@@ -241,6 +241,18 @@
       </para><para>
         <list type="number">
           <item>
+            Call to <see cref="CreateRequiredMarker"/> to test whether a required marker is needed.
+          </item>
+          <item>
+            Call to <see cref="GetHelpProvider"/> to test whether a help provider is needed.
+          </item>
+          <item>
+            Call to <see cref="CreateValidators"/>
+          </item>
+          <item>
+            Call to <see cref="OverrideValidators"/>
+          </item>
+          <item>
             Call to <see cref="LoadMarkersIntoCell"/>.
           </item>
           <item>
@@ -281,10 +293,19 @@
   <ComposeFormGridContents>
     <remarks>
       <para>
-        <see cref="ComposeDataRowContents"/> is called for each <see cref="FormGridRow"/> 
-        of type <see cref="FormGridRowType.DataRow"/>.
+        The following methods are called for each data row.
+        <list type="number">
+          <item>
+            Call to <see cref="CreateLabels"/>, if the cell identified by 
+            <see cref="LabelsColumn"/> is empty.
+          </item>
+          <item>
+            Call to <see cref="HandleReadOnlyControls"/>.
+          </item>
+        </list>
       </para><para>
-        Override this method to change the way the form grid rows are stepped through.
+        Override this method to change the way the form grid rows are stepped through
+        or how the contents is created.
       </para>
     </remarks>
       <param name="formGrid">
@@ -319,34 +340,6 @@
       The <see cref="FormGridRow"/> used as title row
     </param>
   </FormatTitleRow>
-  <ComposeDataRowContents>
-    <remarks>
-      <list type="number">
-        <item>
-          Call to <see cref="OverrideValidators"/>
-        </item>
-        <item>
-          Call to <see cref="CreateLabels"/>, if the cell identified by <see cref="LabelsColumn"/>
-          is empty.
-        </item>
-        <item>
-          Call to <see cref="CreateRequiredMarker"/> to test whether a required marker is needed.
-        </item>
-        <item>
-          Call to <see cref="GetHelpProvider"/> to test whether a help provider is needed.
-        </item>
-        <item>
-          Call to <see cref="HandleReadOnlyControls"/>.
-        </item>
-      </list>
-      <para>
-        Override this method to change the way a data row's contents is composed
-      </para>
-    </remarks>
-    <param name="dataRow">
-      The <see cref="FormGridRow"/> used as data row
-    </param>
-  </ComposeDataRowContents>
   <FormatDataRow>
     <remarks>
       <list type="number">
