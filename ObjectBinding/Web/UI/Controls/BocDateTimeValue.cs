@@ -1105,9 +1105,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Gets a flag describing whether it's save (i.e. the data is valid) to read the contents of 
-  ///   <see cref="Value"/>.
+  ///   Gets a flag describing whether it's save (i.e. accessing <see cref="Value"/> does not throw a 
+  ///   <see cref="FormatException"/>) to read the contents of <see cref="Value"/>.
   /// </summary>
+  /// <remarks> Valus values include valid combinations of date/time values and <see langword="null"/>. </remarks>
   [Browsable(false)]
   public bool IsValidValue
   {
