@@ -57,9 +57,10 @@ public class DataSourceUserControl: UserControl, IBusinessObjectDataSource, IGet
     get { return DataSource.BusinessObjectProvider; }
   }
 
-  bool IBusinessObjectDataSource.IsWritable
+  bool IBusinessObjectDataSource.EditMode
   {
-    get { return DataSource.IsWritable; }
+    get { return DataSource.EditMode; }
+    set { DataSource.EditMode = value; }
   }
 
   void IBusinessObjectDataSource.Unregister (IBusinessObjectBoundControl control)
