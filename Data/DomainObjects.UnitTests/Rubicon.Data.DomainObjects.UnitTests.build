@@ -19,7 +19,7 @@
         <includes asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
-    <copy todir="${project.builddir}">
+    <copy todir="${tests.builddir}">
       <fileset>
         <includes name="*.xml" />
       </fileset>
