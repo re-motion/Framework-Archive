@@ -13,7 +13,8 @@ public interface IBusinessObjectWebUIService: IBusinessObjectService
   IconPrototype GetIcon (IBusinessObjectWithIdentity obj);
 
   /// <summary>
-  ///   Returns a spacer
+  ///   Returns a white space icon matching the icon dimensions of
+  ///   GetIcon (IBusinessObjectWithIdentity)
   /// </summary>
   /// <param name="obj"></param>
   /// <returns></returns>
