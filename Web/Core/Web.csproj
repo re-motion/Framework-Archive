@@ -133,6 +133,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\DataTableControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\DateRangeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
