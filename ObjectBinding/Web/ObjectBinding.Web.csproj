@@ -296,6 +296,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Controls\UserControlBinding.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Design\BocColumnDefinitionCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
