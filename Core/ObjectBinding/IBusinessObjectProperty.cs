@@ -19,7 +19,8 @@ public interface IBusinessObjectProperty
   ///   Creates a list.
   /// </summary>
   /// <remarks>
-  ///   Use this method to create a new list in order to ensure that the correct list type is used (Array, ArrayList, etc.)
+  ///   Use this method to create a new list in order to ensure that the correct list type is used
+  ///   (Array, ArrayList, etc.)
   /// </remarks>
   /// <returns> 
   ///   A new list with the specified number of empty elements.
@@ -30,7 +31,8 @@ public interface IBusinessObjectProperty
   ///   The type of a single value item.
   /// </summary>
   /// <remarks>
-  ///   If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as <see cref="PropertyType"/>. 
+  ///   If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as 
+  ///   <see cref="PropertyType"/>. 
   ///   Otherwise, the item type is the type of a list item.
   /// </remarks>
   Type ItemType { get; }
@@ -39,9 +41,11 @@ public interface IBusinessObjectProperty
   ///   The type of the property.
   /// </summary>
   /// <remarks> 
-  ///   This is the type of elements returned by <see cref="IBusinessObject.GetProperty"/> and set via <see cref="IBusinessObject.SetProperty"/>.
-  ///   If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> interface, and the
-  ///   items contained in this list must have the type <see cref="ItemType"/>.
+  ///   This is the type of elements returned by <see cref="IBusinessObject.GetProperty"/> 
+  ///   and set via <see cref="IBusinessObject.SetProperty"/>.
+  ///   If <see cref="IsList"/> is <see langword="true"/>, the property type must implement 
+  ///   the <see cref="IList"/> interface, and the items contained in this list must have the 
+  ///   type <see cref="ItemType"/>.
   /// </remarks>
   Type PropertyType { get; }
 
@@ -88,7 +92,8 @@ public interface IBusinessObjectProperty
 public interface IBusinessObjectStringProperty: IBusinessObjectProperty
 {
   /// <summary>
-  ///   The maximum length of a string assigned to the property, or <see cref="NaInt32.Null"/> if no maximum length is defined.
+  ///   The maximum length of a string assigned to the property, or <see cref="NaInt32.Null"/> 
+  ///   if no maximum length is defined.
   /// </summary>
   NaInt32 MaxLength { get; }
 }
@@ -159,7 +164,8 @@ public interface IEnumerationValueInfo
   string DisplayName { get; }
 
   /// <summary>
-  ///   Indicates whether this value should be presented as an option to the user. (If not, existing objects might still use this value.)
+  ///   Indicates whether this value should be presented as an option to the user. 
+  ///   (If not, existing objects might still use this value.)
   /// </summary>
   bool IsEnabled { get; }
 }
