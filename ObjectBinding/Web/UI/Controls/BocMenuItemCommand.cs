@@ -8,9 +8,17 @@ public class BocMenuItemCommand: BocCommand
 {
   public MenuItemClickEventHandler Click;
 
-	public BocMenuItemCommand()
-	{
-	}
+  /// <summary> Initializes an instance. </summary>
+  public BocMenuItemCommand()
+    : this (CommandType.Event)
+  {
+  }
+
+  /// <summary> Initializes an instance. </summary>
+  public BocMenuItemCommand (CommandType defaultType)
+    : base (defaultType)
+  {
+  }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   internal virtual void OnClick (BocMenuItem menuItem)
