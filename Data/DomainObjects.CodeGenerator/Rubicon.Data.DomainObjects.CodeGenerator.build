@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.CodeGenerator">
+  
+  <target name="build" description="perform a build">
+    <csc  target="library"
+          output="${project.builddir}/${project.output}.${project.extension}"
+          doc="${project.doc}"
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <sources failonempty="true">
+        <includes name="*.cs"/>
+        <excludes name="AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
+        <includes asis="true" name="${project.builddir}/Rubicon.Data.DomainObjects.dll"/>
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="System.Xml.dll"/>
+      </references>
+    </csc>
+  </target>
+  
+</project>

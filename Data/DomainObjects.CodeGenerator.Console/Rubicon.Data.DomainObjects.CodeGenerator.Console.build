@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.CodeGenerator.Console">
+  
+  <target name="build" description="perform a build">
+    <csc  target="exe"
+          output="${project.builddir}/${project.output}.${project.extension}"
+          doc="${project.doc}"
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <sources failonempty="true">
+        <includes name="*.cs"/>
+        <excludes name="AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
+        <includes asis="true" name="${project.builddir}/Rubicon.Data.DomainObjects.CodeGenerator.dll"/>
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="System.Xml.dll"/>
+      </references>
+    </csc>
+    <copy todir="${project.builddir}" file="mapping.xsd" overwrite="true"/>
+    <copy todir="${project.builddir}" file="storageProviders.xsd" overwrite="true"/>
+    <copy todir="${project.builddir}" file="types.xsd" overwrite="true"/>
+    <copy todir="${project.builddir}" file="queries.xsd" overwrite="true"/>    
+  </target>
+  
+</project>
