@@ -13,6 +13,7 @@
       <sources failonempty="true">
         <includes name="*.cs" />
         <includes name="NullableValueTypes/**/*.cs" />
+        <includes name="ObjectBinding/**/*.cs" />
         <includes name="Text/**/*.cs" />
         <includes name="Utilities/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
