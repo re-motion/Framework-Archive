@@ -1,0 +1,1 @@
+nant clean setdebug all && nant cleantemp getcurrent
