@@ -262,10 +262,17 @@ public class DataContainer
 
   internal void Rollback ()
   {
-    foreach (PropertyValue propertyValue in _propertyValues)
-      propertyValue.Rollback ();
+    if (_state == DataContainerStateType.New)
+    {
+      Discard ();
+    }
+    else
+    {
+      foreach (PropertyValue propertyValue in _propertyValues)
+        propertyValue.Rollback ();
  
-    _state = DataContainerStateType.Existing;
+      _state = DataContainerStateType.Existing;
+    }
   }
 
   internal void SetDomainObject (DomainObject domainObject)

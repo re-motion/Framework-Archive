@@ -3,6 +3,8 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
+using Rubicon.Data.DomainObjects.DataManagement;
+
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
 [TestFixture]  
@@ -129,6 +131,40 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.AreSame (oldOrderItems[DomainObjectIDs.OrderItem2], order.OrderItems[DomainObjectIDs.OrderItem2]);
     Assert.AreSame (oldCustomer, order.Customer);
     Assert.AreSame (oldOfficial, order.Official);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDiscardedException))]
+  public void RollbackForNewObject ()
+  {
+    Order newOrder = new Order ();
+
+    ClientTransaction.Current.Rollback ();
+
+    ObjectID id = newOrder.ID;
+  }
+
+  [Test]
+  public void RollbackForNewObjectWithRelations ()
+  {
+    Order newOrder = new Order ();
+    ObjectID newOrderID = newOrder.ID;
+
+    Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+    OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+
+    newOrder.OrderTicket = orderTicket1;
+    customer.Orders.Add (newOrder);
+    orderItem1.Order = newOrder;
+
+    ClientTransaction.Current.Rollback ();
+
+    Assert.AreEqual (StateType.Unchanged, order1.State);
+    Assert.AreSame (orderTicket1, order1.OrderTicket);
+    Assert.IsFalse (customer.Orders.Contains (newOrderID));
+    Assert.AreSame (order1, orderItem1.Order);
   }
 }
 }

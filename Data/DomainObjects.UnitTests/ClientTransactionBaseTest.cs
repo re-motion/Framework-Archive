@@ -28,14 +28,14 @@ public class ClientTransactionBaseTest : DatabaseTest
   {
     base.SetUp ();
 
-    _clientTransactionMock = new ClientTransactionMock ();
-    ClientTransaction.SetCurrent (_clientTransactionMock);
-    _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
+    ReInitializeTransaction ();
   }
 
   [TearDown]
   public virtual void TearDown ()
   {
+    _testDataContainerFactory = null;
+    _clientTransactionMock = null;
     ClientTransaction.SetCurrent (null);
   }
 
@@ -47,6 +47,13 @@ public class ClientTransactionBaseTest : DatabaseTest
   protected TestDataContainerFactory TestDataContainerFactory
   {
     get { return _testDataContainerFactory; }
+  }
+
+  protected void ReInitializeTransaction ()
+  {
+    _clientTransactionMock = new ClientTransactionMock ();
+    ClientTransaction.SetCurrent (_clientTransactionMock);
+    _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
   }
 }
 }

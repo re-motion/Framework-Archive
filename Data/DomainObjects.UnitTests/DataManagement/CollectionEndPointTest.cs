@@ -76,7 +76,7 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
   public void RemoveFromOppositeDomainObjects ()
   {
     CollectionEndPoint collectionEndPoint = new CollectionEndPoint (
-        ClientTransaction.Current, _customerEndPointID, _orders);
+        ClientTransactionMock, _customerEndPointID, _orders);
     
     collectionEndPoint.OppositeDomainObjects.Remove (_order1.ID);
   }
@@ -88,7 +88,7 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
     Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
 
     CollectionEndPoint collectionEndPoint = new CollectionEndPoint (
-        ClientTransaction.Current, _customerEndPointID, _orders);
+        ClientTransactionMock, _customerEndPointID, _orders);
 
     collectionEndPoint.OppositeDomainObjects.Add (newOrder);
   }
