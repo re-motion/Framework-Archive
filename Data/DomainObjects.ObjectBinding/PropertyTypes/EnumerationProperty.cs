@@ -46,8 +46,10 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
 
       if ((!includeDisabledValues && isEnabled) || includeDisabledValues)
       {
+        string multiLingualDisplayName = EnumDescription.GetDescription ((System.Enum) field.GetValue (null));
+
         valueInfos.Add (
-            new EnumerationValueInfo (field.GetValue (null), field.Name, field.Name, isEnabled));
+            new EnumerationValueInfo (field.GetValue (null), field.Name, multiLingualDisplayName, isEnabled));
       }
     }
 
