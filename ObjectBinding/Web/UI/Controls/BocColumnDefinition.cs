@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
@@ -8,7 +9,6 @@ using System.Web.UI.WebControls;
 using System.Globalization;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
-using System.Collections;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Utilities;
 
@@ -17,7 +17,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   A BocColumnDefinition defines how to display a column of a list. 
 /// </summary>
-[DesignTimeVisible (false)]
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition// : IComponent // for designer support
 {
@@ -71,14 +70,26 @@ public abstract class BocColumnDefinition// : IComponent // for designer support
 
   protected internal IBusinessObjectBoundWebControl OwnerControl
   {
-    get { return _ownerControl; }
-    set { _ownerControl = value; }
+    get
+    {
+      return _ownerControl; 
+    }
+    set
+    {
+      if (_ownerControl != value)
+      {
+        _ownerControl = value;
+        OnOwnerControlChanged();
+      }
+    }
   }
 
+  protected virtual void OnOwnerControlChanged()
+  {}
 }
 
 /// <summary>
-///   A column definition containing no data, but an <see cref="ItemCommand"/>.
+///   A column definition containing no data, but a <see cref="BocItemCommand"/>.
 /// </summary>
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
@@ -168,8 +179,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition
 {
-  private BusinessObjectPropertyPath _propertyPath;
-  private string _propertyPathIdentifier;
+  private BocPropertyPathWrapper _propertyPathWrapper;
 
   public BocSimpleColumnDefinition (
       BusinessObjectPropertyPath propertyPath,
@@ -178,40 +188,45 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     : base (columnHeader, width)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-
-    _propertyPath = propertyPath;
+    _propertyPathWrapper = new BocPropertyPathWrapper (propertyPath);
   }
 
-  public BocSimpleColumnDefinition()
-    : this (
-        new BusinessObjectPropertyPath (
-          new IBusinessObjectProperty[] {new EmptyBusinessObjectProperty()}),
-        null, 
-        Unit.Empty)
-  {}
+  public BocSimpleColumnDefinition (
+      string propertyPathIdentifier,
+      string columnHeader, 
+      Unit width)
+    : base (columnHeader, width)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+    _propertyPathWrapper = new BocPropertyPathWrapper (propertyPathIdentifier);
+  }
+
+  public BocSimpleColumnDefinition ()
+    : base (string.Empty, Unit.Empty)
+  {
+    _propertyPathWrapper = new BocPropertyPathWrapper();
+  }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public BusinessObjectPropertyPath PropertyPath 
   { 
-    get 
+    get
     {
-      if (_propertyPath != null)
-        return _propertyPath; 
-
       if (OwnerControl == null)
         throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundWebControl.");
-
-      bool isDesignMode = ControlHelper.IsDesignMode (OwnerControl);
       
-      if (! isDesignMode && OwnerControl.DataSource == null)
-        throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set in the containing IBusinessObjectBoundWebControl.");
-
-      _propertyPath = BusinessObjectPropertyPath.Parse (
-        OwnerControl.DataSource,
-        _propertyPathIdentifier);
-      
-      return _propertyPath;
+      if (! ControlHelper.IsDesignMode (OwnerControl))
+      {
+        _propertyPathWrapper.DataSource = OwnerControl.DataSource;
+        return _propertyPathWrapper.PropertyPath;
+      }
+      else
+        return null;
+    }
+    set
+    {
+      _propertyPathWrapper.PropertyPath = value;
     }
   }
 
@@ -219,8 +234,14 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
   [DefaultValue("")]
   public string PropertyPathIdentifier
   { 
-    get { return _propertyPathIdentifier; }
-    set { _propertyPathIdentifier = value; }
+    get
+    { 
+      return _propertyPathWrapper.PropertyPathIdentifier; 
+    }
+    set
+    { 
+      _propertyPathWrapper.PropertyPathIdentifier = value; 
+    }
   }
 
   public override string ColumnHeaderDisplayValue
@@ -228,13 +249,22 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     get 
     {
       bool isHeaderEmpty = StringUtility.IsNullOrEmpty(ColumnHeader);
-      return isHeaderEmpty ? _propertyPath.LastProperty.DisplayName : ColumnHeader;  
+
+      if (! isHeaderEmpty)
+        return ColumnHeader;
+      else if (PropertyPath != null)
+        return PropertyPath.LastProperty.DisplayName;  
+      else
+        return string.Empty;
     }
   }
 
   public override string GetStringValue (IBusinessObject obj)
   {
-    return PropertyPath.GetStringValue (obj);
+    if (PropertyPath != null)
+      return PropertyPath.GetStringValue (obj);
+    else
+      return string.Empty;
   }
 }
 
@@ -242,13 +272,14 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 ///   A column definition for displaying a string made up from different property paths.
 /// </summary>
 /// <remarks>
-///   Note that values in these columns can usually not be modified directly.
+///   Note that values in these columnDefinitions can usually not be modified directly.
 /// </remarks>
+[ParseChildren (true, "PropertyPathWrappers")]
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
 //  private string _columnHeader;
   private string _formatString;
-  private BusinessObjectPropertyPath[] _propertyPaths;
+  private BocPropertyPathWrapperCollection _propertyPathWrappers;
 
   public BocCompoundColumnDefinition (
       string formatString,
@@ -262,24 +293,90 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
     ColumnHeader = columnHeader;
     _formatString = formatString;
-    _propertyPaths = propertyPaths;
+    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null, propertyPaths);
   }
 
-  public BocCompoundColumnDefinition ()
-    : this (
-      string.Empty, 
-      new BusinessObjectPropertyPath[] {
-        new BusinessObjectPropertyPath (
-          new IBusinessObjectProperty[] {new EmptyBusinessObjectProperty()})},
-      string.Empty, 
-      Unit.Empty)
-  {}
-
-  public override string GetStringValue(IBusinessObject obj)
+  public BocCompoundColumnDefinition (
+      string formatString,
+      string[] propertyPathIdentifiers, 
+      string columnHeader, 
+      Unit width)
+    : base (columnHeader, width)
   {
-    string[] strings = new string[_propertyPaths.Length];
-    for (int i = 0; i < _propertyPaths.Length; ++i)
-      strings[i] = _propertyPaths[i].GetStringValue (obj);
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifiers", propertyPathIdentifiers);
+    ArgumentUtility.CheckNotNullOrEmpty ("columnHeader", columnHeader);
+
+    ColumnHeader = columnHeader;
+    _formatString = formatString;
+    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null, propertyPathIdentifiers);
+  }
+
+  public BocCompoundColumnDefinition()
+    : base (string.Empty, Unit.Empty)
+  {
+    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null);
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged();
+
+    _propertyPathWrappers.OwnerControl = OwnerControl;
+  }
+
+  [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
+  [ListBindable (false)]
+  [DefaultValue ((string) null)]
+  public BocPropertyPathWrapperCollection PropertyPathWrappers
+  {
+    get 
+    { 
+      return _propertyPathWrappers; 
+    }
+  }
+
+//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+//  [Browsable (false)]
+//  public BusinessObjectPropertyPath PropertyPath 
+//  { 
+//    get
+//    {
+//      if (OwnerControl == null)
+//        throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundWebControl.");
+//      
+//      if (! ControlHelper.IsDesignMode (OwnerControl))
+//      {
+//        _propertyPathWrapper.DataSource = OwnerControl.DataSource;
+//        return _propertyPathWrapper.PropertyPath;
+//      }
+//      else
+//        return null;
+//    }
+//    set
+//    {
+//      _propertyPathWrapper.PropertyPath = value;
+//    }
+//  }
+//
+//  [PersistenceMode (PersistenceMode.Attribute)]
+//  [DefaultValue("")]
+//  public string PropertyPathIdentifier
+//  { 
+//    get
+//    { 
+//      return _propertyPathWrapper.PropertyPathIdentifier; 
+//    }
+//    set
+//    { 
+//      _propertyPathWrapper.PropertyPathIdentifier = value; 
+//    }
+//  }
+
+  public override string GetStringValue (IBusinessObject obj)
+  {
+    string[] strings = new string[_propertyPathWrappers.Count];
+    for (int i = 0; i < _propertyPathWrappers.Count; ++i)
+      strings[i] = _propertyPathWrappers[i].PropertyPath.GetStringValue (obj);
 
     return String.Format (_formatString, strings);
   }
@@ -287,11 +384,11 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   [Description ("The assigned value of the column header, must not be empty or null.")]
   public override string ColumnHeader
   {
-    get { return ColumnHeader; }
+    get { return base.ColumnHeader; }
     set 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("ColumnHeader", value);
-      ColumnHeader = value;
+      base.ColumnHeader = value;
     }
   }
 }
@@ -304,365 +401,6 @@ internal class BocDesignerColumnDefinition : BocColumnDefinition
   public BocDesignerColumnDefinition (string columnHeader, Unit width)
     : base (columnHeader, width)
   {}
-}
- 
-internal class EmptyBusinessObjectProperty : Rubicon.ObjectBinding.IBusinessObjectProperty
-{
-  public bool IsList
-  {
-    get { return false; }
-  }
-
-  public IList CreateList (int count)
-  {
-    throw new InvalidOperationException ("Cannot create lists for non-list properties.");
-  }
-
-  public Type ItemType
-  {
-    get { return typeof (object); }
-  }
-
-  public virtual Type PropertyType
-  {
-    get { return typeof (object);  }
-  }
-
-  public string Identifier
-  {
-    get { return string.Empty; }
-  }
-
-  public string DisplayName
-  {
-    get { return "Empty Property"; }
-  }
-
-  public virtual bool IsRequired
-  {
-    get { return false;  }
-  }
-
-  public bool IsAccessible (IBusinessObject obj)
-  {
-    return false;
-  }
-
-  public bool IsReadOnly(IBusinessObject obj)
-  {
-    return true;
-  }
-}
-
-[Editor (typeof (BocColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
-public  class BocColumnDefinitionCollection : IList, ICollection, IEnumerable
-{
-  private bool _isEditing;
-
-  private IBusinessObjectBoundWebControl _ownerControl;
-
-  // Events
-  public event CollectionChangeEventHandler CollectionChanged;
-
-  // Construction and disposing
-  internal BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
-  {
-    _ownerControl = ownerControl;
-    _items = new ArrayList();
-  }
-
-  internal BocColumnDefinitionCollection (
-      IBusinessObjectBoundWebControl ownerControl, 
-      BocColumnDefinition[] columnDefinitions)
-    : this (ownerControl)
-  {
-    _items.AddRange (columnDefinitions);
-  }
-
-  public void BeginEdit()
-  {
-    _isEditing = true;
-  }
-
-  public void EndEdit()
-  {
-    if (_isEditing)
-    {
-      _isEditing = false;
-      OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
-    }
-  }
-
-  // Methods
-  public virtual int Add (BocColumnDefinition columnDefinition)
-  {
-    if (isDefault)
-    {
-      throw new ArgumentException("DefaultColumnDefinitionCollectionChanged");
-    }
-    //      column.SetDataGridTableInColumn(owner, true);
-    //      column.MappingNameChanged += new EventHandler(ColumnStyleMappingNameChanged);
-    //      column.PropertyDescriptorChanged += new EventHandler(ColumnStylePropDescChanged);
-    //      if ((DataGridTableStyle != null) && (column.Width == -1))
-    //      {
-    //            column.width = DataGridTableStyle.PreferredColumnWidth;
-    //      }
-
-    int count = _items.Add (columnDefinition);
-    columnDefinition.OwnerControl = _ownerControl;
-    OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, columnDefinition));
-    return count;
-  }
-
-  public void AddRange (BocColumnDefinition[] columnDefinitions)
-  {
-    if (columnDefinitions == null)
-      throw new ArgumentNullException("columnDefinitions");
-
-    BeginEdit();
-    for (int i = 0; i < columnDefinitions.Length; i++)
-      Add (columnDefinitions[i]);
-    EndEdit();
-  }
-
-  public void Clear()
-  {
-    _items.Clear();
-   OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
-  }
-
-  public bool Contains(BocColumnDefinition columnDefinition)
-  { 
-    int index = _items.IndexOf(columnDefinition); 
-    return (index != -1);
-  }
-
-  public int IndexOf(BocColumnDefinition element)
-  { 
-    return _items.IndexOf(element);
-  }
-
-  protected void OnCollectionChanged(CollectionChangeEventArgs e)
-  {
-    if (CollectionChanged != null && !_isEditing)
-      CollectionChanged(this, e);
-  }
-
-  public void Remove(BocColumnDefinition columnDefinition)
-  {
-    if (isDefault)
-      throw new ArgumentException("DefaultColumnDefinitionCollectionChanged");
-
-    int num1 = -1;
-    int num2 = _items.Count;
-    for (int num3 = 0; num3 < num2; num3++)
-    {
-      if (_items[num3] == columnDefinition)
-      {
-        num1 = num3;
-        break;
-      }
-    }
-
-    if (num1 == -1)
-      throw new InvalidOperationException("ColumnDefinitionCollectionMissing");
-
-    RemoveAt(num1);
-  }
-
-  public void RemoveAt(int index)
-  {
-    if (isDefault)
-      throw new ArgumentException("DefaultColumnDefinitionCollectionChanged");
-
-    BocColumnDefinition columnDefinition = (BocColumnDefinition) _items[index];
-    //      style1.SetDataGridTableInColumn(null, true);
-    //      style1.MappingNameChanged -= new EventHandler(ColumnStyleMappingNameChanged);
-    //      style1.PropertyDescriptorChanged -= new EventHandler(ColumnStylePropDescChanged);
-    _items.RemoveAt(index);
-    OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, columnDefinition));
-  }
-
-  void ICollection.CopyTo(Array array, int index)
-  {
-    _items.CopyTo (array, index);
-  }
-
-  int ICollection.Count
-  {
-    get  
-    { 
-      return _items.Count;
-    }
-  }
-  bool ICollection.IsSynchronized
-  {
-    get
-    { 
-      return false;
-    }
-  }
-  object ICollection.SyncRoot
-  {
-    get
-    {
-      return this;
-    }
-  }
-
-  IEnumerator IEnumerable.GetEnumerator()
-  {
-    return _items.GetEnumerator();
-  }
-
-  int IList.Add(object value)
-  {
-    return Add ((BocColumnDefinition) value);
-  }
-
-  void IList.Clear()
-  {
-    Clear();
-  }
-
-  bool IList.Contains(object value)
-  {
-    return _items.Contains (value);
-  }
-
-  bool IList.IsFixedSize
-  {
-    get  
-    { 
-      return false;
-    }
-  }
-
-  bool IList.IsReadOnly
-  {
-    get
-    { 
-      return false;
-    }
-  }
-
-  object IList.this [int index]
-  {
-    get
-    {
-      return _items[index];
-    }
-    set
-    {
-      throw new NotSupportedException();
-    }
-  }
- 
-  int IList.IndexOf (object value)
-  {
-    return _items.IndexOf (value);
-  }
-
-  void IList.Insert(int index, object value)
-  {
-    throw new NotSupportedException();
-  }
-
-  void IList.Remove(object value)
-  { 
-    Remove((BocColumnDefinition) value);
-  }
-
-  void IList.RemoveAt(int index)
-  {
-    RemoveAt(index);
-  }
-
-  public BocColumnDefinition[] ToArray()
-  {
-    return (BocColumnDefinition[]) _items.ToArray (typeof (BocColumnDefinition));
-  }
-  // Properties
-//      public TestType this[PropertyDescriptor propDesc] { get
-//      { int num1 = _items.Count;
-//            for (int num2 = 0; num2 < num1; num2++)
-//            {
-//                  DataGridColumnStyle style1 = (DataGridColumnStyle) _items[num2];
-//                  if (propDesc.Equals(style1.PropertyDescriptor))
-//                  {
-//                        return style1;
-//                  }
-//            }
-//            return null;
-//} }
-//      public TestType this[string columnName] { get
-//      {return null;} }
-  public BocColumnDefinition this[int index]
-  {
-    get
-    {
-      return (BocColumnDefinition) _items[index];
-    }
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [EditorBrowsable(EditorBrowsableState.Advanced)]
-  protected virtual ArrayList List
-  {
-    get
-    {
-      return _items;
-    }
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [EditorBrowsable(EditorBrowsableState.Advanced)]
-  public virtual int Count 
-  {
-    get
-    {
-      return  List.Count;
-    } 
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [EditorBrowsable(EditorBrowsableState.Advanced)]
-  public bool IsReadOnly 
-  { 
-    get
-    {
-      return false;                       
-    } 
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [EditorBrowsable(EditorBrowsableState.Advanced)]
-  public bool IsSynchronized 
-  { 
-    get
-    {
-      return false;
-    }
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [EditorBrowsable(EditorBrowsableState.Advanced)]
-  public object SyncRoot
-  { 
-    get
-    {
-      return this;
-    } 
-  }
-
-  // Fields
-  private bool isDefault;
-  private ArrayList _items;
 }
 
 }

@@ -147,10 +147,21 @@
                 />
                 <File
                     RelPath = "Controls\BocColumnDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocColumnDefinitionCollection.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\BocColumnDefinitionSet.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocColumnDefinitionSetCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -171,10 +182,21 @@
                 />
                 <File
                     RelPath = "Controls\BocItemCommand.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\BocList.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocPropertyPathWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocPropertyPathWrapperCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -220,6 +242,11 @@
                 />
                 <File
                     RelPath = "Design\BocColumnDefinitionSetCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\BocPropertyPathWrapperCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
