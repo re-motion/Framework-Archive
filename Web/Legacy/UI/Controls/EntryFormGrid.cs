@@ -133,7 +133,9 @@ public class EntryField: Control
         {
           // Validator is invalid => save status and its error message
           validatorsInvalid = true;
-          validatorMessages += validator.ErrorMessage + " ";
+          if ( validatorMessages.Length > 0 )
+            validatorMessages += "\r\n";
+          validatorMessages += validator.ErrorMessage;
         }
       }
     }
@@ -163,7 +165,7 @@ public class EntryField: Control
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td nowrap>");
 
-		if (this.InfoUrl == String.Empty && ! this.IsRequired)
+		if (this.InfoUrl == String.Empty && ! this.IsRequired && ! validatorsInvalid)
 		{
 			writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"27\" height=\"20\"/>");
 		}
