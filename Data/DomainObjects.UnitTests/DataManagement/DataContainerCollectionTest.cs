@@ -272,7 +272,7 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), "Invalid state '1000' provided.\r\nParameter name: state")]
+  [ExpectedException (typeof (ArgumentOutOfRangeException))]
   public void GetByInvalidState ()
   {
     _collection.GetByState ((StateType) 1000);

@@ -75,7 +75,7 @@ public class DataContainerMapTest : ClientTransactionBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), "Invalid state '1000' provided.\r\nParameter name: state")]
+  [ExpectedException (typeof (ArgumentOutOfRangeException))]
   public void GetByInvalidState ()
   {
     _map.GetByState ((StateType) 1000);
