@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
 using System.Web;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
-namespace Rubicon.Web.UI
+namespace Rubicon.Web
 {
 /// <summary>
 ///   Resolve the relative image URL into an absolute image url.
