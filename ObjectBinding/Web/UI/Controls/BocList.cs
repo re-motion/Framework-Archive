@@ -2403,7 +2403,7 @@ public class BocList:
 
   /// <summary>
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
-  ///   <see cref="BocColumnDefinitions"/> objects in the collection <paramref name="columns"/>.
+  ///   <see cref="BocColumnDefinition"/> objects in the collection <paramref name="columns"/>.
   /// </summary>
   private void DispatchToColumns (BocColumnDefinitionCollection columns, IDictionary values, string collectionName)
   {
