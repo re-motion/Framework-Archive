@@ -331,6 +331,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\Command.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\CommandHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -417,11 +422,6 @@
                 />
                 <File
                     RelPath = "UI\Controls\IFormGridRowProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ItemCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

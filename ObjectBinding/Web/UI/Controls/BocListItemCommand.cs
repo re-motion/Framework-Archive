@@ -14,12 +14,12 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-//  TODO: BocColumnItemCommand: Move long comment blocks to xml-file
-/// <summary> A <see cref="BocColumnItemCommand"/> defines an action the user can invoke on a datarow. </summary>
+//  TODO: BocColumnCommand: Move long comment blocks to xml-file
+/// <summary> A <see cref="BocColumnCommand"/> defines an action the user can invoke on a datarow. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class BocColumnItemCommand: ItemCommand
+public class BocColumnCommand: Command
 {
-  public class CommandParameters: IItemCommandParameters
+  public class CommandParameters: ICommandParameters
   {
     private int _listIndex;
     private IBusinessObject _businessObject;
@@ -53,7 +53,7 @@ public class BocColumnItemCommand: ItemCommand
 
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ColumnHrefCommandInfo: ItemCommand.HrefCommandInfo
+  public class ColumnHrefCommandInfo: Command.HrefCommandInfo
   {
     /// <summary> Simple constructor. </summary>
     public ColumnHrefCommandInfo()
@@ -75,7 +75,7 @@ public class BocColumnItemCommand: ItemCommand
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ColumnWxeFunctionCommandInfo: ItemCommand.WxeFunctionCommandInfo
+  public class ColumnWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
   {
     /// <summary> Simple constructor. </summary>
     public ColumnWxeFunctionCommandInfo()
@@ -143,7 +143,7 @@ public class BocColumnItemCommand: ItemCommand
   //private ScriptCommandInfo _scriptCommand = null;
 
   /// <summary> Simple Constructor. </summary>
-  public BocColumnItemCommand()
+  public BocColumnCommand()
   {
   }
 
@@ -151,7 +151,7 @@ public class BocColumnItemCommand: ItemCommand
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   /// <param name="postBackLink">
   ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
-  ///   <see cref="ItemCommandType.Event"/> or <see cref="ItemCommandType.WxeFunction"/>.
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
   ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
   /// </param>
@@ -180,7 +180,7 @@ public class BocColumnItemCommand: ItemCommand
       HtmlTextWriter writer, 
       string postBackLink,
       string onClick,
-      IItemCommandParameters parameters)
+      ICommandParameters parameters)
   {
     ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
     CommandParameters columnParameters = (CommandParameters) parameters;
@@ -203,8 +203,8 @@ public class BocColumnItemCommand: ItemCommand
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
-    if (Type != ItemCommandType.WxeFunction)
-      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to BocItemCommandType.WxeFunction.");
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to BocCommandType.WxeFunction.");
 
     if (! WxeContext.Current.IsReturningPostBack)
     {
@@ -233,7 +233,7 @@ public class BocColumnItemCommand: ItemCommand
     }
   }
 
-  public override void ExecuteWxeFunction (IWxePage wxePage, IItemCommandParameters parameters)
+  public override void ExecuteWxeFunction (IWxePage wxePage, ICommandParameters parameters)
   {
     ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
     CommandParameters columnParameters = (CommandParameters) parameters;
@@ -245,7 +245,7 @@ public class BocColumnItemCommand: ItemCommand
   ///   The <see cref="ColumnHrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
   /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to <see cref="ItemCommandType.Href"/>.
+  ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>.
   /// </remarks>
   /// <value> A <see cref="ColumnHrefCommandInfo"/> object. </value>
   public override HrefCommandInfo HrefCommand
@@ -260,7 +260,7 @@ public class BocColumnItemCommand: ItemCommand
   /// </summary>
   /// <remarks> 
   ///   Only interpreted if <see cref="Type"/> is set to 
-  ///   <see cref="ItemCommandType.WxeFunction"/>.
+  ///   <see cref="CommandType.WxeFunction"/>.
   /// </remarks>
   /// <value> A <see cref="ColumnWxeFunctionCommandInfo"/> object. </value>
   public override WxeFunctionCommandInfo WxeFunctionCommand
