@@ -31,18 +31,30 @@ public class QueryCommandBuilder : CommandBuilder
   {
     IDbCommand command = CreateCommand ();
 
+    string statement = _query.Statement;
     foreach (QueryParameter parameter in _query.Parameters)
     { 
-      AddCommandParameter (command, parameter.Name, parameter.Value);
+      if (parameter.ParameterType == QueryParameterType.Text)
+        statement = PerformSecureTextReplacement (statement, parameter);
+      else
+        AddCommandParameter (command, parameter.Name, parameter.Value);
     }
 
-    command.CommandText = _query.Statement;
+    command.CommandText = statement;
     return command;
   }
 
   protected override void AppendColumn (string columnName, string parameterName)
   {
     throw new NotSupportedException ("'AppendColumn' is not supported by 'QueryCommandBuilder'.");
+  }
+
+  private string PerformSecureTextReplacement (string statement, QueryParameter parameter)
+  {
+    RdbmsExpression rdbmsExpression = new RdbmsExpression (parameter.Value.ToString ());
+    rdbmsExpression.Check ();
+
+    return statement.Replace (parameter.Name, rdbmsExpression.Text);
   }
 }
 }

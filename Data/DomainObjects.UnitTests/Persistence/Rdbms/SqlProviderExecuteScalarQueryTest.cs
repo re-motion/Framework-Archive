@@ -61,5 +61,24 @@ public class SqlProviderQueryTest: SqlProviderBaseTest
 
     Assert.AreEqual (3, Provider.ExecuteScalarQuery (query));
   }
+
+  [Test]
+  public void ParameterWithTextReplacement ()
+  {
+    Query query = new Query ("OrderNoSumForMultipleCustomers");
+    query.Parameters.Add ("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
+
+    Assert.AreEqual (6, Provider.ExecuteScalarQuery (query));
+  }
+
+  [Test]
+  [ExpectedException (typeof (RdbmsExpressionSecurityException))]
+  public void ParameterWithInsecureTextReplacement ()
+  {
+    Query query = new Query ("OrderNoSumForMultipleCustomers");
+    query.Parameters.Add ("{companyNames}", "'Kunde 1'); TRUNCATE TABLE [Order];--", QueryParameterType.Text);
+
+    Provider.ExecuteScalarQuery (query);
+  }
 }
 }

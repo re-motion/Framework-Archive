@@ -1,33 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <queries 
     application="UnitTests" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\queries.xsd">
-    
-	<query id="QueryWithoutParameter" type="scalar">
-	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>select 42</statement>
-	</query>
-    
-	<query id="OrderQuery" type="collection">
-	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>select [Order].* from [Order] inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
-	    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
-	</query>
-	
-	<query id="CustomerTypeQuery" type="collection">
-	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
-	</query>
-	
-	<query id="OrderNoSumByCustomerNameQuery" type="scalar">
-	    <storageProviderID>TestDomain</storageProviderID>        
-	    <statement>
-	      select sum(OrderNo) 
-	        from [Order] inner join Company on [Order].CustomerID = Company.ID
-	        where Company.Name = @customerName;
+
+  <query id="QueryWithoutParameter" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select 42</statement>
+  </query>
+
+  <query id="OrderQuery" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select [Order].* from [Order] inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
+    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="CustomerTypeQuery" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
+  </query>
+
+  <query id="OrderNoSumByCustomerNameQuery" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+	    select sum(OrderNo) 
+	      from [Order] inner join Company on [Order].CustomerID = Company.ID
+	      where Company.Name = @customerName;
 	    </statement>
-	</query>
-	
+  </query>
+
+  <query id="OrderNoSumForMultipleCustomers" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+	    select sum(OrderNo) 
+	      from [Order] inner join Company on [Order].CustomerID = Company.ID
+	      where Company.Name in ({companyNames});
+	    </statement>
+  </query>
+
 </queries>
