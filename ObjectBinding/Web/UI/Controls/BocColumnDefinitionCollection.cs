@@ -66,7 +66,8 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   /// </param>
   internal BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
     : this (ownerControl, new Type[] {typeof (BocColumnDefinition)})
-  {}
+  {
+  }
 
   /// <summary> Performs additional custom processes before inserting a new element. </summary>
   /// <param name="index"> The zero-based index at which to insert value. </param>
