@@ -6,6 +6,9 @@ using System.ComponentModel;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <summary>
+///   Can be used instead of <see cref="SmartLabel"/> controls (to label controls that do not implement ISmartControl).
+/// </summary>
 [ToolboxItemFilter("System.Web.UI")]
 public class FormGridLabel: Label, ISmartControl
 {
