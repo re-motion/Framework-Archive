@@ -148,11 +148,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "INullable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "InvalidEnumDefinitionException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -364,7 +359,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\ILinkChangeDelegate.cs"
+                    RelPath = "DataManagement\ICollectionEndPointChangeDelegate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\INullable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -374,27 +374,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\MultipleObjectsRelationLink.cs"
+                    RelPath = "DataManagement\NullCollectionEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\MultipleObjectsRelationLinkCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\NullRelationEndPoint.cs"
+                    RelPath = "DataManagement\NullObjectEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "DataManagement\ObjectEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelatioEndPointID.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -409,17 +399,12 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\RelationEndPointID.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\RelationLink.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\SingleObjectRelationLink.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\SingleObjectRelationLinkCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
