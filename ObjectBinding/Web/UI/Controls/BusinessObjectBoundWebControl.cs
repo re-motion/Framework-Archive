@@ -16,6 +16,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Globalization;
+using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -28,7 +29,7 @@ public interface IBusinessObjectBoundWebControl:
   string DataSourceControl { get; set; }
 }
 
-public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundWebControl, IBusinessObjectBoundModifiableControl
+public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundWebControl, IBusinessObjectBoundModifiableControl, IValidatableControl
 {
 }
 
@@ -444,6 +445,31 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
         return (bool) Property.IsRequired;
       return false;
     }
+  }
+
+  
+  private TypedArrayList _validators;
+
+  public virtual void RegisterValidator (BaseValidator validator)
+  {
+    if (_validators == null)
+      _validators = new TypedArrayList (typeof (BaseValidator));
+
+    _validators.Add (validator);
+  }
+
+  public virtual bool Validate ()
+  {
+    if (_validators == null)
+      return true;
+
+    bool isValid = true;
+    foreach (BaseValidator validator in _validators)
+    {
+      validator.Validate();
+      isValid &= validator.IsValid;
+    }
+    return isValid;
   }
 }
 
