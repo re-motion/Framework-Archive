@@ -391,9 +391,6 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
   public abstract void SaveValue (bool interim);
 
   /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
-  protected abstract IResourceManager GetResourceManager();
-
-  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
   /// <param name="localResourcesType"> 
   ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
   ///   Typically the an enum or the derived class it self.
@@ -409,7 +406,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
     //  Get the resource managers
 
     IResourceManager localResourceManager = 
-        MultiLingualResourcesAttribute.GetResourceManager (localResources, true);
+        MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
     IResourceManager namingContainerResourceManager = 
         ResourceManagerUtility.GetResourceManager (NamingContainer);
     _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
