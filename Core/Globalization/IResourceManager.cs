@@ -32,20 +32,19 @@ public interface IResourceManager
   /// </summary>
   /// <param name="id">The ID of the resource to get. </param>
   /// <returns>
-  ///   The value of the resource. If a match is not possible, a null reference is returned.
+  ///   The value of the resource. If no match is possible, the identifier is returned.
   /// </returns>
   string GetString (string id);
 
   /// <summary>
-  ///   Gets the value of the specified String resource. The resource is identified by
-  ///   concatenating the type's FullName and the enumvalue's string representation.
+  ///   Gets the value of the specified string resource. The resource is identified by
+  ///   concatenating type and value name.
   /// </summary>
-  /// <param name="type">The type to which the resource belongs</param>
-  /// <param name="enumValue">The last part of the reosurce identifier.</param>
+  /// <remarks> See <see cref=""/> for resource identifier syntax. </remarks>
   /// <returns>
-  ///   The value of the resource. If a match is not possible, a null reference is returned
+  ///   The value of the resource. If no match is possible, the identifier is returned.
   /// </returns>
-  string GetString (Type type, Enum enumValue);
+  string GetString (Enum enumValue);
 
   string Name { get; }
 }
