@@ -20,16 +20,16 @@ public class BocItemCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class HrefCommandProperties
+  public class HrefCommandInfo
   {
     private string _href = string.Empty;
     private string _target = string.Empty;
 
     /// <summary> Simple constructor. </summary>
-    public HrefCommandProperties()
+    public HrefCommandInfo()
     {}
 
-    /// <summary> Returns a string representation of this <see cref="HrefCommandProperties"/>. </summary>
+    /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
     /// <remarks> Foramt: Href, Target </remarks>
     /// <returns> A <see cref="string"/>. </returns>
     public override string ToString()
@@ -94,17 +94,17 @@ public class BocItemCommand
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class WxeFunctionCommandProperties
+  public class WxeFunctionCommandInfo
   {
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
 
     /// <summary> Simple constructor. </summary>
-    public WxeFunctionCommandProperties()
+    public WxeFunctionCommandInfo()
     {}
 
     /// <summary>
-    ///   Returns a string representation of this <see cref="WxeFunctionCommandProperties"/>.
+    ///   Returns a string representation of this <see cref="WxeFunctionCommandInfo"/>.
     /// </summary>
     /// <remarks> Foramt: Href, Target </remarks>
     /// <returns> A <see cref="string"/>. </returns>
@@ -170,7 +170,7 @@ public class BocItemCommand
   }
 
   /// <summary> Wraps the properties required for rendering a script command. </summary>
-  public class ScriptCommandProperties
+  public class ScriptCommandInfo
   {
     //  TODO: BocItemCommand: Script
     //  Add enum value Script to BocItemCommandType
@@ -181,22 +181,22 @@ public class BocItemCommand
   ///   The <see cref="BocItemCommandType"/> represented by this instance of 
   ///   <see cref="BocItemCommand"/>.
   /// </summary>
-  private BocItemCommandType _type = BocItemCommandType.Event;
+  private BocItemCommandType _type = BocItemCommandType.None;
   /// <summary>
   ///   Determines when the item command is shown to the user in regard of the parent control's 
   ///   read-only setting.
   /// </summary>
   private BocItemCommandShow _show = BocItemCommandShow.Always;
   /// <summary>
-  ///   The <see cref="HrefCommandProperties"/> used when rendering the command as a hyperlink.
+  ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
-  private HrefCommandProperties _hrefCommand = new HrefCommandProperties();
+  private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
   /// <summary>
-  ///   The <see cref="WxeFunctionCommandProperties"/> used when rendering the command as a 
+  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a 
   ///   <see cref="WxeFunction"/>.
   /// </summary>
-  private WxeFunctionCommandProperties _wxeFunctionCommand = new WxeFunctionCommandProperties();
-  //private ScriptCommandProperties _scriptCommand = null;
+  private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo();
+  //private ScriptCommandInfo _scriptCommand = null;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -313,7 +313,7 @@ public class BocItemCommand
 
   /// <summary>
   ///   Executes the <see cref="WxeFunction"/> defined by the 
-  ///   <see cref="WxeFunctionCommandProperties"/>.
+  ///   <see cref="WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
   /// <param name="listIndex"> 
@@ -353,11 +353,14 @@ public class BocItemCommand
   ///   The <see cref="BocItemCommandType"/> represented by this instance of 
   ///   <see cref="BocItemCommand"/>.
   /// </summary>
-  /// <value> One of the <see cref="BocItemCommandType"/> enumeration values. </value>
+  /// <value> 
+  ///   One of the <see cref="BocItemCommandType"/> enumeration values. 
+  ///   The default is <see cref="BocItemCommandType.None"/>.
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The type of command generated.")]
-  //  No default value
+  [DefaultValue (BocItemCommandType.None)]
   [NotifyParentProperty (true)]
   public BocItemCommandType Type
   {
@@ -391,19 +394,19 @@ public class BocItemCommand
   }
 
   /// <summary>
-  ///   The <see cref="HrefCommandProperties"/> used when rendering the command as a hyperlink.
+  ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
   /// <remarks> 
   ///   Only interpreted if <see cref="Type"/> is set to <see cref="BocItemCommandType.Href"/>.
   /// </remarks>
-  /// <value> A <see cref="HrefCommandProperties"/> object. </value>
+  /// <value> A <see cref="HrefCommandInfo"/> object. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The properties of the hyperlink. Interpreted if Type is set to Href.")]
   [DefaultValue ((string)null)]
   [NotifyParentProperty (true)]
-  public HrefCommandProperties HrefCommand
+  public HrefCommandInfo HrefCommand
   {
     get
     {
@@ -416,21 +419,21 @@ public class BocItemCommand
   }
 
   /// <summary>
-  ///   The <see cref="WxeFunctionCommandProperties"/> used when rendering the command as a 
+  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a 
   ///   <see cref="WxeFunction"/>.
   /// </summary>
   /// <remarks> 
   ///   Only interpreted if <see cref="Type"/> is set to 
   ///   <see cref="BocItemCommandType.WxeFunction"/>.
   /// </remarks>
-  /// <value> A <see cref="WxeFunctionCommandProperties"/> object. </value>
+  /// <value> A <see cref="WxeFunctionCommandInfo"/> object. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
   [DefaultValue ((string)null)]
   [NotifyParentProperty (true)]
-  public WxeFunctionCommandProperties WxeFunctionCommand
+  public WxeFunctionCommandInfo WxeFunctionCommand
   {
     get 
     {
@@ -446,6 +449,8 @@ public class BocItemCommand
 /// <summary> The possible command types of a <see cref="BocItemCommand"/>. </summary>
 public enum BocItemCommandType
 {
+  /// <summary> No command will be generated. </summary>
+  None,
   /// <summary> A server side event will be raised upon a command click. </summary>
   Event,
   /// <summary> A hyperlink will be rendered on the page. </summary>
