@@ -59,7 +59,6 @@ public class ClientTransaction
       persistenceManager.Save (changedDataContainers);
     }
 
-    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     _dataManager.Commit ();
   }
 

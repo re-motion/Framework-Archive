@@ -82,13 +82,13 @@ public class DataManager
 
   public void Commit ()
   {
-    _relationEndPointMap.Commit ();
+    _relationEndPointMap.Commit (_dataContainerMap.GetByState (StateType.Deleted));
     _dataContainerMap.Commit ();
   }
 
   public void Rollback ()
   {
-    _relationEndPointMap.Rollback (_dataContainerMap.GetNewDomainObjects ());
+    _relationEndPointMap.Rollback (_dataContainerMap.GetByState (StateType.New));
     _dataContainerMap.Rollback ();
   }
 

@@ -223,6 +223,14 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ObjectDiscardedException))]
+  public void DataContainerClientTransaction ()
+  {
+    _newOrder.Delete ();
+    ClientTransaction clientTransaction = _newOrderContainer.ClientTransaction;
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDiscardedException))]
   public void PropertyValueCollectionContainsPropertyName ()
   {
     _newOrder.Delete ();

@@ -96,16 +96,18 @@ public class DataContainerMap : IEnumerable
     }
   }
 
-  public DomainObjectCollection GetNewDomainObjects ()
+  public DomainObjectCollection GetByState (StateType state)
   {
-    DomainObjectCollection newDomainObjects = new DomainObjectCollection ();
-    foreach (DataContainer dataContainer in _dataContainers)
-    {
-      if (dataContainer.State == StateType.New)
-        newDomainObjects.Add (dataContainer.DomainObject);
-    }
+    if (!Enum.IsDefined (typeof (StateType), state))
+      throw new ArgumentException (string.Format ("Invalid state '{0}' provided.", state), "state");
 
-    return newDomainObjects;
+    DomainObjectCollection domainObjects = new DomainObjectCollection ();
+
+    DataContainerCollection dataContainers = _dataContainers.GetByState (state);
+    foreach (DataContainer dataContainer in dataContainers)
+      domainObjects.Add (dataContainer.DomainObject);
+
+    return domainObjects;
   }
 
   public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)

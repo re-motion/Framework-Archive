@@ -270,5 +270,12 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
     _collection.Clear ();
     Assert.AreEqual (0, _collection.Count);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), "Invalid state '1000' provided.\r\nParameter name: state")]
+  public void GetByInvalidState ()
+  {
+    _collection.GetByState ((StateType) 1000);
+  }
 }
 }

@@ -38,10 +38,18 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     get { return _relationEndPoints.Count; }
   }
 
-  public void Commit ()
+  public void Commit (DomainObjectCollection deletedDomainObjects)
   {
+    ArgumentUtility.CheckNotNull ("deletedDomainObjects", deletedDomainObjects);
+
     foreach (RelationEndPoint endPoint in _relationEndPoints)
       endPoint.Commit ();
+
+    foreach (DomainObject deletedDomainObject in deletedDomainObjects)
+    {
+      foreach (RelationEndPointID endPointID in deletedDomainObject.DataContainer.RelationEndPointIDs)
+        _relationEndPoints.Remove (endPointID);
+    }
   }
 
   public void Rollback (DomainObjectCollection newDomainObjects)

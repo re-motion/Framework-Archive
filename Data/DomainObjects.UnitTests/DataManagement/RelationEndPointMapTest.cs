@@ -17,7 +17,6 @@ public class RelationEndPointMapTest : ClientTransactionBaseTest
   // member fields
 
   private RelationEndPointMap _map;
-  private Order _newOrder;
 
   // construction and disposing
 
@@ -32,15 +31,30 @@ public class RelationEndPointMapTest : ClientTransactionBaseTest
     base.SetUp ();
 
     _map = ClientTransactionMock.DataManager.RelationEndPointMap;
-    _newOrder = new Order ();
   }
 
   [Test]
   public void DeleteNew ()
   {
+    Order newOrder = new Order ();
     Assert.IsTrue (_map.Count > 0);
 
-    _map.PerformDelete (_newOrder);
+    _map.PerformDelete (newOrder);
+    Assert.AreEqual (0, _map.Count);
+  }
+
+  [Test]
+  public void CommitForDeletedObject ()
+  {
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+    Assert.IsTrue (_map.Count > 0);
+
+    computer.Delete ();
+
+    DomainObjectCollection deletedDomainObjects = new DomainObjectCollection ();
+    deletedDomainObjects.Add (computer);
+
+    _map.Commit (deletedDomainObjects);
 
     Assert.AreEqual (0, _map.Count);
   }

@@ -435,15 +435,26 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsTrue (customer.Orders.IsReadOnly);
   }
 
-// TODO: Reactivate test below
-//  [Test]
-//  public void CommitDeletedObject ()
-//  {
-//    Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
-//    computer.Delete ();
-//    ClientTransaction.Current.Commit ();
-//    
-//    Assert.IsNull (Computer.GetObject (DomainObjectIDs.Computer1));
-//  }
+  [Test]
+  [ExpectedException (typeof (ObjectNotFoundException))]
+  public void CommitDeletedObject ()
+  {
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+    computer.Delete ();
+    ClientTransaction.Current.Commit ();
+    
+    Computer.GetObject (DomainObjectIDs.Computer1);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDiscardedException))]
+  public void AccessDeletedObjectAfterCommit ()
+  {
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+    computer.Delete ();
+    ClientTransaction.Current.Commit ();
+    
+    string serialNumber = computer.SerialNumber;
+  }
 }
 }

@@ -73,5 +73,12 @@ public class DataContainerMapTest : ClientTransactionBaseTest
 
     ObjectID id = _existingOrder.ID;
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), "Invalid state '1000' provided.\r\nParameter name: state")]
+  public void GetByInvalidState ()
+  {
+    _map.GetByState ((StateType) 1000);
+  }
 }
 }
