@@ -43,15 +43,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 {
   private BusinessObjectBinding _binding;
   private bool _childControlsPreRendered = false;
+  bool _isValid = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
-
-  protected override void OnLoad (EventArgs e)
-  {
-    base.OnLoad (e);
-    if (! IsValid)
-      Visible = false;
-  }
 
   #region BusinessObjectBinding implementation
 
@@ -133,6 +127,19 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     base.OnInit (e);
     EnsureChildControls();
     _binding.EnsureDataSource();
+  }
+
+  protected override void OnLoad (EventArgs e)
+  {
+    base.OnLoad (e);
+    if (! ControlHelper.IsDesignMode (this, Context))
+      _isValid = IsValid;
+  }
+
+  public override bool Visible
+  {
+    get { return _isValid && base.Visible; }
+    set { base.Visible = value; }
   }
 
 //  /// <summary>
