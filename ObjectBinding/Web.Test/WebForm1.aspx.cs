@@ -38,20 +38,24 @@ public class WebForm1 : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Person person;
-    string path = Server.MapPath ("person.xml");
-    if (System.IO.File.Exists (path))
+    Person person = Person.GetObject (new Guid(0,0,0,0,0,0,0,0,0,0,1));
+    Person partner;
+    if (person == null)
     {
-      person = Person.LoadFromXml (path);
-    }
-    else
-    {
-      person = new Person();
+      person = Person.CreateObject();
       person.FirstName = "Hugo";
       person.LastName = "Meier";
       person.DateOfBirth = new DateTime (1959, 4, 15);
       person.Height = 179;
       person.Income = 2000;
+
+      partner = person.Partner = Person.CreateObject();
+      partner.FirstName = "Sepp";
+      partner.LastName = "Forcher";
+    }
+    else
+    {
+      partner = person.Partner;
     }
 
 		reflectionBusinessObjectDataSource1.BusinessObject = person;
@@ -100,7 +104,9 @@ public class WebForm1 : System.Web.UI.Page
     {
       reflectionBusinessObjectDataSource1.SaveValues();
       Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;
-      person.SaveToXml (Server.MapPath ("person.xml"));
+      person.SaveObject();
+      if (person.Partner != null)
+        person.Partner.SaveObject();
     }
   }
 
