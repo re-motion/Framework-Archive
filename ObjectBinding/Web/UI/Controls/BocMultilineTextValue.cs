@@ -11,6 +11,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -28,6 +29,18 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 {
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
+  protected enum ResourceIdentifier
+  {
+  }
+
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return null;//GetResourceManager (typeof (ResourceIdentifier));
+  }
 	// constants
 
   private const string c_requiredValidationMessage = "Please enter a value.";
