@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <Class>
-  <Constructor>
-    <param name="resourceName">
-      The root name of the resource conantainer to be used by this type
-    </param>
-  </Constructor>
   <GetResourceManager>
     <Common>
       <remarks>
@@ -23,7 +18,7 @@
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>
-    <param name="resourceNames">
+    <param name="baseNames">
       The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
   </GetResourceManager>
@@ -34,7 +29,7 @@
     <param name="assembly">
       The assembly containing the resources.
     </param>
-    <param name="resourceNames">
+    <param name="baseNames">
       The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
     <returns>
@@ -50,7 +45,7 @@
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>
-    <param name="resourceNames">
+    <param name="baseNames">
       The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
   </GetResourceNameAndType>
