@@ -394,7 +394,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br />
-  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
+  ///   <i>index</i> is equal to or greater than the number of items in the collection.
   /// </exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void RemoveAt (int index)
