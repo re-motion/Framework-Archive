@@ -5,7 +5,24 @@
   * Neue Klasse
   * Bietet einen AccessKey-Aware LinkButton an.
     Der AccessKey kann direkt in den Text codiert werden mittels des Prefixes '&'.
-    
+   
+- Rubicon.Web.UI.Controls.FormGridManager
+  * Die Erkennung der verschiedenen Row-Typen wurde rubuster gestaltet. 
+  * Es werden die folgenden Typen erkannt:
+    TitleRow: 
+	    Genau 1 Zelle in der ersten Zeile.
+    SubTitleRow (neu): 
+	    Genau 1 Zelle in einer Zeile.
+    Einzeilige DataRow: 
+	    Befüllte Controls-Collection in der durch ControlsColumn identifizierten Zelle.
+    Zweizeilige DataRow: 
+	    Leere Controls-Collection in der per ControlsColumn identifizierten Zelle
+	    und daran anschließend noch eine Zeile mit zumindest einer Zelle in der LabelsColumn
+    UnknownRow:
+	    Alles was sich nicht identifizieren lässt.
+	    Einzige Formattierung durch den FormGridManager: der Colspan wird angepasst wenn in den anderen Rows
+	    durch den FormGridManager Spalten eingefügt werden (Marker-Spalte, Validator-Message-Spalte).
+ 
 1.2.5.0
 =======
 
