@@ -6,8 +6,6 @@
 - ClientTransaction.Commit: Bei einem Commit wurde in einer 1:n Beziehung die DomainObjectCollection mit dem urspünglichen Status der Beziehung 
   durch ein neues Objekt ersetzt. Jetzt wird die gleiche Objektinstanz auf den neuen Inhalt gesetzt.
 
-- Neue Applikation "Installer":
-  Mit Hilfe dieser Kommandozeilen-Applikation können die Performance Counter installiert und deinstalliert werden.
 
 1.2.11.0
 ========
