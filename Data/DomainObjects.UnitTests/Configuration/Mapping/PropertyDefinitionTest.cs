@@ -49,7 +49,7 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
+  [ExpectedException (typeof (MappingException))]
   public void InvalidMappingType ()
   {
     PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
