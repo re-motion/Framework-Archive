@@ -1,19 +1,31 @@
 using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UI.Design;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
-public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
+[Designer (typeof (WebTabStripDesigner))]
+public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget
 {
+  //  constants
+  /// <summary> The key identifying a tab resource entry. </summary>
+  private const string c_resourceKeyTabs = "Tabs";
+
   // statics
   private static readonly object s_selectedIndexChangedEvent = new object();
+  /// <summary> The log4net logger. </summary>
+  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   // types
 
@@ -251,6 +263,114 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   protected virtual void RenderEndTabsPane (HtmlTextWriter writer)
   {
     writer.RenderEndTag();
+  }
+
+  /// <summary> 
+  ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="WebTabStrip"/>'s properties. 
+  /// </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  public void Dispatch (IDictionary values)
+  {
+    HybridDictionary tabValues = new HybridDictionary();
+    HybridDictionary propertyValues = new HybridDictionary();
+
+    //  Parse the values
+
+    foreach (DictionaryEntry entry in values)
+    {
+      string key = (string) entry.Key;
+      string[] keyParts = key.Split (new Char[] {':'}, 3);
+
+      //  Is a property/value entry?
+      if (keyParts.Length == 1)
+      {
+        string property = keyParts[0];
+        propertyValues.Add (property, entry.Value);
+      }
+        //  Is collection entry?
+      else if (keyParts.Length == 3)
+      {    
+        //  Compound key: "collectionID:elementID:property"
+        string collectionID = keyParts[0];
+        string elementID = keyParts[1];
+        string property = keyParts[2];
+
+        IDictionary currentCollection = null;
+
+        //  Switch to the right collection
+        switch (collectionID)
+        {
+          case c_resourceKeyTabs:
+          {
+            currentCollection = tabValues;
+            break;
+          }
+          default:
+          {
+            //  Invalid collection property
+            s_log.Warn ("WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a collection property named '" + collectionID + "'.");
+            break;
+          }
+        }       
+
+        //  Add the property/value pair to the collection
+        if (currentCollection != null)
+        {
+          //  Get the dictonary for the current element
+          IDictionary elementValues = (IDictionary) currentCollection[elementID];
+
+          //  If no dictonary exists, create it and insert it into the elements hashtable.
+          if (elementValues == null)
+          {
+            elementValues = new HybridDictionary();
+            currentCollection[elementID] = elementValues;
+          }
+
+          //  Insert the argument and resource's value into the dictonary for the specified element.
+          elementValues.Add (property, entry.Value);
+        }
+      }
+      else
+      {
+        //  Not supported format or invalid property
+        s_log.Warn ("WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid or unknown key '" + key + "'. Required format: 'property' or 'collectionID:elementID:property'.");
+      }
+    }
+
+    //  Dispatch simple properties
+    ResourceDispatcher.DispatchGeneric (this, propertyValues);
+
+    //  Dispatch to collections
+    DispatchToTabs (Tabs, tabValues, "Tabs");
+  }
+
+  /// <summary>
+  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
+  ///   <see cref="WebTab"/> objects in the collection <paramref name="tabs"/>.
+  /// </summary>
+  private void DispatchToTabs (WebTabCollection tabs, IDictionary values, string collectionName)
+  {
+    foreach (DictionaryEntry entry in values)
+    {
+      string tabID = (string) entry.Key;
+      
+      bool isValidID = false;
+      foreach (WebTab tab in tabs)
+      {
+        if (tab.TabID == tabID)
+        {
+          ResourceDispatcher.DispatchGeneric (tab, (IDictionary) entry.Value);
+          isValidID = true;
+          break;
+        }
+      }
+
+      if (! isValidID)
+      {
+        //  Invalid collection element
+        s_log.Debug ("WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + tabID + "' inside the collection '" + collectionName + "'.");
+      }
+    }
   }
 
   /// <summary> Sets the selected tab. </summary>
