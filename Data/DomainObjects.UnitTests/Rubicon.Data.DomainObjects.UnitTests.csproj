@@ -84,12 +84,6 @@
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll"
-                    AssemblyFolderKey = "hklm\dn\nunit.framework"
-                />
-                <Reference
                     Name = "Rubicon.Data.DomainObjects"
                     Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -98,6 +92,11 @@
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\..\References\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\References\nunit.framework.dll"
                 />
             </References>
         </Build>
