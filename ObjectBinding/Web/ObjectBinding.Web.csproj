@@ -176,6 +176,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocDatePicker.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocDatePicker.resx"
+                    DependentUpon = "BocDatePicker.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Controls\BocDateTimeValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -226,6 +236,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\IBusinessObjectDataSourceControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\PropertyPathBinding.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -266,6 +281,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Design\BusinessObjectDataSourceControlConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Design\CollectionEditorServiceProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -287,6 +307,10 @@
                 />
                 <File
                     RelPath = "Doc\BocList.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\License DatePicker.txt"
                     BuildAction = "Content"
                 />
                 <File
@@ -312,14 +336,6 @@
                 />
                 <File
                     RelPath = "Res\HTML\bocListTemplate.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\Calendar.htc"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\CalendarFrame.htm"
                     BuildAction = "Content"
                 />
                 <File
@@ -362,6 +378,7 @@
                     RelPath = "Res\Image\MovePreviousInactive.gif"
                     BuildAction = "Content"
                 />
+                <Folder RelPath = "Res\UI\" />
             </Include>
         </Files>
     </CSHARP>

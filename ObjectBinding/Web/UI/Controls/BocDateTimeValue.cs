@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Globalization;
 using System.Collections.Specialized;
+using System.Text;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -19,7 +20,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 //  TODO: BocDateTimeValue: Date-Picker
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
-[ToolboxItemFilter("System.Web.UI")]
 public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 {
   //  constants
@@ -45,6 +45,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private const string c_invalidDateAndTimeErrorMessage = "Unknown date and time format.";
   private const string c_invalidDateErrorMessage = "Unknown date format.";
   private const string c_invalidTimeErrorMessage = "Unknown time format.";
+
+  private const string c_datePickerScriptUrl = "DatePicker.js";
+  private const string c_scriptBlock = 
+    "<script language=\"Javascript\" type=\"text/javascript\" src=\"{0}\"></script>\r\n";
 
   // types
 
@@ -118,6 +122,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
   private Style _datePickerImageStyle = new Style();
+
+  //  TODO: DatePicker, remove fields
+  private TableStyle _datePickerCalendarStyle = new TableStyle();
+  private Style _datePickerDayHeaderStyle = new Style();
+  private Style _datePickerDayStyle = new Style();
+  private Style _datePickerOtherMonthDayStyle = new Style();
+  private Style _datePickerSelectedDayStyle = new Style();
+  private Style _datePickerTodayDayStyle = new Style();
+  private Style _datePickerTitleStyle = new Style();
 
   /// <summary> Flag that determines  whether to show the seconds.</summary>
   private bool _showSeconds = false;
@@ -234,20 +247,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnPreRender (e);
 
+    //  TODO: DatePicker: Work in Progress, currently dirty
     string scriptUrl = ResourceUrlResolver.GetResourceUrl (
         this, 
         this.GetType(),
         ResourceType.Html,
         c_datePickerScriptUrl);
-
     Page.RegisterClientScriptBlock(typeof(BocDateTimeValue).FullName, string.Format (c_scriptBlock, scriptUrl));
+
 
     //  First call
     EnsureChildControlsInitialized ();
   }
-  private const string c_datePickerScriptUrl = "DatePicker.js";
-  private const string c_scriptBlock = 
-    "<script language=\"Javascript\" type=\"text/javascript\" src=\"{0}\"></script>\r\n";
 
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
@@ -265,89 +276,79 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.Render (writer);
   }
 
+  //  TODO: DatePicker: Work in Progress, currently dirty
   bool _renderClientScript = true;
-  bool _renderPopupScript = true;
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
-    // We do not call the base class AddAttributesToRender
-    // because, in the DatePicker, the attributes and styles applied to the
-    // control affect the contained TextBox. The DatePicker itself renders
-    // out as a <span>, which only contains only the ID attribute and any
-    // attributes needed for the pop-up calendar and client script.
-
-    writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+    base.AddAttributesToRender (writer);
 
     if (_renderClientScript) 
     {
-      if (_renderPopupScript) 
-      {
-        //  TODO: link contents with relative URL 
-        //  since IE does not allow filesystem paths on localhost for iframe
-        string calendarDhtmlUrl = ResourceUrlResolver.GetResourceUrl (
-            this, 
-            this.GetType(),
-            ResourceType.Html,
-            "Calendar.htc");
-        calendarDhtmlUrl = "Html/Calendar.htc";
-          writer.AddAttribute("dp_htcURL", calendarDhtmlUrl, false);
-      }
 //      if (AutoPostBack) {
 //          writer.AddAttribute("dp_autoPostBack", "true", false);
 //      }
-//      if (__calendarStyle != null) {
-//          Unit u = _calendarStyle.Width;
+      if (_datePickerCalendarStyle != null)
+      {
+//          Unit u = _datePickerCalendarStyle.Width;
           Unit u = Unit.Pixel (200);
-          if (!u.IsEmpty) {
+          if (!u.IsEmpty)
               writer.AddAttribute("dp_width", u.ToString(CultureInfo.InvariantCulture));
-          }
-//          u = _calendarStyle.Height;
-          if (!u.IsEmpty) {
+//          u = _datePickerCalendarStyle.Height;
+          u = Unit.Pixel (220);
+          if (!u.IsEmpty)
               writer.AddAttribute("dp_height", u.ToString(CultureInfo.InvariantCulture));
-          }
-//          string s = GetCssFromStyle(_calendarStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_calendarStyle", s, false);
-//          }
-//      }
-//      if (_titleStyle != null) {
-//          string s = GetCssFromStyle(_titleStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_titleStyle", s, false);
-//          }
-//      }
-//      if (_dayHeaderStyle != null) {
-//          string s = GetCssFromStyle(_dayHeaderStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_dayHeaderStyle", s, false);
-//          }
-//      }
-//      if (_dayStyle != null) {
-//          string s = GetCssFromStyle(_dayStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_dayStyle", s, false);
-//          }
-//      }
-//      if (_otherMonthDayStyle != null) {
-//          string s = GetCssFromStyle(_otherMonthDayStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_otherMonthDayStyle", s, false);
-//          }
-//      }
-//      if (_todayDayStyle != null) {
-//          string s = GetCssFromStyle(_todayDayStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_todayDayStyle", s, false);
-//          }
-//      }
-//      if (_selectedDayStyle != null) {
-//          string s = GetCssFromStyle(_selectedDayStyle);
-//          if (s.Length != 0) {
-//              writer.AddAttribute("dp_selectedDayStyle", s, false);
-//          }
-//      }
+
+          string s = GetCssFromStyle(_datePickerCalendarStyle);
+          if (s.Length != 0) 
+              writer.AddAttribute("dp_calendarStyle", s, false);
+      }
+      if (_datePickerTitleStyle != null) 
+      {
+          string s = GetCssFromStyle(_datePickerTitleStyle);
+          if (s.Length != 0)
+              writer.AddAttribute("dp_titleStyle", s, false);
+      }
+      if (_datePickerDayHeaderStyle != null)
+      {
+          string s = GetCssFromStyle(_datePickerDayHeaderStyle);
+          if (s.Length != 0)
+              writer.AddAttribute("dp_dayHeaderStyle", s, false);
+      }
+      if (_datePickerDayStyle != null) 
+      {
+          string s = GetCssFromStyle(_datePickerDayStyle);
+          if (s.Length != 0) 
+              writer.AddAttribute("dp_dayStyle", s, false);
+      }
+      if (_datePickerOtherMonthDayStyle != null) 
+      {
+          string s = GetCssFromStyle(_datePickerOtherMonthDayStyle);
+          if (s.Length != 0)
+              writer.AddAttribute("dp_otherMonthDayStyle", s, false);
+      }
+      if (_datePickerTodayDayStyle != null)
+      {
+          string s = GetCssFromStyle(_datePickerTodayDayStyle);
+          if (s.Length != 0)
+              writer.AddAttribute("dp_todayDayStyle", s, false);
+      }
+      if (_datePickerSelectedDayStyle != null)
+      {
+          string s = GetCssFromStyle(_datePickerSelectedDayStyle);
+          if (s.Length != 0)
+              writer.AddAttribute("dp_selectedDayStyle", s, false);
+      }
+      writer.AddAttribute("CssClassDatePickerCalendar", CssClassDatePickerCalendar, false);
+      writer.AddAttribute("CssClassDatePickerDay", CssClassDatePickerDay, false);
+      writer.AddAttribute("CssClassDatePickerDayHeader", CssClassDatePickerDayHeader, false);
+      writer.AddAttribute("CssClassDatePickerOtherMonthDay", CssClassDatePickerOtherMonthDay, false);
+      writer.AddAttribute("CssClassDatePickerSelectedDay", CssClassDatePickerSelectedDay, false);
+      writer.AddAttribute("CssClassDatePickerTitle", CssClassDatePickerTitle, false);
+      writer.AddAttribute("CssClassDatePickerTodayDay", CssClassDatePickerTodayDay, false);
     }
   }
 
+  //  TODO: DatePicker: Work in Progress, currently dirty
   protected override void RenderContents(HtmlTextWriter writer)
   {
     foreach (Control control in Controls)
@@ -356,30 +357,23 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       if (control == _datePickerImage)
       {
-        if (_renderPopupScript == false)
-        {
-          //  TODO: link contents with relative URL 
-          //  since IE does not allow filesystem paths on localhost for iframe
-          string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-              this, 
-              this.GetType(),
-              ResourceType.Html,
-              "CalendarFrame.htm");
-          calendarFrameUrl = "Html/CalendarFrame.htm";
-          // Use an IFRAME instead of a DHTML popup
-          writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
-          writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
-          writer.AddAttribute("marginheight", "0", false);
-          writer.AddAttribute("marginwidth", "0", false);
-          writer.AddAttribute("noresize", "noresize", false);
-          writer.AddAttribute("frameborder", "0", false);
-          writer.AddAttribute("scrolling", "no", false);
-          writer.AddStyleAttribute("position", "absolute");
-          writer.AddStyleAttribute("z-index", "100");
-          writer.AddStyleAttribute("display", "none");
-          writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
-          writer.RenderEndTag();
-        }
+        string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
+            this, 
+            this.GetType(),
+            ResourceType.Aspx,
+            "BocDatePicker.aspx");
+        writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
+        writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
+        writer.AddAttribute("marginheight", "0", false);
+        writer.AddAttribute("marginwidth", "0", false);
+        writer.AddAttribute("noresize", "noresize", false);
+        writer.AddAttribute("frameborder", "0", false);
+        writer.AddAttribute("scrolling", "no", false);
+        writer.AddStyleAttribute("position", "absolute");
+        writer.AddStyleAttribute("z-index", "100");
+        writer.AddStyleAttribute("display", "none");
+        writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
+        writer.RenderEndTag();
       }
     }  
   }
@@ -615,24 +609,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       if (! Width.IsEmpty)
       {
-        int datePickerImageWidth = 0;
+        int datePickerWidth = 0;
 
         //  Icon width approximation
         switch (Width.Type)
         {
           case UnitType.Percentage:
           {
-            datePickerImageWidth = 20;
+            datePickerWidth = 20;
             break;
           }
           case UnitType.Pixel:
           {
-            datePickerImageWidth = 34;
+            datePickerWidth = 42;
             break;
           }
           case UnitType.Point:
           {
-            datePickerImageWidth = 15;
+            datePickerWidth = 15;
             break;
           }
           default:
@@ -641,7 +635,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           }
         }
 
-        int innerControlWidthValue = (int) (Width.Value - datePickerImageWidth);
+        int innerControlWidthValue = (int) (Width.Value - datePickerWidth);
         innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
         int dateTextBoxWidthValue = 0;
@@ -739,12 +733,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       else
         _datePickerImage.ImageUrl = imageUrl;
 
-      string pickerAction;
-      if (_renderPopupScript)
-          pickerAction = "dp_showDatePickerPopup(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'])";
-      else
-          pickerAction = "dp_showDatePickerFrame(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'], document.all['" + ClientID + "_frame'], document)";
-      _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+      string pickerAction = "dp_showDatePickerFrame(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'], document.all['" + ClientID + "_frame'], document)";
+      //  TODO: DatePicker: Work in Progress, currently dirty
+      //  Script deactivated !!
+      //_datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";
@@ -977,6 +969,87 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       return BocDateTimeValueType.Date;
     else
       throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
+  }
+
+  private string GetCssFromStyle(Style style)
+  {
+    StringBuilder sb = new StringBuilder(256);
+    System.Drawing.Color c;
+
+    c = style.ForeColor;
+    if (!c.IsEmpty) 
+    {
+      sb.Append("color:");
+      sb.Append(System.Drawing.ColorTranslator.ToHtml(c));
+      sb.Append(";");
+    }
+    c = style.BackColor;
+    if (!c.IsEmpty) 
+    {
+      sb.Append("background-color:");
+      sb.Append(System.Drawing.ColorTranslator.ToHtml(c));
+      sb.Append(";");
+    }
+
+    FontInfo fi = style.Font;
+    string s;
+
+    s = fi.Name;
+    if (s.Length != 0) 
+    {
+      sb.Append("font-family:'");
+      sb.Append(s);
+      sb.Append("';");
+    }
+    if (fi.Bold)
+      sb.Append("font-weight:bold;");
+    if (fi.Italic)
+      sb.Append("font-style:italic;");
+
+    s = String.Empty;
+    if (fi.Underline)
+      s += "underline";
+    if (fi.Strikeout)
+      s += " line-through";
+    if (fi.Overline)
+      s += " overline";
+    if (s.Length != 0) 
+    {
+      sb.Append("text-decoration:");
+      sb.Append(s);
+      sb.Append(';');
+    }
+
+    FontUnit fu = fi.Size;
+    if (fu.IsEmpty == false) {
+        sb.Append("font-size:");
+        sb.Append(fu.ToString(CultureInfo.InvariantCulture));
+        sb.Append(';');
+    }
+
+    s = String.Empty;
+    Unit u = style.BorderWidth;
+    BorderStyle bs = style.BorderStyle;
+    if (u.IsEmpty == false) {
+        s = u.ToString(CultureInfo.InvariantCulture);
+        if (bs == BorderStyle.NotSet) {
+            s += " solid";
+        }
+    }
+    c = style.BorderColor;
+    if (!c.IsEmpty) {
+        s += " " + System.Drawing.ColorTranslator.ToHtml(c);
+    }
+    if (bs != BorderStyle.NotSet) {
+        s += " " + Enum.Format(typeof(BorderStyle), bs, "G");
+    }
+    if (s.Length != 0) {
+        sb.Append("border:");
+        sb.Append(s);
+        sb.Append(';');
+    }
+
+    return sb.ToString();
   }
 
   /// <summary>
@@ -1285,29 +1358,124 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get { return _datePickerImageStyle; }
   }
 
+  //  TODO: DatePicker: Remove properties
+//  [Category("Style")]
+//  [Description("The style used to customize the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public TableStyle DatePickerCalendarStyle
+//  {
+//    get { return _datePickerCalendarStyle; }
+//    set { _datePickerCalendarStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style used to customize the day headers in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerDayHeaderStyle
+//  {
+//    get { return _datePickerDayHeaderStyle; }
+//    set { _datePickerDayHeaderStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style used to customize all days in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerDayStyle
+//  {
+//    get { return _datePickerDayStyle; }
+//    set { _datePickerDayStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style used to customize days outside the current month in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerOtherMonthDayStyle
+//  {
+//    get { return _datePickerOtherMonthDayStyle; }
+//    set { _datePickerOtherMonthDayStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style applied to the currently selected date in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerSelectedDayStyle
+//  {
+//    get { return _datePickerSelectedDayStyle; }
+//    set { _datePickerSelectedDayStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style applied to the current day in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerTitleStyle
+//  {
+//    get { return _datePickerTitleStyle; }
+//    set { _datePickerTitleStyle = value; }
+//  }
+//
+//  [Category("Style")]
+//  [Description("The style applied to the current day in the popup calendar.")]
+//  [NotifyParentProperty(true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style DatePickerTodayDayStyle
+//  {
+//    get { return _datePickerTodayDayStyle; }
+//    set { _datePickerTodayDayStyle = value; }
+//  }
+
+  public string CssClassDatePickerCalendar
+  { get { return "bocDateTimeValueDatePickerCalendar"; } }
+
+  public string CssClassDatePickerDayHeader
+  { get { return "bocDateTimeValueDatePickerDayHeader"; } }
+
+  public string CssClassDatePickerDay
+  { get { return "bocDateTimeValueDatePickerDay"; } }
+
+  public string CssClassDatePickerOtherMonthDay
+  { get { return "bocDateTimeValueDatePickerOtherMonthDay"; } }
+
+  public string CssClassDatePickerSelectedDay
+  { get { return "bocDateTimeValueDatePickerSelectedDay"; } }
+
+  public string CssClassDatePickerTitle
+  { get { return "bocDateTimeValueDatePickerTitle"; } }
+
+  public string CssClassDatePickerTodayDay
+  { get { return "bocDateTimeValueDatePickerTodayDay"; } }
+
   /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
-  [Browsable (false)]
   public TextBox DateTextBox
   {
     get { return _dateTextBox; }
   }
 
   /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the time component. </summary>
-  [Browsable (false)]
   public TextBox TimeTextBox
   {
     get { return _timeTextBox; }
   }
 
   /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
-  [Browsable (false)]
   public Label Label
   {
     get { return _label; }
   }
 
   /// <summary> Gets the <see cref="Image"/> used in edit mode for opening the date picker. </summary>
-  [Browsable (false)]
   public Image DatePickerImage
   {
     get { return _datePickerImage; }

@@ -7,6 +7,7 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding.Web
 {
 
+[Obsolete ("Implement using IBusinessObjectDataSourceControl.")]
 public class DataSourcePage: Page, IBusinessObjectDataSource, IGetComponentBindingExpression, IResolveComponentBindingExpression
 {
   protected virtual IBusinessObjectDataSource DataSource { get { throw new NotImplementedException ("This method must be overridden."); } }

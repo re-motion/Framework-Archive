@@ -12,6 +12,7 @@ public interface IDataSourceContainer
   IBusinessObjectDataSource DataSource { get; }
 }
 
+[Obsolete ("Implement using IBusinessObjectDataSourceControl.")]
 public class DataSourceUserControl: UserControl, IBusinessObjectDataSource, IGetComponentBindingExpression, IResolveComponentBindingExpression
 {
   public UserControl UserControl

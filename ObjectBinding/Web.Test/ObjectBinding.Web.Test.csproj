@@ -397,14 +397,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "HTML\Calendar.htc"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "HTML\CalendarFrame.htm"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
@@ -462,6 +454,11 @@
                 />
                 <File
                     RelPath = "Image\ValidationError.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\BocDatePicker.aspx"
+                    SubType = "Form"
                     BuildAction = "Content"
                 />
             </Include>

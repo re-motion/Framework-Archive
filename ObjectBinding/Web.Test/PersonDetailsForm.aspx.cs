@@ -25,12 +25,12 @@ public class PersonDetailsPage : WxeWebFormBase
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
   protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BirthdayField;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
   protected System.Web.UI.WebControls.Button NextButton;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -45,12 +45,12 @@ public class PersonDetailsPage : WxeWebFormBase
     if (person != null)
       partner = person.Partner;
 
-    reflectionBusinessObjectDataSource.BusinessObject = person;
+    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
 
     this.DataBind();
     if (!IsPostBack)
     {
-      reflectionBusinessObjectDataSource.LoadValues (false);
+      ReflectionBusinessObjectDataSourceControl.LoadValues (false);
     }
 	}
 
@@ -74,13 +74,6 @@ public class PersonDetailsPage : WxeWebFormBase
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.reflectionBusinessObjectDataSource = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
-    // 
-    // reflectionBusinessObjectDataSource
-    // 
-    this.reflectionBusinessObjectDataSource.BusinessObject = null;
-    this.reflectionBusinessObjectDataSource.EditMode = true;
-    this.reflectionBusinessObjectDataSource.TypeName = "OBWTest.Person, OBWTest";
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
@@ -93,8 +86,8 @@ public class PersonDetailsPage : WxeWebFormBase
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      reflectionBusinessObjectDataSource.SaveValues (false);
-      Person person = (Person) reflectionBusinessObjectDataSource.BusinessObject;
+      ReflectionBusinessObjectDataSourceControl.SaveValues (false);
+      Person person = (Person) ReflectionBusinessObjectDataSourceControl.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
         person.Partner.SaveObject();

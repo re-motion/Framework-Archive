@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections;
 using System.Globalization;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
@@ -23,6 +24,7 @@ public interface IBusinessObjectBoundWebControl:
   ISmartControl,
   IControl
 {
+  string DataSourceControl { get; set; }
 }
 
 public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundWebControl, IBusinessObjectBoundModifiableControl
@@ -32,11 +34,10 @@ public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundW
 /// <summary>
 /// Provides a GUI designer for BusinessObjectBoundControl
 /// </summary>
-[Designer (typeof (BusinessObjectBoundControlDesigner))]
+//[Designer (typeof (BusinessObjectBoundControlDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
   #region IBusinessObjectBoundControl implementation
-  private BusinessObjectBinding _binding;
 
   [Browsable(false)]
   public BusinessObjectBinding Binding
@@ -47,18 +48,24 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
+  [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
-  //[TypeConverter (typeof (BusinessObjectDataSourceObjectConverter))]
-  public IBusinessObjectDataSource DataSource
+  [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+  [DefaultValue ("")]
+  public string DataSourceControl
   {
     get 
     { 
-      return _binding.DataSource; 
+      return _dataSourceControl; 
     }
     set 
     { 
-      _binding.DataSource = value; 
+      if (_dataSourceControl != value)
+      {
+        _dataSourceControl = value; 
+        _binding.DataSource = null;
+      }
     }
   }
 
@@ -91,6 +98,53 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   #endregion
+
+  private BusinessObjectBinding _binding;
+  private string _dataSourceControl;
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+
+    if (!ControlHelper.IsDesignMode (this, this.Context))
+      InitializeDataSource();
+  }
+
+  private void InitializeDataSource()
+  {
+    if (NamingContainer == null)
+      return;
+
+    if (_dataSourceControl == null)
+      return;
+
+    Control control = ControlHelper.FindControl (NamingContainer, _dataSourceControl);
+    if (control == null)
+      throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, this.ID));
+
+    IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
+    if (dataSource == null)
+      throw new HttpException(string.Format ("The value '{0}' of the DataSource property of '{1}' cannot be converted to type '{2}'.", _dataSourceControl, this.ID, typeof (IBusinessObjectDataSourceControl)));
+
+    _binding.DataSource = dataSource;
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public IBusinessObjectDataSource DataSource
+  {
+    get 
+    { 
+      if (_binding.DataSource == null)
+        InitializeDataSource();
+      return _binding.DataSource; 
+    }
+    set 
+    { 
+      _binding.DataSource = value;
+      _dataSourceControl = null;
+    }
+  }
 
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.
