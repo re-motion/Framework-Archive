@@ -9,6 +9,30 @@ using System.Drawing;
 namespace Rubicon.Findit.Client.Controls
 {
 
+public class TabControlBuilder: ControlBuilder
+{
+	public override bool AllowWhitespaceLiterals ()
+	{
+		return false;
+	}
+	
+	public override Type GetChildControlType (string tag, IDictionary attribs)
+	{
+		string unqualifiedTag = tag;
+		int posColon = tag.IndexOf (':');
+		if (posColon >= 0 && posColon < tag.Length + 1)
+			unqualifiedTag = tag.Substring (posColon + 1);
+
+		if (unqualifiedTag == "TabMenu")
+			return typeof (TabMenu);
+
+    throw new ApplicationException ("Only TabMenu tags are allowed in Tab controls");
+	}
+}
+
+/// <summary>
+/// A tab item
+/// </summary>
 [ParseChildren (false, "Controls")]
 [ControlBuilder (typeof (TabControlBuilder))]
 public class Tab: Control
@@ -34,31 +58,15 @@ public class Tab: Control
   }
 }
 
-public class TabControlBuilder: ControlBuilder
-{
-	public override bool AllowWhitespaceLiterals ()
-	{
-		return false;
-	}
-	
-	public override Type GetChildControlType (string tag, IDictionary attribs)
-	{
-		string unqualifiedTag = tag;
-		int posColon = tag.IndexOf (':');
-		if (posColon >= 0 && posColon < tag.Length + 1)
-			unqualifiedTag = tag.Substring (posColon + 1);
-
-		if (unqualifiedTag == "TabMenu")
-			return typeof (TabMenu);
-
-    throw new ApplicationException ("Only TabMenu tags are allowed in Tab controls");
-	}
-}
-
+/// <summary>
+/// A menu item within a tab
+/// </summary>
 public class TabMenu: Control
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
+  private bool _pageToken = false;
+
 
 	public string Label
 	{
@@ -70,20 +78,29 @@ public class TabMenu: Control
 		get { return _href; }
 		set { _href = value; }
 	}
+
+  public bool PageToken
+  {
+    get { return _pageToken; }
+    set { _pageToken = value; }    
+  }
 }
 
 [ParseChildren (true, "Items")]
 public class TabControl: Control, IPostBackEventHandler
 {
 	private TabCollection _items = new TabCollection ();
+
 	private string _firstImage = String.Empty;
 	private string _secondImage = String.Empty;
 	private string _emptyImage = String.Empty;
 	private string _activeClass = String.Empty;
 	private string _inactiveClass = String.Empty;
-	private Color _backColor;
+	
+  private Color _backColor;
 	private Color _activeColor;
-	private int _height = -1;
+	
+  private int _height = -1;
 	private int _activeTab = 0;
 	private string _target = String.Empty;
 	private Color _lineColor;
@@ -191,7 +208,6 @@ public class TabControl: Control, IPostBackEventHandler
           break;
       }
     }
-		
 	}
 
 	protected override object SaveViewState ()
@@ -216,12 +232,7 @@ public class TabControl: Control, IPostBackEventHandler
 		if (href != string.Empty)
 		{
       if (tab.PageToken)
-      {
-        if (href.IndexOf ("?") == -1)
-          href += "?pageToken=" + PageUtility.GetUniqueToken();
-        else
-          href += "&pageToken=" + PageUtility.GetUniqueToken();
-      }
+        href = AddPageToken (href);
 
 			if (_target != string.Empty)
 				script = "window.open('" + href + "', '" + _target + "'); " + script;
@@ -232,6 +243,38 @@ public class TabControl: Control, IPostBackEventHandler
 			resultHref = "href=\"javascript:" + script + "\"";
 
     return resultHref;
+  }
+
+  private string GetHref (string eventName, int itemIndex, TabMenu tabMenu)
+  {
+		string resultHref = null;
+    string eventArgument = eventName + ":" + itemIndex.ToString();
+		string script = Page.GetPostBackClientEvent (this, eventArgument);
+
+    string href = tabMenu.Href;
+		if (href != string.Empty)
+		{
+      if (tabMenu.PageToken)
+        href = AddPageToken (href);
+
+			if (_target != string.Empty)
+				script = "window.open('" + href + "', '" + _target + "'); " + script;
+			else
+				resultHref = "href=\"" + href + "\"";
+		}
+		if (resultHref == null)
+			resultHref = "href=\"javascript:" + script + "\"";
+
+    return resultHref;
+  }
+  
+  
+  protected string AddPageToken (string href)
+  {
+    if (href.IndexOf ("?") == -1)
+      return href += "?pageToken=" + PageUtility.GetUniqueToken();
+    else
+      return href += "&pageToken=" + PageUtility.GetUniqueToken();
   }
 
 	protected override void Render (HtmlTextWriter output)
@@ -248,19 +291,20 @@ public class TabControl: Control, IPostBackEventHandler
 		string lineColor = wcc.ConvertToString (_lineColor);
 
 		string heightAttrib = String.Empty;
-		if (_height >= 0)
+		if (Height >= 0)
 			heightAttrib = "height=\"" + _height.ToString() + "\"";
 		string activeClassAttrib = String.Empty;
-		if (_activeClass != String.Empty)
+		if (ActiveClass != String.Empty)
 			activeClassAttrib = "class=\"" + _activeClass + "\"";
 		string inactiveClassAttrib = String.Empty;
-		if (_inactiveClass != String.Empty)
+		if (InactiveClass != String.Empty)
 			inactiveClassAttrib = "class=\"" + _inactiveClass + "\"";
 		string targetAttribute = String.Empty;
-		if (_target != String.Empty)
+		if (Target != String.Empty)
 			targetAttribute = "target=\"" + _target + "\"";
 
-		output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>", backColor);
+		output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>",
+        backColor);
 
 
 		for (int i=0; i<Items.Count; ++i)
@@ -322,9 +366,13 @@ public class TabControl: Control, IPostBackEventHandler
   		output.WriteLine ("</tr>");
 		}
 
-    //output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>", backColor);
+    RenderMenuBar (output);
+		output.WriteLine ("</table>");
+	}
 
-    if (_hasMenuBar)
+  public void RenderMenuBar (HtmlTextWriter output)
+  {
+    if (HasMenuBar)
     { 
       output.WriteLine ("<tr>");
       int colspan = _items.Count * 4;
@@ -343,25 +391,25 @@ public class TabControl: Control, IPostBackEventHandler
           if (! isFirstMenu)
             output.WriteLine (" | ");
 
-          //string menuHref = GetHref ("MenuSelected", i, menu.Href);
-          string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
+          // string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
+          string menuHref = GetHref ("aa", i, menu);
           output.WriteLine ("<a class=\"tabSubLink\" {0}>{1}</a> ", menuHref, menu.Label);
           isFirstMenu = false;
         }
       }
-      if (_statusMessage != string.Empty)
+      if (StatusMessage != string.Empty)
       {
-        output.WriteLine ("</td><td width=\"100%\" align=\"right\">{0}", _statusMessage);
+        output.WriteLine ("</td><td width=\"100%\" align=\"right\">{0}", StatusMessage);
       }
       output.WriteLine ("</td></tr></table>");
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
     }
-		output.WriteLine ("</table>");
-	}
+  }
 }
 
-public class TabCollection: IList
+
+  public class TabCollection: IList
 {
 	private ArrayList _tabs = new ArrayList ();
 
@@ -501,10 +549,4 @@ public class TabCollection: IList
 		}
 	}
 }
-
-public class XyPage : Page
-{
-}
-
-
 }
