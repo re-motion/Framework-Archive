@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Collections;
 using System.Xml.Serialization;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
@@ -9,10 +10,23 @@ namespace Rubicon.ObjectBinding.Reflection
 {
 
 /// <summary>
-/// This class provides BusinessObject interfaces for simple .NET objects.
+///   This class provides BusinessObject interfaces for simple .NET objects.
 /// </summary>
-public abstract class ReflectionBusinessObject: BusinessObject
+public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectWithIdentity
 {
+  internal Guid _id;
+
+  public ReflectionBusinessObject ()
+  {
+    _id = Guid.NewGuid(); // this id is replaced immediately if the object is loaded from xml
+  }
+
+  [XmlIgnore]
+  public Guid ID
+  {
+    get { return _id; }
+  }
+
   public override IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
   {
     return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
@@ -42,6 +56,18 @@ public abstract class ReflectionBusinessObject: BusinessObject
 
     object internalValue = reflectionProperty.ToInternalType (value);
     propertyInfo.SetValue (this, internalValue, new object[0]);
+  }
+
+  public abstract string DisplayName { get; }
+
+  string IBusinessObjectWithIdentity.UniqueIdentifier
+  {
+    get { return _id.ToString(); }
+  }
+
+  public void SaveObject()
+  {
+    ReflectionBusinessObjectStorage.SaveObject (this);
   }
 }
 

@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Reflection
 {
 
-public class ReflectionBusinessObjectClass: IBusinessObjectClass
+public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
 {
   Type _type;
 
@@ -37,6 +37,11 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClass
   public IBusinessObjectProvider BusinessObjectProvider 
   {
     get { return ReflectionBusinessObjectProvider.Instance; }
+  }
+
+  public IBusinessObjectWithIdentity GetObject (string identifier)
+  {
+   return ReflectionBusinessObjectStorage.GetObject (_type, new Guid (identifier));
   }
 }
 
