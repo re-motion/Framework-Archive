@@ -23,7 +23,6 @@ public class DomainObjectProperty: IBusinessObjectProperty
       ClassDefinition classDefinition)
   {
     ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
     bool isList = false;
     Type itemType = null;
@@ -32,11 +31,35 @@ public class DomainObjectProperty: IBusinessObjectProperty
         || propertyInfo.PropertyType.IsSubclassOf (typeof (DomainObjectCollection)))
     {
       isList = true;
+      itemType = typeof (BindableDomainObject);
 
-      IRelationEndPointDefinition oppositeRelationEndPointDefinition = 
-          classDefinition.GetOppositeEndPointDefinition (propertyInfo.Name);
+      object[] itemTypeAttributes = 
+          propertyInfo.GetCustomAttributes (typeof(ItemTypeAttribute), true);
 
-      itemType = oppositeRelationEndPointDefinition.ClassDefinition.ClassType;
+      if (itemTypeAttributes.Length > 0)
+      {
+        itemType = ((ItemTypeAttribute) itemTypeAttributes[0]).ItemType;
+
+        if (itemType != typeof (BindableDomainObject)
+            && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
+        {
+          throw new InvalidOperationException ("The ItemType defined for a property of type "
+              + "DomainObjectCollection or subclass of must be a DomainObject or a subclass of.");
+        }
+      }
+      else if (classDefinition != null)
+      {
+        IRelationEndPointDefinition relationEndPointDefinition = 
+            classDefinition.GetRelationEndPointDefinition (propertyInfo.Name);
+
+        if (relationEndPointDefinition != null)
+        {
+          IRelationEndPointDefinition oppositeRelationEndPointDefinition =
+              classDefinition.GetOppositeEndPointDefinition (propertyInfo.Name);
+
+          itemType = oppositeRelationEndPointDefinition.ClassDefinition.ClassType;
+        }
+      }
     }
     else
     {
@@ -51,14 +74,16 @@ public class DomainObjectProperty: IBusinessObjectProperty
       itemType = NaTypeUtility.GetBasicType (itemType);
     }
 
-    PropertyDefinition propertyDefinition = 
-        classDefinition.GetPropertyDefinition (propertyInfo.Name);
+    PropertyDefinition propertyDefinition = null;
+
+    if (classDefinition != null)
+      propertyDefinition = classDefinition.GetPropertyDefinition (propertyInfo.Name);
 
     if (itemType == typeof (string))
     {
       return new StringProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
-    if (itemType == typeof (Guid))
+    else if (itemType == typeof (Guid))
     {
       return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
