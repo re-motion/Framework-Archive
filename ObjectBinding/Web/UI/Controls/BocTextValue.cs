@@ -215,7 +215,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     base.OnPreRender (e);
     EnsureChildControlsPreRendered ();
-    if (! IsDesignMode && ! IsReadOnly)
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
 

@@ -1,3 +1,9 @@
+1.2.9.0
+=======
+
+- BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue
+  * Bug in der Enabled-Funktionalität: Das Control hat beim Postback den Wert verloren, wenn es disabled war.
+
 1.2.8.0
 =======
 

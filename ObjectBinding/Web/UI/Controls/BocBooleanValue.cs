@@ -198,7 +198,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     
     //  First call
     EnsureChildControlsPreRendered();
-    if (! IsDesignMode && ! IsReadOnly)
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
 

@@ -160,7 +160,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     
     //  First call
     EnsureChildControlsPreRendered();
-    if (! IsDesignMode && ! IsReadOnly)
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
 

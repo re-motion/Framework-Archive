@@ -280,7 +280,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
     //  First call
     EnsureChildControlsPreRendered();
-    if (! IsDesignMode && ! IsReadOnly)
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
 
     string key = typeof (BocReferenceValue).FullName + "_Script";

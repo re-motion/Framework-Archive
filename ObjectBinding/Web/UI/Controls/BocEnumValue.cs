@@ -204,7 +204,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     //  First call
     EnsureChildControlsPreRendered();
-    if (! IsDesignMode && ! IsReadOnly)
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
 

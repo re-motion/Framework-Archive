@@ -489,7 +489,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     bool isReadOnly = IsReadOnly;
 
     DetermineClientScriptLevel();
-    if (_hasClientScript && ! isReadOnly)
+    if (_hasClientScript && ! isReadOnly && Enabled)
     {
       string key = typeof (BocDateTimeValue).FullName;
       if (! HtmlHeadAppender.Current.IsRegistered (key))
