@@ -141,19 +141,19 @@ public class TypeInfo
     allTypeInfos[12] = new TypeInfo (typeof (ObjectID), "objectID", true, null);
 
     allTypeInfos[13] = new TypeInfo (typeof (bool), "boolean", false, false);
-    allTypeInfos[14] = new TypeInfo (typeof (byte), "byte", false, (byte) 0);
+    allTypeInfos[14] = new TypeInfo (typeof (byte), "byte", false, byte.MinValue);
 
     // Note: mappingType "dateTime" must be before mappingType "date" to ensure hashtable s_types contains the "dateTime" version
     allTypeInfos[15] = new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue);
     allTypeInfos[16] = new TypeInfo (typeof (DateTime), "date", false, DateTime.MinValue);
 
-    allTypeInfos[17] = new TypeInfo (typeof (decimal), "decimal", false, (decimal) 0);
-    allTypeInfos[18] = new TypeInfo (typeof (double), "double", false, (double) 0);
+    allTypeInfos[17] = new TypeInfo (typeof (decimal), "decimal", false, decimal.MinValue);
+    allTypeInfos[18] = new TypeInfo (typeof (double), "double", false, double.MinValue);
     allTypeInfos[19] = new TypeInfo (typeof (Guid), "guid", false, Guid.Empty);
-    allTypeInfos[20] = new TypeInfo (typeof (short), "int16", false, (short) 0);
-    allTypeInfos[21] = new TypeInfo (typeof (int), "int32", false, (int) 0);
-    allTypeInfos[22] = new TypeInfo (typeof (long), "int64", false, (long) 0);
-    allTypeInfos[23] = new TypeInfo (typeof (float), "single", false, (float) 0);
+    allTypeInfos[20] = new TypeInfo (typeof (short), "int16", false, short.MinValue);
+    allTypeInfos[21] = new TypeInfo (typeof (int), "int32", false, int.MinValue);
+    allTypeInfos[22] = new TypeInfo (typeof (long), "int64", false, long.MinValue);
+    allTypeInfos[23] = new TypeInfo (typeof (float), "single", false, float.MinValue);
     allTypeInfos[24] = new TypeInfo (typeof (string), "string", false, string.Empty);
     allTypeInfos[25] = new TypeInfo (typeof (ObjectID), "objectID", false, null);
 
