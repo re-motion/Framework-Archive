@@ -22,10 +22,9 @@ public class CollectionEndPoint : RelationEndPoint
   //       ctors with propertyName (see ObjectEndPoint)
   //       Make domainObjects optional and use ClientTx, if not provided
   
-
   public CollectionEndPoint (
       DomainObject domainObject, 
-      IRelationEndPointDefinition definition, 
+      VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
       : this (domainObject.DataContainer, definition, oppositeDomainObjects)
   {
@@ -33,7 +32,7 @@ public class CollectionEndPoint : RelationEndPoint
 
   public CollectionEndPoint (
       DataContainer dataContainer, 
-      IRelationEndPointDefinition definition, 
+      VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
       : this (dataContainer, definition.PropertyName, oppositeDomainObjects)
   {
