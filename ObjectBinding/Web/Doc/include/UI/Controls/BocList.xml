@@ -60,7 +60,7 @@
   </Class>
   <OnListItemCommandClick>
     <param name="column"> 
-      The <see cref="BocColumnDefinition"/> whose command was clicked. 
+      The <see cref="BocCommandEnabledColumnDefinition"/> whose command was clicked. 
     </param>
     <param name="listIndex">
       An index that indtifies the <see cref="IBusinessObject"/> with which the clicked command is associated.
