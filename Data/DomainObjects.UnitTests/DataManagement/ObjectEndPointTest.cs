@@ -50,7 +50,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
   [ExpectedException (typeof (ArgumentNullException))]
   public void InitializeWithInvalidRelationEndPointID ()
   {
-    ObjectID id = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    ObjectID id = new ObjectID ("Order", Guid.NewGuid ());
     ObjectEndPoint endPoint = CreateObjectEndPoint (null, id);
   }
 
@@ -66,7 +66,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
   [Test]
   public void ChangeOppositeObjectID ()
   {
-    ObjectID newObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    ObjectID newObjectID = new ObjectID ("Order", Guid.NewGuid ());
     _endPoint.OppositeObjectID = newObjectID;
 
     Assert.AreSame (newObjectID, _endPoint.OppositeObjectID);
@@ -78,7 +78,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
   {
     Assert.IsFalse (_endPoint.HasChanged);
 
-    _endPoint.OppositeObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    _endPoint.OppositeObjectID = new ObjectID ("Order", Guid.NewGuid ());
     Assert.IsTrue (_endPoint.HasChanged);
 
     _endPoint.OppositeObjectID = _oppositeObjectID;
@@ -97,7 +97,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
   public void HasChangedWithOldNullValue ()
   {
     ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
-    endPoint.OppositeObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    endPoint.OppositeObjectID = new ObjectID ("Order", Guid.NewGuid ());
 
     Assert.IsTrue (endPoint.HasChanged);
   }
