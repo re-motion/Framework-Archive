@@ -24,7 +24,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Details View
 // TODO: BocList: Sort-Buttons
 // TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
-// TODO: BocList: Add Flag: Show all properties. Insert after fixed columns
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
@@ -100,6 +99,8 @@ public class BocList:
   /// <summary> The user independent column defintions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
 
+  private BocColumnDefinition[] _allPropertyColumns;
+
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
   
@@ -147,6 +148,7 @@ public class BocList:
 	{
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
+    _allPropertyColumns = new BocColumnDefinition[0];
   }
 
 	// methods and properties
@@ -377,13 +379,22 @@ public class BocList:
 
   protected override void Render (HtmlTextWriter writer)
   {
-    BocColumnDefinition[] columnDefinitions = _fixedColumns.ToArray();
+    BocColumnDefinition[] allPropertyColumns = null;
+    if (_showAllProperties)
+      allPropertyColumns = _allPropertyColumns;
+    else
+      allPropertyColumns = new BocColumnDefinition[0];
+
+    BocColumnDefinition[] selectedColumns = null;
     if (_selectedColumnDefinitionSet != null)
-    {
-      columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
-        columnDefinitions, 
-        _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray());
-    }
+      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray();
+    else
+      selectedColumns = new BocColumnDefinition[0];
+
+    BocColumnDefinition[] columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
+      _fixedColumns.ToArray(),
+      allPropertyColumns,
+      selectedColumns);
 
     if (IsDesignMode)
     {
@@ -902,6 +913,26 @@ public class BocList:
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
     //  TODO: BocList: BindingChanged
+
+    if (DataSource != null)
+    {
+      IBusinessObjectProperty[] properties = 
+        DataSource.BusinessObjectClass.GetPropertyDefinitions();
+
+      _allPropertyColumns = new BocColumnDefinition[properties.Length];
+      for (int i = 0; i < properties.Length; i++)
+      {
+        IBusinessObjectProperty property = properties[i];
+        BocSimpleColumnDefinition column = new BocSimpleColumnDefinition ();
+        column.ColumnTitle = property.DisplayName;
+        column.PropertyPath = new BusinessObjectPropertyPath (
+          new IBusinessObjectProperty[] {property});
+        column.OwnerControl = this;
+        _allPropertyColumns[i] = column;
+      }
+    }
+    else
+      _allPropertyColumns = new BocColumnDefinition[0];
   }
 
   private void PopulateAdditionalColumnsList()
@@ -1317,7 +1348,7 @@ public class BocList:
     set { _showSelection = value; }
   }
 
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [Description ("If true, the list generates column for all properties of the bound object.")]
   [DefaultValue (false)]
   public bool ShowAllProperties
