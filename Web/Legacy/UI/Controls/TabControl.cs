@@ -156,6 +156,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 	private bool _vertical = false;
   private bool _hasMenuBar = false;
   private string _statusMessage = string.Empty;
+  private HyperLink _helpLink = null;
   private bool _serverSideNavigation = true;
   private string _backLinkUrl = string.Empty;
 
@@ -253,6 +254,13 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     get { return _statusMessage; }
     set { _statusMessage = value; }
   }
+
+  public HyperLink HelpLink
+  {
+    get { return _helpLink; }
+    set { _helpLink = value; }
+  }
+
   /// <remarks> currently not tested with ServerSideNavigation="false" </remarks>
   public bool ServerSideNavigation
   {
@@ -577,6 +585,10 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
         ++ numVisibleTabs;
       }
 		}
+
+
+    RenderHelpLink (output);
+
 		output.WriteLine ("</tr>");
 
     RenderSeperatorLine (output, lineColor, activeClassAttrib, numVisibleTabs, activeVisibleTab);
@@ -585,6 +597,16 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 		
     output.WriteLine ("</table>");
 	}
+
+  private void RenderHelpLink (HtmlTextWriter output)
+  {
+    if (HelpLink != null)
+    {
+      output.WriteLine ("<td align=\"right\">");
+      HelpLink.RenderControl (output);
+      output.WriteLine ("</td>");
+    }
+  }
 
   /// <summary>
   /// Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
