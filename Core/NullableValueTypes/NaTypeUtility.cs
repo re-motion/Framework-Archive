@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
-
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Rubicon.NullableValueTypes
 {
@@ -144,6 +145,37 @@ public sealed class NaTypeUtility
         + "Rubicon.NullableValueTypes.NaBasicTypeAttribute attribute. This attribute is missing from type " + nullableType.FullName + ".");
   }
 
+  public static XmlSchema CreateXmlSchema (string name, string xmlType)
+  {
+    XmlSchema schema = new XmlSchema();
+    schema.Id = name;
+    schema.ElementFormDefault = XmlSchemaForm.Qualified;
+    schema.Namespaces.Add ("xs", "http://www.w3.org/2001/XMLSchema");
+
+    XmlSchemaElement element = new XmlSchemaElement();
+    element.Name = name;
+    element.SchemaTypeName = new XmlQualifiedName (xmlType, "http://www.w3.org/2001/XMLSchema");
+    element.IsNillable = true;
+    schema.Items.Add (element);
+
+    return schema;
+  }
+
+  public static void WriteXml (XmlWriter writer, string value)
+  {
+    if (value == null)
+      writer.WriteAttributeString ("xsi", "nil", "http://www.w3.org/2001/XMLSchema-instance", "true");
+    else
+      writer.WriteString (value);
+  }
+
+  public static string ReadXml (XmlReader reader)
+  {
+    if (reader.IsEmptyElement)
+      return null;
+    else
+      return reader.ReadElementString();
+  }
 }
 
 internal enum DebuggingNull { Null };

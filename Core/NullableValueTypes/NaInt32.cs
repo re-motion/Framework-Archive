@@ -2,6 +2,9 @@ using System;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Rubicon.NullableValueTypes
 {
@@ -12,7 +15,7 @@ namespace Rubicon.NullableValueTypes
 /// <include file='doc\include\include.xml' path='Comments/NaInt32/remarks' />
 [Serializable]
 [NaBasicType (typeof(Int32))]
-public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
+public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable, IXmlSerializable
 {
   #region member fields
 
@@ -65,6 +68,34 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   {
     info.AddValue ("IsNull", IsNull);
     info.AddValue ("Value", _value);
+  }
+
+  static XmlSchema s_schema = null;
+  
+  XmlSchema IXmlSerializable.GetSchema()
+  {
+    if (s_schema == null)
+    {
+      lock (typeof (NaInt32))
+      {
+        if (s_schema == null)
+          s_schema = NaTypeUtility.CreateXmlSchema (typeof(NaInt32).Name, "int");
+      }
+    }
+    return s_schema;
+  }
+
+  void IXmlSerializable.ReadXml (XmlReader reader)
+  {
+    string strValue = NaTypeUtility.ReadXml (reader);
+    _isNotNull = strValue != null;
+    if (strValue != null)
+      _value = XmlConvert.ToInt32 (strValue);
+  }
+
+  void IXmlSerializable.WriteXml (XmlWriter writer)
+  {
+    NaTypeUtility.WriteXml (writer, IsNull ? null : XmlConvert.ToString (_value));
   }
 
   #endregion
@@ -965,6 +996,5 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   
   #endregion
 }
-
 
 }
