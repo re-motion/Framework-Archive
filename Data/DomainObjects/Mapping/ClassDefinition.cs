@@ -3,7 +3,7 @@ using System.Collections;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.Mapping
 {
 public class ClassDefinition
 {
