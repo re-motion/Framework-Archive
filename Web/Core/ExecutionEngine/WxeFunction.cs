@@ -316,7 +316,7 @@ public abstract class WxeFunction: WxeStepList
         arguments.Add (true);
       else if (string.CompareOrdinal (arg, "false") == 0)   // false
         arguments.Add (false);
-      else if (arg.Length > 0 && char.IsDigit (arg, 0))     // starts with digit -> parse constant
+      else if (arg.Length > 0 && char.IsDigit (arg[0]))     // starts with digit -> parse constant
         arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
       else if (! (bool) isQuotedArray[i])                   // unquoted -> variable name
         arguments.Add (new WxeVariableReference (arg));
