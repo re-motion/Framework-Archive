@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
-public abstract class BocColumnDefinition: IControlItem
+public abstract class BocColumnDefinition: BusinessObjectControlItem
 {
   private const string c_commandIDSuffix = "_Command";
 
@@ -29,10 +29,6 @@ public abstract class BocColumnDefinition: IControlItem
   private Unit _width; 
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
   private BocListItemCommand _command;
-  /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this <see cref="BocColumnDefinition"/> belongs. 
-  /// </summary>
-  private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
@@ -42,9 +38,11 @@ public abstract class BocColumnDefinition: IControlItem
     _command = new BocListItemCommand();
   }
 
-  /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
-  protected virtual void OnOwnerControlChanged()
+  protected override void OnOwnerControlChanged()
   {
+    base.OnOwnerControlChanged();
+    if (_command != null)
+      _command.OwnerControl = OwnerControl;
   }
 
   public override string ToString()
@@ -59,9 +57,7 @@ public abstract class BocColumnDefinition: IControlItem
   }
 
   /// <summary> Gets the programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
-  /// <value>
-  ///   A <see cref="string"/> providing an identifier for the <see cref="BocColumnDefinition"/>. 
-  /// </value>
+  /// <value> A <see cref="string"/> providing an identifier for the <see cref="BocColumnDefinition"/>. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Misc")]
   [Description ("The programmatic name of the column definition.")]
@@ -167,34 +163,6 @@ public abstract class BocColumnDefinition: IControlItem
   protected virtual string DisplayedTypeName
   {
     get { return "ColumnDefinition"; }
-  }
-
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this <see cref="BocColumnDefinition"/> 
-  ///   belongs. 
-  /// </summary>
-  public IBusinessObjectBoundWebControl OwnerControl
-  {
-    get
-    {
-      return _ownerControl; 
-    }
-    set
-    {
-      if (_ownerControl != value)
-      {
-        _ownerControl = value;
-        if (_command != null)
-          _command.OwnerControl = value;
-        OnOwnerControlChanged();
-      }
-    }
-  }
-
-  Control IControlItem.OwnerControl
-  {
-    get { return (Control) _ownerControl; }
-    set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
 }
 
@@ -419,13 +387,8 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   } 
 }
 
-/// <summary>
-///   A column definition for displaying a string made up from different property paths.
-/// </summary>
-/// <remarks>
-///   Note that values in these columnDefinitions can usually not be modified directly.
-/// </remarks>
-[ParseChildren (true, "PropertyPathBindings")]
+/// <summary> A column definition for displaying a string made up from different property paths. </summary>
+/// <remarks> Note that values in these columnDefinitions can usually not be modified directly. </remarks>
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
   /// <summary>
@@ -494,7 +457,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   <see cref="GetStringValue"/> to access the values of an <see cref="IBusinessObject"/>.
   /// </summary>
   /// <value> A collection of <see cref="PropertyPathBinding"/> objects. </value>
-  [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
+  [PersistenceMode(PersistenceMode.InnerProperty)]
   [Category ("Data")]
   [Description ("The Property Paths used to access the values of Business Object.")]
   [NotifyParentProperty (true)]
@@ -503,10 +466,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     get { return _propertyPathBindings; }
   }
 
-  /// <summary>
-  ///   Gets or sets the text displayed in the column title. 
-  ///   Must not be empty or <see langword="null"/>.
-  /// </summary>
+  /// <summary> Gets or sets the text displayed in the column title. Must not be empty or <see langword="null"/>. </summary>
   /// <value> A <see cref="string"/> representing the title of this column. </value>
   [Description ("The assigned value of the column title, must not be empty.")]
   [DefaultValue ("")]

@@ -16,23 +16,25 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> A BocColumnDefinitionSet is a named collection of column definitions. </summary>
 [ParseChildren (true, "ColumnDefinitionCollection")]
-public class BocColumnDefinitionSet: IControlItem
+public class BocColumnDefinitionSet: BusinessObjectControlItem
 {
   private string _setID;
   private object _title;
   /// <summary> 
   ///   The <see cref="BocColumnDefinition"/> objects stored in the <see cref="BocColumnDefinitionSet"/>. 
   /// </summary>
-  private BocColumnDefinitionCollection _columnDefinitionCollection;
-  /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this <see cref="BocColumnDefinitionSet"/> belongs. 
-  /// </summary>
-  private IBusinessObjectBoundWebControl _ownerControl;
+  private BocColumnDefinitionCollection _columnDefinitions;
 
   /// <summary> Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class. </summary>
   public BocColumnDefinitionSet()
   {
-    _columnDefinitionCollection = new BocColumnDefinitionCollection (null);
+    _columnDefinitions = new BocColumnDefinitionCollection (null);
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged();
+    _columnDefinitions.OwnerControl = OwnerControl;
   }
 
   public override string ToString()
@@ -77,34 +79,14 @@ public class BocColumnDefinitionSet: IControlItem
   /// <value>
   ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this <see cref="BocColumnDefinitionSet"/>.
   /// </value>
-  [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
-  [MergableProperty (false)]
+  [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
   [DefaultValue((string) null)]
   [NotifyParentProperty (true)]
-  public BocColumnDefinitionCollection ColumnDefinitionCollection
+  public BocColumnDefinitionCollection ColumnDefinitions
   {
-    get { return _columnDefinitionCollection; }
-  }
-
-  /// <summary> 
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
-  ///   <see cref="BocColumnDefinitionSet"/> belongs. </summary>
-  public IBusinessObjectBoundWebControl OwnerControl
-  {
-    get { return _ownerControl; }
-    set 
-    {
-      _ownerControl = value; 
-      _columnDefinitionCollection.OwnerControl = (Control) _ownerControl;
-    }
-  }
-
-  Control IControlItem.OwnerControl
-  {
-    get { return (Control) _ownerControl; }
-    set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+    get { return _columnDefinitions; }
   }
 
   /// <summary> Gets the human readable name of this type. </summary>

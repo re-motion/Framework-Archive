@@ -11,11 +11,11 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> A collection of <see cref="BocColumnDefinitionSet"/> objects. </summary>
 [Editor (typeof (BocColumnDefinitionSetCollectionEditor), typeof (UITypeEditor))]
-public class BocColumnDefinitionSetCollection: ControlItemCollection
+public class BocColumnDefinitionSetCollection: BusinessObjectControlItemCollection
 {
   /// <summary> Initializes a new instance. </summary>
   public BocColumnDefinitionSetCollection (IBusinessObjectBoundWebControl ownerControl)
-    : base ((Control) ownerControl, new Type[] {typeof (BocColumnDefinitionSet)})
+    : base (ownerControl, new Type[] {typeof (BocColumnDefinitionSet)})
   {
   }
 
@@ -25,10 +25,10 @@ public class BocColumnDefinitionSetCollection: ControlItemCollection
     return (BocColumnDefinitionSet[]) arrayList.ToArray (typeof (BocColumnDefinitionSet));
   }
 
-  public new BocColumnDefinitionSet this[int index]
+  protected internal new BocColumnDefinitionSet this[int index]
   {
-    get { return (BocColumnDefinitionSet) base[index]; }
-    set { base[index] = value; }
+    get { return (BocColumnDefinitionSet) List[index]; }
+    set { List[index] = value; }
   }
 }
 

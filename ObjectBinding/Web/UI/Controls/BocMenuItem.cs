@@ -33,10 +33,10 @@ public class BocMenuItem: MenuItem
     set { base.Command = (BocCommand) value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. 
-  /// </summary>
-  protected internal new IBusinessObjectBoundWebControl OwnerControl
+  /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new IBusinessObjectBoundWebControl OwnerControl
   {
     get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation;  }
     set { base.OwnerControlImplementation = (Control) value; }

@@ -236,7 +236,6 @@ public class BocList:
 
   /// <summary> The user independent column defintions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
-
   /// <summary> 
   ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
   ///   <see cref="IBusinessObject"/>. 
@@ -1432,8 +1431,7 @@ public class BocList:
     if (showIcon)
     {
       IBusinessObjectService service
-        = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
-          typeof (IBusinessObjectWebUIService));
+        = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
 
       IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
 
@@ -1614,14 +1612,9 @@ public class BocList:
   {
     //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
-    {
       DataSource.BusinessObject.SetProperty (Property, Value);
-
-      //  get_Value parses the internal representation of the date/time value
-      //  set_Value updates the internal representation of the date/time value
-      Value = Value;
-    }
   }
+
   /// <summary> Handles refreshing the bound control. </summary>
   /// <param name="sender"> The source of the event. </param>
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
@@ -1767,7 +1760,7 @@ public class BocList:
 
     BocColumnDefinition[] selectedColumns = null;
     if (_selectedColumnDefinitionSet != null)
-      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray();
+      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitions.ToArray();
     else
       selectedColumns = new BocColumnDefinition[0];
 
@@ -2358,14 +2351,13 @@ public class BocList:
     get { return _fixedColumns; }
   }
 
-  /// <summary> Gets the predefined column defintion sets that the user can choose from at run-time. </summary>
   //  No designer support intended
+  /// <summary> Gets the predefined column defintion sets that the user can choose from at run-time. </summary>
   //  [PersistenceMode(PersistenceMode.InnerProperty)]
   //  [ListBindable (false)]
   //  [Category ("Column Definition")]
   //  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
   //  [DefaultValue ((string) null)]
-  [Browsable (false)]
   public BocColumnDefinitionSetCollection AvailableColumnDefinitionSets
   {
     get { return _availableColumnDefinitionSets; }
@@ -2428,7 +2420,7 @@ public class BocList:
         int selectedIndex = _selectedColumnDefinitionSetIndex;
 
         if (selectedIndex < _availableColumnDefinitionSets.Count)
-          _selectedColumnDefinitionSet = _availableColumnDefinitionSets[selectedIndex];
+          _selectedColumnDefinitionSet = (BocColumnDefinitionSet) _availableColumnDefinitionSets[selectedIndex];
         else
           _selectedColumnDefinitionSet = null;
       }
