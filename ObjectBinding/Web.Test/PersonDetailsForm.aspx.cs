@@ -57,7 +57,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     if (! IsPostBack)
     {
       IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
-      PartnerField.RefreshBusinessObjectList (objects);
+      PartnerField.SetBusinessObjectList (objects);
     }
 	}
 
