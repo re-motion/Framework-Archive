@@ -435,7 +435,7 @@ public class EntryField: Control
   {
     bool isValid = true;
 
-    if (   validator != null)
+    if (validator != null)
     {
       if (! (      ignoreRequiredFieldValidators 
               && (    validator is RequiredFieldValidator
