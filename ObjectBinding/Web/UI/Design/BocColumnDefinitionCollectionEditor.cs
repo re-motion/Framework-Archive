@@ -7,7 +7,7 @@ using Rubicon.Web.UI.Design;
 namespace Rubicon.ObjectBinding.Web.Design
 {
 
-public class BocColumnDefinitionCollectionEditor: CollectionEditor
+public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
 {
   public BocColumnDefinitionCollectionEditor (Type type)
     : base (type)
@@ -20,16 +20,6 @@ public class BocColumnDefinitionCollectionEditor: CollectionEditor
       typeof (BocSimpleColumnDefinition), 
       typeof (BocCompoundColumnDefinition),
       typeof (BocCommandColumnDefinition)};
-  }
-
-  public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value)
-  {
-    IServiceProvider collectionEditorServiceProvider = null;
-    if (provider.GetType() != typeof (CollectionEditorServiceProvider))
-      collectionEditorServiceProvider = new CollectionEditorServiceProvider (provider, 800, 500, 4);
-    else
-      collectionEditorServiceProvider = provider;
-    return base.EditValue (context, collectionEditorServiceProvider, value);
   }
 }
 

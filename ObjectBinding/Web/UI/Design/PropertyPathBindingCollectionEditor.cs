@@ -6,7 +6,7 @@ using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class PropertyPathBindingCollectionEditor: CollectionEditor
+public class PropertyPathBindingCollectionEditor: AdvancedCollectionEditor
 {
   public PropertyPathBindingCollectionEditor (Type type)
     : base (type)
@@ -21,12 +21,7 @@ public class PropertyPathBindingCollectionEditor: CollectionEditor
 
   public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value)
   {
-    IServiceProvider collectionEditorServiceProvider = null;
-    if (provider.GetType() != typeof (CollectionEditorServiceProvider))
-      collectionEditorServiceProvider = new CollectionEditorServiceProvider (provider, 600, 400, 2);
-    else
-      collectionEditorServiceProvider = provider;
-    return base.EditValue (context, collectionEditorServiceProvider, value);
+    return EditValue (context, provider, value, 600, 400, 2);
   }
 }
 

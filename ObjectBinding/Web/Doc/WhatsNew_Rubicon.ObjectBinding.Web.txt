@@ -1,3 +1,16 @@
+1.1.33.0
+========
+
+- BocList
+  * OptionsMenu, ListMenu: Commands lassen sich definieren, WxeCommand noch ohne Funktion.
+  * Commands allgemein: Persistierung hat sich geändert.
+    ColumnCommand: die Start- und End-Tags wie folgt ersetzen.
+    "<command " durch "<persistedcommand><obc:BocListItemCommand " ersetzen.
+    "</command>" durch "</obc:BocListItemCommand></PersistedCommand>" ersetzen.
+    MenuCommand: die Start- und End-Tags wie folgt ersetzen.
+    "<command " durch "<persistedcommand><obc:BocMenuItemCommand " ersetzen.
+    "</command>" durch "</obc:BocMenuItemCommand></PersistedCommand>" ersetzen.
+
 1.1.32.0
 ========
 
