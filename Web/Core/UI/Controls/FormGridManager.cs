@@ -219,7 +219,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     public void InsertNewFormGridRow (
         FormGridRow newFormGridRow,
         string relatedRowID,
-        FormGridRowPrototype.RowPosition positionInFormGrid)
+        FormGridRowInfo.RowPosition positionInFormGrid)
     {
       ArgumentUtility.CheckNotNull ("newFormGridRow", newFormGridRow);
 
@@ -238,7 +238,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         Rows.Add (newFormGridRow);
       }
         //  Insert after the related form grid row
-      else if (positionInFormGrid == FormGridRowPrototype.RowPosition.AfterRowWithID)
+      else if (positionInFormGrid == FormGridRowInfo.RowPosition.AfterRowWithID)
       {
         //  Find insertion postion for the html table rows
 
@@ -275,7 +275,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         Rows.Insert (idxFormGridRow, newFormGridRow);
       }
         //  Insert before the related form grid row
-      else if (positionInFormGrid == FormGridRowPrototype.RowPosition.BeforeRowWithID)
+      else if (positionInFormGrid == FormGridRowInfo.RowPosition.BeforeRowWithID)
       {
         //  Find insertion postion for the html table rows
 
@@ -1631,13 +1631,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     if (rowProvider == null)
       return;
 
-    FormGridRowPrototypeCollection formGridRowPrototypes =
-        rowProvider.GetListOfFormGridRowPrototypes (formGrid.Table.ID);
+    FormGridRowInfoCollection formGridRowInfos =
+        rowProvider.GetListOfFormGridRowInfos (formGrid.Table.ID);
 
-    foreach (FormGridRowPrototype prototype in formGridRowPrototypes)
+    foreach (FormGridRowInfo prototype in formGridRowInfos)
     {
       int rowCount = 1;
-      if (prototype.NewRowType == FormGridRowPrototype.RowType.ControlInRowAfterLabel)
+      if (prototype.NewRowType == FormGridRowInfo.RowType.ControlInRowAfterLabel)
         rowCount = 2;
 
       HtmlTableRow[] htmlTableRows = new HtmlTableRow [rowCount];
@@ -1648,7 +1648,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         htmlTableRows[0].Cells.Add (new HtmlTableCell());
 
       //  Row with control
-      if (prototype.NewRowType == FormGridRowPrototype.RowType.ControlInRowAfterLabel)
+      if (prototype.NewRowType == FormGridRowInfo.RowType.ControlInRowAfterLabel)
       {
         htmlTableRows[1] = new HtmlTableRow();
         for (int idxCells = 0, columnCount = ControlsColumn + 1; idxCells <= columnCount; idxCells++)
@@ -1656,12 +1656,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       }
 
       //  Control in labels row
-      if (prototype.NewRowType == FormGridRowPrototype.RowType.ControlInRowWithLabel)
+      if (prototype.NewRowType == FormGridRowInfo.RowType.ControlInRowWithLabel)
       {
         htmlTableRows[0].Cells[ControlsColumn].Controls.Add (prototype.Control);
       }
         //  Control in row after labels row
-      else if (prototype.NewRowType == FormGridRowPrototype.RowType.ControlInRowAfterLabel)
+      else if (prototype.NewRowType == FormGridRowInfo.RowType.ControlInRowAfterLabel)
       {
         htmlTableRows[1].Cells[LabelsColumn].Controls.Add (prototype.Control);
       }
