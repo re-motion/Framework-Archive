@@ -664,11 +664,8 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
 /// </summary>
 public interface IBocCustomColumnDefinitionCell
 {
-  /// <summary>
-  ///   
-  /// </summary>
   /// <param name="writer"></param>
-  /// <param name="list"></param>
+  /// <param name="list"> The <see cref="BocList"/> containing the column. </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> to be rendered. </param>
   /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
   /// <param name="columnIndex"> 

@@ -416,9 +416,9 @@ public class BocList:
     eventArgument = eventArgument.Trim();
 
     if (eventArgument.StartsWith (c_eventListItemCommandPrefix))
-      HandleEventListItemCommand (eventArgument.Substring (c_eventListItemCommandPrefix.Length));
+      HandleListItemCommandEvent (eventArgument.Substring (c_eventListItemCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_eventMenuItemPrefix))
-      HandleEventMenuItem (eventArgument.Substring (c_eventMenuItemPrefix.Length));
+      HandleMenuItemEvent (eventArgument.Substring (c_eventMenuItemPrefix.Length));
     else if (eventArgument.StartsWith (c_sortCommandPrefix))
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_customCellEventPrefix))
@@ -429,7 +429,7 @@ public class BocList:
 
   /// <summary> Handles post back events raised by a list item event. </summary>
   /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt; </param>
-  private void HandleEventListItemCommand (string eventArgument)
+  private void HandleListItemCommandEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -493,7 +493,7 @@ public class BocList:
   }
 
   /// <summary> Handles post back events raised by a menu item event. </summary>
-  private void HandleEventMenuItem (string eventArgument)
+  private void HandleMenuItemEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -1708,14 +1708,17 @@ public class BocList:
 
       //  Render the command
       bool isCommandEnabled = false;
-      if (commandEnabledColumn.Command != null)
+      BocListItemCommand command = commandEnabledColumn.Command;
+      if (command != null)
       {
-        bool isActive =    commandEnabledColumn.Command.Show == CommandShow.Always
-                        || isReadOnly && commandEnabledColumn.Command.Show == CommandShow.ReadOnly
-                        || ! isReadOnly && commandEnabledColumn.Command.Show == CommandShow.EditMode;
+        bool isActive =    command.Show == CommandShow.Always
+                        || isReadOnly && command.Show == CommandShow.ReadOnly
+                        || ! isReadOnly && command.Show == CommandShow.EditMode;
         if (   isActive
-            && commandEnabledColumn.Command.Type != CommandType.None
-            && ! hasEditModeControl)
+            && command.Type != CommandType.None
+            && ! hasEditModeControl
+            && (   command.CommandState == null
+                || command.CommandState.IsEnabled (this, businessObject, commandEnabledColumn)))
         {
           isCommandEnabled = true;
         }
@@ -1726,7 +1729,7 @@ public class BocList:
         string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
         string onClick = "BocList_OnCommandClick();";
-        commandEnabledColumn.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
+        command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
       }
 
       //  Render the icon
@@ -1790,7 +1793,7 @@ public class BocList:
       }
 
       if (isCommandEnabled)
-        commandEnabledColumn.Command.RenderEnd (writer);
+        command.RenderEnd (writer);
     }
     else if (customColumn != null)
     {
