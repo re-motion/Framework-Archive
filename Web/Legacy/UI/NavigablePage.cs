@@ -128,7 +128,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   }
 
 
-  protected void ClearSessionValue (string key)
+  internal protected void ClearSessionValue (string key)
   { 
     ClearSessionValue (this.Token, key);
   }

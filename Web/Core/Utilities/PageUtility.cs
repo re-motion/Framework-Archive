@@ -533,6 +533,9 @@ public class PageUtility
     return string.Format ("WindowOpen ('{0}', '{1}')", url, useScrollbars ? "yes" : "no");
   }
 
+  /// <remarks>Be aware that the refresh of the opener causes a form submit and thus
+  /// the opener page will automatically perform server-side validation. If this is not the desired behavior
+  /// the opener page must override <see cref="System.Web.UI.Page.Validate"/> with an empty method.</remarks>
   public static void CloseBrowserWindow (Page page, bool refreshParent)
   {
     string refreshParentScript = string.Empty;
@@ -542,9 +545,6 @@ public class PageUtility
       refreshParentScript = @"
         if (window.opener != null)
         { 
-          alert (window.opener.Refresh);
-          alert (window.opener.document.forms[0].name);
-
           if (window.opener.Refresh != null) 
           {
             window.opener.Refresh();

@@ -38,6 +38,16 @@ public class StandardUserControl : MultiLingualUserControl
     navigablePage.SetSessionValue (key, sessionValue);
   }
 
+  protected void ClearSessionValue (string key)
+  {
+    NavigablePage navigablePage = Page as NavigablePage;
+
+    if (navigablePage == null)
+      throw new InvalidOperationException ("ClearSessionValue can only be used on a NavigablePage.");
+
+    navigablePage.ClearSessionValue (key);
+  }
+
   protected StandardPage StandardPage
   {
     get 
