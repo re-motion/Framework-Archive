@@ -141,6 +141,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\CompoundValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\CurrencyTextBox.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -197,6 +202,11 @@
                 />
                 <File
                     RelPath = "Controls\FormGridRowProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\IBaseValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

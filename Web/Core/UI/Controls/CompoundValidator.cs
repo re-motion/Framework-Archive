@@ -5,16 +5,8 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.Web.UI.Controls
 {
-
-public interface ICompleteValidator: IValidator
-{
-  bool EnableClientScript { get; set; }
-
-  string ControlToValidate { get; set; }
-  ValidatorDisplay Display { get; set; }
-}
 
 /// <summary>
 ///   Base class for compound validators.
@@ -29,7 +21,7 @@ public interface ICompleteValidator: IValidator
 ///     <see cref="ControlToStringConverter"/> in order to provide a pick list in the VS.NET property editor.
 ///   </para>
 /// </remarks>
-public abstract class CompoundValidator: WebControl, ICompleteValidator
+public abstract class CompoundValidator: WebControl, IBaseValidator
 {
   private string _controlToValidate;
   private Type _targetControlType;
