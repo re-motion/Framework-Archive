@@ -861,7 +861,7 @@ public class BocList:
 
   private bool HasAdditionalColumnsList
   {
-    get { return _showAdditionalColumnsList && _additionalColumnsList.Items.Count > 0; }
+    get { return _showAdditionalColumnsList && _additionalColumnsList.Items.Count > 1; }
   }
 
   private bool HasOptionsMenu
