@@ -4,12 +4,9 @@ using System.Collections;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.Mapping
 {
-
 // TODO: Document how new types can be added. DBValueConverter methods must be changed too
-
-// TODO Documentation:
 public class TypeInfo
 {
   // types

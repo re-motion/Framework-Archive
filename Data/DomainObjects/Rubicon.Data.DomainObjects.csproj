@@ -209,11 +209,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TypeInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "types.xsd"
                     BuildAction = "Content"
                 />
@@ -418,6 +413,11 @@
                 />
                 <File
                     RelPath = "Mapping\RelationEndPointDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Mapping\TypeInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
