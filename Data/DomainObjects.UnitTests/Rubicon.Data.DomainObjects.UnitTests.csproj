@@ -180,6 +180,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "queriesForLoaderTest.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Rubicon.Data.DomainObjects.UnitTests.build"
                     BuildAction = "None"
                 />
@@ -277,6 +281,16 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\TypeMappingTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\QueryDefinitionChecker.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\StorageProviderConfigurationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
