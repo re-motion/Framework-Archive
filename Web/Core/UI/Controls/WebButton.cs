@@ -23,6 +23,7 @@ public class WebButton :
   public WebButton()
   {
     _icon = new IconInfo();
+    CssClass = "Button";
   }
 
   public void RaisePostDataChangedEvent()
@@ -130,7 +131,7 @@ public class WebButton :
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
-  [Description ("The icon displayed in this tree node.")]
+  [Description ("The icon displayed.")]
   [NotifyParentProperty (true)]
   public IconInfo Icon
   {
