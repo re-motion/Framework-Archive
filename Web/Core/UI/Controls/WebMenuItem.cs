@@ -118,6 +118,8 @@ public class WebMenuItem: IControlItem
     set { _text = value; }
   }
 
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public bool IsSeparator
   {
     get { return _text == c_separator; }

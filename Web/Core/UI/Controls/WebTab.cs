@@ -139,6 +139,8 @@ public class WebTab: IControlItem
     }
   }
 
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public bool IsSeparator
   {
     get { return _text == c_separator; }
