@@ -29,9 +29,21 @@ public class PropertyValueChecker
     
     Assert.AreEqual (expectedValue.Value, actualValue.Value, 
         string.Format ("Value, expected property name: '{0}'", expectedValue.Name));
+    
+    if (expectedValue.Value != null)
+    {
+      Assert.AreEqual (expectedValue.Value.GetType (), actualValue.Value.GetType (), 
+          string.Format ("Type of Value, expected property name: '{0}'", expectedValue.Name));
+    }
 
     Assert.AreEqual (expectedValue.OriginalValue, actualValue.OriginalValue, 
         string.Format ("OriginalValue, expected property name: '{0}'", expectedValue.Name));
+
+    if (expectedValue.OriginalValue != null)
+    {
+      Assert.AreEqual (expectedValue.OriginalValue.GetType (), actualValue.OriginalValue.GetType (), 
+          string.Format ("Type of OriginalValue, expected property name: '{0}'", expectedValue.Name));
+    }
 
     Assert.AreEqual (expectedValue.HasChanged, actualValue.HasChanged, 
         string.Format ("HasChanged, expected property name: '{0}'", expectedValue.Name));
