@@ -35,6 +35,12 @@ insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
     
 insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
     values ('{43329F84-D8BB-4988-BFD2-96D4F48EE5DE}', 'Employee', 'Marvin', '{51ECE39B-F040-45b0-8B72-AD8B45353990}')
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{3A24D098-EAAD-4dd7-ADA2-932D9B6935F1}', 'Employee', 'Employee 6', null)
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{DBD9EA74-8C97-4411-AC02-9205D1D6D031}', 'Employee', 'Employee 7', '{3A24D098-EAAD-4dd7-ADA2-932D9B6935F1}')
 
 
 -- Computer
@@ -102,6 +108,9 @@ insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [Indust
 insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
     values ('{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'Kunde 3', '2000/03/01', 2, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
 
+insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
+    values ('{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Kunde 4', '1999/03/01', 2, null)
+
 
 -- Partner
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
@@ -147,6 +156,14 @@ insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDC
     values ('{F4016F41-F4E4-429e-B8D1-659C8C480A67}', 'Order', 2, '2005/02/01', 
     '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
 
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}', 'Order', 4, '2006/02/01', 
+    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{90E26C86-611F-4735-8D1B-E1D0918515C2}', 'Order', 5, '2006/03/01', 
+    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+
 
 -- OrderItem
 insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
@@ -161,6 +178,15 @@ insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product])
     values ('{0D7196A5-8161-4048-820D-B1BBDABE3293}', 'OrderItem', 
     '{83445473-844A-4d3f-A8C3-C27F8D98E8BA}', 1, 'Harddisk')
 
+insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}', 'OrderItem', 
+    '{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}', 1, 'Hitchhiker''s guide')
+
+insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{EA505094-770A-4505-82C1-5A4F94F56FE2}', 'OrderItem', 
+    '{90E26C86-611F-4735-8D1B-E1D0918515C2}', 1, 'Blumentopf')
+
+
 -- OrderTicket
 insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
     values ('{058EF259-F9CD-4cb1-85E5-5C05119AB596}', 'OrderTicket', 'C:\order1.png', '{5682F032-2F0B-494b-A31C-C97F02B89C36}')
@@ -170,6 +196,13 @@ insert into [OrderTicket] (ID, ClassID, FileName, OrderID)
 
 insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
     values ('{BCF6C5F6-323F-4471-9CA5-7DF0A48C7A59}', 'OrderTicket', 'C:\order3.png', '{83445473-844A-4d3f-A8C3-C27F8D98E8BA}')
+
+insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
+    values ('{6768DB2B-9C66-4e2f-BBA2-89C56718FF2B}', 'OrderTicket', 'C:\order4.png', '{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}')
+
+insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
+    values ('{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}', 'OrderTicket', 'C:\order5.png', '{90E26C86-611F-4735-8D1B-E1D0918515C2}')
+
 
 -- Ceo
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 

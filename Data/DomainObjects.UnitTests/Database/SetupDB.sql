@@ -179,7 +179,10 @@ CREATE TABLE [OrderItem] (
   [Product] varchar (100) NOT NULL DEFAULT (''),
   
   CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID]),
-  CONSTRAINT [UN_OrderItem_Position] UNIQUE ([OrderID], [Position]),
+  
+  -- A foreign key cannot be part of a unique constraint:
+  -- CONSTRAINT [UN_OrderItem_Position] UNIQUE ([OrderID], [Position]),
+  
   CONSTRAINT [FK_OrderItem_Order] FOREIGN KEY ([OrderID]) REFERENCES [Order] ([ID])
 ) 
 GO
