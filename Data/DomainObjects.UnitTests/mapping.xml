@@ -411,6 +411,7 @@
         <relationProperty name="ClassWithValidRelationsOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsOptional" cardinality="one" isMandatory="false" />
         <relationProperty name="ClassWithValidRelationsNonOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsNonOptional" cardinality="one" isMandatory="true" />
         <relationProperty name="ClassWithInvalidRelation" relationID="ClassWithGuidKeyToClassWithInvalidRelation" cardinality="one" isMandatory="false" />
+        <relationProperty name="ClassWithRelatedClassIDColumnAndNoInheritance" relationID="ClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritance" cardinality="one" isMandatory="false" />
       </properties>
     </class>
     <class id="ClassWithKeyOfInvalidType">
@@ -478,6 +479,16 @@
       <properties>
         <relationProperty name="Company" relationID="CompanyToClassWithoutRelatedClassIDColumnAndDerivation" cardinality="one" isMandatory="false">
           <column>CompanyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="ClassWithRelatedClassIDColumnAndNoInheritance">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithRelatedClassIDColumnAndNoInheritance" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ClassWithGuidKey" relationID="ClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritance" cardinality="one" isMandatory="false">
+          <column>TableWithGuidKeyID</column>
         </relationProperty>
       </properties>
     </class>
