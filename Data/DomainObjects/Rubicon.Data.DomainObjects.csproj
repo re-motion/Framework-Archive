@@ -158,6 +158,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MandatoryMappingTypeNotFoundException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MandatoryTypeNotFoundException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "mapping.xsd"
                     BuildAction = "None"
                 />
@@ -206,11 +216,6 @@
                 <File
                     RelPath = "types.xsd"
                     BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UnknownPropertyTypeException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "ValueTooLongException.cs"
@@ -433,6 +438,11 @@
                 />
                 <File
                     RelPath = "Persistence\DataContainerFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\DBValueConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
