@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI.WebControls;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 public class LengthValidator : BaseValidator
 {

@@ -3,7 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary>

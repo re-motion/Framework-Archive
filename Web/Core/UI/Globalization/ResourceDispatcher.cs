@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 public sealed class ResourceDispatcher
