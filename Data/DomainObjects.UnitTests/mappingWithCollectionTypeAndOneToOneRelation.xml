@@ -18,14 +18,10 @@
 					<type>dateTime</type>
 					<column>DeliveryDate</column>
 				</property>
-				<property name="Customer">
-					<type>objectID</type>
-					<column>CustomerID</column>
-				</property>
-				<property name="Official">
-					<type>objectID</type>
-					<column>OfficialID</column>
-				</property>				
+				<relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true">
+					<!-- Line below is invalid for cardinality="one" -->
+					<collectionType>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</collectionType>				
+				</relationProperty>
 			</properties>
 		</class>
 		<class id="OrderTicket">
@@ -38,28 +34,10 @@
 					<column>FileName</column>
 					<maxLength>255</maxLength>
 				</property>
-				<property name="Order">
-					<type>objectID</type>
+				<relationProperty name="Order" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true">
 					<column>OrderID</column>
-				</property>
+				</relationProperty>
 			</properties>
 		</class>
 	</classes>
-
-	
-	<relations>
-		<relation id="OrderToOrderTicket">
-			<virtualEndPoint cardinality="one" isMandatory="true">
-				<class id="Order" />
-				<property name="OrderTicket">
-					<!-- Line below is invalid for virtualEndPoint with cardinality="one" -->
-					<collectionType>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</collectionType>
-				</property>	
-			</virtualEndPoint>
-			<endPoint isMandatory="true">
-				<class id="OrderTicket" />
-				<property name="Order" />
-			</endPoint>
-		</relation>
-	</relations>
 </mapping>
