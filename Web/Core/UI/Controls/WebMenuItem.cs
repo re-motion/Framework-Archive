@@ -35,7 +35,7 @@ public class MenuItem: IControlItem
       string category, 
       string text, 
       string icon, 
-      string iconDisabled, 
+      string disabledIcon, 
       MenuItemStyle style,
       RequiredSelection requiredSelection, 
       bool isDisabled,
@@ -45,7 +45,7 @@ public class MenuItem: IControlItem
     _category = category;
     _text = text;
     _icon = icon;
-    _disabledIcon = iconDisabled;
+    _disabledIcon = disabledIcon;
     _style = style;
     _requiredSelection = requiredSelection;
     _isDisabled = isDisabled;
