@@ -106,7 +106,8 @@ namespace Rubicon.Data.NullableValueTypes
 ///   </list>
 /// </remarks>
 [Serializable]
-public struct NaDateTime: INullable, IComparable, ISerializable, IFormattable
+[NaBasicType (typeof(DateTime))]
+public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
 {
   #region member fields
 

@@ -105,7 +105,8 @@ namespace Rubicon.Data.NullableValueTypes
 ///   </list>
 /// </remarks>
 [Serializable]
-public struct NaInt32: INullable, IComparable, ISerializable, IFormattable
+[NaBasicType (typeof(Int32))]
+public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
 {
   #region member fields
 
