@@ -397,5 +397,44 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreEqual (expectedMessage, e.Message);
     }
   }
+
+  [Test]
+  public void ChangeEventsWithOldRelatedObjectNotLoaded ()
+  {
+    Order newOrder = Order.GetObject (DomainObjectIDs.Order3);
+
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
+        new DomainObject[] { _oldOrder, newOrder, _customer },
+        new DomainObjectCollection[] { _customer.Orders });
+  
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = newOrder;
+
+    Assert.AreSame (_customer, newOrder.Customer);
+    Assert.IsTrue (_customer.Orders.Contains (newOrder));
+
+    Customer oldCustomerOfNewOrder = Customer.GetObject (DomainObjectIDs.Customer4);
+
+    Assert.IsFalse (oldCustomerOfNewOrder.Orders.Contains (newOrder));
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from new customer to null"),
+ //TODO: newOrder moves from oldCustomerOfNewOrder to _customer -> therefore the old value should not be null
+      new RelationChangeState (newOrder, "Customer", null, _customer, "2. Changing event of new order from old to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of new customer's order collection"),
+      new CollectionChangeState (_customer.Orders, newOrder, "4. Adding event of new customer's order collection"),
+      new RelationChangeState (_customer, "Orders", _oldOrder, newOrder, "5. Changing event of new customer from old order to new order"),
+
+      new RelationChangeState (_oldOrder, "Customer", null, null, "6. Changed event of old order from new customer to null"),
+      new RelationChangeState (newOrder, "Customer", null, null, "7. Changed event of new order from old to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "8. Removed event of new customer's order collection"),
+      new CollectionChangeState (_customer.Orders, newOrder, "9. Added event of new customer's order collection"),
+      new RelationChangeState (_customer, "Orders", null, null, "10. Changed event of new customer from old order to new order"),
+    };
+
+    eventReceiver.Check (expectedStates);
+      
+  }
 }
 }
