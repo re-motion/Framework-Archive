@@ -206,6 +206,7 @@ public class TabControl: Control, IPostBackEventHandler
           Page.Session["navTab"]= _activeTab;
           Tab selectedTab = _items[_activeTab];
           string href = selectedTab.Href;
+          href = PageUtility.GetPageUrl (this.Page, href);
           if (selectedTab.PageToken)
             href= AddPageToken(href);
           
