@@ -42,6 +42,7 @@ public class OrderCollection : DomainObjectCollection
   public new Order this [int index]  
   {
     get { return (Order) base[index]; }
+    set { base[index] = value; }
   }
 
   public new Order this [ObjectID id]  
