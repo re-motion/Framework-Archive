@@ -3,10 +3,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\..\Core\Core.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "..\..\..\Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "..\..\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -17,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "http://localhost/de
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 4
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {2F11921A-DF99-4EA0-B9CD-9734FAA2E0F9}
@@ -25,19 +21,14 @@ Global
 		SccProjectName1 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
 		SccLocalPath1 = ..\\..\\..\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName2 = ..\\..\\..\\Globalization\\Globalization.csproj
-		SccProjectName2 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
-		SccLocalPath2 = ..\\..\\..\\Globalization
+		SccProjectUniqueName2 = ..\\..\\Core\\Web.UI.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath2 = ..\\..\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName3 = ..\\..\\Core\\Web.UI.csproj
-		SccProjectName3 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
-		SccLocalPath3 = ..\\..\\Core
+		SccProjectUniqueName3 = http://localhost/dev/libraries/Commons/Web.UI/FormGrid/Test/Test.csproj
+		SccLocalPath3 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName4 = http://localhost/dev/libraries/Commons/Web.UI/FormGrid/Test/Test.csproj
-		SccProjectName4 = \u0022$/libraries/Commons/Web.UI/FormGrid/Test\u0022,\u0020TOUAAAAA
-		SccLocalPath4 = .
-		CanCheckoutShared = false
-		SccProjectEnlistmentChoice4 = 2
+		SccProjectEnlistmentChoice3 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -48,10 +39,6 @@ Global
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
