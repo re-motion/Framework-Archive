@@ -9,8 +9,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 
-using log4net;
-
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
@@ -22,30 +20,28 @@ namespace FormGrid.Sample
 /// <summary>
 /// Summary description for WebForm.
 /// </summary>
-[MultiLingualResources("FormGrid.Sample.Globalization.WebForm")]
+
+//  The resource file used by the page and subsequently the embedded FormGridManager
+[MultiLingualResources ("FormGrid.Sample.Globalization.WebForm")]
 public class WebForm : 
   System.Web.UI.Page,
-  IObjectWithResources, 
-  IFormGridRowProvider,
-  IImageUrlResolver,
-  IHelpUrlResolver
+  IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
+  IFormGridRowProvider, //  Provides new rows and rows to hide to the FormGridManager
+  IImageUrlResolver,    //  Provides the image URLs for this WebForm (i.e. to the FormGridManager)
+  IHelpUrlResolver      //  Provides the help URLs for this WebForm (i.e. to the FormGridManager)
 
 {
+  /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
   private static IResourceManager s_chachedResourceManager;
 
-	private static readonly ILog s_log = LogManager.GetLogger (
-    System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-  protected System.Web.UI.WebControls.TextBox FirstNameField;
-  protected System.Web.UI.WebControls.TextBox LastNameField;
-  protected Rubicon.Web.UI.Controls.FormGridLabel AdressFormGridLabel;
-  protected System.Web.UI.WebControls.Label CombinedName_Label;
-
+  /// <summary> Helper implementation for IFormGridRowProvider. </summary>
   private FormGridRowProvider _formGridRowProvider;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
 		// Put user code to initialize the page here
 	}
+
 	override protected void OnInit(EventArgs e)
 	{
 		//
@@ -54,11 +50,18 @@ public class WebForm :
 		InitializeComponent();
 		base.OnInit(e);
 
+    //  Required
     _formGridRowProvider = new FormGridRowProvider();
+
+    //  Demonstration of IFormGridRowProvider
+    //  Data would normally be read by this WebForm from some external source
+    //  This would either have to happen during page initialization
+    //  or dynamically when the interface methods are called.
 
     StringCollection hiddenRows = _formGridRowProvider.GetListOfHiddenRows (
       MainFormGrid.ID);
 
+    //  This row should be hidden
     hiddenRows.Add (FirstNameField.ID);
   
     FormGridRowPrototypeCollection newRows = _formGridRowProvider.GetListOfFormGridRowPrototypes (
@@ -68,6 +71,7 @@ public class WebForm :
     textBox.ID = "MyNewTextBox";
     textBox.Text = "Eine neue Zeile";
 
+    //  A new row
     newRows.Add (new FormGridRowPrototype(
       textBox, 
       FormGridRowPrototype.RowType.ControlInRowWithLabel, 
@@ -80,6 +84,7 @@ public class WebForm :
     textBox.Width = Unit.Parse ("100%");
     textBox.Height = Unit.Parse ("3em");
 
+    //  A second new row
     newRows.Add (new FormGridRowPrototype(
       textBox, 
       FormGridRowPrototype.RowType.ControlInRowAfterLabel, 
@@ -108,6 +113,10 @@ public class WebForm :
   protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
   protected System.Web.UI.WebControls.Label EducationLavel;
   protected System.Web.UI.WebControls.TextBox EducationField;
+  protected System.Web.UI.WebControls.TextBox FirstNameField;
+  protected System.Web.UI.WebControls.TextBox LastNameField;
+  protected Rubicon.Web.UI.Controls.FormGridLabel AdressFormGridLabel;
+  protected System.Web.UI.WebControls.Label CombinedName_Label;
 
   /// <summary>
 	/// Required method for Designer support - do not modify
@@ -122,12 +131,13 @@ public class WebForm :
   }
 	#endregion
 
-    /// <summary>
-  /// Returns the <c>IResourceManager</c> for this page
+  /// <summary>
+  ///   Interface implementation: IObjectWithResources
   /// </summary>
   /// <returns></returns>
   public virtual IResourceManager GetResourceManager()
   {
+    //  chache the resource manager
     lock (typeof(IResourceManager))
     {
       if (s_chachedResourceManager == null)
@@ -140,48 +150,80 @@ public class WebForm :
     return s_chachedResourceManager;
   }
 
+  /// <summary>
+  ///   Interface method: IFormGridRowProvider
+  /// </summary>
+  /// <param name="table"></param>
+  /// <returns></returns>
   public virtual StringCollection GetListOfHiddenRows (string table)
   {
+    //  Logic sufficient if all loading happens during OnInit, as shown in this example
     return _formGridRowProvider.GetListOfHiddenRows (table);
   }
 
+  /// <summary>
+  ///   Interface method: IFormGridRowProvider
+  /// </summary>
+  /// <param name="table"></param>
+  /// <returns></returns>
   public virtual FormGridRowPrototypeCollection GetListOfFormGridRowPrototypes (string table)
   {
+    //  Logic sufficient if all loading happens during OnInit, as shown in this example
     return _formGridRowProvider.GetListOfFormGridRowPrototypes (table);
   }
 
+  /// <summary>
+  ///   Interface method: IImageUrlResolver
+  /// </summary>
+  /// <param name="relativeUrl"></param>
+  /// <returns></returns>
   public virtual string GetImageUrl (string relativeUrl)
   {
+    //  Build the relative URL appended to the application root
     StringBuilder imageUrlBuilder = new StringBuilder (200);
 
+    //  Insert your own logic to get translate the relatveURL passed to this method
+    //  into a relative URL compatible with this applications folder structure.
     imageUrlBuilder.Append (ImageDirectory);
     imageUrlBuilder.Append (relativeUrl);
 
+    //  Join the relative URL with the applications root
     return UrlUtility.Combine (
         HttpContext.Current.Request.ApplicationPath,
         imageUrlBuilder.ToString());
   }
 
+  /// <summary>
+  ///   Interface method: IImageUrlResolver
+  /// </summary>
+  /// <param name="relativeUrl"></param>
+  /// <returns></returns>
   public virtual string GetHelpUrl (string relativeUrl)
   {
+    //  Build the relative URL appended to the application root
     StringBuilder helpUrlBuilder = new StringBuilder (200);
 
+    //  Insert your own logic to get translate the relatveURL passed to this method
+    //  into a relative URL compatible with this applications folder structure.
     helpUrlBuilder.Append (HelpDirectory);
     helpUrlBuilder.Append (relativeUrl);
 
+    //  Join the relative URL with the applications root
     return UrlUtility.Combine (
         HttpContext.Current.Request.ApplicationPath,
         helpUrlBuilder.ToString());
   }
 
-  private void submitButton_Click(object sender, System.EventArgs e)
-  {
-    GlobalFormGridManager.Validate();
-  }
-
   private void WebForm_PreRender(object sender, System.EventArgs e)
   {
+    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this);
+  }
+
+  private void submitButton_Click(object sender, System.EventArgs e)
+  {
+    //  Validate the form grid manager
+    GlobalFormGridManager.Validate();
   }
 
   /// <summary>

@@ -15,12 +15,14 @@ body, input, textarea
 	font-family: 'Arial' , 'Helvetica';
 }
 
+/*  Style applied to the form grid table's outer structure  */
 table.formGridTable
 {
   border-collapse: separate;
   border-width: 1px;
 }
 
+/*  Style applied to the title cell  */
 td.formGridTitleCell
 {
 	font-weight: bold;
@@ -36,6 +38,7 @@ td.formGridTitleCell
   border-color: Black;
 }
 
+/*  Style applied to the cells containing the labels  */
 td.formGridLabelsCell
 {
 	background-color: #E0E0E0;
@@ -50,6 +53,7 @@ td.formGridLabelsCell
   border-color: White;
 }
 
+/*  Style applied to the cells containing the markers  */
 td.formGridMarkersCell
 {
   white-space: nowrap;
@@ -63,6 +67,7 @@ td.formGridMarkersCell
   border-color: White;
 }
 
+/*  Style applied to the cells containing the controls  */
 td.formGridControlsCell
 {
   padding: 0px 5px 0px 5px;
@@ -74,6 +79,8 @@ td.formGridControlsCell
   border-color: White;
 }
 
+/*  Style applied to the cells containing the validation messages, 
+*   if a seperate column is specified  */
 td.formGridValidationMessagesCell
 {
   padding: 2px 7px 2px 7px;
@@ -85,6 +92,7 @@ td.formGridValidationMessagesCell
   border-color: White;
 }
 
+/*  Style applied to the cells in the first row after the title row  */
 td.formGridTopDataRow
 {
   border-style: solid;
@@ -101,14 +109,14 @@ td.formGridTopDataRow
 	font-size: 1em;
 }
 
+/*  Style applied to the validation messages, additiv to formGridValidationMessagesCell  */
 .formGridValidationMessage
 {
 	color: Red;
-  /*padding: 2px 0px 2px 0px;*/
 }
 
+/*  Style applied to the validation notice that can be displayed by the ValidationStateViewer  */
 .formGridValidationNotice
 {
 	color: Red;
-  /*padding: 2px 0px 2px 0px;*/
 }
