@@ -6,12 +6,20 @@ using System.Diagnostics;
 
 namespace Rubicon.Findit.Client.Controls
 {
-
 /// <summary>
 /// Utility class for pages.
 /// </summary>
 public class PageUtility
 {
+  public const string c_supressNavParam = "SupressNav";
+  public const string c_supressNavValue = "true";
+
+  /// <summary>
+  /// Used by method "CallPage" to indicate whether the navigation bar shall be shown.
+  /// If "UseDefault" the display status of the navigation bar is retrieved from the calling page's URL.
+  /// </summary>
+  public enum ViewNavBar {Show, Hide, UseDefault};
+
 	public PageUtility()
 	{
 	}
@@ -62,7 +70,7 @@ public class PageUtility
   /// <returns></returns>
   public static string GetUniqueToken ()
   {
-    return Guid.NewGuid ().ToString ("N") ;
+    return Guid.NewGuid ().ToString ("B") ;
   }
 
   /// <summary>
@@ -107,24 +115,29 @@ public class PageUtility
 
   public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
   {
-    PageUtility.CallPage (sourcePage, destinationUrl, parameters, true);
+    PageUtility.CallPage (sourcePage, destinationUrl, parameters, ViewNavBar.UseDefault);
   }
 
   /// <summary>
-  /// redirects to the page identified by the given URL 
+  /// Redirects to the page identified by the given URL 
   /// </summary>
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
-  /// <param name="viewNavigationBar" >if false, navigationbar is supressed</param>
-  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters, bool viewNavigationBar)
+  /// <param name="viewNav">Specifies the display status of the navigation bar for the page redirected to.</param>
+  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters, ViewNavBar viewNav)
   {    
     // Add referrer information for all pages
     string referrerUrl = GetPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
 
     string supressNavigation = string.Empty ;
-    if (!viewNavigationBar)
-      supressNavigation = "&SupressNav=true";
+    if (viewNav == ViewNavBar.Show)
+      supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
+    else if (viewNav == ViewNavBar.UseDefault)
+    {
+      if (sourcePage.Request.QueryString[c_supressNavParam] == c_supressNavValue)
+        supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
+    }
 
     string token = GetUniqueToken ();
     if (parameters != null)
