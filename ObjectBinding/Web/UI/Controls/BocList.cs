@@ -211,7 +211,8 @@ public class BocList:
   ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
   ///   <see cref="AvailableColumnDefinitionSets"/>.
   /// </summary>
-  private int _selectedColumnDefinitionSetIndex = -1;
+  private NaInt32 _selectedColumnDefinitionSetIndex = NaInt32.Null;
+  bool _isSelectedColumnDefinitionIndexSet = false;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton;
@@ -1868,9 +1869,7 @@ public class BocList:
     object[] values = (object[]) savedState;
     
     base.LoadViewState (values[0]);
-    _selectedColumnDefinitionSetIndex = (int) values[1];
-    if (ShowAdditionalColumnsList)
-      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+    _selectedColumnDefinitionSetIndex = (NaInt32) values[1];
     _currentRow = (int) values[2];
     _sortingOrder = (ArrayList) values[3];
     _isDirty = (bool) values[4];
@@ -1980,9 +1979,9 @@ public class BocList:
 
       if (_selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
       {
-        _selectedColumnDefinitionSetIndex = -1;
+        _selectedColumnDefinitionSetIndex = NaInt32.Null;
       }
-      else if (   _selectedColumnDefinitionSetIndex < 0
+      else if (   _selectedColumnDefinitionSetIndex.IsNull
                && _availableColumnDefinitionSets.Count > 0)
       {
         _selectedColumnDefinitionSetIndex = 0;
@@ -2066,6 +2065,7 @@ public class BocList:
       allPropertyColumns = new BocColumnDefinition[0];
 
     BocColumnDefinition[] selectedColumns = null;
+    EnsureSetSelectedColumnDefinitionIndex();
     if (_selectedColumnDefinitionSet != null)
       selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitions.ToArray();
     else
@@ -2774,12 +2774,16 @@ public class BocList:
   [Browsable (false)]
   public BocColumnDefinitionSet SelectedColumnDefinitionSet
   {
-    get { return _selectedColumnDefinitionSet; }
+    get 
+    {
+      EnsureSetSelectedColumnDefinitionIndex();
+      return _selectedColumnDefinitionSet; 
+    }
     set
     {
       _selectedColumnDefinitionSet = value; 
       ArgumentUtility.CheckNotNullOrEmpty ("AvailableColumnDefinitionSets", _availableColumnDefinitionSets);
-      _selectedColumnDefinitionSetIndex = -1;
+      _selectedColumnDefinitionSetIndex = NaInt32.Null;
 
       if (_selectedColumnDefinitionSet != null)
       {
@@ -2792,35 +2796,42 @@ public class BocList:
           }
         }
 
-        if (_selectedColumnDefinitionSetIndex < 0) 
+        if (_selectedColumnDefinitionSetIndex.IsNull) 
           throw new IndexOutOfRangeException ("The specified ColumnDefinitionSet could not be found in AvailableColumnDefinitionSets");
       }
 
-      _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex;
+      _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex.Value;
       RemoveDynamicColumnsFromSortingOrder();
     }
+  }
+
+  private void EnsureSetSelectedColumnDefinitionIndex()
+  {
+    if (_isSelectedColumnDefinitionIndexSet)
+      return;
+    SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
   }
 
   /// <summary>
   ///   Gets or sets the index of the selected <see cref="BocColumnDefinitionSet"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
-  protected int SelectedColumnDefinitionSetIndex
+  protected NaInt32 SelectedColumnDefinitionSetIndex
   {
     get { return _selectedColumnDefinitionSetIndex; }
     set 
     {
-      _selectedColumnDefinitionSetIndex = value; 
-      
-      if (   _selectedColumnDefinitionSetIndex < -1
-          || _selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
+      if (   ! value.IsNull 
+          && (value.Value < 0 || value.Value >= _availableColumnDefinitionSets.Count))
       {
-        throw new ArgumentOutOfRangeException ("value", value, "SelectedColumnDefinitionSetIndex was outside the bounds of AvailableColumnDefinitionSets");
+        throw new ArgumentOutOfRangeException ("value", value, "SelectedColumnDefinitionSetIndex is outside the bounds of AvailableColumnDefinitionSets");
       }
+      _selectedColumnDefinitionSetIndex = value; 
+      _isSelectedColumnDefinitionIndexSet = true;
 
-      if (_selectedColumnDefinitionSetIndex != -1)
+      if (! _selectedColumnDefinitionSetIndex.IsNull)
       {
-        int selectedIndex = _selectedColumnDefinitionSetIndex;
+        int selectedIndex = _selectedColumnDefinitionSetIndex.Value;
 
         if (selectedIndex < _availableColumnDefinitionSets.Count)
           _selectedColumnDefinitionSet = (BocColumnDefinitionSet) _availableColumnDefinitionSets[selectedIndex];
@@ -3159,15 +3170,7 @@ public class BocList:
   public bool ShowAdditionalColumnsList
   {
     get { return _showAdditionalColumnsList; }
-    set
-    { 
-      if ( _showAdditionalColumnsList != value)
-      {
-        _showAdditionalColumnsList = value; 
-        if (value == true)
-          SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-      }
-    }
+    set { _showAdditionalColumnsList = value; }
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
