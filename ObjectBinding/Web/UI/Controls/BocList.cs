@@ -48,11 +48,13 @@ public class BocList:
 
   /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
   private const string c_eventListItemCommandPrefix = "ListCommand=";
-  private const string c_eventEditDetailsPrefix = "EditDetails=";
   /// <summary> Prefix applied to the post back argument of the event type menu commands. </summary>
   private const string c_eventMenuItemPrefix = "MenuItem=";
   /// <summary> Prefix applied to the post back argument of the custom columns. </summary>
   private const string c_customCellEventPrefix = "CustomCell=";
+
+  private const string c_eventEditDetailsPrefix = "EditDetails=";
+  private const string c_editDetailsRequiredFieldIcon = "RequiredField.gif";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -105,7 +107,12 @@ public class BocList:
   {
     PageInfo,
     OptionsTitle,
-    AdditionalColumnsTitle
+    AdditionalColumnsTitle,
+    EditDetailsErrorMessage,
+    /// <summary>The alternate text for the required icon.</summary>
+    RequiredFieldAlternateText,
+    /// <summary>The tool tip text for the required icon.</summary>
+    RequiredFieldTitle,
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
@@ -183,6 +190,37 @@ public class BocList:
     public override int GetHashCode()
     {
       return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
+    }
+  }
+
+  public class EditDetailsValidator: CustomValidator
+  {
+    BocList _owner;
+    protected internal EditDetailsValidator (BocList owner)
+    {
+      _owner = owner;
+    }
+
+    protected override bool EvaluateIsValid()
+    {
+      return _owner.ValiadateModifiableRow();
+    }
+
+    protected override bool ControlPropertiesValid()
+    {
+      string controlToValidate = ControlToValidate;
+      if (StringUtility.IsNullOrEmpty (controlToValidate))
+        return base.ControlPropertiesValid();
+      else
+      {
+        BocList bocList = NamingContainer.FindControl (controlToValidate) as BocList;
+        if (bocList == null)
+        {
+          CheckControlValidationProperty (controlToValidate, null);
+          return false;
+        }
+      }
+      return true;
     }
   }
 
@@ -328,11 +366,16 @@ public class BocList:
   /// <summary> Determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
+  private PlaceHolder _rowEditModeControlsPlaceHolder;
+  private ControlCollection _rowEditModeControlCollection;
   private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
   private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
   private bool _isRowEditModeRestored = false;
   /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
   private BaseValidator[][] _rowEditModeValidators;
+
+  private string _errorMessage;
+  private ArrayList _validators;
 
   // construction and disposing
 
@@ -344,11 +387,13 @@ public class BocList:
     _movePreviousButton = new ImageButton();
     _moveNextButton = new ImageButton();
     _additionalColumnsList = new DropDownList();
+    _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new BocMenuItemCollection (this);
     _optionsMenuItems = new BocMenuItemCollection (this);
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
+    _validators = new ArrayList();
   }
 
 	// methods and properties
@@ -359,9 +404,13 @@ public class BocList:
     _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
 
+    _moveFirstButton.ID = ID + "_MoveFirstButton";
     Controls.Add (_moveFirstButton);
+    _moveLastButton.ID = ID + "_MoveLastButton";
     Controls.Add (_moveLastButton);
+    _movePreviousButton.ID = ID + "_MovePreviousButton";
     Controls.Add (_movePreviousButton);
+    _moveNextButton.ID = ID + "_MoveNextButton";
     Controls.Add (_moveNextButton);
 
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
@@ -369,6 +418,10 @@ public class BocList:
     _additionalColumnsList.AutoPostBack = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
+
+    _rowEditModeControlsPlaceHolder = new PlaceHolder();
+    Controls.Add (_rowEditModeControlsPlaceHolder);
+    _rowEditModeControlCollection = _rowEditModeControlsPlaceHolder.Controls;
   }
 
   /// <summary> Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls. </summary>
@@ -818,6 +871,39 @@ public class BocList:
       BocCustomColumnClickEventArgs e = new BocCustomColumnClickEventArgs (column, businessObject, argument);
       clickHandler (this, e);
     }
+  }
+
+  /// <summary>
+  ///   Generates a <see cref="BocList.EditDetailsValidator"/>.
+  /// </summary>
+  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  public override BaseValidator[] CreateValidators()
+  {
+    if (IsReadOnly)
+      return new BaseValidator[0];
+
+    BaseValidator[] validators = new BaseValidator[1];
+
+    BocList.EditDetailsValidator editDetailsValidator = new BocList.EditDetailsValidator (this);
+    editDetailsValidator.ID = ID + "_ValidatorEditDetails";
+    editDetailsValidator.ControlToValidate = ID;
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
+    {
+      IResourceManager resourceManager = GetResourceManager();
+      editDetailsValidator.ErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.EditDetailsErrorMessage);
+    }
+    else
+    {
+      editDetailsValidator.ErrorMessage = _errorMessage;
+    }
+    validators[0] = editDetailsValidator;
+
+    //  No validation that only enabled enum values get selected and saved.
+    //  This behaviour mimics the Fabasoft enum behaviour
+
+    _validators.AddRange (validators);
+    return validators;
   }
 
   /// <summary> Overrides the parent's <c>OnPreRender</c> method. </summary>
@@ -1601,82 +1687,13 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
-      // Click on Label or Button toggles direction -> span-tag around both
-      bool hasSortingButton =    EnableSorting 
-                              && (   column is BocValueColumnDefinition
-                                  || (   column is BocCustomColumnDefinition 
-                                      && ((BocCustomColumnDefinition) column).IsSortable));
-      if (hasSortingButton && ! IsRowEditMode)
-      {
-        string argument = c_sortCommandPrefix + idxColumns.ToString();
-        if (_hasClientScript)
-        {
-          string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
-          writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackScript);
-        }
-        writer.RenderBeginTag (HtmlTextWriterTag.A);
-      }
-      if (IsDesignMode && column.ColumnTitleDisplayValue.Length == 0)
-      {
-        writer.Write (c_designModeEmptyContents);
-      }
-      else
-      {
-        string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
-        if (StringUtility.IsNullOrEmpty (contents))
-          contents = c_whiteSpace;
-        writer.Write (contents);
-      }
-
+      RenderTitleCellMarkers (writer, column, idxColumns);
+      bool hasSortingButton = RenderBeginTagTitleCellSortCommand (writer, column, idxColumns);
+      RenderTitleCellText (writer, column);
       if (hasSortingButton)
-      {
-        object obj = sortingDirections[idxColumns];
-        SortingDirection sortingDirection = SortingDirection.None; 
-        if (obj != null)
-          sortingDirection = (SortingDirection)obj;
-
-        string imageUrl = string.Empty;
-        //  Button Asc -> Button Desc -> No Button
-        switch (sortingDirection)
-        {
-          case SortingDirection.Ascending:
-          {
-            imageUrl = ResourceUrlResolver.GetResourceUrl (
-              this, Context, typeof (BocList), ResourceType.Image, c_sortAscendingIcon);
-            break;
-          }
-          case SortingDirection.Descending:
-          {
-            imageUrl = ResourceUrlResolver.GetResourceUrl (
-              this, Context, typeof (BocList), ResourceType.Image, c_sortDescendingIcon);
-            break;
-          }
-          case SortingDirection.None:
-          {
-            break;
-          }
-        }
-
-        if (sortingDirection != SortingDirection.None)
-        {
-          //  WhiteSpace before icon
-          writer.Write (c_whiteSpace);
-          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
-          writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-          RenderIcon (writer, new IconInfo (imageUrl));
-
-          if (_showSortingOrder && sortingOrder.Count > 1)
-          {
-            int orderIndex = sortingOrder.IndexOf (idxColumns);
-            writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
-          }
-          writer.RenderEndTag();
-        }
-
-        if (hasSortingButton && ! IsRowEditMode)
-          writer.RenderEndTag();  //  close A sorting
-      }
+        RenderTitleCellSortingButton (writer, idxColumns, sortingDirections, sortingOrder);
+      RenderEndTagTitleCellSortCommand (writer);
+      
       writer.RenderEndTag();  //  td
     }
     
@@ -1691,6 +1708,139 @@ public class BocList:
     }
 
     writer.RenderEndTag();  // tr
+  }
+
+  private void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)
+  {
+    if (IsRowEditMode && column is BocSimpleColumnDefinition)
+    {
+      if (_rowEditModeControls[columnIndex].IsRequired)
+      {
+        Image requriedFieldMarker = GetRequiredMarker();
+        requriedFieldMarker.RenderControl (writer);
+        writer.Write (c_whiteSpace);
+      }
+    }
+  }
+
+  /// <summary> Builds the input required marker. </summary>
+  protected virtual Image GetRequiredMarker()
+  {
+    Image requiredIcon = new Image();
+    requiredIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
+        this, Context, typeof (BocList), ResourceType.Image, c_editDetailsRequiredFieldIcon);
+
+    IResourceManager resourceManager = GetResourceManager();
+    requiredIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
+    requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
+    
+    requiredIcon.Style["vertical-align"] = "middle";
+    return requiredIcon;
+  }
+
+  private void RenderTitleCellText (HtmlTextWriter writer, BocColumnDefinition column)
+  {
+    if (IsDesignMode && column.ColumnTitleDisplayValue.Length == 0)
+    {
+      writer.Write (c_designModeEmptyContents);
+    }
+    else
+    {
+      string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
+      if (StringUtility.IsNullOrEmpty (contents))
+        contents = c_whiteSpace;
+      writer.Write (contents);
+    }
+  }
+
+  private void RenderTitleCellSortingButton (
+      HtmlTextWriter writer, 
+      int columnIndex, 
+      HybridDictionary sortingDirections, 
+      ArrayList sortingOrder)
+  {
+    object obj = sortingDirections[columnIndex];
+    SortingDirection sortingDirection = SortingDirection.None; 
+    if (obj != null)
+      sortingDirection = (SortingDirection)obj;
+
+    string imageUrl = string.Empty;
+    //  Button Asc -> Button Desc -> No Button
+    switch (sortingDirection)
+    {
+      case SortingDirection.Ascending:
+      {
+        imageUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocList), ResourceType.Image, c_sortAscendingIcon);
+        break;
+      }
+      case SortingDirection.Descending:
+      {
+        imageUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocList), ResourceType.Image, c_sortDescendingIcon);
+        break;
+      }
+      case SortingDirection.None:
+      {
+        break;
+      }
+    }
+
+    if (sortingDirection != SortingDirection.None)
+    {
+      //  WhiteSpace before icon
+      writer.Write (c_whiteSpace);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      RenderIcon (writer, new IconInfo (imageUrl));
+
+      if (_showSortingOrder && sortingOrder.Count > 1)
+      {
+        int orderIndex = sortingOrder.IndexOf (columnIndex);
+        writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
+      }
+      writer.RenderEndTag();
+    }
+  }
+
+  private bool RenderBeginTagTitleCellSortCommand (
+      HtmlTextWriter writer, 
+      BocColumnDefinition column,
+      int columnIndex)
+  {
+    bool hasSortingButton =   EnableSorting 
+                           && (   column is BocValueColumnDefinition
+                               || (   column is BocCustomColumnDefinition 
+                                   && ((BocCustomColumnDefinition) column).IsSortable));
+    
+    if (hasSortingButton)
+    {
+      if (! IsRowEditMode)
+      {
+        string argument = c_sortCommandPrefix + columnIndex.ToString();
+        if (_hasClientScript)
+        {
+          string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
+          writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackScript);
+        }
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+      }
+      else
+      {
+        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      }
+    }
+    else
+    {
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    }
+    return hasSortingButton;
+  }
+
+  private void RenderEndTagTitleCellSortCommand (HtmlTextWriter writer)
+  {
+    writer.RenderEndTag();
   }
 
   /// <summary> Renders a table row containing the data for <paramref name="businessObject"/>. </summary>
@@ -1812,12 +1962,12 @@ public class BocList:
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
       //  Render the command
-      bool isCommandEnabled = RenderBeginTagCellCommand (
+      bool isCommandEnabled = RenderBeginTagDataCellCommand (
           writer, commandEnabledColumn, businessObject, hasEditModeControl, columnIndex, originalRowIndex);
 
       //  Render the icon
       if (showIcon)
-        RenderValueCellIcon (writer, businessObject);
+        RenderDataCellIcon (writer, businessObject);
 
       //  Render the text
       if (commandColumn != null)
@@ -1827,7 +1977,7 @@ public class BocList:
       else if (simpleColumn != null)
         RenderSimpleColumnCellText (writer, simpleColumn, businessObject, hasEditModeControl, columnIndex);
 
-      RenderEndTagCellCommand (writer, commandEnabledColumn, isCommandEnabled);
+      RenderEndTagDataCellCommand (writer, commandEnabledColumn, isCommandEnabled);
     }
     else if (editDetailsColumn != null)
     {
@@ -1893,7 +2043,7 @@ public class BocList:
     writer.RenderEndTag();
   }
 
-  private void RenderValueCellIcon (HtmlTextWriter writer, IBusinessObject businessObject)
+  private void RenderDataCellIcon (HtmlTextWriter writer, IBusinessObject businessObject)
   {
     IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
         businessObject, 
@@ -2007,14 +2157,38 @@ public class BocList:
   {
     if (hasEditModeControl)
     {
+      EditDetailsValidator editDetailsValidator = null;
+      foreach (BaseValidator validator in _validators)
+      {
+        if (validator is EditDetailsValidator)
+          editDetailsValidator = (EditDetailsValidator) validator;
+      }
       _rowEditModeControls[columnIndex].RenderControl (writer);
       BaseValidator[] validators = _rowEditModeValidators[columnIndex];
       foreach (BaseValidator validator in validators)
       {
-        if (! validator.IsValid)
+        if (editDetailsValidator != null)
         {
+          validator.Display = editDetailsValidator.Display;
+          validator.EnableClientScript = editDetailsValidator.EnableClientScript;
+        }
+        else
+        {
+          validator.Display = ValidatorDisplay.None;
+          validator.EnableClientScript = false;
+        }
+        writer.RenderBeginTag (HtmlTextWriterTag.Div);
+        validator.RenderControl (writer);
+        writer.RenderEndTag();
+
+        if (! validator.IsValid && validator.Display == ValidatorDisplay.None)
+        {
+          if (! StringUtility.IsNullOrEmpty (validator.CssClass))
+            writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
+          else
+            writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
           writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          validator.RenderControl (writer);
+          writer.Write (validator.ErrorMessage);
           writer.RenderEndTag();
         }
       }
@@ -2041,7 +2215,7 @@ public class BocList:
     writer.Write (contents);
   }
 
-  private bool RenderBeginTagCellCommand (
+  private bool RenderBeginTagDataCellCommand (
       HtmlTextWriter writer, 
       BocCommandEnabledColumnDefinition column,
       IBusinessObject businessObject,
@@ -2083,7 +2257,7 @@ public class BocList:
     return isCommandEnabled;
   }
 
-  private void RenderEndTagCellCommand (
+  private void RenderEndTagDataCellCommand (
       HtmlTextWriter writer, 
       BocCommandEnabledColumnDefinition column, 
       bool isCommandEnabled)
@@ -3047,9 +3221,16 @@ public class BocList:
 
   private void CreateRowEditModeControls (BocColumnDefinition[] columns)
   {
+    EnsureChildControls();
+
     if (! IsRowEditMode)
       return;
 
+    if (_editableRowIndex.Value >= Value.Count)
+    {
+      _editableRowIndex = NaInt32.Null;
+      return;
+    }
     _rowEditModeDataSource = CreateRowEditModeDataSource ((IBusinessObject) Value[_editableRowIndex.Value]);
     _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
     _rowEditModeValidators = new BaseValidator[columns.Length][];
@@ -3067,7 +3248,7 @@ public class BocList:
       _rowEditModeControls[i] = control;
       if (control != null)
       {
-        Controls.Add ((Control) control);
+        _rowEditModeControlCollection.Add ((Control) control);
         _rowEditModeValidators[i] = control.CreateValidators();
       }
     }    
@@ -3077,7 +3258,7 @@ public class BocList:
       if (columnValidators == null)
         continue;
       foreach (BaseValidator validator in columnValidators)
-        Controls.Add (validator);
+        _rowEditModeControlCollection.Add (validator);
     }
   }
 
@@ -3139,16 +3320,7 @@ public class BocList:
 
   private void RemoveEditModeControls()
   {
-    foreach (Control control in _rowEditModeControls)
-      Controls.Remove (control);
-    
-    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
-    {
-      if (columnValidators == null)
-        continue;
-      foreach (BaseValidator validator in columnValidators)
-        Controls.Remove (validator);
-    }
+    _rowEditModeControlCollection.Clear();
   }
 
   protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
@@ -3789,6 +3961,23 @@ public class BocList:
     set { _listMenuLineBreaks = value; }
   }
 
+  /// <summary>
+  ///   Validation message if the control is not filled correctly.
+  /// </summary>
+  [Description("Validation message if the control is not filled correctly.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string ErrorMessage
+  {
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
+  }
+
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
   /// <remarks> Class: <c>bocListTable</c> </remarks>
@@ -3839,6 +4028,14 @@ public class BocList:
   /// <remarks> Class: <c>bocListAdditionalColumnsListLabel</c> </remarks>
   protected virtual string CssClassAdditionalColumnsListLabel
   { get { return "bocListAdditionalColumnsListLabel"; } }
+  
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
+  /// <remarks>
+  ///   <para> Class: <c>bocListEditDetailsValidationMessage</c> </para>
+  ///   <para> Only applied if the <see cref="EditDetailsValidator"/> has no CSS-class of it's own. </para>
+  ///   </remarks>
+  protected virtual string CssClassEditDetailsValidationMessage
+  { get { return "bocListEditDetailsValidationMessage"; } }
   
   #endregion
 
