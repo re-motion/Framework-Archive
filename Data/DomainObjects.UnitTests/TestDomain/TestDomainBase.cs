@@ -48,11 +48,6 @@ public class TestDomainBase : DomainObject
     get { return base.DataContainer; }
   }
 
-  public new void Delete ()
-  {
-    base.Delete ();
-  }
-
   public new DomainObject GetRelatedObject (string propertyName)
   {
     return base.GetRelatedObject (propertyName);
