@@ -182,8 +182,7 @@ public class EntryFormGrid: Control
 
   public static string GetImagePath (string imgFileName)
   {
-    return "../images/" + imgFileName;
-    //return PageUtility.GetPhysicalPageUrl (sourcePage, RelativeImagePath + imgFileName);
+    return HttpContext.Current.Server.MapPath ("~/images/" + imgFileName);
   }
 
   public string InfoImagePath 
