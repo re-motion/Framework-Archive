@@ -463,6 +463,15 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     MoveToMenu (menuIndex);
   }
 
+  protected virtual string SelectedTab
+  {
+    get { return Page.Request.QueryString["navSelectedTab"]; }
+  }
+
+  protected virtual string SelectedMenu
+  {
+    get { return Page.Request.QueryString["navSelectedMenu"]; }
+  }
 
   private void SetSelectedItems (string defaultPage, bool useCurrentTab)
   {
@@ -471,8 +480,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     
     if (useCurrentTab)
     {
-		  selectedTab = Page.Request.QueryString["navSelectedTab"];
-		  selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+		  selectedTab = SelectedTab;
+		  selectedMenu = SelectedMenu;
     }
     
     if (selectedTab == null && selectedMenu == null)
