@@ -91,12 +91,12 @@ public class WebForm1 :
   override protected void OnInit(EventArgs e)
 	{
 
-    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[TableDesignTimeFormGrid.UniqueID];
+    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[TableDesignTimeFormGrid];
 
     hiddenRows.Add (ToBeHiddenTextBox.ID);
   
     FormGridRowInfoCollection newRows = 
-        (FormGridRowInfoCollection)_listOfFormGridRowInfos[TableDesignTimeFormGrid.UniqueID];
+        (FormGridRowInfoCollection)_listOfFormGridRowInfos[TableDesignTimeFormGrid];
 
     TextBox textBox = new TextBox();
     textBox.ID = "MyNewTextBox";
@@ -162,14 +162,14 @@ public class WebForm1 :
     return s_chachedResourceManager;
   }
 
-  public virtual StringCollection GetHiddenRows (string tableUniqueID)
+  public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[tableUniqueID];
+    return (StringCollection) _listOfHiddenRows[table];
   }
 
-  public virtual FormGridRowInfoCollection GetAdditionalRows (string tableUniqueID)
+  public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[tableUniqueID];
+    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
   public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)

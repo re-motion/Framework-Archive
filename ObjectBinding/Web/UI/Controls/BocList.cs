@@ -1833,7 +1833,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Compares the values of the <see cref="IBusinessObjectProperties"/> identified by <paramref name="propertyPath"/>
+  ///   Compares the values of the <see cref="IBusinessObjectProperty"/> identified by <paramref name="propertyPath"/>
   ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
   /// </summary>
   /// <param name="propertyPath">
