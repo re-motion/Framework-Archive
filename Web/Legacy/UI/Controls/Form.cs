@@ -337,22 +337,47 @@ public class Form : HtmlForm
     string postBackScript = @"
         <script language=""javascript"" type=""text/javascript"">
           <!--
-	          function __doPostBack(eventTarget, eventArgument) {
+	          function __doPostBack(eventTarget, eventArgument) 
+            {
 		          var controlID = eventTarget.split(""$"").join(""_"");
           		
-		          var control = document[controlID];
+              var control = document[controlID];
 
-		          if (control == null && document.all != null)
-		            control = document.all[controlID];
-          		  
-		          if (control == null && document.getElementById != null)
-		            control = document.getElementById (controlID);
-          		
-		          var theform = control.form;
-		          theform.__EVENTTARGET.value = controlID;
-		          theform.__EVENTARGUMENT.value = eventArgument;
-		          theform.submit();
-	          }
+              if (control == null && document.all != null)
+                control = document.all[controlID];
+                    		  
+              if (control == null && document.getElementById != null)
+                control = document.getElementById (controlID);
+                    		
+              var theform = control.form;
+              
+              if (theform == null)
+                theform = GetForm (control);
+              
+              theform.__EVENTTARGET.value = controlID;
+              theform.__EVENTARGUMENT.value = eventArgument;
+              theform.submit();
+            }
+          	          
+            function GetForm (control)
+            {
+              var parentControl = control.parentNode;
+              
+              if (parentControl == null)
+                parentControl = control.parentElement;
+              
+              if (parentControl != null)
+              {
+                if (parentControl.tagName.toLowerCase () == ""form"")
+                  return parentControl;
+                else
+                  return GetForm (parentControl);
+              }
+              else
+              {
+                return null;
+              }
+            }
           // -->
         </script>
         ";
