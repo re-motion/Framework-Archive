@@ -1,5 +1,6 @@
-
-Features BocList
+***************************************************************************************************
+* Features BocList
+***************************************************************************************************
 
 - Definition von Spalten als ColumnDefinition[] (FixedColumns)
 - Ergänzt um Auswahl aus einer Sammlung von zusätzlichen Spaltendefinitionen
@@ -46,7 +47,7 @@ checkbox
     ^---------
     HrefItemCommand (edit.aspx)
                ^--------------------------
-               HrefItem	Command (view.aspx)
+               HrefItemCommand (view.aspx)
 
 
 
@@ -55,3 +56,8 @@ Phase 2:
 - Gruppierung
 - In-Place Editieren von Spalteninhalten
 - Reihenfolge ändern
+
+
+***************************************************************************************************
+* Konzept BocList
+***************************************************************************************************

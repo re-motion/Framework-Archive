@@ -14,6 +14,14 @@ public class BusinessObjectPropertyPath
 
   private IBusinessObjectProperty[] _properties; 
  
+  public static BusinessObjectPropertyPath Parse (
+    IBusinessObjectDataSource dataSource, 
+    string identifier)
+  {
+    throw new NotImplementedException ("BusinessObjectPropertyPath.Parse");
+    //  TODO: BusinessObjectPropertyPath.Parse
+  }
+
   public BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
