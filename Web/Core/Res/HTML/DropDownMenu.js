@@ -99,10 +99,9 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
   for (var idxStyleSheets = 0; idxStyleSheets < window.document.styleSheets.length; idxStyleSheets++)
   {
 		styleSheet = window.document.styleSheets[idxStyleSheets];
-		var isDropDownStyleSheet = styleSheet.href.toLowerCase() == _dropDownMenu_styleSheetLink.toLowerCase();
-    if (isDropDownStyleSheet)
-    {
-      popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
+		if (styleSheet.href != '')
+		{
+      popUpDocument.createStyleSheet (styleSheet.href);	
     }
     else
     {
