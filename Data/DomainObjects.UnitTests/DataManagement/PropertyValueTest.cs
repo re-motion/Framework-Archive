@@ -5,6 +5,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -292,6 +293,16 @@ public class PropertyValueTest
     PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
     propertyValue.Value = null;
+  }
+
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException), "The relation property 'test' cannot be set directly.")]
+  public void SetRelationPropertyDirectly ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "objectID", true);
+    PropertyValue propertyValue = new PropertyValue (definition, null);
+
+    propertyValue.Value = DomainObjectIDs.Customer1;
   }
 
   private PropertyValue CreateIntPropertyValue (string name, int intValue)
