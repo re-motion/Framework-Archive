@@ -10,17 +10,24 @@ namespace Rubicon.Web
 /// <summary> Utility methods for URL resolving. </summary>
 public sealed class ResourceUrlResolver
 {
+  private const string c_designTimeDefaultRoot = "C:\\Rubicon.Resources";
+
   private static bool s_resolverInitialized = false;
   private static IResourceUrlResolver s_resolver = null;
-
   /// <summary>
   ///   Returns the physical URL of a resource item.
   ///   <seealso cref="IResourceUrlResolver"/>.
   /// </summary>
   /// <remarks>
-  ///   If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application object
-  ///   creates the URL string. Otherwise, the URL /&lt;AppDir&gt;/res/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
-  ///   is used. (e.g., /rubicon.res/Rubicon.Web/Image/Help.gif)
+  ///   <para>
+  ///     If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application 
+  ///     object creates the URL string. 
+  ///     Otherwise, the URL /&lt;AppDir&gt;/res/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
+  ///     is used. (e.g., WebApplication/res/Rubicon.Web/Image/Help.gif).
+  ///   </para><para>
+  ///     During design time, the root section <c>/&lt;AppDir&gt;/res</c> is mapped to the environment variable
+  ///     <c>%RUBICONRESOURCES</c>, or if the variable doe not exist, <c>C:\Rubicon.Resources</c>.
+  ///   </para>
   /// </remarks>
   /// <param name="control"> The current <see cref="Control"/>. Currently, this parameter is ignored. </param>
   /// <param name="context"> The current <see cref="HttpContext"/>. </param>
@@ -57,29 +64,27 @@ public sealed class ResourceUrlResolver
       string assemblyName = definingType.Assembly.FullName.Split(',')[0];
       string root;
       if (context == null && Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
-         root = GetTheDesignTimeRoot (control.Site);
+         root = GetTheDesignTimeRoot() + "/";
       else 
-        root = HttpRuntime.AppDomainAppVirtualPath;
-      return root + "/res/" + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
+        root = HttpRuntime.AppDomainAppVirtualPath + "/res/";
+      return root + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
     }
   }
 
-  [Obsolete]
-  private static string GetTheDesignTimeRoot (System.ComponentModel.ISite site)
+  private static string GetTheDesignTimeRoot()
   { 
-    // TODO: MK: da musst du dir wohl was anderes einfallen lassen. envdte.dll ist verboten.
-//    EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
-//    if(environment != null)
-//    {
-//      EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;          
-//      //  project.Properties uses a 1-based index
-//      for (int i = 1; i <= project.Properties.Count; i++)
-//      {
-//        if(project.Properties.Item (i).Name == "ActiveFileSharePath")
-//          return project.Properties.Item (i).Value.ToString();
-//      }
-//    }
-    return string.Empty;
+    return c_designTimeDefaultRoot;
+    //EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
+    //if(environment != null)
+    //{
+    //  EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;          
+    //  //  project.Properties uses a 1-based index
+    //  for (int i = 1; i <= project.Properties.Count; i++)
+    //  {
+    //    if(project.Properties.Item (i).Name == "ActiveFileSharePath")
+    //      return project.Properties.Item (i).Value.ToString();
+    //  }
+    //}
   }
 }
 
