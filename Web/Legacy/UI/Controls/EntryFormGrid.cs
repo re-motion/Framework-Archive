@@ -111,8 +111,12 @@ public class EntryTitle: Control
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"6\"> {0} </td></tr>", this.Title);
-		writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"6\"> "
-				+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");
+    if (this.Title != String.Empty)
+    {
+		  writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"6\"> "
+			  	+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");
+    }
+
 		writer.WriteLine ("<tr> <td><img height=\"3\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
 	}
 }
