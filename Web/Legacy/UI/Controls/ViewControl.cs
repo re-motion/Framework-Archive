@@ -42,7 +42,15 @@ public class ViewControl: Control
 	protected override void Render(HtmlTextWriter writer)
 	{
 		
-    writer.WriteLine ("<table cellpadding=\"2\" cellspacing=\"3\">");
+    writer.Write ("<table cellpadding=\"2\" cellspacing=\"3\"");
+    
+    if (LabelColumnWidth.Value != 0 && ValueColumnWidth.Value != 0)
+    {
+      double width = LabelColumnWidth.Value + ValueColumnWidth.Value;
+      writer.Write ("width=\"" + width + "\"");
+    }
+
+    writer.WriteLine (">");
     
     for (int i = 0; i < this.Controls.Count; ++i)
 		{
