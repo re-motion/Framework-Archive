@@ -80,5 +80,21 @@ public class DataContainerMapTest : ClientTransactionBaseTest
   {
     _map.GetByState ((StateType) 1000);
   }
+
+  [Test]
+  public void RollbackDelete ()
+  {
+    _map.Register (_existingOrder);
+
+    Order order = (Order) _existingOrder.DomainObject;
+    order.Delete ();
+    Assert.AreEqual (StateType.Deleted, _existingOrder.State);
+
+    _map.Rollback ();
+
+    _existingOrder = _map[_existingOrder.ID];
+    Assert.IsNotNull (_existingOrder);
+    Assert.AreEqual (StateType.Unchanged, _existingOrder.State);
+  }
 }
 }

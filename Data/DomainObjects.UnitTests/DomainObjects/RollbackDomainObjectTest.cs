@@ -73,5 +73,46 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (2, customer1.Orders.Count);
     Assert.AreEqual (0, customer2.Orders.Count);
   }
+
+  [Test]
+  public void RollbackDeletion ()
+  {
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+    computer.Delete ();
+
+    ClientTransaction.Current.Rollback ();
+
+    Computer computerAfterRollback = Computer.GetObject (DomainObjectIDs.Computer4);
+    Assert.AreSame (computer, computerAfterRollback);
+
+    Assert.AreEqual (StateType.Unchanged, computer.State);
+  }
+
+  [Test]
+  public void RollbackDeletionWithRelationChange ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+
+    OrderTicket oldOrderTicket = order.OrderTicket;
+    DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("OrderItems");
+    Customer oldCustomer = order.Customer;
+    Official oldOfficial = order.Official;
+
+    order.Delete ();
+
+    Assert.IsNull (order.OrderTicket);
+    Assert.AreEqual (0, order.OrderItems.Count);
+    Assert.IsNull (order.Customer);
+    Assert.IsNull (order.Official);
+
+    ClientTransaction.Current.Rollback ();
+
+    Assert.AreSame (oldOrderTicket, order.OrderTicket);
+    Assert.AreEqual (oldOrderItems.Count, order.OrderItems.Count);
+    Assert.AreSame (oldOrderItems[DomainObjectIDs.OrderItem1], order.OrderItems[DomainObjectIDs.OrderItem1]);
+    Assert.AreSame (oldOrderItems[DomainObjectIDs.OrderItem2], order.OrderItems[DomainObjectIDs.OrderItem2]);
+    Assert.AreSame (oldCustomer, order.Customer);
+    Assert.AreSame (oldOfficial, order.Official);
+  }
 }
 }

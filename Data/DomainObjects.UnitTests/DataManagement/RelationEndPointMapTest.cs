@@ -58,5 +58,27 @@ public class RelationEndPointMapTest : ClientTransactionBaseTest
 
     Assert.AreEqual (0, _map.Count);
   }
+
+  [Test]
+  public void GetOriginalRelatedObjectsWithLazyLoad ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    RelationEndPointID endPointID = new RelationEndPointID (order.ID, "OrderItems");
+    DomainObjectCollection originalOrderItems = _map.GetOriginalRelatedObjects (endPointID);
+    DomainObjectCollection orderItems = _map.GetRelatedObjects (endPointID);
+
+    Assert.IsFalse (object.ReferenceEquals (originalOrderItems, orderItems));
+  }
+
+  [Test]
+  public void GetOriginalRelatedObjectWithLazyLoad ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    RelationEndPointID endPointID = new RelationEndPointID (order.ID, "OrderTicket");
+    DomainObject originalOrderTicket = _map.GetOriginalRelatedObject (endPointID);
+    DomainObject orderTicket = _map.GetRelatedObject (endPointID);
+
+    Assert.IsTrue (object.ReferenceEquals (originalOrderTicket, orderTicket));
+  }
 }
 }

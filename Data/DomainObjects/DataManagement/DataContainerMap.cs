@@ -89,10 +89,10 @@ public class DataContainerMap : IEnumerable
     {
       DataContainer dataContainer = _dataContainers[i];
 
-      dataContainer.Rollback ();
-
       if (dataContainer.State == StateType.New)
         _dataContainers.Remove (dataContainer);
+
+      dataContainer.Rollback ();
     }
   }
 

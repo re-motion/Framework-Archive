@@ -132,7 +132,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
     if (collectionEndPoint == null)
-      return _clientTransaction.LoadRelatedObjects (endPointID); 
+    {
+      _clientTransaction.LoadRelatedObjects (endPointID); 
+      collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
+    }
 
     return collectionEndPoint.OriginalOppositeDomainObjects;
   }

@@ -116,5 +116,30 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
         _customerEndPoint.OppositeDomainObjects.RequiredItemType, 
         _customerEndPoint.OriginalOppositeDomainObjects.RequiredItemType);
   }
+
+  [Test]
+  public void ChangeOppositeDomainObjects ()
+  {
+    Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
+
+    _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Customer", _customerEndPoint.ObjectID));
+    _customerEndPoint.PerformRelationChange ();
+    _customerEndPoint.EndRelationChange ();
+
+    Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
+  }
+
+  [Test]
+  public void PerformDelete ()
+  {
+    Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
+
+    _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Customer", _customerEndPoint.ObjectID));
+    _customerEndPoint.PerformDelete ();
+    _customerEndPoint.EndRelationChange ();
+
+    Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
+    Assert.AreEqual (0, _customerEndPoint.OppositeDomainObjects.Count);
+  }
 }
 }
