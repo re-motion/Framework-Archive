@@ -337,7 +337,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
         formatString = "g";
     }
 
-    return PropertyPath.GetString (obj, formatString);
+    return PropertyPath.GetString (obj, StringUtility.EmptyToNull(formatString));
   }
 
   /// <summary>

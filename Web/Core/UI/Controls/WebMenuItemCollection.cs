@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web.UI;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Design;
@@ -9,34 +10,118 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Controls
 {
+
+public interface IControlItem
+{
+  Control OwnerControl { get; set; }
+}
+
+public class ControlItemCollection: CollectionBase
+{
+  private Control _ownerControl;
+  private Type[] _supportedTypes;
+
+  /// <summary> Creates a new instance. </summary>
+  /// <param name="ownerControl"> Owner control. </param>
+  /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
+  public ControlItemCollection (Control ownerControl, Type[] supportedTypes)
+  {
+    _ownerControl = ownerControl;
+    _supportedTypes = supportedTypes;
+  }
+
+  /// <summary> Creates a new instance. </summary>
+  /// <param name="ownerControl"> Owner control. </param>
+  /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
+  public ControlItemCollection (IControl ownerControl, Type[] supportedTypes)
+  {
+    _ownerControl = (Control) ownerControl;
+    _supportedTypes = supportedTypes;
+  }
+
+  protected override void OnInsert (int index, object value)
+  {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
+    if (! IsSupportedType (value)) throw new ArgumentTypeException ("value", value.GetType());
+
+    IControlItem controlItem = (IControlItem) value;
+    base.OnInsert (index, value);
+    controlItem.OwnerControl = _ownerControl;
+  }
+
+  protected override void OnSet (int index, object oldValue, object newValue)
+  {
+    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (IControlItem));
+    if (! IsSupportedType (newValue)) throw new ArgumentTypeException ("newValue", newValue.GetType());
+
+    IControlItem controlItem = (IControlItem) newValue;
+    base.OnSet (index, oldValue, newValue);
+    controlItem.OwnerControl = _ownerControl;
+  }
+
+  public int Add (IControlItem value)
+  {
+    return List.Add (value);
+  }
+
+  public void AddRange (IControlItem[] values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    foreach (IControlItem controlItem in values)
+      Add (controlItem );
+  }
+
+  public IControlItem[] ToArray()
+  {
+    ArrayList arrayList = new ArrayList (List);
+    return (IControlItem[]) arrayList.ToArray (typeof (IControlItem));
+  }
+
+  public IControlItem this[int index]
+  {
+    get { return (IControlItem) List[index]; }
+    set { List[index] = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the <see cref="IControl"/> to which this collection belongs.
+  /// </summary>
+  internal IControl OwnerControl
+  {
+    get { return _ownerControl; }
+    set 
+    {
+      _ownerControl = value; 
+      foreach (IControlItem controlItem in List)
+        controlItem.OwnerControl = _ownerControl;
+    }
+  }
+
+  /// <summary>
+  ///   Tests whether the specified control item's type is supported by the collection.
+  /// </summary>
+  private bool IsSupportedType (IControlItem controlItem)
+  {
+    Type controlItemType = controlItem.GetType();
+
+    foreach (Type type in _supportedTypes)
+    {
+      if (type.IsAssignableFrom (controlItemType))
+        return true;
+    }
+    
+    return false;
+  }
+}
  
 /// <summary> A collection of <see cref="MenuItem"/> objects. </summary>
 [Editor (typeof (MenuItemCollectionEditor), typeof (UITypeEditor))]
-public class MenuItemCollection : CollectionBase
+public class MenuItemCollection: ControlItemCollection
 {
   /// <summary> 
-  ///   The <see cref="IControl"/> to which this <see cref="MenuItemCollection"/> belongs.
+  ///   Initializes a new instance.
   /// </summary>
-  private IControl _ownerControl;
-
-  /// <summary> 
-  ///   The types derived from <see cref="MenuItem"/> which may be added 
-  ///   to the <see cref="MenuItemCollection"/>. 
-  /// </summary>
-  private Type[] _supportedTypes;
-
-  /// <summary> 
-  ///   Initializes a new instance of the <see cref="MenuItemCollection"/> class with the 
-  ///   <see cref="IControl"/> to which it belongs and the list of <see cref="MenuItem"/> derived types 
-  ///   supported by the collection.
-  ///  </summary>
-  /// <param name="ownerControl">
-  ///   The <see cref="IControl"/> to which this collection belongs.
-  /// </param>
-  /// <param name="supportedTypes"> 
-  ///   The types derived from <see cref="MenuItem"/> which may be added to the 
-  ///   <see cref="MenuItemCollection"/>. 
-  /// </param>
   public MenuItemCollection (IControl ownerControl, Type[] supportedTypes)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("supportedTypes", supportedTypes);
@@ -79,10 +164,6 @@ public class MenuItemCollection : CollectionBase
     menuItem.OwnerControl = _ownerControl;
   }
 
-  /// <summary> Performs additional custom processes before setting a value. </summary>
-  /// <param name="index"> The zero-based index at which <paramref name="oldValue"/> can be found. </param>
-  /// <param name="oldValue"> The value to replace with <paramref name="newValue"/>. </param>
-  /// <param name="newValue"> The new value of the element at index. </param>
   protected override void OnSet (int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (MenuItem));
