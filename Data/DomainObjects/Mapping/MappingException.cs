@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.Mapping
 {
 [Serializable]
-public class MappingException : ConfigurationException
+public class MappingException : DomainObjectException
 {
   // types
 
