@@ -35,7 +35,7 @@ public class DeleteDomainObjectWithLazyLoadTest : ClientTransactionBaseTest
     Assert.IsNull (order.OrderTicket);
     Assert.IsNull (orderTicket.DataContainer["Order"]);
     Assert.AreEqual (StateType.Changed, order.State);
-    Assert.AreEqual (StateType.Original, order.DataContainer.State);
+    Assert.AreEqual (StateType.Unchanged, order.DataContainer.State);
   }
 
   [Test]
@@ -111,7 +111,7 @@ public class DeleteDomainObjectWithLazyLoadTest : ClientTransactionBaseTest
     Assert.IsFalse (order.OrderItems.Contains (orderItem.ID));
     Assert.IsNull (orderItem.DataContainer["Order"]);
     Assert.AreEqual (StateType.Changed, order.State);
-    Assert.AreEqual (StateType.Original, order.DataContainer.State);
+    Assert.AreEqual (StateType.Unchanged, order.DataContainer.State);
   }
 }
 }

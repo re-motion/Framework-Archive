@@ -202,7 +202,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     
-    Assert.AreEqual (StateType.Original, customer.State);    
+    Assert.AreEqual (StateType.Unchanged, customer.State);    
     customer.Name = "New name";
     Assert.AreEqual (StateType.Changed, customer.State);
   }
