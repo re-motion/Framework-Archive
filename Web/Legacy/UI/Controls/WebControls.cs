@@ -5,7 +5,7 @@ using Microsoft.Web.UI.WebControls;
 
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatchTarget
