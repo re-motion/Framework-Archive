@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -8,14 +9,13 @@ using System.Runtime.CompilerServices;
 //
 [assembly: AssemblyTitle("Rubicon Controls Library for Web Applications")]
 [assembly: AssemblyDescription("Common Controls for Web Applications")]
-[assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: debug")]
+[assembly: AssemblyConfiguration("VS.NET build")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon Controls Library for Web Applications")]
-[assembly: AssemblyCopyright("(c) 2004 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-[assembly: System.CLSCompliant(true)]
-
+[assembly: CLSCompliant(true)]
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -27,7 +27,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("3.2.0.0")]
+[assembly: AssemblyVersion("1.1.12.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -46,18 +46,14 @@ using System.Runtime.CompilerServices;
 //       (2) If the KeyName does not exist and the KeyFile does exist, the key 
 //           in the KeyFile is installed into the CSP and used.
 //   (*) In order to create a KeyFile, you can use the sn.exe (Strong Name) utility.
-//        When specifying the KeyFile, the location of the KeyFile should be
-//        relative to the "project output directory". The location of the project output
-//        directory is dependent on whether you are working with a local or web project.
-//        For local projects, the project output directory is defined as
-//       <Project Directory>\obj\<Configuration>. For example, if your KeyFile is
+//       When specifying the KeyFile, the location of the KeyFile should be
+//       relative to the project output directory which is
+//       %Project Directory%\obj\<configuration>. For example, if your KeyFile is
 //       located in the project directory, you would specify the AssemblyKeyFile 
 //       attribute as [assembly: AssemblyKeyFile("..\\..\\mykey.snk")]
-//        For web projects, the project output directory is defined as
-//       %HOMEPATH%\VSWebCache\<Machine Name>\<Project Directory>\obj\<Configuration>.
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]

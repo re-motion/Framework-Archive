@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Web.UI;
@@ -9,15 +10,15 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTitle("Rubicon BusinessObjectControls Library")]
+[assembly: AssemblyDescription("Web controls for 2-way databinding with BusinessObjects.")]
+[assembly: AssemblyConfiguration("VS.NET build")]
+[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
+[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-
+[assembly: CLSCompliant(true)]
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +30,7 @@ using System.Web.UI;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.1.12.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -57,5 +58,5 @@ using System.Web.UI;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
