@@ -468,6 +468,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   The <see cref="IBusinessObjectEnumerationProperty"/> object this control is bound to.
   /// </summary>
   /// <value>An <see cref="IBusinessObjectEnumerationProperty"/> object.</value>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectEnumerationProperty Property
   {
     get { return (IBusinessObjectEnumerationProperty) base.Property; }
