@@ -116,12 +116,17 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Collections\AutoInitHashTable.cs"
+                    RelPath = "Collections\AutoInitHashtable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Collections\NameObjectCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Collections\TypedArrayList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -261,6 +266,11 @@
                 />
                 <File
                     RelPath = "Text\MonospaceTextFormat.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Text\SeparatedStringBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
