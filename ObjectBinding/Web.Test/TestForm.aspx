@@ -1,6 +1,6 @@
-<%@ Page language="c#" Codebehind="WebFormMK.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebFormMK" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="WebFormMK.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebFormMK" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -23,7 +23,15 @@
 </obc:boctextvalue><obc:BocTextValueValidator id="BocTextValueValidator1" runat="server" ControlToValidate="FirstNameField"></obc:BocTextValueValidator></td></tr>
   <tr>
     <td></td>
-    <td><obc:BocTextValue id="BirthdayField" runat="server" DataSource="<%# reflectionBusinessObjectDataSource %>" PropertyIdentifier="DateOfBirth"></obc:BocTextValue><obc:BocTextValueValidator id="BocTextValueValidator2" runat="server" ControlToValidate="BirthdayField"></obc:BocTextValueValidator></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></form>
+    <td><obc:BocEnumValue id="GenderField" runat="server" datasource="<%# reflectionBusinessObjectDataSource %>" propertyidentifier="Gender">
+<listcontrolstyle radiobuttonlisttextalign="Right" radionbuttonlistrepeatlayout="Table" controltype="DropDownList" radiobuttonlistrepeatdirection="Vertical">
+</ListControlStyle></obc:BocEnumValue></td></tr>
+  <tr>
+    <td></td>
+    <td><obc:BocReferenceValue id="PartnerField" runat="server" datasource="<%# reflectionBusinessObjectDataSource %>" propertyidentifier="Partner"></obc:BocReferenceValue></td></tr>
+  <tr>
+    <td></td>
+    <td><obc:BocDateTimeValue id="BirthdayField" runat="server" datasource="<%# reflectionBusinessObjectDataSource %>" propertyidentifier="DateOfBirth"></obc:BocDateTimeValue></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></form>
 	
   </body>
 </html>
