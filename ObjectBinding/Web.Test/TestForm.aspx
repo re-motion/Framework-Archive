@@ -25,7 +25,7 @@
 </obc:BocCommandColumnDefinition>
 <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
 <persistedcommand>
-<obc:BocListItemCommand></obc:BocListItemCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
 </PersistedCommand>
 </obc:BocSimpleColumnDefinition>
 <obc:BocCompoundColumnDefinition FormatString="{0} {1}" ColumnTitle="Name">
@@ -35,13 +35,13 @@
 </PropertyPathBindings>
 
 <persistedcommand>
-<obc:BocListItemCommand></obc:BocListItemCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
 </PersistedCommand>
 </obc:BocCompoundColumnDefinition>
 </FixedColumns>
 
 <optionsmenuitems>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-Parameters="Test'Test" WxeFunctionCommand-TypeName="MyType"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -51,37 +51,37 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href">
+<obc:BocMenuItem Text="Href" Icon="Images/RefelctionBusinessObjectIcon.gif">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Open" Text="&#214;ffnen" Category="Object" RequiredSelection="ExactlyOne">
+<obc:BocMenuItem Text="&#214;ffnen" ItemID="Open" Category="Object" RequiredSelection="ExactlyOne">
 <persistedcommand>
-<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Copy" Icon="Images/CopyItem.gif" Text="Kopieren" Category="Edit" IconDisabled="Images/CopyItemDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Kopieren" ItemID="Copy" Icon="Images/CopyItem.gif" Category="Edit" IconDisabled="Images/CopyItemDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
-<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Cut" Text="Ausschneiden" Category="Edit" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Ausschneiden" ItemID="Cut" Category="Edit" RequiredSelection="OneOrMore">
 <persistedcommand>
-<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Paste" Text="Einf&#252;gen" Category="Edit">
+<obc:BocMenuItem Text="Einf&#252;gen" ItemID="Paste" Category="Edit" IsDisabled="True">
 <persistedcommand>
-<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Duplicate" Text="Duplizieren" Category="Edit" RequiredSelection="ExactlyOne">
+<obc:BocMenuItem Text="Duplizieren" ItemID="Duplicate" Category="Edit" RequiredSelection="ExactlyOne">
 <persistedcommand>
-<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="Delete" Icon="Images/DeleteItem.gif" Text="L&#246;schen" Category="Edit" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="L&#246;schen" ItemID="Delete" Icon="Images/DeleteItem.gif" Category="Edit" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="javascript:DoSomething();"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -89,17 +89,17 @@
 </OptionsMenuItems>
 
 <listmenuitems>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event" Category="PostBacks">
+<obc:BocMenuItem Text="Event" Icon="Images/RefelctionBusinessObjectIcon.gif" Category="PostBacks">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="Links">
+<obc:BocMenuItem Text="Href" Icon="Images/RefelctionBusinessObjectIcon.gif" Category="Links">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="PostBacks" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" Category="PostBacks" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -114,7 +114,7 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Text="long text">
+<obc:BocMenuItem Text="Paste" Category="Edit" IsDisabled="True">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>

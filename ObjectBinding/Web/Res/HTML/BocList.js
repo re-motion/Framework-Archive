@@ -272,10 +272,10 @@ function ContentMenu_MenuInfo (id, itemInfos)
 
 function BocList_AddMenuInfo (bocList, menuInfo)
 {
-  _bocList_listMenuInfos[bocList.ID] = menuInfo;
+  _bocList_listMenuInfos[bocList.id] = menuInfo;
 }
 
-function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, href, target)
+function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target)
 {
   this.ID = id;
   this.Category = category;
@@ -283,6 +283,7 @@ function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requi
   this.Icon = icon;
   this.IconDisabled = iconDisabled;
   this.RequiredSelection = requiredSelection;
+  this.IsDisabled = isDisabled;
   this.Href = href;
   this.Target = target;
 }
@@ -300,37 +301,45 @@ function BocList_UpdateListMenu (bocList)
   {
     var itemInfo = itemInfos[i];
     var isEnabled = true;
-    if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionExactlyOne
-        && selectionCount != 1)
+    if (itemInfo.IsDisabled)
     {
       isEnabled = false;
     }
-    if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionOneOrMore
-        && selectionCount < 1)
+    else
     {
-      isEnabled = false;
+      if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionExactlyOne
+          && selectionCount != 1)
+      {
+        isEnabled = false;
+      }
+      if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionOneOrMore
+          && selectionCount < 1)
+      {
+        isEnabled = false;
+      }
     }
-    
     var item = document.getElementById (itemInfo.ID);
-    var icon = item.children[0];
+    var anchor = item.children[0];
+    var icon = anchor.children[0];
     if (isEnabled)
     {
       if (icon != null)
         icon.src = itemInfo.Icon;
   	  item.className = _contentMenu_itemClassName;
-  	  item.setAttribute ('href', itemInfo.Href);
-      item.onclick = function () { ContentMenu_GoTo (this); };
-	    item.onmouseover = function () { ContentMenu_SelectItem (this); };
-	    item.onmouseleave = function () { ContentMenu_UnselectItem (this); };
+  	  if (itemInfo.Href != null)
+      {
+        anchor.href = itemInfo.Href;
+        if (itemInfo.Target != null)
+      	  anchor.target = itemInfo.Target;
+      }
     }
     else
     {
       if (icon != null)
         icon.src = itemInfo.IconDisabled;
       item.className = _contentMenu_itemDisabledClassName;
-      item.onclick = null;
-	    item.onmouseover = null;
-	    item.onmouseleave = null;
+      anchor.removeAttribute ('href');
+      anchor.removeAttribute ('target');
     }
   }
 }

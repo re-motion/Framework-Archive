@@ -57,7 +57,7 @@ td.bocListDataCellEvenSelected
 {
 	background-color: Navy;
   color: White;
-  
+ 
   padding: 2px 2px 2px 5px;
   border-style: solid;
   border-top-width: 1px;
@@ -116,37 +116,41 @@ input.bocListAdditionalColumnsList
 {
 }
 
-div.contentMenuRow
+td.contentMenuRow
 {
   font-size: 66.67%;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   vertical-align: middle;
-	white-space: nowrap;
-	width: 102%;
+  white-space: nowrap;
 }
 
 span.contentMenuItem
 {
   margin-right: 10pt;
-  padding: 2px;
-	cursor: hand;
 }
 
-span.contentMenuItemFocus
+span.contentMenuItem a
 {
-  margin-right: 10pt;
+  padding: 2px;
+}
+
+span.contentMenuItem a:hover
+{
 	padding: 1px;
-	border-color: #2254b1;
 	border-width: 1px;
+	border-color: #2254b1;
 	border-style: solid;
 	background-color: #fee197;	
-	cursor: hand;
 }
 
 span.contentMenuItemDisabled
 {
   margin-right: 10pt;
+}
+
+span.contentMenuItemDisabled a
+{
   padding: 2px;
   color: gray;
 	cursor: default;
