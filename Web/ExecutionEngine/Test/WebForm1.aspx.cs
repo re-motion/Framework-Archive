@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using Rubicon.PageTransition;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.Utilities;
+using Rubicon.Utilities;
 
 namespace Rubicon.PageTransition
 {
@@ -36,6 +37,8 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Label Label1;
     protected System.Web.UI.WebControls.Label RetValLabel;
     protected System.Web.UI.WebControls.Button SubExtButton;
+    protected System.Web.UI.WebControls.Button SubNoReturnButton;
+    protected System.Web.UI.WebControls.TextBox SubNoReturnField;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -49,12 +52,7 @@ namespace Rubicon.PageTransition
 
 		private void Page_Load (object sender, System.EventArgs e)
 		{
-      NameValueCollection coll = this.GetPostBackCollection();
-      if (coll != null)
-      {
-        object o = new LosFormatter().Deserialize (coll["__VIEWSTATE"]);
-        o = null;
-      }
+
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
         sb.AppendFormat ("{0}<br>", step.ToString());      
@@ -63,36 +61,6 @@ namespace Rubicon.PageTransition
 			Var1Label.Text = Function.Var1;
       Var2Label.Text = Function.Var2;
       IsPostBackCheck.Checked = IsPostBack;
-
-      GetPostBackEventReference (this); // force __doPostBack script
-      PageUtility.RegisterClientScriptBlock (this, "doSubmit",
-          "function doSubmit (button, pageToken) {"
-          + "  var theForm = document." + Form.ClientID + ";"
-          // + "  document.getElementById(button).value = button; "
-          + "  theForm.returningToken.value = pageToken;"
-          + "  document.getElementById(button).click();"
-          + "  }");
-      HtmlInputHidden returningTokenField = new HtmlInputHidden ();
-      returningTokenField.ID = "returningToken";
-      Form.Controls.Add (returningTokenField);
-
-      NameValueCollection postBackCollection = GetPostBackCollection();
-      if (postBackCollection != null)
-      {
-        string returningToken = postBackCollection["returningToken"];
-        if (returningToken != null)
-        {
-          ArrayList pages = (ArrayList) Session["WxePages"];
-          foreach (WxePageSession pageSession in pages)
-          {
-            if (pageSession.PageToken == returningToken)
-            {
-              WxeContext.Current.ReturningFunction = pageSession.Function;
-              WxeContext.Current.IsReturningPostBack = true;
-            }
-          }
-        }
-      }
 		}
 
 		#region Web Form Designer generated code
@@ -113,9 +81,11 @@ namespace Rubicon.PageTransition
 		{    
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
+      this.SubExtButton.Click += new System.EventHandler(this.SubExtButton_Click);
       this.Throw.Click += new System.EventHandler(this.Throw_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);
-      this.SubExtButton.Click += new System.EventHandler(this.SubExtButton_Click);
+      this.SubNoReturnButton.Click += new System.EventHandler(this.SubNoReturnButton_Click);
+      this.SubNoReturnField.TextChanged += new System.EventHandler(this.SubNoReturnField_TextChanged);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
@@ -157,7 +127,7 @@ namespace Rubicon.PageTransition
     {
       if (! IsReturningPostBack)
       {
-        SubFunction subFunction = new SubFunction ("call var 1!", "vall var2");
+        SubFunction subFunction = new SubFunction ("@call var 1!", "vall var2");
         ExecuteFunction (subFunction, "_blank", (Control) sender);
       }
       else
@@ -165,6 +135,16 @@ namespace Rubicon.PageTransition
         SubFunction subFunction = (SubFunction) ReturningFunction;
         RetValLabel.Text = subFunction.Var1;
       }
+    }
+
+    private void SubNoReturnButton_Click (object sender, System.EventArgs e)
+    {
+      CurrentStep.ExecuteFunctionNoRepost (this, new SubFunction ("v1", "button"), (Control) sender);    
+    }
+
+    private void SubNoReturnField_TextChanged(object sender, System.EventArgs e)
+    {
+      CurrentStep.ExecuteFunctionNoRepost (this, new SubFunction ("v1", "textbox"), (Control) sender);    
     }
 
     public class SubFunction: WxeFunction, ISampleFunctionVariables

@@ -10,6 +10,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -91,6 +92,40 @@ public class WxePage: Page, IWxePage
   {
     _wxeInfo.OnInit (this, Context, ref Form);
     base.OnInit (e);
+    Load += new EventHandler (Page_Load);
+  }
+
+  private void Page_Load (object sender, EventArgs e)
+  {
+      // GetPostBackEventReference (this); // force __doPostBack script
+
+      PageUtility.RegisterClientScriptBlock (this, "wxeDoSubmit",
+          "function wxeDoSubmit (button, pageToken) { \n"
+          + "  var theForm = document." + Form.ClientID + "; \n"
+          + "  theForm.returningToken.value = pageToken; \n"
+          + "  document.getElementById(button).click(); \n"
+          + "}");
+
+      NameValueCollection postBackCollection = GetPostBackCollection();
+      if (postBackCollection != null)
+      {
+        string returningToken = WxeForm.ReturningToken;
+        // string returningToken = postBackCollection["returningToken"];
+        if (! StringUtility.IsNullOrEmpty (returningToken))
+        {
+          ArrayList pages = (ArrayList) Session["WxePages"];
+          foreach (WxePageSession pageSession in pages)
+          {
+            if (pageSession.PageToken == returningToken)
+            {
+              WxeContext.Current.ReturningFunction = pageSession.Function;
+              WxeContext.Current.IsReturningPostBack = true;
+            }
+          }
+        }
+      }
+
+      WxeForm.ReturningToken = string.Empty;    
   }
 
   protected override NameValueCollection DeterminePostBackMode()
@@ -154,7 +189,7 @@ public class WxePage: Page, IWxePage
     // string eventtarget = GetPostBackCollection()["__EVENTTARGET"];
     // string eventargument = GetPostBackCollection()["__EVENTARGUMENT"];
     // subFunction.ReturnUrl = "javascript:window.opener.__doPostBack(\"" + eventtarget + "\",\"" + eventargument + "\"); window.close();";
-    function.ReturnUrl = "javascript:window.opener.doSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
+    function.ReturnUrl = "javascript:window.opener.wxeDoSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
 
     PageUtility.RegisterStartupScriptBlock (this, "WxeExecuteFunction", script);
   }
@@ -167,6 +202,11 @@ public class WxePage: Page, IWxePage
   public WxeFunction ReturningFunction
   {
     get { return WxeContext.Current.ReturningFunction; }
+  }
+
+  protected WxeForm WxeForm
+  {
+    get { return (WxeForm) Form; }
   }
 }
 

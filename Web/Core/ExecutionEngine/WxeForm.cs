@@ -11,6 +11,8 @@ namespace Rubicon.Web.ExecutionEngine
 [DesignTimeVisible(false)]
 public class WxeForm: HtmlForm
 {
+  HtmlInputHidden _returningTokenField;
+
   public static WxeForm Replace (HtmlForm htmlForm)
   {
     WxeForm newForm = new WxeForm();
@@ -83,6 +85,19 @@ public class WxeForm: HtmlForm
     this.Attributes.Render(writer);
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    _returningTokenField = new HtmlInputHidden ();
+    _returningTokenField.ID = "returningToken";
+    this.Controls.Add (_returningTokenField);  
+  }
+
+  public String ReturningToken
+  {
+    get { return _returningTokenField.Value; }
+    set { _returningTokenField.Value = value; }
+  }
 }
 
 }

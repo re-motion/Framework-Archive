@@ -1,6 +1,6 @@
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="uc1" TagName="UserControl1" Src="UserControl1.ascx" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -18,6 +18,10 @@
         Text="Stay"></asp:button><asp:button id="Next" style="Z-INDEX: 103; LEFT: 216px; POSITION: absolute; TOP: 144px" runat="server"
         Text="Next"></asp:button>
       <DIV style="WIDTH: 16px; HEIGHT: 16.5em"></DIV>
+      <asp:TextBox id="SubNoReturnField" style="Z-INDEX: 117; LEFT: 904px; POSITION: absolute; TOP: 72px"
+        runat="server" Width="248px" AutoPostBack="True">change text for SubNoReturn</asp:TextBox>
+      <asp:Button id="SubNoReturnButton" style="Z-INDEX: 116; LEFT: 904px; POSITION: absolute; TOP: 32px"
+        runat="server" Text="SubNoReturn"></asp:Button>
       <asp:Button id="SubExtButton" style="Z-INDEX: 115; LEFT: 136px; POSITION: absolute; TOP: 144px"
         runat="server" Text="SubExt"></asp:Button>
       <asp:Label id="RetValLabel" style="Z-INDEX: 114; LEFT: 376px; POSITION: absolute; TOP: 88px"
