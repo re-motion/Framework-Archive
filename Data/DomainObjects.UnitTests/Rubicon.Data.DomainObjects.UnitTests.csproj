@@ -446,11 +446,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DomainObjects\CommitEventsTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjects\DeleteDomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -882,6 +877,11 @@
                 />
                 <File
                     RelPath = "Transaction\ClientTransactionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Transaction\CommitEventsTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
