@@ -6,6 +6,9 @@
   * Bietet einen TreeView (kein ClientSide Script).
   * Nodes können On-Demand befüllt werden.
 
+- Rubicon.Web.UI.Controls.BocReferenceValue
+  * Bug: Null-Wert angegeben und Icon aktivert -> ArgumentException. Gefixed in 1.1.47.0
+
 1.1.45.0
 ========
 
