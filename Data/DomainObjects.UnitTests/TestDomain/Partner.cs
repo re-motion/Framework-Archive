@@ -21,6 +21,10 @@ public class Partner : Company
   {
   }
 
+  public Partner (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Partner (DataContainer dataContainer) : base (dataContainer)
   {
   }
