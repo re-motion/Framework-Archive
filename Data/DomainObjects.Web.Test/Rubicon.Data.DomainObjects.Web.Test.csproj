@@ -218,6 +218,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "SearchObject.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SearchObject.aspx.cs"
+                    DependentUpon = "SearchObject.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SearchObject.aspx.resx"
+                    DependentUpon = "SearchObject.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />
@@ -264,6 +280,11 @@
                 />
                 <File
                     RelPath = "Domain\ClassWithAllDataTypes.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\ClassWithAllDataTypesQuery.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
