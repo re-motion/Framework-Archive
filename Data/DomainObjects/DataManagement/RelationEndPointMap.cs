@@ -206,10 +206,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
   }
 
-  public RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
+  private RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
   {
-    // TODO: This method probably should be private.
-    //       Name this method differently.
     ArgumentUtility.CheckNotNull ("definition", definition);
 
     if (domainObject != null)

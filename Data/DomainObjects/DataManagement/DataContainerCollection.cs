@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class DataContainerCollection : CollectionBase
 {
