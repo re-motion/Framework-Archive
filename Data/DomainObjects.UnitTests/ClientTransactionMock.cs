@@ -42,9 +42,14 @@ public class ClientTransactionMock : ClientTransaction
     return base.LoadRelatedObject (relationEndPointID);
   }
 
-  public new DomainObject GetObject (ObjectID id)
+  public DomainObject GetObject (ObjectID id)
   {
-    return base.GetObject (id);
+    return GetObject (id, false);
+  }
+
+  public new DomainObject GetObject (ObjectID id, bool includeDeleted)
+  {
+    return base.GetObject (id, includeDeleted);
   }
 
   public new DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
