@@ -466,6 +466,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary> The cell containing the controls. </summary>
     private HtmlTableCell _controlsCell;
 
+    private bool _isGenerated;
+
     /// <summary>
     ///   The cell used as a place holder if the controls cell is not at the standard position.
     /// </summary>
@@ -492,7 +494,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       HtmlTableRow[] htmlTableRows,
       FormGridRowType type, 
       int labelsColumn, 
-      int controlsColumn)
+      int controlsColumn,
+      bool isGenerated)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("htmlTableRows", htmlTableRows);
 
@@ -503,6 +506,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       _controlsColumn = controlsColumn;
       _visible = true;
       _controls = new Hashtable(0);
+      _isGenerated = isGenerated;
 
       for (int index = 0; index < htmlTableRows.Length; index++)
       {
@@ -571,11 +575,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
     private void CheckCellRange (int rowIndex, int cellIndex)
     {
-      if (rowIndex >= _htmlTableRows.Count) throw new ArgumentOutOfRangeException ("rowIndex", "Specified argument was out of the range of valid values.");
-      if (rowIndex < 0) throw new ArgumentOutOfRangeException ("rowIndex", "Specified argument was out of the range of valid values.");
+      if (rowIndex >= _htmlTableRows.Count) throw new ArgumentOutOfRangeException ("rowIndex");
+      if (rowIndex < 0) throw new ArgumentOutOfRangeException ("rowIndex");
 
-      if (cellIndex >= _htmlTableRows[rowIndex].Cells.Count) throw new ArgumentOutOfRangeException ("cellIndex", "Specified argument was out of the range of valid values.");
-      if (cellIndex < 0) throw new ArgumentOutOfRangeException ("cellIndex", "Specified argument was out of the range of valid values.");
+      if (cellIndex >= _htmlTableRows[rowIndex].Cells.Count) throw new ArgumentOutOfRangeException ("cellIndex");
+      if (cellIndex < 0) throw new ArgumentOutOfRangeException ("cellIndex");
     }
 
     /// <summary>
@@ -696,6 +700,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       get { return _visible; }
       set { _visible = value; }
+    }
+
+    /// <summary> Gets or sets a value indicating whether this row has been generated from a <see cref="IFormGridRowProvider"/>. </summary>
+    public bool IsGenerated
+    {
+      get { return _isGenerated; }
     }
 
     /// <summary> The <c>ValidationError</c> objects for this <c>FormGridRow</c>. </summary>
@@ -1442,7 +1452,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         tableRows, 
         FormGridRowType.TitleRow,
         labelsColumn,
-        controlsColumn);
+        controlsColumn,
+        false);
 
       formGridRows.Add (formGridRow);
     }
@@ -1472,7 +1483,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           tableRows, 
           FormGridRowType.DataRow,
           labelsColumn,
-          controlsColumn);
+          controlsColumn,
+          false);
         
         formGridRows.Add (formGridRow);
       }
@@ -1487,7 +1499,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           tableRows, 
           FormGridRowType.DataRow,
           labelsColumn,
-          controlsColumn);
+          controlsColumn,
+          false);
         
         formGridRows.Add (formGridRow);
 
@@ -1503,7 +1516,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           tableRows, 
           FormGridRowType.UnknownRow,          
           labelsColumn,
-          controlsColumn);
+          controlsColumn,
+          false);
        
         formGridRows.Add (formGridRow);
       }
@@ -1646,22 +1660,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
   }
 
-//  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-//  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
-//  protected void EnsureTransformIntoFormGridPreLoadViewState()
-//  {
-//    foreach (FormGrid formGrid in _formGrids.Values)
-//      EnsureTransformIntoFormGridPreLoadViewState (formGrid);
-//  }
-//  
-//  private void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
-//  {
-//    object hasCompleted = _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID];
-//    if (hasCompleted != null && (bool) hasCompleted)
-//      return;
-//    TransformIntoFormGridPreLoadViewState (formGrid);
-//  }
-
   private TransformationStep TransformIntoFormGridPreLoadViewState (FormGrid formGrid)
   {
     formGrid.Table.EnableViewState = false;
@@ -1683,8 +1681,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       if (formGridRow.Type == FormGridRowType.DataRow)
       {
-//        CreateRequiredMarker (formGridRow);
-//        CreateHelpProvider(formGridRow);
         CreateValidators (formGridRow);
         ApplyValidatorSettings (formGridRow);
       }
@@ -1695,37 +1691,35 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     return completedStep;
   }  
 
-//  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-//  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPostValidation/*' />
-//  protected void TransformIntoFormGridPostValidation()
-//  {
-//    foreach (FormGrid formGrid in _formGrids.Values)
-//      TransformIntoFormGridPostValidation (formGrid);
-//  }
-
   private TransformationStep TransformIntoFormGridPostValidation (FormGrid formGrid)
   {
     foreach (FormGridRow formGridRow in formGrid.Rows)
     {
-      if (formGridRow.Type == FormGridRowType.DataRow)
-      {
-        CreateRequiredMarker (formGridRow);
-        CreateHelpProvider(formGridRow);
-
-        RegisterValidationErrors (formGridRow);
-
-        LoadMarkersIntoCell (formGridRow);
-        if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
-            ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
-        {
-          LoadValidationMessagesIntoCell (formGridRow);
-        }
-      }
+      if (formGridRow.IsGenerated)
+        UpdateGeneratedRowsVisibility (formGridRow);
 
       if (!formGridRow.CheckVisibility())
+      {
         formGridRow.Hide();
+      }
+      else
+      {
+        if (formGridRow.Type == FormGridRowType.DataRow)
+        {
+          CreateRequiredMarker (formGridRow);
+          CreateHelpProvider(formGridRow);
 
-      AddShowEmptyCellsHack (formGridRow);
+          RegisterValidationErrors (formGridRow);
+
+          LoadMarkersIntoCell (formGridRow);
+          if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
+              ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
+          {
+            LoadValidationMessagesIntoCell (formGridRow);
+          }
+        }
+        AddShowEmptyCellsHack (formGridRow);
+      }
     }
 
     TransformationStep completedStep = TransformationStep.PostValidationTransformationCompleted;
@@ -1785,7 +1779,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         htmlTableRows, 
         FormGridRowType.DataRow, 
         LabelsColumn, 
-        ControlsColumn);
+        ControlsColumn,
+        true);
 
       formGrid.InsertNewFormGridRow (
         newFormGridRow, 
@@ -2363,6 +2358,38 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
         //  We have a help provider, first come, only one served
         return;
+      }
+    }
+  }
+
+  protected void UpdateGeneratedRowsVisibility (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
+    ArgumentUtility.CheckNotNull ("dataRow.ControlCell", dataRow.ControlsCell);
+
+    if (dataRow.LabelsCell.Controls.Count == 1 && dataRow.ControlsCell.Controls.Count == 1)
+    {
+      dataRow.LabelsCell.Controls[0].Visible = dataRow.ControlsCell.Controls[0].Visible;
+    }
+    else
+    {
+      bool isControlVisible = false;
+      foreach (Control control in dataRow.ControlsCell.Controls)
+      {
+        if (control.Visible)
+        {
+          isControlVisible = true;
+          break;
+        }
+      }
+      if (! isControlVisible)
+      {
+        foreach (Control label in dataRow.LabelsCell.Controls)
+        {
+          label.Visible = false;
+        }
       }
     }
   }
