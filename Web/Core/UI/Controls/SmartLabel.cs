@@ -96,10 +96,11 @@ public class SmartLabel: WebControl
 
   protected override void Render(HtmlTextWriter writer)
   {
+    ForControl = StringUtility.NullToEmpty (ForControl);
     this.RenderBeginTag (writer);
     string text = string.Empty;
 
-    if (StringUtility.IsNullOrEmpty (ForControl))
+    if (ForControl == string.Empty)
     {
       text = "[Label for Undefined Control]";
     }
