@@ -71,17 +71,23 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
   //  Create a temporary popup for calculating the size
 	var tempPopUp = window.document.createElement("div");
 	tempPopUp.className = _dropDownMenu_popUpClassName;
+	
 	for (var index in itemInfos)
 	{
 	  var item = DropDownMenu_CreateItem (window.document, itemInfos[index], selectionCount, false);
 	  if(item != null)
   	  tempPopUp.appendChild (item);
 	}
-	tempPopUp.style.position = 'absolute';
-	window.document.body.appendChild (tempPopUp);
+	
+	var tempPopUpWindow = window.document.createElement("div");
+	tempPopUpWindow.style.position = 'absolute';
+	tempPopUpWindow.style.left = 0;
+	tempPopUpWindow.style.top = 0;
+  tempPopUpWindow.appendChild (tempPopUp);
+	window.document.body.appendChild (tempPopUpWindow);
 	var popUpWidth	= tempPopUp.offsetWidth + tempPopUp.offsetLeft;
 	var popUpHeight = tempPopUp.offsetHeight + tempPopUp.offsetTop;
-	window.document.body.removeChild (tempPopUp);
+	window.document.body.removeChild (tempPopUpWindow);
 
   //  IE55up
   popUpWindow = window.createPopup();
@@ -190,7 +196,7 @@ function DropDownMenu_RepositionPopUp()
 
 function DropDownMenu_ClosePopUp()
 {
-  if (_dropDownMenu_currentPopUp != null)
+  if (_dropDownMenu_currentPopUp != null && _dropDownMenu_currentPopUp.document.window != null)
     _dropDownMenu_currentPopUp.document.window.close();
   _dropDownMenu_currentPopUp = null;
   if (_dropDownMenu_currentMenu != null)

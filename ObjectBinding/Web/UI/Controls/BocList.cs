@@ -40,8 +40,7 @@ public class BocList:
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
   private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
   private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
-  private const string c_optionsMenuIDSuffix = "_Boc_optionsMenu";
-  private const string c_optionsMenuGroupID = "BocList";
+  private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
 
   private const int c_titleRowIndex = -1;
 
@@ -281,8 +280,8 @@ public class BocList:
 
   protected override void CreateChildControls()
   {
-    _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
-    _optionsMenu.ID = this.ID + c_optionsMenuIDSuffix;
+    _optionsMenu = new DropDownMenu (ClientID, this);
+    _optionsMenu.ID = ID + c_optionsMenuIDSuffix;
     _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
 

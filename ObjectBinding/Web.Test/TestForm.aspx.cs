@@ -33,6 +33,7 @@ public class TestForm : Page
   protected System.Web.UI.WebControls.Button Button1;
   protected System.Web.UI.WebControls.Label EventLabel;
   protected System.Web.UI.WebControls.Button Button2;
+  protected Rubicon.ObjectBinding.Web.Controls.BocList BocList1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
 
 	private void Page_Load(object sender, System.EventArgs e)

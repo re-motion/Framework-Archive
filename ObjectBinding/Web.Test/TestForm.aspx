@@ -120,7 +120,21 @@
 </PersistedCommand>
 </obc:BocMenuItem>
 </ListMenuItems>
-</obc:boclist></td></tr></table>
+</obc:boclist></td></tr>
+<tr><td></td><td><obc:BocList id="BocList1" runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" PropertyIdentifier="Jobs" ShowAllProperties="True">
+<optionsmenuitems>
+<obc:BocMenuItem Text="test">
+<persistedcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+<obc:BocMenuItem Text="test">
+<persistedcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+</OptionsMenuItems></obc:BocList></td></tr>
+</table>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
