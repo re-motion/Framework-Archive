@@ -35,6 +35,7 @@
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
+    <property name="build.csc.define" value="DEBUG;TRACE" />
     <call target="initialize" force="true" />
   </target>
   
@@ -42,6 +43,7 @@
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
+    <property name="build.csc.define" value="TRACE" />
     <call target="initialize" force="true" />
   </target>
   
@@ -56,6 +58,22 @@
   
   <target name="incversion">
     <buildversion versionfile="build/buildversion.xml" increment="true" />
+  </target>
+  
+  <!--======================= VS.NET =======================-->
+  <target name="preparevs">
+    <call target="setdocumentation" force="true" />
+
+    <property name="project.name" value="Core" />
+    <call target="vsassemblyinfo" force="true" />
+    <property name="project.name" value="CoreTest" />
+    <call target="vsassemblyinfo" force="true" />
+    <property name="project.name" value="DevelopmentCore" />
+    <call target="vsassemblyinfo" force="true" />
+    <property name="project.name" value="DevelopmentCoreTest" />
+    <call target="vsassemblyinfo" force="true" />
+    <property name="project.name" value="CodeDom" />
+    <call target="vsassemblyinfo" force="true" />
   </target>
   
   <!--======================= PROJECTS =======================-->
@@ -159,6 +177,25 @@
         <filter token="keyfile" value="${build.keyfile}" />  
         <filter token="versionnumber" value="${build.version}" />
         <filter token="buildinfo" value=".NET Framework: ${nant.settings.currentframework}, build type: ${project.config}" />
+        <filter token="company" value="${text.companyname}" />
+        <filter token="copyright" value="${text.copyright}" />
+        <filter token="productname" value="${text.productname}" />
+      </filterset>
+      <fileset>
+        <includes name="${project.basedir}/AssemblyInfo.cs" />
+      </fileset>
+    </replace>
+  </target>
+    
+  <target name="vsassemblyinfo" description="prepare assembly info for VS.NET">
+    <property name="project.basedir" value="${nant.project.basedir}/${project.name}" />
+    <copy file="${project.basedir}/AssemblyInfoTemplate.cs"  tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
+    <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
+    <replace>
+      <filterset>
+        <filter token="keyfile" value="${build.keyfile}" />  
+        <filter token="versionnumber" value="${build.version.major}.${build.version.minor}.${build.version.build}.*" />
+        <filter token="buildinfo" value="VS.NET build" />
         <filter token="company" value="${text.companyname}" />
         <filter token="copyright" value="${text.copyright}" />
         <filter token="productname" value="${text.productname}" />
@@ -305,4 +342,14 @@
       </fileset>
     </zip>
   </target>
+  
+  <target name="getcurrent" depends="setdebug">
+    <delete dir="${solution.basedir}/build/Current" />
+    <copy todir="${solution.basedir}/build/Current">
+      <fileset basedir="${project.builddir}">
+        <includes name="*" />
+      </fileset>
+    </copy>
+  </target>
+  
 </project>
