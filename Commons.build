@@ -122,6 +122,8 @@
     <echo message="Add ${sourcezipfile.name}"/>
     <property name="SS.command" value="Add ${sourcezipfile.name}" />
     <call target="SSCommandline" />
+    <copy file="${zipfile.name}" todir="\\at-vie-dc-02\Development\build\libraries\Commons\build\" />  
+    <copy file="${sourcezipfile.name}" todir="\\at-vie-dc-02\Development\build\libraries\Commons\build\" />  
   </target>
 
   <!--======================= GetAll =======================-->
