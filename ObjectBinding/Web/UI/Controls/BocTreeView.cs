@@ -584,6 +584,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     add { Events.AddHandler (s_clickEvent, value); }
     remove { Events.RemoveHandler (s_clickEvent, value); }
   }
+
+  /// <summary> Gets the currently selected tree node. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public BocTreeNode SelectedNode
+  {
+    get { return (BocTreeNode) _treeView.SelectedNode; }
+  }
 }
 
 public class BusinessObjectPropertyTreeNodeInfo
