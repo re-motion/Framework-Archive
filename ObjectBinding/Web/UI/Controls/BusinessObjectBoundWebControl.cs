@@ -15,6 +15,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -354,6 +355,8 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
 {
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
+  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
+  private ResourceManagerSet _cachedResourceManager;
 
   /// <summary>
   ///   Explicitly specifies whether the control is required.
@@ -386,6 +389,33 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
   }
 
   public abstract void SaveValue (bool interim);
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected abstract IResourceManager GetResourceManager();
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  /// <param name="localResourcesType"> 
+  ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
+  ///   Typically the an enum or the derived class it self.
+  /// </param>
+  protected IResourceManager GetResourceManager (Type localResourcesType)
+  {
+    Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+
+    //  Provider has already been identified.
+    if (_cachedResourceManager != null)
+        return _cachedResourceManager;
+
+    //  Get the resource managers
+
+    IResourceManager localResourceManager = 
+        MultiLingualResourcesAttribute.GetResourceManager (localResources, true);
+    IResourceManager namingContainerResourceManager = 
+        ResourceManagerUtility.GetResourceManager (NamingContainer);
+    _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+
+    return _cachedResourceManager;
+  }
 
   public override bool IsReadOnly
   {
