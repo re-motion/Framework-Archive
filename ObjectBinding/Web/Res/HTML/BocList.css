@@ -19,6 +19,22 @@ td.bocListTitleCell
   border-color: Black;
 }
 
+td.bocListTitleCell a
+{
+  color: Blue;
+	padding: 2px;
+}
+
+td.bocListTitleCell a:hover
+{
+  color: Blue;
+	padding: 1px;
+	border-color: #2254b1;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fee197;	
+}
+
 /*  Style applied to the cells in the BocList's odd data rows. */
 td.bocListDataCellOdd
 {
@@ -55,8 +71,8 @@ td.bocListDataCellEven
 td.bocListDataCellOddSelected,
 td.bocListDataCellEvenSelected
 {
-	background-color: Navy;
-  color: White;
+	background-color: Highlight;
+  color: HighlightText;
  
   padding: 2px 2px 2px 5px;
   border-style: solid;

@@ -522,6 +522,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   private IBocCustomColumnDefinitionCell _customCell;
   private string _customCellType;
   private string _customCellArgument;
+  private bool _isSortable = false;
 
   /// <summary> Initializes a new instance of the <see cref="BocCustomColumnDefinition"/> class. </summary>
   public BocCustomColumnDefinition()
@@ -611,6 +612,18 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   { 
     get { return _propertyPathBinding.PropertyPathIdentifier; }
     set { _propertyPathBinding.PropertyPathIdentifier = value; }
+  }
+
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("A flag determining whether to enable sorting for this columns.")]
+  [DefaultValue (true)]
+  [NotifyParentProperty (false)]
+  public bool IsSortable
+  {
+    get { return _isSortable; }
+    set { _isSortable = value; }
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
