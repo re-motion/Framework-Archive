@@ -199,6 +199,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "TypeInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "types.xsd"
                     BuildAction = "Content"
                 />
@@ -378,11 +383,6 @@
                 />
                 <File
                     RelPath = "Mapping\MappingException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\MappingUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
