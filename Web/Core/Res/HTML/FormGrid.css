@@ -1,0 +1,125 @@
+body
+{
+	background-color: #ffffff;
+}
+
+body, input, textarea
+{
+	font-family: 'Arial' , 'Helvetica';
+}
+
+.formGridTable
+{
+  border-collapse: separate;
+  border-width: 1px;
+}
+
+.formGridTitleCell
+{
+	font-weight: bold;
+	font-size: 1em;
+	color: #000000;
+	text-decoration: none;
+
+  padding: 2px 2px 2px 2px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridLabelsCell
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	background-color: #E0E0E0;
+	line-height: 1em;
+	text-align: right;
+
+  padding: 2px 5px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridMarkersCell
+{
+  white-space: nowrap;
+
+  padding: 0px 5px 0px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridControlsCell
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	line-height: 1em;
+
+  padding: 0px 5px 0px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridValidationMessagesCell
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	line-height: 1em;
+
+  padding: 2px 7px 2px 7px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridTopDataRow
+{
+  border-style: solid;
+  border-top-width: 3px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+/*  Class for overriding the TableCell's general settings for input controls */
+.formGridControl
+{
+	font-size: 1em;
+}
+
+.formGridValidationMessage
+{
+	color: Red;
+  /*padding: 2px 0px 2px 0px;*/
+}
+
+.formGridValidationNotice
+{
+	color: Red;
+  /*padding: 2px 0px 2px 0px;*/
+}
