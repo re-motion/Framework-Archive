@@ -21,7 +21,7 @@ public interface IBusinessObjectClass
   ///   // the RequiresWriteBack property of the 'Address' business object class specifies whether the following statement is required:
   ///   person.Address = address;
   ///   ]]></code>
-  /// </remarks>
+  /// </example>
   bool RequiresWriteBack { get; }
 }
 
