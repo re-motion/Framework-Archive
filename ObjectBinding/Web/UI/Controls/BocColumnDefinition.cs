@@ -127,7 +127,7 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
   /// <summary> Gets or sets the <see cref="BocListItemCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocListItemCommand"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Category ("Action")]
+  [Category ("Behavior")]
   [Description ("The command rendered in this column.")]
   [NotifyParentProperty (true)]
   public BocListItemCommand Command
