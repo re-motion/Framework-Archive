@@ -38,18 +38,6 @@ public abstract class WxeStep: IDisposable
     get { return (_parentStep == null) ? null : _parentStep.Variables; }
   }
 
-  public void ExecuteNextStep ()
-  {
-    ExecuteNextStep (WxeContext.Current);
-  }
-
-  public virtual void ExecuteNextStep (WxeContext context)
-  {
-    // the default implementation assumes that the current step does not contain any child steps and therefore executes the parent's next step
-    if (ParentStep != null)
-      ParentStep.ExecuteNextStep (context);
-  }
-
   public WxeFunction RootFunction
   {
     get
@@ -95,6 +83,11 @@ public abstract class WxeStep: IDisposable
   {
     if (! _disposed)
       Dispose (false);
+  }
+
+  protected static WxeVariableReference varref (string localVariable)
+  {
+    return new WxeVariableReference (localVariable);
   }
 }
 

@@ -40,12 +40,6 @@ public class WxeStepList: WxeStep
     }
   }
 
-  public override void ExecuteNextStep (WxeContext context)
-  {
-    ++ _nextStep;
-    RootFunction.Execute (context);
-  }
-
   public WxeStep this[int index]
   {
     get { return (WxeStep) _steps[index]; }

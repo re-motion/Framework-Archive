@@ -75,7 +75,7 @@ public class SampleWxeFunction: WxeFunction, ISampleFunctionVariables
     Var2 = "Var2 - Step1";
   } 
   WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
-  WxeStep Step3 = new SampleWxeSubFunction ("@Var2", "constant for Var2");
+  WxeStep Step3 = new SampleWxeSubFunction (varref("Var2"), "constant for Var2");
   WxeStep Step4 = new WxePageStep ("WebForm1.aspx");
 }
 
