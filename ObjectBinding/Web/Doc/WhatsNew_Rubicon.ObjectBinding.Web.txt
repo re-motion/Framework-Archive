@@ -5,11 +5,12 @@
   * Sortieren: Bisher: Sortierung nach IBusinessObject.GetPropertyValue.ToString() falls 
     IBusinessObject.GetPropertyValue() nicht ICompareable unterstützt, jetzt ist die letzte Instanz
     IBusinessObject.GetPropertyString().
-  * Bug OptionsMenu, nur Version 1.2.10.0: Wird die BocList mit Menueinträgen im Designer abgespeichert, so wird die 
-    Get-Property IsSeparator mit persistiert. Dies verhindert ein Parsen des Controls. 
+    
+- BocList OptionsMenu, BocList ListMenu, BocReferenceValue OptionsMenu
+  * Bug (nur Version 1.2.10.0): Wird die BocList oder der BocReferenceValue mit Menueinträgen im Designer 
+    abgespeichert, so wird die Get-Property IsSeparator persistiert. Dies verhindert ein erneutes Parsen des Controls. 
     Abhilfe: IsSeparator=false löschen und Version 1.2.11.0 einspielen.
     
-
 - BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue, BocList
   * Lokaliserung der Resourcen für Deutsch.
     
