@@ -491,12 +491,20 @@ public class PageUtility
     }
   }  
 
+  public static void RegisterClientScriptBlock (Page page, string key, string javascriptMethode)
+  {
+    string script = 
+        @"<script language=""javascript"" type=""text/javascript"">" +
+        javascriptMethode +
+	      "</script>";
+
+    page.RegisterClientScriptBlock (key, script);
+  }
+
   public static void RegisterWindowOpenJavascript (Page page)
   {
     string script = @"
-        <script language=""javascript"" type=""text/javascript"">
-
-	        function WindowOpen (url, useScrollBars)
+          function WindowOpen (url, useScrollBars)
 	        { 
 	          var windowMaxWidth = 1010;
 	          var windowMaxHeight = 700;
@@ -516,10 +524,9 @@ public class PageUtility
   			        ""width="" + windowMaxWidth + "",height="" + windowMaxHeight + 
                 "",top="" + windowTop + "",left="" + windowLeft + "","" + 
 	  		        ""resizable=yes,location=no,menubar=no,status=no,toolbar=no,scrollbars="" + useScrollBars);
-	        }	    
-	      </script>";
+	        }";
 
-    page.RegisterClientScriptBlock (c_windowOpenJavascriptKey, script);
+    RegisterClientScriptBlock (page, c_windowOpenJavascriptKey, script);
   }
 
   public static string GetWindowOpenJavascript (string url, bool useScrollbars)
