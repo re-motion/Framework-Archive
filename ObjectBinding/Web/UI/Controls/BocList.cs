@@ -85,7 +85,7 @@ public class BocList:
   private bool _isDirty = true;
 
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
-  private DropDownList _additionalColumnsList = null;
+  private DropDownList _additionalColumnsList = new DropDownList();
 
   private ImageButton moveFirstButton = null;
   private ImageButton moveLastButton = null;
@@ -100,7 +100,7 @@ public class BocList:
   /// <summary> The user independent column defintions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
 
-  private BocColumnDefinition[] _allPropertyColumns;
+  private BocColumnDefinition[] _allPropertyColumns = new BocColumnDefinition[0];
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
@@ -149,7 +149,6 @@ public class BocList:
 	{
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
-    _allPropertyColumns = new BocColumnDefinition[0];
   }
 
 	// methods and properties
@@ -162,7 +161,6 @@ public class BocList:
   {
     base.OnInit (e);
 
-    _additionalColumnsList = new DropDownList();
     moveFirstButton = new ImageButton();
     moveLastButton = new ImageButton();
     movePreviousButton = new ImageButton();

@@ -23,8 +23,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Class/*' />
 //  TODO: HTMLEncode
 [ToolboxData("<{0}:FormGridManager runat='server' visible='true'></{0}:FormGridManager>")]
-[ToolboxItemFilter("System.Web.UI")]
-public class FormGridManager : WebControl, IResourceDispatchTarget
+public class FormGridManager : Control, IResourceDispatchTarget
 {
   // types
 

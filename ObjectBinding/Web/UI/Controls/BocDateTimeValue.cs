@@ -37,8 +37,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> String inserted before the date pciker button during design mode. </summary>
   private const string c_designModeDatePickerImageSpacer = " ";
 
-  const int c_defaultDateTextBoxWidthInPoints = 75;
-  const int c_defaultTimeTextBoxWidthInPoints = 50;
+  const int c_defaultDateTextBoxWidthInPoints = 70;
+  const int c_defaultTimeTextBoxWidthInPoints = 40;
 
   private const string c_requiredErrorMessage = "Please enter a value.";
   private const string c_incompleteErrorMessage = "Please enter a date.";
