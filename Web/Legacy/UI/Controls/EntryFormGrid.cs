@@ -26,7 +26,7 @@ public class EntryFieldBreak: Control
   protected override void Render (HtmlTextWriter writer)
   {
     writer.Write ("</td></tr><tr><td colspan=\"4\">{0}</td><td>{0}", 
-      EntryFormGrid.GetWhitespaceImage (0, 0));
+      EntryFormGrid.GetWhitespaceImage (this.Page, 0, 0));
   }
 }
   
@@ -150,24 +150,37 @@ public class EntryFormGrid: Control
 
 			// write vertical empty space before titles
 			if (i != 0 && control is EntryTitle)
-				writer.WriteLine ("<tr><td>{0}</td></tr>", GetWhitespaceImage (1, 10));
+				writer.WriteLine ("<tr><td>{0}</td></tr>", GetWhitespaceImage (this.Page, 1, 10));
 
 			control.RenderControl (writer);
 		}
 
 		writer.WriteLine ("</table>");
 	}
-	
-  internal static string GetWhitespaceImage (int width, int height)
+
+  private static string _relativeImagePath = "Images/";
+
+  public static string RelativeImagePath
   {
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"../Images/ws.gif\">", 
-        width, height);
+    get { return _relativeImagePath; }
+    set { _relativeImagePath = value; }
   }
 
-  internal static string GetWhitespaceImage (string width, string height)
+  public static string GetImagePath (Page sourcePage, string imgFileName)
   {
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"../Images/ws.gif\">", 
-        width, height);
+    return PageUtility.GetPhysicalPageUrl (sourcePage, RelativeImagePath + imgFileName);
+  }
+	
+  internal static string GetWhitespaceImage (Page sourcePage, int width, int height)
+  {
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
+        width, height, EntryFormGrid.GetImagePath (sourcePage, "ws.gif"));
+  }
+
+  internal static string GetWhitespaceImage (Page sourcePage, string width, string height)
+  {
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
+        width, height, EntryFormGrid.GetImagePath (sourcePage, "ws.gif"));
   }
 }
 
@@ -221,7 +234,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage ("1", Padding));
+      writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (this.Page, "1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -229,12 +242,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table bgcolor=\"black\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"100%\">"
-			  	+ EntryFormGrid.GetWhitespaceImage (1, 2)
+			  	+ EntryFormGrid.GetWhitespaceImage (this.Page, 1, 2)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 3));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (this.Page, 1, 3));
 	}
 }
 
@@ -419,16 +432,17 @@ public class EntryField: Control
 		writer.WriteLine ("<tr{0}>", tagStyle);
 		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
-		writer.WriteLine ("<td class=\"label\">{0}</td>", EntryFormGrid.GetWhitespaceImage (7, 1));
-		writer.WriteLine ("<td>{0}</td>", EntryFormGrid.GetWhitespaceImage (3, 1));
+		writer.WriteLine ("<td class=\"label\">{0}</td>", EntryFormGrid.GetWhitespaceImage (this.Page, 7, 1));
+		writer.WriteLine ("<td>{0}</td>", EntryFormGrid.GetWhitespaceImage (this.Page, 3, 1));
 		writer.WriteLine ("<td nowrap>");
 
     if (validatorsInvalid)
     {
       // at least one Validator is invalid
       // => display "invalid field indicator" which has higher priority than the "required field indicator"
-      writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
-        + "width=\"12\" height=\"20\" border=\"0\"/>");
+      writer.WriteLine ("<img src=\"{0}\" alt=\"" + validatorMessages + "\""
+        + "width=\"12\" height=\"20\" border=\"0\"/>", 
+        EntryFormGrid.GetImagePath (this.Page, "field-error.gif"));
     }
     else
     {
@@ -436,12 +450,13 @@ public class EntryField: Control
       // => display the "required field indicator" if requested
       if (this.IsRequired)
       {
-        writer.WriteLine ("<img src=\"../Images/field-required.gif\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
-          + "width=\"12\" height=\"20\" border=\"0\"/>");
+        writer.WriteLine ("<img src=\"{0}\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
+          + "width=\"12\" height=\"20\" border=\"0\"/>",
+          EntryFormGrid.GetImagePath (this.Page, "field-required.gif"));
       }
       else
       {
-        writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
+        writer.WriteLine (EntryFormGrid.GetWhitespaceImage (this.Page, 12, 20));
       }
     }
     
@@ -449,13 +464,14 @@ public class EntryField: Control
 		{
 			writer.WriteLine (
 					"<a href=\"{0}\" target=\"_new\">"
-						+ "<img src=\"../Images/field-info.gif\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
+						+ "<img src=\"{1}\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
-					this.InfoUrl);
+					this.InfoUrl,
+          EntryFormGrid.GetImagePath (this.Page, "field-info.gif"));
     }
 		else
 		{
-			writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
+			writer.WriteLine (EntryFormGrid.GetWhitespaceImage (this.Page, 12, 20));
 		}
 
 		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);
@@ -464,7 +480,7 @@ public class EntryField: Control
 
 		writer.Write ("</td>");
 		writer.WriteLine ("</tr>");
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (this.Page, 1, 1));
 	}
 
   private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
