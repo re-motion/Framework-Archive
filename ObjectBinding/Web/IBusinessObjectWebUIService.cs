@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using Rubicon.ObjectBinding;
+using System.Web.UI.WebControls;
 
 namespace Rubicon.ObjectBinding.Web
 {
@@ -16,12 +17,15 @@ public sealed class IconPrototype
 {
   private string _url;
 
-  private Size _size;
+  private Unit _width;
 
-  public IconPrototype (string url, Size size)
+  private Unit _height;
+
+  public IconPrototype (string url, Unit width, Unit height)
   {
     _url = url;
-    _size = size;
+    _width = _width;
+    _height = height;
   }
 
   public string Url
@@ -30,10 +34,16 @@ public sealed class IconPrototype
     set { _url = value; }
   }
 
-  public Size Size
+  public Unit Width
   {
-    get { return _size; }
-    set { _size = value; }
+    get { return _width; }
+    set { _width = value; }
+  }
+
+  public Unit Height
+  {
+    get { return _height; }
+    set { _height = value; }
   }
 }
 
