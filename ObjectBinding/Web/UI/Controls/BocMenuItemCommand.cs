@@ -68,7 +68,7 @@ public class BocMenuItemCommand: BocCommand
   /// </summary>
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
 
-  public MenuItemClickEventHandler Click;
+  public WebMenuItemClickEventHandler Click;
 
   /// <summary> Initializes an instance. </summary>
   public BocMenuItemCommand()
@@ -87,7 +87,7 @@ public class BocMenuItemCommand: BocCommand
   {
     if (Click != null)
     {
-      MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
       Click (this, e);
     }
   }
