@@ -344,6 +344,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\CollectionEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\DataManagementException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -375,6 +380,26 @@
                 />
                 <File
                     RelPath = "DataManagement\MultipleObjectsRelationLinkCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\NullRelationEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\ObjectEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\RelationEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\RelationEndPointList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -470,31 +495,6 @@
                 />
                 <File
                     RelPath = "Persistence\WhereClauseBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\CollectionEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\NullRelationEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\ObjectEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\RelationEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\RelationEndPointList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

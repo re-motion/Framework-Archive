@@ -1,9 +1,8 @@
 using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.Relations
+namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class RelationEndPoint : INullable
 {

@@ -1,6 +1,5 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Relations;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 

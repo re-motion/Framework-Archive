@@ -338,17 +338,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\RelationEndPointIDTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\RelationEndPointListTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "DataManagement\RelationEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationLinkIDTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

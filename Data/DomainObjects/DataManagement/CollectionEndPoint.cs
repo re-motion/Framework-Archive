@@ -2,7 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Relations
+namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class CollectionEndPoint : RelationEndPoint
 {
