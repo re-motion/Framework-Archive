@@ -3,7 +3,7 @@ using Rubicon.NullableValueTypes;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.Mapping
 {
 public class PropertyDefinition
 {
