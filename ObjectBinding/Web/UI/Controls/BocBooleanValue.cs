@@ -145,7 +145,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
+  /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnCheckedChanged (EventArgs e)
   {
@@ -271,8 +271,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    _notNullItemValidator = new CompareValidator();
-    
     _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = ID;
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
@@ -352,9 +350,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       }
 
       string requiredFlag = IsRequired ? "true" : "false";
+      string labelID = _showDescription ? "'" + _label.ID + "'" : "null";
       script = "BocBooleanValue_SelectNextCheckboxValue ('" 
-          + _imageButton.ID + "', '" 
-          + _label.ID + "', '" 
+          + _imageButton.ID + "', " 
+          + labelID + ", '" 
           + _hiddenField.ID + "', "
           +  requiredFlag + ");"
           + " return false;";
@@ -379,8 +378,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     if (_showDescription)
       _label.Text = description;
 
-    //  Hide icon in accessibility mode if the description is enabled
-    _imageButton.AlternateText = _showDescription ? string.Empty : _label.Text;
+    _imageButton.AlternateText = description;
     _imageButton.Style["vertical-align"] = "text-bottom";
 
     _label.Height = Height;
@@ -550,6 +548,19 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   public Label Label
   {
     get { return _label; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the flag that determines whether to show the description next to the checkbox.
+  /// </summary>
+  /// <value> <see langword="true"/> to enable the description. </value>
+  [Description("The flag that determines whether to show the description next to the checkbox")]
+  [Category ("Appearance")]
+  [DefaultValue(true)]
+  public bool ShowDescription
+  {
+    get { return _showDescription; }
+    set { _showDescription = value; }
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <c>True</c>. </summary>

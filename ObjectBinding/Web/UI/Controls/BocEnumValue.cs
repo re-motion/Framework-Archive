@@ -291,8 +291,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       return new BaseValidator[]{};
 
     BaseValidator[] validators = new BaseValidator[1];
-
-    _notNullItemValidator = new CompareValidator();
     
     _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
