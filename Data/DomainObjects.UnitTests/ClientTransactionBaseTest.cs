@@ -11,6 +11,8 @@ public class ClientTransactionBaseTest : DatabaseTest
 
   // member fields
 
+  private ClientTransactionMock _clientTransactionMock;
+
   // construction and disposing
 
   protected ClientTransactionBaseTest ()
@@ -19,10 +21,23 @@ public class ClientTransactionBaseTest : DatabaseTest
 
   // methods and properties
 
+  public override void SetUp ()
+  {
+    base.SetUp ();
+
+    _clientTransactionMock = new ClientTransactionMock ();
+    ClientTransaction.SetCurrent (_clientTransactionMock);
+  }
+
   [TearDown]
   public virtual void TearDown ()
   {
     ClientTransaction.SetCurrent (null);
+  }
+
+  protected ClientTransactionMock ClientTransactionMock
+  {
+    get { return _clientTransactionMock; }
   }
 }
 }
