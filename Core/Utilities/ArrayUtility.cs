@@ -69,11 +69,11 @@ public sealed class ArrayUtility
     array.CopyTo (result, 0);
     return result;
   }
-
-  public static Array Convert (IList list, Type elementType)
+  
+  public static Array Convert (ICollection collection, Type elementType)
   {
-    Array result = Array.CreateInstance (elementType, list.Count);
-    list.CopyTo (result, 0);
+    Array result = Array.CreateInstance (elementType, collection.Count);
+    collection.CopyTo (result, 0);
     return result;
   }
 
