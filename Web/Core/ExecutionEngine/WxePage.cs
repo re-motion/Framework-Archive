@@ -19,9 +19,9 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
 public class WxePageInfo: WxeTemplateControlInfo
 {
-  public void OnLoad (IWxePage page, HttpContext context, ref HtmlForm form)
+  public void OnInit (IWxePage page, HttpContext context, ref HtmlForm form)
   {
-    OnLoad (page, context);
+    OnInit (page, context);
 
     if (form == null)
       throw new HttpException (page.GetType().FullName + " does not initialize field 'Form'.");
@@ -30,6 +30,9 @@ public class WxePageInfo: WxeTemplateControlInfo
 
   public NameValueCollection DeterminePostBackMode (HttpContext context)
   {
+    if (! WxeContext.Current.IsPostBack)
+      return null;
+
     if (WxeContext.Current.PostBackCollection != null)
       return WxeContext.Current.PostBackCollection;
 
@@ -64,10 +67,10 @@ public class WxePage: Page, IWxePage
 
   protected HtmlForm Form;
 
-  protected override void OnLoad (EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
-    _wxeInfo.OnLoad (this, Context, ref Form);
-    base.OnLoad (e);
+    _wxeInfo.OnInit (this, Context, ref Form);
+    base.OnInit (e);
   }
 
   protected override NameValueCollection DeterminePostBackMode()

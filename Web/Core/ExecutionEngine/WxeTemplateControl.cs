@@ -20,7 +20,7 @@ public class WxeTemplateControlInfo
   private WxePageStep _currentStep;
   private WxeFunction _currentFunction;
 
-  public void OnLoad (IWxeTemplateControl control, HttpContext context)
+  public void OnInit (IWxeTemplateControl control, HttpContext context)
   {
     WxeHandler wxeHandler = context.Handler as WxeHandler;
     _currentStep = (wxeHandler == null) ? null : wxeHandler.CurrentFunction.ExecutingStep as WxePageStep;
