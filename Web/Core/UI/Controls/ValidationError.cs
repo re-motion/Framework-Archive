@@ -24,6 +24,8 @@ public class ValidationError
   /// <summary> The control with an invalid state. </summary>
   private Control _validatedControl;
 
+  private ControlCollection _label;
+
   /// <summary> The message to be displayed to the user. </summary>
   private string _validationMessage;
 
@@ -40,7 +42,7 @@ public class ValidationError
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
   /// <param name="validator"> The validator used to validate the <paramref name="validatedControl"/>. </param>
-	public ValidationError (Control validatedControl, IValidator validator)
+	public ValidationError (Control validatedControl, IValidator validator, ControlCollection label)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validator", validator);
@@ -48,7 +50,13 @@ public class ValidationError
     _validatedControl = validatedControl;
     _validationMessage = null;
     _validator = validator;
+    _label = label;
 	}
+
+  public ValidationError (Control validatedControl, IValidator validator)
+    : this (validatedControl, validator, null)
+	{
+  }
 
   /// <summary>
   ///   Initializes a new instance of the <see cref="ValidationError"/> class with the
@@ -57,7 +65,7 @@ public class ValidationError
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
   /// <param name="validationMessage"> The message to be displayed to the user. </param>
-  public ValidationError (Control validatedControl, string validationMessage)
+  public ValidationError (Control validatedControl, string validationMessage, ControlCollection label)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
@@ -65,6 +73,12 @@ public class ValidationError
     _validatedControl = validatedControl;
     _validationMessage = validationMessage;
     _validator = null;
+    _label = label;
+  }
+
+  public ValidationError (Control validatedControl, string validationMessage)
+    : this (validatedControl, validationMessage, null)
+  {
   }
 
   // methods and properties
@@ -74,6 +88,11 @@ public class ValidationError
   public Control ValidatedControl
   {
     get { return _validatedControl; }
+  }
+
+  public ControlCollection Label
+  {
+    get { return _label; }
   }
 
   /// <summary> The message to be displayed to the user. </summary>

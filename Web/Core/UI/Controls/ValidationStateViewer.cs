@@ -85,7 +85,6 @@ public class ValidationStateViewer : WebControl, IControl
   {
     _formGridManagers = new ArrayList();
     PopulateFormGridManagerList (this.Parent);
-    OutputValidationState();
   }
 
   /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>
@@ -113,38 +112,8 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  /// <summary>
-  ///   Outputs the validation state to the page as defined in <see cref="ValidationErrorStyle"/>.
-  /// </summary>
-  protected virtual void OutputValidationState()
-  {
-    switch (_validationErrorStyle)
-    {
-      case ValidationErrorStyle.DetailedMessages:
-      {
-        DisplayValidationMessages();
-        break;
-      }
-      case ValidationErrorStyle.Notice:
-      {
-        DisplayValidationNotice();
-        break;
-      }
-      case ValidationErrorStyle.HideErrors:
-      {
-        //  Do nothing
-        break;
-      }
-      default:
-      {
-        //  Do nothing
-        break;
-      }
-    }
-  }
-
   /// <summary> Displays a short notice if validation errors where found. </summary>
-  protected virtual void DisplayValidationNotice()
+  protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
     bool hasValidationErrors = false;
 
@@ -176,41 +145,85 @@ public class ValidationStateViewer : WebControl, IControl
   }
 
   /// <summary> Displays the validation messages for each error. </summary>
-  protected virtual void DisplayValidationMessages()
+  protected virtual void RenderValidationMessages (HtmlTextWriter writer)
   {
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);
     foreach (FormGridManager formGridManager in _formGridManagers)
     {
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
-
       //  Get validation messages
       foreach (ValidationError validationError in validationErrors)
       {
         if (validationError == null)
           continue;
 
+        writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+        if (validationError.Label  != null)
+        {
+          writer.AddStyleAttribute ("padding-right", "3pt");
+          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          foreach (Control control in validationError.Label)
+            control.RenderControl (writer);
+          writer.RenderEndTag();
+        }
+        else
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          writer.RenderEndTag();
+        }
+      
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
         //  Label resets the <select> element, ruining postback
         if (validationError.ValidatedControl is TextBox)
-          Controls.Add (validationError.ToLabel(CssClassValidationMessage));
+          validationError.ToLabel(CssClassValidationMessage).RenderControl (writer);
         else
-          Controls.Add (validationError.ToSpan(CssClassValidationMessage));
+          validationError.ToSpan(CssClassValidationMessage).RenderControl (writer);
+        writer.RenderEndTag();
 
-        Controls.Add (new LiteralControl ("<br />"));
+        writer.RenderEndTag();
+      }
+    }
+    writer.RenderEndTag();
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    if (ControlHelper.IsDesignMode (this, this.Context))
+    {
+      writer.WriteLine ("No validation at design time");
+    }
+    else
+    {
+      switch (_validationErrorStyle)
+      {
+        case ValidationErrorStyle.DetailedMessages:
+        {
+          RenderValidationMessages (writer);
+          break;
+        }
+        case ValidationErrorStyle.Notice:
+        {
+          RenderValidationNotice (writer);
+          break;
+        }
+        case ValidationErrorStyle.HideErrors:
+        {
+          //  Do nothing
+          break;
+        }
+        default:
+        {
+          //  Do nothing
+          break;
+        }
       }
     }
   }
 
-  /// <summary> Render this control to the output parameter specified. </summary>
-	/// <param name="output"> The HTML writer to write out to. </param>
-	protected override void Render(HtmlTextWriter output)
-	{
-    if (ControlHelper.IsDesignMode (this, this.Context))
-    {
-      if (Controls.Count == 0)
-        Controls.Add(new LiteralControl("No validation at design time"));
-    }
-
-    base.Render(output);
-  }
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 

@@ -1582,7 +1582,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
       //  Only visible controls: Build ValidationError
       if (controlToValidate.Visible)
-        validationErrorList.Add (new ValidationError (controlToValidate, validator));
+        validationErrorList.Add (new ValidationError (controlToValidate, validator, dataRow.LabelsCell.Controls));
     }
 
     bool hasValidationErrors = validationErrorList.Count > 0;
