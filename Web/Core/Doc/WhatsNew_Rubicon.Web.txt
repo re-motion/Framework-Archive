@@ -4,6 +4,11 @@
 - Rubicon.Web.Utilities.ControlHelper
   * LoadViewStateRecursive: neue Methode, ruft Control.LoadViewStateRecursive auf.
   * SaveViewStateRecursive: neue Methode, ruft Control.SaveViewStateRecursive auf.
+  * ViewState, EventTarget, EventArgument: Properties welche die .net IDs für die HiddenFields enthalten.
+  
+- WxePage, WxepageStep
+  * Verwenden nun die Properties ControlHelper.ViewState, ControlHelper.EventTarget und ControlHelper.EventArgument
+    statt hertcodierter Strings.
 
 1.2.10.0
 ========
