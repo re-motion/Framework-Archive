@@ -1,3 +1,12 @@
+1.2.15.0
+========
+
+- BocList
+  * BugFix: Selection-Mode Single: in der TitleRow wurde keine Zelle gerendert.
+
+- BocList, BocTextValue, BocMultilineTextValue, BocReferenceValue
+  * BugFix: Html-Encode für Read-Only Werte.
+  
 1.2.14.0
 ========
 
