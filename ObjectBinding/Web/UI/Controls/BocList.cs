@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.Design;
 using System.Reflection;
 using System.Text;
+using System.Drawing.Design;
 using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
@@ -19,6 +20,7 @@ using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -218,7 +220,7 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
-  private DropDownMenu _optionsMenu = new DropDownMenu (c_optionsMenuGroupID);
+  private DropDownMenu _optionsMenu;
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -330,6 +332,8 @@ public class BocList:
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
 	public BocList()
 	{
+    //  Reference 'this' is not used for anything but storing the reference to the BocList
+    _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
     //  Reference 'this' is not used for anything but storing the reference to the BocList
     _fixedColumns = new BocColumnDefinitionCollection (this);
     //  Reference 'this' is not used for anything but storing the reference to the BocList
@@ -461,7 +465,7 @@ public class BocList:
     BocColumnDefinition column = columns[columnIndex];
     if (column.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
-    BocColumnCommand command = column.Command;
+    BocListItemCommand command = column.Command;
 
     switch (command.Type)
     {
@@ -2466,6 +2470,18 @@ public class BocList:
     { 
       Events.RemoveHandler (EventCommandClick, value);
     }
+  }
+  /// <summary> Gets the user independent column defintions. </summary>
+  /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Behavior")]
+  [Description ("The menu items displayed by options menu.")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (MenuItemCollectionEditor), typeof (UITypeEditor))]
+  public MenuItemCollection OptionsMenuItems
+  {
+    get { return _optionsMenu.MenuItems; }
   }
 
   /// <summary> Gets or sets the width reserved for the menu block. </summary>

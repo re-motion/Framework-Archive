@@ -9,16 +9,17 @@ using System.Reflection;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-//  TODO: BocColumnCommand: Move long comment blocks to xml-file
-/// <summary> A <see cref="BocColumnCommand"/> defines an action the user can invoke on a datarow. </summary>
+//  TODO: BocListItemCommand: Move long comment blocks to xml-file
+/// <summary> A <see cref="BocListItemCommand"/> defines an action the user can invoke on a datarow. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class BocColumnCommand: Command
+public class BocListItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -107,12 +108,10 @@ public class BocColumnCommand: Command
   /// </summary>
   private ColumnWxeFunctionCommandInfo _wxeFunctionCommand = new ColumnWxeFunctionCommandInfo();
 
-  private IBusinessObjectBoundWebControl _ownerControl = null;
-
   //private ScriptCommandInfo _scriptCommand = null;
 
   /// <summary> Simple Constructor. </summary>
-  public BocColumnCommand()
+  public BocListItemCommand()
   {
   }
 
@@ -166,12 +165,12 @@ public class BocColumnCommand: Command
       parameters["object"] = businessObject;
       if (businessObjectID != null)
         parameters["id"] = businessObjectID;
-      if (_ownerControl != null)
+      if (OwnerControl != null)
       {
-        if (_ownerControl.DataSource != null && _ownerControl.Value != null)
-          parameters["parent"] = _ownerControl.DataSource.BusinessObject;
-        if (_ownerControl.Property != null)
-          parameters["parentproperty"] = _ownerControl.Property;
+        if (OwnerControl.DataSource != null && OwnerControl.Value != null)
+          parameters["parent"] = OwnerControl.DataSource.BusinessObject;
+        if (OwnerControl.Property != null)
+          parameters["parentproperty"] = OwnerControl.Property;
       }
       ExecuteWxeFunction (wxePage, parameters);
     }
@@ -203,16 +202,6 @@ public class BocColumnCommand: Command
   {
     get { return _wxeFunctionCommand; }
     set { _wxeFunctionCommand = (ColumnWxeFunctionCommandInfo) value; }
-  }
-
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> 
-  ///   to which this object belongs. 
-  /// </summary>
-  protected internal IBusinessObjectBoundWebControl OwnerControl
-  {
-    get { return _ownerControl;  }
-    set { _ownerControl = value; }
   }
 }
 
