@@ -2372,17 +2372,34 @@ public class BocList:
           if (compareResult != 0)
             return compareResult;
 
-          if (simpleColumn != null)
+          string stringValueA = null;
+          string stringValueB = null;
+          try
           {
-            string stringValueA = simpleColumn.GetStringValue (businessObjectA);
-            string stringValueB = simpleColumn.GetStringValue (businessObjectB);
-            if (currentEntry.Direction == SortingDirection.Ascending)
-              compareResult = string.Compare (stringValueA, stringValueB);
+            if (simpleColumn != null)
+              stringValueA = simpleColumn.GetStringValue (businessObjectA);
             else
-              compareResult = string.Compare (stringValueB, stringValueA);
-            if (compareResult != 0)
-              return compareResult;
+              stringValueA = propertyPath.GetString (businessObjectA, "");
           }
+          catch
+          {
+          }
+          try
+          {
+            if (simpleColumn != null)
+              stringValueB = simpleColumn.GetStringValue (businessObjectB);
+            else
+              stringValueB = propertyPath.GetString (businessObjectB, "");
+          }
+          catch
+          {
+          }
+          if (currentEntry.Direction == SortingDirection.Ascending)
+            compareResult = string.Compare (stringValueA, stringValueB);
+          else
+            compareResult = string.Compare (stringValueB, stringValueA);
+          if (compareResult != 0)
+            return compareResult;
         }
         else if (compoundColumn != null)
         {
@@ -2398,8 +2415,22 @@ public class BocList:
               return compareResult;
           }
               
-          string stringValueA = compoundColumn.GetStringValue (businessObjectA);
-          string stringValueB = compoundColumn.GetStringValue (businessObjectB);
+          string stringValueA = null;
+          string stringValueB = null;
+          try
+          {
+            stringValueA = compoundColumn.GetStringValue (businessObjectA);
+          }
+          catch
+          {
+          }
+          try
+          {
+            stringValueB = compoundColumn.GetStringValue (businessObjectB);
+          }
+          catch
+          {
+          }
           if (currentEntry.Direction == SortingDirection.Ascending)
             compareResult = string.Compare (stringValueA, stringValueB);
           else

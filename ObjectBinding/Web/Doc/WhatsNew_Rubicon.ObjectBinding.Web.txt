@@ -1,3 +1,11 @@
+1.2.10.0
+========
+
+- BocList
+  * Sortieren: Bisher: Sortierung nach IBusinessObject.GetPropertyValue.ToString() falls 
+    IBusinessObject.GetPropertyValue() nicht ICompareable unterstützt, jetzt ist die letzte Instanz
+    IBusinessObject.GetPropertyString().
+  
 1.2.9.0
 =======
 
