@@ -69,11 +69,11 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   // construction and disposing
 
-  public BindableDomainObject ()
+  protected BindableDomainObject ()
   {
   }
 
-  public BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
+  protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
   }
 
