@@ -67,11 +67,10 @@ public class ClassDefinitionLoader
 
     foreach (XmlNode classNodeWithBaseClass in classNodesWithBaseClass)
     {
-      ClassDefinition derivedClass = classDefinitions.GetByClassID (
-          classNodeWithBaseClass.SelectSingleNode ("@id").InnerText);
+      ClassDefinition derivedClass = classDefinitions[classNodeWithBaseClass.SelectSingleNode ("@id").InnerText];
 
       string baseClassID = classNodeWithBaseClass.SelectSingleNode ("@baseClass").InnerText;
-      ClassDefinition baseClass = classDefinitions.GetByClassID (baseClassID);
+      ClassDefinition baseClass = classDefinitions[baseClassID];
 
       if (baseClass == null)
         throw CreateMappingException ("Class '{0}' refers to non-existing base class '{1}'.", derivedClass.ID, baseClassID);
