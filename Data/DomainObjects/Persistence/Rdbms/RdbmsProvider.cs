@@ -294,7 +294,7 @@ public abstract class RdbmsProvider : StorageProvider
     if (command == null)
       return;
 
-    if (dataContainer.State == StateType.Original)
+    if (dataContainer.State == StateType.Unchanged)
       return; 
 
     int recordsAffected = 0;

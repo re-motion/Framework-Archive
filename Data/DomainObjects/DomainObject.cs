@@ -67,12 +67,12 @@ public class DomainObject
   {
     get
     {
-      if (_dataContainer.State == StateType.Original)
+      if (_dataContainer.State == StateType.Unchanged)
       {
         if (ClientTransaction.Current.HasRelationChanged (this))
           return StateType.Changed;
         else
-          return StateType.Original;
+          return StateType.Unchanged;
       }
 
       return _dataContainer.State;
