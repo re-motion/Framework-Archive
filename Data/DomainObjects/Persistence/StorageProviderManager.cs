@@ -13,6 +13,7 @@ public class StorageProviderManager : IDisposable
 
   // member fields
 
+  private bool _disposed = false;
   private StorageProviderCollection _storageProviders;
 
   // construction and disposing
@@ -24,12 +25,18 @@ public class StorageProviderManager : IDisposable
 
   #region IDisposable Members
 
-  public void Dispose()
+  public void Dispose ()
   {
-    if (_storageProviders != null)
-      _storageProviders.Dispose ();
+    if (!_disposed)
+    {
+      if (_storageProviders != null)
+        _storageProviders.Dispose ();
 
-    _storageProviders = null;
+      _storageProviders = null;
+      
+      _disposed = true;
+      GC.SuppressFinalize (this);
+    }
   }
 
   #endregion
@@ -38,6 +45,7 @@ public class StorageProviderManager : IDisposable
 
   public StorageProvider GetMandatoryStorageProvider (string storageProviderID)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
 
     StorageProvider provider = this[storageProviderID];
@@ -54,6 +62,7 @@ public class StorageProviderManager : IDisposable
   {
     get 
     {
+      CheckDisposed ();
       ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
 
       if (_storageProviders.Contains (storageProviderID))
@@ -75,12 +84,22 @@ public class StorageProviderManager : IDisposable
 
   public StorageProviderCollection StorageProviders
   {
-    get { return _storageProviders; }
+    get 
+    { 
+      CheckDisposed ();
+      return _storageProviders; 
+    }
   }
 
   private PersistenceException CreatePersistenceException (string message, params object[] args)
   {
     return new PersistenceException (string.Format (message, args));
+  }
+
+  private void CheckDisposed ()
+  {
+    if (_disposed)
+      throw new ObjectDisposedException ("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
   }
 }
 }

@@ -39,8 +39,8 @@ public class StorageProviderCollection : CollectionBase, IDisposable
     for (int i = Count - 1; i>= 0; i--)
     {
       StorageProvider provider = this[i];
-      provider.Dispose ();
       this.Remove (provider.ID);
+      provider.Dispose ();      
       provider = null;
     }
 

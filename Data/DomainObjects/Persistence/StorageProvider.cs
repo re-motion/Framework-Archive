@@ -16,6 +16,7 @@ public abstract class StorageProvider : IDisposable
   // member fields
 
   private StorageProviderDefinition _storageProviderDefinition;
+  private bool _disposed = false;
 
   // construction and disposing
 
@@ -38,6 +39,10 @@ public abstract class StorageProvider : IDisposable
 
   protected virtual void Dispose (bool disposing)
   {
+    if (disposing)
+      _storageProviderDefinition = null;
+
+    _disposed = true;
   }
 
   // abstract methods and properties
@@ -60,12 +65,31 @@ public abstract class StorageProvider : IDisposable
 
   public string ID
   {
-    get { return _storageProviderDefinition.StorageProviderID; }
+    get 
+    {
+      CheckDisposed ();
+      return _storageProviderDefinition.StorageProviderID; 
+    }
   }
 
   protected StorageProviderDefinition StorageProviderDefinition
   {
-    get { return _storageProviderDefinition; }
+    get 
+    {
+      CheckDisposed ();
+      return _storageProviderDefinition; 
+    }
+  }
+
+  protected bool IsDisposed 
+  {
+    get { return _disposed; }
+  }
+
+  protected void CheckDisposed ()
+  {
+    if (_disposed)
+      throw new ObjectDisposedException ("StorageProvider", "A disposed StorageProvider cannot be accessed.");
   }
 }
 }
