@@ -103,11 +103,6 @@
         <Files>
             <Include>
                 <File
-                    RelPath = "ArgumentUtilityTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -119,21 +114,6 @@
                 <File
                     RelPath = "Core.Test.build"
                     BuildAction = "None"
-                />
-                <File
-                    RelPath = "EnumDescriptionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StringUtilityTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WorkContextTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "NullableValueTypes\ArithmeticsTests.cs"
@@ -184,6 +164,36 @@
                 />
                 <File
                     RelPath = "Text\CommandLine\CommandLineParserTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ArgumentUtilityTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ArrayUtilityTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\EnumDescriptionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\EnumUtilityTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\StringUtilityTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\WorkContextTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
