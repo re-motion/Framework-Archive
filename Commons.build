@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="nant-schema" name="Rubicon.CooNet">
+
+  <target name="debug" depends="setdebug,all" />
+  <target name="release" depends="setdebug,all" />
+  <target name="doc" depends="doc-public,doc-internal" />
+  <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
     
   <include buildfile="build/properties.include.xml"/>
 

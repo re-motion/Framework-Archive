@@ -297,7 +297,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     get { return _value; }
     set 
     { 
-      _value = (Enum) value; 
+      _value = value; 
       InternalLoadValue();
     }
   }
