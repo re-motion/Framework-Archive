@@ -47,11 +47,7 @@ public class PersonDetailsPage : WxeWebFormBase
 
     ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
 
-    this.DataBind();
-    if (!IsPostBack)
-    {
-      ReflectionBusinessObjectDataSourceControl.LoadValues (false);
-    }
+    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
 	}
 
 	override protected void OnInit(EventArgs e)
