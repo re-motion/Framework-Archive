@@ -46,7 +46,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectStringProperty) };
 
-  private static readonly object s_eventTextChanged = new object();
+  private static readonly object s_textChangedEvent = new object();
 
 	// member fields
   /// <summary>
@@ -135,7 +135,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnTextChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventTextChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_textChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -451,8 +451,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the checked state of the control changes.")]
   public event EventHandler TextChanged
   {
-    add { Events.AddHandler (s_eventTextChanged, value); }
-    remove { Events.RemoveHandler (s_eventTextChanged, value); }
+    add { Events.AddHandler (s_textChangedEvent, value); }
+    remove { Events.RemoveHandler (s_textChangedEvent, value); }
   }
 
   /// <summary>
