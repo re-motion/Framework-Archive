@@ -84,6 +84,32 @@ public class RelationEndPointIDTest
   }
 
   [Test]
+  public void TestEqualsForObjectID ()
+  {
+    RelationEndPointID endPointID2 = new RelationEndPointID (ObjectID.Parse (_objectID.ToString ()), _propertyName);
+    RelationEndPointID endPointID3 = new RelationEndPointID (DomainObjectIDs.Order2, _propertyName);
+
+    Assert.IsTrue (_endPointID.Equals (endPointID2));
+    Assert.IsTrue (endPointID2.Equals (_endPointID));
+    Assert.IsFalse (_endPointID.Equals (endPointID3));
+    Assert.IsFalse (endPointID3.Equals (_endPointID));
+    Assert.IsFalse (endPointID2.Equals (endPointID3));
+    Assert.IsFalse (endPointID3.Equals (endPointID2));
+  }
+
+  [Test]
+  public void TestEqualsWithOtherType ()
+  {
+    Assert.IsFalse (_endPointID.Equals (new RelationEndPointIDTest ()));
+  }
+
+  [Test]
+  public void TestEqualsWithNull ()
+  {
+    Assert.IsFalse (_endPointID.Equals (null));
+  }
+
+  [Test]
   public void TestToString ()
   {
     string expected = _objectID.ToString () + "/" + _propertyName;
