@@ -198,7 +198,7 @@ public class DataContainer
         return StateType.Changed;
     }
 
-    return StateType.Original;
+    return StateType.Unchanged;
   }
 
   protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)

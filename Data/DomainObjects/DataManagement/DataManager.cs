@@ -34,7 +34,7 @@ public class DataManager
     {
       _relationEndPointMap.CheckMandatoryRelations (domainObject);
 
-      if (domainObject.DataContainer.State != StateType.Original)
+      if (domainObject.DataContainer.State != StateType.Unchanged)
         changedDataContainers.Add (domainObject.DataContainer);
     }
 
@@ -47,7 +47,7 @@ public class DataManager
 
     foreach (DataContainer dataContainer in _dataContainerMap)
     {
-      if (dataContainer.DomainObject.State != StateType.Original)
+      if (dataContainer.DomainObject.State != StateType.Unchanged)
         changedDomainObjects.Add (dataContainer.DomainObject);
     }
 
