@@ -61,8 +61,7 @@ public class RelationEndPointID
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (objectID.ClassID);
-    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
+    _definition = objectID.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
     _objectID = objectID;
   }
 
