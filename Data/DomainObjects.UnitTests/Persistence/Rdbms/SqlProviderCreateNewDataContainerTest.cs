@@ -42,7 +42,7 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.IsNull (newContainer.Timestamp, "Timestamp of new DataContainer.");
     Assert.AreEqual (StateType.New, newContainer.State, "State of new DataContainer.");
     Assert.AreEqual (4, newContainer.PropertyValues.Count, "PropertyValues.Count");
-    Assert.AreEqual (0, newContainer["OrderNumber"], "OrderNumber");
+    Assert.AreEqual (int.MinValue, newContainer["OrderNumber"], "OrderNumber");
     Assert.AreEqual (DateTime.MinValue, newContainer["DeliveryDate"], "DeliveryDate");
     Assert.IsNull (newContainer["Official"], "Official");
     Assert.IsNull (newContainer["Customer"], "Customer");
@@ -55,17 +55,17 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     DataContainer newContainer = Provider.CreateNewDataContainer (classDefinition);
 
     Assert.AreEqual (false, newContainer["BooleanProperty"]);
-    Assert.AreEqual ((byte) 0, newContainer["ByteProperty"]);
+    Assert.AreEqual (byte.MinValue, newContainer["ByteProperty"]);
     Assert.AreEqual (DateTime.MinValue, newContainer["DateProperty"]);
     Assert.AreEqual (DateTime.MinValue, newContainer["DateTimeProperty"]);
-    Assert.AreEqual ((decimal) 0, newContainer["DecimalProperty"]);
-    Assert.AreEqual ((double) 0, newContainer["DoubleProperty"]);
+    Assert.AreEqual (decimal.MinValue, newContainer["DecimalProperty"]);
+    Assert.AreEqual (double.MinValue, newContainer["DoubleProperty"]);
     Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, newContainer["EnumProperty"]);
     Assert.AreEqual (Guid.Empty, newContainer["GuidProperty"]);
-    Assert.AreEqual ((short) 0, newContainer["Int16Property"]);
-    Assert.AreEqual ((int) 0, newContainer["Int32Property"]);
-    Assert.AreEqual ((long) 0, newContainer["Int64Property"]);
-    Assert.AreEqual ((float) 0, newContainer["SingleProperty"]);
+    Assert.AreEqual (short.MinValue, newContainer["Int16Property"]);
+    Assert.AreEqual (int.MinValue, newContainer["Int32Property"]);
+    Assert.AreEqual (long.MinValue, newContainer["Int64Property"]);
+    Assert.AreEqual (float.MinValue, newContainer["SingleProperty"]);
     Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
 
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);
