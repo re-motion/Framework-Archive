@@ -226,7 +226,12 @@ public abstract class RdbmsProvider : StorageProvider
           classDefinition.ID, propertyName);
     }
 
-    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, classDefinition, property, relatedID);
+    VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition = 
+        (VirtualRelationEndPointDefinition) classDefinition.GetOppositeEndPointDefinition (property.PropertyName);
+
+    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
+        this, classDefinition, property, relatedID, oppositeRelationEndPointDefinition.SortExpression);
+
     using (IDbCommand command = commandBuilder.Create ())
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
