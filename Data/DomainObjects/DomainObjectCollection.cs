@@ -287,7 +287,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br />
-  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
+  ///   <i>index</i> is equal to or greater than the number of items in the collection.
   /// </exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException">
@@ -492,7 +492,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br />
-  ///   <i>index</i> is greater than <see cref="Count"/>.
+  ///   <i>index</i> is greater than the number of items in the collection.
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
@@ -669,7 +669,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br />
-  ///   <i>index</i> is greater than <see cref="Count"/>.
+  ///   <i>index</i> is greater than the number of items in the collection.
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">

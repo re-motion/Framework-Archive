@@ -81,7 +81,7 @@ public class ClientTransaction
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
   /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
-  /// <exception cref="Persistance.StorageProviderException">An error occured while committing the changes to the datasource.</exception>
+  /// <exception cref="Persistence.StorageProviderException">An error occured while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
     BeginCommit ();
@@ -343,7 +343,7 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="DomainObjectCollection"/>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/>, raises the <see cref="Load"/> event and optionally registers the relation with the specified <see cref="RelationEndPointID"/>.
+  /// Creates a new <see cref="DomainObjectCollection"/>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainer"/>s, raises the <see cref="Loaded"/> event and optionally registers the relation with the specified <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
@@ -364,7 +364,7 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType.</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/> and raises the <see cref="Load"/> event.
+  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainer"/>s and raises the <see cref="Loaded"/> event.
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
@@ -381,7 +381,7 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType.</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/>, raises the <see cref="Load"/> event and optionally registers the relation with the specified <see cref="RelationEndPointID"/>.
+  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType.</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainer"/>s, raises the <see cref="Loaded"/> event and optionally registers the relation with the specified <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>

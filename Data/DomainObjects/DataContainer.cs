@@ -268,7 +268,7 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the <see cref="Configuration.Mapping.ClassDefinition"/> of the <see cref="DataContainer"/>.
+  /// Gets the <see cref="Mapping.Configuration.ClassDefinition"/> of the <see cref="DataContainer"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
   public ClassDefinition ClassDefinition
