@@ -135,10 +135,17 @@ public class PageUtility
 
   private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
   { 
+    if (page.Session.IsCookieless)
+      return page.Request.ApplicationPath + "/(" + page.Session.SessionID + ")/" + relativeUrl;
+    else
+      return page.Request.ApplicationPath + "/" + relativeUrl;
+
+    /*
     string returnUrl;
 
-    Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
-    
+    //Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
+    Uri pageUrl = new Uri (page.Request.ApplicationPath + relativeUrl);
+
     // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
     // removes cookie information from the URL => manually add cookie information to URL
     if (page.Session.IsCookieless)
@@ -158,6 +165,7 @@ public class PageUtility
     }
     
     return returnUrl;
+    */
   }
 
   public static string AddCleanupToken (Page page, string url)

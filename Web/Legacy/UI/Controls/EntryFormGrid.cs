@@ -356,46 +356,39 @@ public class EntryField: Control
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td nowrap>");
 
-		if (this.InfoUrl == String.Empty && ! this.IsRequired && ! validatorsInvalid)
-		{
-			writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"27\" height=\"20\"/>");
-		}
-		else
-		{
-      if (validatorsInvalid)
+    if (validatorsInvalid)
+    {
+      // at least one Validator is invalid
+      // => display "invalid field indicator" which has higher priority than the "required field indicator"
+      writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
+        + "width=\"12\" height=\"20\" border=\"0\"/>");
+    }
+    else
+    {
+      // all Validators are valid
+      // => display the "required field indicator" if requested
+      if (this.IsRequired)
       {
-        // at least one Validator is invalid
-        // => display "invalid field indicator" which has higher priority than the "required field indicator"
-        writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
+        writer.WriteLine ("<img src=\"../Images/field-required.gif\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
           + "width=\"12\" height=\"20\" border=\"0\"/>");
       }
       else
       {
-        // all Validators are valid
-        // => display the "required field indicator" if requested
-        if (this.IsRequired)
-        {
-          writer.WriteLine ("<img src=\"../Images/field-required.gif\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
-            + "width=\"12\" height=\"20\" border=\"0\"/>");
-        }
-        else
-        {
-          writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
-        }
+        writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\" border=\"0\" />");
       }
-      
-			if (this.InfoUrl != String.Empty)
-			{
-				writer.WriteLine (
-						"<a href=\"{0}\" target=\"_new\">"
-							+ "<img src=\"../Images/field-info.gif\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
-							+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
-						this.InfoUrl);
-      }
-			else
-			{
-				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
-			}
+    }
+    
+		if (this.InfoUrl != String.Empty)
+		{
+			writer.WriteLine (
+					"<a href=\"{0}\" target=\"_new\">"
+						+ "<img src=\"../Images/field-info.gif\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
+						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
+					this.InfoUrl);
+    }
+		else
+		{
+			writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\" border=\"0\" />");
 		}
 
 		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);

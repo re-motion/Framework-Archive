@@ -148,23 +148,6 @@ public class TabControl: Control, IPostBackEventHandler
 
   // construction and disposal
 
-  protected override void OnInit (EventArgs e)
-  {
-    base.OnInit(e);
-
-		string selectedTab = Page.Request.QueryString["navSelectedTab"];
-    if (selectedTab != null)
-      _activeTab = int.Parse (selectedTab);
-    else
-      _activeTab = 0;
-
-		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
-    if (selectedMenu != null)
-      _activeMenu = int.Parse (selectedMenu);
-    else
-      _activeMenu = 0;
-  }
-
   // methods and properties
 
 	public string FirstImage
@@ -317,6 +300,13 @@ public class TabControl: Control, IPostBackEventHandler
     }
   }
 
+  public string GetCurrentUrl ()
+  {
+    SetSelectedItems();
+    TabMenu menu = (TabMenu) Items[_activeTab].Controls[_activeMenu];
+    return GetCompleteUrl (menu, _activeTab, _activeMenu);
+  }
+
   private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
   {
     ITabItem navigableItem = tabItem.GetNavigableItem();
@@ -409,9 +399,48 @@ public class TabControl: Control, IPostBackEventHandler
     return resultHref;
   }
 
+  private void SetSelectedItems()
+  {
+		string selectedTab = Page.Request.QueryString["navSelectedTab"];
+    if (selectedTab != null)
+    {
+      _activeTab = int.Parse (selectedTab);
+    }
+    else
+    {
+      for (int i = 0; i < _items.Count; ++i)
+      {
+        if (_items[i].Visible)
+        {
+          _activeTab = i;
+          break;
+        }
+      }
+    }
+
+		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+    if (selectedMenu != null)
+    {
+      _activeMenu = int.Parse (selectedMenu);
+    }
+    else
+    {
+      for (int i = 0; i < _items[_activeTab].Controls.Count; ++i)
+      {
+        if (_items[_activeTab].Controls[i].Visible)
+        {
+          _activeMenu = i;
+          break;
+        }
+      }
+    }
+  }
+
   
   protected override void Render (HtmlTextWriter output)
 	{
+    SetSelectedItems();
+
     if (this.Site != null && this.Site.DesignMode)
 		{
 			output.WriteLine ("[TabControl - edit in HTML view]");
@@ -454,6 +483,8 @@ public class TabControl: Control, IPostBackEventHandler
       }
     }
 
+    int numVisibleTabs = 0;
+    int activeVisibleTab = 0;
 		for (int i=0; i<Items.Count; ++i)
 		{
 			Tab tab = Items[i];
@@ -462,11 +493,14 @@ public class TabControl: Control, IPostBackEventHandler
       {
         string classAttrib = inactiveClassAttrib;
 		    if (i == _activeTab)
+        {
 			    classAttrib = activeClassAttrib;
+          activeVisibleTab = numVisibleTabs;
+        }
 
 
 		    // write seperator cell
-		    if (i > 0)
+		    if (numVisibleTabs > 0)
 			    output.WriteLine ("<td width=\"3\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"3\"></td>", backColor, _emptyImage);
 
 		    // write cell with first image
@@ -482,36 +516,39 @@ public class TabControl: Control, IPostBackEventHandler
 		    output.WriteLine ("<td {0} {1} align=\"right\" valign=\"top\">", classAttrib, heightAttrib);
 		    output.WriteLine ("<img align=\"top\" width=\"5\" height=\"5\" border=\"0\" src=\"{0}\"/>", _secondImage);
 		    output.WriteLine ("</td>");
+
+        ++ numVisibleTabs;
       }
 		}
 		output.WriteLine ("</tr>");
 
-    RenderSeperatorLine (output, lineColor, activeClassAttrib);
+    RenderSeperatorLine (output, lineColor, activeClassAttrib, numVisibleTabs, activeVisibleTab);
     
     RenderMenuBar (output);
 		
     output.WriteLine ("</table>");
 	}
 
-  public void RenderSeperatorLine (HtmlTextWriter output, string lineColor, string activeClassAttrib)
+  public void RenderSeperatorLine (HtmlTextWriter output, string lineColor, string activeClassAttrib, 
+      int numVisibleTabs, int activeVisibleTab)
   {
 		if (SeperatorLine)
 		{
       output.WriteLine ("<tr>");
-			if (_activeTab != 0)
+			if (activeVisibleTab != 0)
 			{
 				output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
-						_activeTab * 4, lineColor, _emptyImage);
+						activeVisibleTab * 4, lineColor, _emptyImage);
 			}
-			if (_activeTab >= 0 && _activeTab < _items.Count)
+			if (activeVisibleTab >= 0 && activeVisibleTab < numVisibleTabs)
 			{
 				output.WriteLine ("<td colspan=\"3\" {0} <img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
 						activeClassAttrib, _emptyImage);
 			}
-      if (_activeTab < (_items.Count - 1))
+      if (activeVisibleTab < (numVisibleTabs - 1))
       {
 			  output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
-					  (_items.Count - _activeTab - 1) * 4, lineColor, _emptyImage);
+					  (numVisibleTabs - activeVisibleTab - 1) * 4, lineColor, _emptyImage);
       }
 			output.WriteLine ("<td width=\"100%\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
 					lineColor, _emptyImage);
