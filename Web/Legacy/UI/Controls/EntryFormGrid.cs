@@ -490,7 +490,7 @@ public class EntryField: Control
         writer.WriteLine ("<img src=\"{0}\" alt=\"{1}\" "
           + "width=\"12\" height=\"20\" border=\"0\"/>",
           EntryFormGrid.GetImagePath ("field-required.gif"),
-          ResourceDispatcher.GetResourceText (this, "RequiredFieldText"));
+          ResourceManagerPool.GetResourceText (this, "RequiredFieldText"));
       }
       else
       {
@@ -509,7 +509,7 @@ public class EntryField: Control
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 					infoUrl,
           ParentGrid.InfoImagePath,
-          ResourceDispatcher.GetResourceText (this, "HelpInfoText"));
+          ResourceManagerPool.GetResourceText (this, "HelpInfoText"));
     }
 		else
 		{

@@ -3,8 +3,9 @@ using System.Web.UI;
 
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Globalization.UI
+namespace Rubicon.Findit.Client.Controls
 {
+
 public class MultiLingualPage : Page
 {
   // types

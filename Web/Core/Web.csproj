@@ -104,14 +104,14 @@
                     HintPath = "..\..\..\..\Program Files\Microsoft Internet Explorer WebControls\Microsoft.Web.UI.WebControls.dll"
                 />
                 <Reference
-                    Name = "Globalization"
-                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\..\ExternalReferences\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "Globalization"
+                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
@@ -143,11 +143,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DateTextControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DefaultTextControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -173,7 +168,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MultiLingualPage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MultiLingualUserControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PageUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ResourceDispatcher.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

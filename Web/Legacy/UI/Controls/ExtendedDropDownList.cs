@@ -7,6 +7,7 @@ using Rubicon.Findit.Globalization.Classes;
 
 namespace Rubicon.Findit.Client.Controls
 {
+
 public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
 {
   public void InitListFromEnum (Type resourceEnumType)

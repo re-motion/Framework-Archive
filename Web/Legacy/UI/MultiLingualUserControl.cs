@@ -3,8 +3,9 @@ using System.Web.UI;
 
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Globalization.UI
+namespace Rubicon.Findit.Client.Controls
 {
+
 public class MultiLingualUserControl : UserControl
 {
   // types
@@ -24,6 +25,6 @@ public class MultiLingualUserControl : UserControl
 
     base.OnInit (e);
   }
-
 }
+
 }

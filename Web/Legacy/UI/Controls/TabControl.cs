@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Reflection;
 
 using Rubicon;
-using Rubicon.Findit.Globalization.UI;
+using Rubicon.Findit.Client.Controls;
 using Rubicon.Findit.Globalization.Classes;
 
 namespace Rubicon.Findit.Client.Controls
