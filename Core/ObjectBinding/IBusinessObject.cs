@@ -16,7 +16,7 @@ public interface IBusinessObject
   IBusinessObjectClass BusinessObjectClass { get; }
 }
 
-public interface IBusinessObjectWithIdentity
+public interface IBusinessObjectWithIdentity : IBusinessObject
 {
   string DisplayName { get; }
   string UniqueIdentifier { get; }
