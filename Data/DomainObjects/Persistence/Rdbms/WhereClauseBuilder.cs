@@ -39,7 +39,7 @@ public class WhereClauseBuilder
 
     string parameterName = _commandBuilder.Provider.GetParameterName (columnName);
     _whereClauseBuilder.AppendFormat ("[{0}] = {1}", columnName, parameterName);
-    _commandBuilder.AddCommandParameter (_command, parameterName, value);
+    _commandBuilder.AddCommandParameter (_command, columnName, value);
   }
 
   public override string ToString ()
