@@ -281,6 +281,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     {
       if (_renderPopupScript) 
       {
+        //  TODO: link contents with relative URL 
+        //  since IE does not allow filesystem paths on localhost for iframe
         string calendarDhtmlUrl = ResourceUrlResolver.GetResourceUrl (
             this, 
             this.GetType(),
@@ -356,6 +358,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {
         if (_renderPopupScript == false)
         {
+          //  TODO: link contents with relative URL 
+          //  since IE does not allow filesystem paths on localhost for iframe
           string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
               this, 
               this.GetType(),

@@ -327,10 +327,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Image\Calendar.gif"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Res\Image\DatePicker.gif"
                     BuildAction = "Content"
                 />

@@ -36,12 +36,12 @@ public sealed class ResourceUrlResolver
     if (resourceUrlResolver == null)
       return ResourceUrlResolver.GetResourceUrl (control.Parent, definingType, resourceType, relativeUrl);
     
-    string imageUrl = resourceUrlResolver.GetResourceUrl (definingType, resourceType, relativeUrl);
+    string resourceUrl = resourceUrlResolver.GetResourceUrl (definingType, resourceType, relativeUrl);
 
-    if (imageUrl == null)
+    if (resourceUrl == null)
       return ResourceUrlResolver.GetResourceUrl (control.Parent, definingType, resourceType, relativeUrl);
 
-    return imageUrl;
+    return resourceUrl;
   }
 }
 

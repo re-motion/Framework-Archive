@@ -22,15 +22,8 @@ using Rubicon.Globalization;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
-public class WebFormMK :
-  Page,
-  IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
-  IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
+public class WebFormMK : WebFormBase
 {
-  /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
-  private static IResourceManager s_chachedResourceManager;
-
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
@@ -82,9 +75,6 @@ public class WebFormMK :
 		InitializeComponent();
 		base.OnInit(e);
 
-    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-    Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-
     if (!IsPostBack)
       Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
 	}
@@ -121,33 +111,6 @@ public class WebFormMK :
       if (person.Partner != null)
         person.Partner.SaveObject();
     }
-  }
-
-  /// <summary>
-  ///   Interface implementation: IObjectWithResources
-  /// </summary>
-  /// <returns></returns>
-  public virtual IResourceManager GetResourceManager()
-  {
-    //  chache the resource manager
-    lock (typeof(IResourceManager))
-    {
-      if (s_chachedResourceManager == null)
-      {
-        s_chachedResourceManager = MultiLingualResourcesAttribute.GetResourceManager (
-          this.GetType(), true);
-      }
-    }  
-  
-    return s_chachedResourceManager;
-  }
-
-  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
-  {
-    if (ControlHelper.IsDesignMode (this, this.Context))
-      return resourceType.Name + "/" + relativeUrl;
-    else
-      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 }
 

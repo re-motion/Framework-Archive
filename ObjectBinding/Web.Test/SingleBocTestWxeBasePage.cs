@@ -57,7 +57,7 @@ public class WxeWebFormBase:
     Type type = this.GetType();
     if (s_chachedResourceManagers[type] == null)
     {
-      lock (typeof (WebFormBase))
+      lock (typeof (WxeWebFormBase))
       {
         if (s_chachedResourceManagers[type] == null)
           s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);
