@@ -83,7 +83,7 @@ public abstract class CommandBuilder
     if (propertyValue.Value != null)
     {
       ObjectID relatedID = (ObjectID) propertyValue.Value;
-      relatedClassDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (relatedID.ClassID);
+      relatedClassDefinition = relatedID.ClassDefinition;
       relatedIDValue = GetObjectIDForParameter (relatedID);
     }
     else
