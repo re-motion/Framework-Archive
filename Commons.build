@@ -89,36 +89,34 @@
     <echo message="new version is ${build.version.noconfig}"/>
   </target>
 
-  <!--======================= LABEL =======================-->
-  <target name="label">
-    <buildversion versionfile="build/buildversion.xml" increment="false" />
-    <echo message="labeling with ${build.version.noconfig}"/>
-    <exec program="SS" append="true" commandline="Label -L${build.version.noconfig} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+
+  <!--======================= SS Command =======================-->
+  <target name="SSCommandline">
+    <exec program="SS" append="true" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
       </environment>  
     </exec>
   </target>
 
+  <!--======================= LABEL =======================-->
+  <target name="label">
+    <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <echo message="labeling with ${build.version.noconfig}"/>
+    <property name="SS.command" value="Label $/libraries/commons -L${build.version.noconfig}" />
+    <call target="SSCommandline" />
+  </target>
+
   <!--======================= AddZip =======================-->
   <target name="addzip" depends="zipfilename">
-    <exec program="SS" append="true" commandline="Cp $/libraries/Commons/build -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
-      <environment>
-        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
-      </environment>  
-    </exec>
+    <property name="SS.command" value="Cp $/libraries/Commons/build" />
+    <call target="SSCommandline" />
     <echo message="Add ${zipfile.name}"/>
-    <exec program="SS" append="true" commandline="Add ${zipfile.name} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
-      <environment>
-        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
-      </environment>  
-    </exec>
+    <property name="SS.command" value="Add ${zipfile.name}" />
+    <call target="SSCommandline" force="true"/>
     <echo message="Add ${sourcezipfile.name}"/>
-    <exec program="SS" append="true" commandline="Add ${sourcezipfile.name} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
-      <environment>
-        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
-      </environment>  
-    </exec>
+    <property name="SS.command" value="Add ${sourcezipfile.name}" />
+    <call target="SSCommandline" force="true"/>
   </target>
 
   <!--======================= VS.NET =======================-->
