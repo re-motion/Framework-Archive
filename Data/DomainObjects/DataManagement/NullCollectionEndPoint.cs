@@ -75,5 +75,14 @@ public class NullCollectionEndPoint : CollectionEndPoint
   {
     get { return true; }
   }
+
+  #region ICloneable Members
+
+  public override object Clone ()
+  {
+    return new NullCollectionEndPoint (this.Definition);
+  }
+
+  #endregion
 }
 }
