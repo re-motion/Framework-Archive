@@ -100,7 +100,7 @@ public class ValueConverter
 
         if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
         {
-          if (MappingConfiguration.Current.ClassDefinitions.IsPartOfInheritanceHierarchy (relatedClassDefinition))
+          if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
           {
             throw CreateRdbmsProviderException (
                 "Incorrect database format encountered."
@@ -187,7 +187,7 @@ public class ValueConverter
     if (HasClassIDColumn (propertyDefinition, dataReader))
     {
       ClassDefinition oppositeClassDefinition = classDefinition.GetOppositeClassDefinition (propertyDefinition.PropertyName);
-      if (!MappingConfiguration.Current.ClassDefinitions.IsPartOfInheritanceHierarchy (oppositeClassDefinition))
+      if (!oppositeClassDefinition.IsPartOfInheritanceHierarchy)
       {
         throw CreateRdbmsProviderException (
             "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
