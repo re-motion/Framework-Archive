@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.Text;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Persistence
 {
 public class DeleteCommandBuilder : CommandBuilder
@@ -21,7 +23,7 @@ public class DeleteCommandBuilder : CommandBuilder
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (dataContainer.State != StateType.Deleted)
-      throw CreateArgumentException ("dataContainer", "State of provided dataContainer must be 'Deleted', but is '{0}'.", dataContainer.State);
+      throw CreateArgumentException ("dataContainer", "State of provided DataContainer must be 'Deleted', but is '{0}'.", dataContainer.State);
 
     _dataContainer = dataContainer;
   }

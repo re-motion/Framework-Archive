@@ -2,10 +2,11 @@ using System;
 using System.Data;
 using System.Text;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
@@ -332,18 +333,6 @@ public abstract class RdbmsProvider : StorageProvider
           "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", 
           dataContainer.ID);
     }
-  }
-
-  protected virtual IDbCommand CreateCommand (DataContainer dataContainer)
-  {
-    CommandBuilder commandBuilder = null;
-
-    if (dataContainer.State == StateType.New)
-      commandBuilder = new InsertCommandBuilder (this, dataContainer);
-    else
-      commandBuilder = new UpdateCommandBuilder (this, dataContainer);
-
-    return commandBuilder.Create ();
   }
 
   protected new RdbmsProviderDefinition StorageProviderDefinition

@@ -2,9 +2,10 @@ using System;
 using System.Data;
 using System.Text;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
@@ -27,7 +28,7 @@ public class InsertCommandBuilder : CommandBuilder
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (dataContainer.State != StateType.New)
-      throw CreateArgumentException ("dataContainer", "State of provided dataContainer must be 'New', but is '{0}'.", dataContainer.State);
+      throw CreateArgumentException ("dataContainer", "State of provided DataContainer must be 'New', but is '{0}'.", dataContainer.State);
 
     _dataContainer = dataContainer;
   }
