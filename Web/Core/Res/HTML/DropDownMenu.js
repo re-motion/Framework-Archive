@@ -39,7 +39,13 @@ function DropDownMenu_OnClick (context, menuID)
 //  </div>
 function DropDownMenu_OpenPopUp (id, menuID, context)
 {
-	var popUp = document.createElement("div");
+  //  IE55up
+  popUpWindow = window.createPopup();
+	//  IE55up
+  var popUpDocument = popUpWindow.document;
+	//  Other
+	//  var popUpDocument = window.document;
+	var popUp = popUpDocument.createElement("div");
 	if(popUp == null)
 	  return null;
 	if(id != null)
@@ -49,27 +55,72 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   var itemInfos = _dropDownMenu_menuInfos[menuID].ItemInfos;
 	for (var index in itemInfos)
 	{
-	  var item = DropDownMenu_CreateItem (itemInfos[index]);
+	  var item = DropDownMenu_CreateItem (popUpDocument, itemInfos[index]);
 	  if(item != null)
   	  DropDownMenu_AppendChild (popUp, item);
 	}
 
-	DropDownMenu_AppendChild (document.body, popUp);
-	_dropDownMenu_currentPopUpWidth = popUp.offsetWidth;
 	_dropDownMenu_currentPopUp = popUp;
 	_dropDownMenu_currentMenu = context;
 	//  Brower Switch
 	//  Css2.1
+	//  DropDownMenu_AppendChild (document.body, popUp);
+	//  _dropDownMenu_currentPopUpWidth = popUp.offsetWidth;
   //	DropDownMenu_RepositionPopUp ();
   //	window.onresize = DropDownMenu_RepositionPopUp;
   //  IE
-	popUp.style.behavior = "url(res/Rubicon.Web/HTML/DropDownMenu.htc)";
-  popUp.onreadystatechange=OMenuEvnt;
+  //popUp.style.display = 'none';
+  popUpBody = popUpDocument.body
+  popUpDocument.createStyleSheet ("res/Rubicon.Web/HTML/DropDownMenu.css");
+  DropDownMenu_AppendChild (popUpBody, popUp);
+	popUpWindow.show(0, 0, 0, 0, context);
+	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth;
+	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight;
+	if (nRealWidth > window.screen.width) nRealWidth = window.screen.width;
+	if (nRealHeight > window.screen.height) nRealHeight = window.screen.height;
+	popUpWindow.hide();
+	
+	popUpBody.oncontextmenu = kfnDisableEvent;
+	popUpBody.ondragstart = kfnDisableEvent;
+	popUpBody.onselectstart = kfnDisableEvent;
+	popUpBody.onkeydown = PopupKeyDown;
+	popUpBody.onmouseup = PopupMouseUp;
+	popUpBody.onmouseover = PopupMouseOver;
+	popUpBody.onmouseleave = PopupMouseLeave;
+	_oContents = _dropDownMenu_currentPopUp;
+  _oRoot = _oContents;
+  _arrSelected[_nLevel] = null;
+  _wzPrefixID = popUp.uniqueID;
+  
+	var EdgeLeft = window.screenLeft;
+	var EdgeRight = EdgeLeft + window.document.body.clientWidth;
+	var ParentLeft = 0;
+	var oCurrent;
+	for (oCurrent = context; oCurrent && oCurrent != window.document.body; oCurrent = oCurrent.offsetParent)
+		ParentLeft += oCurrent.offsetLeft - oCurrent.scrollLeft;
+	if (oCurrent)
+	  ParentLeft += oCurrent.clientLeft - oCurrent.scrollLeft;
+	ParentLeft += EdgeLeft;
+	var xDefault = 0;
+	var xFlipped = 0;
+	var nParentWidth = context ? context.offsetWidth : 0;
+	xDefault = 0;
+	var MenuRightDefault = ParentLeft + xDefault + nRealWidth;
+	var MenuLeftFlipped = ParentLeft - nRealWidth;
+	MenuLeftFlipped += nParentWidth;
+	xFlipped = MenuLeftFlipped - ParentLeft;
+	fFlippedDefault = MenuRightDefault > EdgeRight && MenuLeftFlipped > EdgeLeft;
+	fFlippedNonDefault = !(MenuLeftFlipped < EdgeLeft && MenuRightDefault < EdgeRight);
+	var x = xFlipped;
+	var y = context.offsetHeight - 1;
+	popUpWindow.show(x, y, nRealWidth, nRealHeight, context);
+	//popUp.style.behavior = 'url(res/Rubicon.Web/HTML/DropDownMenu.htc)';
+  //popUp.onreadystatechange = DropDownMenu_OpenPopUpEvent;
   //  IE501
 
 	return popUp;
 }
-function OMenuEvnt()
+function DropDownMenu_OpenPopUpEvent()
 {
 	var popUp=event.srcElement;
 	if(!popUp.isOpen())
@@ -101,11 +152,11 @@ function DropDownMenu_ClosePopUp (popUp)
 //  <div class="_dropDownMenu_itemClassName">
 //    item contents
 //  </div>
-function DropDownMenu_CreateItem (itemInfo)
+function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 {
   if (itemInfo == null)
     return null;
-	var item = document.createElement("div");
+	var item = popUpDocument.createElement("div");
 	if(item == null)
 	  return null;
 	  
@@ -132,4 +183,285 @@ function DropDownMenu_AppendChild (parent, child)
 {
 	if(parent != null && child != null)
 	  parent.appendChild (child);
+}
+
+/* copy and pasted */
+var kfnDisableEvent = new Function("return false");
+var _nLevel = 0;
+var _oContents;						
+var _oRoot;
+var _arrSelected = new Array();
+var _wzPrefixID;		
+
+function HideMenu()
+{
+	if (IsOpen()) _dropDownMenu_currentPopUp.hide();
+}
+
+function IsOpen()
+{
+	var oPopup = _dropDownMenu_currentPopUp;
+	return oPopup && oPopup.isOpen;
+}
+
+function GetEventFromLevel(nLevel)
+{
+	if (nLevel >= 0 && nLevel <= _nLevel)
+		{
+		var oPopup = _dropDownMenu_currentPopUp;
+		if (oPopup) return oPopup.document.parentWindow.event;
+		}
+	return null;	
+}
+function GetEventLevel()
+{
+	for (var nIndex = _nLevel; nIndex >= 0; nIndex--)
+		if (GetEventFromLevel(nIndex)) return nIndex;
+	return -1;
+}
+function UpdateLevel(nLevel)
+{
+	var oPopup;
+	while (_nLevel > nLevel)
+		{
+		oPopup = _dropDownMenu_currentPopUp;
+		if (oPopup)
+			{
+			ClearShowSubMenuEvnt();
+			oPopup.hide();
+			}
+		_dropDownMenu_currentPopUp = null;
+		_arrSelected[_nLevel] = null;
+		_oRoot = _oRoot.parentNode;
+		_nLevel--;
+		}
+	oPopup = _dropDownMenu_currentPopUp;
+	if (oPopup) ClearShowSubMenuEvnt();
+}
+
+function ClearShowSubMenuEvnt()
+{
+return;
+	var oPopup = _arrPopup[_nLevel];
+	var oWnd = _nLevel == 0 ? window : _arrPopup[_nLevel - 1].document.parentWindow;
+	if (oPopup && oWnd)
+		{
+		var oPopupBody = oPopup.document.body;
+		var id = oPopupBody.getAttribute("timeoutID");
+		if (typeof(id)=="number")
+			{
+			oWnd.clearTimeout(id);
+			}
+		oPopupBody.removeAttribute("timeoutID");
+		}
+}
+function GetEventSrcItem(oEvent)
+{
+	if (oEvent)
+		for (var oSrc = oEvent.srcElement; oSrc && !FIStringEquals(oSrc.tagName, "BODY"); oSrc = oSrc.parentNode)
+			if (FIStringEquals(oSrc.tagName, "TR") && oSrc.id.substring(0, _wzPrefixID.length) == _wzPrefixID) return oSrc;
+	return null;
+}
+function PopupMouseOver()
+{
+	var nLevel = GetEventLevel();
+	if (nLevel < 0) return;
+	var oPopupEvent = GetEventFromLevel(nLevel);
+	var oSrcElem = GetEventSrcItem(oPopupEvent);
+	if (oSrcElem)
+		{
+		if (oSrcElem != _arrSelected[nLevel])
+			{
+			if (FIsIType(oSrcElem, "separator")) return;
+			ToggleMenuItem(nLevel, oSrcElem);
+			if (FIsIType(oSrcElem, "submenu")) EngageSelection(true, true, false);
+			}
+		else if (nLevel < _nLevel)
+			{
+			UnselectCurrentOption();
+			}
+		}
+}
+function PopupMouseLeave()
+{
+	if (GetEventLevel() == _nLevel) UnselectCurrentOption();
+}
+function PopupMouseUp()
+{
+	var nLevel = GetEventLevel();
+	if (nLevel < 0) return;
+	var oItem = _arrSelected[nLevel];
+	if (GetEventFromLevel(nLevel).button == 1 || FIsIType(oItem, "submenu"))
+		{
+		UpdateLevel(nLevel);
+		EngageSelection(true, false, false);
+		}
+}
+function PopupKeyDown()
+{
+	var nLevel = GetEventLevel();
+	if (nLevel < 0) return;
+	var oPopupEvent = GetEventFromLevel(nLevel);
+	var nKeyCode = oPopupEvent.keyCode;
+	if (nKeyCode == 9) nKeyCode = !oPopupEvent.shiftKey ? 40 : 38;
+	ClearShowSubMenuEvnt();
+	switch (nKeyCode)
+		{
+	case 38:	
+		MoveMenuSelection(-1);
+		break;
+	case 40:	
+		MoveMenuSelection(1);
+		break;
+	case 37:	
+	case 27: 
+		CloseCurrentLevel(nKeyCode == 27);
+		break;
+	case 39:	
+	case 13:	
+		EngageSelection(nKeyCode == 13, false, true);
+		break;
+		}
+	oPopupEvent.returnValue = false;
+}
+function EngageSelection(fDoSelection, fDelayExpandSM, fEnterSM)
+{
+	var oItem = _arrSelected[_nLevel];
+	if (!oItem || oItem.optionDisabled) return;
+	if (FIsIType(oItem, "submenu"))
+		{
+		if (fDelayExpandSM)
+			{
+			SetShowSubMenuEvnt();
+			}
+		else
+			{
+			ShowSubMenu(_nLevel, oItem);
+			if (fEnterSM) MoveMenuSelection(1);
+			}
+		}
+	else if (fDoSelection)
+		{
+		var fnOnClick = oItem.getAttribute("onMenuClick");
+		if (fnOnClick)
+			{
+			if (FIStringEquals(typeof(fnOnClick), "string"))
+				fnOnClick = new Function("var document=window.document; {" + fnOnClick + "}");
+			var oTemp = window.document.body.appendChild(window.document.createElement("span"));
+			oTemp.onclick = fnOnClick;
+			oTemp.click();
+			oTemp.removeNode();
+			HideMenu();
+			}
+		}
+}
+function GetIType(oItem)
+{
+	return oItem ? oItem.getAttribute("type") : null;
+}
+function FIsIType(oItem, wzType)
+{
+	return FIStringEquals(GetIType(oItem), wzType);
+}
+function SetIType(oItem, wzType)
+{
+	if (oItem) oItem.setAttribute("type", wzType);
+}
+function FIStringEquals(wzX, wzY)
+{
+	return wzX != null && wzY != null && wzX.toLowerCase() == wzY.toLowerCase();
+}
+function FIStringContains(wzX, wzY)
+{
+	return wzX != null && wzY != null && wzX.toLowerCase().indexOf(wzY.toLowerCase()) >= 0;
+}
+function FIStringStartsWith(wzX, wzY)
+{
+	return wzX != null && wzY != null && wzX.toLowerCase().indexOf(wzY.toLowerCase()) == 0;
+}
+function FIStringEndsWith(wzX, wzY)
+{
+	return wzX != null && wzY != null && wzX.length >= wzY.length &&
+		(wzY == "" || wzX.toLowerCase().indexOf(wzY.toLowerCase()) == wzX.length - wzY.length);
+}
+function CloseCurrentLevel(fAllowHideRoot)
+{
+	if (_nLevel > 0) UpdateLevel(_nLevel - 1);
+	else if (fAllowHideRoot) HideMenu();
+}
+function UnselectCurrentOption()
+{
+	if (_nLevel >= 0)
+		{
+		var oItem = _arrSelected[_nLevel];
+		if (FIsIType(oItem, "option"))
+			{
+			UnselectItem(oItem);
+			_arrSelected[_nLevel] = null;
+			}
+		}
+}
+function MakeID(nLevel, nIndex)
+{
+	return _wzPrefixID + "_" + nLevel + "_" + nIndex;
+}
+function GetItem(nLevel, nIndex)
+{
+	var oPopup = _dropDownMenu_currentPopUp;
+	return oPopup ? oPopup.document.getElementById(MakeID(nLevel, nIndex)) : null;
+}
+function MoveMenuSelection(iDir)
+{
+	var nIndex = -1;
+	var nNumItems = _oRoot.children.length;
+	var oSelected = _arrSelected[_nLevel];
+	if (oSelected)
+		{
+		var wzSelectedID = oSelected ? oSelected.id : null;
+		if (wzSelectedID)
+			{
+			var nCurIndex = parseInt(wzSelectedID.substring(wzSelectedID.lastIndexOf("_") + 1, wzSelectedID.length));
+			nIndex = (nCurIndex + nNumItems + iDir) % nNumItems; 
+			}
+		}
+	if (nIndex < 0)
+		nIndex = iDir > 0 ? 0 : (nNumItems - 1);
+	var oItem;
+	var nIndexStart = nIndex;
+	do
+		{
+		oItem = GetItem(_nLevel, nIndex);
+		nIndex = (nIndex + nNumItems + iDir) % nNumItems; 
+		}
+	while (nIndex != nIndexStart &&
+			 (!oItem || oItem.style.display == "none" ||
+			  !(FIsIType(oItem, "option") || FIsIType(oItem, "submenu"))));
+	ToggleMenuItem(_nLevel, oItem);
+}
+function ToggleMenuItem(nLevel, oItem)
+{
+	var oOld = _arrSelected[nLevel];
+	if (!oItem || (oOld && oItem.id == oOld.id)) return;
+	if (oOld) UnselectItem(oOld);
+	UpdateLevel(nLevel);
+	SelectItem(oItem);
+	_arrSelected[nLevel] = oItem;
+	oItem.tabIndex = 0;
+	oItem.setActive();
+}
+function SelectItem(oItem)
+{
+	if (!oItem) return;
+	var oItemTableCell = oItem.firstChild;
+	var oItemTable = oItemTableCell.firstChild;
+	oItemTableCell.className = "ms-MenuUIItemTableCellHover";
+	oItemTable.className = "ms-MenuUIItemTableHover";
+}
+function UnselectItem(oItem)
+{
+	if (!oItem) return;
+	var oItemTableCell = oItem.firstChild;
+	var oItemTable = oItemTableCell.firstChild;
+	oItemTableCell.className = "ms-MenuUIItemTableCell";
+	oItemTable.className = "ms-MenuUIItemTable";
 }
