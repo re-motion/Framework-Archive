@@ -188,8 +188,8 @@ public class EntryField: Control
   /// <remarks>
   /// Validates all Validators.
   /// </remarks>
-  /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators are not validated when
-  /// this parameter is true.</param>
+  /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators and other validators whose IDs
+  /// end with "...RequiredValidator" are not validated when this parameter is true.</param>
   /// <returns> Returns false if any Validator is not valid. </returns>
   public bool Validate (bool ignoreRequiredFieldValidators)
   {
@@ -198,8 +198,9 @@ public class EntryField: Control
     {
       BaseValidator validator = control as BaseValidator;
       if (   validator != null
-          && (   ! ignoreRequiredFieldValidators 
-              || ! (validator is RequiredFieldValidator)))
+          && ! (    ignoreRequiredFieldValidators 
+                 && (    validator is RequiredFieldValidator
+                      || validator.ID.EndsWith ("RequiredValidator"))))
       {
         validator.Validate();
         if (! validator.IsValid)
