@@ -333,6 +333,8 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       Binding.EvaluateBinding();
       if (Property == null || DataSource == null)
         return false;
+      if (DataSource.BusinessObject == null)
+        return true;
       if (! DataSource.IsWritable)
         return true;
       return Property.IsReadOnly (DataSource.BusinessObject);
