@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -15,8 +16,39 @@ public class HtmlHeadContents : Control
   {
     HtmlHeadAppender.Current.EnsureAppended (Controls);
     //  Don't render tags for this control.
-    base.RenderChildren (writer);
+    RenderChildren (writer);
   }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    foreach (Control control in Controls)
+    {
+      HtmlGenericControl genericControl = control as HtmlGenericControl;
+      if (genericControl != null)
+      {
+        //  <link ...> has no closing tags.
+        if (string.Compare (genericControl.TagName, "link", true) == 0)
+        {
+          writer.WriteBeginTag ("link");
+          foreach (string attributeKey in genericControl.Attributes.Keys)
+            writer.WriteAttribute (attributeKey, genericControl.Attributes[attributeKey]);
+          writer.WriteLineNoTabs (">");
+        }
+        else
+        {
+          control.RenderControl(writer);
+          writer.WriteLine();
+        }
+      }
+      else
+      {
+        control.RenderControl(writer);
+        writer.WriteLine();
+     }
+
+    }
+  }
+
 }
 
 }
