@@ -133,6 +133,11 @@
                     Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "Microsoft.Web.UI.WebControls"
+                    AssemblyName = "Microsoft.Web.UI.WebControls"
+                    HintPath = "..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -388,6 +393,62 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestTabbedForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedForm.aspx.cs"
+                    DependentUpon = "TestTabbedForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedForm.aspx.resx"
+                    DependentUpon = "TestTabbedForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestTabbedFormWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.cs"
+                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.resx"
+                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx.cs"
+                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx.resx"
+                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestWxeBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ViewPersonDetailsWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -478,6 +539,10 @@
                 />
                 <File
                     RelPath = "Globalization\SingleBocTestListForm.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\TestBasePage.resx"
                     BuildAction = "EmbeddedResource"
                 />
             </Include>

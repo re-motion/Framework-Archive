@@ -14,10 +14,13 @@
       <p>Wxe-Enabled Tests for individual Business Object Controls<br>
         <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest">
           WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</a></p>
-      <p>Wxe-Enabled&nbsp;Tests containing all the Business Object 
+      <p>Wxe-Enabled Tests containing all the Business Object 
 Controls in a single Form or User Control<br>
         <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest">
           WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</a></p>
+      <p>Wxe-Enabled Test for a Tabbed Form<br>
+        <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&ReadOnly=false">
+          WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&ReadOnly=false</a></p>
     </form>
 
   </body>

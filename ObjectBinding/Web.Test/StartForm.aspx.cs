@@ -12,16 +12,14 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace OBWTest
 {
-/// <summary>
-/// Summary description for Start.
-/// </summary>
+
 public class StartForm : System.Web.UI.Page
 {
 	private void Page_Load(object sender, System.EventArgs e)
 	{
     Session.Clear();
-//    Response.Redirect ("WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest");
 	}
+
 
 	#region Web Form Designer generated code
 	override protected void OnInit(EventArgs e)
