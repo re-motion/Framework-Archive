@@ -18,4 +18,4 @@ Build:
   * ZIP-Datei in VSS einchecken
   * Visual Studio: close solution
   * Gesamten Source Code auf 
-    \\at-vie-dc-02\buildsources$\Libraries\Rubicon\Rubicon.Web.UI\<major-version>-<minor-version>-<build-num>-<rev-num> kopieren
+    \\at-vie-dc-02\buildsources$\Libraries\Rubicon\Web.UI\<major-version>-<minor-version>-<build-num>-<rev-num> kopieren
