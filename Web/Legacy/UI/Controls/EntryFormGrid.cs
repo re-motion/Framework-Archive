@@ -264,8 +264,8 @@ public class EntryTitle: Control
     if (this.Title != String.Empty)
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
-          + "<table bgcolor=\"black\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"100%\">"
-			  	+ EntryFormGrid.GetWhitespaceImage (1, 2)
+          + "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"formGroupSeparatorLine\" width=\"100%\">"
+			  	+ EntryFormGrid.GetWhitespaceImage (1, 1)
           + "</td></tr></table>"
           + "</td></tr>");
     }
