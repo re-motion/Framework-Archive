@@ -309,7 +309,7 @@ public abstract class RdbmsProvider : StorageProvider
 
     if (recordsAffected != 1)
     {
-      throw CreateStorageProviderException (
+      throw CreateConcurrencyViolationException (
           "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", 
           dataContainer.ID);
     }
@@ -355,6 +355,22 @@ public abstract class RdbmsProvider : StorageProvider
       params object[] args)
   {
     return new StorageProviderException (string.Format (formatString, args), innerException);
+  }
+
+
+  protected ConcurrencyViolationException CreateConcurrencyViolationException (
+      string formatString,
+      params object[] args)
+  {
+    return CreateConcurrencyViolationException (null, formatString, args);
+  }
+
+  protected ConcurrencyViolationException CreateConcurrencyViolationException (
+      Exception innerException,
+      string formatString,
+      params object[] args)
+  {
+    return new ConcurrencyViolationException (string.Format (formatString, args), innerException);
   }
 
   private void DisposeTransaction ()

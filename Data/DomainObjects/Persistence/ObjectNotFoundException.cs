@@ -16,7 +16,7 @@ public class ObjectNotFoundException : PersistenceException
 
   // construction and disposing
 
-  public ObjectNotFoundException () : base ("Object could not be found.") 
+  public ObjectNotFoundException () : this ("Object could not be found.") 
   {
   }
 
