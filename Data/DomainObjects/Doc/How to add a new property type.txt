@@ -39,7 +39,9 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte 
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypesWithNull
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveNewTest.AllDataTypes
 
-12. Alle UnitTests laufen lassen. Diese müssen an der erwarteten Stelle scheitern, wenn Änderungen in DBValueConverter notwendig sind.
+12. Alle UnitTests laufen lassen. Diese müssen an der erwarteten Stelle scheitern, wenn Änderungen in einer der folgenden Klassen/Methoden notwendig sind:
+    - Rubicon.Data.DomainObjects.Persistence.DBValueConverter (Alle Methoden)
+    - Rubicon.Data.DomainObjects.DataContainer (Methoden IsNull und IsNullOrEmpty)
 
 13. Neue Datentypen in Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetValue ergänzen.
     Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetDBValue ergänzt werden.
