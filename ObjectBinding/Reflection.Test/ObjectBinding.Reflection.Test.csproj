@@ -138,6 +138,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PersonListItemCommandState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PersonTreeView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
