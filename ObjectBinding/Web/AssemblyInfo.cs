@@ -1,5 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Web.UI;
+
+[assembly: TagPrefix ("Rubicon.ObjectBinding.Web.Controls", "obw")]
 
 //
 // General Information about an assembly is controlled through the following 

@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Serialization;
 using System.IO;
+using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 
 namespace OBWTest
@@ -23,6 +24,7 @@ public class Person: ReflectionBusinessObject
   private string _lastName;
   private DateTime _dateOfBirth;
   private int _height;
+  private NaInt32 _income = 1;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
 
@@ -64,12 +66,21 @@ public class Person: ReflectionBusinessObject
     set { _height = value; }
   }
 
+  [XmlElement]
+  public NaInt32 Income
+  {
+    get { return _income; }
+    set { _income = value; }
+  }
+
+  [XmlAttribute]
   public Gender Gender
   {
     get { return _gender; }
     set { _gender = value; }
   }
 
+  [XmlAttribute]
   public MarriageStatus MarriageStatus
   {
     get { return _marriageStatus; }

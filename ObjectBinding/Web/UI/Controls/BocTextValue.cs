@@ -408,11 +408,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     set { _isDirty = value; }
   }
 
-  public override Type[] SupportedPropertyInterfaces
+  protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
-
 }
 
 /// <summary>

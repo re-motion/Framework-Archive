@@ -51,20 +51,7 @@ public class PropertyPathPickerControl: System.Windows.Forms.UserControl
       if (   filter.Length == 0 
           || (property.Identifier != null && property.Identifier.ToLower().IndexOf (filter) >= 0))
       {
-        bool isSupportedPropertyType = true;
-        if (_control.SupportedPropertyInterfaces != null)
-        {
-          isSupportedPropertyType = false;
-          foreach (Type supportedInterface in _control.SupportedPropertyInterfaces)
-          {
-            if (supportedInterface.IsAssignableFrom (property.GetType()))
-            {
-              isSupportedPropertyType = true;
-              break;
-            }
-          }
-        }
-        if (isSupportedPropertyType)
+        if (_control.SupportsProperty (property))
           PropertiesList.Items.Add (property.Identifier);
       }
     }

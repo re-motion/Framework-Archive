@@ -210,8 +210,46 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable(false)]
   public abstract bool IsDirty { get; set; }
 
+
+  public virtual bool SupportsProperty (IBusinessObjectProperty property)
+  {
+    if (SupportedPropertyInterfaces == null)
+      return true;
+    if (! SupportsPropertyMultiplicity (property.IsList))
+      return false;
+
+    bool isSupportedPropertyType = false;
+    foreach (Type supportedInterface in SupportedPropertyInterfaces)
+    {
+      if (supportedInterface.IsAssignableFrom (property.GetType()))
+      {
+        isSupportedPropertyType = true;
+        break;
+      }
+    }
+    return isSupportedPropertyType;
+  }
+
+  /// <summary>
+  ///   Gets the interfaces derived from IBusinessObjectProperty that this control supports, 
+  ///   or <see langword="null"/> if no restrictions are made.
+  /// </summary>
+  /// <remarks>
+  ///   Used by <see cref="SupportsProperty"/>.
+  /// </remarks>
   [Browsable(false)]
-  public abstract Type[] SupportedPropertyInterfaces { get; }
+  protected abstract Type[] SupportedPropertyInterfaces { get; }
+
+  /// <summary>
+  ///   Indicates whether properties with the specified multiplicity are supported.
+  /// </summary>
+  /// <remarks>
+  ///   Used by <see cref="SupportsProperty"/>.
+  /// </remarks>
+  protected virtual bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return ! isList;
+  }
 
   public virtual BaseValidator[] CreateValidators()
   {
@@ -306,7 +344,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       if (_required != NaBooleanEnum.Undefined)
         return _required == NaBooleanEnum.True;
       Binding.EvaluateBinding();
-      if (Property != null && ! Property.IsRequired.IsNull)
+      if (Property != null)
         return (bool) Property.IsRequired;
       return false;
     }

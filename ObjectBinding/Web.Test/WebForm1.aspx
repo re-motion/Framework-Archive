@@ -25,13 +25,13 @@
         runat="server" ControlToValidate="DateOfBirthField" EnableClientScript="False"></obc:boctextvaluevalidator><obc:boctextvalue id=HeightField style="Z-INDEX: 109; LEFT: 224px; POSITION: absolute; TOP: 112px" runat="server" PropertyIdentifier="Height" DataSource="<%# reflectionBusinessObjectDataSource1 %>">
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel4" style="Z-INDEX: 110; LEFT: 16px; POSITION: absolute; TOP: 112px"
         runat="server" ForControl="HeightField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator2" style="Z-INDEX: 111; LEFT: 424px; POSITION: absolute; TOP: 112px"
-        runat="server" ControlToValidate="HeightField" EnableClientScript="False"></obc:boctextvaluevalidator><asp:label id="Label1" style="Z-INDEX: 112; LEFT: 384px; POSITION: absolute; TOP: 112px" runat="server">cm</asp:label><asp:button id="SaveButton" style="Z-INDEX: 103; LEFT: 16px; POSITION: absolute; TOP: 168px"
+        runat="server" ControlToValidate="HeightField" EnableClientScript="False"></obc:boctextvaluevalidator><asp:label id="Label1" style="Z-INDEX: 112; LEFT: 384px; POSITION: absolute; TOP: 112px" runat="server">cm</asp:label><asp:button id="SaveButton" style="Z-INDEX: 103; LEFT: 24px; POSITION: absolute; TOP: 272px"
         runat="server" Text="Save" Width="80px"></asp:button>
-      <obc:BocEnumValue id=GenderField style="Z-INDEX: 113; LEFT: 224px; POSITION: absolute; TOP: 224px" runat="server" PropertyIdentifier="MarriageStatus" DataSource="<%# reflectionBusinessObjectDataSource1 %>" Width="144px" Height="104px">
-        <LISTCONTROLSTYLE RadioButtonListRepeatDirection="Horizontal" ControlType="ListBox" BackColor="#FFFF80"
-          RadionButtonListRepeatLayout="Table" ForeColor="Red" BorderColor="Red" Font-Bold="True" RadioButtonListTextAlign="Right"></LISTCONTROLSTYLE>
+      <obc:BocEnumValue id=GenderField style="Z-INDEX: 113; LEFT: 224px; POSITION: absolute; TOP: 184px" runat="server" PropertyIdentifier="MarriageStatus" DataSource="<%# reflectionBusinessObjectDataSource1 %>" Width="144px" Height="24px">
+        <ListControlStyle RadioButtonListTextAlign="Right" Font-Bold="True" BorderColor="Red" ForeColor="Red"
+          RadionButtonListRepeatLayout="Table" BackColor="#FFFF80" ControlType="DropDownList" RadioButtonListRepeatDirection="Horizontal"></ListControlStyle>
       </obc:BocEnumValue>
-      <rwc:SmartLabel id="BocPropertyLabel5" style="Z-INDEX: 114; LEFT: 32px; POSITION: absolute; TOP: 224px"
+      <rwc:SmartLabel id="BocPropertyLabel5" style="Z-INDEX: 114; LEFT: 16px; POSITION: absolute; TOP: 184px"
         runat="server" ForControl="GenderField"></rwc:SmartLabel>
       <asp:TextBox id="TextBox1" style="Z-INDEX: 115; LEFT: 664px; POSITION: absolute; TOP: 352px"
         runat="server"></asp:TextBox>

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Xml.Serialization;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -17,6 +18,7 @@ public abstract class ReflectionBusinessObject: BusinessObject
     return BusinessObjectClass.GetProperty (propertyIdentifier);
   }
 
+  [XmlIgnore]
   public override IBusinessObjectClass BusinessObjectClass
   {
     get { return new ReflectionBusinessObjectClass (this.GetType()); }
@@ -25,17 +27,21 @@ public abstract class ReflectionBusinessObject: BusinessObject
   public override object GetProperty (IBusinessObjectProperty property)
   {
     ArgumentUtility.CheckNotNullAndType ("property", property, typeof (ReflectionBusinessObjectProperty));
-    PropertyInfo propertyInfo = ((ReflectionBusinessObjectProperty)property).PropertyInfo;
+    ReflectionBusinessObjectProperty reflectionProperty = (ReflectionBusinessObjectProperty) property;
+    PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
-    return propertyInfo.GetValue (this, new object[0]);
+    object internalValue = propertyInfo.GetValue (this, new object[0]);
+    return reflectionProperty.FromInternalType (internalValue);
   }
 
   public override void SetProperty (IBusinessObjectProperty property, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("property", property, typeof (ReflectionBusinessObjectProperty));
-    PropertyInfo propertyInfo = ((ReflectionBusinessObjectProperty)property).PropertyInfo;
+    ReflectionBusinessObjectProperty reflectionProperty = (ReflectionBusinessObjectProperty) property;
+    PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
-    propertyInfo.SetValue (this, value, new object[0]);
+    object internalValue = reflectionProperty.ToInternalType (value);
+    propertyInfo.SetValue (this, internalValue, new object[0]);
   }
 }
 

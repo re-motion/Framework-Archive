@@ -26,7 +26,7 @@ public class LoadRequiredDesigner: ControlDesigner
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
 [Designer (typeof (LoadRequiredDesigner))]
-public class BocEnumValue: BusinessObjectBoundModifiableWebControl
+public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
 {
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectEnumerationProperty) };
@@ -37,13 +37,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   /// <remarks>
   ///   The event is fired only if the selection change is caused by the user.
   /// </remarks>
-  public event EventHandler TextChanged;
+  public event EventHandler SelectionChanged;
 
   private const string c_nullIdentifier = "--null--";
   private const string c_nullDisplayName = "Undefined";
 
-//  private string _text = string.Empty;
-//  private string _newText = null;
   private bool _isDirty = true;
   private ListControl _listControl;
   private Label _label = null;
@@ -76,19 +74,14 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
     _label = new Label ();
 
     _listControl.ID = this.ID + "_ListControl";
-    _listControl.EnableViewState = false;
+    _listControl.EnableViewState = true;
     Controls.Add (_listControl);
 
     _label.ID = this.ID + "_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
 
-    if (! (this.Site != null && this.Site.DesignMode))
-    {
-      string newValue = this.Page.Request.Form[_listControl.UniqueID];
-      if (newValue != null)
-        _newValue = newValue;
-    }
+    _listControl.SelectedIndexChanged += new EventHandler(ListControl_SelectedIndexChanged);
   }
 
   protected override void OnLoad (EventArgs e)
@@ -97,29 +90,38 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
 
     Binding.EvaluateBinding();
 
+    if (! (this.Site != null && this.Site.DesignMode))
+    {
+      string newValue = this.Page.Request.Form[_listControl.UniqueID];
+      if (newValue == c_nullIdentifier)
+        _newValue = null;
+      else if (newValue != null)
+        _newValue = Property.GetValueInfo (newValue).Value;
+    }
+
     if (_newValue != null && _newValue != _value)
       _isDirty = true;
   }
 
-  // TODO!
-  internal void HandleTextChange()
+  // TODO: invoke!
+  // internal void HandleSelectionChange()
+  private void ListControl_SelectedIndexChanged (object sender, EventArgs e)
   {
     if (_newValue != null && _newValue != _value)
     {
-      _value = _newValue;
-      OnTextChanged (EventArgs.Empty);
+      Value = _newValue;
+      OnSelectionChanged (EventArgs.Empty);
     }
   }
 
   /// <summary>
-  /// Fires the <see cref="TextChanged"/> event.
+  /// Fires the <see cref="SelectionChanged"/> event.
   /// </summary>
   /// <param name="e"> Empty. </param>
-  protected virtual void OnTextChanged (EventArgs e)
+  protected virtual void OnSelectionChanged (EventArgs e)
   {
-    // _isDirty = true; // moved to OnLoad
-    if (TextChanged != null)
-      TextChanged (this, e);
+    if (SelectionChanged != null)
+      SelectionChanged (this, e);
   }
 
   private void Binding_BindingChanged (object sender, EventArgs e)
@@ -138,6 +140,30 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
       {
         ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Value.ToString());
         _listControl.Items.Add (item);
+      }
+    }
+    InternalLoadValue();
+  }
+
+  private void InternalLoadValue ()
+  {
+    if (Property != null)
+    {
+      IEnumerationValueInfo valueInfo = Property.GetValueInfo (_value);
+      if (valueInfo == null)
+      {
+        _listControl.SelectedIndex = 0;
+      }
+      else
+      {
+        for (int i = 0; i < _listControl.Items.Count; ++i)
+        {
+          if (_listControl.Items[i].Value == valueInfo.Identifier)
+          {
+            _listControl.SelectedIndex = i;
+            break;
+          }
+        }
       }
     }
   }
@@ -174,7 +200,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   public new IBusinessObjectEnumerationProperty Property
   {
     get { return (IBusinessObjectEnumerationProperty) base.Property; }
-    set { base.Property = value; }
+    set { base.Property = (IBusinessObjectEnumerationProperty) value; }
   }
 
   protected override void InitializeChildControls()
@@ -259,7 +285,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   {
     object[] values = (object[]) savedState;
     base.LoadViewState (values[0]);
-    _value = values[1];
+    Value = values[1];
     _isDirty = (bool)  values[2];
   }
 
@@ -267,7 +293,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   {
     object[] values = new object[3];
     values[0] = base.SaveViewState();
-    values[1] = _value;
+    values[1] = Value;
     values[2] = _isDirty;
     return values;
   }
@@ -280,7 +306,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   public override object Value
   {
     get { return _value; }
-    set { _value = value; }
+    set 
+    { 
+      _value = (Enum) value; 
+      InternalLoadValue();
+    }
   }
 
   public override Control TargetControl 
@@ -302,7 +332,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
     set { _isDirty = value; }
   }
 
-  public override Type[] SupportedPropertyInterfaces
+  protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
@@ -312,6 +342,16 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   {
     get { return _listControlStyle.ControlType != ListControlType.DropDownList; }
   }
+
+//  void IPostBackDataHandler.RaisePostDataChangedEvent()
+//  {
+//    HandleSelectionChange();
+//  }
+//
+//  bool IPostBackDataHandler.LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+//  {
+//    return true;
+//  }
 }
 
 }

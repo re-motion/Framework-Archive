@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 
 namespace Rubicon.ObjectBinding
 {
@@ -25,6 +26,7 @@ public abstract class BusinessObject: IBusinessObject
 
   public abstract object GetProperty (IBusinessObjectProperty property);
   public abstract void SetProperty (IBusinessObjectProperty property, object value);
+
   public object this [IBusinessObjectProperty property]
   {
     get { return GetProperty (property); }
@@ -47,6 +49,7 @@ public abstract class BusinessObject: IBusinessObject
     set { SetProperty (property, value); }
   }
 
+  [XmlIgnore]
   public abstract IBusinessObjectClass BusinessObjectClass { get; }
 }
 

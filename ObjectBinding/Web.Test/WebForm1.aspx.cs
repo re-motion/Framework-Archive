@@ -39,13 +39,23 @@ public class WebForm1 : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Person p = new Person();
-    p.FirstName = "Hugo";
-    p.LastName = "Meier";
-    p.DateOfBirth = new DateTime (1959, 4, 15);
-    p.Height = 179;
+    Person person;
+    string path = Server.MapPath ("person.xml");
+    if (System.IO.File.Exists (path))
+    {
+      person = Person.LoadFromXml (path);
+    }
+    else
+    {
+      person = new Person();
+      person.FirstName = "Hugo";
+      person.LastName = "Meier";
+      person.DateOfBirth = new DateTime (1959, 4, 15);
+      person.Height = 179;
+      person.Income = 2000;
+    }
 
-		reflectionBusinessObjectDataSource1.BusinessObject = p;
+		reflectionBusinessObjectDataSource1.BusinessObject = person;
 
     this.DataBind();
     reflectionBusinessObjectDataSource1.LoadValues ();
@@ -68,26 +78,27 @@ public class WebForm1 : System.Web.UI.Page
 	private void InitializeComponent()
 	{    
     this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
+    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
     // 
     // reflectionBusinessObjectDataSource1
     // 
     this.reflectionBusinessObjectDataSource1.BusinessObject = null;
     this.reflectionBusinessObjectDataSource1.EditMode = true;
     this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
-    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click (object sender, System.EventArgs e)
   {
     if (Page.IsValid)
     {
       reflectionBusinessObjectDataSource1.SaveValues();
-      string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
+      Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;
+      person.SaveToXml (Server.MapPath ("person.xml"));
     }
   }
 
