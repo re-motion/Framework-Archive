@@ -16,6 +16,9 @@ public class PrefixNamespace
   public static readonly PrefixNamespace StorageProviderConfigurationNamespace = new PrefixNamespace (
       "sp", "http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0");
 
+  public static readonly PrefixNamespace QueryConfigurationNamespace = new PrefixNamespace (
+      "q", "http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0");
+
   // member fields
 
   private string _prefix;
