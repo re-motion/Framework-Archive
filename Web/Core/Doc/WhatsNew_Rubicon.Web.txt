@@ -1,4 +1,19 @@
+1.2.13.0
+========
+
+- FormGridManager
+  * BugFix für Version 1.2.12.0: Das Table-Tag für die FormGrids wurde doppelt gerendert.
+  
+- TabbedMultiView
+  * Neue Klasse
+  * Bietet eine Verschmelzung von WebTabStrip und MultiPage
+  
+- WebTabStrip
+  * Neue Klasse
+  * Bietet einen mehrzeiligen TabStrip
+  
 1.2.12.0
+========
 
 - FormGridManager
   * ASP.net 2.0 kompatibel
