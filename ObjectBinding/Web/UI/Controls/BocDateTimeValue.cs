@@ -445,11 +445,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     if (_hasClientScript && ! isReadOnly)
     {
       string key = typeof (BocDateTimeValue).FullName;
-      if (! Page.IsClientScriptBlockRegistered (key))
+    if (! HtmlHeaderFactory.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-        PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
+        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 
       key = typeof (BocDateTimeValue).FullName + "_DocumentClickHandler";
@@ -689,7 +689,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         string pickerActionContainer = "document.all['" + ClientID + "']";
         string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
         string pickerActionFrame = "document.all['" + ClientID + "_frame']";
-        string pickerAction = "ShowDatePicker("
+        string pickerAction = "DatePicker_ShowDatePicker("
             + pickerActionButton + ", "
             + pickerActionContainer + ", "
             + pickerActionTarget + ", "

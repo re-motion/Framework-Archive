@@ -31,6 +31,8 @@ td.bocListDataCellOdd
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  
+  cursor: default;
 }
 
 /*  Style applied to the cells in the BocList's even data rows. */
@@ -45,10 +47,13 @@ td.bocListDataCellEven
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  
+  cursor: default;
 }
 
-/*  Style applied to the cells in the BocList's selected odd data rows. */
-td.bocListDataCellOddSelected
+/*  Style applied to the cells in the BocList's selected odd and even data rows. */
+td.bocListDataCellOddSelected,
+td.bocListDataCellEvenSelected
 {
 	background-color: Navy;
   color: White;
@@ -60,21 +65,25 @@ td.bocListDataCellOddSelected
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  
+  cursor: default;
 }
 
-/*  Style applied to the cells in the BocList's selected even data rows. */
-td.bocListDataCellEvenSelected
+/*  Style applied to the anchor tags in BocList's selected odd and even data rows.  */
+td.bocListDataCellOddSelected a,
+td.bocListDataCellEvenSelected a
 {
-	background-color: Navy;
   color: White;
+}
 
-  padding: 2px 2px 2px 5px;
-  border-style: solid;
-  border-top-width: 1px;
-  border-right-width: 0px;
-  border-bottom-width: 0px;
-  border-left-width: 0px;
-  border-color: White;
+/*  Style applied to the anchor tags during hovering in BocList's selected odd and even data rows.  */
+td.bocListDataCellOdd a:hover,
+td.bocListDataCellEven a:hover,
+td.bocListDataCellOddSelected a:hover,
+td.bocListDataCellEvenSelected a:hover
+{
+  color: Black;
+  background-color: Yellow;
 }
 
 /* Style applied to the text providing the sorting order's index. */
@@ -88,14 +97,4 @@ span.bocListSortingOrder
 /*  Style applied to the BocList's navigator. */
 div.bocListNavigator
 {
-}
-
-td.bocListDataCellOddSelected a
-{
-  color: White;
-}
-
-td.bocListDataCellEvenSelected a
-{
-  color: White;
 }

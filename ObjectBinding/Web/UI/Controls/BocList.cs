@@ -18,6 +18,7 @@ using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -119,8 +120,7 @@ public class BocList:
     ///   Initializes a new instance of the <see cref="SortingOrderEntry"/> class with
     ///   a column index and the <see cref="SortingDirection"/> for this column.
     /// </summary>
-    /// <param name="columnIndex"> The index of the column. </param>
-    /// <param name="direction"> The sorting direction for the column. </param>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Constructor/*' />
     public SortingOrderEntry (int columnIndex, SortingDirection direction)
     {
       _columnIndex = columnIndex;
@@ -130,16 +130,7 @@ public class BocList:
     /// <summary>
     ///   Tests whether two specified <see cref="SortingOrderEntry"/> structures are equivalent.
     /// </summary>
-    /// <param name="left">
-    ///   The <see cref="SortingOrderEntry"/> structure that is to the left of the equality operator. 
-    /// </param>
-    /// <param name="right">
-    ///   The <see cref="SortingOrderEntry"/> structure that is to the right of the equality operator. 
-    /// </param>
-    /// <returns>
-    ///   This operator returns <see langword="true"/> if the two <see cref="SortingOrderEntry"/>
-    ///   structures are equal; otherwise, <see langword="false"/>.
-    /// </returns>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/OperatorEqual/*' />
     public static bool operator == (SortingOrderEntry left, SortingOrderEntry right)
     {
       return left.ColumnIndex == right.ColumnIndex && left.Direction == right.Direction;
@@ -148,16 +139,7 @@ public class BocList:
     /// <summary>
     ///   Tests whether two specified <see cref="SortingOrderEntry"/> structures are different.
     /// </summary>
-    /// <param name="left">
-    ///   The <see cref="SortingOrderEntry"/> structure that is to the left of the inequality operator. 
-    /// </param>
-    /// <param name="right">
-    ///   The <see cref="SortingOrderEntry"/> structure that is to the right of the inequality operator. 
-    /// </param>
-    /// <returns>
-    ///   This operator returns <see langword="true"/> if the two <see cref="SortingOrderEntry"/>
-    ///   structures are different; otherwise, <see langword="false"/>.
-    /// </returns>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/OperatorDifferent/*' />
     public static bool operator != (SortingOrderEntry left, SortingOrderEntry right)
     {
       return !(left == right);
@@ -167,12 +149,7 @@ public class BocList:
     ///   Tests whether the specified object is a <see cref="SortingOrderEntry"/> structure 
     ///   and is equivalent to this <see cref="SortingOrderEntry"/> structure.
     /// </summary>
-    /// <param name="obj"> The object to test. </param>
-    /// <returns>
-    ///   This method returns <see langword="true"/> if <paramref name="obj"/> 
-    ///   is a <see cref="SortingOrderEntry"/> structure equivalent to this 
-    ///   <see cref="SortingOrderEntry"/> structure; otherwise, <see langword="false"/>.
-    /// </returns>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Equals/*' />
     public override bool Equals (object obj)
     {
       if (obj is SortingOrderEntry)
@@ -186,18 +163,14 @@ public class BocList:
     /// <summary>
     ///   Returns a hash code for this <see cref="SortingOrderEntry"/> structure.
     /// </summary>
-    /// <returns> 
-    ///   An integer value that specifies the hash code for this  <see cref="SortingOrderEntry"/> 
-    ///   structure. 
-    /// </returns>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/GetHashCode/*' />
     public override int GetHashCode()
     {
       return _columnIndex.GetHashCode() ^ _direction.GetHashCode();
     }
 
     /// <summary>
-    ///   Gets or sets the index of the column for which the <see cref="Direction"/> 
-    ///   is entered.
+    ///   Gets or sets the index of the column for which the <see cref="Direction"/> is entered.
     /// </summary>
     public int ColumnIndex
     {
@@ -206,8 +179,7 @@ public class BocList:
     }
 
     /// <summary>
-    ///   Gets or sets the <see cref="SortingDirection"/> for the column at 
-    ///   <see cref="ColumnIndex"/>.
+    ///   Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>.
     /// </summary>
     public SortingDirection Direction
     {
@@ -403,7 +375,7 @@ public class BocList:
     eventArgument = eventArgument.Trim();
 
     if (eventArgument.StartsWith (c_eventCommandPrefix))
-      HandeEventCommand (eventArgument.Substring (c_eventCommandPrefix.Length));
+      HandleEventCommand (eventArgument.Substring (c_eventCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_sortCommandPrefix))
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
     else
@@ -414,7 +386,7 @@ public class BocList:
   /// <param name="eventArgument">
   ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
   /// </param>
-  private void HandeEventCommand (string eventArgument)
+  private void HandleEventCommand (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -557,15 +529,7 @@ public class BocList:
   }
 
   /// <summary> Fires the <see cref="CommandClick"/> event. </summary>
-  /// <param name="columnID"> The ID of the column whose command was clicked. </param>
-  /// <param name="listIndex">
-  ///   An index that indtifies the <see cref="IBusinessObject"/> with which the clicked command 
-  ///   is associated.
-  /// </param>
-  /// <param name="businessObjectID">
-  ///   An identifier for the <see cref="IBusinessObject"/> with which the clicked command 
-  ///   is associated.
-  /// </param>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnCommandClick/*' />
   protected virtual void OnCommandClick (string columnID, int listIndex, string businessObjectID)
   {
     BocItemCommandClickEventHandler commandClickHandler = 
@@ -646,11 +610,11 @@ public class BocList:
       }
 
       key = typeof (BocList).FullName;
-      if (! Page.IsClientScriptBlockRegistered (key))
+      if (! HtmlHeaderFactory.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.Html, c_bocListScriptUrl);
-        PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
+        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
     }
   }

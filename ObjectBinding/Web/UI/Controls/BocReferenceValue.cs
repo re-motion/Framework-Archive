@@ -325,7 +325,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   edit mode.
   /// </summary>
   /// <remarks>
-  ///   Use this method when manually setting the listed items, i.e. from the parent control.
+  ///   Use this method when manually setting the listed items, e.g. from the parent control.
   /// </remarks>
   /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
   public void SetBusinessObjectReferenceList (IBusinessObjectWithIdentity[] businessObjects)

@@ -7,6 +7,7 @@ using System.Web.UI.HtmlControls;
 using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UI;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -37,6 +38,7 @@ public class DatePickerPage : Page
   private const string c_datePickerScriptUrl = "DatePicker.js";
   
   protected HtmlForm Form;
+  protected HtmlGenericControl HtmlHeader;
   protected Calendar Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
   private HtmlInputHidden TargetIDField;
@@ -49,6 +51,8 @@ public class DatePickerPage : Page
 	{
     if (Form == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");
+    if (HtmlHeader == null)
+      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHeader'.");
     if (Calendar == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
 
@@ -101,20 +105,26 @@ public class DatePickerPage : Page
   protected override void OnPreRender(EventArgs e)
   {
     string key = typeof (DatePickerPage).FullName;
-    if (! Page.IsClientScriptBlockRegistered (key))
+    if (! HtmlHeaderFactory.Current.IsRegistered (key))
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
-      PageUtility.RegisterClientScriptInclude (this, key, scriptUrl);
+          this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
+      HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
     }
 
     base.OnPreRender (e);
   }
 
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    HtmlHeaderFactory.Current.EnsureAppendHeaders (HtmlHeader.Controls);
+    base.RenderChildren (writer);
+  }
+
   private void Calendar_SelectionChanged(object sender, EventArgs e)
   {
     string key = typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged";
-    string script = "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');";
+    string script = "DatePicker_Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');";
     if (! Page.IsStartupScriptRegistered (key))
       PageUtility.RegisterStartupScriptBlock (this, key, script);
   }

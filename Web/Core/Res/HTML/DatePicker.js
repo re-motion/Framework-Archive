@@ -3,15 +3,15 @@
 
 //  The currently displayed date picker
 //  Belongs to the parent page.
-var _currentDatePicker = null;
+var _datePicker_currentDatePicker = null;
 
 //  Helper variable for event handling.
 //  Belongs to the parent page.
 //  The click event of the document fires after the methods bound to the button click have been 
-//  executed. _isEventAfterDatePickerButtonClick is used to identify those click events fired
+//  executed. _datePicker_isEventAfterDatePickerButtonClick is used to identify those click events fired
 //  because a date picker button had been clicked in contrast to events fired
 //  beause of a click somewhere on the page.
-var _isEventAfterDatePickerButtonClick = false;
+var _datePicker_isEventAfterDatePickerButtonClick = false;
 
 //  Shows the date picker frame below the button.
 //  Belongs to the parent page.
@@ -19,11 +19,11 @@ var _isEventAfterDatePickerButtonClick = false;
 //  container: The page element containing the properties to be passed to the picker.
 //  target: The input element receiving the value returned by the date picker.
 //  frame: The IFrame containing the date picker that will be shown.
-function ShowDatePicker (button, container, target, frame)
+function DatePicker_ShowDatePicker (button, container, target, frame)
 {
   //  Tried to open the already open date picker?
   //  Close it and return.
-  if (CloseVisibleDatePickerFrame (frame))
+  if (DatePicker_CloseVisibleDatePickerFrame (frame))
     return;
     
   if (target.disabled || target.readOnly)
@@ -56,11 +56,11 @@ function ShowDatePicker (button, container, target, frame)
   frame.style.top = frame.offsetTop + container.offsetHeight;
   frame.style.display = 'none';
 
-  window.frames[frame.id].InitializeCalendarFrame(target, frame);
+  window.frames[frame.id].DatePicker_InitializeCalendarFrame(target, frame);
   
-  _currentDatePicker = frame;
+  _datePicker_currentDatePicker = frame;
   frame.style.display = '';
-  _isEventAfterDatePickerButtonClick = true;
+  _datePicker_isEventAfterDatePickerButtonClick = true;
 }
 
 //  Closes the currently visible date picker frame.
@@ -68,17 +68,17 @@ function ShowDatePicker (button, container, target, frame)
 //  newDatePicker: The newly selected date picker frame, used to test whether the current frame 
 //      is identical to the new frame.
 //  returns true if the newDatePicker is equal to the visible date picker.
-function CloseVisibleDatePickerFrame (newDatePicker)
+function DatePicker_CloseVisibleDatePickerFrame (newDatePicker)
 {
-  if (   newDatePicker == _currentDatePicker
+  if (   newDatePicker == _datePicker_currentDatePicker
       && newDatePicker.style.display != 'none')
   {
     return true;
   }        
-  if (_currentDatePicker != null)
+  if (_datePicker_currentDatePicker != null)
   {
-    window.frames[_currentDatePicker.id].CloseDatePicker();
-    _currentDatePicker = null;
+    window.frames[_datePicker_currentDatePicker.id].DatePicker_CloseDatePicker();
+    _datePicker_currentDatePicker = null;
   }
   return false;
 }
@@ -89,7 +89,7 @@ function CloseVisibleDatePickerFrame (newDatePicker)
 //  Sets the currently selected date and calls a post back.
 //  target: The input element receiving the value returned by the date picker.
 //  frame: The IFrame containing the date picker that will be shown.
-function InitializeCalendarFrame (target, frame)
+function DatePicker_InitializeCalendarFrame (target, frame)
 {
   document.all['TargetIDField'].value = target.id;
   document.all['FrameIDField'].value = frame.id;
@@ -103,17 +103,17 @@ function InitializeCalendarFrame (target, frame)
 
 //  Called by the date picker when a new date is selected in the calendar. 
 //  Belongs to the date picker frame.
-function Calendar_SelectionChanged (value)
+function DatePicker_Calendar_SelectionChanged (value)
 {
   target = window.parent.document.all[document.all['TargetIDField'].value];
   target.value = value;
 
-  CloseDatePicker();
+  DatePicker_CloseDatePicker();
 }
 
 //  Closes the date picker frame
 //  Belongs to the date picker frame.
-function CloseDatePicker() 
+function DatePicker_CloseDatePicker() 
 {
   document.all['DateValueField'].value = '';
   target = window.parent.document.all[document.all['TargetIDField'].value];
@@ -125,17 +125,17 @@ function CloseDatePicker()
 //  Called by th event handler for the onclick event of the parent pages's document.
 //  Belongs to the parent page.
 //  Closes the currently open date picker frame, 
-//  unless _isEventAfterDatePickerButtonClick is set to false.
+//  unless _datePicker_isEventAfterDatePickerButtonClick is set to false.
 function DatePicker_OnDocumentClick()
 {
-  if (_isEventAfterDatePickerButtonClick)
+  if (_datePicker_isEventAfterDatePickerButtonClick)
   {
-    _isEventAfterDatePickerButtonClick = false;
+    _datePicker_isEventAfterDatePickerButtonClick = false;
   }
-  else if (_currentDatePicker != null)
+  else if (_datePicker_currentDatePicker != null)
   {
-    window.frames[_currentDatePicker.id].CloseDatePicker();
-    _currentDatePicker = null;
+    window.frames[_datePicker_currentDatePicker.id].DatePicker_CloseDatePicker();
+    _datePicker_currentDatePicker = null;
   }  
 }
 

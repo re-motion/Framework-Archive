@@ -28,12 +28,12 @@ public class WxeWebFormBase:
   private static Hashtable s_chachedResourceManagers = new Hashtable();
   
   private Button _nextButton = new Button();
-  protected HtmlGenericControl HtmlHeader;
+  protected HtmlGenericControl HtmlHead;
 
   protected override void OnInit(EventArgs e)
   {
-    if (HtmlHeader == null)
-      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHeader'.");
+    if (HtmlHead == null)
+      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHead'.");
 
     if (! ControlHelper.IsDesignMode (this, Context))
     {
@@ -57,13 +57,13 @@ public class WxeWebFormBase:
     Form.Controls.Add (_nextButton);
 
     string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-    HtmlHeaderFactory.Current.RegisterStylesheetLink ("FormGrid_Style", url);
+    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
   }
 
   protected override void RenderChildren(HtmlTextWriter writer)
   {
-    HtmlHeaderFactory.Current.EnsureAppendHeaders (HtmlHeader.Controls);
+    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
     base.RenderChildren (writer);
   }
 

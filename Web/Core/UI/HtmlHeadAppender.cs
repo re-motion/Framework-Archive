@@ -20,8 +20,12 @@ public class HtmlHeaderFactory
 {
   /// <summary> Hashtable&lt;string key, string header&gt; </summary>
   private Hashtable _registeredHeaders = new Hashtable();
+  /// <summary> <see langword="true"/> if <see cref="AppendHeaders"/> has already executed. </summary>
   private bool _hasAppendHeadersExecuted = false;
 
+  /// <summary>
+  ///   Gets the <see cref="HtmlHeaderFactory"/> instance.
+  /// </summary>
   public static HtmlHeaderFactory Current
   {
     get 
@@ -54,27 +58,28 @@ public class HtmlHeaderFactory
   /// <param name="headerCollection">
   ///   <see cref="ControlCollection"/> to which the headers will be appended.
   /// </param>
-  public void AppendHeaders (ControlCollection headerCollection)
+  public void EnsureAppendHeaders (ControlCollection headerCollection)
   {
-    foreach (HtmlGenericControl header in _registeredHeaders.Values)
+    if (_hasAppendHeadersExecuted)
+      return;
+
+    foreach (Control header in _registeredHeaders.Values)
       headerCollection.Add (header);
 
     _hasAppendHeadersExecuted = true;
   }
 
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary> Registers a stylesheet file. </summary>
   /// <remarks>
-  ///   All calls to <see cref="RegisterHeaderStylesheetLink"/> must be completed before
-  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>PreRender</c> phase.)
+  ///   All calls to <see cref="RegisterStylesheetLink"/> must be completed before
+  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>Render</c> phase.)
   /// </remarks>
-  /// <param name="key"></param>
-  /// <param name="href"></param>
+  /// <param name="key"> The unique key identifying the stylesheet file in the headers collection. </param>
+  /// <param name="href"> The url of the stylesheet file. </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="AppendHeaders"/> has executed.
   /// </exception>
-  public void RegisterHeaderStylesheetLink (string key, string href)
+  public void RegisterStylesheetLink (string key, string href)
   {
     HtmlGenericControl header = new HtmlGenericControl ("link");
     header.Attributes.Add ("type", "text/css");
@@ -83,24 +88,45 @@ public class HtmlHeaderFactory
     RegisterHeader (key, header);
   }
 
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary> Registers a javascript file. </summary>
   /// <remarks>
-  ///   All calls to <see cref="RegisterHeader"/> must be completed before
-  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>PreRender</c> phase.)
+  ///   All calls to <see cref="RegisterJavaScriptInclude"/> must be completed before
+  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>Render</c> phase.)
   /// </remarks>
-  /// <param name="key"></param>
-  /// <param name="header"></param>
+  /// <param name="key"> The unique key identifying the javascript file in the headers collection. </param>
+  /// <param name="src"> The url of the javascript file. </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="AppendHeaders"/> has executed.
   /// </exception>
-  public void RegisterHeader (string key, HtmlGenericControl header)
+  public void RegisterJavaScriptInclude (string key, string src)
+  {
+    HtmlGenericControl header = new HtmlGenericControl ("script");
+    header.Attributes.Add ("type", "text/javascript");
+    header.Attributes.Add ("src", src);
+    RegisterHeader (key, header);
+  }
+
+  /// <summary> Registers a <see cref="Control"/> containing an HTML header element. </summary>
+  /// <remarks>
+  ///   All calls to <see cref="RegisterHeader"/> must be completed before
+  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>Render</c> phase.)
+  /// </remarks>
+  /// <param name="key"> The unique key identifying the header element in the collection. </param>
+  /// <param name="header"> The <see cref="Control"/> representing the header element. </param>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if method is called after <see cref="AppendHeaders"/> has executed.
+  /// </exception>
+  public void RegisterHeader (string key, Control header)
   {
     if (_hasAppendHeadersExecuted)
       throw new HttpException ("RegisterHeader must not be called after AppendHeaders has executed.");
     if (! _registeredHeaders.Contains (key))
       _registeredHeaders.Add (key, header);
+  }
+
+  public bool IsRegistered (string key)
+  {
+    return _registeredHeaders.Contains (key);
   }
 }
 

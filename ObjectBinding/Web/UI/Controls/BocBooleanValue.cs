@@ -12,6 +12,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UI;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -337,11 +338,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       string script;
 
       string key = typeof (BocBooleanValue).FullName;
-      if (! Page.IsClientScriptBlockRegistered (key))
+      if (! HtmlHeaderFactory.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.Html, c_bocBooleanValueScriptUrl);
-        PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
+        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 
       key = typeof (BocBooleanValue).FullName+ "_Startup";

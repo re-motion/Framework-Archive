@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head id="HtmlHeader" runat="server">
+  <head id="HtmlHead" runat="server">
     <title>PersonDetailsPage</title>
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
