@@ -371,11 +371,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\FormGridRowProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\IBaseValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -481,11 +476,6 @@
                 <File
                     RelPath = "UI\Globalization\TabControl.resx"
                     BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Utilities\AccessKeyUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Utilities\ControlHelper.cs"
