@@ -126,8 +126,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TabControl.cs"
+                    RelPath = "PageUtility.cs"
                     SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TabControl.cs"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File

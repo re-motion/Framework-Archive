@@ -15,6 +15,7 @@ public class Tab: Control
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
+  private bool _pageToken = false;
 
 	public string Label
 	{
@@ -26,6 +27,11 @@ public class Tab: Control
 		get { return _href; }
 		set { _href = value; }
 	}
+  public bool PageToken
+  {
+    get { return _pageToken; }
+    set { _pageToken = value; }
+  }
 }
 
 public class TabControlBuilder: ControlBuilder
@@ -200,18 +206,27 @@ public class TabControl: Control, IPostBackEventHandler
 		_activeTab = (int) state.Second;
 	}
 
-  private string GetHref (string eventName, int itemIndex, string rawHref)
+  private string GetHref (string eventName, int itemIndex, Tab tab)
   {
 		string resultHref = null;
     string eventArgument = eventName + ":" + itemIndex.ToString();
 		string script = Page.GetPostBackClientEvent (this, eventArgument);
 
-		if (rawHref != string.Empty)
+    string href = tab.Href;
+		if (href != string.Empty)
 		{
+      if (tab.PageToken)
+      {
+        if (href.IndexOf ("?") == -1)
+          href += "?pageToken=" + PageUtility.GetUniqueToken();
+        else
+          href += "&pageToken=" + PageUtility.GetUniqueToken();
+      }
+
 			if (_target != string.Empty)
-				script = "window.open('" + rawHref + "', '" + _target + "'); " + script;
+				script = "window.open('" + href + "', '" + _target + "'); " + script;
 			else
-				resultHref = "href=\"" + rawHref + "\"";
+				resultHref = "href=\"" + href + "\"";
 		}
 		if (resultHref == null)
 			resultHref = "href=\"javascript:" + script + "\"";
@@ -256,7 +271,7 @@ public class TabControl: Control, IPostBackEventHandler
 			if (i == _activeTab)
 				classAttrib = activeClassAttrib;
 
-      string href = GetHref ("TabSelected", i, tab.Href);
+      string href = GetHref ("TabSelected", i, tab);
 
 			/*
 				href = "href=\"javascript:window.open('" + tab.Href + "'); " + Page.GetPostBackClientEvent (this, i.ToString()) + "\"";
@@ -485,6 +500,10 @@ public class TabCollection: IList
 			_tabs[index] = value;
 		}
 	}
+}
+
+public class XyPage : Page
+{
 }
 
 
