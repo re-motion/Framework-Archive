@@ -22,7 +22,7 @@ public class WxeWebFormBase:
     IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
     IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
-  /// <summary> Hashtable&lt;type,IResourceManager&gt; </summary>
+  /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
 
   protected override void OnInit(EventArgs e)
@@ -59,7 +59,7 @@ public class WxeWebFormBase:
     Type type = this.GetType();
     if (s_chachedResourceManagers[type] == null)
     {
-      lock (typeof (WxeWebFormBase))
+      lock (typeof (WebFormBase))
       {
         if (s_chachedResourceManagers[type] == null)
           s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);

@@ -23,7 +23,7 @@ public class WebFormBase:
     IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
     IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
-  /// <summary> Hashtable&lt;type,IResourceManager&gt; </summary>
+  /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
 
   protected override void OnInit(EventArgs e)

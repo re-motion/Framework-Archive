@@ -57,9 +57,9 @@ public class WebFormMK : WebFormBase
     {
       partner = person.Partner;
     }
-      person.SaveObject();
-      if (person.Partner != null)
-        person.Partner.SaveObject();
+//      person.SaveObject();
+//      if (person.Partner != null)
+//        person.Partner.SaveObject();
 
     ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
 
