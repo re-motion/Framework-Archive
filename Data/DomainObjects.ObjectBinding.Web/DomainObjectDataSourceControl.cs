@@ -6,6 +6,8 @@ using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml;
+using System.IO;
 
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
@@ -54,8 +56,49 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     if (projectPath == null)
       return;
 
-    MappingLoader mappingLoader = new MappingLoader (projectPath + @"\bin\mapping.xml", projectPath + @"\bin\mapping.xsd");
+    MappingLoader mappingLoader = new MappingLoader (GetMappingFilePath (projectPath), GetMappingSchemaPath (projectPath));
     MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
+  }
+
+  private string GetMappingFilePath (string projectPath)
+  {
+    return GetFilePathFromWebConfig (
+        projectPath,
+        MappingLoader.ConfigurationAppSettingKey,
+        projectPath + @"\bin\mapping.xml");
+  }
+
+  private string GetMappingSchemaPath (string projectPath)
+  {
+    return GetFilePathFromWebConfig (
+        projectPath,
+        MappingLoader.SchemaAppSettingKey,
+        projectPath + @"\bin\mapping.xsd");
+  }
+
+  private string GetFilePathFromWebConfig (string projectPath, string configurationKey, string defaultPath)
+  {
+    string webConfigFilePath = projectPath + "\\web.config";
+    string filePath = GetValueFromWebConfig (webConfigFilePath, configurationKey);
+    if (filePath == null || filePath == string.Empty)
+      return defaultPath;
+
+    if (!File.Exists (filePath))
+      return defaultPath;
+
+    return filePath;
+  }
+
+  private string GetValueFromWebConfig (string webConfigFilePath, string configurationKey)
+  {
+    XmlDocument webConfigDocument = new XmlDocument();
+    webConfigDocument.Load (webConfigFilePath);
+    string xPath = string.Format ("/configuration/appSettings/add/@value[../@key='{0}']", configurationKey);
+    XmlNode valueNode = webConfigDocument.SelectSingleNode (xPath);
+    if (valueNode == null)
+      return null;
+
+    return valueNode.InnerText;
   }
 }
 }
