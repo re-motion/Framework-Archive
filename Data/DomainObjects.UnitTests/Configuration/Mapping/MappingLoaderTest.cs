@@ -31,7 +31,7 @@ public class LoaderTest
   [SetUp]
   public void Setup ()
   {
-    _loader = new MappingLoader (@"..\..\mapping.xml", @"..\..\..\mapping.xsd");
+    _loader = new MappingLoader (@"mapping.xml", @"mapping.xsd");
   }
 
   [Test]
@@ -85,7 +85,9 @@ public class LoaderTest
   [Test]
   public void ReadAndValidateMappingFile ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mapping.xml", @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mapping.xml", 
+        @"mapping.xsd");
 
     // expectation: no exception
   }
@@ -94,8 +96,9 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException), "Class 'Company' cannot refer to itself as base class.")]
   public void MappingWithInvalidBaseClass ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithInvalidDerivation.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithInvalidDerivation.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -106,8 +109,9 @@ public class LoaderTest
           "base class 'Company' must be equal.")]
   public void MappingWithDerivationAndInvalidEntityName ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithDerivationAndInvalidEntityName.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithDerivationAndInvalidEntityName.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -118,8 +122,8 @@ public class LoaderTest
   public void MappingWithInvalidDerivationAcrossStorageProviders ()
   {
     MappingLoader loader = new MappingLoader (
-        @"..\..\mappingWithInvalidDerivationAcrossStorageProviders.xml", 
-        @"..\..\..\mapping.xsd");
+        @"mappingWithInvalidDerivationAcrossStorageProviders.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -130,8 +134,9 @@ public class LoaderTest
         + " because the property 'Name' is defined in both classes.")]
   public void MappingWithPropertyDefinedInBaseAndDerivedClass ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithPropertyDefinedInBaseAndDerivedClass.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithPropertyDefinedInBaseAndDerivedClass.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -142,8 +147,9 @@ public class LoaderTest
         + " because the property 'Name' is defined in both classes.")]
   public void MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -151,8 +157,9 @@ public class LoaderTest
   [Test]
   public void MappingWithMinimumData ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithMinimumData.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithMinimumData.xml", 
+        @"mapping.xsd");
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
     RelationDefinitionCollection relationDefinitions = loader.GetRelationDefinitions (classDefinitions);
@@ -168,8 +175,9 @@ public class LoaderTest
       "Class 'Customer' refers to non-existing base class 'NonExistingClass'.")]
   public void MappingWithNonExistingBaseClass ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithNonExistingBaseClass.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithNonExistingBaseClass.xml", 
+        @"mapping.xsd");
   
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -178,8 +186,9 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException))]
   public void MappingWithSchemaException ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithSchemaException.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithSchemaException.xml", 
+        @"mapping.xsd");
   }
 
   [Test]
@@ -188,8 +197,9 @@ public class LoaderTest
      + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 4.")]
   public void MappingWithXmlException ()
   {
-    MappingLoader loader = new MappingLoader (@"..\..\mappingWithXmlException.xml", 
-        @"..\..\..\mapping.xsd");
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithXmlException.xml", 
+        @"mapping.xsd");
   }
 
 
@@ -197,7 +207,8 @@ public class LoaderTest
   public void ReadAndValidateStorageProviderFile ()
   {
     StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"..\..\storageProviders.xml", @"..\..\..\storageProviders.xsd");
+        @"storageProviders.xml", 
+        @"storageProviders.xsd");
 
     // expectation: no exception
   }
@@ -207,8 +218,8 @@ public class LoaderTest
   public void StorageProvidersWithSchemaException ()
   {
     StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"..\..\storageProvidersWithSchemaException.xml", 
-        @"..\..\..\storageProviders.xsd");
+        @"storageProvidersWithSchemaException.xml", 
+        @"storageProviders.xsd");
   }
 
   [Test]
@@ -218,8 +229,23 @@ public class LoaderTest
   public void StorageProvidersWithXmlException ()
   {
     StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"..\..\storageProvidersWithXmlException.xml", 
-        @"..\..\..\storageProviders.xsd");
+        @"storageProvidersWithXmlException.xml", 
+        @"storageProviders.xsd");
   }
+
+
+  [Test]
+  [ExpectedException (typeof (MappingException), 
+      "Virtual end point of one-to-one relation 'OrderToOrderTicket' does not define a property type.")]
+  public void MappingWithOneToOneRelationWithoutPropertyType ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithOneToOneRelationWithoutPropertyType.xml", 
+        @"mapping.xsd");
+    
+    RelationDefinitionCollection relations = loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  }
+
+  
 }
 }
