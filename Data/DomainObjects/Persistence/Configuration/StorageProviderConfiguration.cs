@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
-public class StorageProviderConfiguration
+public class StorageProviderConfiguration : ConfigurationBase
 {
   // types
 
@@ -39,10 +39,7 @@ public class StorageProviderConfiguration
 
   // member fields
 
-  private string _applicationName;
   private StorageProviderDefinitionCollection _storageProviderDefinitions;
-  private string _configurationFile;
-  private string _schemaFile;
 
   // construction and disposing
 
@@ -51,14 +48,11 @@ public class StorageProviderConfiguration
   {
   }
 
-  public StorageProviderConfiguration (StorageProviderConfigurationLoader loader)
+  public StorageProviderConfiguration (StorageProviderConfigurationLoader loader) : base (loader)
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
-    _applicationName = loader.GetApplicationName ();
     _storageProviderDefinitions = loader.GetStorageProviderDefinitions ();
-    _configurationFile = loader.ConfigurationFile;
-    _schemaFile = loader.SchemaFile;
   }
 
   // methods and properties
@@ -72,24 +66,9 @@ public class StorageProviderConfiguration
     }
   }
 
-  public string ApplicationName 
-  {
-    get { return _applicationName; }
-  }
-
   public StorageProviderDefinitionCollection StorageProviderDefinitions
   {
     get { return _storageProviderDefinitions; }
-  }
-
-  public string ConfigurationFile
-  {
-    get { return _configurationFile; }
-  }
-
-  public string SchemaFile
-  {
-    get { return _schemaFile; }
   }
 }
 }

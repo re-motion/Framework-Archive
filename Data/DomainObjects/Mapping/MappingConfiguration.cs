@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-public class MappingConfiguration
+public class MappingConfiguration : ConfigurationBase
 {
   // types
 
@@ -39,11 +39,8 @@ public class MappingConfiguration
 
   // member fields
 
-  private string _appliationName;
   private ClassDefinitionCollection _classDefinitions;
   private RelationDefinitionCollection _relationDefinitions;
-  private string _configurationFile;
-  private string _schemaFile;
 
   // construction and disposing
 
@@ -52,23 +49,15 @@ public class MappingConfiguration
   {
   }
 
-  public MappingConfiguration (MappingLoader loader)
+  public MappingConfiguration (MappingLoader loader) : base (loader)
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
-    _appliationName = loader.GetApplicationName ();
     _classDefinitions = loader.GetClassDefinitions ();
     _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
-    _configurationFile = loader.ConfigurationFile;
-    _schemaFile = loader.SchemaFile;
   }
 
   // methods and properties
-
-  public string ApplicationName
-  {
-    get { return _appliationName; }
-  }
 
   public ClassDefinitionCollection ClassDefinitions
   {
@@ -78,16 +67,6 @@ public class MappingConfiguration
   public RelationDefinitionCollection RelationDefinitions
   {
     get { return _relationDefinitions; }
-  }
-
-  public string ConfigurationFile
-  {
-    get { return _configurationFile; }
-  }
-
-  public string SchemaFile
-  {
-    get { return _schemaFile; }
   }
 }
 }

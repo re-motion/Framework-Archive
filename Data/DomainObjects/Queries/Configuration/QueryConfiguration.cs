@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <summary>
 /// Represents the current query configuration.
 /// </summary>
-public class QueryConfiguration
+public class QueryConfiguration : ConfigurationBase
 {
   // types
 
@@ -19,7 +19,23 @@ public class QueryConfiguration
   /// <summary>
   /// Gets the current query configuration.
   /// </summary>
-  /// <remarks>If there is no current query configuration a new one is created.</remarks>
+  /// <remarks>
+  /// <para>If there is no current query configuration a new one is created.</para>
+  /// <para>The file containing the query configuration is determined as follows:
+  /// <list type="bullet">
+  ///   <item>
+  ///     <description>
+  ///       If the application configuration file (e.g. web.config, app.config) contains the keys 
+  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile</b> and
+  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile</b> specifying the configuration file and the schema file for verficiation those are used.
+  ///     </description>  
+  ///   </item>
+  ///   <item>
+  ///     <description>The files <b>queries.xml</b> and <b>queries.xsd</b> must be present in the same directory as the assemblies reside.</description>
+  ///   </item>  
+  /// </list>
+  /// </para>
+  /// </remarks>
   public static QueryConfiguration Current
   {
     get 
@@ -50,10 +66,7 @@ public class QueryConfiguration
 
   // member fields
 
-  private string _applicationName;
   private QueryDefinitionCollection _queryDefinitions;
-  private string _configurationFile;
-  private string _schemaFile;
 
   // construction and disposing
 
@@ -72,31 +85,13 @@ public class QueryConfiguration
   /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/>.
   /// </summary>
   /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>.</param>
-  /// <remarks>
-  /// The file containing the query configuration is determined as follows:
-  /// <list type="bullet">
-  ///   <item>
-  ///     <description>
-  ///       If the application configuration file (e.g. web.config, app.config) contains the keys 
-  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile</b> and
-  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile</b> specifying the configuration file and the schema file for verficiation those are used.
-  ///     </description>  
-  ///   </item>
-  ///   <item>
-  ///     <description>The files <b>queries.xml</b> and <b>queries.xsd</b> must be present in the same directory as the assemblies reside.</description>
-  ///   </item>  
-  /// </list>
-  /// </remarks>
   /// <exception cref="System.ArgumentNullException"><i>loader</i> is a null reference.</exception>
   /// <exception cref="QueryConfigurationException">The query configuration could not be read from the configuration file.</exception>
-  public QueryConfiguration (QueryConfigurationLoader loader)
+  public QueryConfiguration (QueryConfigurationLoader loader) : base (loader)
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
-    _applicationName = loader.GetApplicationName ();
     _queryDefinitions = loader.GetQueryDefinitions ();
-    _configurationFile = loader.ConfigurationFile;
-    _schemaFile = loader.SchemaFile;
   }
 
   // methods and properties
@@ -116,35 +111,11 @@ public class QueryConfiguration
   }
 
   /// <summary>
-  /// Gets the application name that is specified in the XML configuration file. 
-  /// </summary>
-  public string ApplicationName 
-  {
-    get { return _applicationName; }
-  }
-
-  /// <summary>
   /// Gets all configured <see cref="QueryDefinition"/>s.
   /// </summary>
   public QueryDefinitionCollection QueryDefinitions
   {
     get { return _queryDefinitions; }
-  }
-
-  /// <summary>
-  /// Gets the configuration file.
-  /// </summary>
-  public string ConfigurationFile
-  {
-    get { return _configurationFile; }
-  }
-
-  /// <summary>
-  /// Gets the schema file that the <see cref="ConfigurationFile"/> has been validated against.
-  /// </summary>
-  public string SchemaFile
-  {
-    get { return _schemaFile; }
   }
 }
 }
