@@ -370,6 +370,11 @@
           <includes name="**/*" />
         </fileset>
       </copy>
+      <copy todir="${build.basedir}" flatten="true">
+        <fileset basedir="${project.dir}/">
+        <includes name="**/WhatsNew*" />
+        </fileset>
+      </copy>
       <!-- else -->
     </if>
     <if unless="${build.copyresources}" propertyexists="dummy">
