@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -14,23 +15,116 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   Validates date values in the current culture.
-/// </summary>
-/// <remarks>
-///   <para>
-///     This class does not provide client-side validation.
-///   </para><para>
-///     Cannot detect a 0:0 time component included in the date string.
-///     Since a time-offset of 0:0 will not falsify the result, this is acceptable.
-///     Prevented by setting the MaxLength attribute of the input field.
-///   </para>
-/// </remarks>
-public class DateValidator: BaseValidator
+public class BocDateTimeValueValidator: BaseValidator
 {
+  private string _requiredErrorMessage = null;
+  private string _incompleteErrorMessage = null;
+  private string _invalidDateAndTimeErrorMessage = null;
+  private string _invalidDateErrorMessage = null;
+  private string _invalidTimeErrorMessage = null;
+
   protected override bool EvaluateIsValid()
   {
-    string dateValue =  GetControlValidationValue (ControlToValidate);
+    Control control = this.NamingContainer.FindControl(ControlToValidate);
+
+    BocDateTimeValue dateTimeValueControl = control as BocDateTimeValue;
+
+    if (dateTimeValueControl == null)
+      return true;
+
+    if (! EvaluateIsRequiredValid (dateTimeValueControl))
+    {
+      if (! StringUtility.IsNullOrEmpty (RequiredErrorMessage))
+        ErrorMessage = RequiredErrorMessage;
+
+      return false;
+    }
+
+    if (! EvaluateIsCompleteValid (dateTimeValueControl))
+    {
+      if (! StringUtility.IsNullOrEmpty (IncompleteErrorMessage))
+        ErrorMessage = IncompleteErrorMessage;
+
+      return false;
+    }
+
+    bool isValidDate = EvaluateIsValidDate (dateTimeValueControl);
+    bool isValidTime = EvaluateIsValidTime (dateTimeValueControl);
+
+    if (! isValidDate && ! isValidTime)
+    {
+      if (! StringUtility.IsNullOrEmpty (InvalidDateAndTimeErrorMessage))
+        ErrorMessage = InvalidDateAndTimeErrorMessage;
+    }
+    else if (! isValidDate)
+    {
+       if (! StringUtility.IsNullOrEmpty (InvalidDateErrorMessage))
+        ErrorMessage = InvalidDateErrorMessage;
+    }
+    else if (! isValidTime)
+    {
+      if (! StringUtility.IsNullOrEmpty (InvalidTimeErrorMessage))
+        ErrorMessage = InvalidTimeErrorMessage;
+    }
+
+    return isValidDate && isValidTime;
+  }
+
+  private bool EvaluateIsRequiredValid (BocDateTimeValue control)
+  {
+    if (! control.IsRequired)
+      return true;
+
+    bool isDateRequired =     control.ActualValueType == BocDateTimeValueType.DateTime
+                          ||  control.ActualValueType == BocDateTimeValueType.Date;
+    bool isTimeRequired =     control.ActualValueType == BocDateTimeValueType.DateTime;
+
+    //  Neither field required because the value of the control of an unknown/undefined type
+    if (! isDateRequired && ! isTimeRequired)
+      return true;
+
+    bool hasDate = ! StringUtility.IsNullOrEmpty (control.DateTextBox.Text); 
+    bool hasTime = ! StringUtility.IsNullOrEmpty (control.TimeTextBox.Text); 
+
+    bool isDateMissing = isDateRequired && ! hasDate;
+    bool isTimeMissing = isTimeRequired && ! hasTime;
+
+    return ! (isDateMissing || isTimeMissing);
+  }
+
+  private bool EvaluateIsCompleteValid (BocDateTimeValue control)
+  {
+    bool isDateRequired =     control.ActualValueType == BocDateTimeValueType.DateTime
+                          ||  control.ActualValueType == BocDateTimeValueType.Date;
+    
+    bool hasDate = ! StringUtility.IsNullOrEmpty (control.DateTextBox.Text);     
+    bool hasTime = ! StringUtility.IsNullOrEmpty (control.TimeTextBox.Text); 
+
+    bool isDateMissing = isDateRequired && ! hasDate;
+
+    return ! (isDateMissing && hasTime);
+  }
+
+  /// <summary>
+  ///   Validates date values in the current culture.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     This class does not provide client-side validation.
+  ///   </para><para>
+  ///     Cannot detect a 0:0 time component included in the date string.
+  ///     Since a time-offset of 0:0 will not falsify the result, this is acceptable.
+  ///     Prevented by setting the MaxLength attribute of the input field.
+  ///   </para>
+  /// </remarks>
+  private bool EvaluateIsValidDate (BocDateTimeValue control)
+  {
+    if (control.ActualValueType == BocDateTimeValueType.Undefined)
+    {
+      return true;
+    }
+
+    string dateValue = control.DateTextBox.Text;
 
     //  Test for empty
 
@@ -82,23 +176,26 @@ public class DateValidator: BaseValidator
 
     return true;
   }
-}
 
-/// <summary>
-///   Valitimes time values in the current culture.
-/// </summary>
-/// <remarks>
-///   <para>
-///     This class does not provide client-side validation.
-///   </para><para>
-///     Does not detect an included date of 01.01.0001. 
-///   </para>
-/// </remarks>
-public class TimeValidator: BaseValidator
-{
-  protected override bool EvaluateIsValid()
+  /// <summary>
+  ///   Valitimes time values in the current culture.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     This class does not provide client-side validation.
+  ///   </para><para>
+  ///     Does not detect an included date of 01.01.0001. 
+  ///   </para>
+  /// </remarks>
+  private bool EvaluateIsValidTime (BocDateTimeValue control)
   {
-    string timeValue =  GetControlValidationValue (ControlToValidate);
+    if (    control.ActualValueType == BocDateTimeValueType.Date
+        ||  control.ActualValueType == BocDateTimeValueType.Undefined)
+    {
+      return true;
+    }
+
+    string timeValue = control.TimeTextBox.Text;
 
     //  Test for empty
 
@@ -129,125 +226,69 @@ public class TimeValidator: BaseValidator
 
     return true;
   }
-}
 
-/// <summary>
-///   Compound validator for <see cref="BocDateTimeValue"/> controls.
-/// </summary>
-/// <remarks>
-///   This compound validator automatically creates the following child validators:
-///   <list type="table">
-///     <listheader>
-///       <term>Validator</term>
-///       <description>Condition</description>
-///     </listheader>
-///     <item>
-///       <term><see cref="RequiredFieldValidator"/></term>
-///       <description>
-///         <para>
-///           The validated <see cref="BocDateTimeValue"/> control's 
-///           <c>IsRequired</c> property is <see langword="true"/>.
-///         </para><para>
-///           Only the date component will be validated for 
-///           <see cref="BocDateTimeValue"/> controls.
-///         </para>
-///     </description>
-///     </item>
-///     <item>
-///       <term><see cref="DateValidator"/></term>
-///       <description>
-///         The validated <see cref="BocDateTimeValue"/> control
-///         is bound to an <see cref="IBusinessObjectDateTimeProperty"/> 
-///         or an <see cref="IBusinessObjectDateProperty"/>.
-///       </description>
-///     </item>
-///     <item>
-///       <term><see cref="TimeValidator"/></term>
-///       <description>
-///         The validated <see cref="BocDateTimeValue"/> control
-///         is bound to an <see cref="IBusinessObjectDateTimeProperty"/>.
-///       </description>
-///     </item>
-///   </list>
-/// </remarks>
-public class BocDateTimeValueValidator: CompoundValidator
-{
-  public BocDateTimeValueValidator ()
-    : base (typeof (BocDateTimeValue))
+  protected override bool ControlPropertiesValid()
   {
-  }
+    if (! base.ControlPropertiesValid())
+    {
+      return false;
+    }
+
+    Control control = this.NamingContainer.FindControl(ControlToValidate);
+
+    if (! (control is BocDateTimeValue))
+    {
+      throw new HttpException("Control '" + ControlToValidate + "' is not of type '" + typeof (BocDateTimeValue) + "'");
+    }
+
+    return true;
+  } 
 
   [TypeConverter (typeof (BocDateTimeValueControlToStringConverter))]
-  public override string ControlToValidate
+  public new string ControlToValidate
   {
     get { return base.ControlToValidate; }
     set { base.ControlToValidate = value; }
   }
 
-  public static BaseValidator[] CreateValidators (
-    BocDateTimeValue dateTimeValueControl, 
-    string baseID)
+  [Browsable (false)]
+  public new string ErrorMessage
   {
-    ArrayList validators = new ArrayList();
-
-    BocDateTimeValueType valueType = dateTimeValueControl.ValueType;
-    if (dateTimeValueControl.IsRequired)
-    {
-      //  Only validate the date field. The time can default to 00:00 if it is empty.
-      if (    valueType == BocDateTimeValueType.DateTime
-          ||  valueType == BocDateTimeValueType.Date)
-      {
-        RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-        requiredValidator.ID = baseID + "Required";
-        requiredValidator.ControlToValidate = dateTimeValueControl.DateTextBox.ID;
-        requiredValidator.ErrorMessage = "Enter a value.";
-        requiredValidator.Display = ValidatorDisplay.Dynamic;
-        validators.Add (requiredValidator);
-      }
-    }
-
-    if (    valueType == BocDateTimeValueType.DateTime
-        ||  valueType == BocDateTimeValueType.Date)
-    {
-      DateValidator dateValidator = new DateValidator();
-      dateValidator.ID = baseID + "Date";
-      dateValidator.ControlToValidate = dateTimeValueControl.DateTextBox.ID;
-      dateValidator.ErrorMessage = "Unknown date format.";
-      dateValidator.Display = ValidatorDisplay.Dynamic;
-      validators.Add (dateValidator);
-    }
-
-    if (valueType == BocDateTimeValueType.DateTime)
-    {
-      TimeValidator timeValidator = new TimeValidator();
-      timeValidator.ID = baseID + "Time";
-      timeValidator.ControlToValidate = dateTimeValueControl.TimeTextBox.ID;
-      timeValidator.ErrorMessage = "Unknown time format.";
-      timeValidator.Display = ValidatorDisplay.Dynamic;
-      validators.Add (timeValidator);
-    }
-
-    return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
+    get { return base.ErrorMessage; }
+    set { base.ErrorMessage = value; }
   }
 
-  protected override void CreateChildValidators ()
+  public string RequiredErrorMessage
   {
-    if (ControlHelper.IsDesignMode (this, Context))
-      return;
-
-    BocDateTimeValue dateTimeValueControl = 
-      NamingContainer.FindControl (ControlToValidate) as BocDateTimeValue;
-
-    if (dateTimeValueControl == null)
-      return;
-
-    if (dateTimeValueControl.IsReadOnly)
-      return;
-
-    string baseID = this.ID + "_Validator";
-    foreach (BaseValidator validator in CreateValidators (dateTimeValueControl, baseID))
-      Controls.Add (validator);
+    get { return _requiredErrorMessage; }
+    set { _requiredErrorMessage = value; }
   }
+
+  public string IncompleteErrorMessage
+  {
+    get { return _incompleteErrorMessage; }
+    set { _incompleteErrorMessage = value; }
+  }
+
+  public string InvalidDateErrorMessage
+  {
+    get { return _invalidDateErrorMessage; }
+    set { _invalidDateErrorMessage = value; }
+  }
+
+  public string InvalidTimeErrorMessage
+  {
+    get { return _invalidTimeErrorMessage; }
+    set { _invalidTimeErrorMessage = value; }
+  }
+
+  public string InvalidDateAndTimeErrorMessage
+  {
+    get { return _invalidDateAndTimeErrorMessage; }
+    set { _invalidDateAndTimeErrorMessage = value; }
+  }
+
+
 }
 
 /// <summary>
@@ -264,4 +305,5 @@ public class BocDateTimeValueControlToStringConverter: ControlToStringConverter
   {
   }
 }
+
 }

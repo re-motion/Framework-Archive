@@ -36,6 +36,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
 
+  private const int c_defaultTextBoxWidthInPoints = 150;
+
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
 
@@ -209,7 +211,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     else
     {
       //  Provide a default width
-      _textBox.Width = Unit.Pixel (150);
+      _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
       if (Width != Unit.Empty)
         _textBox.Width = Width;

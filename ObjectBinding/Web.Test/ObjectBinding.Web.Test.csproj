@@ -109,11 +109,6 @@
                     HintPath = "..\Web\bin\Debug\Rubicon.Core.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Globalization"
-                    AssemblyName = "Rubicon.Globalization"
-                    HintPath = "..\Web\bin\Debug\Rubicon.Globalization.dll"
-                />
-                <Reference
                     Name = "Rubicon.ObjectBinding"
                     AssemblyName = "Rubicon.ObjectBinding"
                     HintPath = "..\Web\bin\Debug\Rubicon.ObjectBinding.dll"
@@ -277,6 +272,7 @@
                 />
                 <File
                     RelPath = "WebFormBase.cs"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -313,6 +309,10 @@
                 />
                 <File
                     RelPath = "HTML\style.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\Calendar.gif"
                     BuildAction = "Content"
                 />
                 <File

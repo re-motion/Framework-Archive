@@ -8,6 +8,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -33,6 +34,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private const string c_designModeDateTimeSpacer = " ";
   /// <summary> String inserted before the date pciker button during design mode. </summary>
   private const string c_designModeImageButtonSpacer = " ";
+
+  const int c_defaultDateTextBoxWidthInPoints = 75;
+  const int c_defaultTimeTextBoxWidthInPoints = 50;
+
+  private const string c_requiredErrorMessage = "Please enter a value.";
+  private const string c_incompleteErrorMessage = "Please enter a date.";
+  private const string c_invalidDateAndTimeErrorMessage = "Unknown date and time format.";
+  private const string c_invalidDateErrorMessage = "Unknown date format.";
+  private const string c_invalidTimeErrorMessage = "Unknown time format.";
 
   // types
 
@@ -68,6 +78,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary>  </summary>
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
+  private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
 
   private Style _commonStyle = new Style();
   private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
@@ -101,6 +112,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBox.EnableViewState = false;
     Controls.Add (_dateTextBox);
 
+    _imageButton.ID = this.ID + "_ImageButton";
+    _imageButton.EnableViewState = false;
+    Controls.Add (_imageButton);
+
     _timeTextBox.ID = this.ID + "_TimeTextBox";
     _timeTextBox.EnableViewState = false;
     Controls.Add (_timeTextBox);
@@ -108,10 +123,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _label.ID = this.ID + "_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
-
-    _imageButton.ID = this.ID + "_ImageButton";
-    _imageButton.EnableViewState = false;
-    Controls.Add (_imageButton);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dateTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
@@ -121,6 +132,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
+
+    Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -208,23 +221,26 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
     _valueType = (BocDateTimeValueType) values[3];
 
-    _showSeconds = (bool) values[4];
+    _actualValueType = (BocDateTimeValueType) values[4];
 
-    _provideMaxLength = (bool) values[5];
+    _showSeconds = (bool) values[5];
+
+    _provideMaxLength = (bool) values[6];
     
-    _isDirty = (bool) values[6];
+    _isDirty = (bool) values[7];
   }
 
   protected override object SaveViewState()
   {
-    object[] values = new object[7];
+    object[] values = new object[8];
     values[0] = base.SaveViewState();
     values[1] = _internalDateValue;
     values[2] = _internalTimeValue;
     values[3] = _valueType;
-    values[4] = _showSeconds;
-    values[5] = _provideMaxLength;
-    values[6] = _isDirty;
+    values[4] = _actualValueType;
+    values[5] = _showSeconds;
+    values[6] = _provideMaxLength;
+    values[7] = _isDirty;
     return values;
   }
 
@@ -266,7 +282,25 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
-    return BocDateTimeValueValidator.CreateValidators (this, this.ID + "_Validator");
+    BaseValidator[] validators = new BaseValidator[1];
+
+    BocDateTimeValueValidator dateTimeValidator = new BocDateTimeValueValidator();
+
+    dateTimeValidator.ID = this.ID + "_ValidatorDateTime";
+    dateTimeValidator.ControlToValidate = ID;
+    //  TODO: Get Message from ResourceProvider
+    dateTimeValidator.RequiredErrorMessage = c_requiredErrorMessage;
+    dateTimeValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
+    dateTimeValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
+    dateTimeValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
+    dateTimeValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
+
+    validators[0] = dateTimeValidator;
+
+    //  No validation that only enabled enum values get selected and saved.
+    //  This behaviour mimics the Fabasoft enum behaviour
+
+    return validators;
   }
 
   protected override void InitializeChildControls()
@@ -294,10 +328,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         {
           DateTime dateTime = (DateTime)internalValue;
 
-          if (ValueType == BocDateTimeValueType.DateTime)
-            _label.Text = FormatDateTimeValue(dateTime);
-          else if (ValueType == BocDateTimeValueType.Date)
-            _label.Text = FormatDateValue(dateTime);
+          if (ActualValueType == BocDateTimeValueType.DateTime)
+            _label.Text = FormatDateTimeValue (dateTime, isReadOnly);
+          else if (ActualValueType == BocDateTimeValueType.Date)
+            _label.Text = FormatDateValue (dateTime, isReadOnly);
           else
             _label.Text = string.Empty;
         }
@@ -315,6 +349,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
     else // Edit Mode
     {
+      const double dateTextBoxWidthRelative = (double) c_defaultDateTextBoxWidthInPoints 
+        / (c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints);
+      
+      const double timeTextBoxWidthRelative = (double) c_defaultTimeTextBoxWidthInPoints 
+        / (c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints);
+
       if (ProvideMaxLength)
       {
         NaInt32 dateMaxLength = GetDateMaxLength();
@@ -330,15 +370,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       _timeTextBox.Text = InternalTimeValue;
 
       //  Prevent a collapsed control
-      _dateTextBox.Width = Unit.Pixel (75);
-      _timeTextBox.Width = Unit.Pixel (50);
+      _dateTextBox.Width = Unit.Point (c_defaultDateTextBoxWidthInPoints);
+      _timeTextBox.Width = Unit.Point (c_defaultTimeTextBoxWidthInPoints);
 
       //  Insert Spacer between Date and Time text boxes
       
       LiteralControl dateTimeSpacer = null;
 
-      if (    ValueType == BocDateTimeValueType.DateTime
-          ||  IsDesignMode && ValueType == BocDateTimeValueType.Undefined)
+      if (    ActualValueType == BocDateTimeValueType.DateTime
+          ||  IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
         int timeTextBoxIndex = Controls.IndexOf (_timeTextBox);
 
@@ -355,9 +395,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       LiteralControl imageButtonSpacer = null;
 
-      if (    ValueType == BocDateTimeValueType.DateTime
-          ||  ValueType == BocDateTimeValueType.Date
-          ||  IsDesignMode && ValueType == BocDateTimeValueType.Undefined)
+      if (    ActualValueType == BocDateTimeValueType.DateTime
+          ||  ActualValueType == BocDateTimeValueType.Date
+          ||  IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
         int imageButtonIndex = Controls.IndexOf (_imageButton);
 
@@ -374,37 +414,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       if (Width != Unit.Empty)
       {
-        //  Handle icon width approximation
+        int imageButtonWidth = 0;
+
+        //  Icon width approximation
         switch (Width.Type)
         {
           case UnitType.Percentage:
           {
-            int designModemageButtonWidth = 20;
-            int innerControlWidthValue = (int) (Width.Value - designModemageButtonWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            dateTextBoxWidth = Unit.Percentage ((int)(innerControlWidthValue * 0.60));
-            timeTextBoxWidth = Unit.Percentage ((int)(innerControlWidthValue * 0.40));
+            imageButtonWidth = 20;
             break;
           }
           case UnitType.Pixel:
           {
-            int designModemageButtonWidth = 30;
-            int innerControlWidthValue = (int) (Width.Value - designModemageButtonWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            dateTextBoxWidth = Unit.Pixel ((int)(innerControlWidthValue * 0.60));
-            timeTextBoxWidth = Unit.Pixel ((int)(innerControlWidthValue * 0.40));
+            imageButtonWidth = 30;
             break;
           }
           case UnitType.Point:
           {
-            int designModemageButtonWidth = 15;
-            int innerControlWidthValue = (int) (Width.Value - designModemageButtonWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            dateTextBoxWidth = Unit.Point ((int)(innerControlWidthValue * 0.60));
-            timeTextBoxWidth = Unit.Point ((int)(innerControlWidthValue * 0.40));
+            imageButtonWidth = 15;
             break;
           }
           default:
@@ -412,14 +439,70 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
             break;
           }
         }
-      }
 
-      if (ValueType == BocDateTimeValueType.DateTime)
+        int innerControlWidthValue = (int) (Width.Value - imageButtonWidth);
+        innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
+
+        int dateTextBoxWidthValue = 0;
+        int timeTextBoxWidthValue = 0;
+
+        //  Calculate the widths
+        if (ActualValueType == BocDateTimeValueType.DateTime)
+        {
+          dateTextBoxWidthValue = (int)(innerControlWidthValue * dateTextBoxWidthRelative);            
+          timeTextBoxWidthValue = (int)(innerControlWidthValue * timeTextBoxWidthRelative);
+        }
+        else if (ActualValueType == BocDateTimeValueType.Date)
+        {
+          dateTextBoxWidthValue = innerControlWidthValue;            
+        }
+        else if (     IsDesignMode
+                  &&  ActualValueType == BocDateTimeValueType.Undefined)
+        {
+          dateTextBoxWidthValue = (int)(innerControlWidthValue * dateTextBoxWidthRelative);            
+          timeTextBoxWidthValue = (int)(innerControlWidthValue * timeTextBoxWidthRelative);
+        }
+         
+        //  Assign the widths
+        switch (Width.Type)
+        {
+          case UnitType.Percentage:
+          {
+            dateTextBoxWidth = Unit.Percentage (dateTextBoxWidthValue);            
+            timeTextBoxWidth = Unit.Percentage (timeTextBoxWidthValue);            
+            break;
+          }
+          case UnitType.Pixel:
+          {
+            dateTextBoxWidth = Unit.Pixel (dateTextBoxWidthValue);            
+            timeTextBoxWidth = Unit.Pixel (timeTextBoxWidthValue);            
+            break;
+          }
+          case UnitType.Point:
+          {
+            dateTextBoxWidth = Unit.Point (dateTextBoxWidthValue);            
+            timeTextBoxWidth = Unit.Point (timeTextBoxWidthValue);            
+            break;
+          }
+          default:
+          {
+            break;
+          }
+        }
+
+        if (dateTextBoxWidthValue == 0)
+          dateTextBoxWidth = Unit.Empty;
+
+        if (timeTextBoxWidthValue == 0)
+          timeTextBoxWidth = Unit.Empty;
+     }
+
+      if (ActualValueType == BocDateTimeValueType.DateTime)
       {
         _dateTextBox.Visible = true;
         _timeTextBox.Visible = true;
       }
-      else if (ValueType == BocDateTimeValueType.Date)
+      else if (ActualValueType == BocDateTimeValueType.Date)
       {
         _dateTextBox.Visible = true;
         _timeTextBox.Visible = false;
@@ -427,7 +510,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         if (dateTimeSpacer != null)
           dateTimeSpacer.Visible = false;
       }
-      else if (IsDesignMode && ValueType == BocDateTimeValueType.Undefined)
+      else if (IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
         _dateTextBox.Visible = true;
         _timeTextBox.Visible = true;
@@ -481,28 +564,68 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
   
-  protected virtual string FormatDateTimeValue (DateTime dateValue)
+  protected virtual string FormatDateTimeValue (DateTime dateValue, bool isReadOnly)
   {
-    if (ShowSeconds)
+    isReadOnly = false;
+
+    if (isReadOnly)
     {
-      //  G:  yyyy, mm, dd, hh, mm, ss
-      return dateValue.ToString ("G");
+      if (ShowSeconds)
+      {
+        //  F:  dddd, MMMM dd yyyy, hh, mm, ss
+        return dateValue.ToString ("F");
+      }
+      else
+      {
+        //  f:  dddd, MMMM dd yyyy, hh, mm
+        return dateValue.ToString ("f");
+      }
     }
     else
     {
-      //  g:  yyyy, mm, dd, hh, mm
-      return dateValue.ToString ("g");
+      if (ShowSeconds)
+      {
+        //  G:  yyyy, mm, dd, hh, mm, ss
+        return dateValue.ToString ("G");
+      }
+      else
+      {
+        //  g:  yyyy, mm, dd, hh, mm
+        return dateValue.ToString ("g");
+      }
     }
   }
-  
-  protected virtual string FormatDateValue (DateTime dateValue)
+
+  protected virtual string FormatDateTimeValue (DateTime dateValue)
   {
-    //  d:  yyyy, mm, dd, hh, mm, ss
-    return dateValue.ToString ("d");
+    return FormatDateTimeValue (dateValue, false);
   }
 
-  protected virtual string FormatTimeValue (DateTime timeValue)
+  protected virtual string FormatDateValue (DateTime dateValue, bool isReadOnly)
   {
+    isReadOnly = false;
+
+    if (isReadOnly)
+    {
+      //  D:  dddd, MMMM dd yyyy
+      return dateValue.ToString ("D");
+    }
+    else
+    {
+      //  d:  yyyy, mm, dd
+      return dateValue.ToString ("d");
+    }
+  }
+
+  protected virtual string FormatDateValue (DateTime dateValue)
+  {
+    return FormatDateValue (dateValue, false);
+  }
+
+  protected virtual string FormatTimeValue (DateTime timeValue, bool isReadOnly)
+  {
+    //  ignore Read-Only
+
     if (ShowSeconds)
     {
       //  T: hh, mm, ss
@@ -515,39 +638,42 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  protected virtual string FormatTimeValue (TimeSpan timeValue)
+  protected virtual string FormatTimeValue (DateTime timeValue)
+  {
+    return FormatTimeValue (timeValue, false);
+  }
+
+  protected virtual string FormatTimeValue (TimeSpan timeValue, bool isReadOnly)
   {
     return FormatTimeValue (DateTime.MinValue.Add(timeValue));
   }
 
+  protected virtual string FormatTimeValue (TimeSpan timeValue)
+  {
+    return FormatTimeValue (DateTime.MinValue.Add(timeValue), false);
+  }
+
   protected virtual NaInt32 GetDateMaxLength()
   {
-    string maxDate = DateTime.MaxValue.ToString ("D");
-    int maxLength = CalculateMaxLength (maxDate.Length);
+    string maxDate = new DateTime (2000, 12, 31).ToString ("d");
+    
+    int maxLength = maxDate.Length;
 
     return new NaInt32 (maxLength);
   }
 
   protected virtual NaInt32 GetTimeMaxLength()
   {
-    string maxTime = DateTime.MaxValue.ToString ("T");
-    int maxLength = CalculateMaxLength (maxTime.Length);
+    string maxTime = "";
+
+    if (ShowSeconds)
+      maxTime = new DateTime (1, 1, 1, 23, 30, 30).ToString ("T");
+    else
+      maxTime = new DateTime (1, 1, 1, 23, 30, 30).ToString ("t");
+
+    int maxLength = maxTime.Length;
 
     return new NaInt32 (maxLength);
-  }
-
-  private int CalculateMaxLength (int length)
-  {
-    string lengthString = length.ToString();
-
-    int digits = lengthString.Length;
-    
-    string mostSignificantDigitChar = lengthString[0].ToString();
-    int mostSignificantDigit = int.Parse (mostSignificantDigitChar);
-    
-    int maxLength = (int) ((mostSignificantDigit + 2) * Math.Pow (10, digits - 1));
-    
-    return maxLength;
   }
 
   private void DateTimeTextBoxes_TextChanged (object sender, EventArgs e)
@@ -567,17 +693,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
-    _valueType = GetBocDateTimeValueType (Property);
+    if (_valueType == BocDateTimeValueType.Undefined)
+      _actualValueType = GetBocDateTimeValueType (Property);
   }
 
   private BocDateTimeValueType GetBocDateTimeValueType (IBusinessObjectProperty property)
   {
-    if (Property == null)
+    if (property == null)
       return BocDateTimeValueType.Undefined;
 
     if (property is IBusinessObjectDateTimeProperty)
       return BocDateTimeValueType.DateTime;
-    else if (property is IBusinessObjectInt32Property)
+    else if (property is IBusinessObjectDateProperty)
       return BocDateTimeValueType.Date;
     else
       throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
@@ -587,10 +714,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   ///   Gets or sets the current value.
   /// </summary>
   /// <value> 
-  ///   The value has the type specified in the <see cref="ValueType"/> property (<see cref="String"/>, <see cref="Int32"/>, 
+  ///   The value has the type specified in the <see cref="ActualValueType"/> property (<see cref="String"/>, <see cref="Int32"/>, 
   ///   <see cref="Double"/> or <see cref="DateTime"/>).
   /// </value>
-  /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.</exception>
+  /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ActualValueType"/>.</exception>
   [Description("Gets or sets the current value.")]
   [Browsable(false)]
   public override object Value
@@ -604,8 +731,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Parse Date
 
-      if (    ValueType == BocDateTimeValueType.DateTime
-          ||  ValueType == BocDateTimeValueType.Date)
+      if (    ActualValueType == BocDateTimeValueType.DateTime
+          ||  ActualValueType == BocDateTimeValueType.Date)
       {
         if (InternalDateValue == null)
         {
@@ -614,7 +741,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
         try
         {
-          dateTimeValue = DateTime.Parse (InternalDateValue);
+          dateTimeValue = DateTime.Parse (InternalDateValue).Date;
         }
         catch (FormatException ex)
         {
@@ -625,12 +752,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Parse Time
 
-      if (    ValueType == BocDateTimeValueType.DateTime
+      if (    ActualValueType == BocDateTimeValueType.DateTime
           &&  InternalTimeValue != null)
       {        
         try
         {
-          dateTimeValue.Add (TimeSpan.Parse (InternalTimeValue));
+          
+          dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
         }
         catch (FormatException ex)
         {
@@ -649,8 +777,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         return;
       }
 
-      if (    ValueType == BocDateTimeValueType.DateTime
-          ||  ValueType == BocDateTimeValueType.Date)
+      if (    ActualValueType == BocDateTimeValueType.DateTime
+          ||  ActualValueType == BocDateTimeValueType.Date)
       {
         try
         {
@@ -661,7 +789,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         }
         catch  (InvalidCastException e)
         {
-          throw new ArgumentException ("Expected type '" + _valueType.ToString() + "', but was '" + value.GetType().FullName + "'.", "value", e);
+          throw new ArgumentException ("Expected type '" + _actualValueType.ToString() + "', but was '" + value.GetType().FullName + "'.", "value", e);
         }
       }
       else
@@ -737,15 +865,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   ///     style settings for the respective modes. 
   ///   </para><para>
   ///     Note that if you set one of the <c>Font</c> 
-  ///     attributes (Bold, Italic etc.) to <c>true</c>, this cannot be overridden using 
-  ///     <see cref="DateTimeTextBoxStyle"/>, <see cref="DateTextBoxStyle"/>, 
+  ///     attributes (Bold, Italic etc.) to <see langword="true"/>, this cannot be overridden 
+  ///     using <see cref="DateTimeTextBoxStyle"/>, <see cref="DateTextBoxStyle"/>, 
   ///     <see cref="TimeTextBoxStyle"/>, and <see cref="LabelStyle"/> properties.
   ///   </para><para>
   ///     Note that if you set one of the <c>Width</c> attribute, that it will be applied to
   ///     both the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/> as well as the 
-  ///     <see cref="Label"/> as is. The control will therefor show different widths depending
-  ///     on whether it is in read-only mode or not. It is recommended to set the width in the 
-  ///     styles of the individual sub-controls instead.
+  ///     <see cref="Label"/> as is. If the control is bound to an
+  ///     <see cref="IBusinessObjectDateTimeProperty"/>, it will therefor show different 
+  ///     widths depending on whether it is in read-only mode or not. It is recommended to set 
+  ///     the width in the styles of the individual sub-controls instead.
   ///   </para>
   /// </remarks>
   [Category("Style")]
@@ -888,10 +1017,38 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     set { _provideMaxLength = value; }
   }
 
-  [Browsable (false)]
+  [Description("Gets or sets a fixed value type.")]
+  [Category("Data")]
+  [DefaultValue(typeof(BocDateTimeValueType), "Undefined")]
   public BocDateTimeValueType ValueType
   {
-    get { return _valueType; }
+    get 
+    {
+      return _valueType; 
+    }
+    set 
+    {
+      if (_valueType != value)
+      {
+        _valueType = value;
+        _actualValueType = value;
+        if (_valueType != BocDateTimeValueType.Undefined)
+        {
+          InternalDateValue = string.Empty;
+          InternalTimeValue = string.Empty;
+        }
+      }
+    }
+  }
+
+  [Browsable (false)]
+  public BocDateTimeValueType ActualValueType
+  {
+    get 
+    {
+      Binding.EvaluateBinding();
+      return _actualValueType; 
+    }
   }
 
   [Browsable (false)]
@@ -905,8 +1062,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     get
     {
-      //  TODO: return null fields depenting on BocDateTimeValueType
-      return InternalDateValue + "\n" + InternalTimeValue;
+      if (ActualValueType == BocDateTimeValueType.DateTime)
+        return InternalDateValue + "\n" + InternalTimeValue;
+      else if (ActualValueType == BocDateTimeValueType.Date)
+        return InternalDateValue + "\n" + "";
+      else
+        return "\n";
+
     }
   }
 }

@@ -30,6 +30,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
 
+  private const int c_defaultDropDownListWidthInPoints = 120;
+
   // types
 
   // static members
@@ -297,6 +299,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     CompareValidator notNullItemValidator = new CompareValidator();
     
+    notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
     notNullItemValidator.ControlToValidate = TargetControl.ID;
     notNullItemValidator.ValueToCompare = c_nullIdentifier;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
@@ -406,7 +409,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _label.Visible = isReadOnly;
 
     //  Prevent a collapsed control
-    _dropDownList.Width = Unit.Pixel (120);
+    _dropDownList.Width = Unit.Point (c_defaultDropDownListWidthInPoints);
 
     Unit iconWidth = (_icon.Visible) ? _icon.Width : Unit.Empty;
 

@@ -29,6 +29,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
 
+  private const int c_defaultListControlWidthInPoints = 150;
+
   // types
 
   // static members
@@ -291,6 +293,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     CompareValidator notNullItemValidator = new CompareValidator();
     
+    notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
     notNullItemValidator.ControlToValidate = TargetControl.ID;
     notNullItemValidator.ValueToCompare = c_nullIdentifier;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
@@ -362,7 +365,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     else
     {
       //  Prevent a collapsed control
-      _listControl.Width = Unit.Pixel (150);
+      _listControl.Width = Unit.Point (c_defaultListControlWidthInPoints);
 
       if (Width != Unit.Empty)
         _listControl.Width = Width;
