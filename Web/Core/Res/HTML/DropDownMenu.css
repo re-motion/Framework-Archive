@@ -38,6 +38,7 @@ div.dropDownMenuPopUp
 
 div.dropDownMenuItem
 {
+  color: Blue;
 	margin: 1px;
 	padding: 2px;
 	vertical-align: middle;	
@@ -47,6 +48,7 @@ div.dropDownMenuItem
 
 div.dropDownMenuItemFocus
 {
+  color: Blue;
 	margin: 1px;
 	padding: 1px;
 	vertical-align: middle;
