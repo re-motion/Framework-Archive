@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Configuration.Loader;
@@ -36,6 +37,19 @@ public class StorageProviderConfigurationTest
 
     StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
     checker.Check (expectedProviders, actualProviders);
+  }
+
+  [Test]
+  public void InitializeWithFileNames ()
+  {
+    StorageProviderConfiguration.SetCurrent (
+        new StorageProviderConfiguration (@"..\..\storageProviders.xml", @"..\..\..\storageProviders.xsd"));
+
+    string configurationFile = Path.GetFullPath (@"..\..\storageProviders.xml");
+    string schemaFile = Path.GetFullPath (@"..\..\..\storageProviders.xsd");
+
+    Assert.AreEqual (configurationFile, StorageProviderConfiguration.Current.ConfigurationFile);
+    Assert.AreEqual (schemaFile, StorageProviderConfiguration.Current.SchemaFile);
   }
 }
 }
