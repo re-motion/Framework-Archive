@@ -8,7 +8,7 @@ Verwendung des Generators
    
 2. Kompilieren des Projekts
    Das Stubs-File muss nun in das Projekt eingebunden, und das Assembly kompiliert werden.
-   Nun kann das Mapping vom RPF gelesen, und daraus der Code generiert werden.
+   Nun kann das Mapping gelesen, und daraus der Code generiert werden.
    
 3. Generieren von setupDB.sql
    Aufruf mit -sql erzeugt aus der mapping.xml ein sql script zum Aufbau der Datenbank.
