@@ -38,30 +38,54 @@ public class ValidatableControlInitializer
   ///   Registers validators with their <see cref="IValidatableControl"/> web controls.
   /// </summary>
   /// <remarks>
-  ///   All <see cref="BaseValidator"/> controls within <paramref cref="control"/> (or its children) that
-  ///   validate a <see cref="IValidatableControl"/> control are registered. This method is best called
-  ///   from f
+  ///   All <see cref="BaseValidator"/> controls within <paramref cref="page"/> that validate a 
+  ///   <see cref="IValidatableControl"/> control are registered. This method is best called
+  ///   from a postback event handler.
   /// </remarks>
-  public static void InitializeValidatableControls (Control control)
+  public static void InitializeValidatableControls (Page page)
   {
-    BaseValidator[] validators = (BaseValidator[]) ControlHelper.GetControlsRecursive (control.NamingContainer, typeof (BaseValidator));
-    foreach (BaseValidator validator in validators)
+    foreach (IValidator ivalidator in page.Validators)
     {
-      IValidatableControl validatableControl = validator.NamingContainer.FindControl (validator.ControlToValidate) as IValidatableControl;
-      if (control != null)
-        validatableControl.RegisterValidator (validator);
+      BaseValidator validator = ivalidator as BaseValidator;
+      if (validator == null)
+        continue;
+
+      Control validatedControl = validator.NamingContainer.FindControl (validator.ControlToValidate);
+
+      if (validatedControl is IValidatableControl)
+      {
+        // register validator with parent
+        ((IValidatableControl)validatedControl).RegisterValidator (validator);
+      }
+      else
+      {
+        // try to find a parent control that supports IValidatableControl and has validatedControl as TargetControl
+        // (the validator may point to a child control of the control that should actually be validated)
+        for (Control parentControl = validatedControl;
+            parentControl != null;
+            parentControl = parentControl.Parent)
+        {
+          if (   parentControl is IValidatableControl 
+              && parentControl is ISmartControl 
+              && ((ISmartControl)parentControl).TargetControl == validatedControl)
+          {
+            ((IValidatableControl)parentControl).RegisterValidator (validator);
+          }
+          continue;
+        }
+      }
     }
   }
 
-  private Control _control;
+  private Page _page;
   private bool _initialized;
 
   /// <summary>
-  ///   Creates a new initializer for <c>control</c> and all sub-controls.
+  ///   Creates a new initializer for <c>page</c> and all sub-controls.
   /// </summary>
-  public ValidatableControlInitializer (Control control)
+  public ValidatableControlInitializer (Page page)
   {
-    _control = control;
+    _page = page;
     _initialized = false;
   }
 
@@ -72,7 +96,7 @@ public class ValidatableControlInitializer
   {
     if (! _initialized)
     {
-      InitializeValidatableControls (_control);
+      InitializeValidatableControls (_page);
       _initialized = true;
     }
   }

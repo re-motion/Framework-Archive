@@ -119,11 +119,16 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
+  protected override void Render (HtmlTextWriter writer)
   {
+//    base.Render (writer);
+//  }
+//
+//  protected override void RenderChildren(HtmlTextWriter writer)
+//  {
     if (ControlHelper.IsDesignMode (this, this.Context))
     {
-      writer.WriteLine ("No validation at design time");
+      // writer.WriteLine ("No validation at design time");
     }
     else
     {

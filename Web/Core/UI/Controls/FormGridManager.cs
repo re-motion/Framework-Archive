@@ -23,7 +23,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Class/*' />
 //  TODO: HTMLEncode
 [ToolboxItemFilter("System.Web.UI")]
-public class FormGridManager : Control, IControl, IResourceDispatchTarget
+public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupportsPostLoadControl
 {
   // types
 
@@ -1183,14 +1183,29 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     EnsureTransformIntoFormGridPreLoadViewState (formGrid);
   }
 
+  private bool _postLoadExecuted = false;
+
+  /// <summary>
+  /// Optionally called after the <c>Load</c> event.
+  /// </summary>
+  public void OnPostLoad()
+  {
+    foreach (FormGrid grid in _formGrids.Values)
+      TransformIntoFormGridPostValidation (grid);
+    _postLoadExecuted = true;
+  }
+
   /// <summary>
   ///   Calls <see cref="TransformIntoFormGridPostValidation"/>.
   /// </summary>
   private void Table_PreRender (object sender, EventArgs e)
   {
-    string formGridID = ((HtmlTable) sender).UniqueID;
-    FormGrid formGrid = (FormGrid) _formGrids[formGridID];
-    TransformIntoFormGridPostValidation (formGrid);
+    if (! _postLoadExecuted)
+    {
+      string formGridID = ((HtmlTable) sender).UniqueID;
+      FormGrid formGrid = (FormGrid) _formGrids[formGridID];
+      TransformIntoFormGridPostValidation (formGrid);
+    }
   }
 
   /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
@@ -1203,7 +1218,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       _hasViewState = true;
 
       base.LoadViewState (savedState);
- 
+  
       object labelsColumn = ViewState[c_viewStateIDLabelsColumn];
       if (labelsColumn != null)
         _labelsColumn = (int)labelsColumn;
@@ -1653,7 +1668,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         {
           CreateValidators (formGridRow);
           ApplyValidatorSettings (formGridRow);
-          _hasValidatorsCreated = true;
         }
 
         FormatValidators (formGridRow);
@@ -1671,6 +1685,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
       AddShowEmptyCellsHack (formGridRow);
     }
+
+    _hasValidatorsCreated = true;
   }
 
   /// <summary>

@@ -152,7 +152,7 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
 
   public override bool Validate()
   {
-    return _referenceDataSource.Validate ();
+    return _userControl.Validate ();
   }
 
   protected override Type[] SupportedPropertyInterfaces
