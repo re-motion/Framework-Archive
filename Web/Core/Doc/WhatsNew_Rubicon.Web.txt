@@ -5,6 +5,8 @@
   * Neue Methode RegisterClientScriptFile
   * Neue Methode RegisterStartupScript
   
+- Methode GetResourceUrl der Klasse ResourceUrlResolver: Signatur geändert.
+  
 1.1.21.0
 ========
 
@@ -40,6 +42,14 @@
       mit ':' als Separator für Control-Hierarchien statt '_' gesetzt 
       (Events in UserControls funktionieren wieder)
 
+1.1.14.0
+========
+- Neues Interface: IResourceUrlResolver
+    Löst IImageUrlResolver und IHelpUrlResolver ab.
+    
+- Klasse ResourceUrlResolver
+    Methoden GetImageUrl und GetHelpUrl durch GetResourceUrl ersetzt.
+    
 3.2.0.0
 =======
 
