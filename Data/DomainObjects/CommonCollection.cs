@@ -79,7 +79,7 @@ public class CollectionBase : ICollection
 
   // methods and properties
 
-  internal protected object GetObject (int index)
+  protected object GetObject (int index)
   {
     return _collectionData[_collectionKeys[index]];
   }
