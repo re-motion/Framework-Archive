@@ -4,18 +4,16 @@ using System.Diagnostics;
 using System.Collections;
 using System.Xml.Serialization;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-
 using Rubicon.ObjectBinding;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class DomainObjectBooleanProperty: DomainObjectNullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
+public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
 {
-  public DomainObjectBooleanProperty (      
+  public BooleanProperty (      
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
       Type itemType, 
@@ -25,14 +23,9 @@ public class DomainObjectBooleanProperty: DomainObjectNullableProperty, IBusines
   {
   }
 
-//  public bool AllowNegative
-//  {
-//    get { return false; }
-//  }
-
   protected internal override object FromInternalType (object internalValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaBoolean.ToBoxedBoolean ((NaBoolean)internalValue);
     else
       return internalValue;
@@ -40,7 +33,7 @@ public class DomainObjectBooleanProperty: DomainObjectNullableProperty, IBusines
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaBoolean.FromBoxedBoolean (publicValue);
     else
       return publicValue;

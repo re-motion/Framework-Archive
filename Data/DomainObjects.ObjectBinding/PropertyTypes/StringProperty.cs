@@ -4,18 +4,16 @@ using System.Diagnostics;
 using System.Collections;
 using System.Xml.Serialization;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-
 using Rubicon.ObjectBinding;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class DomainObjectStringProperty: DomainObjectProperty, IBusinessObjectStringProperty
+public class StringProperty : DomainObjectProperty, IBusinessObjectStringProperty
 {
-  public DomainObjectStringProperty (
+  public StringProperty (
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
       Type itemType, 

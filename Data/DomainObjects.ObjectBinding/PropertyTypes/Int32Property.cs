@@ -4,18 +4,16 @@ using System.Diagnostics;
 using System.Collections;
 using System.Xml.Serialization;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-
 using Rubicon.ObjectBinding;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class DomainObjectInt32Property: DomainObjectNullableProperty, IBusinessObjectInt32Property
+public class Int32Property : NullableProperty, IBusinessObjectInt32Property
 {
-  public DomainObjectInt32Property (      
+  public Int32Property (      
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
       Type itemType, 
@@ -32,7 +30,7 @@ public class DomainObjectInt32Property: DomainObjectNullableProperty, IBusinessO
 
   protected internal override object FromInternalType (object internalValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaInt32.ToBoxedInt32 ((NaInt32)internalValue);
     else
       return internalValue;
@@ -40,7 +38,7 @@ public class DomainObjectInt32Property: DomainObjectNullableProperty, IBusinessO
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaInt32.FromBoxedInt32 (publicValue);
     else
       return publicValue;

@@ -56,58 +56,58 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
     if (itemType == typeof (string))
     {
-      return new DomainObjectStringProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new StringProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     if (itemType == typeof (Guid))
     {
-      return new DomainObjectGuidProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (char))
     {
-      return new DomainObjectCharProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new CharProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (byte))
     {
-      return new DomainObjectByteProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new ByteProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (int))
     {
-      return new DomainObjectInt32Property (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
+      return new Int32Property (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (Int16))
     {
-      return new DomainObjectInt16Property (propertyInfo, propertyDefinition, itemType, isList);
+      return new Int16Property (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (Single))
     {
-      return new DomainObjectSingleProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new SingleProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (double))
     {
-      return new DomainObjectDoubleProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
+      return new DoubleProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (decimal))
     {
-      return new DomainObjectDecimalProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new DecimalProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (itemType == typeof (bool))
     {
-      return new DomainObjectBooleanProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
+      return new BooleanProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (DateTime))
     {
       if (propertyDefinition != null && propertyDefinition.MappingType == "date")
-        return new DomainObjectDateProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
+        return new DateProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
       else
-        return new DomainObjectDateTimeProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
+        return new DateTimeProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType.IsEnum)
     {
-      return new DomainObjectEnumerationProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new EnumerationProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
     else if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (itemType))
     {
-      return new DomainObjectReferenceProperty (propertyInfo, propertyDefinition, 
+      return new ReferenceProperty (propertyInfo, propertyDefinition, 
         classDefinition.GetRelationEndPointDefinition (propertyInfo.Name), itemType, isList);
     }
     else

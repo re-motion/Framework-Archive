@@ -4,21 +4,19 @@ using System.Diagnostics;
 using System.Collections;
 using System.Xml.Serialization;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-
 using Rubicon.ObjectBinding;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class DomainObjectGuidProperty: DomainObjectProperty, IBusinessObjectStringProperty
+public class GuidProperty : DomainObjectProperty, IBusinessObjectStringProperty
 {
-  public DomainObjectGuidProperty (
+  public GuidProperty (
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
-      Type itemType, 
+      Type itemType,
       bool isList)
     : base (propertyInfo, propertyDefinition, itemType, isList)
   {
@@ -44,7 +42,5 @@ public class DomainObjectGuidProperty: DomainObjectProperty, IBusinessObjectStri
     else
       return publicValue;
   }
-
-
 }
 }

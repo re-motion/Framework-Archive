@@ -4,18 +4,16 @@ using System.Diagnostics;
 using System.Collections;
 using System.Xml.Serialization;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-
 using Rubicon.ObjectBinding;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class DomainObjectDateTimeProperty: DomainObjectNullableProperty, IBusinessObjectDateTimeProperty
+public class DateTimeProperty : NullableProperty, IBusinessObjectDateTimeProperty
 {
-  public DomainObjectDateTimeProperty (      
+  public DateTimeProperty (
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
       Type itemType, 
@@ -27,7 +25,7 @@ public class DomainObjectDateTimeProperty: DomainObjectNullableProperty, IBusine
 
   protected internal override object FromInternalType (object internalValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaDateTime.ToBoxedDateTime ((NaDateTime)internalValue);
     else
       return internalValue;
@@ -35,7 +33,7 @@ public class DomainObjectDateTimeProperty: DomainObjectNullableProperty, IBusine
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (! IsList && IsNullableType)
+    if (!IsList && IsNullableType)
       return NaDateTime.FromBoxedDateTime (publicValue);
     else
       return publicValue;
