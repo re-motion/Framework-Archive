@@ -33,12 +33,12 @@ public class UnitTestStorageProviderStub : StorageProvider
     return container;
   }
 
-  public override DataContainerCollection ExecuteCollectionQuery (Query query)
+  public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
   {
     return null;
   }
 
-  public override object ExecuteScalarQuery (Query query)
+  public override object ExecuteScalarQuery (IQuery query)
   {
     return null;
   }
