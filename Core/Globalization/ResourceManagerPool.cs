@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Resources;
+using System.Web;
 using System.Web.UI;
 using System.Collections;
 using System.Collections.Specialized;
@@ -15,19 +16,19 @@ public sealed class ResourceDispatcher
 
   // static members and constants
 
-  public static string GetResourceText (Page page, string name)
+  public static string GetResourceText (Control control, string name)
   {
-    return GetResourceText (page, GetPageType (page), name);  
+    return GetResourceText (control, GetControlType (control), name);  
   }
 
-  public static string GetResourceText (Page page, Type pageType, string name)
+  public static string GetResourceText (Control control, Type controlType, string name)
   {
-    return GetResourceText (page, pageType, GetResourceName (page, pageType), name);
+    return GetResourceText (control, controlType, GetResourceName (control, controlType), name);
   }
 
-  public static string GetResourceText (Page page, Type pageType, string resourceName, string name)
+  public static string GetResourceText (Control control, Type controlType, string resourceName, string name)
   {
-    ResourceManager rm = GetOrCreateResourceManager (page, pageType, resourceName);
+    ResourceManager rm = GetOrCreateResourceManager (controlType, resourceName);
 
 
     string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
@@ -38,23 +39,23 @@ public sealed class ResourceDispatcher
     return text;
   }
 
-  public static void Dispatch (Page page)
+  public static void Dispatch (Control control)
   {
-    Dispatch (page, GetPageType (page));
+    Dispatch (control, GetControlType (control));
   }
 
-  public static void Dispatch (Page page, Type pageType)
+  public static void Dispatch (Control control, Type controlType)
   {
-    Dispatch (page, pageType, GetResourceName (page, pageType));
+    Dispatch (control, controlType, GetResourceName (control, controlType));
   }
 
-  public static void Dispatch (Page page, Type pageType, string resourceName)
+  public static void Dispatch (Control control, Type controlType, string resourceName)
   {
     // Hashtable<string elementID, IDictionary<string argument, string value> elementValues>
     IDictionary elements = new Hashtable (); 
 
     // TODO: Read current CultureInfo from user, domain, ...
-    ResourceSet resources = GetResourceSet (page, pageType, resourceName);
+    ResourceSet resources = GetResourceSet (control, controlType, resourceName);
 
     foreach (DictionaryEntry resourceEntry in resources)
     {
@@ -82,16 +83,16 @@ public sealed class ResourceDispatcher
     foreach (DictionaryEntry elementsEntry in elements)
     {
       string elementID = (string) elementsEntry.Key;
-      Control control = page.FindControl (elementID);
-      if (control == null)
+      Control childControl = control.FindControl (elementID);
+      if (childControl == null)
         throw new ApplicationException ("No control with ID " + elementID + " found. ID was read from resource " + resourceName + ".");
 
       IDictionary values = (IDictionary) elementsEntry.Value;
-      IResourceDispatchTarget resourceDispatchTarget = control as IResourceDispatchTarget;
+      IResourceDispatchTarget resourceDispatchTarget = childControl as IResourceDispatchTarget;
       if (resourceDispatchTarget != null)
         resourceDispatchTarget.Dispatch (values);
       else
-        DispatchGeneric (control, values);
+        DispatchGeneric (childControl, values);
     }
   }
 
@@ -110,47 +111,52 @@ public sealed class ResourceDispatcher
     }
   }
 
-  private static Type GetPageType (Page page)
+  private static Type GetControlType (Control control)
   {
-    Type type = page.GetType();
+    Type type = control.GetType();
     
-    if (type != null && typeof(Page).IsAssignableFrom (type) && type.Namespace == "ASP" && type.Name.EndsWith ("_aspx"))
+    if (type != null && 
+        typeof(Control).IsAssignableFrom (type) && 
+        type.Namespace == "ASP" && 
+        (type.Name.EndsWith ("_aspx") || type.Name.EndsWith ("_ascx")))
+    {
       type = type.BaseType;
+    }
 
     return type;
   }
 
-  private static string GetResourceName (Page page, Type pageType)
+  private static string GetResourceName (Control control, Type controlType)
   {
-    PageResourcesAttribute[] resourceAttributes = (PageResourcesAttribute[]) pageType.GetCustomAttributes (
-      typeof (PageResourcesAttribute), false);
+    ControlResourcesAttribute[] resourceAttributes = (ControlResourcesAttribute[]) controlType.GetCustomAttributes (
+      typeof (ControlResourcesAttribute), false);
 
     if (resourceAttributes.Length == 0)
-      throw new ApplicationException ("Cannot dispatch resources for pages that do not have the PageResourcesAttribute attribute.");
+      throw new ApplicationException ("Cannot dispatch resources for controls that do not have the ControlResourcesAttribute attribute.");
      
     return resourceAttributes[0].ResourceName;
   }
 
-  private static ResourceSet GetResourceSet (Page page, Type pageType, string resourceName)
+  private static ResourceSet GetResourceSet (Control control, Type controlType, string resourceName)
   {
-    ResourceManager rm = GetOrCreateResourceManager (page, pageType, resourceName);
+    ResourceManager rm = GetOrCreateResourceManager (controlType, resourceName);
 
     return rm.GetResourceSet (MultiLingualUtility.GetUICulture (), true, true);
   }
 
-  private static ResourceManager GetOrCreateResourceManager (Page page, Type pageType, string resourceName)
+  private static ResourceManager GetOrCreateResourceManager (Type controlType, string resourceName)
   {
-    if (page.Application[resourceName] != null)
+    if (HttpContext.Current.Application[resourceName] != null)
     {
-      return (ResourceManager) page.Application[resourceName];
+      return (ResourceManager) HttpContext.Current.Application[resourceName];
     }
     else
     {
-      ResourceManager rm = new ResourceManager (resourceName, pageType.Assembly);
+      ResourceManager rm = new ResourceManager (resourceName, controlType.Assembly);
       if (rm == null)
         throw new ApplicationException ("No resource with name " + resourceName + " found.");
 
-      page.Application[page.ID] = rm;
+      HttpContext.Current.Application[resourceName] = rm;
 
       return rm;
     }
@@ -174,11 +180,11 @@ public interface IResourceDispatchTarget
 }
 
 [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class PageResourcesAttribute: Attribute
+public class ControlResourcesAttribute: Attribute
 {
   private string _resourceName;
 
-  public PageResourcesAttribute (string resourceName)
+  public ControlResourcesAttribute (string resourceName)
   {
     _resourceName = resourceName;
   }
