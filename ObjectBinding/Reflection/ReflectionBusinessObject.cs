@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Xml.Serialization;
+using System.ComponentModel;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -22,6 +23,7 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   }
 
   [XmlIgnore]
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public Guid ID
   {
     get { return _id; }
@@ -33,6 +35,7 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   }
 
   [XmlIgnore]
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public override IBusinessObjectClass BusinessObjectClass
   {
     get { return new ReflectionBusinessObjectClass (this.GetType()); }
@@ -58,8 +61,10 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
     propertyInfo.SetValue (this, internalValue, new object[0]);
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public abstract string DisplayName { get; }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   string IBusinessObjectWithIdentity.UniqueIdentifier
   {
     get { return _id.ToString(); }

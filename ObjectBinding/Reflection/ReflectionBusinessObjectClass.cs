@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using System.ComponentModel;
+using System.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Reflection
@@ -27,11 +29,28 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
     if (propertyInfos == null)
       return new IBusinessObjectProperty[0];
 
-    IBusinessObjectProperty[] properties = new IBusinessObjectProperty[propertyInfos.Length];
+    ArrayList properties = new ArrayList();
     for (int i = 0; i < propertyInfos.Length; ++i)
-      properties[i] = ReflectionBusinessObjectProperty.Create (propertyInfos[i]);
+    {
+      PropertyInfo propertyInfo = propertyInfos[i];
+      EditorBrowsableAttribute[] editorBrowsableAttributes = (EditorBrowsableAttribute[]) propertyInfo.GetCustomAttributes (typeof (EditorBrowsableAttribute), true);
+      if (editorBrowsableAttributes.Length == 1)
+      {
+        EditorBrowsableAttribute editorBrowsableAttribute = editorBrowsableAttributes[0];
+        if (editorBrowsableAttribute.State == EditorBrowsableState.Never)
+          continue;
+      }
 
-    return properties;
+      //  Prevents the display of the indexers declared in BusinessObject.
+      //  Adding "EditorBrowsable (EditorBrowsableState.Never)" to BusinessObject 
+      //  might not be the best solution until the final way of hiding properties is established
+      if (propertyInfo.Name == "Item")
+        continue;
+
+      properties.Add (ReflectionBusinessObjectProperty.Create (propertyInfo));
+    }
+
+    return (IBusinessObjectProperty[]) properties.ToArray (typeof (IBusinessObjectProperty));
   }
 
   public IBusinessObjectProvider BusinessObjectProvider 
