@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
@@ -83,6 +84,26 @@ public class ControlHelper
         return (TemplateControl) parent;
     }
     return null;
+  }
+
+  /// <summary>
+  ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
+  ///   design mode.
+  /// </summary>
+  /// <param name="control"> 
+  ///   The <see cref="Control"/> to be tested for being in design mode. 
+  /// </param>
+  /// <param name="context"> 
+  ///   The <see cref="HttpContext"/> of the <paramref name="control"/>. 
+  /// </param>
+  /// <returns> 
+  ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
+  /// </returns>
+  public static bool IsDesignMode (Control control, HttpContext context)
+  {
+    return   context == null 
+          || (control.Site != null && control.Site.DesignMode)
+          || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
   }
 
   // member fields
