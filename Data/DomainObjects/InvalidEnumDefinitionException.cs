@@ -5,7 +5,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// The exception that is thrown when an enum definition is invalid.
+/// </summary>
 [Serializable]
 public class InvalidEnumDefinitionException : DomainObjectException
 {
@@ -50,11 +54,19 @@ public class InvalidEnumDefinitionException : DomainObjectException
 
   // methods and properties
 
+  /// <summary>
+  /// The type of the enum that is invalid.
+  /// </summary>
   public Type EnumType
   {
     get { return _enumType; }
   }
 
+  /// <summary>
+  /// Sets the SerializationInfo object with the parameter name and additional exception information.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     base.GetObjectData (info, context);

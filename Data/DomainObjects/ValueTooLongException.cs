@@ -67,6 +67,11 @@ public class ValueTooLongException : DomainObjectException
     get { return _maxLength; }
   }
 
+  /// <summary>
+  /// Sets the SerializationInfo object with the parameter name and additional exception information.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     base.GetObjectData (info, context);

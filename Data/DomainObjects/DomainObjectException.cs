@@ -3,7 +3,11 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// BaseClass for all exceptions of the persistence framework.
+/// </summary>
 [Serializable]
 public class DomainObjectException : Exception
 {

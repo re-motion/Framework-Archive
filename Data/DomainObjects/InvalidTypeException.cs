@@ -5,7 +5,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// The exception that is thrown when a PropertyValue is set to a value of wrong type.
+/// </summary>
 [Serializable]
 public class InvalidTypeException : DomainObjectException
 {
@@ -64,21 +68,35 @@ public class InvalidTypeException : DomainObjectException
 
   // methods and properties
 
+  /// <summary>
+  /// The name of the property that caused the exception.
+  /// </summary>
   public string PropertyName
   {
     get { return _propertyName; }
   }
 
+  /// <summary>
+  /// The type that was expected for the property value.
+  /// </summary>
   public Type ExpectedType
   {
     get { return _expectedType; }
   }
 
+  /// <summary>
+  /// The type that was provided for the property value.
+  /// </summary>
   public Type ActualType
   {
     get { return _actualType; }
   }
 
+  /// <summary>
+  /// Sets the SerializationInfo object with the parameter name and additional exception information.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     base.GetObjectData (info, context);
