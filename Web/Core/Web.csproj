@@ -111,12 +111,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DateTextControl.cs"
+                    RelPath = "DateRangeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DateValidator.cs"
+                    RelPath = "DateTextControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
