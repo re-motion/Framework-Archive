@@ -314,23 +314,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   {
     WebTreeNodeCollection designModeNodes = new WebTreeNodeCollection (null);
     designModeNodes.SetParent (this, null);
-    WebTreeNodeCollection nodes= designModeNodes;
+    WebTreeNodeCollection nodes = designModeNodes;
     nodes.Add (new WebTreeNode ("node0", "Node 0"));
     nodes.Add (new WebTreeNode ("node1", "Node 1"));
     nodes.Add (new WebTreeNode ("node2", "Node 2"));
-
-    nodes = ((WebTreeNode) designModeNodes[0]).Children;
-    nodes.Add (new WebTreeNode ("node00", "Node 0-0"));
-    nodes.Add (new WebTreeNode ("node01", "Node 0-1"));
-
-    nodes = ((WebTreeNode) ((WebTreeNode) designModeNodes[0]).Children[0]).Children;
-    nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
-    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1"));
-
-    nodes = ((WebTreeNode) designModeNodes[2]).Children;
-    nodes.Add (new WebTreeNode ("node20", "Node 2-0"));
-
-    designModeNodes.SetExpandsion (false);
     RenderNodes (writer, designModeNodes);
   }
 

@@ -206,8 +206,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
+  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
   /// </summary>
   /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)
@@ -375,8 +374,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in 
-  ///   edit mode.
+  ///   Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
   /// <remarks>
   ///   Use this method when manually setting the listed items, e.g. from the parent control.
@@ -448,18 +446,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Prerenders the child controls.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The <c>Width</c> of the control and the <c>Width</c> property of <see cref="Icon"/> must
-  ///     be of the same <see cref="UnitType"/>. If they are not, the width of the 
-  ///     icon is added to the specified total width of the control. It is recommended to always 
-  ///     specify the <c>Width</c> in pixels.
-  ///   </para>
-  ///   <para>
-  ///     During design-time, the width of the icon versus the width of the list or label
-  ///     is only approximated.
-  ///   </para>
-  /// </remarks>
   protected override void PreRenderChildControls()
   {
     PreRenderIcon();
@@ -473,6 +459,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       PreRenderEditModeValue();
   }
 
+  /// <summary>
+  ///   Prerenders the <see cref="Label"/>.
+  /// </summary>
   private void PreRenderReadOnlyValue()
   {
     if (Value != null)
@@ -493,6 +482,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Prerenders the <see cref="DropDownList"/>.
+  /// </summary>
   private void PreRenderEditModeValue()
   {
     bool isNullItem = InternalValue == null;
@@ -529,6 +521,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _dropDownListStyle.ApplyStyle (_dropDownList);
   }
 
+  /// <summary>
+  ///   Prerenders the <see cref="Icon"/>.
+  /// </summary>
   private void PreRenderIcon()
   {
     //  Get icon
@@ -568,6 +563,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Prerenders the <see cref="_optionsMenu"/>.
+  /// </summary>
   private void PreRenderOptionsMenu()
   {
     _optionsMenu.MenuItems.Clear();

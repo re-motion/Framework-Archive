@@ -1,8 +1,6 @@
 /*  */
 div.treeViewParentNode
 {
-  background-image: url(../Image/TreeViewWhite.gif);
-  background-repeat: repeat-y;  
 }
 
 /*  */
@@ -16,7 +14,5 @@ div.treeViewNodeGroup
 /*  */
 div.treeViewLastNodeGroup
 {
-  background-image: url(../Image/TreeViewWhite.gif);
-  background-repeat: repeat-y;  
   padding-left: 16px;
 }
