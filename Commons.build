@@ -301,7 +301,7 @@
 
   <!--======================= UNIT TESTS =======================-->
 
-  <target name="alltests" depends="CoreTest, DevelopmentCoreTest" />
+  <target name="alltests" depends="CoreTest, DevelopmentCoreTest, Data.DomainObjects.UnitTests" />
 
   <target name="CoreTest" depends="Core,DevelopmentCore">
     <property name="project.name" value="Core.Test" />
@@ -334,6 +334,11 @@
           commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects\UnitTests\Database\CreateDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
+    <copy todir="${tests.builddir}" >
+      <fileset basedir="${project.dir}/Database/">
+        <includes name="*.sql" />
+      </fileset>
+    </copy>
     <call target="buildtest" />
     <nunit2>
       <test assemblyname="${tests.builddir}/Rubicon.Data.DomainObjects.UnitTests.dll" />
