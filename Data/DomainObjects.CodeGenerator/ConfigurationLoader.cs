@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class StubsBuilder : CodeBuilder, IBuilder
+public class StubsBuilder : CodeBuilder
 {
   // types
 
@@ -19,7 +19,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
   private XmlDocument _mappingDocument;
   private ConfigurationNamespaceManager _namespaceManager;
   private string[] _uris;
-  private Regex _typeRegex = new Regex (@"^(?<namespacename>\w+(\.\w+)*)\.(?<classname>\w+)(\+(?<membername>\w*))?, (?<assemblyname>(\w+\.)*\w+)$");
+  private Regex _typeRegex = new Regex (@"^(?<namespacename>\w+(\.\w+)*)\.(?<typename>\w+)(\+(?<membername>\w*))?, (?<assemblyname>(\w+\.)*\w+)$");
 
   // construction and disposing
 
@@ -60,15 +60,13 @@ public class StubsBuilder : CodeBuilder, IBuilder
     ArrayList enumTypes = new ArrayList ();
     foreach (XmlNode enumTypeNode in propertyTypeNodes)
     {
-      if (GetClassname (enumTypeNode.InnerText.Trim ()) != string.Empty)
+      if (GetTypeName (enumTypeNode.InnerText.Trim ()) != string.Empty)
         enumTypes.Add (enumTypeNode.InnerText.Trim ());
     }
 
     return (string[]) enumTypes.ToArray (typeof (string));
   }
 
-  // TODO: each type should be returned only once!
-  // TODO: eliminate DomainObjectCollections
   private string[] GetCollectionStrings ()
   {
     XmlNodeList collectionTypeNodes = _mappingDocument.SelectNodes (
@@ -78,8 +76,9 @@ public class StubsBuilder : CodeBuilder, IBuilder
     ArrayList collectionTypes = new ArrayList ();
     foreach (XmlNode collectionTypeNode in collectionTypeNodes)
     {
-      if (IsTypeString (collectionTypeNode.InnerText.Trim ()))
-        collectionTypes.Add (collectionTypeNode.InnerText.Trim ());
+      string typeString = collectionTypeNode.InnerText.Trim ();
+      if (IsTypeString (typeString) && typeString != DomainObjectCollectionBuilder.DefaultBaseClass && !collectionTypes.Contains (typeString))
+        collectionTypes.Add (typeString);
     }
 
     return (string[]) collectionTypes.ToArray (typeof (string));
@@ -108,7 +107,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
   {
     Match typeMatch = _typeRegex.Match (typeString);
 
-    return (typeMatch.Groups["classname"].Value != string.Empty);
+    return (typeMatch.Groups["typename"].Value != string.Empty);
   }
   
   public string GetNamespacename (string typeString)
@@ -118,12 +117,11 @@ public class StubsBuilder : CodeBuilder, IBuilder
     return typeMatch.Groups["namespacename"].Value;
   }
 
-  //TODO: rename to GetTypeName
-  private string GetClassname (string typeString)
+  private string GetTypeName (string typeString)
   {
     Match typeMatch = _typeRegex.Match (typeString);
 
-    return typeMatch.Groups["classname"].Value;
+    return typeMatch.Groups["typename"].Value;
   }
 
   private string GetMembername (string typeString)
@@ -145,12 +143,12 @@ public class StubsBuilder : CodeBuilder, IBuilder
     ArrayList nestedTypeNames = new ArrayList ();
 
     string parentNamespaceName = GetNamespacename (parentTypeString);
-    string parentClassName = GetClassname (parentTypeString);
+    string parentClassName = GetTypeName (parentTypeString);
 
     foreach (string typeString in typeStrings)
     {
       if (parentNamespaceName == GetNamespacename (typeString)
-          && parentClassName == GetClassname (typeString))
+          && parentClassName == GetTypeName (typeString))
       {
         nestedTypeNames.Add (GetMembername (typeString));
       }
@@ -160,7 +158,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
 
   #region IBuilder Members
 
-  public virtual void Build()
+  public override void Build()
   {
     string[] classTypeNames = GetClassStrings ();
     string[] enumTypeNames = GetEnumStrings ();
@@ -173,10 +171,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
       BeginNamespace (GetNamespacename (classTypeName));
 
       WriteComment (classTypeName);
-      BeginClass (GetClassname (classTypeName), "DomainObject");
-
-      BeginConstructor (GetClassname (classTypeName));
-      EndConstructor ();
+      BeginClass (GetTypeName (classTypeName), "DomainObject");
 
       foreach (string enumTypeName in GetNestedTypes (enumTypeNames, classTypeName))
         WriteNestedEnum (enumTypeName);
@@ -191,7 +186,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
         BeginNamespace (GetNamespacename (enumTypeName));
 
         WriteComment (enumTypeName);
-        WriteEnum (GetClassname (enumTypeName));
+        WriteEnum (GetTypeName (enumTypeName));
       }
     }
 
@@ -200,10 +195,7 @@ public class StubsBuilder : CodeBuilder, IBuilder
       BeginNamespace (GetNamespacename (collectionTypeName));
 
       WriteComment (collectionTypeName);
-      BeginClass (GetClassname (collectionTypeName), "DomainObjectCollection");
-
-      BeginConstructor (GetClassname (collectionTypeName));
-      EndConstructor ();
+      BeginClass (GetTypeName (collectionTypeName), "DomainObjectCollection");
 
       foreach (string enumTypeName in GetNestedTypes (enumTypeNames, collectionTypeName))
         WriteNestedEnum (enumTypeName);

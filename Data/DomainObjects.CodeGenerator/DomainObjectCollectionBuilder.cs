@@ -1,17 +1,18 @@
 using System;
+using System.Collections;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class DomainObjectCollectionBuilder : CodeBuilder, IBuilder
+public class DomainObjectCollectionBuilder : CodeBuilder
 {
   // types
 
   // static members and constants
 
-  private static readonly string s_defaultBaseClass = "DomainObjectCollection";
+  public static readonly string DefaultBaseClass = "DomainObjectCollection";
 
   #region templates
 
@@ -56,17 +57,13 @@ public class DomainObjectCollectionBuilder : CodeBuilder, IBuilder
     if (baseClass != null)
       _baseClass = baseClass;
     else
-      _baseClass = s_defaultBaseClass;
+      _baseClass = DefaultBaseClass;
 	}
 
   // methods and properties
 
-  public virtual void Build ()
+  public override void Build ()
   {
-    //TODO: implement this on the DomainModelBuilder
-    if (_classname == s_defaultBaseClass)
-      return;
-
     OpenFile ();
 
     BeginNamespace (_namespacename);
@@ -78,7 +75,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder, IBuilder
     WriteNewLine ();
 
     //Write nested types (enums)
-    foreach (PropertyDefinition propertyDefinition in BuilderUtility.GetPropertyDefinitionsWithNestedType (_type))
+    foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (_type))
       WriteNestedEnum (propertyDefinition.PropertyType.Name);
 
     // static members and constants
@@ -135,7 +132,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder, IBuilder
     output = BuilderUtility.ReplaceTag (output, s_returntypeTag, requiredTypename);
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, baseParameter);
 
-    ClassWriter.Write (output);
+    Write (output);
   }
 
   protected void WriteIndexerSetStatement (string baseParameter)
@@ -143,7 +140,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder, IBuilder
     string output = s_indexerSetStatement;
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, baseParameter);
 
-    ClassWriter.Write (output);
+    Write (output);
   }
 }
 }

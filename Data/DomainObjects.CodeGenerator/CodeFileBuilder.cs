@@ -1,13 +1,14 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-// TODO: should implement IBuilder here
-public abstract class CodeBuilder
+public abstract class CodeBuilder : IBuilder
 {
   // types
 
@@ -120,14 +121,6 @@ public abstract class CodeBuilder
     _filename = filename;
   }
   
-  //TODO: eliminate this constructor
-  protected CodeBuilder (TextWriter textWriter)
-	{
-    ArgumentUtility.CheckNotNull ("textWriter", textWriter);
-
-    _classWriter = textWriter;
-  }
-
   // methods and properties
 
   protected string FileName
@@ -136,13 +129,6 @@ public abstract class CodeBuilder
     set { _filename = value;}
   }
 
-  //TODO: eliminate property and provide a method for Write (string text)
-  protected TextWriter ClassWriter
-  {
-    get { return _classWriter; }
-    set { _classWriter = value; }
-  }
-  
   protected void OpenFile ()
   {
     if (_filename != null)
@@ -156,7 +142,12 @@ public abstract class CodeBuilder
 
     _classWriter.Close ();
   }
-  
+
+  protected void Write (string text)
+  {
+    _classWriter.Write (text);
+  }
+
   protected void WriteNewLine ()
   {
     _classWriter.Write (Environment.NewLine);
@@ -324,5 +315,25 @@ public abstract class CodeBuilder
   {
     _classWriter.Write (s_propertyFooter);
   }
+
+  protected PropertyDefinition[] GetEnumPropertyDefinitionsWithNestedType (Type outerType)
+  {
+    ArrayList nestedTypes = new ArrayList ();
+    foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
+    {
+      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+      {
+        if (propertyDefinition.PropertyType.IsEnum && propertyDefinition.PropertyType.DeclaringType == outerType)
+          nestedTypes.Add (propertyDefinition);
+      }
+    }
+    return (PropertyDefinition[]) nestedTypes.ToArray (typeof(PropertyDefinition));
+  }
+
+  #region IBuilder Members
+
+  public abstract void Build ();
+
+  #endregion
 }
 }

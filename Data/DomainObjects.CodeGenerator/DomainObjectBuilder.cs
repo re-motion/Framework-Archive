@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
 //TODO: implement mapping from CLS Type to C# value types (string, int, double, ...)
-public class DomainObjectBuilder : CodeBuilder, IBuilder
+public class DomainObjectBuilder : CodeBuilder
 {
   // types
 
@@ -57,17 +57,6 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
 	public DomainObjectBuilder (string filename, ClassDefinition classDefinition, string baseClass)
       : base (filename)
 	{
-    Initialize (classDefinition, baseClass);
-	}
-
-	public DomainObjectBuilder (TextWriter textWriter, ClassDefinition classDefinition, string baseClass)
-      : base (textWriter)
-	{
-    Initialize (classDefinition, baseClass);
-	}
-
-  private void Initialize (ClassDefinition classDefinition, string baseClass)
-  {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
     _classDefinition = classDefinition;
@@ -76,11 +65,11 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
       _baseClass = baseClass;
     else
       _baseClass = s_defaultBaseClass;
-  }
+	}
 
   // methods and properties
 
-  public virtual void Build ()
+  public override void Build ()
   {
     Type type = _classDefinition.ClassType;
 
@@ -95,7 +84,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     WriteNewLine ();
 
     //Write nested types (enums)
-    foreach (PropertyDefinition propertyDefinition in BuilderUtility.GetPropertyDefinitionsWithNestedType (type))
+    foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
       WriteNestedEnum (propertyDefinition.PropertyType.Name);
 
     // static members and constants
@@ -131,20 +120,13 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
       WriteValueProperty (propertyDefinition.PropertyName, propertyDefinition.PropertyType.Name);
     }
 
-    //TODO: improve this snipped with _classDefinition.GetRelationEndPoints (is implemented in latest RPF build)
-    foreach (RelationDefinition relationDefinition in _classDefinition.MyRelationDefinitions)
+    foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetMyRelationEndPointDefinitions ())
     {
-      foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
-      {
-        if (endPointDefinition.ClassDefinition != _classDefinition)
-          continue;
+      if (endPointDefinition.Cardinality == CardinalityType.One)
+        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
 
-        if (endPointDefinition.Cardinality == CardinalityType.One)
-          WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
-
-        if (endPointDefinition.Cardinality == CardinalityType.Many)
-          WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
-      }
+      if (endPointDefinition.Cardinality == CardinalityType.Many)
+        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
     }
 
     EndClass ();
@@ -161,7 +143,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string output = s_getObjectContent;
     output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersForContent);
-    ClassWriter.Write (output);
+    Write (output);
 
     EndGetObject ();
   }
@@ -173,7 +155,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string output = s_getObjectContent;
     output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithDeletedForContent);
-    ClassWriter.Write (output);
+    Write (output);
 
     EndGetObject ();
   }
@@ -185,7 +167,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string output = s_getObjectContent;
     output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionForContent);
-    ClassWriter.Write (output);
+    Write (output);
 
     EndGetObject ();
   }
@@ -197,7 +179,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string output = s_getObjectContent;
     output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
     output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionAndDeletedForContent);
-    ClassWriter.Write (output);
+    Write (output);
 
     EndGetObject ();
   }
@@ -239,11 +221,11 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string getStatement = s_valuePropertyGetStatement;
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    ClassWriter.Write (getStatement);
+    Write (getStatement);
 
     string setStatement = s_valuePropertySetStatement;
     setStatement = BuilderUtility.ReplaceTag (setStatement, s_propertynameTag, propertyName);
-    ClassWriter.Write (setStatement);
+    Write (setStatement);
 
     EndProperty ();
   }
@@ -255,11 +237,11 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string getStatement = s_relationPropertyCardinalityOneGetStatement;
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    ClassWriter.Write (getStatement);
+    Write (getStatement);
 
     string setStatement = s_relationPropertyCardinalityOneSetStatement;
     setStatement = BuilderUtility.ReplaceTag (setStatement, s_propertynameTag, propertyName);
-    ClassWriter.Write (setStatement);
+    Write (setStatement);
 
     EndProperty ();
   }
@@ -271,7 +253,7 @@ public class DomainObjectBuilder : CodeBuilder, IBuilder
     string getStatement = s_relationPropertyCardinalityManyGetStatement;
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
     getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    ClassWriter.Write (getStatement);
+    Write (getStatement);
 
     EndProperty ();
   }

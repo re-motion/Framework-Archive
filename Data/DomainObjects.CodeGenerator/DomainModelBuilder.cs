@@ -70,24 +70,21 @@ public class DomainModelBuilder : IBuilder
           Path.Combine (_outputFolder, classDefinition.ClassType.Name + s_fileExtention), 
           classDefinition, domainObjectBaseClass));
 
-      // Todo: improve this with existing functionality of RPF
-      foreach (RelationDefinition relationDefinition in classDefinition.MyRelationDefinitions)
+      foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
       {
-        foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
-        {
-          if (endPointDefinition.ClassDefinition != classDefinition)
-            continue;
+        if (endPointDefinition.Cardinality != CardinalityType.Many)
+          continue;
 
-          if (endPointDefinition.Cardinality != CardinalityType.Many)
-            continue;
+        if (endPointDefinition.PropertyType.Name == DomainObjectCollectionBuilder.DefaultBaseClass)
+          continue;
 
-          Type requiredItemType = classDefinition.GetOppositeEndPointDefinition (endPointDefinition.PropertyName).PropertyType;
-          domainObjectCollectionBuilders.Add (new DomainObjectCollectionBuilder (
-              Path.Combine (_outputFolder, endPointDefinition.PropertyType.Name + s_fileExtention), 
-              endPointDefinition.PropertyType, 
-              requiredItemType.Name,
-              domainObjectCollectionBaseClass));
-        }
+        Type requiredItemType = classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassType;
+
+        domainObjectCollectionBuilders.Add (new DomainObjectCollectionBuilder (
+            Path.Combine (_outputFolder, endPointDefinition.PropertyType.Name + s_fileExtention), 
+            endPointDefinition.PropertyType, 
+            requiredItemType.Name,
+            domainObjectCollectionBaseClass));
       }
     }
     _domainObjectBuilders = (IBuilder[]) domainObjectBuilders.ToArray (typeof (IBuilder));

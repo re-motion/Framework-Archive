@@ -5,6 +5,7 @@ using System.IO;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
@@ -14,6 +15,41 @@ public class SqlFileBuilder : IBuilder
   // types
 
   // static members and constants
+
+  private static Hashtable s_sqlTypeMapping = new Hashtable ();
+
+  static SqlFileBuilder ()
+  {
+    s_sqlTypeMapping.Add ("boolean", "bit");
+    s_sqlTypeMapping.Add ("byte", "tinyint");
+    s_sqlTypeMapping.Add ("date", "datetime");
+    s_sqlTypeMapping.Add ("dateTime", "datetime");
+    s_sqlTypeMapping.Add ("decimal", "decimal");
+    s_sqlTypeMapping.Add ("double", "real");
+    s_sqlTypeMapping.Add ("guid", "uniqueidentifier");
+    s_sqlTypeMapping.Add ("int16", "smallint");
+    s_sqlTypeMapping.Add ("int32", "int");
+    s_sqlTypeMapping.Add ("int64", "bigint");
+    s_sqlTypeMapping.Add ("single", "float");
+    s_sqlTypeMapping.Add ("string", "nvarchar");
+    s_sqlTypeMapping.Add ("char", "nchar(1)");
+    s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
+  }
+
+  public static string GetDBType (string mappingType, Type propertyType, NaInt32 maxLength)
+  {
+    if (s_sqlTypeMapping.ContainsKey (mappingType))
+    {
+      string typeString = (string) s_sqlTypeMapping[mappingType];
+      if (mappingType == "string")
+        typeString += " (" + maxLength.Value.ToString () + ")";
+      return typeString;
+    }
+    else if (propertyType.IsEnum)
+      return (string) s_sqlTypeMapping["int32"];
+
+    throw new ArgumentException (string.Format ("Cannot map type {0} to the corresponding database type", mappingType), "mappingType");
+  }
 
   // member fields
 
@@ -79,10 +115,9 @@ public class SqlFileBuilder : IBuilder
 
       foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
       {
-        ArrayList derivedClasses = GetDerivedClassDefinitions (baseClass, true);
-        bool hasChildClasses = derivedClasses.Count != 0;
+        bool hasChildClasses = baseClass.DerivedClasses.Count != 0;
 
-        builder.CreateTable (baseClass.EntityName, hasChildClasses, GetColumns (baseClass, derivedClasses));
+        builder.CreateTable (baseClass.EntityName, hasChildClasses, GetColumns (baseClass));
       }
 
       foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
@@ -114,12 +149,11 @@ public class SqlFileBuilder : IBuilder
     return (ConstraintDefinition[]) constraints.ToArray (typeof (ConstraintDefinition));
   }
 
-  // TODO: improve this code with existing functionality from RPF
-  private ColumnDefinition[] GetColumns (ClassDefinition baseClass, ArrayList derivedClasses)
+  private ColumnDefinition[] GetColumns (ClassDefinition baseClass)
   {
     ArrayList columns = new ArrayList ();
     MergeColumnDefinitions (columns, baseClass);
-    foreach (ClassDefinition derivedClass in derivedClasses)
+    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass, true))
       MergeColumnDefinitions (columns, derivedClass);
 
     return (ColumnDefinition[]) columns.ToArray (typeof (ColumnDefinition));
@@ -129,7 +163,7 @@ public class SqlFileBuilder : IBuilder
   {
     foreach (PropertyDefinition property in classDefinition.MyPropertyDefinitions)
     {
-      string dataType = BuilderUtility.GetDBType (property.MappingType, property.PropertyType, property.MaxLength);
+      string dataType = GetDBType (property.MappingType, property.PropertyType, property.MaxLength);
       if (property.MappingType == "objectID" && 
           GetOppositeClass (classDefinition, property.PropertyName).StorageProviderID != classDefinition.StorageProviderID)
       {
@@ -157,16 +191,7 @@ public class SqlFileBuilder : IBuilder
   {
     ClassDefinition oppositeClass = GetOppositeClass (classDefinition, propertyName);
 
-    //TODO: use ClassDefinition.IsPartOfInheritanceHierarchy instead of the code below
-    if (oppositeClass.BaseClass != null)
-      return true;
-
-    foreach (ClassDefinition myClassDefinition in _mappingConfig.ClassDefinitions)
-    {
-      if (myClassDefinition.BaseClass == oppositeClass)
-        return true;
-    }
-    return false;
+    return oppositeClass.IsPartOfInheritanceHierarchy;
   }
 
   private ArrayList GetBaseClassDefinitions (string storageProviderID)
@@ -184,26 +209,26 @@ public class SqlFileBuilder : IBuilder
   }
 
 
-  private ArrayList GetDerivedClassDefinitions (ClassDefinition baseClass)
+  private ClassDefinitionCollection GetDerivedClassDefinitions (ClassDefinition baseClass)
   {
-    //Todo: use ClassDefinition.DerivedClasses instead and inline this
     return GetDerivedClassDefinitions (baseClass, false);
   }
 
-  private ArrayList GetDerivedClassDefinitions (ClassDefinition baseClass, bool recursive)
+  private ClassDefinitionCollection GetDerivedClassDefinitions (ClassDefinition baseClass, bool recursive)
   {
-    ArrayList derivedClasses = new ArrayList ();
+    ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection ();
 
-    //Todo: use ClassDefinition.DerivedClasses instead
-    foreach (ClassDefinition classDefinition in _mappingConfig.ClassDefinitions)
+    foreach (ClassDefinition derivedClass in baseClass.DerivedClasses)
     {
-      if (classDefinition.BaseClass == baseClass)
+      derivedClasses.Add (derivedClass);
+
+      if (recursive)
       {
-        derivedClasses.Add (classDefinition);
-        if (recursive)
-          derivedClasses.AddRange (GetDerivedClassDefinitions (classDefinition, true));
+        foreach (ClassDefinition classDefinition in GetDerivedClassDefinitions (derivedClass, true))
+          derivedClasses.Add (classDefinition);
       }
     }
+
     return derivedClasses;
   }
 
