@@ -9,7 +9,7 @@ using System.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
