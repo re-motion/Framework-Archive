@@ -1,0 +1,543 @@
+body, td
+{
+	background-color: #ffffff;
+	
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	line-height: 1em;
+}
+
+body, input, textarea
+{
+	font-family: 'Arial' , 'Helvetica';
+}
+
+table.formGridTable
+{
+  border-collapse: separate;
+  border-width: 1px;
+}
+
+td.formGridTitleCell
+{
+	font-weight: bold;
+	font-size: 1em;
+
+  padding: 2px 2px 2px 2px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+td.formGridLabelsCell
+{
+	background-color: #E0E0E0;
+	text-align: right;
+
+  padding: 2px 5px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+td.formGridMarkersCell
+{
+  white-space: nowrap;
+
+  padding: 0px 5px 0px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+td.formGridControlsCell
+{
+  padding: 0px 5px 0px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+td.formGridValidationMessagesCell
+{
+  padding: 2px 7px 2px 7px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+td.formGridTopDataRow
+{
+  border-style: solid;
+  border-top-width: 3px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: Black;
+}
+
+.formGridInputControl
+{
+	font-size: 1em;
+}
+
+.formGridValidationMessage
+{
+	color: Red;
+  /*padding: 2px 0px 2px 0px;*/
+}
+
+.formGridValidationNotice
+{
+	color: Red;
+  /*padding: 2px 0px 2px 0px;*/
+}
+
+/*************************************************************************************************/
+.activeTab
+{
+	font-family: 'Verdana' , 'Arial' , 'Helvetica';
+	font-weight: bold;
+	font-size: .93em;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #990000;
+}
+
+A:link.activeTab
+{
+	font-weight: bold;
+	font-size: 0.93em;
+	color: #FFFFFF;
+	background-color: #990000;
+	text-decoration: none;
+}
+
+A:visited.activeTab
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+A:hover.activeTab
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+.inactiveTab
+{
+	font-weight: bold;
+	font-size: 0.93em;
+	color: #ffffff;
+	font-family: 'Verdana' , 'Arial' , 'Helvetica';
+	background-color: #0a547e;
+	text-decoration: none;
+}
+
+A:link.inactiveTab
+{
+	font-weight: bold;
+	font-size: .93em;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #0a547e;
+}
+
+A:visited.inactiveTab
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+A:hover.inactiveTab
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+.tabSubMenuBar
+{
+	font-weight: normal;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #990000;
+	line-height: 2em;
+}
+
+.tabSubLink
+{
+	font-weight: normal;
+	font-size: .9em;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #990000;
+	line-height: 2em;
+}
+
+A:link.tabSubLink
+{
+	font-weight: normal;
+	font-size: .9em;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #990000;
+}
+
+A:visited.tabSubLink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+A:hover.tabSubLink
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+.tabActiveSubLink
+{
+	font-weight: normal;
+	font-size: .9em;
+	color: #FFFFFF;
+	text-decoration: underline;
+	background-color: #990000;
+	line-height: 2em;
+}
+
+A:link.tabActiveSubLink
+{
+	font-weight: normal;
+	font-size: .9em;
+	color: #FFFFFF;
+	text-decoration: underline;
+	background-color: #990000;
+}
+
+A:visited.tabActiveSubLink
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+A:hover.tabActiveSubLink
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+.tabActiveBackLink
+{
+	font-weight: normal;
+	font-size: 10pt;
+	color: #000000;
+	text-decoration: none;
+	background-color: #FFFFFF;
+	line-height: 3em;
+}
+
+A:hover.tabActiveBackLink
+{
+	text-decoration: underline;
+}
+
+.tabInactiveBackLink
+{
+	font-weight: bold;
+	font-size: .9em;
+	color: #600000;
+	text-decoration: none;
+	background-color: #003399;
+	line-height: 2em;
+}
+
+.button
+{
+	font-weight: normal;
+	font-size: .93em;
+	color: #000000;
+	text-decoration: none;
+}
+
+A:link.button
+{
+	font-weight: bold;
+	font-size: .93em;
+	color: #000000;
+	text-decoration: none;
+}
+
+A:visited.button
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+A:hover.button
+{
+	color: #000000;
+	text-decoration: underline;
+}
+
+A:NavigationButton
+{
+	font-weight: bold;
+	font-size: .93em;
+	color: #000000;
+	text-decoration: underline;
+}
+
+A:visited.NavigationButton
+{
+	color: #000000;
+	text-decoration: underline;
+}
+
+A:hover.NavigationButton
+{
+	color: #0000ff;
+	text-decoration: underline;
+}
+
+.label
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	background-color: #E0E0E0;
+	line-height: 1em;
+}
+
+.labelView
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	background-color: #E0E0E0;
+	line-height: 1em;
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+	white-space: nowrap;
+}
+
+.labelRequired
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: DarkRed;
+	line-height: 1em;
+}
+
+.labelOpen
+{
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+}
+
+.formGroup
+{
+	font-weight: bold;
+	font-size: 1em;
+	color: #000000;
+	text-decoration: none;
+}
+
+.formGroupSeparatorLine
+{
+	background-color: #000000;
+	height: 2px;
+}
+
+INPUT
+{
+	font-size: .8em;
+}
+
+.list
+{
+	padding-right: 1px;
+	padding-left: 1px;
+	font-size: 0.8em;
+}
+
+.disabledLink
+{
+	color: #808080;
+	text-decoration: none;
+}
+
+A:link.standardLink
+{
+	color: blue;
+	text-decoration: none;
+}
+
+A:visited.standardLink
+{
+	color: blue;
+	text-decoration: none;
+}
+
+A:hover.standardLink
+{
+	color: blue;
+	text-decoration: underline;
+}
+
+.searchResultInfo
+{
+}
+
+TD.listHeader, td.listHeaderWorkList
+{
+	font-weight: bold;
+	background-color: #E0E0E0;
+}
+
+td.listHeaderWorkList
+{
+	white-space: nowrap;
+}
+
+.listItem
+{
+	background-color: #ffffff;
+}
+
+.listItemDraft
+{
+	background-color: #ffffff;
+	color: Red;
+	font-style: italic;
+}
+
+.alternatingListItem
+{
+	background-color: #f0f0f0;
+}
+
+.alternatingListItemDraft
+{
+	background-color: #f0f0f0;
+	color: Red;
+	font-style: italic;
+}
+
+.selectedListItem
+{
+	background-color: #0a547e;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.validator
+{
+	font-size: .8em;
+	color: Red;
+	font-weight: bold;
+}
+.text
+{
+	font-size: .8em;
+}
+
+.textHighlighted
+{
+	font-size: .8em;
+	font-weight: bold;
+}
+
+.textHighlightedFontIndependent
+{
+	font-weight: bold;
+}
+
+A:link.text
+{
+	font-weight: bold;
+	color: blue;
+	text-decoration: none;
+}
+
+A:visited.text
+{
+	font-weight: bold;
+	color: blue;
+	text-decoration: none;
+}
+
+A:hover.text
+{
+	text-decoration: underline;
+}
+
+.ReadOnlyValue
+{
+	font-size: .8em;
+}
+
+.header1
+{
+	font-size: 1.8em;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+}
+
+.header2
+{
+	font-size: 1.3em;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+}
+
+.header3
+{
+	font-size: .8em;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+}
+
+table.controlBorder
+{
+	border-color: #E0E0E0;
+}
+
+.errorLabel
+{
+	font-weight: bold;
+	font-size: 0.8em;
+	color: #ff0000;
+	text-decoration: none;
+}
+
+.currencyColumn
+{
+	text-align: right;
+}

@@ -1,0 +1,67 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "http://localhost/dev/libraries/Commons/Web.UI/FormGrid/Test/Test.csproj", "{B4A30549-A642-433C-8A0E-FD87F9393C47}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "..\..\..\Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "..\..\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 5
+		SccProjectUniqueName0 = ..\\..\\..\\Core\\Core.csproj
+		SccProjectName0 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath0 = ..\\..\\..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName1 = ..\\..\\..\\Globalization\\Globalization.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath1 = ..\\..\\..\\Globalization
+		CanCheckoutShared = false
+		SccProjectUniqueName2 = ..\\..\\Core\\Web.UI.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath2 = ..\\..\\Core
+		CanCheckoutShared = false
+		SccLocalPath3 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {2F11921A-DF99-4EA0-B9CD-9734FAA2E0F9}
+		SccProjectUniqueName4 = http://localhost/dev/libraries/Commons/Web.UI/FormGrid/Test/Test.csproj
+		SccLocalPath4 = .
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice4 = 2
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{B4A30549-A642-433C-8A0E-FD87F9393C47}.Debug.ActiveCfg = Debug|.NET
+		{B4A30549-A642-433C-8A0E-FD87F9393C47}.Debug.Build.0 = Debug|.NET
+		{B4A30549-A642-433C-8A0E-FD87F9393C47}.Release.ActiveCfg = Release|.NET
+		{B4A30549-A642-433C-8A0E-FD87F9393C47}.Release.Build.0 = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.ActiveCfg = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
