@@ -28,11 +28,11 @@ public class WebFormMK : WebFormBase
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
   protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BirthdayField;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -57,13 +57,16 @@ public class WebFormMK : WebFormBase
     {
       partner = person.Partner;
     }
+      person.SaveObject();
+      if (person.Partner != null)
+        person.Partner.SaveObject();
 
-    reflectionBusinessObjectDataSource.BusinessObject = person;
+    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
 
     this.DataBind();
     if (!IsPostBack)
     {
-      reflectionBusinessObjectDataSource.LoadValues (false);
+      ReflectionBusinessObjectDataSourceControl.LoadValues (false);
     }
 	}
 
@@ -87,14 +90,7 @@ public class WebFormMK : WebFormBase
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.reflectionBusinessObjectDataSource = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    // 
-    // reflectionBusinessObjectDataSource
-    // 
-    this.reflectionBusinessObjectDataSource.BusinessObject = null;
-    this.reflectionBusinessObjectDataSource.EditMode = true;
-    this.reflectionBusinessObjectDataSource.TypeName = "OBWTest.Person, OBWTest";
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -105,8 +101,8 @@ public class WebFormMK : WebFormBase
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      reflectionBusinessObjectDataSource.SaveValues (false);
-      Person person = (Person) reflectionBusinessObjectDataSource.BusinessObject;
+      ReflectionBusinessObjectDataSourceControl.SaveValues (false);
+      Person person = (Person) ReflectionBusinessObjectDataSourceControl.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
         person.Partner.SaveObject();

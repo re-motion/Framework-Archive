@@ -27,9 +27,11 @@ public class WxeWebFormBase:
 
   protected override void OnInit(EventArgs e)
   {
-    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-    Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-
+    if (! ControlHelper.IsDesignMode (this, Context))
+    {
+      Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+    }
     base.OnInit (e);
   }
 
@@ -72,7 +74,7 @@ public class WxeWebFormBase:
     if (ControlHelper.IsDesignMode (this, this.Context))
       return resourceType.Name + "/" + relativeUrl;
     else
-      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
+      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
   }
 }
 

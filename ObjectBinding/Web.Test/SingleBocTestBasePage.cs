@@ -19,6 +19,7 @@ namespace OBWTest
 [MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WebFormBase:
     Page, 
+    IControl,
     IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
     IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
@@ -62,7 +63,7 @@ public class WebFormBase:
     if (ControlHelper.IsDesignMode (this, this.Context))
       return resourceType.Name + "/" + relativeUrl;
     else
-      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
+      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
   }
 }
 
