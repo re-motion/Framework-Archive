@@ -76,9 +76,7 @@ public class ValidationStateViewer : WebControl, IControl
   public ValidationStateViewer()
   {
     _validationErrorStyle = ValidationErrorStyle.Notice;
-
     _validationErrorNotice = new LiteralControl();
-
     _noticeText = String.Empty;
   }
 
@@ -90,7 +88,6 @@ public class ValidationStateViewer : WebControl, IControl
   protected override void OnInit (EventArgs e)
 	{
     this.Page.PreRender += new EventHandler(ParentPage_PreRender);
-
     base.OnInit(e);
 	}
 
@@ -103,7 +100,6 @@ public class ValidationStateViewer : WebControl, IControl
   private void ParentPage_PreRender (object sender, EventArgs e)
   {
     PopulateFormGridManagerList (this.Parent);
-
     OutputValidationState();
   }
 
