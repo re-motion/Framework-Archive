@@ -113,7 +113,7 @@ public class DataContainerMap : IEnumerable
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
-    return dataContainers.Combine (_dataContainers);
+    return dataContainers.Merge (_dataContainers);
   }
 
   public DataContainerCollection GetNotExisting (DataContainerCollection dataContainers)
