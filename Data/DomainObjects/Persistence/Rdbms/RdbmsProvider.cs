@@ -165,11 +165,9 @@ public abstract class RdbmsProvider : StorageProvider
 
     Connect ();
 
-    using (IDbCommand command = _connection.CreateCommand ())
+    QueryCommandBuilder commandBuilder = new QueryCommandBuilder (this, query);
+    using (IDbCommand command = commandBuilder.Create ())
     {
-      command.CommandText = query.Statement;
-
-
       try
       {
         return command.ExecuteScalar ();
