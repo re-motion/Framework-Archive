@@ -59,6 +59,9 @@ public class BusinessObjectTreeNode: BocTreeNode
   {
   }
 
+  /// <summary>
+  ///   The <see cref="IBusinessObjectWithIdentity"/> of this <see cref="BusinessObjectTreeNode"/>.
+  /// </summary>
   public IBusinessObjectWithIdentity BusinessObject
   {
     get { return _businessObject; }
@@ -73,6 +76,10 @@ public class BusinessObjectTreeNode: BocTreeNode
     }
   }
 
+  /// <summary>
+  ///   The <see cref="IBusinessObjectReferenceProperty"/> that was used to access the 
+  ///   <see cref="IBusinessObjectWithIdentity"/> of this <see cref="BusinessObjectTreeNode"/>.
+  /// </summary>
   public IBusinessObjectReferenceProperty Property
   {
     get { return _property; }
@@ -130,6 +137,9 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   {
   }
 
+  /// <summary>
+  ///   The <see cref="IBusinessObjectReferenceProperty"/> of this <see cref="BusinessObjectProeprtyTreeNode"/>.
+  /// </summary>
   public IBusinessObjectReferenceProperty Property
   {
     get { return _property; }
