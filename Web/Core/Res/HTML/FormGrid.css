@@ -104,6 +104,12 @@ td.formGridTopDataRow
 	color: Red;
 }
 
+/*  Style applied to the validators created by FormGridManager  */
+.formGridValidator
+{
+	color: Red;
+}
+
 /*  Style applied to the validation notice that can be displayed by the ValidationStateViewer  */
 .formGridValidationNotice
 {
