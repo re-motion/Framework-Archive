@@ -51,6 +51,7 @@ td.formGridLabelsCell
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  width: 17%;
 }
 
 /*  Style applied to the cells containing the markers  */
@@ -65,6 +66,7 @@ td.formGridMarkersCell
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  width: 1%;
 }
 
 /*  Style applied to the cells containing the controls  */
@@ -77,6 +79,7 @@ td.formGridControlsCell
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+  width: auto;
 }
 
 /*  Style applied to the cells containing the validation messages, 
