@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -19,6 +20,17 @@ public class IntegrationTest: ClientTransactionBaseTest
   // static members and constants
 
   // member fields
+
+  DataContainer _orderDataContainer;
+  PropertyValueCollection _orderPropertyValues;
+  PropertyValue _orderDeliveryDateProperty;
+  PropertyValue _orderCustomerProperty;
+
+  DomainObjectEventReceiver _orderDomainObjectEventReceiver;
+  PropertyValueContainerEventReceiver _orderDataContainerEventReceiver;
+  PropertyValueContainerEventReceiver _orderPropertyValuesEventReceiver;
+  PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
+  PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
 
   // construction and disposing
 
@@ -74,7 +86,7 @@ public class IntegrationTest: ClientTransactionBaseTest
 //    //expectation: no exception
 //  }
 
-  // TODO: Reacticate this test
+// TODO: Reacticate this test
 //  [Test]
 //  public void RelationEventTest ()
 //  {
@@ -355,6 +367,101 @@ public class IntegrationTest: ClientTransactionBaseTest
     Assert.IsTrue (propertyValues.Contains ("Name"));
 
     propertyValues.Add (new PropertyValue (propertyDefinition));
+  }
+
+  [Test]
+  public void PropertyEventsOfNewObjectPropertyChangeTest ()
+  {
+    Order newOrder = new Order ();
+
+    InitializeEventReceivers (newOrder);
+    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+    newOrder.DeliveryDate = DateTime.Now;
+
+    CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+  }
+
+  [Test]
+  public void PropertyEventsOfNewObjectRelationChangeTest ()
+  {
+    Order newOrder = new Order ();
+
+    InitializeEventReceivers (newOrder);
+    CheckNoEvents (_orderCustomerPropertyEventReceiver);
+
+    newOrder.Customer = null;
+
+    CheckNoEvents (_orderCustomerPropertyEventReceiver);
+  }
+
+  [Test]
+  public void PropertyEventsOfExistingObjectPropertyChangeTest ()
+  {
+    Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+    InitializeEventReceivers (order2);
+    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+    order2.DeliveryDate = DateTime.Now;
+
+    CheckEvents  (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+  }
+
+  [Test]
+  public void PropertyEventsOfExistingObjectRelationChangeTest ()
+  {
+    Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+    InitializeEventReceivers (order2);
+    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+    order2.Customer = null;
+
+    CheckNoEvents  (_orderDeliveryDatePropertyEventReceiver);
+  }
+
+  private void InitializeEventReceivers (Order order)
+  {
+    _orderDataContainer = order.DataContainer;
+    _orderPropertyValues = _orderDataContainer.PropertyValues;
+    _orderDeliveryDateProperty = _orderPropertyValues["DeliveryDate"];
+    _orderCustomerProperty = _orderPropertyValues["Customer"];
+
+    _orderDomainObjectEventReceiver = new DomainObjectEventReceiver (order);
+    _orderDataContainerEventReceiver = new PropertyValueContainerEventReceiver (_orderDataContainer, false);
+    _orderPropertyValuesEventReceiver = new PropertyValueContainerEventReceiver (_orderPropertyValues, false);
+    
+    _orderDeliveryDatePropertyEventReceiver = new PropertyValueEventReceiver (_orderDeliveryDateProperty);
+    _orderCustomerPropertyEventReceiver = new PropertyValueEventReceiver (_orderCustomerProperty);
+  }
+
+  private void CheckNoEvents (PropertyValueEventReceiver propertyValueEventReceiver)
+  {
+    Assert.IsFalse (propertyValueEventReceiver.HasChangingEventBeenCalled);
+    Assert.IsFalse (propertyValueEventReceiver.HasChangedEventBeenCalled);
+    Assert.IsNull (_orderPropertyValuesEventReceiver.ChangingPropertyValue);
+    Assert.IsNull (_orderPropertyValuesEventReceiver.ChangedPropertyValue);
+    Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
+    Assert.IsNull (_orderDataContainerEventReceiver.ChangedPropertyValue);
+    Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
+    Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
+    Assert.IsNull (_orderDomainObjectEventReceiver.ChangingPropertyValue);
+    Assert.IsNull (_orderDomainObjectEventReceiver.ChangedPropertyValue);
+  }
+
+  private void CheckEvents (PropertyValueEventReceiver propertyValueEventReceiver, PropertyValue propertyValue)
+  {
+    Assert.IsTrue (propertyValueEventReceiver.HasChangingEventBeenCalled);
+    Assert.IsTrue (propertyValueEventReceiver.HasChangedEventBeenCalled);
+    Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangingPropertyValue);
+    Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangedPropertyValue);
+    Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangingPropertyValue);
+    Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangedPropertyValue);
+    Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
+    Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
+    Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangingPropertyValue);
+    Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangedPropertyValue);
   }
 }
 }
