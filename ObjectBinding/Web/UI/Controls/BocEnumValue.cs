@@ -656,7 +656,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
   public override bool UseLabel
   {
     get 

@@ -1206,7 +1206,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   The currently selected <see cref="ColumnDefinitionSet"/> used to supplement the 
+  ///   The currently selected <see cref="BocColumnDefinitionSet"/> used to supplement the 
   ///   <see cref="FixedColumns"/>.
   /// </summary>
   [Browsable (false)]
