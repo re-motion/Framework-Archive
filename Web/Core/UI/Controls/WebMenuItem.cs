@@ -194,7 +194,7 @@ public class WebMenuItem: IControlItem
       return true;
   }
 
-  /// <summary> Sets the <see cref="Command"/> to it's default value. </summary>
+  /// <summary> Sets the <see cref="Command"/> to its default value. </summary>
   /// <remarks> 
   ///   The default value is a <see cref="Command"/> object with a <c>Command.Type</c> set to 
   ///   <see cref="CommandType.None"/>.
