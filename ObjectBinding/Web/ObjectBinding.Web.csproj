@@ -127,6 +127,16 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "DataSourcePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataSourceUserControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IBusinessObjectWebUIService.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -177,6 +187,11 @@
                 />
                 <File
                     RelPath = "Design\BusinessObjectBoundControlDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\ComponentBindingExpressionUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
