@@ -167,25 +167,24 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.AreSame (order1, orderItem1.Order);
   }
 
-  //TODO implement this test
-//  [Test]
-//  public void CreateNewObjectAfterRollback ()
-//  {
-//    Order order = Order.GetObject (DomainObjectIDs.Order1);
-//    OrderItem orderItem = new OrderItem (order);
-//    ObjectID orderItemID = orderItem.ID;
-//
-//    Assert.AreSame (order, orderItem.Order);
-//    Assert.IsTrue (order.OrderItems.Contains (orderItemID));
-//
-//    ClientTransactionMock.Rollback ();
-//
-//    Assert.IsFalse (order.OrderItems.Contains (orderItemID));
-//
-//    orderItem = new OrderItem (order);
-//
-//    Assert.AreSame (order, orderItem.Order);
-//    Assert.IsTrue (order.OrderItems.Contains (orderItemID));
-//  }
+  [Test]
+  public void SetOneToManyRelationForNewObjectAfterRollback ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    OrderItem orderItem = new OrderItem (order);
+    ObjectID orderItemID = orderItem.ID;
+
+    Assert.AreSame (order, orderItem.Order);
+    Assert.IsTrue (order.OrderItems.Contains (orderItemID));
+
+    ClientTransactionMock.Rollback ();
+
+    Assert.IsFalse (order.OrderItems.Contains (orderItemID));
+
+    orderItem = new OrderItem (order);
+
+    Assert.AreSame (order, orderItem.Order);
+    Assert.IsTrue (order.OrderItems.Contains (orderItem));
+  }
 }
 }
