@@ -153,6 +153,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\INavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\LengthValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -165,6 +170,11 @@
                 <File
                     RelPath = "Controls\MultiLingualUserControl.cs"
                     SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\NavigablePage.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
