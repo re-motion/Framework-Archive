@@ -99,29 +99,29 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
                 />
                 <Reference
-                    Name = "Rubicon.ObjectBinding.Reflection"
-                    AssemblyName = "Rubicon.ObjectBinding.Reflection"
-                    HintPath = "..\Reflection\bin\Debug\Rubicon.ObjectBinding.Reflection.dll"
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\Reflection\bin\Debug\Rubicon.Core.dll"
+                    Name = "ObjectBinding"
+                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.ObjectBinding"
-                    AssemblyName = "Rubicon.ObjectBinding"
-                    HintPath = "..\Reflection\bin\Debug\Rubicon.ObjectBinding.dll"
+                    Name = "ObjectBinding.Reflection"
+                    Project = "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.ObjectBinding.Web"
-                    AssemblyName = "Rubicon.ObjectBinding.Web"
-                    HintPath = "..\Web\bin\Debug\Rubicon.ObjectBinding.Web.dll"
+                    Name = "ObjectBinding.Web"
+                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.Web.UI"
-                    AssemblyName = "Rubicon.Web.UI"
-                    HintPath = "..\..\Web.UI\bin\debug\Rubicon.Web.UI.dll"
+                    Name = "Web.UI"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
