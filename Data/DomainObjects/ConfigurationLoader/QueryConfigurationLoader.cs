@@ -5,7 +5,7 @@ using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.Configuration.Queries;
 using Rubicon.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Loader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
 public class QueryConfigurationLoader : BaseLoader
 {

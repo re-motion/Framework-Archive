@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 using Rubicon.ObjectBinding;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Loader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
 public class RelationDefinitionLoader
 {
