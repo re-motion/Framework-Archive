@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Drawing;
 using System.Globalization;
 
+using Rubicon.Findit.Globalization.Classes;
+
 namespace Rubicon.Findit.Client.Controls
 {
 
@@ -275,6 +277,7 @@ public class EntryTitle: Control
 }
 
 [ParseChildren (false)]
+[MultiLingualResources ("Rubicon.Findit.Client.Controls.Globalization.EntryFormGrid")] 
 public class EntryField: Control
 {
 	private string _label = String.Empty;
@@ -484,9 +487,10 @@ public class EntryField: Control
       // => display the "required field indicator" if requested
       if (this.IsRequired)
       {
-        writer.WriteLine ("<img src=\"{0}\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
+        writer.WriteLine ("<img src=\"{0}\" alt=\"{1}\" "
           + "width=\"12\" height=\"20\" border=\"0\"/>",
-          EntryFormGrid.GetImagePath ("field-required.gif"));
+          EntryFormGrid.GetImagePath ("field-required.gif"),
+          ResourceDispatcher.GetResourceText (this, "RequiredFieldText"));
       }
       else
       {
@@ -501,10 +505,11 @@ public class EntryField: Control
       string infoUrl = parentGrid.InfoBase + this.InfoUrl;
 			writer.WriteLine (
 					"<a href=\"{0}\" target=\"_new\">"
-						+ "<img src=\"{1}\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
+						+ "<img src=\"{1}\" alt=\"{2}\""
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 					infoUrl,
-          ParentGrid.InfoImagePath);
+          ParentGrid.InfoImagePath,
+          ResourceDispatcher.GetResourceText (this, "HelpInfoText"));
     }
 		else
 		{
