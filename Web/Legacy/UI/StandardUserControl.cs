@@ -37,5 +37,13 @@ public class StandardControl : MultiLingualUserControl
 
     navigablePage.SetSessionValue (key, sessionValue);
   }
+
+  protected StandardPage StandardPage
+  {
+    get 
+    {
+      return Page as StandardPage;
+    }
+  }
 }
 }
