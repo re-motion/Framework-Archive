@@ -270,26 +270,26 @@ public class IntegrationTest: ClientTransactionBaseTest
 
     //16
 //TODO: reactivate these lines
-//    eventReceiver = new SequenceEventReceiver (
-//        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-//        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders } );
-//
-//    newOrder2.Delete ();     //Throws objectNotFoundException for Object newOrder2 in EndDelete of CollectionEndPoint
-//
-//    expectedChangeStates = new ChangeState[]
-//    { 
-//      new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
-//      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
-//      new RelationChangeState (newCustomer2, "Orders", newOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
-//      new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
-//      new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
-//
-//      new ObjectDeletionState (newOrder2, "16: 6. Deleted event of newOrder2"),
-//      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
-//      new RelationChangeState (newCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
-//      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
-//      new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
-//    };
+    eventReceiver = new SequenceEventReceiver (
+        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
+        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders } );
+
+    newOrder2.Delete ();     //Throws objectNotFoundException for Object newOrder2 in EndDelete of CollectionEndPoint
+
+    expectedChangeStates = new ChangeState[]
+    { 
+      new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
+      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
+      new RelationChangeState (newCustomer2, "Orders", newOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
+      new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
+      new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
+
+      new ObjectDeletionState (newOrder2, "16: 6. Deleted event of newOrder2"),
+      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
+      new RelationChangeState (newCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
+      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
+      new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
+    };
 
     eventReceiver.Compare (expectedChangeStates);
     eventReceiver.Unregister ();
