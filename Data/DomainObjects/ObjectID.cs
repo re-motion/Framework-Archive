@@ -15,6 +15,31 @@ public class ObjectID
   private const string c_escapedDelimiter = "&pipe;";
   private const string c_escapedDelimiterPlaceholder = "&amp;pipe;";
 
+  public static bool operator == (ObjectID id1, ObjectID id2)
+  {
+    return Equals (id1, id2);
+  }
+
+  public static bool operator != (ObjectID id1, ObjectID id2)
+  {
+    return !Equals (id1, id2);
+  }
+
+  public static bool Equals (ObjectID id1, ObjectID id2)
+  {
+    if ((object) id1 == (object) id2)
+      return true;
+
+    if ((object) id1 != null && (object) id2 != null)
+    {
+      return id1._storageProviderID.Equals (id2._storageProviderID)
+          && id1._classID.Equals (id2._classID)
+          && id1._value.Equals (id2._value);
+    }
+
+    return false;
+  }
+
   /// <summary>
   /// Converts the string representation of the ID to an <see cref="ObjectID"/> instance.
   /// </summary>
@@ -162,7 +187,7 @@ public class ObjectID
   /// Returns the string representation of the current <see cref="ObjectID"/>.
   /// </summary>
   /// <returns>A <see cref="String"/> that represents the current <see cref="ObjectID"/>.</returns>
-  public override string ToString()
+  public override string ToString ()
   {
     Type valueType = _value.GetType();
 
@@ -170,6 +195,23 @@ public class ObjectID
         Escape (_classID) + c_delimiter + 
         Escape (_value.ToString ()) + c_delimiter + 
         Escape (valueType.FullName);
+  }
+
+  /// <summary>
+  /// Returns the hash code for this instance.
+  /// </summary>
+  /// <returns>A 32-bit signed integer hash code.</returns>
+  public override int GetHashCode()
+  {
+    return _storageProviderID.GetHashCode () ^ _classID.GetHashCode () ^ _value.GetHashCode ();
+  }
+
+  public override bool Equals (object obj)
+  {
+    if (!(obj is ObjectID))
+      return false;
+
+    return (this == (ObjectID) obj);
   }
 
   private void CheckValue (string argumentName, object value)
@@ -199,34 +241,6 @@ public class ObjectID
       value = value.Replace (c_delimiter.ToString (), c_escapedDelimiter);
 
     return value;
-  }
-
-  /// <summary>
-  /// Returns the hash code for this instance.
-  /// </summary>
-  /// <returns>A 32-bit signed integer hash code.</returns>
-  public override int GetHashCode()
-  {
-    return _storageProviderID.GetHashCode () ^ _classID.GetHashCode () ^ _value.GetHashCode ();
-  }
-
-  /// <summary>
-  /// Determines whether two <see cref="ObjectID"/> instances refer to the same domain object.
-  /// </summary>
-  /// <param name="obj">An <see cref="ObjectID"/> instance.</param>
-  /// <returns>
-  ///   <b>true</b> if the <see cref="ObjectID"/> obj refers to the same domain object as this instance;
-  ///   otherwise, <b>false</b>.
-  /// </returns>
-  public override bool Equals (object obj)
-  {
-    ObjectID id = obj as ObjectID;
-    if (id == null)
-      return false;
-
-    return this._storageProviderID.Equals (id._storageProviderID)
-        && this._classID.Equals (id._classID)
-        && this._value.Equals (id._value);
   }
 }
 }
