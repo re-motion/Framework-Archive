@@ -2692,7 +2692,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     foreach (Control childControl in control.Controls)
     {
       HtmlTable htmlTable = childControl as HtmlTable;
-      if (htmlTable != null && htmlTable.ID.EndsWith (_formGridSuffix))
+      if (htmlTable != null && htmlTable.ID != null && htmlTable.ID.EndsWith (_formGridSuffix))
         Add (htmlTable);
 
       PopulateFormGridList (childControl);
