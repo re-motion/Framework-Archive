@@ -201,7 +201,7 @@ public class CommandLineParser
   /// <summary>
   /// This method reads a command line and initializes the arguments contained in <see cref="Arguments"/>.
   /// </summary>
-  /// <param name="args">The string that contains the command line arguments. See <see cref="SplitCommandLine"/> for information on how
+  /// <param name="commandLine">The string that contains the command line arguments. See <see cref="SplitCommandLine"/> for information on how
   /// command lines are parsed.</param>
   /// <exception cref="InvalidCommandLineArgumentValueException">The value of a parameter cannot be interpreted.</exception>
   /// <exception cref="InvalidCommandLineArgumentNameException">The command line contains a named argument that is not defined.</exception>

@@ -58,7 +58,7 @@
                     FileAlignment = "4096"
                     IncrementalBuild = "false"
                     NoStdLib = "false"
-                    NoWarn = ""
+                    NoWarn = "1591"
                     Optimize = "true"
                     OutputPath = "bin\Release\"
                     RegisterForComInterop = "false"
@@ -79,14 +79,14 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Data"
-                    AssemblyName = "Rubicon.Data"
-                    HintPath = "..\..\Data\DataCore\bin\Debug\Rubicon.Data.dll"
-                />
-                <Reference
                     Name = "VJSharpCodeProvider"
                     AssemblyName = "VJSharpCodeProvider"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\VJSharpCodeProvider.DLL"
+                />
+                <Reference
+                    Name = "DataCore"
+                    Project = "{BD0A67E1-D144-4641-811C-C5EE1EA3A2E7}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>

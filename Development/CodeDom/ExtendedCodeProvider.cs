@@ -97,6 +97,7 @@ public abstract class ExtendedCodeProvider
   /// </summary>
   /// <param name="fromType">Type that the method casts from.</param>
   /// <param name="toType">Type that the method casts to.</param>
+  /// <param name="argumentName">The name of the cast operator's argument.</param>
   /// <param name="statements">Statements that perform the conversion, ending with a <c>CodeMethodReturnStatement</c>.</param>
   /// <param name="attributes">Method attributes that define access and scope. Must be static.</param>
   /// <param name="castOperatorKind"><c>Implicit</c> to create an implicit casting operator, <c>Explicit</c> otherwise.</param>
@@ -248,7 +249,7 @@ public abstract class ExtendedCodeProvider
   /// </summary>
   /// <param name="name">The name of the new type.</param>
   /// <returns>The default implementation returns a <c>CodeTypeDeclaration</c> object with its <c>IsEnum</c> property set to <c>true</c>.</returns>
-  public virtual CodeTypeDeclaration CreateEnumeDeclaration (string name)
+  public virtual CodeTypeDeclaration CreateEnumDeclaration (string name)
   {
     CodeTypeDeclaration enumDeclaration = new CodeTypeDeclaration (GetValidName (name));
     enumDeclaration.IsEnum = true;

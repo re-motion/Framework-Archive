@@ -9,7 +9,7 @@ namespace Rubicon.Data.NullableValueTypes
 /// <summary>
 /// Represents a 32-bit signed integer that can be <c>Null</c>. The corresponding system type is System.Int32.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaInt32/remarks' />
+/// <include file="doc\include\include.xml" path="Comments/NaInt32/remarks" />
 [Serializable]
 [NaBasicType (typeof(Int32))]
 public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable

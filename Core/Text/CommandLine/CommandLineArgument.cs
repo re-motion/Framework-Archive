@@ -33,7 +33,6 @@ public abstract class CommandLineArgument
   /// <summary>
   /// Creates a named command line argument.
   /// </summary>
-  /// <param name="name"></param>
   protected CommandLineArgument (string name, bool isOptional)
   {
     _name = name;

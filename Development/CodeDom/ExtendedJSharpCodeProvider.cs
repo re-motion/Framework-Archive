@@ -18,7 +18,7 @@ public class ExtendedJSharpCodeProvider: ExtendedCodeProvider
     get { return true; }
   }
 
-  public override CodeTypeDeclaration CreateEnumeDeclaration (string name)
+  public override CodeTypeDeclaration CreateEnumDeclaration (string name)
   {
     CodeTypeDeclaration enumDeclaration = new CodeTypeDeclaration (GetValidName(name));
     CodeTypeReference enumDeclarationReference = new CodeTypeReference (name);
