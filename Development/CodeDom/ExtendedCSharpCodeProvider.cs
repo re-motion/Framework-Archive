@@ -86,6 +86,11 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
       return "@" + name;
     return name;
   }
+
+  public override bool IsCaseSensitive
+  {
+    get { return true; }
+  }
 }
 
 }

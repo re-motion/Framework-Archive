@@ -16,7 +16,8 @@ namespace Rubicon.CooNet.Gen
 /// <para></para>
 ///   <b>Note to inheritors:</b>
 /// <para></para>
-///   Inheritors must at least call the base class constructor with a valid CodeDomProvider.
+///   Inheritors must at least call the base class constructor with a valid <c>CodeDomProvider</c> and 
+///   implement <see cref="IsCaseSensitive"/>.
 /// <para></para>
 ///   If the specific language supports custom casting operators, override <see cref="SupportsCastingOperators"/> 
 ///   and <see cref="CreateCastingOperator"/>. 
@@ -204,6 +205,11 @@ public abstract class ExtendedCodeProvider
   public virtual void AddOptionCreateXmlDocumentation (CompilerParameters parameters, string xmlFilename)
   {
   }
+
+  /// <summary>
+  /// Specifies whether the language is case sensitive.
+  /// </summary>
+  public abstract bool IsCaseSensitive { get; }
 
   /// <summary>
   /// Writes the language-specific keywords that correspond to the values of the <c>attribute</c> parameter.

@@ -171,7 +171,7 @@ public class CommandLineParserTest
     string synopsis = parser.GetAsciiSynopsis ("app.exe", 80);
     
     string expectedResult = 
-        "app.exe [source-directory [destination-directory]] [/b-] [/rep{yes|no|almost}]" 
+        "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]" 
         + "\n"
         + "\n  source-directory       Directory to copy from" 
         + "\n  destination-directory  This is the directory to copy to. This is the directory" 

@@ -814,6 +814,44 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
     }
   }
 
+  /// <summary>
+  /// Increments the value by one. 
+  /// </summary>
+  /// <remarks>
+  /// The <c>Value</c> property is incremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// </remarks>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
+  /// or the original value when used as a postfix operator. 
+  /// </returns>
+  public static NaInt32 operator ++ (NaInt32 x)
+  {
+    if (x.IsNull) 
+      return NaInt32.Null;
+
+    ++ x._value;
+    return x;
+  }
+
+  /// <summary>
+  /// Decrements the value by one. 
+  /// </summary>
+  /// <remarks>
+  /// The <c>Value</c> property is decremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// </remarks>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
+  /// or the original value when used as a postfix operator. 
+  /// </returns>
+  public static NaInt32 operator -- (NaInt32 x)
+  {
+    if (x.IsNull) 
+      return NaInt32.Null;
+
+    -- x._value;
+    return x;
+  }
+
   #endregion
 
   #region relative compare operators

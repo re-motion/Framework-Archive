@@ -9,6 +9,18 @@ public class ExtendedVBCodeProvider: ExtendedCodeProvider
     : base (new Microsoft.VisualBasic.VBCodeProvider())
 	{
 	}
+
+  public override string GetValidName(string name)
+  {
+    if (name == "ObjectClass")
+      return "[" + name + "]";
+    return name;
+  }
+
+  public override bool IsCaseSensitive
+  {
+    get { return false; }
+  }
 }
 
 }
