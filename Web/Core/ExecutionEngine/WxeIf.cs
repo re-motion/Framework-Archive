@@ -65,6 +65,15 @@ public abstract class WxeIf: WxeStep
     }
   }
 
+  protected override void Dispose (bool disposing)
+  {
+    if (disposing)
+    {
+      if (_stepList != null)
+        _stepList.Dispose();
+    }
+  }
+
 }
 
 }
