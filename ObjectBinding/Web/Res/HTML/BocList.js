@@ -46,20 +46,17 @@ function BocList_InitializeGlobals (
 //  arrays with the BocList's selected rows.
 //  Call this method once for each BocList on the page.
 //  bocList: The BocList to which the row belongs.
-//  rowPrefix: The common part of the rows' ID (everything before the index).
 //  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
 //  firstRow: The index of the first data row in the BocList.
 //  count: The number of data rows in the BocList.
-function BocList_InitializeList (bocList, rowPrefix, checkBoxPrefix, firstRow, count)
+function BocList_InitializeList (bocList, checkBoxPrefix, firstRow, count)
 {
   var selectedRows = new Array();
   var selectedRowsLength = 0
   for (var i = 0, rowNumber = firstRow, isOdd = true; i < count; i++, rowNumber++, isOdd = !isOdd)
   {
-    var rowID = rowPrefix + rowNumber;
     var checkBoxID = checkBoxPrefix + rowNumber;
-    var row = bocList.all[rowID];
-    var checkBox = row.all[checkBoxID];
+    var checkBox = document.getElementById (checkBoxID);
     if (checkBox.checked)      
     {
       var rowBlock = new Array();
@@ -217,14 +214,12 @@ function BocList_UnselectRow (bocList, currentRow, checkBox, isOdd)
 //  Event handler for the selection checkBox in the title row.
 //  Applies the checked state of the title's checkBox to all data rows' selectu=ion checkBoxes.
 //  bocList: The BocList to which the checkBox belongs.
-//  rowPrefix: The common part of the rows' ID (everything before the index).
 //  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
 //  firstRow: The index of the first data row in the BocList.
 //  count: The number of data rows in the BocList.
 function BocList_OnSelectAllCheckBoxClick (
     bocList, 
     selectAllCheckBox, 
-    rowPrefix,
     checkBoxPrefix,
     firstRow,
     count)
@@ -237,8 +232,7 @@ function BocList_OnSelectAllCheckBoxClick (
   {
     var rowID = rowPrefix + rowNumber;
     var checkBoxID = checkBoxPrefix + rowNumber;
-    var row = bocList.all[rowID];
-    var checkBox = row.all[checkBoxID];
+    var checkBox = document.getElementById (checkBoxID);
     if (selectAllCheckBox.checked)      
       BocList_SelectRow (bocList, row, checkBox, isOdd)
     else
