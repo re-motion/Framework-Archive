@@ -163,7 +163,7 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
-    CheckStorageProviderID (query);
+    CheckQuery (query, "query");
 
     if (query.QueryType == QueryType.Scalar)
       throw CreateArgumentException ("query", "A scalar query cannot be used with ExecuteCollectionQuery.");
@@ -185,7 +185,7 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
-    CheckStorageProviderID (query);
+    CheckQuery (query, "query");
 
     if (query.QueryType == QueryType.Collection)
       throw CreateArgumentException ("query", "A collection query cannot be used with ExecuteScalarQuery.");
@@ -479,7 +479,7 @@ public abstract class RdbmsProvider : StorageProvider
     _connection = null;
   }
 
-  private void CheckStorageProviderID (Query query)
+  private void CheckQuery (Query query, string argumentName)
   {
     if (query.StorageProviderID != ID)
     {
@@ -489,6 +489,24 @@ public abstract class RdbmsProvider : StorageProvider
           query.StorageProviderID, 
           query.QueryID,
           ID);
+    }
+
+    foreach (QueryParameter parameter in query.Parameters)
+    {
+      if (parameter.Value != null && parameter.Value.GetType () == typeof (ObjectID))
+      {
+        ObjectID id = (ObjectID) parameter.Value;
+        if (id.StorageProviderID == ID && id.Value != null && id.Value.GetType () != typeof (System.Guid))
+        {
+          throw CreateArgumentException (
+              argumentName,
+              "The query parameter '{0}' is of type 'Rubicon.Data.DomainObjects.ObjectID'."
+                  + " The value of this parameter is of type '{1}', but only 'System.Guid' is supported.",
+              parameter.Name,
+              id.Value.GetType ());
+              
+        }
+      }
     }
   }
 }
