@@ -14,7 +14,12 @@ public class Person: ReflectionBusinessObject
 {
   public static Person GetObject (Guid id)
   {
-    return (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
+    Person person = (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
+    
+    if (person.PartnerID != Guid.Empty)
+      person.Partner = (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), person.PartnerID);
+
+    return person;
   }
 
   public static Person CreateObject ()
@@ -105,6 +110,13 @@ public class Person: ReflectionBusinessObject
   {
     get { return LastName + ", " + FirstName; }
   }
+
+  public override string ToString()
+  {
+    return DisplayName;
+  }
+
+
 }
 
 public enum Gender
