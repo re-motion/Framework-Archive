@@ -3,19 +3,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTest", "CoreTest\CoreTest.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevelopmentCore", "DevelopmentCore\DevelopmentCore.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevelopmentCoreTest", "DevelopmentCoreTest\DevelopmentCoreTest.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeDom", "CodeDom\CodeDom.csproj", "{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "Core.Test\Core.Test.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -52,7 +40,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "prereq\prereq.csp
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormGrid.Sample", "http://localhost/FormGrid.Sample/FormGrid.Sample.csproj", "{3ED0B235-2319-4584-A79C-7A1183AC630C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core.Test", "Development\Core.Test\Development.Core.Test.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.CodeDom", "Development\CodeDom\Development.CodeDom.csproj", "{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -66,52 +62,52 @@ Global
 		SccProjectName1 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
 		SccLocalPath1 = Core
 		CanCheckoutShared = false
-		SccProjectUniqueName2 = CoreTest\\CoreTest.csproj
-		SccProjectName2 = \u0022$/libraries/Commons/CoreTest\u0022,\u0020LNDAAAAA
-		SccLocalPath2 = CoreTest
+		SccProjectUniqueName2 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/ObjectBinding/Web.Test\u0022,\u0020QQTAAAAA
+		SccLocalPath2 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/
 		CanCheckoutShared = false
-		SccProjectUniqueName3 = DevelopmentCore\\DevelopmentCore.csproj
-		SccProjectName3 = \u0022$/libraries/Commons/DevelopmentCore\u0022,\u0020LQAAAAAA
-		SccLocalPath3 = DevelopmentCore
+		SccProjectEnlistmentChoice2 = 2
+		SccProjectUniqueName3 = ObjectBinding\\Core\\ObjectBinding.csproj
+		SccLocalPath3 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName4 = DevelopmentCoreTest\\DevelopmentCoreTest.csproj
-		SccProjectName4 = \u0022$/libraries/Commons/DevelopmentCoreTest\u0022,\u0020TQAAAAAA
-		SccLocalPath4 = DevelopmentCoreTest
+		SccProjectFilePathRelativizedFromConnection3 = ObjectBinding\\Core\\
+		SccProjectUniqueName4 = ObjectBinding\\Reflection\\ObjectBinding.Reflection.csproj
+		SccLocalPath4 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName5 = CodeDom\\CodeDom.csproj
-		SccProjectName5 = \u0022$/libraries/Commons/CodeDom\u0022,\u0020ERAAAAAA
-		SccLocalPath5 = CodeDom
+		SccProjectFilePathRelativizedFromConnection4 = ObjectBinding\\Reflection\\
+		SccProjectUniqueName5 = ObjectBinding\\Web\\ObjectBinding.Web.csproj
+		SccLocalPath5 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName6 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj
-		SccProjectName6 = \u0022$/libraries/Commons/ObjectBinding/Web.Test\u0022,\u0020QQTAAAAA
-		SccLocalPath6 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/
+		SccProjectFilePathRelativizedFromConnection5 = ObjectBinding\\Web\\
+		SccProjectUniqueName6 = Globalization\\Globalization.csproj
+		SccProjectName6 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath6 = Globalization
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice6 = 2
-		SccProjectUniqueName7 = ObjectBinding\\Core\\ObjectBinding.csproj
+		SccProjectUniqueName7 = prereq\\prereq.csproj
 		SccLocalPath7 = .
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection7 = ObjectBinding\\Core\\
-		SccProjectUniqueName8 = ObjectBinding\\Reflection\\ObjectBinding.Reflection.csproj
-		SccLocalPath8 = .
+		SccProjectFilePathRelativizedFromConnection7 = prereq\\
+		SccProjectUniqueName8 = Web.UI\\Core\\Web.UI.csproj
+		SccProjectName8 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
+		SccLocalPath8 = Web.UI
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection8 = ObjectBinding\\Reflection\\
-		SccProjectUniqueName9 = ObjectBinding\\Web\\ObjectBinding.Web.csproj
-		SccLocalPath9 = .
+		SccProjectFilePathRelativizedFromConnection8 = Core\\
+		SccProjectUniqueName9 = Core.Test\\Core.Test.csproj
+		SccProjectName9 = \u0022$/libraries/Commons/Core.Test\u0022,\u0020LNDAAAAA
+		SccLocalPath9 = Core.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection9 = ObjectBinding\\Web\\
-		SccProjectUniqueName10 = Globalization\\Globalization.csproj
-		SccProjectName10 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
-		SccLocalPath10 = Globalization
+		SccProjectUniqueName10 = Development\\Core\\Development.Core.csproj
+		SccProjectName10 = \u0022$/libraries/Commons/Development/Core\u0022,\u0020LQAAAAAA
+		SccLocalPath10 = Development\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName11 = prereq\\prereq.csproj
-		SccLocalPath11 = .
+		SccProjectUniqueName11 = Development\\Core.Test\\Development.Core.Test.csproj
+		SccProjectName11 = \u0022$/libraries/Commons/Development/Core.Test\u0022,\u0020TQAAAAAA
+		SccLocalPath11 = Development\\Core.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection11 = prereq\\
-		SccProjectUniqueName12 = Web.UI\\Core\\Web.UI.csproj
-		SccProjectName12 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
-		SccLocalPath12 = Web.UI
+		SccProjectUniqueName12 = Development\\CodeDom\\Development.CodeDom.csproj
+		SccProjectName12 = \u0022$/libraries/Commons/Development/CodeDom\u0022,\u0020ERAAAAAA
+		SccLocalPath12 = Development\\CodeDom
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection12 = Core\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -126,18 +122,6 @@ Global
 		{C216DEC9-8820-4298-B10F-FB4131466B69}.Debug.Build.0 = Debug|.NET
 		{C216DEC9-8820-4298-B10F-FB4131466B69}.Release.ActiveCfg = Release|.NET
 		{C216DEC9-8820-4298-B10F-FB4131466B69}.Release.Build.0 = Release|.NET
-		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.ActiveCfg = Debug|.NET
-		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.Build.0 = Debug|.NET
-		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.ActiveCfg = Release|.NET
-		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.Build.0 = Release|.NET
-		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.ActiveCfg = Debug|.NET
-		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.Build.0 = Debug|.NET
-		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.ActiveCfg = Release|.NET
-		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.Build.0 = Release|.NET
-		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.ActiveCfg = Debug|.NET
-		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
-		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
-		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.ActiveCfg = Debug|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.Build.0 = Debug|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.ActiveCfg = Release|.NET
@@ -166,10 +150,18 @@ Global
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.Build.0 = Debug|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.ActiveCfg = Release|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.Build.0 = Release|.NET
-		{3ED0B235-2319-4584-A79C-7A1183AC630C}.Debug.ActiveCfg = Debug|.NET
-		{3ED0B235-2319-4584-A79C-7A1183AC630C}.Debug.Build.0 = Debug|.NET
-		{3ED0B235-2319-4584-A79C-7A1183AC630C}.Release.ActiveCfg = Release|.NET
-		{3ED0B235-2319-4584-A79C-7A1183AC630C}.Release.Build.0 = Release|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.ActiveCfg = Debug|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.Build.0 = Debug|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.ActiveCfg = Release|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.Build.0 = Release|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.ActiveCfg = Debug|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.Build.0 = Debug|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.ActiveCfg = Release|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.Build.0 = Release|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.ActiveCfg = Debug|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
