@@ -130,6 +130,11 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///   <see cref="IBusinessObjectDataSourceControl"/>.
   /// </returns>
   protected abstract IBusinessObjectDataSource GetDataSource();
+
+  public IBusinessObjectBoundControl[] BoundControls
+  {
+    get { return GetDataSource().BoundControls; }
+  }
 }
 
 }
