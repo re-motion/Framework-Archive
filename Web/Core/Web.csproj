@@ -106,6 +106,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DateTextControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DefaultTextControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "EntryFormGrid.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
