@@ -872,7 +872,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  // TODO: Implement this
   public void GetItemsNotInCollection ()
   {
     DomainObjectCollection collection2 = new DomainObjectCollection ();
@@ -885,7 +884,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  // TODO: Implement this
   public void GetItemsNotInCollectionBothCollectionsEmpty ()
   {
     DomainObjectCollection collection = new DomainObjectCollection ();
@@ -894,7 +892,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  // TODO: Implement this
   public void GetItemsNotInCollectionForEmptyCollection ()
   {
     DomainObjectCollection collection2 = new DomainObjectCollection ();
@@ -904,6 +901,44 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreEqual (2, itemsNotInCollection.Count);
     Assert.IsTrue (itemsNotInCollection.Contains (_customer1));
     Assert.IsTrue (itemsNotInCollection.Contains (_customer2));
+  }
+
+  [Test]
+  public void Combine ()
+  {
+    DomainObjectCollection secondCollection = new DomainObjectCollection (_collection, false);
+    secondCollection.Add (Customer.GetObject (DomainObjectIDs.Customer3));
+
+    _collection.Combine (secondCollection);
+    
+    Assert.AreEqual (3, _collection.Count);
+    Assert.IsTrue (_collection.Contains (_customer1));
+    Assert.IsTrue (_collection.Contains (_customer2));
+    Assert.IsTrue (_collection.Contains (DomainObjectIDs.Customer3));
+    Assert.IsFalse (_collection.IsReadOnly);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void CombineWithItemOfInvalidType ()
+  {
+    DomainObjectCollection secondCollection = new DomainObjectCollection ();
+    secondCollection.Add (Order.GetObject (DomainObjectIDs.Order1));
+
+    _collection.Combine (secondCollection);
+  }
+
+  [Test]
+  public void CloneOrderCollection ()
+  {
+    OrderCollection orders = new OrderCollection ();
+    orders.Add (Order.GetObject (DomainObjectIDs.Order1));
+
+    DomainObjectCollection clonedOrders = orders.Clone (true);
+
+    Assert.AreEqual (typeof (OrderCollection), clonedOrders.GetType ());
+    Assert.AreEqual (orders.Count, clonedOrders.Count);
+    Assert.AreEqual (orders.RequiredItemType, clonedOrders.RequiredItemType);
   }
 
   private DomainObjectCollection CreateCustomerCollection ()
