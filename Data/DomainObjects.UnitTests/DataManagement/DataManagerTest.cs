@@ -16,7 +16,6 @@ public class DataManagerTest : ClientTransactionBaseTest
 
   // member fields
 
-  private ClientTransactionMock _clientTransaction;
   private DataManager _dataManager;
 
   // construction and disposing
@@ -31,10 +30,7 @@ public class DataManagerTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _clientTransaction = new ClientTransactionMock ();
-    ClientTransaction.SetCurrent (_clientTransaction);
-
-    _dataManager = _clientTransaction.DataManager;
+    _dataManager = ClientTransactionMock.DataManager;
   }
 
   [Test]
@@ -86,7 +82,7 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
     RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
-    _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
+    ClientTransactionMock.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
     DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
     Assert.AreEqual (4, changedObjects.Count);
@@ -123,15 +119,15 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
     RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
-    _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
+    ClientTransactionMock.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
     _dataManager.Commit ();
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
-    Assert.AreSame (orderTicket2.DomainObject, _clientTransaction.GetRelatedObject (order1EndPointID));
-    Assert.AreSame (order1.DomainObject, _clientTransaction.GetRelatedObject (new RelationEndPointID (orderTicket2.ID, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPointID (orderTicket1.ID, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPointID (orderWithoutOrderItemDataContainer.ID, "OrderTicket")));
+    Assert.AreSame (orderTicket2.DomainObject, ClientTransactionMock.GetRelatedObject (order1EndPointID));
+    Assert.AreSame (order1.DomainObject, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket2.ID, "Order")));
+    Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket1.ID, "Order")));
+    Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderWithoutOrderItemDataContainer.ID, "OrderTicket")));
     Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (order1));
     Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (orderWithoutOrderItemDataContainer));
     Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (orderTicket1));
@@ -149,7 +145,7 @@ public class DataManagerTest : ClientTransactionBaseTest
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
     Assert.IsNull (order1.Customer);
-    Assert.AreEqual (0, _clientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (customer1.ID, "Orders")).Count);
+    Assert.AreEqual (0, ClientTransactionMock.GetOriginalRelatedObjects (new RelationEndPointID (customer1.ID, "Orders")).Count);
     Assert.AreEqual (0, customer1.Orders.Count);
   }
 

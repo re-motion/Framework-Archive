@@ -72,6 +72,11 @@ public class ClientTransactionMock : ClientTransaction
     base.SetRelatedObject (relationEndPointID, newRelatedObject);
   }
 
+  public new void SetClientTransaction (DataContainer dataContainer)
+  {
+    base.SetClientTransaction (dataContainer);
+  }
+
   public int NumberOfCallsToLoadDataContainer
   {
     get { return _numberOfCallsToLoadDataContainer; }

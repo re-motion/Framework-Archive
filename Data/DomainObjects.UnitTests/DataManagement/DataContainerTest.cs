@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class DataContainerTest
+public class DataContainerTest : ClientTransactionBaseTest
 {
   // types
 
@@ -31,9 +31,10 @@ public class DataContainerTest
 
   // methods and properties
 
-  [SetUp]
-  public void SetUp ()
+  public override void SetUp ()
   {
+    base.SetUp ();
+
     _newDataContainer = DataContainer.CreateNew (new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5));
 
     _existingDataContainer = DataContainer.CreateForExisting (

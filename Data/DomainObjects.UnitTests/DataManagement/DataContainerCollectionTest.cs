@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class DataContainerCollectionTest
+public class DataContainerCollectionTest : ClientTransactionBaseTest
 {
   // types
 
@@ -28,9 +28,10 @@ public class DataContainerCollectionTest
 
   // methods and properties
 
-  [SetUp]
-  public void SetUp ()
+  public override void SetUp ()
   {
+    base.SetUp ();
+
     _dataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
     _collection = new DataContainerCollection ();
   }

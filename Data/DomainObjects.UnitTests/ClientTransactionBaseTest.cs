@@ -1,6 +1,8 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
+
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
 public class ClientTransactionBaseTest : DatabaseTest
@@ -12,6 +14,7 @@ public class ClientTransactionBaseTest : DatabaseTest
   // member fields
 
   private ClientTransactionMock _clientTransactionMock;
+  private TestDataContainerFactory _testDataContainerFactory;
 
   // construction and disposing
 
@@ -27,6 +30,7 @@ public class ClientTransactionBaseTest : DatabaseTest
 
     _clientTransactionMock = new ClientTransactionMock ();
     ClientTransaction.SetCurrent (_clientTransactionMock);
+    _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
   }
 
   [TearDown]
@@ -38,6 +42,11 @@ public class ClientTransactionBaseTest : DatabaseTest
   protected ClientTransactionMock ClientTransactionMock
   {
     get { return _clientTransactionMock; }
+  }
+
+  protected TestDataContainerFactory TestDataContainerFactory
+  {
+    get { return _testDataContainerFactory; }
   }
 }
 }
