@@ -34,10 +34,13 @@ public class RelationEndPointCollection : CollectionBase
 
   // methods and properties
 
-  public void Merge (RelationEndPointCollection endPoints)
+  public void Combine (RelationEndPointCollection endPoints)
   {
     foreach (RelationEndPoint endPoint in endPoints)
-      Add (endPoint);
+    {
+      if (!Contains (endPoint))
+        Add (endPoint);
+    }
   }
 
   public void BeginDelete (DomainObject domainObject)
@@ -65,7 +68,7 @@ public class RelationEndPointCollection : CollectionBase
     RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
 
     foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      oppositeEndPoints.Merge (GetOppositeRelationEndPoints (this[endPointID]));
+      oppositeEndPoints.Combine (GetOppositeRelationEndPoints (this[endPointID]));
 
     return oppositeEndPoints;
   }
