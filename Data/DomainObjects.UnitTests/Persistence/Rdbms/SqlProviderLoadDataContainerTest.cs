@@ -222,5 +222,18 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
 
     Provider.LoadDataContainer (invalidID);
   }
+
+  [Test]
+  [ExpectedException (typeof (RdbmsProviderException), 
+      "Error while reading property 'ClassWithGuidKey' for class 'ClassWithRelatedClassIDColumnAndNoInheritance':" 
+      + " Incorrect database format encountered."
+      + " Entity 'TableWithRelatedClassIDColumnAndNoInheritance' must not contain column 'TableWithGuidKeyIDClassID',"
+      + " because opposite class 'ClassWithGuidKey' is not part of an inheritance hierarchy.")]
+  public void LoadDataContainerWithRelatedClassIDColumnAndNoInheritance ()
+  {
+    ObjectID id = new ObjectID ("ClassWithRelatedClassIDColumnAndNoInheritance", new Guid ("{CB72715D-F419-4ab9-8D49-ABCBA4E9EDB4}"));
+
+    Provider.LoadDataContainer (id);
+  }
 }
 }

@@ -82,6 +82,9 @@ public class ValueConverter
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+    
+    if (propertyDefinition.PropertyType == typeof (ObjectID))
+      CheckClassIDColumn (classDefinition, propertyDefinition, dataReader);
 
     int columnOrdinal = dataReader.GetOrdinal (propertyDefinition.ColumnName);
 
@@ -158,17 +161,53 @@ public class ValueConverter
       IDataReader dataReader)
   {
     string relatedClassIDColumnName = GetClassIDColumnName (propertyDefinition.ColumnName);
-    string classID = null;
+    int columnOrdinal = -1;
     try
     {
-      classID = dataReader.GetString (dataReader.GetOrdinal (relatedClassIDColumnName));
+      columnOrdinal = dataReader.GetOrdinal (relatedClassIDColumnName);
     }
     catch (IndexOutOfRangeException)
     {
       return null;
     }
 
-    return MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+    if (dataReader.IsDBNull (columnOrdinal))
+    {
+      throw CreateRdbmsProviderException (
+          "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
+          relatedClassIDColumnName, 
+          classDefinition.EntityName);
+    }
+
+    return MappingConfiguration.Current.ClassDefinitions.GetMandatory (dataReader.GetString (columnOrdinal));
+  }
+
+  private void CheckClassIDColumn (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader)
+  {
+    if (HasClassIDColumn (propertyDefinition, dataReader))
+    {
+      ClassDefinition oppositeClassDefinition = classDefinition.GetOppositeClassDefinition (propertyDefinition.PropertyName);
+      if (!MappingConfiguration.Current.ClassDefinitions.IsPartOfInheritanceHierarchy (oppositeClassDefinition))
+      {
+        throw CreateRdbmsProviderException (
+            "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
+            classDefinition.EntityName,
+            GetClassIDColumnName (propertyDefinition.ColumnName),
+            oppositeClassDefinition.ID);
+      }
+    }
+  }
+
+  private bool HasClassIDColumn (PropertyDefinition propertyDefinition, IDataReader dataReader)
+  {
+    try
+    {
+      return (dataReader.GetOrdinal (GetClassIDColumnName (propertyDefinition.ColumnName)) >= 0);
+    }
+    catch (IndexOutOfRangeException)
+    {
+      return false;
+    }
   }
 
   private ClassDefinition GetOppositeClassDefinition (
