@@ -84,8 +84,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
 
-    // TODO: Use DomainObjectCollection.Create instead to assure correct collection type => New overload necessary!
-    _originalOppositeDomainObjects = new DomainObjectCollection (oppositeDomainObjects, true);
+    _originalOppositeDomainObjects = oppositeDomainObjects.Clone (true);
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
   }
@@ -99,22 +98,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override void Commit ()
   {
     if (HasChanged)
-    {
-      // TODO: Use DomainObjectCollection.Create instead to assure correct collection type => New overload necessary!
-      _originalOppositeDomainObjects = new DomainObjectCollection (_oppositeDomainObjects, true);
-    }
+      _originalOppositeDomainObjects = _oppositeDomainObjects.Clone (true);
   }
 
   public override void Rollback ()
   {
     if (HasChanged)
-    {
-      for (int i = _oppositeDomainObjects.Count - 1; i >= 0; i--)
-        _oppositeDomainObjects.PerformRemove (_oppositeDomainObjects[i]);
-
-      foreach (DomainObject domainObject in _originalOppositeDomainObjects)
-        _oppositeDomainObjects.PerformAdd (domainObject);
-    }
+      _oppositeDomainObjects = _originalOppositeDomainObjects.Clone (_oppositeDomainObjects.IsReadOnly);
   }
 
   public override bool HasChanged
