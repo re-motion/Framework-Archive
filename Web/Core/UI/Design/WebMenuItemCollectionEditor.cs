@@ -15,7 +15,7 @@ public class MenuItemCollectionEditor: AdvancedCollectionEditor
 
   protected override Type[] CreateNewItemTypes()
   {
-    return new Type[] {typeof (MenuItem)};
+    return new Type[] {typeof (WebMenuItem)};
   }
 }
 
