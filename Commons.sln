@@ -52,9 +52,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "http://localhost
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test", "Web\Test\Web.Test.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 14
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -108,6 +112,10 @@ Global
 		SccLocalPath12 = Web\\ExecutionEngine\\Test
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice12 = 2
+		SccProjectUniqueName13 = Web\\Test\\Web.Test.csproj
+		SccLocalPath13 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection13 = Web\\Test\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -162,6 +170,10 @@ Global
 		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Debug.Build.0 = Debug|.NET
 		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Release.ActiveCfg = Release|.NET
 		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Release.Build.0 = Release|.NET
+		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Debug.ActiveCfg = Debug|.NET
+		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Debug.Build.0 = Debug|.NET
+		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.ActiveCfg = Release|.NET
+		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
