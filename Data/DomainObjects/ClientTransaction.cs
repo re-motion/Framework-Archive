@@ -8,9 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-/// <summary>
-/// TODO: write this comment
-/// </summary>
+//TODO documentation: Write summary for class
 public class ClientTransaction
 {
   // types
@@ -46,7 +44,7 @@ public class ClientTransaction
   // member fields
 
   /// <summary>
-  /// Occurs when the <b>ClientTransaction</b> has loaded a new object.
+  /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
   public event LoadedEventHandler Loaded;
   
@@ -86,6 +84,7 @@ public class ClientTransaction
     _dataManager.Rollback ();
   }
 
+//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -97,6 +96,7 @@ public class ClientTransaction
     return GetObject (id, false);
   }
 
+//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -139,7 +139,7 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
   }
 
-//TODO: check if the statement about the invalidCastOperation is right
+//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related object of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
@@ -153,7 +153,7 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
   }
 
-//TODO: check if the statement about the invalidCastOperation is right
+//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related object of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
@@ -167,7 +167,7 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
   }
 
-//TODO: check if the statement about the invalidCastOperation is right
+//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related objects of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
@@ -181,7 +181,7 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
   }
 
-//TODO: check if the statement about the invalidCastOperation is right
+//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related objects of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
@@ -198,7 +198,7 @@ public class ClientTransaction
   /// <summary>
   /// Sets a relation between two relationEndPoints.
   /// </summary>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> referring the <see cref="DataManagement.RelationEndPoint"/> that should point to a new <see cref="DomainObject"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> referring the <see cref="DataManagement.RelationEndPoint"/> that should relate to <i>newRelatedObject</i>.</param>
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   internal protected void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
@@ -244,7 +244,7 @@ public class ClientTransaction
     }
   }
 
-//TODO: check if the statement about the invalidCastOperation is right
+//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>

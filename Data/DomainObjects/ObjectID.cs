@@ -18,16 +18,34 @@ public class ObjectID
   private const string c_escapedDelimiter = "&pipe;";
   private const string c_escapedDelimiterPlaceholder = "&amp;pipe;";
 
+  /// <summary>
+  /// Tests whether two specified <see cref="ObjectID"/> objects are equivalent.
+  /// </summary>
+  /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the equality operator.</param>
+  /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the equality operator.</param>
+  /// <returns></returns>
   public static bool operator == (ObjectID id1, ObjectID id2)
   {
     return Equals (id1, id2);
   }
 
+  /// <summary>
+  /// Tests whether two specified <see cref="ObjectID"/> objects are different.
+  /// </summary>
+  /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the inequality operator.</param>
+  /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the inequality operator.</param>
+  /// <returns></returns>
   public static bool operator != (ObjectID id1, ObjectID id2)
   {
     return !Equals (id1, id2);
   }
 
+  /// <summary>
+  /// Determines whether the specified <see cref="ObjectID"/> instances are considered equal.
+  /// </summary>
+  /// <param name="id1">The first <see cref="ObjectID"/> to compare.</param>
+  /// <param name="id2">The second <see cref="ObjectID"/> to compare.</param>
+  /// <returns><b>true</b> if the both <see cref="ObjectID"/>s are equal; otherwise, <b>false</b>.</returns>
   public static bool Equals (ObjectID id1, ObjectID id2)
   {
     if (object.ReferenceEquals (id1, id2)) return true;
@@ -43,9 +61,9 @@ public class ObjectID
   /// <returns>
   ///   An <see cref="ObjectID"/> instance equivalent to the object ID contained in <i>objectIDString</i>.
   /// </returns>
-  /// <exception cref="ArgumentNullException"><i>objectIDString</i> is a null reference.</exception>
-  /// <exception cref="ArgumentEmptyException"><i>objectIDString</i> is an empty string.</exception>
-  /// <exception cref="FormatException">
+  /// <exception cref="System.ArgumentNullException"><i>objectIDString</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>objectIDString</i> is an empty string.</exception>
+  /// <exception cref="System.FormatException">
   ///   <i>objectIDString</i> does not contain the string representation of an object ID.
   /// </exception>
   public static ObjectID Parse (string objectIDString)
@@ -129,13 +147,13 @@ public class ObjectID
   /// </param>
   /// <param name="classID">The ID of the class of the object.</param>
   /// <param name="value">The ID value used to identify the object in the storage provider.</param>
-  /// <exception cref="ArgumentNullException">
+  /// <exception cref="System.ArgumentNullException">
   ///   <i>storageProviderID</i>, <i>classID</i> or <i>value</i> is a null reference.
   /// </exception>
-  /// <exception cref="ArgumentEmptyException">
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>storageProviderID</i> or <i>classID</i> is an empty string.
   /// </exception>
-  /// <exception cref="ArgumentException">
+  /// <exception cref="System.ArgumentException">
   ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
   /// </exception>
   public ObjectID (string storageProviderID, string classID, object value)
@@ -163,9 +181,6 @@ public class ObjectID
   /// <summary>
   /// Gets the ID value used to identify the object in the storage provider.
   /// </summary>
-  /// <exception cref="ArgumentException">
-  ///   The value has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
   public object Value
   {
     get { return _value; }
@@ -202,6 +217,11 @@ public class ObjectID
     return _storageProviderID.GetHashCode () ^ _classID.GetHashCode () ^ _value.GetHashCode ();
   }
 
+  /// <summary>
+  /// Determines whether the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>.
+  /// </summary>
+  /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <b>ObjectID</b>. </param>
+  /// <returns><b>true</b> if the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>; otherwise, <b>false</b>.</returns>
   public override bool Equals (object obj)
   {
     if (obj == null) return false;
