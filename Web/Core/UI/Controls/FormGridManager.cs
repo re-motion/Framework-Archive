@@ -2061,7 +2061,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       if (control is ISmartControl)
       {
         SmartLabel smartLabel = new SmartLabel();
-        smartLabel.ForControl = control.UniqueID;
+        smartLabel.ForControl = control.ID;
         label = smartLabel;
       }
         //  For these controls, the label's text will come from the resource dispatcher  

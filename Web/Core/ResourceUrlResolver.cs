@@ -10,27 +10,23 @@ namespace Rubicon.Web
 /// <summary> Utility methods for URL resolving. </summary>
 public sealed class ResourceUrlResolver
 {
+  private static bool s_resolverInitialized = false;
+  private static IResourceUrlResolver s_resolver = null;
+
   /// <summary>
-  ///   Searches the control hierarchy for an implementation of <see cref="IResourceUrlResolver"/>
-  ///   and resolves the <paramref name="relativeUrl"/> using 
-  ///   <see cref="IResourceUrlResolver.GetResourceUrl"/>.
+  ///   Returns the physical URL of a resource item.
+  ///   <seealso cref="IResourceUrlResolver"/>.
   /// </summary>
   /// <remarks>
-  ///   Walks the control hierarchy upwards until an implementation of 
-  ///   <see cref="IResourceUrlResolver"/> is found. If none is found, the 
-  ///   <see cref="HttpContext.ApplicationInstance"/> is tested.
+  ///   If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application object
+  ///   creates the URL string. Otherwise, the URL /rubicon.res/&ltdefiningType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
+  ///   is used. (e.g., /rubicon.res/Rubicon.Web/Image/Help.gif)
   /// </remarks>
-  /// <param name="control"> The <see cref="Control"/> where to start the hierarchy walk.</param>
-  /// <param name="context"> The <see cref="HttpContext"/> of the control initializing the search. </param>
-  /// <param name="definingType"> The type of the control initializing the search. </param>
-  /// <param name="resourceType"> An instance of type <see cref="ResourceType"/>. </param>
-  /// <param name="relativeUrl">
-  ///   The relative URL used by the implementation of <see cref="ResourceUrlResolver"/>
-  ///   to build a URL.
-  /// </param>
-  /// <returns>
-  ///   The URL or <see langword="null"/> if no <see cref="ResourceUrlResolver"/> could be found.
-  /// </returns>
+  /// <param name="control"> The current <see cref="Control"/>. Currently, this parameter is ignored. </param>
+  /// <param name="context"> The current <see cref="HttpContext"/>. </param>
+  /// <param name="definingType"> The type that this resource item is associated with. </param>
+  /// <param name="resourceType"> The resource type (image, static html, etc.) </param>
+  /// <param name="relativeUrl"> The relative URL of the item. </param>
   public static string GetResourceUrl (
       Control control, 
       HttpContext context,
@@ -38,29 +34,27 @@ public sealed class ResourceUrlResolver
       ResourceType resourceType, 
       string relativeUrl)
   {
-    if (control == null)
-      return null;
-
-    IResourceUrlResolver resourceUrlResolver = control as IResourceUrlResolver;
-    if (resourceUrlResolver == null)
+    if (! s_resolverInitialized)
     {
-      if (control.Parent != null)
+      lock (typeof (ResourceUrlResolver))
       {
-        return ResourceUrlResolver.GetResourceUrl (control.Parent, context, definingType, resourceType, relativeUrl);
-      }
-      else
-      {
-        resourceUrlResolver = context.ApplicationInstance as IResourceUrlResolver;
-        if (resourceUrlResolver == null)
-          return null;
+        if (! s_resolverInitialized)
+        {
+          s_resolver = context.ApplicationInstance as IResourceUrlResolver;
+          s_resolverInitialized = true;
+        }
       }
     }
 
-    string resourceUrl = resourceUrlResolver.GetResourceUrl (definingType, resourceType, relativeUrl);
-    if (resourceUrl == null)
-      return ResourceUrlResolver.GetResourceUrl (control.Parent, context, definingType, resourceType, relativeUrl);
-
-    return resourceUrl;
+    if (s_resolver != null)
+    {
+      return s_resolver.GetResourceUrl (definingType, resourceType, relativeUrl);
+    }
+    else
+    {
+      string assemblyName = definingType.Assembly.FullName.Split(',')[0];
+      return "/rubicon.res/" + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
+    }
   }
 }
 
