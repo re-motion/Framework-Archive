@@ -133,9 +133,18 @@ public sealed class ResourceManagerPool
 
   public static ResourceSet GetResourceSet (ResourceManager resourceManager, bool throwExceptionIfNotFound)
   {
-    ResourceSet resourceSet = resourceManager.GetResourceSet (GetUICulture (), true, true);
+    Exception innerException = null;
+    ResourceSet resourceSet = null;
+    try
+    {
+      resourceSet = resourceManager.GetResourceSet (GetUICulture (), true, true);
+    }
+    catch (MissingManifestResourceException e)
+    {
+      innerException = e;
+    }
     if (throwExceptionIfNotFound && resourceSet == null)
-      throw new ResourceException (string.Format ("No resource set in culture {0} found for resource {1}.", GetUICulture().Name, resourceManager.BaseName));
+      throw new ResourceException (string.Format ("No resource set in culture {0} found for resource {1}.", GetUICulture().Name, resourceManager.BaseName), innerException);
     return resourceSet;
   }
 
