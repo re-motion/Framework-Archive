@@ -1292,12 +1292,21 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     //       3: control view states
     
     Triplet table = (Triplet)viewState;
-    
+
+    //  Completely empty table could result in a null reference as a list
+    if (table.Third == null)
+        return viewState;
+
     ArrayList rows = (ArrayList)table.Third;
     foreach (Triplet row in rows)
     {
       //  Remove the row's view state
       row.First = null;
+
+      //  Cells without any view state relevant data
+      //  result in a null reference as a list.
+      if (row.Third == null)
+        continue;
 
       ArrayList cells = (ArrayList)row.Third;
       foreach (Triplet cell in cells)
