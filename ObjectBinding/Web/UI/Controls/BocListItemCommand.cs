@@ -300,19 +300,6 @@ public class BocItemCommand: Control, IPostBackEventHandler
     }
   }
 
-//  [Browsable (false)]
-//  public WxeFunction Function
-//  {
-//    get
-//    {
-//      if (_type != BocItemCommandType.WxeFunction)
-//        return null;
-//
-//      Type functionType = System.Type.GetType (FunctionTypeName); 
-//      return Activator.CreateInstance (functionType);
-//    }
-//  }
-
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Type: WxeFunction")]
   [Description ("The assembly containing the WxeFunction used for this command.")]

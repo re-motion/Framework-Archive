@@ -253,11 +253,20 @@ public class BocList:
       {
         IWxePage wxePage = this.Page as IWxePage;
         if (wxePage == null)
-          throw new InvalidOperationException ("BocList '" + ID + "' contains a BocItemCommand of type 'WxeFunction' but is not part of an IWxePage.");
+          throw new InvalidOperationException ("BocList '" + ID + "' contains a BocItemCommand of BocItemCommandType.WxeFunction but is not part of an IWxePage.");
 
-        string functionTypeName = command.FunctionTypeName + "," + command.FunctionAssemblyName;
+        string functionTypeName = command.FunctionTypeName + ", ";
+        if (StringUtility.IsNullOrEmpty (command.FunctionAssemblyName))
+        {
+          Assembly pageAssembly = Page.GetType().BaseType.Assembly;
+          functionTypeName += pageAssembly.FullName;
+        }
+        else
+        {
+          functionTypeName += command.FunctionAssemblyName;
+        }
         Type functionType = System.Type.GetType (functionTypeName); 
-        
+
         object [] arguments = new object[command.FunctionParameters.Length];
         for (int i = 0; i < command.FunctionParameters.Length; i++)
         {
@@ -266,6 +275,7 @@ public class BocList:
         }
 
         WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
+        
         wxePage.CurrentStep.ExecuteFunction (this, wxePage, function);
         
         break;

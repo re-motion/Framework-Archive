@@ -964,6 +964,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// </summary>
   private bool isResourceManagerUndefined;
 
+  /// <summary> <see langword="true"/> if PostBack and ViewState was loaded. </summary>
+  private bool hasViewState = false;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
@@ -1159,6 +1162,17 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
   }
 
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+    if (    ! ControlHelper.IsDesignMode (this, Context)
+        &&  Page.IsPostBack
+        &&  ! hasViewState)
+    {
+      throw new InvalidOperationException ("FormGrid '" + ID + "' did not receive a view state.");
+    }
+  }
+
   /// <summary>
   ///   Calls <see cref="TransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
   /// </summary>
@@ -1178,6 +1192,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     if (savedState != null)
     {
+      hasViewState = true;
+
       base.LoadViewState (savedState);
  
       object labelsColumn = ViewState[c_viewStateIDLabelsColumn];
