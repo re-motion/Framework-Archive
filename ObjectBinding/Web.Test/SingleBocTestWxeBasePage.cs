@@ -24,6 +24,8 @@ public class WxeWebFormBase:
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
+  
+  private Button _nextButton = new Button();
 
   protected override void OnInit(EventArgs e)
   {
@@ -32,6 +34,13 @@ public class WxeWebFormBase:
       Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
       Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
     }
+
+
+    _nextButton.ID = "NextButton";
+    _nextButton.Text = "Next";
+    _nextButton.Click += new EventHandler(NextButton_Click);
+    Form.Controls.Add (_nextButton);
+
     base.OnInit (e);
   }
 
@@ -45,12 +54,14 @@ public class WxeWebFormBase:
     LiteralControl stack = new LiteralControl();
 
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    sb.Append ("<div>");
     sb.Append ("<b>Stack:</b><br>");
     for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
       sb.AppendFormat ("{0}<br>", step.ToString());      
+    sb.Append ("</div>");
     stack.Text = sb.ToString();
     
-    Controls.Add (stack);
+    Form.Controls.Add (stack);
   }
 
   public virtual IResourceManager GetResourceManager()
@@ -75,6 +86,11 @@ public class WxeWebFormBase:
       return resourceType.Name + "/" + relativeUrl;
     else
       return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
+  }
+
+  private void NextButton_Click(object sender, System.EventArgs e)
+  {
+    CurrentStep.ExecuteNextStep();
   }
 }
 

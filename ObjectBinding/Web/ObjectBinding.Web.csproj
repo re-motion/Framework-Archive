@@ -326,6 +326,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocBooleanValue.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\bocListTemplate.css"
                     BuildAction = "Content"
                 />
