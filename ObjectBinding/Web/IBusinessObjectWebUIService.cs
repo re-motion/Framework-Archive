@@ -5,40 +5,24 @@ using System.Web.UI.WebControls;
 
 namespace Rubicon.ObjectBinding.Web
 {
+
 /// <summary>
 ///   Provides services for business object bound web applications
 /// </summary>
 public interface IBusinessObjectWebUIService: IBusinessObjectService
 {
-  IconPrototype GetIcon (IBusinessObject obj);
-  IconPrototype GetIcon (IBusinessObjectWithIdentity obj);
-
-  /// <summary>
-  ///   Returns a white space icon matching the icon dimensions of
-  ///   GetIcon (IBusinessObject)
-  /// </summary>
-  /// <param name="obj"></param>
-  /// <returns></returns>
-  IconPrototype GetIcon (IBusinessObjectClass obj);
-
-  /// <summary>
-  ///   Returns a white space icon matching the icon dimensions of
-  ///   GetIcon (IBusinessObjectWithIdentity)
-  /// </summary>
-  /// <param name="obj"></param>
-  /// <returns></returns>
-  IconPrototype GetIcon (IBusinessObjectClassWithIdentity obj);
+  IconInfo GetIcon (IBusinessObject obj);
+  IconInfo GetIcon (IBusinessObjectClass obj);
+  IconInfo GetWhitespaceIcon ();
 }
 
-public sealed class IconPrototype
+public sealed class IconInfo
 {
   private string _url;
-
   private Unit _width;
-
   private Unit _height;
 
-  public IconPrototype (string url, Unit width, Unit height)
+  public IconInfo (string url, Unit width, Unit height)
   {
     _url = url;
     _width = _width;
