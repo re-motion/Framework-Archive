@@ -23,7 +23,7 @@ public class ResourceManagerUtility
   public static IResourceManager GetResourceManager (Control control)
   {
     if (control == null)
-      return;
+      return null;
 
     IObjectWithResources objectWithResources  = control as IObjectWithResources;
 
