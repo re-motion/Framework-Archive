@@ -33,11 +33,9 @@ public class StandardPage : NavigablePage
 
     this.PreRender += new EventHandler (this.Page_OnPreRender);
 
-    /*
-    Rubicon.Findit.Common.Domain.SecurityService.AccessType requiredAccessType = GetRequiredAccessType();
-    if (! this.SecurityService.HasAccess (requiredAccessType) )
-      throw new AccessDeniedException (requiredAccessType);
-    */
+    Response.AppendHeader ("Expires", "-1");
+    Response.AppendHeader ("Cache-Control", "max-age=0,no-cache");
+    Response.AppendHeader ("Pragma", "no-cache");    
   }
 
   protected virtual void RegisterEventHandlers()

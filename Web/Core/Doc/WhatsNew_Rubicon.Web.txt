@@ -7,6 +7,8 @@
   Da sich bestehende Projekte auf dieses Fehlverhalten verlassen, wurde der Enum von 
   ShowNavigationBar auf NavigationBar umbenannt. Deshalb sind bei der Einbindung einer neuen Version
   von Rubicon.Web.UI alle Rereferenzen von ShowNavigationBar zu korrigieren (Compile Errors).
+- TabControl: Neue Methode GetCompleteUrl (...). Unterschied zu GetCurrentUrl (...) ist, dass der
+  Tab der Ziel URL ausgewählt wird und nicht erhalten bleibt wie bei GetCurrentUrl.
 
 
 3.0.3.0

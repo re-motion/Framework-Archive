@@ -50,7 +50,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       Page sourcePage, 
       string destinationUrl, 
       bool returnToThisPage, 
-      PageUtility.ShowNavigationBar showNavBar)
+      PageUtility.NavigationBar showNavBar)
   {
     CallPage (sourcePage, destinationUrl, null, returnToThisPage, showNavBar);
   }
@@ -65,7 +65,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      PageUtility.ShowNavigationBar showNavBar)
+      PageUtility.NavigationBar showNavBar)
   {
     PageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar);
   }
@@ -80,7 +80,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      PageUtility.ShowNavigationBar showNavBar,
+      PageUtility.NavigationBar showNavBar,
       string referrerUrl)
   {
     PageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar, referrerUrl);

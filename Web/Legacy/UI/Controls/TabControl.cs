@@ -279,7 +279,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
 	void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
 	{
-    SetSelectedItems (string.Empty);
+    SetSelectedItems (string.Empty, true);
     int colonPos = eventArgument.IndexOf (":");
     if (colonPos >= 0)
     {
@@ -346,8 +346,18 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
   public string GetCurrentUrl (string defaultPage)
   {
-    SetSelectedItems (defaultPage);
+    SetSelectedItems (defaultPage, true);
+    return GetCompleteUrl ();
+  }
 
+  public string GetCompleteUrl (string pageUrl)
+  {
+    SetSelectedItems (pageUrl, false);
+    return GetCompleteUrl ();      
+  }
+  
+  private string GetCompleteUrl ()
+  {
     if (Tabs[_activeTab].Controls.Count > 0)
     {
       TabMenu menu = (TabMenu) Tabs[_activeTab].Controls[_activeMenu];
@@ -356,14 +366,12 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     else
     {
       return GetCompleteUrl (Tabs[_activeTab], _activeTab, _activeMenu);
-    }
+    }  
   }
-
+  
   private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
   {
     ITabItem navigableItem = tabItem.GetNavigableItem();
-    /*if (tabItem.Href == string.Empty)
-      return string.Empty;*/
 
     string url = PageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
     if (navigableItem.SupportsPageToken)
@@ -442,11 +450,17 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     return resultHref;
   }
 
-  private void SetSelectedItems (string defaultPage)
+  private void SetSelectedItems (string defaultPage, bool useCurrentTab)
   {
-		string selectedTab = Page.Request.QueryString["navSelectedTab"];
-		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
-
+    string selectedTab = null;
+    string selectedMenu = null;
+    
+    if (useCurrentTab)
+    {
+		  selectedTab = Page.Request.QueryString["navSelectedTab"];
+		  selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+    }
+    
     if (selectedTab == null && selectedMenu == null)
     {
       if (defaultPage == string.Empty)
@@ -523,7 +537,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   
   protected override void Render (HtmlTextWriter output)
 	{
-    SetSelectedItems (string.Empty);
+    SetSelectedItems (string.Empty, true);
 
     if (this.Site != null && this.Site.DesignMode)
 		{
