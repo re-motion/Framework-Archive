@@ -95,20 +95,20 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   private bool _enableGrouping = true;
   private string _getSelectionCount = "";
 
-  private MenuItemCollection _menuItems;
+  private WebMenuItemCollection _menuItems;
 
 	public DropDownMenu (Control ownerControl, Type[] supportedMenuItemTypes)
 	{
-    _menuItems = new MenuItemCollection (ownerControl, supportedMenuItemTypes);
+    _menuItems = new WebMenuItemCollection (ownerControl, supportedMenuItemTypes);
 	}
 
   public DropDownMenu (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (MenuItem)})
+    : this (ownerControl, new Type[] {typeof (WebMenuItem)})
 	{
   }
 
   public DropDownMenu ()
-    : this (null, new Type[] {typeof (MenuItem)})
+    : this (null, new Type[] {typeof (WebMenuItem)})
   {
   }
 
@@ -134,7 +134,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     if (index >= _menuItems.Count)
       throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
 
-    MenuItem item = _menuItems[index];
+    WebMenuItem item = _menuItems[index];
     if (item.Command == null)
       throw new ArgumentOutOfRangeException ("The DropDownMenu '" + ID + "' does not have a command associated with menu item " + index + ".");
 
@@ -159,23 +159,23 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   }
 
   /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
-  protected virtual void OnEventCommandClick (MenuItem item)
+  protected virtual void OnEventCommandClick (WebMenuItem item)
   {
-    MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_eventCommandClickEvent];
+    WebMenuItemClickEventHandler clickHandler = (WebMenuItemClickEventHandler) Events[s_eventCommandClickEvent];
     if (clickHandler != null)
     {
-      MenuItemClickEventArgs e = new MenuItemClickEventArgs (item);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (item);
       clickHandler (this, e);
     }
   }
 
   /// <summary> Fires the <see cref="WxeFunctionCommandClick"/> event. </summary>
-  protected virtual void OnWxeFunctionCommandClick (MenuItem item)
+  protected virtual void OnWxeFunctionCommandClick (WebMenuItem item)
   {
-    MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_wxeFunctionCommandClickEvent];
+    WebMenuItemClickEventHandler clickHandler = (WebMenuItemClickEventHandler) Events[s_wxeFunctionCommandClickEvent];
     if (clickHandler != null)
     {
-      MenuItemClickEventArgs e = new MenuItemClickEventArgs (item);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (item);
       clickHandler (this, e);
     }
   }
@@ -220,7 +220,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", ClientID);
       bool isFirstItem = true;
 
-      MenuItem[] menuItems;
+      WebMenuItem[] menuItems;
       if (_enableGrouping)
         menuItems = _menuItems.GroupMenuItems (true);
       else
@@ -228,7 +228,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       
       for (int i = 0; i < menuItems.Length; i++)
       {
-        MenuItem menuItem = menuItems[i];
+        WebMenuItem menuItem = menuItems[i];
         if (isFirstItem)
           isFirstItem = false;
         else
@@ -244,7 +244,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     base.OnPreRender (e);
   }
 
-  private void AppendMenuItem (StringBuilder stringBuilder, MenuItem menuItem, int menuItemIndex)
+  private void AppendMenuItem (StringBuilder stringBuilder, WebMenuItem menuItem, int menuItemIndex)
   {
     string href = "null";
     string target = "null";
@@ -276,8 +276,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       }
     }
 
-    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
-    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showIcon = menuItem.Style == WebMenuItemStyle.Icon ||  menuItem.Style == WebMenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == WebMenuItemStyle.Text ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     string icon = "null";
     if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
       icon =  "'" + menuItem.Icon + "'";
@@ -414,7 +414,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   [Category ("Behavior")]
   [Description ("The menu items displayed by this drop down menu.")]
   [DefaultValue ((string) null)]
-  public MenuItemCollection MenuItems
+  public WebMenuItemCollection MenuItems
   {
     get { return _menuItems; }
   }
@@ -443,7 +443,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   /// <summary> Occurs when a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a command of type Event is clicked.")]
-  public event MenuItemClickEventHandler EventCommandClick
+  public event WebMenuItemClickEventHandler EventCommandClick
   {
     add { Events.AddHandler (s_eventCommandClickEvent, value); }
     remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
@@ -452,7 +452,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   /// <summary> Occurs when a command of type <see cref="CommandType.WxeFunction"/> is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a command of type WxeFunction is clicked.")]
-  public event MenuItemClickEventHandler WxeFunctionCommandClick
+  public event WebMenuItemClickEventHandler WxeFunctionCommandClick
   {
     add { Events.AddHandler (s_wxeFunctionCommandClickEvent, value); }
     remove { Events.RemoveHandler (s_wxeFunctionCommandClickEvent, value); }

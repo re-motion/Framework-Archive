@@ -8,12 +8,12 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class MenuItem: IControlItem
+public class WebMenuItem: IControlItem
 {
-  public static MenuItem GetSeparator()
+  public static WebMenuItem GetSeparator()
   {
-    return new MenuItem (
-        null, null, "-", null, null, MenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
+    return new WebMenuItem (
+        null, null, "-", null, null, WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
   }
 
   private string _itemID = "";
@@ -21,7 +21,7 @@ public class MenuItem: IControlItem
   private string _text = "";
   private string _icon = "";
   private string _disabledIcon = "";
-  private MenuItemStyle _style = MenuItemStyle.IconAndText;
+  private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
   private bool _isDisabled = false;
 
@@ -30,13 +30,13 @@ public class MenuItem: IControlItem
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
 
-  public MenuItem (
+  public WebMenuItem (
       string itemID, 
       string category, 
       string text, 
       string icon, 
       string disabledIcon, 
-      MenuItemStyle style,
+      WebMenuItemStyle style,
       RequiredSelection requiredSelection, 
       bool isDisabled,
       Command command)
@@ -52,10 +52,10 @@ public class MenuItem: IControlItem
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
-  public MenuItem ()
+  public WebMenuItem ()
     : this (
         null, null, null, null, null, 
-        MenuItemStyle.IconAndText, RequiredSelection.Any, false, new Command (CommandType.Event))
+        WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, new Command (CommandType.Event))
   {
   }
 
@@ -64,7 +64,7 @@ public class MenuItem: IControlItem
   {
   }
 
-  /// <summary> Returns a <see cref="string"/> that represents this <see cref="MenuItem"/>. </summary>
+  /// <summary> Returns a <see cref="string"/> that represents this <see cref="WebMenuItem"/>. </summary>
   /// <returns> Returns the <see cref="Text"/>, followed by the class name of the instance. </returns>
   public override string ToString()
   {
@@ -80,7 +80,7 @@ public class MenuItem: IControlItem
   /// <summary> Gets the human readable name of this type. </summary>
   protected virtual string DisplayedTypeName
   {
-    get { return "MenuItem"; }
+    get { return "WebMenuItem"; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -152,8 +152,8 @@ public class MenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
-  [DefaultValue (MenuItemStyle.IconAndText)]
-  public MenuItemStyle Style
+  [DefaultValue (WebMenuItemStyle.IconAndText)]
+  public WebMenuItemStyle Style
   {
     get { return _style; }
     set { _style = value; }
@@ -233,7 +233,7 @@ public enum RequiredSelection
   OneOrMore = 2
 }
 
-public enum MenuItemStyle
+public enum WebMenuItemStyle
 {
   IconAndText,
   Icon,
@@ -243,24 +243,24 @@ public enum MenuItemStyle
 /// <summary>
 ///   Represents the method that handles the <c>Click</c> event raised when clicking on a menu item.
 /// </summary>
-public delegate void MenuItemClickEventHandler (object sender, MenuItemClickEventArgs e);
+public delegate void WebMenuItemClickEventHandler (object sender, WebMenuItemClickEventArgs e);
 
 /// <summary>
 ///   Provides data for the <c>Click</c> event.
 /// </summary>
-public class MenuItemClickEventArgs: EventArgs
+public class WebMenuItemClickEventArgs: EventArgs
 {
-  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
-  private MenuItem _item;
+  /// <summary> The <see cref="WebMenuItem"/> that was clicked. </summary>
+  private WebMenuItem _item;
 
   /// <summary> Initializes an instance. </summary>
-  public MenuItemClickEventArgs (MenuItem item)
+  public WebMenuItemClickEventArgs (WebMenuItem item)
   {
     _item = item;
   }
 
-  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
-  public MenuItem Item
+  /// <summary> The <see cref="WebMenuItem"/> that was clicked. </summary>
+  public WebMenuItem Item
   {
     get { return _item; }
   }
