@@ -132,7 +132,7 @@ public class EntryFormGrid: Control
 		}
 
     writer.WriteLine (
-        "<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"width: {0}; {1}\">",
+        "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"width: {0}; {1}\">",
         Width.ToString (CultureInfo.InvariantCulture),
         FixedLayout ? "table-layout: fixed;" : string.Empty);
 
