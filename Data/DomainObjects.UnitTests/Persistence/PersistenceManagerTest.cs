@@ -37,6 +37,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
 
   public override void TearDown ()
   {
+    base.TearDown ();
     _persistenceManager.Dispose ();
   }
 

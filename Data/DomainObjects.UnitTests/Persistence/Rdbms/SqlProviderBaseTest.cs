@@ -37,6 +37,7 @@ public class SqlProviderBaseTest : ClientTransactionBaseTest
   
   public override void TearDown ()
   {
+    base.TearDown ();
     _provider.Dispose ();
   }
 
