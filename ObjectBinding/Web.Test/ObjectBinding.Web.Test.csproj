@@ -373,6 +373,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestForm.aspx.cs"
+                    DependentUpon = "TestForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestForm.aspx.resx"
+                    DependentUpon = "TestForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "ViewPersonDetailsWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -427,22 +442,6 @@
                 <File
                     RelPath = "WebForm3.aspx.resx"
                     DependentUpon = "WebForm3.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WebFormMK.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebFormMK.aspx.cs"
-                    DependentUpon = "WebFormMK.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebFormMK.aspx.resx"
-                    DependentUpon = "WebFormMK.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
