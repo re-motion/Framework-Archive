@@ -87,29 +87,8 @@ public abstract class WxeFunction: WxeStepList
 
     base.Execute (context);
 
-    if (_returnUrl != null)
-    {
-      // Variables.Clear();
-      if (_returnUrl.StartsWith ("javascript:"))
-      {
-        context.HttpContext.Response.Clear();
-        string script = _returnUrl.Substring ("javascript:".Length);
-        context.HttpContext.Response.Write ("<html><script language=\"JavaScript\">" + script + "</script></html>");
-        context.HttpContext.Response.End();
-      }
-      else
-      {
-        context.HttpContext.Response.Redirect (_returnUrl, true);
-      }
-    }
-
     if (ParentStep != null)
       ReturnParametersToCaller();
-    
-    // Variables.Clear();
-
-    if (ParentStep == null)
-      context.HttpContext.Response.End();
   }
 
   public string ReturnUrl
