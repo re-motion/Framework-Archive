@@ -92,11 +92,6 @@ public class BusinessObjectBinding
           throw new ArgumentException ("Property 'Property' does not support the property '" + _propertyIdentifier + "'.");
         _property = property;
       }
-
-      //  TODO: Check if side effects
-      //  _bindingChanged = false must be before OnBindingChanged to prevent infinite loops
-      //  IsReadOnly and IsRequired both call EvaluateBinding and are essential for displaying 
-      //  bound objects
       _bindingChanged = false;
 
       this.OnBindingChanged();
