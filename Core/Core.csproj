@@ -136,12 +136,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "doc\autoexp.dat"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "doc\Building Rubicon.Commons.txt"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "doc\mcee_cs.dat"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "doc\include\include.xml"
