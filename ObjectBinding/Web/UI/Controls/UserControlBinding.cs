@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.ComponentModel;
+using System.Web.UI.WebControls;
 using Rubicon.ObjectBinding.Web;
 using Rubicon.Web.Utilities;
 
@@ -142,6 +143,16 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
     }
 
     base.Render (writer);
+  }
+
+  public override void RegisterValidator (BaseValidator validator)
+  {
+    throw new NotSupportedException();
+  }
+
+  public override bool Validate()
+  {
+    return _referenceDataSource.Validate ();
   }
 
   protected override Type[] SupportedPropertyInterfaces

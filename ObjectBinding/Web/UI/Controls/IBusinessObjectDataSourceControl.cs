@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding;
 
@@ -14,6 +15,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// </summary>
 public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IControl
 {
+  bool Validate ();
 }
 
 /// <summary>
@@ -136,6 +138,18 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return GetDataSource().BoundControls; }
+  }
+
+  public bool Validate()
+  {
+    bool isValid = true;
+    foreach (IBusinessObjectBoundControl control in BoundControls)
+    {
+      IValidatableControl validateableControl = control as IValidatableControl;
+      if (validateableControl != null)
+        isValid &= validateableControl.Validate();
+    }
+    return isValid;
   }
 }
 
