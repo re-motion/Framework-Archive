@@ -100,7 +100,7 @@
                 <File
                     RelPath = "AssemblyInfoTemplate.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "ChangeTrackingEvents.cs"
