@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries
 {
-public class QueryParameterCollection : BaseCollection
+public class QueryParameterCollection : CommonCollection
 {
   // types
 

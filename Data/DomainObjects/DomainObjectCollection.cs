@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents a collection of <see cref="DomainObject"/>s.
 /// </summary>
-public class DomainObjectCollection : BaseCollection, ICloneable, IList
+public class DomainObjectCollection : CommonCollection, ICloneable, IList
 {
   // types
 
