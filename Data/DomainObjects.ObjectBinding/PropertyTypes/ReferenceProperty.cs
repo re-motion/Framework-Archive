@@ -38,7 +38,6 @@ public class DomainObjectReferenceProperty: DomainObjectProperty, IBusinessObjec
 
   public IBusinessObjectWithIdentity[] SearchAvailableObjects(IBusinessObject obj, string searchStatement)
   {
-    // TODO: Implement Query when available
     return new BindableDomainObject[] {};
   }
 
@@ -46,7 +45,7 @@ public class DomainObjectReferenceProperty: DomainObjectProperty, IBusinessObjec
   {
     get
     {
-      return true;
+      return false;
     }
   }
 
