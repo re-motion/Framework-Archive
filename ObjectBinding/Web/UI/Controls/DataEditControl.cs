@@ -63,7 +63,7 @@ public interface IDataEditControl: IControl
   /// <summary>
   /// Provides access to the data source object. For common operations, use the methods of <see cref="IDataEditControl"/> instead.
   /// </summary>
-  IBusinessObjectDataSource DataSource { get; }
+  IBusinessObjectDataSourceControl DataSource { get; }
 }
 
 public class DataEditUserControl: UserControl, IDataEditControl
@@ -96,7 +96,7 @@ public class DataEditUserControl: UserControl, IDataEditControl
 
   public virtual bool Validate()
   {
-    return true;
+    return DataSource.Validate();
   }
 
   /// <summary>
@@ -105,7 +105,7 @@ public class DataEditUserControl: UserControl, IDataEditControl
   /// <remarks>
   ///   This method should be abstract, but abstract base classes are not supported by VS.NET designer.
   /// </remarks>
-  public virtual IBusinessObjectDataSource DataSource
+  public virtual IBusinessObjectDataSourceControl DataSource
   {
     get { throw new NotImplementedException ("Property DataSource must be overridden by derived classes to return a non-null value."); }
   }
