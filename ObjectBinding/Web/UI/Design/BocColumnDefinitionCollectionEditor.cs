@@ -20,6 +20,7 @@ public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
       typeof (BocSimpleColumnDefinition), 
       typeof (BocCompoundColumnDefinition),
       typeof (BocCommandColumnDefinition),
+      typeof (BocEditDetailsColumnDefinition),
       typeof (BocCustomColumnDefinition)};
   }
 }
