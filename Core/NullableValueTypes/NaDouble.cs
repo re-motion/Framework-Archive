@@ -341,7 +341,7 @@ public struct NaDouble: INaNullable, IComparable, ISerializable, IFormattable
   /// Gets the value of this <see cref="NaDouble"/> structure. This property is read-only.
   /// </summary>
   /// <value>
-  /// An integer representing the value of this NaDouble structure.
+  /// A Double representing the value of this NaDouble structure.
   /// </value>
   /// <exception cref="NaNullValueException">
   /// The property contains <see cref="Null"/>.
@@ -354,6 +354,20 @@ public struct NaDouble: INaNullable, IComparable, ISerializable, IFormattable
         throw NaNullValueException.AccessingMember ("Value");
       return _value;
     }
+  }
+
+  /// <summary>
+  /// Gets the value of this <see cref="NaDouble"/> structure. This property is read-only.
+  /// </summary>
+  /// <value>
+  /// An Object representing the value of this NaDouble structure.
+  /// </value>
+  /// <exception cref="NaNullValueException">
+  /// The property contains <see cref="Null"/>.
+  /// </exception>
+  object INaNullable.Value
+  {
+    get { return Value; }
   }
 
   /// <summary>
