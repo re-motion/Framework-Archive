@@ -376,6 +376,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\DropDownMenuItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\EntryFormGrid.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
