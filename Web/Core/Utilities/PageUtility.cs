@@ -250,6 +250,11 @@ public class PageUtility
     return AddUrlParameter (url, "cleanupToken", GetToken(page));
   }
 
+  public static string AddCleanupToken (INavigablePage navigablePage, string url)
+  {
+    return PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.Token);
+  }
+
   public static string AddParentToken (Page page, string url)
   {
     return AddUrlParameter (url, "parentToken", GetToken(page));
