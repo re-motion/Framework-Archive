@@ -7,27 +7,13 @@ table.formGridTable
 }
 
 /*  Style applied to the title cell  */
-td.formGridTitleCell
-{
-	font-weight: bold;
-	/*  no inheritence from body */
-	font-size: 125%;
-
-  padding: 2px 2px 2px 2px;
-  border-style: solid;
-  border-top-width: 0px;
-  border-right-width: 0px;
-  border-bottom-width: 2px;
-  border-left-width: 0px;
-  border-color: Black;
-}
-
+td.formGridTitleCell,
 /*  Style applied to the sub title cell  */
 td.formGridSubTitleCell
 {
 	font-weight: bold;
 	/*  no inheritence from body */
-	font-size: 100%;
+	font-size: 125%;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
