@@ -277,7 +277,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Used by <see cref="SupportsProperty"/>.
   /// </remarks>
   /// <returns>
-  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList" is 
+  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
   ///   supported.
   /// </returns>
   protected virtual bool SupportsPropertyMultiplicity (bool isList)

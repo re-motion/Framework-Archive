@@ -46,7 +46,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   public event EventHandler SelectionChanged;
 
   /// <summary>
-  ///   <see langword="true"/> if <see cref="ReferenceValue"/> has been changed since last call to
+  ///   <see langword="true"/> if <see cref="BocReferenceValue"/> has been changed since last call to
   ///   <see cref="SaveValue"/>.
   /// </summary>
   private bool _isDirty = true;
@@ -60,7 +60,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon = null;
 
-  /// <summary> The object returned by <see cref="ReferenceValue"/>. </summary>
+  /// <summary> The object returned by <see cref="BocReferenceValue"/>. </summary>
   /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
   private IBusinessObjectWithIdentity _value = null;
 
