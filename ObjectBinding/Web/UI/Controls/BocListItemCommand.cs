@@ -75,7 +75,7 @@ public class BocListItemCommand: BocCommand
     ///     </item>
     ///     <item>
     ///       <term> @object </term>
-    ///       <description> The <see cref="IBusinessObject"/> it self. </description>
+    ///       <description> The <see cref="IBusinessObject"/> itself. </description>
     ///     </item>
     ///     <item>
     ///       <term> @parent </term>
