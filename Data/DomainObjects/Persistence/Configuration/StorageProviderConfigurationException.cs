@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
+namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
 [Serializable]
 public class StorageProviderConfigurationException : ConfigurationException
