@@ -21,6 +21,11 @@ public class SequenceEventReceiver
 
   // construction and disposing
 
+  public SequenceEventReceiver (DomainObjectCollection collection) 
+      : this (new DomainObject[0], new DomainObjectCollection[] {collection})
+  {
+  }
+
   public SequenceEventReceiver (DomainObject domainObject) 
       : this (new DomainObject[] {domainObject}, new DomainObjectCollection[0])
   {
@@ -28,6 +33,11 @@ public class SequenceEventReceiver
 
   public SequenceEventReceiver (DomainObject[] domainObjects, DomainObjectCollection[] collections) 
       : this (domainObjects, collections, 0)
+  {
+  }
+
+  public SequenceEventReceiver (DomainObjectCollection collection, int cancelEventNumber) 
+      : this (new DomainObject[0], new DomainObjectCollection[] {collection}, cancelEventNumber)
   {
   }
 
