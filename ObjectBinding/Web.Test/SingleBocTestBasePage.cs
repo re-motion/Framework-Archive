@@ -43,10 +43,6 @@ public class WebFormBase:
     }
     catch (ArgumentException)
     {}
-
-    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-
-    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
   }
 
   protected override void OnPreRender(EventArgs e)

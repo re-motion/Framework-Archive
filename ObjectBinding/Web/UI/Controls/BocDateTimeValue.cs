@@ -944,11 +944,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     {
       if (EnableClientScript) 
       {
-        bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
-                                ||   Context.Request.Browser.MajorVersion == 5 
-                                  && Context.Request.Browser.MinorVersion >= 0.5;
+        bool isVersionGreaterOrEqual55 = 
+               Context.Request.Browser.MajorVersion >= 6
+            ||    Context.Request.Browser.MajorVersion == 5 
+               && Context.Request.Browser.MinorVersion >= 0.5;
         bool isInternetExplorer55AndHigher = 
-            Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
+            Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual55;
 
         _hasClientScript = isInternetExplorer55AndHigher;
 

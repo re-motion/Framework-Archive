@@ -52,8 +52,6 @@ public class WxeWebFormBase:
     _nextButton.Click += new EventHandler(NextButton_Click);
     Form.Controls.Add (_nextButton);
 
-    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
   }
 

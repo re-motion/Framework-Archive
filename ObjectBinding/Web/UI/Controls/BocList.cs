@@ -73,9 +73,8 @@ public class BocList:
   /// <summary> The key identifying a fixed column resource entry. </summary>
   private const string c_resourceKeyFixedColumns = "FixedColumns";
 
-  private const string c_defaultListBlockWidth = "80%";
-  private const string c_defaultMenuBlockWidth = "20%";
-  private const string c_defaultMenuBlockOffset = "10pt";
+  private const string c_defaultMenuBlockWidth = "200px";
+  private const string c_defaultMenuBlockOffset = "0px";
 
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
@@ -214,8 +213,6 @@ public class BocList:
   /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The width applied to the <c>list block</c>. </summary>
-  private Unit _listBlockWidth = Unit.Empty;
   /// <summary> The width applied to the <c>menu block</c>. </summary>
   private Unit _menuBlockWidth = Unit.Empty;
   /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
@@ -224,7 +221,7 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
-  //private DropDownMenu _dropDownMenu = new DropDownMenu();
+  private DropDownMenu _dropDownMenu = new DropDownMenu();
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -345,13 +342,14 @@ public class BocList:
   {
     base.OnInit (e);
 
-    //_dropDownMenu.ID = this.ID + c_dropDownMenuIDSuffix;
-
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
     _additionalColumnsList.AutoPostBack = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
+
+    _dropDownMenu.ID = this.ID + c_dropDownMenuIDSuffix;
+    Controls.Add (_dropDownMenu);
 
     _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
     Controls.Add (_moveFirstButton);
@@ -616,10 +614,12 @@ public class BocList:
       }
     }
 
+    string key;
+
     if (_hasClientScript)
     {
       //  Include script file
-      string key = typeof (BocList).FullName;
+      key = typeof (BocList).FullName + "_Script";
       if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
@@ -639,6 +639,14 @@ public class BocList:
             CssClassDataCellEvenSelected);
         PageUtility.RegisterStartupScriptBlock (Page, key, script);
       }
+    }
+
+    key = typeof (BocList).FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocList), ResourceType.Html, "BocList.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
   }
 
@@ -666,9 +674,101 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Id, ID);
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
-    writer.AddStyleAttribute ("position", "relative");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClass);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Control-Tag
 
+    bool isInternetExplorer501AndHigher = true;
+    bool isCss21Compatible = false;
+    if (! IsDesignMode)
+    {
+      bool isVersionGreaterOrEqual501 = 
+              Context.Request.Browser.MajorVersion >= 6
+          ||    Context.Request.Browser.MajorVersion == 5 
+              && Context.Request.Browser.MinorVersion >= 0.01;
+      isInternetExplorer501AndHigher = 
+          Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual501;
+      bool isOperaGreaterOrEqual7 = 
+             Context.Request.Browser.Browser == "Opera"
+          && Context.Request.Browser.MajorVersion >= 7;
+      bool isNetscapeCompatibleGreaterOrEqual5 = 
+             Context.Request.Browser.Browser == "Netscape"
+          && Context.Request.Browser.MajorVersion >= 5;
+      isCss21Compatible = isOperaGreaterOrEqual7 || isNetscapeCompatibleGreaterOrEqual5;
+    }
+
+    if (isInternetExplorer501AndHigher)
+      RenderTableAndMenuInternetExplorer501Compatible (writer);
+    else if (isCss21Compatible && ! (writer is Html32TextWriter))
+      RenderTableAndMenuCss21Compatible (writer);
+    else
+      RenderTableAndMenuLegacyBrowser (writer);
+
+    //  The navigation block
+    if (_alwaysShowPageInfo || _pageCount > 1)
+      RenderNavigator (writer);
+
+    writer.RenderEndTag(); // End control-tag
+  }
+
+  private void RenderTableAndMenuInternetExplorer501Compatible (HtmlTextWriter writer)
+  {
+    writer.AddStyleAttribute ("display", "inline");
+    writer.AddStyleAttribute ("float", "right");
+    writer.AddStyleAttribute ("vertical-align", "top");
+    string menuBlockWidth = c_defaultMenuBlockWidth;
+    if (! _menuBlockWidth.IsEmpty)
+      menuBlockWidth = _menuBlockWidth.ToString();
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);      
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    RenderMenuBlock (writer);
+    writer.RenderEndTag();
+    
+    writer.AddStyleAttribute ("display", "inline");
+    writer.AddStyleAttribute ("vertical-align", "top");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    RenderTableBlock (writer);
+    writer.RenderEndTag();
+  }
+
+  private void RenderTableAndMenuCss21Compatible (HtmlTextWriter writer)
+  {
+    writer.AddStyleAttribute ("display", "table");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table
+    writer.AddStyleAttribute ("display", "table-row");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+
+    writer.AddStyleAttribute ("display", "table-cell"); 
+    writer.AddStyleAttribute ("vertical-align", "top");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+    RenderTableBlock (writer);
+    writer.RenderEndTag();  //  End table-cell
+
+    writer.AddStyleAttribute ("display", "table-cell");
+    writer.AddStyleAttribute ("vertical-align", "top");
+    string menuBlockWidth = c_defaultMenuBlockWidth;
+    if (! _menuBlockWidth.IsEmpty)
+      menuBlockWidth = _menuBlockWidth.ToString();
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);       
+    string menuBlockOffset = c_defaultMenuBlockOffset;
+    if (! _menuBlockOffset.IsEmpty)
+      menuBlockOffset = _menuBlockWidth.ToString();
+    writer.AddStyleAttribute ("padding-left", menuBlockOffset);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-cell
+    RenderMenuBlock (writer);
+    writer.RenderEndTag();  //  End table-cell
+
+    writer.RenderEndTag();  //  End table-row
+    writer.RenderEndTag();  //  End table
+  }
+
+  /// <remarks>
+  ///   Use display:table, display:table-row, ... for opera and mozilla/firefox
+  /// </remarks>
+  private void RenderTableAndMenuLegacyBrowser (HtmlTextWriter writer)
+  {
     //  Render list block / menu block
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
 
@@ -676,10 +776,6 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     //  Left: list block
-    string listBlockWidth = c_defaultListBlockWidth;
-    if (! _listBlockWidth.IsEmpty)
-      listBlockWidth =  _listBlockWidth.ToString();
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, listBlockWidth);
     writer.RenderBeginTag (HtmlTextWriterTag.Col);
     writer.RenderEndTag();
 
@@ -702,7 +798,7 @@ public class BocList:
     //  List Block
     writer.AddStyleAttribute ("vertical-align", "top");
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
-    RenderListBlock (writer);
+    RenderTableBlock (writer);
     writer.RenderEndTag();
 
     //  Menu Block
@@ -714,24 +810,12 @@ public class BocList:
     writer.RenderEndTag();  //  TR
 
     writer.RenderEndTag();  //  Table
-
-    //  The navigation block
-    if (_alwaysShowPageInfo || _pageCount > 1)
-      RenderNavigator (writer);
-
-    //  Close the control
-    writer.RenderEndTag();
   }
 
   /// <summary> Renders the menu block of the control. </summary>
   /// <remarks> 
-  ///   <para>
-  ///     The menu block is rendered to the right of the list, 
-  ///     using a <c>div</c>-tag with an <c>absolute position</c>.
-  ///   </para><para> 
-  ///     Contains the drop down list for selcting a column configuration 
-  ///     and the options menu. 
-  ///   </para>
+  ///   Contains the drop down list for selcting a column configuration 
+  ///   and the options menu. 
   /// </remarks>
   /// <param name="writer"> 
   ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
@@ -740,8 +824,6 @@ public class BocList:
   {
     if (_showAdditionalColumnsList)
     {
-      writer.AddStyleAttribute ("position", "relative");
-      writer.AddStyleAttribute ("z-index", "10");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.Write (_additionalColumnsTitle + c_whiteSpace);
@@ -751,62 +833,47 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    //_dropDownMenu.RenderControl (writer);
+    _dropDownMenu.TitleText = _optionsTitle;
+    _dropDownMenu.RenderControl (writer);
 
     #region Temporay filling material
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 1");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 2");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 3");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 4");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 5");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 6");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 7");
 //    writer.RenderEndTag();
-//    writer.AddStyleAttribute ("position", "relative");
-//    writer.AddStyleAttribute ("z-index", "10");
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
 //    writer.RenderBeginTag (HtmlTextWriterTag.Div);
 //    writer.Write ("Other stuff 8");
 //    writer.RenderEndTag();
@@ -817,7 +884,7 @@ public class BocList:
   /// <param name="writer"> 
   ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
   /// </param>
-  private void RenderListBlock (HtmlTextWriter writer)
+  private void RenderTableBlock (HtmlTextWriter writer)
   {
     //  The table non-data sections
     RenderTableOpeningTag (writer);
@@ -991,8 +1058,8 @@ public class BocList:
   /// </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
-    if (! Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    //  TODO: Browser Switch: Css2.1: 100%, IE 5.01: auto
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
@@ -1857,11 +1924,12 @@ public class BocList:
     {
       if (EnableClientScript) 
       {
-        bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
-                                ||   Context.Request.Browser.MajorVersion == 5 
-                                  && Context.Request.Browser.MinorVersion >= 0.5;
+        bool isVersionGreaterOrEqual55 = 
+               Context.Request.Browser.MajorVersion >= 6
+            ||    Context.Request.Browser.MajorVersion == 5 
+               && Context.Request.Browser.MinorVersion >= 0.5;
         bool isInternetExplorer55AndHigher = 
-            Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
+            Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual55;
 
         _hasClientScript = isInternetExplorer55AndHigher;
 
@@ -2242,20 +2310,6 @@ public class BocList:
     { 
       Events.RemoveHandler (EventCommandClick, value);
     }
-  }
-
-  /// <summary> Gets or sets the width of the list of values. </summary>
-  /// <remarks> 
-  ///   For optimum result, the <see cref="ListBlockWidth"/> should be comaptible with
-  ///   both the <see cref="MenuBlockWidth"/> and the <see cref="Width"/> of the control.
-  /// </remarks>
-  [Category ("Appearance")]
-  [Description ("The width of the list of values.")]
-  [DefaultValue (typeof (Unit), "")]
-  public Unit ListBlockWidth
-  {
-    get { return _listBlockWidth; }
-    set { _listBlockWidth = value; }
   }
 
   /// <summary> Gets or sets the width reserved for the menu block. </summary>
