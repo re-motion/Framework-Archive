@@ -19,7 +19,7 @@ table.formGridTable
 {
   border-collapse: separate;
   border-width: 1px;
-  width: 100%
+  width: 100%;
 }
 
 /*  Style applied to the title cell  */
