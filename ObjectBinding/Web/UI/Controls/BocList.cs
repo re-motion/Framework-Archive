@@ -25,6 +25,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Sort-Buttons
 // TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
 // TODO: BocList: Add Flag: Show all properties. Insert after fixed columns
+[DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
   BusinessObjectBoundModifiableWebControl, 
@@ -76,6 +77,8 @@ public class BocList:
   /// <summary> The log4net logger. </summary>
   private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+  private static readonly object EventCommandClick = new object();
+
 	// member fields
 
   /// <summary></summary>
@@ -94,8 +97,11 @@ public class BocList:
   /// <summary> The <see cref="Style"/> applied to the <see cref="_additionalColumnsList"/>. </summary>
   private DropDownListStyle _additionalColumnsListStyle = new DropDownListStyle();
 
-  // can only be set at design time.
+  /// <summary> The user independent column defintions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
+
+  /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
+  private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
   
   // may be set at run time. these columnDefinitions do usually not contain commands.
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
@@ -103,23 +109,14 @@ public class BocList:
   // the command to be used for the first ValueColumnDefinition column
   private BocItemCommand _firstColumnCommand;
  
+  //  If true, generates columns for all properties
   private bool _showAllProperties;
-
-
-  public bool ShowAllProperties
-  {
-    get { return _showAllProperties; }
-    set { _showAllProperties = value; }
-  }
 
   // show check boxes for each object
   private bool _showSelection = false;
   
   // show drop down list for selecting additional columnDefinitions
   private bool _showAdditionalColumnsList = true;
-
-  // user may choose one ColumnDefinitionSet
-  private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
 
   // Null, 0: show all objects, > 0: show n objects per page
   private NaInt32 _pageSize = NaInt32.Null; 
@@ -142,8 +139,6 @@ public class BocList:
   private MoveOption _move = MoveOption.Undefined;
 
   private string _pageInfo = "Page {0} of {1}";
-
-  public event BocColumnCommandClickEventHandler ColumnCommandClick;
 
   // construction and disposing
 
@@ -265,25 +260,39 @@ public class BocList:
     if (columnIndex >= _fixedColumns.Count)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of fixed columns.'");
 
+    BocCommandColumnDefinition column = null;
     BocItemCommand command = null;
 
     if (columnIndex == -1)
     {
       command = _firstColumnCommand;
       if (command == null)
-        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does have a command for the first value column.");
+        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command for the first value column.");
     }
     else
     {
-      BocCommandColumnDefinition column = _fixedColumns[columnIndex] as BocCommandColumnDefinition;
-      if (column == null)
-        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does have a command inside column " + columnIndex + ".");
+      column = _fixedColumns[columnIndex] as BocCommandColumnDefinition;
+      if (column.Command == null)
+        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
       
       command = column.Command;
     }
 
     switch (command.Type)
     {
+      case BocItemCommandType.Event:
+      {
+        string columnID = string.Empty;
+        if (column != null)
+        {
+          if (StringUtility.IsNullOrEmpty (column.ID))
+            throw new InvalidOperationException ("The column No. " + columnIndex + " does not have an ID but raised an event.");
+          columnID = column.ID;
+        }
+
+        OnCommandClick (columnID, listIndex, businessObjectID);
+        break;
+      }
       case BocItemCommandType.WxeFunction:
       {
         command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, businessObjectID);
@@ -304,14 +313,21 @@ public class BocList:
   ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
   ///   applied on.
   /// </param>
-  protected virtual void OnColumnCommandClick (
+  protected virtual void OnCommandClick (
     string columnID, 
     int listIndex, 
     string businessObjectID)
   {
-    if (ColumnCommandClick != null)
-      ColumnCommandClick (this, new BocColumnCommandClickEventArgs (columnID, listIndex, businessObjectID));
+    BocItemCommandClickEventHandler commandClickHandler = 
+      (BocItemCommandClickEventHandler) Events[EventCommandClick];
+    if (commandClickHandler != null)
+    {
+      BocItemCommandClickEventArgs e = 
+        new BocItemCommandClickEventArgs (columnID, listIndex, businessObjectID);
+      commandClickHandler (this, e);
+    }
   }
+
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
@@ -1163,6 +1179,9 @@ public class BocList:
     return true;
   }
 
+
+  /// <summary> The user independent column defintions. </summary>
+  /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Column Definition")]
@@ -1173,6 +1192,7 @@ public class BocList:
     get { return _fixedColumns; }
   }
 
+  /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   //  No designer support intended
   //  [PersistenceMode(PersistenceMode.InnerProperty)]
   //  [ListBindable (false)]
@@ -1185,11 +1205,10 @@ public class BocList:
     get { return _availableColumnDefinitionSets; }
   }
 
-  private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
-  {
-    PopulateAdditionalColumnsList();
-  }
-
+  /// <summary>
+  ///   The currently selected <see cref="ColumnDefinitionSet"/> used to supplement the 
+  ///   <see cref="FixedColumns"/>.
+  /// </summary>
   [Browsable (false)]
   public BocColumnDefinitionSet SelectedColumnDefinitionSet
   {
@@ -1219,6 +1238,11 @@ public class BocList:
 
       _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex;
     }
+  }
+
+  private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
+  {
+    PopulateAdditionalColumnsList();
   }
 
   [Browsable (false)]
@@ -1293,6 +1317,15 @@ public class BocList:
     set { _showSelection = value; }
   }
 
+  [Category ("Behavior")]
+  [Description ("If true, the list generates column for all properties of the bound object.")]
+  [DefaultValue (false)]
+  public bool ShowAllProperties
+  {
+    get { return _showAllProperties; }
+    set { _showAllProperties = value; }
+  }
+
   /// <summary>
   ///   Set <see langword="true"/> to display an icon in front of the first value column.
   /// </summary>
@@ -1315,6 +1348,19 @@ public class BocList:
   {
     get { return _pageInfo; }
     set { _pageInfo = value; }
+  }
+
+  [Category ("Action")]
+  public event BocItemCommandClickEventHandler CommandClick
+  {
+    add 
+    {
+      Events.AddHandler (EventCommandClick, value);
+    }
+    remove 
+    { 
+      Events.RemoveHandler (EventCommandClick, value);
+    }
   }
 
   private bool IsPostBack
@@ -1355,9 +1401,9 @@ public class BocList:
   { get { return "bocListNavigator"; } }
 }
 
-public delegate void BocColumnCommandClickEventHandler (object sender, BocColumnCommandClickEventArgs e);
+public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
 
-public class BocColumnCommandClickEventArgs: EventArgs
+public class BocItemCommandClickEventArgs: EventArgs
 {
   private string _columnID;
   private int _listIndex;
@@ -1372,7 +1418,7 @@ public class BocColumnCommandClickEventArgs: EventArgs
   ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
   ///   applied on.
   /// </param>
-  public BocColumnCommandClickEventArgs (
+  public BocItemCommandClickEventArgs (
     string columnID, 
     int listIndex, 
     string businessObjectID)

@@ -16,13 +16,12 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   A <see cref="BocItemCommand"/> defines an action the user can invoke on a datarow.
 /// </summary>
-//  TODO: BocItemCommand: Event
 //  TODO: BocItemCommand: Script
-//  TODO: WireUp Event
-[TypeConverter (typeof (BocItemCommandConverter))]
+[TypeConverter (typeof (ExpandableObjectConverter))]
+//[TypeConverter (typeof (BocItemCommandConverter))]
 public class BocItemCommand
 {
-  [TypeConverter (typeof (HrefCommandPropertiesConverter))]
+  [TypeConverter (typeof (ExpandableObjectConverter))]
   public class HrefCommandProperties
   {
     private string _href;
@@ -50,8 +49,8 @@ public class BocItemCommand
       return stringBuilder.ToString();
     }
 
-
-    public static HrefCommandProperties Parse (string value)
+    [Obsolete()]
+    internal static HrefCommandProperties Parse (string value)
     {
       // parse the format "href" or "href, target"
       string[] properties = ((string) value).Split (',');
@@ -114,7 +113,7 @@ public class BocItemCommand
     }
   }
 
-  [TypeConverter (typeof (WxeFunctionCommandPropertiesConverter))]
+  [TypeConverter (typeof (ExpandableObjectConverter))]
   public class WxeFunctionCommandProperties
   {
     private string _typeName;
@@ -144,8 +143,8 @@ public class BocItemCommand
       return stringBuilder.ToString();
     }
 
-
-    public static WxeFunctionCommandProperties Parse (string value)
+    [Obsolete()]
+    internal static WxeFunctionCommandProperties Parse (string value)
     {
       // parse the format "functionTypeName ([parameter1[, parameter2[, ...]]])"
       string[] properties = ((string) value).Split ('(');
@@ -190,11 +189,10 @@ public class BocItemCommand
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    //[Category ("Behavior")]
-    //[Description ("A list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
+    [Category ("Behavior")]
+    [Description ("A list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
     [DefaultValue((string) null)]
-    //[NotifyParentProperty (true)]
-    [Browsable (false)]
+    [NotifyParentProperty (true)]
     public string[] Parameters
     {
       get
@@ -210,18 +208,8 @@ public class BocItemCommand
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("A comma seperated list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
     [DefaultValue ("")]
-    [NotifyParentProperty (true)]
-    //[Browsable (false)]
-    //  WORKAROUND: BocItemCommand: string[] Parameters causes a null reference exception
-    //  when the list is changed in BocList.FirstValueColumnCommand
-    //  This only happens if the aspx-file is not saved after editing the property.
-    //  It also does not happen with BocItemCommands used in BocCommandColumns.
-    //  Could be a Designer-internal problem caused by too many expandable objects 
-    //  or it could be a bug in this construct, manly the applied designer attributes.
-    //  Remember to change WxeFunctionPropetiesConverter as well when returning to the string[].
+    [Browsable (false)]
     public string ParameterList
     {
       get
@@ -254,21 +242,18 @@ public class BocItemCommand
     }
   }
 
-  public class EventCommandProperties
-  {
-  }
-
   public class ScriptCommandProperties
   {
   }
 
-  private BocItemCommandType _type = BocItemCommandType.Href;
+  private BocItemCommandType _type = BocItemCommandType.Event;
   private BocItemCommandShow _show = BocItemCommandShow.Always;
 
-  private HrefCommandProperties _hrefCommand = new HrefCommandProperties();
-  private WxeFunctionCommandProperties _wxeFunctionCommand = new WxeFunctionCommandProperties();
-  private EventCommandProperties _eventCommand = new EventCommandProperties();
-  private ScriptCommandProperties _scriptCommand = new ScriptCommandProperties();
+  private HrefCommandProperties _hrefCommand = null;
+  private WxeFunctionCommandProperties _wxeFunctionCommand = null;
+  //private ScriptCommandProperties _scriptCommand = null;
+
+  private bool _isCommandTypeInitialized = false;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -330,6 +315,13 @@ public class BocItemCommand
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
         break;
       }
+      case BocItemCommandType.Event:
+      {
+        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+
+        break;
+      }
       case BocItemCommandType.WxeFunction:
       {
         ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
@@ -376,9 +368,9 @@ public class BocItemCommand
   {
     StringBuilder stringBuilder = new StringBuilder (50);
 
-    stringBuilder.Append (_type.ToString());
+    stringBuilder.Append (Type.ToString());
 
-    switch (_type)
+    switch (Type)
     {
       case BocItemCommandType.Href:
       {
@@ -444,8 +436,39 @@ public class BocItemCommand
   [NotifyParentProperty (true)]
   public BocItemCommandType Type
   {
-    get { return _type; }
-    set { _type = value; }
+    get
+    {
+      if (!_isCommandTypeInitialized)
+        _isCommandTypeInitialized = true;
+      return _type; 
+    }
+    set 
+    {
+      _type = value; 
+      if (!_isCommandTypeInitialized)
+        _isCommandTypeInitialized = true;
+      switch (_type)
+      {
+        case BocItemCommandType.Href:
+        {
+          _hrefCommand = new HrefCommandProperties();
+          _wxeFunctionCommand = null;
+          break;
+        }
+        case BocItemCommandType.WxeFunction:
+        {
+          _hrefCommand = null;
+          _wxeFunctionCommand = new WxeFunctionCommandProperties();
+          break;
+        }
+        default:
+        {
+          _hrefCommand = null;
+          _wxeFunctionCommand = null;
+         break;
+        }
+      }
+    }
   }
 
   /// <summary>
@@ -477,12 +500,16 @@ public class BocItemCommand
   {
     get
     {
-      if (_type != BocItemCommandType.Href)
-        return new HrefCommandProperties();
+      if (!_isCommandTypeInitialized)
+        Type = BocItemCommandType.Href;
       return _hrefCommand; 
     }
     set
     { 
+      if (!_isCommandTypeInitialized)
+        Type = BocItemCommandType.Href;
+      if (_type != BocItemCommandType.Href)
+        throw new InvalidOperationException ("HrefCommand can only be set if Type is Href.");
       _hrefCommand = value;
     }
   }
@@ -497,12 +524,16 @@ public class BocItemCommand
   {
     get 
     {
-      if (_type != BocItemCommandType.WxeFunction)
-        return new WxeFunctionCommandProperties();
+      if (!_isCommandTypeInitialized)
+        Type = BocItemCommandType.WxeFunction;
       return _wxeFunctionCommand; 
     }
     set 
     {
+      if (!_isCommandTypeInitialized)
+        Type = BocItemCommandType.WxeFunction;
+      if (_type != BocItemCommandType.WxeFunction)
+        throw new InvalidOperationException ("WxeFunctionCommand can only be set if Type is WxeFunction.");
       _wxeFunctionCommand = value; 
     }
   }
@@ -511,6 +542,7 @@ public class BocItemCommand
 // TODO: BocItemCommandType: Documentation
 public enum BocItemCommandType
 {
+  Event,
   Href,
   WxeFunction
 }
