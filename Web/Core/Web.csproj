@@ -217,11 +217,11 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Res\HTML\FormGridTemplate.css"
+                    RelPath = "Res\HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\PopupCalendar.js"
+                    RelPath = "Res\HTML\FormGridTemplate.css"
                     BuildAction = "Content"
                 />
                 <File
@@ -238,6 +238,11 @@
                 />
                 <File
                     RelPath = "Res\Image\ValidationError.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UI\DatePickerForm.aspx"
+                    SubType = "Form"
                     BuildAction = "Content"
                 />
                 <File
@@ -316,6 +321,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\DatePickerPage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\DateRangeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -377,11 +387,6 @@
                 />
                 <File
                     RelPath = "UI\Controls\LengthValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\PopUpCalendar.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
