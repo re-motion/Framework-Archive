@@ -186,11 +186,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable
   /// <summary>
   /// Returns a cloned version of this collection. Must be overridden in derived classes.
   /// </summary>
-  /// <param name="isReadOnly">Specifies whether the cloned collection should be read-only.</param>
+  /// <param name="makeReadOnly">Specifies whether the cloned collection should be read-only.</param>
   /// <returns>The cloned collection.</returns>
-  public virtual DomainObjectCollection Clone (bool isReadOnly)
+  public virtual DomainObjectCollection Clone (bool makeReadOnly)
   {
-    return new DomainObjectCollection (this, isReadOnly);
+    return new DomainObjectCollection (this, makeReadOnly);
   }
 
   #endregion
