@@ -80,7 +80,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
@@ -91,6 +91,26 @@
                 <Reference
                     Name = "ObjectBinding.Reflection"
                     Project = "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding.Web"
+                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "system.web"
+                    AssemblyName = "system.web"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.web.dll"
+                />
+                <Reference
+                    Name = "ObjectBinding"
+                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
@@ -109,6 +129,11 @@
                 />
                 <File
                     RelPath = "Person.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PersonTreeView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
