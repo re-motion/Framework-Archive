@@ -123,23 +123,11 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     }
   }
 
-  public DomainObjectCollection OriginalOppositeDomainObjects
-  {
-    get { return _originalOppositeDomainObjects; }
-  }
-
-  public DomainObjectCollection OppositeDomainObjects
-  {
-    get { return _oppositeDomainObjects; }
-  }
-
-  public ICollectionEndPointChangeDelegate ChangeDelegate
-  {
-    set { _changeDelegate = value; }
-  }
-
   public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+
     _oldEndPoint = oldEndPoint;
     _newEndPoint = newEndPoint;
 
@@ -150,6 +138,23 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       return false;
 
     return base.BeginRelationChange (oldEndPoint, newEndPoint);
+  }
+
+  public override void PerformRelationChange ()
+  {
+    if (_oldEndPoint == null || _newEndPoint == null)
+      throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
+
+    if (IsAddOperation ())
+      _oppositeDomainObjects.PerformAdd (_newEndPoint.GetDomainObject ());
+
+    if (IsRemoveOperation ())
+      _oppositeDomainObjects.PerformRemove (_oldEndPoint.GetDomainObject ());
+  }
+
+  public override void PerformDelete ()
+  {
+    _oppositeDomainObjects.PerformClear ();
   }
 
   public override void EndRelationChange ()
@@ -163,7 +168,25 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (IsRemoveOperation ())
       _oppositeDomainObjects.EndRemove (_oldEndPoint.GetDomainObject ());
 
+    _oldEndPoint = null;
+    _newEndPoint = null;
+
     base.EndRelationChange ();
+  }
+
+  public DomainObjectCollection OriginalOppositeDomainObjects
+  {
+    get { return _originalOppositeDomainObjects; }
+  }
+
+  public DomainObjectCollection OppositeDomainObjects
+  {
+    get { return _oppositeDomainObjects; }
+  }
+
+  public ICollectionEndPointChangeDelegate ChangeDelegate
+  {
+    set { _changeDelegate = value; }
   }
 
   private bool IsAddOperation ()

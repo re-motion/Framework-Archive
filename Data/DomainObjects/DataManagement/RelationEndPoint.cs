@@ -97,6 +97,8 @@ public abstract class RelationEndPoint : INullable
   public abstract void Commit ();
   public abstract void Rollback ();
   public abstract void CheckMandatory ();
+  public abstract void PerformRelationChange ();
+  public abstract void PerformDelete ();
 
   // methods and properties
 

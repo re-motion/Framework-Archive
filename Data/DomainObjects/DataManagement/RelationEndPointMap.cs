@@ -63,29 +63,32 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
     {
+      RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
+
+      RelationEndPointCollection allOppositeEndPoints = 
+          _relationEndPoints.GetOppositeRelationEndPoints (endPoint);
+
+      foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
+      {
+        if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
+        {
+          ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
+              RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
+        }
+        else
+        {
+          ((CollectionEndPoint) oppositeEndPoint).OppositeDomainObjects.PerformRemove (domainObject);
+        }
+      }
+
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {
-        ObjectEndPoint objectEndPoint = (ObjectEndPoint) GetRelationEndPointWithLazyLoad (endPointID);
-        
-        RelationEndPointCollection allOppositeEndPoints = 
-            _relationEndPoints.GetOppositeRelationEndPoints (objectEndPoint);
-
-        foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
-        {
-          if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
-          {
-            ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
-                RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
-          }
-          else
-          {
-            CollectionEndPoint oppositeCollectionEndPoint = (CollectionEndPoint) oppositeEndPoint;
-            oppositeCollectionEndPoint.OppositeDomainObjects.PerformRemove (domainObject);
-          }
-        }
-
-        objectEndPoint.SetOppositeEndPoint (
-          RelationEndPoint.CreateNullRelationEndPoint (objectEndPoint.OppositeEndPointDefinition));
+        ((ObjectEndPoint) endPoint).SetOppositeEndPoint (
+            RelationEndPoint.CreateNullRelationEndPoint (endPoint.OppositeEndPointDefinition));
+      }
+      else
+      {
+        ((CollectionEndPoint) endPoint).OppositeDomainObjects.PerformClear ();
       }
     }
 
@@ -278,6 +281,18 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
     {
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
+      
+      if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.Many)
+      {
+        ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
+        if (objectEndPoint.OppositeObjectID != null)
+        {
+          RelationEndPointID oppositeEndPointID = 
+              new RelationEndPointID (objectEndPoint.OppositeObjectID, objectEndPoint.OppositeEndPointDefinition);
+
+          GetRelatedObjects (oppositeEndPointID);
+        }
+      }
 
       allRelationEndPoints.Add (endPoint);
       allRelationEndPoints.Merge (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));

@@ -35,9 +35,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
     _orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
     _order = _orderItem.Order;
 
-    _eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] {_orderItem, _order},
-        new DomainObjectCollection[] {_order.OrderItems});
+    _eventReceiver = CreateEventReceiver ();
   }
 
   [Test]
@@ -120,6 +118,30 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
     Assert.IsNull (_orderItem.DataContainer["Order"]);
     Assert.AreEqual (StateType.Changed, _order.State);
     Assert.AreEqual (StateType.Original, _order.DataContainer.State);
+  }
+
+  [Test]
+  public void ChangePropertyBeforeDeletion ()
+  {
+    _orderItem.Order = null;
+    _eventReceiver = CreateEventReceiver ();
+
+    _orderItem.Delete ();
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
+      new ObjectDeletionState (_orderItem, "2. Deleted event of orderItem"),
+    };
+
+    _eventReceiver.Compare (expectedStates);
+  }
+
+  private SequenceEventReceiver CreateEventReceiver ()
+  {
+    return new SequenceEventReceiver (
+        new DomainObject[] {_orderItem, _order},
+        new DomainObjectCollection[] {_order.OrderItems});
   }
 }
 }

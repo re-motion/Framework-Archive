@@ -14,6 +14,7 @@ public class ObjectEndPoint : RelationEndPoint, INullable
 
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
+  private RelationEndPoint _newEndPoint;
 
   // construction and disposing
 
@@ -122,7 +123,25 @@ public class ObjectEndPoint : RelationEndPoint, INullable
     }    
   }
 
-  public virtual void SetOppositeEndPoint (RelationEndPoint endPoint)
+  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+
+    _newEndPoint = newEndPoint;
+
+    return base.BeginRelationChange (oldEndPoint, newEndPoint);
+  }
+
+  public override void PerformRelationChange ()
+  {
+    if (_newEndPoint == null)
+      throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
+
+    PerformRelationChange (_newEndPoint);
+  }
+
+  public virtual void PerformRelationChange (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
@@ -133,6 +152,21 @@ public class ObjectEndPoint : RelationEndPoint, INullable
       DataContainer dataContainer = GetDataContainer ();
       dataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
     }
+  }
+
+  public override void PerformDelete ()
+  {
+    PerformRelationChange (RelationEndPoint.CreateNullRelationEndPoint (OppositeEndPointDefinition));
+  }
+
+  public override void EndRelationChange ()
+  {
+    if (_newEndPoint == null)
+      throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
+
+    _newEndPoint = null;
+
+    base.EndRelationChange ();
   }
 
   public ObjectID OriginalOppositeObjectID

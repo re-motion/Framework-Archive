@@ -27,6 +27,15 @@ public class NullCollectionEndPoint : CollectionEndPoint
     return true;
   }
 
+  public override void PerformRelationChange ()
+  {
+  }
+
+  public override void PerformDelete ()
+  {
+    throw new InvalidOperationException ("PerformDelete cannot be called on a NullCollectionEndPoint.");    
+  }
+
   public override void EndRelationChange ()
   {
   }

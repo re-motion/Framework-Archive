@@ -248,6 +248,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     OnRemoved (new DomainObjectCollectionChangedEventArgs (domainObject));
   }
 
+  internal void PerformClear ()
+  {
+    base.ClearCollection ();
+  }
+
   private void CheckItemType (Type requiredType, Type itemType)
   {
     if (!ValidateItemType (requiredType, itemType))

@@ -37,9 +37,7 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
     _subordinate1 = (Employee) _supervisor.Subordinates[0];
     _subordinate2 = (Employee) _supervisor.Subordinates[1];
 
-    _eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] {_supervisor, _subordinate1, _subordinate2},
-        new DomainObjectCollection[] {_supervisor.Subordinates});
+    _eventReceiver = CreateEventReceiver ();
   }
 
   [Test]
@@ -91,22 +89,44 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
     _eventReceiver.Compare (expectedStates);
   }
 
-// TODO: Implement this test: Collection must be cloned. Be aware that this conflicts with a
-// many to one relation change!!!
-//  [Test]
-//  public void Relations ()
-//  {
-//    int numberOfSubordinatesBeforeDelete = _supervisor.Subordinates.Count;
-//
-//    _supervisor.Delete ();
-//
-//    Assert.AreEqual (numberOfSubordinatesBeforeDelete, _supervisor.Subordinates.Count);
-//    Assert.IsNull (_subordinate1.Supervisor);
-//    Assert.IsNull (_subordinate2.Supervisor);
-//    Assert.IsNull (_subordinate1.DataContainer["Order"]);
-//    Assert.IsNull (_subordinate2.DataContainer["Order"]);
-//    Assert.AreEqual (StateType.Changed, _subordinate1.DataContainer.State);
-//    Assert.AreEqual (StateType.Changed, _subordinate2.DataContainer.State);
-//  }
+  [Test]
+  public void Relations ()
+  {
+    int numberOfSubordinatesBeforeDelete = _supervisor.Subordinates.Count;
+
+    _supervisor.Delete ();
+
+    Assert.AreEqual (0, _supervisor.Subordinates.Count);
+    Assert.IsNull (_subordinate1.Supervisor);
+    Assert.IsNull (_subordinate2.Supervisor);
+    Assert.IsNull (_subordinate1.DataContainer["Supervisor"]);
+    Assert.IsNull (_subordinate2.DataContainer["Supervisor"]);
+    Assert.AreEqual (StateType.Changed, _subordinate1.DataContainer.State);
+    Assert.AreEqual (StateType.Changed, _subordinate2.DataContainer.State);
+  }
+
+  [Test]
+  public void ChangePropertyBeforeDeletion ()
+  {
+    _supervisor.Subordinates.Clear ();
+    _eventReceiver = CreateEventReceiver ();
+
+    _supervisor.Delete ();
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
+      new ObjectDeletionState (_supervisor, "2. Deleted of supervisor"),
+    };
+
+    _eventReceiver.Compare (expectedStates);
+  }
+
+  private SequenceEventReceiver CreateEventReceiver ()
+  {
+    return new SequenceEventReceiver (
+        new DomainObject[] {_supervisor, _subordinate1, _subordinate2},
+        new DomainObjectCollection[] {_supervisor.Subordinates});
+  }
 }
 }

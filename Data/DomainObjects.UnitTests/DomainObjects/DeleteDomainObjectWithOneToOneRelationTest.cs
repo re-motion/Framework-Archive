@@ -35,9 +35,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     _orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
     _order = _orderTicket.Order;
 
-    _eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] {_orderTicket, _order},
-        new DomainObjectCollection[] {_order.OrderItems});
+    _eventReceiver = CreateEventReceiver ();
   }
 
   [Test]
@@ -49,7 +47,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     {
       new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
       new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order"),
-      new ObjectDeletionState (_orderTicket, "3. Deleted event of orderItem"),
+      new ObjectDeletionState (_orderTicket, "3. Deleted event of orderTicket"),
       new RelationChangeState (_order, "OrderTicket", null, null, "4. Relation changed event of order"),
     };
 
@@ -108,7 +106,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
   }
 
   [Test]
-  public void DomainObjectWithNonVirtualProperty ()
+  public void NonVirtualProperty ()
   {
     _orderTicket.Delete ();
 
@@ -119,16 +117,56 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     Assert.AreEqual (StateType.Original, _order.DataContainer.State);
   }
 
-// TODO: Implement this test:
-//  [Test]
-//  public void DomainObjectWithVirtualProperty ()
-//  {
-//    _order.Delete ();
-//
-//    Assert.IsNull (_orderTicket.Order);
-//    Assert.IsNull (_order.OrderTicket);
-//    Assert.IsNull (_orderTicket.DataContainer["Order"]);
-//    Assert.AreEqual (StateType.Changed, _orderTicket.DataContainer.State);
-//  }
+  [Test]
+  public void VirtualProperty ()
+  {
+    _order.Delete ();
+
+    Assert.IsNull (_orderTicket.Order);
+    Assert.IsNull (_order.OrderTicket);
+    Assert.IsNull (_orderTicket.DataContainer["Order"]);
+    Assert.AreEqual (StateType.Changed, _orderTicket.DataContainer.State);
+  }
+
+  [Test]
+  public void ChangeNonVirtualPropertyBeforeDeletion ()
+  {
+    _orderTicket.Order = null;
+    _eventReceiver = CreateEventReceiver ();
+
+    _orderTicket.Delete ();
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
+      new ObjectDeletionState (_orderTicket, "2. Deleted event of orderTicket"),
+    };
+
+    _eventReceiver.Compare (expectedStates);
+  }
+
+  [Test]
+  public void ChangeVirtualPropertyBeforeDeletion ()
+  {
+    _order.OrderTicket = null;
+    _eventReceiver = CreateEventReceiver ();
+
+    _order.Delete ();
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new ObjectDeletionState (_order, "1. Deleting event of ordert"),
+      new ObjectDeletionState (_order, "2. Deleted event of order"),
+    };
+
+    _eventReceiver.Compare (expectedStates);
+  }
+
+  private SequenceEventReceiver CreateEventReceiver ()
+  {
+    return new SequenceEventReceiver (
+        new DomainObject[] {_orderTicket, _order},
+        new DomainObjectCollection[] {_order.OrderItems});
+  }
 }
 }

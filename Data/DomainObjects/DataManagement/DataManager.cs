@@ -112,7 +112,7 @@ public class DataManager
       RelationEndPointCollection allOppositeRelationEndPoints = 
           allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
 
-      _relationEndPointMap.Delete (domainObject);
+      _relationEndPointMap.PerformDelete (domainObject);
 
       EndDelete (domainObject, allOppositeRelationEndPoints);
     }
