@@ -247,7 +247,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     Add (collectionEndPoint);
   }
 
-  public void Register (DataContainer dataContainer)
+  public void RegisterExistingDataContainer (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
@@ -362,17 +362,14 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
     {
-      if (endPointID.Definition.IsVirtual)
+      if (endPointID.Definition.Cardinality == CardinalityType.One) 
       {
-        if (endPointID.Definition.Cardinality == CardinalityType.One) 
-        {
-          RegisterObjectEndPoint (endPointID, null);
-        }
-        else
-        {
-          DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
-          RegisterCollectionEndPoint (endPointID, domainObjects);
-        }
+        RegisterObjectEndPoint (endPointID, null);
+      }
+      else
+      {
+        DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
+        RegisterCollectionEndPoint (endPointID, domainObjects);
       }
     }
   }
