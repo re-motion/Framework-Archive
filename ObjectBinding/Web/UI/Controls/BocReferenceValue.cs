@@ -465,7 +465,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   ///   Use this method when manually setting the listed items, e.g. from the parent control.
   /// </remarks>
   /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
-  public void SetBusinessObjectReferenceList (IBusinessObjectWithIdentity[] businessObjects)
+  public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
     ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
@@ -476,7 +476,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
   ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
-  public void RefreshBusinessObjectList()
+  /// <remarks> 
+  ///   Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
+  ///   <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
+  /// </remarks>
+  protected void RefreshBusinessObjectList()
   {
     if (Property == null)
       return;
@@ -500,7 +504,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
   ///   <see cref="DropDownList"/>.
   /// </param>
-  public virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
+  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
     if (! IsReadOnly)
     {
