@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -554,21 +555,29 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   private void PreRenderReadOnlyValue()
   {
+    string text;
     if (Value != null)
-      _label.Text = Value.DisplayName;
+      text = HttpUtility.HtmlEncode (Value.DisplayName);
     else
-      _label.Text = String.Empty;
+      text = String.Empty;
+    if (StringUtility.IsNullOrEmpty (text))
+    {
+      if (IsDesignMode)
+      {
+        text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
+      else
+      {
+        text = "&nbsp;";
+      }
+    }
+    _label.Text = text;
 
     _label.Enabled = Enabled;
     _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
-
-    if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
-    {
-      _label.Text = c_designModeEmptyLabelContents;
-      //  Too long, can't resize in designer to less than the content's width
-      //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-    }
   }
 
   /// <summary>
