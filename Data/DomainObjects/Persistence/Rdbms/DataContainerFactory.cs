@@ -1,8 +1,8 @@
 using System;
 using System.Data;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
