@@ -201,6 +201,8 @@ public class ReflectionBusinessObjectDateTimeProperty: ReflectionBusinessObjectN
 
 public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectEnumerationProperty
 {
+  private const string c_disabledPrefix = "Disabled_";
+
   public ReflectionBusinessObjectEnumerationProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
     : base (propertyInfo, itemType, isList)
   {
@@ -208,32 +210,70 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
 
   public IEnumerationValueInfo[] GetEnabledValues()
   {
-    return GetAllValues();
+    return GetValues (false);
   }
 
   public IEnumerationValueInfo[] GetAllValues()
   {
-    Debug.Assert (PropertyInfo.PropertyType.IsEnum, "type.IsEnum");
-    FieldInfo[] fields = PropertyInfo.PropertyType.GetFields (BindingFlags.Static | BindingFlags.Public);
-    IEnumerationValueInfo[] valueInfos = new IEnumerationValueInfo [fields.Length];
-
-    for (int i = 0; i < fields.Length; ++i)
-      valueInfos[i] = new EnumerationValueInfo (fields[i].GetValue (null), fields[i].Name, fields[i].Name, true);
-    return valueInfos;
+    return GetValues (true);
   }
 
+  private IEnumerationValueInfo[] GetValues (bool includeDisabledValues)
+  {
+    Debug.Assert (PropertyInfo.PropertyType.IsEnum, "type.IsEnum");
+    FieldInfo[] fields = PropertyInfo.PropertyType.GetFields (BindingFlags.Static | BindingFlags.Public);
+    ArrayList valueInfos = new ArrayList (fields.Length);
+
+    foreach (FieldInfo field in fields)
+    {
+      bool isEnabled = ! field.Name.StartsWith (c_disabledPrefix);
+
+      if (    ! includeDisabledValues && isEnabled
+          ||  includeDisabledValues)
+      {
+        valueInfos.Add (
+          new EnumerationValueInfo (field.GetValue (null), field.Name, field.Name, isEnabled));
+      }
+    }
+
+    return (IEnumerationValueInfo[]) valueInfos.ToArray (typeof (IEnumerationValueInfo));
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="value">
+  ///   An enum value that belongs to the enum identified by <see cref="PropertyType"/>.
+  /// </param>
+  /// <returns></returns>
   public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
     if (value == null)
+    {
       return null;
+    }
     else
-      return new EnumerationValueInfo (value, value.ToString(), value.ToString(), true);
+    {
+      string valueString = value.ToString();
+
+      //  Test if enum value is correct type, throws an exception if not
+      Enum.Parse (PropertyType, valueString, false);
+
+      bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
+
+      return new EnumerationValueInfo (value, value.ToString(), value.ToString(), isEnabled);
+    }
   }
 
   public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
   {
     object value = Enum.Parse (PropertyType, identifier, false);
-    return new EnumerationValueInfo (value, identifier, identifier, true);
+
+    string valueString = value.ToString();
+
+    bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
+
+    return new EnumerationValueInfo (value, value.ToString(), value.ToString(), isEnabled);
   }
 }
 

@@ -127,14 +127,17 @@ public class Person: ReflectionBusinessObject
 public enum Gender
 {
   Male,
-  Female
+  Female,
+  Disabled_UnknownGender
 }
 
 public enum MarriageStatus
 {
   Married,
   Single, 
-  Divorced
+  Divorced,
+  Disabled_Bigamist,
+  Disabled_Polygamist,
 }
 
 }

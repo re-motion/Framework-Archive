@@ -151,6 +151,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     if (! IsDesignMode)
     {
       string newInternalValue = this.Page.Request.Form[_dropDownList.UniqueID];
+
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;
       else if (newInternalValue != null)
@@ -160,10 +161,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
       if (! Page.IsPostBack)
         RefreshBusinessObjectList();
-    }
 
-    if (_newInternalValue != _internalValue)
-      _isDirty = true;
+      if (newInternalValue != null && _newInternalValue != _internalValue)
+        _isDirty = true;
+    }
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -215,7 +216,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     object[] values = (object[]) savedState;
     base.LoadViewState (values[0]);
-    InternalValue = (string) values[1];    
+    if (values[1] != null)    
+      InternalValue = (string) values[1];    
     _isDirty = (bool) values[2];
 
     _isLoadViewState = false;
@@ -497,11 +499,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <overloads>Overloaded.</overloads>
   /// <summary> Refreshes the sub-controls for the new value. </summary>
-  /// <param name="removeUndefined">
+  /// <param name="removeNullItem">
   ///   <see langword="true"/> to remove the item specifying a null reference.
   ///   Used for required values once they are set to an item different from the null item.
   /// </param>
-  private void InternalLoadValue (bool removeUndefined)
+  private void InternalLoadValue (bool removeNullItem)
   {
     bool hasPropertyAfterInitializion = ! _isLoadViewState && Property != null;
 
@@ -519,7 +521,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
                         ||  ! hasPropertyAfterInitializion;
 
       //  Prevent unnecessary removal
-      if (removeUndefined && ! isNullItem)
+      if (removeNullItem && ! isNullItem)
       {
         ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
         _dropDownList.Items.Remove (itemToRemove);
@@ -547,8 +549,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         {
           IBusinessObjectWithIdentity businessObject = ReferenceValue;
 
-          _dropDownList.Items.Add (
-            new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier));
+          ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+          _dropDownList.Items.Add (item);
 
           _dropDownList.SelectedValue = InternalValue;
         }
@@ -732,11 +734,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       else
         _internalValue = value;
 
-      bool removeUndefined =    IsRequired 
+      bool removeNullItem =    IsRequired 
                             &&  isOldInternalValueNull
                             &&  _internalValue != null;
       
-      InternalLoadValue (removeUndefined);
+      InternalLoadValue (removeNullItem);
     }
   }
 
