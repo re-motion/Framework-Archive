@@ -209,8 +209,8 @@ public class ClassDefinitionTest
   {
     ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
 
-    companyClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-    companyClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
   }
 
   [Test]
@@ -218,12 +218,12 @@ public class ClassDefinitionTest
   public void AddDuplicatePropertyBaseClass ()
   {
     ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
-    companyClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     ClassDefinition customerClass = new ClassDefinition (
         "Customer", "Company", typeof (Customer), "TestDomain", companyClass);    
 
-    customerClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
   }
 
   [Test]
@@ -231,7 +231,7 @@ public class ClassDefinitionTest
   public void AddDuplicatePropertyBaseOfBaseClass ()
   {
     ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
-    companyClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     ClassDefinition partnerClass = new ClassDefinition (
         "Partner", "Company", typeof (Partner), "TestDomain", companyClass);    
@@ -239,7 +239,7 @@ public class ClassDefinitionTest
     ClassDefinition supplierClass = new ClassDefinition (
         "Supplier", "Company", typeof (Supplier), "TestDomain", partnerClass);    
 
-    supplierClass.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
   }
 
   [Test]
