@@ -6,13 +6,21 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// Utility class for methods using reflection.
+/// </summary>
 public sealed class ReflectionUtility
 {
   // types
 
   // static members and constants
 
+  /// <summary>
+  /// Returns the directory of the current executing assembly.
+  /// </summary>
+  /// <returns>The path of the current executing assembly</returns>
   public static string GetExecutingAssemblyPath ()
   {
     AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName ();
@@ -21,6 +29,14 @@ public sealed class ReflectionUtility
     return Path.GetDirectoryName (codeBaseUri.LocalPath);
   }
 
+  /// <summary>
+  /// Creates an object of a given type.
+  /// </summary>
+  /// <param name="type">The <see cref="System.Type"/> of the object to instantiate.</param>
+  /// <param name="constructorParameters">The parameters for the constructor of the object.</param>
+  /// <returns>The object that has been created.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>type</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException">Type <i>type</i> has no suitable constructor for the given <i>constructorParameters</i>.</exception>
   public static object CreateObject (Type type, params object[] constructorParameters)
   {
     ArgumentUtility.CheckNotNull ("type", type);
