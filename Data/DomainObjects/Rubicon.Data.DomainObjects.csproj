@@ -84,9 +84,9 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\References\Rubicon.Core.dll"
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>

@@ -3,6 +3,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
+using System.Reflection;
+using System.ComponentModel;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Utilities;
@@ -182,6 +184,54 @@ public class ControlHelper
     }
   }
 
+  public static object GetDesignTimePropertyValue (Control control, string propertyName)
+  {
+    if (! IsDesignMode (control))
+      return null;
+
+    try
+    {
+      ISite site = control.Site;
+
+      //EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
+      MethodInfo getServiceMethod = site.GetType().GetMethod ("GetService");
+      Type _DTEType = Type.GetType ("EnvDTE._DTE, EnvDTE");
+      object[] arguments = new object[] { _DTEType };
+      object environment = getServiceMethod.Invoke (site, arguments);
+
+      if (environment != null)
+      {
+        //EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;
+        object activeDocument =_DTEType.InvokeMember ("ActiveDocument", BindingFlags.GetProperty, null, environment, null);
+        object projectItem = activeDocument.GetType().InvokeMember ("ProjectItem", BindingFlags.GetProperty, null, activeDocument, null);
+        object project = projectItem.GetType().InvokeMember ("ContainingProject", BindingFlags.GetProperty, null, projectItem, null);
+
+        ////project.Properties uses a 1-based index
+        //foreach (EnvDTE.Property property in project.Properties)
+        object properties = project.GetType().InvokeMember ("Properties", BindingFlags.GetProperty, null, project, null);
+        IEnumerator propertiesEnumerator = (IEnumerator) properties.GetType().InvokeMember ("GetEnumerator", BindingFlags.InvokeMethod, null, properties, null);
+        while (propertiesEnumerator.MoveNext())
+        {
+          object property = propertiesEnumerator.Current;
+
+          //if (property.Name == propertyName)
+          string projectPropertyName = (string) property.GetType().InvokeMember ("Name", BindingFlags.GetProperty, null, property, null);
+          if (projectPropertyName == propertyName)
+          {
+            //return property.Value;
+            return property.GetType().InvokeMember ("Value", BindingFlags.GetProperty, null, property, null);
+          }
+        }
+      }
+    }
+    catch
+    {
+      return null;
+    }
+
+    return null;
+  }
+
   // member fields
 
   // construction and disposing
@@ -191,8 +241,3 @@ public class ControlHelper
 }
 
 }
-
-
-
-
-

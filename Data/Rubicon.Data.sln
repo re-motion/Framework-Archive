@@ -19,9 +19,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "..\ObjectBinding\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "..\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "..\Web\Core\Web.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 11
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {15D953AA-128D-410E-90E9-33617BB62CB3}
@@ -51,6 +67,22 @@ Global
 		SccProjectName6 = \u0022$/libraries/Commons/Data/DomainObjects/ObjectBinding/Web\u0022,\u0020OQZAAAAA
 		SccLocalPath6 = DomainObjects\\ObjectBinding\\Web
 		CanCheckoutShared = false
+		SccProjectUniqueName7 = ..\\Core\\Core.csproj
+		SccProjectName7 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath7 = ..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName8 = ..\\ObjectBinding\\Core\\ObjectBinding.csproj
+		SccProjectName8 = \u0022$/libraries/Commons/ObjectBinding/Core\u0022,\u0020SQTAAAAA
+		SccLocalPath8 = ..\\ObjectBinding\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName9 = ..\\ObjectBinding\\Web\\ObjectBinding.Web.csproj
+		SccProjectName9 = \u0022$/libraries/Commons/ObjectBinding/Web\u0022,\u0020RRTAAAAA
+		SccLocalPath9 = ..\\ObjectBinding\\Web
+		CanCheckoutShared = false
+		SccProjectUniqueName10 = ..\\Web\\Core\\Web.csproj
+		SccProjectName10 = \u0022$/libraries/Commons/Web/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath10 = ..\\Web\\Core
+		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -77,6 +109,22 @@ Global
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug.Build.0 = Debug|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.ActiveCfg = Release|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.Build.0 = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.ActiveCfg = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.ActiveCfg = Debug|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.Build.0 = Debug|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.ActiveCfg = Release|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.Build.0 = Release|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug.ActiveCfg = Debug|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug.Build.0 = Debug|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.ActiveCfg = Release|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.Build.0 = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		References\log4net.dll = References\log4net.dll
