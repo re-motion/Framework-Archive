@@ -139,7 +139,7 @@ public class CollectionBase : ICollection
   /// </summary>
   /// <param name="key">The key of the object to add.</param>
   /// <param name="value">The object to add.</param>
-  /// <exception cref="System.NotSupportedException">The collection is read only.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void Add (object key, object value)
   {
     ArgumentUtility.CheckNotNull ("key", key);
@@ -157,7 +157,7 @@ public class CollectionBase : ICollection
   /// </summary>
   /// <param name="key">The key of the object to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
-  /// <exception cref="System.NotSupportedException">The collection is read only.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void Remove (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
