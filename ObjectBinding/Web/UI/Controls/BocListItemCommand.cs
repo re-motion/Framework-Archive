@@ -20,17 +20,21 @@ namespace Rubicon.ObjectBinding.Web.Controls
 //  TODO: BocItemCommand: Script
 //  TODO: BocItemCommand: WebExecutionEngine
 [TypeConverter (typeof (BocItemCommandConverter))]
-public class BocItemCommand
+public class BocItemCommand: Control, IPostBackEventHandler
 {
+  private string _id;
+
   private BocItemCommandType _type = BocItemCommandType.Href;
   private BocItemCommandShow _show = BocItemCommandShow.Always;
 
   private string _href;
   private string _target;
 
+  private string _functionAssemblyName;
   private string _functionTypeName;
-
   private string[] _functionParameters;
+
+  public event BocItemCommandClickEventHandler Click;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -93,7 +97,17 @@ public class BocItemCommand
       }
       case BocItemCommandType.WxeFunction:
       {
-        WxeFunction function = Function;
+        if (Page == null)
+          throw new InvalidOperationException ("'" + typeof (BocItemCommand).FullName + "' can only be rendered when it is part of a '" + typeof (Page).FullName + "'.");
+                
+        string argument = index.ToString();
+        if (! StringUtility.IsNullOrEmpty (id))
+          argument += "," + id;
+        
+        writer.AddAttribute (
+          HtmlTextWriterAttribute.Href, 
+          Page.GetPostBackClientHyperlink (this, argument));
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
 
         break;
       }
@@ -152,7 +166,7 @@ public class BocItemCommand
       {
         if (! StringUtility.IsNullOrEmpty (FunctionTypeName))
         {
-          stringBuilder.AppendFormat (": {0}", FunctionTypeName);
+          stringBuilder.AppendFormat (": {0}, {1}", FunctionAssemblyName, FunctionTypeName);
           if (FunctionParameters != null)
           {
             stringBuilder.AppendFormat (
@@ -169,6 +183,60 @@ public class BocItemCommand
     }
 
     return stringBuilder.ToString();
+  }
+
+  public void RaisePostBackEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
+
+    int index;
+    string id = null;
+    
+    eventArgumentParts[0] = eventArgumentParts[0].Trim();
+    if (eventArgumentParts[0].Length == 0)
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: 'Int32' or 'Int32,String'.");
+    try 
+    {
+      index = int.Parse (eventArgumentParts[0]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: 'Int32' or 'Int32,String'.");
+    }
+    
+    if (eventArgumentParts.Length > 1)
+      id = eventArgumentParts[1].Trim();
+
+    BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (index, id);
+    OnClick (e);
+  }
+
+  protected void OnClick (BocItemCommandClickEventArgs e)
+  {
+    if (Click != null)
+      Click (this, e);
+  }
+
+  /// <summary> The ID of this command. </summary>
+  /// <value> A <see cref="string"/> providing an identifier for this command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The ID of this command.")]
+  [Category ("Misc")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string ID
+  {
+    get { return _id; }
+    set { _id = value; }
+  }
+
+  [Browsable (false)]
+  public override bool Visible
+  {
+    get { return base.Visible; }
+    set { base.Visible = value; }
   }
 
   /// <summary>
@@ -232,18 +300,35 @@ public class BocItemCommand
     }
   }
 
-  [Browsable (false)]
-  public WxeFunction Function
+//  [Browsable (false)]
+//  public WxeFunction Function
+//  {
+//    get
+//    {
+//      if (_type != BocItemCommandType.WxeFunction)
+//        return null;
+//
+//      Type functionType = System.Type.GetType (FunctionTypeName); 
+//      return Activator.CreateInstance (functionType);
+//    }
+//  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Type: WxeFunction")]
+  [Description ("The assembly containing the WxeFunction used for this command.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string FunctionAssemblyName
   {
     get
     {
       if (_type != BocItemCommandType.WxeFunction)
         return null;
-
-      Type functionType = System.Type.GetType (FunctionTypeName); 
-
-
-      return null;
+      return StringUtility.NullToEmpty (_functionAssemblyName); 
+    }
+    set 
+    {
+      _functionAssemblyName = value; 
     }
   }
 
@@ -354,4 +439,29 @@ public enum BocItemCommandShow
   ReadOnly,
   EditMode
 }
+
+public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
+
+public class BocItemCommandClickEventArgs: EventArgs
+{
+  private int _index;
+  private string _id;
+
+  public BocItemCommandClickEventArgs (int index, string id)
+  {
+    _index = index;
+    _id = StringUtility.EmptyToNull (id);
+  }
+
+  public int Index
+  {
+    get { return _index; }
+  }
+
+  public string ID
+  {
+    get { return _id; }
+  }
+}
+
 }

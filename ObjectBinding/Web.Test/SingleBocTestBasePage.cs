@@ -14,6 +14,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace OBWTest
 {
 
+[MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WebFormBase:
   WxePage, 
   IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
@@ -28,6 +29,10 @@ public class WebFormBase:
     Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
 
     base.OnInit (e);
+  }
+  protected override void LoadViewState(object savedState)
+  {
+    base.LoadViewState (savedState);
   }
 
   /// <summary>

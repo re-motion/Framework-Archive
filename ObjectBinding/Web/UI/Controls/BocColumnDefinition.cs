@@ -43,6 +43,10 @@ public abstract class BocColumnDefinition
     : this (null, Unit.Empty)
   {}
 
+  /// <summary> Is called when the value of <see cref="OwnerControl"/> is changeing. </summary>
+  protected virtual void OnOwnerControlChange()
+  {}
+
   /// <summary> Is called when the value of <see cref="OwnerControl"/> was changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {}
@@ -71,6 +75,7 @@ public abstract class BocColumnDefinition
   [Category ("Misc")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
+  [ParenthesizePropertyName (true)]
   public string ID
   {
     get { return _id; }
@@ -135,6 +140,7 @@ public abstract class BocColumnDefinition
     {
       if (_ownerControl != value)
       {
+        OnOwnerControlChange();
         _ownerControl = value;
         OnOwnerControlChanged();
       }
@@ -145,6 +151,8 @@ public abstract class BocColumnDefinition
 /// <summary> A column definition containing no data, but a <see cref="BocItemCommand"/>. </summary>
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
+  private const string c_commandIDSuffix = "_Command";
+
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   private BocItemCommand _command;
   /// <summary> The text representing the command on the rendered page. </summary>
@@ -199,6 +207,25 @@ public class BocCommandColumnDefinition: BocColumnDefinition
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
+  protected override void OnOwnerControlChange()
+  {
+    base.OnOwnerControlChange();
+  
+    if (OwnerControl != null && _command != null)
+    {
+      OwnerControl.Controls.Remove (_command);
+    }
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    if (OwnerControl != null && _command != null)
+    {
+      OwnerControl.Controls.Add (_command);
+    }
+    base.OnOwnerControlChanged();
+  }
+
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocItemCommand"/>. </value>
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -207,8 +234,14 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public BocItemCommand Command
   {
-    get { return _command; }
-    set { _command = value; }
+    get
+    {
+      return _command; 
+    }
+    set
+    {
+      _command = value;
+    }
   }
 
   /// <summary> The text representing the command in the rendered page. </summary>
@@ -517,9 +550,8 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// </summary>
   protected override void OnOwnerControlChanged()
   {
-    base.OnOwnerControlChanged();
-
     _propertyPathBindings.OwnerControl = OwnerControl;
+    base.OnOwnerControlChanged();
   }
 
   /// <summary>
