@@ -871,6 +871,41 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreEqual (typeof (Order), collection.RequiredItemType);
   }
 
+  [Test]
+  // TODO: Implement this
+  public void GetItemsNotInCollection ()
+  {
+    DomainObjectCollection collection2 = new DomainObjectCollection ();
+    collection2.Add (_customer1);
+
+    DomainObjectCollection itemsNotInCollection = collection2.GetItemsNotInCollection (_collection);
+
+    Assert.AreEqual (1, itemsNotInCollection.Count);
+    Assert.AreSame (_customer2, itemsNotInCollection[0]);
+  }
+
+  [Test]
+  // TODO: Implement this
+  public void GetItemsNotInCollectionBothCollectionsEmpty ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection ();
+    DomainObjectCollection itemsNotInCollection = collection.GetItemsNotInCollection (new DomainObjectCollection ());
+    Assert.AreEqual (0, itemsNotInCollection.Count);
+  }
+
+  [Test]
+  // TODO: Implement this
+  public void GetItemsNotInCollectionForEmptyCollection ()
+  {
+    DomainObjectCollection collection2 = new DomainObjectCollection ();
+
+    DomainObjectCollection itemsNotInCollection = collection2.GetItemsNotInCollection (_collection);
+    
+    Assert.AreEqual (2, itemsNotInCollection.Count);
+    Assert.IsTrue (itemsNotInCollection.Contains (_customer1));
+    Assert.IsTrue (itemsNotInCollection.Contains (_customer2));
+  }
+
   private DomainObjectCollection CreateCustomerCollection ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
