@@ -114,6 +114,7 @@ public abstract class RelationEndPoint : INullable
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
     DomainObject domainObject = GetDomainObject ();
+
     return domainObject.BeginRelationChange (
         PropertyName, oldEndPoint.GetDomainObject (), newEndPoint.GetDomainObject ());
   }
