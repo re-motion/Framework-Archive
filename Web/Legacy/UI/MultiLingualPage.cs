@@ -33,8 +33,8 @@ public class MultiLingualPage : Page
     //  if (ResourceManagerPool.ExistsResource (this))
     if (MultiLingualResourcesAttribute.ExistsResource (this))
     {
-      IResourceManager resourceManager
-        = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
+      IResourceManager resourceManager = 
+          MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
 
       ResourceDispatcher.Dispatch (this, resourceManager);
       
@@ -46,7 +46,7 @@ public class MultiLingualPage : Page
     }
           
     base.OnInit (e);
-  }
+  } 
   
   protected string GetResourceText (string name)
   {

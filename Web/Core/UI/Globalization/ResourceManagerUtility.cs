@@ -1,6 +1,5 @@
 using System;
 using System.Web.UI;
-
 using Rubicon.Globalization;
 
 namespace Rubicon.Web.Utilities
@@ -36,6 +35,8 @@ public class ResourceManagerUtility
   //  No construction for static only class
   /// <exclude />
 	private ResourceManagerUtility()
-	{}
+	{
+  }
 }
+
 }
