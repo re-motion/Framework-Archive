@@ -538,7 +538,7 @@ public class PageUtility
     string refreshParentScript = string.Empty;
 
     if (refreshParent)
-      refreshParentScript = "window.opener.refresh();\n";
+      refreshParentScript = "window.opener.Refresh();\n";
 
     string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
       refreshParentScript +
