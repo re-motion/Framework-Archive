@@ -166,6 +166,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
+    //  Best left to specializations
     // EnsureChildControlsInitialized();
   }
 
@@ -173,7 +174,11 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Calls <see cref="InitializeChildControls"/> on the first invocation.
   /// </summary>
   /// <remarks>
-  ///   In some situations, this method gets invoked more than once in the VS.NET designer.
+  ///   <para>
+  ///     In some situations, this method gets invoked more than once in the VS.NET designer.
+  ///   </para><para>
+  ///     Best practice: call once in <c>OnPreRender</c> method and once in <c>Render</c> method.
+  ///   </para>
   /// </remarks>
   protected void EnsureChildControlsInitialized()
   {

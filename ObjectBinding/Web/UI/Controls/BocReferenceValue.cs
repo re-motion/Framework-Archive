@@ -152,17 +152,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     {
       string newInternalValue = this.Page.Request.Form[_dropDownList.UniqueID];
       if (newInternalValue == c_nullIdentifier)
-        _newInternalValue = c_nullIdentifier;
+        _newInternalValue = null;
       else if (newInternalValue != null)
         _newInternalValue = newInternalValue;
       else
-        _newInternalValue = c_nullIdentifier;
+        _newInternalValue = null;
 
       if (! Page.IsPostBack)
         RefreshBusinessObjectList();
     }
 
-    if (_newInternalValue != null && _newInternalValue != _internalValue)
+    if (_newInternalValue != _internalValue)
       _isDirty = true;
   }
 
@@ -515,7 +515,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
     else // Not Read-Only
     {
-      bool isNullItem =     InternalValue == c_nullIdentifier
+      bool isNullItem =     InternalValue == null
                         ||  ! hasPropertyAfterInitializion;
 
       //  Prevent unnecessary removal
@@ -607,7 +607,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
   {
-    if (_newInternalValue != null && _newInternalValue != _internalValue)
+    if (_newInternalValue != _internalValue)
     {
       InternalValue = _newInternalValue;
       OnSelectionChanged (EventArgs.Empty);
@@ -663,7 +663,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     {
-      if (InternalValue == c_nullIdentifier)
+      if (InternalValue == null)
       {
         _referenceValue = null;
       }
@@ -686,7 +686,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (businessObjectWithIdentity != null)
         InternalValue = businessObjectWithIdentity.UniqueIdentifier;
       else
-        InternalValue = c_nullIdentifier;
+        InternalValue = null;
     }
   }
   
@@ -725,17 +725,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (_internalValue == value)
         return;
 
-      bool isOldInternalValueNull =     _internalValue == c_nullIdentifier
-                                    ||  _internalValue == null;
+      bool isOldInternalValueNull = _internalValue == null;
 
       if (StringUtility.IsNullOrEmpty (value))
-        _internalValue = c_nullIdentifier;
+        _internalValue = null;
       else
         _internalValue = value;
 
       bool removeUndefined =    IsRequired 
                             &&  isOldInternalValueNull
-                            &&  _internalValue != c_nullIdentifier;
+                            &&  _internalValue != null;
       
       InternalLoadValue (removeUndefined);
     }
