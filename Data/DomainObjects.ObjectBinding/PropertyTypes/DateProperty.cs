@@ -30,6 +30,10 @@ public class DateProperty : NullableProperty, IBusinessObjectDateProperty
       NaDateTime value = (NaDateTime) internalValue;
       return NaDateTime.ToBoxedDateTime (value.Date);
     }
+    else if (!IsList && !IsNullableType)
+    {
+      return base.FromInternalType (internalValue);
+    }
     else
     {
       return ((DateTime)internalValue).Date;
