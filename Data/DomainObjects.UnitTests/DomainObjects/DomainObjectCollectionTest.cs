@@ -164,28 +164,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void CloneAllItems ()
-  {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-
-    collection.Add (customer1);
-    collection.Add (customer2);
-
-    DomainObjectCollection readOnlyCollection = new DomainObjectCollection (collection, true);
-
-    DomainObjectCollection clone = (DomainObjectCollection) readOnlyCollection.Clone ();
-
-    Assert.IsNotNull (clone, "Clone does not exist");
-    Assert.AreEqual (2, clone.Count, "Item count of clone");
-    Assert.AreSame (customer1, clone[customer1.ID], "Customer1");
-    Assert.AreSame (customer2, clone[customer2.ID], "Customer2");
-    Assert.AreEqual (true, clone.IsReadOnly, "IsReadOnly");
-  }
-
-  [Test]
   public void Remove ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
@@ -605,6 +583,38 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreEqual (collection.RequiredItemType, clonedCollection.RequiredItemType);
     Assert.AreSame (collection[0], clonedCollection[0]);
     Assert.AreSame (collection[1], clonedCollection[1]);
+  }
+
+  [Test]
+  public void CloneReadOnlyCollection ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+
+    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+
+    collection.Add (customer1);
+    collection.Add (customer2);
+
+    DomainObjectCollection readOnlyCollection = new DomainObjectCollection (collection, true);
+
+    DomainObjectCollection clone = (DomainObjectCollection) readOnlyCollection.Clone ();
+
+    Assert.IsNotNull (clone, "Clone does not exist");
+    Assert.AreEqual (2, clone.Count, "Item count of clone");
+    Assert.AreSame (customer1, clone[customer1.ID], "Customer1");
+    Assert.AreSame (customer2, clone[customer2.ID], "Customer2");
+    Assert.AreEqual (true, clone.IsReadOnly, "IsReadOnly");
+  }
+
+  [Test]
+  public void CloneDerivedCollection ()
+  {
+    OrderCollection orderCollection = new OrderCollection ();
+    OrderCollection clone = (OrderCollection) orderCollection.Clone ();
+    
+    Assert.AreEqual (typeof (OrderCollection), clone.GetType ());
+    Assert.AreEqual (orderCollection.RequiredItemType, clone.RequiredItemType);
   }
 }
 }
