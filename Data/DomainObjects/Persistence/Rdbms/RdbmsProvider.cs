@@ -71,7 +71,7 @@ public abstract class RdbmsProvider : StorageProvider
       }
       catch (Exception e)
       {
-        throw CreateStorageProviderException (e, "Error while opening connection.");
+        throw CreateRdbmsProviderException (e, "Error while opening connection.");
       }
     }
   }
@@ -107,7 +107,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while executing BeginTransaction.");
+      throw CreateRdbmsProviderException (e, "Error while executing BeginTransaction.");
     }
   }
 
@@ -127,7 +127,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while executing Commit.");
+      throw CreateRdbmsProviderException (e, "Error while executing Commit.");
     }
     finally 
     {
@@ -151,7 +151,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while executing Rollback.");
+      throw CreateRdbmsProviderException (e, "Error while executing Rollback.");
     }
     finally
     {
@@ -201,7 +201,7 @@ public abstract class RdbmsProvider : StorageProvider
       }
       catch (Exception e)
       {
-        throw CreateStorageProviderException (
+        throw CreateRdbmsProviderException (
             e, "Error while executing SQL command for query '{0}'.", query.QueryID);
       }
     }
@@ -224,7 +224,7 @@ public abstract class RdbmsProvider : StorageProvider
     PropertyDefinition property = classDefinition.GetPropertyDefinition (propertyName);
     if (property == null)
     {
-      throw CreateStorageProviderException ("Class '{0}' does not contain property '{1}'.",
+      throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.",
           classDefinition.ID, propertyName);
     }
 
@@ -364,7 +364,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while executing SQL command.");
+      throw CreateRdbmsProviderException (e, "Error while executing SQL command.");
     }
   }
   
@@ -387,7 +387,7 @@ public abstract class RdbmsProvider : StorageProvider
       }
       catch (Exception e)
       {
-        throw CreateStorageProviderException (e, "Error while setting timestamp for object '{0}'.", dataContainer.ID);
+        throw CreateRdbmsProviderException (e, "Error while setting timestamp for object '{0}'.", dataContainer.ID);
       }
     }
   }
@@ -409,7 +409,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while saving object '{0}'.", id);
+      throw CreateRdbmsProviderException (e, "Error while saving object '{0}'.", id);
     }
 
     if (recordsAffected != 1)
@@ -438,19 +438,19 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected StorageProviderException CreateStorageProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       string formatString,
       params object[] args)
   {
-    return CreateStorageProviderException (null, formatString, args);
+    return CreateRdbmsProviderException (null, formatString, args);
   }
 
-  protected StorageProviderException CreateStorageProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       Exception innerException,
       string formatString,
       params object[] args)
   {
-    return new StorageProviderException (string.Format (formatString, args), innerException);
+    return new RdbmsProviderException (string.Format (formatString, args), innerException);
   }
 
 

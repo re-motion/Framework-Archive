@@ -324,7 +324,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException))]
+  [ExpectedException (typeof (RdbmsProviderException))]
   public void WrapSqlException ()
   {
     using (Provider)

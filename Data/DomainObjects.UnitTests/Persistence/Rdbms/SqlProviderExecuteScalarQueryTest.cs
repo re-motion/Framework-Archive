@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -33,7 +33,7 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException))]
+  [ExpectedException (typeof (RdbmsProviderException))]
   public void InvalidScalarQuery ()
   {
     QueryDefinition definition = new QueryDefinition (

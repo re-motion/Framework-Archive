@@ -526,6 +526,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\Rdbms\RdbmsProviderException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\Rdbms\SelectCommandBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

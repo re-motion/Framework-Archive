@@ -97,7 +97,7 @@ public class ValueConverter
 
         if (relatedClassDefinition.BaseClass != null)
         {
-          throw CreateStorageProviderException (
+          throw CreateRdbmsProviderException (
               "Incorrect database format encountered."
               + " Class must have column '{0}' defined, because it points to derived class '{1}'.",
               GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
@@ -109,7 +109,7 @@ public class ValueConverter
 
         if (derivedClasses.Count > 0)
         {
-          throw CreateStorageProviderException (
+          throw CreateRdbmsProviderException (
               "Incorrect database format encountered."
               + " Class must have column '{0}' defined, because at least one class inherits from '{1}'.",
               GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
@@ -185,9 +185,8 @@ public class ValueConverter
 
     if (relatedClassDefinition == null)
     {
-      throw new StorageProviderException (string.Format (
-          "Property '{0}' of class '{1}' has no relations assigned.", 
-          propertyDefinition.PropertyName, classDefinition.ID));  
+      throw CreateRdbmsProviderException (
+          "Property '{0}' of class '{1}' has no relations assigned.", propertyDefinition.PropertyName, classDefinition.ID);  
     }
 
     return relatedClassDefinition;
@@ -198,7 +197,7 @@ public class ValueConverter
     if (Enum.IsDefined (propertyDefinition.PropertyType, dataValue))
       return Enum.ToObject (propertyDefinition.PropertyType, dataValue);
 
-    throw CreateStorageProviderException (
+    throw CreateRdbmsProviderException (
         "Enumeration '{0}' does not define the value '{1}', property '{2}'.",
         propertyDefinition.PropertyType.FullName, dataValue, propertyDefinition.PropertyName);
   }
@@ -208,19 +207,19 @@ public class ValueConverter
     return columnName + "ClassID";
   }
 
-  private StorageProviderException CreateStorageProviderException (
+  private RdbmsProviderException CreateRdbmsProviderException (
       string formatString,
       params object[] args)
   {
-    return CreateStorageProviderException (null, formatString, args);
+    return CreateRdbmsProviderException (null, formatString, args);
   }
 
-  private StorageProviderException CreateStorageProviderException (
+  private RdbmsProviderException CreateRdbmsProviderException (
       Exception innerException,
       string formatString,
       params object[] args)
   {
-    return new StorageProviderException (string.Format (formatString, args), innerException);
+    return new RdbmsProviderException (string.Format (formatString, args), innerException);
   }
 
   // member fields

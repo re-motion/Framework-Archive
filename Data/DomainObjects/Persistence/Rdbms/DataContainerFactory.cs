@@ -54,10 +54,7 @@ public class DataContainerFactory
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
 
     if (classDefinition == null)
-    {
-      throw CreateStorageProviderException (
-          "Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
-    }
+      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
 
     ValueConverter valueConverter = new ValueConverter ();
     ObjectID id = valueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
@@ -73,14 +70,14 @@ public class DataContainerFactory
       {
         dataValue = valueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
       }
-      catch (StorageProviderException e)
+      catch (RdbmsProviderException e)
       {
-        throw CreateStorageProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
+        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
             propertyDefinition.PropertyName, classDefinition.ID, e.Message);
       }
       catch (InvalidCastException e)
       {
-        throw CreateStorageProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
+        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
             propertyDefinition.PropertyName, classDefinition.ID, e.Message);
       }
 
@@ -107,23 +104,23 @@ public class DataContainerFactory
     }
     catch (IndexOutOfRangeException)
     {
-      throw CreateStorageProviderException ("The mandatory column '{0}' could not be found.", columnName);
+      throw CreateRdbmsProviderException ("The mandatory column '{0}' could not be found.", columnName);
     }
   }
 
-  protected StorageProviderException CreateStorageProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       string formatString,
       params object[] args)
   {
-    return CreateStorageProviderException (null, formatString, args);
+    return CreateRdbmsProviderException (null, formatString, args);
   }
 
-  protected StorageProviderException CreateStorageProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       Exception innerException,
       string formatString,
       params object[] args)
   {
-    return new StorageProviderException (string.Format (formatString, args), innerException);
+    return new RdbmsProviderException (string.Format (formatString, args), innerException);
   }
 }
 }

@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -40,7 +40,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
+  [ExpectedException (typeof (RdbmsProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithInvalidIDType ()
   {
     ObjectID id = new ObjectID ("ClassWithKeyOfInvalidType", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
@@ -49,7 +49,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
     {
       DataContainer container = Provider.LoadDataContainer (id);
     }
-    catch (StorageProviderException e)
+    catch (RdbmsProviderException e)
     {
       Assert.AreEqual (typeof (SqlException), e.InnerException.GetType ());
       throw e;
@@ -57,7 +57,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
+  [ExpectedException (typeof (RdbmsProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithoutIDColumn ()
   {
     ObjectID id = new ObjectID ("ClassWithoutIDProperty", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
@@ -66,7 +66,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
     {
       DataContainer container = Provider.LoadDataContainer (id);
     }
-    catch (StorageProviderException e)
+    catch (RdbmsProviderException e)
     {
       Assert.AreEqual (typeof (SqlException), e.InnerException.GetType ());
       throw e;
@@ -74,7 +74,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'ClassID' could not be found.")]
+  [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'ClassID' could not be found.")]
   public void LoadDataContainerWithoutClassIDColumn ()
   {
     ObjectID id = new ObjectID ("ClassWithoutClassIDProperty", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
@@ -83,7 +83,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'Timestamp' could not be found.")]
+  [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'Timestamp' could not be found.")]
   public void LoadDataContainerWithoutTimestampColumn ()
   {
     ObjectID id = new ObjectID ("ClassWithoutTimestampProperty", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
@@ -92,7 +92,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), 
+  [ExpectedException (typeof (RdbmsProviderException), 
       "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf' encountered.")]
   public void LoadDataContainerWithNonExistingClassID ()
   {
@@ -102,7 +102,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'OrderNo' could not be found.")]
+  [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'OrderNo' could not be found.")]
   public void LoadDataContainerWithClassIDFromOtherClass ()
   {
     ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
@@ -179,7 +179,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), 
+  [ExpectedException (typeof (RdbmsProviderException), 
       "Error while reading property 'Partner' for class 'ClassWithoutRelatedClassIDColumn':" 
       + " Incorrect database format encountered."
       + " Class must have column 'PartnerIDClassID' defined, because it points to derived class 'Partner'.")]
@@ -191,7 +191,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), 
+  [ExpectedException (typeof (RdbmsProviderException), 
       "Error while reading property 'Company' for class 'ClassWithoutRelatedClassIDColumnAndDerivation':" 
       + " Incorrect database format encountered."
       + " Class must have column 'CompanyIDClassID' defined, because at least one class inherits from 'Company'.")]
