@@ -117,12 +117,12 @@ public sealed class ResourceDispatcher
   }
 
   /// <summary>
-  ///   Dispatch a dictonary to a control's properties.
+  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
   /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
-  public static void DispatchGeneric (Control control, IDictionary values)
+  public static void DispatchGeneric (object obj, IDictionary values)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("obj", obj);
     ArgumentUtility.CheckNotNull ("values", values);
 
     foreach (DictionaryEntry entry in values)
@@ -130,14 +130,14 @@ public sealed class ResourceDispatcher
       string propertyName = (string) entry.Key;
       string propertyValue = (string) entry.Value;
 
-      PropertyInfo property = control.GetType ().GetProperty (propertyName, typeof (string));
-      
+      PropertyInfo property = obj.GetType ().GetProperty (propertyName, typeof (string));
       if (property != null)
       {
-        property.SetValue (control, propertyValue, new object[0]); 
+        property.SetValue (obj, propertyValue, new object[0]); 
       }
-      else
+      else if (obj is Control)
       {
+        Control control = (Control) obj;
         //  Test for HtmlControl, they can take anything
         HtmlControl genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
