@@ -13,7 +13,14 @@ public class TableControl : Control
     Vertical = 1
   }
 
-  protected Table _table = new Table ();
+  private Table _table = new Table ();
+
+  protected Table Table
+  {
+    get { return _table; }
+    set { _table = value; }
+  }
+
   private OrientationType _orientation = OrientationType.Horizontal;
   
   public OrientationType Orientation

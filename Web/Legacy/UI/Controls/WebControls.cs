@@ -9,6 +9,7 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
+[CLSCompliant (false)] // because Microsoft.Web.UI.WebControls.BasePostBackControl is not CLS compliant
 public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatchTarget
 {
   protected override RenderPathID RenderPath
@@ -110,6 +111,7 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
   }
 }
 
+[CLSCompliant (false)] // because Microsoft.Web.UI.WebControls.BasePostBackControl is not CLS compliant
 public class MultiPage : Microsoft.Web.UI.WebControls.MultiPage
 {
   protected override RenderPathID RenderPath
@@ -125,6 +127,7 @@ public class MultiPage : Microsoft.Web.UI.WebControls.MultiPage
 
 }
   
+[CLSCompliant (false)] // because Microsoft.Web.UI.WebControls.BaseRichControl is not CLS compliant
 public class PageView : Microsoft.Web.UI.WebControls.PageView
 {
   protected override RenderPathID RenderPath
