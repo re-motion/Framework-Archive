@@ -5,6 +5,7 @@ using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using Rubicon.Web.UI.Design;
 using System.Text;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -72,12 +73,12 @@ public class SmartLabel: WebControl
     
     return stringBuilder.ToString();
   }
-  
-  // TODO: use access key (nicht für texte aus dem control)
 
   private string _forControl = null;
+  //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
+  //  private string _text = string.Empty;
 
-	public SmartLabel()
+  public SmartLabel()
     : base (HtmlTextWriterTag.Label)
 	{
 	}
@@ -95,13 +96,52 @@ public class SmartLabel: WebControl
   protected override void Render(HtmlTextWriter writer)
   {
     this.RenderBeginTag (writer);
+    string text = string.Empty;
 
     ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
     if (smartControl != null && smartControl.DisplayName != null)
-      writer.Write (smartControl.DisplayName);
+    {
+      text = smartControl.DisplayName;
+    }
+    // TODO: use access key (nicht für texte aus dem control)
+    //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
+    //    else if (!StringUtility.IsNullOrEmpty (_text))
+    //    {
+    //      // TODO: use access key (nicht für texte aus dem control)
+    //      Control associatedControl = NamingContainer.FindControl (ForControl);
+    //    
+    //      if (associatedControl != null)
+    //      {
+    //        ISmartControl smartControl = control as ISmartControl;
+    //        if (smartControl != null && smartControl.UseLabel)
+    //        {
+    //          string accessKey;
+    //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+    //          label.AccessKey = accessKey;
+    //        }
+    //        else if (control is DropDownList || control is HtmlSelect)
+    //        {
+    //          text = SmartLabel.FormatLabelText (label.Text, false);
+    //          label.AccessKey = "";
+    //        }
+    //        else
+    //        {
+    //          string accessKey;
+    //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+    //          label.AccessKey = accessKey;
+    //        }
+    //      }
+    //      else
+    //      {
+    //        text = SmartLabel.FormatLabelText (label.Text, false);
+    //      }
+    //    }
     else
-      writer.Write ("[Label for " + ForControl + "]");
+    {
+      text = "[Label for " + ForControl + "]";
+    }
 
+    writer.Write (text);
     this.RenderEndTag (writer);
   }
 
@@ -127,9 +167,22 @@ public class SmartLabel: WebControl
 
     // TODO: add <a href="ToName(target.ClientID)"> ...
     // ToName: '.' -> '_'
-
-    //  Accesskey support
   }
+
+  //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
+  //  /// <summary>
+  //  ///   Gets or sets the text displayed if the <see cref="SmartLabel"/> is not bound to an 
+  //  ///   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
+  //  ///   <see cref="ISmartControl.DisplayName"/>.
+  //  /// </summary>
+  //  [Category ("Appearance")]
+  //  [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
+  //  [DefaultValue ("")]
+  //  public string Text
+  //  {
+  //    get { return _text; }
+  //    set { _text = value; }
+  //  }
 }
 
 }

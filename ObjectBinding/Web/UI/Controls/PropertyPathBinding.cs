@@ -13,7 +13,9 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 /// <summary>
-/// Summary description for PropertyPathBinding.
+///   A <see cref="PropertyPathBinding"/> encapsulates the creation of a 
+///   <see cref="BusinessObjectPropertyPath"/> from it's string representation and an
+///   <see cref="IBusinessObjectDataSource"/>
 /// </summary>
 public class PropertyPathBinding: IPropertyPathBinding
 {

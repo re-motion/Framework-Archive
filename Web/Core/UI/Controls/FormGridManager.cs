@@ -1118,7 +1118,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
             //  Label has associated control
             if (label.AssociatedControlID.Length > 0)
             {
-              Control associatedControl = this.FindControl (label.AssociatedControlID);
+              Control associatedControl = NamingContainer.FindControl (label.AssociatedControlID);
 
               ISmartControl smartControl = control as ISmartControl;
               if (smartControl != null && smartControl.UseLabel)
@@ -1127,16 +1127,16 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
                 label.Text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
                 label.AccessKey = accessKey;
               }
-              else if (associatedControl is TextBox)
+              else if (control is DropDownList || control is HtmlSelect)
+              {
+                label.Text = SmartLabel.FormatLabelText (label.Text, false);
+                label.AccessKey = "";
+              }
+              else
               {
                 string accessKey;
                 label.Text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
                 label.AccessKey = accessKey;
-              }
-              else
-              {
-                label.Text = SmartLabel.FormatLabelText (label.Text, false);
-                label.AccessKey = "";
               }
             }
             else
