@@ -245,6 +245,18 @@ public sealed class NullableTypeCreator
     provider.AddSummaryComment (propertyValue, "Returns the value if the current value is not Null.");
     provider.AddExceptionComment (propertyValue, typeof (NaNullValueException), "The current value is Null.");
     nullableTypeDeclaration.Members.Add (propertyValue);
+
+    // add property: object INaNullable Value
+    CodeMemberProperty propertyGenericValue = new CodeMemberProperty ();
+    propertyGenericValue.Name = "Value";
+    propertyGenericValue.PrivateImplementationType = new CodeTypeReference (typeof (INaNullable));
+    propertyGenericValue.Attributes = MemberAttributes.Final;
+    propertyGenericValue.Type = new CodeTypeReference (typeof (object));
+    propertyGenericValue.HasGet = true;
+    propertyGenericValue.GetStatements.Add (
+        new CodeMethodReturnStatement (
+            new CodePropertyReferenceExpression (new CodeThisReferenceExpression(), "Value")));
+    nullableTypeDeclaration.Members.Add (propertyGenericValue);
     
     // add method: public void GetObjectData (SerializationInfo info, StreamingContext context)
     CodeMemberMethod methodGetObjectData = new CodeMemberMethod ();
