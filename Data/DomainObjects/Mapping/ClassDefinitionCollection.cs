@@ -21,7 +21,7 @@ public class ClassDefinitionCollection : CollectionBase
   }
 
   // standard constructor for collections
-  public ClassDefinitionCollection (ClassDefinitionCollection collection, bool isCollectionReadOnly)  
+  public ClassDefinitionCollection (ClassDefinitionCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -30,7 +30,7 @@ public class ClassDefinitionCollection : CollectionBase
       Add (classDefinition);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
