@@ -367,7 +367,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (MandatoryRelationNotSetException),
      "Mandatory relation property 'Companies' of domain object"
-     + " 'TestDomain|IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no elements.")]
+     + " 'TestDomain|IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
   public void CommitWithMandatoryOneToManyRelationNotSet ()
   {
     IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector2);

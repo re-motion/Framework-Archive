@@ -215,8 +215,33 @@ public class CommitEventsTest : ClientTransactionBaseTest
     DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
 
     Assert.AreEqual (1, committingDomainObjects.Count);
+    Assert.AreEqual (0, committedDomainObjects.Count);
 
     Assert.IsTrue (committingDomainObjects.Contains (classWithAllDataTypesID));
+  }
+
+  [Test]
+  public void CommittedEventForObjectChangedBackToOriginal ()
+  {
+    _customer.Name = "New name";
+
+    DomainObjectEventReceiver customerEventReceiver = new DomainObjectEventReceiver (_customer);
+    ClientTransactionEventReceiver clientTransactionEventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
+    _customer.Committing += new EventHandler (Customer_CommittingForCommittedEventForObjectChangedBackToOriginal); 
+
+    ClientTransactionMock.Commit ();
+
+    Assert.IsTrue (customerEventReceiver.HasCommittingEventBeenCalled);
+    Assert.IsFalse (customerEventReceiver.HasCommittedEventBeenCalled);
+
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+
+    DomainObjectCollection committingDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittingDomainObjects[0];
+    DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
+
+    Assert.AreEqual (0, committingDomainObjects.Count);
+    Assert.AreEqual (0, committedDomainObjects.Count);
   }
 
   private void Customer_CommittingForModifyOtherObjectInDomainObjectCommitting (object sender, EventArgs e)
@@ -244,6 +269,11 @@ public class CommitEventsTest : ClientTransactionBaseTest
     Customer customer = (Customer) args.DomainObjects[DomainObjectIDs.Customer1];
     if (customer != null)
       customer.IndustrialSector.Name = "New industrial sector name";
+  }
+
+  private void Customer_CommittingForCommittedEventForObjectChangedBackToOriginal (object sender, EventArgs e)
+  {
+    _customer.Name = (string) _customer.DataContainer.PropertyValues["Name"].OriginalValue;
   }
 }
 }

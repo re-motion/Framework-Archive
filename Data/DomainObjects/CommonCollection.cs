@@ -137,16 +137,20 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Adds an element with the specified key and value.
+  /// Adds an item with the specified key and value.
   /// </summary>
-  /// <param name="key">A key of the element to add.</param>
-  /// <param name="value">The value of the element to add. The value can be a null reference.</param>
+  /// <param name="key">A key of the item to add. The key must not be a null reference.</param>
+  /// <param name="value">The value of the item to add. The value must not be a null reference.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>key</i> is a null reference.<br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
   protected void Add (object key, object value)
   {
     ArgumentUtility.CheckNotNull ("key", key);
     ArgumentUtility.CheckNotNull ("value", value);
-    if (_isReadOnly) throw new NotSupportedException ("Cannot add an element to a read-only collection.");
+    if (_isReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
 
     _collectionData.Add (key, value);
     _collectionKeys.Add (key);
@@ -154,15 +158,15 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Removes the element with the specified key.
+  /// Removes the item with the specified key.
   /// </summary>
-  /// <param name="key">The key of the element to remove.</param>
+  /// <param name="key">The key of the item to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void Remove (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
-    if (_isReadOnly) throw new NotSupportedException ("Cannot remove an element from a read-only collection.");
+    if (_isReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
     _collectionData.Remove (key);
     _collectionKeys.Remove (key);
@@ -183,35 +187,36 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Returns the zero-based index of the element with a given key in the collection.
+  /// Returns the zero-based index of the item with a given key in the collection.
   /// </summary>
   /// <param name="key">The <i>key</i> to locate in the collection.</param>
-  /// <returns>The zero-based index of the element with the given <i>key</i>, if found; otherwise, -1.</returns>
+  /// <returns>The zero-based index of the item with the given <i>key</i>, if found; otherwise, -1.</returns>
   protected int IndexOfKey (object key)
   {
     return _collectionKeys.IndexOf (key);
   }
 
   /// <summary>
-  /// Inserts an element into the collection at the specified index.
+  /// Inserts an item into the collection at the specified index.
   /// </summary>
-  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
-  /// <param name="key">A key of the element to insert.</param>
-  /// <param name="value">The <i>value</i> of the element to add. The <i>value</i> can be a null reference.</param>
+  /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
+  /// <param name="key">The key of the item to insert.</param>
+  /// <param name="value">The <i>value</i> of the item to add. The <i>value</i> can be a null reference.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <param><i>index</i> is less than zero.</param>
   ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
-  /// <exception cref="System.ArgumentException">An element with the same <i>key</i> already exists in the collection.</exception>
+  /// <exception cref="System.ArgumentException">An item with the same <i>key</i> already exists in the collection.</exception>
   protected void Insert (int index, object key, object value)
   {
-    if (_isReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
+    if (_isReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckIndexForInsert ("index", index);
 
     _collectionData.Add (key, value);
     _collectionKeys.Insert (index, key);
+    _version++;
   }
 
   /// <summary>
@@ -292,7 +297,7 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Gets the number of elements contained in the <see cref="CollectionBase"/>.
+  /// Gets the number of items contained in the <see cref="CollectionBase"/>.
   /// </summary>
   public virtual int Count
   {
@@ -300,16 +305,16 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Copies the elements of the <see cref="CollectionBase"/> to an Array, starting at a particular Array index.
+  /// Copies the items of the <see cref="CollectionBase"/> to an Array, starting at a particular Array index.
   /// </summary>
-  /// <param name="array">The one-dimensional Array that is the destination of the elements copied from <see cref="CollectionBase"/>. The Array must have zero-based indexing.</param>
+  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CollectionBase"/>. The array must have zero-based indexing.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
   /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
   ///   <i>array</i> is not a one-dimensional array.
   ///   <i>index</i> is greater than the current length of the array.
-  ///   The number of elements is greater than the available space from <i>index</i> to the end of <i>array</i>.
+  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
   /// </exception>
   public virtual void CopyTo (Array array, int index)
   {
@@ -317,7 +322,7 @@ public class CollectionBase : ICollection
     if (index < 0) throw new ArgumentOutOfRangeException ("index", index, "Index must be greater than or equal to zero.");
     if (array.Rank != 1) throw new ArgumentException ("CopyTo can only operate on one-dimensional arrays.", "array");
     if (index >= array.Length) throw new ArgumentException ("Index cannot be equal to or greater than the length of the array.", "index");
-    if ((array.Length - index) < Count) throw new ArgumentException ("The number of elements in the source collection is greater than the available space from index to the end of the destination array.", "index");
+    if ((array.Length - index) < Count) throw new ArgumentException ("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
 
     for (int i = 0; i < Count; i++)
       array.SetValue (this.GetObject (i), index + i);
