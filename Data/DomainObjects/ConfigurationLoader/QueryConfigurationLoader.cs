@@ -50,7 +50,7 @@ public class QueryConfigurationLoader : BaseLoader
     catch (XmlException e)
     {
       throw CreateQueryConfigurationException (
-          e, "Error while reading storage provider configuration: {0}", e.Message);
+          e, "Error while reading query configuration: {0}", e.Message);
     }
   }
   
