@@ -58,6 +58,7 @@
   
   <target name="incversion">
     <buildversion versionfile="build/buildversion.xml" increment="true" />
+    <echo message="new version is ${build.version.noconfig}"/>
   </target>
   
   <!--======================= VS.NET =======================-->
