@@ -104,8 +104,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
     Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
     Assert.AreSame (_supervisor, _subordinate.Supervisor);
   }
@@ -139,8 +139,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
     Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
     Assert.AreSame (_supervisor, _subordinate.Supervisor);
   }
@@ -172,8 +172,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
     Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
     Assert.AreSame (_supervisor, _subordinate.Supervisor);
   }
@@ -181,8 +181,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
   [Test]
   public void StateTracking ()
   {
-    Assert.AreEqual (StateType.Original, _supervisor.State);
-    Assert.AreEqual (StateType.Original, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
 
     _supervisor.Subordinates.Remove (_subordinate);
 
