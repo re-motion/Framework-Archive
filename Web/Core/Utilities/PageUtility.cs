@@ -153,10 +153,15 @@ public class PageUtility
     if (relativeUrl == null || relativeUrl == string.Empty)
       throw new ArgumentException ("Argument must contain a valid relative URL", "relativeURL");
 
+    string appPath = page.Request.ApplicationPath;
+
+    if (!appPath.EndsWith ("/"))
+      appPath += "/";
+
     if (page.Session.IsCookieless)
-      return page.Request.ApplicationPath + "/(" + page.Session.SessionID + ")/" + relativeUrl;
+      return appPath + "(" + page.Session.SessionID + ")/" + relativeUrl;
     else
-      return page.Request.ApplicationPath + "/" + relativeUrl;
+      return appPath + relativeUrl;
   }
 
 /*  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
@@ -274,9 +279,14 @@ public class PageUtility
     else
       urlDelimiter = "?";
 
-    string url = sourcePage.Request.ApplicationPath + "/" + destinationUrl 
-        + urlDelimiter + "pageToken=" + token 
-        + supressNavigation;
+    string relAppPath = destinationUrl + urlDelimiter + "pageToken=" + token + supressNavigation;
+
+    string url = GetPhysicalPageUrl (sourcePage, relAppPath);
+
+    //string url = sourcePage.Request.ApplicationPath + "/" + destinationUrl 
+    //    + urlDelimiter + "pageToken=" + token 
+    //    + supressNavigation;
+
     NavigateTo (sourcePage, url, returnToThisPage);
   }
 
