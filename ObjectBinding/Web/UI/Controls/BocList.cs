@@ -218,6 +218,8 @@ public class BocList:
   /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
   private IList _value = null;
 
+  private NaInt32 _editableRowIndex = NaInt32.Null;
+
   /// <summary> The user independent column defintions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
   /// <summary> 
@@ -2577,7 +2579,6 @@ public class BocList:
     }
   }
 
-
   /// <summary>
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
@@ -2637,6 +2638,22 @@ public class BocList:
         // _hasClientScript = hasEcmaScript && hasDOM;
       }
     }
+  }
+
+  public void SwitchRowIntoEditMode (int index)
+  {
+    if (Value.Count > index)
+      _editableRowIndex = index;
+  }
+
+  public void ClearEditMode()
+  {
+    _editableRowIndex = NaInt32.Null;
+  }
+
+  public NaInt32 EditableRowIndex
+  {
+    get { return _editableRowIndex; }
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
