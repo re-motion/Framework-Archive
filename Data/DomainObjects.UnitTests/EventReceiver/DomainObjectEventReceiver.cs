@@ -14,19 +14,22 @@ public class DomainObjectEventReceiver
   // member fields
 
   private bool _cancel;
-  private bool _hasChangingEventBeenCalled;
-  private bool _hasChangedEventBeenCalled;
+  private bool _hasChangingEventBeenCalled = false;
+  private bool _hasChangedEventBeenCalled = false;
   private PropertyValue _changingPropertyValue;
   private PropertyValue _changedPropertyValue;
   private object _oldValue;
   private object _newValue;
+  private bool _hasDeletingEventBeenCalled = false;
+  private bool _hasDeletedEventBeenCalled = false;
 
-  private bool _hasRelationChangingEventBeenCalled;
-  private bool _hasRelationChangedEventBeenCalled;
+  private bool _hasRelationChangingEventBeenCalled = false;
+  private bool _hasRelationChangedEventBeenCalled = false;
   private string _changingRelationPropertyName;
   private string _changedRelationPropertyName;
   private DomainObject _oldRelatedObject;
   private DomainObject _newRelatedObject;
+
 
   // construction and disposing
 
@@ -42,6 +45,8 @@ public class DomainObjectEventReceiver
     domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
     domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
     domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
+    domainObject.Deleting += new DeletingEventHandler(domainObject_Deleting);
+    domainObject.Deleted += new EventHandler(domainObject_Deleted);
   }
 
   // methods and properties
@@ -112,6 +117,16 @@ public class DomainObjectEventReceiver
     get { return _newRelatedObject; }
   }
 
+  public bool HasDeletingEventBeenCalled
+  {
+    get { return _hasDeletingEventBeenCalled; }
+  }
+
+  public bool HasDeletedEventBeenCalled
+  {
+    get { return _hasDeletedEventBeenCalled; }
+  }
+
   private void DomainObject_PropertyChanging(object sender, PropertyChangingEventArgs args)
   {
     _hasChangingEventBeenCalled = true;
@@ -127,7 +142,7 @@ public class DomainObjectEventReceiver
     _changedPropertyValue = args.PropertyValue;
   }
 
-  private void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
+  protected virtual void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
   {
     _hasRelationChangingEventBeenCalled = true;
     _changingRelationPropertyName = args.PropertyName;
@@ -136,10 +151,20 @@ public class DomainObjectEventReceiver
     args.Cancel = _cancel;
   }
 
-  private void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
+  protected virtual void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
   {
     _hasRelationChangedEventBeenCalled = true;
     _changedRelationPropertyName = args.PropertyName;
+  }
+
+  protected virtual void domainObject_Deleting(object sender, DeletingEventArgs args)
+  {
+    _hasDeletingEventBeenCalled = true;
+  }
+
+  protected virtual void domainObject_Deleted(object sender, EventArgs e)
+  {
+    _hasDeletedEventBeenCalled = true;
   }
 }
 }
