@@ -104,8 +104,16 @@ public class DataDropDownList: DropDownList
 
   protected override void OnPreRender (EventArgs e)
   {
-    if (_isRequired && this.SelectedIndex > 0 && this.Items[0].Value == "-1")
-      this.Items.RemoveAt (0);
+    // delete all empty items (except the one that is selected)
+    if (_isRequired)
+    {
+      for (int i = this.Items.Count - 1; i >= 0; --i)
+      {
+        ListItem item = this.Items[i];
+        if (! item.Selected && item.Value == "-1")
+          this.Items.RemoveAt (i);
+      }
+    }
 
     base.OnPreRender (e);
   }
