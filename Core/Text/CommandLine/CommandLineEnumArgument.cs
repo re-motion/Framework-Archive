@@ -3,7 +3,7 @@ using System.Text;
 using System.Reflection;
 using System.Globalization;
 
-namespace Rubicon.Text.CommandLineParser
+namespace Rubicon.Text.CommandLine
 {
 
 public class CommandLineEnumArgument: CommandLineValueArgument
@@ -11,6 +11,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   // fields
 
   private Type _enumType;
+  private bool _hasValue = false;
   private System.Enum _value;
   private bool _isCaseSensitive = false;
 
@@ -44,6 +45,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
         if (string.Compare (enumName, value, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           foundExact = true;
+          _hasValue = true;
           _value = (System.Enum) enumValue.GetValue (null);
           break;
         }
@@ -57,6 +59,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
           else
           {
             foundIncremental = true;
+            _hasValue = true;
             _value = (System.Enum) enumValue.GetValue (null);
           }
         }
@@ -96,6 +99,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     {
       sb.Append ("/");
       sb.Append (Name);
+      sb.Append (Parser.Seperator);
     }
     sb.Append (this.Placeholder);
     sb.Append ("{");
@@ -111,9 +115,24 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     sb.Append ("}");
   }
 
+  protected internal override void AttachParser(CommandLineParser parser)
+  {
+    _isCaseSensitive = parser.IsCaseSensitive;
+    base.AttachParser (parser);
+  }
+
+  public bool HasValue
+  {
+    get { return _hasValue; }
+  }
+
   public System.Enum Value
   {
-    get { return _value; }
+    get 
+    { 
+      if (!_hasValue) throw new InvalidOperationException ("Cannot read value if 'HasValue' is false.");
+      return _value; 
+    }
   }
 
 }

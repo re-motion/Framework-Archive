@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Text.CommandLineParser
+namespace Rubicon.Text.CommandLine
 {
 
 public class CommandLineFlagArgument: CommandLineArgument

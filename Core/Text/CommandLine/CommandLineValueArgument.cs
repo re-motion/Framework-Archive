@@ -3,7 +3,7 @@ using System.Text;
 using System.Globalization;
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Text.CommandLineParser
+namespace Rubicon.Text.CommandLine
 {
 
 public class CommandLineValueArgument: CommandLineArgument
@@ -24,6 +24,8 @@ public class CommandLineValueArgument: CommandLineArgument
     {
       sb.Append ("/");
       sb.Append (Name);
+      if (this.Placeholder != null)
+        sb.Append (Parser.Seperator);
     }
     sb.Append (this.Placeholder);
   }

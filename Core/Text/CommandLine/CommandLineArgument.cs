@@ -3,7 +3,7 @@ using System.Text;
 
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Text.CommandLineParser
+namespace Rubicon.Text.CommandLine
 {
 /// <summary>
 /// The base class for command line argument definitions
@@ -102,7 +102,7 @@ public abstract class CommandLineArgument
     get { return _parser; }
   }
 
-  internal void AttachParser (CommandLineParser parser)
+  internal protected virtual void AttachParser (CommandLineParser parser)
   {
     _parser = parser;
   }

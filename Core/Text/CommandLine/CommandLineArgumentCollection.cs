@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.Text.CommandLineParser
+namespace Rubicon.Text.CommandLine
 {
 
 /// <summary>
