@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding
 
 public interface IBusinessObjectDataSource
 {
-  bool IsWritable { get; }
+  bool EditMode { get; set; }
 
   void Register (IBusinessObjectBoundControl control);
   void Unregister (IBusinessObjectBoundControl control);
@@ -54,12 +54,6 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   {
     get { return _editMode; }
     set { _editMode = value; }
-  }
-
-  [Browsable (false)]
-  bool IBusinessObjectDataSource.IsWritable
-  {
-    get { return EditMode; }
   }
 
   public void Register (IBusinessObjectBoundControl control)

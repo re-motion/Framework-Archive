@@ -26,12 +26,6 @@ public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusine
   private IBusinessObjectReferenceProperty _property;
   private bool _propertyDirty = true;
 
-  [Browsable (false)]
-  bool IBusinessObjectDataSource.IsWritable
-  {
-    get { return EditMode && _dataSource.IsWritable; }
-  }
-
   [Category ("Data")]
   public IBusinessObjectDataSource DataSource
   {
