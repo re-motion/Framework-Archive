@@ -96,14 +96,30 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
   public decimal Amount
   {
     get 
-    {
-      if (_amountText != string.Empty)
-        return decimal.Parse (_amountText.Trim ()); 
-      else
-        return decimal.MinValue;
+    { 
+      decimal amount = 0;
+
+      try
+      {
+        amount = decimal.Parse (_amountText);
+      }
+      catch
+      {
+      }
+
+      return amount; 
     }
 
     set { _amountText = value.ToString (); }
+  }
+
+  /// <summary>
+  /// Gets or sets wether the control is enabled
+  /// </summary>
+  public bool Enabled
+  {
+    get { return _amountTextBox.Enabled; }
+    set { _amountTextBox.Enabled = value; }
   }
  
   /// <summary>
@@ -160,11 +176,44 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
     return values;
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    EnsureChildControls ();
+
+    base.OnInit (e);
+  }
+
   protected override void CreateChildControls()
   {
+    //this.Controls.Clear ();
+
     CreateAndAppendMainTable ();
 
     base.CreateChildControls ();
+  }
+
+  protected override void OnLoad(EventArgs e)
+  {
+    // Display amount for validators
+    DisplayAmount ();
+
+    base.OnLoad (e);
+  }
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    DisplayAmount ();
+
+    base.OnPreRender (e);
+  }
+
+
+  private void DisplayAmount ()
+  {
+    //if (Amount > 0)
+    //  _amountTextBox.Text = Amount.ToString ("n");
+    //else
+      _amountTextBox.Text = _amountText;
   }
 
   protected override void Render(HtmlTextWriter writer)
@@ -193,6 +242,7 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
 
     cell = new TableCell ();
     cell.VerticalAlign = VerticalAlign.Middle;
+    cell.HorizontalAlign = HorizontalAlign.Left;
 
     cell.Controls.Add (_amountTextBox);
   
@@ -221,15 +271,20 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
   {
     _amountTextBox = new TextBox ();
     _amountTextBox.ID = "AmountTextBox";
-    _amountTextBox.Text = _amountText;
     _amountTextBox.MaxLength = 13;
+
+    if (_cssClass != string.Empty)
+      _amountTextBox.CssClass = _cssClass;
+
     _amountTextBox.Style["width"] = "10em";
+    _amountTextBox.Style["text-align"] = "right";
   }
 
   private TableCell CreateCurrencySymbolCell ()
   {
     TableCell cell = new TableCell ();
     cell.VerticalAlign = VerticalAlign.Middle;
+    cell.Width = new Unit (1, UnitType.Percentage);
     cell.Controls.Add (CreateCurrencySymbol ());
 
     return cell;
@@ -275,9 +330,7 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
   {
     string currentValue = _amountText;
 
-    this.Controls.Add (_amountTextBox);
     string postedValue = postCollection[_amountTextBox.UniqueID];
-    this.Controls.Remove (_amountTextBox);
 
     if (!currentValue.Equals (postedValue))
     {

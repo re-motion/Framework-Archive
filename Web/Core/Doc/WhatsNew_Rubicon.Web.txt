@@ -11,6 +11,8 @@
   * Position des Währungssymbols definierbar ("BeforeTextbox", "AfterTextbox"); default "BeforeTextbox"
   * Validiert wird der Datentyp des eingegebenen Betrags, nicht aber ob leer oder nicht 
     -> im Entryfield mit RequiredFieldValidator prüfen
+- Klasse "EntryField" Methode "Render": Wenn LabelColumnWidth = 0, dann werden links neben den 
+    requiredfield- und invalidstate-images keine Whitespaceimages angezeigt
 
 
 3.1.6.1
