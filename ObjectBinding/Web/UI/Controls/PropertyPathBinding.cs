@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <see cref="BusinessObjectPropertyPath"/> from it's string representation and an
 ///   <see cref="IBusinessObjectDataSource"/>
 /// </summary>
-public class PropertyPathBinding: IReferencePropertySource
+public class PropertyPathBinding: IBusinessObjectClassSource
 {
   /// <summary> <see langword="true"/> once the <see cref="PropertyPath"/> has been set. </summary>
   private bool _isPopertyPathEvaluated;
