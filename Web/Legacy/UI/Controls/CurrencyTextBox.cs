@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -30,7 +31,7 @@ public class CurrencyTextBox: Control, INamingContainer
   private CurrencySymbolPositionType _currencySymbolPosition = CurrencySymbolPositionType.BeforeTextBox;
   private string _amountText = string.Empty;
   private TextBox _amountTextBox;
-  private RangeValidator _rangeValidator;
+  private string _cssClass = string.Empty;
 
   private string _errorMessageCssClass = string.Empty;
   private string _errorMessage = "Bitte gültigen Betrag eingeben.";
@@ -101,6 +102,15 @@ public class CurrencyTextBox: Control, INamingContainer
   }
  
   /// <summary>
+  /// Gets or sets the css-class
+  /// </summary>
+  public string CssClass
+  {
+    get { return _cssClass; }
+    set { _cssClass = value; }
+  }
+
+  /// <summary>
   /// Gets or sets the css-class for the error message.
   /// </summary>
   public string ErrorMessageCssClass
@@ -145,21 +155,65 @@ public class CurrencyTextBox: Control, INamingContainer
     return values;
   }
 
+  private string GetAmountToDisplay ()
+  {
+    string amount = this.Page.Request.Form[_amountTextBox.UniqueID];
+
+    if (!this.Page.IsPostBack && (amount == null || amount == string.Empty))
+      amount = _amountText;
+
+    return amount;
+  }
+
   protected override void CreateChildControls()
   {
-    if (CurrencySymbolPosition == CurrencySymbolPositionType.BeforeTextBox)
-      CreateCurrencySymbol ();
-
-    CreateAmountTextBox ();
-   
-    if (CurrencySymbolPosition == CurrencySymbolPositionType.AfterTextBox)
-      CreateCurrencySymbol ();
-
-    this.Controls.Add (new LiteralControl ("<br>"));
-
-    CreateValidator ();    
+    this.Controls.Add (CreateMainTable ());
 
     base.CreateChildControls ();
+
+    _amountTextBox.Text = GetAmountToDisplay ();
+    AmountText = GetAmountToDisplay ();
+  }
+
+  private HtmlTable CreateMainTable ()
+  {
+    HtmlTable table = new HtmlTable ();
+    table.CellPadding = 0;
+    table.CellSpacing = 0;
+
+    if (_cssClass != string.Empty)
+      table.Attributes["class"] = _cssClass;
+
+    HtmlTableRow row = new HtmlTableRow ();
+    HtmlTableCell cell = null;
+
+    if (CurrencySymbolPosition == CurrencySymbolPositionType.BeforeTextBox)
+      row.Cells.Add (CreateCurrencySymbolCell ());
+
+    cell = new HtmlTableCell ();
+    cell.VAlign = "Middle";
+
+    CreateAmountTextBox ();
+    cell.Controls.Add (_amountTextBox);
+  
+    row.Cells.Add (cell);
+
+    if (CurrencySymbolPosition == CurrencySymbolPositionType.AfterTextBox)
+      row.Cells.Add (CreateCurrencySymbolCell ());
+
+    table.Rows.Add (row);
+   
+    row = new HtmlTableRow ();
+    cell = new HtmlTableCell ();
+    cell.ColSpan = 2;
+
+    cell.Controls.Add (CreateValidator ());  
+
+    row.Cells.Add (cell);
+
+    table.Rows.Add (row);
+
+    return table;
   }
 
   private void CreateAmountTextBox ()
@@ -168,18 +222,18 @@ public class CurrencyTextBox: Control, INamingContainer
     _amountTextBox.ID = "AmountTextBox";
     _amountTextBox.MaxLength = 13;
     _amountTextBox.Width = new Unit (10, UnitType.Em);
-    this.Controls.Add (_amountTextBox);
-
-    string amount = this.Page.Request.Form[_amountTextBox.UniqueID];
-
-    if (!this.Page.IsPostBack && (amount == null || amount == string.Empty))
-      amount = _amountText;
-    
-    _amountTextBox.Text = amount;
-    AmountText = amount;
   }
 
-  private void CreateCurrencySymbol ()
+  private HtmlTableCell CreateCurrencySymbolCell ()
+  {
+    HtmlTableCell cell = new HtmlTableCell ();
+    cell.VAlign = "Middle";
+    cell.Controls.Add (CreateCurrencySymbol ());
+
+    return cell;
+  }
+
+  private Label CreateCurrencySymbol ()
   {
     Label currencySymbolLabel = new Label ();
     currencySymbolLabel.CssClass = "labelOpen";
@@ -192,23 +246,23 @@ public class CurrencyTextBox: Control, INamingContainer
     if (CurrencySymbolPosition == CurrencySymbolPositionType.BeforeTextBox)
       currencySymbolLabel.Controls.Add (new LiteralControl ("&nbsp;"));
 
-    this.Controls.Add (currencySymbolLabel);
+    return currencySymbolLabel;
   }
 
-  private void CreateValidator ()
+  private RangeValidator CreateValidator ()
   {
-    _rangeValidator = new RangeValidator ();
-    _rangeValidator.ID = "AmountRangeValidator";
-    _rangeValidator.ErrorMessage = _errorMessage;
-    _rangeValidator.Display = _errorMessageDisplay;
-    _rangeValidator.MinimumValue = "0";
-    _rangeValidator.MaximumValue = "1200000000000";
-    _rangeValidator.Type = ValidationDataType.Double;
-    _rangeValidator.CssClass = _errorMessageCssClass;
-    _rangeValidator.EnableClientScript = false;
-    _rangeValidator.ControlToValidate = _amountTextBox.ID;
+    RangeValidator rangeValidator = new RangeValidator ();
+    rangeValidator.ID = "AmountRangeValidator";
+    rangeValidator.ErrorMessage = _errorMessage;
+    rangeValidator.Display = _errorMessageDisplay;
+    rangeValidator.MinimumValue = "0";
+    rangeValidator.MaximumValue = "1200000000000";
+    rangeValidator.Type = ValidationDataType.Double;
+    rangeValidator.CssClass = _errorMessageCssClass;
+    rangeValidator.EnableClientScript = false;
+    rangeValidator.ControlToValidate = _amountTextBox.ID;
 
-    this.Controls.Add (_rangeValidator);
+    return rangeValidator;
   }
 }
 
