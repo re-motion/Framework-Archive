@@ -126,6 +126,7 @@ public abstract class CommandBuilder
       return id.ToString ();
   }
 
+  // TODO: Move this method to MappingUtility. Review when adding new Na* types.
   protected object ConvertToDBType (object value)
   {
     if (value == null)
@@ -133,38 +134,11 @@ public abstract class CommandBuilder
 
     Type type = value.GetType ();
 
-    if (type == typeof (NaBoolean))
+    INaNullable naValueType = value as INaNullable;
+    if (naValueType != null)
     {
-      NaBoolean naBooleanValue = (NaBoolean) value;
-      if (!naBooleanValue.IsNull)
-        return naBooleanValue.Value;
-      else
-        return DBNull.Value;
-    }
-
-    if (type == typeof (NaDateTime))
-    {
-      NaDateTime naDateTimeValue = (NaDateTime) value;
-      if (!naDateTimeValue.IsNull)
-        return naDateTimeValue.Value;
-      else
-        return DBNull.Value;
-    }
-
-    if (type == typeof (NaDouble))
-    {
-      NaDouble naDoubleValue = (NaDouble) value;
-      if (!naDoubleValue.IsNull)
-        return naDoubleValue.Value;
-      else
-        return DBNull.Value;
-    }
-
-    if (type == typeof (NaInt32))
-    {
-      NaInt32 naInt32Value = (NaInt32) value;
-      if (!naInt32Value.IsNull)
-        return naInt32Value.Value;
+      if (!naValueType.IsNull)
+        return naValueType.Value;
       else
         return DBNull.Value;
     }
