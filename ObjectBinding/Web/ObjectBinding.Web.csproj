@@ -246,6 +246,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocTreeView.cs"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BusinessObjectBinding.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
