@@ -49,7 +49,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectReferenceProperty) };
 
-  private static readonly object s_eventSelectionChanged = new object();
+  private static readonly object s_selectionChangedEvent = new object();
   private static readonly object EventMenuItemClick = new object();
 
 	// member fields
@@ -161,7 +161,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
-    _optionsMenu.Click += new MenuItemClickEventHandler(OptionsMenu_Click);
+    _optionsMenu.EventCommandClick += new MenuItemClickEventHandler (OptionsMenu_EventCommandClick);
+    _optionsMenu.WxeFunctionCommandClick += new MenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
   }
 
   /// <summary>
@@ -198,7 +199,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnSelectionChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventSelectionChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -747,7 +748,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     return menuItems;
   }
 
-  private void OptionsMenu_Click(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
+  {
+  }
+
+  private void OptionsMenu_EventCommandClick(object sender, MenuItemClickEventArgs e)
   {
     OnMenuItemClick ((BocMenuItem) e.Item);
   }
@@ -902,8 +907,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the selection changes.")]
   public event EventHandler SelectionChanged
   {
-    add { Events.AddHandler (s_eventSelectionChanged, value); }
-    remove { Events.RemoveHandler (s_eventSelectionChanged, value); }
+    add { Events.AddHandler (s_selectionChangedEvent, value); }
+    remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
   }
 
   /// <summary> The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode). </summary>
