@@ -309,7 +309,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void TestAllOperationsWithHirarchy ()
+  public void TestAllOperationsWithHierarchy ()
   {
     Employee newSupervisor1 = new Employee ();
     Employee newSubordinate1 = new Employee ();
@@ -340,6 +340,40 @@ public class DomainObjectTest : ClientTransactionBaseTest
     ClientTransactionMock.Commit ();
 
     // expectation: no exception
+  }
+
+  [Test]
+  public void DeleteNewObjectWithExistingRelated ()
+  {
+    Computer computer4 = Computer.GetObject (DomainObjectIDs.Computer4);
+
+    Employee newDeletedEmployee = new Employee ();
+    computer4.Employee = newDeletedEmployee;
+
+    newDeletedEmployee.Delete ();
+
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
+
+    computer4 = Computer.GetObject (DomainObjectIDs.Computer4);
+    Assert.IsNull (computer4.Employee);
+  }
+
+  [Test]
+  public void ExistingObjectRelatesToNewAndDeleted ()
+  {
+    Partner partner = Partner.GetObject (DomainObjectIDs.Partner2);
+
+    Person newPerson = new Person ();
+    partner.ContactPerson = newPerson;
+    partner.IndustrialSector.Delete ();
+
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
+
+    partner = Partner.GetObject (DomainObjectIDs.Partner2);
+    Assert.AreEqual (newPerson.ID, partner.ContactPerson.ID);
+    Assert.IsNull (partner.IndustrialSector);
   }
 }
 }

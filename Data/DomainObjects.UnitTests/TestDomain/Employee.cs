@@ -49,5 +49,14 @@ public class Employee : TestDomainBase
     get { return (Computer) GetRelatedObject ("Computer"); }
     set { SetRelatedObject ("Computer", value); }
   }
+
+  public void DeleteWithSubordinates ()
+  {
+    DomainObjectCollection subordinates = (DomainObjectCollection) Subordinates.Clone ();
+    foreach (Employee employee in subordinates)
+      employee.Delete ();
+
+    this.Delete ();
+  }
 }
 }

@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -94,6 +95,39 @@ public class DeleteDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (new DateTime (2005, 3, 1), _order.DeliveryDate);
     Assert.IsNotNull (_order.DataContainer.Timestamp);
     Assert.IsNotNull (_order.DataContainer.PropertyValues["OrderNumber"]);
+  }
+
+  [Test]
+  public void CascadedDelete ()
+  {
+    Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+    supervisor.DeleteWithSubordinates ();
+
+    DomainObject deletedSubordinate4 = TestDomainBase.GetObject (DomainObjectIDs.Employee4, true);
+    DomainObject deletedSubordinate5 = TestDomainBase.GetObject (DomainObjectIDs.Employee5, true);
+
+    Assert.AreEqual (StateType.Deleted, supervisor.State);
+    Assert.AreEqual (StateType.Deleted, deletedSubordinate4.State);
+    Assert.AreEqual (StateType.Deleted, deletedSubordinate5.State);
+
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
+
+    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee1);
+    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee4);
+    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee5);
+  }
+
+  private void GetDeletedObjectWithAssertion (ObjectID id)
+  {
+    try
+    {
+      DomainObject domainObject = TestDomainBase.GetObject (id, true); 
+      Assert.IsNull (domainObject, string.Format ("Object '{0}' was not deleted.", id));
+    }
+    catch (ObjectNotFoundException)
+    {
+    }
   }
 }
 }
