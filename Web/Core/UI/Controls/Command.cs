@@ -397,7 +397,7 @@ public class Command: IControlItem
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
+  [Description ("Determines when to show the item command to the user in regard to the parent control's read-only setting.")]
   [DefaultValue (CommandShow.Always)]
   [NotifyParentProperty (true)]
   public CommandShow Show
