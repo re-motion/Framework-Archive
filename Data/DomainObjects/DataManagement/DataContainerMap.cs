@@ -98,8 +98,7 @@ public class DataContainerMap : IEnumerable
 
   public DomainObjectCollection GetByState (StateType state)
   {
-    if (!Enum.IsDefined (typeof (StateType), state))
-      throw new ArgumentException (string.Format ("Invalid state '{0}' provided.", state), "state");
+    ArgumentUtility.CheckValidEnumValue (state, "state");
 
     DomainObjectCollection domainObjects = new DomainObjectCollection ();
 

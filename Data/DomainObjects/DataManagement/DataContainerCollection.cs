@@ -36,8 +36,7 @@ public class DataContainerCollection : CollectionBase
 
   public DataContainerCollection GetByState (StateType state)
   {
-    if (!Enum.IsDefined (typeof (StateType), state))
-      throw new ArgumentException (string.Format ("Invalid state '{0}' provided.", state), "state");
+    ArgumentUtility.CheckValidEnumValue (state, "state");
 
     DataContainerCollection collection = new DataContainerCollection ();
 
