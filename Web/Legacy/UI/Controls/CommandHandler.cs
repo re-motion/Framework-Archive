@@ -28,7 +28,7 @@ public class CommandHandler : Control, IPostBackEventHandler
   
   public void RaisePostBackEvent (string eventArgument)
   {   
-      CommandEventArgs e = new CommandEventArgs ("CommandHandler", eventArgument);
+      CommandEventArgs e = new CommandEventArgs (this.ClientID, eventArgument);
 
       OnCommand (e);
   }
