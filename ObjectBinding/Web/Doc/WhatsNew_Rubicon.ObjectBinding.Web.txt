@@ -6,6 +6,14 @@
 
 - BocList, BocTextValue, BocMultilineTextValue, BocReferenceValue
   * BugFix: Html-Encode für Read-Only Werte.
+  * Enum RowSelection, Wert Single heißt nun SingleCheckBox
+    Muss im HTML-View korrigiert werden, falls Selection auf bereits auf Single gesetzt war.
+  * Inline Editing verfügbar:
+    Neuer Spaltentyp: BocEditDetailsColumnDefinition für Edit/Save/Cancel in der Zeile
+    Programmatisch über SwitchRowIntoEditMode (int) und EndRowEditMode (bool).
+    Die bearbeitete Zeile wird über den Index indentifziert. Es muss daher sicher gestellt sein, dass der Index
+    der gerade bearbeiteten Zeile nicht geändert wird. Ansonsten wird beim darauf folgenden Rendern die falsche 
+    Zeile bearbeitet.    
   
 1.2.14.0
 ========
@@ -154,11 +162,11 @@
   * OptionsMenu, ListMenu: Commands lassen sich definieren, WxeCommand noch ohne Funktion.
   * Commands allgemein: Persistierung hat sich geändert.
     ColumnCommand: die Start- und End-Tags wie folgt ersetzen.
-    "<command " durch "<persistedcommand><obc:BocListItemCommand " ersetzen.
-    "</command>" durch "</obc:BocListItemCommand></PersistedCommand>" ersetzen.
+    "<command " durch "<persistedcommand><Prefix:BocListItemCommand " ersetzen.
+    "</command>" durch "</Prefix:BocListItemCommand></PersistedCommand>" ersetzen.
     MenuCommand: die Start- und End-Tags wie folgt ersetzen.
-    "<command " durch "<persistedcommand><obc:BocMenuItemCommand " ersetzen.
-    "</command>" durch "</obc:BocMenuItemCommand></PersistedCommand>" ersetzen.
+    "<command " durch "<persistedcommand><Prefix:BocMenuItemCommand " ersetzen.
+    "</command>" durch "</Prefix:BocMenuItemCommand></PersistedCommand>" ersetzen.
 
 1.1.32.0
 ========
