@@ -1,6 +1,6 @@
 using System;
-using Rubicon.Utilities;
 
+using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.Mapping;
 
