@@ -126,6 +126,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "StringUtilityTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WorkContextTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
