@@ -73,9 +73,10 @@
         <see cref="IBusinessObjectBoundControl.PropertyIdentifier"/> are not set, the 
         control is unbound. In that case, <see cref="Property"/> must be set programmatically and
         <see cref="Value"/> must be set to display the current item and queried to save it back 
-        into the <see cref="IBusinessObject"/>. It is also necessary to manually fill the list of 
-        <see cref="IBusinessObjectWithIdentity"/> objects using  
-        <see cref="SetBusinessObjectReferenceList"/>.
+        into the <see cref="IBusinessObject"/>.
+      </para><para>
+        If no <see cref="Select"/> statement is provided, use <see cref="SetBusinessObjectReferenceList"/>
+        to fill the list of <see cref="IBusinessObjectWithIdentity"/> objects.
       </para>
     </remarks>
   </Class>
