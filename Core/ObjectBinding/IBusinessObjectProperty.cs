@@ -18,9 +18,31 @@ public interface IBusinessObjectProperty
   /// <summary>
   ///   Creates a list.
   /// </summary>
-  /// <returns></returns>
+  /// <remarks>
+  ///   Use this method to create a new list in order to ensure that the correct list type is used (Array, ArrayList, etc.)
+  /// </remarks>
+  /// <returns> 
+  ///   A new list with the specified number of empty elements.
+  /// </returns>
   IList CreateList (int count);
 
+  /// <summary>
+  ///   The type of a single value item.
+  /// </summary>
+  /// <remarks>
+  ///   If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as <see cref="PropertyType"/>. 
+  ///   Otherwise, the item type is the type of a list item.
+  /// </remarks>
+  Type ItemType { get; }
+
+  /// <summary>
+  ///   The type of the property.
+  /// </summary>
+  /// <remarks> 
+  ///   This is the type of elements returned by <see cref="IBusinessObject.GetValue"/> and set via <see cref="IBusinessObject.SetValue"/>.
+  ///   If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> interface, and the
+  ///   items contained in this list must have the type <see cref="ItemType"/>.
+  /// </remarks>
   Type PropertyType { get; }
 
   /// <summary>
@@ -29,8 +51,11 @@ public interface IBusinessObjectProperty
   string Identifier { get; }
 
   /// <summary>
-  ///   The property name as presented to the user (may depend on the current culture).
+  ///   The property name as presented to the user.
   /// </summary>
+  /// <remarks>
+  ///   The value of this property may depend on the current culture.
+  /// </remarks>
   string DisplayName { get; }
 
   /// <summary>
@@ -62,11 +87,17 @@ public interface IBusinessObjectProperty
 
 public interface IBusinessObjectStringProperty: IBusinessObjectProperty
 {
+  /// <summary>
+  ///   The maximum length of a string assigned to the property, or <see cref="NaInt32.Null"/> if no maximum length is defined.
+  /// </summary>
   NaInt32 MaxLength { get; }
 }
 
 public interface IBusinessObjectNumericProperty: IBusinessObjectProperty
 {
+  /// <summary>
+  ///   Specifies whether negative numbers are valid for the property.
+  /// </summary>
   bool AllowNegative { get; }
 }
 
@@ -88,6 +119,10 @@ public interface IBusinessObjectDateTimeProperty: IBusinessObjectProperty
 
 public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
 {
+  /// <summary>
+  ///   Gets the class information for elements of this property.
+  /// </summary>
+  IBusinessObjectClass ReferenceClass { get; }
 }
 
 public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty

@@ -16,34 +16,34 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
     ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
     bool isList = propertyInfo.PropertyType.IsArray;
-    Type elementType = isList ? propertyInfo.PropertyType.GetElementType() : propertyInfo.PropertyType;
+    Type itemType = isList ? propertyInfo.PropertyType.GetElementType() : propertyInfo.PropertyType;
     bool isNullableType = false;
-    if (NaTypeUtility.IsNaNullableType (elementType))
+    if (NaTypeUtility.IsNaNullableType (itemType))
     {
       isNullableType = true;
-      elementType = NaTypeUtility.GetBasicType (elementType);
+      itemType = NaTypeUtility.GetBasicType (itemType);
     }
 
     if (propertyInfo.PropertyType == typeof (string))
-      return new ReflectionBusinessObjectStringProperty (propertyInfo, elementType, isList);
-    else if (elementType == typeof (int))
-      return new ReflectionBusinessObjectInt32Property (propertyInfo, elementType, isList, isNullableType);
+      return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
+    else if (itemType == typeof (int))
+      return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType == typeof (DateTime))
-      return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, elementType, isList, isNullableType);
+      return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType.IsEnum)
-      return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, elementType, isList);
+      return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, isList);
     else
-      return new ReflectionBusinessObjectProperty (propertyInfo, elementType, isList);
+      return new ReflectionBusinessObjectProperty (propertyInfo, itemType, isList);
   }
 
   PropertyInfo _propertyInfo;
-  Type _elementType;
+  Type _itemType;
   bool _isList;
 
-  protected ReflectionBusinessObjectProperty (PropertyInfo propertyInfo, Type elementType, bool isList)
+  protected ReflectionBusinessObjectProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
   {
     _propertyInfo = propertyInfo;
-    _elementType = elementType;
+    _itemType = itemType;
     _isList = isList;
   }
 
@@ -56,12 +56,12 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
   {
     if (! IsList)
       throw new InvalidOperationException ("Cannot create lists for non-list properties.");
-    return Array.CreateInstance (_elementType, count);
+    return Array.CreateInstance (_itemType, count);
   }
 
-  public Type ElementType
+  public Type ItemType
   {
-    get { return _elementType; }
+    get { return _itemType; }
   }
 
   public virtual Type PropertyType
@@ -112,8 +112,8 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
 
 public class ReflectionBusinessObjectStringProperty: ReflectionBusinessObjectProperty, IBusinessObjectStringProperty
 {
-  public ReflectionBusinessObjectStringProperty (PropertyInfo propertyInfo, Type elementType, bool isList)
-    : base (propertyInfo, elementType, isList)
+  public ReflectionBusinessObjectStringProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
+    : base (propertyInfo, itemType, isList)
   {
   }
 
@@ -127,8 +127,8 @@ public class ReflectionBusinessObjectNullableProperty: ReflectionBusinessObjectP
 {
   bool _isNullableType;
 
-  public ReflectionBusinessObjectNullableProperty (PropertyInfo propertyInfo, Type elementType, bool isList, bool isNullableType)
-    : base (propertyInfo, elementType, isList)
+  public ReflectionBusinessObjectNullableProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullableType)
+    : base (propertyInfo, itemType, isList)
   {
     _isNullableType = isNullableType;
   }
@@ -146,8 +146,8 @@ public class ReflectionBusinessObjectNullableProperty: ReflectionBusinessObjectP
 
 public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNullableProperty, IBusinessObjectInt32Property
 {
-  public ReflectionBusinessObjectInt32Property (PropertyInfo propertyInfo, Type elementType, bool isList, bool isNullable)
-    : base (propertyInfo, elementType, isList, isNullable)
+  public ReflectionBusinessObjectInt32Property (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    : base (propertyInfo, itemType, isList, isNullable)
   {
   }
 
@@ -175,8 +175,8 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNull
 
 public class ReflectionBusinessObjectDateTimeProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDateTimeProperty
 {
-  public ReflectionBusinessObjectDateTimeProperty (PropertyInfo propertyInfo, Type elementType, bool isList, bool isNullable)
-    : base (propertyInfo, elementType, isList, isNullable)
+  public ReflectionBusinessObjectDateTimeProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    : base (propertyInfo, itemType, isList, isNullable)
   {
   }
 
@@ -199,8 +199,8 @@ public class ReflectionBusinessObjectDateTimeProperty: ReflectionBusinessObjectN
 
 public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectEnumerationProperty
 {
-  public ReflectionBusinessObjectEnumerationProperty (PropertyInfo propertyInfo, Type elementType, bool isList)
-    : base (propertyInfo, elementType, isList)
+  public ReflectionBusinessObjectEnumerationProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
+    : base (propertyInfo, itemType, isList)
   {
   }
 
