@@ -33,9 +33,9 @@ public class RelationEndPointCollection : CollectionBase
 
   // methods and properties
 
-  public void Merge (RelationEndPointCollection relationEndPoints)
+  public void Merge (RelationEndPointCollection endPoints)
   {
-    foreach (RelationEndPoint endPoint in relationEndPoints)
+    foreach (RelationEndPoint endPoint in endPoints)
       Add (endPoint);
   }
 
