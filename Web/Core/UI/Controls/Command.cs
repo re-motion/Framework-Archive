@@ -446,6 +446,8 @@ public class Command
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public Control OwnerControl
   {
     get { return OwnerControlImplementation;  }

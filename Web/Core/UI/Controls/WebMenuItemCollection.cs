@@ -30,10 +30,10 @@ public class MenuItemCollection: ControlItemCollection
     return (MenuItem[]) arrayList.ToArray (typeof (MenuItem));
   }
 
-  public new MenuItem this[int index]
+  protected internal new MenuItem this[int index]
   {
-    get { return (MenuItem) base[index]; }
-    set { base[index] = value; }
+    get { return (MenuItem) List[index]; }
+    set { List[index] = value; }
   }
 }
 

@@ -9,6 +9,7 @@ using System.Globalization;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -17,7 +18,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <see cref="BusinessObjectPropertyPath"/> from it's string representation and an
 ///   <see cref="IBusinessObjectDataSource"/>
 /// </summary>
-public class PropertyPathBinding: IBusinessObjectClassSource
+public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClassSource
 {
   /// <summary> <see langword="true"/> once the <see cref="PropertyPath"/> has been set. </summary>
   private bool _isPopertyPathEvaluated;
@@ -31,10 +32,6 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   ///   by this <see cref="PropertyPathBinding"/>.
   /// </summary>
   private string _propertyPathIdentifier;
-  /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> containing the <see cref="DataSource"/>. 
-  /// </summary>
-  private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> 
   ///   Initializes a new instance of the <see cref="PropertyPathBinding"/> class with the
@@ -172,16 +169,6 @@ public class PropertyPathBinding: IBusinessObjectClassSource
       _propertyPath = null;
       _isPopertyPathEvaluated = false;
     }
-  }
-
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> containing the 
-  ///   <see cref="DataSource"/>. 
-  /// </summary>
-  protected internal IBusinessObjectBoundWebControl OwnerControl
-  {
-    get { return _ownerControl;  }
-    set { _ownerControl = value; }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

@@ -28,12 +28,9 @@ public class BocListDesigner: BocDesigner, IServiceProvider
     PropertyDescriptor propertyDescriptor = propertyDescriptors["FixedColumns"];
 
     BocColumnDefinitionCollectionEditor editor = null;
-    editor = (BocColumnDefinitionCollectionEditor) TypeDescriptor.GetEditor (
-        propertyDescriptor.PropertyType, 
-        typeof(UITypeEditor));
-    
     TypeDescriptorContext context = new TypeDescriptorContext (this, this, propertyDescriptor);
     object value = propertyDescriptor.GetValue (Component);
+    editor = (BocColumnDefinitionCollectionEditor) TypeDescriptor.GetEditor (value, typeof(UITypeEditor));
     editor.EditValue (context, this, value);
   }
 

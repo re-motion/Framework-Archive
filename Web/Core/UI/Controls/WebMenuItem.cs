@@ -93,8 +93,7 @@ public class MenuItem: IControlItem
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
   /// <value> A <see cref="Command"/>. </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Category ("Action")]
   [Description ("The command rendered for this menu item.")]
   [NotifyParentProperty (true)]
@@ -109,9 +108,29 @@ public class MenuItem: IControlItem
     }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IControl"/> to which this object belongs. 
-  /// </summary>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [Browsable (false)]
+  public Command[] PersistedCommand
+  {
+    get
+    {
+      if (Command != null)
+        return new Command[] {Command}; 
+      else
+        return new Command[0];
+    }
+    set 
+    { 
+      if (value == null || value.Length != 1 || value[0] == null)
+        Command = null;
+      else
+        Command = value[0]; 
+    }
+  }
+
+  /// <summary> Gets or sets the control to which this object belongs. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public Control OwnerControl
   {
     get { return OwnerControlImplementation;  }

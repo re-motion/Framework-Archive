@@ -12,7 +12,7 @@ public interface IControlItem
   Control OwnerControl { get; set; }
 }
 
-public class ControlItemCollection: CollectionBase
+public abstract class ControlItemCollection: CollectionBase
 {
   private Control _ownerControl;
   private Type[] _supportedTypes;
@@ -109,28 +109,22 @@ public class ControlItemCollection: CollectionBase
       Add (controlItem );
   }
 
+  /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </summary>
   public IControlItem[] ToArray()
   {
     ArrayList arrayList = new ArrayList (List);
     return (IControlItem[]) arrayList.ToArray (typeof (IControlItem));
   }
 
+  /// <remarks> 
+  ///   Do not redefine the indexer as a public member in any derived class if you intend to use in the VS Designer. 
+  ///   Otherwise VS Designer will not know which property to use, this one or the new one.
+  ///   It is possible to redefine it as a non-public member.
+  /// <remarks>
   public IControlItem this[int index]
   {
     get { return (IControlItem) List[index]; }
     set { List[index] = value; }
-  }
-
-  /// <summary> Gets or sets the control to which this collection belongs. </summary>
-  public Control OwnerControl
-  {
-    get { return _ownerControl; }
-    set 
-    {
-      _ownerControl = value; 
-      foreach (IControlItem controlItem in List)
-        controlItem.OwnerControl = _ownerControl;
-    }
   }
 
   /// <summary>Tests whether the specified control item's type is supported by the collection. </summary>
@@ -145,6 +139,20 @@ public class ControlItemCollection: CollectionBase
     }
     
     return false;
+  }
+
+  /// <summary> Gets or sets the control to which this collection belongs. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public Control OwnerControl
+  {
+    get { return _ownerControl; }
+    set 
+    {
+      _ownerControl = value; 
+      foreach (IControlItem controlItem in List)
+        controlItem.OwnerControl = _ownerControl;
+    }
   }
 }
 
