@@ -83,11 +83,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     if (! (this.Site != null && this.Site.DesignMode))
     {
-      string newValue = this.Page.Request.Form[_listControl.UniqueID];
+      string newValue = this.Page.Request.Form[_listControl.UniqueID]; // gets enum identifier
       if (newValue == c_nullIdentifier)
         _newValue = null;
       else if (newValue != null)
-        _newValue = Property.GetValueInfo (newValue).Value;
+        _newValue = Property.GetValueInfoByIdentifier (newValue).Value;
     }
 
     if (_newValue != null && _newValue != _value)
@@ -127,7 +127,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
       foreach (IEnumerationValueInfo valueInfo in Property.GetAllValues())
       {
-        ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Value.ToString());
+        ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Identifier);
         _listControl.Items.Add (item);
       }
     }
@@ -138,7 +138,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     if (Property != null)
     {
-      IEnumerationValueInfo valueInfo = Property.GetValueInfo (_value);
+      IEnumerationValueInfo valueInfo = Property.GetValueInfoByValue (_value);
       if (valueInfo == null)
       {
         _listControl.SelectedIndex = 0;
@@ -199,7 +199,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     _label.Visible = isReadOnly;
     if (isReadOnly)
     {
-      _label.Text = Property.GetValueInfo (Value).DisplayName;
+      _label.Text = Property.GetValueInfoByValue (Value).DisplayName;
 
       _label.Width = this.Width;
       _label.Height = this.Height;
