@@ -40,7 +40,7 @@ public class DataContainerTest : ClientTransactionBaseTest
     _existingDataContainer = DataContainer.CreateForExisting (
         new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5), null);
 
-    _nameDefinition = new PropertyDefinition ("Name", "Name", typeof (string), new NaInt32 (100));
+    _nameDefinition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
     _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
   }
 
@@ -159,7 +159,7 @@ public class DataContainerTest : ClientTransactionBaseTest
     DataContainer container = DataContainer.CreateNew (id);
 
     PropertyDefinition reportsToDefinition = new PropertyDefinition (
-        "ReportsTo", "ReportsTo", typeof (string), true, new NaInt32 (100));
+        "ReportsTo", "ReportsTo", "string", true, new NaInt32 (100));
 
     container.PropertyValues.Add (new PropertyValue (reportsToDefinition, null));
 
