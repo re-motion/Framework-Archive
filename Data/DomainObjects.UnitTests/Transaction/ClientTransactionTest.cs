@@ -432,5 +432,33 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsFalse (newOrderTicketTimestamp.Equals (newOrderTicket.DataContainer.Timestamp));
     Assert.AreEqual (oldOrderOfNewOrderTicketTimestamp, oldOrderOfNewOrderTicket.DataContainer.Timestamp);
   }
+
+  [Test]
+  public void OppositeDomainObjectsTypeAfterCommit ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+
+    customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
+    ClientTransaction.Current.Commit ();
+
+    DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Orders");
+    Assert.AreEqual (typeof (OrderCollection), originalOrders.GetType ());
+    Assert.IsTrue (originalOrders.IsReadOnly);
+
+    Assert.AreEqual (customer.Orders.RequiredItemType, originalOrders.RequiredItemType);  
+  }
+
+  [Test]
+  public void RollbackReadOnlyOppositeDomainObjects ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
+
+    customer.Orders.SetIsReadOnly (true);    
+    ClientTransaction.Current.Rollback ();
+
+    Assert.IsTrue (customer.GetOriginalRelatedObjects("Orders").IsReadOnly);
+    Assert.IsTrue (customer.Orders.IsReadOnly);
+  }
 }
 }
