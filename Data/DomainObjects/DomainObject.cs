@@ -235,7 +235,7 @@ public class DomainObject
   /// Deletes the <b>DomainObject</b>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected void Delete ()
+  public void Delete ()
   {
     CheckDiscarded ();
     ClientTransaction.Delete (this);
