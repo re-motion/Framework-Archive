@@ -286,6 +286,8 @@ public class EntryField: Control
 	private bool _isRequired = false;
   private string _title = string.Empty;
   private bool   _showErrors = true;
+  private bool   _externalValidState = true;
+  private string _externalErrorMessage = string.Empty;
 
 //  private int _height = -1;
 //  private int _width = -1;
@@ -352,9 +354,22 @@ public class EntryField: Control
     }
 
     _showErrors = showErrors;
-    return isValid;
+    return isValid && _externalValidState;
   }
 
+  /// <summary>
+  /// Set an external validation state.
+  /// </summary>
+  /// <remarks>
+  /// The external validation state indicates errors which can't be validated by the validators.
+  /// </remarks>
+  /// <param name="valid">Validation state</param>
+  /// <param name="errorMessage">Associated error message</param>
+  public void SetExternalValidState (bool valid, string errorMessage)
+  {
+    _externalValidState = valid;
+    _externalErrorMessage = errorMessage;
+  }
 
   private bool ValidateSubControls (Control control, bool ignoreRequiredFieldValidators)
   {
@@ -421,7 +436,7 @@ public class EntryField: Control
     bool validatorsInvalid = false;
 
     // search for Validator child controls and keep if at least one is invalid
-
+    CheckExternalValidState (ref validatorMessages, ref validatorsInvalid);
     CheckForInvalidValidators (this.Controls, ref validatorMessages, ref validatorsInvalid);
 
     Control labeledControl = null;
@@ -525,6 +540,15 @@ public class EntryField: Control
 		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
 	}
 
+  private void CheckExternalValidState (ref string errorMessages, ref bool invalid)
+  {
+    if (_externalValidState == false)
+    {
+      invalid = true;
+      errorMessages = AddErrorMessage (errorMessages, _externalErrorMessage);
+    }
+  }
+
   private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
   {
     // search for Validator child controls and keep if at least one is invalid
@@ -553,12 +577,16 @@ public class EntryField: Control
     if ( (validator != null) && (!validator.IsValid) )
     {
       validatorsInvalid = true;
-  
-      if ( validatorMessages.Length > 0 )
-        validatorMessages += "\r\n";
-  
-      validatorMessages += validator.ErrorMessage;
+      validatorMessages = AddErrorMessage (validatorMessages, validator.ErrorMessage);
     }
+  }
+
+  private string AddErrorMessage (string errorMessages, string newErrorMessage)
+  {
+    if (errorMessages.Length > 0)
+      errorMessages += "\r\n";
+
+    return errorMessages + newErrorMessage;
   }
 }
 
