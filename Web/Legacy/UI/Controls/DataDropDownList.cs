@@ -82,6 +82,7 @@ public class DataDropDownList: DropDownList
       if (val == _emptyValue)
       {
         SetEmpty();
+        return;
       }
 
       for (int i = 0; i < this.Items.Count; ++i)
