@@ -79,7 +79,15 @@ public sealed class ArgumentUtility
     return actualValue;
   }
 
-  private ArgumentUtility()
+	public static void CheckValidEnumValue (System.Enum enumValue, string argumentName)
+	{
+		if (enumValue == null)
+			throw new ArgumentNullException (argumentName);
+		else if (! EnumUtility.IsValidEnumValue (enumValue))
+			throw new ArgumentOutOfRangeException (argumentName);
+	}
+
+	private ArgumentUtility()
 	{
 	}
 }
