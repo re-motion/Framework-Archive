@@ -511,9 +511,7 @@ public class ClientTransaction
       clientTransactionCommittingEventNotRaised = clientTransactionCommittingEventRaised.GetItemsNotInCollection (changedDomainObjects);
       
       OnCommitting (new ClientTransactionEventArgs (clientTransactionCommittingEventNotRaised.Clone (true)  ));
-
-      foreach (DomainObject domainObject in clientTransactionCommittingEventNotRaised)
-        clientTransactionCommittingEventRaised.Add (domainObject);
+      clientTransactionCommittingEventRaised.Combine (clientTransactionCommittingEventNotRaised);
 
       changedDomainObjects = _dataManager.GetChangedDomainObjects ();
       clientTransactionCommittingEventNotRaised = clientTransactionCommittingEventRaised.GetItemsNotInCollection (changedDomainObjects);

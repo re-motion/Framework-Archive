@@ -64,21 +64,21 @@ public class DataContainerCollection : CollectionBase
     return difference;
   }
 
-  public DataContainerCollection Combine (DataContainerCollection dataContainers)
+  public DataContainerCollection Merge (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
-    DataContainerCollection combinedCollection = new DataContainerCollection ();
+    DataContainerCollection mergedCollection = new DataContainerCollection ();
 
     foreach (DataContainer dataContainer in this)
     {
       if (dataContainers.Contains (dataContainer.ID))
-        combinedCollection.Add (dataContainers[dataContainer.ID]);
+        mergedCollection.Add (dataContainers[dataContainer.ID]);
       else
-        combinedCollection.Add (dataContainer);
+        mergedCollection.Add (dataContainer);
     }
 
-    return combinedCollection;
+    return mergedCollection;
   }
 
   #region Standard implementation for collections
