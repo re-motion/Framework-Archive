@@ -470,7 +470,7 @@ public class BocList:
     else
       imageUrl = c_moveFirstIcon;      
     imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, typeof (BocList), ResourceType.Image, imageUrl);
+      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
     if (isFirstPage)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
@@ -489,7 +489,7 @@ public class BocList:
     else
       imageUrl = c_movePreviousIcon;      
     imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, typeof (BocList), ResourceType.Image, imageUrl);
+      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
     if (isFirstPage)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
@@ -509,7 +509,7 @@ public class BocList:
     else
       imageUrl = c_moveNextIcon;      
     imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, typeof (BocList), ResourceType.Image, imageUrl);
+      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
     if (isLastPage)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
@@ -529,7 +529,7 @@ public class BocList:
     else
       imageUrl = c_moveLastIcon;     
     imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, typeof (BocList), ResourceType.Image, imageUrl);
+      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
     if (isLastPage)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
