@@ -38,6 +38,8 @@ public class WebTabCollection: ControlItemCollection
   protected override void OnInsert(int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
+    WebTab tab = (WebTab) value;
+    CheckTab ("value", tab);
     base.OnInsert (index, value);
   }
 
@@ -53,6 +55,8 @@ public class WebTabCollection: ControlItemCollection
   protected override void OnSet(int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTab));
+    WebTab tab = (WebTab) newValue;
+    CheckTab ("newValue", tab);
     base.OnSet (index, oldValue, newValue);
   }
 
@@ -65,11 +69,40 @@ public class WebTabCollection: ControlItemCollection
       tab.SetSelected (true);
   }
 
+  private void CheckTab (string arguemntName, WebTab tab)
+  {
+    if (_tabStrip != null && ! ControlHelper.IsDesignMode ((Control) _tabStrip))
+    {
+      if (! tab.IsSeparator)
+      {
+        if (StringUtility.IsNullOrEmpty (tab.TabID))
+          throw new ArgumentException ("The tab is no separator tab and does not contain a 'TabID'. It can therfor not be inserted into the collection.", arguemntName);
+        if (Find (tab.TabID) != null)
+          throw new ArgumentException ("The collection already contains a tab with TabID '" + tab.TabID + "'.", arguemntName);
+      }
+    }
+  }
+
   protected internal void SetParent (WebTabStrip tabStrip)
   {
     _tabStrip = tabStrip; 
     foreach (WebTab tab in List)
       tab.SetParent (_tabStrip);
+  }
+
+  /// <summary>
+  ///   Finds the <see cref="WebTab"/> with a <see cref="WebTab.TabID"/> of <paramref name="id"/>.
+  /// </summary>
+  /// <param name="id"> The ID to look for. </param>
+  /// <returns> A <see cref="WebTab"/> or <see langword="null"/> if no matching tab was found. </returns>
+  public WebTab Find (string id)
+  {
+    foreach (WebTab tab in InnerList)
+    {
+      if (tab.TabID == id)
+        return tab;
+    }
+    return null;
   }
 }
 

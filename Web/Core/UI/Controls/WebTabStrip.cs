@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -9,41 +10,30 @@ namespace Rubicon.Web.UI.Controls
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
 public class WebTabStrip : WebControl, IPostBackEventHandler
 {
+  // statics
+  private static readonly object s_selectedIndexChangedEvent = new object();
+
+  // types
+
+  // fields
+  private WebTabCollection _tabs;
   private WebTab _selectedTab;
-
-  [Description("TabStripSelectedIndexChange")]
-  public event EventHandler SelectedIndexChange;
-
-  private int _CachedSelectedIndex;
-  private WebTabCollection _Items;
-  private int _OldMultiPageIndex;
-  private Style _SepDefaultStyle;
-  private Style _SepHoverStyle;
-  private Style _SepSelectedStyle;
-  private Style _TabDefaultStyle;
-  private Style _TabHoverStyle;
-  private Style _TabSelectedStyle;
-  private const int NoSelection = -1;
-  private const int NotSet = -2;
-  public const string TabSeparatorTagName = "TabSeparator";
-  public const string TabStripTagName = "TabStrip";
-  public const string TabTagName = "Tab";
-  public const string TagNamespace = "TSNS";
-
+  private bool _hasTabsCreated;
+  private Triplet[] _tabsViewState;
+  private Style _separatorStyle;
+  private Style _tabStyle;
+  private Style _tabHoverStyle;
+  private Style _tabSelectedStyle;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTabStrip (Control ownerControl)
   {
-    _Items = new WebTabCollection (ownerControl);
-    _Items.SetParent (this);
-    this._CachedSelectedIndex = -2;
-    this._OldMultiPageIndex = -1;
-    this._TabDefaultStyle = new Style();
-    this._TabHoverStyle = new Style();
-    this._TabSelectedStyle = new Style();
-    this._SepDefaultStyle = new Style();
-    this._SepHoverStyle = new Style();
-    this._SepSelectedStyle = new Style();
+    _tabs = new WebTabCollection (ownerControl);
+    _tabs.SetParent (this);
+    this._tabStyle = new Style();
+    this._tabHoverStyle = new Style();
+    this._tabSelectedStyle = new Style();
+    this._separatorStyle = new Style();
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -52,45 +42,217 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   {
   }
 
-  protected override ControlCollection CreateControlCollection()
+  /// <summary> Implementation of the <see cref="IPostBackEventHandler"/> interface. </summary>
+  /// <param name="eventArgument"> &lt;node path&gt;</param>
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
-    return new EmptyControlCollection(this);
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+    EnsureTabsCreated();
+
+    eventArgument = eventArgument.Trim();
+    HandleClickEvent (eventArgument);
+  }
+
+  /// <summary> Handles the click event for a tab. </summary>
+  /// <param name="eventArgument"> The id of the tab. </param>
+  private void HandleClickEvent (string eventArgument)
+  {
+    WebTab clickedTab = _tabs.Find (eventArgument);
+    if (clickedTab != SelectedTab)
+    {
+      SetSelectedTab (clickedTab);
+      OnSelectedIndexChange();
+    }
+  }
+
+  private void EnsureTabsCreated()
+  {
+    if (_hasTabsCreated)
+      return;
+
+    if (_tabsViewState != null)
+      LoadTabsViewStateRecursive (_tabsViewState, _tabs);
+
+    _hasTabsCreated = true;
   }
 
   protected override void LoadViewState(object savedState)
   {
     if (savedState != null)
     {
-      object[] objArray1 = (object[]) savedState;
-      base.LoadViewState(objArray1[0]);
-      //this.Items.LoadViewState(objArray1[1]);
-      //            ((IStateManager) this.TabDefaultStyle).LoadViewState(objArray1[2]);
-      //            ((IStateManager) this.TabHoverStyle).LoadViewState(objArray1[3]);
-      //            ((IStateManager) this.TabSelectedStyle).LoadViewState(objArray1[4]);
-      //            ((IStateManager) this.SepDefaultStyle).LoadViewState(objArray1[5]);
-      //            ((IStateManager) this.SepHoverStyle).LoadViewState(objArray1[6]);
-      //            ((IStateManager) this.SepSelectedStyle).LoadViewState(objArray1[7]);
+      object[] values = (object[]) savedState;
+      base.LoadViewState(values[0]);
+      _tabsViewState = (Triplet[]) values[1];
     }
-  }
-  protected override void OnInit(EventArgs e)
-  {
-    if (this._CachedSelectedIndex != -2)
-    {
-      this.SelectedIndex = this._CachedSelectedIndex;
-      this._CachedSelectedIndex = -2;
-    }
-    base.OnInit(e);
   }
 
-  protected override void OnLoad(EventArgs e)
+  protected override object SaveViewState()
   {
-    if ((this.Page != null) && !this.Page.IsPostBack)
+    object[] values = new object[2];
+    values[0] = base.SaveViewState();
+    values[1] = SaveNodesViewStateRecursive (_tabs);
+    return values;
+  }
+
+  /// <summary> Loads the settings of the <paramref name="tabs"/> from <paramref name="tabsViewState"/>. </summary>
+  private void LoadTabsViewStateRecursive (Triplet[] tabsViewState, WebTabCollection tabs)
+  {
+    // Not the most efficient method, but be once the tab strip is more advanced.
+    foreach (Triplet tabViewState in tabsViewState)
     {
+      string tabID = (string) tabViewState.First;
+      WebTab tab = _tabs.Find (tabID);
+      if (tab != null)
+      {
+        object[] values = (object[]) tabViewState.Second;
+        bool isSelected = (bool) values[0];
+        if (isSelected)
+          tab.IsSelected = true;
+        // LoadNodesViewStateRecursive ((Triplet[]) tabViewState.Third, tab.Children);
+      }
+    }
+  }
+
+  /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
+  private Triplet[] SaveNodesViewStateRecursive (WebTabCollection tabs)
+  {
+    // Not the most efficient method, but be once the tab strip is more advanced.
+    Triplet[] tabsViewState = new Triplet[tabs.Count];
+    for (int i = 0; i < tabs.Count; i++)
+    {
+      WebTab tab = _tabs[i];    
+      Triplet tabViewState = new Triplet();
+      tabViewState.First = tab.TabID;
+      object[] values = new object[1];
+      values[0] = tab.IsSelected;
+      tabViewState.Second = values;
+      // tabViewState.Third = SaveNodesViewStateRecursive (tab.Children);
+      tabsViewState[i] = tabViewState;
+    }
+    return tabsViewState;
+  }
+
+  protected virtual void OnSelectedIndexChange ()
+  {
+    if (_selectedTab != null)
+      _selectedTab.OnSelectionChanged();
+
+    EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
+    if (handler != null)
+      handler (this, EventArgs.Empty);
+  }
+  
+  /// <summary> Sets the selected tab. </summary>
+  internal void SetSelectedTab (WebTab tab)
+  {
+    if (tab != null && tab.TabStrip != this)
+      throw new InvalidOperationException ("Only tabs that are part of this tab strip can be selected.");
+    if (_selectedTab != tab)
+    {
+      if ((_selectedTab != null) && _selectedTab.IsSelected)
+        _selectedTab.SetSelected (false);
+      _selectedTab = tab;
+      if ((_selectedTab != null) && ! _selectedTab.IsSelected)
+        _selectedTab.SetSelected (true);
+    }
+  }
+
+  /// <summary> Gets the currently selected tab. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public WebTab SelectedTab
+  {
+    get { return _selectedTab; }
+  }
+
+  /// <summary> Gets the tabs displayed by this tab strip. </summary>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [MergableProperty(false)]
+  //  Default category
+  [Description ("The tabs displayed by this tab strip.")]
+  [DefaultValue ((string) null)]
+  public virtual WebTabCollection Tabs
+  {
+    get { return this._tabs; }
+  }
+
+  [Category("Style")]
+  [Description("The style that you want to apply to a tab if it is not the selected tab.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabStyle
+  {
+    get { return _tabStyle; }
+  }
+
+  [Category("Style")]
+  [Description("The style that you want to apply to the selected tab.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabSelectedStyle
+  {
+    get { return _tabSelectedStyle; }
+  }
+
+  [Category("Style")]
+  [Description("The style that you want to apply to the separators.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style SeparatorStyle
+  {
+    get { return _separatorStyle; }
+  }
+
+  /// <summary> Occurs when a node is clicked. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the selected tab has been changed.")]
+  public event EventHandler SelectedIndexChanged
+  {
+    add { Events.AddHandler (s_selectedIndexChangedEvent, value); }
+    remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
+  }
+
+
+/******************************************************************************************************************/
+
+
+//  private int _CachedSelectedIndex;
+//  private int _OldMultiPageIndex;
+//  private const int NoSelection = -1;
+//  private const int NotSet = -2;
+//  public const string TabSeparatorTagName = "TabSeparator";
+//  public const string TabStripTagName = "TabStrip";
+//  public const string TabTagName = "Tab";
+//  public const string TagNamespace = "TSNS";
+
+//  protected override ControlCollection CreateControlCollection()
+//  {
+//    return new EmptyControlCollection(this);
+//  }
+
+//  protected override void OnInit(EventArgs e)
+//  {
+//    if (this._CachedSelectedIndex != -2)
+//    {
+//      this.SelectedIndex = this._CachedSelectedIndex;
+//      this._CachedSelectedIndex = -2;
+//    }
+//    base.OnInit(e);
+//  }
+
+//  protected override void OnLoad(EventArgs e)
+//  {
+//    if ((this.Page != null) && !this.Page.IsPostBack)
+//    {
 //      if ((this.TargetID != string.Empty) && (this.Target == null))
 //      {
 //        throw new Exception(BaseRichControl.GetStringResource("TabStripInvalidTargetID"));
 //      }
-//      foreach (Tab1 in this.Items)
+//      foreach (Tab1 in this.Tabs)
 //      {
 //        if (item1 is Tab)
 //        {
@@ -103,23 +265,15 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
 //        }
 //      }
 //      this.SetTargetSelectedIndex();
-    }
-    base.OnLoad(e);
-  }
+//    }
+//    base.OnLoad(e);
+//  }
 
-  protected override void OnPreRender(EventArgs e)
-  {
+//  protected override void OnPreRender(EventArgs e)
+//  {
 //    this.HelperData = this.SelectedIndex.ToString();
-    base.OnPreRender(e);
-  }
-
-  protected virtual void OnSelectedIndexChange(EventArgs e)
-  {
-    if (this.SelectedIndexChange != null)
-    {
-      this.SelectedIndexChange(this, e);
-    }
-  }
+//    base.OnPreRender(e);
+//  }
 
 //  protected override bool ProcessData(string szData)
 //  {
@@ -138,26 +292,9 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
 //    return false;
 //  }
 
-  void IPostBackEventHandler.RaisePostBackEvent (string argument)
-  {
-//    this.OnSelectedIndexChange(new EventArgs());
-//    MultiPage page1 = this.Target;
-//    if (page1 != null)
-//    {
-//      if (this._OldMultiPageIndex < 0)
-//      {
-//        this.SetTargetSelectedIndex();
-//      }
-//      if ((this._OldMultiPageIndex >= 0) && (page1.SelectedIndex != this._OldMultiPageIndex))
-//      {
-//        page1.FireSelectedIndexChangeEvent();
-//      }
-//    }
-  }
-
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    foreach (WebTab tab in this.Items)
+    foreach (WebTab tab in this.Tabs)
     {
       if (tab.IsSelected)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, null);  
@@ -294,47 +431,6 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
     }
   }
 
-  protected override object SaveViewState()
-  {
-    object[] viewState = new object[1];
-    viewState[0] = base.SaveViewState();
-//
-//    object[] objArray2 = new object[8] { base.SaveViewState(), this.Items.SaveViewState(), ((IStateManager) this.TabDefaultStyle).SaveViewState(), ((IStateManager) this.TabHoverStyle).SaveViewState(), ((IStateManager) this.TabSelectedStyle).SaveViewState(), ((IStateManager) this.SepDefaultStyle).SaveViewState(), ((IStateManager) this.SepHoverStyle).SaveViewState(), ((IStateManager) this.SepSelectedStyle).SaveViewState() } ;
-//    object[] objArray1 = objArray2;
-//    objArray2 = objArray1;
-//    for (int num1 = 0; num1 < objArray2.Length; num1++)
-//    {
-//      object obj1 = objArray2[num1];
-//      if (obj1 != null)
-//      {
-//        return objArray1;
-//      }
-//    }
-//    return null;
-    return viewState;
-  }
-
-  private void SetTargetSelectedIndex()
-  {
-//    int num1 = this.Items.ToArrayIndex(this.SelectedIndex);
-//    if (num1 >= 0)
-//    {
-//      Tab tab1 = (Tab) this.Items[num1];
-//      MultiPage page1 = this.Target;
-//      if (page1 != null)
-//      {
-//        PageView view1 = (tab1 == null) ? null : tab1.Target;
-//        if ((view1 != null) && !view1.Selected)
-//        {
-//          if (this._OldMultiPageIndex < 0)
-//          {
-//            this._OldMultiPageIndex = page1.SelectedIndex;
-//          }
-//          view1.Activate();
-//        }
-//      }
-//    }
-  }
 
   //protected override void TrackViewState()
   //{
@@ -345,42 +441,8 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   //      ((IStateManager) this.SepDefaultStyle).TrackViewState();
   //      ((IStateManager) this.SepHoverStyle).TrackViewState();
   //      ((IStateManager) this.SepSelectedStyle).TrackViewState();
-  //      this.Items.TrackViewState();
+  //      this.Tabs.TrackViewState();
   //}
-
-  [Category("Behavior")]
-  [DefaultValue(false)]
-  [Description("AutoPostBack")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public bool AutoPostBack
-  {
-    get
-    {
-      object obj1 = this.ViewState["AutoPostBack"];
-      if (obj1 != null)
-      {
-        return (bool) obj1;
-      }
-      return false;
-    }
-    set
-    {
-      this.ViewState["AutoPostBack"] = value;
-    }
-  }
-
-  [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
-  [DefaultValue((string) null)]
-  [MergableProperty(false)]
-  [Category("Data")]
-  [Description("TabStripItems")]
-  public virtual WebTabCollection Items
-  {
-    get
-    {
-      return this._Items;
-    }
-  }
 
 //  protected override bool NeedHelper
 //  {
@@ -419,7 +481,7 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   {
     get
     {
-//      int num1 = this.Items.NumTabs;
+//      int num1 = this.Tabs.NumTabs;
 //      if (num1 != 0)
 //      {
 //        int num2 = 0;
@@ -441,13 +503,13 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
     }
     set
     {
-//      if ((this.Items.NumTabs == 0) && (value > -2))
+//      if ((this.Tabs.NumTabs == 0) && (value > -2))
 //      {
 //        this._CachedSelectedIndex = value;
 //      }
 //      else
 //      {
-//        if ((value <= -2) || (value >= this.Items.NumTabs))
+//        if ((value <= -2) || (value >= this.Tabs.NumTabs))
 //        {
 //          throw new ArgumentOutOfRangeException();
 //        }
@@ -482,217 +544,56 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
     }
   }
 
-  [Description("SepDefaultStyle")]
-  [Category("Separator Defaults")]
-  [DefaultValue(typeof(Style), "")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style SepDefaultStyle
-  {
-    get
-    {
-      return this._SepDefaultStyle;
-    }
-    set
-    {
-      this._SepDefaultStyle = value;
-    }
-  }
-
-  [DefaultValue("")]
-  [Category("Separator Defaults")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  [Description("SepHoverImageUrl")]
-  public string SepHoverImageUrl
-  {
-    get
-    {
-      object obj1 = this.ViewState["SepHoverImageUrl"];
-      if (obj1 != null)
-      {
-        return (string) obj1;
-      }
-      return string.Empty;
-    }
-    set
-    {
-      this.ViewState["SepHoverImageUrl"] = value;
-    }
-  }
-
-  [DefaultValue(typeof(Style), "")]
-  [Category("Separator Defaults")]
-  [Description("SepHoverStyle")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style SepHoverStyle
-  {
-    get
-    {
-      return this._SepHoverStyle;
-    }
-    set
-    {
-      this._SepHoverStyle = value;
-    }
-  }
-
-  [Category("Separator Defaults")]
-  [DefaultValue("")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  [Description("SepSelectedImageUrl")]
-  public string SepSelectedImageUrl
-  {
-    get
-    {
-      object obj1 = this.ViewState["SepSelectedImageUrl"];
-      if (obj1 != null)
-      {
-        return (string) obj1;
-      }
-      return string.Empty;
-    }
-    set
-    {
-      this.ViewState["SepSelectedImageUrl"] = value;
-    }
-  }
-
-  [Category("Separator Defaults")]
-  [Description("SepSelectedStyle")]
-  [DefaultValue(typeof(Style), "")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style SepSelectedStyle
-  {
-    get
-    {
-      return this._SepSelectedStyle;
-    }
-    set
-    {
-      this._SepSelectedStyle = value;
-    }
-  }
-
-  [Category("Tab Defaults")]
-  [Description("TabDefaultStyle")]
-  [DefaultValue(typeof(Style), "")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style TabDefaultStyle
-  {
-    get
-    {
-      return this._TabDefaultStyle;
-    }
-    set
-    {
-      this._TabDefaultStyle = value;
-    }
-  }
-
-  [Description("TabHoverStyle")]
-  [Category("Tab Defaults")]
-  [DefaultValue(typeof(Style), "")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style TabHoverStyle
-  {
-    get
-    {
-      return this._TabHoverStyle;
-    }
-    set
-    {
-      this._TabHoverStyle = value;
-    }
-  }
-
-  [Description("TabSelectedStyle")]
-  [Category("Tab Defaults")]
-  [DefaultValue(typeof(Style), "")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  public Style TabSelectedStyle
-  {
-    get
-    {
-      return this._TabSelectedStyle;
-    }
-    set
-    {
-      this._TabSelectedStyle = value;
-    }
-  }
-
-  [Browsable(false)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-  [CLSCompliant (false)]
-  public MultiPage Target
-  {
-    get
-    {
-      string text1 = this.TargetID;
-      if (text1 != string.Empty)
-      {
-        Control control1 = null;
-        Control control2 = this.NamingContainer;
-        Control control3 = this.Page;
-        if (control2 != null)
-        {
-          control1 = control2.FindControl(text1);
-        }
-        if ((control1 == null) && (control3 != null))
-        {
-          control1 = control3.FindControl(text1);
-        }
-        if ((control1 != null) && (control1 is MultiPage))
-        {
-          return (MultiPage) control1;
-        }
-      }
-      return null;
-    }
-  }
-
-  [Category("Behavior")]
-  [DefaultValue("")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  [Description("TabStripTargetID")]
-  public string TargetID
-  {
-    get
-    {
-      object obj1 = this.ViewState["TargetID"];
-      if (obj1 != null)
-      {
-        return (string) obj1;
-      }
-      return string.Empty;
-    }
-    set
-    {
-      this.ViewState["TargetID"] = value;
-    }
-  }
-  
-  /// <summary> Sets the selected tab. </summary>
-  internal void SetSelectedTab (WebTab tab)
-  {
-    if (tab != null && tab.TabStrip != this)
-      throw new InvalidOperationException ("Only tabs that are part of this tab strip can be selected.");
-    if (_selectedTab != tab)
-    {
-      if ((_selectedTab != null) && _selectedTab.IsSelected)
-        _selectedTab.SetSelected (false);
-      _selectedTab = tab;
-      if ((_selectedTab != null) && ! _selectedTab.IsSelected)
-        _selectedTab.SetSelected (true);
-    }
-  }
-
-  /// <summary> Gets the currently selected tab. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public WebTab SelectedTab
-  {
-    get { return _selectedTab; }
-  }
+//  [Browsable(false)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+//  [CLSCompliant (false)]
+//  public MultiPage Target
+//  {
+//    get
+//    {
+//      string text1 = this.TargetID;
+//      if (text1 != string.Empty)
+//      {
+//        Control control1 = null;
+//        Control control2 = this.NamingContainer;
+//        Control control3 = this.Page;
+//        if (control2 != null)
+//        {
+//          control1 = control2.FindControl(text1);
+//        }
+//        if ((control1 == null) && (control3 != null))
+//        {
+//          control1 = control3.FindControl(text1);
+//        }
+//        if ((control1 != null) && (control1 is MultiPage))
+//        {
+//          return (MultiPage) control1;
+//        }
+//      }
+//      return null;
+//    }
+//  }
+//
+//  [Category("Behavior")]
+//  [DefaultValue("")]
+//  [PersistenceMode(PersistenceMode.Attribute)]
+//  [Description("TabStripTargetID")]
+//  public string TargetID
+//  {
+//    get
+//    {
+//      object obj1 = this.ViewState["TargetID"];
+//      if (obj1 != null)
+//      {
+//        return (string) obj1;
+//      }
+//      return string.Empty;
+//    }
+//    set
+//    {
+//      this.ViewState["TargetID"] = value;
+//    }
+//  }
 }
 
 }

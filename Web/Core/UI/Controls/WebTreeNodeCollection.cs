@@ -73,7 +73,7 @@ public class WebTreeNodeCollection: ControlItemCollection
 
   private void CheckNode (string arguemntName, WebTreeNode node)
   {
-    if (_treeView != null && ! ControlHelper.IsDesignMode ((IControl) _treeView))
+    if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
     {
       if (StringUtility.IsNullOrEmpty (node.NodeID))
         throw new ArgumentException ("The node does not contain a 'NodeID' and can therfor not be inserted into the collection.", arguemntName);

@@ -123,16 +123,16 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
     eventArgument = eventArgument.Trim();
     if (eventArgument.StartsWith (c_expansionCommandPrefix))
-      HandleEventExpansionCommand (eventArgument.Substring (c_expansionCommandPrefix.Length));
+      HandleExpansionCommandEvent (eventArgument.Substring (c_expansionCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_clickCommandPrefix))
-      HandleEventClickCommand (eventArgument.Substring (c_clickCommandPrefix.Length));
+      HandleClickCommandEvent (eventArgument.Substring (c_clickCommandPrefix.Length));
     else
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
 
   /// <summary> Handles the expansion command (i.e. expands/collapses the clicked tree node). </summary>
   /// <param name="eventArgument"> The path to the clicked tree node. </param>
-  private void HandleEventExpansionCommand (string eventArgument)
+  private void HandleExpansionCommandEvent (string eventArgument)
   {
     string[] pathSegments;
     WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
@@ -147,7 +147,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
   /// <summary> Handles the click command. </summary>
   /// <param name="eventArgument"> The path to the clicked tree node. </param>
-  private void HandleEventClickCommand (string eventArgument)
+  private void HandleClickCommandEvent (string eventArgument)
   {
     string[] pathSegments;
     WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
