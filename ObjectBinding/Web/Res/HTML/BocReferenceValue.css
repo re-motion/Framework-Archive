@@ -1,0 +1,16 @@
+/* Style applied to the BocReferenceValue's value. */
+span.bocReferenceValue
+{
+}
+
+span.bocReferenceValue a
+{
+  color: Blue;
+  cursor: hand;
+}
+
+span.bocReferenceValue a:hover
+{
+  color: Blue;
+	cursor: hand;
+}
