@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
+[assembly: log4net.Config.DOMConfigurator(ConfigFileExtension="log4net", Watch=true)]
+
 namespace FormGrid.Sample 
 {
 	/// <summary>
@@ -11,7 +13,13 @@ namespace FormGrid.Sample
 	/// </summary>
 	public class Global : System.Web.HttpApplication
 	{
-		/// <summary>
+    static Global()
+    {
+      //  Initialize Logger
+	    log4net.LogManager.GetLogger (typeof (Global));
+    }
+
+    /// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;

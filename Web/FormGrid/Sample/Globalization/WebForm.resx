@@ -39,9 +39,6 @@
     <resheader name="Writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="auto:this:Title">
-        <value>Hello World !</value>
-    </data>
     <data name="auto:GlobalFormGridManager:MainFormGrid:PersonDataLabel:Text">
         <value>Personendaten</value>
     </data>
@@ -65,5 +62,16 @@
     </data>
     <data name="Rubicon.Web.UI.Controls.FormGridManager.HelpTitle" mimetype="	">
         <value>zur Hilfe</value>
+    </data>
+    <data name="ASP.WebForm_aspx.MainFormGrid.GenderList_Label">
+        <value>&amp;Geschlecht</value>
+    </data>
+    <data name="ASP.WebForm_aspx.MainFormGrid.ZipField_Label">
+        <value>&amp;PLZ</value>
+    </data>
+    <data name="ASP.WebForm_aspx.MainFormGrid.PlaceField_Label">
+    </data>
+    <data name="ASP.WebForm_aspx.MainFormGrid.CompaniesTable_Label">
+        <value>&amp;Firmenliste</value>
     </data>
 </root>

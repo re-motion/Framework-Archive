@@ -1,3 +1,4 @@
+/*  TD does not inherit from body */
 body, td
 {
 	background-color: #ffffff;
@@ -23,7 +24,8 @@ table.formGridTable
 td.formGridTitleCell
 {
 	font-weight: bold;
-	font-size: 1em;
+	/*  no inheritence from body */
+	font-size: 1.25em;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;

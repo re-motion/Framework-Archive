@@ -1,9 +1,10 @@
+/*  TD does not inherit from body */
 body, td
 {
 	background-color: #ffffff;
 	
 	font-weight: normal;
-	font-size: .8em;
+	font-size: 1em;
 	color: #000000;
 	text-decoration: none;
 	line-height: 1em;
@@ -23,14 +24,15 @@ table.formGridTable
 td.formGridTitleCell
 {
 	font-weight: bold;
-	font-size: 1em;
+	/*  no inheritence from body */
+	font-size: 1.25em;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
-  border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
   border-color: Black;
 }
 
@@ -42,10 +44,10 @@ td.formGridLabelsCell
   padding: 2px 5px 2px 5px;
   border-style: solid;
   border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-color: Black;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
 }
 
 td.formGridMarkersCell
@@ -55,10 +57,10 @@ td.formGridMarkersCell
   padding: 0px 5px 0px 5px;
   border-style: solid;
   border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-color: Black;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
 }
 
 td.formGridControlsCell
@@ -66,10 +68,10 @@ td.formGridControlsCell
   padding: 0px 5px 0px 5px;
   border-style: solid;
   border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-color: Black;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
 }
 
 td.formGridValidationMessagesCell
@@ -77,20 +79,20 @@ td.formGridValidationMessagesCell
   padding: 2px 7px 2px 7px;
   border-style: solid;
   border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-color: Black;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
 }
 
 td.formGridTopDataRow
 {
   border-style: solid;
   border-top-width: 3px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-color: Black;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
 }
 
 /*  Class for overriding the TableCell's general settings for input controls */

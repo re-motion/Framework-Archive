@@ -33,7 +33,29 @@ public class WebForm :
 {
   private static IResourceManager s_chachedResourceManager;
 
-	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	private static readonly ILog s_log = LogManager.GetLogger (
+    System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+  private FormGridRowProvider _formGridRowProvider;
+
+	private void Page_Load(object sender, System.EventArgs e)
+	{
+		// Put user code to initialize the page here
+	}
+	override protected void OnInit(EventArgs e)
+	{
+		//
+		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+		//
+		InitializeComponent();
+		base.OnInit(e);
+
+    _formGridRowProvider = new FormGridRowProvider();
+	}
+	
+
+	#region Web Form Designer generated code
+
   protected System.Web.UI.WebControls.Label PersonDataLabel;
   protected System.Web.UI.WebControls.Label NameLabel;
   protected System.Web.UI.WebControls.TextBox NameField;
@@ -54,26 +76,7 @@ public class WebForm :
   protected System.Web.UI.WebControls.Button submitButton;
   protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
 
-  private FormGridRowProvider _formGridRowProvider;
-
-	private void Page_Load(object sender, System.EventArgs e)
-	{Type temp = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType;
-		// Put user code to initialize the page here
-	}
-	override protected void OnInit(EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-
-    _formGridRowProvider = new FormGridRowProvider();
-	}
-	
-
-	#region Web Form Designer generated code
-	/// <summary>
+  /// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>

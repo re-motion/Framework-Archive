@@ -265,7 +265,7 @@ public class MultiLingualResourcesAttribute: Attribute
     resourceManagerWrapper =  new ResourceManagerWrapper(
       (ResourceManager[])resourceManagers.ToArray(typeof(ResourceManager)));
     
-    if (resourceManagerWrapper == null) throw new ResourceException ("No resource manager wrapper could be created for " + objectType.FullName + " found in assembly \"" + objectType.Assembly.FullName + "\".");
+    if (resourceManagerWrapper == null) throw new ResourceException ("No resource manager wrapper could be created for " + objectType.FullName + " found in assembly '" + objectType.Assembly.FullName + "'.");
 
     lock (s_resourceManagerWrappersCache)
     {
@@ -301,7 +301,7 @@ public class MultiLingualResourcesAttribute: Attribute
       //  Create a new resource mananger and put it into the cache.
 
       resourceManagers[index] = new ResourceManager (resourceNames[index], assembly);
-      if (resourceManagers[index] == null) throw new ResourceException ("No resource with name " + resourceNames + " found in assembly \"" + assembly.FullName + "\".");
+      if (resourceManagers[index] == null) throw new ResourceException ("No resource with name '" + resourceNames + "' found in assembly '" + assembly.FullName + "'.");
 
       lock (s_resourceManagersCache)
       {

@@ -3,9 +3,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "http://localhost/
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "..\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "..\..\Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 5
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {8EDFEBB2-0421-47F7-9790-CE7B47484E86}
@@ -14,6 +26,18 @@ Global
 		SccLocalPath1 = Sample
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice1 = 2
+		SccProjectUniqueName2 = ..\\Core\\Web.UI.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath2 = ..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName3 = ..\\..\\Core\\Core.csproj
+		SccProjectName3 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath3 = ..\\..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName4 = ..\\..\\Globalization\\Globalization.csproj
+		SccProjectName4 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath4 = ..\\..\\Globalization
+		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -24,6 +48,18 @@ Global
 		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Debug.Build.0 = Debug|.NET
 		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.ActiveCfg = Release|.NET
 		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.Build.0 = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.ActiveCfg = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

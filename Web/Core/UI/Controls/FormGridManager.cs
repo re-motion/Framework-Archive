@@ -251,7 +251,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       //  Not found, append to form grid instead of inserting at position of related form grid row
       if (relatedRow == null)
       {
-        s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' on page '" + _table.Page.ToString() + "'.");
+        s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().FullName + "' on page '" + _table.Page.ToString() + "'.");
 
         //  append html table rows
         foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
@@ -950,6 +950,16 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// </summary>
   private bool isFormGridRowProviderUndefined;
 
+  /// <summary>
+  ///   Caches the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>.
+  /// </summary>
+  private IResourceManager _cachedResourceManager;
+
+  /// <summary>
+  /// 
+  /// </summary>
+  private bool isResourceManagerUndefined;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
@@ -1067,13 +1077,13 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          s_log.Warn ("FormGridManager '" + ID + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
+          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
         }
       }
       else
       {
         //  Invalid form grid
-        s_log.Warn ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' on page '" + Page.ToString() + "'.");
+        s_log.Warn ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "'.");
       }
     }
 
@@ -1140,7 +1150,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Invalid control
-          s_log.Warn ("FormGrid '" + formGridID + "' is on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
+          s_log.Warn ("FormGrid '" + formGridID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
         }
       }
     }
@@ -1701,6 +1711,27 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   }
 
   /// <summary>
+  ///   Find the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>.
+  /// </summary>
+  /// <returns></returns>
+  protected IResourceManager GetResourceManager()
+  {
+    //  Control hierarchy doesn't implent this interface
+    if (isResourceManagerUndefined)
+      return null;
+
+    //  Provider has already been identified.
+    if (_cachedResourceManager != null)
+        return _cachedResourceManager;
+
+    //  Try to get the resource manager
+
+    _cachedResourceManager  = ResourceManagerUtility.GetResourceManager (this);
+
+    return _cachedResourceManager;
+  }
+
+  /// <summary>
   ///   Composes all information required to transform the <see cref="HtmlTable"/> 
   ///   into a form grid.
   /// </summary>
@@ -1981,23 +2012,34 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       //  Query the controls for the string to be used as the labeling Text
 
+      string newID = String.Empty;
       string newText = String.Empty;
 
       if (control is ISmartControl)
       {
+        newID = control.ID + "_Label";
         newText = ((ISmartControl)control).DisplayName;
       }
-      else if (control is TextBox)
+      else if (   control is TextBox 
+              ||  control is DropDownList
+              ||  control is Table)
       {
-        newText = ((TextBox)control).Text;
-      }
-      else if (control is DropDownList)
-      {
-        newText = ((DropDownList)control).DataTextField;
-      }
-      else if (control is Table)
-      {
-        newText = ((Table)control).Caption;
+        newID = control.ID + "_Label";
+
+        //  Get Text
+        IResourceManager resourceManager = GetResourceManager();
+
+        if (resourceManager != null)
+        {
+          StringBuilder identifier = new StringBuilder (100);
+          Type namingContainerType = dataRow.FormGrid.Table.NamingContainer.GetType();
+          identifier.Append (namingContainerType.FullName);
+          identifier.Append (".");
+          identifier.Append (dataRow.FormGrid.Table.ID);
+          identifier.Append (".");
+          identifier.Append (newID);
+          newText = resourceManager.GetString (identifier.ToString());
+        }
       }
         //  The control found in this iteration does not get handled by this method.
       else
@@ -2005,7 +2047,24 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         continue;
       }
 
+      //  Add seperator if already a control in the cell
+      
+      if (dataRow.LabelsCell.Controls.Count > 0)
+      {
+        LiteralControl seperator = new LiteralControl(", ");
+
+        //  Not default, but ViewState is needed
+        seperator.EnableViewState = true;
+
+        dataRow.LabelsCell.Controls.Add(seperator);
+        
+        //  Set Visible after control is added so ViewState knows about it
+        seperator.Visible = control.Visible;
+      }
+
       Label label = new Label();
+      
+      label.ID = newID;
       
       //  Insert the text provided by the control
       if (newText != null && newText != String.Empty)
@@ -2030,7 +2089,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       else if (control.ID != null)
       {
         label.Text = control.ID.ToUpper();
-        s_log.Warn ("No resource available for control '" + control.ID + "' in page '" + control.Page.ToString() + "'.");
+        s_log.Warn ("No resource available for control '" + control.ID + "' in naming container '" + control.NamingContainer.GetType().FullName + "'.");
       }
 
       //  Should be default, but better safe than sorry
@@ -2040,21 +2099,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
       //  Set Visible after control is added so ViewState knows about it
       label.Visible = control.Visible;
-
-      //  Add seperator if already a control in the cell
-      if (dataRow.LabelsCell.Controls.Count > 0)
-      {
-        LiteralControl seperator = new LiteralControl(", ");
-
-        //  Not default, but ViewState is needed
-        seperator.EnableViewState = true;
-
-        dataRow.LabelsCell.Controls.Add(seperator);
-        
-        //  Set Visible after control is added so ViewState knows about it
-        seperator.Visible = label.Visible;
-
-      }
     }
   }
 
@@ -2471,7 +2515,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     
     requiredIcon.AlternateText = "*";
  
-    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
     IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
 
     if (resourceManager != null)
@@ -2503,7 +2546,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     helpIcon.AlternateText = "?";
  
-    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
     IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
 
     if (resourceManager != null)
@@ -2541,7 +2583,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     validationErrorIcon.AlternateText = "!";
     validationErrorIcon.ToolTip = toolTip;
  
-    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
     IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
 
     if (resourceManager != null)
