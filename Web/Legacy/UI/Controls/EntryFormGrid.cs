@@ -31,7 +31,19 @@ public class EntryFieldBreak: Control
   {
     EntryField parentField = (EntryField) this.Parent;
     writer.Write ("</td></tr><tr><td colspan=\"5\">{0}</td><td>{0}", 
-      EntryFormGrid.GetWhitespaceImage (0, 0));
+      this.EntryFormGrid.GetWhitespaceImage (0, 0));
+  }
+
+  public EntryFormGrid EntryFormGrid
+  {
+    get 
+    {
+      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      if (entryFormGrid == null)
+        throw new InvalidOperationException ("EntryFieldBreak must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
+
+      return entryFormGrid;
+    }
   }
 }
 
@@ -42,33 +54,6 @@ public class EntryFormGrid: Control
 
   // static members and constants
 
-  private static string s_imagePath = Path.Combine (HttpContext.Current.Request.ApplicationPath, "images");
-
-  private static string ImagePath
-  {
-    get { return s_imagePath; }
-    set { s_imagePath = value; }
-  }
-
-  public static string GetImagePath (string imgFileName)
-  {
-    return Path.Combine (s_imagePath, imgFileName);
-  }
-
-  public static string GetWhitespaceImage (int width, int height)
-  {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
-  }
-
-  public static string GetWhitespaceImage (string width, string height)
-  {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
-  }
-
   // member fields
 
   private Unit _labelColumnWidth;
@@ -76,12 +61,38 @@ public class EntryFormGrid: Control
   private FontUnit _fieldFontSize;
   private string _infoBase = string.Empty;
   private string _infoImage = "field-info.gif";
+  private string _imagePath = Path.Combine (HttpContext.Current.Request.ApplicationPath, "images");
 
   // methods and properties
 
+  public virtual string ImagePath
+  {
+    get { return _imagePath; }
+    set { _imagePath = value; }
+  }
+
+  public string GetImagePath (string imgFileName)
+  {
+    return Path.Combine (_imagePath, imgFileName);
+  }
+
+  public string GetWhitespaceImage (int width, int height)
+  {
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
+      width, height, GetImagePath ("ws.gif"));
+  }
+
+  public string GetWhitespaceImage (string width, string height)
+  {
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
+      width, height, GetImagePath ("ws.gif"));
+  }
+
   public string InfoImagePath 
   {
-    get { return EntryFormGrid.GetImagePath (InfoImage); }
+    get { return GetImagePath (InfoImage); }
   }
 
   public string InfoImage 
@@ -207,7 +218,7 @@ public class EntryFormGrid: Control
 
 			// write vertical empty space before titles
 			if (i != 0 && (control is EntryTitle) && control.Visible)
-				writer.WriteLine ("<tr><td colspan=\"6\">{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (1, 10));
+				writer.WriteLine ("<tr><td colspan=\"6\">{0}</td></tr>", GetWhitespaceImage (1, 10));
 
 			control.RenderControl (writer);
 		}
@@ -246,6 +257,18 @@ public class EntryTitle: Control
   
   private int _colSpan = 6;
 
+  public EntryFormGrid EntryFormGrid
+  {
+    get 
+    {
+      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      if (entryFormGrid == null)
+        throw new InvalidOperationException ("EntryTitle must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
+
+      return entryFormGrid;
+    }
+  }
+
   public int ColSpan
   {
     get { return _colSpan; }
@@ -266,7 +289,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage ("1", Padding));
+      writer.WriteLine ("<tr><td>{0}</td></tr>", this.EntryFormGrid.GetWhitespaceImage ("1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -274,12 +297,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"formGroupSeparatorLine\" width=\"100%\">"
-			  	+ EntryFormGrid.GetWhitespaceImage (1, 1)
+			  	+ this.EntryFormGrid.GetWhitespaceImage (1, 1)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 3));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", this.EntryFormGrid.GetWhitespaceImage (1, 3));
 	}
 }
 
@@ -296,8 +319,17 @@ public class EntryField: Control
   private bool   _externalValidState = true;
   private string _externalErrorMessage = string.Empty;
 
-//  private int _height = -1;
-//  private int _width = -1;
+  public EntryFormGrid EntryFormGrid
+  {
+    get 
+    {
+      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      if (entryFormGrid == null)
+        throw new InvalidOperationException ("EntryField must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
+
+      return entryFormGrid;
+    }
+  }
 
   public string Label 
 	{
@@ -323,11 +355,6 @@ public class EntryField: Control
   {
     get { return _title; }
     set { _title = value; }
-  }
-
-  protected EntryFormGrid ParentGrid
-  {
-    get { return (EntryFormGrid) this.Parent; }
   }
 
   /// <summary>
@@ -467,11 +494,10 @@ public class EntryField: Control
 
     string labelWidthAttribute = string.Empty;
     string valueWidthAttribute = string.Empty;
-    EntryFormGrid parentGrid = Parent as EntryFormGrid;
-    if (parentGrid != null && ! parentGrid.FixedLayout)
+    if (!EntryFormGrid.FixedLayout)
     {
-      if (! parentGrid.LabelColumnWidth.IsEmpty)
-        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString(CultureInfo.InvariantCulture));
+      if (! EntryFormGrid.LabelColumnWidth.IsEmpty)
+        labelWidthAttribute = string.Format ("style=\"width: {0};\"", EntryFormGrid.LabelColumnWidth.ToString(CultureInfo.InvariantCulture));
     }
 
     string tagStyle = string.Empty;
@@ -481,8 +507,8 @@ public class EntryField: Control
 		writer.WriteLine ("<tr valign=\"middle\" {0}>", tagStyle);
 		writer.WriteLine ("<td class=\"label\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
-		writer.WriteLine ("<td class=\"label\">{0}</td>", EntryFormGrid.GetWhitespaceImage (7, 1));
-		writer.WriteLine ("<td>{0}</td>", EntryFormGrid.GetWhitespaceImage (3, 1));
+		writer.WriteLine ("<td class=\"label\">{0}</td>", this.EntryFormGrid.GetWhitespaceImage (7, 1));
+		writer.WriteLine ("<td>{0}</td>", this.EntryFormGrid.GetWhitespaceImage (3, 1));
 		writer.WriteLine ("<td nowrap>");
 
     if (validatorsInvalid)
@@ -493,7 +519,7 @@ public class EntryField: Control
       writer.WriteLine (UIUtility.GetIconImage (
           Page,
           validatorMessages, 
-          EntryFormGrid.GetImagePath ("field-error.gif")));
+          this.EntryFormGrid.GetImagePath ("field-error.gif")));
     }
     else
     {
@@ -504,11 +530,11 @@ public class EntryField: Control
         writer.WriteLine (UIUtility.GetIconImage (
             Page,
             ResourceManagerPool.GetResourceText (this, "RequiredFieldText"), 
-            EntryFormGrid.GetImagePath ("field-required.gif")));
+            this.EntryFormGrid.GetImagePath ("field-required.gif")));
       }
       else
       {
-        writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
+        writer.WriteLine (this.EntryFormGrid.GetWhitespaceImage (12, 20));
       }
     }
 
@@ -516,18 +542,18 @@ public class EntryField: Control
     
 		if (this.InfoUrl != String.Empty)
 		{
-      string infoUrl = parentGrid.InfoBase + this.InfoUrl;
+      string infoUrl = EntryFormGrid.InfoBase + this.InfoUrl;
 			writer.WriteLine (
 					"<a href=\"{0}\" target=\"_new\">"
 						+ "<img src=\"{1}\" alt=\"{2}\""
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 					infoUrl,
-          ParentGrid.InfoImagePath,
+          EntryFormGrid.InfoImagePath,
           ResourceManagerPool.GetResourceText (this, "HelpInfoText"));
     }
 		else
 		{
-			writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
+			writer.WriteLine (this.EntryFormGrid.GetWhitespaceImage (12, 20));
 		}
 
 		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);
@@ -536,7 +562,7 @@ public class EntryField: Control
 
 		writer.Write ("</td>");
 		writer.WriteLine ("</tr>");
-		writer.WriteLine ("<tr> <td colspan=\"6\">{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
+		writer.WriteLine ("<tr> <td colspan=\"6\">{0}</td> </tr>", this.EntryFormGrid.GetWhitespaceImage (1, 1));
 	}
 
   protected void CheckExternalValidState (ref string errorMessages, ref bool invalid)
