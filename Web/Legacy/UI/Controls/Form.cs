@@ -43,6 +43,11 @@ public class Form : HtmlForm
 
   // methods and properties
 
+  public string GetActionUrlFromRequest (HttpRequest request)
+  {
+    return Path.GetFileName (request.FilePath) + request.Url.Query;
+  }
+
   /// <summary>
   /// Override Render to add citizen card environment form fields.
   /// </summary>
