@@ -151,11 +151,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <remarks>
-  /// The new <b>DomainObjectCollection</b> has the same <see cref="RequiredItemType"/> and the same elements as the 
+  /// The new <b>DomainObjectCollection</b> has the same <see cref="RequiredItemType"/> and the same items as the 
   /// given <i>collection</i>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
-  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
   public DomainObjectCollection (DomainObjectCollection collection, bool makeCollectionReadOnly)
   {
@@ -172,7 +172,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given array of <see cref="DomainObject"/>s.
   /// </summary>
   /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy.</param>
-  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
   public DomainObjectCollection (DomainObject[] domainObjects, bool makeCollectionReadOnly)
   {
@@ -188,7 +188,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a <see cref="DataManagement.DataContainerCollection"/>s.
   /// </summary>
   /// <param name="dataContainers">The <see cref="DataManagement.DataContainerCollection"/> to copy.</param>
-  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is a null reference.</exception>
   public DomainObjectCollection (DataContainerCollection dataContainers, bool makeCollectionReadOnly)
   {
@@ -238,7 +238,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   /// <summary>
-  /// Determines whether an element is in the <see cref="DomainObjectCollection"/>.
+  /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
   /// <returns><b>true</b> if <i>domainObject</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
@@ -251,7 +251,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   /// <summary>
-  /// Determines whether and element is in the <see cref="DomainObjectCollection"/>.
+  /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
   /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <see cref="ObjectID"/> <i>id</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
@@ -347,7 +347,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckItemType (domainObject, "domainObject");
-    if (IsReadOnly) throw new NotSupportedException ("Cannot add an element to a read-only collection.");
+    if (IsReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
 
     if (Contains (domainObject))
     {
@@ -409,7 +409,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public void Remove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    if (IsReadOnly) throw new NotSupportedException ("Cannot remove an element from a read-only collection.");
+    if (IsReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
     // Do not perform remove, if domain object is not part of this collection     
     if (this[domainObject.ID] == null)
@@ -428,7 +428,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   /// <summary>
-  /// Removes all elements from the <see cref="DomainObjectCollection"/>.
+  /// Removes all items from the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Clear ()
@@ -467,7 +467,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Inserts a <see cref="DomainObject"/> into the collection at the specified index.
   /// </summary>
-  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
+  /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
   /// <param name="domainObject">The <i>domainObject</i> to add.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
@@ -483,7 +483,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckIndexForInsert ("index", index);
-    if (IsReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
+    if (IsReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckItemType (domainObject, "domainObject");
     
     if (Contains (domainObject))
@@ -635,7 +635,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Inserts a <see cref="DomainObject"/> at a given index to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
   /// </summary>
-  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
+  /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
   /// <param name="domainObject">The <i>domainObject</i> to add.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
