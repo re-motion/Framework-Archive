@@ -56,81 +56,24 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   public IBusinessObjectDataSource DataSource
   {
-    get 
-    { 
-      if (_binding.DataSource == null)
-        InitializeDataSource();
-      return _binding.DataSource; 
-    }
-    set 
-    { 
-      _binding.DataSource = value;
-      _dataSourceControl = null;
-    }
+    get { return _binding.DataSource; }
+    set { _binding.DataSource = value; }
   }
 
   [Category ("Data")]
   [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
   public string PropertyIdentifier
   {
-    get
-    { 
-      return _binding.PropertyIdentifier; 
-    }
-    set
-    { 
-      _binding.PropertyIdentifier = value; 
-    }
+    get { return _binding.PropertyIdentifier; }
+    set { _binding.PropertyIdentifier = value; }
   }
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectProperty Property
   {
-    get 
-    { 
-      return _binding.Property; 
-    }
-    set
-    {
-      _binding.Property = value; 
-    }
-  }
-
-  #endregion
-
-  private BusinessObjectBinding _binding;
-  private string _dataSourceControl;
-
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-
-    if (!ControlHelper.IsDesignMode (this, this.Context))
-      InitializeDataSource();
-  }
-
-  /// <summary>
-  ///   Evaluates control ID stored in <see cref="DataSourceControl"/> and binds this 
-  ///   <see cref="IBusinessObjectBoundWebControl"/> the <see cref="IBusinessObjectDataSource"/>.
-  /// </summary>
-  private void InitializeDataSource()
-  {
-    if (NamingContainer == null)
-      return;
-
-    if (_dataSourceControl == null)
-      return;
-
-    Control control = ControlHelper.FindControl (NamingContainer, _dataSourceControl);
-    if (control == null)
-      throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, this.ID));
-
-    IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
-    if (dataSource == null)
-      throw new HttpException(string.Format ("The value '{0}' of the DataSource property of '{1}' cannot be converted to type '{2}'.", _dataSourceControl, this.ID, typeof (IBusinessObjectDataSourceControl)));
-
-    _binding.DataSource = dataSource;
+    get { return _binding.Property; }
+    set { _binding.Property = value; }
   }
 
   /// <summary>
@@ -145,19 +88,22 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [DefaultValue ("")]
   public string DataSourceControl
   {
-    get 
-    { 
-      return _dataSourceControl; 
-    }
-    set 
-    { 
-      if (_dataSourceControl != value)
-      {
-        _dataSourceControl = value; 
-        _binding.DataSource = null;
-      }
-    }
+    get { return _binding.DataSourceControl; }
+    set { _binding.DataSourceControl = value; }
   }
+  #endregion
+
+  private BusinessObjectBinding _binding;
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+
+    // TODO: raushaun?
+    //if (!ControlHelper.IsDesignMode (this, this.Context))
+    //  InitializeDataSource();
+  }
+
 
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.
