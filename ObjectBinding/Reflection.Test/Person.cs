@@ -47,10 +47,9 @@ public class Person: ReflectionBusinessObject
   private DateTime _dateOfDeath;
   private bool _deceased = false;
   private string[] _cv;
-
   private Guid _partnerID; 
-
   private Guid[] _childIDs;
+  private Guid[] _jobIDs;
 
   [XmlAttribute]
   public string FirstName
@@ -149,6 +148,43 @@ public class Person: ReflectionBusinessObject
       else
       {
         _childIDs = new Guid[0];
+      }
+    }
+  }
+
+  [XmlElement]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public Guid[] JobIDs
+  {
+    get { return _jobIDs; }
+    set { _jobIDs = value; }
+  }
+
+  [XmlIgnore]
+  public Job[] Jobs
+  {
+    get 
+    {
+      if (_jobIDs == null)
+        return new Job[0];
+
+      Job[] Jobs = new Job[_jobIDs.Length];
+      for (int i = 0; i < _jobIDs.Length; i++)
+        Jobs[i] = Job.GetObject (_jobIDs[i]);
+        
+      return Jobs; 
+    }
+    set
+    {
+      if  (value != null)
+      {
+        _jobIDs = new Guid[value.Length];
+        for (int i = 0; i < value.Length; i++)
+          _jobIDs[i] = ReflectionBusinessObjectStorage.GetID (value[i]); 
+      }
+      else
+      {
+        _jobIDs = new Guid[0];
       }
     }
   }

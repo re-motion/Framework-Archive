@@ -17,8 +17,14 @@ public class ReflectionBusinessObjectDataSourceControl: BusinessObjectDataSource
   [DefaultValue("")]
   public string TypeName
   {
-    get { return _dataSource.TypeName; }
-    set { _dataSource.TypeName = value; }
+    get 
+    { 
+      return _dataSource.TypeName; 
+    }
+    set
+    { 
+      _dataSource.TypeName = value; 
+    }
   }
 
   protected override IBusinessObjectDataSource GetDataSource()
