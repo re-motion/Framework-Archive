@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.Design;
@@ -304,15 +305,28 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
     if (isReadOnly)
     {
-      if (Value != null)
-        _label.Text = StringUtility.ConcatWithSeperator (Value, "<br />");
-
-      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      string[] lines = Value;
+      string text = null;
+      if (lines != null)
       {
-        _label.Text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        for (int i = 0; i < lines.Length; i++)
+          lines[i] = HttpUtility.HtmlEncode (lines[i]);
+        text = StringUtility.ConcatWithSeperator (lines, "<br />");
       }
+      if (StringUtility.IsNullOrEmpty (text))
+      {
+        if (IsDesignMode)
+        {
+          text = c_designModeEmptyLabelContents;
+          //  Too long, can't resize in designer to less than the content's width
+          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        }
+        else
+        {
+          text = "&nbsp;";
+        }
+      }
+      _label.Text = text;
 
       _label.Height = Height;
       _label.ApplyStyle (_commonStyle);
