@@ -2323,15 +2323,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
     ArrayList smartControls = new ArrayList();
-    ArrayList validators = new ArrayList();
+    //ArrayList validators = new ArrayList();
 
     //  Split into smart controls and validators
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
       if (control is ISmartControl)
         smartControls.Add (control);
-      else if (control is BaseValidator || control is IBaseValidator)
-        validators.Add (control);
+      //else if (control is BaseValidator || control is IBaseValidator)
+      //  validators.Add (control);
     }
     
     foreach (ISmartControl smartControl in smartControls)
@@ -2339,22 +2339,22 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       if (!smartControl.Visible)
         continue;
 
-      //  Create Validators only if none are assigned for the SmartControl
-      foreach (IValidator validator in validators)
-      {
-        BaseValidator baseValidator = validator as BaseValidator;
-        IBaseValidator iBaseValidator = validator as IBaseValidator;
-        if (   baseValidator != null
-            && baseValidator.ControlToValidate == smartControl.ID)
-        {
-          return;
-        }
-        else if (   iBaseValidator != null
-                 && iBaseValidator.ControlToValidate == smartControl.ID)
-        {
-          return;
-        }
-      }
+      ////  Create Validators only if none are assigned for the SmartControl
+      //foreach (IValidator validator in validators)
+      //{
+      //  BaseValidator baseValidator = validator as BaseValidator;
+      //  IBaseValidator iBaseValidator = validator as IBaseValidator;
+      //  if (   baseValidator != null
+      //      && baseValidator.ControlToValidate == smartControl.ID)
+      //  {
+      //    return;
+      //  }
+      //  else if (   iBaseValidator != null
+      //           && iBaseValidator.ControlToValidate == smartControl.ID)
+      //  {
+      //    return;
+      //  }
+      //}
 
       BaseValidator[] newValidators = smartControl.CreateValidators();
 
