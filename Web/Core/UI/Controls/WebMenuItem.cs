@@ -10,10 +10,12 @@ namespace Rubicon.Web.UI.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class WebMenuItem: IControlItem
 {
+  private const string c_separator = "-";
+
   public static WebMenuItem GetSeparator()
   {
     return new WebMenuItem (
-        null, null, "-", null, null, WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
+        null, null, c_separator, null, null, WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
   }
 
   private string _itemID = "";
@@ -107,13 +109,18 @@ public class WebMenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text displayed in this menu item.")]
+  [Description ("The text displayed in this menu item. Use '-' for a separator menu item.")]
   [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Text
   {
     get { return _text; }
     set { _text = value; }
+  }
+
+  public bool IsSeparator
+  {
+    get { return _text == c_separator; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
