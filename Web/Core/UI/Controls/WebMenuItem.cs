@@ -17,7 +17,7 @@ public class MenuItem
   /// <summary> The <see cref="Command"/> rendered for this menu item. </summary>
   private Command _command;
   /// <summary>
-  ///   The <see cref="IControl"/> to which this <see cref="BocColumnDefinition"/> belongs. 
+  ///   The <see cref="IControl"/> to which this object belongs. 
   /// </summary>
   private IControl _ownerControl;
 
@@ -38,6 +38,29 @@ public class MenuItem
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {
+  }
+
+  /// <summary>
+  ///   Returns a <see cref="string"/> that represents this <see cref="MenuItem"/>.
+  /// </summary>
+  /// <returns>
+  ///   Returns the <see cref="Text"/>, followed by the class name of the instance.
+  /// </returns>
+  public override string ToString()
+  {
+    string displayName = ID;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = Text;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      return DisplayedTypeName;
+    else
+      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+  }
+
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected virtual string DisplayedTypeName
+  {
+    get { return "MenuItem"; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -93,16 +116,19 @@ public class MenuItem
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IControl"/> to which this <see cref="BocColumnDefinition"/> belongs. 
+  ///   Gets or sets the <see cref="IControl"/> to which this object belongs. 
   /// </summary>
   protected internal IControl OwnerControl
   {
-    get
-    {
-      return _ownerControl; 
-    }
+    get { return OwnerControlImplementation;  }
+    set { OwnerControlImplementation = value; }
+  }
+
+  protected virtual IControl OwnerControlImplementation
+  {
+    get { return _ownerControl;  }
     set
-    {
+    { 
       if (_ownerControl != value)
       {
         _ownerControl = value;

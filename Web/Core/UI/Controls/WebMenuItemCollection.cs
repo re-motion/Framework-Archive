@@ -37,7 +37,7 @@ public class MenuItemCollection : CollectionBase
   ///   The types derived from <see cref="MenuItem"/> which may be added to the 
   ///   <see cref="MenuItemCollection"/>. 
   /// </param>
-  internal MenuItemCollection (IControl ownerControl, Type[] supportedTypes)
+  public MenuItemCollection (IControl ownerControl, Type[] supportedTypes)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("supportedTypes", supportedTypes);
     foreach (Type type in supportedTypes)
@@ -61,7 +61,7 @@ public class MenuItemCollection : CollectionBase
   /// <param name="ownerControl">
   ///   The <see cref="IControl"/> to which this <see cref="MenuItemCollection"/> belongs.
   /// </param>
-  internal MenuItemCollection (IControl ownerControl)
+  public MenuItemCollection (IControl ownerControl)
     : this (ownerControl, new Type[] {typeof (MenuItem)})
   {
   }
@@ -136,8 +136,8 @@ public class MenuItemCollection : CollectionBase
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
-  ///   <see cref="BocColumnDefinitionCollection"/> belongs.
+  ///   Gets or sets the <see cref="IControl"/> to which this 
+  ///   <see cref="IControl"/> belongs.
   /// </summary>
   internal IControl OwnerControl
   {

@@ -61,16 +61,6 @@ public class DropDownMenu: WebControl, IControl
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
     }
 
-    MenuItem[] items = new MenuItem[] {
-        new MenuItem ("open", "object", "Öffnen", "open.gif", null),
-        new MenuItem ("cut", "edit", "Ausschneiden", "cut.gif", null),
-        new MenuItem ("paste", "edit", "Einfügen", "paste.gif", null),
-        new MenuItem ("duplicate", "edit", "Duplizieren", "duplicate.gif", null),
-        new MenuItem ("delete", "edit", "Löschen", "delete.gif", null),
-        new MenuItem ("item", "item", "Item", "item.gif", null),
-        new MenuItem ("item", "item", "Item", "item.gif", null),
-        new MenuItem ("item", "item", "Item", "item.gif", null),
-        new MenuItem ("item", "item", "Item", "item.gif", null)};
     key = typeof (DropDownMenu).FullName + _groupID;
     if (! Page.IsStartupScriptRegistered (key))
     {
@@ -80,7 +70,7 @@ public class DropDownMenu: WebControl, IControl
           "new DropDownMenu_MenuInfo ('{0}', new Array (\r\n",
           _groupID);
       bool isFirstItem = true;
-      foreach (MenuItem item in items)
+      foreach (MenuItem menuItem in MenuItems)
       {
         if (isFirstItem)
           isFirstItem = false;
@@ -89,7 +79,7 @@ public class DropDownMenu: WebControl, IControl
 
         script.AppendFormat (
             "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}')",
-            item.ID, item.Category, item.Text, item.Icon);
+            menuItem.ID, menuItem.Category, menuItem.Text, menuItem.Icon);
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
