@@ -515,12 +515,12 @@ public class EntryField: Control
 
     writer.WriteLine ("<tr valign=\"middle\" {0}>", tagStyle);
 
-    if (!EntryFormGrid.LabelColumnWidth.IsEmpty)
+    if (!EntryFormGrid.LabelColumnWidth.IsEmpty || Label.Trim() != string.Empty)
     {
       writer.WriteLine ("<td class=\"label\" align=\"right\" {0} >{1}</td>", 
           labelWidthAttribute, label);
-		  writer.WriteLine ("<td class=\"label\">{0}</td>", this.EntryFormGrid.GetWhitespaceImage (7, 1));
-		  writer.WriteLine ("<td>{0}</td>", this.EntryFormGrid.GetWhitespaceImage (3, 1));
+      writer.WriteLine ("<td class=\"label\">{0}</td>", this.EntryFormGrid.GetWhitespaceImage (7, 1));
+      writer.WriteLine ("<td>{0}</td>", this.EntryFormGrid.GetWhitespaceImage (3, 1));
     }
 
 		writer.WriteLine ("<td nowrap>");

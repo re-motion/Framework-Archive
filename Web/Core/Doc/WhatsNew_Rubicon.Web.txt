@@ -7,6 +7,12 @@
 
 - EntryFormGrid.cs:
   * Neues property "EntryFormGrid" bei Klasse "EntryTitle"
+  * Methode "Render" bei Klasse "EntryField":
+    Ab Version 3.1.7.0 wurde die Table-Column mit dem Label nur gerendert wenn LabelColumnWidth ungleich 0;
+    Ab der aktuellen Version wird die Table-Column mit dem Label nur gerendert 
+      wenn LabelColumnWidth ungleich 0 oder der Text des Labels ungleich Leerstring; 
+    Einschränkung: Wenn in einem EntryFormGrid mit LabelColumnWidth = 0 oder nicht gesetzt EntryFields nicht alle keinen Text 
+      oder alle einen Text haben, dann werden die EntryFields versetzt ausgegeben!!
   
 - ViewControl.cs:
   * Neue Methoden "GetWhitespaceImage" und "GetImagePath" bei Klasse "ViewControl"
