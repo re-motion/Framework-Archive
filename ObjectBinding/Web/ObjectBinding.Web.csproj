@@ -113,11 +113,6 @@
                     Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\..\prereq\Assemblies\log4net.dll"
-                />
             </References>
         </Build>
         <Files>
@@ -149,11 +144,6 @@
                 <File
                     RelPath = "ObjectBinding.Web.build"
                     BuildAction = "None"
-                />
-                <File
-                    RelPath = "Controls\BocBusinessObjectBoundWebControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\BocColumnDefinition.cs"
@@ -201,6 +191,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocPropertyPathWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocPropertyPathWrapperCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocReferenceValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -221,12 +221,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\PropertyPathBinding.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\PropertyPathBindingCollection.cs"
+                    RelPath = "Controls\BusinessObjectBoundWebControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -251,7 +246,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Design\BocItemCommandConverter.cs"
+                    RelPath = "Design\BocPropertyPathWrapperCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -262,11 +257,6 @@
                 />
                 <File
                     RelPath = "Design\ComponentBindingExpressionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\PropertyPathBindingCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -287,51 +277,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocList.xml"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Doc\include\Controls\BocReferenceValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\bocListTemplate.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\Calendar.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveFirst.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveFirstInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveLast.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveLastInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveNext.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveNextInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MovePrevious.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MovePreviousInactive.gif"
                     BuildAction = "Content"
                 />
             </Include>
