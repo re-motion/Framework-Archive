@@ -27,12 +27,12 @@ public class MultiLingualPage : Page
 
   protected override void OnInit(EventArgs e)
   {
-    if (ResourceDispatcher.ExistsResource (this))
+    if (ResourceManagerPool.ExistsResource (this))
     {
       ResourceDispatcher.Dispatch (this);
       
-      if (ResourceDispatcher.ExistsResourceText (this, "auto:PageTitle"))
-        this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
+      if (ResourceManagerPool.ExistsResourceText (this, "auto:PageTitle"))
+        this.PageTitle = ResourceManagerPool.GetResourceText (this, "auto:PageTitle");
     }
           
     base.OnInit (e);
@@ -40,7 +40,7 @@ public class MultiLingualPage : Page
   
   protected string GetResourceText (string name)
   {
-    return ResourceDispatcher.GetResourceText (this, name);
+    return ResourceManagerPool.GetResourceText (this, name);
   }
 }
 }

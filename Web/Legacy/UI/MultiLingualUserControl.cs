@@ -19,7 +19,7 @@ public class MultiLingualUserControl : UserControl
 
   protected override void OnInit(EventArgs e)
   {
-    if (ResourceDispatcher.ExistsResource (this))
+    if (ResourceManagerPool.ExistsResource (this))
       ResourceDispatcher.Dispatch (this);
 
     base.OnInit (e);
