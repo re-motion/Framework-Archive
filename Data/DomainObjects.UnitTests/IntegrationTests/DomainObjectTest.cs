@@ -9,11 +9,12 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
 [TestFixture]
-public class IntegrationTest: ClientTransactionBaseTest
+public class DomainObjectTest : ClientTransactionBaseTest
 {
   // types
 
@@ -34,7 +35,7 @@ public class IntegrationTest: ClientTransactionBaseTest
 
   // construction and disposing
 
-  public IntegrationTest ()
+  public DomainObjectTest ()
   {
   }
 
