@@ -80,7 +80,7 @@ public class TestTabbedForm : TestWxeBasePage
     view.ID = id+ "_View";
     view.Title = title;
     view.Icon = icon;
-    MultiView.TabViews.Add (view);
+    MultiView.Views.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
     control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));

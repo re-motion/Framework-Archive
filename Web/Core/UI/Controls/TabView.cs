@@ -31,10 +31,15 @@ public class TabView : Rubicon.Web.UI.Controls.PageView
   // construction and destruction
 
   // methods and properties
-
-  protected internal virtual void OnInsert (TabbedMultiView multiView)
+  internal void OnInsert (TabbedMultiView.MultiView multiView)
   {
+    //TODO: .net2.0 complier switch. Not needed in .net2.0
     base.ParentMultiPage = multiView;
+  }
+
+  protected void OnInsert (Control multiView)
+  {
+    OnInsert ((TabbedMultiView.MultiView) multiView);
   }
 
   /// <summary> Gets or sets the title displayed in the tab for this view. </summary>

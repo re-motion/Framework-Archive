@@ -8,9 +8,13 @@ namespace Rubicon.Web.UI.Controls
 //TODO: .net2.0 complier switch. Inherit from System.Web.UI.ViewCollection
 public class TabViewCollection : ControlCollection
 {
-  //TODO: .net2.0 complier switch. TabbedMultiView is CLS-complient in .net 2.0
-  [CLSCompliant (false)]
-  public TabViewCollection (TabbedMultiView owner) : base (owner)
+  public TabViewCollection (Control owner)
+    : this ((TabbedMultiView.MultiView) owner)
+  {
+  }
+
+  internal TabViewCollection (TabbedMultiView.MultiView owner)
+    : base (owner)
   {
   }
 
@@ -41,9 +45,9 @@ public class TabViewCollection : ControlCollection
 
   //TODO: .net2.0 complier switch. TabView is CLS-complient in .net 2.0
   [CLSCompliant (false)]
-  protected new TabbedMultiView Owner
+  private new TabbedMultiView.MultiView Owner
   {
-    get { return (TabbedMultiView) base.Owner; }
+    get { return (TabbedMultiView.MultiView) base.Owner; }
   }
 }
 
