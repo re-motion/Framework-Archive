@@ -134,6 +134,7 @@ public class WebForm :
 	private void InitializeComponent()
 	{    
     this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
+
   }
 	#endregion
 
