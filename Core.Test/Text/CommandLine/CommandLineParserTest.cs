@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.NullableValueTypes;
-using Rubicon.UnitTests;
+using Rubicon.Development.UnitTesting;
 
 using Rubicon.Text.CommandLine;
 
