@@ -1,3 +1,9 @@
+1.1.50.0
+========
+
+- BocValueColumnDefinition und BocCommandColumnDefinition
+  * Ableitungshierachie geändert: statt von BocColumnDefinition nun von BocCommandEnabledColumnDefinition abgeleitet.
+  
 1.1.49.0
 ========
 
