@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-// TODO: Document how new types can be added. DBValueConverter methods must be changed too
 public class TypeInfo
 {
   // types
