@@ -366,7 +366,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       //  Prevent a collapsed control
       _listControl.Width = Unit.Point (c_defaultListControlWidthInPoints);
 
-      if (Width != Unit.Empty)
+      if (! Width.IsEmpty)
         _listControl.Width = Width;
       _listControl.Height = Height;
       _listControl.ApplyStyle (_commonStyle);
