@@ -22,7 +22,7 @@ var _bocList_isCheckBoxClick = false;
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
 
-var _bocList_ListMenuInfos = new Array();
+var _bocList_listMenuInfos = new Array();
 
 var _contentMenu_itemClassName = 'contentMenuItem';
 var _contentMenu_itemFocusClassName = 'contentMenuItemFocus';
@@ -143,7 +143,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
   checkBox.focus();
   _bocList_isCheckBoxClick = false;
 
-  BocList_UpdateListMenu (bocList, document.getElementById (bocList.id + '_Boc_ListMenu'));
+  BocList_UpdateListMenu (bocList);
 }
 
 //  Selects a row.
@@ -238,7 +238,7 @@ function BocList_OnSelectAllCheckBoxClick (bocList, selectAllCheckBox, checkBoxP
   if (! selectAllCheckBox.checked)      
     _bocList_selectedRowsLength[bocList.id] = 0;
     
-  BocList_UpdateListMenu (bocList, document.getElementById (bocList.id + '_Boc_ListMenu'));
+  BocList_UpdateListMenu (bocList);
 }
 
 //  Event handler for the selection checkBox in a data row.
@@ -270,9 +270,9 @@ function ContentMenu_MenuInfo (id, itemInfos)
   this.ItemInfos = itemInfos;
 }
 
-function ContentMenu_AddMenuInfo (menuInfo)
+function BocList_AddMenuInfo (bocList, menuInfo)
 {
-  _bocList_ListMenuInfos[menuInfo.ID] = menuInfo;
+  _bocList_listMenuInfos[bocList.ID] = menuInfo;
 }
 
 function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, href, target)
@@ -287,9 +287,13 @@ function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requi
   this.Target = target;
 }
 
-function BocList_UpdateListMenu (bocList, listMenu)
+function BocList_UpdateListMenu (bocList)
 {
-  var itemInfos = _bocList_ListMenuInfos[listMenu.id].ItemInfos;
+  var menuInfo = _bocList_listMenuInfos[bocList.id];
+  if (menuInfo == null)
+    return;
+    
+  var itemInfos = menuInfo.ItemInfos;
   var selectionCount = BocList_GetSelectionCount (bocList.id);
   
   for (var i = 0; i < itemInfos.length; i++)

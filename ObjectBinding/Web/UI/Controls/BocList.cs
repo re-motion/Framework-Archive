@@ -280,7 +280,7 @@ public class BocList:
 
   protected override void CreateChildControls()
   {
-    _optionsMenu = new DropDownMenu (ClientID, this);
+    _optionsMenu = new DropDownMenu (this);
     _optionsMenu.ID = ID + c_optionsMenuIDSuffix;
     _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
@@ -794,6 +794,8 @@ public class BocList:
   {
     //  Render list block / menu block
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
 
     //  Two columns
@@ -879,10 +881,10 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
     if (HasOptionsMenu)
     {
+      _optionsMenu.MenuItems.Clear();
+      _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
       _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       _optionsMenu.RenderControl (writer);
@@ -932,7 +934,7 @@ public class BocList:
     if (! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
-      script.Append ("ContentMenu_AddMenuInfo (\r\n\t");
+      script.AppendFormat ("BocList_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", ClientID);
       script.AppendFormat ("new ContentMenu_MenuInfo ('{0}', new Array (\r\n", menuID);
       bool isFirstItem = true;
 
@@ -2631,7 +2633,7 @@ public class BocList:
   ///   Gets or sets a flag that determines whether to display the options menu.
   /// </summary>
   /// <value> <see langword="true"/> to show the options menu. </value>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("Enables the options menu.")]
   [DefaultValue (true)]
   public bool ShowOptionsMenu
