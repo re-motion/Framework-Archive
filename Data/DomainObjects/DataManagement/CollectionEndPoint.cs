@@ -128,10 +128,16 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    if (!oldEndPoint.IsNull)
+    if (oldEndPoint.IsNull && newEndPoint.IsNull)
+      throw new ArgumentException ("Both endPoints cannot be NullEndPoints.", "oldEndPoint, newEndPoint");
+
+    if (!oldEndPoint.IsNull && !newEndPoint.IsNull)
+      throw new ArgumentException ("One endPoint must be a NullEndPoint.", "oldEndPoint, newEndPoint");
+
+    if (!oldEndPoint.IsNull && newEndPoint.IsNull)
        _changeWorker = CollectionEndPointChangeWorker.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
-    if (!newEndPoint.IsNull)
+    if (!newEndPoint.IsNull && oldEndPoint.IsNull)
       _changeWorker = CollectionEndPointChangeWorker.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
     return BeginRelationChange ();
