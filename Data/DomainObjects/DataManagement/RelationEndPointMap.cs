@@ -398,7 +398,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     CheckDeleted (endPoint);
     CheckDeleted (domainObject);
 
-    ((ICollectionEndPointChangeDelegate) this).PerformInsert (endPoint, domainObject, -1); 
+    ((ICollectionEndPointChangeDelegate) this).PerformInsert (endPoint, domainObject, endPoint.OppositeDomainObjects.Count); 
   }
 
 
@@ -420,24 +420,16 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       _clientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
     
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
-        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
+        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
+        && endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index))
     {
-      bool beginEndPointRelationChange;
-      if (index >= 0)
-        beginEndPointRelationChange = endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index);
-      else
-        beginEndPointRelationChange = endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint);
+      addingEndPoint.PerformRelationChange ();
+      oldRelatedEndPoint.PerformRelationChange ();
+      endPoint.PerformRelationChange ();
 
-      if (beginEndPointRelationChange)
-      {
-        addingEndPoint.PerformRelationChange ();
-        oldRelatedEndPoint.PerformRelationChange ();
-        endPoint.PerformRelationChange ();
-
-        addingEndPoint.EndRelationChange ();
-        oldRelatedEndPoint.EndRelationChange ();
-        endPoint.EndRelationChange ();
-      }
+      addingEndPoint.EndRelationChange ();
+      oldRelatedEndPoint.EndRelationChange ();
+      endPoint.EndRelationChange ();
     }
   }
 

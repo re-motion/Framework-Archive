@@ -176,7 +176,23 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   public DomainObject this[int index]  
   {
-    get { return (DomainObject) GetObject (index); }
+    get 
+    { 
+      return (DomainObject) GetObject (index); 
+    }
+    set 
+    {
+      DomainObject oldObject = this[index];
+
+      if (BeginRemove (oldObject) && BeginAdd (value))
+      {
+        PerformRemove (oldObject);
+        PerformInsert (index, value);
+
+        EndRemove (oldObject);
+        EndAdd (value);
+      }
+    }
   }
 
   /// <summary>
@@ -319,13 +335,16 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   // TODO Documentation: Check all explicitly implemented IList members if documentation is inherited.
   object IList.this[int index]
   {
-    get { return this[index]; }
+    get 
+    { 
+      return this[index]; 
+    }
     set 
     {
-      // TODO: Implement this
-      throw new NotImplementedException ();
-      //this[index] = value; 
-    }
+      ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+
+      this[index] = (DomainObject) value; 
+    } 
   }
 
   // TODO Documentation: Behavior for invalid object type.
