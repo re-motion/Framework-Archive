@@ -10,9 +10,11 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs"/>
-        <includes name="Configuration/**/*.cs"/>
+        <includes name="ConfigurationLoader/**/*.cs"/>
+        <includes name="Mapping/**/*.cs"/>
         <includes name="DataManagement/**/*.cs"/>
         <includes name="Persistence/**/*.cs"/>
+        <includes name="Queries/**/*.cs"/>
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
