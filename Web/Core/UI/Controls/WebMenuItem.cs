@@ -186,7 +186,6 @@ public class MenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [Browsable (false)]
-  [EditorBrowsable (EditorBrowsableState.Never)]
   public SingleControlItemCollection PersistedCommand
   {
     get { return _command; }
