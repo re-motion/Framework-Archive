@@ -3,12 +3,15 @@ var _dropDownMenu_menuInfos = new Array();
 var _dropDownMenu_popUpClassName = 'dropDownMenuPopUp';
 var _dropDownMenu_itemClassName = 'dropDownMenuItem';
 var _dropDownMenu_itemHoverClassName = 'dropDownMenuItemHover';
-
+var _dropDownMenu_itemTextPaneClassName = 'dropDownMenuItemTextPane';
+var _dropDownMenu_itemIconPaneClassName = 'dropDownMenuItemIconPane';
 var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopUp = null;
 var _dropDownMenu_currentPopUpWidth = null;
 
 var _dropDownMenu_styleSheetLink = null;
+var _dropDownMenu_menuItemIDPrefix = 'menuItem_';
+var _dropDownMenu_currentItem = null;
 
 function DropDownMenu_InitializeGlobals (styleSheetLink)
 {
@@ -43,9 +46,6 @@ function DropDownMenu_OnClick (context, menuID)
   DropDownMenu_OpenPopUp (id, menuID, context)
 }
 
-//  <div style="position: absolute; right: 0px" class="_dropDownMenu_popUpClassName">
-//    CreateItem
-//  </div>
 function DropDownMenu_OpenPopUp (id, menuID, context)
 {
   //  IE55up
@@ -83,8 +83,8 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   DropDownMenu_AppendChild (popUpBody, popUp);
   popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
   popUpWindow.show(0, 0, 0, 0, context);
-	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth;
-	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight;
+	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth + 1;
+	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight + 1;
 	if (nRealWidth > window.screen.width) nRealWidth = window.screen.width;
 	if (nRealHeight > window.screen.height) nRealHeight = window.screen.height;
 	popUpWindow.hide();
@@ -158,9 +158,7 @@ function DropDownMenu_ClosePopUp (popUp)
   if (popUp != null)
     return;//
 }
-//  <div class="_dropDownMenu_itemClassName">
-//    item contents
-//  </div>
+
 function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 {
   if (itemInfo == null)
@@ -170,28 +168,43 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 	  return null;
 	  
 	//  item.setAttribute("type", "option");
-	item.setAttribute ('id', itemInfo.ID);
+	item.setAttribute (_dropDownMenu_menuItemIDPrefix + 'id', itemInfo.ID);
+	item.className = _dropDownMenu_itemClassName;
+	if (itemInfo.Href != null)
+	{
+  	item.onclick = function () { window.location = itemInfo.Href; };
+  }	
+
+	var iconPane = popUpDocument.createElement ('span');
+	iconPane.className = _dropDownMenu_itemIconPaneClassName;
+	if (itemInfo.Icon != null)
+	{
+  	var icon = popUpDocument.createElement ('img');
+	  icon.setAttribute ('src', itemInfo.Icon);
+	  //icon.setAttribute ('style', 'border-style: none; vertical-align: middle;');
+	  icon.setAttribute ('align', 'middle');
+	  iconPane.appendChild (icon);
+	}
+	item.appendChild (iconPane);
+
+	var textPane = popUpDocument.createElement ('span');
+	textPane.className = _dropDownMenu_itemTextPaneClassName;	
 	if (itemInfo.Href != null)
 	{
 	  var anchor = popUpDocument.createElement ('a');
 	  anchor.innerHTML = itemInfo.Text;
 	  anchor.setAttribute ('href', '#');
-	  anchor.onclick = function () { window.location = itemInfo.Href; };
-	  item.appendChild (anchor);
+	  textPane.appendChild (anchor);
 	}
 	else
 	{
-  	item.innerHTML = itemInfo.Text;
+  	textPane.innerHTML = itemInfo.Text;
   }
-	item.className = _dropDownMenu_itemClassName;
-	//item.setAttribute("onClick", wzAct);
-	//AImg(mo,wzISrc,wzIAlt);
-	return item;
-}
+	item.appendChild (textPane);
 
-function DropDownMenu_ItemClick()
-{
-  alert("hello");
+	item.onmouseover = function () { SelectItem (item); };
+	item.onmouseleave = function () { UnselectItem (item); };
+	return item;
 }
 
 function AImg(mi,wzISrc,wzIAlt)
@@ -208,6 +221,22 @@ function DropDownMenu_AppendChild (parent, child)
 {
 	if(parent != null && child != null)
 	  parent.appendChild (child);
+}
+
+function SelectItem (menuItem)
+{
+	if (menuItem == null)
+	  return;
+	menuItem.className = _dropDownMenu_itemHoverClassName;
+	_dropDownMenu_currentItem = menuItem;
+}
+
+function UnselectItem (menuItem)
+{
+	if (menuItem == null)
+	  return;
+	menuItem.className = _dropDownMenu_itemClassName;
+	_dropDownMenu_currentItem = null;
 }
 
 /* copy and pasted */
@@ -283,8 +312,16 @@ return;
 function GetEventSrcItem(oEvent)
 {
 	if (oEvent)
+	{
 		for (var oSrc = oEvent.srcElement; oSrc && !FIStringEquals(oSrc.tagName, "BODY"); oSrc = oSrc.parentNode)
-			if (FIStringEquals(oSrc.tagName, "TR") && oSrc.id.substring(0, _wzPrefixID.length) == _wzPrefixID) return oSrc;
+		{
+			if (   FIStringEquals(oSrc.tagName, "DIV") 
+			    && oSrc.id.substring(0, _dropDownMenu_menuItemIDPrefix.length) == _dropDownMenu_menuItemIDPrefix) 
+			{
+			  return oSrc;
+			}
+	  }
+	}
 	return null;
 }
 function PopupMouseOver()
@@ -473,20 +510,4 @@ function ToggleMenuItem(nLevel, oItem)
 	_arrSelected[nLevel] = oItem;
 	oItem.tabIndex = 0;
 	oItem.setActive();
-}
-function SelectItem(oItem)
-{
-	if (!oItem) return;
-	var oItemTableCell = oItem.firstChild;
-	var oItemTable = oItemTableCell.firstChild;
-	oItemTableCell.className = "ms-MenuUIItemTableCellHover";
-	oItemTable.className = "ms-MenuUIItemTableHover";
-}
-function UnselectItem(oItem)
-{
-	if (!oItem) return;
-	var oItemTableCell = oItem.firstChild;
-	var oItemTable = oItemTableCell.firstChild;
-	oItemTableCell.className = "ms-MenuUIItemTableCell";
-	oItemTable.className = "ms-MenuUIItemTable";
 }

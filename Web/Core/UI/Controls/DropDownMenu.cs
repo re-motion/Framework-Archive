@@ -247,9 +247,10 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       }
     }
 
+    string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}', {4}, {5})",
-        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, menuItem.Icon, href, target);
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5})",
+        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, icon, href, target);
   }
 
   protected override void Render (HtmlTextWriter writer)
