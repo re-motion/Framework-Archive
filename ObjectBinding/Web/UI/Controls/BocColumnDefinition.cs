@@ -524,6 +524,7 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   private IconInfo _saveIcon;
   private string _cancelText;
   private IconInfo _cancelIcon;
+  private BocEditDetailsColumnDefintionShow _show = BocEditDetailsColumnDefintionShow.EditMode;
 
   /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
   public BocEditDetailsColumnDefinition()
@@ -531,6 +532,24 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
     _editIcon = new IconInfo();
     _saveIcon = new IconInfo();
     _cancelIcon = new IconInfo();
+  }
+
+  /// <summary>
+  ///   Determines when the column is shown to the user in regard of the <see cref="BocList"/>'s read-only setting.
+  /// </summary>
+  /// <value> 
+  ///   One of the <see cref="BocEditDetailsColumnDefintionShow"/> enumeration values. 
+  ///   The default is <see cref="BocEditDetailsColumnDefintionShow.EditMode"/>.
+  /// </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("Determines when to show the column to the user in regard to the BocList's read-only setting.")]
+  [DefaultValue (BocEditDetailsColumnDefintionShow.EditMode)]
+  [NotifyParentProperty (true)]
+  public BocEditDetailsColumnDefintionShow Show
+  {
+    get { return _show; }
+    set { _show = value; }
   }
 
   /// <summary> Gets or sets the text representing the edit command in the rendered page. </summary>
@@ -876,6 +895,15 @@ public class BocCustomColumnClickEventArgs: EventArgs
   {
     get { return _argument; }
   }
+}
+
+/// <summary> Defines when the <see cref="BocEditDetailsColumnDefintion"/> will be shown in the <see cref="BocList"/>. </summary>
+public enum BocEditDetailsColumnDefintionShow
+{
+  /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read only. </summary>
+  Always,
+  /// <summary> The column is only shown if the <see cref="BocList"/> is in eidt-mode. </summary>
+  EditMode
 }
 
 }

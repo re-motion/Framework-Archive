@@ -48,6 +48,7 @@ public class BocList:
 
   /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
   private const string c_eventListItemCommandPrefix = "ListCommand=";
+  private const string c_eventEditDetailsPrefix = "EditDetails=";
   /// <summary> Prefix applied to the post back argument of the event type menu commands. </summary>
   private const string c_eventMenuItemPrefix = "MenuItem=";
   /// <summary> Prefix applied to the post back argument of the custom columns. </summary>
@@ -70,7 +71,7 @@ public class BocList:
   #endregion
 
   private const string c_bocListScriptUrl = "BocList.js";
-  private const string c_onCommandClickSrip = "BocList_OnCommandClick();";
+  private const string c_onCommandClickScript = "BocList_OnCommandClick();";
 
   private const string c_whiteSpace = "&nbsp;";
 
@@ -120,6 +121,13 @@ public class BocList:
     Previous,
     /// <summary> Move to next page. </summary>
     Next
+  }
+
+  private enum EditDetailsCommand
+  {
+    Edit,
+    Save,
+    Cancel
   }
 
   /// <summary> Represents the sorting direction for an individual column. </summary>
@@ -437,6 +445,8 @@ public class BocList:
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_customCellEventPrefix))
       HandleCustomCellEvent (eventArgument.Substring (c_customCellEventPrefix.Length));
+    else if (eventArgument.StartsWith (c_eventEditDetailsPrefix))
+      HandleEditDetailsEvent (eventArgument.Substring (c_eventEditDetailsPrefix.Length));
     else
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
@@ -672,6 +682,68 @@ public class BocList:
 
     BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
     OnCustomCellClick (column, (IBusinessObject) Value[listIndex], customCellArgument);
+  }
+
+  /// <summary> Handles post back events raised by an edit details event. </summary>
+  /// <param name="eventArgument"> &lt;list-index&gt;,&lt;command&gt; </param>
+  private void HandleEditDetailsEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
+
+    //  First part: list index
+    int listIndex;
+    eventArgumentParts[0] = eventArgumentParts[0].Trim();
+    try 
+    {
+      if (eventArgumentParts[0].Length == 0)
+        throw new FormatException();
+      listIndex = int.Parse (eventArgumentParts[0]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<list-index>,<command>'.");
+    }
+
+    //  Second part: command
+    EditDetailsCommand command;
+    eventArgumentParts[1] = eventArgumentParts[1].Trim();
+    try 
+    {
+      if (eventArgumentParts[1].Length == 0)
+        throw new FormatException();
+      command = (EditDetailsCommand) Enum.Parse (typeof (EditDetailsCommand), eventArgumentParts[1]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.");
+    }
+
+    switch (command)
+    {
+      case EditDetailsCommand.Edit:
+      {
+        if (listIndex >= Value.Count)
+          throw new ArgumentOutOfRangeException ("list-index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of business objects in the list.'");
+        SwitchRowIntoEditMode (listIndex);
+        break;
+      }
+      case EditDetailsCommand.Save:
+      {
+        EndRowEditMode (true);
+        break;
+      }
+      case EditDetailsCommand.Cancel:
+      {
+        EndRowEditMode (false);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
   }
 
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
@@ -1517,6 +1589,14 @@ public class BocList:
     for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
     {
       BocColumnDefinition column = renderColumns[idxColumns];
+      BocEditDetailsColumnDefinition editDetailsColumn = renderColumns[idxColumns] as BocEditDetailsColumnDefinition;
+
+      if (   editDetailsColumn != null
+          && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
+          && isReadOnly)
+      {
+        continue;
+      }
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1703,10 +1783,6 @@ public class BocList:
       int originalRowIndex, IBusinessObject businessObject,
       bool showIcon, string cssClassTableCell)
   {
-    string objectID = null;
-    IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
-    if (businessObjectWithIdentity != null)
-      objectID = businessObjectWithIdentity.UniqueIdentifier;
     bool isReadOnly = IsReadOnly;
     bool isEditedRow = ! EditableRowIndex.IsNull && EditableRowIndex.Value == originalRowIndex;
     bool hasEditModeControl =    isEditedRow
@@ -1714,12 +1790,19 @@ public class BocList:
                               && _rowEditModeControls.Length > 0 
                               && _rowEditModeControls[columnIndex] != null;
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td);
-
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
+
+    if (   editDetailsColumn != null
+        && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
+        && isReadOnly)
+    {
+      return;
+    }
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
     if (commandEnabledColumn != null)
     {
@@ -1729,30 +1812,8 @@ public class BocList:
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
       //  Render the command
-      bool isCommandEnabled = false;
-      BocListItemCommand command = commandEnabledColumn.Command;
-      if (command != null)
-      {
-        bool isActive =    command.Show == CommandShow.Always
-                        || isReadOnly && command.Show == CommandShow.ReadOnly
-                        || ! isReadOnly && command.Show == CommandShow.EditMode;
-        if (   isActive
-            && command.Type != CommandType.None
-            && ! hasEditModeControl
-            && (   command.CommandState == null
-                || command.CommandState.IsEnabled (this, businessObject, commandEnabledColumn)))
-        {
-          isCommandEnabled = true;
-        }
-      }
-
-      if (isCommandEnabled)
-      {    
-        string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
-        string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        string onClick = c_onCommandClickSrip;
-        command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
-      }
+      bool isCommandEnabled = RenderBeginTagCellCommand (
+          writer, commandEnabledColumn, businessObject, hasEditModeControl, columnIndex, originalRowIndex);
 
       //  Render the icon
       if (showIcon)
@@ -1766,16 +1827,15 @@ public class BocList:
       else if (simpleColumn != null)
         RenderSimpleColumnCellText (writer, simpleColumn, businessObject, hasEditModeControl, columnIndex);
 
-      if (isCommandEnabled)
-        command.RenderEnd (writer);
+      RenderEndTagCellCommand (writer, commandEnabledColumn, isCommandEnabled);
     }
     else if (editDetailsColumn != null)
     {
-      RenderEditDetailsColumnCell (writer, editDetailsColumn, isEditedRow);
+      RenderEditDetailsColumnCell (writer, editDetailsColumn, isEditedRow, originalRowIndex);
     }
     else if (customColumn != null)
     {
-      string onClick = c_onCommandClickSrip;
+      string onClick = c_onCommandClickScript;
       customColumn.CustomCell.Render (
           writer, this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
     }
@@ -1849,10 +1909,24 @@ public class BocList:
   private void RenderEditDetailsColumnCell (
       HtmlTextWriter writer, 
       BocEditDetailsColumnDefinition column,
-      bool isEditedRow)
+      bool isEditedRow,
+      int originalRowIndex)
   {
+    bool isReadOnly = IsReadOnly;
+    string argument = null;
+    string postBackLink = null;
+
     if (isEditedRow)
     {
+      if (! isReadOnly)
+      {
+        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Save;
+        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+      }
+      writer.RenderBeginTag (HtmlTextWriterTag.A);
+
       bool hasSaveIcon = column.SaveIcon != null && ! StringUtility.IsNullOrEmpty (column.SaveIcon.Url);
       bool hasSaveText = ! StringUtility.IsNullOrEmpty (column.SaveText);
 
@@ -1863,6 +1937,17 @@ public class BocList:
       if (hasSaveText)
         writer.Write (column.SaveText);
 
+      writer.RenderEndTag();
+
+      if (! isReadOnly)
+      {
+        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Cancel;
+        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+      }
+      writer.RenderBeginTag (HtmlTextWriterTag.A);
+
       bool hasCancelIcon = column.CancelIcon != null && ! StringUtility.IsNullOrEmpty (column.CancelIcon.Url);
       bool hasCancelText = ! StringUtility.IsNullOrEmpty (column.CancelText);
 
@@ -1872,9 +1957,20 @@ public class BocList:
         writer.Write (c_whiteSpace);
       if (hasCancelText)
         writer.Write (column.CancelText);
+
+      writer.RenderEndTag();
     }
     else
     {
+      if (! isReadOnly)
+      {
+        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
+        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+      }
+      writer.RenderBeginTag (HtmlTextWriterTag.A);
+
       bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
       bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
 
@@ -1884,6 +1980,8 @@ public class BocList:
         writer.Write (c_whiteSpace);
       if (hasEditText)
         writer.Write (column.EditText);
+
+      writer.RenderEndTag();
     }
   }
 
@@ -1941,6 +2039,57 @@ public class BocList:
     if (StringUtility.IsNullOrEmpty (contents))
       contents = c_whiteSpace;
     writer.Write (contents);
+  }
+
+  private bool RenderBeginTagCellCommand (
+      HtmlTextWriter writer, 
+      BocCommandEnabledColumnDefinition column,
+      IBusinessObject businessObject,
+      bool hasEditModeControl,
+      int columnIndex,
+      int originalRowIndex)
+  {
+    bool isCommandEnabled = false;
+    BocListItemCommand command = column.Command;
+    if (command == null)
+      return isCommandEnabled;
+
+    bool isReadOnly = IsReadOnly;
+    bool isActive =    command.Show == CommandShow.Always
+                    || isReadOnly && command.Show == CommandShow.ReadOnly
+                    || ! isReadOnly && command.Show == CommandShow.EditMode;
+    if (   isActive
+        && command.Type != CommandType.None
+        && ! hasEditModeControl
+        && (   command.CommandState == null
+            || command.CommandState.IsEnabled (this, businessObject, column)))
+    {
+      isCommandEnabled = true;
+    }
+
+    if (isCommandEnabled)
+    {    
+      string objectID = null;
+      IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
+      if (businessObjectWithIdentity != null)
+        objectID = businessObjectWithIdentity.UniqueIdentifier;
+
+      string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
+      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string onClick = c_onCommandClickScript;
+      command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
+    }
+
+    return isCommandEnabled;
+  }
+
+  private void RenderEndTagCellCommand (
+      HtmlTextWriter writer, 
+      BocCommandEnabledColumnDefinition column, 
+      bool isCommandEnabled)
+  {
+    if (isCommandEnabled)
+      column.Command.RenderEnd (writer);
   }
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
@@ -2028,15 +2177,6 @@ public class BocList:
     return values;
   }
 
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
   public override void LoadValue (bool interim)
   {
     //Binding.EvaluateBinding();
