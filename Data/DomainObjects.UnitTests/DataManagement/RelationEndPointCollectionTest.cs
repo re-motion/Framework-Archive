@@ -149,5 +149,16 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
     _endPoints.Clear ();
     Assert.AreEqual (0, _endPoints.Count);
   }
+
+  [Test]
+  public void MergeForItemAlreadyInCollection ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+    RelationEndPointCollection secondEndPoints = new RelationEndPointCollection (_endPoints, false);
+    
+    _endPoints.Combine (secondEndPoints);
+
+    Assert.AreEqual (1, _endPoints.Count);
+  }
 }
 }
