@@ -389,6 +389,21 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable, IX
     }
   }
 
+
+  /// <summary>
+  /// Gets the value of this <see cref="NaInt32"/> structure. This property is read-only.
+  /// </summary>
+  /// <value>
+  /// An Object representing the value of this NaInt32 structure.
+  /// </value>
+  /// <exception cref="NaNullValueException">
+  /// The property contains <see cref="Null"/>.
+  /// </exception>
+  object INaNullable.Value
+  {
+    get { return Value; }
+  }
+
   /// <summary>
   /// Gets the value of the structure for debugger watch windows.
   /// </summary>
