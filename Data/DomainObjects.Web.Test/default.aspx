@@ -1,8 +1,8 @@
+<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" 
   Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.DefaultPage" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -115,7 +115,7 @@
 
         <tr>
           <td></td>
-          <td><br/><h2>Nullable Types</h2></td>
+          <td><br><h2>Nullable Types</h2></td>
         </tr>        
         <TR>
           <TD></TD>
@@ -197,7 +197,7 @@
 
         <tr>
           <td></td>
-          <td><br/><h2>Nullable Types with null values</h2></td>
+          <td><br><h2>Nullable Types with null values</h2></td>
         </tr>        
         <TR>
           <TD></TD>
@@ -287,7 +287,7 @@
 
         <tr>
           <td></td>
-          <td><br/><h2>Reference Types</h2></td>
+          <td><br><h2>Reference Types</h2></td>
         </tr>        
         <TR>
           <TD></TD>
