@@ -309,25 +309,73 @@ public class ClientTransaction
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
       DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
-
-      DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
-      SetClientTransaction (newLoadedDataContainers);
-      _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
-
-      DomainObjectCollection domainObjects = DomainObjectCollection.Create (
-          relationEndPointID.Definition.PropertyType,
-          _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers),
-          relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType);
-
-      _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
-
-      foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
-        OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
-
-      return domainObjects;
+      return GetLoadedDomainObjects (relatedDataContainers, relationEndPointID);
     }
   }
 
+  /// <summary>
+  /// Creates a new <see cref="DomainObjectCollection"/>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/>, raises the <see cref="Load"/> event and optionally registers the relation with the specified <see cref="RelationEndPointID"/>.
+  /// </summary>
+  /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
+  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+      DataContainerCollection dataContainers, 
+      RelationEndPointID relationEndPointID)
+  {
+    return GetLoadedDomainObjects (
+        dataContainers, 
+        relationEndPointID.Definition.PropertyType,
+        relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
+        relationEndPointID);
+  }
+
+  /// <summary>
+  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType.</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/> and raises the <see cref="Load"/> event.
+  /// </summary>
+  /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
+  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+      DataContainerCollection dataContainers, 
+      Type collectionType)
+  {
+    return GetLoadedDomainObjects (dataContainers, collectionType, null, null);
+  }
+
+  /// <summary>
+  /// Creates a new <see cref="DomainObjectCollection"/> with the specified <i>collectionType.</i>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/>, raises the <see cref="Load"/> event and optionally registers the relation with the specified <see cref="RelationEndPointID"/>.
+  /// </summary>
+  /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
+  /// <param name="relationEndPointID"></param>
+  /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
+  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+      DataContainerCollection dataContainers, 
+      Type collectionType,
+      Type requiredItemType,
+      RelationEndPointID relationEndPointID)
+  {
+    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (dataContainers);
+    SetClientTransaction (newLoadedDataContainers);
+    _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
+
+    DomainObjectCollection domainObjects = DomainObjectCollection.Create (
+        collectionType, _dataManager.DataContainerMap.MergeWithExisting (dataContainers), requiredItemType);
+
+    if (relationEndPointID != null)
+      _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
+
+    foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
+      OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
+
+    return domainObjects;
+  }
+      
   /// <summary>
   /// Sets the ClientTransaction property of all <see cref="DataContainer"/>s of a given <see cref="DataManagement.DataContainerCollection"/>.
   /// </summary>
