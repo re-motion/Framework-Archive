@@ -700,14 +700,16 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
           //  menu handling
 
           TabMenu menu = GetMenuByName( GetTabByName (ctrlIDs[0]), ctrlIDs[1] );
-          menu.Label = text;
+          if (menu != null)
+            menu.Label = text;
         }
         else
         {
           //  tab handling
 
           Tab tab = GetTabByName ( ctrlIDs[0] );
-          tab.Label = text;
+          if (tab != null)
+            tab.Label = text;
         }
       }      
       else
@@ -719,12 +721,14 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
   private TabMenu GetMenuByName (Tab tab, string menuName)
   {
-    foreach (TabMenu menu in tab.Controls)
+    if (tab != null)
     {
-      if (menu.ID == menuName)
-        return menu;
+      foreach (TabMenu menu in tab.Controls)
+      {
+        if (menu.ID == menuName)
+          return menu;
+      }
     }
-
     return null;
   }
   
