@@ -530,7 +530,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
   ///   values and "g" for date/time values (use "G" to display seconds too).
   /// </remarks>
-  [Description ("Gets or sets the format string used to create the string value.")]
+  [Description ("Gets or sets the format string used to create the string value. Format must be parsable by the value's type if the control is in edit-mode.")]
   [Category ("Style")]
   [DefaultValue (null)]
   public string Format
