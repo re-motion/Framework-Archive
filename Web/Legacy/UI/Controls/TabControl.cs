@@ -121,10 +121,10 @@ public class TabMenu: Control, ITabItem
   }
 }
 
-[ParseChildren (true, "Items")]
+[ParseChildren (true, "Tabs")]
 public class TabControl: Control, IPostBackEventHandler
 {
-	private TabCollection _items = new TabCollection ();
+	private TabCollection _tabs = new TabCollection ();
 
 	private string _firstImage = String.Empty;
 	private string _secondImage = String.Empty;
@@ -237,14 +237,14 @@ public class TabControl: Control, IPostBackEventHandler
     set { _serverSideNavigation = value; }
   }
 
-	public TabCollection Items
+	public TabCollection Tabs
 	{
-		get { return _items; }
+		get { return _tabs; }
 	}
 
 	void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
 	{
-    SetSelectedItems();
+    SetSelectedItems (string.Empty);
     int colonPos = eventArgument.IndexOf (":");
     if (colonPos >= 0)
     {
@@ -274,9 +274,9 @@ public class TabControl: Control, IPostBackEventHandler
 
   public void MoveToTab (int tab)
   {
-    if (tab >= _items.Count) throw new ArgumentOutOfRangeException ("tab");
+    if (tab >= _tabs.Count) throw new ArgumentOutOfRangeException ("tab");
 
-    Tab selectedTab = _items[tab];
+    Tab selectedTab = _tabs[tab];
 
     string url = GetCompleteUrl (selectedTab, tab, 0);
     if (AllowNavigation (url))
@@ -288,7 +288,7 @@ public class TabControl: Control, IPostBackEventHandler
 
   public void MoveToMenu (int menu)
   {
-    Tab activeTab = (Tab) Items[_activeTab];
+    Tab activeTab = (Tab) Tabs[_activeTab];
     if (menu >= activeTab.Controls.Count) throw new ArgumentOutOfRangeException ("menu");
 
     TabMenu selectedMenu = (TabMenu) activeTab.Controls[menu];
@@ -301,10 +301,10 @@ public class TabControl: Control, IPostBackEventHandler
     }
   }
 
-  public string GetCurrentUrl ()
+  public string GetCurrentUrl (string defaultPage)
   {
-    SetSelectedItems();
-    TabMenu menu = (TabMenu) Items[_activeTab].Controls[_activeMenu];
+    SetSelectedItems (defaultPage);
+    TabMenu menu = (TabMenu) Tabs[_activeTab].Controls[_activeMenu];
     return GetCompleteUrl (menu, _activeTab, _activeMenu);
   }
 
@@ -400,18 +400,60 @@ public class TabControl: Control, IPostBackEventHandler
     return resultHref;
   }
 
-  private void SetSelectedItems()
+  private void SetSelectedItems (string defaultPage)
   {
 		string selectedTab = Page.Request.QueryString["navSelectedTab"];
+		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+
+    if (selectedTab == null && selectedMenu == null)
+    {
+      if (defaultPage == string.Empty)
+      {
+        for (int i = 0; i < _tabs.Count; ++i)
+        {
+          if (_tabs[i].Visible)
+          {
+            _activeTab = i;
+            break;
+          }
+        }
+      }
+      else
+      {
+        for (int tabIdx = 0; tabIdx < _tabs.Count; tabIdx++)
+        {
+          Tab tab = _tabs[tabIdx];
+
+          if (string.Compare (tab.Href, defaultPage, true) == 0)
+          {
+            _activeTab = tabIdx;
+            return;
+          }
+
+          for (int tabMenuIdx = 0; tabMenuIdx < tab.Controls.Count; tabMenuIdx++)
+          {
+            TabMenu menu = (TabMenu) tab.Controls[tabMenuIdx];
+
+            if (string.Compare (menu.Href, defaultPage, true) == 0)
+            {
+              _activeTab = tabIdx;
+              _activeMenu = tabMenuIdx;
+              return;
+            }
+          }
+        }
+      }
+    }
+    
     if (selectedTab != null)
     {
       _activeTab = int.Parse (selectedTab);
     }
     else
     {
-      for (int i = 0; i < _items.Count; ++i)
+      for (int i = 0; i < _tabs.Count; ++i)
       {
-        if (_items[i].Visible)
+        if (_tabs[i].Visible)
         {
           _activeTab = i;
           break;
@@ -419,16 +461,15 @@ public class TabControl: Control, IPostBackEventHandler
       }
     }
 
-		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
     if (selectedMenu != null)
     {
       _activeMenu = int.Parse (selectedMenu);
     }
     else
     {
-      for (int i = 0; i < _items[_activeTab].Controls.Count; ++i)
+      for (int i = 0; i < _tabs[_activeTab].Controls.Count; ++i)
       {
-        if (_items[_activeTab].Controls[i].Visible)
+        if (_tabs[_activeTab].Controls[i].Visible)
         {
           _activeMenu = i;
           break;
@@ -440,7 +481,7 @@ public class TabControl: Control, IPostBackEventHandler
   
   protected override void Render (HtmlTextWriter output)
 	{
-    SetSelectedItems();
+    SetSelectedItems (string.Empty);
 
     if (this.Site != null && this.Site.DesignMode)
 		{
@@ -470,11 +511,11 @@ public class TabControl: Control, IPostBackEventHandler
         backColor);
 
     //Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
-    if (!Items[_activeTab].Visible)
+    if (!Tabs[_activeTab].Visible)
     {
-		  for (int i=0; i<Items.Count; ++i)
+		  for (int i=0; i<Tabs.Count; ++i)
 		  {
-			  Tab tab = Items[i];    
+			  Tab tab = Tabs[i];    
 
         if (tab.Visible)
         {
@@ -486,9 +527,9 @@ public class TabControl: Control, IPostBackEventHandler
 
     int numVisibleTabs = 0;
     int activeVisibleTab = 0;
-		for (int i=0; i<Items.Count; ++i)
+		for (int i=0; i<Tabs.Count; ++i)
 		{
-			Tab tab = Items[i];
+			Tab tab = Tabs[i];
 
       if (tab.Visible)
       {
@@ -563,13 +604,13 @@ public class TabControl: Control, IPostBackEventHandler
     if (HasMenuBar)
     { 
       output.WriteLine ("<tr>");
-      int colspan = _items.Count * 4;
+      int colspan = _tabs.Count * 4;
 			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">", colspan);
 
       output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
       output.WriteLine ("<tr class=\"tabSubLink\"><td nowrap>&nbsp;");
   
-      Tab activeTab = Items[_activeTab];
+      Tab activeTab = Tabs[_activeTab];
       bool isFirstMenu = true;
       for (int i = 0; i < activeTab.Controls.Count; ++i)
       {
