@@ -91,6 +91,26 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
   {
     get { return true; }
   }
+
+  public override CodeExpression CreateUnaryOperatorExpression (CodeUnaryOperatorType operatorType, CodeExpression expression)
+  {
+    StringBuilder sb = new StringBuilder();
+    switch (operatorType)
+    {
+      case CodeUnaryOperatorType.BooleanNot:
+        sb.Append ("(! (");
+      case CodeUnaryOperatorType.Negate:
+        sb.Append ("(- (");
+      case CodeUnaryOperatorType.Plus:
+        sb.Append ("(+ (");
+      case CodeUnaryOperatorType.OnesComplement:
+        sb.Append ("(~ (");
+    }
+    StringWriter writer = new StringWriter (sb);
+    Generator.GenerateCodeFromExpression (expression, writer, null);
+    sb.Append ("))");
+    return new CodeSnippetExpression (sb.ToString());
+  }
 }
 
 }

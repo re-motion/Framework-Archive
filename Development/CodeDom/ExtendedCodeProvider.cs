@@ -261,6 +261,16 @@ public abstract class ExtendedCodeProvider
     enumValueField.Attributes = MemberAttributes.Public | MemberAttributes.Static | MemberAttributes.Const;
     return enumValueField;
   }
+
+  public abstract CodeExpression CreateUnaryOperatorExpression (CodeUnaryOperatorType operatorType, CodeExpression expression);
+}
+
+public enum CodeUnaryOperatorType
+{
+  BooleanNot,
+  Negate,
+  Plus,
+  OnesComplement
 }
 
 }
