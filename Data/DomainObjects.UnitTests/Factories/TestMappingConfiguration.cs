@@ -38,7 +38,7 @@ public class TestMappingConfiguration
   private TestMappingConfiguration ()
   {
     _classDefinitions = CreateClassDefinitions ();
-    _relationDefinitions = CreateRelationDefintions ();
+    _relationDefinitions = CreateRelationDefinitions ();
   }
 
   // methods and properties
@@ -78,9 +78,9 @@ public class TestMappingConfiguration
     classDefinitions.Add (CreateOrderTicketDefinition ());
     classDefinitions.Add (CreateOrderItemDefinition ());
 
-    ClassDefinition officialDefintion = CreateOfficialDefinition ();
-    classDefinitions.Add (officialDefintion);
-    classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefintion));
+    ClassDefinition officialDefinition = CreateOfficialDefinition ();
+    classDefinitions.Add (officialDefinition);
+    classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
     classDefinitions.Add (CreateCeoDefinition ());
     classDefinitions.Add (CreatePersonDefinition ());
@@ -425,7 +425,7 @@ public class TestMappingConfiguration
 
   #region Methods for creating relation definitions
 
-  private RelationDefinitionCollection CreateRelationDefintions ()
+  private RelationDefinitionCollection CreateRelationDefinitions ()
   {
     RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection ();
     
