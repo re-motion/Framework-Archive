@@ -119,14 +119,14 @@
                     HintPath = "..\Web\bin\Debug\Rubicon.ObjectBinding.Web.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Web.UI"
-                    AssemblyName = "Rubicon.Web.UI"
-                    HintPath = "..\Web\bin\Debug\Rubicon.Web.UI.dll"
-                />
-                <Reference
                     Name = "Rubicon.ObjectBinding.Reflection"
                     AssemblyName = "Rubicon.ObjectBinding.Reflection"
                     HintPath = "..\Reflection\bin\Debug\Rubicon.ObjectBinding.Reflection.dll"
+                />
+                <Reference
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>

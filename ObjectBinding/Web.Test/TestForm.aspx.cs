@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
 
 namespace OBWTest
