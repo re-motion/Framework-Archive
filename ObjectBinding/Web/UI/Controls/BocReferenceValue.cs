@@ -462,7 +462,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   ///   Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
   /// <remarks>
-  ///   Use this method when manually setting the listed items, e.g. from the parent control.
+  ///   Use this method to set the listed items, e.g. from the parent control if no <see cref="Select"/>
+  ///   statement was provided.
   /// </remarks>
   /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
   public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
