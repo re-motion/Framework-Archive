@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.Web.Controls
 {
 /// <summary>
 /// Summary description for PropertyPathBinding.

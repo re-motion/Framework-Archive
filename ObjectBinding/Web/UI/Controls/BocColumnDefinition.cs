@@ -311,7 +311,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 /// </remarks>
 // TODO: BocSimpleColumnDefinition: PropertyPathPicker
 // TODO: FormatString Property
-public class BocSimpleColumnDefinition: BocValueColumnDefinition
+public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathBinding
 {
   /// <summary>
   ///   The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> 
@@ -387,7 +387,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
       
       if (! ControlHelper.IsDesignMode (OwnerControl))
       {
-        _propertyPathBinding.DataSource = OwnerControl.DataSource;
+        DataSource = OwnerControl.DataSource;
         return _propertyPathBinding.PropertyPath;
       }
       else
@@ -405,7 +405,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
   ///   <see langword="null"/> or emtpy.
   /// </summary>
   /// <value> A <see cref="string"/> representing the <see cref="PropertyPath"/>. </value>
-  //[Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
+  [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
   //  No default value
@@ -420,6 +420,24 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     { 
      ArgumentUtility.CheckNotNullOrEmpty ("PropertyPathIdentifier", value);
      _propertyPathBinding.PropertyPathIdentifier = value; 
+    }
+  }
+
+  /// <summary> 
+  ///   The <see cref="IBusinessObjectDataSource"/> used to evaluate the 
+  ///   <see cref="PropertyPathIdentifier"/>. 
+  /// </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public IBusinessObjectDataSource DataSource
+  {
+    get
+    {
+      return _propertyPathBinding.DataSource; 
+    }
+    set 
+    {
+      _propertyPathBinding.DataSource = value; 
     }
   }
 
