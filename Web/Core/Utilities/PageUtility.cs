@@ -39,7 +39,7 @@ public class PageUtility
       if (page.Session.IsNewSession)
         throw new SessionTimeoutException ();
       else
-        throw new ArgumentException ("Session variable not found.", "key");
+        throw new SessionVariableNotFound (key);
     }
 
     return o;
@@ -280,4 +280,30 @@ public class NoPageTokenException : ApplicationException
     }
   }
 }
+
+[Serializable]
+public class SessionVariableNotFound : ApplicationException
+{
+  private string _key;
+
+  public SessionVariableNotFound (string key)
+  {
+    _key = key;
+  }
+
+  public string Key
+  {
+    get { return _key; }
+  }
+
+  public override string Message 
+  {
+    get 
+    { 
+      return string.Format ("The current session does not contain a key \"{0}\".", _key);
+    }
+  }
 }
+
+}
+
