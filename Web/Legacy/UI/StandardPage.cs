@@ -111,6 +111,19 @@ public class StandardPage : NavigablePage
     }
   }
 
+  /// <summary>
+  /// Registers a Javascript method for opening an URL in a new window and 
+  /// returns the required Javascript method call.
+  /// </summary>
+  /// <param name="url">The URL to open.</param>
+  /// <param name="useScrollbars">Indicates whether scrollbars should be displayed in the new window.</param>
+  /// <returns>The Javascript method call to open the URL in the new window.</returns>
+  public string GetWindowOpenJavascriptWithRegistration (string url, bool useScrollbars)
+  {
+    PageUtility.RegisterWindowOpenJavascript (this);
+    return PageUtility.GetWindowOpenJavascript (url, useScrollbars);
+  }
+
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
     if (SaveViewStateToSession)
