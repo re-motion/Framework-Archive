@@ -47,7 +47,7 @@
           <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAdditionalColumnsList="False" ShowAllProperties="True" ShowOptionsMenu="False" EnableSelection="True"></obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p></form>
+      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p></form>
 
   </body>
 </html>
