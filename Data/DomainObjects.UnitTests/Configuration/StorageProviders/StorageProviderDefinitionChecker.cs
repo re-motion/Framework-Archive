@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 {
