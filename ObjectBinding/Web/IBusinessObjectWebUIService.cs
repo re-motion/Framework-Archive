@@ -24,7 +24,7 @@ public sealed class IconInfo
   public IconInfo (string url, Unit width, Unit height)
   {
     _url = url;
-    _width = _width;
+    _width = width;
     _height = height;
   }
 
