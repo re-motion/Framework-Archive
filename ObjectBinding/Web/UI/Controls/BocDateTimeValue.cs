@@ -238,7 +238,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     string scriptUrl = ResourceUrlResolver.GetResourceUrl (
         this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
-    PageUtility.RegisterClientScriptFile (
+    PageUtility.RegisterClientScriptInclude (
         Page,
         typeof (BocDateTimeValue).FullName, 
         scriptUrl);

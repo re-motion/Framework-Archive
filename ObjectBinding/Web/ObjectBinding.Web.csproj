@@ -156,6 +156,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Controls\BocBooleanValue.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocColumnDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

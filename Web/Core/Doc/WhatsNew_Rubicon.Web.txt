@@ -2,8 +2,8 @@
 ========
 
 - PageUtility
-  * Neue Methode RegisterClientScriptFile
-  * Neue Methode RegisterStartupScript
+  * Neue Methode RegisterClientScriptInclude
+  * Neue Methode RegisterStartupScriptBlock
   
 - Methode GetResourceUrl der Klasse ResourceUrlResolver: Signatur geändert.
 
