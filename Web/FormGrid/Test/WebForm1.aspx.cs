@@ -17,6 +17,7 @@ using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.UI;
 
 namespace FormGrid.Test
 {
@@ -28,8 +29,7 @@ public class WebForm1 :
   Page,
   IObjectWithResources, 
   IFormGridRowProvider,
-  IImageUrlResolver,
-  IHelpUrlResolver
+  IResourceUrlResolver
 {
   private static IResourceManager s_chachedResourceManager;
 
@@ -165,28 +165,9 @@ public class WebForm1 :
     return _formGridRowProvider.GetListOfFormGridRowPrototypes (table);
   }
 
-  public virtual string GetImageUrl (string relativeUrl)
+  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
   {
-    StringBuilder imageUrlBuilder = new StringBuilder (200);
-
-    imageUrlBuilder.Append (ImageDirectory);
-    imageUrlBuilder.Append (relativeUrl);
-
-    return UrlUtility.Combine (
-        HttpContext.Current.Request.ApplicationPath,
-        imageUrlBuilder.ToString());
-  }
-
-  public virtual string GetHelpUrl (string relativeUrl)
-  {
-    StringBuilder helpUrlBuilder = new StringBuilder (200);
-
-    helpUrlBuilder.Append (HelpDirectory);
-    helpUrlBuilder.Append (relativeUrl);
-
-    return UrlUtility.Combine (
-        HttpContext.Current.Request.ApplicationPath,
-        helpUrlBuilder.ToString());
+    return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 
   private void Button1_Click(object sender, System.EventArgs e)

@@ -13,7 +13,7 @@
 <form id=Form1 method=post runat="server"><rubicon:FormGridManager id="GlobalFormGridManager" runat="server" visible="true" validatorvisibility="ValidationMessageAfterControlsColumn"></rubicon:FormGridManager><rubicon:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" validationerrorstyle="DetailedMessages"></rubicon:ValidationStateViewer>
 <TABLE id=TableDesignTimeFormGrid cellSpacing=0 cellPadding=0 runat="server">
   <TR>
-    <TD colSpan=5><asp:label id=PersonDataLabel runat="server"></asp:label></TD></TR>
+    <TD colSpan=5><asp:label id=PersonDataLabel runat="server">###</asp:label></TD></TR>
   <TR>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td>
     <TD><asp:label id=NameLabel runat="server" AssociatedControlID="NameField">&Name Local</asp:label></TD>
