@@ -123,7 +123,10 @@ public class BocListItemCommand: BocCommand
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
-  public virtual void OnClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  public virtual void OnClick (
+      BocCommandEnabledColumnDefinition column, 
+      int listIndex, 
+      IBusinessObject businessObject)
   {
     if (Click != null)
     {
@@ -221,12 +224,15 @@ public delegate void BocListItemCommandClickEventHandler (object sender, BocList
 /// <summary> Provides data for the <see cref="BocListItemCommand.Click"/> event. </summary>
 public class BocListItemCommandClickEventArgs: EventArgs
 {
-  private BocColumnDefinition _column;
+  private BocCommandEnabledColumnDefinition _column;
   private int _listIndex;
   private IBusinessObject _businessObject;
 
   /// <summary> Initializes a new instance. </summary>
-  public BocListItemCommandClickEventArgs (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  public BocListItemCommandClickEventArgs (
+      BocCommandEnabledColumnDefinition column, 
+      int listIndex, 
+      IBusinessObject businessObject)
   {
     _column = column;
     _listIndex = listIndex;
@@ -236,7 +242,7 @@ public class BocListItemCommandClickEventArgs: EventArgs
   /// <summary>
   ///   The <see cref="BocColumnDefinition"/> to which the command belongs.
   /// </summary>
-  public BocColumnDefinition Column
+  public BocCommandEnabledColumnDefinition Column
   {
     get { return _column; }
   }
