@@ -195,11 +195,14 @@ public class BocItemCommand
   ///   <see cref="WxeFunction"/>.
   /// </summary>
   private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo();
+  private IBusinessObjectBoundWebControl _ownerControl = null;
+
   //private ScriptCommandInfo _scriptCommand = null;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
-  {}
+  {
+  }
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
@@ -330,7 +333,7 @@ public class BocItemCommand
   ///   <see cref="IBusinessObject"/> in the row where the command was clicked 
   ///   is an <see cref="IBusinessObjectWithIdentity"/>.
   /// </param>
-  public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, string businessObjectID)
+  public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject, string businessObjectID)
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
@@ -339,6 +342,18 @@ public class BocItemCommand
 
     if (! WxeContext.Current.IsReturningPostBack)
     {
+      wxePage.CurrentFunction.Variables["index"] = listIndex;
+      wxePage.CurrentFunction.Variables["object"] = businessObject;
+      if (businessObjectID != null)
+        wxePage.CurrentFunction.Variables["id"] = businessObjectID;
+      if (_ownerControl != null)
+      {
+        if (_ownerControl.DataSource != null && _ownerControl.Value != null)
+          wxePage.CurrentFunction.Variables ["parent"] = _ownerControl.DataSource.BusinessObject;
+        if (_ownerControl.Property != null)
+          wxePage.CurrentFunction.Variables ["parentproperty"] = _ownerControl.Property;
+      }
+
       Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
 
       object [] parameters = WxeParameterDeclaration.ParseActualParameters (
@@ -446,6 +461,15 @@ public class BocItemCommand
     {
       _wxeFunctionCommand = value; 
     }
+  }
+  /// <summary>
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> 
+  ///   to which this object belongs. 
+  /// </summary>
+  protected internal IBusinessObjectBoundWebControl OwnerControl
+  {
+    get { return _ownerControl;  }
+    set { _ownerControl = value; }
   }
 }
 

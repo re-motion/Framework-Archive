@@ -59,16 +59,19 @@ public abstract class BocColumnDefinition
   /// <param name="width"> The width of the rendered column. </param>
   public BocColumnDefinition (string columnTitle, Unit width)
     : this (columnTitle, width, new BocItemCommand())
-  {}
+  {
+  }
 
   /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
     : this (null, Unit.Empty)
-  {}
+  {
+  }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
-  {}
+  {
+  }
 
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
@@ -153,7 +156,12 @@ public abstract class BocColumnDefinition
   public BocItemCommand Command
   {
     get { return _command; }
-    set { _command = value; }
+    set 
+    { 
+      _command = value; 
+      if (_ownerControl != null)
+        _command.OwnerControl = _ownerControl;
+    }
   }
 
   /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
@@ -208,6 +216,8 @@ public abstract class BocColumnDefinition
       if (_ownerControl != value)
       {
         _ownerControl = value;
+        if (_command != null)
+          _command.OwnerControl = value;
         OnOwnerControlChanged();
       }
     }
@@ -249,7 +259,8 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
   public BocCommandColumnDefinition()
     : base ()
-  {}
+  {
+  }
 
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
@@ -313,7 +324,8 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
   /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   public BocValueColumnDefinition (string columnTitle, Unit width, BocItemCommand command)
     : base (columnTitle, width, command)
-  {}
+  {
+  }
 
   /// <summary>
   ///   Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class with a 
@@ -323,12 +335,14 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
   /// <param name="width"> The width of the rendered column. </param>
   public BocValueColumnDefinition (string columnTitle, Unit width)
     : base (columnTitle, width)
-  {}
+  {
+  }
 
   /// <summary> Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class. </summary>
   private BocValueColumnDefinition()
     : base (null, Unit.Empty)
-  {}
+  {
+  }
 
   /// <summary> Creates a string representation of the data displayed in this column. </summary>
   /// <param name="obj"> The <see cref="IBusinessObject"/> to be displayed in this column. </param>

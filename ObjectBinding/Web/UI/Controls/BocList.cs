@@ -470,7 +470,7 @@ public class BocList:
       }
       case BocItemCommandType.WxeFunction:
       {
-        command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, businessObjectID);
+        command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, (IBusinessObject) this.Value[listIndex], businessObjectID);
         break;
       }
       default:
