@@ -69,7 +69,8 @@ public class DomainObject
     {
       if (_dataContainer.State == StateType.Original)
       {
-        if (ClientTransaction.Current.DataManager.HasRelationChanged (_dataContainer))
+        // TODO: Provide a better way to perform this operation:
+        if (ClientTransaction.Current.DataManager.RelationEndPointMap.HasRelationChanged (_dataContainer))
           return StateType.Changed;
         else
           return StateType.Original;
