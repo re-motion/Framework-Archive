@@ -1428,7 +1428,7 @@ public class BocList:
       {
         if (commandColumn.IconPath != null)
         {
-          writer.AddAttribute (HtmlTextWriterAttribute.Href, commandColumn.IconPath);
+          writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
           writer.RenderEndTag();
         }
