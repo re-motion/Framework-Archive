@@ -33,6 +33,9 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
     _editorService = (IWindowsFormsEditorService) GetService (typeof (IWindowsFormsEditorService));
     _propertySource = propertySource;
 
+    if (_propertySource != null && _propertySource.ReferenceProperty != null)
+      PathTree.PathSeparator =  propertySource.ReferenceProperty.BusinessObjectProvider.GetPropertyPathSeparator().ToString();
+
     FillTree();
   }
 
