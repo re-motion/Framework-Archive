@@ -10,9 +10,11 @@
   </HEAD>
   <body MS_POSITIONING="GridLayout">
     <form id="Form1" method="post" runat="server">
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" >
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition">
         WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition
       </a>
+      <br><br>
+      <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session"></asp:Button>
     </form>
   </body>
 </HTML>

@@ -16,11 +16,11 @@ namespace Rubicon.PageTransition
 	/// </summary>
 	public class Start : System.Web.UI.Page
 	{
+    protected System.Web.UI.WebControls.Button ResetSessionButton;
     protected System.Web.UI.WebControls.HyperLink HyperLink1;
   
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			Session.Clear();
 		}
 
 		#region Web Form Designer generated code
@@ -39,9 +39,15 @@ namespace Rubicon.PageTransition
 		/// </summary>
 		private void InitializeComponent()
 		{    
+      this.ResetSessionButton.Click += new System.EventHandler(this.ResetSessionButton_Click);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
 		#endregion
+
+    private void ResetSessionButton_Click(object sender, System.EventArgs e)
+    {
+			Session.Clear();
+    }
 	}
 }
