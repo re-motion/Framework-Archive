@@ -35,8 +35,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   [Test]
   public void DataContainerWithNoRelation ()
   {
-    ObjectID id = new ObjectID (
-        DatabaseTest.c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     DataContainer container = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
     _endPoints.RegisterExistingDataContainer (container);
