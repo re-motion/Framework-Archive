@@ -70,6 +70,7 @@ public class BocList:
   #endregion
 
   private const string c_bocListScriptUrl = "BocList.js";
+  private const string c_onCommandClickSrip = "BocList_OnCommandClick();";
 
   private const string c_whiteSpace = "&nbsp;";
 
@@ -318,6 +319,12 @@ public class BocList:
   private bool _enableClientScript = true;
   /// <summary> Determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
+
+  private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
+  private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
+  private bool _isRowEditModeRestored = false;
+  /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
+  private BaseValidator[][] _rowEditModeValidators;
 
   // construction and disposing
 
@@ -1577,11 +1584,7 @@ public class BocList:
           writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
           writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-          writer.AddStyleAttribute ("border", "none");
-          writer.AddStyleAttribute ("vertical-align", "middle");
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
+          RenderIcon (writer, new IconInfo (imageUrl));
 
           if (_showSortingOrder && sortingOrder.Count > 1)
           {
@@ -1705,8 +1708,8 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
     bool isReadOnly = IsReadOnly;
-    bool hasEditModeControl =   ! EditableRowIndex.IsNull 
-                              && EditableRowIndex.Value == originalRowIndex
+    bool isEditedRow = ! EditableRowIndex.IsNull && EditableRowIndex.Value == originalRowIndex;
+    bool hasEditModeControl =    isEditedRow
                               && _rowEditModeControls != null 
                               && _rowEditModeControls.Length > 0 
                               && _rowEditModeControls[columnIndex] != null;
@@ -1715,6 +1718,7 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
+    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
 
     if (commandEnabledColumn != null)
@@ -1746,79 +1750,32 @@ public class BocList:
       {    
         string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        string onClick = "BocList_OnCommandClick();";
+        string onClick = c_onCommandClickSrip;
         command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
       }
 
       //  Render the icon
       if (showIcon)
-      {
-        IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
-            businessObject, 
-            businessObject.BusinessObjectClass.BusinessObjectProvider);
+        RenderValueCellIcon (writer, businessObject);
 
-        if (icon != null)
-        {
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
-          if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
-          {
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
-            writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
-          }
-          writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-          writer.AddStyleAttribute ("vertical-align", "middle");
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
-          writer.Write (c_whiteSpace);
-        }
-      }
-
-      //  Render the label
+      //  Render the text
       if (commandColumn != null)
-      {
-        if (commandColumn.IconPath != null)
-        {
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
-        }
-
-        if (commandColumn.Text != null)
-          writer.Write (commandColumn.Text);
-      }
+        RenderCommandColumnCell (writer, commandColumn);
       else if (compoundColumn != null)
-      {
-        string contents = compoundColumn.GetStringValue (businessObject);
-        contents = HttpUtility.HtmlEncode (contents);
-        if (StringUtility.IsNullOrEmpty (contents))
-          contents = c_whiteSpace;
-        writer.Write (contents);
-      }
+        RenderCompoundColumnCellText (writer, compoundColumn, businessObject);
       else if (simpleColumn != null)
-      {
-        if (hasEditModeControl)
-        {
-          _rowEditModeControls[columnIndex].RenderControl (writer);
-          BaseValidator[] validators = _rowEditModeValidators[columnIndex];
-          foreach (BaseValidator validator in validators)
-            validator.RenderControl (writer);
-        }
-        else
-        {
-          string contents = simpleColumn.GetStringValue (businessObject);
-          contents = HttpUtility.HtmlEncode (contents);
-          if (StringUtility.IsNullOrEmpty (contents))
-            contents = c_whiteSpace;
-          writer.Write (contents);
-        }
-      }
+        RenderSimpleColumnCellText (writer, simpleColumn, businessObject, hasEditModeControl, columnIndex);
 
       if (isCommandEnabled)
         command.RenderEnd (writer);
     }
+    else if (editDetailsColumn != null)
+    {
+      RenderEditDetailsColumnCell (writer, editDetailsColumn, isEditedRow);
+    }
     else if (customColumn != null)
     {
-      string onClick = "BocList_OnCommandClick();";
+      string onClick = c_onCommandClickSrip;
       customColumn.CustomCell.Render (
           writer, this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
     }
@@ -1873,6 +1830,130 @@ public class BocList:
       }
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Input);
+    writer.RenderEndTag();
+  }
+
+  private void RenderValueCellIcon (HtmlTextWriter writer, IBusinessObject businessObject)
+  {
+    IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
+        businessObject, 
+        businessObject.BusinessObjectClass.BusinessObjectProvider);
+
+    if (icon != null)
+    {
+      RenderIcon (writer, icon);
+      writer.Write (c_whiteSpace);
+    }
+  }
+
+  private void RenderEditDetailsColumnCell (
+      HtmlTextWriter writer, 
+      BocEditDetailsColumnDefinition column,
+      bool isEditedRow)
+  {
+    if (isEditedRow)
+    {
+      bool hasSaveIcon = column.SaveIcon != null && ! StringUtility.IsNullOrEmpty (column.SaveIcon.Url);
+      bool hasSaveText = ! StringUtility.IsNullOrEmpty (column.SaveText);
+
+      if (hasSaveIcon)
+        RenderIcon (writer, column.SaveIcon);
+      if (hasSaveIcon && hasSaveText)
+        writer.Write (c_whiteSpace);
+      if (hasSaveText)
+        writer.Write (column.SaveText);
+
+      bool hasCancelIcon = column.CancelIcon != null && ! StringUtility.IsNullOrEmpty (column.CancelIcon.Url);
+      bool hasCancelText = ! StringUtility.IsNullOrEmpty (column.CancelText);
+
+      if (hasCancelIcon)
+        RenderIcon (writer, column.CancelIcon);
+      if (hasCancelIcon && hasCancelText)
+        writer.Write (c_whiteSpace);
+      if (hasCancelText)
+        writer.Write (column.CancelText);
+    }
+    else
+    {
+      bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
+      bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
+
+      if (hasEditIcon)
+        RenderIcon (writer, column.EditIcon);
+      if (hasEditIcon && hasEditText)
+        writer.Write (c_whiteSpace);
+      if (hasEditText)
+        writer.Write (column.EditText);
+    }
+  }
+
+  private void RenderCommandColumnCell (HtmlTextWriter writer, BocCommandColumnDefinition column)
+  {
+    if (column.IconPath != null)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, column.IconPath);
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+    }
+
+    if (column.Text != null)
+      writer.Write (column.Text);
+  }
+
+  private void RenderSimpleColumnCellText (
+      HtmlTextWriter writer, 
+      BocSimpleColumnDefinition column,
+      IBusinessObject businessObject,
+      bool hasEditModeControl,
+      int columnIndex) 
+  {
+    if (hasEditModeControl)
+    {
+      _rowEditModeControls[columnIndex].RenderControl (writer);
+      BaseValidator[] validators = _rowEditModeValidators[columnIndex];
+      foreach (BaseValidator validator in validators)
+      {
+        if (! validator.IsValid)
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.Div);
+          validator.RenderControl (writer);
+          writer.RenderEndTag();
+        }
+      }
+    }
+    else
+    {
+      string contents = column.GetStringValue (businessObject);
+      contents = HttpUtility.HtmlEncode (contents);
+      if (StringUtility.IsNullOrEmpty (contents))
+        contents = c_whiteSpace;
+      writer.Write (contents);
+    }
+  }
+ 
+   private void RenderCompoundColumnCellText (
+      HtmlTextWriter writer, 
+      BocCompoundColumnDefinition column,
+      IBusinessObject businessObject)
+  {
+    string contents = column.GetStringValue (businessObject);
+    contents = HttpUtility.HtmlEncode (contents);
+    if (StringUtility.IsNullOrEmpty (contents))
+      contents = c_whiteSpace;
+    writer.Write (contents);
+  }
+
+  private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
+  {
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
+    if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
+      writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
+    }
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+    writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
 
@@ -1977,6 +2058,8 @@ public class BocList:
   /// </param>
   public override void SaveValue (bool interim)
   {
+    if (! interim)
+      EndRowEditMode (true);
     //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       DataSource.BusinessObject.SetProperty (Property, Value);
@@ -2022,6 +2105,10 @@ public class BocList:
   /// <summary> Refreshes the <see cref="_additionalColumnsList"/>. </summary>
   private void PopulateAdditionalColumnsList()
   {
+    _selectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
+    if (_selectedColumnDefinitionSetIndex < 0)
+      _selectedColumnDefinitionSetIndex = NaInt32.Null;
+
     _additionalColumnsList.Items.Clear();
 
     if (_availableColumnDefinitionSets != null)
@@ -2036,7 +2123,10 @@ public class BocList:
 
       if (_selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
       {
-        _selectedColumnDefinitionSetIndex = NaInt32.Null;
+        if (_availableColumnDefinitionSets.Count > 0)
+          _selectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
+        else
+          _selectedColumnDefinitionSetIndex = NaInt32.Null;
       }
       else if (   _selectedColumnDefinitionSetIndex.IsNull
                && _availableColumnDefinitionSets.Count > 0)
@@ -2053,7 +2143,8 @@ public class BocList:
   /// </summary>
   private void AdditionalColumnsList_SelectedIndexChanged (object sender, EventArgs e)
   {
-    SelectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
+    _selectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
+    EnsureSelectedColumnDefinitionIndexSet();
   }
 
   /// <summary>
@@ -2753,12 +2844,6 @@ public class BocList:
     }
   }
 
-  private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
-  private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
-  private bool _isRowEditModeRestored = false;
-  /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
-  private BaseValidator[][] _rowEditModeValidators;
-
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
   /// </summary>
@@ -2856,9 +2941,11 @@ public class BocList:
     }
   }
 
-  private bool ValiadateModifiableRow()
+  public bool ValiadateModifiableRow()
   {
     bool isValid = true;
+    if (_rowEditModeValidators == null)
+      return isValid;
     foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
     {
       if (columnValidators == null)
@@ -3159,13 +3246,20 @@ public class BocList:
         int selectedIndex = _selectedColumnDefinitionSetIndex.Value;
 
         if (selectedIndex < _availableColumnDefinitionSets.Count)
+        {
           _selectedColumnDefinitionSet = (BocColumnDefinitionSet) _availableColumnDefinitionSets[selectedIndex];
+          _additionalColumnsList.SelectedIndex = selectedIndex;
+        }
         else
+        {
           _selectedColumnDefinitionSet = null;
+          _additionalColumnsList.SelectedIndex = -1;
+        }
       }
       else
       {
         _selectedColumnDefinitionSet = null;
+        _additionalColumnsList.SelectedIndex = -1;
       }
       if (hasIndexChanged)
         RemoveDynamicColumnsFromSortingOrder();
