@@ -98,6 +98,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
+    EnsureChildControls();
     _binding.EnsureDataSource();
   }
 
@@ -110,7 +111,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 //  /// </remarks>
 //  public event BindingChangedEventHandler BindingChanged;
 
-  private bool _childControlsInitialized = false;
+  private bool _childControlsPreRendered = false;
 //  private bool _onLoadCalled = false;
 //  private bool _propertyBindingChangedBeforeOnLoad = false;
 
@@ -212,11 +213,20 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     base.OnPreRender (e);
     //  Best left to specializations
-    // EnsureChildControlsInitialized();
+    // EnsureChildControlsPreRendered();
+  }
+
+  public override ControlCollection Controls
+  {
+    get
+    {
+      EnsureChildControls();
+      return base.Controls;
+    }
   }
 
   /// <summary>
-  ///   Calls <see cref="InitializeChildControls"/> on the first invocation.
+  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -225,12 +235,13 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///     Best practice: call once in <c>OnPreRender</c> method and once in <c>Render</c> method.
   ///   </para>
   /// </remarks>
-  protected void EnsureChildControlsInitialized()
+  protected void EnsureChildControlsPreRendered()
   {
-    if (! _childControlsInitialized || IsDesignMode)
+    EnsureChildControls();
+    if (! _childControlsPreRendered || IsDesignMode)
     {
-      InitializeChildControls();
-      _childControlsInitialized = true;
+      PreRenderChildControls();
+      _childControlsPreRendered = true;
     }
   }
 
@@ -239,9 +250,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </summary>
   /// <remarks>
   ///   Child controls that do not need to be created before handling post data can be created
-  ///   in this method. Use <see cref="EnsureChildControlsInitialized"/> to call this method.
+  ///   in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
   /// </remarks>
-  protected virtual void InitializeChildControls ()
+  protected virtual void PreRenderChildControls ()
   {
   }
 
