@@ -227,14 +227,14 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
       {
         DomainObject oldObject = this[index];
 
-        if (BeginRemove (oldObject) && BeginAdd (value))
-        {
-          PerformRemove (oldObject);
-          PerformInsert (index, value);
+        BeginRemove (oldObject);
+        BeginAdd (value);
 
-          EndRemove (oldObject);
-          EndAdd (value);
-        }
+        PerformRemove (oldObject);
+        PerformInsert (index, value);
+
+        EndRemove (oldObject);
+        EndAdd (value);
       }
     }
   }
@@ -272,11 +272,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     else
     {
-      if (BeginAdd (domainObject))
-      {
-        PerformAdd (domainObject);
-        EndAdd (domainObject);
-      }
+      BeginAdd (domainObject);
+      PerformAdd (domainObject);
+      EndAdd (domainObject);
     }
 
     return Count - 1;
@@ -323,11 +321,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     else
     {
-      if (BeginRemove (domainObject))
-      {
-        PerformRemove (domainObject);
-        EndRemove (domainObject);
-      }
+      BeginRemove (domainObject);
+      PerformRemove (domainObject);
+      EndRemove (domainObject);
     }
   }
 
@@ -379,11 +375,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     else
     {
-      if (BeginAdd (domainObject))
-      {
-        PerformInsert (index, domainObject);
-        EndAdd (domainObject);
-      }
+      BeginAdd (domainObject);
+      PerformInsert (index, domainObject);
+      EndAdd (domainObject);
     }
   }
 
@@ -498,11 +492,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
 
   #endregion
 
-  internal bool BeginAdd (DomainObject domainObject)
+  internal void BeginAdd (DomainObject domainObject)
   {
-    DomainObjectCollectionChangingEventArgs addingArgs = new DomainObjectCollectionChangingEventArgs (domainObject);
-    OnAdding (addingArgs);
-    return !addingArgs.Cancel;
+    OnAdding (new DomainObjectCollectionChangingEventArgs (domainObject));
   }
 
   /// <summary>
@@ -531,13 +523,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     OnAdded (new DomainObjectCollectionChangedEventArgs (domainObject));
   }
 
-  internal bool BeginRemove (DomainObject domainObject)
+  internal void BeginRemove (DomainObject domainObject)
   {
-    DomainObjectCollectionChangingEventArgs removingArgs = 
-        new DomainObjectCollectionChangingEventArgs (domainObject); 
-
-    OnRemoving (removingArgs);
-    return !removingArgs.Cancel;
+    OnRemoving (new DomainObjectCollectionChangingEventArgs (domainObject));
   }
 
   /// <summary>
