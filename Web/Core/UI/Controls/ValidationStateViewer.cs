@@ -91,6 +91,12 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected override void Render (HtmlTextWriter writer)
   {
+    //  Don't render tags for this control.
+    RenderChildren (writer);
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
     if (!ControlHelper.IsDesignMode (this, this.Context))
     {
       switch (_validationErrorStyle)
