@@ -12,8 +12,8 @@
   <body MS_POSITIONING="FlowLayout">
 	
     <form id="Form" method="post" runat="server">
-      <a href="WxeHandler.ashx?WxeFunctionType=Test.MainWxeFunction,OBWTest" >
-        WxeHandler.ashx?WxeFunctionType=Test.MainWxeFunction,OBWTest
+      <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest" >
+        WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest
 
      </form>
 	

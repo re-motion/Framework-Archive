@@ -19,7 +19,7 @@ public class StartPage : System.Web.UI.Page
 {
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Response.Redirect ("WxeHandler.ashx?WxeFunctionType=Test.MainWxeFunction,OBWTest");
+    Response.Redirect ("WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest");
 	}
 
 	#region Web Form Designer generated code
