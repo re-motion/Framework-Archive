@@ -95,7 +95,7 @@ public class WebTab: IControlItem
   /// <summary> Gets or sets the ID of this tab. </summary>
 // /// <remarks> Must be unique within the collection of tabs. Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this node.")]
+  [Description ("The ID of this tab.")]
   //No Default value
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
@@ -127,7 +127,7 @@ public class WebTab: IControlItem
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text displayed in this tab. Use '-' for a separator menu.")]
+  [Description ("The text displayed in this tab. Use '-' for a separator tab.")]
   [NotifyParentProperty (true)]
   public virtual string Text
   {
@@ -150,7 +150,7 @@ public class WebTab: IControlItem
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
-  [Description ("The icon displayed in this tree node.")]
+  [Description ("The icon displayed in this tab.")]
   [NotifyParentProperty (true)]
   public virtual IconInfo Icon
   {
@@ -275,80 +275,4 @@ public class WebTab: IControlItem
   }
 }
 
-public class MultiPageTab: WebTab
-{
-  string _target;
-
-  /// <summary> Initalizes a new instance. </summary>
-  public MultiPageTab (string tabID, string text, IconInfo icon)
-    : base (tabID, text, icon)
-  {
-  }
-
-  /// <summary> Initalizes a new instance. </summary>
-  public MultiPageTab (string tabID, string text, string iconUrl)
-    : this (tabID, text, new IconInfo (iconUrl))
-  {
-  }
-
-  /// <summary> Initalizes a new instance. </summary>
-  public MultiPageTab (string tabID, string text)
-    : this (tabID, text, string.Empty)
-  {
-  }
-
-  /// <summary> Initalizes a new instance. </summary>
-  public MultiPageTab()
-    : this (null, null, new IconInfo ())
-  {
-  }
-
-  public string Target
-  {
-    get { return _target; }
-    set { _target = value; }
-  }
-
-  public override void OnSelectionChanged()
-  {
-    PageView pageView = (PageView) TabStrip.FindControl (_target);
-    MultiPage multiPage = (MultiPage) pageView.Parent;
-    int selectedPageView = multiPage.Controls.IndexOf (pageView);
-    multiPage.SelectedIndex = selectedPageView;
-//    if (multiPage != null)
-//    {
-//      if (_OldMultiPageIndex < 0)
-//      {
-//        this.SetTargetSelectedIndex();
-//      }
-//      if ((_OldMultiPageIndex >= 0) && (multiPage.SelectedIndex != _OldMultiPageIndex))
-//      {
-//        multiPage.FireSelectedIndexChangeEvent();
-//      }
-//    }
-  }
-
-//  private void SetTargetSelectedIndex()
-//  {
-//    int num1 = this.Tabs.ToArrayIndex(this.SelectedIndex);
-//    if (num1 >= 0)
-//    {
-//      Tab tab1 = (Tab) this.Tabs[num1];
-//      MultiPage page1 = this.Target;
-//      if (page1 != null)
-//      {
-//        PageView view1 = (tab1 == null) ? null : tab1.Target;
-//        if ((view1 != null) && !view1.Selected)
-//        {
-//          if (this._OldMultiPageIndex < 0)
-//          {
-//            this._OldMultiPageIndex = page1.SelectedIndex;
-//          }
-//          view1.Activate();
-//        }
-//      }
-//    }
-//  }
-
-}
 }

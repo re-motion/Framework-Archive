@@ -586,6 +586,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\TabViewCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\ValidationError.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

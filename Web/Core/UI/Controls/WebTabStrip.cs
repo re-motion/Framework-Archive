@@ -41,10 +41,12 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private Style _tabStyle;
   private Style _tabSelectedStyle;
   private NaInt32 _tabsPaneSize = NaInt32.Null;
+  private Control _ownerControl;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTabStrip (Control ownerControl)
   {
+    _ownerControl = ownerControl;
     _tabs = new WebTabCollection (ownerControl);
     Tabs.SetParent (this);
     _tabsPaneStyle = new Style();
@@ -239,7 +241,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
       string postBackLink = null;
       if (! tab.IsSeparator && ! tab.IsSelected)
-        postBackLink = Page.GetPostBackClientHyperlink (this, tab.TabID);
+      {
+        Page page = Page;
+        if (page == null && _ownerControl != null)
+          page = _ownerControl.Page;
+        if (page != null)
+          postBackLink = page.GetPostBackClientHyperlink (this, tab.TabID);
+      }
       tab.RenderContents(writer, postBackLink);
 
       writer.RenderEndTag();
