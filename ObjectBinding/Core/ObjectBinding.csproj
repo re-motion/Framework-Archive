@@ -151,17 +151,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyPathBindingCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Design\BindingExpression.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\PropertyPathBindingCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

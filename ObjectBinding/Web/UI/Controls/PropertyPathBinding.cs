@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.Design;
 using System.Globalization;
 using Rubicon.Utilities;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding
@@ -14,7 +15,7 @@ namespace Rubicon.ObjectBinding
 /// <summary>
 /// Summary description for PropertyPathBinding.
 /// </summary>
-public class PropertyPathBinding
+public class PropertyPathBinding: IPropertyPathBinding
 {
   /// <summary> <see langword="true"/> once the <see cref="PropertyPath"/> has been set. </summary>
   private bool _isPopertyPathEvaluated;
