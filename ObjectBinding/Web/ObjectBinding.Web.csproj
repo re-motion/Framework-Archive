@@ -221,6 +221,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\PropertyPathBinding.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\PropertyPathBindingCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
