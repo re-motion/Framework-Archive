@@ -96,7 +96,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
   
   if (isCtrlKeyPress || _bocList_isCheckBoxClick)
   {
-    if (selectedRows[currentRow.id] == null)
+    if (selectedRows[checkBox.id] == null)
     {
       //  Add currentRow to list and select it
       BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
@@ -120,7 +120,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
     {
       //  Unselect row and clear the list
       BocList_UnselectAllRows (bocList);
-      if (selectedRows[currentRow.id] == null)
+      if (selectedRows[checkBox.id] == null)
       {
         //  Add current row to list and select it
         BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
@@ -150,7 +150,7 @@ function BocList_SelectRow (bocList, currentRow, checkBox, isOdd)
   currentRowBlock[_bocList_checkBoxKey] = checkBox;
   currentRowBlock[_bocList_isOddKey] = isOdd;
   
-  _bocList_selectedRows[bocList.id][currentRow.id] = currentRowBlock;
+  _bocList_selectedRows[bocList.id][checkBox.id] = currentRowBlock;
   _bocList_selectedRowsLength[bocList.id]++;
     
   // Select currentRow
@@ -198,7 +198,7 @@ function BocList_UnselectAllRows (bocList)
 function BocList_UnselectRow (bocList, currentRow, checkBox, isOdd)
 {
   //  Remove currentRow from list
-  _bocList_selectedRows[bocList.id][currentRow.id] = null;
+  _bocList_selectedRows[bocList.id][checkBox.id] = null;
   _bocList_selectedRowsLength[bocList.id]--;
   
   // Select currentRow
