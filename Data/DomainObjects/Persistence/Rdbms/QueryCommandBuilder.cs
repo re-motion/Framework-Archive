@@ -35,7 +35,7 @@ public class QueryCommandBuilder : CommandBuilder
     foreach (QueryParameter parameter in _query.Parameters)
     { 
       if (parameter.ParameterType == QueryParameterType.Text)
-        statement = PerformSecureTextReplacement (statement, parameter);
+        statement = statement.Replace (parameter.Name, parameter.Value.ToString ());
       else
         AddCommandParameter (command, parameter.Name, parameter.Value);
     }
@@ -47,14 +47,6 @@ public class QueryCommandBuilder : CommandBuilder
   protected override void AppendColumn (string columnName, string parameterName)
   {
     throw new NotSupportedException ("'AppendColumn' is not supported by 'QueryCommandBuilder'.");
-  }
-
-  private string PerformSecureTextReplacement (string statement, QueryParameter parameter)
-  {
-    RdbmsExpression rdbmsExpression = new RdbmsExpression (parameter.Value.ToString ());
-    rdbmsExpression.Check ();
-
-    return statement.Replace (parameter.Name, rdbmsExpression.Text);
   }
 }
 }
