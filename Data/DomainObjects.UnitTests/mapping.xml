@@ -1,424 +1,423 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
-	<classes>
-		<class id="Company">
-			<!-- Example: Leading and trailing whitespace in type element is ignored. Thus linebreaks can be applied for formatting purposes. -->
-			<type>
+<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+  <classes>
+    <class id="Company">
+      <!-- Example: Leading and trailing whitespace in type element is ignored. Thus linebreaks can be applied for formatting purposes. -->
+      <type>
 			  Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests
 			</type>
-			<entity name="Company" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Ceo" relationID="CompanyToCeo" cardinality="one" isMandatory="true" />
-				<relationProperty name="ClassWithoutRelatedClassIDColumnAndDerivation" relationID="CompanyToClassWithoutRelatedClassIDColumnAndDerivation" cardinality="one" isMandatory="false" />
-				<relationProperty name="IndustrialSector" relationID="IndustrialSectorToCompany" cardinality="one" isMandatory="false">
-					<column>IndustrialSectorID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Company" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="CustomerSince">
-					<type>dateTime</type>
-					<column>CustomerSince</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="CustomerType">
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
-					<column>CustomerType</column>
-				</property>
-				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
-					<collectionType>
+      <entity name="Company" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Ceo" relationID="CompanyToCeo" cardinality="one" isMandatory="true" />
+        <relationProperty name="ClassWithoutRelatedClassIDColumnAndDerivation" relationID="CompanyToClassWithoutRelatedClassIDColumnAndDerivation" cardinality="one" isMandatory="false" />
+        <relationProperty name="IndustrialSector" relationID="IndustrialSectorToCompany" cardinality="one" isMandatory="false">
+          <column>IndustrialSectorID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="Customer" baseClass="Company">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Company" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="CustomerSince">
+          <type>dateTime</type>
+          <column>CustomerSince</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="CustomerType">
+          <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
+          <column>CustomerType</column>
+        </property>
+        <relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
+          <collectionType>
 						Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests
 					</collectionType>
-					<!-- <sortExpression>OrderNumber desc</sortExpression> -->
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="Supplier" baseClass="Partner">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Company" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="SupplierQuality">
-					<type>int32</type>
-					<column>SupplierQuality</column>
-				</property>
-			</properties>
-		</class>
-		<class id="Distributor" baseClass="Partner">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Company" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="NumberOfShops">
-					<type>int32</type>
-					<column>NumberOfShops</column>
-				</property>
-			</properties>
-		</class>
-		<!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
+          <sortExpression>OrderNumber desc</sortExpression>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="Supplier" baseClass="Partner">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Company" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="SupplierQuality">
+          <type>int32</type>
+          <column>SupplierQuality</column>
+        </property>
+      </properties>
+    </class>
+    <class id="Distributor" baseClass="Partner">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Company" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="NumberOfShops">
+          <type>int32</type>
+          <column>NumberOfShops</column>
+        </property>
+      </properties>
+    </class>
+    <!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
 		     assumed when mapping.xml is read. -->
-		<class id="Partner" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Company" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="ContactPerson" relationID="PartnerToPerson" cardinality="one" isMandatory="true">
-					<column>ContactPersonID</column>
-				</relationProperty>
-				<relationProperty name="ClassWithoutRelatedClassIDColumn" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false" />
-			</properties>
-		</class>
-		<class id="Ceo">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Ceo" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Company" relationID="CompanyToCeo" cardinality="one" isMandatory="true">
-					<column>CompanyID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="Person">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Person" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="AssociatedPartnerCompany" relationID="PartnerToPerson" cardinality="one" isMandatory="false" />
-			</properties>
-		</class>
-		<class id="Order">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Order" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="OrderNumber">
-					<type>int32</type>
-					<column>OrderNo</column>
-				</property>
-				<property name="DeliveryDate">
-					<type>dateTime</type>
-					<column>DeliveryDate</column>
-				</property>
-				<relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
-					<column>CustomerID</column>
-				</relationProperty>
-				<relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true" />
-				<relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true" />
-				<relationProperty name="Official" relationID="OfficialToOrder" cardinality="one" isMandatory="true">
-					<column>OfficialID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="OrderItem">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="OrderItem" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Position">
-					<type>int32</type>
-					<column>Position</column>
-				</property>
-				<property name="Product">
-					<type>string</type>
-					<column>Product</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Order" relationID="OrderToOrderItem" cardinality="one" isMandatory="true">
-					<column>OrderID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="OrderTicket">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="OrderTicket" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="FileName">
-					<type>string</type>
-					<column>FileName</column>
-					<maxLength>255</maxLength>
-				</property>
-				<relationProperty name="Order" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true">
-					<column>OrderID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="Official">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Official" />
-			<storageProviderID>UnitTestStorageProviderStub</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false" />
-			</properties>
-		</class>
-		<class id="IndustrialSector">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="IndustrialSector" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Companies" relationID="IndustrialSectorToCompany" cardinality="many" isMandatory="true" />
-			</properties>
-		</class>
-		<class id="Employee">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Employee" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="Name">
-					<type>string</type>
-					<column>Name</column>
-					<maxLength>100</maxLength>
-				</property>
-				<relationProperty name="Subordinates" relationID="SupervisorToSubordinate" cardinality="many" isMandatory="false" />
-				<relationProperty name="Supervisor" relationID="SupervisorToSubordinate" cardinality="one" isMandatory="false">
-					<column>SupervisorID</column>
-				</relationProperty>
-				<relationProperty name="Computer" relationID="EmployeeToComputer" cardinality="one" isMandatory="false" />
-			</properties>
-		</class>
-		<class id="Computer">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="Computer" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="SerialNumber">
-					<type>string</type>
-					<column>SerialNumber</column>
-					<maxLength>20</maxLength>
-				</property>
-				<relationProperty name="Employee" relationID="EmployeeToComputer" cardinality="one" isMandatory="false">
-					<column>EmployeeID</column>
-				</relationProperty>
-			</properties>
-		</class>		
-		<class id="ClassWithAllDataTypes">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithAllDataTypes" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="BooleanProperty">
-					<type>boolean</type>
-					<column>Boolean</column>
-				</property>
-				<property name="ByteProperty">
-					<type>byte</type>
-					<column>Byte</column>
-				</property>
-				<property name="CharProperty">
-					<type>char</type>
-					<column>Char</column>
-				</property>
-				<property name="DateProperty">
-					<type>date</type>
-					<column>Date</column>
-				</property>
-				<property name="DateTimeProperty">
-					<type>dateTime</type>
-					<column>DateTime</column>
-				</property>
-				<property name="DecimalProperty">
-					<type>decimal</type>
-					<column>Decimal</column>
-				</property>
-				<property name="DoubleProperty">
-					<type>double</type>
-					<column>Double</column>
-				</property>
-				<property name="EnumProperty">
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests</type>
-					<column>Enum</column>
-				</property>
-				<property name="GuidProperty">
-					<type>guid</type>
-					<column>Guid</column>
-				</property>
-				<property name="Int16Property">
-					<type>int16</type>
-					<column>Int16</column>
-				</property>
-				<property name="Int32Property">
-					<type>int32</type>
-					<column>Int32</column>
-				</property>
-				<property name="Int64Property">
-					<type>int64</type>
-					<column>Int64</column>
-				</property>
-				<property name="SingleProperty">
-					<type>single</type>
-					<column>Single</column>
-				</property>
-				<property name="StringProperty">
-					<type>string</type>
-					<column>String</column>
-					<maxLength>100</maxLength>
-				</property>
-				<property name="NaBooleanProperty">
-					<type>boolean</type>
-					<column>NaBoolean</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDateProperty">
-					<type>date</type>
-					<column>NaDate</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDateTimeProperty">
-					<type>dateTime</type>
-					<column>NaDateTime</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDoubleProperty">
-					<type>double</type>
-					<column>NaDouble</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaInt32Property">
-					<type>int32</type>
-					<column>NaInt32</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="StringWithNullValueProperty">
-					<type>string</type>
-					<column>StringWithNullValue</column>
-					<nullable>true</nullable>
-					<maxLength>100</maxLength>
-				</property>
-				<property name="NaBooleanWithNullValueProperty">
-					<type>boolean</type>
-					<column>NaBooleanWithNullValue</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDateWithNullValueProperty">
-					<type>date</type>
-					<column>NaDateWithNullValue</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDateTimeWithNullValueProperty">
-					<type>dateTime</type>
-					<column>NaDateTimeWithNullValue</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaDoubleWithNullValueProperty">
-					<type>double</type>
-					<column>NaDoubleWithNullValue</column>
-					<nullable>true</nullable>
-				</property>
-				<property name="NaInt32WithNullValueProperty">
-					<type>int32</type>
-					<column>NaInt32WithNullValue</column>
-					<nullable>true</nullable>
-				</property>
-			</properties>
-		</class>
-		<class id="ClassWithGuidKey">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithGuidKey" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="ClassWithValidRelationsOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsOptional" cardinality="one" isMandatory="false" />
-				<relationProperty name="ClassWithValidRelationsNonOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsNonOptional" cardinality="one" isMandatory="true" />
-				<relationProperty name="ClassWithInvalidRelation" relationID="ClassWithGuidKeyToClassWithInvalidRelation" cardinality="one" isMandatory="false" />
-			</properties>
-		</class>
-		<class id="ClassWithKeyOfInvalidType">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithKeyOfInvalidType, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithKeyOfInvalidType" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties />
-		</class>
-		<class id="ClassWithoutIDProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithoutIDColumn" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties />
-		</class>
-		<class id="ClassWithoutClassIDProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithoutClassIDColumn" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties />
-		</class>
-		<class id="ClassWithoutTimestampProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithoutTimestampColumn" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties />
-		</class>
-		<class id="ClassWithValidRelations">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithValidRelations" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="ClassWithGuidKeyOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsOptional" cardinality="one" isMandatory="false">
-					<column>TableWithGuidKeyOptionalID</column>
-				</relationProperty>
-				<relationProperty name="ClassWithGuidKeyNonOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsNonOptional" cardinality="one" isMandatory="true">
-					<column>TableWithGuidKeyNonOptionalID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<!-- Contains foreign key of type guid with non-optional relation, which does not refer to an existing row. -->
-		<class id="ClassWithInvalidRelation">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithInvalidRelation" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="ClassWithGuidKey" relationID="ClassWithGuidKeyToClassWithInvalidRelation" cardinality="one" isMandatory="false">
-					<column>TableWithGuidKeyID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="ClassWithoutRelatedClassIDColumn">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithoutRelatedClassIDColumn" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="Partner" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false">
-					<column>PartnerID</column>
-				</relationProperty>
-			</properties>
-		</class>
-		<class id="ClassWithoutRelatedClassIDColumnAndDerivation">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity name="TableWithoutRelatedClassIDColumnAndDerivation" />
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<relationProperty name="Company" relationID="CompanyToClassWithoutRelatedClassIDColumnAndDerivation" cardinality="one" isMandatory="false">
-					<column>CompanyID</column>
-				</relationProperty>
-			</properties>
-		</class>
-	</classes>
+    <class id="Partner" baseClass="Company">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Company" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ContactPerson" relationID="PartnerToPerson" cardinality="one" isMandatory="true">
+          <column>ContactPersonID</column>
+        </relationProperty>
+        <relationProperty name="ClassWithoutRelatedClassIDColumn" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false" />
+      </properties>
+    </class>
+    <class id="Ceo">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Ceo" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Company" relationID="CompanyToCeo" cardinality="one" isMandatory="true">
+          <column>CompanyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="Person">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Person" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="AssociatedPartnerCompany" relationID="PartnerToPerson" cardinality="one" isMandatory="false" />
+      </properties>
+    </class>
+    <class id="Order">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Order" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="OrderNumber">
+          <type>int32</type>
+          <column>OrderNo</column>
+        </property>
+        <property name="DeliveryDate">
+          <type>dateTime</type>
+          <column>DeliveryDate</column>
+        </property>
+        <relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
+          <column>CustomerID</column>
+        </relationProperty>
+        <relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true" />
+        <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true" />
+        <relationProperty name="Official" relationID="OfficialToOrder" cardinality="one" isMandatory="true">
+          <column>OfficialID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="OrderItem">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="OrderItem" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Position">
+          <type>int32</type>
+          <column>Position</column>
+        </property>
+        <property name="Product">
+          <type>string</type>
+          <column>Product</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Order" relationID="OrderToOrderItem" cardinality="one" isMandatory="true">
+          <column>OrderID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="OrderTicket">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="OrderTicket" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="FileName">
+          <type>string</type>
+          <column>FileName</column>
+          <maxLength>255</maxLength>
+        </property>
+        <relationProperty name="Order" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true">
+          <column>OrderID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="Official">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Official" />
+      <storageProviderID>UnitTestStorageProviderStub</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+    <class id="IndustrialSector">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="IndustrialSector" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Companies" relationID="IndustrialSectorToCompany" cardinality="many" isMandatory="true" />
+      </properties>
+    </class>
+    <class id="Employee">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Employee" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Subordinates" relationID="SupervisorToSubordinate" cardinality="many" isMandatory="false" />
+        <relationProperty name="Supervisor" relationID="SupervisorToSubordinate" cardinality="one" isMandatory="false">
+          <column>SupervisorID</column>
+        </relationProperty>
+        <relationProperty name="Computer" relationID="EmployeeToComputer" cardinality="one" isMandatory="false" />
+      </properties>
+    </class>
+    <class id="Computer">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Computer" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="SerialNumber">
+          <type>string</type>
+          <column>SerialNumber</column>
+          <maxLength>20</maxLength>
+        </property>
+        <relationProperty name="Employee" relationID="EmployeeToComputer" cardinality="one" isMandatory="false">
+          <column>EmployeeID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="ClassWithAllDataTypes">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithAllDataTypes" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="BooleanProperty">
+          <type>boolean</type>
+          <column>Boolean</column>
+        </property>
+        <property name="ByteProperty">
+          <type>byte</type>
+          <column>Byte</column>
+        </property>
+        <property name="CharProperty">
+          <type>char</type>
+          <column>Char</column>
+        </property>
+        <property name="DateProperty">
+          <type>date</type>
+          <column>Date</column>
+        </property>
+        <property name="DateTimeProperty">
+          <type>dateTime</type>
+          <column>DateTime</column>
+        </property>
+        <property name="DecimalProperty">
+          <type>decimal</type>
+          <column>Decimal</column>
+        </property>
+        <property name="DoubleProperty">
+          <type>double</type>
+          <column>Double</column>
+        </property>
+        <property name="EnumProperty">
+          <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests</type>
+          <column>Enum</column>
+        </property>
+        <property name="GuidProperty">
+          <type>guid</type>
+          <column>Guid</column>
+        </property>
+        <property name="Int16Property">
+          <type>int16</type>
+          <column>Int16</column>
+        </property>
+        <property name="Int32Property">
+          <type>int32</type>
+          <column>Int32</column>
+        </property>
+        <property name="Int64Property">
+          <type>int64</type>
+          <column>Int64</column>
+        </property>
+        <property name="SingleProperty">
+          <type>single</type>
+          <column>Single</column>
+        </property>
+        <property name="StringProperty">
+          <type>string</type>
+          <column>String</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="NaBooleanProperty">
+          <type>boolean</type>
+          <column>NaBoolean</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDateProperty">
+          <type>date</type>
+          <column>NaDate</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDateTimeProperty">
+          <type>dateTime</type>
+          <column>NaDateTime</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDoubleProperty">
+          <type>double</type>
+          <column>NaDouble</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaInt32Property">
+          <type>int32</type>
+          <column>NaInt32</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="StringWithNullValueProperty">
+          <type>string</type>
+          <column>StringWithNullValue</column>
+          <nullable>true</nullable>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="NaBooleanWithNullValueProperty">
+          <type>boolean</type>
+          <column>NaBooleanWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDateWithNullValueProperty">
+          <type>date</type>
+          <column>NaDateWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDateTimeWithNullValueProperty">
+          <type>dateTime</type>
+          <column>NaDateTimeWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDoubleWithNullValueProperty">
+          <type>double</type>
+          <column>NaDoubleWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaInt32WithNullValueProperty">
+          <type>int32</type>
+          <column>NaInt32WithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+      </properties>
+    </class>
+    <class id="ClassWithGuidKey">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithGuidKey" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ClassWithValidRelationsOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsOptional" cardinality="one" isMandatory="false" />
+        <relationProperty name="ClassWithValidRelationsNonOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsNonOptional" cardinality="one" isMandatory="true" />
+        <relationProperty name="ClassWithInvalidRelation" relationID="ClassWithGuidKeyToClassWithInvalidRelation" cardinality="one" isMandatory="false" />
+      </properties>
+    </class>
+    <class id="ClassWithKeyOfInvalidType">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithKeyOfInvalidType, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithKeyOfInvalidType" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties />
+    </class>
+    <class id="ClassWithoutIDProperty">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithoutIDColumn" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties />
+    </class>
+    <class id="ClassWithoutClassIDProperty">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithoutClassIDColumn" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties />
+    </class>
+    <class id="ClassWithoutTimestampProperty">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithoutTimestampColumn" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties />
+    </class>
+    <class id="ClassWithValidRelations">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithValidRelations" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ClassWithGuidKeyOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsOptional" cardinality="one" isMandatory="false">
+          <column>TableWithGuidKeyOptionalID</column>
+        </relationProperty>
+        <relationProperty name="ClassWithGuidKeyNonOptional" relationID="ClassWithGuidKeyToClassWithValidRelationsNonOptional" cardinality="one" isMandatory="true">
+          <column>TableWithGuidKeyNonOptionalID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <!-- Contains foreign key of type guid with non-optional relation, which does not refer to an existing row. -->
+    <class id="ClassWithInvalidRelation">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithInvalidRelation" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ClassWithGuidKey" relationID="ClassWithGuidKeyToClassWithInvalidRelation" cardinality="one" isMandatory="false">
+          <column>TableWithGuidKeyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="ClassWithoutRelatedClassIDColumn">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithoutRelatedClassIDColumn" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="Partner" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false">
+          <column>PartnerID</column>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="ClassWithoutRelatedClassIDColumnAndDerivation">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithoutRelatedClassIDColumnAndDerivation" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="Company" relationID="CompanyToClassWithoutRelatedClassIDColumnAndDerivation" cardinality="one" isMandatory="false">
+          <column>CompanyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+  </classes>
 </mapping>
