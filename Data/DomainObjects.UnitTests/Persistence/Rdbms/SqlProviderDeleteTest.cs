@@ -19,7 +19,6 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
   // member fields
 
   private SqlProvider _provider;
-  private DataContainer _deletedOrderTicketContainer;
 
   // construction and disposing
 
@@ -38,10 +37,6 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
 
     _provider = new SqlProvider (definition);
     _provider.Connect ();
-
-    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    orderTicket.Delete ();
-    _deletedOrderTicketContainer = orderTicket.DataContainer;
   }
 
   public override void TearDown()
@@ -53,9 +48,7 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
   [Test]
   public void DeleteSingleDataContainer ()
   {
-    DataContainerCollection containers = new DataContainerCollection ();
-    containers.Add (_deletedOrderTicketContainer);
-    _provider.Save (containers);
+    _provider.Save (CreateDataContainerCollection (GetDeletedOrderTicketContainer ()));
 
     Assert.IsNull (_provider.LoadDataContainer (DomainObjectIDs.OrderTicket1));
   }
@@ -63,12 +56,44 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
   [Test]
   public void SetTimestampOfDeletedDataContainer ()
   {
-    DataContainerCollection containers = new DataContainerCollection ();
-    containers.Add (_deletedOrderTicketContainer);
+    DataContainerCollection containers = CreateDataContainerCollection (GetDeletedOrderTicketContainer ());
     _provider.Save (containers);
     _provider.SetTimestamp (containers);
 
     // expectation: no exception
+  }
+
+  [Test]
+  public void DeleteRelatedDataContainers ()
+  {
+    Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee2);
+    Employee subordinate = Employee.GetObject (DomainObjectIDs.Employee3);
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+
+    supervisor.Delete ();
+    subordinate.Delete ();
+    computer.Delete ();
+
+    DataContainerCollection containers = 
+        CreateDataContainerCollection (supervisor.DataContainer, subordinate.DataContainer, computer.DataContainer);
+
+    _provider.Save (containers);
+  }
+
+  private DataContainerCollection CreateDataContainerCollection (params DataContainer[] dataContainers)
+  {
+    DataContainerCollection collection = new DataContainerCollection ();
+    foreach (DataContainer dataContainer in dataContainers)
+      collection.Add (dataContainer);
+
+    return collection;
+  }
+
+  private DataContainer GetDeletedOrderTicketContainer ()
+  {
+    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    orderTicket.Delete ();
+    return orderTicket.DataContainer;
   }
 }
 }

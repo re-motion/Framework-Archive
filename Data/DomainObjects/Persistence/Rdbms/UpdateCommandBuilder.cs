@@ -87,6 +87,7 @@ public class UpdateCommandBuilder : CommandBuilder
   private bool MustBeUpdated (PropertyValue propertyValue)
   {
     return (_dataContainer.State == StateType.New && propertyValue.PropertyType == typeof (ObjectID)) 
+        || (_dataContainer.State == StateType.Deleted && propertyValue.PropertyType == typeof (ObjectID)) 
         || (_dataContainer.State == StateType.Changed && propertyValue.HasChanged);
   }
 }

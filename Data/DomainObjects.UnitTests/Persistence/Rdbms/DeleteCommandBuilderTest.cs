@@ -19,8 +19,6 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
   // member fields
 
   private SqlProvider _provider;
-  private DataContainer _deletedOrderContainer;
-  private DeleteCommandBuilder _commandBuilder;
 
   // construction and disposing
 
@@ -39,12 +37,6 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
 
     _provider = new SqlProvider (definition);
     _provider.Connect ();
-
-    Order order = Order.GetObject (DomainObjectIDs.Order1);
-    order.Delete ();
-    _deletedOrderContainer = order.DataContainer;
-
-    _commandBuilder = new DeleteCommandBuilder (_provider, _deletedOrderContainer);
   }
 
   public override void TearDown()
@@ -55,11 +47,19 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void Create ()
+  public void CreateWithoutForeignKeyColumn ()
   {
-    using (IDbCommand deleteCommand = _commandBuilder.Create ())
+    ObjectID id = new ObjectID (
+        c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+    ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+    classWithAllDataTypes.Delete ();
+    DataContainer deletedContainer = classWithAllDataTypes.DataContainer;
+    CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, deletedContainer);
+
+    using (IDbCommand deleteCommand = commandBuilder.Create ())
     {
-      string expectedCommandText = "DELETE FROM [Order] WHERE [ID] = @ID AND [Timestamp] = @Timestamp;";
+      string expectedCommandText = "DELETE FROM [TableWithAllDataTypes] WHERE [ID] = @ID AND [Timestamp] = @Timestamp;";
       Assert.AreEqual (expectedCommandText, deleteCommand.CommandText);
 
       Assert.AreEqual (2, deleteCommand.Parameters.Count);
@@ -67,8 +67,29 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
       IDataParameter idParameter = (IDataParameter) deleteCommand.Parameters["@ID"];
       IDataParameter timestampParameter = (IDataParameter) deleteCommand.Parameters["@Timestamp"];
 
-      Assert.AreEqual (_deletedOrderContainer.ID.Value, idParameter.Value);
-      Assert.AreEqual (_deletedOrderContainer.Timestamp, timestampParameter.Value);
+      Assert.AreEqual (deletedContainer.ID.Value, idParameter.Value);
+      Assert.AreEqual (deletedContainer.Timestamp, timestampParameter.Value);
+    }
+  }
+
+  [Test]
+  public void CreateWithForeignKeyColumn ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    order.Delete ();
+    DataContainer deletedOrderContainer = order.DataContainer;
+    CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, deletedOrderContainer);
+
+    using (IDbCommand deleteCommand = commandBuilder.Create ())
+    {
+      string expectedCommandText = "DELETE FROM [Order] WHERE [ID] = @ID;";
+      Assert.AreEqual (expectedCommandText, deleteCommand.CommandText);
+
+      Assert.AreEqual (1, deleteCommand.Parameters.Count);
+
+      IDataParameter idParameter = (IDataParameter) deleteCommand.Parameters["@ID"];
+
+      Assert.AreEqual (deletedOrderContainer.ID.Value, idParameter.Value);
     }
   }
 
@@ -76,7 +97,7 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
   [ExpectedException (typeof (ArgumentException))]
   public void InitializeWithDataContainerOfInvalidState ()
   {
-    _commandBuilder = new DeleteCommandBuilder (_provider, TestDataContainerFactory.CreateOrder1DataContainer ());
+    CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, TestDataContainerFactory.CreateOrder1DataContainer ());
   }
 }
 }

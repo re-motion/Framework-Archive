@@ -34,13 +34,26 @@ public class DeleteCommandBuilder : CommandBuilder
 
     WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
     whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);
-    whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
+
+    if (MustAddTimestampToWhereClause ())
+      whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
     command.CommandText = string.Format ("DELETE FROM [{0}] WHERE {1};",
         _dataContainer.ClassDefinition.EntityName,
         whereClauseBuilder.ToString ());
 
     return command;
+  }
+
+  private bool MustAddTimestampToWhereClause ()
+  {
+    foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)
+    {
+      if (propertyValue.PropertyType == typeof (ObjectID))
+        return false;
+    }
+
+    return true;
   }
 }
 }

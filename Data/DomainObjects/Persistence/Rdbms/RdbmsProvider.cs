@@ -228,6 +228,15 @@ public abstract class RdbmsProvider : StorageProvider
         }
       }
     }
+
+    foreach (DataContainer dataContainer in dataContainers.GetByState (StateType.Deleted))
+    {
+      CommandBuilder commandBuilder = new DeleteCommandBuilder (this, dataContainer);
+      using (IDbCommand command = commandBuilder.Create ())
+      {
+        Save (command, dataContainer);
+      }
+    }
   }
 
   public override void SetTimestamp (DataContainerCollection dataContainers)
@@ -237,7 +246,10 @@ public abstract class RdbmsProvider : StorageProvider
     Connect ();
 
     foreach (DataContainer dataContainer in dataContainers)
-      SetTimestamp (dataContainer);
+    {
+      if (dataContainer.State != StateType.Deleted)
+        SetTimestamp (dataContainer);
+    }
   }
 
   public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
@@ -274,6 +286,9 @@ public abstract class RdbmsProvider : StorageProvider
   protected virtual void SetTimestamp (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    if (dataContainer.State == StateType.Deleted)
+      throw new ArgumentException ("Timestamp cannot be set for a deleted DataContainer.", "dataContainer");
 
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
         this, "Timestamp", dataContainer.ClassDefinition, "ID", dataContainer.ID.Value);

@@ -557,6 +557,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\SqlProviderDeleteTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\SqlProviderLoadByIDTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
