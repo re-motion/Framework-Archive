@@ -534,16 +534,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     get { return IsReadOnly ? (Control) this : _imageButton; }
   }
 
-  /// <summary>
-  ///   Specifies whether the boolean value within the control has been changed 
-  ///   since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> 
-  ///   during loading and saving values. Text changes by the user cause <c>IsDirty</c> to be 
-  ///   reset to <c>false</c> during the loading phase of the request (i.e., before the page's 
-  ///   <c>Load</c> event is raised).
-  /// </remarks>
   public override bool IsDirty
   {
     get { return _isDirty; }
@@ -554,7 +544,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
   ///   implementations that can be bound to this control.
   /// </summary>
-
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return BocBooleanValue.GetSupportedPropertyInterfaces(); }
