@@ -22,12 +22,12 @@
                   <xs:selector xpath="m:properties/m:property | m:properties/m:relationProperty" />
                   <xs:field xpath="@name" />
                 </xs:key>
-                
+
                 <xs:key name="columnKey">
                   <xs:selector xpath="m:properties/m:property" />
                   <xs:field xpath="m:column" />
                 </xs:key>
-                
+
               </xs:element>
             </xs:sequence>
           </xs:complexType>
@@ -47,9 +47,9 @@
     <xs:sequence>
       <xs:element name="type" type="t:dotNetType" />
       <xs:element name="entity">
-      	<xs:complexType>
-      		<xs:attribute name="name" type="t:requiredStringType" use="required" />
-      	</xs:complexType>
+        <xs:complexType>
+          <xs:attribute name="name" type="t:requiredStringType" use="required" />
+        </xs:complexType>
       </xs:element>
       <xs:element name="storageProviderID" type="t:requiredStringType" />
       <xs:element name="properties">
@@ -57,7 +57,7 @@
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="property" type="m:propertyType" />
             <xs:element name="relationProperty" type="m:relationPropertyType" />
-				</xs:choice>
+          </xs:choice>
         </xs:complexType>
       </xs:element>
     </xs:sequence>
@@ -78,10 +78,13 @@
   <xs:complexType name="relationPropertyType">
     <xs:choice minOccurs="0">
       <xs:element name="column" type="t:requiredStringType" />
-      <xs:element name="collectionType" type="t:dotNetType" />
+      <xs:sequence>
+        <xs:element name="collectionType" type="t:dotNetType" minOccurs="0" />
+        <xs:element name="sortExpression" type="t:requiredStringType" minOccurs="0" />
+      </xs:sequence>
     </xs:choice>
     <xs:attribute name="name" type="t:requiredStringType" use="required" />
-    <xs:attribute name="relationID" type="t:requiredStringType" use="required" />    
+    <xs:attribute name="relationID" type="t:requiredStringType" use="required" />
     <xs:attribute name="isMandatory" type="xs:boolean" use="required" />
     <xs:attribute name="cardinality" use="required">
       <xs:simpleType>
@@ -90,7 +93,7 @@
           <xs:enumeration value="many" />
         </xs:restriction>
       </xs:simpleType>
-    </xs:attribute> 
+    </xs:attribute>
   </xs:complexType>
 
   <xs:simpleType name="positiveIntType">
