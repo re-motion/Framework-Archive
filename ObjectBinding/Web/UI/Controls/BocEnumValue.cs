@@ -23,6 +23,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
   private const string c_nullIdentifier = "--null--";
   private const string c_nullDisplayName = "Undefined";
+  private const string c_nullItemValidationMessage = "Please select an item.";
 
   // types
 
@@ -262,9 +263,20 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     if (! IsRequired)
       return new BaseValidator[]{};
 
-    BaseValidator[] validators = new BaseValidator[0];
+    BaseValidator[] validators = new BaseValidator[1];
 
-    // TODO: Validators
+    CompareValidator notNullItemValidator = new CompareValidator();
+    
+    notNullItemValidator.ControlToValidate = TargetControl.ID;
+    notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    //  TODO: Get Message from ResourceProvider
+    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+
+    validators[0] = notNullItemValidator;
+
+    //  No validation that only enabled enum values get selected and saved.
+    //  This behaviour mimics the Fabasoft enum behaviour
 
     return validators;
   }
