@@ -57,7 +57,12 @@ public class PropertyValueCollection : CollectionBase
   internal void Discard ()
   {
     foreach (PropertyValue propertyValue in this)
+    {
+      propertyValue.Changing -= new ValueChangingEventHandler (PropertyValue_Changing);
+      propertyValue.Changed -= new EventHandler (PropertyValue_Changed);
+
       propertyValue.Discard ();
+    }
 
     _isDiscarded = true;
   }
