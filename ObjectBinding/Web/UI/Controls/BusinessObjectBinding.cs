@@ -164,7 +164,7 @@ public class BusinessObjectBinding
       // evaluate binding
       if (_bindingChanged || _hasDesignModePropertyChanged && _isDesignModePropertyInitalized)
       {
-        if (_property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
+        if (_property == null && DataSource != null && DataSource.BusinessObjectClass != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
         {
           IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
           if (! Control.SupportsProperty (property))
