@@ -338,7 +338,7 @@ public class ClientTransaction
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
       DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
-      return GetLoadedDomainObjects (relatedDataContainers, relationEndPointID);
+      return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);
     }
   }
 
@@ -349,14 +349,14 @@ public class ClientTransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    return GetLoadedDomainObjects (
+    return MergeLoadedDomainObjects (
         dataContainers, 
         relationEndPointID.Definition.PropertyType,
         relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
@@ -370,14 +370,14 @@ public class ClientTransaction
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       Type collectionType)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    return GetLoadedDomainObjects (dataContainers, collectionType, null, null);
+    return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
   }
 
   /// <summary>
@@ -386,10 +386,10 @@ public class ClientTransaction
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
   /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
-  /// <param name="relationEndPointID"></param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
+  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       Type collectionType,
       Type requiredItemType,
