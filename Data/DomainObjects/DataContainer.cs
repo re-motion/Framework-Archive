@@ -7,7 +7,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// Represents a container for the persisted properties of a DomainObject.
+/// </summary>
 public class DataContainer
 {
   // types
@@ -53,6 +57,7 @@ public class DataContainer
   /// <param name="timestamp">The timestamp value of the existing object in the datasource.</param>
   /// <returns>The new <see cref="DataContainer"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  /// <exception cref="Mapping.MappingException">ClassDefinition of <i>id</i> does not exist in mapping.</exception>
   public static DataContainer CreateForExisting (ObjectID id, object timestamp)
   {
     ArgumentUtility.CheckNotNull ("id", id);

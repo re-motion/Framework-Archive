@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All exceptions checked
+//Documentation: All done
 
 /// <summary>
 /// Base class for all collections of Rubicon.Data.DomainObjects.

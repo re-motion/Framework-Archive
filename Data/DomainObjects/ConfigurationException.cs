@@ -3,6 +3,11 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects
 {
+//Documentation: All done
+
+/// <summary>
+/// BaseClass for exceptions that are related to the configuraton of the Persistence Framework.
+/// </summary>
 public class ConfigurationException : DomainObjectException
 {
   // types
