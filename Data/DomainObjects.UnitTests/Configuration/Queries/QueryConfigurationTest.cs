@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Configuration.Loader;
@@ -43,6 +44,19 @@ public class QueryConfigurationTest
   {
     QueryConfigurationLoader loader = new QueryConfigurationLoader (@"valueQueryWithCollectionType.xml", @"queries.xsd");
     loader.GetQueryDefinitions ();
+  }
+
+  [Test]
+  public void InitializeWithFileNames ()
+  {
+    QueryConfiguration.SetCurrent (
+        new QueryConfiguration (@"..\..\queries.xml", @"..\..\..\queries.xsd"));
+
+    string configurationFile = Path.GetFullPath (@"..\..\queries.xml");
+    string schemaFile = Path.GetFullPath (@"..\..\..\queries.xsd");
+
+    Assert.AreEqual (configurationFile, QueryConfiguration.Current.ConfigurationFile);
+    Assert.AreEqual (schemaFile, QueryConfiguration.Current.SchemaFile);
   }
   
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
