@@ -20,6 +20,7 @@ using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -130,8 +131,8 @@ public class BocList:
   /// <summary> The log4net logger. </summary>
   private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-  private static readonly object EventListItemCommandClick = new object();
-  private static readonly object EventMenuItemClick = new object();
+  private static readonly object s_listItemCommandClickEvent = new object();
+  private static readonly object s_menuItemClickEvent = new object();
 
 	// member fields
 
@@ -311,7 +312,8 @@ public class BocList:
   {
     base.OnInit (e);
 
-    _optionsMenu.Click += new MenuItemClickEventHandler(OptionsMenu_Click);
+    _optionsMenu.EventCommandClick += new MenuItemClickEventHandler (OptionsMenu_EventCommandClick);
+    _optionsMenu.WxeFunctionCommandClick += new MenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
     _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
     _moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
     _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
@@ -374,12 +376,12 @@ public class BocList:
   }
 
   /// <summary> Handles post back events raised by a list item event. </summary>
-  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;] </param>
+  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt; </param>
   private void HandleEventListItemCommand (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
-    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 3);
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
 
     //  First part: column index
     int columnIndex;
@@ -392,7 +394,7 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<business-object-id>]'.");
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.");
     }
 
     //  Second part: list index
@@ -406,13 +408,8 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>[,<business-object-id>]'.");
+      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>'.");
     }
-    
-    //  Third part, optional: business object ID
-    string businessObjectID = null;
-    if (eventArgumentParts.Length == 3)
-      businessObjectID = eventArgumentParts[2].Trim();
 
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
 
@@ -433,7 +430,7 @@ public class BocList:
       }
       case CommandType.WxeFunction:
       {
-        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, (IBusinessObject) Value[listIndex], businessObjectID);
+        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, (IBusinessObject) Value[listIndex]);
         break;
       }
       default:
@@ -448,26 +445,17 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
-    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
-
-    //  First part: index
     int index;
-    eventArgumentParts[0] = eventArgumentParts[0].Trim();
     try 
     {
-      if (eventArgumentParts[0].Length == 0)
+      if (eventArgument.Length == 0)
         throw new FormatException();
-      index = int.Parse (eventArgumentParts[0]);
+      index = int.Parse (eventArgument);
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>[,<business-object-id>]'.");
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
     }
-
-    //  Second part, optional: item ID
-    string id = null;
-    if (eventArgumentParts.Length == 2)
-      id = eventArgumentParts[1].Trim();
 
     BocMenuItem[] menuItems = EnsureListMenuItemsForPreviousLifeCycleGot();
     if (index >= menuItems.Length)
@@ -477,7 +465,24 @@ public class BocList:
     if (menuItem.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command associated with list menu item " + index + ".");
 
-    OnMenuItemClick (menuItem);
+    BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+    switch (command.Type)
+    {
+      case CommandType.Event:
+      {
+        OnMenuItemEventCommandClick (menuItem);
+        break;
+      }
+      case CommandType.WxeFunction:
+      {
+        OnMenuItemWxeFunctionCommandClick (menuItem);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
   }
 
   /// <summary> Handles post back events raised by a sorting button. </summary>
@@ -554,7 +559,7 @@ public class BocList:
   protected virtual void OnListItemCommandClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
   {
     BocListItemCommandClickEventHandler commandClickHandler = 
-        (BocListItemCommandClickEventHandler) Events[EventListItemCommandClick];
+        (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
     if (column != null && column.Command != null)
       column.Command.OnClick (column, listIndex, businessObject);
     if (commandClickHandler != null)
@@ -564,20 +569,34 @@ public class BocList:
     }
   }
 
-  private void OptionsMenu_Click(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_EventCommandClick(object sender, MenuItemClickEventArgs e)
   {
-    OnMenuItemClick ((BocMenuItem) e.Item);
+    OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
-  protected virtual void OnMenuItemClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
-    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[EventMenuItemClick];
+    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
       ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
     if (menuItemClickHandler != null)
     {
       MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
       menuItemClickHandler (this, e);
+    }
+  }
+
+  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
+  {
+    OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
+  }
+
+  protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
+  {
+    if (menuItem != null && menuItem.Command != null)
+    {
+      BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+      command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
     }
   }
 
@@ -989,8 +1008,6 @@ public class BocList:
         if (isPostBackCommand)
         {
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
-          if (menuItem.Command.Type == CommandType.WxeFunction)
-            argument += "," + menuItem.Command.WxeFunctionCommand.Parameters;
           href = Page.GetPostBackClientHyperlink (this, argument);
           //  HACK: EscapeJavaScript will be moved to extra class 
           href = DropDownMenu.EscapeJavaScript (href);
@@ -1517,8 +1534,6 @@ public class BocList:
     if (isCommandEnabled)
     {    
       string argument = c_eventListItemCommandPrefix + idxColumn + "," + originalRowIndex;
-      if (businessObjectWithIdentity != null)
-        argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
       string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
       string onClick = "BocList_OnCommandClick();";
       column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
@@ -2753,15 +2768,15 @@ public class BocList:
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
   public event BocListItemCommandClickEventHandler ListItemCommandClick
   {
-    add { Events.AddHandler (EventListItemCommandClick, value); }
-    remove { Events.RemoveHandler (EventListItemCommandClick, value); }
+    add { Events.AddHandler (s_listItemCommandClickEvent, value); }
+    remove { Events.RemoveHandler (s_listItemCommandClickEvent, value); }
   }
 
   [Category ("Action")]
   public event MenuItemClickEventHandler MenuItemClick
   {
-    add { Events.AddHandler (EventMenuItemClick, value); }
-    remove { Events.RemoveHandler (EventMenuItemClick, value); }
+    add { Events.AddHandler (s_menuItemClickEvent, value); }
+    remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
   }
 
   /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>

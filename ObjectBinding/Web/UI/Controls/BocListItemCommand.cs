@@ -23,10 +23,10 @@ public class BocListItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ColumnHrefCommandInfo: Command.HrefCommandInfo
+  public class ListItemHrefCommandInfo: Command.HrefCommandInfo
   {
-    /// <summary> Simple constructor. </summary>
-    public ColumnHrefCommandInfo()
+    /// <summary> Initalizes a new instance </summary>
+    public ListItemHrefCommandInfo()
     {
     }
 
@@ -45,10 +45,10 @@ public class BocListItemCommand: BocCommand
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ColumnWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
+  public class ListItemWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
   {
-    /// <summary> Simple constructor. </summary>
-    public ColumnWxeFunctionCommandInfo()
+    /// <summary> Initalizes a new instance </summary>
+    public ListItemWxeFunctionCommandInfo()
     {
     }
 
@@ -100,13 +100,13 @@ public class BocListItemCommand: BocCommand
   }
 
   /// <summary>
-  ///   The <see cref="ColumnHrefCommandInfo"/> used when rendering the command as a hyperlink.
+  ///   The <see cref="ListItemHrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
-  private ColumnHrefCommandInfo _hrefCommand = new ColumnHrefCommandInfo();
+  private ListItemHrefCommandInfo _hrefCommand = new ListItemHrefCommandInfo();
   /// <summary>
-  ///   The <see cref="ColumnWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
+  ///   The <see cref="ListItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
-  private ColumnWxeFunctionCommandInfo _wxeFunctionCommand = new ColumnWxeFunctionCommandInfo();
+  private ListItemWxeFunctionCommandInfo _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
 
   public BocListItemCommandClickEventHandler Click;
 
@@ -123,7 +123,7 @@ public class BocListItemCommand: BocCommand
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
-  internal virtual void OnClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  public virtual void OnClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
   {
     if (Click != null)
     {
@@ -168,20 +168,18 @@ public class BocListItemCommand: BocCommand
   /// <param name="listIndex"> 
   ///   The index of the <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
-  /// <param name="businessObjectID"> 
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
-  ///   <see cref="IBusinessObject"/> in the row where the command was clicked 
-  ///   is an <see cref="IBusinessObjectWithIdentity"/>.
+  /// <param name="businessObject">
+  ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
-  public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject, string businessObjectID)
+  public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject)
   {
     if (! WxeContext.Current.IsReturningPostBack)
     {
       NameObjectCollection parameters = new NameObjectCollection();
       parameters["index"] = listIndex;
       parameters["object"] = businessObject;
-      if (businessObjectID != null)
-        parameters["id"] = businessObjectID;
+      if (businessObject is IBusinessObjectWithIdentity)
+        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
       if (OwnerControl != null)
       {
         if (OwnerControl.DataSource != null && OwnerControl.Value != null)
@@ -193,32 +191,24 @@ public class BocListItemCommand: BocCommand
     }
   }
 
-  /// <summary>
-  ///   The <see cref="ColumnHrefCommandInfo"/> used when rendering the command as a hyperlink.
-  /// </summary>
-  /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>.
-  /// </remarks>
+  /// <summary> The <see cref="ListItemHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>
+  /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>. </remarks>
   /// <value> A <see cref="ColumnHrefCommandInfo"/> object. </value>
   public override HrefCommandInfo HrefCommand
   {
     get { return _hrefCommand;  }
-    set { _hrefCommand = (ColumnHrefCommandInfo) value; }
+    set { _hrefCommand = (ListItemHrefCommandInfo) value; }
   }
 
   /// <summary>
-  ///   The <see cref="ColumnWxeFunctionCommandInfo"/> used when rendering the command as a 
-  ///   <see cref="WxeFunction"/>.
+  ///   The <see cref="ListItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
-  /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to 
-  ///   <see cref="CommandType.WxeFunction"/>.
-  /// </remarks>
-  /// <value> A <see cref="ColumnWxeFunctionCommandInfo"/> object. </value>
+  /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.WxeFunction"/>. </remarks>
+  /// <value> A <see cref="ListItemWxeFunctionCommandInfo"/> object. </value>
   public override WxeFunctionCommandInfo WxeFunctionCommand
   {
     get { return _wxeFunctionCommand; }
-    set { _wxeFunctionCommand = (ColumnWxeFunctionCommandInfo) value; }
+    set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo) value; }
   }
 }
 
@@ -228,22 +218,11 @@ public class BocListItemCommand: BocCommand
 /// </summary>
 public delegate void BocListItemCommandClickEventHandler (object sender, BocListItemCommandClickEventArgs e);
 
-/// <summary>
-///   Provides data for the <see cref="BocListItemCommand.Click"/> event.
-/// </summary>
+/// <summary> Provides data for the <see cref="BocListItemCommand.Click"/> event. </summary>
 public class BocListItemCommandClickEventArgs: EventArgs
 {
-  /// <summary>
-  ///   The <see cref="BocColumnDefinition"/> to which the clicked command belongs to.
-  /// </summary>
   private BocColumnDefinition _column;
-  /// <summary>
-  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is applied on.
-  /// </summary>
   private int _listIndex;
-  /// <summary>
-  ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
-  /// </summary>
   private IBusinessObject _businessObject;
 
   /// <summary> Initializes a new instance. </summary>
@@ -255,7 +234,7 @@ public class BocListItemCommandClickEventArgs: EventArgs
   }
 
   /// <summary>
-  ///   The <see cref="BocColumnDefinition"/> of the column to which the command belongs.
+  ///   The <see cref="BocColumnDefinition"/> to which the command belongs.
   /// </summary>
   public BocColumnDefinition Column
   {
