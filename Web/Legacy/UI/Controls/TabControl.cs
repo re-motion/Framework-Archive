@@ -81,11 +81,15 @@ public class Tab: Control, ITabItem
     if (this.Controls.Count < 1)
       return null;
 
-    TabMenu firstMenu = this.Controls[0] as TabMenu;
-    if (firstMenu != null)
-      return firstMenu;
-    else 
-      return this;
+    for (int i = 0; i < this.Controls.Count; ++i)
+    {
+      if (this.Controls[i].Visible)
+      {
+        return (TabMenu) this.Controls[i];
+      }
+    }
+
+    return this;
   }
 }
 
