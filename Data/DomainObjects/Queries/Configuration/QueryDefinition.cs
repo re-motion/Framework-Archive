@@ -36,9 +36,7 @@ public class QueryDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-    
-    if (!Enum.IsDefined (typeof (QueryType), queryType))
-      throw new ArgumentException (string.Format ("Invalid queryType '{0}' provided.", queryType), "queryType");
+    ArgumentUtility.CheckValidEnumValue (queryType, "queryType");
 
     _queryID = queryID;
     _storageProviderID = storageProviderID;
