@@ -61,34 +61,33 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    // TODO: Reactivate code below
-//    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-//    {
-//      if (endPointID.Definition.Cardinality == CardinalityType.One)
-//      {
-//        ObjectEndPoint objectEndPoint = (ObjectEndPoint) GetRelationEndPointWithLazyLoad (endPointID);
-//        
-//        RelationEndPointCollection allOppositeEndPoints = 
-//            _relationEndPoints.GetOppositeRelationEndPoints (objectEndPoint);
-//
-//        foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
-//        {
-//          if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
-//          {
-//            ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
-//                RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
-//          }
-//          else
-//          {
-//            CollectionEndPoint oppositeCollectionEndPoint = (CollectionEndPoint) oppositeEndPoint;
-//            oppositeCollectionEndPoint.OppositeDomainObjects.PerformRemove (domainObject);
-//          }
-//        }
-//
-//        objectEndPoint.SetOppositeEndPoint (
-//          RelationEndPoint.CreateNullRelationEndPoint (objectEndPoint.OppositeEndPointDefinition));
-//      }
-//    }
+    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+    {
+      if (endPointID.Definition.Cardinality == CardinalityType.One)
+      {
+        ObjectEndPoint objectEndPoint = (ObjectEndPoint) GetRelationEndPointWithLazyLoad (endPointID);
+        
+        RelationEndPointCollection allOppositeEndPoints = 
+            _relationEndPoints.GetOppositeRelationEndPoints (objectEndPoint);
+
+        foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
+        {
+          if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
+          {
+            ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
+                RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
+          }
+          else
+          {
+            CollectionEndPoint oppositeCollectionEndPoint = (CollectionEndPoint) oppositeEndPoint;
+            oppositeCollectionEndPoint.OppositeDomainObjects.PerformRemove (domainObject);
+          }
+        }
+
+        objectEndPoint.SetOppositeEndPoint (
+          RelationEndPoint.CreateNullRelationEndPoint (objectEndPoint.OppositeEndPointDefinition));
+      }
+    }
 
     /*
       foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
@@ -270,7 +269,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
-  public RelationEndPointCollection GetAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
+  public RelationEndPointCollection CloneAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -284,7 +283,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       allRelationEndPoints.Merge (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
     }
 
-    return allRelationEndPoints;
+    return (RelationEndPointCollection) allRelationEndPoints.Clone ();
   }
 
   public void CheckMandatoryRelations (DomainObject domainObject)

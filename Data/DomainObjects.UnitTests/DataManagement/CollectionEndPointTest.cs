@@ -129,10 +129,8 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
     Assert.AreSame (_customerEndPoint.Definition, clone.Definition);
     Assert.AreEqual (_customerEndPoint.ID, clone.ID);
     Assert.AreEqual (_customerEndPoint.ObjectID, clone.ObjectID);
-    Assert.IsFalse (object.ReferenceEquals (_customerEndPoint.OppositeDomainObjects, clone.OppositeDomainObjects));
-    Assert.IsTrue (DomainObjectCollection.Compare (_customerEndPoint.OppositeDomainObjects, clone.OppositeDomainObjects));
-    Assert.IsFalse (object.ReferenceEquals (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects));
-    Assert.IsTrue (DomainObjectCollection.Compare (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects));
+    Assert.AreSame (_customerEndPoint.OppositeDomainObjects, clone.OppositeDomainObjects);
+    Assert.AreSame (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects);
     Assert.AreSame (_customerEndPoint.ClientTransaction, clone.ClientTransaction);
   }
 
@@ -140,11 +138,9 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
   public void CloneChangedEndPoint ()
   {
     _customerEndPoint.OppositeDomainObjects.Remove (_order1);
-
     CollectionEndPoint clone = (CollectionEndPoint) _customerEndPoint.Clone ();
 
-    Assert.IsFalse (object.ReferenceEquals (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects));
-    Assert.IsTrue (DomainObjectCollection.Compare (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects));
+    Assert.AreSame (_customerEndPoint.OriginalOppositeDomainObjects, clone.OriginalOppositeDomainObjects);
   }
 }
 }
