@@ -262,6 +262,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\TreeView.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\DropDownMenuArrow.gif"
                     BuildAction = "Content"
                 />
@@ -279,6 +283,70 @@
                 />
                 <File
                     RelPath = "Res\Image\Spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewF.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewFMinus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewFPlus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewI.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewL.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewLMinus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewLPlus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewMinus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewPlus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewR.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewRMinus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewRPlus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewT.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewTMinus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewTPlus.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TreeViewWhite.gif"
                     BuildAction = "Content"
                 />
                 <File
@@ -526,10 +594,12 @@
                 />
                 <File
                     RelPath = "UI\Controls\WebTreeNode.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\WebTreeNodeCollection.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
