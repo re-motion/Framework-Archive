@@ -274,5 +274,16 @@ public class LoaderTest
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Property 'SpecialCustomer' of class 'SpecialOrder' inherits a property which already defines the column 'CustomerID'.")]
+  public void MappingWithDerivationAndDuplicateColumnName ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithDerivationAndDuplicateColumnName.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
 }
 }
