@@ -27,7 +27,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// </remarks>
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
-[ToolboxItemFilter("System.Web.UI")]
 public class BocTextValue: BusinessObjectBoundModifiableWebControl
 {
   //  constants

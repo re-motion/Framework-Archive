@@ -20,7 +20,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 //  TODO: BocReferenceValue: Link to DetailsPage?
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
-[ToolboxItemFilter("System.Web.UI")]
 public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 {
 	// constants
