@@ -1,7 +1,9 @@
 using System;
+using System.IO;
+using System.Text;
 using System.CodeDom;
 
-namespace Rubicon.CooNet.Gen
+namespace Rubicon.CodeDom
 {
 
 public class ExtendedJSharpCodeProvider: ExtendedCodeProvider
@@ -123,7 +125,26 @@ public class ExtendedJSharpCodeProvider: ExtendedCodeProvider
     return enumValueField;
   }
 
-
+  public override CodeExpression CreateUnaryOperatorExpression (CodeUnaryOperatorType operatorType, CodeExpression expression)
+  {
+    StringBuilder sb = new StringBuilder();
+    switch (operatorType)
+    {
+      case CodeUnaryOperatorType.BooleanNot:
+        sb.Append ("(! (");
+        break;
+      case CodeUnaryOperatorType.Negate:
+        sb.Append ("(- (");
+        break;
+      case CodeUnaryOperatorType.Plus:
+        sb.Append ("(+ (");
+        break;
+    }
+    StringWriter writer = new StringWriter (sb);
+    Generator.GenerateCodeFromExpression (expression, writer, null);
+    sb.Append ("))");
+    return new CodeSnippetExpression (sb.ToString());
+  }
 }
 
 }

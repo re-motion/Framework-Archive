@@ -4,7 +4,7 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Text;
 
-namespace Rubicon.CooNet.Gen
+namespace Rubicon.CodeDom
 {
 
 public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
@@ -39,13 +39,13 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
   }
 
   public override CodeTypeMember CreateCastingOperator ( 
-      string fromType, string toType, CodeStatementCollection statements, 
-      MemberAttributes attributes, Rubicon.CooNet.Gen.ExtendedCodeProvider.CastOperatorKind castOperatorKind)
+      string fromType, string toType, string argumentName, CodeStatementCollection statements, 
+      MemberAttributes attributes, CodeCastOperatorKind castOperatorKind)
   {
     StringBuilder sb = new StringBuilder ();
 
     AppendMemberAttributeString (sb, c_memberAttributeKeywordMappings, attributes);
-    if (castOperatorKind == CastOperatorKind.Implicit)
+    if (castOperatorKind == CodeCastOperatorKind.Implicit)
       sb.Append (" implicit operator ");
     else
       sb.Append (" explicit operator ");
@@ -53,7 +53,9 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
     sb.Append (toType);
     sb.Append (" (");
     sb.Append (fromType);
-    sb.Append (" obj) {");
+    sb.Append (" ");
+    sb.Append (argumentName);
+    sb.Append (") {");
 
     StringWriter writer = new StringWriter (sb);
     // CodeGeneratorOptions options  = new CodeGeneratorOptions ();
@@ -61,10 +63,50 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
     foreach (CodeStatement statement in statements)
       Generator.GenerateCodeFromStatement (statement, writer, null);
 
-    sb.Append ("\n}");
+    sb.Append ("        }");
 
     return new CodeSnippetTypeMember (sb.ToString());
   }
+
+  public override bool SupportsOperatorOverriding
+  {
+    get { return true; }
+  }
+
+  public override CodeTypeMember CreateBinaryOperator (
+      string argumentTypeName, string firstArgumentName, string secondArgumentName, 
+      CodeOverridableOperatorType operatorType, string returnTypeName,
+      CodeStatementCollection statements, MemberAttributes attributes)
+  {
+    StringBuilder sb = new StringBuilder ();
+
+    AppendMemberAttributeString (sb, c_memberAttributeKeywordMappings, attributes);
+    sb.Append (" ");
+    sb.Append (returnTypeName);
+    sb.Append (" operator ");
+    sb.Append (GetOverridableOperatorString (operatorType));
+    sb.Append (" (");
+    sb.Append (argumentTypeName);
+    sb.Append (" ");
+    sb.Append (firstArgumentName);
+    sb.Append (", ");
+    sb.Append (argumentTypeName);
+    sb.Append (" ");
+    sb.Append (secondArgumentName);
+    sb.Append (") {");
+
+    StringWriter writer = new StringWriter (sb);
+    // CodeGeneratorOptions options  = new CodeGeneratorOptions ();
+
+    foreach (CodeStatement statement in statements)
+      Generator.GenerateCodeFromStatement (statement, writer, null);
+
+    sb.Append ("        }");
+
+    return new CodeSnippetTypeMember (sb.ToString());
+  }
+
+
 
   public override bool SupportsDocumentationComments
   {
@@ -99,17 +141,53 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
     {
       case CodeUnaryOperatorType.BooleanNot:
         sb.Append ("(! (");
+        break;
       case CodeUnaryOperatorType.Negate:
         sb.Append ("(- (");
+        break;
       case CodeUnaryOperatorType.Plus:
         sb.Append ("(+ (");
-      case CodeUnaryOperatorType.OnesComplement:
-        sb.Append ("(~ (");
+        break;
     }
     StringWriter writer = new StringWriter (sb);
     Generator.GenerateCodeFromExpression (expression, writer, null);
     sb.Append ("))");
     return new CodeSnippetExpression (sb.ToString());
+  }
+
+  private string GetOverridableOperatorString (CodeOverridableOperatorType operatorType)
+  {
+    switch (operatorType)
+    {
+      case CodeOverridableOperatorType.Equality:
+        return "==";
+      case CodeOverridableOperatorType.Inequality:
+        return "!=";
+      case CodeOverridableOperatorType.BitwiseAnd:
+        return "&";
+      case CodeOverridableOperatorType.BooleanOr:
+        return "|";
+      case CodeOverridableOperatorType.GreaterThan:
+        return ">";
+      case CodeOverridableOperatorType.GreaterThanOrEqual:
+        return ">=";
+      case CodeOverridableOperatorType.LessThan:
+        return "<";
+      case CodeOverridableOperatorType.LessThanOrEqual:
+        return "<=";
+      case CodeOverridableOperatorType.Add:
+        return "+";
+      case CodeOverridableOperatorType.Multiply:
+        return "*";
+      case CodeOverridableOperatorType.Subtract:
+        return "-";
+      case CodeOverridableOperatorType.Divide:
+        return "/";
+      case CodeOverridableOperatorType.Modulus:
+        return "%";
+      default:
+        throw new ArgumentException ("Invalid CodeOverridableOperatorType value: " + operatorType.ToString(), "operatorType");
+    }
   }
 }
 

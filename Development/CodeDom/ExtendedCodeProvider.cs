@@ -3,7 +3,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Text;
 
-namespace Rubicon.CooNet.Gen
+namespace Rubicon.CodeDom
 {
 /// <summary>
 /// Base class for extended code providers.
@@ -17,21 +17,17 @@ namespace Rubicon.CooNet.Gen
 ///   <b>Note to inheritors:</b>
 /// <para></para>
 ///   Inheritors must at least call the base class constructor with a valid <c>CodeDomProvider</c> and 
-///   implement <see cref="IsCaseSensitive"/>.
+///   implement <see cref="IsCaseSensitive"/> and <see cref="CreateUnaryOperatorExpression"/>.
 /// <para></para>
 ///   If the specific language supports custom casting operators, override <see cref="SupportsCastingOperators"/> 
 ///   and <see cref="CreateCastingOperator"/>. 
+/// <para></para>
+///   If the specific language supports operator overriding, override <see cref="SupportsOperatorOverriding"/> 
+///   and <see cref="CreateBinaryOperator"/>. 
 /// </para>
 /// </remarks>
 public abstract class ExtendedCodeProvider
 {
-  // types
-
-  /// <summary>
-  /// Specifies one of the two kinds of casting operators.
-  /// </summary>
-  public enum CastOperatorKind { Implicit, Explicit }
-
   /// <summary>
   /// This class is used to create a mapping table for <c>AppendMemberAttributeString</c>.
   /// <seealso cref="AppendMemberAttributeString"/>
@@ -107,10 +103,23 @@ public abstract class ExtendedCodeProvider
   /// <returns>A <c>CodeTypeMember</c> object that can be appended to a CodeDOM type object.</returns>
   /// <exception cref="NotSupportedException">The default implementation always throws this exception.</exception>
   public virtual CodeTypeMember CreateCastingOperator (
-      string fromType, string toType, CodeStatementCollection statements, 
-      MemberAttributes attributes, CastOperatorKind castOperatorKind)
+      string fromType, string toType, string argumentName, CodeStatementCollection statements, 
+      MemberAttributes attributes, CodeCastOperatorKind castOperatorKind)
   {
     throw new NotSupportedException (this.GetType().FullName + " does not support casting operators.");
+  }
+
+  public virtual bool SupportsOperatorOverriding
+  {
+    get { return false; }
+  }
+
+  public virtual CodeTypeMember CreateBinaryOperator (
+      string argumentTypeName, string firstArgumentName, string secondArgumentName, 
+      CodeOverridableOperatorType operatorType, string returnTypeName,
+      CodeStatementCollection statements, MemberAttributes attributes)
+  {
+    throw new NotSupportedException (this.GetType().FullName + " does not support operator overriding.");
   }
 
   /// <summary>
@@ -265,12 +274,37 @@ public abstract class ExtendedCodeProvider
   public abstract CodeExpression CreateUnaryOperatorExpression (CodeUnaryOperatorType operatorType, CodeExpression expression);
 }
 
+/// <summary>
+/// Specifies one of the two kinds of casting operators.
+/// </summary>
+public enum CodeCastOperatorKind 
+{ 
+  Implicit, 
+  Explicit 
+}
+
 public enum CodeUnaryOperatorType
 {
   BooleanNot,
   Negate,
-  Plus,
-  OnesComplement
+  Plus
+}
+
+public enum CodeOverridableOperatorType
+{
+  Equality,
+  Inequality,
+  LessThan,
+  LessThanOrEqual,
+  GreaterThan,
+  GreaterThanOrEqual,
+  BitwiseAnd,
+  BooleanOr,
+  Add,
+  Subtract,
+  Multiply,
+  Divide,
+  Modulus
 }
 
 }
