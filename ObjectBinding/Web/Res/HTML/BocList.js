@@ -9,17 +9,18 @@ var _bocList_TdEvenClassNameSelected = '';
 //  Associative array: <BocList ID>, <BocList_SelectedRows>
 var _bocList_selectedRows = new Array();
 
-//  A flag that indicates that the OnClick event for a selection checkBox has been raised
+//  A flag that indicates that the OnClick event for a selection selectorControl has been raised
 //  prior to the row's OnClick event.
-var _bocList_isCheckBoxClick = false;
+var _bocList_isSelectorControlClick = false;
   
 //  A flag that indicates that the OnClick event for an anchor tag (command) has been raised
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
 
 var _bocList_rowSelectionDisabled = 0;
-var _bocList_rowSelectionSingle = 1;
-var _bocList_rowSelectionMultiple = 2;
+var _bocList_rowSelectionSingleCheckBox = 1;
+var _bocList_rowSelectionSingleRadioButton = 2;
+var _bocList_rowSelectionMultiple = 3;
 
 var _bocList_listMenuInfos = new Array();
 
@@ -33,7 +34,7 @@ var _contentMenu_requiredSelectionOneOrMore = 2;
 function BocList_SelectedRows (selection)
 {
   this.Selection = selection;
-  //  Associative Array: <CheckBox ID>, <BocList_RowBlock>
+  //  Associative Array: <SelectorControl ID>, <BocList_RowBlock>
   this.Length = 0;
   this.Rows = new Array();
   this.Clear = function()
@@ -43,10 +44,10 @@ function BocList_SelectedRows (selection)
   }
 }
 
-function BocList_RowBlock (row, checkBox, isOdd)
+function BocList_RowBlock (row, selectorControl, isOdd)
 {
   this.Row = row;
-  this.CheckBox = checkBox;
+  this.SelectorControl = selectorControl;
   this.IsOdd = isOdd;
 }
 
@@ -68,29 +69,32 @@ function BocList_InitializeGlobals (
 //  arrays with the BocList's selected rows.
 //  Call this method once for each BocList on the page.
 //  bocList: The BocList to which the row belongs.
-//  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
+//  selectorControlPrefix: The common part of the selectorControles' ID (everything before the index).
 //  count: The number of data rows in the BocList.
 //  selection: The RowSelection enum value defining the selection mode (disabled/single/multiple)
-function BocList_InitializeList (bocList, checkBoxPrefix, count, selection)
+function BocList_InitializeList (bocList, selectorControlPrefix, count, selection)
 {
   var selectedRows = new BocList_SelectedRows (selection);
   if (selectedRows.Selection != _bocList_rowSelectionDisabled)
   {
     for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
     {
-      var checkBoxID = checkBoxPrefix + i;
-      var checkBox = document.getElementById (checkBoxID);
-      if (checkBox == null)
+      var selectorControlID = selectorControlPrefix + i;
+      var selectorControl = document.getElementById (selectorControlID);
+      if (selectorControl == null)
         continue;
-      var row =  checkBox.parentElement.parentElement;
-      if (checkBox.checked)      
+      var row =  selectorControl.parentElement.parentElement;
+      if (selectorControl.checked)      
       {
-        var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
-        selectedRows.Rows[checkBox.id] = rowBlock;
+        var rowBlock = new BocList_RowBlock (row, selectorControl, isOdd);
+        selectedRows.Rows[selectorControl.id] = rowBlock;
         selectedRows.Length++;
         
-        if (selectedRows.Selection == _bocList_rowSelectionSingle)
+        if (   selectedRows.Selection == _bocList_rowSelectionSingleCheckBox
+            || selectedRows.Selection == _bocList_rowSelectionSingleRadioButton)
+        {
           break;
+        }
       }
     }
   }
@@ -99,13 +103,13 @@ function BocList_InitializeList (bocList, checkBoxPrefix, count, selection)
 
 //  Event handler for a table row in the BocList. 
 //  Selects/unselects a row/all rows depending on it's selection state,
-//      whether CTRL has been pressed and if _bocList_isCheckBoxClick is true.
+//      whether CTRL has been pressed and if _bocList_isSelectorControlClick is true.
 //  Aborts the execution if _bocList_isCommandClick is true.
 //  bocList: The BocList to which the row belongs.
 //  currentRow: The row that fired the click event.
-//  checkBox: The selection checkBox in this row.
+//  selectorControl: The selection selectorControl in this row.
 //  isOdd: True if it is an odd data row, otherwise false.
-function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
+function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
 {
   if (_bocList_isCommandClick)
   {
@@ -113,7 +117,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
     return;
   }  
   
-  var currentRowBlock = new BocList_RowBlock (currentRow, checkBox, isOdd);
+  var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl, isOdd);
   var selectedRows = _bocList_selectedRows[bocList.id];
   var className; //  The css-class
   var isCtrlKeyPress = window.event.ctrlKey;
@@ -121,17 +125,18 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
   if (selectedRows.Selection == _bocList_rowSelectionDisabled)
     return;
     
-  if (isCtrlKeyPress || _bocList_isCheckBoxClick)
+  if (isCtrlKeyPress || _bocList_isSelectorControlClick)
   {
     //  Is current row selected?
-    if (selectedRows.Rows[checkBox.id] != null)
+    if (selectedRows.Rows[selectorControl.id] != null)
     {
       //  Remove currentRow from list and unselect it
       BocList_UnselectRow (bocList, currentRowBlock);
     }
     else
     {
-      if (   selectedRows.Selection == _bocList_rowSelectionSingle
+      if (  (   selectedRows.Selection == _bocList_rowSelectionSingleCheckBox
+             || selectedRows.Selection == _bocList_rowSelectionSingleRadioButton)
           && selectedRows.Length > 0)
       {
         //  Unselect all rows and clear the list
@@ -151,8 +156,8 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
     //  Add currentRow to list and select it
     BocList_SelectRow (bocList, currentRowBlock);
   }
-  checkBox.focus();
-  _bocList_isCheckBoxClick = false;
+  selectorControl.focus();
+  _bocList_isSelectorControlClick = false;
 
   BocList_UpdateListMenu (bocList);
 }
@@ -165,7 +170,7 @@ function BocList_SelectRow (bocList, rowBlock)
 {
   //  Add currentRow to list  
   var selectedRows = _bocList_selectedRows[bocList.id];
-  selectedRows.Rows[rowBlock.CheckBox.id] = rowBlock;
+  selectedRows.Rows[rowBlock.SelectorControl.id] = rowBlock;
   selectedRows.Length++;
     
   // Select currentRow
@@ -177,7 +182,7 @@ function BocList_SelectRow (bocList, rowBlock)
   for (var i = 0; i < rowBlock.Row.children.length; i++)
     rowBlock.Row.children[i].className = className;
 
-  rowBlock.CheckBox.checked = true;
+  rowBlock.SelectorControl.checked = true;
 }
 
 //  Unselects all rows in a BocList.
@@ -207,7 +212,7 @@ function BocList_UnselectRow (bocList, rowBlock)
 {
   //  Remove currentRow from list
   var selectedRows = _bocList_selectedRows[bocList.id];
-  selectedRows.Rows[rowBlock.CheckBox.id] = null;
+  selectedRows.Rows[rowBlock.SelectorControl.id] = null;
   selectedRows.Length--;
     
   // Select currentRow
@@ -219,49 +224,49 @@ function BocList_UnselectRow (bocList, rowBlock)
   for (var i = 0; i < rowBlock.Row.children.length; i++)
     rowBlock.Row.children[i].className = className;
   
-  rowBlock.CheckBox.checked = false;
+  rowBlock.SelectorControl.checked = false;
 }
 
-//  Event handler for the selection checkBox in the title row.
-//  Applies the checked state of the title's checkBox to all data rows' selectu=ion checkBoxes.
-//  bocList: The BocList to which the checkBox belongs.
-//  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
+//  Event handler for the selection selectorControl in the title row.
+//  Applies the checked state of the title's selectorControl to all data rows' selectu=ion selectorControles.
+//  bocList: The BocList to which the selectorControl belongs.
+//  selectorControlPrefix: The common part of the selectorControles' ID (everything before the index).
 //  count: The number of data rows in the BocList.
-function BocList_OnSelectAllCheckBoxClick (bocList, selectAllCheckBox, checkBoxPrefix, count)
+function BocList_OnSelectAllSelectorControlClick (bocList, selectAllSelectorControl, selectorControlPrefix, count)
 {
   var selectedRows = _bocList_selectedRows[bocList.id];
   if (selectedRows.Selection != _bocList_rowSelectionMultiple)
     return;
 
   //  BocList_SelectRow will increment the length, therefor initialize it to zero.
-  if (selectAllCheckBox.checked)      
+  if (selectAllSelectorControl.checked)      
     selectedRows.Length = 0;
 
   for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
   {
-    var checkBoxID = checkBoxPrefix + i;
-    var checkBox = document.getElementById (checkBoxID);
-    if (checkBox == null)
+    var selectorControlID = selectorControlPrefix + i;
+    var selectorControl = document.getElementById (selectorControlID);
+    if (selectorControl == null)
       continue;
-    var row =  checkBox.parentElement.parentElement;
-    var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
-    if (selectAllCheckBox.checked)      
+    var row =  selectorControl.parentElement.parentElement;
+    var rowBlock = new BocList_RowBlock (row, selectorControl, isOdd);
+    if (selectAllSelectorControl.checked)      
       BocList_SelectRow (bocList, rowBlock)
     else
       BocList_UnselectRow (bocList, rowBlock)
   }
   
-  if (! selectAllCheckBox.checked)      
+  if (! selectAllSelectorControl.checked)      
     selectedRows.Length = 0;
     
   BocList_UpdateListMenu (bocList);
 }
 
-//  Event handler for the selection checkBox in a data row.
-//  Sets the _bocList_isCheckBoxClick flag.
-function BocList_OnSelectionCheckBoxClick()
+//  Event handler for the selection selectorControl in a data row.
+//  Sets the _bocList_isSelectorControlClick flag.
+function BocList_OnSelectionSelectorControlClick()
 {
-  _bocList_isCheckBoxClick = true;
+  _bocList_isSelectorControlClick = true;
 }
 
 //  Event handler for the anchor tags (commands) in a data row.
