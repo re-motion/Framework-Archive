@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using System.Web.UI;
 
 namespace Rubicon.Web.UI.Utilities
 {
@@ -22,6 +23,11 @@ public class HtmlUtility
     html = html.Replace ("\n", "<br>");
     html = html.Replace ("\r", "<br>");
     return html;
+  }
+
+  public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
+  {
+    writer.Write (HtmlUtility.HtmlEncode (nonHtmlString));
   }
 
   private HtmlUtility()
