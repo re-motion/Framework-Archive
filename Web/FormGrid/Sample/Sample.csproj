@@ -93,6 +93,26 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\prereq\log4net.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Core"
+                    AssemblyName = "Rubicon.Core"
+                    HintPath = "..\prereq\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Globalization"
+                    AssemblyName = "Rubicon.Globalization"
+                    HintPath = "..\prereq\Rubicon.Globalization.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Web.UI"
+                    AssemblyName = "Rubicon.Web.UI"
+                    HintPath = "..\prereq\Rubicon.Web.UI.dll"
+                />
             </References>
         </Build>
         <Files>

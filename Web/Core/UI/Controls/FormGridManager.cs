@@ -2725,7 +2725,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Defines how the validation messages are displayed. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
-  [CategoryAttribute("Behaviour")]
+  [CategoryAttribute("Behavior")]
   [DefaultValue(ValidatorVisibility.ValidationMessageInControlsColumn)]
   [Description("The position of the validation messages in the form grids.")]
   public ValidatorVisibility ValidatorVisibility
@@ -2738,7 +2738,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the validation markers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
-  [CategoryAttribute("Behaviour")]
+  [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the validation markers.")]
   public bool ShowValidationMarkers
@@ -2749,7 +2749,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the required markers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
-  [CategoryAttribute("Behaviour")]
+  [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the required markers.")]
   public bool ShowRequiredMarkers
@@ -2760,7 +2760,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the help providers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
-  [CategoryAttribute("Behaviour")]
+  [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the help providers.")]
   public bool ShowHelpProviders

@@ -35,6 +35,10 @@ public class WebForm :
 
 	private static readonly ILog s_log = LogManager.GetLogger (
     System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  protected System.Web.UI.WebControls.TextBox FirstNameField;
+  protected System.Web.UI.WebControls.TextBox LastNameField;
+  protected Rubicon.Web.UI.Controls.FormGridLabel AdressFormGridLabel;
+  protected System.Web.UI.WebControls.Label CombinedName_Label;
 
   private FormGridRowProvider _formGridRowProvider;
 
@@ -51,6 +55,37 @@ public class WebForm :
 		base.OnInit(e);
 
     _formGridRowProvider = new FormGridRowProvider();
+
+    StringCollection hiddenRows = _formGridRowProvider.GetListOfHiddenRows (
+      MainFormGrid.ID);
+
+    hiddenRows.Add (FirstNameField.ID);
+  
+    FormGridRowPrototypeCollection newRows = _formGridRowProvider.GetListOfFormGridRowPrototypes (
+      MainFormGrid.ID);
+
+    TextBox textBox = new TextBox();
+    textBox.ID = "MyNewTextBox";
+    textBox.Text = "Eine neue Zeile";
+
+    newRows.Add (new FormGridRowPrototype(
+      textBox, 
+      FormGridRowPrototype.RowType.ControlInRowWithLabel, 
+      AddressField.ID, 
+      FormGridRowPrototype.RowPosition.AfterRowWithID));
+
+    textBox = new TextBox();
+    textBox.ID = "MyOtherNewTextBox";
+    textBox.Text = "Noch eine neue Zeile, diesmal zweizeilig.";
+    textBox.Width = Unit.Parse ("100%");
+    textBox.Height = Unit.Parse ("3em");
+
+    newRows.Add (new FormGridRowPrototype(
+      textBox, 
+      FormGridRowPrototype.RowType.ControlInRowAfterLabel, 
+      CompaniesTable.ID, 
+      FormGridRowPrototype.RowPosition.BeforeRowWithID));
+
 	}
 	
 
@@ -62,12 +97,8 @@ public class WebForm :
   protected System.Web.UI.WebControls.DropDownList GenderList;
   protected System.Web.UI.WebControls.TextBox ZipField;
   protected System.Web.UI.WebControls.TextBox PlaceField;
-  protected System.Web.UI.WebControls.Label AddressLabel;
   protected System.Web.UI.WebControls.TextBox AddressField;
-  protected System.Web.UI.WebControls.TextBox TextBox1;
-  protected System.Web.UI.WebControls.TextBox TextBox2;
   protected System.Web.UI.HtmlControls.HtmlTable MainFormGrid;
-  protected Rubicon.Web.UI.Controls.FormGridLabel FormGridLabel;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected System.Web.UI.WebControls.CompareValidator NameFieldCompareValidator;
   protected System.Web.UI.WebControls.CompareValidator GenderListCompareValidator;
@@ -75,6 +106,8 @@ public class WebForm :
   protected System.Web.UI.WebControls.RequiredFieldValidator CompaniesTableRequiredFieldValidator;
   protected System.Web.UI.WebControls.Button submitButton;
   protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
+  protected System.Web.UI.WebControls.Label EducationLavel;
+  protected System.Web.UI.WebControls.TextBox EducationField;
 
   /// <summary>
 	/// Required method for Designer support - do not modify
