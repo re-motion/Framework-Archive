@@ -100,6 +100,27 @@
     </exec>
   </target>
 
+  <!--======================= AddZip =======================-->
+  <target name="addzip" depends="zipfilename">
+    <exec program="SS" append="true" commandline="Cp $/libraries/Commons/build -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+      <environment>
+        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
+      </environment>  
+    </exec>
+    <echo message="Add ${zipfile.name}"/>
+    <exec program="SS" append="true" commandline="Add ${zipfile.name} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+      <environment>
+        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
+      </environment>  
+    </exec>
+    <echo message="Add ${sourcezipfile.name}"/>
+    <exec program="SS" append="true" commandline="Add ${sourcezipfile.name} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+      <environment>
+        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
+      </environment>  
+    </exec>
+  </target>
+
   <!--======================= VS.NET =======================-->
   <target name="preparevs">
     <call target="setdocumentation" />
@@ -435,10 +456,16 @@
     </delete>
   </target>
   
-  <target name="zip" depends="setdocumentation">
-    <property name="local.zipfile" value="${build.basedir}/RubiconCommons_${build.version.noconfig}.zip" />
-    <delete file="${local.zipfile}" failonerror="false" />
-    <zip zipfile="${local.zipfile}">
+  <target name="zipfilename" depends="setdocumentation">
+    <property name="zipfile.name" value="${build.basedir}/RubiconCommons_${build.version.noconfig}.zip" />
+    <property name="sourcezipfile.name" value="${build.basedir}/RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
+    <echo message="Zipfile is ${zipfile.name}"/>
+    <echo message="SourceZipfile is ${sourcezipfile.name}"/>
+  </target>
+ 
+  <target name="zip" depends="zipfilename">
+    <delete file="${zipfile.name}" failonerror="false" />
+    <zip zipfile="${zipfile.name}">
       <fileset basedir="${build.basedir}">
         <includes name="**/*" />
         <excludes name="*/bin/documentation/*" />
@@ -447,10 +474,9 @@
     </zip>
   </target>
 
-  <target name="sourcezip" depends="setdocumentation">
-    <property name="local.zipfile" value="${build.basedir}/RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
-    <delete file="${local.zipfile}" failonerror="false" />
-    <zip zipfile="${local.zipfile}">
+  <target name="sourcezip" depends="zipfilename">
+    <delete file="${sourcezipfile.name}" failonerror="false" />
+    <zip zipfile="${sourcezipfile.name}">
       <fileset>
         <includes name="Core/**/*" />
         <includes name="Core.Test/**/*" />
