@@ -47,8 +47,11 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
 
     PathTree.Nodes.Clear();
     string filter = FilterField.Text.ToLower().Trim();
-    IBusinessObjectProperty[] properties = 
-      _binding.DataSource.BusinessObjectClass.GetPropertyDefinitions();
+    if (_binding.OwnerControl == null || _binding.OwnerControl.Property == null || (! (_binding.OwnerControl.Property is IBusinessObjectReferenceProperty)))
+      return;
+    IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty) _binding.OwnerControl.Property;
+    IBusinessObjectProperty[] properties = parentProperty.ReferenceClass.GetPropertyDefinitions();
+    //IBusinessObjectProperty[] properties = _binding.DataSource.BusinessObjectClass.GetPropertyDefinitions();
 
     foreach (IBusinessObjectProperty property in properties)
     {
