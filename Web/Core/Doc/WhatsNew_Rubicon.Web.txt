@@ -1,3 +1,9 @@
+3.0.2.0
+=======
+
+- TableControl: AddRow (...), AddRowWithStyle (...), AddHorizontalRow (...) liefern jetzt die erzeugte Row zurück.
+
+
 3.0.1.0
 =======
 
