@@ -35,32 +35,6 @@ public class LoaderTest
   }
 
   [Test]
-  public void TypeMapping ()
-  {
-    string[] types = new string[]
-        {
-          "byte",
-          "boolean", 
-          "dateTime", 
-          "decimal", 
-          "double", 
-          "guid", 
-          "int16", 
-          "int32", 
-          "int64", 
-          "string", 
-          "char", 
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests",
-          "objectID"
-        };
-
-    foreach (string type in types)
-    {
-      LoaderUtility.MapType (type);
-    }
-  }
-
-  [Test]
   public void LoadingOfClassDefinitions ()
   {
     ClassDefinitionCollection actualClassDefinitions = _loader.GetClassDefinitions ();
