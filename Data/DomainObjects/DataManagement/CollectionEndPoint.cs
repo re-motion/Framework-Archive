@@ -20,6 +20,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private RelationEndPoint _oldEndPoint;
   private RelationEndPoint _newEndPoint;
+  private int _insertIndex = -1;
 
   // construction and disposing
 
@@ -131,6 +132,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     _oldEndPoint = oldEndPoint;
     _newEndPoint = newEndPoint;
+    _insertIndex = -1;
 
     if (IsAddOperation () && !_oppositeDomainObjects.BeginAdd (_newEndPoint.GetDomainObject ()))
       return false;
@@ -141,13 +143,37 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     return base.BeginRelationChange (oldEndPoint, newEndPoint);
   }
 
+  public bool BeginInsert (
+      RelationEndPoint oldEndPoint, 
+      RelationEndPoint newEndPoint,
+      int index)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+
+    bool result = BeginRelationChange (oldEndPoint, newEndPoint);
+
+    _insertIndex = index;
+
+    return result;
+  }
+
   public override void PerformRelationChange ()
   {
     if (_oldEndPoint == null || _newEndPoint == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
+    if (IsInsertOperation ())
+    {
+      _oppositeDomainObjects.PerformInsert (_insertIndex, _newEndPoint.GetDomainObject ());
+      return;
+    }
+
     if (IsAddOperation ())
+    {
       _oppositeDomainObjects.PerformAdd (_newEndPoint.GetDomainObject ());
+      return;
+    }
 
     if (IsRemoveOperation ())
       _oppositeDomainObjects.PerformRemove (_oldEndPoint.GetDomainObject ());
@@ -171,6 +197,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     _oldEndPoint = null;
     _newEndPoint = null;
+    _insertIndex = -1;
 
     base.EndRelationChange ();
   }
@@ -188,6 +215,11 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public ICollectionEndPointChangeDelegate ChangeDelegate
   {
     set { _changeDelegate = value; }
+  }
+
+  private bool IsInsertOperation ()
+  {
+    return (_insertIndex >= 0 && IsAddOperation ());
   }
 
   private bool IsAddOperation ()
@@ -208,6 +240,14 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformAdd (this, domainObject);
+  }
+
+  void ICollectionChangeDelegate.PerformInsert (DomainObjectCollection collection, DomainObject domainObject, int index)
+  {
+    if (_changeDelegate == null)
+      throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
+
+    _changeDelegate.PerformInsert (this, domainObject, index);
   }
 
   void ICollectionChangeDelegate.PerformRemove (DomainObjectCollection collection, DomainObject domainObject)
