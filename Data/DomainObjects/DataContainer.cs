@@ -13,7 +13,8 @@ public class DataContainer
   private enum DataContainerStateType
   {
     Existing = 0,
-    New = 1
+    New = 1,
+    Deleted = 2
   }
 
   // static members and constants
@@ -143,13 +144,22 @@ public class DataContainer
       if (_state == DataContainerStateType.Existing)
         return GetStateForPropertyValues ();
 
-      return StateType.New;
+      if (_state == DataContainerStateType.New) 
+        return StateType.New;
+      
+      return StateType.Deleted;
     }
   }
 
   public object Timestamp
   {
     get { return _timestamp; }
+  }
+
+  internal void Delete ()
+  {
+    // TODO: Check if datacontainer is new => Dispose object in that case.
+    _state = DataContainerStateType.Deleted;
   }
 
   internal void SetTimestamp (object timestamp)
