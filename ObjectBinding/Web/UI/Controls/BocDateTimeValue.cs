@@ -844,9 +844,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   ///   The value of the <see cref="InternalDateValue"/> and <see cref="InternalTimeValue"/> 
   ///   properties cannot be converted to the specified <see cref="ActualValueType"/>.
   /// </exception>
-  [Description("Gets or sets the current value.")]
   [Browsable(false)]
-  public override object Value
+  public new object Value
   {
     get 
     {
@@ -952,6 +951,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         InternalTimeValue = null;
       }
     }
+  }
+
+  protected override object ValueImplementation
+  {
+    get { return Value; }
+    set { Value = value; }
   }
 
   /// <summary> The string displayed in the date text box. </summary>

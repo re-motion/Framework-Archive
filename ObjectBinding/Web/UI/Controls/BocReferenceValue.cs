@@ -62,7 +62,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The object returned by <see cref="ReferenceValue"/>. </summary>
   /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
-  private IBusinessObjectWithIdentity _referenceValue = null;
+  private IBusinessObjectWithIdentity _value = null;
 
   /// <summary> 
   ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
@@ -259,8 +259,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ReferenceValue 
-          = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        Value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
         
         _isDirty = false;
       }
@@ -283,7 +282,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       Binding.EvaluateBinding();
 
       if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
-        DataSource.BusinessObject.SetProperty (Property, ReferenceValue);
+        DataSource.BusinessObject.SetProperty (Property, Value);
     }
   }
 
@@ -555,8 +554,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     //  Set the display value
     if (IsReadOnly)
     {
-      if (ReferenceValue != null && hasPropertyAfterInitializion)
-        _label.Text = ReferenceValue.DisplayName;
+      if (Value != null && hasPropertyAfterInitializion)
+        _label.Text = Value.DisplayName;
       else
         _label.Text = String.Empty;
     }
@@ -590,9 +589,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
           _dropDownList.SelectedValue = InternalValue;
         }
           //  Item not yet in the list but is a valid item.
-        else if (ReferenceValue != null)
+        else if (Value != null)
         {
-          IBusinessObjectWithIdentity businessObject = ReferenceValue;
+          IBusinessObjectWithIdentity businessObject = Value;
 
           ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
           _dropDownList.Items.Add (item);
@@ -614,8 +613,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       IconPrototype iconPrototype = null;
       if (webUIService != null)
       {
-        if (ReferenceValue != null)
-          iconPrototype = webUIService.GetIcon (ReferenceValue);
+        if (Value != null)
+          iconPrototype = webUIService.GetIcon (Value);
         else
           iconPrototype = webUIService.GetIcon (
             (IBusinessObjectClassWithIdentity) Property.ReferenceClass);
@@ -709,23 +708,23 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     {
       if (InternalValue == null)
       {
-        _referenceValue = null;
+        _value = null;
       }
       //  Only reload if value is outdated
       else if (     Property != null
-                &&  (     _referenceValue == null
-                      ||  _referenceValue.UniqueIdentifier != InternalValue))
+                &&  (     _value == null
+                      ||  _value.UniqueIdentifier != InternalValue))
       {
-        _referenceValue = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (
+        _value = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (
           InternalValue);
       }
 
-      return _referenceValue;
+      return _value;
     }
     set 
     { 
       IBusinessObjectWithIdentity businessObjectWithIdentity = value;
-      _referenceValue = businessObjectWithIdentity; 
+      _value = businessObjectWithIdentity; 
       
       if (businessObjectWithIdentity != null)
         InternalValue = businessObjectWithIdentity.UniqueIdentifier;

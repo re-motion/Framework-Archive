@@ -504,7 +504,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   The enumeration value currently displayed 
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
-  public override object Value
+  [Browsable(false)]
+  public new object Value
   {
     get { return _value; }
     set
@@ -521,6 +522,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       else
         InternalValue = null;
     }
+  }
+
+  protected override object ValueImplementation
+  {
+    get { return Value; }
+    set { Value = value; }
   }
 
   /// <summary>

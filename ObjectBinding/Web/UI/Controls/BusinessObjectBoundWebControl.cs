@@ -184,7 +184,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   
   /// <remarks>
   ///   Override <see cref="ValueImplementation"/> to define the behaviour of <c>Value</c>. 
-  ///   Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) to provide a typesafe implementation in derived classes.
+  ///   Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) 
+  ///   to provide a typesafe implementation in derived classes.
   /// </remarks>
   [Browsable (false)]
   public object Value 
