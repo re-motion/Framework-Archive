@@ -129,6 +129,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "link.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "link.aspx.cs"
+                    DependentUpon = "link.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "link.aspx.resx"
+                    DependentUpon = "link.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "SampleWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

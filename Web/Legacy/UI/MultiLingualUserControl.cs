@@ -24,8 +24,7 @@ public class MultiLingualUserControl : UserControl
     //  if (ResourceManagerPool.ExistsResource (this))
     if (MultiLingualResourcesAttribute.ExistsResource (this))
     {
-      IResourceManager resourceManager
-        = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
+      IResourceManager resourceManager = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
 
       ResourceDispatcher.Dispatch (this, resourceManager);
     }

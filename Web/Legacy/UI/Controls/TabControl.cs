@@ -803,7 +803,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
       }      
       else
       {
-        ResourceDispatcher.SetProperty (this, key, text);
+        Rubicon.Utilities.ReflectionUtility.SetFieldOrPropertyValue (this, key, text);
       }
     }
   }

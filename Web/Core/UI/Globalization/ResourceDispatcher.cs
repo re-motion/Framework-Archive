@@ -24,7 +24,36 @@ public sealed class ResourceDispatcher
   // types
 
   // static members and constants
+
+  /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
+  private const string c_thisElementID = "this";
+
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
+
+  /// <summary>
+  ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
+  ///   to a control that implements interface <see cref="IObjectWithResources"/>.
+  /// </summary>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
+  /// <param name="control">
+  ///   The control to be dispatched
+  ///   Must implement the interface <see cref="IObjectWithResources"/>.
+  ///   Must not be <see langname="null"/>.
+  /// </param>
+  /// <exception cref="ResourceException">
+  ///   Thrown if control does not support interface IObjectWithResources
+  /// </exception>
+  [Obsolete ("Use Dispatch (Control, IResourceManager) instead.")]
+  public static void Dispatch (Control control)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+
+    IObjectWithResources objectWithResources = control as IObjectWithResources;
+    if (objectWithResources == null)
+      throw new ResourceException ("Control does not support interface IObjectWithResources");
+
+    ResourceDispatcher.Dispatch (control, objectWithResources.GetResourceManager());
+  }
 
   /// <summary>
   ///   Dispatches resources
@@ -46,31 +75,7 @@ public sealed class ResourceDispatcher
 
     IDictionary elements = ResourceDispatcher.GetResources (resourceManager, autoPrefix);
 
-    ResourceDispatcher.Dispatch (control, elements, resourceManager);
-  }
-
-  /// <summary>
-  ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
-  ///   to a control that implements interface <see cref="IObjectWithResources"/>.
-  /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
-  /// <param name="control">
-  ///   The control to be dispatched
-  ///   Must implement the interface <see cref="IObjectWithResources"/>.
-  ///   Must not be <see langname="null"/>.
-  /// </param>
-  /// <exception cref="ResourceException">
-  ///   Thrown if control does not support interface IObjectWithResources
-  /// </exception>
-  public static void Dispatch (Control control)
-  {
-    ArgumentUtility.CheckNotNull ("control", control);
-
-    IObjectWithResources objectWithResources = control as IObjectWithResources;
-    if (objectWithResources == null)
-      throw new ResourceException ("Control does not support interface IObjectWithResources");
-
-    ResourceDispatcher.Dispatch (control, objectWithResources.GetResourceManager());
+    ResourceDispatcher.Dispatch (control, elements, resourceManager.Name);
   }
 
   /// <summary>
@@ -78,15 +83,12 @@ public sealed class ResourceDispatcher
   /// </summary>
   /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (
-    Control control,
-    IDictionary elements,
-    IResourceManager resourceManager)
+      Control control,
+      IDictionary elements,
+      string resourceSource)
   {
-    const string thisElementID = "this";
-
     ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("elements", elements);
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
     //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)
@@ -95,14 +97,14 @@ public sealed class ResourceDispatcher
 
       Control targetControl = null;
 
-      if (elementID == thisElementID)
+      if (elementID == c_thisElementID)
         targetControl = control;
       else
         targetControl = control.FindControl (elementID);
 
       if (targetControl == null)
       {
-        s_log.Warn ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource container " + resourceManager.Name + ".");
+        s_log.Warn ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
       }
       else
       {
@@ -111,13 +113,9 @@ public sealed class ResourceDispatcher
         IResourceDispatchTarget resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
-        {
           resourceDispatchTarget.Dispatch (values);       
-        }
         else
-        {
           ResourceDispatcher.DispatchGeneric (targetControl, values);
-        }
       }
     }
   }
@@ -147,14 +145,9 @@ public sealed class ResourceDispatcher
         //  Test for HtmlControl, they can take anything
         HtmlControl genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
-        {
           genericHtmlControl.Attributes[propertyName] = propertyValue;
-        }
-          //  Non-HtmlControls require valid property
-        else
-        {
-           s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
-        }
+        else //  Non-HtmlControls require valid property
+          s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
       }
     }
   }
@@ -171,7 +164,7 @@ public sealed class ResourceDispatcher
   /// <returns>
   ///   Hashtable&lt;string elementID, IDictionary&lt;string property, string value&gt; elementValues&gt;
   /// </returns>
-  public static IDictionary GetResources (IResourceManager resourceManager, string prefix)
+  private static IDictionary GetResources (IResourceManager resourceManager, string prefix)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
@@ -233,6 +226,7 @@ public sealed class ResourceDispatcher
   ///   Thrown if propertyName is unknown in objectToSetPropertyFor
   /// </exception>
   // TODO: Replace using the reflection utility
+  [Obsolete ("Use ReflectionUtility.SetPropertyOrFieldValue.")]
   public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
   {
     ArgumentUtility.CheckNotNull ("objectToSetPropertyFor", objectToSetPropertyFor);
@@ -242,9 +236,7 @@ public sealed class ResourceDispatcher
     PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
 
     if (property == null)
-    {
       s_log.Warn ("Object of type '" + objectToSetPropertyFor.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
-    }
 
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
   }
@@ -254,7 +246,7 @@ public sealed class ResourceDispatcher
   /// </summary>
   /// <param name="control"></param>
   /// <param name="controlType"></param>
-  [Obsolete("Use Dispatch (Control control instead")]
+  [Obsolete("Use Dispatch (Control) instead.")]
   public static void Dispatch (Control control, Type controlType)
   {
     ArgumentUtility.CheckNotNull ("control", control);
@@ -268,7 +260,7 @@ public sealed class ResourceDispatcher
   /// </summary>
   /// <param name="control"></param>
   /// <param name="resourceManager"></param>
-  [Obsolete ("Use Dispatch (Control control, IResourceManager resourceManager) instead")]
+  [Obsolete ("Use Dispatch (Control, IResourceManager) instead.")]
   public static void Dispatch (Control control, ResourceManager resourceManager)
   {
     ArgumentUtility.CheckNotNull ("control", control);
@@ -284,7 +276,8 @@ public sealed class ResourceDispatcher
   /// since class is only used static
   /// </summary>
   private ResourceDispatcher ()
-  {}
+  {
+  }
 }
 
 }
