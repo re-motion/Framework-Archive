@@ -58,7 +58,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private Image _icon = null;
 
   /// <summary> The object returned by <see cref="ReferenceValue"/>. </summary>
-  /// <remarks> Does not require <see cref="ISerializable"/>. </remarks>
+  /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
   private IBusinessObjectWithIdentity _referenceValue = null;
 
   /// <summary> 
@@ -66,7 +66,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   private string _internalValue = null;
 
-  /// <summary> The <see cref="DropDownList.SelectedValue"/> of <see cref="_dropDownList"/>. </summary>
+  /// <summary> The <c>SelectedValue</c> of <see cref="DropDownList"/>. </summary>
   private string _newInternalValue = null;
 
   /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
@@ -302,11 +302,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Loads the <see cref="Value"/> from the <see cref="DataSource"/> or uses the cached
+  ///   Loads the <see cref="Value"/> from the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
   ///   information if <paramref name="interim"/> is <see langword="false"/>.
   /// </summary>
   /// <param name="interim">
-  ///   <see langword="true"/> to load the <see cref="Value"/> from the <see cref="DataSource"/>.
+  ///   <see langword="true"/> to load the <see cref="Value"/> from the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
   /// </param>
   public override void LoadValue (bool interim)
   {
@@ -325,11 +327,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Writes the <see cref="Value"/> into the <see cref="DataSource"/>
-  ///   if <paramref name="interim"/> is <see langword="true"/>.
+  ///   Writes the <see cref="Value"/> into the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
+  ///   is <see langword="true"/>.
   /// </summary>
   /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the <see cref="DataSource"/>.
+  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
   /// </param>
   public override void SaveValue (bool interim)
   {
@@ -385,7 +389,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     The control has to be in edit mode (<see cref="ReadOnly"/> set to 
+  ///     The control has to be in edit mode 
+  ///     (<see cref="BusinessObjectBoundModifiableWebControl.ReadOnly"/> set to 
   ///     <see langword="false"/>) to refresh the list.
   ///   </para><para>
   ///     Use this method when manually setting the listed items, i.e. from the parent control.
@@ -408,7 +413,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     The control has to be in edit mode (<see cref="ReadOnly"/> set to 
+  ///     The control has to be in edit mode
+  ///     (<see cref="BusinessObjectBoundModifiableWebControl.ReadOnly"/> set to 
   ///     <see langword="false"/>) to refresh the list.
   ///   </para>
   /// </remarks>
@@ -444,7 +450,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
   /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <param name="writer"> 
+  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
+  /// </param>
   protected override void Render (HtmlTextWriter writer)
   {
     //  Second call has practically no overhead
@@ -459,10 +467,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     The <see cref="Width"/> and <see cref="Image.Width"/> property of <see cref="Icon"/> must
+  ///     The <c>Width</c> of the control and the <c>Width</c> property of <see cref="Icon"/> must
   ///     be of the same <see cref="UnitType"/>. If they are not, the width of the 
-  ///     icon is added to the specified total  width of the control. It is recommended to always 
-  ///     specify the <see cref="Width"/> in pixels.
+  ///     icon is added to the specified total width of the control. It is recommended to always 
+  ///     specify the <c>Width</c> in pixels.
   ///   </para>
   ///   <para>
   ///     During design-time, the width of the icon versus the width of the list or label
@@ -777,7 +785,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   Gets or sets the current value.
   /// </summary>
   /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentfier"/> for the current 
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> for the current 
   ///   <see cref="IBusinessObjectWithIdentity"/> object
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
@@ -838,7 +846,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="ISmartControl.UseLabel"/>. </summary>
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
   public override bool UseLabel
   {
     get { return false; }

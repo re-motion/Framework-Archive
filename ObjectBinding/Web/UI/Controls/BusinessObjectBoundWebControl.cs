@@ -67,11 +67,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { _binding.Property = value; }
   }
 
-  [Browsable (false)]
-  protected bool IsDesignMode
-  {
-    get { return this.Site != null && this.Site.DesignMode;  }
-  }
   #endregion
 
 //  /// <summary>
@@ -180,7 +175,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <remarks>
   ///   In some situations, this method gets invoked more than once in the VS.NET designer.
   /// </remarks>
-  protected void EnsureChildControlsInitialized ()
+  protected void EnsureChildControlsInitialized()
   {
     if (! _childControlsInitialized || IsDesignMode)
     {
@@ -193,8 +188,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Override this method to initialize child controls.
   /// </summary>
   /// <remarks>
-  ///   Child controls that do not need to be created before handling post data can be created in this method.
-  ///   Use <see cref="EnsureChildControlsInitialized"/> to call this method.
+  ///   Child controls that do not need to be created before handling post data can be created
+  ///   in this method. Use <see cref="EnsureChildControlsInitialized"/> to call this method.
   /// </remarks>
   protected virtual void InitializeChildControls ()
   {
@@ -278,6 +273,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public virtual bool UseLabel
   {
     get { return ! (TargetControl is DropDownList || TargetControl is HtmlSelect); }
+  }
+
+  [Browsable (false)]
+  protected bool IsDesignMode
+  {
+    get { return this.Site != null && this.Site.DesignMode;  }
   }
 }
 
