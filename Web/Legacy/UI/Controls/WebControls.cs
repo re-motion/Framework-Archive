@@ -89,6 +89,24 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
 
     return null;
   }
+
+  public TabItem GetSelectedTab ()
+  {
+    int tabIndex = 0;
+    for (int i = 0; i < Items.Count; i++)
+    {
+      object tabStripItem = Items[i];
+      if ((tabStripItem as Microsoft.Web.UI.WebControls.Tab) != null)
+      {
+        if (tabIndex == SelectedIndex)
+          return Items[i];
+
+        tabIndex++;
+      }
+    }
+
+    return null;
+  }
 }
 
 public class MultiPage : Microsoft.Web.UI.WebControls.MultiPage
