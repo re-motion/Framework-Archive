@@ -525,6 +525,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\WebTreeNode.cs"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebTreeNodeCollection.cs"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\WebTreeView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -552,6 +560,10 @@
                 <File
                     RelPath = "UI\Design\WebMenuItemCollectionEditor.cs"
                     SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\WebTreeNodeCollectionEditor.cs"
                     BuildAction = "Compile"
                 />
                 <File
