@@ -27,6 +27,9 @@
         <includes asis="true" name="System.Web.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.ObjectBinding.Web">
+        <includes name="Globalization/*.resx" />
+      </resources>
     </csc>
         
   </target>
