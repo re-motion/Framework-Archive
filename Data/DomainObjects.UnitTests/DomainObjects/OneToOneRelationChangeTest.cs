@@ -415,5 +415,21 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
     Assert.IsNull (computer.GetOriginalRelatedObject ("Employee"));
   }
+
+  [Test]
+  public void OldObjectAndNewObjectAreSameRelationInherited ()
+  {
+    // TODO: Events überprüfen
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer4);
+    Ceo ceo = customer.Ceo;
+
+    Assert.AreEqual (StateType.Unchanged, customer.State);
+    Assert.AreEqual (StateType.Unchanged, ceo.State);
+
+    customer.Ceo = ceo;
+
+    Assert.AreEqual (StateType.Unchanged, customer.State);
+    Assert.AreEqual (StateType.Unchanged, ceo.State);
+  }
 }
 }

@@ -129,6 +129,18 @@ public class DomainObjectTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void GetRelatedObjectByInheritedRelationTwice ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer4);
+    
+    Ceo ceoReference1 = customer.Ceo;
+
+    Ceo ceoReference2 = customer.Ceo;
+    
+    Assert.AreSame (ceoReference1, ceoReference2);
+  }
+
+  [Test]
   public void GetDerivedRelatedObject ()
   {
     Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo10);
