@@ -130,6 +130,7 @@ public class TabMenu: Control, ITabItem
   }
 }
 
+[MultiLingualResources ("Rubicon.Findit.Client.Controls.Globalization.TabControl")] 
 [ParseChildren (true, "Tabs")]
 public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 {
@@ -682,8 +683,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
             BackLinkUrl,
             _activeBackLinkImage);
         output.WriteLine ("</td><td nowrap>");
-        output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">Zur&uuml;ck</a>&nbsp;&nbsp;",
-            BackLinkUrl);
+        output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">{1}</a>&nbsp;&nbsp;",
+            BackLinkUrl, ResourceManagerPool.GetResourceText (this, "BackLink"));
         output.WriteLine ("</td><td width=\"100%\">");
         output.WriteLine ("</td></tr></table>");
       }
