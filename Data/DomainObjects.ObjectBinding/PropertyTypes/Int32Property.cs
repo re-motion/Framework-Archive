@@ -15,11 +15,11 @@ public class Int32Property : NullableProperty, IBusinessObjectInt32Property
 {
   public Int32Property (      
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired, 
       Type itemType, 
       bool isList, 
       bool isNullableType)
-      : base (propertyInfo, propertyDefinition, itemType, isList, isNullableType)
+      : base (propertyInfo, isRequired, itemType, isList, isNullableType)
   {
   }
 

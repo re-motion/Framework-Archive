@@ -17,10 +17,10 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
 
   public EnumerationProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired, 
       Type itemType, 
       bool isList)
-      : base (propertyInfo, propertyDefinition, itemType, isList)
+      : base (propertyInfo, isRequired, itemType, isList)
   {
   }
 

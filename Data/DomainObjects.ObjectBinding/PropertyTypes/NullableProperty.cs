@@ -17,11 +17,11 @@ public class NullableProperty : DomainObjectProperty
 
   public NullableProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired,
       Type itemType, 
       bool isList, 
       bool isNullableType)
-    : base (propertyInfo, propertyDefinition, itemType, isList)
+    : base (propertyInfo, isRequired, itemType, isList)
   {
     _isNullableType = isNullableType;
   }
@@ -51,6 +51,5 @@ public class NullableProperty : DomainObjectProperty
 
     return publicValue;
   }
-
 }
 }

@@ -128,6 +128,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "BusinessObjectClassReflector.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BusinessObjectReflector.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjectClass.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -143,6 +153,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DomainObjectPropertyFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjectProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -154,6 +169,11 @@
                 />
                 <File
                     RelPath = "ItemTypeAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PropertyFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

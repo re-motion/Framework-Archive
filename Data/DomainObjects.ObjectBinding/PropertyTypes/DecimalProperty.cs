@@ -15,11 +15,11 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
 {
   public DecimalProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired, 
       Type itemType, 
       bool isList, 
       bool isNullableType)
-      : base (propertyInfo, propertyDefinition, itemType, isList, isNullableType)
+      : base (propertyInfo, isRequired, itemType, isList, isNullableType)
   {
   }
 
