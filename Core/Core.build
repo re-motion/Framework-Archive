@@ -18,6 +18,7 @@
         <includes name="Text/**/*.cs" />
         <includes name="Utilities/**/*.cs" />
         <includes name="Collections/**/*.cs" />
+        <includes name="Xml/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
