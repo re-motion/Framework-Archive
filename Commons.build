@@ -16,11 +16,18 @@
 
   <property name="build.keyfile" value="\development\global\rubicon.snk" />
   <property name="dummy" value="true" />
+  
+  <target name="local" depends="initNoConfig" description="make local build into directory build/current">
+    <property name="build.local" value="true" />
+  </target>
 
   <target name="initNoConfig">
     <buildversion versionfile="build/buildversion.xml" increment="false" />
     <echo message="new version is ${build.version.noconfig}"/>
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />  
+    <if propertyexists="build.local">
+      <property name="build.basedir" value="${solution.basedir}/build/Current" />  
+    </if>
     <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
   </target>
   
