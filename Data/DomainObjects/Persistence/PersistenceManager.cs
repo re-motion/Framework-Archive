@@ -71,9 +71,24 @@ public class PersistenceManager : IDisposable
     StorageProvider provider = _storageProviderManager.GetMandatory (storageProviderID);
 
     provider.BeginTransaction ();
-    provider.Save (dataContainers);
-    provider.SetTimestamp (dataContainers);
-    provider.Commit ();
+
+    try
+    {
+      provider.Save (dataContainers);
+      provider.SetTimestamp (dataContainers);
+      provider.Commit ();
+    }
+    catch
+    {
+      try
+      {
+        provider.Rollback ();
+      }
+      finally
+      {
+        throw;
+      }
+    }
   }
 
   public DataContainer LoadDataContainer (ObjectID id)
