@@ -543,6 +543,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Relations\RelationEndPointListTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Ceo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
