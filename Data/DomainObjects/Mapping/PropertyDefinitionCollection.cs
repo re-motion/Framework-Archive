@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
 public class PropertyDefinitionCollection : CollectionBase

@@ -1,5 +1,7 @@
 using System;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
 // TODO: Document that properties and methods are not inheritance-aware!

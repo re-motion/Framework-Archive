@@ -1,6 +1,8 @@
 using System;
 using Rubicon.NullableValueTypes;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
 public class PropertyDefinition

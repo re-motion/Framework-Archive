@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
 public class ClassDefinition
