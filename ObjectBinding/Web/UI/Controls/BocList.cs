@@ -6,24 +6,27 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
+using System.Reflection;
+using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
 [ToolboxItemFilter("System.Web.UI")]
-public class BocList: BusinessObjectBoundModifiableWebControl
+public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatchTarget
 {
   //  constants
   private const string c_dataRowCheckBoxIDSuffix = "_CheckBox_";
-  private const string c_headerRowCheckBoxIDSuffix = "_CheckBox_SelectAll";
+  private const string c_titleRowCheckBoxIDSuffix = "_CheckBox_SelectAll";
 
-  private const string c_moveDisplayCurrentPage = "Seite {0} von {1}";
   private const string c_moveFirstIcon = "MoveFirst.gif";
   private const string c_moveLastIcon = "MoveLast.gif";
   private const string c_movePreviousIcon = "MovePrevious.gif";
@@ -41,7 +44,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyContents = "#";
-  private const string c_designModeDummyColumnHeader = "Column Header {0}";
+  private const string c_designModeDummyColumnTitle = "Column Title {0}";
   private const int c_designModeDummyColumnCount = 3;
 
   // types
@@ -58,6 +61,9 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   // static members
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectProperty) };
+  
+  /// <summary> The log4net logger. </summary>
+  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 	// member fields
 
@@ -115,6 +121,8 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   private MoveOption _move = MoveOption.Undefined;
 
+  private string __pageInfo = "Page {0} of {1}";
+
   // construction and disposing
 
   /// <summary></summary>
@@ -168,7 +176,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     if (IsPostBack && Page != null)
     {
       string dataRowCheckBoxFilter = ID + c_dataRowCheckBoxIDSuffix;
-      string headerRowCheckBoxFilter = ID + c_headerRowCheckBoxIDSuffix;
+      string titleRowCheckBoxFilter = ID + c_titleRowCheckBoxIDSuffix;
       NameValueCollection formVariables = Page.Request.Form;
 
       for (int i = 0; i < formVariables.Count; i++)
@@ -177,7 +185,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
         if (key.StartsWith (dataRowCheckBoxFilter))
           _checkBoxCheckedState[key] = true; 
-        else if (key.StartsWith (headerRowCheckBoxFilter))
+        else if (key.StartsWith (titleRowCheckBoxFilter))
           _checkBoxCheckedState[key] = true; 
       }
     }
@@ -246,10 +254,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
         _pageCount = 1;
     }
  
-    RenderHeader (writer);
+    RenderTitle (writer);
     RenderTableOpeningTag (writer);
     RenderColGroup (writer, columnDefinitions);
-    RenderColumnHeadersRow (writer, columnDefinitions);
+    RenderColumnTitlesRow (writer, columnDefinitions);
 
     int firstRow = 0;
     int rowCountWithOffset = (Value != null) ? Value.Count : 0;
@@ -264,8 +272,12 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     if (Value != null)
     {
+      bool isOddRow = true;
       for (int idxRow = firstRow; idxRow < rowCountWithOffset; idxRow++)
-        RenderDataRow (writer, columnDefinitions, idxRow);
+      {
+        RenderDataRow (writer, columnDefinitions, idxRow, isOddRow);
+        isOddRow = !isOddRow;
+      }
     }
 
     RenderTableClosingTag (writer);
@@ -273,7 +285,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       RenderNavigator (writer);
   }
 
-  private void RenderHeader (HtmlTextWriter writer)
+  private void RenderTitle (HtmlTextWriter writer)
   {
     if (_showAdditionalColumnsList)
     {
@@ -287,7 +299,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     bool isFirstPage = _currentPage == 0;
     bool isLastPage = _currentPage + 1 >= _pageCount;
 
-    writer.Write (c_moveDisplayCurrentPage, _currentPage + 1, _pageCount);
+    writer.Write (__pageInfo, _currentPage + 1, _pageCount);
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
     string imageUrl = null;
@@ -370,7 +382,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   {
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Border, "1");
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
   }
 
@@ -411,14 +426,14 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     writer.RenderEndTag();
   }
 
-  private void RenderColumnHeadersRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
+  private void RenderColumnTitlesRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
   {
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
     if (ShowSelection)
     {
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      string checkBoxName = ID + c_headerRowCheckBoxIDSuffix;
+      string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
       bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
       RenderCheckBox (writer, checkBoxName, isChecked);
       writer.RenderEndTag();
@@ -426,13 +441,18 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     foreach (BocColumnDefinition column in columnDefinitions)
     {
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
-      if (IsDesignMode && column.ColumnHeaderDisplayValue.Length == 0)
+      if (IsDesignMode && column.ColumnTitleDisplayValue.Length == 0)
           writer.Write (c_designModeEmptyContents);
       else
-        HttpUtility.HtmlEncode (column.ColumnHeaderDisplayValue, writer);
-
+      {
+        string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
+        if (contents == string.Empty)
+          contents = "&nbsp;";
+        writer.Write (contents);
+      }
       writer.RenderEndTag();
     }
     
@@ -441,7 +461,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       for (int i = 0; i < c_designModeDummyColumnCount; i++)
       {
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        writer.Write (string.Format (c_designModeDummyColumnHeader, i + 1));
+        writer.Write (string.Format (c_designModeDummyColumnTitle, i + 1));
         writer.RenderEndTag ();
       }
     }
@@ -449,7 +469,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     writer.RenderEndTag ();
   }
 
-  private void RenderDataRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions, int rowIndex)
+  private void RenderDataRow (
+    HtmlTextWriter writer, 
+    BocColumnDefinition[] columnDefinitions, 
+    int rowIndex,
+    bool isOddRow)
   {
     IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
     if (businessObject == null)
@@ -479,6 +503,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     if (ShowSelection)
     {
+      if (isOddRow)
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellOdd);
+      else
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellEven);
+
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       string checkBoxName = ID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
       bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
@@ -488,6 +517,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     foreach (BocColumnDefinition column in columnDefinitions)
     {
+      if (isOddRow)
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellOdd);
+      else
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellEven);
+
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
       BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
@@ -569,11 +603,19 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       }
       else if (compoundColumn != null)
       {
-        writer.Write (compoundColumn.GetStringValue (businessObject));
+        string contents = compoundColumn.GetStringValue (businessObject);
+        contents = HttpUtility.HtmlEncode (contents);
+        if (contents == string.Empty)
+          contents = "&nbsp;";
+        writer.Write (contents);
       }
       else if (simpleColumn != null)
       {
-        writer.Write (simpleColumn.GetStringValue (businessObject));
+        string contents = simpleColumn.GetStringValue (businessObject);
+        contents = HttpUtility.HtmlEncode (contents);
+        if (contents == string.Empty)
+          contents = "&nbsp;";
+        writer.Write (contents);
       }
 
       if (! isFirstValueColumnRendered && valueColumn != null)
@@ -744,6 +786,123 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private void MoveNextButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.Next;
+  }
+
+  private const string c_resourcePageInfo = "PageInfo";
+  private const string c_resourceFixedColumns = "FixedColumns";
+
+  public void Dispatch(IDictionary values)
+  {
+    Hashtable fixedColumns = new Hashtable();
+    HybridDictionary propertyValues = new HybridDictionary();
+
+    //  Parse the values
+
+    foreach (DictionaryEntry entry in values)
+    {
+      string key = (string) entry.Key;
+      string[] keyParts = key.Split (new Char[] {':'}, 3);
+
+      //  Is a property/value entry?
+      if (keyParts.Length == 1)
+      {
+        string property = keyParts[0];
+        propertyValues.Add (property, entry.Value);
+      }
+        //  Is collection entry?
+      else if (keyParts.Length == 3)
+      {    
+        //  Compound key: "collectionID:elementID:property"
+        string collectionID = keyParts[0];
+        string elementID = keyParts[1];
+        string property = keyParts[2];
+
+        Hashtable currentCollection = null;
+
+        //  Switch to the right collection
+        switch (collectionID)
+        {
+          case c_resourceFixedColumns:
+          {
+            currentCollection = fixedColumns;
+            break;
+          }
+          default:
+          {
+            //  Invalid collection property
+            s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a collection property named '" + collectionID + "'.");
+            break;
+          }
+        }       
+
+        //  Add the property/value pair to the collection
+        if (currentCollection != null)
+        {
+          //  Get the dictonary for the current element
+          IDictionary elementValues = (IDictionary) currentCollection[elementID];
+
+          //  If no dictonary exists, create it and insert it into the elements hashtable.
+          if (elementValues == null)
+          {
+            elementValues = new HybridDictionary();
+            currentCollection[elementID] = elementValues;
+          }
+
+          //  Insert the argument and resource's value into the dictonary for the specified element.
+          elementValues.Add (property, entry.Value);
+        }
+      }
+      else
+      {
+        //  Not supported format or invalid property
+        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid or unknown key '" + key + "'. Required format: 'property' or 'collectionID:elementID:property'.");
+      }
+    }
+
+    //  Dispatch simple properties
+    DispatchToProperties (this, propertyValues);
+
+    //  Dispatch fixed column definition properties
+    foreach (DictionaryEntry fixedColumnEntry in fixedColumns)
+    {
+      string id = (string) fixedColumnEntry.Key;
+      
+      bool isValidID = false;
+      foreach (BocColumnDefinition columnDefinition in _fixedColumns)
+      {
+        if (columnDefinition.ID == id)
+        {
+          DispatchToProperties (columnDefinition, (IDictionary) fixedColumnEntry.Value);
+          isValidID = true;
+          break;
+        }
+      }
+
+      if (! isValidID)
+      {
+        //  Invalid collection element
+        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a fixed column definition with an ID of '" + id + "'.");
+      }
+    }
+  }
+
+  private void DispatchToProperties (object obj, IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("obj", obj);
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    foreach (DictionaryEntry entry in values)
+    {
+      string propertyName = (string) entry.Key;
+      string propertyValue = (string) entry.Value;
+
+      PropertyInfo property = obj.GetType ().GetProperty (propertyName, typeof (string));
+      
+      if (property != null)
+      {
+        property.SetValue (obj, propertyValue, new object[0]); 
+      }
+    }
   }
 
   /// <summary>
@@ -960,13 +1119,24 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   ///   Set <see langword="true"/> to display an icon in front of the first value column.
   /// </summary>
   [Category ("Appearance")]
-  [Description ("Set true to enable the icon in front of the first value column")]
+  [Description ("Set true to enable the icon in front of the first value column.")]
   [DefaultValue (true)]
   public bool EnableIcon
   {
     get { return _enableIcon; }
     set
     { _enableIcon = value; }
+  }
+
+  /// <summary> The text providing the current page information to the user. </summary>
+  /// <remarks> Use {0} for the current page and {1} for the total page count. </remarks>
+  [Category ("Appearance")]
+  [Description ("The text providing the current page information to the user. Use {0} for the current page and {1} for the total page count.")]
+  [DefaultValue ("Page {0} of {1}")]
+  public string PageInfo
+  {
+    get { return __pageInfo; }
+    set { __pageInfo = value; }
   }
 
   private bool IsPostBack
@@ -982,9 +1152,24 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary> CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
+  /// <remarks> Class: <c>bocListTable</c> </remarks>
   protected virtual string CssClassTable
   { get { return "bocListTable"; } }
+
+  /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s title row. </summary>
+  /// <remarks> Class: <c>bocListTitleCell</c> </remarks>
+  protected virtual string CssClassTitleCell
+  { get { return "bocListTitleCell"; } }
+
+  /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows. </summary>
+  /// <remarks> Class: <c>bocListDataCellOdd</c> </remarks>
+  protected virtual string CssClassDataCellOdd
+  { get { return "bocListDataCellOdd"; } }
+
+  /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s even data rows. </summary>
+  /// <remarks> Class: <c>bocListDataCellEven</c> </remarks>
+  protected virtual string CssClassDataCellEven
+  { get { return "bocListDataCellEven"; } }
 }
 
 

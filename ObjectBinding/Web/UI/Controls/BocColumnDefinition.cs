@@ -20,8 +20,11 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition
 {
-  /// <summary> The text displayed in the column header. </summary>
-  private string _columnHeader;
+  /// <summary> The ID of this column definition. </summary>
+  private string _id;
+
+  /// <summary> The text displayed in the column title. </summary>
+  private string _columnTitle;
   /// <summary> The width of the column. </summary>
   private Unit _width; 
   /// <summary>
@@ -29,10 +32,10 @@ public abstract class BocColumnDefinition
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
-  public BocColumnDefinition (string columnHeader, Unit width)
+  public BocColumnDefinition (string columnTitle, Unit width)
   {
     _width = width;
-    _columnHeader = StringUtility.NullToEmpty (columnHeader);
+    _columnTitle = StringUtility.NullToEmpty (columnTitle);
   }
 
   private BocColumnDefinition()
@@ -47,38 +50,49 @@ public abstract class BocColumnDefinition
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
   /// </summary>
   /// <returns>
-  ///   Returns the class name of the instance, followed by the <see cref="ColumnHeader"/>.
+  ///   Returns the class name of the instance, followed by the <see cref="ColumnTitle"/>.
   /// </returns>
   public override string ToString()
   {
-    if (StringUtility.IsNullOrEmpty (ColumnHeader))
+    if (StringUtility.IsNullOrEmpty (ColumnTitle))
       return GetType().Name;
     else
-      return string.Format ("{0} ({1})", GetType().Name, ColumnHeader);
+      return string.Format ("{0} ({1})", GetType().Name, ColumnTitle);
   }
 
-  /// <summary> The displayed value of the column header. </summary>
-  /// <remarks> Override this property to change the way the column header text is generated. </remarks>
+  /// <summary> The ID of this column definition. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The ID of this column definition.")]
+  [Category ("Misc")]
+  [DefaultValue("")]
+  public string ID
+  {
+    get { return _id; }
+    set { _id = value; }
+  }
+
+  /// <summary> The displayed value of the column title. </summary>
+  /// <remarks> Override this property to change the way the column title text is generated. </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public virtual string ColumnHeaderDisplayValue
+  public virtual string ColumnTitleDisplayValue
   {
-    get { return ColumnHeader; }
+    get { return ColumnTitle; }
   }
 
-  /// <summary> The text displayed in the column header. </summary>
+  /// <summary> The text displayed in the column title. </summary>
   /// <remarks>
   ///   Override this property to add validity checks to the set accessor.
   ///   The get accessor should return the value verbatim.
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The assigned value of the column header, can be empty.")]
+  [Description ("The assigned value of the column title, can be empty.")]
   [Category ("Appearance")]
   [DefaultValue("")]
-  public virtual string ColumnHeader
+  public virtual string ColumnTitle
   {
-    get { return _columnHeader; }
-    set { _columnHeader = StringUtility.NullToEmpty (value); }
+    get { return _columnTitle; }
+    set { _columnTitle = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> THe width of the column. </summary>
@@ -127,9 +141,9 @@ public class BocCommandColumnDefinition: BocColumnDefinition
       BocItemCommand command, 
       object label, 
       string iconPath, 
-      string columnHeader, 
+      string columnTitle, 
       Unit width)
-    : base (columnHeader, width)
+    : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNull ("command", command);
 
@@ -194,8 +208,8 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 /// </summary>
 public abstract class BocValueColumnDefinition: BocColumnDefinition
 {
-  public BocValueColumnDefinition (string columnHeader, Unit width)
-    : base (columnHeader, width)
+  public BocValueColumnDefinition (string columnTitle, Unit width)
+    : base (columnTitle, width)
   {}
 
   private BocValueColumnDefinition()
@@ -225,9 +239,9 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 
   public BocSimpleColumnDefinition (
       BusinessObjectPropertyPath propertyPath,
-      string columnHeader, 
+      string columnTitle, 
       Unit width)
-    : base (columnHeader, width)
+    : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
     _propertyPathBinding = new PropertyPathBinding (propertyPath);
@@ -235,9 +249,9 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 
   public BocSimpleColumnDefinition (
       string propertyPathIdentifier,
-      string columnHeader, 
+      string columnTitle, 
       Unit width)
-    : base (columnHeader, width)
+    : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
     _propertyPathBinding = new PropertyPathBinding (propertyPathIdentifier);
@@ -303,19 +317,19 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     }
   }
 
-  /// <summary> The displayed value of the column header. </summary>
+  /// <summary> The displayed value of the column title. </summary>
   /// <remarks> 
-  ///   If <see cref="ColumnHeader"/> is empty or <see langowrd="null"/>, the <c>DisplayName</c>
+  ///   If <see cref="ColumnTitle"/> is empty or <see langowrd="null"/>, the <c>DisplayName</c>
   ///   of the <see cref="BusinessObjectProperty"/> is returned.
   /// </remarks>
-  public override string ColumnHeaderDisplayValue
+  public override string ColumnTitleDisplayValue
   {
     get 
     {
-      bool isHeaderEmpty = StringUtility.IsNullOrEmpty(ColumnHeader);
+      bool isTitleEmpty = StringUtility.IsNullOrEmpty(ColumnTitle);
 
-      if (! isHeaderEmpty)
-        return ColumnHeader;
+      if (! isTitleEmpty)
+        return ColumnTitle;
       else if (PropertyPath != null)
         return PropertyPath.LastProperty.DisplayName;  
       else
@@ -348,14 +362,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   public BocCompoundColumnDefinition (
       string formatString,
       BusinessObjectPropertyPath[] propertyPaths, 
-      string columnHeader, 
+      string columnTitle, 
       Unit width)
-    : base (columnHeader, width)
+    : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPaths", propertyPaths);
-    ArgumentUtility.CheckNotNullOrEmpty ("columnHeader", columnHeader);
+    ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
 
-    ColumnHeader = columnHeader;
+    ColumnTitle = columnTitle;
     _formatString = formatString;
     _propertyPathBindings = new PropertyPathBindingCollection (null);
     _propertyPathBindings.AddRange (propertyPaths);
@@ -364,14 +378,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   public BocCompoundColumnDefinition (
       string formatString,
       string[] propertyPathIdentifiers, 
-      string columnHeader, 
+      string columnTitle, 
       Unit width)
-    : base (columnHeader, width)
+    : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifiers", propertyPathIdentifiers);
-    ArgumentUtility.CheckNotNullOrEmpty ("columnHeader", columnHeader);
+    ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
 
-    ColumnHeader = columnHeader;
+    ColumnTitle = columnTitle;
     _formatString = formatString;
     _propertyPathBindings = new PropertyPathBindingCollection (null);
     _propertyPathBindings.AddRange (propertyPathIdentifiers);
@@ -435,17 +449,17 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 
   /// <summary>
-  ///   The text displayed in the column header. Must not be empty or <see langword="null"/>.
+  ///   The text displayed in the column title. Must not be empty or <see langword="null"/>.
   /// </summary>
-  [Description ("The assigned value of the column header, must not be empty or null.")]
+  [Description ("The assigned value of the column title, must not be empty or null.")]
   [DefaultValue ("")]
-  public override string ColumnHeader
+  public override string ColumnTitle
   {
-    get { return base.ColumnHeader; }
+    get { return base.ColumnTitle; }
     set 
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("ColumnHeader", value);
-      base.ColumnHeader = value;
+      ArgumentUtility.CheckNotNullOrEmpty ("ColumnTitle", value);
+      base.ColumnTitle = value;
     }
   }
 }

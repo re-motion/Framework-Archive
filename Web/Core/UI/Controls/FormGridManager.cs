@@ -1050,8 +1050,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         //  If no hashtable exists, create it and insert it into the formGridControls hashtable.
         if (controls == null)
         {
-          controls = new Hashtable 
-            ();
+          controls = new Hashtable();
           formGridControls[formGridID] = controls;
         }
 
