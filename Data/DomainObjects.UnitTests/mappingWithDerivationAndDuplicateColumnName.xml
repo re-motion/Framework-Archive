@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+  <classes>
+		<class id="Customer">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Company" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="CustomerSince">
+					<type>dateTime</type>
+					<column>CustomerSince</column>
+					<nullable>true</nullable>					
+				</property>
+				<property name="CustomerType">
+					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
+					<column>CustomerType</column>
+				</property>
+				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false" />
+				<relationProperty name="SpecialOrders" relationID="CustomerToSpecialOrder" cardinality="many" isMandatory="false" />
+			</properties>
+		</class>
+		<class id="Order">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Order" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="OrderNumber">
+					<type>int32</type>
+					<column>OrderNo</column>
+				</property>
+				<property name="DeliveryDate">
+					<type>dateTime</type>
+					<column>DeliveryDate</column>
+				</property>
+				<relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
+					<column>CustomerID</column>
+				</relationProperty>
+			</properties>
+		</class>
+		<class id="SpecialOrder" baseClass="Order">
+		  <!-- Use an arbitrary class name to avoid other exception while loading mapping file. -->
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Order" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<relationProperty name="SpecialCustomer" relationID="CustomerToSpecialOrder" cardinality="one" isMandatory="true">
+				  <!-- Mapping error: Inherited property 'Customer' already defines column 'CustomerID'. -->
+					<column>CustomerID</column>
+				</relationProperty>
+			</properties>		
+		</class>
+  </classes>
+</mapping>
