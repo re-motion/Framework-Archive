@@ -20,7 +20,7 @@ public class RelationEndPointCollection : CollectionBase
   {
   }
 
-  public RelationEndPointCollection (RelationEndPointCollection collection, bool isCollectionReadOnly)
+  public RelationEndPointCollection (RelationEndPointCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
     
@@ -29,7 +29,7 @@ public class RelationEndPointCollection : CollectionBase
       Add (endPoint);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
