@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -19,7 +19,7 @@
     <td></td>
     <td><obc:BocList id="BocList" runat="server">
 <fixedcolumns>
-<obc:BocCommandColumnDefinition Label="Cmd" Width="200px" ColumnTitle="Cmd"></obc:BocCommandColumnDefinition>
+<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd"></obc:BocCommandColumnDefinition>
 </FixedColumns></obc:BocList></td></tr>
 </table>
 <rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager></form>

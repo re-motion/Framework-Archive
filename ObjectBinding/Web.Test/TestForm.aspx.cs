@@ -26,6 +26,7 @@ public class TestForm : Page
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.ObjectBinding.Web.Controls.BocList BocList;
 
 	private void Page_Load(object sender, System.EventArgs e)
