@@ -597,6 +597,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\WebLinkButton.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\WebMenuItem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
