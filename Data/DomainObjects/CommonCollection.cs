@@ -106,7 +106,7 @@ public class CollectionBase : ICollection
   /// Returns the object with a given key from the collection.
   /// </summary>
   /// <param name="key">The key of the object to return.</param>
-  /// <returns>The object with the given key.</returns>
+  /// <returns>The object with the given key, if the object is found; otherwise, null.</returns>
   /// <exception cref="ArgumentNullException"><i>key</i> is a null reference.</exception>
   protected object GetObject (object key)
   {

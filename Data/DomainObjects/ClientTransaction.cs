@@ -80,7 +80,8 @@ public class ClientTransaction
   /// <summary>
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
-  //todo documentation: exceptions
+  /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
+  /// <exception cref="Persistance.StorageProviderException">An error occured while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects (); 
@@ -99,7 +100,6 @@ public class ClientTransaction
   /// <summary>
   /// Performs a rollback of all changes withing the <b>ClientTransaction</b>.
   /// </summary>
-  //todo documentation: exceptions
   public virtual void Rollback ()
   {
     _dataManager.Rollback ();
@@ -250,7 +250,10 @@ public class ClientTransaction
   /// <param name="id">An <see cref="ObjectID"/> object indicating which <see cref="DomainObject"/> to load.</param>
   /// <returns>The <see cref="DomainObject"/> object that was loaded.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
-  //todo documentation: exception of methods called
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   Mapping does not contain a class definition for the given <i>id</i>.<br />
+  ///   An error occured while accessing the datasource.
+  /// </exception>
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -317,8 +320,10 @@ public class ClientTransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.CollectionEndPoint"/></exception>
-  //todo documentation: exceptions of called methods
+  /// <exception cref="Persistence.PersistenceException">
+  ///   <i>relationEndPointID</i> does not refer to 1-to-n relation. <br />
+  ///   The StorageProvider for the related objects could not be initialized.
+  /// </exception>
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);

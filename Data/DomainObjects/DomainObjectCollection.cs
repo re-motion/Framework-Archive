@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Check entire class
+//TODO documentation: Write summary for class
 public class DomainObjectCollection : CollectionBase, ICloneable, IList
 {
   // types
@@ -18,12 +18,21 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType)
   {
     return Create (collectionType, new DataContainerCollection (), null);
   }
 
+  /// <summary>
+  /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and sets the <see cref="RequiredItemType"/>.
+  /// </summary>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
+  /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, Type requiredItemType)
   {
     return Create (collectionType, new DataContainerCollection (), requiredItemType);
@@ -35,6 +44,10 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
   /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>collectionType</i> is a null reference.<br />
+  ///   <i>dataContainers</i> is a null reference.
+  /// </exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, DataContainerCollection dataContainers)
   {
@@ -48,6 +61,10 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
   /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>collectionType</i> is a null reference.<br />
+  ///   <i>dataContainers</i> is a null reference.
+  /// </exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (
       Type collectionType, 
@@ -56,7 +73,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
-
+//TODO: idea of ES: check type if equals or subclass of DomainObjectCollection -> change Documentation of all Create methods
     DomainObjectCollection domainObjects = (DomainObjectCollection) ReflectionUtility.CreateObject (collectionType);
     domainObjects._requiredItemType = requiredItemType;
 
@@ -169,7 +186,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   /// <summary>
-  /// Determines whether and element is in the <see cref="DomainObjectCollection"/>.
+  /// Determines whether an element is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
   /// <returns><b>true</b> if <i>domainObject</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
@@ -190,12 +207,22 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public bool Contains (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
+
     return base.ContainsKey (id);
   }
 
   /// <summary>
-  /// Gets the <see cref="DomainObject"/> with a given <i>index</i> in the <see cref="DomainObjectCollection"/>.
+  /// Gets or sets the <see cref="DomainObject"/> with a given <i>index</i> in the <see cref="DomainObjectCollection"/>.
   /// </summary>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  /// </exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> is not a derived type of <see cref="DomainObject"/> and of type <see cref="RequiredItemType"/> or a derived type.
+  /// </exception>
+  /// <exception cref="System.InvalidOperationException"><i>value</i> is already part of the collection.</exception>
   public DomainObject this[int index]  
   {
     get 
@@ -250,18 +277,20 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
   /// </summary>
+  /// <remarks>The indexer returns null if the given ID was not found.</remarks>
   public DomainObject this[ObjectID id]  
   {
     get { return (DomainObject) GetObject (id); }
   }
 
-  //TODO Documentation: Return type changed
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to add.</param>
-  /// <exception cref="System.ArgumentNullException"><i>value</i> is a null reference.</exception>
-  /// <exception cref="System.ArgumentException"><i>value</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
+  /// <returns>The zero-based index where the <i>domainObject</i> has been added.</returns>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   public int Add (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -288,32 +317,43 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return Count - 1;
   }
 
-//TODO documentation: ArgumentOutOfRangeException?
-//TODO documentation: ArgumentNullException?
   /// <summary>
   /// Removes a <see cref="DomainObject"/> from the collection.
   /// </summary>
   /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  /// </exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void RemoveAt (int index)
   {
     Remove (this[index]);
   }
 
-//TODO documentation: ArgumentNullException?
   /// <summary>
   /// Removes a <see cref="DomainObject"/> from the collection.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>id</i> is a null reference. <br />
+  ///   <i>id</i> is not in the collection.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Remove (ObjectID id)
   {
+// TODO: idea of ES: check result of this[id] for null -> otherwise ArgumentNullException from Remove -> should be ArgumentException
     Remove (this[id]);
   }
 
   /// <summary>
   /// Removes a <see cref="DomainObject"/> from the collection.
   /// </summary>
+  /// <remarks>
+  ///   If <b>Remove</b> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
+  /// </remarks>
   /// <param name="domainObject">The <see cref="DomainObject"/> to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Remove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -338,6 +378,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Removes all elements from the <see cref="DomainObjectCollection"/>.
   /// </summary>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Clear ()
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
@@ -346,7 +387,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
       Remove (this[i].ID);
   }
 
-  // TODO Documentation:
+  /// <summary>
+  /// Returns the zero-based index of a given <see cref="DomainObject"/> in the collection.
+  /// </summary>
+  /// <param name="domainObject">The <i>domainObject</i> to locate in the collection.</param>
+  /// <returns>The zero-based index of the <i>domainObject</i>, if found; otherwise, -1.</returns>
   public int IndexOf (DomainObject domainObject)
   {
     ObjectID id = null;
@@ -357,13 +402,32 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return IndexOf (id);
   }
 
-  // TODO Documentation:
+  /// <summary>
+  /// Returns the zero-based index of a given <see cref="ObjectID"/> in the collection.
+  /// </summary>
+  /// <param name="id">The <i>id</i> to locate in the collection.</param>
+  /// <returns>The zero-based index of the <i>id</i>, if found; otherwise, -1.</returns>
   public int IndexOf (ObjectID id)
   {
     return base.IndexOfKey (id);
   }
 
-  // TODO Documentation:
+
+  /// <summary>
+  /// Inserts a <see cref="DomainObject"/> into the collection at the specified index.
+  /// </summary>
+  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
+  /// <param name="domainObject">The <i>domainObject</i> to add.</param>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  /// </exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException">
+  ///   The <i>domainObject</i> already exists in the collection. <br />
+  ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
+  /// </exception>
   public void Insert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -389,7 +453,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
   }
 
-  // TODO Documentation:
+  /// <summary>
+  /// Gets a value indicating if the collection has a fixed size. Always returns false.
+  /// </summary>
   public bool IsFixedSize
   {
     get { return false; }
@@ -397,7 +463,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
 
   #region Explicitly implemeted IList Members
 
-  // TODO Documentation: Check all explicitly implemented IList members if documentation is inherited.
+  //Todo documentation: Info - explicit interface implementation is not shown in the chm file.
   object IList.this[int index]
   {
     get 
@@ -412,7 +478,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     } 
   }
 
-  // TODO Documentation: Behavior for invalid object type.
   void IList.Insert (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -420,7 +485,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     Insert (index, (DomainObject) value);
   }
 
-  // TODO Documentation: Behavior for invalid object type.
   void IList.Remove (object value)
   {
     if (value is DomainObject)
@@ -430,7 +494,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
       Remove ((ObjectID) value);
   }
 
-  // TODO Documentation: Behavior for invalid object type.
   bool IList.Contains (object value)
   {
     if (value is DomainObject)
@@ -442,7 +505,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return false;
   }
 
-  // TODO Documentation: Behavior for invalid object type.
   int IList.IndexOf (object value)
   {
     if (value is DomainObject)
@@ -454,7 +516,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return -1;
   }
 
-  // TODO Documentation: Behavior for invalid object type.
   int IList.Add (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -510,6 +571,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   internal protected void PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -518,6 +580,21 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     base.Add (domainObject.ID, domainObject);
   }
 
+  /// <summary>
+  /// Inserts a <see cref="DomainObject"/> at a given index to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
+  /// </summary>
+  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
+  /// <param name="domainObject">The <i>domainObject</i> to add.</param>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  /// </exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException">
+  ///   The <i>domainObject</i> already exists in the collection. <br />
+  ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
+  /// </exception>
   internal protected void PerformInsert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -541,6 +618,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to remove from the collection.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   internal protected void PerformRemove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);

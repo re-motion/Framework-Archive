@@ -23,7 +23,7 @@ public class DomainObject
   /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
-  //Todo documentation: exceptions from DomainObject.LoadObject
+  //Todo documentation: exceptions from ClientTransaction.LoadObject
   protected static DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
@@ -36,7 +36,7 @@ public class DomainObject
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
-  //Todo documentation: exceptions from DomainObject.LoadObject
+  //Todo documentation: exceptions from ClientTransaction.LoadObject
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     return GetObject (id, ClientTransaction.Current, includeDeleted);
@@ -49,7 +49,7 @@ public class DomainObject
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>DomainObject</b>.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
-  //Todo documentation: exceptions from DomainObject.LoadObject
+  //Todo documentation: exceptions from ClientTransaction.LoadObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     return GetObject (id, clientTransaction, false);
@@ -63,7 +63,7 @@ public class DomainObject
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
-  //Todo documentation: exceptions from DomainObject.LoadObject
+  //Todo documentation: exceptions from ClientTransaction.LoadObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
