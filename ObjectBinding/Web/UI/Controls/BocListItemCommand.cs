@@ -172,7 +172,6 @@ public class BocItemCommand
   /// <summary> Wraps the properties required for rendering a script command. </summary>
   public class ScriptCommandInfo
   {
-    //  TODO: BocItemCommand: Script
     //  Add enum value Script to BocItemCommandType
     //  Add property ScriptCommand to BocItemCommand
   }

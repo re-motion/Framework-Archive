@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
-//  TODO: BocColumnDefinitionSet: Move long comment blocks to xml-file
+
 /// <summary> A BocColumnDefinitionSet is a named collection of column definitions. </summary>
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocColumnDefinitionSet
