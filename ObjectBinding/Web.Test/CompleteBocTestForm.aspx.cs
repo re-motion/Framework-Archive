@@ -114,6 +114,7 @@ namespace OBWTest
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.ReferenceField.SelectionChanged += new System.EventHandler(this.ReferenceField_SelectionChanged);
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -140,6 +141,11 @@ namespace OBWTest
   {
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
+
+    private void ReferenceField_SelectionChanged(object sender, System.EventArgs e)
+    {
+    
+    }
 }
 
 }
