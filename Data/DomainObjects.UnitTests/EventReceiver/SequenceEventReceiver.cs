@@ -71,9 +71,15 @@ public class SequenceEventReceiver
 
   public void Compare (ChangeState[] states)
   {
-    Assert.AreEqual (states.Length, _states.Count, "Length");
-    for (int i = 0; i < _states.Count; i++)
+    for (int i = 0; i < states.Length; i++)
+    {
+      if (i >= _states.Count)
+        Assert.Fail ("Missing event: " + states[i].Message);
+
       Assert.IsTrue (((ChangeState) _states[i]).Compare (states[i]), states[i].Message);
+    }
+
+    Assert.AreEqual (states.Length, _states.Count, "Length");
   }
 
   private void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
