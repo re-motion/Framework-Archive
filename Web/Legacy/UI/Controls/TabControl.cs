@@ -13,6 +13,8 @@ public interface INavigablePage
 {
   bool AllowImmediateClose {get; }
   bool NavigationRequest (string url);
+  bool AutoDeleteSessionVariables { get; }
+  void NavigateTo (string url, bool returnToThisPage);
 }
 
 public interface ITabItem
@@ -140,7 +142,7 @@ public class TabControl: Control, IPostBackEventHandler
 	private bool _vertical = false;
   private bool _hasMenuBar = false;
   private string _statusMessage = string.Empty;
-  private bool _serverSideNavigation = false;
+  private bool _serverSideNavigation = true;
 
 	public string FirstImage
 	{ 
@@ -222,6 +224,7 @@ public class TabControl: Control, IPostBackEventHandler
     get { return _statusMessage; }
     set { _statusMessage = value; }
   }
+  /// <remarks> currently not tested with ServerSideNavigation="false" </remarks>
   public bool ServerSideNavigation
   {
     get { return _serverSideNavigation; }
@@ -349,7 +352,7 @@ public class TabControl: Control, IPostBackEventHandler
           || allowImmediateClose)
 		  {
 			  if (_target != string.Empty)
-				  script = "window.open('" + href + "', '" + _target + "'); " + script;
+				  script = "window.open('" + href + "', '" + _target + "'); " + script; // TODO: replace w/ <a target=...>
 			  else
 				  resultHref = "href=\"" + href + "\"";
 		  }
@@ -361,9 +364,7 @@ public class TabControl: Control, IPostBackEventHandler
   }
 
   
-
-
-	protected override void Render (HtmlTextWriter output)
+  protected override void Render (HtmlTextWriter output)
 	{
 		string selectedTab = Page.Request.QueryString["navSelectedTab"];
     if (selectedTab != null)

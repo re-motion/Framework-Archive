@@ -19,7 +19,12 @@ public class PageUtility
   /// Used by method "CallPage" to indicate whether the navigation bar shall be shown.
   /// If "UseDefault" the display status of the navigation bar is retrieved from the calling page's URL.
   /// </summary>
-  public enum ViewNavBar {Show, Hide, UseDefault};
+  public enum ShowNavigationBar 
+  {
+    Show, 
+    Hide, 
+    UseDefault
+  };
 
 	public PageUtility()
 	{
@@ -30,9 +35,14 @@ public class PageUtility
     object o = page.Session[GetUniqueKey (page, key)];
     
     if (required && o == null)
-       throw new SessionTimeoutException ();
+    {
+      if (page.Session.IsNewSession)
+        throw new SessionTimeoutException ();
+      else
+        throw new ArgumentException ("Session variable not found.", "key");
+    }
 
-     return o;
+    return o;
   }
 
   public static void SetSessionValue (Page page, string key, object sessionValue)
@@ -43,11 +53,6 @@ public class PageUtility
   public static void ClearSessionValue (Page page, string key)
   {
     page.Session[GetUniqueKey (page, key)] = null;
-  }
-
-  public static bool IsSessionValueSet (Page page, string key)
-  {
-    return page.Session[GetUniqueKey (page, key)] != null;
   }
 
   /// <summary>
@@ -125,6 +130,11 @@ public class PageUtility
     return returnUrl;
   }
 
+  public static string AddCleanupToken (Page page, string url)
+  {
+    return AddUrlParameter (url, "cleanupToken", GetToken(page));
+  }
+
   public static string AddPageToken (string url)
   {
     return AddUrlParameter (url, "pageToken", GetUniqueToken());
@@ -136,9 +146,9 @@ public class PageUtility
     return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode(value);
   }
 
-  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
+  public static string GetToken (Page page)
   {
-    PageUtility.CallPage (sourcePage, destinationUrl, parameters, ViewNavBar.UseDefault);
+    return page.Request.QueryString["pageToken"];
   }
 
   /// <summary>
@@ -147,16 +157,21 @@ public class PageUtility
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
   /// <param name="viewNav">Specifies the display status of the navigation bar for the page redirected to.</param>
-  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters, ViewNavBar viewNav)
+  public static void CallPage (
+      Page sourcePage, 
+      string destinationUrl, 
+      IDictionary parameters, 
+      bool returnToThisPage,
+      ShowNavigationBar showNavBar)
   {    
     // Add referrer information for all pages
     string referrerUrl = GetPhysicalPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
 
     string supressNavigation = string.Empty ;
-    if (viewNav == ViewNavBar.Show)
+    if (showNavBar == ShowNavigationBar.Show)
       supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
-    else if (viewNav == ViewNavBar.UseDefault)
+    else if (showNavBar == ShowNavigationBar.UseDefault)
     {
       if (sourcePage.Request.QueryString[c_supressNavParam] == c_supressNavValue)
         supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
@@ -166,8 +181,17 @@ public class PageUtility
     if (parameters != null)
       sourcePage.Session[token] = parameters;
     
-    sourcePage.Response.Redirect (
-        sourcePage.Request.ApplicationPath + "/" + destinationUrl +"?pageToken=" + token + supressNavigation);
+    string url = sourcePage.Request.ApplicationPath + "/" + destinationUrl +"?pageToken=" + token + supressNavigation;
+    NavigateTo (sourcePage, url, returnToThisPage);
+  }
+
+  public static void NavigateTo (Page sourcePage, string url, bool returnToThisPage)
+  {
+    INavigablePage navigablePage = sourcePage as INavigablePage;
+    if (navigablePage != null)
+      navigablePage.NavigateTo (url, returnToThisPage);
+    else
+      sourcePage.Response.Redirect (url);
   }
 
   /// <summary>
