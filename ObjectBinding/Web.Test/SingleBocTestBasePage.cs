@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Globalization;
+using System.Collections;
 using System.Threading;
 using Rubicon.Web;
 using Rubicon.Web.UI;
@@ -21,8 +22,8 @@ public class WebFormBase:
   IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
   IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
-  /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
-  private static IResourceManager s_chachedResourceManager;
+  /// <summary> Hashtable&lt;type,IResourceManager&gt; </summary>
+  private static Hashtable s_chachedResourceManagers = new Hashtable();
 
   protected override void OnInit(EventArgs e)
   {
@@ -57,16 +58,19 @@ public class WebFormBase:
   public virtual IResourceManager GetResourceManager()
   {
     //  chache the resource manager
-    lock (typeof(IResourceManager))
+    Type type = this.GetType();
+    if (s_chachedResourceManagers[type] == null)
     {
-      if (s_chachedResourceManager == null)
+      lock (typeof (WebFormBase))
       {
-        s_chachedResourceManager = MultiLingualResourcesAttribute.GetResourceManager (
-          this.GetType(), true);
-      }
-    }  
+        if (s_chachedResourceManagers[type] == null)
+        {
+          s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
+        }
+      }  
+    }
   
-    return s_chachedResourceManager;
+    return (IResourceManager) s_chachedResourceManagers[type];
   }
 
   public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
