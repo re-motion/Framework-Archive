@@ -563,7 +563,7 @@ public class BocList:
         && ! (   columns[columnIndex] is BocCustomColumnDefinition
               && ((BocCustomColumnDefinition) columns[columnIndex]).IsSortable))
     {
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or custom column at index" + columnIndex + ".");
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or sortable custom column at index" + columnIndex + ".");
     }
 
     SortingOrderEntry sortingOrderEntry = SortingOrderEntry.Empty;
@@ -3043,6 +3043,7 @@ public class BocList:
     }
     set
     {
+      bool hasChanged = _selectedColumnDefinitionSet != value; 
       _selectedColumnDefinitionSet = value; 
       ArgumentUtility.CheckNotNullOrEmpty ("AvailableColumnDefinitionSets", _availableColumnDefinitionSets);
       _selectedColumnDefinitionSetIndex = NaInt32.Null;
@@ -3063,7 +3064,8 @@ public class BocList:
       }
 
       _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex.Value;
-      RemoveDynamicColumnsFromSortingOrder();
+      if (hasChanged)
+        RemoveDynamicColumnsFromSortingOrder();
     }
   }
 
@@ -3096,6 +3098,7 @@ public class BocList:
         throw new InvalidOperationException ("The selected column defintion set cannot be changed while the BocList is in row edit mode.");
       }
 
+      bool hasIndexChanged = _selectedColumnDefinitionSetIndex != value; 
       _selectedColumnDefinitionSetIndex = value; 
       _isSelectedColumnDefinitionIndexSet = true;
 
@@ -3112,7 +3115,8 @@ public class BocList:
       {
         _selectedColumnDefinitionSet = null;
       }
-      RemoveDynamicColumnsFromSortingOrder();
+      if (hasIndexChanged)
+        RemoveDynamicColumnsFromSortingOrder();
     }
   }
 
