@@ -20,6 +20,7 @@ public class DataDropDownList: DropDownList
   // member fields
 
   bool _isRequired = false;
+  int _emptyValue = -1;
 
   // construction and disposing
 
@@ -45,6 +46,12 @@ public class DataDropDownList: DropDownList
     set { _isRequired = value; }
   }
 
+  public int EmptyValue
+  {
+    get { return _emptyValue; }
+    set { _emptyValue = value; }
+  }
+
   /// <summary>
   /// Returns the value of the selected item, or -1 if no item or the empty item is selected.
   /// </summary>
@@ -58,7 +65,11 @@ public class DataDropDownList: DropDownList
       
       try
       {
-        return int.Parse(item.Value);
+        int val = int.Parse(item.Value);
+        if (val == -1)
+          return _emptyValue;
+        else
+          return val;
       }
       catch (FormatException)
       {
@@ -67,11 +78,15 @@ public class DataDropDownList: DropDownList
     }
     set
     {
+      int val = value;
+      if (val == _emptyValue)
+        val = -1;
+
       for (int i = 0; i < this.Items.Count; ++i)
       {
         try
         {
-          if (value == int.Parse (this.Items[i].Value))
+          if (val == int.Parse (this.Items[i].Value))
           {
             SelectedIndex = i;
             return;

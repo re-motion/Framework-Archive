@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
+using System.Globalization;
 
 namespace Rubicon.Findit.Client.Controls
 {
@@ -46,8 +47,16 @@ public class ViewControl: Control
     
     if (LabelColumnWidth.Value != 0 && ValueColumnWidth.Value != 0)
     {
-      double width = LabelColumnWidth.Value + ValueColumnWidth.Value;
-      writer.Write ("width=\"" + width + "\"");
+      if (LabelColumnWidth.Type != ValueColumnWidth.Type)
+      {
+        throw new InvalidOperationException (
+            "Cannot specify LabelColumnWidth and ValueColumnWidth in different units.");
+      }
+      double widthValue = LabelColumnWidth.Value + ValueColumnWidth.Value;
+      if (LabelColumnWidth.Type == UnitType.Em)
+        widthValue *= .8; // WORKAROUND: EMs in TD are only 80% of EMs in TABLE
+      Unit tableWidth = new Unit (widthValue, LabelColumnWidth.Type);
+      writer.Write ("style=\"width: " + tableWidth.ToString(CultureInfo.InvariantCulture) + ";\"");
     }
 
     writer.WriteLine (">");
@@ -133,7 +142,7 @@ public class ViewField: Control
     writer.Write ("<tr><td class=\"labelView\" valign=\"middle\" align=\"right\" ");
 
     if (labelColumnWidth.Length != 0)
-      writer.Write ("width=\"" + labelColumnWidth + "\"");
+      writer.Write ("style=\"width: " + labelColumnWidth + ";\"");
 
     writer.WriteLine (">");
       
@@ -141,10 +150,10 @@ public class ViewField: Control
     
     writer.Write ("<img height=\"1\" width=\"7\" src=\"../Images/ws.gif\">");
   
-    writer.Write ("</td><td class=\"text\" valign=\"top\" align=\"left\" ");
+    writer.Write ("</td><td class=\"text\" valign=\"middle\" align=\"left\" ");
 
     if (valueColumnWidth.Length != 0)
-      writer.Write ("width=\"" + valueColumnWidth + "\"");
+      writer.Write ("style=\"width: " + valueColumnWidth + ";\"");
 
     writer.WriteLine (">");
 
