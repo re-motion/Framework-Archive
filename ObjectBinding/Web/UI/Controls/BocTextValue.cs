@@ -56,17 +56,9 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   private TextBox _textBox = null;
   private Label _label = null;
 
-  [Browsable (false)]
-  public TextBox TextBox
-  {
-    get { return _textBox; }
-  }
-
-  [Browsable (false)]
-  public Label Label
-  {
-    get { return _label; }
-  }
+  private Style _commonStyle = new Style ();
+  private TextBoxStyle _textBoxStyle = new TextBoxStyle ();
+  private Style _labelStyle = new Style ();
 
 	public BocTextValue()
 	{
@@ -78,9 +70,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    //  Prevent a collapsed control
-    if (IsDesignMode && Width == Unit.Empty)
-      Width = Unit.Pixel (150);
 
     _textBox.ID = this.ID + "_TextBox";
     _textBox.EnableViewState = false;
@@ -212,23 +201,23 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
         //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
 
-      _label.Width = this.Width;
-      _label.Height = this.Height;
+      _label.Width = Width;
+      _label.Height = Height;
       _label.ApplyStyle (_commonStyle);
       _label.ApplyStyle (_labelStyle);
     }
     else
     {
-      _textBox.Width = this.Width;
-      _textBox.Height = this.Height;
+      //  Provide a default width
+      _textBox.Width = Unit.Pixel (150);
+
+      if (Width != Unit.Empty)
+        _textBox.Width = Width;
+      _textBox.Height = Height;
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
     }
   }
-
-  private Style _commonStyle = new Style ();
-  private TextBoxStyle _textBoxStyle = new TextBoxStyle ();
-  private Style _labelStyle = new Style ();
 
   /// <summary>
   ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
@@ -429,6 +418,18 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   public override BaseValidator[] CreateValidators()
   {
     return BocTextValueValidator.CreateValidators (this, this.ID + "_Validator");
+  }
+
+  [Browsable (false)]
+  public TextBox TextBox
+  {
+    get { return _textBox; }
+  }
+
+  [Browsable (false)]
+  public Label Label
+  {
+    get { return _label; }
   }
 }
 

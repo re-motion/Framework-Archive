@@ -108,10 +108,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     base.OnInit (e);
 
-    //  Prevent a collapsed control
-    if (IsDesignMode && Width == Unit.Empty)
-      Width = Unit.Pixel (150);
-
     _listControl = _listControlStyle.Create (false);
     _label = new Label();
 
@@ -128,6 +124,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     _label.ID = this.ID + "_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
+
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _listControl.SelectedIndexChanged += new EventHandler(ListControl_SelectedIndexChanged);
@@ -346,8 +343,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     if (isReadOnly)
     {
-      _label.Width = this.Width;
-      _label.Height = this.Height;
+      _label.Width = Width;
+      _label.Height = Height;
       _label.ApplyStyle (_commonStyle);
       _label.ApplyStyle (_labelStyle);
 
@@ -364,8 +361,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     }
     else
     {
-      _listControl.Width = this.Width;
-      _listControl.Height = this.Height;
+      //  Prevent a collapsed control
+      _listControl.Width = Unit.Pixel (150);
+
+      if (Width != Unit.Empty)
+        _listControl.Width = Width;
+      _listControl.Height = Height;
       _listControl.ApplyStyle (_commonStyle);
       _listControlStyle.ApplyStyle (_listControl);
     }
