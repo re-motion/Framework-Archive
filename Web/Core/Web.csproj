@@ -243,22 +243,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Globalization\PagingNavigationControl.en.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\PagingNavigationControl.fr.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\PagingNavigationControl.it.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\PagingNavigationControl.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "Globalization\ResourceDispatcher.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
