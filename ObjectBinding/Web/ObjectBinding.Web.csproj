@@ -178,7 +178,7 @@
                 <File
                     RelPath = "Controls\BocList.cs"
                     SubType = "Code"
-                    BuildAction = "None"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\BocReferenceValue.cs"
@@ -214,6 +214,16 @@
                     RelPath = "Controls\Styles.resx"
                     DependentUpon = "Styles.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\BocColumnDefinitionCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\BocColumnDefinitionSetCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Design\BusinessObjectBoundControlDesigner.cs"
