@@ -44,7 +44,8 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (false, classWithAllDataTypes.BooleanProperty, "BooleanProperty");
     Assert.AreEqual (85, classWithAllDataTypes.ByteProperty, "ByteProperty");
     Assert.AreEqual ('a', classWithAllDataTypes.CharProperty, "CharProperty");
-    Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes.DateTimeProperty, "DateTimeProperty");
+    Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes.DateProperty, "DateProperty");
+    Assert.AreEqual (new DateTime (2005, 1, 1, 17, 0, 0), classWithAllDataTypes.DateTimeProperty, "DateTimeProperty");
     Assert.AreEqual (123456.789, classWithAllDataTypes.DecimalProperty, "DecimalProperty");
     Assert.AreEqual (987654.321, classWithAllDataTypes.DoubleProperty, "DoubleProperty");
     Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes.EnumProperty, "EnumProperty");
@@ -60,6 +61,9 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes.NaBooleanProperty, "NaBooleanProperty");
 
     Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1)), 
+        classWithAllDataTypes.NaDateProperty, "NaDateProperty");
+
+    Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)), 
         classWithAllDataTypes.NaDateTimeProperty, "NaDateTimeProperty");
 
     Assert.AreEqual (new NaDouble (654321.789), classWithAllDataTypes.NaDoubleProperty, "NaDoubleProperty");
@@ -68,6 +72,9 @@ public class DomainObjectTest : ClientTransactionBaseTest
     
     Assert.AreEqual (NaBoolean.Null, 
         classWithAllDataTypes.NaBooleanWithNullValueProperty, "NaBooleanWithNullValueProperty");
+
+    Assert.AreEqual (NaDateTime.Null, 
+        classWithAllDataTypes.NaDateWithNullValueProperty, "NaDateWithNullValueProperty");
     
     Assert.AreEqual (NaDateTime.Null, 
         classWithAllDataTypes.NaDateTimeWithNullValueProperty, "NaDateTimeWithNullValueProperty");
