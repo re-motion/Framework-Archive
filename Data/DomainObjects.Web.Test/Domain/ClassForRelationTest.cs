@@ -48,5 +48,11 @@ public class ClassForRelationTest : BindableDomainObject
   {
     get { return Name; }
   }
+
+  [ItemType(typeof(ClassWithAllDataTypes))]
+  public DomainObjectCollection ComputedList
+  {
+    get { return null; }
+  }
 }
 }
