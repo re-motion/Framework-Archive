@@ -30,7 +30,7 @@ public class PropertyDefinitionCollectionTest
   [SetUp]
   public void SetUp ()
   {
-    _propertyDefinition = new PropertyDefinition ("Name", "Name", typeof (string), 100);
+    _propertyDefinition = new PropertyDefinition ("Name", "Name", "string", 100);
     _collection = new PropertyDefinitionCollection ();
   }
 

@@ -28,16 +28,31 @@ public class PropertyDefinitionTest
       "Property 'PropertyName' of type 'System.String' must have MaxLength defined.")]     
   public void StringPropertyWithoutMaxLength ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("PropertyName", "ColumnName", typeof (string));
+    PropertyDefinition definition = new PropertyDefinition ("PropertyName", "ColumnName", "string");
   }
-
 
   [Test]
   [ExpectedException (typeof (MappingException),
       "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
   public void IntPropertyWithMaxLength ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (int), new NaInt32 (10));
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", new NaInt32 (10));
+  }
+
+  [Test]
+  public void MappingType ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "date");
+ 
+    Assert.AreEqual (typeof (DateTime), definition.PropertyType);
+    Assert.AreEqual ("date", definition.MappingType);
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException))]
+  public void InvalidMappingType ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
   }
 }
 }
