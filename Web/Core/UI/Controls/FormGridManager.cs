@@ -621,7 +621,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     /// <summary>
     ///   Test's whether this <see cref="FormGridRow"/> contains visible controls or if 
-    ///   it's own <see cref="Visible"/> property is set to false.
+    ///   its own <see cref="Visible"/> property is set to false.
     /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
     public virtual bool CheckVisibility()
@@ -645,7 +645,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary>
-    ///   Sets the <see cref="FormGridRow"/> and it's contained <see cref="HtmlTableRow"/> objects
+    ///   Sets the <see cref="FormGridRow"/> and its contained <see cref="HtmlTableRow"/> objects
     ///   invisible.
     /// </summary>
     public virtual void Hide()
@@ -657,7 +657,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary>
-    ///   Sets the <see cref="FormGridRow"/> and it's contained <see cref="HtmlTableRow"/> 
+    ///   Sets the <see cref="FormGridRow"/> and its contained <see cref="HtmlTableRow"/> 
     ///   visible.
     /// </summary>
     public virtual void Show()
@@ -2367,7 +2367,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
   }
 
-  /// <summary> Queries the control for it's read-only setting and transforms it if necessary. </summary>
+  /// <summary> Queries the control for its read-only setting and transforms it if necessary. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
   protected virtual void HandleReadOnlyControls (FormGridRow dataRow)
   {
