@@ -73,8 +73,7 @@ public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
       "The value of the provided ObjectID is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: relatedID")]
   public void LoadDataContainersByRelatedIDWithObjectIDWithValueOfInvalidType ()
   {
-    ObjectID invalidCustomerID = new ObjectID (
-        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+    ObjectID invalidCustomerID = new ObjectID (DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
 
     ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
