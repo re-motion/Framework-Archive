@@ -301,19 +301,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\Help.gif"
+                    RelPath = "Image\Help.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\RequiredField.gif"
+                    RelPath = "Image\RequiredField.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\Spacer.gif"
+                    RelPath = "Image\Spacer.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\ValidationError.gif"
+                    RelPath = "Image\ValidationError.gif"
                     BuildAction = "Content"
                 />
             </Include>

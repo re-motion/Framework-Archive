@@ -10,11 +10,22 @@ namespace Rubicon.Web.UI
 /// </summary>
 public interface IResourceUrlResolver
 {
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/summary' />
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/Parameters/*' />
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/returns' />
-  /// <param name="definingType"> The type that defines the resource. If the resource instance is not defined by a type, this is null. </param>
-  /// <param name="resourceType"> The type of resource to get. </param>
+  /// <summary>
+  ///   Resolves a relative URL into an absolute URL.
+  /// </summary>
+  /// <param name="relativeUrl">
+  ///   The relative URL to be resolved into an absolute URL.
+  /// </param>
+  /// <param name="definingType"> 
+  ///   The type that defines the resource. If the resource instance is not defined by a type, 
+  ///   this is null. 
+  /// </param>
+  /// <param name="resourceType">
+  ///   The type of resource to get. 
+  /// </param>
+  /// <returns>
+  ///   The absulute URL.
+  /// </returns>
 	string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl);
 }
 
@@ -35,17 +46,6 @@ public class ResourceType
   { 
     get { return _name; }
   }
-}
-
-/// <summary>
-///   Resolve the relative help URL into an absolute help url.
-/// </summary>
-public interface IHelpUrlResolver
-{
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/summary' />
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/Parameters/*' />
-  /// <include file='doc\include\IUrlResolver.xml' path='/IUrlResolver/Common/returns' />
-	string GetHelpUrl (Type definingType, string relativeUrl);
 }
 
 }

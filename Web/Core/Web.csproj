@@ -328,10 +328,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\IUrlResolver.xml"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Doc\include\ResourceDispatcher.xml"
                     BuildAction = "Content"
                 />
