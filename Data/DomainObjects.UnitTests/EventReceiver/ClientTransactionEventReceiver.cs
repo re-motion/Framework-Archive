@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
 public class ClientTransactionEventReceiver
 {
