@@ -258,7 +258,7 @@ public class ValidationStateViewer : WebControl
   ///   Defines how the validation errors are displayed on the page.
   /// </summary>
   /// <value>A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration.</value>
-  [CategoryAttribute("Behaviour")]
+  [CategoryAttribute("Behavior")]
   [DefaultValue(ValidationErrorStyle.Notice)]
   [Description("Defines how the validation messages are displayed.")]
   public ValidationErrorStyle ValidationErrorStyle
