@@ -65,32 +65,45 @@ public class PageUtility
   }
 
   /// <summary>
-  /// Returns the correct page's URL even if cookieless mode is activated.
-  /// </summary>
-  public static string GetPageUrl (Page page)
+  /// Returns the correct Url for a specified page with a relative Url 
+  /// even if cookieless mode is activated.
+  /// </summary>  
+  public static string GetPageUrl (Page page, string relativeUrl)
   {
-    string pageUrl;
+    Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
+    
+    string returnUrl;
 
     // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
     // removes cookie information from the URL => manually add cookie information to URL
     if (page.Session.IsCookieless)
     { 
-      string tempUrl = page.Request.Url.AbsoluteUri;
+      string tempUrl = pageUrl.AbsoluteUri;
       string appPath = page.Request.ApplicationPath;
       int appPathPosition = tempUrl.IndexOf (appPath);
       int appPathPositionEnd = appPathPosition + appPath.Length;
 
-      pageUrl = 
+      returnUrl = 
             tempUrl.Substring (0, appPathPositionEnd) 
           + "/(" + page.Session.SessionID + ")" 
           + tempUrl.Substring (appPathPositionEnd);
     }
     else
     {
-      pageUrl = page.Request.RawUrl;
+      returnUrl = page.Request.RawUrl;
     }
 
-    return pageUrl;
+    return returnUrl;
+  
+  }
+
+
+  /// <summary>
+  /// Returns the correct page's URL even if cookieless mode is activated.
+  /// </summary>
+  public static string GetPageUrl (Page page)
+  {
+    return GetPageUrl (page, "");
   }
 
   /// <summary>
