@@ -9,10 +9,10 @@ namespace Rubicon.Data.NullableValueTypes
 /// </summary>
 /// <remarks>
 ///   <para>
-///     A class that implements <c>INaNullable</c> must meet the following conditions.
+///     Create a value type <c>NaT</c> for each value type <c>T</c> that you want to be able to contain null values.
 ///   </para>
 ///   <para>
-///     (Assume a new nullable type <c>NaT</c> that wraps a value type <c>T</c>.
+///     A class that implements <c>INaNullable</c> must meet the following conditions:
 ///   </para>
 ///   <list type="bullet">
 ///     <item>
