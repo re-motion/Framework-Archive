@@ -33,7 +33,7 @@
     </xs:sequence>	
     <xs:attribute name="id" type="t:requiredStringType" use="required" />
     <xs:attribute name="type" use="required">
-      <xs:simpleType name="">
+      <xs:simpleType>
    	   <xs:restriction base="xs:string">
    	     <xs:enumeration value="collection" />
    	     <xs:enumeration value="value" />

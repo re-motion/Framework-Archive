@@ -248,6 +248,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Loader\QueryConfigurationLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Loader\RelationDefinitionLoader.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -319,6 +324,26 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\VirtualRelationEndPointDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\QueryConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\QueryConfigurationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\QueryDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Queries\QueryDefinitionCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -528,6 +553,11 @@
                 />
                 <File
                     RelPath = "Persistence\WhereClauseBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\QueryType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
