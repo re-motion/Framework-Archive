@@ -48,22 +48,22 @@ public class QueryManager
   }
 
   /// <summary>
-  /// Executes a given <see cref="Query"/> and returns the scalar value.
+  /// Executes a given <see cref="IQuery"/> and returns the scalar value.
   /// </summary>
   /// <param name="query">The query to execute.</param>
   /// <returns>The scalar value that is returned by the query.</returns>
   /// <exception cref="System.ArgumentNullException"><i>query</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException"><i>query</i> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
-  ///   The <see cref="Query.StorageProviderID"/> of <i>query</i> could not be found.
+  ///   The <see cref="IQuery.StorageProviderID"/> of <i>query</i> could not be found.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="Query"/> could not be instantiated.
+  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
   ///   An error occurred while executing the query.
   /// </exception>
-  public object GetScalar (Query query)
+  public object GetScalar (IQuery query)
   {
     ArgumentUtility.CheckNotNull ("query", query);
 
@@ -78,22 +78,22 @@ public class QueryManager
   }
 
   /// <summary>
-  /// Executes a given <see cref="Query"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
+  /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
   /// </summary>
   /// <param name="query">The query to execute.</param>
   /// <returns>The scalar value that is returned by the query.</returns>
   /// <exception cref="System.ArgumentNullException"><i>query</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException"><i>query</i> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
-  ///   The <see cref="Query.StorageProviderID"/> of <i>query</i> could not be found.
+  ///   The <see cref="IQuery.StorageProviderID"/> of <i>query</i> could not be found.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="Query"/> could not be instantiated.
+  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
   ///   An error occurred while executing the query.
   /// </exception>
-  public DomainObjectCollection GetCollection (Query query)
+  public DomainObjectCollection GetCollection (IQuery query)
   {
     ArgumentUtility.CheckNotNull ("query", query);
 

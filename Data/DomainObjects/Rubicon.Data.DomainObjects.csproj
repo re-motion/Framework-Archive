@@ -556,6 +556,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Queries\IQuery.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Queries\Query.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
