@@ -285,7 +285,7 @@ public abstract class RdbmsProvider : StorageProvider
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("command", command);
-    if (!Enum.IsDefined (typeof (CommandBehavior), behavior)) throw new ArgumentException (string.Format ("Invalid command behavior '{0}' provided.", behavior), "behavior");
+    ArgumentUtility.CheckValidEnumValue (behavior, "behavior");
 
     try
     {
