@@ -43,18 +43,14 @@ public class ValidationError
   /// </summary>
   /// <overload>Overloaded</overload>
   /// <param name="validatedControl">The control with an invalid state.</param>
-  /// <param name="validationMessage">The message to be displayed to the user.</param>
   /// <param name="validator">The validator used to validate the <paramref name="validatedControl"/>.</param>
-	public ValidationError (
-    Control validatedControl,
-    string validationMessage,
-    IValidator validator)
+	public ValidationError (Control validatedControl, IValidator validator)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
-    ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+    ArgumentUtility.CheckNotNull ("validator", validator);
 
     _validatedControl = validatedControl;
-    _validationMessage = validationMessage;
+    _validationMessage = null;
     _validator = validator;
 	}
 
@@ -65,8 +61,14 @@ public class ValidationError
   /// <param name="validatedControl">The control with an invalid state.</param>
   /// <param name="validationMessage">The message to be displayed to the user.</param>
   public ValidationError (Control validatedControl, string validationMessage)
-    :this (validatedControl, validationMessage, null)
-	{}
+	{
+    ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
+    ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+
+    _validatedControl = validatedControl;
+    _validationMessage = validationMessage;
+    _validator = null;
+  }
 
   // methods and properties
 
@@ -85,7 +87,13 @@ public class ValidationError
   /// <value>A string containing the message</value>
   public string ValidationMessage
   {
-    get { return _validationMessage; }
+    get 
+    {
+      if (_validationMessage == null)
+        return _validator.ErrorMessage;
+      else
+        return _validationMessage; 
+    }
   }
 
   /// <summary>
