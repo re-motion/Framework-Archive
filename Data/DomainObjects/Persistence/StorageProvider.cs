@@ -29,7 +29,7 @@ public abstract class StorageProvider : IDisposable
     Dispose (false);
   }
 
-  public void Dispose()
+  public void Dispose ()
   {
     Dispose (true);
     GC.SuppressFinalize (this);

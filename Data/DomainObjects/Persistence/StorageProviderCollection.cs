@@ -32,10 +32,17 @@ public class StorageProviderCollection : CollectionBase, IDisposable
 
   #region IDisposable Members
 
-  public void Dispose()
+  public virtual void Dispose ()
   {
-    foreach (StorageProvider provider in this)
+    for (int i = Count - 1; i>= 0; i--)
+    {
+      StorageProvider provider = this[i];
       provider.Dispose ();
+      this.Remove (provider.ID);
+      provider = null;
+    }
+
+    GC.SuppressFinalize (this);
   }
 
   #endregion

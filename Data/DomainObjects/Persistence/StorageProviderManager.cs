@@ -25,7 +25,10 @@ public class StorageProviderManager : IDisposable
 
   public void Dispose()
   {
-    _storageProviders.Dispose ();
+    if (_storageProviders != null)
+      _storageProviders.Dispose ();
+
+    _storageProviders = null;
   }
 
   #endregion
