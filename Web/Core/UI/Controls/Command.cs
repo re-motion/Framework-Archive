@@ -333,7 +333,7 @@ public class Command: IControlItem
     if (! wxePage.IsReturningPostBack)
     {
       string target = WxeFunctionCommand.Target;
-      bool hasTarget = StringUtility.IsNullOrEmpty (target);
+      bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
       Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
 
