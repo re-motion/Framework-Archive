@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.ObjectBinding;
+using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
@@ -82,7 +83,7 @@ public class BocTextValueValidator: CompoundValidator
     set { base.ControlToValidate = value; }
   }
 
-  static BaseValidator[] CreateValidators (BocTextValue textValueControl, string baseID)
+  public static BaseValidator[] CreateValidators (BocTextValue textValueControl, string baseID)
   {
     ArrayList validators = new ArrayList();
 

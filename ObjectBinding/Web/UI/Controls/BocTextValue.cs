@@ -412,6 +412,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     get { return s_supportedPropertyInterfaces; }
   }
+
+  public override BaseValidator[] CreateValidators()
+  {
+    return BocTextValueValidator.CreateValidators (this, this.ID + "_Validator");
+  }
 }
 
 /// <summary>
