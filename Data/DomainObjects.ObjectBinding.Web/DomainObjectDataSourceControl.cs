@@ -11,8 +11,8 @@ using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.Configuration.Loader;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
