@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel;
+using System.Drawing.Design;
+using System.Web.UI.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Runtime.Serialization;
@@ -37,6 +39,7 @@ public sealed class IconInfo: ISerializable
   {
   }
 
+  //[Editor(typeof(ImageUrlEditor), typeof(UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue ("")]
   [NotifyParentProperty (true)]
