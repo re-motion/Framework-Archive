@@ -44,17 +44,15 @@ public class ViewControl: Control
 		
     writer.WriteLine ("<table cellpadding=\"2\" cellspacing=\"3\">");
     
-		
     for (int i = 0; i < this.Controls.Count; ++i)
 		{
 			Control control = this.Controls[i];
       
       if (control.GetType() == typeof(EntryTitle))
       {
-          writer.WriteLine("<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">"
-              + "<tr><td>");
+          writer.WriteLine("<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
           control.RenderControl (writer);
-          writer.WriteLine ("</td></tr></table></td></tr>");
+          writer.WriteLine ("</table></td></tr>");
       }
       else
       {
@@ -123,7 +121,7 @@ public class ViewField: Control
       valueColumnWidth = viewControl.ValueColumnWidth.ToString();
     }
 
-    writer.Write ("<tr><td class=\"labelView\" valign=\"center\" align=\"right\" ");
+    writer.Write ("<tr><td class=\"labelView\" valign=\"middle\" align=\"right\" ");
 
     if (labelColumnWidth.Length != 0)
       writer.Write ("width=\"" + labelColumnWidth + "\"");
@@ -132,7 +130,7 @@ public class ViewField: Control
       
     writer.Write (Title);
     
-    writer.Write ("<img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"");
+    writer.Write ("<img height=\"1\" width=\"7\" src=\"../Images/ws.gif\">");
   
     writer.Write ("</td><td class=\"text\" valign=\"top\" align=\"left\" ");
 
