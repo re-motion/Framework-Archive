@@ -5,7 +5,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//All exceptions checked
+
+/// <summary>
+/// Base class for all collections of Rubicon.Data.DomainObjects.
+/// </summary>
 public class CollectionBase : ICollection
 {
   // types
@@ -62,7 +66,6 @@ public class CollectionBase : ICollection
     }
   }
 
-
   // static members and constants
 
   // member fields
@@ -85,19 +88,20 @@ public class CollectionBase : ICollection
 
   // methods and properties
 
-//TODO documentation: ArgumentOutOfRangeException?
-//TODO documentation: ArgumentNullException?
   /// <summary>
   /// Returns the object with a given index from the collection 
   /// </summary>
   /// <param name="index">The index of the object to return.</param>
   /// <returns>The object with the given index.</returns>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  /// </exception>
   protected object GetObject (int index)
   {
     return _collectionData[_collectionKeys[index]];
   }
 
-//TODO documentation: ArgumentOutOfRangeException?
   /// <summary>
   /// Returns the object with a given key from the collection.
   /// </summary>
@@ -132,12 +136,11 @@ public class CollectionBase : ICollection
     return _collectionData.ContainsKey (key);
   }
 
-//TODO documentation: check param description
   /// <summary>
-  /// Adds an object to the collection with a specified key.
+  /// Adds an element with the specified key and value.
   /// </summary>
-  /// <param name="key">The key of the object to add.</param>
-  /// <param name="value">The object to add.</param>
+  /// <param name="key">A key of the element to add.</param>
+  /// <param name="value">The value of the element to add. The value can be a null reference.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void Add (object key, object value)
   {
@@ -151,9 +154,9 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Removes an object from the collection with a specified key.
+  /// Removes the element with the specified key.
   /// </summary>
-  /// <param name="key">The key of the object to remove.</param>
+  /// <param name="key">The key of the element to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void Remove (object key)
@@ -169,7 +172,7 @@ public class CollectionBase : ICollection
   /// <summary>
   /// Removes all objects from the collection.
   /// </summary>
-  //TODO Documentation: NotSupportedException
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void ClearCollection ()
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
@@ -179,13 +182,29 @@ public class CollectionBase : ICollection
     _version++;
   }
 
-  // TODO Documentation:
+  /// <summary>
+  /// Returns the zero-based index of the element with a given key in the collection.
+  /// </summary>
+  /// <param name="key">The <i>key</i> to locate in the collection.</param>
+  /// <returns>The zero-based index of the element with the given <i>key</i>, if found; otherwise, -1.</returns>
   protected int IndexOfKey (object key)
   {
     return _collectionKeys.IndexOf (key);
   }
 
-  // TODO Documentation: Including exception
+  /// <summary>
+  /// Inserts an element into the collection at the specified index.
+  /// </summary>
+  /// <param name="index">The zero-based <i>index</i> at which element should be inserted.</param>
+  /// <param name="key">A key of the element to insert.</param>
+  /// <param name="value">The <i>value</i> of the element to add. The <i>value</i> can be a null reference.</param>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  /// </exception>
+  /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException">An element with the same <i>key</i> already exists in the collection.</exception>
   protected void Insert (int index, object key, object value)
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
@@ -195,7 +214,15 @@ public class CollectionBase : ICollection
     _collectionKeys.Insert (index, key);
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Checks the <i>index</i> for an insert operation and throws an exception if it is invalid.
+  /// </summary>
+  /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
+  /// <param name="index">The <i>index</i> to check.</param>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  /// </exception>
   protected void CheckIndexForInsert (string argumentName, int index)
   {
     if (index < 0 || index > Count)
@@ -207,7 +234,15 @@ public class CollectionBase : ICollection
     }
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Checks the <i>index</i> for access via the indexer and throws an exception if it is invalid.
+  /// </summary>
+  /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
+  /// <param name="index">The <i>index</i> to check.</param>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <param><i>index</i> is less than zero.</param>
+  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  /// </exception>
   protected void CheckIndexForIndexer (string argumentName, int index)
   {
     if (index < 0 || index >= Count)
