@@ -585,6 +585,24 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   {
     get { return "SimpleColumnDefinition"; }
   }
+
+
+  
+  // TODO: nochmal checken ob das alles sinn macht!
+//  public IBusinessObjectClass BusinessObjectClass
+//  {
+//    get 
+//    {
+//      if (OwnerControl != null && OwnerControl.Property != null && (OwnerControl.Property is IBusinessObjectReferenceProperty))
+//        return ((IBusinessObjectReferenceProperty)OwnerControl.Property).ReferenceClass;
+//      else
+//        return null;
+//    }
+//  }
+  IBusinessObjectBoundControl IPropertyPathBinding.OwnerControl
+  {
+    get { return OwnerControl; }
+  } 
 }
 
 /// <summary>

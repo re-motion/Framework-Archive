@@ -72,7 +72,8 @@ public class PropertyPathBinding: IPropertyPathBinding
 
   /// <summary> Initializes a new instance of the <see cref="PropertyPathBinding"/> class.  </summary>
   public PropertyPathBinding()
-  {}
+  {
+  }
 
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="PropertyPathBinding"/>.
@@ -171,7 +172,7 @@ public class PropertyPathBinding: IPropertyPathBinding
   ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> containing the 
   ///   <see cref="DataSource"/>. 
   /// </summary>
-  protected internal IBusinessObjectBoundControl OwnerControl
+  public IBusinessObjectBoundControl OwnerControl
   {
     get { return _ownerControl;  }
     set { _ownerControl = value; }
