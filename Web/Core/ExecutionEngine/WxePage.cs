@@ -84,11 +84,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       // string returningToken = postBackCollection["returningToken"];
       if (! StringUtility.IsNullOrEmpty (returningToken))
       {
-        WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
-        WxeWindowState windowState = windowStates.GetItem (returningToken);
-        if (windowState != null)
+        WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+        WxeFunctionState functionState = functionStates.GetItem (returningToken);
+        if (functionState != null)
         {
-          WxeContext.Current.ReturningFunction = windowState.Function;
+          WxeContext.Current.ReturningFunction = functionState.Function;
           WxeContext.Current.IsReturningPostBack = true;
         }
       }
@@ -145,11 +145,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    WxeWindowState windowState = new WxeWindowState (function, 20);
-    WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
-    windowStates.Add (windowState);
+    WxeFunctionState functionState = new WxeFunctionState (function, 20);
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    functionStates.Add (functionState);
 
-    string href = _page.Request.Path + "?WxeWindowToken=" + windowState.WindowToken;
+    string href = _page.Request.Path + "?WxeFunctionToken=" + functionState.FunctionToken;
     string openScript = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
@@ -178,7 +178,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
           + "window.close();", 
           _page.CurrentStep.PageToken,
           sender.ClientID, 
-          windowState.WindowToken);
+          functionState.FunctionToken);
     }
     function.ReturnUrl = "javascript:" + returnScript;
   }

@@ -186,6 +186,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeFunctionState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -238,11 +243,6 @@
                 <File
                     RelPath = "ExecutionEngine\WxeUserControl.cs"
                     SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeWindowState.cs"
-                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File

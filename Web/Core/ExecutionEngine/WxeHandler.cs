@@ -20,59 +20,64 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   {
     get { return _currentFunction; }
   }
-
   // IHttpHandler Members
 
 
   public void ProcessRequest (HttpContext context)
   {
-    WxeWindowState windowState = null;
-    string windowToken = context.Request.Params["WxeWindowToken"];
-    WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
-    if (windowToken != null)
+    WxeFunctionState functionState = null;
+    string functionToken = context.Request.Params["WxeFunctionToken"];
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+
+    string typeName = context.Request.Params["WxeFunctionType"];
+    if (typeName != null)
     {
-      if (windowStates == null)
+      Type type = TypeUtility.GetType (typeName, true, false);
+      _currentFunction = (WxeFunction) Activator.CreateInstance (type);
+
+      if (functionStates == null)
+      {
+        functionStates = new WxeFunctionStateCollection();
+        WxeFunctionStateCollection.Instance = functionStates;
+      }
+
+      if (functionToken != null)
+        functionState = new WxeFunctionState (_currentFunction, functionToken, 20); // TODO: make lifetime configurable
+      else
+        functionState = new WxeFunctionState (_currentFunction, 20);
+      functionStates.Add (functionState);
+
+      _currentFunction.InitializeParameters (context.Request.Params);
+    }
+    else if (functionToken != null)
+    {
+      if (functionStates == null)
         throw new ApplicationException ("Session timeout."); // TODO: display error message
 
-      windowState = windowStates.GetItem (windowToken);
-      if (windowState == null)
+      functionState = functionStates.GetItem (functionToken);
+      if (functionState == null)
         throw new ApplicationException ("Page timeout."); // TODO: display error message
-      windowState.Touch();
+      functionState.Touch();
 
-      windowStates.DisposeExpired();
+      functionStates.DisposeExpired();
 
-      _currentFunction = windowState.Function;
+      _currentFunction = functionState.Function;
       if (_currentFunction == null)
-        throw new ApplicationException ("Function missing in WxeWindowState {0}." + windowState.WindowToken);
+        throw new ApplicationException ("Function missing in WxeFunctionState {0}." + functionState.FunctionToken);
       string action = context.Request["WxeAction"];
       if (action == "cancel")
       {
-        windowStates.Remove (windowState);
+        functionStates.Remove (functionState);
         return;
       }
     }
     else
     {
-      string typeName = context.Request.Params["WxeFunctionType"];
-      if (typeName == null)
-        throw new HttpException ("Missing URL parameter 'WxeFunctionType'");
-
-      Type type = TypeUtility.GetType (typeName, true, false);
-      _currentFunction = (WxeFunction) Activator.CreateInstance (type);
-
-      if (windowStates == null)
-      {
-        windowStates = new WxeWindowStateCollection();
-        WxeWindowStateCollection.Instance = windowStates;
-      }
-      windowState = new WxeWindowState (_currentFunction, 20); // TODO: make lifetime configurable
-      windowStates.Add (windowState);
-
-      _currentFunction.InitializeParameters (context.Request.Params);
+      throw new HttpException ("Missing URL parameter 'WxeFunctionType'");
     }
 
     WxeContext wxeContext = new WxeContext (context); 
-    wxeContext.WindowToken = windowState.WindowToken;
+    wxeContext.FunctionToken = functionState.FunctionToken;
     WxeContext.SetCurrent (wxeContext);
 
     _currentFunction.Execute (wxeContext);
