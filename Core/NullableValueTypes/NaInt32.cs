@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.ComponentModel;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -14,7 +15,8 @@ namespace Rubicon.NullableValueTypes
 /// </summary>
 /// <include file='doc\include\include.xml' path='Comments/NaInt32/remarks' />
 [Serializable]
-[NaBasicType (typeof(Int32))]
+[NaBasicType (typeof (Int32))]
+[TypeConverter (typeof (NaInt32Converter))]
 public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable, IXmlSerializable
 {
   #region member fields

@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace Rubicon.NullableValueTypes
 {
@@ -11,7 +12,8 @@ namespace Rubicon.NullableValueTypes
 /// </summary>
 /// <include file='doc\include\include.xml' path='Comments/NaBoolean/remarks' />
 [Serializable]
-[NaBasicType (typeof(Boolean))]
+[NaBasicType (typeof (Boolean))]
+[TypeConverter (typeof (NaBooleanConverter))]
 public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
 {
   #region constants
