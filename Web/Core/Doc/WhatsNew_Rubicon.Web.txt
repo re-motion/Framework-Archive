@@ -5,7 +5,11 @@
   * Erweitert: WebButton unterstützt nun mehrere unabhängige WebButtons auf einer Seite, 
     mit getrennten OnClick Event-Handlern.
     .net 1.1 kann reguläre System.Web.UI.WebControl.Buttons nicht mit getrennten OnClick-Events fahren. 
-    Es wird immer das OnClick Event für den letzten Button in der Collection ausgelöst.
+    Es wird immer das OnClick Event für den letzten Button in der Collection ausgelöst, 
+    da Buttons auch PostData enthalten.
+
+- FormGridManager, ValidationStateViewer
+  * Lokaliserung der Resourcen für Deutsch.
     
 1.2.7.0
 =======
