@@ -145,4 +145,7 @@ public sealed class NaTypeUtility
   }
 
 }
+
+internal enum DebuggingNull { Null };
+
 }

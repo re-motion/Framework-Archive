@@ -9,102 +9,7 @@ namespace Rubicon.Data.NullableValueTypes
 /// <summary>
 /// Represents date and time data that can be null. The corresponding system type is System.DateTime. 
 /// </summary>
-/// <remarks>
-///   <para>
-///     <c>NaDateTime</c> is basically a structure that can contain any date time value or <c>Null</c>. Use <see cref="IsNull"/> to find 
-///     out whether a specific structure contains <c>Null</c>, or <c>NaDateTime.Null</c> to assign <c>Null</c> to a <c>NaDateTime</c> variable.
-///   </para>
-///   <para>
-///     You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>DateTime</c> conversion operator. Either
-///     method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
-///   </para>
-///   <para>
-///     NaDateTime can be used as a replacement for <c>System.Data.SqlTypes.SqlDateTime</c> if you prefer the null-value semantics of <c>NaDateTime</c>
-///     or need serializability. Implicit conversion operators for <c>SqlDateTime </c>allow <c>NaDateTime</c> to be used seamlessly with ADO.NET.
-///   </para>
-///   <para>
-///     The following null-value semantics are used for <c>NaDateTime</c> structures:
-///   </para>
-///   <list type="table">
-///     <listheader>
-///       <term>Category</term>
-///       <description>Semantics</description>
-///     </listheader>
-///     <item>
-///       <term>Equality</term>
-///       <description>
-///         The standard equality methods and operators of <c>NaDateTime</c> consider two <see cref="Null"/> values equal.
-///         <para>
-///           Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>SQL-style Equality</term>
-///       <description>
-///         The SQL-style equality methods of <c>NaDateTime</c> return <c>NaBoolean.Null</c> if either of the compared values
-///         is <see cref="Null"/>. 
-///         <para>
-///           Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Relative Comparison</term>
-///       <description>
-///         The standard compare methods and operators of <c>NaDateTime</c> return <c>NaBoolean.Null</c> if either of the compared values
-///         is <see cref="Null"/>. 
-///         <para>
-///           Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
-///           <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Relative Comparision using <c>CompareTo</c></term>
-///       <description>
-///         The CompareTo methods of <c>NaDateTime</c> consider <see cref="Null"/> and null references to be less than any other value.
-///         <para>
-///           Applies to <see cref="CompareTo"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Arithmetics</term>
-///       <description>
-///         The arithmetic methods and operators of <c>NaDateTime</c> return <see cref="Null"/> if the current instance or one of their 
-///         arguments are <c>Null</c>. All arithmetic methods are checked, i.e. an OverflowException may be thrown.
-///         <para>
-///           Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="AddYears"/>, <see cref="AddMonths"/>, <see cref="AddDays"/>, 
-///           <see cref="AddHours"/>, <see cref="AddMinutes"/>, <see cref="AddSeconds"/>, <see cref="AddMilliseconds"/>, 
-///           <see cref="operator +"/>, <see cref="operator -"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Type Conversion</term>
-///       <description>
-///         If a <c>NaDateTime</c> null-value is converted to an <c>DateTime</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
-///         from <c>DateTime</c> to <c>NaDateTime</c>, and conversions to and from <c>SqlDateTime</c> never throw exceptions.
-///       </description>
-///     </item>
-///     <item>
-///       <term>Formatting and Parsing</term>
-///       <description>
-///         <para>
-///           If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>DateTime.ToString</c> would return. If it is
-///           <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
-///           symbol ("~") to return a
-///           zero-length string for <c>Null</c>.
-///         </para>
-///         <para>
-///           <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
-///           Otherwise, it returns the same value that <c>DateTime.Parse</c> would return.
-///         </para>
-///       </description>
-///     </item>
-///   </list>
-/// </remarks>
+/// <include file='doc\include\include.xml' path='Comments/NaDateTime/remarks' />
 [Serializable]
 [NaBasicType (typeof(DateTime))]
 public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
@@ -112,7 +17,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   #region member fields
 
   private DateTime _value;
-  private bool _isNull;
+  private bool _isNotNull;
 
   #endregion
 
@@ -125,13 +30,13 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   public NaDateTime (DateTime value)
   {
     _value = value;
-    _isNull = false;
+    _isNotNull = true;
   }
 
   private NaDateTime (bool isNull)
   {
     _value = new DateTime (0);
-    _isNull = isNull;
+    _isNotNull = ! isNull;
   }
 
   #endregion
@@ -146,7 +51,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   private NaDateTime (SerializationInfo info, StreamingContext context)
   {
-    _isNull = info.GetBoolean ("IsNull");
+    _isNotNull = ! info.GetBoolean ("IsNull");
     _value = info.GetDateTime ("Value");
   }
 
@@ -158,7 +63,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    info.AddValue ("IsNull", _isNull);
+    info.AddValue ("IsNull", IsNull);
     info.AddValue ("Value", _value);
   }
 
@@ -219,13 +124,13 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   {
     if (format != null && format.Length > 0 && format[0] == '~')
     {
-      if (_isNull)
+      if (IsNull)
         return string.Empty;
       format = format.Substring (1);
     }
     else
     {
-      if (_isNull)
+      if (IsNull)
         return NullString;
     }
     return _value.ToString (format, provider);
@@ -313,7 +218,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </exception>
   public static explicit operator DateTime (NaDateTime value)
   {
-    if (value._isNull)
+    if (value.IsNull)
       throw NaNullValueException.AccessingMember ("NaDateTime to DateTime Conversion");
     return value._value;
   }
@@ -366,7 +271,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static object ToBoxedDateTime (NaDateTime value)
   {
-    if (value._isNull )
+    if (value.IsNull )
       return null;
     else
       return value._value;
@@ -402,7 +307,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static object ToBoxedDateTimeDBNull (NaDateTime value)
   {
-    if (value._isNull )
+    if (value.IsNull )
       return DBNull.Value;
     else
       return value._value;
@@ -443,7 +348,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   {
     get 
     { 
-      if (_isNull)
+      if (IsNull)
         throw NaNullValueException.AccessingMember ("Value");
       return _value;
     }
@@ -537,6 +442,20 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
     get { return Value.Ticks; }
   }
 
+  /// <summary>
+  /// Gets the value of the structure for debugger watch windows.
+  /// </summary>
+  /// <remarks>Modify Visual Studio's mcee_cs.dat file to set this as the default property for watch windows.</remarks>
+  private object DebuggingValue
+  {
+    get 
+    { 
+      if (IsNull)
+        return DebuggingNull.Null;
+      else
+        return _value;
+    }
+  }
   #endregion
 
   #region nullable
@@ -558,7 +477,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </value>
   public bool IsNull 
   {
-    get { return _isNull; }
+    get { return ! _isNotNull; }
   }
 
   #endregion
@@ -654,9 +573,9 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static bool operator == (NaDateTime x, NaDateTime y)
   {
-    if (x._isNull && y._isNull)
+    if (x.IsNull && y.IsNull)
       return true;
-    if (x._isNull != y._isNull)
+    if (x.IsNull != y.IsNull)
       return false;
     return x._value == y._value;
   }
@@ -699,7 +618,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean EqualsSql (NaDateTime x, NaDateTime y)
   {
-    if (x._isNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
     else return new NaBoolean (x._value == y._value);
   }
@@ -712,7 +631,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean NotEqualsSql (NaDateTime x, NaDateTime y)
   {
-    if (x._isNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
     else return new NaBoolean (x._value != y._value);
   }
@@ -722,7 +641,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </summary>
   public override int GetHashCode()
   {
-    if (_isNull)
+    if (IsNull)
       return 0;
     else return _value.GetHashCode();
   }
@@ -755,7 +674,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   public int CompareTo (object obj)
   {
     if (obj == null)
-      return _isNull ? 0 : 1;
+      return IsNull ? 0 : 1;
 
     if (! (obj is NaDateTime))
       throw new ArgumentException ("obj");
@@ -790,14 +709,14 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public int CompareTo (NaDateTime value)
   {
-    if (this._isNull)
+    if (this.IsNull)
     {
-      if (value._isNull)
+      if (value.IsNull)
         return 0; // both are null
       else
         return -1; // this is null
     }
-    if (value._isNull)
+    if (value.IsNull)
       return 1; // value is null
 
     if (this._value < value._value)
@@ -835,7 +754,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDateTime operator + (NaDateTime datetime, TimeSpan timespan)
   {
-	  if (datetime._isNull)
+	  if (datetime.IsNull)
 		  return NaDateTime.Null;
 
     try
@@ -901,7 +820,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMonths (int months)
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -921,7 +840,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddDays (double days)
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -941,7 +860,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddHours (double hours)
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -961,7 +880,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMinutes (double minutes)
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -981,7 +900,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddSeconds (double seconds)
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -1001,7 +920,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMilliseconds  (double milliseconds )
   {
-    if (this._isNull)
+    if (this.IsNull)
       return NaDateTime.Null;
 
     try
@@ -1039,7 +958,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator < (NaDateTime x, NaDateTime y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value < y._value);
@@ -1066,7 +985,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator <= (NaDateTime x, NaDateTime y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value <= y._value);
@@ -1093,7 +1012,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator > (NaDateTime x, NaDateTime y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value > y._value);
@@ -1120,7 +1039,7 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator >= (NaDateTime x, NaDateTime y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value >= y._value);

@@ -9,92 +9,7 @@ namespace Rubicon.Data.NullableValueTypes
 /// <summary>
 /// Represents a boolean value that can be <c>Null</c>. The corresponding system type is System.Boolean.
 /// </summary>
-/// <remarks>
-///   <para>
-///     <c>NaBoolean</c> is basically a structure that can contain <c>true</c>, <c>false</c> or <c>Null</c>. Use <see cref="IsNull"/> to find 
-///     out whether a specific structure contains <c>Null</c>, or <c>NaBoolean.Null</c> to assign <c>Null</c> to a <c>NaBoolean</c> variable.
-///   </para>
-///   <para>
-///     You can use the <see cref="Value"/> property to access the boolean value, or the explicit <c>Boolean</c> conversion operator. Either
-///     method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
-///   </para>
-///   <para>
-///     NaBoolean can be used as a replacement for <c>System.Data.SqlTypes.SqlBoolean</c> if you prefer the null-value semantics of <c>NaBoolean</c>
-///     or need serializability. Implicit conversion operators for <c>SqlBoolean </c>allow <c>NaBoolean</c> to be used seamlessly with ADO.NET.
-///   </para>
-///   <para>
-///     The following null-value semantics are used for <c>NaBoolean</c> structures:
-///   </para>
-///   <list type="table">
-///     <listheader>
-///       <term>Category</term>
-///       <description>Semantics</description>
-///     </listheader>
-///     <item>
-///       <term>Equality</term>
-///       <description>
-///         The standard equality methods and operators of <c>NaBoolean</c> consider two <see cref="Null"/> values equal.
-///         <para>
-///           Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>SQL-style Equality</term>
-///       <description>
-///         The SQL-style equality methods of <c>NaBoolean</c> return <c>NaBoolean.Null</c> if either of the compared values
-///         is <see cref="Null"/>. 
-///         <para>
-///           Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Relative Comparision using <c>CompareTo</c></term>
-///       <description>
-///         The CompareTo methods of <c>NaBoolean</c> consider <see cref="Null"/> and null references to be less than any other value.
-///         Note that <c>false</c> is considerd greater than <c>true</c> and two <c>Null</c> values are considered equal:
-///         <para>
-///           <c>Null</c> &lt; <c>true</c> &lt; <c>false</c>
-///         </para>
-///         <para>
-///           Applies to <see cref="CompareTo"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Logical</term>
-///       <description>
-///         The logical methods and operators of <c>NaBoolean</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
-///         <para>
-///           Applies to <see cref="And"/>, <see cref="Or"/>, <see cref="Xor"/>, <see cref="Not"/>, 
-///           <see cref="operator &amp;"/>, <see cref="operator |"/>, <see cref="operator ^"/>, <see cref="operator !"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Type Conversion</term>
-///       <description>
-///         If a <c>NaBoolean</c> null-value is converted to a <c>Boolean</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
-///         from <c>Boolean</c> to <c>NaBoolean</c>, and conversions to and from <c>SqlBoolean</c> never throw exceptions.
-///       </description>
-///     </item>
-///     <item>
-///       <term>Formatting and Parsing</term>
-///       <description>
-///         <para>
-///           If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Boolean.ToString</c> would return. If it is
-///           <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
-///           symbol ("~") to return a zero-length string for <c>Null</c>.
-///         </para>
-///         <para>
-///           <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
-///           Otherwise, it returns the same value that <c>Boolean.Parse</c> would return.
-///         </para>
-///       </description>
-///     </item>
-///   </list>
-/// </remarks>
+/// <include file='doc\include\include.xml' path='Comments/NaBoolean/remarks' />
 [Serializable]
 [NaBasicType (typeof(Boolean))]
 public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
@@ -418,6 +333,20 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
     }
   }
 
+  /// <summary>
+  /// Gets the value of the structure for debugger watch windows.
+  /// </summary>
+  /// <remarks>Modify Visual Studio's mcee_cs.dat file to set this as the default property for watch windows.</remarks>
+  private object DebuggingValue
+  {
+    get 
+    { 
+      if (IsNull)
+        return DebuggingNull.Null;
+      else
+        return Value;
+    }
+  }
   #endregion
 
   #region nullable

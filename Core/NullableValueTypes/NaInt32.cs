@@ -9,101 +9,7 @@ namespace Rubicon.Data.NullableValueTypes
 /// <summary>
 /// Represents a 32-bit signed integer that can be <c>Null</c>. The corresponding system type is System.Int32.
 /// </summary>
-/// <remarks>
-///   <para>
-///     <c>NaInt32</c> is basically a structure that can contain any 32-bit integer value or <c>Null</c>. Use <see cref="IsNull"/> to find 
-///     out whether a specific structure contains <c>Null</c>, or <c>NaInt32.Null</c> to assign <c>Null</c> to a <c>NaInt32</c> variable.
-///   </para>
-///   <para>
-///     You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>Int32</c> conversion operator. Either
-///     method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
-///   </para>
-///   <para>
-///     NaInt32 can be used as a replacement for <c>System.Data.SqlTypes.SqlInt32</c> if you prefer the null-value semantics of <c>NaInt32</c>
-///     or need serializability. Implicit conversion operators for <c>SqlInt32 </c>allow <c>NaInt32</c> to be used seamlessly with ADO.NET.
-///   </para>
-///   <para>
-///     The following null-value semantics are used for <c>NaInt32</c> structures:
-///   </para>
-///   <list type="table">
-///     <listheader>
-///       <term>Category</term>
-///       <description>Semantics</description>
-///     </listheader>
-///     <item>
-///       <term>Equality</term>
-///       <description>
-///         The standard equality methods and operators of <c>NaInt32</c> consider two <see cref="Null"/> values equal.
-///         <para>
-///           Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>SQL-style Equality</term>
-///       <description>
-///         The SQL-style equality methods of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
-///         is <see cref="Null"/>. 
-///         <para>
-///           Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Relative Comparison</term>
-///       <description>
-///         The standard compare methods and operators of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
-///         is <see cref="Null"/>. 
-///         <para>
-///           Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
-///           <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Relative Comparision using <c>CompareTo</c></term>
-///       <description>
-///         The CompareTo methods of <c>NaInt32</c> consider <see cref="Null"/> and null references to be less than any other value.
-///         <para>
-///           Applies to <see cref="CompareTo"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Arithmetics</term>
-///       <description>
-///         The arithmetic methods and operators of <c>NaInt32</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
-///         All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
-///         <para>
-///           Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
-///           <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
-///         </para>
-///       </description>
-///     </item>
-///     <item>
-///       <term>Type Conversion</term>
-///       <description>
-///         If a <c>NaInt32</c> null-value is converted to an <c>Int32</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
-///         from <c>Int32</c> to <c>NaInt32</c>, and conversions to and from <c>SqlInt32</c> never throw exceptions.
-///       </description>
-///     </item>
-///     <item>
-///       <term>Formatting and Parsing</term>
-///       <description>
-///         <para>
-///           If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Int32.ToString</c> would return. If it is
-///           <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
-///           symbol ("~") to return a
-///           zero-length string for <c>Null</c>.
-///         </para>
-///         <para>
-///           <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
-///           Otherwise, it returns the same value that <c>Int32.Parse</c> would return.
-///         </para>
-///       </description>
-///     </item>
-///   </list>
-/// </remarks>
+/// <include file='doc\include\include.xml' path='Comments/NaInt32/remarks' />
 [Serializable]
 [NaBasicType (typeof(Int32))]
 public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
@@ -111,7 +17,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   #region member fields
 
   private Int32 _value;
-  private bool _isNull;
+  private bool _isNotNull;
 
   #endregion
 
@@ -124,13 +30,13 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   public NaInt32 (Int32 value)
   {
     _value = value;
-    _isNull = false;
+    _isNotNull = true;
   }
 
   private NaInt32 (bool isNull)
   {
     _value = 0;
-    _isNull = isNull;
+    _isNotNull = ! isNull;
   }
 
   #endregion
@@ -145,7 +51,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   private NaInt32 (SerializationInfo info, StreamingContext context)
   {
-    _isNull = info.GetBoolean ("IsNull");
+    _isNotNull = ! info.GetBoolean ("IsNull");
     _value = info.GetInt32 ("Value");
   }
 
@@ -157,7 +63,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    info.AddValue ("IsNull", _isNull);
+    info.AddValue ("IsNull", IsNull);
     info.AddValue ("Value", _value);
   }
 
@@ -218,13 +124,13 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   {
     if (format != null && format.Length > 0 && format[0] == '~')
     {
-      if (_isNull)
+      if (IsNull)
         return string.Empty;
       format = format.Substring (1);
     }
     else
     {
-      if (_isNull)
+      if (IsNull)
         return NullString;
     }
     return _value.ToString (format, provider);
@@ -312,7 +218,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </exception>
   public static explicit operator Int32 (NaInt32 value)
   {
-    if (value._isNull)
+    if (value.IsNull)
       throw NaNullValueException.AccessingMember ("NaInt32 to Int32 Conversion");
     return value._value;
   }
@@ -365,7 +271,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static object ToBoxedInt32 (NaInt32 value)
   {
-    if (value._isNull )
+    if (value.IsNull )
       return null;
     else
       return value._value;
@@ -401,7 +307,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static object ToBoxedInt32DBNull (NaInt32 value)
   {
-    if (value._isNull )
+    if (value.IsNull )
       return DBNull.Value;
     else
       return value._value;
@@ -444,12 +350,26 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   {
     get 
     { 
-      if (_isNull)
+      if (IsNull)
         throw NaNullValueException.AccessingMember ("Value");
       return _value;
     }
   }
 
+  /// <summary>
+  /// Gets the value of the structure for debugger watch windows.
+  /// </summary>
+  /// <remarks>Modify Visual Studio's mcee_cs.dat file to set this as the default property for watch windows.</remarks>
+  private object DebuggingValue
+  {
+    get 
+    { 
+      if (IsNull)
+        return DebuggingNull.Null;
+      else
+        return _value;
+    }
+  }
   #endregion
 
   #region nullable
@@ -471,7 +391,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </value>
   public bool IsNull 
   {
-    get { return _isNull; }
+    get { return ! _isNotNull; }
   }
 
   #endregion
@@ -576,9 +496,9 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </remarks>
   public static bool operator == (NaInt32 x, NaInt32 y)
   {
-    if (x._isNull && y._isNull)
+    if (x.IsNull && y.IsNull)
       return true;
-    if (x._isNull != y._isNull)
+    if (x.IsNull != y.IsNull)
       return false;
     return x._value == y._value;
   }
@@ -621,7 +541,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean EqualsSql (NaInt32 x, NaInt32 y)
   {
-    if (x._isNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
     else return new NaBoolean (x._value == y._value);
   }
@@ -634,7 +554,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean NotEqualsSql (NaInt32 x, NaInt32 y)
   {
-    if (x._isNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
     else return new NaBoolean (x._value != y._value);
   }
@@ -644,7 +564,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </summary>
   public override int GetHashCode()
   {
-    if (_isNull)
+    if (IsNull)
       return 0;
     else return _value.GetHashCode();
   }
@@ -677,7 +597,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   public int CompareTo (object obj)
   {
     if (obj == null)
-      return _isNull ? 0 : 1;
+      return IsNull ? 0 : 1;
 
     if (! (obj is NaInt32))
       throw new ArgumentException ("obj");
@@ -712,14 +632,14 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public int CompareTo (NaInt32 value)
   {
-    if (this._isNull)
+    if (this.IsNull)
     {
-      if (value._isNull)
+      if (value.IsNull)
         return 0; // both are null
       else
         return -1; // this is null
     }
-    if (value._isNull)
+    if (value.IsNull)
       return 1; // value is null
 
     if (this._value < value._value)
@@ -757,7 +677,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator + (NaInt32 x, NaInt32 y)
   {
-	  if (x._isNull || y._isNull)
+	  if (x.IsNull || y.IsNull)
 		  return NaInt32.Null;
 
     checked
@@ -789,7 +709,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator - (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaInt32.Null;
 
     checked
@@ -821,7 +741,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 operator / (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaInt32.Null;
 
     checked
@@ -853,7 +773,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator * (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaInt32.Null;
 
     checked
@@ -885,7 +805,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 operator % (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaInt32.Null;
 
     checked
@@ -919,7 +839,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator < (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value < y._value);
@@ -946,7 +866,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator <= (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value <= y._value);
@@ -973,7 +893,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator > (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value > y._value);
@@ -1000,7 +920,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   /// </returns>
   public static NaBoolean operator >= (NaInt32 x, NaInt32 y)
   {
-    if (x.IsNull || y._isNull)
+    if (x.IsNull || y.IsNull)
       return NaBoolean.Null;
 
     return new NaBoolean (x._value >= y._value);
