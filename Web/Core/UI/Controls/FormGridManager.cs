@@ -653,7 +653,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     ///   Sets the <see cref="FormGridRow"/> and it's contained <see cref="HtmlTableRow"/> 
     ///   visible.
     /// </summary>
-   public virtual void Show()
+    public virtual void Show()
     {
       _visible = true;
 
