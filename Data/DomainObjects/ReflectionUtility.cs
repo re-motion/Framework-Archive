@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 
 using Rubicon.Utilities;
@@ -11,6 +12,14 @@ public sealed class ReflectionUtility
   // types
 
   // static members and constants
+
+  public static string GetExecutingAssemblyPath ()
+  {
+    AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName ();
+
+    Uri codeBaseUri = new Uri (assemblyName.CodeBase);
+    return Path.GetDirectoryName (codeBaseUri.LocalPath);
+  }
 
   public static object CreateObject (Type type, params object[] constructorParameters)
   {
