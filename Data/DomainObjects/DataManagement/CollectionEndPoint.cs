@@ -29,6 +29,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private RelationChangeOperation _relationChangeOperation = RelationChangeOperation.Unspecified;
   private RelationEndPoint _oldEndPoint = null;
+  private DomainObject _oldRelatedObject = null;
   private RelationEndPoint _newEndPoint = null;
   private int _index = -1;
 
@@ -142,6 +143,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     _relationChangeOperation = RelationChangeOperation.Unspecified;
     _oldEndPoint = oldEndPoint;
+    _oldRelatedObject = oldEndPoint.GetDomainObject ();
     _newEndPoint = newEndPoint;
     _index = -1;
 
@@ -149,7 +151,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     {
       _relationChangeOperation = RelationChangeOperation.Remove;
 
-      if (!_oppositeDomainObjects.BeginRemove (_oldEndPoint.GetDomainObject ()))
+      if (!_oppositeDomainObjects.BeginRemove (_oldRelatedObject))
         return false;
     }
 
@@ -200,7 +202,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     if (_relationChangeOperation == RelationChangeOperation.Remove)
     {
-      _oppositeDomainObjects.PerformRemove (_oldEndPoint.GetDomainObject ());
+      _oppositeDomainObjects.PerformRemove (_oldRelatedObject);
       return;
     }
 
@@ -218,7 +220,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     if (_relationChangeOperation == RelationChangeOperation.Replace)
     {
-      _oppositeDomainObjects.PerformRemove (_oldEndPoint.GetDomainObject ());
+      _oppositeDomainObjects.PerformRemove (_oldRelatedObject);
       _oppositeDomainObjects.PerformInsert (_index, _newEndPoint.GetDomainObject ());
     }
   }
@@ -234,13 +236,14 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
 
     if (_relationChangeOperation == RelationChangeOperation.Remove)
-      _oppositeDomainObjects.EndRemove (_oldEndPoint.GetDomainObject ());
+      _oppositeDomainObjects.EndRemove (_oldRelatedObject);
 
     if (_relationChangeOperation == RelationChangeOperation.Insert || _relationChangeOperation == RelationChangeOperation.Add)
       _oppositeDomainObjects.EndAdd (_newEndPoint.GetDomainObject ());
 
     _relationChangeOperation = RelationChangeOperation.Unspecified;
     _oldEndPoint = null;
+    _oldRelatedObject = null;
     _newEndPoint = null;
     _index = -1;
 
