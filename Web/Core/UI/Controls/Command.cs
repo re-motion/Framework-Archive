@@ -205,7 +205,7 @@ public class Command
 
   //private ScriptCommandInfo _scriptCommand = null;
 
-  private IControl _ownerControl = null;
+  private Control _ownerControl = null;
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
@@ -445,16 +445,14 @@ public class Command
     }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IControl"/> to which this object belongs. 
-  /// </summary>
-  protected internal IControl OwnerControl
+  /// <summary> Gets or sets the control to which this object belongs. </summary>
+  public Control OwnerControl
   {
     get { return OwnerControlImplementation;  }
     set { OwnerControlImplementation = value; }
   }
 
-  protected virtual IControl OwnerControlImplementation
+  protected virtual Control OwnerControlImplementation
   {
     get { return _ownerControl;  }
     set
