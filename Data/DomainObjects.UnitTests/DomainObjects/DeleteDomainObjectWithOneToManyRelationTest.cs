@@ -90,5 +90,20 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
 
     _eventReceiver.Compare (expectedStates);
   }
+
+// TODO: Implement this test: Collection must be cloned. Be aware that this conflicts with a
+// many to one relation change!!!
+
+//  [Test]
+//  public void Relations ()
+//  {
+//    int numberOfSubordinatesBeforeDelete = _supervisor.Subordinates.Count;
+//
+//    _supervisor.Delete ();
+//
+//    Assert.AreEqual (numberOfSubordinatesBeforeDelete, _supervisor.Subordinates.Count);
+//    Assert.IsNull (_subordinate1.Supervisor);
+//    Assert.IsNull (_subordinate2.Supervisor);
+//  }
 }
 }
