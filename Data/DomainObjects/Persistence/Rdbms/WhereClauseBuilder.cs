@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.Text;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Persistence
 {
 public class WhereClauseBuilder
