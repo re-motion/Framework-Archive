@@ -127,6 +127,8 @@ public class ObjectEndPoint : RelationEndPoint, INullable
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
+    _oppositeObjectID = endPoint.ObjectID;
+
     if (!IsVirtual)
     {
       DataContainer dataContainer = GetDataContainer ();
