@@ -21,6 +21,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Collections;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -36,6 +37,18 @@ public class BocList:
     IPostBackEventHandler, 
     IComparer
 {
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
+  protected enum ResourceIdentifier
+  {
+  }
+
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return null;//GetResourceManager (typeof (ResourceIdentifier));
+  }
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
