@@ -3,6 +3,7 @@ using System;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -233,9 +234,9 @@ public class DataContainer
   {
     if (_state == DataContainerStateType.New)
     {
-      _isDiscarded = true;
       _propertyValues.Discard ();
       _clientTransaction = null;
+      _isDiscarded = true;
     }
 
     _state = DataContainerStateType.Deleted;

@@ -2,6 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
