@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -51,7 +52,7 @@ public class WxeForm: HtmlForm
   {
     if (Context != null && WxeContext.Current != null)
     {
-      string action = Context.Request.Path + "?WxeFunctionToken=" + WxeContext.Current.FunctionToken;
+      string action = Path.GetFileName (Context.Request.Path) + "?WxeFunctionToken=" + WxeContext.Current.FunctionToken;
       writer.WriteAttribute ("action", action);
       Attributes.Remove ("action");
     }
