@@ -38,7 +38,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   public event EventHandler SelectionChanged;
 
   /// <summary>
-  ///   <see langword="true"/> if <see cref="ReferenceValue"/> has been changed since last call to
+  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
   ///   <see cref="SaveValue"/>.
   /// </summary>
   private bool _isDirty = true;
@@ -479,7 +479,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///     Must be serializable.
   ///   </para><para>
   ///      Must be part of the enum identified by 
-  ///      <see cref="IBusinessObjectEnumerationProperty.PropertyType"/>.
+  ///      <see cref="IBusinessObjectProperty.PropertyType"/>.
   ///   </para><para>
   ///     Relies on the implementation of
   ///     <see cref="IBusinessObjectEnumerationProperty.GetValueInfoByValue"/>
@@ -543,7 +543,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   </para>
   /// </remarks>
   /// <value> 
-  ///   The <see cref="EnumerationValueInfo.Identifier"/> object
+  ///   The <see cref="IEnumerationValueInfo.Identifier"/> object
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
   protected virtual string InternalValue
