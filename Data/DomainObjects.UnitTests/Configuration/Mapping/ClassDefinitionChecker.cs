@@ -45,7 +45,7 @@ public class ClassDefinitionChecker
       if (checkRelations)
       {
         RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
-        relationDefinitionChecker.Check (expectedDefinition.RelationDefinitions, actualDefinition.RelationDefinitions);
+        relationDefinitionChecker.Check (expectedDefinition.MyRelationDefinitions, actualDefinition.MyRelationDefinitions);
       }
     }
   }
@@ -84,8 +84,8 @@ public class ClassDefinitionChecker
     }
 
     CheckPropertyDefinitions (
-        expectedDefinition.PropertyDefinitions, 
-        actualDefinition.PropertyDefinitions, 
+        expectedDefinition.MyPropertyDefinitions, 
+        actualDefinition.MyPropertyDefinitions, 
         expectedDefinition);
   }
 
