@@ -2732,7 +2732,7 @@ public class BocList:
   /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [Category ("Column Definition")]
+  //  Default category
   [Description ("The user independent column defintions.")]
   [DefaultValue ((string) null)]
   public BocColumnDefinitionCollection FixedColumns
@@ -2744,7 +2744,7 @@ public class BocList:
   /// <summary> Gets the predefined column defintion sets that the user can choose from at run-time. </summary>
   //  [PersistenceMode(PersistenceMode.InnerProperty)]
   //  [ListBindable (false)]
-  //  [Category ("Column Definition")]
+  //  //  Default category
   //  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
   //  [DefaultValue ((string) null)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

@@ -1076,11 +1076,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary> Gets or sets the <see cref="BocCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocCommand"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Menu")]
-    [Description ("The command rendered in this column.")]
-    [NotifyParentProperty (true)]
-  // HACK: have to use collection editor, otherwise the designer doesn't realize the collection has changed
-  //[Browsable (false)]
+  [Category ("Menu")]
+  [Description ("The command rendered in this column.")]
+  [NotifyParentProperty (true)]
   public BocCommand Command
   {
     get { return (BocCommand) _command.Item; }
@@ -1118,6 +1116,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [Browsable (false)]
+  [NotifyParentProperty (true)]
   public SingleControlItemCollection PersistedCommand
   {
     get { return _command; }
