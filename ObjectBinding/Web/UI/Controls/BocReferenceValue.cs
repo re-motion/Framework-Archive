@@ -227,12 +227,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
           _dropDownList.Items.Remove (itemToRemove);
       }
 
-      //  Check if null item is to be selected
-      bool hasProperty = _isLoadViewState || Property != null;
+      bool hasPropertyPostInitializion = _isLoadViewState || Property != null;
 
-      if (InternalValue == null || ! hasProperty)
-//      if (    InternalValue == null
-//          ||  (! _isLoadViewState && Property == null))
+      //  Check if null item is to be selected
+      if (InternalValue == null || ! hasPropertyPostInitializion)
       {
         //  No
         if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
