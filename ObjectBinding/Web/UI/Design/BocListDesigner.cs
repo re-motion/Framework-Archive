@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class BocListDesigner: ControlDesigner, IServiceProvider
+public class BocListDesigner: BocDesigner, IServiceProvider
 {
   private DesignerVerbCollection _verbs = null;
 
