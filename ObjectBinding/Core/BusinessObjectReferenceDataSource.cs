@@ -13,7 +13,7 @@ public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
   IBusinessObjectDataSource ReferencedDataSource { get; }
 }
 
-public abstract class BusinessObjectReferenceDataSourceBase: BusinessObjectDataSource, IBusinessObjectDataSource
+public abstract class BusinessObjectReferenceDataSourceBase: BusinessObjectDataSource, IBusinessObjectReferenceDataSource
 {
   [CLSCompliant (false)]
   protected IBusinessObject _businessObject;
