@@ -23,7 +23,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <exception cref="InvalidOperationException">
-///   Thrown if <see cref="EnableTreeNodeCaching"/> is <see langword="true"/> and a tree node's 
+///   Thrown during <see cref="WebTreeView"/>'s call to the <c>EvaluateWebTreeNode</c> delegate 
+///   if <see cref="EnableTreeNodeCaching"/> is <see langword="true"/> and a tree node's 
 ///   <see cref="IBusinessObjectWithIdentity"/> or <see cref="IBusinessObjectReferenceProperty"/> could not restored
 ///   from the underlying object model.
 /// </exception>
@@ -312,6 +313,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
     //  Is root node?
     if (node.ParentNode == null)
     {
+      if (Value == null)
+        throw new InvalidOperationException ("Cannot evaluate the tree node hierarchy because the value collection is null.");
+
       foreach (IBusinessObjectWithIdentity businessObject in Value)
       {
         if (node.NodeID == businessObject.UniqueIdentifier)
@@ -320,11 +324,17 @@ public class BocTreeView: BusinessObjectBoundWebControl
           break;
         }
       }
+
       if (node.BusinessObject == null)
       {
         //  Required business object has not been part of the values collection in this post back, get it from the class
-        ArgumentUtility.CheckNotNull ("DataSource", DataSource);
-        ArgumentUtility.CheckNotNullAndType ("DataSource.BusinessObjectClass", DataSource.BusinessObjectClass, typeof (IBusinessObjectClassWithIdentity));
+        if (DataSource == null)
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSoure is null.");
+        if (DataSource.BusinessObjectClass == null)
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSource.BusinessObjectClass is null.");
+        if (! (DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSource.BusinessObjectClass is of type '" + DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
+        
         node.BusinessObject = 
             ((IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass).GetObject (node.NodeID);
         if (node.BusinessObject == null) // This test could be omitted if graceful recovery is wanted.
