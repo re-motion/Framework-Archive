@@ -111,7 +111,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       if (Value != null)
       {
         foreach (IBusinessObjectWithIdentity businessObject in Value)
-          CreateRootNode (Nodes, businessObject, ! EnableTopLevelExpander);
+          CreateRootNode (Nodes, null, businessObject, ! EnableTopLevelExpander);
       }
     }
     else
@@ -122,7 +122,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void EvaluateTreeNode (WebTreeNode node)
   {
-    ArgumentUtility.CheckNotNull ("node", node);
+    ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
 
     BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
     BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
@@ -137,10 +137,11 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void CreateRootNode (
       WebTreeNodeCollection rootNodes, 
+      IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity rootBusinessObject,
       bool expandNode)
   {
-    BusinessObjectTreeNode rootNode = CreateBusinessObjectNode (rootBusinessObject);
+    BusinessObjectTreeNode rootNode = CreateBusinessObjectNode (property, rootBusinessObject);
     rootNodes.Add (rootNode);
     if (expandNode)
       rootNode.EvaluateExpand();
@@ -150,6 +151,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void CreateAppendBusinessObjectNodeChildren (BusinessObjectTreeNode businessObjectNode)
   {
+    EnsureTreeNodeBusinessObject (businessObjectNode);
     IBusinessObjectWithIdentity businessObject = businessObjectNode.BusinessObject;
     BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos = GetPropertyNodes (businessObject);
     if (propertyNodeInfos == null)
@@ -168,20 +170,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void CreateAppendPropertyNodeChildren (BusinessObjectPropertyTreeNode propertyNode)
   {
-    IBusinessObjectWithIdentity parentBusinessObject = null;
-    if (propertyNode.ParentNode != null)
-    {
-      parentBusinessObject = ((BusinessObjectTreeNode) propertyNode.ParentNode).BusinessObject;
-      if (parentBusinessObject == null)
-      {
-      }
-    }
-    else if (DataSource.BusinessObject != null)
-      parentBusinessObject = (IBusinessObjectWithIdentity) DataSource.BusinessObject;
+    if (propertyNode.ParentNode == null)
+      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
 
-    if (parentBusinessObject != null)
-      CreateAppendBusinessObjectNodes (propertyNode.Children, parentBusinessObject, propertyNode.Property);
-
+    BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
+    EnsureTreeNodeBusinessObject (parentNode);
+    EnsureTreeNodeProperty (propertyNode);
+    CreateAppendBusinessObjectNodes (propertyNode.Children, parentNode.BusinessObject, propertyNode.Property);
     propertyNode.IsEvaluated = true;
   }
 
@@ -193,7 +188,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     IList children = (IList) parentBusinessObject.GetProperty (property);
     foreach (IBusinessObjectWithIdentity childBusinessObject in children)
     {
-      BusinessObjectTreeNode childNode = CreateBusinessObjectNode (childBusinessObject);
+      BusinessObjectTreeNode childNode = CreateBusinessObjectNode (property, childBusinessObject);
       businessObjectNodes.Add (childNode);
     }
   }
@@ -215,14 +210,16 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
 
-  private BusinessObjectTreeNode CreateBusinessObjectNode (IBusinessObjectWithIdentity businessObject)
+  private BusinessObjectTreeNode CreateBusinessObjectNode (
+    IBusinessObjectReferenceProperty property,
+    IBusinessObjectWithIdentity businessObject)
   {
     string id = businessObject.UniqueIdentifier;
     string text = businessObject.DisplayName;
     IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
         businessObject, 
         businessObject.BusinessObjectClass.BusinessObjectProvider);
-    BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, icon, businessObject);
+    BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, icon, property, businessObject);
     node.IsEvaluated = false;
     return node;
   }
@@ -237,6 +234,87 @@ public class BocTreeView: BusinessObjectBoundWebControl
         businessObject, 
         Property.ReferenceClass.BusinessObjectProvider);
     return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (title, icon, Property) };
+  }
+
+  private void EnsureTreeNodeBusinessObject (BusinessObjectTreeNode node)
+  {
+    if (node.BusinessObject != null)
+      return;
+
+    if (node.ParentNode == null)
+    {
+      foreach (IBusinessObjectWithIdentity businessObject in Value)
+      {
+        if (node.NodeID == businessObject.UniqueIdentifier)
+        {
+          node.BusinessObject = businessObject;
+          break;
+        }
+      }
+      if (node.BusinessObject == null)
+      {
+        //  Required business object has not been part of the values collection in this post back, get it from the class
+        ArgumentUtility.CheckNotNull ("DataSource", DataSource);
+        ArgumentUtility.CheckNotNullAndType ("DataSource.BusinessObjectClass", DataSource.BusinessObjectClass, typeof (IBusinessObjectClassWithIdentity));
+        node.BusinessObject = ((IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass).GetObject (node.NodeID);
+        if (node.BusinessObject == null) // This test could be omitted if graceful recovery is wanted.
+          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + node.NodeID + "' via the DataSource.");
+      }
+      //  Root nodes do not have a property, only a business object
+    }
+    else
+    {
+      EnsureTreeNodeProperty (node);
+      IBusinessObjectReferenceProperty property = node.Property;
+      string businessObjectID = node.NodeID;
+      node.BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
+    }
+  }
+
+  private void EnsureTreeNodeProperty (BusinessObjectTreeNode node)
+  {
+    if (node.Property != null)
+      return;
+
+    BusinessObjectTreeNode businessObjectParentNode = node.ParentNode as BusinessObjectTreeNode;
+    BusinessObjectPropertyTreeNode propertyParentNode = node.ParentNode as BusinessObjectPropertyTreeNode;
+    
+    if (businessObjectParentNode != null)
+    {
+      EnsureTreeNodeBusinessObject (businessObjectParentNode);
+      BusinessObjectPropertyTreeNodeInfo[] nodeInfos = GetPropertyNodes (businessObjectParentNode.BusinessObject);
+      foreach (BusinessObjectPropertyTreeNodeInfo nodeInfo in nodeInfos)
+      {
+        if (nodeInfo.Property.Identifier == node.PropertyIdentifier)
+        {
+          node.Property = nodeInfo.Property;
+          break;
+        }
+      }
+
+      if (node.Property == null)
+        throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + node.PropertyIdentifier + "'.");
+    }
+    else if (propertyParentNode != null)
+    {
+      EnsureTreeNodeProperty (propertyParentNode);
+      node.Property = propertyParentNode.Property;
+      return;
+    }
+  }
+
+  private void EnsureTreeNodeProperty (BusinessObjectPropertyTreeNode node)
+  {
+    if (node.Property != null)
+      return;
+
+    BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) node.ParentNode;
+    if (parentNode == null)
+      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + node.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
+
+    EnsureTreeNodeBusinessObject (parentNode);
+    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (node.NodeID);
+    node.Property = (IBusinessObjectReferenceProperty) property;
   }
 
   /// <summary>
@@ -289,13 +367,19 @@ public class BocTreeView: BusinessObjectBoundWebControl
       bool isEvaluated = (bool) values[2];
       string text = (string) values[3];
       IconInfo icon = (IconInfo) values[4];
-      bool isBusinessObjectTreeNode = (bool) values[5];
+      bool isBusinessObjectTreeNode = (bool) values[6];
       
       WebTreeNode node;
       if (isBusinessObjectTreeNode)
-        node = new BusinessObjectTreeNode (nodeID, text, icon, null);
+      {
+        node = new BusinessObjectTreeNode (nodeID, text, icon, null, null);
+        string propertyIdentifier = (string) values[5];
+        ((BusinessObjectTreeNode) node).PropertyIdentifier = propertyIdentifier;
+      }
       else
+      {
         node = new BusinessObjectPropertyTreeNode (nodeID, text, icon, null);
+      }
       node.IsExpanded = isExpanded;
       node.IsEvaluated = isEvaluated;
       nodes.Add (node);
@@ -312,13 +396,21 @@ public class BocTreeView: BusinessObjectBoundWebControl
     {
       WebTreeNode node = (WebTreeNode) nodes[i];    
       Pair nodeViewState = new Pair();
-      object[] values = new object[6];
+      object[] values = new object[7];
       values[0] = node.NodeID;
       values[1] = node.IsExpanded;
       values[2] = node.IsEvaluated;
       values[3] = node.Text;
       values[4] = node.Icon;
-      values[5] = node is BusinessObjectTreeNode;
+      if (node is BusinessObjectTreeNode)
+      { 
+        values[5] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
+        values[6] = true;
+      }
+      else
+      {
+        values[6] = false;
+      }
       nodeViewState.First = values;
       nodeViewState.Second = SaveNodeViewStateRecursive (node.Children);
       nodeViewStates[i] = nodeViewState;

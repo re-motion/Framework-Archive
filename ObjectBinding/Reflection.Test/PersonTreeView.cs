@@ -16,16 +16,16 @@ public class PersonTreeView: BocTreeView
 
   protected override BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes (IBusinessObjectWithIdentity businessObject)
   { 
-    BusinessObjectPropertyTreeNodeInfo[] nodeInfo;
+    BusinessObjectPropertyTreeNodeInfo[] nodeInfos;
     if (businessObject is Person)
     {
-      nodeInfo = new BusinessObjectPropertyTreeNodeInfo[2];
-      nodeInfo[0] = new BusinessObjectPropertyTreeNodeInfo (
+      nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
+      nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo (
           "Children", 
           new IconInfo(null, Unit.Empty, Unit.Empty), 
           new ReflectionBusinessObjectReferenceProperty (
               typeof (Person).GetProperty ("Children"), typeof (Person), true));
-      nodeInfo[1] = new BusinessObjectPropertyTreeNodeInfo (
+      nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo (
           "Jobs", 
           new IconInfo(null, Unit.Empty, Unit.Empty), 
           new ReflectionBusinessObjectReferenceProperty (
@@ -33,10 +33,10 @@ public class PersonTreeView: BocTreeView
     }
     else
     {
-      nodeInfo = new BusinessObjectPropertyTreeNodeInfo[0];
+      nodeInfos = new BusinessObjectPropertyTreeNodeInfo[0];
     }
 
-    return nodeInfo;                                
+    return nodeInfos;                                
   }
 
 }
