@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 using Rubicon.Text.CommandLine;
 
-namespace Rubicon.UnitTests.Text.CommandLine
+namespace Rubicon.Core.UnitTests.Text.CommandLine
 {
   public class Arguments
   {
@@ -28,6 +28,10 @@ namespace Rubicon.UnitTests.Text.CommandLine
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
       Arguments arguments = (Arguments) parser.Parse ("sdir ddir /b- /rep:y", true);
+      Assertion.AssertEquals ("sdir", arguments.SourceDirectory);
+      Assertion.AssertEquals ("ddir", arguments.DestinationDirectory);
+      Assertion.AssertEquals (false, arguments.CopyBinary);
+      Assertion.AssertEquals (TestOption.yes, arguments.ReplaceTarget);
     }
   }
 }
