@@ -125,10 +125,14 @@ public class BocItemCommand
   ///   The <see cref="BocItemCommandType"/> represented by this instance of 
   ///   <see cref="BocItemCommand"/>.
   /// </summary>
+  /// <value> 
+  ///   One of the <see cref="BocItemCommandType"/> enumeration values. 
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The type of the command.")]
   //  No default value
+  [NotifyParentProperty (true)]
   public BocItemCommandType Type
   {
     get { return _type; }
@@ -136,10 +140,12 @@ public class BocItemCommand
   }
 
   /// <summary> The hyperlink reference; used for <see cref="BocItemCommandType.Href"/>. </summary>
+  /// <value> A <see cref="string"/> representing the hyperlink reference. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
   [Category ("Type: Href")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string Href 
   {
     get
@@ -156,10 +162,12 @@ public class BocItemCommand
   }
 
   /// <summary> The hyperlink target; used for <see cref="BocItemCommandType.Href"/>. </summary>
+  /// <value> A <see cref="string"/> representing the hyperlink target. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The target frame of the command. Leave it blank for no target.")]
   [Category ("Type: Href")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string Target 
   { 
     get
@@ -179,10 +187,15 @@ public class BocItemCommand
   ///   Determines when the item command is shown to the user in regard of the parent control's 
   ///   read-only setting.
   /// </summary>
+  /// <value> 
+  ///   One of the <see cref="BocItemCommandShow"/> enumeration values. 
+  ///   The default is <see cref="BocItemCommandShow.Always"/>.
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
   [Category ("Behavior")]
   [DefaultValue (BocItemCommandShow.Always)]
+  [NotifyParentProperty (true)]
   public BocItemCommandShow Show
   {
     get { return _show; }
@@ -190,11 +203,13 @@ public class BocItemCommand
   }
 }
 
+// TODO: Doc BocItemCommandType
 public enum BocItemCommandType
 {
   Href
 }
 
+// TODO: Doc BocItemCommandShow
 public enum BocItemCommandShow
 {
   Always,

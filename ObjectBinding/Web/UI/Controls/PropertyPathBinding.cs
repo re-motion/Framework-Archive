@@ -134,6 +134,7 @@ public class PropertyPathBinding
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
+  [Description ("A string representing a valid property path.")]
   //  No default value
   public string PropertyPathIdentifier
   {

@@ -117,7 +117,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private Style _imageButtonStyle = new Style();
 
   /// <summary> Flag that determines  whether to show the seconds.</summary>
-  private bool _showSeconds = true;
+  private bool _showSeconds = false;
 
   /// <summary> 
   ///   Flag that determines whether to provide an automatic maximun length for the text boxes.
@@ -1173,7 +1173,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <value> <see langword="true"/> to enable the seconds. </value>
   [Category ("Appearance")]
   [Description ("Ture to display the seconds. ")]
-  [DefaultValue (true)]
+  [DefaultValue (false)]
   public bool ShowSeconds
   {
     get { return _showSeconds; }

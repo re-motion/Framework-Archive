@@ -1,11 +1,11 @@
-/*  Style applied to the BocList's table's outer structure  */
+/*  Style applied to the BocList's table's outer structure.  */
 table.bocListTable
 {
   border-collapse: separate;
   border-width: 0px;
 }
 
-/*  Style applied to the cells in the BocList's title row  */
+/*  Style applied to the cells in the BocList's title row.  */
 td.bocListTitleCell
 {
 	font-weight: bold;
@@ -21,7 +21,7 @@ td.bocListTitleCell
   border-color: Black;
 }
 
-/*  Style applied to the cells in the BocList's even data rows */
+/*  Style applied to the cells in the BocList's even data rows. */
 td.bocListDataCellOdd
 {
 	background-color: #FFFFFF;
@@ -35,7 +35,7 @@ td.bocListDataCellOdd
   border-color: White;
 }
 
-/*  Style applied to the cells in the BocList's even data rows */
+/*  Style applied to the cells in the BocList's even data rows. */
 td.bocListDataCellEven
 {
 	background-color: #E0E0E0;
@@ -47,4 +47,9 @@ td.bocListDataCellEven
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
+}
+
+/*  Style applied to the BocList's navigator. */
+div.bocListNavigator
+{
 }

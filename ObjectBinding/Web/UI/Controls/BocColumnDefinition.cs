@@ -68,6 +68,7 @@ public abstract class BocColumnDefinition
   [Description ("The ID of this column definition.")]
   [Category ("Misc")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string ID
   {
     get { return _id; }
@@ -94,6 +95,7 @@ public abstract class BocColumnDefinition
   [Description ("The assigned value of the column title, can be empty.")]
   [Category ("Appearance")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public virtual string ColumnTitle
   {
     get { return _columnTitle; }
@@ -105,6 +107,7 @@ public abstract class BocColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Layout")]
   [DefaultValue(typeof (Unit), "")]
+  [NotifyParentProperty (true)]
   public Unit Width 
   { 
     get { return _width; } 
@@ -188,6 +191,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Action")]
+  [NotifyParentProperty (true)]
   public BocItemCommand Command
   {
     get { return _command; }
@@ -199,6 +203,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string Label
   {
     get { return (_label != null) ? _label.ToString() : string.Empty; }
@@ -210,6 +215,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string IconPath 
   {
     get { return _iconPath; }
@@ -340,6 +346,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
   //  No default value
+  [NotifyParentProperty (true)]
   public string PropertyPathIdentifier
   { 
     get
@@ -492,6 +499,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string FormatString
   {
     get { return _formatString; }
@@ -504,8 +512,8 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// </summary>
   /// <value> A collection of <see cref="PropertyPathBinding"/> objects. </value>
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
-  [ListBindable (false)]
   [Category ("Data")]
+  [NotifyParentProperty (true)]
   public PropertyPathBindingCollection PropertyPathBindings
   {
     get 
@@ -520,6 +528,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// <value> A <see cref="string"/> representing the title of this column. </value>
   [Description ("The assigned value of the column title, must not be empty or null.")]
   [DefaultValue ("")]
+  [NotifyParentProperty (true)]
   public override string ColumnTitle
   {
     get { return base.ColumnTitle; }

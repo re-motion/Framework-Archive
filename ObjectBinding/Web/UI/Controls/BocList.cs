@@ -299,6 +299,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
     bool isFirstPage = _currentPage == 0;
     bool isLastPage = _currentPage + 1 >= _pageCount;
 
+    if (! Width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNavigator);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+
     writer.Write (__pageInfo, _currentPage + 1, _pageCount);
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
@@ -318,6 +323,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
     }
     else
     {
+      moveFirstButton.ImageUrl = imageUrl;
       moveFirstButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -336,6 +342,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
     }
     else
     {
+      movePreviousButton.ImageUrl = imageUrl;
       movePreviousButton.RenderControl (writer);
     }
 
@@ -355,6 +362,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
     }
     else
     {
+      moveNextButton.ImageUrl = imageUrl;
       moveNextButton.RenderControl (writer);
     }
 
@@ -374,8 +382,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
     }
     else
     {
+      moveLastButton.ImageUrl = imageUrl;
       moveLastButton.RenderControl (writer);
     }
+
+    writer.RenderEndTag();
   }
 
   private void RenderTableOpeningTag (HtmlTextWriter writer)
@@ -384,7 +395,6 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "1");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
   }
@@ -432,10 +442,13 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
 
     if (ShowSelection)
     {
+      //  TODO: Select all checkbox
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
-      bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
-      RenderCheckBox (writer, checkBoxName, isChecked);
+      //string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
+      //bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
+      //RenderCheckBox (writer, checkBoxName, isChecked);
+      writer.Write ("&nbsp;");
       writer.RenderEndTag();
     }
 
@@ -1170,6 +1183,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
   /// <remarks> Class: <c>bocListDataCellEven</c> </remarks>
   protected virtual string CssClassDataCellEven
   { get { return "bocListDataCellEven"; } }
+
+  /// <summary> CSS-Class applied to the <see cref="BocList"/>'s navigator. </summary>
+  /// <remarks> Class: <c>bocListNavigator</c> </remarks>
+  protected virtual string CssClassNavigator
+  { get { return "bocListNavigator"; } }
 }
 
 

@@ -89,6 +89,7 @@ public class BocColumnDefinitionSet
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [DefaultValue("")]
+  [NotifyParentProperty (true)]
   public string Title
   {
     get { return (_title != null) ? _title.ToString() : string.Empty; }
@@ -102,10 +103,10 @@ public class BocColumnDefinitionSet
   /// </value>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
-  [ListBindable (false)]
   [MergableProperty (false)]
   [Category ("Data")]
   [DefaultValue((string) null)]
+  [NotifyParentProperty (true)]
   public BocColumnDefinitionCollection ColumnDefinitionCollection
   {
     get { return _columnDefinitionCollection; }

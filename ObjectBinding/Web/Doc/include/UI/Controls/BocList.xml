@@ -9,7 +9,7 @@
         </listheader>
         <item>
           <term>
-            CurrentPageDescriptor
+            CurrentPageInfo
           </term>
           <description>
             &lt;BocList Resource ID&gt;:PageInfo
@@ -31,6 +31,7 @@
             &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Label
           </description>
         </item>
+      </list>
     </remarks>
   </Class>
 </BocList>
