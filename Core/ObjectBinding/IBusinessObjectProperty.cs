@@ -74,10 +74,10 @@ public interface IBusinessObjectProperty
   ///   Indicates whether this property can be accessed by the user.
   /// </summary>
   /// <remarks>
-  ///   The result may depend on the user's authorization and/or the object.
+  ///   The result may depend on the class, the user's authorization and/or the instance value.
   /// </remarks>
   /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
-  bool IsAccessible (IBusinessObject obj);
+  bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj);
 
   /// <summary>
   ///   Indicates whether this property can be modified by the user.
