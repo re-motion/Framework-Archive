@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 using System.IO;
+using System.Globalization;
 using Rubicon.ObjectBinding.Reflection;
 
 namespace OBWTest 
@@ -34,7 +35,6 @@ namespace OBWTest
  
 		protected void Session_Start(Object sender, EventArgs e)
 		{
-
 		}
 
 		protected void Application_BeginRequest(Object sender, EventArgs e)
