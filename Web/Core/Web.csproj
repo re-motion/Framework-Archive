@@ -161,6 +161,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "ExecutionEngine\NumberedMemberFinder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
