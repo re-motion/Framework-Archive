@@ -47,7 +47,12 @@ public class Command: IControlItem
     {
       string[] encodedParameters = new string[parameters.Length];
       for (int i = 0; i < parameters.Length; i++)
-        encodedParameters[i] = HttpUtility.UrlEncode (parameters[i], HttpContext.Current.Response.ContentEncoding);
+      {
+        if (HttpContext.Current != null)
+          encodedParameters[i] = HttpUtility.UrlEncode (parameters[i], HttpContext.Current.Response.ContentEncoding);
+        else
+          encodedParameters[i] = "";
+      }
       return string.Format (Href, encodedParameters);
     }
 
