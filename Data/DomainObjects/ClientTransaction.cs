@@ -84,22 +84,20 @@ public class ClientTransaction
   /// <exception cref="Persistance.StorageProviderException">An error occured while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
-    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
-    if (changedDomainObjects.Count > 0)
+    BeginCommit ();
+    DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetChangedDomainObjects (false); 
+
+    DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
+    if (changedDataContainers.Count > 0)
     {
-      BeginCommit (changedDomainObjects);
-
-      DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetChangedDomainObjects (false); 
-
-      DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
       using (PersistenceManager persistenceManager = new PersistenceManager ())
       {
         persistenceManager.Save (changedDataContainers);
       }
-
-      _dataManager.Commit ();
-      EndCommit (changedButNotDeletedDomainObjects);
     }
+
+    _dataManager.Commit ();
+    EndCommit (changedButNotDeletedDomainObjects);
   }
 
   /// <summary>
@@ -488,13 +486,14 @@ public class ClientTransaction
     get { return _queryManager; }
   }
 
-  private void BeginCommit (DomainObjectCollection changedDomainObjects)
+  private void BeginCommit ()
   {
+    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     DomainObjectCollection domainObjectComittingEventRaised = new DomainObjectCollection ();
     DomainObjectCollection clientTransactionCommittingEventRaised = new DomainObjectCollection ();
 
     DomainObjectCollection clientTransactionCommittingEventNotRaised = changedDomainObjects;
-    while (clientTransactionCommittingEventNotRaised.Count > 0)
+    do
     {
       DomainObjectCollection domainObjectCommittingEventNotRaised = domainObjectComittingEventRaised.GetItemsNotInCollection (changedDomainObjects);
       while (domainObjectCommittingEventNotRaised.Count > 0)
@@ -518,7 +517,7 @@ public class ClientTransaction
 
       changedDomainObjects = _dataManager.GetChangedDomainObjects ();
       clientTransactionCommittingEventNotRaised = clientTransactionCommittingEventRaised.GetItemsNotInCollection (changedDomainObjects);
-    }
+    } while (clientTransactionCommittingEventNotRaised.Count > 0);
   }
 
   private void EndCommit (DomainObjectCollection changedDomainObjects)

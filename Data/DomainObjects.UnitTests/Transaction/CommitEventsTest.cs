@@ -192,8 +192,14 @@ public class CommitEventsTest : ClientTransactionBaseTest
     
     ClientTransactionMock.Commit ();
 
-    Assert.AreEqual (0, clientTransactionEventReceiver.CommittingDomainObjects.Count);
-    Assert.AreEqual (0, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+
+    DomainObjectCollection committingDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittingDomainObjects[0];
+    DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
+
+    Assert.AreEqual (0, committingDomainObjects.Count);
+    Assert.AreEqual (0, committedDomainObjects.Count);
   }
 
   [Test]

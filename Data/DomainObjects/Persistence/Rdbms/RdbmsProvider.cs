@@ -274,7 +274,7 @@ public abstract class RdbmsProvider : StorageProvider
       CommandBuilder commandBuilder = new InsertCommandBuilder (this, dataContainer);
       using (IDbCommand command = commandBuilder.Create ())
       {
-        Save (command, dataContainer);
+        Save (command, dataContainer.ID);
       }
     }
 
@@ -285,7 +285,7 @@ public abstract class RdbmsProvider : StorageProvider
         CommandBuilder commandBuilder = new UpdateCommandBuilder (this, dataContainer);
         using (IDbCommand command = commandBuilder.Create ())
         {
-          Save (command, dataContainer);
+          Save (command, dataContainer.ID);
         }
       }
     }
@@ -295,7 +295,7 @@ public abstract class RdbmsProvider : StorageProvider
       CommandBuilder commandBuilder = new DeleteCommandBuilder (this, dataContainer);
       using (IDbCommand command = commandBuilder.Create ())
       {
-        Save (command, dataContainer);
+        Save (command, dataContainer.ID);
       }
     }
   }
@@ -370,16 +370,13 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected virtual void Save (IDbCommand command, DataContainer dataContainer)
+  protected virtual void Save (IDbCommand command, ObjectID id)
   {
     CheckDisposed ();
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    ArgumentUtility.CheckNotNull ("id", id);
 
     if (command == null)
       return;
-
-    if (dataContainer.State == StateType.Unchanged)
-      return; 
 
     int recordsAffected = 0;
     try
@@ -388,14 +385,13 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (e, "Error while saving object '{0}'.", dataContainer.ID);
+      throw CreateStorageProviderException (e, "Error while saving object '{0}'.", id);
     }
 
     if (recordsAffected != 1)
     {
       throw CreateConcurrencyViolationException (
-          "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", 
-          dataContainer.ID);
+          "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", id);
     }
   }
 
