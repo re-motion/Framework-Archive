@@ -90,30 +90,18 @@ public class ValueConverter
 
     if (propertyDefinition.PropertyType == typeof (ObjectID))
     {
-      ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (propertyDefinition, dataReader);
+      ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (classDefinition, propertyDefinition, dataReader);
       if (relatedClassDefinition == null)
       {
         relatedClassDefinition = GetOppositeClassDefinition (classDefinition, propertyDefinition);
 
         if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
         {
-          if (relatedClassDefinition.BaseClass != null)
+          if (MappingConfiguration.Current.ClassDefinitions.IsPartOfInheritanceHierarchy (relatedClassDefinition))
           {
             throw CreateRdbmsProviderException (
                 "Incorrect database format encountered."
-                + " Class must have column '{0}' defined, because it points to derived class '{1}'.",
-                GetClassIDColumnName (propertyDefinition.ColumnName), 
-                relatedClassDefinition.ID);    
-          }
-
-          ClassDefinitionCollection derivedClasses = 
-              MappingConfiguration.Current.ClassDefinitions.GetDirectlyDerivedClassDefinitions (relatedClassDefinition);
-
-          if (derivedClasses.Count > 0)
-          {
-            throw CreateRdbmsProviderException (
-                "Incorrect database format encountered."
-                + " Class must have column '{0}' defined, because at least one class inherits from '{1}'.",
+                + " Entity must have column '{0}' defined, because opposite class '{1}' is part of an inheritance hierarchy.",
                 GetClassIDColumnName (propertyDefinition.ColumnName), 
                 relatedClassDefinition.ID);    
           }
@@ -164,19 +152,23 @@ public class ValueConverter
     return new ArgumentException (string.Format (message, args), argumentName);
   }
 
-  private ClassDefinition GetOppositeClassDefinitionFromClassIDColumn (PropertyDefinition propertyDefinition, IDataReader dataReader)
+  private ClassDefinition GetOppositeClassDefinitionFromClassIDColumn (
+      ClassDefinition classDefinition, 
+      PropertyDefinition propertyDefinition, 
+      IDataReader dataReader)
   {
     string relatedClassIDColumnName = GetClassIDColumnName (propertyDefinition.ColumnName);
+    string classID = null;
     try
     {
-      string classID = dataReader.GetString (dataReader.GetOrdinal (relatedClassIDColumnName));
-      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+      classID = dataReader.GetString (dataReader.GetOrdinal (relatedClassIDColumnName));
     }
     catch (IndexOutOfRangeException)
     {
+      return null;
     }
 
-    return null;
+    return MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
   }
 
   private ClassDefinition GetOppositeClassDefinition (

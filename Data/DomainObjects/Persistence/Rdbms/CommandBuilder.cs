@@ -107,10 +107,7 @@ public abstract class CommandBuilder
     ArgumentUtility.CheckNotNull ("relatedClassDefinition", relatedClassDefinition);
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
-    ClassDefinitionCollection derivedClasses =  
-        MappingConfiguration.Current.ClassDefinitions.GetDirectlyDerivedClassDefinitions (relatedClassDefinition);
-
-    if (relatedClassDefinition.BaseClass != null || derivedClasses.Count > 0)
+    if (MappingConfiguration.Current.ClassDefinitions.IsPartOfInheritanceHierarchy (relatedClassDefinition))
     {
       string classIDColumnName = propertyValue.Definition.ColumnName + "ClassID";
       AppendColumn (classIDColumnName, classIDColumnName);

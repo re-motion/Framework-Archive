@@ -59,7 +59,7 @@ public class ClassDefinitionTest
     Assert.AreEqual (5, relations.Count);
     Assert.IsNotNull (relations["CompanyToCeo"]);
     Assert.IsNotNull (relations["PartnerToPerson"]);
-    Assert.IsNotNull (relations["PartnerToClassWithoutRelatedClassIDColumn"]);
+    Assert.IsNotNull (relations["DistributorToClassWithoutRelatedClassIDColumn"]);
     Assert.IsNotNull (relations["CompanyToClassWithoutRelatedClassIDColumnAndDerivation"]);
     Assert.IsNotNull (relations["IndustrialSectorToCompany"]);
   }
