@@ -1,7 +1,7 @@
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
-<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <TABLE id="FormGrid" cellSpacing="0" cellPadding="0" border="0" runat="server">
   <tr>
     <td></td>
@@ -299,25 +299,35 @@
   <TR>
     <TD></TD>
     <TD><obc:boclist id="BocList1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestMandatoryNavigateOnly">
-        <FixedColumns>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-            <PersistedCommand>
-              <obc:BocListItemCommand></obc:BocListItemCommand>
-            </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
-        </FixedColumns>
+<FixedColumns>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+<PersistedCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocSimpleColumnDefinition>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+<PersistedCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocSimpleColumnDefinition>
+</FixedColumns>
       </obc:boclist></TD>
   </TR>
   <TR>
     <TD></TD>
     <TD><obc:boclist id="BocList2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestOptionalNavigateOnly">
-        <FixedColumns>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-            <PersistedCommand>
-              <obc:BocListItemCommand></obc:BocListItemCommand>
-            </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
-        </FixedColumns>
+<FixedColumns>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+<PersistedCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocSimpleColumnDefinition>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+<PersistedCommand>
+<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocSimpleColumnDefinition>
+</FixedColumns>
       </obc:boclist></TD>
   </TR>
 </TABLE>

@@ -49,6 +49,12 @@ public class ClassForRelationTest : BindableDomainObject
     get { return Name; }
   }
 
+  public ClassWithAllDataTypes.EnumType EnumProperty
+  {
+    get { return ClassWithAllDataTypes.EnumType.Value0; }
+    set { }
+  }
+
   [ItemType(typeof(ClassWithAllDataTypes))]
   public DomainObjectCollection ComputedList
   {
