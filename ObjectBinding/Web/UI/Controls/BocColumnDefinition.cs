@@ -515,6 +515,143 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 }
 
+/// <summary> A column definition used for switching between edit-mode and returning from it via save and cancel. </summary>
+public class BocEditDetailsColumnDefinition: BocColumnDefinition
+{
+  private string _editText;
+  private IconInfo _editIcon;
+  private string _saveText;
+  private IconInfo _saveIcon;
+  private string _cancelText;
+  private IconInfo _cancelIcon;
+
+  /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
+  public BocEditDetailsColumnDefinition()
+  {
+    _editIcon = new IconInfo();
+    _saveIcon = new IconInfo();
+    _cancelIcon = new IconInfo();
+  }
+
+  /// <summary> Gets or sets the text representing the edit command in the rendered page. </summary>
+  /// <value> A <see cref="string"/> representing the edit command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The text representing the edit command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string EditText
+  {
+    get { return StringUtility.NullToEmpty (_editText); }
+    set { _editText = value; }
+  }
+
+  /// <summary> Gets or sets the image representing the edit command in the rendered page. </summary>
+  /// <value> An <see cref="IconInfo"/> representing the edit command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Appearance")]
+  [Description ("The image representing the edit command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public IconInfo EditIcon
+  {
+    get { return _editIcon; }
+    set { _editIcon = value; }
+  }
+
+  private bool ShouldSerializeEditIcon()
+  {
+    return IconInfo.ShouldSerialize (_editIcon);
+  }
+
+  private void ResetEditIcon()
+  {
+    _editIcon.Reset();
+  }
+
+
+  /// <summary> Gets or sets the text representing the save command in the rendered page. </summary>
+  /// <value> A <see cref="string"/> representing the save command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The text representing the save command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string SaveText
+  {
+    get { return StringUtility.NullToEmpty (_saveText); }
+    set { _saveText = value; }
+  }
+
+  /// <summary> Gets or sets the image representing the save command in the rendered page. </summary>
+  /// <value> An <see cref="Image"/> representing the save command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Appearance")]
+  [Description ("The relative url to image representing the save command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public IconInfo SaveIcon
+  {
+    get { return _saveIcon; }
+    set { _saveIcon = value; }
+  }
+
+  private bool ShouldSerializeSaveIcon()
+  {
+    return IconInfo.ShouldSerialize (_saveIcon);
+  }
+
+  private void ResetSaveIcon()
+  {
+    _saveIcon.Reset();
+  }
+
+  /// <summary> Gets or sets the text representing the cancel command in the rendered page. </summary>
+  /// <value> A <see cref="string"/> representing the cancel command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The text representing the cancel command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string CancelText
+  {
+    get { return StringUtility.NullToEmpty (_cancelText); }
+    set { _cancelText = value; }
+  }
+
+  /// <summary> Gets or sets the image representing the cancel command in the rendered page. </summary>
+  /// <value> An <see cref="IconInfo"/> representing the cancel command. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Appearance")]
+  [Description ("The image representing the cancel command in the rendered page.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public IconInfo CancelIcon
+  {
+    get { return _cancelIcon; }
+    set { _cancelIcon = value; }
+  }
+
+  private bool ShouldSerializeCancelIcon()
+  {
+    return IconInfo.ShouldSerialize (_cancelIcon);
+  }
+
+  private void ResetCancelIcon()
+  {
+    _cancelIcon.Reset();
+  }
+
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "EditDetailsColumnDefinition"; }
+  }
+}
+
 /// <summary> A column definition using <see cref="IBocCustomColumnDefinitionCell"/> for rendering the data. </summary>
 public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
 {
