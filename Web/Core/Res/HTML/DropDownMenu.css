@@ -4,6 +4,8 @@ div.dropDownMenuHead
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
+/*	padding: 1px;
+  border-style: none;*/
   background-color: #fafafa;
 }
 
@@ -51,7 +53,7 @@ div.dropDownMenuItem
 	cursor: default;
 }
 
-div.dropDownMenuItemHover
+div.dropDownMenuItemFocus
 {
 	margin: 1px;
 	padding: 1px;
@@ -65,7 +67,7 @@ div.dropDownMenuItemHover
 }
 
 div.dropDownMenuItem a,
-div.dropDownMenuItemHover a
+div.dropDownMenuItemFocus a
 {
   color: black;
   text-decoration: none;

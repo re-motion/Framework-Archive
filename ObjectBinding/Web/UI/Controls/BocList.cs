@@ -222,8 +222,6 @@ public class BocList:
   ///   Contains <see cref="SortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
   private ArrayList _sortingOrder = new ArrayList();
-  /// <summary> Contains the row indices of the business objects in the list, before the objects are sorted. </summary>
-  private Hashtable _originalRowIndices = null;
 
   /// <summary> Determines whether the options menu is shown. </summary>
   private bool _showOptionsMenu = true;
@@ -953,33 +951,25 @@ public class BocList:
     {
       bool isOddRow = true;
 
-      ArrayList rows = new ArrayList (Value);
+      ArrayList rows = new ArrayList (Value.Count);
+      for (int idxRows = 0; idxRows < Value.Count; idxRows++)
+        rows.Add (new Pair (idxRows, Value[idxRows]));
 
-      _originalRowIndices = null;
       if (EnableSorting)
-      {
-        _originalRowIndices = new Hashtable();
-        for (int idxRows = 0; idxRows < totalRowCount; idxRows++)
-        {
-          if (rows[idxRows] == null)
-            continue;
-          _originalRowIndices.Add (rows[idxRows], idxRows);
-        }
         rows.Sort (this);
-      }
-      for (int idxSortedRows = firstRow, idxRows = 0; 
-          idxSortedRows < rowCountWithOffset; 
-          idxSortedRows++, idxRows++)
+
+      for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
+          idxAbsoluteRows < rowCountWithOffset; 
+          idxAbsoluteRows++, idxRelativeRows++)
       {
-        if (rows[idxSortedRows] == null)
+        Pair rowPair = (Pair)rows[idxAbsoluteRows];
+        if (rowPair.Second == null)
           throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
-        IBusinessObject businessObject = rows[idxSortedRows] as IBusinessObject;
-        int originalRowIndex = idxSortedRows;
-        if (EnableSorting)
-          originalRowIndex = (int) _originalRowIndices[businessObject];
+        int originalRowIndex = (int) rowPair.First;
+        IBusinessObject businessObject = rowPair.Second as IBusinessObject;
         if (businessObject == null)
           throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-        RenderDataRow (writer, businessObject, idxRows, originalRowIndex, isOddRow);
+        RenderDataRow (writer, businessObject, idxRelativeRows, originalRowIndex, isOddRow);
         isOddRow = !isOddRow;
       }
     }
@@ -987,7 +977,7 @@ public class BocList:
     //  Close the table
     RenderTableClosingTag (writer);
 
-        if (_hasClientScript && _enableSelection)
+    if (_hasClientScript && _enableSelection)
     {
       //  Render the init script for the client side selection handling
       int count = 0;
@@ -1934,10 +1924,12 @@ public class BocList:
   ///   Compares <paramref name="objectA"/> and <paramref name="objectB"/>.
   /// </summary>
   /// <param name="objectA"> 
-  ///   First <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
+  ///   First <see cref="Pair"/> (&lt;int index, IBusniessObject object&gt;) to compare.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <param name="objectB"> 
-  ///   Second <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
+  ///   Second <see cref="Pair"/> (&lt;int index, IBusniessObject object&gt;) to compare.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <returns>
   ///   <list type="table">
@@ -1961,11 +1953,17 @@ public class BocList:
   /// </returns>
   int IComparer.Compare (object objectA , object objectB)
   {
-    ArgumentUtility.CheckNotNullAndType ("objectA", objectA, typeof (IBusinessObject));
-    ArgumentUtility.CheckNotNullAndType ("objectB", objectB, typeof (IBusinessObject));
+    ArgumentUtility.CheckNotNullAndType ("objectA", objectA, typeof (Pair));
+    ArgumentUtility.CheckNotNullAndType ("objectB", objectB, typeof (Pair));
 
-    IBusinessObject businessObjectA = (IBusinessObject) objectA;
-    IBusinessObject businessObjectB = (IBusinessObject) objectB;
+    Pair pairA = (Pair) objectA;
+    Pair pairB = (Pair) objectB;
+
+    ArgumentUtility.CheckNotNullAndType ("pairA.Second", pairA.Second, typeof (IBusinessObject));
+    ArgumentUtility.CheckNotNullAndType ("pairB.Second", pairB.Second, typeof (IBusinessObject));
+
+    IBusinessObject businessObjectA = (IBusinessObject) pairA.Second;
+    IBusinessObject businessObjectB = (IBusinessObject) pairB.Second;
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot();
     foreach (SortingOrderEntry currentEntry in _sortingOrder)
@@ -2007,8 +2005,8 @@ public class BocList:
     }
     if (businessObjectA != null && businessObjectB != null)
     {
-      int indexObjectA = (int) _originalRowIndices[businessObjectA];
-      int indexObjectB = (int) _originalRowIndices[businessObjectB];
+      int indexObjectA = (int) pairA.First;
+      int indexObjectB = (int) pairB.First;
       return indexObjectA - indexObjectB;
     }
     return 0;

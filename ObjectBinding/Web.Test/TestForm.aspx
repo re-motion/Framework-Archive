@@ -89,17 +89,17 @@
 </FixedColumns>
 
 <listmenuitems>
-<obc:BocMenuItem ItemID="" Icon="" Text="Event" Category="">
+<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event" Category="">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Wxe" Category="">
+<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Href" Category="">
+<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>

@@ -296,6 +296,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
     writer.AddAttribute ("id", ID + "_HeadDiv");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHead);
+    writer.AddAttribute ("OnMouseOver", "DropDownMenu_OnHeadMouseOver (this)");
+    writer.AddAttribute ("OnMouseOut", "DropDownMenu_OnHeadMouseOut (this)");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Drop Down Head-Div
 
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
@@ -429,8 +431,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   protected virtual string CssClassItem
   { get { return "dropDownMenuItem"; } }
 
-  protected virtual string CssClassItemHover
-  { get { return "dropDownMenuItemHover"; } }
+  protected virtual string CssClassItemFocus
+  { get { return "dropDownMenuItemFocus"; } }
 
   protected virtual string CssClassItemTextPane
   { get { return "dropDownMenuItemTextPane"; } }
