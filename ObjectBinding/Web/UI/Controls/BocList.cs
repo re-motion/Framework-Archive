@@ -1015,14 +1015,18 @@ public class BocList:
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAdditionalColumnsListLabel);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
       if (StringUtility.IsNullOrEmpty (_additionalColumnsTitle))
         writer.Write (GetResourceManager().GetString (ResourceIdentifier.AdditionalColumnsTitle));
       else
         writer.Write (_additionalColumnsTitle);
+      writer.RenderEndTag();
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
       _additionalColumnsList.Enabled = ! IsRowEditMode;
+      _additionalColumnsList.CssClass = CssClassAdditionalColumnsListDropDownList;
       _additionalColumnsList.RenderControl (writer);
       writer.RenderEndTag();
     }
@@ -3491,10 +3495,15 @@ public class BocList:
   protected virtual string CssClassNavigator
   { get { return "bocListNavigator"; } }
 
-  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additionalc columns. </summary>
-  /// <remarks> Class: <c>bocListAdditionalColumnsList</c> </remarks>
-  protected virtual string CssClassAdditionalColumnsList
-  { get { return "bocListAdditionalColumnsList"; } }
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
+  /// <remarks> Class: <c>bocListAdditionalColumnsListDropDownList</c> </remarks>
+  protected virtual string CssClassAdditionalColumnsListDropDownList
+  { get { return "bocListAdditionalColumnsListDropDownList"; } }
+  
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s label for the list of additional columns. </summary>
+  /// <remarks> Class: <c>bocListAdditionalColumnsListLabel</c> </remarks>
+  protected virtual string CssClassAdditionalColumnsListLabel
+  { get { return "bocListAdditionalColumnsListLabel"; } }
   
   #endregion
 
