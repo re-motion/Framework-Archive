@@ -49,7 +49,7 @@ public class TestWxeBasePage:
       _nextButton.ID = "NextButton";
       _nextButton.Text = "Next";
       _nextButton.Click += new EventHandler(NextButton_Click);
-      Form.Controls.AddAt (0, _nextButton);
+      WxeForm.Controls.AddAt (0, _nextButton);
     }
 
     base.OnInit (e);
@@ -72,7 +72,7 @@ public class TestWxeBasePage:
     sb.Append ("</div>");
     stack.Text = sb.ToString();
     
-    Form.Controls.Add (stack);
+    WxeForm.Controls.Add (stack);
   }
 
   public virtual IResourceManager GetResourceManager()
