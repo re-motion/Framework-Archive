@@ -31,12 +31,6 @@ public class SmartLabel: WebControl
     const string highlighter = "<u>{0}</u>";
     accessKey = String.Empty;
 
-    if (! underlineAccessKey)
-    {
-      //  Remove ampersands
-      return rawString.Replace("&", "");
-    }
-
     //  Access key is preceeded by an ampersand
     int indexOfAmp = rawString.IndexOf ("&");
     
@@ -69,8 +63,15 @@ public class SmartLabel: WebControl
     StringBuilder stringBuilder = new StringBuilder (rawString.Length + highlighter.Length);
 
     stringBuilder.Append (leftSubString);
-    stringBuilder.AppendFormat (highlighter, accessKey);
-    stringBuilder.Append (rightSubString.Substring(1));
+    if (underlineAccessKey)
+    {
+      stringBuilder.AppendFormat (highlighter, accessKey);
+      stringBuilder.Append (rightSubString.Substring(1));
+    }
+    else
+    {
+      stringBuilder.Append (rightSubString);
+    }
     
     return stringBuilder.ToString();
   }
