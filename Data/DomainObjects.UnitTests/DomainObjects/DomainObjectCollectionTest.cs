@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
@@ -251,13 +251,19 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
         collection, true);
 
-    collection.Add (_customer1);
-
-    Assert.AreEqual (0, collection.Count);
-    Assert.AreEqual (true, eventReceiver.HasAddingEventBeenCalled);
-    Assert.AreEqual (false, eventReceiver.HasAddedEventBeenCalled);
-    Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
-    Assert.IsNull (eventReceiver.AddedDomainObject);
+    try
+    {
+      collection.Add (_customer1);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (0, collection.Count);
+      Assert.AreEqual (true, eventReceiver.HasAddingEventBeenCalled);
+      Assert.AreEqual (false, eventReceiver.HasAddedEventBeenCalled);
+      Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
+      Assert.IsNull (eventReceiver.AddedDomainObject);
+    }
   }
 
   [Test]
@@ -283,14 +289,20 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
         _collection, true);
 
-    _collection.Remove (_customer1.ID);
-
-    Assert.AreEqual (2, _collection.Count);
-    Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
-    Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
-    Assert.AreEqual (1, eventReceiver.RemovingDomainObjects.Count);
-    Assert.AreEqual (0, eventReceiver.RemovedDomainObjects.Count);
-    Assert.AreSame (_customer1, eventReceiver.RemovingDomainObjects[0]);
+    try
+    {
+      _collection.Remove (_customer1.ID);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (2, _collection.Count);
+      Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
+      Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
+      Assert.AreEqual (1, eventReceiver.RemovingDomainObjects.Count);
+      Assert.AreEqual (0, eventReceiver.RemovedDomainObjects.Count);
+      Assert.AreSame (_customer1, eventReceiver.RemovingDomainObjects[0]);
+    }
   }
 
   [Test]
@@ -318,13 +330,19 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
         _collection, true);
 
-    _collection.Clear ();
-
-    Assert.AreEqual (2, _collection.Count);
-    Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
-    Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
-    Assert.AreEqual (2, eventReceiver.RemovingDomainObjects.Count);
-    Assert.AreEqual (0, eventReceiver.RemovedDomainObjects.Count);
+    try
+    {
+      _collection.Clear ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (2, _collection.Count);
+      Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
+      Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
+      Assert.AreEqual (1, eventReceiver.RemovingDomainObjects.Count);
+      Assert.AreEqual (0, eventReceiver.RemovedDomainObjects.Count);
+    }
   }
 
   [Test]
@@ -776,17 +794,23 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   {
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (_collection, 1);
 
-    _collection[0] = _customer3NotInCollection;
-
-    ChangeState[] expectedStates = new ChangeState[] 
+    try
     {
-      new CollectionChangeState (_collection, _customer1, "1. Removing event")
-    };
+      _collection[0] = _customer3NotInCollection;
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[] 
+      {
+        new CollectionChangeState (_collection, _customer1, "1. Removing event")
+      };
 
-    Assert.AreSame (_customer1, _collection[0]);
-    Assert.AreEqual (2, _collection.Count);
+      Assert.AreSame (_customer1, _collection[0]);
+      Assert.AreEqual (2, _collection.Count);
 
-    eventReceiver.Check (expectedStates);
+      eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
@@ -794,18 +818,24 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   {
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (_collection, 2);
 
-    _collection[0] = _customer3NotInCollection;
-
-    ChangeState[] expectedStates = new ChangeState[] 
+    try
     {
-      new CollectionChangeState (_collection, _customer1, "1. Removing event"),
-      new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event")
-    };
+      _collection[0] = _customer3NotInCollection;
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[] 
+      {
+        new CollectionChangeState (_collection, _customer1, "1. Removing event"),
+        new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event")
+      };
 
-    Assert.AreSame (_customer1, _collection[0]);
-    Assert.AreEqual (2, _collection.Count);
+      Assert.AreSame (_customer1, _collection[0]);
+      Assert.AreEqual (2, _collection.Count);
 
-    eventReceiver.Check (expectedStates);
+      eventReceiver.Check (expectedStates);
+    }
   }
  
   [Test]
