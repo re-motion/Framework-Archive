@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <summary> A node for the <see cref="WebTreeView"/>. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class WebTreeNode: IControlItem
 {
@@ -21,6 +22,7 @@ public class WebTreeNode: IControlItem
   private bool _isExpanded = false;
   private bool _isEvaluated = false;
 
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string nodeID, string text, string icon)
   {
     NodeID = nodeID;
@@ -30,41 +32,50 @@ public class WebTreeNode: IControlItem
     _children.SetParent (null, this);
   }
 
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string nodeID, string text)
     : this (nodeID, text, null)
   {
   }
 
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode()
     : this (null, null, null)
   {
   }
 
-  public void Collapse()
-  {
-    IsExpanded = false;
-  }
-
-  public void CollapseAll()
-  {
-    _children.SetExpandsion (false);
-  }
-  
-  public void Expand()
-  {
-    IsExpanded = true;
-  }
-  
-  public void ExpandAll()
-  {
-    _children.SetExpandsion (true);
-  }
+  //  /// <summary> Collapses the current node. </summary>
+  //  public void Collapse()
+  //  {
+  //    IsExpanded = false;
+  //  }
+  //
+  //  /// <summary> Collapses the current node and all child nodes. </summary>
+  //  public void CollapseAll()
+  //  {
+  //    Collapse();
+  //    _children.SetExpansion (false);
+  //  }
+  //  
+  //  /// <summary> Expands the current node. </summary>
+  //  public void Expand()
+  //  {
+  //    IsExpanded = true;
+  //  }
+  //  
+  //  /// <summary> Expands the current node and all child nodes. </summary>
+  //  public void ExpandAll()
+  //  {
+  //    Expand();
+  //    _children.SetExpansion (true);
+  //  }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {
   }
 
+  /// <summary> Sets this node's <see cref="WebTreeView"/> and parent <see cref="WebTreeNode"/>. </summary>
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
   {
     _treeView = treeView; 
@@ -72,10 +83,13 @@ public class WebTreeNode: IControlItem
     _children.SetParent (_treeView, this);
   }
 
-  /// <summary>
-  ///   Must be unique within the collection of tree nodes. Must not be <see langword="null"/> or emtpy.
-  /// </summary>
-  [DefaultValue ("")]
+  /// <summary> Gets or sets the ID of this node. </summary>
+  /// <remarks> Must be unique within the collection of tree nodes. Must not be <see langword="null"/> or emtpy. </remarks>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The ID of this node.")]
+  [NotifyParentProperty (true)]
+  [ParenthesizePropertyName (true)]
+  //  No default value
   public virtual string NodeID
   {
     get { return _nodeID; }
@@ -97,15 +111,27 @@ public class WebTreeNode: IControlItem
     }
   }
 
+  /// <summary> Gets or sets the text displayed in this node. </summary>
+  /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [DefaultValue ("")]
+  [Category ("Appearance")]
+  [Description ("The text displayed in this node.")]
+  [NotifyParentProperty (true)]
   public virtual string Text
   {
     get { return _text; }
-    set { _text = value; }
+    set 
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      _text = value; 
+    }
   }
 
+  /// <summary> Gets or sets the URL for the icon displayed in this tree node. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The URL for the icon displayed in this tree node.")]
+  [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Icon
   {
@@ -113,6 +139,7 @@ public class WebTreeNode: IControlItem
     set { _icon = value; }
   }
 
+  /// <summary> Gets the child nodes of this node. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Behavior")]
@@ -123,6 +150,7 @@ public class WebTreeNode: IControlItem
     get { return _children; }
   }
 
+  /// <summary> Gets the <see cref="WebTreeView"/> to which this node belongs. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public WebTreeView TreeView
@@ -130,6 +158,7 @@ public class WebTreeNode: IControlItem
     get { return _treeView; }
   }
 
+  /// <summary> Gets the parent <see cref="WebTreeNode"/> of this node. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public WebTreeNode ParentNode
@@ -137,6 +166,7 @@ public class WebTreeNode: IControlItem
     get { return _parentNode; }
   }
 
+  /// <summary> Gets or sets a flag that determines whether this node is expanded. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public bool IsExpanded
@@ -145,6 +175,7 @@ public class WebTreeNode: IControlItem
     set { _isExpanded = value; }
   }
 
+  /// <summary> Gets or sets a flag that determines whether this node's child collection has been populated. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public bool IsEvaluated

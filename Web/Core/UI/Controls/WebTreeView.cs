@@ -11,10 +11,12 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <summary> A tree view. </summary>
 [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
 public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 {
   // constants
+  #region private const string c_nodeIcon...
   private const string c_nodeIconF = "TreeViewF.gif";
   private const string c_nodeIconFMinus = "TreeViewFMinus.gif";
   private const string c_nodeIconFPlus = "TreeViewFPlus.gif";
@@ -31,9 +33,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   private const string c_nodeIconTMinus = "TreeViewTMinus.gif";
   private const string c_nodeIconTPlus = "TreeViewTPlus.gif";
   private const string c_nodeIconWhite = "TreeViewWhite.gif";
+  #endregion
 
+  /// <summary> The separator used for the node path. </summary>
   private const char c_pathSeparator = '|';
+  /// <summary> The prefix for the expansion command. </summary>
   private const string c_expansionCommandPrefix = "Expand=";
+  /// <summary> The prefix for the click command. </summary>
   private const string c_clickCommandPrefix = "Click=";
 
   // statics
@@ -42,33 +48,52 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   // types
 
   // fields
-  private WebTreeNodeCollection _nodes;
-  private string _nodeIconF;
-  private string _nodeIconFMinus;
-  private string _nodeIconFPlus;
-  private string _nodeIconI;
-  private string _nodeIconL;
-  private string _nodeIconLMinus;
-  private string _nodeIconLPlus;
-  private string _nodeIconMinus;
-  private string _nodeIconPlus;
-  private string _nodeIconR;
-  private string _nodeIconRMinus;
-  private string _nodeIconRPlus;
-  private string _nodeIconT;
-  private string _nodeIconTMinus;
-  private string _nodeIconTPlus;
-  private string _nodeIconWhite;
+  // The URL resolved icon paths.
+  #region private string _resolvedNodeIcon...
+  private string _resolvedNodeIconF;
+  private string _resolvedNodeIconFMinus;
+  private string _resolvedNodeIconFPlus;
+  private string _resolvedNodeIconI;
+  private string _resolvedNodeIconL;
+  private string _resolvedNodeIconLMinus;
+  private string _resolvedNodeIconLPlus;
+  private string _resolvedNodeIconMinus;
+  private string _resolvedNodeIconPlus;
+  private string _resolvedNodeIconR;
+  private string _resolvedNodeIconRMinus;
+  private string _resolvedNodeIconRPlus;
+  private string _resolvedNodeIconT;
+  private string _resolvedNodeIconTMinus;
+  private string _resolvedNodeIconTPlus;
+  private string _resolvedNodeIconWhite;
+  #endregion
 
+  /// <summary> The nodes in this tree view. </summary>
+  private WebTreeNodeCollection _nodes;
+
+  /// <summary>
+  ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
+  ///   is expanded.
+  /// </summary>
+  /// <exception cref="NullReferenceException">
+  ///   Thrown if no method is registered for this delegate but a node with <see cref="WebTreeNode.IsEvaluated"/> 
+  ///   set to <see langword="false"/> is going to be expanded.
+  /// </exception>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if the registered method has not set the <see cref="WebTreeNode.IsEvaluated"/> flag.
+  /// </exception>
   public EvaluateWebTreeNode EvaluateTreeNode;
 
   //  construction and destruction
+
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeView (Control ownerControl)
   {
     _nodes = new WebTreeNodeCollection (ownerControl);
     _nodes.SetParent (this, null);
   }
 
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeView()
     :this (null)
   {
@@ -90,6 +115,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
 
+  /// <summary> Handles the expansion command (i.e. expands/collapses the clicked tree node). </summary>
+  /// <param name="eventArgument"> The path to the clicked tree node. </param>
   private void HandleEventExpansionCommand (string eventArgument)
   {
     string[] pathSegments;
@@ -102,7 +129,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       }
       else
       {
-        if (EvaluateTreeNode == null) throw new InvalidOperationException ("EvaluateTreeNode has no method registered but tree node '" + clickedNode.NodeID + "' is not evaluated.");
+        if (EvaluateTreeNode == null) throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + clickedNode.NodeID + "' is not evaluated.");
         EvaluateTreeNode (clickedNode);
         if (! clickedNode.IsEvaluated) throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + clickedNode.NodeID + "' but did not evaluate the tree node.");
         clickedNode.IsExpanded = true;
@@ -110,12 +137,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     }
   }
 
+  /// <summary> Handles the click command. </summary>
+  /// <param name="eventArgument"> The path to the clicked tree node. </param>
   private void HandleEventClickCommand (string eventArgument)
   {
     string[] pathSegments;
     WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
-    if (clickedNode != null)
-      OnClick (clickedNode, pathSegments);
+    OnClick (clickedNode, pathSegments);
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
@@ -129,16 +157,19 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     }
   }
 
-  public void CollapseAll()
-  {
-    _nodes.SetExpandsion (false);
-  }
-    
-  public void ExpandAll()
-  {
-    _nodes.SetExpandsion (true);
-  }
+  //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
+  //  public void CollapseAll()
+  //  {
+  //    _nodes.SetExpansion (false);
+  //  }
+  //    
+  //  /// <summary> Expands all nodes of this tree view.</summary>
+  //  public void ExpandAll()
+  //  {
+  //    _nodes.SetExpansion (true);
+  //  }
 
+  /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
   protected override void OnPreRender(EventArgs e)
   {
     string key = typeof (DropDownMenu).FullName + "_Style";
@@ -175,6 +206,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     return values;
   }
 
+  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="viewState"/>. </summary>
   private void LoadNodeViewStateRecursive (object viewState, WebTreeNodeCollection nodes)
   {
     Triplet[] nodeViewStates = (Triplet[]) viewState;
@@ -192,6 +224,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     }
   }
 
+  /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
   private object SaveNodeViewStateRecursive (WebTreeNodeCollection nodes)
   {
     Triplet[] nodeViewStates = new Triplet[nodes.Count];
@@ -210,24 +243,22 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     return nodeViewStates;
   }
 
+  /// <summary> Overrides the parent control's <c>TagKey</c> property. </summary>
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Div; }
   }
 
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    base.AddAttributesToRender (writer);
-  }
-
+  /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    InitalizeNodeIcons();
+    ResolveNodeIcons();
     RenderNodes (writer, _nodes);
     if (ControlHelper.IsDesignMode (this, Context) && _nodes.Count == 0)
       RenderDesignModeContents (writer);
   }
 
+  /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
   private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes)
   {
     for (int i = 0; i < nodes.Count; i++)
@@ -238,35 +269,45 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
       writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin node block
 
-      RenderParentNodeSection (writer, node, isFirstNode, isLastNode); 
+      RenderNode (writer, node, isFirstNode, isLastNode); 
       bool hasChildren = node.Children.Count > 0;
       if (hasChildren && node.IsExpanded)
-        RenderChildNodeSection (writer, node, isLastNode);       
+        RenderNodeChildren (writer, node, isLastNode);       
 
       writer.RenderEndTag(); // End node block
     }
   }
 
-  private void RenderParentNodeSection (HtmlTextWriter writer, WebTreeNode node, bool isFirstNode, bool isLastNode)
+  /// <summary> Renders the <paramref name="node"/> onto the <paremref name="writer"/>. </summary>
+  /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
+  /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
+  private void RenderNode (HtmlTextWriter writer, WebTreeNode node, bool isFirstNode, bool isLastNode)
   {
     writer.AddStyleAttribute ("white-space", "nowrap");
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassParentNode);  
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);  
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
-
-    string nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
 
     string nodePath = FormatNodePath (node);
 
-    string argument;
-    string postBackLink;
+    RenderNodeExpander (writer, node, nodePath, isFirstNode, isLastNode);
+    RenderNodeHead (writer, node, nodePath);
 
+    writer.RenderEndTag();
+  }
+
+  /// <summary> Renders the <paramref name="node"/>'s expander (i.e. +/-) onto the <paremref name="writer"/>. </summary>
+  /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
+  /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
+  private void RenderNodeExpander (HtmlTextWriter writer, WebTreeNode node, string nodePath, bool isFirstNode, bool isLastNode)
+  {
+    string nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
     bool hasChildren = node.Children.Count > 0;
     bool isEvaluated = node.IsEvaluated;
     bool hasExpansionLink = hasChildren || ! isEvaluated;
     if (hasExpansionLink)
     {
-      argument = c_expansionCommandPrefix + nodePath;
-      postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string argument = c_expansionCommandPrefix + nodePath;
+      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
     }
@@ -277,18 +318,26 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     writer.RenderEndTag();
     if (hasExpansionLink)
       writer.RenderEndTag();
+  }
 
-    argument = c_clickCommandPrefix + nodePath;
-    postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+  /// <summary> Renders the <paramref name="node"/>'s head (i.e. icon and text) onto the <paremref name="writer"/>. </summary>
+  private void RenderNodeHead (HtmlTextWriter writer, WebTreeNode node, string nodePath)
+  {
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);  
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+    string argument = c_clickCommandPrefix + nodePath;
+    string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
     writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     if (! StringUtility.IsNullOrEmpty (node.Icon))
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, nodeIcon);
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, node.Icon);
       writer.AddStyleAttribute ("vertical-align", "middle");
       writer.AddStyleAttribute ("border", "0");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
+      writer.Write ("&nbsp;");
     }
     if (! StringUtility.IsNullOrEmpty (node.Text))
       writer.Write (node.Text);
@@ -297,12 +346,14 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     writer.RenderEndTag();
   }
 
-  private void RenderChildNodeSection (HtmlTextWriter writer, WebTreeNode node, bool isLastNode)
+  /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
+  /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
+  private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode)
   {
     if (isLastNode)
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLastNodeGroup);  
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLastNodeChildren);  
     else
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeGroup);  
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);  
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin child nodes
 
     RenderNodes (writer, node.Children);
@@ -310,6 +361,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     writer.RenderEndTag(); // End child nodes
   }
 
+  /// <summary> Renders a dummy tree for design mode. </summary>
   private void RenderDesignModeContents (HtmlTextWriter writer)
   {
     WebTreeNodeCollection designModeNodes = new WebTreeNodeCollection (null);
@@ -321,6 +373,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     RenderNodes (writer, designModeNodes);
   }
 
+  /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
+  /// <remarks> ...&lt;node.Parent.Parent.NodeID&gt;|&lt;node.Parent.NodeID&gt;|&lt;NodeID&gt; </remarks>
   public string FormatNodePath (WebTreeNode node)
   {    
     string parentPath = string.Empty;
@@ -332,6 +386,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     return parentPath + node.NodeID;
   }
 
+  /// <summary>
+  ///   Parses the string generated by <see cref="FormatNodePath"/> and returns the node to which it points.
+  /// </summary>
+  /// <remarks> If the path cannot be resolved completly, the last valid node in the path is returned. </remarks>
+  /// <param name="path"> The path to be parsed. </param>
+  /// <param name="pathSegments"> Returns the IDs that comprised the path. </param>
+  /// <returns> The <see cref="WebTreeNode"/> to which <paramref name="path"/> pointed. </returns>
   public WebTreeNode ParseNodePath (string path, out string[] pathSegments)
   {
     pathSegments = path.Split (c_pathSeparator);
@@ -348,6 +409,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     return currentNode;
   }
 
+  /// <summary> Returns the URL of the node icon for the <paramref name="node"/>. </summary>
+  /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
+  /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
+  /// <returns> An image URL. </returns>
   private string GetNodeIcon (WebTreeNode node, bool isFirstNode, bool isLastNode)
   {
     bool hasChildren = node.Children.Count > 0;
@@ -395,70 +460,71 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     }
 
     if (expander == ' ' && type == 'F')
-      return _nodeIconF;
+      return _resolvedNodeIconF;
     else if (expander == '-' && type == 'F')
-      return _nodeIconFMinus;
+      return _resolvedNodeIconFMinus;
     else if (expander == '+' && type == 'F')
-      return _nodeIconFPlus;
+      return _resolvedNodeIconFPlus;
     else if (expander == ' ' && type == 'L')
-      return _nodeIconL;
+      return _resolvedNodeIconL;
     else if (expander == '-' && type == 'L')
-      return _nodeIconLMinus;
+      return _resolvedNodeIconLMinus;
     else if (expander == '+' && type == 'L')
-      return _nodeIconLPlus;
+      return _resolvedNodeIconLPlus;
     else if (expander == ' ' && type == 'r')
-      return _nodeIconR;
+      return _resolvedNodeIconR;
     else if (expander == '-' && type == 'r')
-      return _nodeIconRMinus;
+      return _resolvedNodeIconRMinus;
     else if (expander == '+' && type == 'r')
-      return _nodeIconRPlus;
+      return _resolvedNodeIconRPlus;
     else if (expander == ' ' && type == 'T')
-      return _nodeIconT;
+      return _resolvedNodeIconT;
     else if (expander == '-' && type == 'T')
-      return _nodeIconTMinus;
+      return _resolvedNodeIconTMinus;
     else if (expander == '+' && type == 'T')
-      return _nodeIconTPlus;
+      return _resolvedNodeIconTPlus;
     
-    return _nodeIconR;
+    return _resolvedNodeIconR;
   }
 
-
-  private void InitalizeNodeIcons()
+  /// <summary> Resolves the URLs for the node icons. </summary>
+  private void ResolveNodeIcons()
   {
-    _nodeIconF = 
+    _resolvedNodeIconF = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconF);
-    _nodeIconFMinus = 
+    _resolvedNodeIconFMinus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFMinus);
-    _nodeIconFPlus = 
+    _resolvedNodeIconFPlus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFPlus);
-    _nodeIconI = 
+    _resolvedNodeIconI = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconI);
-    _nodeIconL = 
+    _resolvedNodeIconL = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconL);
-    _nodeIconLMinus = 
+    _resolvedNodeIconLMinus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLMinus);
-    _nodeIconLPlus = 
+    _resolvedNodeIconLPlus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLPlus);
-    _nodeIconMinus = 
+    _resolvedNodeIconMinus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconMinus);
-    _nodeIconPlus = 
+    _resolvedNodeIconPlus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconPlus);
-    _nodeIconR = 
+    _resolvedNodeIconR = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconR);
-    _nodeIconRMinus = 
+    _resolvedNodeIconRMinus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRMinus);
-    _nodeIconRPlus = 
+    _resolvedNodeIconRPlus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRPlus);
-    _nodeIconT = 
+    _resolvedNodeIconT = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconT);
-    _nodeIconTMinus = 
+    _resolvedNodeIconTMinus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTMinus);
-    _nodeIconTPlus = 
+    _resolvedNodeIconTPlus = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTPlus);
-    _nodeIconWhite = 
+    _resolvedNodeIconWhite = 
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconWhite);
   }
   
+  /// <summary> Gets the tree nodes displayed by this tree view. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Behavior")]
@@ -478,22 +544,41 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     remove { Events.RemoveHandler (s_clickEvent, value); }
   }
 
-  public virtual string CssClassParentNode
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/> node. </summary>
+  /// <remarks> Class: <c>treeViewNode</c> </remarks>
+  public virtual string CssClassNode
   {
-    get { return "treeViewParentNode"; }
+    get { return "treeViewNode"; }
   }
 
-  public virtual string CssClassNodeGroup
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node head. </summary>
+  /// <remarks> Class: <c>treeViewNodeHead</c> </remarks>
+  public virtual string CssClassNodeHead
   {
-    get { return "treeViewNodeGroup"; }
+    get { return "treeViewNodeHead"; }
   }
 
-  public virtual string CssClassLastNodeGroup
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node children. </summary>
+  /// <remarks> Class: <c>treeViewNodeChildren</c> </remarks>
+  public virtual string CssClassNodeChildren
   {
-    get { return "treeViewLastNodeGroup"; }
+    get { return "treeViewNodeChildren"; }
   }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s last node's children. </summary>
+  /// <remarks> Class: <c>treeViewLastNodeChildren</c> </remarks>
+  public virtual string CssClassLastNodeChildren
+  {
+    get { return "treeViewLastNodeChildren"; }
+  }
+  #endregion
 }
 
+/// <summary>
+///   Represents the method called before a <see cref="WebTreeNode"/> with <see cref="WebTreeNode.IsEvaluated"/>
+///   set to <see langword="false"/> is expanded.
+/// </summary>
 public delegate void EvaluateWebTreeNode (WebTreeNode expandingNode);
 
 /// <summary> Represents the method that handles the <c>Click</c> event raised when clicking on a tree node. </summary>

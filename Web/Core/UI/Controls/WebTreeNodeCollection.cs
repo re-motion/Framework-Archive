@@ -74,6 +74,11 @@ public class WebTreeNodeCollection: ControlItemCollection
       node.SetParent (_treeView, parentNode);
   }
 
+  /// <summary>
+  ///   Finds the <see cref="WebTreeNode"/> with a <see cref="WebTreeNode.NodeID"/> of <paramref name="id"/>.
+  /// </summary>
+  /// <param name="id"> The ID to look for. </param>
+  /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
   public WebTreeNode Find (string id)
   {
     foreach (WebTreeNode node in InnerList)
@@ -84,17 +89,21 @@ public class WebTreeNodeCollection: ControlItemCollection
     return null;
   }
 
-  public void SetExpandsion (bool expand)
-  {
-    foreach (WebTreeNode node in InnerList)
-    {
-      node.IsExpanded = expand;
-      if (expand)
-        node.ExpandAll();
-      else
-        node.CollapseAll();
-    }
-  }
+  //  /// <summary>
+  //  ///   Sets the <see cref="WebTreeNode.IsExpanded"/> of all nodes in this collection, including all child nodes.
+  //  /// </summary>
+  //  /// <param name="expand"> <see langword="true"/> to expand all nodes, <see langword="false"/> to collapse them. </param>
+  //  public void SetExpansion (bool expand)
+  //  {
+  //    foreach (WebTreeNode node in InnerList)
+  //    {
+  //      node.IsExpanded = expand;
+  //      if (expand)
+  //        node.ExpandAll();
+  //      else
+  //        node.CollapseAll();
+  //    }
+  //  }
 }
 
 }
