@@ -17,21 +17,21 @@ public class ControlHelper
 
   // static members
 
-  public static ArrayList GetControlsByType (Control parentControl, Type type)
+  public static ArrayList GetControlsRecursive (Control parentControl, Type type)
   {
     ArrayList controlList = new ArrayList ();
-    GetControlsByType (parentControl, type, controlList);
+    GetControlsRecursive (parentControl, type, controlList);
     return controlList;
   }
 
-  private static void GetControlsByType (Control parentControl, Type type, ArrayList controlList)
+  private static void GetControlsRecursive (Control parentControl, Type type, ArrayList controlList)
   {
     foreach (Control control in parentControl.Controls)
     {
       if (control.GetType() == type)
         controlList.Add (control);
       
-      GetControlsByType (control, type, controlList);
+      GetControlsRecursive (control, type, controlList);
     }
   }
   
