@@ -90,7 +90,14 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
 
   public string DisplayName
   {
-    get { return _propertyInfo.Name; }
+    get 
+    { 
+      DisplayNameAttribute displayNameAttribute = DisplayNameAttribute.GetDisplayNameAttribute(_propertyInfo);
+      if (displayNameAttribute != null)
+        return displayNameAttribute.DisplayName;
+      else
+        return _propertyInfo.Name; 
+    }
   }
 
   public virtual bool IsRequired
@@ -404,6 +411,31 @@ public class ReflectionBusinessObjectReferenceProperty: ReflectionBusinessObject
     {
       return true;
     }
+  }
+}
+
+[AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+public class DisplayNameAttribute: Attribute
+{
+  public static DisplayNameAttribute GetDisplayNameAttribute (PropertyInfo propertyInfo)
+  {
+    object[] attributes = propertyInfo.GetCustomAttributes (typeof (DisplayNameAttribute), false);
+    if (attributes.Length == 0)
+      return null;
+    else
+      return (DisplayNameAttribute) attributes[0];
+  }
+
+  private string _displayName;
+
+  public DisplayNameAttribute (string displayName)
+  {
+    _displayName = displayName;
+  }
+
+  public string DisplayName
+  {
+    get { return _displayName; }
   }
 }
 
