@@ -9,6 +9,10 @@
     <param name="objectType">
       The type for which the resource manager is wanted.
     </param>
+    <param name="resourceType">
+      The <see="MultiLingualResourcesAttribute.ResourceTypeEnum" /> value selecting which type of
+      resources should be selected.
+    </param>
     <param name="includeHierarchy">
       Include the resource managers for the base types.
     </param>
