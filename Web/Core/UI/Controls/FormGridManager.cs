@@ -872,6 +872,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
   private const string c_formGridSuffix = "FormGrid";
 
+  private const string c_generatedLabelSuffix = "_FormGridManagerGeneratedLabel";
   #region private const string c_viewStateID...
 
   /// <summary> View State ID for the form grid view states. </summary>
@@ -1507,7 +1508,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
-      BaseValidator validator = control as BaseValidator;
+      IValidator validator = control as IValidator;
 
       //  Only for validators
       if (validator == null)
@@ -1518,10 +1519,16 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       if (validator.IsValid)
         continue;
 
-      //  Optimize: Expect the validated control in the same cell
-      //  and look in the page only if not found locally
-      Control controlToValidate = validator.NamingContainer.FindControl (
-        validator.ControlToValidate);
+      //  Get control to validate
+      Control controlToValidate = null;
+
+      BaseValidator baseValidator = control as BaseValidator;
+      IBaseValidator iBaseValidator = control as IBaseValidator;
+
+      if (baseValidator != null)
+        controlToValidate = control.NamingContainer.FindControl (baseValidator.ControlToValidate);
+      else if (iBaseValidator != null)
+        controlToValidate = control.NamingContainer.FindControl (iBaseValidator.ControlToValidate);
 
       //  Ignore invisible controls
       if (!controlToValidate.Visible)
@@ -1989,17 +1996,26 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
-      BaseValidator validator = control as BaseValidator;
+      BaseValidator baseValidator = control as BaseValidator;
+      IBaseValidator iBaseValidator = control as IBaseValidator;
 
       //  Only for validators
-      if (validator == null)
+      if (baseValidator == null && iBaseValidator == null)
         continue;
       
       //  FormGrid override
       if (ValidatorVisibility != ValidatorVisibility.ShowValidators)
       {
-        validator.Display = ValidatorDisplay.None;
-        validator.EnableClientScript = false;
+        if (baseValidator != null)
+        {
+          baseValidator.Display = ValidatorDisplay.None;
+          baseValidator.EnableClientScript = false;
+        }
+        else if (iBaseValidator != null)
+        {
+          iBaseValidator.Display = ValidatorDisplay.None;
+          iBaseValidator.EnableClientScript = false;
+        }
       }
     }
   }
@@ -2024,19 +2040,28 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       //  Query the controls for the string to be used as the labeling Text
 
-      string newID = String.Empty;
-      string newText = String.Empty;
+      Control label = null;
+
+      string newID = control.ID + c_generatedLabelSuffix;
 
       if (control is ISmartControl)
       {
-        newID = control.ID + "_Label";
-        newText = ((ISmartControl)control).DisplayName;
+        SmartLabel smartLabel = new SmartLabel();
+        
+        smartLabel.ForControl = control.ID;
+
+        label = smartLabel;
       }
-      else if (   control is TextBox 
-              ||  control is DropDownList
-              ||  control is Table)
+      else if (     ! StringUtility.IsNullOrEmpty (control.ID)
+                &&  (     control is TextBox 
+                      ||  control is ListControl
+                      ||  control is Table
+                      ||  control is HtmlInputControl
+                      ||  control is HtmlSelect
+                      ||  control is HtmlTextArea
+                      ||  control is HtmlTable))
       {
-        newID = control.ID + "_Label";
+        string newText = String.Empty;
 
         //  Get Text
         IResourceManager resourceManager = GetResourceManager();
@@ -2052,12 +2077,38 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
           identifier.Append (newID);
           newText = resourceManager.GetString (identifier.ToString());
         }
+
+        Label primitiveLabel = new Label();
+
+        string accessKey = String.Empty;
+
+        //  Insert the text provided by the control
+        if (! StringUtility.IsNullOrEmpty (newText))
+        {
+          primitiveLabel.Text = AccessKeyUtility.FormatLabelText (newText, false, out accessKey);
+        }
+          //  Otherwise, create default warning text.
+        else if (control.ID != null)
+        {
+          primitiveLabel.Text = control.ID.ToUpper();
+          s_log.Warn ("No resource available for control '" + control.ID + "' in naming container '" + control.NamingContainer.GetType().FullName + "'.");
+        }
+
+        if (! (control is DropDownList || control is HtmlSelect))
+        {
+          primitiveLabel.AccessKey = accessKey;
+          primitiveLabel.AssociatedControlID = control.ClientID;
+        }
+
+        label = primitiveLabel;
       }
         //  The control found in this iteration does not get handled by this method.
       else
       {
         continue;
       }
+
+      label.ID = newID;
 
       //  Add seperator if already a control in the cell
       
@@ -2072,36 +2123,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         
         //  Set Visible after control is added so ViewState knows about it
         seperator.Visible = control.Visible;
-      }
-
-      Label label = new Label();
-      
-      label.ID = newID;
-      
-      //  Insert the text provided by the control
-      if (newText != null && newText != String.Empty)
-      {
-        string accessKey = String.Empty;
-
-        label.Text = AccessKeyUtility.FormatLabelText (newText, false, out accessKey);
-        
-        ISmartControl smartControl = control as ISmartControl;
-        if (smartControl != null && smartControl.UseLabel)
-        {
-          label.AccessKey = accessKey;
-          label.AssociatedControlID = smartControl.TargetControl.ClientID;
-        }
-        else if (control is TextBox)
-        {
-          label.AccessKey = accessKey;
-          label.AssociatedControlID = control.ClientID;
-        }
-      }
-        //  Otherwise, create default text.
-      else if (control.ID != null)
-      {
-        label.Text = control.ID.ToUpper();
-        s_log.Warn ("No resource available for control '" + control.ID + "' in naming container '" + control.NamingContainer.GetType().FullName + "'.");
       }
 
       //  Should be default, but better safe than sorry

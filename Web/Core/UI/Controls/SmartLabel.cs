@@ -18,6 +18,9 @@ public class SmartLabel: WebControl
 	{
 	}
 
+  /// <summary>
+  ///   The ID
+  /// </summary>
   [TypeConverter (typeof (SmartControlToStringConverter))]
   public string ForControl
   {

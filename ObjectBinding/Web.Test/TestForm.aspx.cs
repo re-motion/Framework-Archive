@@ -21,20 +21,22 @@ public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
 
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue DateOfBirthField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel4;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue HeightField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel5;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel6;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel3;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel4;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator2;
+  protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -81,15 +83,15 @@ public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
 	private void InitializeComponent()
 	{    
     this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
-    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
     // 
     // reflectionBusinessObjectDataSource1
     // 
     this.reflectionBusinessObjectDataSource1.BusinessObject = null;
     this.reflectionBusinessObjectDataSource1.EditMode = true;
     this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
+    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
+    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -97,7 +99,8 @@ public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
 
   private void SaveButton_Click(object sender, System.EventArgs e)
   {
-    if (Page.IsValid)
+    bool isValid = FormGridManager.Validate();
+    if (isValid)
     {
       reflectionBusinessObjectDataSource1.SaveValues();
       Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;

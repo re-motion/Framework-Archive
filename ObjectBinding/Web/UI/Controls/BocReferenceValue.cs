@@ -12,7 +12,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <summary>
-///   This control can be used to display or edit enumeration values.
+///   This control can be used to display or edit reference values.
 /// </summary>
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
@@ -86,8 +86,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
       string newValue = this.Page.Request.Form[_listControl.UniqueID];
       if (newValue == c_nullIdentifier)
         _newValue = null;
-      else if (newValue != null)
-        _newValue = Property.GetValueInfo (newValue).Value;
+//      else if (newValue != null)
+//        _newValue = Property.GetValueInfo (newValue).Value;
     }
 
     if (_newValue != null && _newValue != _value)
@@ -125,11 +125,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
         _listControl.Items.Add (emptyItem);
       }
 
-      foreach (IEnumerationValueInfo valueInfo in Property.GetAllValues())
-      {
-        ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Value.ToString());
-        _listControl.Items.Add (item);
-      }
+//      foreach (IEnumerationValueInfo valueInfo in Property.GetAllValues())
+//      {
+//        ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Value.ToString());
+//        _listControl.Items.Add (item);
+//      }
     }
     InternalLoadValue();
   }
@@ -138,22 +138,22 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
   {
     if (Property != null)
     {
-      IEnumerationValueInfo valueInfo = Property.GetValueInfo (_value);
-      if (valueInfo == null)
-      {
-        _listControl.SelectedIndex = 0;
-      }
-      else
-      {
-        for (int i = 0; i < _listControl.Items.Count; ++i)
-        {
-          if (_listControl.Items[i].Value == valueInfo.Identifier)
-          {
-            _listControl.SelectedIndex = i;
-            break;
-          }
-        }
-      }
+//      IEnumerationValueInfo valueInfo = Property.GetValueInfo (_value);
+//      if (valueInfo == null)
+//      {
+//        _listControl.SelectedIndex = 0;
+//      }
+//      else
+//      {
+//        for (int i = 0; i < _listControl.Items.Count; ++i)
+//        {
+//          if (_listControl.Items[i].Value == valueInfo.Identifier)
+//          {
+//            _listControl.SelectedIndex = i;
+//            break;
+//          }
+//        }
+//      }
     }
   }
 
@@ -186,12 +186,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
     base.Render (writer);
   }
 
-  public new IBusinessObjectEnumerationProperty Property
-  {
-    get { return (IBusinessObjectEnumerationProperty) base.Property; }
-    set { base.Property = (IBusinessObjectEnumerationProperty) value; }
-  }
-
   protected override void InitializeChildControls()
   {
     bool isReadOnly = IsReadOnly;
@@ -199,7 +193,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
     _label.Visible = isReadOnly;
     if (isReadOnly)
     {
-      _label.Text = Property.GetValueInfo (Value).DisplayName;
+//      _label.Text = Property.GetValueInfo (Value).DisplayName;
 
       _label.Width = this.Width;
       _label.Height = this.Height;
