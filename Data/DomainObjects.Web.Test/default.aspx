@@ -35,12 +35,6 @@
             </obc:boctextvalue><obc:boctextvaluevalidator id="BocTextValueValidator3" runat="server" ControlToValidate="BocTextValue19"></obc:boctextvaluevalidator></TD>
         </TR>
         <TR>
-          <td></td>
-          <TD><obc:boctextvalue id="Boctextvalue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="CharProperty">
-              <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-            </obc:boctextvalue><obc:boctextvaluevalidator id="BocTextValueValidator4" runat="server" ControlToValidate="Boctextvalue3"></obc:boctextvaluevalidator></TD>
-        </TR>
-        <TR>
           <TD></TD>
           <TD><obc:boctextvalue id="BocTextValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Int32Property">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>

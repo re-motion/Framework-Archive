@@ -37,7 +37,6 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
     protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BocDateTimeValue3;
     protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BocBooleanValue2;
     protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BocBooleanValue3;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValue Boctextvalue3;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue4;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue5;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue6;
@@ -68,7 +67,6 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
     protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValueValidator BocDateTimeValueValidator1;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator2;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator3;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator4;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator5;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator6;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator7;
