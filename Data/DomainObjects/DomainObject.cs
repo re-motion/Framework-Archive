@@ -13,10 +13,15 @@ public class DomainObject
 
   protected static DomainObject GetObject (ObjectID id)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
-    return ClientTransaction.Current.GetObject (id);
+    return GetObject (id, false);
   }
 
+  protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    return ClientTransaction.Current.GetObject (id, includeDeleted);
+  }
+ 
   internal static DomainObject Create (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);

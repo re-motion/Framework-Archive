@@ -84,7 +84,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return _clientTransaction.LoadRelatedObject (endPointID);
     
     if (objectEndPoint.OppositeObjectID != null)
-      return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID);
+      return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, false);
 
     return null;
   }
@@ -98,7 +98,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return _clientTransaction.LoadRelatedObject (endPointID);
 
     if (objectEndPoint.OriginalOppositeObjectID != null)
-      return _clientTransaction.GetObject (objectEndPoint.OriginalOppositeObjectID);
+      return _clientTransaction.GetObject (objectEndPoint.OriginalOppositeObjectID, true);
 
     return null;
   }
@@ -130,6 +130,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
+    CheckDeleted (endPoint);
 
     RelationEndPoint newRelatedEndPoint = GetRelationEndPoint (
         newRelatedObject, endPoint.OppositeEndPointDefinition);
@@ -283,6 +284,17 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     return false;
   }
 
+  private void CheckDeleted (RelationEndPoint endPoint)
+  {
+    CheckDeleted (endPoint.GetDomainObject ());
+  }
+
+  private void CheckDeleted (DomainObject domainObject)
+  {
+    if (domainObject.State == StateType.Deleted)
+      throw new ObjectDeletedException (domainObject.ID);
+  }
+
   private void SetRelatedObjectForOneToOneRelation (
       ObjectEndPoint endPoint, 
       ObjectEndPoint newRelatedEndPoint,
@@ -367,6 +379,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   void ICollectionEndPointChangeDelegate.PerformAdd  (CollectionEndPoint endPoint, DomainObject domainObject)
   {
+    CheckDeleted (endPoint);
+
     ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
 

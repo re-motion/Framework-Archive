@@ -125,8 +125,7 @@ public abstract class RelationEndPoint : INullable
 
   public virtual DomainObject GetDomainObject ()
   {
-    // TODO: This method should return a deleted domainObject too!
-    return _clientTransaction.GetObject (ObjectID); 
+    return _clientTransaction.GetObject (ObjectID, true); 
   }
 
   public virtual DataContainer GetDataContainer ()
