@@ -1,18 +1,16 @@
 /*  TD does not inherit from body */
 body, td
 {
-	background-color: #ffffff;
-	
-	font-weight: normal;
-	font-size: 100%;
-	color: #000000;
-	text-decoration: none;
-	line-height: 100%;
 }
 
 body, input, textarea
 {
 	font-family: 'Arial' , 'Helvetica';
+}
+
+a
+{
+  color: Blue;
 }
 
 /*  Style applied to the form grid table's outer structure  */
@@ -122,9 +120,4 @@ td.formGridTopDataRow
 .formGridValidationNotice
 {
 	color: Red;
-}
-
-a
-{
-  color: Blue;
 }
