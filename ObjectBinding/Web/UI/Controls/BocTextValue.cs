@@ -643,9 +643,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return _label; }
   }
 
-  /// <summary>
-  ///   Validation message if the control is not filled correctly.
-  /// </summary>
+  /// <summary> Gets or sets the validation error message. </summary>
   [Description("Validation message if the control is not filled correctly.")]
   [Category ("Validator")]
   [DefaultValue("")]
