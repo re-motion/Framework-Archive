@@ -17,10 +17,27 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
+  /// <summary> The BocColumnDefinition types supported by this collection instance. </summary>
+  private Type[] _supportedTypes;
+
   /// <summary>
-  ///   The event raised after the items contained in the collection have been changed.
+  ///   Constructor.
   /// </summary>
-  public event CollectionChangeEventHandler CollectionChanged;
+  /// <param name="ownerControl">
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  /// </param>
+  /// <param name="supportedTypes"> 
+  ///   The <see cref="BocColumnDefinition"/> types supported by this collection. 
+  /// </param>
+  internal BocColumnDefinitionCollection (
+    IBusinessObjectBoundWebControl ownerControl, 
+    Type[] supportedTypes)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("supportedTypes", supportedTypes);
+
+    _ownerControl = ownerControl;
+    _supportedTypes = supportedTypes;
+  }
 
   /// <summary>
   ///   Constructor.
@@ -29,9 +46,8 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
   internal BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
-  {
-    _ownerControl = ownerControl;
-  }
+    : this (ownerControl, new Type[] {typeof (BocColumnDefinition)})
+  {}
 
   /// <summary> Performs additional custom processes before inserting a new element. </summary>
   /// <param name="index"> The zero-based index at which to insert value. </param>
@@ -39,8 +55,11 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   protected override void OnInsert(int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (BocColumnDefinition));
-    base.OnInsert (index, value);    
-    ((BocColumnDefinition) value).OwnerControl = _ownerControl;
+    BocColumnDefinition columnDefinition = (BocColumnDefinition) value;
+    if (!IsSupportedType (columnDefinition))
+      throw new ArgumentException ("The collection does not support a BocColumnDefinition of type '" + columnDefinition.GetType() + "'.", "value");
+    base.OnInsert (index, columnDefinition);    
+    columnDefinition.OwnerControl = _ownerControl;
   }
 
   /// <summary> Performs additional custom processes before setting a value. </summary>
@@ -50,8 +69,11 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   protected override void OnSet(int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (BocColumnDefinition));
-    base.OnSet (index, oldValue, newValue);    
-    ((BocColumnDefinition) newValue).OwnerControl = _ownerControl;
+    BocColumnDefinition columnDefinition = (BocColumnDefinition) newValue;
+    if (!IsSupportedType (columnDefinition))
+      throw new ArgumentException ("The collection does not support a BocColumnDefinition of type '" + columnDefinition.GetType() + "'.", "newValue");
+    base.OnSet (index, oldValue, columnDefinition);    
+    columnDefinition.OwnerControl = _ownerControl;
   }
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>
@@ -108,6 +130,25 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
       foreach (BocColumnDefinition columnDefinition in List)
         columnDefinition.OwnerControl = _ownerControl;
     }
+  }
+
+  /// <summary>
+  ///   Tests whether the specified <see cref="BocColumnDefinition"/>'s type is supported by the
+  ///   collection.
+  /// </summary>
+  /// <param name="columnDefinition"> The <see cref="BocColumnDefinition"/> to be tested. </param>
+  /// <returns><see langword="true"/> if the <see cref="BocColumnDefinition"/> is suppported. </returns>
+  private bool IsSupportedType (BocColumnDefinition columnDefinition)
+  {
+    Type columnDefinitionType = columnDefinition.GetType();
+
+    foreach (Type type in _supportedTypes)
+    {
+      if (type.IsAssignableFrom (columnDefinitionType))
+        return true;
+    }
+    
+    return false;
   }
 }
 

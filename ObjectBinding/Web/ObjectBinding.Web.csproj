@@ -246,6 +246,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Design\BocItemCommandConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Design\BusinessObjectBoundControlDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

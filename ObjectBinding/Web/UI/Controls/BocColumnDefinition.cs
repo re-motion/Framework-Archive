@@ -18,7 +18,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   A BocColumnDefinition defines how to display a column of a list. 
 /// </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
-public abstract class BocColumnDefinition// : IComponent // for designer support
+public abstract class BocColumnDefinition
 {
   private Unit _width; 
   private string _columnHeader;
@@ -93,12 +93,14 @@ public abstract class BocColumnDefinition// : IComponent // for designer support
 /// </summary>
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
-  private BocItemCommand _command;
+  //  WORKAROUND: Implement Commands other than HrefItemCommand
+
+  private BocHrefItemCommand _command;
   private object _label;
   private string _iconPath;
 
   public BocCommandColumnDefinition (
-      BocItemCommand command, 
+      BocHrefItemCommand command, 
       object label, 
       string iconPath, 
       string columnHeader, 
@@ -113,8 +115,10 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   }
 
   public BocCommandColumnDefinition()
-    : base(null, Unit.Empty)// this (null, new EmptyItemCommand(), null, null, Unit.Empty)
-  {}
+    : base (null, Unit.Empty)
+  {
+    _command = new BocHrefItemCommand (".aspx?{0}", null);
+  }
 
 //  protected void RenderLabel (HtmlTextWriter writer)
 //  {
@@ -146,8 +150,9 @@ public class BocCommandColumnDefinition: BocColumnDefinition
     set { _iconPath = value; }
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public BocItemCommand Command
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  public BocHrefItemCommand Command
   {
     get { return _command; }
     set { _command = value; }
@@ -347,43 +352,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     }
   }
 
-//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-//  [Browsable (false)]
-//  public BusinessObjectPropertyPath PropertyPath 
-//  { 
-//    get
-//    {
-//      if (OwnerControl == null)
-//        throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundWebControl.");
-//      
-//      if (! ControlHelper.IsDesignMode (OwnerControl))
-//      {
-//        _propertyPathBinding.DataSource = OwnerControl.DataSource;
-//        return _propertyPathBinding.PropertyPath;
-//      }
-//      else
-//        return null;
-//    }
-//    set
-//    {
-//      _propertyPathBinding.PropertyPath = value;
-//    }
-//  }
-//
-//  [PersistenceMode (PersistenceMode.Attribute)]
-//  [DefaultValue("")]
-//  public string PropertyPathIdentifier
-//  { 
-//    get
-//    { 
-//      return _propertyPathBinding.PropertyPathIdentifier; 
-//    }
-//    set
-//    { 
-//      _propertyPathBinding.PropertyPathIdentifier = value; 
-//    }
-//  }
-
   public override string GetStringValue (IBusinessObject obj)
   {
     string[] strings = new string[_propertyPathBindings.Count];
@@ -403,16 +371,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
       base.ColumnHeader = value;
     }
   }
-}
-
-/// <summary>
-///   A BocColumnDefinition defines how to display a column of a list. 
-/// </summary>
-internal class BocDesignerColumnDefinition : BocColumnDefinition
-{
-  public BocDesignerColumnDefinition (string columnHeader, Unit width)
-    : base (columnHeader, width)
-  {}
 }
 
 }

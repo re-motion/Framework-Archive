@@ -42,7 +42,10 @@ public class BocColumnDefinitionSet
     BocColumnDefinition[] columnDefinitions)
   {
     _title = title;
-    _columnDefinitionCollection = new BocColumnDefinitionCollection (ownerControl);
+    _columnDefinitionCollection = new BocColumnDefinitionCollection (
+      ownerControl, 
+      new Type[] {typeof (BocSimpleColumnDefinition)});
+    
     if (columnDefinitions != null)
       _columnDefinitionCollection.AddRange (columnDefinitions);
   }
@@ -68,6 +71,7 @@ public class BocColumnDefinitionSet
   }
 
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
+  [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
   [ListBindable (false)]
   [MergableProperty (false)]
   [DefaultValue((string) null)]

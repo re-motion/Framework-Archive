@@ -19,4 +19,17 @@ public class BocColumnDefinitionCollectionEditor: CollectionEditor
       typeof (BocCommandColumnDefinition)};
   }
 }
-}
+
+public class BocSimpleColumnDefinitionCollectionEditor: CollectionEditor
+{
+  public BocSimpleColumnDefinitionCollectionEditor (Type type)
+    : base (type)
+  {
+  }
+
+  protected override Type[] CreateNewItemTypes()
+  {
+    return new Type[] {
+      typeof (BocSimpleColumnDefinition)};
+  }
+}}

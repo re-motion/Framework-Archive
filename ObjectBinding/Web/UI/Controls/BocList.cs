@@ -38,7 +38,8 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyContents = "#";
-
+  private const string c_designModeDummyColumnHeader = "Column Header {0}";
+  private const int c_designModeDummyColumnCount = 3;
   // types
   
   private enum GoToOption
@@ -78,8 +79,9 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   // may be set at run time. these columnDefinitions do usually not contain commands.
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
   
+  //  WORKAROUND: Implement Commands other than HrefItemCommand
   // the command to be used for the first ValueColumnDefinition column
-  private BocItemCommand _firstColumnCommand;
+  private BocHrefItemCommand _firstColumnCommand;
   
   // show check boxes for each object
   private bool _showSelection = false;
@@ -241,14 +243,6 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     {
       if (_pageCount == 0)
         _pageCount = 1;
-
-      if (columnDefinitions.Length == 0)
-      {
-        columnDefinitions = new BocColumnDefinition[] {
-          new BocDesignerColumnDefinition ("#", Unit.Empty),
-          new BocDesignerColumnDefinition ("#", Unit.Empty),
-          new BocDesignerColumnDefinition ("#", Unit.Empty)};
-      }
     }
  
     RenderHeader (writer);
@@ -333,7 +327,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(0).ToString());
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
-      writer.RenderEndTag ();
+      writer.RenderEndTag();
     }
 
     foreach (BocColumnDefinition column in columnDefinitions)
@@ -342,10 +336,19 @@ public class BocList: BusinessObjectBoundModifiableWebControl
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
 
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
-      writer.RenderEndTag ();
+      writer.RenderEndTag();
     }
     
-    writer.RenderEndTag ();
+    if (IsDesignMode && columnDefinitions.Length == 0)
+    {
+      for (int i = 0; i < c_designModeDummyColumnCount; i++)
+      {
+        writer.RenderBeginTag (HtmlTextWriterTag.Col);
+        writer.RenderEndTag();
+      }
+    }
+ 
+    writer.RenderEndTag();
   }
 
   private void RenderColumnHeadersRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
@@ -370,9 +373,19 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       else
         HttpUtility.HtmlEncode (column.ColumnHeaderDisplayValue, writer);
 
-      writer.RenderEndTag ();
+      writer.RenderEndTag();
     }
     
+    if (IsDesignMode && columnDefinitions.Length == 0)
+    {
+      for (int i = 0; i < c_designModeDummyColumnCount; i++)
+      {
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        writer.Write (string.Format (c_designModeDummyColumnHeader, i + 1));
+        writer.RenderEndTag ();
+      }
+    }
+
     writer.RenderEndTag ();
   }
 
@@ -718,9 +731,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     return isList;
   }
 
+  [PersistenceMode (PersistenceMode.InnerProperty)]
   [Category ("Column Definition")]
   [Description ("The ItemCommand added to the first value column.")]
-  public BocItemCommand FirstColumnCommand
+  [DefaultValue ((string) null)]
+  public BocHrefItemCommand FirstColumnCommand
   {
     get { return _firstColumnCommand; }
     set { _firstColumnCommand = value; }

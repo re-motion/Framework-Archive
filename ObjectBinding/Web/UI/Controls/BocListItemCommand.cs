@@ -1,6 +1,9 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using System.ComponentModel;
+using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -11,6 +14,7 @@ public abstract class BocItemCommand
   public abstract void RenderEnd (HtmlTextWriter writer);
 }
 
+[TypeConverter (typeof (BocHrefItemCommandConverter))]
 public class BocHrefItemCommand: BocItemCommand
 {
   private string _href;
@@ -27,15 +31,24 @@ public class BocHrefItemCommand: BocItemCommand
     _target = target;
   }
 
+  public BocHrefItemCommand()
+    : this (".aspx?{0}", null)
+  {}
 
+  [Description ("The hyperlink reference of the command.")]
+  [DefaultValue(".aspx?{0}")]
   public string Href 
   {
     get { return _href; }
+    set { _href = value; }
   }
 
+  [Description ("The target frame of the command. Leave it blank for no target.")]
+  [DefaultValue("")]
   public string Target 
   { 
     get { return _target; }
+    set { _target = value; }
   }
 
   public override void RenderBegin (HtmlTextWriter writer, int index, string id)
@@ -52,18 +65,16 @@ public class BocHrefItemCommand: BocItemCommand
     writer.RenderEndTag();
   }
 
-}
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (Href))
+      return string.Empty;
+    else if (StringUtility.IsNullOrEmpty (Target))
+      return Href;
+    else
+      return string.Format ("{0}, {1}", Href, Target);
+  }
 
-public class BocEmptyItemCommand : BocItemCommand
-{
-  public BocEmptyItemCommand()
-  {}
-
-  public override void RenderBegin (HtmlTextWriter writer, int index, string id)
-  {}
-
-  public override void RenderEnd (HtmlTextWriter writer)
-  {}
 }
 
 }
