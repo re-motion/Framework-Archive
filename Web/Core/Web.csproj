@@ -128,6 +128,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Web.UI.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "Controls\CommandHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
