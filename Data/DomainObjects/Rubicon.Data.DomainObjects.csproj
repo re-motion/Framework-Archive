@@ -394,6 +394,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\ObjectDeletedException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\ObjectEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
