@@ -978,7 +978,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary>
   ///   <see langword="true"/> if the control hierarchy doesn't implement <see cref="IFormGridRowProvider"/>.
   /// </summary>
-  private bool isFormGridRowProviderUndefined;
+  private bool _isFormGridRowProviderUndefined;
 
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="FormGridManager"/>. </summary>
   private ResourceManagerSet _cachedResourceManager;
@@ -1848,7 +1848,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   private IFormGridRowProvider GetFormGridRowProvider (Control control)
   {
     //  Control hierarchy doesn't implent this interface
-    if (isFormGridRowProviderUndefined)
+    if (_isFormGridRowProviderUndefined)
       return null;
 
     //  Provider has already been identified.
@@ -1868,7 +1868,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     //  End of hierarchy and not found -> no IformGridRowProvider defined.
     if (control.Parent == null)
-      isFormGridRowProviderUndefined = true;
+      _isFormGridRowProviderUndefined = true;
 
     //  Try the next level
     return GetFormGridRowProvider (control.Parent);
