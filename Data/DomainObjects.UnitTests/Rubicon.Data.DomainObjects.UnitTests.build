@@ -3,7 +3,7 @@
   
   <target name="build" description="perform a build">
     <csc  target="library"
-          output="${project.builddir}/${project.output}.${project.extension}"
+          output="${tests.builddir}/${project.output}.${project.extension}"
           debug="${build.debug}"
           define="${build.csc.define}">
       <sources failonempty="true">
@@ -11,9 +11,9 @@
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes asis="true" name="${project.builddir}/nunit.framework.dll"/>
-        <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
-        <includes asis="true" name="${project.builddir}/Rubicon.Data.DomainObjects.dll"/>
+        <includes asis="true" name="${tests.builddir}/nunit.framework.dll"/>
+        <includes asis="true" name="${tests.builddir}/Rubicon.Core.dll"/>
+        <includes asis="true" name="${tests.builddir}/Rubicon.Data.DomainObjects.dll"/>
         <includes asis="true" name="System.dll"/>
         <includes asis="true" name="System.Data.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
