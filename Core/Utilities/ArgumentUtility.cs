@@ -172,6 +172,11 @@ public class ArgumentTypeException: ArgumentException
   {
   }
 
+  public ArgumentTypeException (string argumentName, Type actualType)
+    : base (FormatMessage (argumentName, null, actualType), argumentName)
+  {
+  }
+
   public ArgumentTypeException (SerializationInfo info, StreamingContext context)
     : base (info, context)
   {
@@ -179,8 +184,15 @@ public class ArgumentTypeException: ArgumentException
 
   private static string FormatMessage (string argumentName, Type expectedType, Type actualType)
   {
-    return string.Format ("Argument {0} has type {2} when type {1} was expected.",
-        argumentName, expectedType, actualType);
+    if (expectedType == null)
+    {
+      return string.Format ("Argument {0} has unexpected type {1}", argumentName, actualType);
+    }
+    else
+    {
+      return string.Format ("Argument {0} has type {2} when type {1} was expected.",
+          argumentName, expectedType, actualType);
+    }
   }
 }
 
