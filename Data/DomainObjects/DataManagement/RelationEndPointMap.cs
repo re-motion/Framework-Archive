@@ -441,7 +441,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
         GetRelatedObject (newEndPoint.ID), newEndPoint.OppositeEndPointDefinition);
  
     if (oldEndPoint.BeginRelationChange (endPoint)
-        && newEndPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (newEndPoint.OppositeEndPointDefinition), endPoint)
+        && newEndPoint.BeginRelationChange (oldEndPointOfNewEndPoint, endPoint)
         && endPoint.BeginReplace (oldEndPoint, newEndPoint)
         && oldEndPointOfNewEndPoint.BeginRelationChange (newEndPoint))
     {
