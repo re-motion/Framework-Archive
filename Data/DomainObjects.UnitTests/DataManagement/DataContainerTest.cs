@@ -219,5 +219,36 @@ public class DataContainerTest : ClientTransactionBaseTest
 
     Assert.AreEqual ("Zaphod Beeblebrox", _existingDataContainer.GetString ("Name"));
   }
+
+  [Test]
+  public void IsNull ()
+  {
+    DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
+
+    Assert.IsTrue (dataContainer.IsNull ("StringWithNullValueProperty"));
+    Assert.IsTrue (dataContainer.IsNull ("NaInt32WithNullValueProperty"));
+    Assert.IsFalse (dataContainer.IsNull ("NaDateProperty"));
+    Assert.IsFalse (dataContainer.IsNull ("Int32Property"));
+  }
+
+  [Test]
+  public void IsNullOrEmpty ()
+  {
+    DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
+
+    Assert.IsTrue (dataContainer.IsNullOrEmpty ("StringWithNullValueProperty"));
+    Assert.IsTrue (dataContainer.IsNullOrEmpty ("NaInt32WithNullValueProperty"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("NaDateProperty"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("Int32Property"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("GuidProperty"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("StringProperty"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("CharProperty"));
+
+    dataContainer["GuidProperty"] = Guid.Empty;
+    dataContainer["StringProperty"] = string.Empty;
+
+    Assert.IsTrue (dataContainer.IsNullOrEmpty ("GuidProperty"));
+    Assert.IsTrue (dataContainer.IsNullOrEmpty ("StringProperty"));    
+  }
 }
 }
