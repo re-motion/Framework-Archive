@@ -3,12 +3,13 @@ using System.Xml.Serialization;
 using System.IO;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
+using Rubicon.ObjectBinding;
 
 namespace OBWTest
 {
 
 [XmlType]
-public class Person: ReflectionBusinessObject
+public class Person: ReflectionBusinessObject, IBusinessObjectWithIdentity
 {
   public static Person LoadFromXml (string fileName)
   {
@@ -92,6 +93,23 @@ public class Person: ReflectionBusinessObject
   {
     get { return _partner; }
     set { _partner = value; }
+  }
+
+  public string DisplayName
+  {
+    get
+    {
+      return LastName + ", " + FirstName;
+    }
+  }
+
+  public string UniqueIdentifier
+  {
+    get
+    {
+      // TODO:  Add Person.UniqueIdentifier getter implementation
+      return null;
+    }
   }
 }
 
