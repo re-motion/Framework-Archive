@@ -541,21 +541,6 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="char"/>.
-  /// </summary>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="char"/>.</exception>
-  public char GetChar (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
-
-    return (char) this[propertyName];
-  }
-
-  /// <summary>
   /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="System.DateTime"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
