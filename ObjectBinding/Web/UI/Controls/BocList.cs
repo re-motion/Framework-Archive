@@ -36,13 +36,14 @@ public class BocList:
     IComparer
 {
   //  constants
-  private const string c_dataRowIDSuffix = "_Boc_Row_";
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
   private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
   private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
-  private const string c_dropDownMenuIDSuffix = "_Boc_DropDownMenu";
-  private const string c_dropDownMenuGroupID = "BocList";
+  private const string c_optionsMenuIDSuffix = "_Boc_optionsMenu";
+  private const string c_optionsMenuGroupID = "BocList";
+
+  private const int c_titleRowIndex = -1;
 
   /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
   private const string c_eventCommandPrefix = "Event=";
@@ -218,7 +219,7 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
-  private DropDownMenu _dropDownMenu = new DropDownMenu (c_dropDownMenuGroupID);
+  private DropDownMenu _optionsMenu = new DropDownMenu (c_optionsMenuGroupID);
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -281,12 +282,17 @@ public class BocList:
   ///   Contains <see cref="SortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
   private ArrayList _sortingOrder = new ArrayList();
+  /// <summary> Contains the row indices of the business objects in the list, before the objects are sorted. </summary>
+  private Hashtable _originalRowIndices = null;
+
+  /// <summary> Determines whether the options menu is shown. </summary>
+  private bool _showOptionsMenu = true;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
   private bool _enableSelection = false;
   /// <summary> 
   ///   Contains the checked state for each of the selection checkBoxes in the <see cref="BocList"/>.
-  ///   Hashtable&lt;string CheckBoxID, bool isChecked&gt; 
+  ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
   /// </summary>
   private Hashtable _checkBoxCheckedState = new Hashtable();
 
@@ -345,8 +351,8 @@ public class BocList:
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
 
-    _dropDownMenu.ID = this.ID + c_dropDownMenuIDSuffix;
-    Controls.Add (_dropDownMenu);
+    _optionsMenu.ID = this.ID + c_optionsMenuIDSuffix;
+    Controls.Add (_optionsMenu);
 
     _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
     Controls.Add (_moveFirstButton);
@@ -375,10 +381,13 @@ public class BocList:
         {
           string key = formVariables.Keys[i];
 
-          if (key.StartsWith (dataRowCheckBoxFilter))
-            _checkBoxCheckedState[key] = true; 
-          else if (key == titleRowCheckBoxFilter)
-            _checkBoxCheckedState[key] = true; 
+          bool isDataRowCheckBox = key.StartsWith (dataRowCheckBoxFilter);
+          bool isTitleRowCheckBox = (key == titleRowCheckBoxFilter);
+          if (isDataRowCheckBox || isTitleRowCheckBox)
+          {
+            int rowIndex = int.Parse (formVariables[i]);
+            _checkBoxCheckedState[rowIndex] = true; 
+          }
         }
       }
     }
@@ -610,6 +619,9 @@ public class BocList:
           break;
         }
       }
+
+      if (_move != MoveOption.Undefined)
+        _checkBoxCheckedState.Clear();
     }
 
     string key;
@@ -834,8 +846,11 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    _dropDownMenu.TitleText = _optionsTitle;
-    _dropDownMenu.RenderControl (writer);
+    if (_showOptionsMenu)
+    {
+      _optionsMenu.TitleText = _optionsTitle;
+      _optionsMenu.RenderControl (writer);
+    }
 
     #region Temporay filling material
 //    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
@@ -911,30 +926,31 @@ public class BocList:
 
       ArrayList rows = new ArrayList (Value);
 
-      Hashtable originalRowIndices = null;
-    
+      _originalRowIndices = null;
       if (EnableSorting)
       {
-        originalRowIndices = new Hashtable();
-        for (int idxRows = 0; idxRows < rowCountWithOffset; idxRows++)
+        _originalRowIndices = new Hashtable();
+        for (int idxRows = 0; idxRows < totalRowCount; idxRows++)
         {
           if (rows[idxRows] == null)
             continue;
-          originalRowIndices.Add (rows[idxRows], idxRows);
+          _originalRowIndices.Add (rows[idxRows], idxRows);
         }
         rows.Sort (this);
       }
-      for (int idxRows = firstRow; idxRows < rowCountWithOffset; idxRows++)
+      for (int idxSortedRows = firstRow, idxRows = 0; 
+          idxSortedRows < rowCountWithOffset; 
+          idxSortedRows++, idxRows++)
       {
-        if (rows[idxRows] == null)
-          throw new NullReferenceException ("List item " + idxRows + " in IList 'Value' of BocList " + ID + " is null.");
-        IBusinessObject businessObject = rows[idxRows] as IBusinessObject;
-        if (businessObject == null)
-          throw new InvalidCastException ("List item " + idxRows + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-        int originalRowIndex = idxRows;
+        if (rows[idxSortedRows] == null)
+          throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
+        IBusinessObject businessObject = rows[idxSortedRows] as IBusinessObject;
+        int originalRowIndex = idxSortedRows;
         if (EnableSorting)
-          originalRowIndex = (int) originalRowIndices[businessObject];
-        RenderDataRow (writer, businessObject, originalRowIndex, isOddRow);
+          originalRowIndex = (int) _originalRowIndices[businessObject];
+        if (businessObject == null)
+          throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
+        RenderDataRow (writer, businessObject, idxRows, originalRowIndex, isOddRow);
         isOddRow = !isOddRow;
       }
     }
@@ -953,10 +969,8 @@ public class BocList:
 
       string script = "<script type=\"text/javascript\">\r\n<!--\r\n"
           + "BocList_InitializeList ("
-          + "document.all['" + ID + "'], '"
-          + ID + c_dataRowIDSuffix + "', '"
-          + ID + c_dataRowCheckBoxIDSuffix + "', "
-          + firstRow.ToString() + ", "
+          + "document.getElementById ('" + ClientID + "'), '"
+          + ClientID + c_dataRowCheckBoxIDSuffix + "', "
           + count.ToString() + ");"
           + "\r\n//-->\r\n</script>";
       writer.Write (script);
@@ -1162,8 +1176,8 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
-      bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
-      RenderCheckBox (writer, checkBoxName, isChecked, true);
+      bool isChecked = (_checkBoxCheckedState[c_titleRowIndex] != null);
+      RenderCheckBox (writer, checkBoxName, c_titleRowIndex.ToString(), isChecked, true);
       writer.RenderEndTag();
     }
 
@@ -1280,12 +1294,14 @@ public class BocList:
   ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
   /// </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> whose data will be rendered. </param>
-  /// <param name="rowIndex"> The position of <paramref name="businessObject"/> in the list. </param>
+  /// <param name="rowIndex"> The row number in the current view. </param>
+  /// <param name="listIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
   /// <param name="isOddRow"> Whether the data row is rendered in an odd or an even table row. </param>
   private void RenderDataRow (
       HtmlTextWriter writer, 
       IBusinessObject businessObject,
       int rowIndex,
+      int originalRowIndex,
       bool isOddRow)
   {
     bool isReadOnly = IsReadOnly;
@@ -1295,8 +1311,8 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
 
-    string checkBoxID = ID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
-    bool isChecked = (_checkBoxCheckedState[checkBoxID] != null);
+    string checkBoxID = ClientID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
+    bool isChecked = (_checkBoxCheckedState[originalRowIndex] != null);
 
     string cssClassTableCell;
     if (isChecked && _hasClientScript)
@@ -1316,16 +1332,13 @@ public class BocList:
 
     if (_enableSelection)
     {
-      string rowID = ID + c_dataRowIDSuffix + rowIndex.ToString();
-      writer.AddAttribute (HtmlTextWriterAttribute.Id, rowID);
-
       if (_hasClientScript)
       {
         string isOddRowString = (isOddRow ? "true" : "false");
         string script = "BocList_OnRowClick ("
-            + "document.all['" + ID + "'], "
+            + "document.getElementById ('" + ClientID + "'), "
             + "this, "
-            + "this.all['" + checkBoxID + "'], "
+            + "document.getElementById ('" + checkBoxID + "'), "
             + isOddRowString 
             + ");";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
@@ -1338,7 +1351,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      RenderCheckBox (writer, checkBoxID, isChecked, false);
+      RenderCheckBox (writer, checkBoxID, originalRowIndex.ToString(), isChecked, false);
       writer.RenderEndTag();
     }
 
@@ -1374,12 +1387,12 @@ public class BocList:
 
       if (isCommandEnabled)
       {    
-        string argument = c_eventCommandPrefix + idxColumn + "," + rowIndex;
+        string argument = c_eventCommandPrefix + idxColumn + "," + originalRowIndex;
         if (businessObjectWithIdentity != null)
           argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
         string onClick = "BocList_OnCommandClick();";
-        column.Command.RenderBegin (writer, rowIndex, objectID, postBackLink, onClick);
+        column.Command.RenderBegin (writer, originalRowIndex, objectID, postBackLink, onClick);
       }
 
       //  Render the icon
@@ -1456,38 +1469,37 @@ public class BocList:
   ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
   /// </param>
   /// <param name="id"> 
-  ///   The <see cref="string"/> rednered into the <c>id</c> and <c>name</c> attributes.
+  ///   The <see cref="string"/> rendered into the <c>id</c> and <c>name</c> attributes.
   /// </param>
+  /// <param name="value"> The value of the <see cref="CheckBox"/>. </param>
   /// <param name="isChecked"> <see langword="true"/> if the <c>CheckBox</c> is checked. </param>
   /// <param name="isSelectAllCheckBox"> 
   ///   <see langword="true"/> if the rendered <c>CheckBox</c> is the title row's <c>CheckBox</c>. </param>
-  private void RenderCheckBox (HtmlTextWriter writer, string id, bool isChecked, bool isSelectAllCheckBox)
+  private void RenderCheckBox (
+      HtmlTextWriter writer, 
+      string id, 
+      string value, 
+      bool isChecked, 
+      bool isSelectAllCheckBox)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
     writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
+    writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
     if (isChecked)
       writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");      
     if (isSelectAllCheckBox)
     {
-      int firstRow = 0;
       int count = 0;
       if (! _pageSize.IsNull)
-      {
-        firstRow = _currentPage * _pageSize.Value;
         count = _pageSize.Value;
-      }
       else if (Value != null)
-      {
         count = Value.Count;
-      }
 
       string script = "BocList_OnSelectAllCheckBoxClick ("
-          + "document.all['" + ID + "'], "
+          + "document.getElementById ('" + ClientID + "'), "
           + "this , '"
-          + ID + c_dataRowIDSuffix + "', '"
-          + ID + c_dataRowCheckBoxIDSuffix + "', "
-          + firstRow.ToString() + ", "
+          + ClientID + c_dataRowCheckBoxIDSuffix + "', "
           + count.ToString() + ");";
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
     }
@@ -1810,6 +1822,12 @@ public class BocList:
           }
         }
       } 
+    }
+    if (businessObjectA != null && businessObjectB != null)
+    {
+      int indexObjectA = (int) _originalRowIndices[businessObjectA];
+      int indexObjectB = (int) _originalRowIndices[businessObjectB];
+      return indexObjectA - indexObjectB;
     }
     return 0;
   }
@@ -2215,18 +2233,13 @@ public class BocList:
     ArrayList selectedRows = new ArrayList();
     foreach (DictionaryEntry entry in _checkBoxCheckedState)
     {
-      string checkBoxID = (string) entry.Key;
-      if (checkBoxID == titleCheckBoxID)
+      int rowIndex = (int) entry.Key;
+      if (rowIndex == c_titleRowIndex)
         continue;
 
       bool isChecked = (bool) entry.Value;
-
-      if (checkBoxID.StartsWith (commonCheckBoxID) && isChecked)
-      {
-        string checkBoxIndex = checkBoxID.Remove (0, commonCheckBoxIDLength);
-        int rowIndex = int.Parse (checkBoxIndex);
+      if (isChecked)
         selectedRows.Add (rowIndex);
-      }
     }
     return (int[]) selectedRows.ToArray (typeof (int));
   }
@@ -2289,6 +2302,19 @@ public class BocList:
   {
     get { return _showSortingOrder; }
     set { _showSortingOrder = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to display the options menu.
+  /// </summary>
+  /// <value> <see langword="true"/> to show the options menu. </value>
+  [Category ("Appearance")]
+  [Description ("Enables the options menu.")]
+  [DefaultValue (true)]
+  public bool ShowOptionsMenu
+  {
+    get { return _showOptionsMenu; }
+    set { _showOptionsMenu = value; }
   }
 
   /// <summary>
