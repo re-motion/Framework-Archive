@@ -184,8 +184,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Globalization\ResourceIdentifiersAttribute.cs"
-                    SubType = "Code"
+                    RelPath = "Globalization\ResourceIdentifierAttribute.cs"
                     BuildAction = "Compile"
                 />
                 <File

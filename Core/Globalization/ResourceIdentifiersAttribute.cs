@@ -9,7 +9,7 @@ namespace Rubicon.Globalization
 {
 
 [AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
-public class ResourceIdentifiersAttribute: Attribute
+public class ResourceIdentifierAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
@@ -28,12 +28,12 @@ public class ResourceIdentifiersAttribute: Attribute
 
   private string _defaultResourceFileName;
 
-  public ResourceIdentifiersAttribute ()
+  public ResourceIdentifierAttribute ()
     : this (null)
   {
   }
 
-  public ResourceIdentifiersAttribute (string defaultResourceFileName)
+  public ResourceIdentifierAttribute (string defaultResourceFileName)
   {
     _defaultResourceFileName = defaultResourceFileName;
   }
@@ -70,7 +70,7 @@ public class ResourceSummaryUtility // move to .exe utility
         foreach (FieldInfo field in fields)
         {
           Enum enumValue = (Enum)field.GetValue(null);
-          string name = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+          string name = ResourceIdentifierAttribute.GetResourceIdentifier (enumValue);
           string comment = null;
           if (commentsDocument != null)
           {
@@ -90,10 +90,10 @@ public class ResourceSummaryUtility // move to .exe utility
 
   private static bool HasResourceIdentifiersAttribute (Type type)
   {
-    object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifiersAttribute), false); // typeof -> string literal
+    object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifierAttribute), false); // typeof -> string literal
     foreach (object attribute in attributes)
     {
-      if (attribute.GetType().FullName == typeof (ResourceIdentifiersAttribute).FullName)
+      if (attribute.GetType().FullName == typeof (ResourceIdentifierAttribute).FullName)
         return true;
     }
     return false;
