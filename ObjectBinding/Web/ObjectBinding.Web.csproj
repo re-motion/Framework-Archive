@@ -349,6 +349,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\WhatsNew.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
                     BuildAction = "Content"
                 />
