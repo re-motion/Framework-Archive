@@ -145,9 +145,9 @@ public class ControlItemCollection: CollectionBase
     InnerList.Sort (index, count, comparer);
   }
 
-  public int IndexOf (MenuItem menuItem)
+  public int IndexOf (IControlItem item)
   {
-    return InnerList.IndexOf (menuItem);
+    return InnerList.IndexOf (item);
   }
 
   /// <remarks> 
