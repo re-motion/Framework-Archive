@@ -73,6 +73,11 @@ public class DataSourceUserControl: UserControl, IBusinessObjectDataSource, IGet
   {
     DataSource.SaveValues (interim);
   }
+
+  public IBusinessObjectBoundControl[] BoundControls
+  {
+    get { return DataSource.BoundControls; }
+  }
 }
 
 }

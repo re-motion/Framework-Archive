@@ -4,11 +4,164 @@ using System.Drawing.Design;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-public class BusinessObjectReferenceDataSourceControl: BusinessObjectDataSourceControl, IBusinessObjectBoundModifiableControl
+public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectReferenceDataSourceControl
+{
+  protected override bool SupportsPropertyMultiplicity(bool isList)
+  {
+    return true;
+  }
+
+  public override void LoadValues (bool interim)
+  {
+    throw new NotSupportedException ("Use BusinessObjectReferenceDataSourceControl for actual data.");
+  }
+}
+
+public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl
+{
+  private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
+  {
+    private BusinessObjectReferenceDataSourceControl _parent;
+
+    public InternalBusinessObjectReferenceDataSource (BusinessObjectReferenceDataSourceControl parent)
+    {
+      _parent = parent;
+    }
+
+    public override IBusinessObjectReferenceProperty ReferenceProperty
+    {
+      get { return _parent.ReferenceProperty; }
+      set { _parent.ReferenceProperty = value; }
+    }
+
+    public override IBusinessObjectDataSource ReferencedDataSource
+    {
+      get { return _parent.DataSource; }
+    }
+
+    public bool IsDirty
+    {
+      get { return _businessObjectChanged; }
+      set { _businessObjectChanged = value; }
+    }
+  }
+
+  private InternalBusinessObjectReferenceDataSource _internalDataSource;
+
+  protected override Type[] SupportedPropertyInterfaces
+  {
+    get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
+  }
+
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return isList == false;
+  }
+
+  public BusinessObjectReferenceDataSourceControl ()
+  {
+    _internalDataSource = new InternalBusinessObjectReferenceDataSource (this);
+  }
+
+  protected override object ValueImplementation
+  {
+    get { return _internalDataSource.BusinessObject; }
+    set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
+  }
+
+  public override void LoadValue (bool interim) // inherited from control interface
+  {
+    _internalDataSource.LoadValue (interim);
+  }
+
+  public virtual void LoadValues (bool interim) // inherited from data source interface
+  {
+    _internalDataSource.LoadValues (interim);
+  }
+
+  public override void SaveValue (bool interim) // inherited from control interface
+  {
+    _internalDataSource.SaveValue (interim);
+  }
+
+  public virtual void SaveValues (bool interim) // inherited data source interface
+  {
+    _internalDataSource.SaveValue (interim);
+  }
+
+  public IBusinessObjectBoundControl[] BoundControls
+  {
+    get { return _internalDataSource.BoundControls; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IBusinessObjectReferenceProperty ReferenceProperty
+  {
+    get { return (IBusinessObjectReferenceProperty) Property; }
+    set { Property = value; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IBusinessObject BusinessObject
+  {
+    get { return _internalDataSource.BusinessObject; }
+    set { _internalDataSource.BusinessObject = value; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IBusinessObjectClass BusinessObjectClass
+  {
+    get { return _internalDataSource.BusinessObjectClass; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IBusinessObjectProvider BusinessObjectProvider
+  {
+    get { return _internalDataSource.BusinessObjectProvider; }
+  }
+
+  public void Register (IBusinessObjectBoundControl control)
+  {
+    _internalDataSource.Register (control);
+  }
+
+  public void Unregister (IBusinessObjectBoundControl control)
+  {
+    _internalDataSource.Unregister (control);
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public bool EditMode
+  {
+    get { return IsReadOnly; }
+    set { ReadOnly = (NaBoolean) value; }
+  }
+
+  // TODO: redesign IsDirty semantics!
+  public override bool IsDirty
+  {
+    get { return _internalDataSource.IsDirty; }
+    set { _internalDataSource.IsDirty = value; }
+  }
+
+  protected override void Render (System.Web.UI.HtmlTextWriter writer)
+  {
+    // invisible control
+  }
+}
+
+
+/* public class BusinessObjectReferenceDataSourceControl: BusinessObjectDataSourceControl, IBusinessObjectBoundModifiableControl
 {
   private BusinessObjectReferenceDataSource _dataSource;
   private IBusinessObjectBoundModifiableControl _control;
@@ -94,5 +247,5 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectDataSourceC
     _control.SaveValue (interim);
   }
 }
-
+*/
 }
