@@ -339,11 +339,11 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\BocList.js"
+                    RelPath = "Res\HTML\BocList.css"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\bocListTemplate.css"
+                    RelPath = "Res\HTML\BocList.js"
                     BuildAction = "Content"
                 />
                 <File

@@ -221,7 +221,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\FormGridTemplate.css"
+                    RelPath = "Res\HTML\FormGrid.css"
                     BuildAction = "Content"
                 />
                 <File

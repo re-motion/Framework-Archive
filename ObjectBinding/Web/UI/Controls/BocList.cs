@@ -727,7 +727,7 @@ public class BocList:
       RenderNavigator (writer);
 
     //  Render the init script for the client side selection handling
-    if (_hasClientScript)
+    if (_hasClientScript && _enableSelection)
     {
       int count = 0;
       if (! _pageSize.IsNull)
@@ -2054,7 +2054,7 @@ public class BocList:
   ///   and highlights selected data rows.
   /// </remarks>
   /// <value> <see langword="true"/> to enable row selection. </value>
-  [Category ("Appearance")]
+  [Category ("Behavior")]
   [Description ("Indicates whether row selection is enabled.")]
   [DefaultValue (false)]
   public bool EnableSelection
@@ -2068,7 +2068,7 @@ public class BocList:
   ///   An integer greater than zero to limit the number of rows per page to the specified value,
   ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all rows.
   /// </value>
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [Description ("The number of rows displayed per page. Set PageSize to 0 to show all rows.")]
   [DefaultValue (typeof(NaInt32), "null")]
   public NaInt32 PageSize
