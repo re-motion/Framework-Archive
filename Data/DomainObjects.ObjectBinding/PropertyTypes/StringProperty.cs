@@ -13,27 +13,27 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class StringProperty : DomainObjectProperty, IBusinessObjectStringProperty
 {
+  private NaInt32 _maxLength;
+
   public StringProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired,
       Type itemType, 
-      bool isList)
-    : base (propertyInfo, propertyDefinition, itemType, isList)
+      bool isList,
+      NaInt32 maxLength)
+    : base (propertyInfo, isRequired, itemType, isList)
   {
+    _maxLength = maxLength;
   }
 
   public NaInt32 MaxLength
   {
-    get 
-    { 
-      return (PropertyDefinition != null) ? PropertyDefinition.MaxLength : NaInt32.Null; 
-    }
+    get { return _maxLength; }
   }
 
-  protected internal override object ToInternalType(object publicValue)
+  protected internal override object ToInternalType (object publicValue)
   {
     return publicValue;
   }
-
 }
 }
