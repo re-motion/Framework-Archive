@@ -128,10 +128,16 @@ public abstract class WxeFunction: WxeStepList
     return sb.ToString();
   }
 
-  public void InitializeParameters (object[] parameters)
+  /// <summary> Initalizes parameters by position. </summary>
+  /// <remarks> Remove obsolete and make public if this method should be required. </remarks>
+  [Obsolete]
+  private void InitializeParameters (object[] parameters)
   {
     CheckParametersNotInitialized();
     WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
+    if (parameters.Length > parameterDeclarations.Length)
+      throw new ApplicationException (string.Format ("{0} parameters provided but only {1} were expected.", parameters.Length, parameterDeclarations.Length));
+
     for (int i = 0; i < parameters.Length; i++)
     {
       WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
