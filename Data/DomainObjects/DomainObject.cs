@@ -6,26 +6,27 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+/// <summary>
+/// Base class for all objects that are persisted by the framework.
+/// </summary>
 public class DomainObject
 {
   // types
 
   // static members and constants
 
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  //Todo documentation: exceptions from DomainObject.LoadObject
   protected static DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
   }
 
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -33,12 +34,12 @@ public class DomainObject
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  //Todo documentation: exceptions from DomainObject.LoadObject
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     return GetObject (id, ClientTransaction.Current, includeDeleted);
   }
 
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -46,12 +47,12 @@ public class DomainObject
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>DomainObject</b>.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
+  //Todo documentation: exceptions from DomainObject.LoadObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     return GetObject (id, clientTransaction, false);
   }
  
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -60,6 +61,7 @@ public class DomainObject
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
+  //Todo documentation: exceptions from DomainObject.LoadObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -219,7 +221,6 @@ public class DomainObject
     }
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related object of a given <i>propertyName</i>.
   /// </summary>
@@ -228,7 +229,7 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an 1-to-1 or n-to-1 relation.</exception>
   protected virtual DomainObject GetRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -237,7 +238,6 @@ public class DomainObject
     return ClientTransaction.GetRelatedObject (new RelationEndPointID (ID, propertyName));
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related object of a given <i>propertyName</i> at the point of instantiation, loading, commit or rollback.
   /// </summary>
@@ -246,7 +246,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
+  /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an 1-to-1 or n-to-1 relation.</exception>
   protected virtual DomainObject GetOriginalRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -255,7 +256,6 @@ public class DomainObject
     return ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (ID, propertyName));
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related objects of a given <i>propertyName</i>.
   /// </summary>
@@ -264,7 +264,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
+  /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an 1-to-n relation.</exception>
   protected virtual DomainObjectCollection GetRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -273,7 +274,6 @@ public class DomainObject
     return ClientTransaction.GetRelatedObjects (new RelationEndPointID (ID, propertyName));
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related objects of a given <i>propertyName</i> at the point of instantiation, loading, commit or rollback.
   /// </summary>
@@ -282,7 +282,7 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an 1-to-n relation.</exception>
   protected virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -307,7 +307,9 @@ public class DomainObject
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Gets a value indicating the discarded status of the object.
+  /// </summary>
   protected bool IsDiscarded 
   {
     get { return _dataContainer.IsDiscarded; }
