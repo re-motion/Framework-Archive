@@ -236,7 +236,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       }
       else
       {
-        DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
+        DomainObjectCollection domainObjects = DomainObjectCollection.Create (
+            endPointID.Definition.PropertyType, endPointID.OppositeEndPointDefinition.ClassDefinition.ClassType);
+
         RegisterCollectionEndPoint (endPointID, domainObjects);
       }
     }

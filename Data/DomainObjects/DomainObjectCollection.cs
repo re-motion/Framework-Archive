@@ -21,7 +21,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType)
   {
-    return Create (collectionType, new DataContainerCollection ());
+    return Create (collectionType, new DataContainerCollection (), null);
+  }
+
+  public static DomainObjectCollection Create (Type collectionType, Type requiredItemType)
+  {
+    return Create (collectionType, new DataContainerCollection (), requiredItemType);
   }
 
   /// <summary>
@@ -33,10 +38,19 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, DataContainerCollection dataContainers)
   {
+    return Create (collectionType, dataContainers, null);
+  }
+
+  public static DomainObjectCollection Create (
+      Type collectionType, 
+      DataContainerCollection dataContainers, 
+      Type requiredItemType)
+  {
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     DomainObjectCollection domainObjects = (DomainObjectCollection) ReflectionUtility.CreateObject (collectionType);
+    domainObjects._requiredItemType = requiredItemType;
 
     foreach (DataContainer dataContainer in dataContainers)
       domainObjects.Add (dataContainer.DomainObject);
