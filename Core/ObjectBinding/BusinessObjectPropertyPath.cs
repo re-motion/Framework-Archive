@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding
 /// <summary>
 ///   A collection of business object properties that result in each other.
 /// </summary>
-public class BusinessObjectPropertyPath
+public abstract class BusinessObjectPropertyPath
 {
   /// <summary>
   ///   Property path formatters can be passed to <see cref="String.Format"/> for full <see cref="IFormattable"/> support.
@@ -36,7 +36,6 @@ public class BusinessObjectPropertyPath
     }
   }
 
-  private const string c_multipleValuesFormatString = "{0}, ... [{1}]";
 
   private IBusinessObjectProperty[] _properties; 
  
@@ -71,9 +70,10 @@ public class BusinessObjectPropertyPath
     if (properties[lastProperty] == null)
       throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[lastProperty] + "'.", propertyPathIdentifier);
 
-    return new BusinessObjectPropertyPath (properties);
+    objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
   }
 
+  public abstract IBusinessObjectProvider BusinessObjectProvider { get; }
   public BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
@@ -112,7 +112,7 @@ public class BusinessObjectPropertyPath
   ///   (This does not apply to the last property in the path. If the last property is a list property, the return value is always a list.) </param>
   /// <exception cref="InvalidOperationException"> 
   ///   Thrown if any but the last property in the path is <see langword="null"/>, or is not a single-value reference property. </exception>
-  public object GetValue (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
+  public virtual object GetValue (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
   {
     IBusinessObject obj2 = GetValueWithoutLast (obj, throwExceptionIfNotReachable, getFirstListEntry);
     if (obj2 == null)
@@ -121,7 +121,7 @@ public class BusinessObjectPropertyPath
     return obj2.GetProperty (LastProperty);
   }
   
-  public string GetString (IBusinessObject obj, string format)
+  public virtual string GetString (IBusinessObject obj, string format)
   {
     IBusinessObject obj2 = GetValueWithoutLast (obj, false, true);
     if (obj2 == null)
@@ -168,7 +168,7 @@ public class BusinessObjectPropertyPath
     return obj;
   }
 
-  public object SetValue (IBusinessObject obj)
+  public virtual object SetValue (IBusinessObject obj)
   {
     // TODO: implement
     throw new NotImplementedException();
