@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<ResourceDispatcher>
+  <Dispatch>
+    <Common>
+      <remarks>
+        Each key must consist of the following three parts, seperated by colons, to be dispatched:
+        <list type="table">
+          <listheader>
+            <term>Key Part</term>
+            <description>function</description>
+          </listheader>
+          <item>
+            <term>prefix</term>
+            <description>
+              Indicates all resources to be dispatched automatically (prefix = "auto")
+            </description>
+          </item>
+          <item>
+            <term>ElementID</term>
+            <description>The ID of the child control inside the passed control</description>
+          </item>
+          <item>
+            <term>Parameter</term>
+            <description>
+              The parameter can denote a single property or contain prefixes it self.
+            </description>
+          </item>
+        </list>
+        If the parameter section of the key contains prefixes, the child control must implement
+        IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
+        handle parameters named like one of the child control's properties.
+      </remarks>
+      <exception cref="InvalidOperationException">
+          A resource with an ElementID was found, that is unknown in the control's Control collection.
+      </exception>
+      <exception cref="InvalidOperationException">
+          For a control that does not implement <c>IResourceDispatchTarget</c>,
+          Parameter denotes an unknown property.
+      </exception>
+    </Common>
+    <param name="control">
+      The control to be dispatched.
+      The control must contain child controls for dispatching to occur.
+    </param>
+    <param name="resourceManager"></param>  
+  </Dispatch>
+  <DispatchGeneric>
+    <param name="control">
+      The control to be dispatched.
+    </param>
+    <param name="values">
+      A dictonary consisting of name/value pairs
+      corresponding to property's name and value resprectively.
+    </param>
+  </DispatchGeneric>
+</ResourceDispatcher>
