@@ -223,7 +223,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       ArgumentUtility.CheckNotNull ("newFormGridRow", newFormGridRow);
 
-      newFormGridRow.SetFormGrid (this);
       FormGridRow relatedRow = GetRowForID (relatedRowID);
 
       //  Not found, append to form grid instead of inserting at position of related form grid row
@@ -253,9 +252,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         {
           if (_table.Rows[idxHtmlTableRow] == lastReleatedTableRow)
           {    
-            //  We want to isnert after the current position
+            //  We want to insert after the current position
             idxHtmlTableRow++;
-
             break;
           }
         }
@@ -281,7 +279,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         //  Find insertion postion for the html table rows
 
         int idxHtmlTableRow = 0;
-
         HtmlTableRow firstReleatedTableRow = relatedRow.HtmlTableRows[0];
 
         //  Find position in html table
@@ -300,7 +297,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
 
         //  Insert row into Form Grid
-        
         int idxFormGridRow = Rows.IndexOf (relatedRow);
         //  Before the related row
         Rows.Insert (idxFormGridRow, newFormGridRow);
@@ -358,7 +354,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       {
         if (formGridRows[index] == null)
           throw new ArgumentNullException ("formGridRows[" + index + "]");
-
         formGridRows[index]._formGrid = _ownerFormGrid;
       }
 
@@ -371,8 +366,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       get
       {
-        if (index < 0 || index >= InnerList.Count) throw new ArgumentOutOfRangeException ("index");
-
+        if (index < 0 || index >= InnerList.Count) 
+          throw new ArgumentOutOfRangeException ("index");
         return (FormGridRow)InnerList[index];
       }
     }
@@ -383,25 +378,31 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckType ("value", value, typeof (FormGridRow));
-      FormGridRow formGridRow = (FormGridRow) value;      
+      FormGridRow formGridRow = (FormGridRow) value; 
+      if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
+        throw new InvalidOperationException ("The FormGridRow that attempted to be inserted at position " + index + " contains HtmlTableRows belonging to the table '" + formGridRow.HtmlTableRows[0].Parent.ID + "', but the FormGrid encapsulates the table '" +_ownerFormGrid.Table.ID + "'.");
       formGridRow._formGrid = _ownerFormGrid;
       base.OnInsert (index, value);
     }
 
     public int IndexOf (object value)
     {
-      return this.InnerList.IndexOf (value);
+      return InnerList.IndexOf (value);
     }
 
     public void Insert (int index, object value)
     {
-      this.InnerList.Insert (index, value);
+      OnInsert (index, value);
+      InnerList.Insert (index, value);
+      OnInsertComplete (index, value);
     }
 
     public void Add (object value)
     {
-      this.InnerList.Add (value);
-    }
+      OnInsert (InnerList.Count, value);
+      int index = InnerList.Add (value);
+      OnInsertComplete (index, value);
+   }
   }
 
   /// <summary>
@@ -654,11 +655,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         row.Visible = true;
     }
 
-    internal void SetFormGrid (FormGrid formGrid)
-    {
-      _formGrid = formGrid;
-    }
-
     /// <summary>
     ///   The <see cref="FormGrid"/> instance of which this <c>FormGridRow</c> is a part of.
     /// </summary>
@@ -844,8 +840,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       get
       {
-        if (index < 0 || index >= InnerList.Count) throw new ArgumentOutOfRangeException ("index");
-
+        if (index < 0 || index >= InnerList.Count) 
+          throw new ArgumentOutOfRangeException ("index");
         return (HtmlTableRow)InnerList[index];
       }
     }
@@ -1019,6 +1015,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   public virtual void Dispatch (IDictionary values)
   {
     EnsureFormGridListPopulated();
+    EnsureTransformIntoFormGridPreLoadViewState();
 
     Hashtable formGridControls = new Hashtable();
 
@@ -1026,7 +1023,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     foreach (DictionaryEntry entry in values)
     {
-      //  Compound key: "formGridID:controlID:property"
+      //  Compound key: "tableUniqueID:controlUniqueID:property"
       string key = (string)entry.Key;
 
       int posColon = key.IndexOf (':');
@@ -1075,7 +1072,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableID:controlID:property'.");
+          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
         }
       }
       else
@@ -1148,7 +1145,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         else
         {
           //  Invalid control
-          s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
+          s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with UniqueID '" + controlID + "'.");
         }
       }
     }
@@ -1171,7 +1168,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnPreRender (EventArgs e)
   {
-    TransformIntoFormGridPreLoadViewState();
+    EnsureTransformIntoFormGridPreLoadViewState();
     TransformIntoFormGridPostValidation();
 
     base.OnPreRender (e);
@@ -1219,7 +1216,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
 
     //  Rebuild the HTML tables used as form grids
-    TransformIntoFormGridPreLoadViewState();
+    EnsureTransformIntoFormGridPreLoadViewState();
 
 
     //  Restore the view state to the form grids
@@ -1565,7 +1562,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
-  protected virtual void TransformIntoFormGridPreLoadViewState()
+  protected virtual void EnsureTransformIntoFormGridPreLoadViewState()
   {
     if (_hasCompletedTransformationStepPreLoadViewState)
       return;
@@ -2056,62 +2053,27 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       //  Query the controls for the string to be used as the labeling Text
 
       Control label = null;
-      string newID = control.ID + c_generatedLabelSuffix;
+      string newID = control.UniqueID + c_generatedLabelSuffix;
+      //  SmartLabel knows how the get the contents from ISmartControl
       if (control is ISmartControl)
       {
         SmartLabel smartLabel = new SmartLabel();
-        smartLabel.ForControl = control.ID;
+        smartLabel.ForControl = control.UniqueID;
         label = smartLabel;
       }
-      else if (   ! StringUtility.IsNullOrEmpty (control.ID)
-               && (   control is TextBox 
-                   || control is ListControl
-                   || control is Table
-                   || control is HtmlInputControl
-                   || control is HtmlSelect
-                   || control is HtmlTextArea
-                   || control is HtmlTable))
+        //  For these controls, the label's text will come from the resource dispatcher  
+        //  auto:FormGridManagerUniqueID:TableUniqueID:ControlUniqueID_Label:Text
+      else if (  control is TextBox 
+              || control is ListControl
+              || control is Table
+              || control is HtmlInputControl
+              || control is HtmlSelect
+              || control is HtmlTextArea
+              || control is HtmlTable)
       {
-        string newText = String.Empty;
-
-        // TODO: weg mit dem zeug
-                                                IResourceManager resourceManager = GetResourceManager();
-                                                if (resourceManager != null)
-                                                {
-                                                  // bisher: ASP.MyPage_aspx.TableID.ConrolID_FormGridManagerGeneratedLabel
-                                                  // neu: auto:TableID.ControlID_Label.Text
-                                                  StringBuilder identifier = new StringBuilder (100);
-                                                  Type namingContainerType = dataRow.FormGrid.Table.NamingContainer.GetType();
-                                                  identifier.Append (namingContainerType.FullName);
-                                                  identifier.Append (".");
-                                                  identifier.Append (dataRow.FormGrid.Table.ID);
-                                                  identifier.Append (".");
-                                                  identifier.Append (newID);
-                                                  newText = resourceManager.GetString (identifier.ToString());
-                                                }
-
         Label primitiveLabel = new Label();
-
-        string accessKey = String.Empty;
-
-        if (! StringUtility.IsNullOrEmpty (newText))
-        {
-          // Insert the text provided by the control
-          primitiveLabel.Text = SmartLabel.FormatLabelText (newText, true, out accessKey);
-        }
-        else if (control.ID != null)
-        {
-          // create default warning text
-          primitiveLabel.Text = control.ID.ToUpper();
-          s_log.Warn ("No resource available for control '" + control.ID + "' in naming container '" + control.NamingContainer.GetType().FullName + "'.");
-        }
-
         if (! (control is DropDownList || control is HtmlSelect))
-        {
-          primitiveLabel.AccessKey = accessKey;
           primitiveLabel.AssociatedControlID = control.ClientID;
-        }
-
         label = primitiveLabel;
       }
       else
