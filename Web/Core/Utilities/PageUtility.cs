@@ -490,6 +490,20 @@ public class PageUtility
     }
   }  
 
+  /// <summary> Used to register client scripts located inside a script file. </summary>
+  /// <param name="page"> The <see cref="Page"/> where the script file will be registered. </param>
+  /// <param name="key"> The key identifying the registered script file. </param>
+  /// <param name="scriptUrl"> The url of the script file. </param>
+  public static void RegisterClientScriptFile (Page page, string key, string scriptUrl)
+  {
+    string script = 
+        @"<script language=""Javascript"" type=""text/javascript"" src=""" +
+        scriptUrl +
+	      @"""></script>";
+
+    page.RegisterClientScriptBlock (key, script);
+  }
+
   public static void RegisterClientScriptBlock (Page page, string key, string javascript)
   {
     string script = 
@@ -498,6 +512,23 @@ public class PageUtility
 	      "</script>";
 
     page.RegisterClientScriptBlock (key, script);
+  }
+
+  /// <summary>
+  ///   Used to register a client script that will be automatically executed after the page is 
+  ///   loaded.
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/> where the script will be registered. </param>
+  /// <param name="key"> The key identifying the registered script file. </param>
+  /// <param name="javascript"> The client script that will be registered. </param>
+  public static void RegisterStartupScript (Page page, string key, string javascript)
+  {
+    string script = 
+        @"<script language=""javascript"" type=""text/javascript"">" +
+        javascript +
+	      "</script>";
+
+    page.RegisterStartupScript (key, script);
   }
 
   public static void RegisterWindowOpenJavascript (Page page)
