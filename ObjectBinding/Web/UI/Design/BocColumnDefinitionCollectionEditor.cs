@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using Rubicon.ObjectBinding.Web.Controls;
 
@@ -18,9 +19,19 @@ public class BocColumnDefinitionCollectionEditor: CollectionEditor
       typeof (BocCompoundColumnDefinition),
       typeof (BocCommandColumnDefinition)};
   }
+
+  public override object EditValue (
+      ITypeDescriptorContext context, 
+      IServiceProvider provider, 
+      object value)
+  {
+    BocListDesigner designer = new BocListDesigner();
+    return base.EditValue (context, designer, value);
+  }
+
 }
 
-public class BocSimpleColumnDefinitionCollectionEditor: CollectionEditor
+public class BocSimpleColumnDefinitionCollectionEditor: BocColumnDefinitionCollectionEditor
 {
   public BocSimpleColumnDefinitionCollectionEditor (Type type)
     : base (type)
@@ -32,4 +43,5 @@ public class BocSimpleColumnDefinitionCollectionEditor: CollectionEditor
     return new Type[] {
       typeof (BocSimpleColumnDefinition)};
   }
-}}
+}
+}

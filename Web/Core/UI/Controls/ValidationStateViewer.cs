@@ -87,7 +87,7 @@ public class ValidationStateViewer : WebControl
   ///   event, before calling the base class's <c>OnInit</c>
   /// </summary>
   /// <param name="e">The <see cref="EventArgs"/>.</param>
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
 	{
     this.Page.PreRender += new EventHandler(ParentPage_PreRender);
 
@@ -100,7 +100,7 @@ public class ValidationStateViewer : WebControl
   /// </summary>
   /// <param name="sender">The <see cref="Page"/> object.</param>
   /// <param name="e">The <see cref="EventArgs"/>.</param>
-  private void ParentPage_PreRender(object sender, EventArgs e)
+  private void ParentPage_PreRender (object sender, EventArgs e)
   {
     PopulateFormGridManagerList (this.Parent);
 
@@ -231,7 +231,7 @@ public class ValidationStateViewer : WebControl
 	/// <param name="output"> The HTML writer to write out to </param>
 	protected override void Render(HtmlTextWriter output)
 	{
-    if (this.Site != null && this.Site.DesignMode)
+    if (ControlHelper.IsDesignMode (this, this.Context))
     {
       if (Controls.Count == 0)
         Controls.Add(new LiteralControl("No validation at design time"));

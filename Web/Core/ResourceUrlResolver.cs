@@ -22,7 +22,11 @@ public sealed class ResourceUrlResolver
   /// <returns>
   ///   The URL or <see langword="null"/> if no <see cref="ResourceUrlResolver"/> could be found.
   /// </returns>
-  public static string GetResourceUrl (Control control, Type definingType, ResourceType resourceType, string relativeUrl)
+  public static string GetResourceUrl (
+      Control control, 
+      Type definingType, 
+      ResourceType resourceType, 
+      string relativeUrl)
   {
     if (control == null)
       return null;

@@ -24,6 +24,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Details View
 // TODO: BocList: Sort-Buttons
 // TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
+[Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
