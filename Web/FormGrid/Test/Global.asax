@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="Rubicon.EGO.Clients.Web.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="FormGrid.Test.Global" %>

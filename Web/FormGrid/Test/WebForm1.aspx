@@ -1,5 +1,5 @@
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Test.WebForm1" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.EGO.Clients.Web.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -119,23 +119,7 @@
           <TD style="WIDTH: 123px">F2</TD>
           <TD></TD>
           <TD></TD></TR></TABLE><FONT color=#ff3366 
-      >Bitte eine dritte Firma</FONT> </TD></TR></TABLE><asp:button id=Button1 runat="server" Text="Post Back"></asp:button>
-<table id="TableFormGrid" cellspacing="1" cellpadding="1" width="300" border="1" runat="server">
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td></tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td></tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td></tr></table></form>
+      >Bitte eine dritte Firma</FONT> </TD></TR></TABLE><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></form>
 	
   </body>
 </html>

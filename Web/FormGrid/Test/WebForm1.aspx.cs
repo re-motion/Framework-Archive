@@ -18,12 +18,12 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.UI.Utilities;
 
-namespace Rubicon.EGO.Clients.Web
+namespace FormGrid.Test
 {
 /// <summary>
 /// Summary description for WebForm1.
 /// </summary>
-[MultiLingualResources("Rubicon.EGO.Clients.Web.Globalization.WebForm1")]
+[MultiLingualResources("FormGrid.Test.Globalization.WebForm1")]
 public class WebForm1 : 
   Page,
   IObjectWithResources, 

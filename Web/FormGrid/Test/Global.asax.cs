@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
-[assembly: log4net.Config.DOMConfigurator(ConfigFileExtension="log4net", Watch=true)]
-
-namespace Rubicon.EGO.Clients.Web 
+namespace FormGrid.Test
 {
 	/// <summary>
 	/// Summary description for Global.

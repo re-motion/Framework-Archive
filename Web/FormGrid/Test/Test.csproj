@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "FormsGrid"
+                AssemblyName = "Test"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.EGO.Clients.Web"
+                RootNamespace = "FormGrid.Test"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -94,24 +94,24 @@
                     HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\..\..\..\..\libraries\Commons\prereq\Assemblies\log4net.dll"
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\..\..\..\..\libraries\Commons\Core\bin\Debug\Rubicon.Core.dll"
-                />
-                <Reference
-                    Name = "Rubicon.Globalization"
-                    AssemblyName = "Rubicon.Globalization"
-                    HintPath = "..\..\..\..\..\libraries\Commons\Globalization\bin\Debug\Rubicon.Globalization.dll"
+                    Name = "Globalization"
+                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
                     Name = "Web.UI"
                     Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\..\..\prereq\Assemblies\log4net.dll"
                 />
             </References>
         </Build>
