@@ -2,6 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries
@@ -36,6 +37,9 @@ public class QueryManager
   {
     ArgumentUtility.CheckNotNull ("query", query);
 
+    if (query.QueryType == QueryType.Collection)
+      throw new ArgumentException ("A collection query cannot be used with GetScalar.", "query");
+
     using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
     {
       StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
@@ -46,6 +50,9 @@ public class QueryManager
   public DomainObjectCollection GetCollection (Query query)
   {
     ArgumentUtility.CheckNotNull ("query", query);
+
+    if (query.QueryType == QueryType.Scalar)
+      throw new ArgumentException ("A scalar query cannot be used with GetCollection.", "query");
 
     using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
     {

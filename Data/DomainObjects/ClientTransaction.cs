@@ -3,6 +3,7 @@ using System;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 
@@ -51,6 +52,7 @@ public class ClientTransaction
   public event LoadedEventHandler Loaded;
   
   private DataManager _dataManager;
+  private QueryManager _queryManager;
 
   // construction and disposing
 
@@ -59,7 +61,8 @@ public class ClientTransaction
   /// </summary>
   public ClientTransaction ()
   {
-    Initialize ();
+    _dataManager = new DataManager (this);
+    _queryManager = new QueryManager (this);
   }
 
   // methods and properties
@@ -421,16 +424,19 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Gets the current <see cref="DataManager"/> of the <b>ClientTransaction</b>.
+  /// Gets the <see cref="DataManager"/> of the <b>ClientTransaction</b>.
   /// </summary>
   protected DataManager DataManager
   {
     get { return _dataManager; }
   }
 
-  private void Initialize ()
+  /// <summary>
+  /// Gets the <see cref="QueryManager"/> of the <b>ClientTransaction</b>.
+  /// </summary>
+  public QueryManager QueryManager 
   {
-    _dataManager = new DataManager (this);
+    get { return _queryManager; }
   }
 }
 }
