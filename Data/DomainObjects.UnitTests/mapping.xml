@@ -176,6 +176,12 @@
         <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false" />
       </properties>
     </class>
+    <class id="SpecialOfficial" baseClass="Official">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.SpecialOfficial, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Official" />
+      <storageProviderID>UnitTestStorageProviderStub</storageProviderID>
+      <properties />
+    </class>    
     <class id="IndustrialSector">
       <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector, Rubicon.Data.DomainObjects.UnitTests</type>
       <entity name="IndustrialSector" />
