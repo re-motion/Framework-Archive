@@ -154,7 +154,7 @@ public class CollectionEndPointChangeWorker
       _oppositeDomainObjects.EndAdd (NewRelatedObject);
   }
 
-  public bool MustRemoveObject
+  protected bool MustRemoveObject
   {
     get 
     { 
@@ -163,7 +163,7 @@ public class CollectionEndPointChangeWorker
     }
   }
 
-  public bool MustAddObject
+  protected bool MustAddObject
   {
     get 
     { 
@@ -183,22 +183,22 @@ public class CollectionEndPointChangeWorker
     get { return _oldEndPoint; }
   }
 
-  public DomainObject OldRelatedObject
-  {
-    get { return _oldRelatedObject; }
-  }
-
   public RelationEndPoint NewEndPoint
   {
     get { return _newEndPoint; }
   }
 
-  public DomainObject NewRelatedObject 
+  protected DomainObject OldRelatedObject
+  {
+    get { return _oldRelatedObject; }
+  }
+
+  protected DomainObject NewRelatedObject 
   {
     get { return _newEndPoint.GetDomainObject (); }
   }
 
-  public int CollectionIndex
+  protected int CollectionIndex
   {
     get { return _collectionIndex; }
   }
