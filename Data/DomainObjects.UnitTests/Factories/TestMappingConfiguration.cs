@@ -453,7 +453,7 @@ public class TestMappingConfiguration
     ClassDefinition customer = _classDefinitions.GetByClassID ("Customer");
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-        customer, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
+        customer, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
 
     ClassDefinition orderClass = _classDefinitions.GetByClassID ("Order");
     
