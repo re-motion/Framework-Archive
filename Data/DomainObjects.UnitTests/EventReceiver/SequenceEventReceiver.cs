@@ -52,7 +52,7 @@ public class SequenceEventReceiver : EventReceiverBase
 
     foreach (DomainObject domainObject in domainObjects)
     {
-      domainObject.Deleting += new DeletingEventHandler (DomainObject_Deleting);
+      domainObject.Deleting += new EventHandler (DomainObject_Deleting);
       domainObject.Deleted += new EventHandler (DomainObject_Deleted);
       domainObject.PropertyChanging += new PropertyChangingEventHandler (DomainObject_PropertyChanging);
       domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
@@ -111,7 +111,7 @@ public class SequenceEventReceiver : EventReceiverBase
   {
     foreach (DomainObject domainObject in _domainObjects)
     {
-      domainObject.Deleting -= new DeletingEventHandler (DomainObject_Deleting);
+      domainObject.Deleting -= new EventHandler (DomainObject_Deleting);
       domainObject.Deleted -= new EventHandler (DomainObject_Deleted);
       domainObject.PropertyChanging -= new PropertyChangingEventHandler (DomainObject_PropertyChanging);
       domainObject.PropertyChanged -= new PropertyChangedEventHandler (DomainObject_PropertyChanged);

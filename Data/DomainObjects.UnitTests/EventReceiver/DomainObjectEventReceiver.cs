@@ -13,6 +13,7 @@ public class DomainObjectEventReceiver : EventReceiverBase
 
   // member fields
 
+  private DomainObject _domainObject;
   private bool _cancel;
   private bool _hasChangingEventBeenCalled = false;
   private bool _hasChangedEventBeenCalled = false;
@@ -30,6 +31,8 @@ public class DomainObjectEventReceiver : EventReceiverBase
   private DomainObject _oldRelatedObject;
   private DomainObject _newRelatedObject;
 
+  private bool _hasCommittingEventBeenCalled = false;
+  private bool _hasCommittedEventBeenCalled = false;
 
   // construction and disposing
 
@@ -39,14 +42,17 @@ public class DomainObjectEventReceiver : EventReceiverBase
 
   public DomainObjectEventReceiver (DomainObject domainObject, bool cancel)
   {
+    _domainObject = domainObject;
     _cancel = cancel;
 
-    domainObject.PropertyChanging += new PropertyChangingEventHandler (DomainObject_PropertyChanging);
-    domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
-    domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
-    domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
-    domainObject.Deleting += new DeletingEventHandler(domainObject_Deleting);
-    domainObject.Deleted += new EventHandler(domainObject_Deleted);
+    _domainObject.PropertyChanging += new PropertyChangingEventHandler (DomainObject_PropertyChanging);
+    _domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
+    _domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
+    _domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
+    _domainObject.Deleting += new EventHandler (domainObject_Deleting);
+    _domainObject.Deleted += new EventHandler (domainObject_Deleted);
+    _domainObject.Committing += new EventHandler (DomainObject_Committing);
+    _domainObject.Committed += new EventHandler (DomainObject_Committed);
   }
 
   // methods and properties
@@ -127,7 +133,17 @@ public class DomainObjectEventReceiver : EventReceiverBase
     get { return _hasDeletedEventBeenCalled; }
   }
 
-  private void DomainObject_PropertyChanging(object sender, PropertyChangingEventArgs args)
+  public bool HasCommittingEventBeenCalled
+  {
+    get { return _hasCommittingEventBeenCalled; }
+  }
+
+  public bool HasCommittedEventBeenCalled
+  {
+    get { return _hasCommittedEventBeenCalled; }
+  }
+
+  private void DomainObject_PropertyChanging (object sender, PropertyChangingEventArgs args)
   {
     _hasChangingEventBeenCalled = true;
     _changingPropertyValue = args.PropertyValue;
@@ -138,7 +154,7 @@ public class DomainObjectEventReceiver : EventReceiverBase
       CancelOperation ();
   }
 
-  private void DomainObject_PropertyChanged(object sender, PropertyChangedEventArgs args)
+  private void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     _hasChangedEventBeenCalled = true;
     _changedPropertyValue = args.PropertyValue;
@@ -161,14 +177,41 @@ public class DomainObjectEventReceiver : EventReceiverBase
     _changedRelationPropertyName = args.PropertyName;
   }
 
-  protected virtual void domainObject_Deleting(object sender, EventArgs args)
+  protected virtual void domainObject_Deleting (object sender, EventArgs args)
   {
+    if (_cancel)
+      CancelOperation ();
+
     _hasDeletingEventBeenCalled = true;
   }
 
-  protected virtual void domainObject_Deleted(object sender, EventArgs e)
+  protected virtual void domainObject_Deleted (object sender, EventArgs e)
   {
     _hasDeletedEventBeenCalled = true;
+  }
+
+  private void DomainObject_Committing (object sender, EventArgs e)
+  {
+    if (_hasCommittingEventBeenCalled)
+      throw CreateApplicationException ("Committing event on DomainObject '{0}' has already been called.", _domainObject.ID);
+
+    if (_cancel)
+      CancelOperation ();
+
+    _hasCommittingEventBeenCalled = true;
+  }
+
+  private void DomainObject_Committed (object sender, EventArgs e)
+  {
+    if (_hasCommittedEventBeenCalled)
+      throw CreateApplicationException ("Committed event on DomainObject '{0}' has already been called.", _domainObject.ID);
+
+    _hasCommittedEventBeenCalled = true;
+  }
+
+  private ApplicationException CreateApplicationException (string message, params object[] args)
+  {
+    return new ApplicationException (string.Format (message, args));
   }
 }
 }
