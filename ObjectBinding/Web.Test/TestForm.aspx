@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -18,7 +18,7 @@
     <td></td>
     <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children">
 <optionsmenuitems>
-<obc:BocMenuItem ItemID="" Icon="" Text="Wxe" Category="">
+<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-Parameters="Test'Test" WxeFunctionCommand-TypeName="MyType"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -28,7 +28,7 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Href" Category="">
+<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>

@@ -37,6 +37,9 @@ div.dropDownMenuPopUp
   border-style: solid;
   border-width: 1px;
   background-color: #fafafa;
+  background-image: url(../Image/DropDownMenuItemIconPane.gif);
+  background-repeat: repeat-y;
+  
 }
 
 div.dropDownMenuItem
@@ -44,34 +47,52 @@ div.dropDownMenuItem
 	margin: 1px;
 	padding: 2px;
 	vertical-align: middle;	
+	white-space: nowrap;
+	cursor: default;
 }
 
 div.dropDownMenuItemHover
 {
 	margin: 1px;
-	padding: 2px;
+	padding: 1px;
 	vertical-align: middle;
+	white-space: nowrap;
 	border-color: #2254b1;
 	border-width: 1px;
 	border-style: solid;
-	background-color: #fee197;
-	
+	background-color: #fee197;	
+  cursor: default;
+}
+
+div.dropDownMenuItem a,
+div.dropDownMenuItemHover a
+{
+  color: black;
+  text-decoration: none;
+  cursor: default;
 }
 
 /*  */
-div.dropDownMenuItemTextPane
+span.dropDownMenuItemTextPane
 {
-  padding: 0px;
+  padding: 4px;
   margin: 0px;
   font-size: 66.67%;
   font-family: Verdana, sans-serif;
   border-style: none;
+	vertical-align: middle;
 }
 
 
 /*  */
-div.dropDownMenuItemIconPane
+span.dropDownMenuItemIconPane
 {
+  width: 21px;
+	padding-right: 3px;
+	margin-right: 5px;
+  border-style: none;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .ms-MenuUIPopupBody {

@@ -155,11 +155,12 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   protected override void OnPreRender (EventArgs e)
   {
     string key = typeof (DropDownMenu).FullName + "_Style";
+    string styleSheetUrl = null;
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
-      string url = ResourceUrlResolver.GetResourceUrl (
+      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
     }
 
     key = typeof (DropDownMenu).FullName + "_Script";
@@ -170,14 +171,25 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
     }
 
+    //  Startup script initalizing the global values of the script.
+    key = typeof (DropDownMenu).FullName+ "_Startup";
+    if (! Page.IsStartupScriptRegistered (key))
+    {
+      if (styleSheetUrl == null)
+      {
+        styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+            this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
+      }
+      string script = string.Format ("DropDownMenu_InitializeGlobals ('{0}');", styleSheetUrl);
+      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+    }
+
     key = typeof (DropDownMenu).FullName + _groupID;
     if (! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
       script.Append ("DropDownMenu_AddMenuInfo (\r\n\t");
-      script.AppendFormat (
-          "new DropDownMenu_MenuInfo ('{0}', new Array (\r\n",
-          _groupID);
+      script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", _groupID);
       bool isFirstItem = true;
       for (int i = 0; i < MenuItems.Count; i++)
       {

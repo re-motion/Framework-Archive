@@ -10,30 +10,34 @@ namespace Rubicon.Web.UI.Design
 public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEditorService
 {
   private IServiceProvider _baseServiceProvider = null;
+  private string _title = null;
   private Size _editorSize;
   private double _propertyGridLabelRatio;
 
   public CollectionEditorServiceProvider (
       IServiceProvider baseServiceProvider,
+      string title,
       Size editorSize, 
       double propertyGridLabelRatio)
   {
     _baseServiceProvider = baseServiceProvider;
+    _title = title;
     _editorSize = editorSize;
     _propertyGridLabelRatio = propertyGridLabelRatio;
   }
 
   public CollectionEditorServiceProvider (
       IServiceProvider baseServiceProvider,
+      string title,
       int editorWidth, 
       int editorHeight, 
       double propertyGridLabelRatio)
-    : this (baseServiceProvider, new Size (editorWidth, editorHeight), propertyGridLabelRatio)
+    : this (baseServiceProvider, title, new Size (editorWidth, editorHeight), propertyGridLabelRatio)
 	{
   }
 
 	public CollectionEditorServiceProvider (IServiceProvider baseServiceProvider)
-    : this (baseServiceProvider, new Size (300, 400), 2)
+    : this (baseServiceProvider, null, new Size (300, 400), 2)
 	{
   }
 
@@ -65,6 +69,8 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
     propertyGrid.HelpVisible = true;
     propertyGrid.BackColor = SystemColors.Control;
     
+    if (! Rubicon.Utilities.StringUtility.IsNullOrEmpty (_title))
+      dialog.Text = _title;
     return dialog.ShowDialog();
   }
 

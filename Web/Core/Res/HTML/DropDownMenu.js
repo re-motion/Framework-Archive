@@ -8,6 +8,13 @@ var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopUp = null;
 var _dropDownMenu_currentPopUpWidth = null;
 
+var _dropDownMenu_styleSheetLink = null;
+
+function DropDownMenu_InitializeGlobals (styleSheetLink)
+{
+  _dropDownMenu_styleSheetLink = styleSheetLink;
+}
+
 function DropDownMenu_MenuInfo (id, itemInfos)
 {
   this.ID = id;
@@ -74,7 +81,7 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   //popUp.style.display = 'none';
   popUpBody = popUpDocument.body
   DropDownMenu_AppendChild (popUpBody, popUp);
-  popUpDocument.createStyleSheet ("res/Rubicon.Web/HTML/DropDownMenu.css");
+  popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
   popUpWindow.show(0, 0, 0, 0, context);
 	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth;
 	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight;

@@ -30,6 +30,7 @@ public class MenuItemCollection: ControlItemCollection
     return (MenuItem[]) arrayList.ToArray (typeof (MenuItem));
   }
 
+  //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new MenuItem this[int index]
   {
     get { return (MenuItem) List[index]; }
