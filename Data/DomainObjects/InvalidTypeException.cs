@@ -38,8 +38,8 @@ public class InvalidTypeException : DomainObjectException
   protected InvalidTypeException (SerializationInfo info, StreamingContext context) : base (info, context) 
   {
     _propertyName = info.GetString ("PropertyName");
-    _expectedType = Type.GetType (info.GetString ("ExpectedType"));
-    _actualType = Type.GetType (info.GetString ("ActualType"));
+    _expectedType = (Type) info.GetValue ("ExpectedType", typeof (Type));
+    _actualType = (Type) info.GetValue ("ActualType", typeof (Type));
   }
 
   public InvalidTypeException (string propertyName, Type expectedType, Type actualType) : this (
@@ -100,8 +100,8 @@ public class InvalidTypeException : DomainObjectException
     base.GetObjectData (info, context);
 
     info.AddValue ("PropertyName", _propertyName);
-    info.AddValue ("ExpectedType", _expectedType.FullName);
-    info.AddValue ("ActualType", _actualType.FullName);
+    info.AddValue ("ExpectedType", _expectedType);
+    info.AddValue ("ActualType", _actualType);
   }
 }
 }
