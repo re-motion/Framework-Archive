@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Globalization;
-using Rubicon;
+using Rubicon.Utilities;
 using NUnit.Framework;
 
 
