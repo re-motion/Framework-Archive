@@ -205,6 +205,13 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     {
       _label.Text = _text;
 
+      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      {
+        //  nothing
+        //  _label.Text = c_nullDisplayName;
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
+
       _label.Width = this.Width;
       _label.Height = this.Height;
       _label.ApplyStyle (_commonStyle);

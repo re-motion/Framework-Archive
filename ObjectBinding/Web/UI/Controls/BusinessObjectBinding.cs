@@ -60,7 +60,10 @@ public class BusinessObjectBinding
     get { return _property; }
 
     set 
-    { 
+    {
+      if (! Control.SupportsProperty (value))
+        throw new ArgumentException ("Property 'Property' does not support this value.", "value");
+
       _property = value; 
       _propertyIdentifier = (value == null) ? string.Empty : value.Identifier;
       _bindingChanged = true;
@@ -80,12 +83,21 @@ public class BusinessObjectBinding
 
   public void EvaluateBinding()
   {
-    if (_bindingChanged && _property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
+    if (_bindingChanged)
     {
-      _property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
+      if (_property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
+      {
+        IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
+        if (! Control.SupportsProperty (property))
+          throw new ArgumentException ("Property 'Property' does not support the property '" + _propertyIdentifier + "'.");
+        _property = property;
+      }
 
-      this.OnBindingChanged();
+      //  Must be before OnBindingChanged to prevent infinite Loops
+      //  IsReadOnly and IsRequired both call EvaluateBinding and are essential for displaying 
+      //  bound objects
       _bindingChanged = false;
+      this.OnBindingChanged();
     }
   }
 
