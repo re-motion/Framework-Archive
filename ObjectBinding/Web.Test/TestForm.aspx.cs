@@ -28,10 +28,18 @@ public class TestForm : Page
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.ObjectBinding.Web.Controls.BocList Boclist2;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected System.Web.UI.WebControls.Button Button1;
   protected Rubicon.ObjectBinding.Web.Controls.BocList BocList;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
+    Person person = Person.GetObject (personID);
+
+    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;    
+    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
 	}
 
 	override protected void OnInit(EventArgs e)

@@ -17,6 +17,11 @@
 <table id=FormGrid runat="server">
   <tr>
     <td></td>
+    <td><obc:BocTextValue id="BocTextValue1" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="FirstName">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle></obc:BocTextValue></td></tr>
+      <tr>
+    <td></td>
     <td><obc:BocList id="BocList" runat="server">
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
@@ -38,7 +43,9 @@
 <obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
 </FixedColumns></obc:boclist></td></tr>
 </table>
-<rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager></form>
+<p>
+<rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" TypeName="OBWTest.Person, OBWTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
+<p><asp:Button id="Button1" runat="server" Text="Post Back"></asp:Button></p></form>
 	
   </body>
 </html>
