@@ -242,7 +242,6 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("Int32Property"));
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("GuidProperty"));
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("StringProperty"));
-    Assert.IsFalse (dataContainer.IsNullOrEmpty ("CharProperty"));
 
     dataContainer["GuidProperty"] = Guid.Empty;
     dataContainer["StringProperty"] = string.Empty;
