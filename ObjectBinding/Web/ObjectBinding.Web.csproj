@@ -315,6 +315,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\Bugs and ToDos.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\ReadMe.txt"
                     SubType = "Form"
                     BuildAction = "Content"
