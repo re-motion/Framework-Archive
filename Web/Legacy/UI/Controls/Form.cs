@@ -217,7 +217,9 @@ public class Form : HtmlForm
   {
     get 
     { 
-      return UrlUtility.GetAbsoluteUrlWithoutProtocol (Page, _action) == 
+      Uri actionUri = new Uri (UrlUtility.GetAbsoluteUrl (Page, _action));
+
+      return UrlUtility.GetAbsoluteUrlWithoutProtocol (Page, actionUri.AbsolutePath) == 
           UrlUtility.GetAbsoluteUrlWithoutProtocol (Page, UrlUtility.GetAbsolutePageUrl (Page));
     }
   }
