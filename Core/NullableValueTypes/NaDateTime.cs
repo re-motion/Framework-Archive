@@ -33,6 +33,41 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
     _isNotNull = true;
   }
 
+  public NaDateTime (int year, int month, int day, int hour, int minute, int second, int milisecond, System.Globalization.Calendar calendar)
+    : this (new DateTime (year, month, day, hour, minute, second, milisecond, calendar))
+  {
+  }
+
+  public NaDateTime (int year, int month, int day, int hour, int minute, int second, int milisecond)
+    : this (new DateTime (year, month, day, hour, minute, second, milisecond))
+  {
+  }
+
+  public NaDateTime (int year, int month, int day, int hour, int minute, int second, System.Globalization.Calendar calendar)
+    : this (new DateTime (year, month, day, hour, minute, second, calendar))
+  {
+  }
+
+  public NaDateTime (int year, int month, int day, int hour, int minute, int second)
+    : this (new DateTime (year, month, day, hour, minute, second))
+  {
+  }
+
+  public NaDateTime (int year, int month, int day, System.Globalization.Calendar calendar)
+    : this (new DateTime (year, month, day, calendar))
+  {
+  }
+
+  public NaDateTime (int year, int month, int day)
+    : this (new DateTime (year, month, day))
+  {
+  }
+
+  public NaDateTime (long ticks)
+    : this (new DateTime (ticks))
+  {
+  }
+
   private NaDateTime (bool isNull)
   {
     _value = new DateTime (0);

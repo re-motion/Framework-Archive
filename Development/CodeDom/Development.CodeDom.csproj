@@ -102,13 +102,13 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "CodeDom.build"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "CodeOperatorChainExpression.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Development.CodeDom.build"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "ExtendedCodeProvider.cs"
