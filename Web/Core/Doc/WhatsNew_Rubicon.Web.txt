@@ -1,3 +1,10 @@
+3.1.5.0
+=======
+
+- EntryFormGrid: Neue static property "ImagePath". Wird default auf ApplicationPath + "/images" gesetzt.
+  Kann jedoch von einer Applikation überschrieben werden, wenn sich die EntryFormGrid images wo anders befinden.
+
+
 3.1.4.0
 =======
 
