@@ -66,12 +66,40 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
 
     PropertyGrid propertyGrid = GetPropertyGrid (dialog);
     SetPropertyGridSplitter (propertyGrid, _propertyGridLabelRatio);
+    Button cancelButton = GetCancelButton (dialog);
+    cancelButton.Visible = false;
     propertyGrid.HelpVisible = true;
     propertyGrid.BackColor = SystemColors.Control;
     
     if (! Rubicon.Utilities.StringUtility.IsNullOrEmpty (_title))
       dialog.Text = _title;
     return dialog.ShowDialog();
+  }
+
+  private Button GetCancelButton (Form editor)
+  {
+    const string collectionEditorCollectionFormTypeName = "System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm";
+
+    BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic;
+
+    Type collectionEditorCollectionFormType = editor.GetType();
+    if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
+    {
+      throw new ArgumentException (
+          string.Format ("Argument {0} has type {2} when type {1} was expected.",
+          "editor",
+          collectionEditorCollectionFormTypeName,
+          collectionEditorCollectionFormType), "editor");
+    }
+
+    //  HACK: CollectionEditorServiceProvider: Reflection on private Button CollectionEditorCollectionForm.cancelButton
+    //  private PropertyGrid System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm.propertyBrowser
+    FieldInfo cancelButtonFieldInfo = collectionEditorCollectionFormType.GetField (
+        "cancelButton",
+        bindingFlags);
+    Button cancelButton = (Button) cancelButtonFieldInfo.GetValue(editor);
+
+    return cancelButton;
   }
 
   private PropertyGrid GetPropertyGrid (Form editor)
