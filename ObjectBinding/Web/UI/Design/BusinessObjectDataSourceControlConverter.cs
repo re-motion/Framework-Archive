@@ -9,7 +9,8 @@ namespace Rubicon.ObjectBinding.Web.Design
 public class BusinessObjectDataSourceControlConverter : StringConverter
 {
   public BusinessObjectDataSourceControlConverter()
-  {}
+  {
+  }
 
   private object[] GetDataSourceControls (IContainer container)
   {
