@@ -26,5 +26,4 @@ public class ReflectionBusinessObjectDataSourceControl: BusinessObjectDataSource
     return _dataSource;
   }
 }
-
 }

@@ -27,52 +27,36 @@ public class ValidationStateViewer : WebControl, IControl
   // constants
   private const string c_noticeTextResourceID = "auto:ValidationStateViewer:NoticeText";
 
-  /// <summary>
-  ///   CSS-Class applied to the individual validation messages
-  /// </summary>
-  /// <remarks>
-  ///   Class: <c>formGridValidationMessage</c>
-  /// </remarks>
+  /// <summary> CSS-Class applied to the individual validation messages. </summary>
+  /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationMessage = "formGridValidationMessage";
   
-  /// <summary>
-  ///   CSS-Class applied to the validation notice
-  /// </summary>
-  /// <remarks>
-  ///   Class: <c>formGridValidationMessage</c>
-  /// </remarks>
+  /// <summary> CSS-Class applied to the validation notice. </summary>
+  /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationNotice = "formGridValidationNotice";
 
   // static members
 
   // member fields
 
-  /// <summary>
-  ///   Collection of <see cref="FormGridManager" /> instances in the page 
-  /// </summary>
+  /// <summary> Collection of <see cref="FormGridManager" /> instances in the page. </summary>
   private ArrayList _formGridManagers;
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
-  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
+  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
   private string _noticeText;
 
-  /// <summary>
-  ///   The style in which the validation errors should be displayed on the page
-  /// </summary>
+  /// <summary> The style in which the validation errors should be displayed on the page. </summary>
   private ValidationErrorStyle _validationErrorStyle;
 
-  /// <summary>
-  ///   The <c>LiteralControl</c> containing the text displayed as a validation notice.
-  /// </summary>
+  /// <summary> The <c>LiteralControl</c> containing the text displayed as a validation notice. </summary>
   private LiteralControl _validationErrorNotice;
 
   // construction and disposing
 
-  /// <summary>
-  ///   Simple constructor
-  /// </summary>
+  /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
   public ValidationStateViewer()
   {
     _validationErrorStyle = ValidationErrorStyle.Notice;
@@ -82,9 +66,9 @@ public class ValidationStateViewer : WebControl, IControl
 
   /// <summary>
   ///   Registers <see cref="ParentPage_PreRender"/> with the parent page's <c>PreRender</c>
-  ///   event, before calling the base class's <c>OnInit</c>
+  ///   event, before calling the base class's <c>OnInit</c>.
   /// </summary>
-  /// <param name="e">The <see cref="EventArgs"/>.</param>
+  /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnInit (EventArgs e)
 	{
     this.Page.PreRender += new EventHandler(ParentPage_PreRender);
@@ -92,21 +76,19 @@ public class ValidationStateViewer : WebControl, IControl
 	}
 
   /// <summary>
-  ///   Event handler for the control's PreRender event tasked with 
+  ///   Event handler for the control's <c>PreRender</c> event tasked with 
   ///   filling the form grid manager list.
   /// </summary>
-  /// <param name="sender">The <see cref="Page"/> object.</param>
-  /// <param name="e">The <see cref="EventArgs"/>.</param>
+  /// <param name="sender"> The <see cref="Page"/> object. </param>
+  /// <param name="e"> The <see cref="EventArgs"/>. </param>
   private void ParentPage_PreRender (object sender, EventArgs e)
   {
     PopulateFormGridManagerList (this.Parent);
     OutputValidationState();
   }
 
-  /// <summary>
-  ///   Registers all instances of <see cref="FormGridManager"/>
-  /// </summary>
-  /// <param name="control">Parent element of the FormGridManager objects</param>
+  /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>
+  /// <param name="control"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
@@ -161,9 +143,7 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  /// <summary>
-  ///   Displays a short notice if validation errors where found.
-  /// </summary>
+  /// <summary> Displays a short notice if validation errors where found. </summary>
   protected virtual void DisplayValidationNotice()
   {
     bool hasValidationErrors = false;
@@ -195,9 +175,7 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  /// <summary>
-  ///   Displays the validation messages for each error.
-  /// </summary>
+  /// <summary> Displays the validation messages for each error. </summary>
   protected virtual void DisplayValidationMessages()
   {
     foreach (FormGridManager formGridManager in _formGridManagers)
@@ -221,10 +199,8 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  /// <summary> 
-	///   Render this control to the output parameter specified.
-	/// </summary>
-	/// <param name="output"> The HTML writer to write out to </param>
+  /// <summary> Render this control to the output parameter specified. </summary>
+	/// <param name="output"> The HTML writer to write out to. </param>
 	protected override void Render(HtmlTextWriter output)
 	{
     if (ControlHelper.IsDesignMode (this, this.Context))
@@ -240,7 +216,7 @@ public class ValidationStateViewer : WebControl, IControl
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
   ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
-  /// <value>A string.</value>
+  /// <value> A string. </value>
   [CategoryAttribute("Appearance")]
   [DefaultValue("")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
@@ -250,10 +226,8 @@ public class ValidationStateViewer : WebControl, IControl
     set { _noticeText = value; }
   }
 
-  /// <summary>
-  ///   Defines how the validation errors are displayed on the page.
-  /// </summary>
-  /// <value>A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration.</value>
+  /// <summary> Defines how the validation errors are displayed on the page. </summary>
+  /// <value> A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration. </value>
   [CategoryAttribute("Behavior")]
   [DefaultValue(ValidationErrorStyle.Notice)]
   [Description("Defines how the validation messages are displayed.")]
@@ -263,42 +237,26 @@ public class ValidationStateViewer : WebControl, IControl
     set { _validationErrorStyle = value; }
   }
 
-  /// <summary>
-  ///   CSS-Class applied to the individual validation messages.
-  /// </summary>
-  /// <remarks>
-  ///   Class: <c>formGridValidationMessage</c>
-  /// </remarks>
+  /// <summary> CSS-Class applied to the individual validation messages. </summary>
+  /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   protected virtual string CssClassValidationMessage
   { get { return c_cssClassValidationMessage;} }
 
-  /// <summary>
-  ///   CSS-Class applied to the validation notice.
-  /// </summary>
-  /// <remarks>
-  ///   Class: <c>formGridValidationMessage</c>
-  /// </remarks>
+  /// <summary> CSS-Class applied to the validation notice. </summary>
+  /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   protected virtual string CssClassValidationNotice
   { get { return c_cssClassValidationNotice;} }
 }  
 
 
-/// <summary>
-///   A list of possible ways to displau the validation messages.
-/// </summary>
+/// <summary> A list of possible ways to displau the validation messages. </summary>
 public enum ValidationErrorStyle
 {
-  /// <summary>
-  ///   Display no messages.
-  /// </summary>
+  /// <summary> Display no messages. </summary>
   HideErrors,
-  /// <summary>
-  ///   Display a short notice if validation errors where found.
-  /// </summary>
+  /// <summary> Display a short notice if validation errors where found. </summary>
   Notice,
-  /// <summary>
-  ///   Display the individual validation messages provided by the FormGridManager.
-  /// </summary>
+  /// <summary> Display the individual validation messages provided by the FormGridManager. </summary>
   DetailedMessages
 }
 

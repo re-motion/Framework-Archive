@@ -300,10 +300,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\License DatePicker.txt"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Doc\ReadMe.txt"
                     SubType = "Form"
                     BuildAction = "Content"

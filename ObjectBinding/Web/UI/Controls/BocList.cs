@@ -133,6 +133,9 @@ public class BocList:
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
 
+  /// <summary>
+  ///   Hashtable&lt;string CheckBoxID, bool isChecked&gt;
+  /// </summary>
   private Hashtable _checkBoxCheckedState = new Hashtable();
 
   private MoveOption _move = MoveOption.Undefined;
@@ -581,9 +584,9 @@ public class BocList:
 
     if (ShowSelection)
     {
-      // TODO: BocList: CheckBox SelectAll implementation
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      // TODO: BocList: CheckBox SelectAll implementation
       //string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
       //bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
       //RenderCheckBox (writer, checkBoxName, isChecked);
@@ -1212,6 +1215,37 @@ public class BocList:
       {
         _selectedColumnDefinitionSet = null;
       }
+    }
+  }
+
+  /// <summary>
+  ///   Gets the list of <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>.
+  /// </summary>
+  /// <value> An array of <see cref="IBusinessObject"/> objects. </value>
+  [Browsable (false)]
+  public IBusinessObject[] SelectedBusinessObjects
+  {
+    get
+    {
+      string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
+      int commonCheckBoxIDLength = commonCheckBoxID.Length;
+      ArrayList selectedBusinessObjects = new ArrayList();
+      foreach (DictionaryEntry entry in _checkBoxCheckedState)
+      {
+        string checkBoxID = (string) entry.Key;
+        bool isChecked = (bool) entry.Value;
+
+        if (checkBoxID.StartsWith (commonCheckBoxID) && isChecked)
+        {
+          string checkBoxIndex = checkBoxID.Remove (0, commonCheckBoxIDLength);
+          int rowIndex = int.Parse (checkBoxIndex);
+          
+          IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
+          if (businessObject != null)
+            selectedBusinessObjects.Add (businessObject);
+        }
+      }
+      return (IBusinessObject[]) selectedBusinessObjects.ToArray (typeof (IBusinessObject));
     }
   }
 
