@@ -231,7 +231,6 @@ public class TestMappingConfiguration
         "BooleanProperty", "Boolean", "boolean"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("CharProperty", "Char", "char"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
         "DateProperty", "Date", "date"));
