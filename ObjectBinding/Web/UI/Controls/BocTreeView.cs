@@ -96,15 +96,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
     
       BocTreeNodeClickEventArgs e = null;
       if (businessObjectNode != null)
-      {
-        EnsureBusinessObjectTreeNode (businessObjectNode);
         e = new BocTreeNodeClickEventArgs (businessObjectNode, path);
-      }
       else if (propertyNode != null)
-      {
-        EnsurePropertyTreeNode (propertyNode);
         e = new BocTreeNodeClickEventArgs (propertyNode, path);
-      }
       
       handler (this, e);
     }
@@ -227,8 +221,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void CreateAppendBusinessObjectNodeChildren (BusinessObjectTreeNode businessObjectNode)
   {
-    EnsureBusinessObjectTreeNode (businessObjectNode);
-    
     IBusinessObjectWithIdentity businessObject = businessObjectNode.BusinessObject;
     BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos = GetPropertyNodes (businessObject);
     if (propertyNodeInfos != null && propertyNodeInfos.Length > 0)
@@ -247,10 +239,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
       throw new ArgumentException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
 
     BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
-    
-    EnsureBusinessObjectTreeNode (parentNode);
-    EnsurePropertyTreeNode (propertyNode);
-
     CreateAppendBusinessObjectNodes (propertyNode.Children, parentNode.BusinessObject, propertyNode.Property);
     propertyNode.IsEvaluated = true;
   }
@@ -328,92 +316,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
     
     return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (Property) };
-  }
-
-  private void EnsureBusinessObjectTreeNode (BusinessObjectTreeNode node)
-  {
-    if (node.BusinessObject != null)
-      return;
-
-    //  Is root node?
-    if (node.ParentNode == null)
-    {
-      if (Value == null)
-        throw new InvalidOperationException ("Cannot evaluate the tree node hierarchy because the value collection is null.");
-
-      foreach (IBusinessObjectWithIdentity businessObject in Value)
-      {
-        if (node.NodeID == businessObject.UniqueIdentifier)
-        {
-          node.BusinessObject = businessObject;
-          break;
-        }
-      }
-
-      if (node.BusinessObject == null)
-      {
-        //  Required business object has not been part of the values collection in this post back, get it from the class
-        if (DataSource == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSoure is null.");
-        if (DataSource.BusinessObjectClass == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSource.BusinessObjectClass is null.");
-        if (! (DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + node.NodeID + "': DataSource.BusinessObjectClass is of type '" + DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
-        
-        node.BusinessObject = 
-            ((IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass).GetObject (node.NodeID);
-        if (node.BusinessObject == null) // This test could be omitted if graceful recovery is wanted.
-          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + node.NodeID + "' via the DataSource.");
-      }
-    }
-    else
-    {
-      EnsureBusinessObjectTreeNodeProperty (node);
-      IBusinessObjectReferenceProperty property = node.Property;
-      string businessObjectID = node.NodeID;
-      node.BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
-    }
-  }
-
-  private void EnsureBusinessObjectTreeNodeProperty (BusinessObjectTreeNode node)
-  {
-    if (node.Property != null)
-      return;
-
-    BusinessObjectTreeNode businessObjectParentNode = node.ParentNode as BusinessObjectTreeNode;
-    BusinessObjectPropertyTreeNode propertyParentNode = node.ParentNode as BusinessObjectPropertyTreeNode;
-    
-    if (businessObjectParentNode != null)
-    {
-      EnsureBusinessObjectTreeNode (businessObjectParentNode);
-
-      IBusinessObjectProperty property = 
-          businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (node.PropertyIdentifier);
-      node.Property = (IBusinessObjectReferenceProperty) property;
-
-      if (node.Property == null) // This test could be omitted if graceful recovery is wanted.
-        throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + node.PropertyIdentifier + "'.");
-    }
-    else if (propertyParentNode != null)
-    {
-      EnsurePropertyTreeNode (propertyParentNode);
-      node.Property = propertyParentNode.Property;
-      return;
-    }
-  }
-
-  private void EnsurePropertyTreeNode (BusinessObjectPropertyTreeNode node)
-  {
-    if (node.Property != null)
-      return;
-
-    BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) node.ParentNode;
-    if (parentNode == null)
-      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + node.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
-
-    EnsureBusinessObjectTreeNode (parentNode);
-    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (node.NodeID);
-    node.Property = (IBusinessObjectReferenceProperty) property;
   }
 
   /// <summary>
