@@ -3,7 +3,7 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.Text;
 
-namespace Rubicon.Text.UnitTests
+namespace Rubicon.UnitTests.Text
 {
 
 [TestFixture]

@@ -2,7 +2,7 @@ using System;
 using System.CodeDom;
 using System.Runtime.Serialization;
 
-using Rubicon.Data.NullableValueTypes;
+using Rubicon.NullableValueTypes;
 using Rubicon.Development.CodeDom;
 
 namespace Rubicon.Development.CodeDom.NullableValueTypes

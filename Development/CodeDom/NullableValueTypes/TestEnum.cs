@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-using Rubicon.Data.NullableValueTypes;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Development.CodeDom.NullableValueTypes.Sample
 {
