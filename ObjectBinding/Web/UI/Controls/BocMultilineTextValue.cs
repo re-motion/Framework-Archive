@@ -288,19 +288,19 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    RequiredFieldValidator _requiredValidator = new RequiredFieldValidator();
-    _requiredValidator.ID = ID + "_ValidatorRequired";
-    _requiredValidator.ControlToValidate = TargetControl.ID;
+    RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+    requiredValidator.ID = ID + "_ValidatorRequired";
+    requiredValidator.ControlToValidate = TargetControl.ID;
     if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
-      _requiredValidator.ErrorMessage = 
+      requiredValidator.ErrorMessage = 
           GetResourceManager().GetString (ResourceIdentifier.RequiredValidationMessage);
     }
     else
     {
-      _requiredValidator.ErrorMessage = _errorMessage;
+      requiredValidator.ErrorMessage = _errorMessage;
     }      
-    validators[0] = _requiredValidator;
+    validators[0] = requiredValidator;
 
     _validators.AddRange (validators);
     return validators;
