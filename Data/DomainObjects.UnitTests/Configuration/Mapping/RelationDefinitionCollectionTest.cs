@@ -82,13 +82,13 @@ public class RelationDefinitionCollectionTest
   [Test]
   [ExpectedException (typeof (MappingException), 
       "Relation 'NonExistingRelationDefinitionID' does not exist.")]
-  public void GetMandatoryWithNonExistingRelationDefintionID ()
+  public void GetMandatoryWithNonExistingRelationDefinitionID ()
   {
     _collection.GetMandatory ("NonExistingRelationDefinitionID");
   }
 
   [Test]
-  public void ContainsRelationDefintion ()
+  public void ContainsRelationDefinition ()
   {
     _collection.Add (_relationDefinition);
     
@@ -97,7 +97,7 @@ public class RelationDefinitionCollectionTest
 
   [Test]
   [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsNullRelationDefintion ()
+  public void ContainsNullRelationDefinition ()
   {
     _collection.Contains ((RelationDefinition) null);
   }
