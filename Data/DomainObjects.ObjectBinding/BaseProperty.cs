@@ -183,6 +183,10 @@ public class DomainObjectProperty: IBusinessObjectProperty
   {
     get { return (_propertyDefinition != null) ? !_propertyDefinition.IsNullable : true;  }
   }
+  public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
+  {
+    return true;
+  };
 
   public bool IsAccessible (IBusinessObject obj)
   {
