@@ -123,13 +123,22 @@ public class PropertyPathBinding: IBusinessObjectClassSource
     {
       if (! _isPopertyPathEvaluated)
       {
-        if (DataSource == null)
-          throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
-
-        if (ReferenceProperty != null)
-          _propertyPath = BusinessObjectPropertyPath.Parse (ReferenceProperty.ReferenceClass, _propertyPathIdentifier);
-        else
+        if (StringUtility.IsNullOrEmpty (_propertyPathIdentifier))
+        {
           _propertyPath = null;
+        }
+        else
+        {
+          if (DataSource == null)
+            throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
+
+          if (ReferenceProperty != null)
+            _propertyPath = BusinessObjectPropertyPath.Parse (ReferenceProperty.ReferenceClass, _propertyPathIdentifier);
+          else if (DataSource.BusinessObjectClass != null)
+            _propertyPath = BusinessObjectPropertyPath.Parse (DataSource.BusinessObjectClass, _propertyPathIdentifier);
+          else
+            _propertyPath = null;
+        }
         _isPopertyPathEvaluated = true;
       }
 

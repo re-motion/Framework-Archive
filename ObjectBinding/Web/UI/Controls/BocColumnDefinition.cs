@@ -228,7 +228,7 @@ public abstract class BocColumnDefinition
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
   /// <summary> The text representing the command on the rendered page. </summary>
-  private object _label;
+  private string _label;
   /// <summary> The image representing the command on the rendered page. </summary>
   private string _iconPath;
 
@@ -246,7 +246,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
       string columnTitle, 
       Unit width, 
       BocListItemCommand command, 
-      object label, 
+      string label, 
       string iconPath)
     : base (columnTitle, width, command)
   {
@@ -288,7 +288,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public string Label
   {
-    get { return (_label != null) ? _label.ToString() : string.Empty; }
+    get { return StringUtility.NullToEmpty (_label); }
     set { _label = value; }
   }
 
