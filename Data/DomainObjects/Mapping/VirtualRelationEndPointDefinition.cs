@@ -17,6 +17,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
   private CardinalityType _cardinality;
   private string _propertyName;
   private Type _propertyType;
+  private string _sortExpression;
 
   // construction and disposing
 
@@ -26,12 +27,41 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
       bool isMandatory,    
       CardinalityType cardinality,
       Type propertyType) 
+      : this (classDefinition, propertyName, isMandatory, cardinality, propertyType, null)
+  {
+  }
+
+  public VirtualRelationEndPointDefinition (
+      ClassDefinition classDefinition, 
+      string propertyName, 
+      bool isMandatory,    
+      CardinalityType cardinality,
+      Type propertyType,
+      string sortExpression) 
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckValidEnumValue (cardinality, "cardinality");
     ArgumentUtility.CheckNotNull ("propertyType", propertyType);
 
+    CheckParameters (classDefinition, propertyName, isMandatory, cardinality, propertyType, sortExpression);
+
+    _classDefinition = classDefinition;    
+    _cardinality = cardinality;
+    _isMandatory = isMandatory;
+    _propertyName = propertyName;
+    _propertyType = propertyType;
+    _sortExpression = sortExpression;
+  }
+
+  private void CheckParameters (
+      ClassDefinition classDefinition, 
+      string propertyName, 
+      bool isMandatory,    
+      CardinalityType cardinality,
+      Type propertyType,
+      string sortExpression)
+  {
     if (propertyType != typeof (DomainObjectCollection)
         && !propertyType.IsSubclassOf (typeof (DomainObjectCollection))
         && !propertyType.IsSubclassOf (typeof (DomainObject)))
@@ -57,11 +87,12 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
           + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.");
     }
 
-    _classDefinition = classDefinition;    
-    _cardinality = cardinality;
-    _isMandatory = isMandatory;
-    _propertyName = propertyName;
-    _propertyType = propertyType;
+    if (cardinality == CardinalityType.One && sortExpression != null)
+    {
+      throw CreateMappingException (
+          "Property '{0}' of class '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
+          propertyName, classDefinition.ID);
+    }
   }
 
   // methods and properties
@@ -102,6 +133,11 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
   public bool IsVirtual
   {
     get { return true; }
+  }
+
+  public string SortExpression 
+  {
+    get { return _sortExpression; }
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
