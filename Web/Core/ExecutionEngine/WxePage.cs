@@ -74,14 +74,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       // string returningToken = postBackCollection["returningToken"];
       if (! StringUtility.IsNullOrEmpty (returningToken))
       {
-        ArrayList pages = (ArrayList) _page.Session["WxePages"];
-        foreach (WxePageSession pageSession in pages)
+        WxeWindowStateCollection windowStates = (WxeWindowStateCollection) _page.Session[WxeWindowStateCollection.SessionKey];
+        WxeWindowState windowState = windowStates.GetItem (returningToken);
+        if (windowState != null)
         {
-          if (pageSession.PageToken == returningToken)
-          {
-            WxeContext.Current.ReturningFunction = pageSession.Function;
-            WxeContext.Current.IsReturningPostBack = true;
-          }
+          WxeContext.Current.ReturningFunction = windowState.Function;
+          WxeContext.Current.IsReturningPostBack = true;
         }
       }
     }
@@ -134,17 +132,39 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunction (WxeFunction function, string target, Control sender)
   {
     ArrayList pages = (ArrayList) _page.Session["WxePages"];
-    WxePageSession pageSession = new WxePageSession (function, 20);
-    pages.Add (pageSession);
-    string href = _page.Request.Path + "?WxePageToken=" + pageSession.PageToken;
-    string script = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
+    WxeWindowState windowState = new WxeWindowState (function, 20);
+    pages.Add (windowState);
 
-    // string eventtarget = GetPostBackCollection()["__EVENTTARGET"];
-    // string eventargument = GetPostBackCollection()["__EVENTARGUMENT"];
-    // subFunction.ReturnUrl = "javascript:window.opener.__doPostBack(\"" + eventtarget + "\",\"" + eventargument + "\"); window.close();";
-    function.ReturnUrl = "javascript:window.opener.wxeDoSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
+    string href = _page.Request.Path + "?WxeWindowToken=" + windowState.WindowToken;
+    string openScript = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
+    PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
-    PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", script);
+    string returnScript;
+    if (UsesEventTarget)
+    {
+      string eventtarget = _page.GetPostBackCollection()["__EVENTTARGET"];
+      string eventargument = _page.GetPostBackCollection()["__EVENTARGUMENT"];
+      returnScript = string.Format (
+            "if (window.opener && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
+          + "  window.opener.__doPostBack(\"{1}\", \"{2}\"); \n"
+          + "window.close();", 
+          pageToken,
+          eventtarget, 
+          eventargument);
+    }
+    else
+    {
+      returnScript = string.Format (
+          "window.opener.wxeDoSubmit(\"{0}\", \"{1}\"); window.close();", 
+          sender.ClientID, 
+          windowState.WindowToken);
+    }
+    function.ReturnUrl = "javascript:" + returnScript;
+  }
+
+  public bool UsesEventTarget
+  {
+    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()["__EVENTTARGET"]); }
   }
 
   public void Dispose ()
@@ -236,8 +256,7 @@ public class WxePage: Page, IWxePage
   /// </remarks>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
-    bool usesEventTarget = ! StringUtility.IsNullOrEmpty (GetPostBackCollection()["__EVENTTARGET"]);
-    ExecuteFunctionNoRepost (function, sender, usesEventTarget);
+    ExecuteFunctionNoRepost (function, sender, _wxeInfo.UsesEventTarget);
   }
 
   /// <summary>

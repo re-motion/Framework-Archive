@@ -1,21 +1,59 @@
 using System;
+using System.Collections;
 using System.Runtime.Serialization;
 
 namespace Rubicon.Web.ExecutionEngine
 {
 
+[Serializable]
+public class WxeWindowStateCollection
+{
+  /// <summary> The key for storing the global window state list in the application's session. </summary>
+  public const string SessionKey = "WxeWindowStates";
+
+  private ArrayList _windowStates = new ArrayList();
+
+  public void DisposeExpired()
+  {
+    foreach (WxeWindowState window in _windowStates)
+    {
+      if (window.IsExpired)
+      {
+        _windowStates.Remove (window);
+        window.Dispose();
+      }
+    }
+  }
+
+  public WxeWindowState GetItem (string windowToken)
+  {
+    foreach (WxeWindowState window in _windowStates)
+    {
+      if (window.WindowToken == windowToken)
+        return window;
+    }
+    return null;
+  }
+
+  public void Remove (WxeWindowState windowState)
+  {
+    _windowStates.Remove (windowState);
+    windowState.Dispose();
+  }
+}
+
 /// <summary>
 ///   Stores the session state for a single page token.
 /// </summary>
 [Serializable]
-public class WxePageSession: ISerializable, IDisposable
+public class WxeWindowState: ISerializable, IDisposable
 {
   private WxeFunction _function;
   private DateTime _lastAccess;
   private int _lifetime;
   private string _windowToken;
 
-  public WxePageSession (WxeFunction function, int lifetime)
+  public WxeWindowState (WxeFunction function, int lifetime)
   {
     _function = function;
     _lastAccess = DateTime.Now;
@@ -23,7 +61,7 @@ public class WxePageSession: ISerializable, IDisposable
     _windowToken = Guid.NewGuid().ToString();
   }
 
-  protected WxePageSession (SerializationInfo info, StreamingContext context)
+  protected WxeWindowState (SerializationInfo info, StreamingContext context)
   {
     _function = (WxeFunction) info.GetValue ("_function", typeof (WxeFunction));
     _lastAccess = info.GetDateTime ("_lastAccess");
@@ -84,7 +122,7 @@ public class WxePageSession: ISerializable, IDisposable
     }
   }
 
-  ~WxePageSession()
+  ~WxeWindowState()
   {
     Dispose (false);
   }

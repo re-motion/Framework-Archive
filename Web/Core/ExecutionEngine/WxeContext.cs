@@ -28,7 +28,7 @@ public class WxeContext
   private bool _isPostBack;
   private bool _isReturningPostBack;
   private NameValueCollection _postBackCollection;
-  private string _pageToken = null;
+  private string _windowToken = null;
   private WxeFunction _returningFunction = null;
 
   public WxeContext (HttpContext context)
@@ -67,10 +67,10 @@ public class WxeContext
     set { _postBackCollection = value; }
   }
 
-  public string PageToken
+  public string WindowToken
   {
-    get { return _pageToken; }
-    set { _pageToken = value; }
+    get { return _windowToken; }
+    set { _windowToken = value; }
   }
 
   public WxeFunction ReturningFunction 

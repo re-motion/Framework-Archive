@@ -49,7 +49,7 @@ public class WxeForm: HtmlForm
 
   protected override void RenderAttributes (HtmlTextWriter writer)
   {
-    string action = Context.Request.Path + "?WxePageToken=" + WxeContext.Current.PageToken;
+    string action = Context.Request.Path + "?WxeWindowToken=" + WxeContext.Current.WindowToken;
     writer.WriteAttribute ("action", action);
     Attributes.Remove ("action");
 

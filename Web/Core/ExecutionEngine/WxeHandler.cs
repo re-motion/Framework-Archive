@@ -26,40 +26,28 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   public void ProcessRequest (HttpContext context)
   {
-    WxePageSession pageSession = null;
-    string pageToken = context.Request.Params["WxePageToken"];
-    if (pageToken != null)
+    WxeWindowState windowState = null;
+    string windowToken = context.Request.Params["WxeWindowToken"];
+    WxeWindowStateCollection windowStates = (WxeWindowStateCollection) context.Session[WxeWindowStateCollection.SessionKey];
+    if (windowToken != null)
     {
-      ArrayList pages = (ArrayList) context.Session ["WxePages"];
-      if (pages == null)
+      if (windowStates == null)
         throw new ApplicationException ("Session timeout."); // TODO: display error message
 
-      // find page session for current token and dispose expired page sessions
-      foreach (WxePageSession page in pages)
-      {
-        if (pageToken == page.PageToken)
-        {
-          pageSession = page;
-        }
-        else if (page.IsExpired)
-        {
-          pages.Remove (page);
-          page.Dispose();
-        }
-      }
-
-      if (pageSession == null)
+      windowState = windowStates.GetItem (windowToken);
+      if (windowState == null)
         throw new ApplicationException ("Page timeout."); // TODO: display error message
+      windowState.Touch();
 
-      pageSession.Touch();
-      _currentFunction = pageSession.Function;
+      windowStates.DisposeExpired();
+
+      _currentFunction = windowState.Function;
       if (_currentFunction == null)
-        throw new ApplicationException ("Function missing in WxePageSession {0}." + pageSession.PageToken);
+        throw new ApplicationException ("Function missing in WxeWindowState {0}." + windowState.WindowToken);
       string action = context.Request["WxeAction"];
       if (action == "cancel")
       {
-        pages.Remove (pageSession);
-        pageSession.Dispose();
+        windowStates.Remove (windowState);
         return;
       }
     }
@@ -78,14 +66,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
         pages = new ArrayList(1);
         context.Session["WxePages"] = pages;
       }
-      pageSession = new WxePageSession (_currentFunction, 20); // TODO: make lifetime configurable
-      pages.Add (pageSession);
+      windowState = new WxeWindowState (_currentFunction, 20); // TODO: make lifetime configurable
+      pages.Add (windowState);
 
       WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables, CultureInfo.InvariantCulture);
     }
 
     WxeContext wxeContext = new WxeContext (context); 
-    wxeContext.PageToken = pageSession.PageToken;
+    wxeContext.WindowToken = windowState.WindowToken;
     WxeContext.SetCurrent (wxeContext);
 
     _currentFunction.Execute (wxeContext);
