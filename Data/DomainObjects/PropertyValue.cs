@@ -2,6 +2,7 @@ using System;
 
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -95,6 +96,7 @@ public class PropertyValue
   private PropertyDefinition _definition;
   private object _value;
   private object _originalValue;
+  private bool _isDiscarded = false;
 
   // construction and disposing
 
@@ -116,27 +118,42 @@ public class PropertyValue
 
   public PropertyDefinition Definition
   {
-    get { return _definition; }
+    get 
+    {
+      CheckDiscarded ();
+      return _definition; 
+    }
   }
 
   public string Name
   {
-    get { return _definition.PropertyName; }
+    get 
+    {
+      CheckDiscarded ();
+      return _definition.PropertyName; 
+    }
   }
 
   public Type PropertyType
   {
-    get { return _definition.PropertyType; }
+    get 
+    {
+      CheckDiscarded ();
+      return _definition.PropertyType; 
+    }
   }
 
   public object Value
   {
     get
     {
+      CheckDiscarded ();
       return _value;
     }
     set
     {
+      CheckDiscarded ();
+
       if (AreValuesDifferent (_value, value))
       {
         CheckValue (value, _definition);
@@ -155,26 +172,44 @@ public class PropertyValue
 
   public object OriginalValue
   {
-    get { return _originalValue; }
+    get 
+    { 
+      CheckDiscarded ();
+      return _originalValue; 
+    }
   }
 
   public bool IsNullable
   {
-    get { return _definition.IsNullable; }
+    get 
+    {
+      CheckDiscarded ();
+      return _definition.IsNullable; 
+    }
   }
 
   public NaInt32 MaxLength 
   {
-    get { return _definition.MaxLength; }
+    get 
+    {
+      CheckDiscarded ();
+      return _definition.MaxLength; 
+    }
   }
 
   public bool HasChanged
   {
-    get { return AreValuesDifferent (_value, _originalValue); }
+    get 
+    {
+      CheckDiscarded ();
+      return AreValuesDifferent (_value, _originalValue); 
+    }
   }
 
   public override bool Equals (object obj)
   {
+    CheckDiscarded ();
+
     PropertyValue propertyValue = obj as PropertyValue;
 
     if (propertyValue != null)
@@ -192,8 +227,15 @@ public class PropertyValue
 
   public override int GetHashCode()
   {
+    CheckDiscarded ();
     return _definition.PropertyName.GetHashCode () ^ _value.GetHashCode () ^ _originalValue.GetHashCode ();
   }
+
+  public void Discard ()
+  {
+    _isDiscarded = true;
+  }
+
   protected virtual void OnChanging (ValueChangingEventArgs args)
   {
     if (Changing != null)
@@ -266,6 +308,12 @@ public class PropertyValue
   private ArgumentException CreateArgumentException (string message, params object[] args)
   {
     return new ArgumentException (string.Format (message, args));
+  }
+
+  private void CheckDiscarded ()
+  {
+    if (_isDiscarded)
+      throw new ObjectDiscardedException ();
   }
 }
 }

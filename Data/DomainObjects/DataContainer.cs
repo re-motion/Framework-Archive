@@ -53,6 +53,7 @@ public class DataContainer
   private DomainObject _domainObject;
   private ClassDefinition _classDefinition;
   private RelationEndPointID[] _relationEndPointIDs = null;
+  private bool _isDiscarded = false;
 
   // construction and disposing
 
@@ -80,18 +81,32 @@ public class DataContainer
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      CheckDiscarded ();
+
       return _propertyValues[propertyName].Value; 
     }
     set 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      CheckDiscarded ();
+
       _propertyValues[propertyName].Value = value; 
     }
+  }
+
+  public object GetValue (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return this[propertyName];
   }
 
   public void SetValue (string propertyName, object value)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
     this[propertyName] = value;
   }
 
@@ -100,6 +115,8 @@ public class DataContainer
   {
     get
     {
+      CheckDiscarded ();
+
       if (_relationEndPointIDs != null)
         return _relationEndPointIDs;
 
@@ -117,6 +134,8 @@ public class DataContainer
   {
     get 
     {
+      CheckDiscarded ();
+
       if (_domainObject == null)
         _domainObject = DomainObject.Create (this);
 
@@ -126,28 +145,46 @@ public class DataContainer
 
   public ObjectID ID
   {
-    get { return _id; }
+    get 
+    { 
+      CheckDiscarded ();
+      return _id; 
+    }
   }
 
   public ClassDefinition ClassDefinition
   {
-    get { return _classDefinition; }
+    get 
+    { 
+      CheckDiscarded ();
+      return _classDefinition; 
+    }
   }
 
   public Type DomainObjectType
   {
-    get { return _classDefinition.ClassType; }
+    get 
+    { 
+      CheckDiscarded ();
+      return _classDefinition.ClassType; 
+    }
   }
 
   public PropertyValueCollection PropertyValues
   {
-    get { return _propertyValues; }
+    get 
+    {
+      CheckDiscarded ();
+      return _propertyValues; 
+    }
   }
 
   public StateType State
   {
     get 
     { 
+      CheckDiscarded ();
+
       if (_state == DataContainerStateType.Existing)
         return GetStateForPropertyValues ();
 
@@ -160,7 +197,11 @@ public class DataContainer
 
   public object Timestamp
   {
-    get { return _timestamp; }
+    get 
+    {
+      CheckDiscarded ();
+      return _timestamp; 
+    }
   }
 
   protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
@@ -175,9 +216,19 @@ public class DataContainer
       PropertyChanged (this, args);
   }
 
+  internal ObjectID GetID ()
+  {
+    return _id;
+  }
+
   internal void Delete ()
   {
-    // TODO: Check if datacontainer is new => Dispose object in that case.
+    if (_state == DataContainerStateType.New)
+    {
+      _isDiscarded = true;
+      _propertyValues.Discard ();
+    }
+
     _state = DataContainerStateType.Deleted;
   }
 
@@ -209,6 +260,11 @@ public class DataContainer
     _domainObject = domainObject;
   }
 
+  internal bool IsDiscarded
+  {
+    get { return _isDiscarded; }
+  }
+
   private StateType GetStateForPropertyValues ()
   {
     foreach (PropertyValue propertyValue in _propertyValues)
@@ -233,11 +289,18 @@ public class DataContainer
     OnPropertyChanged (args);
   }
 
+  private void CheckDiscarded ()
+  {
+    if (_isDiscarded)
+      throw new ObjectDiscardedException (_id);
+  }
+
   #region Typed property accessors
 
   public ObjectID GetObjectID (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     object value = _propertyValues[propertyName].Value;
     
@@ -258,6 +321,7 @@ public class DataContainer
   public bool GetBoolean (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (bool) this[propertyName];
   }
@@ -265,6 +329,7 @@ public class DataContainer
   public byte GetByte (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (byte) this[propertyName];
   }
@@ -272,6 +337,7 @@ public class DataContainer
   public char GetChar (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (char) this[propertyName];
   }
@@ -279,6 +345,7 @@ public class DataContainer
   public DateTime GetDateTime (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (DateTime) this[propertyName];
   }
@@ -286,6 +353,7 @@ public class DataContainer
   public decimal GetDecimal (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (decimal) this[propertyName];
   }
@@ -293,6 +361,7 @@ public class DataContainer
   public double GetDouble (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (double) this[propertyName];
   }
@@ -300,6 +369,7 @@ public class DataContainer
   public Guid GetGuid (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (Guid) this[propertyName];
   }
@@ -307,6 +377,7 @@ public class DataContainer
   public short GetInt16 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (short) this[propertyName];
   }
@@ -314,6 +385,7 @@ public class DataContainer
   public int GetInt32 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (int) this[propertyName];
   }
@@ -321,6 +393,7 @@ public class DataContainer
   public long GetInt64 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (long) this[propertyName];
   }
@@ -328,6 +401,7 @@ public class DataContainer
   public float GetSingle (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (float) this[propertyName];
   }
@@ -335,6 +409,7 @@ public class DataContainer
   public string GetString (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (string) this[propertyName];
   }
@@ -342,6 +417,7 @@ public class DataContainer
   public NaBoolean GetNaBoolean (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (NaBoolean) this[propertyName];
   }
@@ -349,6 +425,7 @@ public class DataContainer
   public NaDateTime GetNaDateTime (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (NaDateTime) this[propertyName];
   }
@@ -356,6 +433,7 @@ public class DataContainer
   public NaDouble GetNaDouble (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (NaDouble) this[propertyName];
   }
@@ -363,6 +441,7 @@ public class DataContainer
   public NaInt32 GetNaInt32 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
 
     return (NaInt32) this[propertyName];
   }

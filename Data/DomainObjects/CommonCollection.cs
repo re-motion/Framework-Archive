@@ -91,7 +91,7 @@ public class CollectionBase : ICollection
     return _collectionData[key];
   }
 
-  public bool IsReadOnly
+  public virtual bool IsReadOnly
   {
     get { return _isReadOnly; }
   }
@@ -143,7 +143,7 @@ public class CollectionBase : ICollection
 
   #region IEnumerable Members
 
-  public IEnumerator GetEnumerator ()
+  public virtual IEnumerator GetEnumerator ()
   {
     return new CollectionEnumerator (this);
   }
@@ -152,17 +152,17 @@ public class CollectionBase : ICollection
 
   #region ICollection Members
 
-  public bool IsSynchronized
+  public virtual bool IsSynchronized
   {
     get { return false; }
   }
 
-  public int Count
+  public virtual int Count
   {
     get { return _collectionData.Count; }
   }
 
-  public void CopyTo (Array array, int index)
+  public virtual void CopyTo (Array array, int index)
   {
     ArgumentUtility.CheckNotNull ("array", array);
     if (index < 0) throw new ArgumentOutOfRangeException ("index", index, "Index must be greater than or equal to zero.");
@@ -174,7 +174,7 @@ public class CollectionBase : ICollection
       array.SetValue (this.GetObject (i), index + i);
   }
 
-  public object SyncRoot
+  public virtual object SyncRoot
   {
     get { return this; }
   }
