@@ -54,7 +54,7 @@ public class DateTimeValidator: BaseValidator
 }
 
 /// <summary>
-///   Compound validator for <see cref="FscValue"/> controls.
+///   Compound validator for <c>FscValue</c> controls.
 /// </summary>
 /// <remarks>
 ///   This compound validator automatically creates the following child validators:
@@ -65,7 +65,7 @@ public class DateTimeValidator: BaseValidator
 ///     </listheader>
 ///     <item>
 ///       <term><see cref="RequiredFieldValidator"/></term>
-///       <description>The validated <see cref="FscValue"/> control's <c>IsRequired</c> property is true.</description>
+///       <description>The validated <c>FscValue</c> control's <c>IsRequired</c> property is true.</description>
 ///     </item>
 ///   </list>
 /// </remarks>
