@@ -16,7 +16,7 @@ namespace Rubicon.Web.UI.Controls
 //  TODO: Command: Move long comment blocks to xml-file
 /// <summary> An <see cref="Command"/> defines an action the user can invoke. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public abstract class Command
+public class Command
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]

@@ -65,15 +65,15 @@ public class DropDownMenu: WebControl
     }
 
     DropDownMenuItem[] items = new DropDownMenuItem[] {
-        new DropDownMenuItem ("open", "object", "Öffnen", "open.gif"),
-        new DropDownMenuItem ("cut", "edit", "Ausschneiden", "cut.gif"),
-        new DropDownMenuItem ("paste", "edit", "Einfügen", "paste.gif"),
-        new DropDownMenuItem ("duplicate", "edit", "Duplizieren", "duplicate.gif"),
-        new DropDownMenuItem ("delete", "edit", "Löschen", "delete.gif"),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif"),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif"),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif"),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif")};
+        new DropDownMenuItem ("open", "object", "Öffnen", "open.gif", null),
+        new DropDownMenuItem ("cut", "edit", "Ausschneiden", "cut.gif", null),
+        new DropDownMenuItem ("paste", "edit", "Einfügen", "paste.gif", null),
+        new DropDownMenuItem ("duplicate", "edit", "Duplizieren", "duplicate.gif", null),
+        new DropDownMenuItem ("delete", "edit", "Löschen", "delete.gif", null),
+        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
+        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
+        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
+        new DropDownMenuItem ("item", "item", "Item", "item.gif", null)};
     key = typeof (DropDownMenu).FullName + _groupID;
     if (! Page.IsStartupScriptRegistered (key))
     {
@@ -221,47 +221,6 @@ public class DropDownMenu: WebControl
 
   protected virtual string CssClassItemIconPane
   { get { return "dropDownMenuItemIconPane"; } }
-}
-
-public class DropDownMenuItem
-{
-  string _id;
-  string _category;
-  string _text;
-  string _icon;
-
-
-  public DropDownMenuItem (string id, string category, string text, string icon)
-  {
-    _id = id;
-    _category = category;
-    _text = text;
-    _icon = icon;
-  }
-
-  public string ID
-  {
-    get { return _id; }
-    set { _id = value; }
-  }
-
-  public string Category
-  {
-    get { return _category; }
-    set { _category = value; }
-  }
-
-  public string Text
-  {
-    get { return _text; }
-    set { _text = value; }
-  }
-
-  public string Icon
-  {
-    get { return _icon; }
-    set { _icon = value; }
-  }
 }
 
 }
