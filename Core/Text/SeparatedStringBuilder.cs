@@ -41,6 +41,12 @@ public class SeparatedStringBuilder
     if (_stringBuilder.Length == 0)
       _stringBuilder.Append (_separator);
   }
+
+  public override string ToString()
+  {
+    return _stringBuilder.ToString();
+  }
+
 }
 
 }
