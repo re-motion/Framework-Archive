@@ -36,6 +36,16 @@ public class DataContainerMap : IEnumerable
     get { return _dataContainers.Count; }
   }
 
+  public DomainObject GetObject (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    if (_dataContainers.Contains (id))
+      return this[id].DomainObject;
+
+    return _clientTransaction.LoadObject (id);
+  }
+
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);

@@ -96,12 +96,7 @@ public class ClientTransaction : IDisposable
   internal protected DomainObject GetObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-
-    DataContainer dataContainer = _dataManager.DataContainerMap[id];
-    if (dataContainer != null)
-      return dataContainer.DomainObject;
-
-    return LoadObject (id);
+    return _dataManager.DataContainerMap.GetObject (id);
   }
 
   internal protected DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
@@ -140,7 +135,7 @@ public class ClientTransaction : IDisposable
     _dataManager.Delete (domainObject);
   }
   
-  protected virtual DomainObject LoadObject (ObjectID id)
+  internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
@@ -183,12 +178,14 @@ public class ClientTransaction : IDisposable
     DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
     _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
-    DomainObjectCollection domainObjects = GetDomainObjects (relationEndPointID, relatedDataContainers);
+    DomainObjectCollection domainObjects = DomainObjectCollection.Create (
+        relationEndPointID.Definition.PropertyType,
+        _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
 
     _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
-    foreach (DataContainer loadedDataContainer in newLoadedDataContainers)
-      OnLoaded (new LoadedEventArgs (loadedDataContainer.DomainObject));
+    foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
+      OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
 
     return domainObjects;
   }
@@ -224,15 +221,6 @@ public class ClientTransaction : IDisposable
   {
     _dataManager = new DataManager (this);
     _persistenceManager = new PersistenceManager ();
-  }
-
-  private DomainObjectCollection GetDomainObjects (
-      RelationEndPointID relationEndPointID,
-      DataContainerCollection relatedDataContainers)
-  {
-    return DomainObjectCollection.Create (
-        relationEndPointID.Definition.PropertyType,
-        _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
   }
 }
 }
