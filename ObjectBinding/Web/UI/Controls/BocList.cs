@@ -409,7 +409,7 @@ public class BocList:
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
   /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
-  public void RaisePostBackEvent (string eventArgument)
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
