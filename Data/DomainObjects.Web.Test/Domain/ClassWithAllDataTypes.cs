@@ -57,12 +57,6 @@ public class ClassWithAllDataTypes : BindableDomainObject
     set { DataContainer.SetValue ("ByteProperty", value); }
   }
 
-  public char CharProperty
-  {
-    get { return DataContainer.GetChar ("CharProperty"); }
-    set { DataContainer.SetValue ("CharProperty", value); }
-  }
-
   public DateTime DateProperty
   {
     get { return DataContainer.GetDateTime ("DateProperty"); }

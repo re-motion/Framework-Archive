@@ -16,7 +16,6 @@ CREATE TABLE [TableWithAllDataTypes] (
   
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
-  [Char] char (1) NOT NULL,
   [Date] dateTime NOT NULL,
   [DateTime] dateTime NOT NULL,
   [Decimal] decimal (38, 3) NOT NULL,
