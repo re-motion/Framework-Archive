@@ -17,6 +17,7 @@ using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Globalization;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -94,6 +95,30 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { _binding.DataSourceControl = value; }
   }
   #endregion
+
+  /// <summary>
+  ///   Gets the <see cref="IBusinessObjectService"/> from the <paramref name="businessObjectProvider"/> 
+  ///   and queries it for an <see cref="IconInfo"/> object.
+  /// </summary>
+  public static IconInfo GetIcon (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+
+    IBusinessObjectService service = businessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
+
+    IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+
+    IconInfo iconInfo = null;
+    if (webUIService != null)
+    {
+      if (businessObject != null)
+        iconInfo = webUIService.GetIcon (businessObject);
+      else
+        iconInfo = webUIService.GetNullValueIcon ();
+    }
+    return iconInfo;
+  }
 
   private BusinessObjectBinding _binding;
   private bool _childControlsPreRendered = false;

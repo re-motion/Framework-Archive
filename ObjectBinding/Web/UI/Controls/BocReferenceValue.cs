@@ -529,20 +529,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     //  Get icon
     if (_enableIcon && Property != null)
     {
-      IBusinessObjectService service
-        = Property.ReferenceClass.BusinessObjectProvider.GetService(
-          typeof (IBusinessObjectWebUIService));
-
-      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
-
-      IconInfo iconInfo = null;
-      if (webUIService != null)
-      {
-        if (Value != null)
-          iconInfo = webUIService.GetIcon (Value);
-        else
-          iconInfo = webUIService.GetNullValueIcon ();
-      }
+      IconInfo iconInfo = BusinessObjectBoundWebControl.GetIcon (Value, Property.ReferenceClass.BusinessObjectProvider);
 
       if (iconInfo != null)
       {

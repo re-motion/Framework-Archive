@@ -1630,14 +1630,9 @@ public class BocList:
     //  Render the icon
     if (showIcon)
     {
-      IBusinessObjectService service
-        = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
-
-      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
-
-      IconInfo icon = null;
-      if (webUIService != null)
-        icon = webUIService.GetIcon (businessObject);
+      IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
+          businessObject, 
+          businessObject.BusinessObjectClass.BusinessObjectProvider);
 
       if (icon != null)
       {
@@ -2522,7 +2517,6 @@ public class BocList:
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
-  /// <remarks> Explicit setting of <see cref="Property"/> is not offically supported. </remarks>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
