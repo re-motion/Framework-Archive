@@ -42,7 +42,7 @@
     <data name="auto:this:Title">
         <value>Hello World !</value>
     </data>
-    <data name="auto:GlobalFormGridManager:TableDesignTimeFormGrid:PersonDataLabel:Text">
+    <data name="auto:PersonDataLabel:Text">
         <value>Personendaten</value>
     </data>
     <data name="auto:NameLabel:Text">
@@ -65,5 +65,11 @@
     </data>
     <data name="Rubicon.Web.UI.Controls.FormGridManager.HelpTitle" mimetype="	">
         <value>zur Hilfe</value>
+    </data>
+    <data name="auto:GlobalFormGridManager:TableDesignTimeFormGrid:ZipField_Label:Text">
+        <value>&amp;Plz</value>
+    </data>
+    <data name="auto:GlobalFormGridManager:TableDesignTimeFormGrid:PlaceField_Label:Text">
+        <value>&amp;Ort</value>
     </data>
 </root>
