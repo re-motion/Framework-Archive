@@ -8,28 +8,51 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using Rubicon.Findit.Globalization.Globalization;
 
 namespace Rubicon.Findit.Globalization.Classes
 {
 
-public sealed class ResourceDispatcher
+public sealed class ResourceManagerPool
 {
-  // types
-
-  // static members and constants
+  // static members
 
   private static Hashtable s_resourceManagerCache = new Hashtable ();
 
+  private static void GetResourceNameAndType (Type concreteType, out Type definingType, out string resourceName)
+  {
+    Type type = concreteType;
+    MultiLingualResourcesAttribute[] resourceAttributes = GetResourceAttributes (type);
+
+    while (type != null && resourceAttributes.Length == 0) 
+    {
+      type = type.BaseType;
+      resourceAttributes = GetResourceAttributes (type);
+    } 
+
+    if (type == null)
+      throw new ResourceException ("Type " + concreteType.FullName + " and its base classes do not define the attribute MultiLingualResourcesAttribute.");
+
+    definingType = type;
+    resourceName = resourceAttributes[0].ResourceName;
+  }
+
+  private static MultiLingualResourcesAttribute[] GetResourceAttributes (Type type)
+  {
+    return (MultiLingualResourcesAttribute[]) 
+        type.GetCustomAttributes (typeof (MultiLingualResourcesAttribute), false);
+  }
+
   public static bool ExistsResource (Type objectTypeToGetResourceFor)
   {
+    ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
     try
     {
-      GetResourceSet (objectTypeToGetResourceFor, GetResourceName (objectTypeToGetResourceFor));
-      return true;
+      return GetResourceSet (objectTypeToGetResourceFor) != null;
     }
-    catch
+    catch (ResourceException)
     {
       return false;
     }
@@ -37,16 +60,9 @@ public sealed class ResourceDispatcher
   
   public static bool ExistsResource (object objectToGetResourceFor)
   {
-    try
-    {
-      Type type = GetType (objectToGetResourceFor);
-      GetResourceSet (type, GetResourceName (type));
-      return true;
-    }
-    catch
-    {
-      return false;
-    }  
+    ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
+
+    return ExistsResource (objectToGetResourceFor.GetType());
   }
 
   public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
@@ -77,158 +93,84 @@ public sealed class ResourceDispatcher
   
   public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
   {
-    return GetResourceText (null, objectTypeToGetResourceFor, GetResourceName (objectTypeToGetResourceFor), name);
-  }
-
-  public static string GetResourceText (object objectToGetResourceFor, string name)
-  {
-    Type type = GetType (objectToGetResourceFor);
-
-    return GetResourceText (objectToGetResourceFor, type, GetResourceName (type), name);  
-  }
-
-  public static string GetResourceText (
-      object objectToGetResourceFor, 
-      Type objectType, 
-      string resourceName, 
-      string name)
-  {
-    ResourceManager rm = GetOrCreateResourceManager (objectType, resourceName);
-
+    Type definingType;
+    string resourceName;
+    ResourceManager rm = GetOrCreateResourceManager (objectTypeToGetResourceFor, out definingType, out resourceName);
 
     string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
 
     if (text == null)
-    {
-      string message = string.Format ("The resource '{0}' in '{1}' could not be found", name, resourceName);
-      throw new InvalidOperationException (message);
-    }
+      throw new ResourceException (string.Format ("The resource '{0}' in '{1}' could not be found", name, resourceName));
 
     return text;
   }
 
-  public static void Dispatch (Control control)
+  public static string GetResourceText (object objectToGetResourceFor, string name)
   {
-    Dispatch (control, GetType (control));
+    ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
+    ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+    return GetResourceText (objectToGetResourceFor.GetType(), name);  
   }
 
-  public static void Dispatch (Control control, Type controlType)
-  {
-    Dispatch (control, controlType, GetResourceName (controlType));
-  }
-
-  public static void Dispatch (Control control, Type controlType, string resourceName)
-  {
-    // Hashtable<string elementID, IDictionary<string argument, string value> elementValues>
-    IDictionary elements = new Hashtable (); 
-
-    ResourceSet resources = GetResourceSet (controlType, resourceName);
-
-    foreach (DictionaryEntry resourceEntry in resources)
-    {
-      string key = (string) resourceEntry.Key;
-      if (key.StartsWith ("auto:"))
-      {
-        key = key.Substring (5);
-        int posColon = key.IndexOf (':');
-        if (posColon >= 0)
-        {
-          string elementID = key.Substring (0, posColon);
-          string argument = key.Substring (posColon + 1);
-
-          IDictionary elementValues = (IDictionary) elements[elementID];
-          if (elementValues == null)
-          {
-            elementValues = new HybridDictionary ();
-            elements[elementID] = elementValues;
-          }
-          elementValues.Add (argument, resourceEntry.Value);
-        }
-      }
-    }
-
-    foreach (DictionaryEntry elementsEntry in elements)
-    {
-      string elementID = (string) elementsEntry.Key;
-      Control childControl = control.FindControl (elementID);
-      if (childControl == null)
-        throw new ApplicationException ("No control with ID " + elementID + " found. ID was read from resource " + resourceName + ".");
-
-      IDictionary values = (IDictionary) elementsEntry.Value;
-      IResourceDispatchTarget resourceDispatchTarget = childControl as IResourceDispatchTarget;
-      if (resourceDispatchTarget != null)
-        resourceDispatchTarget.Dispatch (values);
-      else
-        DispatchGeneric (childControl, values);
-    }
-  }
-
-  public static void DispatchGeneric (Control control, IDictionary values)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string propertyName = (string) entry.Key;
-      string propertyValue = (string) entry.Value;
-
-      string line = string.Format("Control: ID={0} {1}={2} ", control.ID, propertyName, propertyValue);
-      Trace.WriteLine(line);
-      HtmlControl genericHtmlControl = control as HtmlControl;
-      if (genericHtmlControl != null)
-      {
-        genericHtmlControl.Attributes[propertyName] = propertyValue;
-      }
-      else  
-      {
-        SetProperty (control, propertyName, propertyValue);
-      }
-    }
-  }
-
-  public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
-  {
-    PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
-
-    if (property == null)
-    {
-      throw new ApplicationException ("Type " + objectToSetPropertyFor.GetType().FullName + " does not contain a public property " + propertyName + ".");
-    }
-
-    property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
-  }
-  
-  private static Type GetType (object objectToGetTypeFor)
-  {
-    Type type = objectToGetTypeFor.GetType();
-    
-    if (type != null && 
-        typeof(Control).IsAssignableFrom (type) && 
-        type.Namespace == "ASP" && 
-        (type.Name.EndsWith ("_aspx") || type.Name.EndsWith ("_ascx")))
-    {
-      type = type.BaseType;
-    }
-
-    return type;
-  }
-
+  /*
   private static string GetResourceName (Type objectType)
   {
     MultiLingualResourcesAttribute[] resourceAttributes = (MultiLingualResourcesAttribute[]) objectType.GetCustomAttributes (
       typeof (MultiLingualResourcesAttribute), false);
 
     if (resourceAttributes.Length == 0)
-      throw new ApplicationException ("Cannot dispatch resources for object types that do not have the MultiLingualResources attribute.");
+      throw new ResourceException ("Cannot dispatch resources for object types that do not have the MultiLingualResources attribute.");
      
     return resourceAttributes[0].ResourceName;
   }
+  */
 
-  private static ResourceSet GetResourceSet (Type objectType, string resourceName)
+  public static ResourceSet GetResourceSet (Type objectType)
   {
-    ResourceManager rm = GetOrCreateResourceManager (objectType, resourceName);
-
-    return rm.GetResourceSet (MultiLingualUtility.GetUICulture (), true, true);
+    ResourceManager rm = GetOrCreateResourceManager (objectType);
+    return GetResourceSet (rm, true);
   }
 
+  public static ResourceSet GetResourceSet (ResourceManager resourceManager, bool throwExceptionIfNotFound)
+  {
+    ResourceSet resourceSet = resourceManager.GetResourceSet (MultiLingualUtility.GetUICulture (), true, true);
+    if (throwExceptionIfNotFound && resourceSet == null)
+      throw new ResourceException (string.Format ("No resource set in culture {0} found for resource {1}.", MultiLingualUtility.GetUICulture().Name, resourceManager.BaseName));
+    return resourceSet;
+  }
+
+  public static ResourceManager GetOrCreateResourceManager (Type objectType)
+  {
+    Type definingType;
+    string resourceName;
+    return GetOrCreateResourceManager (objectType, out definingType, out resourceName);
+  }
+
+  public static ResourceManager GetOrCreateResourceManager (Type objectType, out Type definingType, out string resourceName)
+  {
+    GetResourceNameAndType (objectType, out definingType, out resourceName);
+
+    Assembly assembly = definingType.Assembly;
+    string key = resourceName + " in " + assembly.FullName;
+
+    ResourceManager resourceManager = (ResourceManager) s_resourceManagerCache[key];
+    if (resourceManager != null)
+      return resourceManager;
+
+    resourceManager = new ResourceManager (resourceName, assembly);
+    if (resourceManager == null)
+      throw new ResourceException ("No resource with name " + resourceName + " found in assembly \"" + assembly.FullName + "\".");
+
+    lock (s_resourceManagerCache)
+    {
+      s_resourceManagerCache[key] = resourceManager;
+    }
+
+    return resourceManager;
+  }
+
+  /*
   private static ResourceManager GetOrCreateResourceManager (Type objectType, string resourceName)
   {
     if (s_resourceManagerCache.ContainsKey (resourceName))
@@ -239,7 +181,7 @@ public sealed class ResourceDispatcher
     {
       ResourceManager rm = new ResourceManager (resourceName, objectType.Assembly);
       if (rm == null)
-        throw new ApplicationException ("No resource with name " + resourceName + " found.");
+        throw new ResourceException ("No resource with name " + resourceName + " found.");
 
       lock (typeof (ResourceDispatcher))
       {
@@ -249,22 +191,13 @@ public sealed class ResourceDispatcher
       return rm;
     }
   }
+  */
 
-  // member fields
+  // construction and disposal
 
-  // construction and disposing
-
-  private ResourceDispatcher()
+  private ResourceManagerPool()
   {
   }
-
-  // methods and properties
-
-}
-
-public interface IResourceDispatchTarget
-{
-  void Dispatch (IDictionary values);
 }
 
 [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
@@ -282,4 +215,24 @@ public class MultiLingualResourcesAttribute: Attribute
     get { return _resourceName; }
   }
 }
+
+[Serializable]
+public class ResourceException: Exception
+{
+  public ResourceException (string message)
+    : base (message)
+  {
+  }
+
+  public ResourceException (string message, Exception innerException)
+    : base (message, innerException)
+  {
+  }
+
+  public ResourceException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
+}
+
 }
