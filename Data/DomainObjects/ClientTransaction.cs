@@ -74,8 +74,9 @@ public class ClientTransaction
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
       DataContainer newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition); 
+      SetClientTransaction (newDataContainer);
       _dataManager.RegisterNewDataContainer (newDataContainer);
-
+      
       return newDataContainer;
     }    
   }
@@ -136,6 +137,7 @@ public class ClientTransaction
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
       DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
+      SetClientTransaction (dataContainer);
 
       _dataManager.RegisterExistingDataContainer (dataContainer);
 
@@ -158,6 +160,7 @@ public class ClientTransaction
 
       if (relatedDataContainer != null)
       {
+        SetClientTransaction (relatedDataContainer);
         _dataManager.RegisterExistingDataContainer (relatedDataContainer);
         OnLoaded (new LoadedEventArgs (relatedDataContainer.DomainObject));
         return relatedDataContainer.DomainObject;
@@ -179,6 +182,7 @@ public class ClientTransaction
       DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
 
       DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
+      SetClientTransaction (newLoadedDataContainers);
       _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
       DomainObjectCollection domainObjects = DomainObjectCollection.Create (
@@ -192,6 +196,19 @@ public class ClientTransaction
 
       return domainObjects;
     }
+  }
+
+  protected void SetClientTransaction (DataContainerCollection dataContainers)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+    foreach (DataContainer dataContainer in dataContainers)
+      SetClientTransaction (dataContainer);
+  }
+
+  protected void SetClientTransaction (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    dataContainer.SetClientTransaction (this);
   }
 
   protected virtual void OnLoaded (LoadedEventArgs args)

@@ -46,6 +46,7 @@ public class DataContainer
   public event PropertyChangingEventHandler PropertyChanging;
   public event PropertyChangedEventHandler PropertyChanged;
 
+  private ClientTransaction _clientTransaction;
   private ObjectID _id;
   private object _timestamp;
   private PropertyValueCollection _propertyValues;
@@ -54,7 +55,7 @@ public class DataContainer
   private ClassDefinition _classDefinition;
   private RelationEndPointID[] _relationEndPointIDs = null;
   private bool _isDiscarded = false;
-
+  
   // construction and disposing
 
   private DataContainer (ObjectID id) : this (id, null)
@@ -108,6 +109,16 @@ public class DataContainer
     CheckDiscarded ();
 
     this[propertyName] = value;
+  }
+
+  public ClientTransaction ClientTransaction 
+  {
+    get 
+    {
+      CheckDiscarded ();
+      return _clientTransaction;
+    }
+
   }
 
   public DomainObject DomainObject
@@ -195,6 +206,12 @@ public class DataContainer
     }
   }
 
+  internal void SetClientTransaction (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    _clientTransaction = clientTransaction;
+  }
+
   protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
   {
     if (PropertyChanging != null)
@@ -218,6 +235,7 @@ public class DataContainer
     {
       _isDiscarded = true;
       _propertyValues.Discard ();
+      _clientTransaction = null;
     }
 
     _state = DataContainerStateType.Deleted;
