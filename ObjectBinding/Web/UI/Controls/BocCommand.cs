@@ -12,8 +12,15 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class BocCommand: Command
 {
-  /// <summary> Initializes an instance of the <see cref="BocCommand"/> class. </summary>
+  /// <summary> Initializes an instance. </summary>
   public BocCommand()
+    : this (CommandType.None)
+  {
+  }
+
+  /// <summary> Initializes an instance. </summary>
+  public BocCommand (CommandType defaultType)
+    : base (defaultType)
   {
   }
 
