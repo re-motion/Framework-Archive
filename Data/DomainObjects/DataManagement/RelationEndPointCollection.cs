@@ -63,6 +63,47 @@ public class RelationEndPointCollection : CollectionBase
       endPoint.EndRelationChange ();    
   }
 
+  public RelationEndPointCollection GetOppositeRelationEndPoints (DomainObject domainObject)
+  {
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+
+    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+      oppositeEndPoints.Merge (GetOppositeRelationEndPoints (this[endPointID]));
+
+    return oppositeEndPoints;
+  }
+
+  public RelationEndPointCollection GetOppositeRelationEndPoints (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+    if (endPoint.Definition.Cardinality == CardinalityType.One)
+    {
+      ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
+      if (objectEndPoint.OppositeObjectID != null)
+      {
+        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+          objectEndPoint.OppositeObjectID, objectEndPoint.OppositeEndPointDefinition);
+
+        oppositeEndPoints.Add (this[oppositeEndPointID]);
+      }
+    }
+    else
+    {
+      CollectionEndPoint collectionEndPoint = (CollectionEndPoint) endPoint;
+      foreach (DomainObject oppositeDomainObject in collectionEndPoint.OppositeDomainObjects)
+      {
+        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+          oppositeDomainObject.ID, collectionEndPoint.OppositeEndPointDefinition);
+
+        oppositeEndPoints.Add (this[oppositeEndPointID]);
+      }
+    }
+
+    return oppositeEndPoints;
+  }
+
   #region Standard implementation for collections
 
   public bool Contains (RelationEndPoint endPoint)
@@ -87,7 +128,7 @@ public class RelationEndPointCollection : CollectionBase
     get { return (RelationEndPoint) GetObject (id); }
   }
 
-  public virtual void Add (RelationEndPoint endPoint)
+  public void Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
     base.Add (endPoint.ID, endPoint);
@@ -116,46 +157,5 @@ public class RelationEndPointCollection : CollectionBase
   }
 
   #endregion
-
-  protected RelationEndPointCollection GetOppositeRelationEndPoints (DomainObject domainObject)
-  {
-    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
-
-    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      oppositeEndPoints.Merge (GetOppositeRelationEndPoints (this[endPointID]));
-
-    return oppositeEndPoints;
-  }
-
-  protected RelationEndPointCollection GetOppositeRelationEndPoints (RelationEndPoint endPoint)
-  {
-    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-
-    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
-    if (endPoint.Definition.Cardinality == CardinalityType.One)
-    {
-      ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
-      if (objectEndPoint.OppositeObjectID != null)
-      {
-        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
-            objectEndPoint.OppositeObjectID, objectEndPoint.OppositeEndPointDefinition);
-
-        oppositeEndPoints.Add (this[oppositeEndPointID]);
-      }
-    }
-    else
-    {
-      CollectionEndPoint collectionEndPoint = (CollectionEndPoint) endPoint;
-      foreach (DomainObject oppositeDomainObject in collectionEndPoint.OppositeDomainObjects)
-      {
-        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
-            oppositeDomainObject.ID, collectionEndPoint.OppositeEndPointDefinition);
-
-        oppositeEndPoints.Add (this[oppositeEndPointID]);
-      }
-    }
-
-    return oppositeEndPoints;
-  }
 }
 }

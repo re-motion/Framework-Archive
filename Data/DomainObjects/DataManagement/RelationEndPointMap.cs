@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPointChangeDelegate
+public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 {
   // types
 
@@ -13,35 +13,32 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   // member fields
 
   private ClientTransaction _clientTransaction;
+  private RelationEndPointCollection _relationEndPoints;
 
   // construction and disposing
 
   public RelationEndPointMap (ClientTransaction clientTransaction)
   {
-    Initialize (clientTransaction);
-  }
-
-  public RelationEndPointMap (
-      ClientTransaction clientTransaction,
-      RelationEndPointCollection collection, 
-      bool isCollectionReadOnly) 
-      : base (collection, isCollectionReadOnly)
-  {
-    Initialize (clientTransaction);
-  }
-
-
-  private void Initialize (ClientTransaction clientTransaction)
-  {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
     _clientTransaction = clientTransaction;
+    _relationEndPoints = new RelationEndPointCollection ();
   }
 
   // methods and properties
 
+  public RelationEndPoint this[RelationEndPointID endPointID]
+  {
+    get { return _relationEndPoints[endPointID]; }
+  }
+
+  public int Count
+  {
+    get { return _relationEndPoints.Count; }
+  }
+
   public void Commit ()
   {
-    foreach (RelationEndPoint endPoint in this)
+    foreach (RelationEndPoint endPoint in _relationEndPoints)
       endPoint.Commit ();
   }
 
@@ -49,13 +46,13 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("newDomainObjects", newDomainObjects);
 
-    foreach (RelationEndPoint endPoint in this)
+    foreach (RelationEndPoint endPoint in _relationEndPoints)
       endPoint.Rollback ();
 
     foreach (DomainObject newDomainObject in newDomainObjects)
     {
       foreach (RelationEndPointID endPointID in newDomainObject.DataContainer.RelationEndPointIDs)
-        Remove (endPointID);
+        _relationEndPoints.Remove (endPointID);
     }
   }
 
@@ -63,7 +60,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    ObjectEndPoint objectEndPoint = (ObjectEndPoint) this[endPointID];
+    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
     if (objectEndPoint == null)
       return _clientTransaction.LoadRelatedObject (endPointID);
     
@@ -77,7 +74,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    ObjectEndPoint objectEndPoint = (ObjectEndPoint) this[endPointID];
+    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
     if (objectEndPoint == null)
       return _clientTransaction.LoadRelatedObject (endPointID);
 
@@ -91,7 +88,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) this[endPointID];
+    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
     if (collectionEndPoint == null)  
       return _clientTransaction.LoadRelatedObjects (endPointID);
 
@@ -102,7 +99,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) this[endPointID];
+    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
     if (collectionEndPoint == null)
       return _clientTransaction.LoadRelatedObjects (endPointID); 
 
@@ -225,15 +222,15 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
     // TODO: This method probably should be private.
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    if (Contains (endPointID))
-      return this[endPointID];
+    if (_relationEndPoints.Contains (endPointID))
+      return _relationEndPoints[endPointID];
 
     if (endPointID.Definition.Cardinality == CardinalityType.One)
       _clientTransaction.LoadRelatedObject (endPointID);
     else
       _clientTransaction.LoadRelatedObjects (endPointID);
 
-    return this[endPointID];
+    return _relationEndPoints[endPointID];
   }
 
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
@@ -250,15 +247,6 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
     CollectionEndPoint collectionEndPoint = new CollectionEndPoint (_clientTransaction, endPointID, domainObjects);
     collectionEndPoint.ChangeDelegate = this;
     Add (collectionEndPoint);
-  }
-
-  public override void Add (RelationEndPoint endPoint)
-  {
-    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-    if (endPoint.IsNull)
-      throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
-
-    base.Add (endPoint);
   }
 
   public void Register (DataContainer dataContainer)
@@ -309,7 +297,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
 
       allRelationEndPoints.Add (endPoint);
-      allRelationEndPoints.Merge (GetOppositeRelationEndPoints (endPoint));
+      allRelationEndPoints.Merge (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
     }
 
     return allRelationEndPoints;
@@ -347,7 +335,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-    ObjectEndPoint endPoint = (ObjectEndPoint) this[endPointID];
+    ObjectEndPoint endPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
 
     if (newRelatedObject != null)
       endPoint.OppositeObjectID = newRelatedObject.ID;
@@ -363,7 +351,7 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
     {
       if (endPointID.Definition.IsMandatory)
       {
-        RelationEndPoint endPoint = this[endPointID];
+        RelationEndPoint endPoint = _relationEndPoints[endPointID];
         if (endPoint != null)
           endPoint.CheckMandatory ();
       }
@@ -416,12 +404,21 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
     foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
     {
-      RelationEndPoint endPoint = this[endPointID];
+      RelationEndPoint endPoint = _relationEndPoints[endPointID];
       if (endPoint != null && endPoint.HasChanged)
         return true;
     }
 
     return false;
+  }
+
+  private void Add (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+    if (endPoint.IsNull)
+      throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
+
+    _relationEndPoints.Add (endPoint);
   }
 
   #region ICollectionEndPointChangeDelegate Members
