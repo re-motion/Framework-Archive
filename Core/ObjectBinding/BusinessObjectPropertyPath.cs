@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding
 /// <summary>
 ///   A collection of business object properties that result in each other.
 /// </summary>
-public abstract class BusinessObjectPropertyPath
+public class BusinessObjectPropertyPath
 {
   /// <summary>
   ///   Property path formatters can be passed to <see cref="String.Format"/> for full <see cref="IFormattable"/> support.
@@ -70,11 +70,10 @@ public abstract class BusinessObjectPropertyPath
     if (properties[lastProperty] == null)
       throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[lastProperty] + "'.", propertyPathIdentifier);
 
-    objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
+    return objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
   }
 
-  public abstract IBusinessObjectProvider BusinessObjectProvider { get; }
-  public BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
+  internal BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
     for (int i = 0; i < properties.Length - 1; ++i)

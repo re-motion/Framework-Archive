@@ -6,6 +6,27 @@ namespace Rubicon.ObjectBinding
 
 public abstract class BusinessObject: IBusinessObject
 {
+  public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
+  {
+    object value = obj.GetProperty (property);
+
+    if (value == null)
+      return string.Empty;
+
+    IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
+    if (businessObject != null)
+      return businessObject.DisplayName;
+
+    if (format != null)
+    {
+      IFormattable formattable = value as IFormattable;
+      if (formattable != null)
+        return formattable.ToString (format, null);
+    }
+
+    return value.ToString();
+  }
+
   public virtual IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
   {
     return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
@@ -27,22 +48,8 @@ public abstract class BusinessObject: IBusinessObject
 
   public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
   {
-    object value = GetProperty (property);
-
-    IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
-    if (businessObject != null)
-      return businessObject.DisplayName;
-
-    if (format != null)
-    {
-      IFormattable formattable = value as IFormattable;
-      if (formattable != null)
-        return formattable.ToString (format, null);
-    }
-
-    return property.ToString();
+    return GetPropertyString (this, property, format);
   }
-
   
   public object GetProperty (string property)
   {
