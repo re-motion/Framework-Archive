@@ -10,8 +10,14 @@
 
   <property name="build.keyfile" value="\development\global\rubicon.snk" />
   <property name="dummy" value="true" />
-      
-  <target name="initialize">
+
+  <target name="initNoConfig">
+    <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />  
+    <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
+  </target>
+  
+  <target name="initialize" depends="initNoConfig">
     <!-- make sure that one of the set...-targets was called -->
     <property name="local.setnotcalled" value="true"/>
     <if propertyexists="project.config">
@@ -21,10 +27,7 @@
       <fail message="Specify a set&lt;configuration&gt; target first. (setdebug, setrelease or setdocumentation)" />
     </if>
     
-    <buildversion versionfile="build/buildversion.xml" increment="false" />
-    <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />
     <property name="project.builddir" value="${build.basedir}/${nant.settings.currentframework}/bin/${project.config}" />
-    <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
     <property name="project.tempdir" value="${build.basedir}/temp/${nant.settings.currentframework}/${project.config}" />
     <property name="tests.builddir" value="${build.basedir}/temp/${nant.settings.currentframework}/tests/${project.config}" />
   </target>
@@ -435,14 +438,15 @@
     </zip>
   </target>
   
-  <target name="getcurrent">
-    <property name="local.currentdir" value="${solution.basedir}/build/Current/${nant.settings.currentframework}/bin/${project.config}" />
+  <target name="getcurrent" depends="initNoConfig">
+    <property name="local.currentdir" value="${solution.basedir}/build/Current" />
+    
     <if targetexists="${local.currentdir}">
       <delete dir="${local.currentdir}"/>
     </if>
     <copy todir="${local.currentdir}">
-      <fileset basedir="${project.builddir}">
-        <includes name="*" />
+      <fileset basedir="${build.basedir}">
+        <includes name="**/*" />
       </fileset>
     </copy>
   </target>

@@ -117,11 +117,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   </para><para>
   ///     The following rules are used to determine the value of this property:
   ///     <list type="bullets">
+  ///       <item>If the control is read-only, false is returned.</item>
   ///       <item>If the value of the property <see cref="Required"/> is not <c>Undefined</c>, this value is returned.</item>
-  ///       <item>If the property <see cref="PropertyPath"/> contains a property definition with the <c>Must be defined</c> 
+  ///       <item>If the property <see cref="Property"/> contains a property definition with the <c>Required</c> 
   ///       flag set, <c>true</c> is returned. </item>
   ///       <item>Otherwise, <c>false is returned.</c></item>
-  ///     </list>
+  ///     </list>..
   ///   </para>
   /// </remarks>
   [Browsable(false)]
