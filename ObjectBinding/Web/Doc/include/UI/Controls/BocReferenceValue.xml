@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<BocReferenceValue>
+  <Class>
+    <remarks>
+      <list type="definition">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Displays the <see cref="IBusinessObjectWithIdentity.DisplayName"/> 
+            for <see cref="Value"/> 
+            and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+            if <see cref="EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displays no text
+            and the spacer returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+            if <see cref="EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Modifiable / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Text is automatically provided by the <see cref="_dropDownList"/>.
+            Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+            if <see cref="EnableIcon"/> is <see langword="true"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Modifiable / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            <para>
+              Text is automatically provided by the <see cref="_dropDownList"/>.
+              Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+              if <see cref="EnableIcon"/> is <see langword="true"/>.
+            </para><para>
+              If the control is required, the undefined item is removed, once a valid item is
+              selected.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            Modifiable / <see cref="Value"/> is set to an item not in the list.
+          </term>
+          <description>
+            <para>
+              The new item is added to the list and displayed in the <see cref="_dropDownList"/>. 
+            </para><para>
+              If <see cref="Value"/> is null but the control is required, the undefined item is
+              added to the <see cref="_dropDownList"/> unitl the selection is again changed to a
+              valid item.
+            </para>
+          </description>
+        </item>
+      </list>
+    </remarks>
+  </Class>
+</BocReferenceValue>
