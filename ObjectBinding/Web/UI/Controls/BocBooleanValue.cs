@@ -62,7 +62,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="HtmlInputField"/> used to hold the check state. </summary>
   private BocInputHidden _hiddenField = new BocInputHidden();
 
-  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
+  /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator = new CompareValidator();
 
   /// <summary> The tristate value of the checkbox. </summary>
