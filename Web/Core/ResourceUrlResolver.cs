@@ -63,19 +63,22 @@ public sealed class ResourceUrlResolver
       return root + "/res/" + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
     }
   }
+
+  [Obsolete]
   private static string GetTheDesignTimeRoot (System.ComponentModel.ISite site)
-  {
-    EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
-    if(environment != null)
-    {
-      EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;          
-      //  project.Properties uses a 1-based index
-      for (int i = 1; i <= project.Properties.Count; i++)
-      {
-        if(project.Properties.Item (i).Name == "ActiveFileSharePath")
-          return project.Properties.Item (i).Value.ToString();
-      }
-    }
+  { 
+    // TODO: MK: da musst du dir wohl was anderes einfallen lassen. envdte.dll ist verboten.
+//    EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
+//    if(environment != null)
+//    {
+//      EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;          
+//      //  project.Properties uses a 1-based index
+//      for (int i = 1; i <= project.Properties.Count; i++)
+//      {
+//        if(project.Properties.Item (i).Name == "ActiveFileSharePath")
+//          return project.Properties.Item (i).Value.ToString();
+//      }
+//    }
     return string.Empty;
   }
 }
