@@ -143,6 +143,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "QueryObjectDataSourceControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Rubicon.Data.DomainObjects.ObjectBinding.Web.build"
                     BuildAction = "None"
                 />
