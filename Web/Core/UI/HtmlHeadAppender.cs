@@ -80,6 +80,35 @@ public class HtmlHeadAppender
     _hasAppendExecuted = true;
   }
 
+  /// <summary>
+  ///   Sets the <c>title</c> of the page.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     All calls to <see cref="RegisterStylesheetLink"/> must be completed before
+  ///     <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
+  ///   </para>
+  ///   <para>
+  ///     Remove the title tag from the aspx-source.
+  ///   </para>
+  /// </remarks>
+  /// <param name="title"> The stirng to be isnerted as the title. </param>
+  public void SetTitle (string title)
+  {
+    string key = "title";
+
+    if (_registeredHeadElements.Contains (key))
+    {
+      ((HtmlGenericControl) _registeredHeadElements[key]).InnerText = title;
+    }
+    else
+    {
+      HtmlGenericControl headElement = new HtmlGenericControl ("title");
+      headElement.InnerText = title;
+      RegisterHeadElement ("title", headElement);
+    }
+  }
+
   /// <summary> Registers a stylesheet file. </summary>
   /// <remarks>
   ///   All calls to <see cref="RegisterStylesheetLink"/> must be completed before
