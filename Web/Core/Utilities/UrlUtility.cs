@@ -51,6 +51,18 @@ public class UrlUtility
     return GetAbsoluteUrl (page, Path.GetFileName (page.Request.Url.AbsolutePath));
   }
 
+  /// <summary>
+  /// Combines 2 web URLs. 
+  /// </summary>
+  /// <param name="path1">Can be a relative or a absolute URL.</param>
+  /// <param name="path2">Must be a relative URL or a filename.</param>
+  /// <returns>The combined path.</returns>
+  public static string Combine (string path1, string path2)
+  {
+    string path = Path.Combine (path1, path2);
+    return path.Replace (@"\", "/");
+  }
+
 	private UrlUtility()
 	{
 	}
