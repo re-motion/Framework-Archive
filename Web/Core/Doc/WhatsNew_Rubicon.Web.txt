@@ -1,9 +1,10 @@
 3.1.2.0
 =======
 
-- StandardControl: 
-  * Neue protected property "StandardPage" eingeführt.
-  * StandardControl in StandardUserControl umbenannt.
+- StandardUserControl: 
+  * Stellt Protected property "StandardPage" zur Verfügung.
+  * Kann Session Variablen unter dem pageToken der Page speichern.
+  * RegisterEventHandlers () von MultiLingualControl nach StandardUserControl verschoben.
 - Neues Control StandardButton
   * Stellt Referenz auf StandardPage zur Verfügung.
   * Wird nach dem Drücken client-seitig disabled, um visuelles Feedback zu geben und zu 

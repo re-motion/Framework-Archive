@@ -25,12 +25,6 @@ public class MultiLingualUserControl : UserControl
       ResourceDispatcher.Dispatch (this);
 
     base.OnInit (e);
-
-    RegisterEventHandlers ();
-  }
-
-  protected virtual void RegisterEventHandlers ()
-  {
   }
 
   protected string GetResourceText (string name)

@@ -45,5 +45,15 @@ public class StandardUserControl : MultiLingualUserControl
       return Page as StandardPage;
     }
   }
+
+  protected override void OnInit(EventArgs e)
+  {
+    RegisterEventHandlers ();
+    base.OnInit (e);
+  }
+
+  protected virtual void RegisterEventHandlers ()
+  {
+  }
 }
 }
