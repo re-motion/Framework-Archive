@@ -4,7 +4,9 @@
 - NavigablePage
   * ClearGlobalSessionValue -> Funktioniert jetzt analog zu Set- und GetGlobalSessionValue 
       ohne UniqueKey (PageToken) 
-      
+- Utilities.HtmlUtility
+  * HtmlEncode überladen: HtmlEncode (string,HttpWriter)
+      schreibt encoded string direkt auf den HttpWriter
 
 3.2.0.0
 =======
