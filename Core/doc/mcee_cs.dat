@@ -7,7 +7,13 @@
 <Rubicon.Collections.NameObjectCollection>=Count=<Count>
 
 ; Rubicon.NullableValueTypes
-<Rubicon.NullableValueTypes.NaInt32>=<DebuggingValue>
 <Rubicon.NullableValueTypes.NaBoolean>=<DebuggingValue>
-<Rubicon.NullableValueTypes.NaDateTime>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaByte>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaInt16>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaInt32>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaInt64>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaSingle>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaDecimal>=<DebuggingValue>
 <Rubicon.NullableValueTypes.NaDouble>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaDateTime>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaGuid>=<DebuggingValue>
