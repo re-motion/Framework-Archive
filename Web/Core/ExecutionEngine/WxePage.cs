@@ -207,7 +207,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   private void EnsureHtmlFormFieldInitialized()
   {
-    if (! _htmlFormFieldInitialized)
+    if (! _htmlFormFieldInitialized && ! ControlHelper.IsDesignMode (_page))
     {
       MemberInfo[] fields = _page.GetType().FindMembers (
             MemberTypes.Field, 
