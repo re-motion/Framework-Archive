@@ -57,13 +57,13 @@ public class HtmlHeadAppender
   }
 
   /// <summary>
-  ///   Appends the <c>HTML headers</c> registered with the <see cref="Current"/>
+  ///   Appends the <c>HTML head elements</c> registered with the <see cref="Current"/>
   ///   <see cref="HtmlHeadAppender"/> to the <paramref name="headerCollection"/>.
   /// </summary>
   /// <remarks>
   ///   Call this method during in an override of <c>RenderChildren</c>.
   /// </remarks>
-  /// <param name="headerCollection">
+  /// <param name="headCollection">
   ///   <see cref="ControlCollection"/> to which the headers will be appended.
   /// </param>
   public void EnsureAppended (ControlCollection headCollection)

@@ -246,7 +246,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "UI\HeaderFactory.cs"
+                    RelPath = "UI\HtmlHeadAppender.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
