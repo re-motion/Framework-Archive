@@ -35,10 +35,6 @@ public class MenuItem
   {
   }
 
-  protected virtual void OnCommandChanging (Command currentCommand, Command newCommand)
-  {
-  }
-
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {

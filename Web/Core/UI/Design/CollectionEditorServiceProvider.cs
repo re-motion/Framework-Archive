@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Reflection;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.Web.UI.Design
 {
 
 public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEditorService
