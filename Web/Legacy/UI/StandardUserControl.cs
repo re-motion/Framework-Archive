@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Web.UI.Controls
 {
-public class StandardControl : MultiLingualUserControl
+public class StandardUserControl : MultiLingualUserControl
 {
-	public StandardControl ()
+	public StandardUserControl ()
 	{
 	}
 
