@@ -269,12 +269,11 @@ public class IntegrationTest: ClientTransactionBaseTest
     eventReceiver.Unregister ();
 
     //16
-//TODO: reactivate these lines
     eventReceiver = new SequenceEventReceiver (
         new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
         new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders } );
 
-    newOrder2.Delete ();     //Throws objectNotFoundException for Object newOrder2 in EndDelete of CollectionEndPoint
+    newOrder2.Delete ();
 
     expectedChangeStates = new ChangeState[]
     { 
@@ -295,17 +294,22 @@ public class IntegrationTest: ClientTransactionBaseTest
     eventReceiver.Unregister ();
 
     //17
-    //Todo: reactivate this line    
-//    newOrderTicket1.Order = newOrder1;
-//    expectedChangeStates = new ChangeState[]
-//    { 
-//      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
-//      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
-//      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
-//      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
-//    };
-//    eventReceiver.Compare (expectedChangeStates);
-//    eventReceiver.Unregister ();
+    eventReceiver = new SequenceEventReceiver (
+        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder1, newOrderItem1 },
+        new DomainObjectCollection[] { newCustomer1.Orders, newCustomer2.Orders } );
+
+    newOrderTicket1.Order = newOrder1;
+
+    expectedChangeStates = new ChangeState[]
+    { 
+      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
+      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
+      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
+    };
+
+    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Unregister ();
   }
 
   [Test]

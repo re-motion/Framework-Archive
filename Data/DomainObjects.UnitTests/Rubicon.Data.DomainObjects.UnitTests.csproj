@@ -543,6 +543,7 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
+                <Folder RelPath = "IntegrationTests\" />
                 <File
                     RelPath = "ObjectIDs\ObjectIDTest.cs"
                     SubType = "Code"
