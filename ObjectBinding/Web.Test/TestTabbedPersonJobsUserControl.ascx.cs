@@ -17,7 +17,7 @@ public class TestTabbedPersonJobsUserControl :
 
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
 
-  public override IBusinessObjectDataSourceControl DataSource
+  public override IBusinessObjectDataSource DataSource
   {
     get { return ReflectionBusinessObjectDataSourceControl; }
   }
