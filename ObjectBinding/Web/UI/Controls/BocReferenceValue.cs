@@ -55,18 +55,18 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="DropDownList"/> used in edit mode. </summary>
-  private DropDownList _dropDownList = null;
+  private DropDownList _dropDownList;
 
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
-  private Label _label = null;
+  private Label _label;
 
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
-  private Image _icon = null;
+  private Image _icon ;
 
-  private LiteralControl _iconSpacer = null; 
+  private LiteralControl _iconSpacer; 
 
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator = new CompareValidator();
+  private CompareValidator _notNullItemValidator;
 
   /// <summary> The object returned by <see cref="BocReferenceValue"/>. </summary>
   /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
@@ -117,24 +117,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
 	// methods and properties
 
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnInit(EventArgs e)
+  protected override void CreateChildControls()
   {
-    base.OnInit (e);
-
     _icon = new Image();
-    _iconSpacer = new LiteralControl();
-    _dropDownList = new DropDownList();
-    _label = new Label();
-
-    _icon.ID = this.ID + "_Boc_Icon";
+    _icon.ID = ID + "_Boc_Icon";
     _icon.EnableViewState = false;
     _icon.Visible = EnableIcon;
     Controls.Add (_icon);
 
+    _iconSpacer = new LiteralControl();
     _iconSpacer.EnableViewState = false;
     _iconSpacer.Visible = EnableIcon;
     if (IsDesignMode)
@@ -143,14 +134,26 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _iconSpacer.Text = c_whiteSpace;
     Controls.Add (_iconSpacer);
 
-    _dropDownList.ID = this.ID + "_Boc_DropDownList";
+    _dropDownList = new DropDownList();
+    _dropDownList.ID = ID + "_Boc_DropDownList";
     _dropDownList.EnableViewState = true;
     Controls.Add (_dropDownList);
 
-    _label.ID = this.ID + "_Boc_Label";
-    _label.EnableViewState = true;
+    _label = new Label();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
     Controls.Add (_label);
 
+    _notNullItemValidator = new CompareValidator();
+  }
+
+  /// <summary>
+  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
@@ -163,8 +166,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-
-    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -204,7 +205,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     base.OnPreRender (e);
 
     //  First call
-    EnsureChildControlsInitialized();
+    EnsureChildControlsPreRendered();
   }
 
   /// <summary>
@@ -218,7 +219,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     //  Second call has practically no overhead
     //  Required to get optimum designer support.
-    EnsureChildControlsInitialized();
+    EnsureChildControlsPreRendered();
 
     base.Render (writer);
   }
@@ -237,8 +238,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     base.LoadViewState (values[0]);
     if (values[1] != null)    
-      InternalValue = (string) values[1];    
-    _isDirty = (bool) values[2];
+      InternalValue = (string) values[1];  
+    _label.Text = (string) values[2];
+    _isDirty = (bool) values[3];
 
     _isLoadViewState = false;
   }
@@ -251,11 +253,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[3];
+    object[] values = new object[4];
 
     values[0] = base.SaveViewState();
     values[1] = InternalValue;
-    values[2] = _isDirty;
+    values[2] = _label.Text;
+    values[3] = _isDirty;
 
     return values;
   }
@@ -321,7 +324,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     _notNullItemValidator = new CompareValidator();
     
-    _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
+    _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
@@ -422,7 +425,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///     is only approximated.
   ///   </para>
   /// </remarks>
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
 

@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
+public class BocEnumValue: BusinessObjectBoundModifiableWebControl
 {
 	// constants
 
@@ -50,13 +50,13 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   private bool _isDirty = true;
 
   /// <summary> The <see cref="ListControl"/> used in edit mode. </summary>
-  private ListControl _listControl = null;
+  private ListControl _listControl;
 
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
-  private Label _label = null;
+  private Label _label;
 
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator = new CompareValidator();
+  private CompareValidator _notNullItemValidator;
 
   /// <summary> The actual enum value. </summary>
   private object _value = null;
@@ -100,6 +100,26 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
 	// methods and properties
 
+  protected override void CreateChildControls()
+  {
+    _listControl = _listControlStyle.Create (false);
+    if (_listControl == null)
+    {
+      _listControl = new DropDownList();
+      ReadOnly = NaBoolean.True;
+    }
+    _listControl.ID = ID + "_Boc_ListControl";
+    _listControl.EnableViewState = true;
+    Controls.Add (_listControl);
+
+    _label = new Label();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
+
+    _notNullItemValidator = new CompareValidator();
+  }
+
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
   /// </summary>
@@ -112,24 +132,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     base.OnInit (e);
 
-    _listControl = _listControlStyle.Create (false);
-    _label = new Label();
-
-    if (_listControl == null)
-    {
-      _listControl = new DropDownList();
-      ReadOnly = NaBoolean.True;
-    }
-
-    _listControl.ID = this.ID + "_Boc_ListControl";
-    _listControl.EnableViewState = true;
-    Controls.Add (_listControl);
-
-    _label.ID = this.ID + "_Boc_Label";
-    _label.EnableViewState = false;
-    Controls.Add (_label);
-
-
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _listControl.SelectedIndexChanged += new EventHandler(ListControl_SelectedIndexChanged);
   }
@@ -141,8 +143,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-
-    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -179,7 +179,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     base.OnPreRender (e);
 
     //  First call
-    EnsureChildControlsInitialized();
+    EnsureChildControlsPreRendered();
   }
 
   /// <summary>
@@ -193,7 +193,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     //  Second call has practically no overhead
     //  Required to get optimum designer support.
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
 
     base.Render (writer);
   }
@@ -293,7 +293,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     BaseValidator[] validators = new BaseValidator[1];
     
-    _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
+    _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
@@ -336,7 +336,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   }
 
   /// <summary> Initializes the child controls. </summary>
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
 

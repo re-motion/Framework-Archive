@@ -60,22 +60,24 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
 	public BocTextValue()
 	{
-    _textBox = new TextBox();
-    _label = new Label ();
 	}
+
+  protected override void CreateChildControls()
+  {
+    _textBox = new TextBox();
+    _textBox.ID = ID + "_Boc_TextBox";
+    _textBox.EnableViewState = false;
+    Controls.Add (_textBox);
+
+    _label = new Label ();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
+  }
 
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    _textBox.ID = this.ID + "_Boc_TextBox";
-    _textBox.EnableViewState = false;
-    Controls.Add (_textBox);
-
-    _label.ID = this.ID + "_Boc_Label";
-    _label.EnableViewState = false;
-    Controls.Add (_label);
-
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
@@ -174,23 +176,23 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
   }
 
   protected override void Render (HtmlTextWriter writer)
   {
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
     base.Render (writer);
   }
 
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
     _textBox.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
     if (isReadOnly)
     {
-      _label.Text = _text;
+      _label.Text = Text;
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
@@ -206,7 +208,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
-      _textBox.Text = _text;
+      _textBox.Text = Text;
       //  Provide a default width
       _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
@@ -292,6 +294,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _valueType = (BocTextValueType) values[2];
     _actualValueType = (BocTextValueType) values[3];
     _isDirty = (bool)  values[4];
+
+    _textBox.Text = Text;
   }
 
   protected override object SaveViewState()
@@ -455,7 +459,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
   public override BaseValidator[] CreateValidators()
   {
-    return BocTextValueValidator.CreateValidators (this, this.ID + "_Validator");
+    return BocTextValueValidator.CreateValidators (this, ID + "_Validator");
   }
 
   [Browsable (false)]

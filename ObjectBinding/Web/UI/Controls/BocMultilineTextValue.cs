@@ -56,13 +56,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="TextBox"/> used in edit mode. </summary>
-  private TextBox _textBox = new TextBox();
+  private TextBox _textBox;
 
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
-  private Label _label = new Label();
+  private Label _label;
 
   /// <summary> The <see cref="RequiredFieldValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private RequiredFieldValidator _requiredValidator = new RequiredFieldValidator();
+  private RequiredFieldValidator _requiredValidator;
 
   /// <summary>  The concatenated string build from the string array. </summary>
   /// <remarks> Uses <c>\r\n</c> as separation characters. </remarks>
@@ -87,6 +87,21 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
   // methods and properties
 
+  protected override void CreateChildControls()
+  {
+    _textBox = new TextBox();
+    _textBox.ID = ID + "_Boc_TextBox";
+    _textBox.EnableViewState = false;
+    Controls.Add (_textBox);
+
+    _label = new Label();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
+
+    _requiredValidator = new RequiredFieldValidator();
+  }
+
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
   /// </summary>
@@ -94,14 +109,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    _textBox.ID = ID + "_Boc_TextBox";
-    _textBox.EnableViewState = false;
-    Controls.Add (_textBox);
-
-    _label.ID = ID + "_Boc_Label";
-    _label.EnableViewState = false;
-    Controls.Add (_label);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
@@ -114,8 +121,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-
-    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -145,7 +150,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     base.OnPreRender (e);
     
     //  First call
-    EnsureChildControlsInitialized();
+    EnsureChildControlsPreRendered();
   }
 
   /// <summary>
@@ -159,7 +164,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     //  Second call has practically no overhead
     //  Required to get optimum designer support.
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
 
     base.Render (writer);
   }
@@ -177,6 +182,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     base.LoadViewState (values[0]);
     _internalValue = (string) values[1];
     _isDirty = (bool)  values[2];
+
+    _textBox.Text = Text;
   }
 
   /// <summary>
@@ -252,8 +259,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    _requiredValidator.ID = this.ID + "_ValidatorRequired";
-    _requiredValidator.ControlToValidate = ID;
+    _requiredValidator.ID = ID + "_ValidatorRequired";
+    _requiredValidator.ControlToValidate = TargetControl.ID;
     _requiredValidator.ErrorMessage = c_requiredValidationMessage;
 
     validators[0] = _requiredValidator;
@@ -262,7 +269,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   }
   
   /// <summary> Initializes the child controls. </summary>
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
 
