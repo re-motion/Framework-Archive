@@ -1,0 +1,50 @@
+/*  Style applied to the BocList's table's outer structure  */
+table.bocListTable
+{
+  border-collapse: separate;
+  border-width: 0px;
+}
+
+/*  Style applied to the cells in the BocList's title row  */
+td.bocListTitleCell
+{
+	font-weight: bold;
+	/*  no inheritence from body */
+	/*font-size: 1.25em; */
+
+  padding: 2px 2px 2px 2px;
+  border-style: solid;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
+  border-color: Black;
+}
+
+/*  Style applied to the cells in the BocList's even data rows */
+td.bocListDataCellOdd
+{
+	background-color: #FFFFFF;
+
+  padding: 2px 2px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
+}
+
+/*  Style applied to the cells in the BocList's even data rows */
+td.bocListDataCellEven
+{
+	background-color: #E0E0E0;
+
+  padding: 2px 2px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
+}
