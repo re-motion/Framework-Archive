@@ -8,7 +8,8 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
