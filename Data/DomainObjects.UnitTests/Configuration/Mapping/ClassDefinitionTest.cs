@@ -310,5 +310,35 @@ public class ClassDefinitionTest
     Assert.IsTrue (Array.IndexOf (relationEndPointDefinitions, classWithoutRelatedClassIDColumnAndDerivationEndPoint) >= 0);
     Assert.IsTrue (Array.IndexOf (relationEndPointDefinitions, industrialSectorEndPoint) >= 0);
   }
+
+  [Test]
+  public void GetDerivedClassesWithoutInheritance ()
+  {
+    Assert.IsNotNull (_orderClass.DerivedClasses);
+    Assert.AreEqual (0, _orderClass.DerivedClasses.Count);
+    Assert.IsTrue (_orderClass.DerivedClasses.IsReadOnly);
+  }
+
+  [Test]
+  public void GetDerivedClassesWithInheritance ()
+  {
+    ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions["Company"];
+
+    Assert.IsNotNull (companyDefinition.DerivedClasses);
+    Assert.AreEqual (2, companyDefinition.DerivedClasses.Count);
+    Assert.IsTrue (companyDefinition.DerivedClasses.Contains ("Customer"));
+    Assert.IsTrue (companyDefinition.DerivedClasses.Contains ("Partner"));
+    Assert.IsTrue (companyDefinition.DerivedClasses.IsReadOnly);
+  }
+
+  [Test]
+  public void IsPartOfInheritanceHierarchy ()
+  {
+    ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions["Company"];
+
+    Assert.IsTrue (companyDefinition.IsPartOfInheritanceHierarchy);
+    Assert.IsTrue (_distributorClass.IsPartOfInheritanceHierarchy);
+    Assert.IsFalse (_orderClass.IsPartOfInheritanceHierarchy);
+  }
 }
 }

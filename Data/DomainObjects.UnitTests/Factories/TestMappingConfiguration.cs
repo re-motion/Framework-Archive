@@ -99,6 +99,7 @@ public class TestMappingConfiguration
     classDefinitions.Add (CreateComputerDefinition ());
     classDefinitions.Add (CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition  ());
 
+
     return classDefinitions;
   }
 

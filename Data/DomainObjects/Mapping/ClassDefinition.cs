@@ -19,9 +19,10 @@ public class ClassDefinition
   private Type _classType;
   private string _storageProviderID;
   private ClassDefinition _baseClass;
+  private ClassDefinitionCollection _derivedClasses;
   private PropertyDefinitionCollection _propertyDefinitions;
   private RelationDefinitionCollection _relationDefinitions;
-
+  
   // construction and disposing
 
   public ClassDefinition (string id, string entityName, Type classType, string storageProviderID)
@@ -49,8 +50,9 @@ public class ClassDefinition
     _entityName = entityName;
     _classType = classType;
     _storageProviderID = storageProviderID;
-    _baseClass = baseClass;
+    PerformSetBaseClass (baseClass);
 
+    _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (), true);
     _propertyDefinitions = new PropertyDefinitionCollection ();
     _relationDefinitions = new RelationDefinitionCollection ();
 
@@ -261,6 +263,11 @@ public class ClassDefinition
     get { return _baseClass; }
   }
 
+  public ClassDefinitionCollection DerivedClasses
+  {
+    get { return _derivedClasses; }
+  }
+
   public PropertyDefinitionCollection MyPropertyDefinitions
 	{
 		get { return _propertyDefinitions; }
@@ -269,6 +276,11 @@ public class ClassDefinition
   public RelationDefinitionCollection MyRelationDefinitions
   {
     get { return _relationDefinitions; }
+  }
+
+  public bool IsPartOfInheritanceHierarchy
+  {
+    get { return (_baseClass != null || _derivedClasses.Count > 0); }
   }
 
   private void CheckBaseClass (
@@ -319,7 +331,22 @@ public class ClassDefinition
       }
     }
 
+    PerformSetBaseClass (baseClass);
+  }
+
+  private void PerformSetBaseClass (ClassDefinition baseClass)
+  {
     _baseClass = baseClass;
+
+    if (baseClass != null)
+      baseClass.AddDerivedClass (this);
+  }
+
+  private void AddDerivedClass (ClassDefinition derivedClass)
+  {
+    ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection (_derivedClasses, false);
+    derivedClasses.Add (derivedClass);
+    _derivedClasses = new ClassDefinitionCollection (derivedClasses, true);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
