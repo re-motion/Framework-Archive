@@ -341,17 +341,14 @@ public class BocItemCommand
     {
       Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
 
-      throw new NotImplementedException ("WxeFunctionParameterDeclaration parsing logic not completed.");
+      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
+          functionType,
+          WxeFunctionCommand.Parameters,
+          null);
 
-//      WxeParameterDeclaration[] parameterDeclarations = null;
-//      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
-//          parameterDeclarations,
-//          WxeFunctionCommand.Parameters,
-//          null);
-//
-//      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
-//      
-//      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
+      
+      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
     }
   }
 

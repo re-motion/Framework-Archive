@@ -367,7 +367,7 @@ public class BocList:
     {
       string dataRowCheckBoxFilter = ID + c_dataRowCheckBoxIDSuffix;
       string titleRowCheckBoxFilter = ID + c_titleRowCheckBoxIDSuffix;
-      NameValueCollection formVariables = Page.Request.Form;
+      NameValueCollection formVariables = PageUtility.GetRequestCollection(Page);
 
       for (int i = 0; i < formVariables.Count; i++)
       {

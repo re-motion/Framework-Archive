@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -78,7 +79,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      string newValue = this.Page.Request.Form[_textBox.UniqueID];
+      string newValue = PageUtility.GetRequestCollection(Page)[_textBox.UniqueID];
       if (newValue != null)
         _newText = newValue;
     }

@@ -9,6 +9,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -154,7 +155,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      string newInternalValue = this.Page.Request.Form[_dropDownList.UniqueID];
+      string newInternalValue = PageUtility.GetRequestCollection(Page)[_dropDownList.UniqueID];
 
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;

@@ -186,7 +186,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     {
       //  Date input field
 
-      string newInternalDateValue = this.Page.Request.Form[_dateTextBox.UniqueID];
+      string newInternalDateValue = PageUtility.GetRequestCollection(Page)[_dateTextBox.UniqueID];
 
       if (newInternalDateValue == "")
         _newInternalDateValue = null;
@@ -201,7 +201,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Time input field
 
-      string newInternalTimeValue = this.Page.Request.Form[_timeTextBox.UniqueID];
+      string newInternalTimeValue = PageUtility.GetRequestCollection(Page)[_timeTextBox.UniqueID];
         
       if (newInternalTimeValue == "")
         _newInternalTimeValue = null;

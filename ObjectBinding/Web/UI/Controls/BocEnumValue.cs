@@ -7,6 +7,7 @@ using System.Web.UI.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -145,7 +146,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     if (! IsDesignMode)
     {
-      string newInternalValue = this.Page.Request.Form[_listControl.UniqueID]; // gets enum identifier
+      string newInternalValue = PageUtility.GetRequestCollection(Page)[_listControl.UniqueID]; // gets enum identifier
 
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;
