@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Resources;
 
 using Rubicon.Utilities;
+using log4net;
 
 namespace Rubicon.Globalization
 {
@@ -25,6 +26,10 @@ namespace Rubicon.Globalization
 /// </remarks>
 public class ResourceManagerWrapper: IResourceManager, IList
 {
+  //  static fields
+
+	private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
   // member fields
 
   /// <summary> Wrapped resource managers </summary>
@@ -139,8 +144,19 @@ public class ResourceManagerWrapper: IResourceManager, IList
     {
       for (int index = 0; index < _resourceManagers.Length; index++)
       {
-        ResourceSet resourceSet = _resourceManagers[index].GetResourceSet (
-          culture, true, true);
+        ResourceSet resourceSet = null;
+
+        try
+        {
+          resourceSet = _resourceManagers[index].GetResourceSet (culture, true, false);
+        }
+        catch (MissingManifestResourceException ex)
+        {
+          log.Error ("Missing resource.", ex);
+        }
+
+        if (resourceSet == null)
+          continue;
 
         foreach (DictionaryEntry entry in resourceSet)
         {
@@ -177,8 +193,16 @@ public class ResourceManagerWrapper: IResourceManager, IList
 
     for (int index = 0; index < _resourceManagers.Length; index++)
     {
-      //  Implicit fallback to more neutral cultures if no match found
-      result = _resourceManagers[index].GetString (id, GetUICulture());
+      try
+      {
+        //  Implicit fallback to more neutral cultures if no match found
+        result = _resourceManagers[index].GetString (id, GetUICulture());
+      }
+      catch (MissingManifestResourceException ex)
+      {
+        log.Error ("Missing resource.", ex);
+      }
+
     }
 
     return result;
@@ -212,6 +236,9 @@ public class ResourceManagerWrapper: IResourceManager, IList
       hierarchyTopDown.Add (currentLevel);
       currentLevel = currentLevel.Parent;
     } while (currentLevel != CultureInfo.InvariantCulture);
+
+    if (mostSpecialized != CultureInfo.InvariantCulture)
+      hierarchyTopDown.Add (currentLevel);
 
     CultureInfo[] hierarchyBottomUp = new CultureInfo[hierarchyTopDown.Count];
 
