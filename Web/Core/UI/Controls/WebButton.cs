@@ -9,14 +9,29 @@ namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A <c>Button</c> using <c>&</c> as access key prefix in <see cref="Button.Text"/>. </summary>
+//TODO: .net2.0 complier switch. .net2.0 has more elegant way of doing buttons, making .net1.1 a workaround
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
-public class WebButton : Button
+public class WebButton : 
+  Button, 
+  // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls collection, 
+  // unless the postback event was caused by a control implementing both IPostBackEventHandler and IPostBackDataHandler.
+  // .net 2.0 resolves this issue for controls using a javascript induced postback event.
+  IPostBackDataHandler
 {
   IconInfo _icon;
 
   public WebButton()
   {
     _icon = new IconInfo();
+  }
+
+  public void RaisePostDataChangedEvent()
+  {
+  }
+
+  public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+  {
+    return false;
   }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
@@ -29,8 +44,50 @@ public class WebButton : Button
       writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, accessKey);
     string tempText = Text;
     Text = text;
-    base.AddAttributesToRender (writer);
+    //TODO: .net 2.0 compiler switch
+    AddAttributesToRender_net11 (writer);
+    //AddAttributesToRender_net20 (writer);
     Text = tempText;
+  }
+
+  /// <summary> Method to be executed when compiled for .net 1.1. Compiler switch not yet implented. </summary>
+  private void AddAttributesToRender_net11 (HtmlTextWriter writer)
+  {
+    if (Page != null)
+      Page.VerifyRenderingInServerForm(this);
+
+    if (Page != null)
+    {
+      string onClick = string.Empty;
+      if (CausesValidation && Page.Validators.Count > 0)
+      {
+        const string clientValidation = "if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate(); ";
+        onClick += clientValidation;
+        if (Attributes.Count > 0)
+        {
+          string baseOnClick = Attributes["onclick"];
+          if (baseOnClick != null)
+          {
+            onClick += baseOnClick;
+            Attributes.Remove("onclick");
+          }
+        }
+      }
+      onClick += Page.GetPostBackEventReference (this) + "; ";
+      onClick += "return false;";
+      writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
+      writer.AddAttribute("language", "javascript");
+    }
+    bool causesValidationTemp = CausesValidation;
+    CausesValidation = false;
+    base.AddAttributesToRender (writer);
+    CausesValidation = causesValidationTemp;
+  }
+
+  /// <summary> Method to be executed when compiled for .net 2.0. Compiler switch not yet implented. </summary>
+  private void AddAttributesToRender_net20 (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
   }
 
   protected override HtmlTextWriterTag TagKey
