@@ -176,16 +176,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BocDatePicker.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\BocDatePicker.resx"
-                    DependentUpon = "BocDatePicker.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "Controls\BocDateTimeValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -1,150 +1,143 @@
-var g_elemPicker = null;
-var g_elemTarget = null;
-var g_elemContainer = null;
-var g_popup = null;
+//  The currently displayed date picker
+//  Belongs to the parent page.
+var _currentDatePicker = null;
 
-function dp_showDatePickerPopup(elemPicker, elemTarget, elemContainer) {
-    if (elemTarget.disabled || elemTarget.readOnly) {
-        return;
-    }
+//  Helper variable for event handling.
+//  Belongs to the parent page.
+//  The click event of the document fires after the methods bound to the button click have been 
+//  executed. _isEventAfterDatePickerButtonClick is used to identify those click events fired
+//  because a date picker button had been clicked in contrast to events fired
+//  beause of a click somewhere on the page.
+var _isEventAfterDatePickerButtonClick = false;
+
+//  Shows the date picker frame below the button.
+//  Belongs to the parent page.
+//  button: The button that opened the date picker frame.
+//  container: The page element containing the properties to be passed to the picker.
+//  target: The input element receiving the value returned by the date picker.
+//  frame: The IFrame containing the date picker that will be shown.
+function ShowDatePicker (button, container, target, frame)
+{
+  //  Tried to open the already open date picker?
+  //  Close it and return.
+  if (CloseVisibleDatePickerFrame (frame))
+    return;
     
-    g_elemPicker = elemPicker;
-    g_elemTarget = elemTarget;
-    g_elemContainer = elemContainer;
+  if (target.disabled || target.readOnly)
+    return;
 
-    var strContent =
-        "<html xmlns:c><body scroll=no style=\"border: none; margin: 0; padding: 0;\"><?import namespace=\"c\" implementation=\"" + elemContainer.dp_htcURL + "\">" +
-        "<c:Calendar onDatePicked=\"parent.dp_onPickerClosed(this.selectedDate)\" selectedDate=\"" + elemTarget.value + "\" ";
+  var left = button.offsetWidth;
+  var top = 0;
+  
+  //  Claculate the offset of the frame in respect to the left top corner of the page.
+  for (var currentNode = button; 
+      currentNode && (currentNode.tagName != 'BODY'); 
+      currentNode = currentNode.offsetParent)
+  {
+    left += currentNode.offsetLeft;
+    top += currentNode.offsetTop;
+  }
 
-    var strWidth = elemContainer.dp_width;
-    var strHeight = elemContainer.dp_height;
-    if ((strWidth != null) || (strHeight != null)) {
-        var strStyle = "style=\"";
-        if (strWidth != null) {
-            strStyle = strStyle + "width:" + strWidth + ";";
-        }
-        if (strHeight != null) {
-            strStyle = strStyle + "height:" + strHeight + ";";
-        }
-        strStyle = strStyle + "\" ";
-    
-        strContent = strContent + strStyle;
-    }
+  //  Position at the top bottom corner of the button
+  frame.style.left = left;
+  frame.style.top = top;
+  if (container.dp_width != null)
+      frame.style.width = container.dp_width;
+  if (container.dp_height != null)
+      frame.style.height = container.dp_height;
+  
+  //  Adjust position so the date picker is shown below 
+  //  and aligned with the right border of the button.
+  frame.style.display = '';
+  frame.style.left = frame.offsetLeft - frame.offsetWidth;
+  frame.style.top = frame.offsetTop + container.offsetHeight;
+  frame.style.display = 'none';
 
-    if (elemContainer.dp_calendarStyle != null) {
-        strContent = strContent + "calendarStyle=\"" + elemContainer.dp_calendarStyle + "\" ";
-    }
-    if (elemContainer.dp_titleStyle != null) {
-        strContent = strContent + "titleStyle=\"" + elemContainer.dp_titleStyle + "\" ";
-    }
-    if (elemContainer.dp_dayHeaderStyle != null) {
-        strContent = strContent + "dayHeaderStyle=\"" + elemContainer.dp_dayHeaderStyle + "\" ";
-    }
-    if (elemContainer.dp_dayStyle != null) {
-        strContent = strContent + "dayStyle=\"" + elemContainer.dp_dayStyle + "\" ";
-    }
-    if (elemContainer.dp_otherMonthDayStyle != null) {
-        strContent = strContent + "otherMonthDayStyle=\"" + elemContainer.dp_otherMonthDayStyle + "\" ";
-    }
-    if (elemContainer.dp_todayDayStyle != null) {
-        strContent = strContent + "todayDayStyle=\"" + elemContainer.dp_todayDayStyle + "\" ";
-    }
-    if (elemContainer.dp_selectedDayStyle != null) {
-        strContent = strContent + "selectedDayStyle=\"" + elemContainer.dp_selectedDayStyle + "\" ";
-    }
-    if (elemContainer.CssClassDatePickerCalendar != null)
-        strContent = strContent + "CssClassCalendar=\"" + elemContainer.CssClassDatePickerCalendar + "\" ";
-    if (elemContainer.CssClassDatePickerTitle != null)
-        strContent = strContent + "CssClassTitle=\"" + elemContainer.CssClassDatePickerTitle + "\" ";
-    if (elemContainer.CssClassDatePickerDayHeader != null)
-        strContent = strContent + "CssClassDayHeader=\"" + elemContainer.CssClassDatePickerDayHeader + "\" ";
-    if (elemContainer.CssClassDatePickerDay != null)
-        strContent = strContent + "CssClassDay=\"" + elemContainer.CssClassDatePickerDay + "\" ";
-    if (elemContainer.CssClassDatePickerOtherMonthDay != null)
-        strContent = strContent + "CssClassOtherMonthDay=\"" + elemContainer.CssClassDatePickerOtherMonthDay + "\" ";
-    if (elemContainer.CssClassDatePickerTodayDay != null)
-        strContent = strContent + "CssClassTodayDay=\"" + elemContainer.CssClassDatePickerTodayDay + "\" ";
-    if (elemContainer.CssClassDatePickerSelectedDay != null)
-        strContent = strContent + "CssClassSelectedDay=\"" + elemContainer.CssClassDatePickerSelectedDay + "\" ";
-
-    strContent = strContent + " />" +
-                 "<body></html>"
-
-    var width = 16;
-    var height = 16;
-    var left = elemPicker.offsetWidth;
-    var top = elemPicker.offsetHeight;
-
-    g_popup = window.createPopup();
-    g_popup.document.write(strContent);
-
-    var popupBody = g_popup.document.body;
-    g_popup.show(0, 0, width, height);
-    width = popupBody.scrollWidth;
-    height = popupBody.scrollHeight;
-    left = left - width;
-
-    g_popup.hide();
-    g_popup.show(left, top, width, height, elemPicker);
+  window.frames[frame.id].InitializeCalendarFrame(target, frame);
+  
+  _currentDatePicker = frame;
+  frame.style.display = '';
+  _isEventAfterDatePickerButtonClick = true;
 }
 
-function dp_onPickerClosed(dtSelected) {
-    if (dtSelected != null) {
-        var nYear = dtSelected.getYear();
-        if (nYear < 1900) {
-            nYear += 1900;
-        }
-
-        g_elemTarget.value = (dtSelected.getMonth() + 1) + '/' + dtSelected.getDate() + '/' + nYear;
-        g_elemTarget.focus();
-        dp_runValidation(g_elemTarget);
-
-        if (g_elemContainer.dp_autoPostBack != null) {
-            dp_doAutoPostBack(g_elemTarget);
-        }
-    }
-    g_elemTarget = null;
-    g_elemContainer = null;
-
-    g_popup.hide();
-    g_popup = null;
+//  Closes the currently visible date picker frame.
+//  Belongs to the parent page.
+//  newDatePicker: The newly selected date picker frame, used to test whether the current frame 
+//      is identical to the new frame.
+//  returns true if the newDatePicker is equal to the visible date picker.
+function CloseVisibleDatePickerFrame (newDatePicker)
+{
+  if (   newDatePicker == _currentDatePicker
+      && newDatePicker.style.display != 'none')
+  {
+    return true;
+  }        
+  if (_currentDatePicker != null)
+  {
+    window.frames[_currentDatePicker.id].CloseDatePicker();
+    _currentDatePicker = null;
+  }
+  return false;
 }
 
-function dp_runValidation(elem) {
-    var vals = elem.Validators;
-    var i;
-    for (i = 0; i < vals.length; i++) {
-        ValidatorValidate(vals[i]);
-    }
-    ValidatorUpdateIsValid();
+//  Initializes the date picker. 
+//  Belongs to the date picker frame.
+//  Persists the target and frame ids inside the picker frame to support post back.
+//  Sets the currently selected date and calls a post back.
+//  target: The input element receiving the value returned by the date picker.
+//  frame: The IFrame containing the date picker that will be shown.
+function InitializeCalendarFrame (target, frame)
+{
+  document.all['TargetIDField'].value = target.id;
+  document.all['FrameIDField'].value = frame.id;
+  
+  if (document.all['DateValueField'].value == '' && target.value != '')
+  {
+    document.all['DateValueField'].value = target.value;
+    __doPostBack('','');
+  }
 }
 
-function dp_doAutoPostBack(elem) {
-    __doPostBack(elem.name, '');
+//  Called by the date picker when a new date is selected in the calendar. 
+//  Belongs to the date picker frame.
+function Calendar_SelectionChanged (value)
+{
+  target = window.parent.document.all[document.all['TargetIDField'].value];
+  target.value = value;
+
+  CloseDatePicker();
 }
 
-function dp_showDatePickerFrame(elemPicker, elemTarget, elemContainer, elemFrame, ownerDocument) {
-    if (elemTarget.disabled || elemTarget.readOnly) {
-        return;
-    }
-
-    var left = 0;
-    var top = elemPicker.offsetHeight;
-
-    for (var p = elemPicker; p && (p.tagName != 'BODY'); p = p.offsetParent) {
-        left += p.offsetLeft;
-        top += p.offsetTop;
-    }
-
-    elemFrame.style.left = left;
-    elemFrame.style.top = top;
-    if (elemContainer.dp_width != null) {
-        elemFrame.style.width = elemContainer.dp_width;
-    }
-    if (elemContainer.dp_height != null) {
-        elemFrame.style.height = elemContainer.dp_height;
-    }
-    window.frames[elemFrame.id].InitializeCalendarFrame(elemTarget, elemFrame, elemContainer, ownerDocument);
-    
-    elemFrame.style.display = '';
+//  Closes the date picker frame
+//  Belongs to the date picker frame.
+function CloseDatePicker() 
+{
+  document.all['DateValueField'].value = '';
+  target = window.parent.document.all[document.all['TargetIDField'].value];
+  frame = window.parent.document.all[document.all['FrameIDField'].value];
+  target.focus();
+  frame.style.display = 'none';
 }
+
+//  Called by th event handler for the onclick event of the parent pages's document.
+//  Belongs to the parent page.
+//  Closes the currently open date picker frame, 
+//  unless _isEventAfterDatePickerButtonClick is set to false.
+function DatePicker_OnDocumentClick()
+{
+  if (_isEventAfterDatePickerButtonClick)
+  {
+    _isEventAfterDatePickerButtonClick = false;
+  }
+  else if (_currentDatePicker != null)
+  {
+    window.frames[_currentDatePicker.id].CloseDatePicker();
+    _currentDatePicker = null;
+  }  
+}
+
+//  Eventhandler for the parent page's document onclick event. 
+//  Must be rendered inside the parent page.
+//  <script for="document" event="onclick()" language="JScript" type="text/jscript">
+//  { DatePicker_OnDocumentClick(); return true; }
+//  </script>
