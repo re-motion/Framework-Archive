@@ -150,7 +150,7 @@ public class ClassDefinition
     return null;
   }
 
-  public ClassDefinition GetRelatedClassDefinition (string propertyName)
+  public ClassDefinition GetOppositeClassDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
@@ -164,7 +164,7 @@ public class ClassDefinition
       return relatedClass;
 
     if (_baseClass != null)
-      return _baseClass.GetRelatedClassDefinition (propertyName);
+      return _baseClass.GetOppositeClassDefinition (propertyName);
 
     return null;
   }
@@ -250,6 +250,11 @@ public class ClassDefinition
     get { return _baseClass; }
   }
 
+  public RelationDefinitionCollection RelationDefinitions
+  {
+    get { return _relationDefinitions; }
+  }
+
   private void CheckBaseClass (
       ClassDefinition baseClass,
       string id,
@@ -299,11 +304,6 @@ public class ClassDefinition
     }
 
     _baseClass = baseClass;
-  }
-
-  public RelationDefinitionCollection RelationDefinitions
-  {
-    get { return _relationDefinitions; }
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
