@@ -120,6 +120,24 @@ public class EntryField: Control
 		string label;
     string clientId = String.Empty;
     Control labeledControl;
+    string validatorMessages = String.Empty ;
+    bool validatorsInvalid = false;
+
+    // search for Validator child controls and keep if at least one is invalid
+    foreach ( Control childControl in this.Controls )
+    {
+      if ( childControl is BaseValidator )
+      {
+        BaseValidator validator = (BaseValidator) childControl;
+        if ( !validator.IsValid )
+        {
+          // Validator is invalid => save status and its error message
+          validatorsInvalid = true;
+          validatorMessages += validator.ErrorMessage + " ";
+        }
+      }
+    }
+
     if (For == String.Empty)
       labeledControl = this.Controls[1];
     else
@@ -158,7 +176,7 @@ public class EntryField: Control
 			}
 			else
 			{
-				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"15\" height=\"20\"/>");
+				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
 			}
 
 			if (this.InfoUrl != String.Empty)
@@ -168,11 +186,21 @@ public class EntryField: Control
 							+ "<img src=\"../Images/field-info.gif\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
 							+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 						this.InfoUrl);
-			}
+      }
 			else
 			{
 				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
 			}
+
+      if (validatorsInvalid)
+      {
+        writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
+          + "width=\"12\" height=\"20\" border=\"0\"/>");
+      }
+      else
+      {
+        writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
+      }
 		}
 
 		writer.WriteLine ("</td><td>");
