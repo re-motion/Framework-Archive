@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -214,6 +215,39 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_subordinate.Supervisor);
     Assert.AreEqual (1, _supervisor.Subordinates.Count);
     Assert.IsNull (_supervisor.Subordinates[_subordinate.ID]);
+  }
+
+  [Test]
+  public void SetNumericIndexerOfSupervisorNull ()
+  {
+    Employee employeeToRemove = (Employee) _supervisor.Subordinates[0];
+    Employee unaffectedEmployee = (Employee) _supervisor.Subordinates[1];
+
+    _supervisor.Subordinates[0] = null;
+
+    Assert.AreEqual (1, _supervisor.Subordinates.Count);
+    Assert.IsTrue (_supervisor.Subordinates.Contains (unaffectedEmployee));
+    Assert.IsFalse (_supervisor.Subordinates.Contains (employeeToRemove));
+
+    Assert.AreSame (_supervisor, unaffectedEmployee.Supervisor);
+    Assert.IsNull (employeeToRemove.Supervisor);
+  }
+
+  [Test]
+  public void SetNumericIListIndexerOfSupervisorNull ()
+  {
+    Employee employeeToRemove = (Employee) _supervisor.Subordinates[0];
+    Employee unaffectedEmployee = (Employee) _supervisor.Subordinates[1];
+
+    IList list = _supervisor.Subordinates;
+    list[0] = null;
+
+    Assert.AreEqual (1, _supervisor.Subordinates.Count);
+    Assert.IsTrue (_supervisor.Subordinates.Contains (unaffectedEmployee));
+    Assert.IsFalse (_supervisor.Subordinates.Contains (employeeToRemove));
+
+    Assert.AreSame (_supervisor, unaffectedEmployee.Supervisor);
+    Assert.IsNull (employeeToRemove.Supervisor);
   }
 }
 }
