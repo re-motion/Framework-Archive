@@ -450,6 +450,20 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     return resultHref;
   }
 
+  public void SelectItem (string tabID, string menuID)
+  {
+    Tab tab = GetTabByName (tabID);
+
+    SelectItem (GetTabIndexByName (tabID), GetMenuIndexByName (tab, menuID));
+  }
+
+  public void SelectItem (int tabIndex, int menuIndex)
+  {
+    MoveToTab (tabIndex);
+    MoveToMenu (menuIndex);
+  }
+
+
   private void SetSelectedItems (string defaultPage, bool useCurrentTab)
   {
     string selectedTab = null;
@@ -815,6 +829,30 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     }
 
     return null;
+  }
+
+  private int GetTabIndexByName (string ctrlName)
+  {
+    for (int i = 0; i < this.Tabs.Count; i++)
+    {
+      if (this.Tabs[i].ID == ctrlName)
+        return i;
+    }
+
+    return -1;
+  }
+
+  private int GetMenuIndexByName (Tab tab, string menuName)
+  {
+    if (tab != null)
+    {
+      for (int i = 0; i < tab.Controls.Count; i++)
+      {
+        if (tab.Controls[i].ID == menuName)
+          return i;
+      }
+    }
+    return -1;
   }
 }
 
