@@ -409,8 +409,11 @@ public class DataContainer
 
   private void Discard ()
   {
+    _propertyValues.PropertyChanging -= new PropertyChangingEventHandler(PropertyValues_PropertyChanging);
+    _propertyValues.PropertyChanged -= new PropertyChangedEventHandler(PropertyValues_PropertyChanged);
     _propertyValues.Discard ();
     _clientTransaction = null;
+
     _isDiscarded = true;
   }
 
