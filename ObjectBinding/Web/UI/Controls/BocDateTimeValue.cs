@@ -778,7 +778,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     bool isTimeChanged = _newInternalTimeValue != _internalTimeValue;
 
     if (isDateChanged)
+    {
       InternalDateValue = _newInternalDateValue;
+      
+      //  Reset the time in if the Control is displazed in date mode
+      //  and the date was changed
+      if (    ActualValueType == BocDateTimeValueType.Date
+          &&  ! _originalDateTimeValue.IsNull)
+      {
+         _originalDateTimeValue = _originalDateTimeValue.Date;
+      }
+    }
 
     if (isTimeChanged)
       InternalTimeValue = _newInternalTimeValue;
@@ -859,7 +869,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Parse Time
 
-      if (    ActualValueType == BocDateTimeValueType.DateTime
+      if (ActualValueType == BocDateTimeValueType.DateTime
           &&  InternalTimeValue != null)
       {        
         try
@@ -873,6 +883,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         {
           throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
         }
+      }
+      else if (     ActualValueType == BocDateTimeValueType.Date
+                &&  ! _originalDateTimeValue.IsNull)
+      {
+        dateTimeValue = dateTimeValue.Add (_originalDateTimeValue.Time);
       }
 
       return dateTimeValue;
@@ -895,9 +910,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {
         try
         {
-
           InternalDateValue = FormatDateValue (dateTimeValue);
-          InternalTimeValue = FormatTimeValue (dateTimeValue);
         }
         catch  (InvalidCastException e)
         {
@@ -907,6 +920,21 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       else
       {
         InternalDateValue = null;
+      }
+
+      if (ActualValueType == BocDateTimeValueType.DateTime)
+      {
+        try
+        {
+          InternalTimeValue = FormatTimeValue (dateTimeValue);
+        }
+        catch  (InvalidCastException e)
+        {
+          throw new ArgumentException ("Expected type '" + _actualValueType.ToString() + "', but was '" + value.GetType().FullName + "'.", "value", e);
+        }
+      }
+      else
+      {
         InternalTimeValue = null;
       }
     }
