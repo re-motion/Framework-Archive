@@ -186,6 +186,7 @@ public class BocList:
 
   private static readonly object s_listItemCommandClickEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();
+  private static readonly object s_customColummClickEvent = new object();
 
 	// member fields
 
@@ -656,7 +657,7 @@ public class BocList:
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
 
     BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
-    column.CustomCell.OnClick (this, (IBusinessObject) Value[listIndex], column, customCellArgument);
+    OnCustomCellClick (column, (IBusinessObject) Value[listIndex], customCellArgument);
   }
 
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
@@ -666,10 +667,10 @@ public class BocList:
       int listIndex, 
       IBusinessObject businessObject)
   {
-    BocListItemCommandClickEventHandler commandClickHandler = 
-        (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
     if (column != null && column.Command != null)
       column.Command.OnClick (column, listIndex, businessObject);
+    BocListItemCommandClickEventHandler commandClickHandler = 
+        (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
     if (commandClickHandler != null)
     {
       BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (column, listIndex, businessObject);
@@ -689,9 +690,9 @@ public class BocList:
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
   protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
-    WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
       ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
+    WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItemClickHandler != null)
     {
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
@@ -715,6 +716,21 @@ public class BocList:
     {
       BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
       command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+    }
+  }
+
+  protected virtual void OnCustomCellClick (
+      BocCustomColumnDefinition column, 
+      IBusinessObject businessObject,
+      string argument)
+  {
+    column.CustomCell.OnClick (this, businessObject, column, argument);
+    BocCustomColumnClickEventHandler clickHandler = 
+        (BocCustomColumnClickEventHandler) Events[s_customColummClickEvent];
+    if (clickHandler != null)
+    {
+      BocCustomColumnClickEventArgs e = new BocCustomColumnClickEventArgs (column, businessObject, argument);
+      clickHandler (this, e);
     }
   }
 
