@@ -22,6 +22,11 @@ public class Ceo : TestDomainBase
   {
   }
 
+  // CEOs can only be created within this assembly.
+  internal Ceo (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Ceo (DataContainer dataContainer) : base (dataContainer)
   {
   }

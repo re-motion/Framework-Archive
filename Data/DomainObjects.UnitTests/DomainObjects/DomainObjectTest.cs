@@ -462,5 +462,40 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (newPerson.ID, partner.ContactPerson.ID);
     Assert.IsNull (partner.IndustrialSector);
   }
+
+  [Test]
+  public void GetObjectWithTransaction ()
+  {
+    ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
+    Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+
+    Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
+    Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+  }
+
+  [Test]
+  public void GetDeletedObjectWithTransaction ()
+  {
+    ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
+    Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+
+    order.Delete ();
+
+    order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock, true);
+
+    Assert.AreEqual (StateType.Deleted, order.State);
+    Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
+    Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+  }
+
+  [Test]
+  public void CreateNewObjectWithTransaction ()
+  {
+    ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
+    Order order = new Order (clientTransactionMock);
+    
+    Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
+    Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));    
+  }
 }
 }

@@ -84,17 +84,13 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
   [ExpectedException (typeof (ConcurrencyViolationException))]
   public void ConcurrentDeleteWithForeignKey ()
   {
-    ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
-    ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
+    ClientTransaction clientTransaction1 = new ClientTransaction ();
+    ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-    // TODO: Remove line below and work directly with transactions:
-    ClientTransaction.SetCurrent (clientTransaction1);
-    OrderTicket changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    OrderTicket changedOrderTicket = (OrderTicket) clientTransaction1.GetObject (DomainObjectIDs.OrderTicket1);
     changedOrderTicket.FileName = @"C:\NewFile.jpg";
   
-    // TODO: Remove line below and work directly with transactions:
-    ClientTransaction.SetCurrent (clientTransaction2);
-    OrderTicket deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    OrderTicket deletedOrderTicket = (OrderTicket) clientTransaction2.GetObject (DomainObjectIDs.OrderTicket1);
     deletedOrderTicket.Delete ();
 
     _provider.Save (CreateDataContainerCollection (changedOrderTicket.DataContainer));
@@ -105,17 +101,17 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
   [ExpectedException (typeof (ConcurrencyViolationException))]
   public void ConcurrentDeleteWithoutForeignKey ()
   {
-    ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
-    ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
+    ClientTransaction clientTransaction1 = new ClientTransaction ();
+    ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-    // TODO: Remove line below and work directly with transactions:
-    ClientTransaction.SetCurrent (clientTransaction1);
-    ClassWithAllDataTypes changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+    ClassWithAllDataTypes changedObject = 
+        (ClassWithAllDataTypes) TestDomainBase.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction1);
+    
     changedObject.StringProperty = "New text";
   
-    // TODO: Remove line below and work directly with transactions:
-    ClientTransaction.SetCurrent (clientTransaction2);
-    ClassWithAllDataTypes deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+    ClassWithAllDataTypes deletedObject = 
+        (ClassWithAllDataTypes) TestDomainBase.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction2);
+
     deletedObject.Delete ();
 
     _provider.Save (CreateDataContainerCollection (changedObject.DataContainer));
