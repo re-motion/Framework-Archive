@@ -20,8 +20,6 @@ public class MultiLingualUserControl : UserControl
 
   protected override void OnInit(EventArgs e)
   {
-    // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
-    //  if (ResourceManagerPool.ExistsResource (this))
     if (MultiLingualResourcesAttribute.ExistsResource (this))
     {
       IResourceManager resourceManager = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
@@ -34,8 +32,6 @@ public class MultiLingualUserControl : UserControl
 
   protected string GetResourceText (string name)
   {
-    // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
-    //  return ResourceManagerPool.GetResourceText (this, name);
     return MultiLingualResourcesAttribute.GetResourceText (this, name);
   }
 
