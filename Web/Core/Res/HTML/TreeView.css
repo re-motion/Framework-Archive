@@ -16,8 +16,8 @@ div.treeViewNodeChildren
   padding-left: 16px;
 }
 
-/* Applied to the last node's children area in each group. */
-div.treeViewLastNodeChildren
+/* Applied to the node's children area if the nodes should not be connected by lines. */
+div.treeViewNodeChildrenNoLines
 {
   padding-left: 16px;
 }

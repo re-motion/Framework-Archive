@@ -2,12 +2,14 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public sealed class IconInfo
+[Serializable]
+public sealed class IconInfo: ISerializable
 {
   private string _url;
   private Unit _width;
@@ -49,6 +51,22 @@ public sealed class IconInfo
     return _url;
   }
 
+  private IconInfo (SerializationInfo info, StreamingContext context)
+  {
+    string width = (string) info.GetValue ("_width", typeof (string));
+    string height = (string) info.GetValue ("_height", typeof (string));
+
+    _url = (string) info.GetValue ("_url", typeof (string));
+    _width = new Unit (width);
+    _height = new Unit (height);
+  }
+
+  void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("_url", _url);
+    info.AddValue ("_width", _width.ToString());
+    info.AddValue ("_height", _height.ToString());
+  }
 }
 
 }

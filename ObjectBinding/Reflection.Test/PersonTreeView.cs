@@ -14,7 +14,7 @@ public class PersonTreeView: BocTreeView
 	{
 	}
 
-  protected override BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes(IBusinessObject businessObject)
+  protected override BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes (IBusinessObjectWithIdentity businessObject)
   { 
     BusinessObjectPropertyTreeNodeInfo[] nodeInfo;
     if (businessObject is Person)

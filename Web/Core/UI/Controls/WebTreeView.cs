@@ -70,9 +70,16 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
   /// <summary> The nodes in this tree view. </summary>
   private WebTreeNodeCollection _nodes;
+  private Triplet[] _nodeViewStates;
 
   private bool _enableTopLevelExpander = true;
+  private bool _enableScrollBars = false;
+  private bool _enableWordWrap = false;
+  private bool _showLines = true;
+  private bool _enableTreeNodeViewState = true;
+
   private bool _hasTreeNodesCreated = false;
+
 
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
@@ -205,24 +212,6 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.NodeID + "' but did not evaluate the tree node.");
   }
 
-  /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
-  protected override void OnPreRender(EventArgs e)
-  {
-    string key = typeof (DropDownMenu).FullName + "_Style";
-    string styleSheetUrl = null;
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (DropDownMenu), ResourceType.Html, "TreeView.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
-    }
-
-    EnsureTreeNodesCreated();
-    
-    base.OnPreRender (e);
-  }
-
-
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
   /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
@@ -230,9 +219,11 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     object[] values = (object[]) savedState;
     
     base.LoadViewState (values[0]);
-    _nodeViewStates = (Triplet[]) values[1];
+    if (_enableTreeNodeViewState)
+      _nodeViewStates = (Triplet[]) values[1];
+    else
+      _nodeViewStates = null;
   }
-  private Triplet[] _nodeViewStates;
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
@@ -241,12 +232,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     object[] values = new object[2];
 
     values[0] = base.SaveViewState();
-    values[1] = SaveNodeViewStateRecursive (_nodes);
+    if (_enableTreeNodeViewState)
+      values[1] = SaveNodeViewStateRecursive (_nodes);
 
     return values;
   }
 
-  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="viewState"/>. </summary>
+  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodeViewStates"/>. </summary>
   private void LoadNodeViewStateRecursive (Triplet[] nodeViewStates, WebTreeNodeCollection nodes)
   {
     foreach (Triplet nodeViewState in nodeViewStates)
@@ -257,11 +249,14 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       {
         object[] values = (object[]) nodeViewState.Second;
         node.IsExpanded = (bool) values[0];
-        bool isEvaluated = (bool) values[1];
-        if (isEvaluated && ! node.IsEvaluated)
-          EvaluateTreeNodeInternal (node);
-        else
-          node.IsEvaluated = false;
+        if (! node.IsEvaluated)
+        {
+          bool isEvaluated = (bool) values[1];
+          if (isEvaluated)
+            EvaluateTreeNodeInternal (node);
+          else
+            node.IsEvaluated = false;
+        }
         LoadNodeViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
       }
     }
@@ -286,10 +281,34 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     return nodeViewStates;
   }
 
+  /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
+  protected override void OnPreRender(EventArgs e)
+  {
+    string key = typeof (DropDownMenu).FullName + "_Style";
+    string styleSheetUrl = null;
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (WebTreeView), ResourceType.Html, "TreeView.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
+    }
+
+    EnsureTreeNodesCreated();
+    
+    base.OnPreRender (e);
+  }
+
   /// <summary> Overrides the parent control's <c>TagKey</c> property. </summary>
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Div; }
+  }
+
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  { 
+    base.AddAttributesToRender (writer);
+    if (_enableScrollBars)
+      writer.AddStyleAttribute ("overflow", "scroll");
   }
 
   /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
@@ -336,7 +355,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       bool isLastNode, 
       bool hasExpander)
   {
-    writer.AddStyleAttribute ("white-space", "nowrap");
+    if (! _enableWordWrap)
+      writer.AddStyleAttribute ("white-space", "nowrap");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);  
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
@@ -412,8 +432,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   {
     if (! hasExpander)
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);  
-    else if (isLastNode)
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLastNodeChildren);  
+    else if (isLastNode || ! _showLines)
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildrenNoLines);  
     else
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);  
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin child nodes
@@ -521,32 +541,44 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
         type = 'T';
     }
 
-    if (expander == ' ' && type == 'F')
-      return _resolvedNodeIconF;
-    else if (expander == '-' && type == 'F')
-      return _resolvedNodeIconFMinus;
-    else if (expander == '+' && type == 'F')
-      return _resolvedNodeIconFPlus;
-    else if (expander == ' ' && type == 'L')
-      return _resolvedNodeIconL;
-    else if (expander == '-' && type == 'L')
-      return _resolvedNodeIconLMinus;
-    else if (expander == '+' && type == 'L')
-      return _resolvedNodeIconLPlus;
-    else if (expander == ' ' && type == 'r')
-      return _resolvedNodeIconR;
-    else if (expander == '-' && type == 'r')
-      return _resolvedNodeIconRMinus;
-    else if (expander == '+' && type == 'r')
-      return _resolvedNodeIconRPlus;
-    else if (expander == ' ' && type == 'T')
-      return _resolvedNodeIconT;
-    else if (expander == '-' && type == 'T')
-      return _resolvedNodeIconTMinus;
-    else if (expander == '+' && type == 'T')
-      return _resolvedNodeIconTPlus;
-    
-    return _resolvedNodeIconR;
+    if (_showLines)
+    {
+      if (expander == ' ' && type == 'F')
+        return _resolvedNodeIconF;
+      else if (expander == '-' && type == 'F')
+        return _resolvedNodeIconFMinus;
+      else if (expander == '+' && type == 'F')
+        return _resolvedNodeIconFPlus;
+      else if (expander == ' ' && type == 'L')
+        return _resolvedNodeIconL;
+      else if (expander == '-' && type == 'L')
+        return _resolvedNodeIconLMinus;
+      else if (expander == '+' && type == 'L')
+        return _resolvedNodeIconLPlus;
+      else if (expander == ' ' && type == 'r')
+        return _resolvedNodeIconR;
+      else if (expander == '-' && type == 'r')
+        return _resolvedNodeIconRMinus;
+      else if (expander == '+' && type == 'r')
+        return _resolvedNodeIconRPlus;
+      else if (expander == ' ' && type == 'T')
+        return _resolvedNodeIconT;
+      else if (expander == '-' && type == 'T')
+        return _resolvedNodeIconTMinus;
+      else if (expander == '+' && type == 'T')
+        return _resolvedNodeIconTPlus;
+    }
+    else
+    {
+      if (expander == ' ')
+        return _resolvedNodeIconWhite;
+      else if (expander == '-')
+        return _resolvedNodeIconMinus;
+      else if (expander == '+')
+        return _resolvedNodeIconPlus;
+    }
+
+    return _resolvedNodeIconWhite;
   }
 
   /// <summary> Resolves the URLs for the node icons. </summary>
@@ -612,6 +644,56 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     set { _enableTopLevelExpander = value; }
   }
 
+  /// <summary> 
+  ///   Gets or sets a flag that determines whether to show scroll bars. Requires also a width for the tree view.
+  /// </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("If set, the tree view shows srcoll bars. Requires a witdh in addition to this setting to actually enable the scrollbars.")]
+  [DefaultValue (false)]
+  public bool EnableScrollBars
+  {
+    get { return _enableScrollBars; }
+    set { _enableScrollBars = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether to enable word wrapping. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("If set, word wrap will be enabled for the tree node's text.")]
+  [DefaultValue (false)]
+  public bool EnableWordWrap
+  {
+    get { return _enableWordWrap; }
+    set { _enableWordWrap = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether to show the connection lines between the nodes. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("If cleared, the tree nodes will not be connected by lines.")]
+  [DefaultValue (true)]
+  public bool ShowLines
+  {
+    get { return _showLines; }
+    set { _showLines = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets a flag that determines whether the tree node's state information will be saved in the view state.
+  /// </summary>
+  /// <remarks>
+  ///   If cleared, the tree view's owner control will have to save the <see cref="WebTreeNode.IsEvaluated"/> and
+  ///   <see cref="WebTreeNode.IsExpanded"/> flags to provide a consistent user expierence.
+  /// </remarks>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public bool EnableTreeNodeViewState
+  {
+    get { return _enableTreeNodeViewState; }
+    set { _enableTreeNodeViewState = value; }
+  }
+
   /// <summary> Occurs when a node is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a node is clicked.")]
@@ -644,10 +726,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s last node's children. </summary>
-  /// <remarks> Class: <c>treeViewLastNodeChildren</c> </remarks>
-  protected virtual string CssClassLastNodeChildren
+  /// <remarks> Class: <c>treeViewNodeChildrenNoLines</c> </remarks>
+  protected virtual string CssClassNodeChildrenNoLines
   {
-    get { return "treeViewLastNodeChildren"; }
+    get { return "treeViewNodeChildrenNoLines"; }
   }
 
   /// <summary> 

@@ -22,13 +22,13 @@ public abstract class BocTreeNode: WebTreeNode
 
 public class BusinessObjectTreeNode: WebTreeNode
 {
-  IBusinessObject _businessObject;
+  IBusinessObjectWithIdentity _businessObject;
 
   public BusinessObjectTreeNode (
       string nodeID, 
       string text, 
       IconInfo icon, 
-      IBusinessObject businessObject)
+      IBusinessObjectWithIdentity businessObject)
     : base (nodeID, text, icon.Url)
   {
     _businessObject = businessObject;
@@ -37,12 +37,12 @@ public class BusinessObjectTreeNode: WebTreeNode
   public BusinessObjectTreeNode (
       string nodeID, 
       string text, 
-      IBusinessObject businessObject)
+      IBusinessObjectWithIdentity businessObject)
     : this (nodeID, text, null, businessObject)
   {
   }
 
-  public IBusinessObject BusinessObject
+  public IBusinessObjectWithIdentity BusinessObject
   {
     get { return _businessObject; }
     set { _businessObject = value; }

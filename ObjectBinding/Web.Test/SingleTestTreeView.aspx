@@ -14,17 +14,17 @@
   </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
-<h1>SingleTest TreeView</h1>
-<p><cc1:PersonTreeView id="PersonTreeView" runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" EnableTopLevelExpander="False"></cc1:PersonTreeView></p>
-<p>&nbsp;</p>
-<p><rubicon:webtreeview id=WebTreeView runat="server" visible="False"></rubicon:webtreeview></p>
-<p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></p><rubicon:formgridmanager 
+<h1>SingleTest TreeView</H1>
+<p><cc1:persontreeview id=PersonTreeView runat="server" EnableTopLevelExpander="False" DataSourceControl="ReflectionBusinessObjectDataSourceControl" cssclass="TreeBlock"></cc1:persontreeview></P>
+<p>&nbsp;</P>
+<p><rubicon:webtreeview id=WebTreeView runat="server" cssclass="TreeBlock" showlines="False"></rubicon:webtreeview></P>
+<p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></P><rubicon:formgridmanager 
 id=FormGridManager 
 runat="server"></rubicon:formgridmanager>
 <p><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
-<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label></p></form>
+typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
+<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label></P></FORM>
 	
   </body>
 </html>
