@@ -34,10 +34,15 @@ public class WebForm1 : System.Web.UI.Page
   protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue PartnerFirstNameField;
+  protected System.Web.UI.WebControls.Label Label2;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource CurrentObjectDataSource;
+  protected Rubicon.ObjectBinding.PropertyBusinessObjectDataSource PartnerDataSource;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    ReflectionBusinessObjectStorage.Reset();
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
     Person partner;
@@ -62,12 +67,12 @@ public class WebForm1 : System.Web.UI.Page
       partner = person.Partner;
     }
 
-		reflectionBusinessObjectDataSource1.BusinessObject = person;
+		CurrentObjectDataSource.BusinessObject = person;
 
     this.DataBind();
     if (!IsPostBack)
     {
-      reflectionBusinessObjectDataSource1.LoadValues (IsPostBack);
+      CurrentObjectDataSource.LoadValues (IsPostBack);
     }
 	}
 
@@ -87,16 +92,22 @@ public class WebForm1 : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
-    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
+    this.CurrentObjectDataSource = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
+    this.PartnerDataSource = new Rubicon.ObjectBinding.PropertyBusinessObjectDataSource();
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
     // 
-    // reflectionBusinessObjectDataSource1
+    // CurrentObjectDataSource
     // 
-    this.reflectionBusinessObjectDataSource1.BusinessObject = null;
-    this.reflectionBusinessObjectDataSource1.EditMode = true;
-    this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
+    this.CurrentObjectDataSource.BusinessObject = null;
+    this.CurrentObjectDataSource.EditMode = true;
+    this.CurrentObjectDataSource.TypeName = "OBWTest.Person, OBWTest";
+    // 
+    // PartnerDataSource
+    // 
+    this.PartnerDataSource.BusinessObject = null;
+    this.PartnerDataSource.DataSource = this.CurrentObjectDataSource;
+    this.PartnerDataSource.EditMode = true;
+    this.PartnerDataSource.PropertyIdentifier = "Partner";
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -106,28 +117,14 @@ public class WebForm1 : System.Web.UI.Page
   {
     if (Page.IsValid)
     {
-      reflectionBusinessObjectDataSource1.SaveValues (false);
-      Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;
+      CurrentObjectDataSource.SaveValues (false);
+      Person person = (Person) CurrentObjectDataSource.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
         person.Partner.SaveObject();
     }
   }
 
-  private void RadioButtonList1_SelectedIndexChanged(object sender, System.EventArgs e)
-  {
-  
-  }
-
-  private void GenderField_Init(object sender, System.EventArgs e)
-  {
-  
-  }
-
-  private void FirstNameField_TextChanged(object sender, System.EventArgs e)
-  {
-  
-  }
 }
 
 }
