@@ -457,7 +457,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "UI\BocDatePicker.aspx"
+                    RelPath = "UI\DatePickerForm.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
                 />

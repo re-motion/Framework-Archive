@@ -20,6 +20,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 //  TODO: BocDateTimeValue: Date-Picker
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
+[ToolboxItemFilter("System.Web.UI")]
 public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 {
   //  constants
@@ -47,9 +48,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private const string c_invalidTimeErrorMessage = "Unknown time format.";
 
   private const string c_datePickerScriptUrl = "DatePicker.js";
-  private const string c_scriptBlock = 
-    "<script language=\"Javascript\" type=\"text/javascript\" src=\"{0}\"></script>\r\n";
-
+  private const string c_datePickerDocumentClickHander = 
+      "<script for=\"document\" event=\"onclick()\" language=\"JScript\" type=\"text/jscript\">"
+      + "{ DatePicker_OnDocumentClick(); return true; }"
+      + "</script>";
+  
   // types
 
   // static members
@@ -245,16 +248,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
-
-    //  TODO: DatePicker: Work in Progress, currently dirty
     string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-        this, 
-        this.GetType(),
-        ResourceType.Html,
-        c_datePickerScriptUrl);
-    Page.RegisterClientScriptBlock(typeof(BocDateTimeValue).FullName, string.Format (c_scriptBlock, scriptUrl));
+        this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
+    PageUtility.RegisterClientScriptFile (
+        Page,
+        typeof (BocDateTimeValue).FullName, 
+        scriptUrl);
 
+    Page.RegisterClientScriptBlock (
+        typeof (BocDateTimeValue).FullName + "_DocumentClickHandler", 
+        c_datePickerDocumentClickHander);
+
+    base.OnPreRender (e);
 
     //  First call
     EnsureChildControlsInitialized ();
@@ -294,7 +299,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           if (!u.IsEmpty)
               writer.AddAttribute("dp_width", u.ToString(CultureInfo.InvariantCulture));
 //          u = _datePickerCalendarStyle.Height;
-          u = Unit.Pixel (220);
+          u = Unit.Pixel (200);
           if (!u.IsEmpty)
               writer.AddAttribute("dp_height", u.ToString(CultureInfo.InvariantCulture));
 
@@ -358,10 +363,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       if (control == _datePickerImage)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-            this, 
-            this.GetType(),
-            ResourceType.Aspx,
-            "BocDatePicker.aspx");
+            this, Context, this.GetType(), ResourceType.UI, "DatePickerForm.aspx");
         writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
         writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
         writer.AddAttribute("marginheight", "0", false);
@@ -723,20 +725,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       }
 
       string imageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, 
-        typeof (BocDateTimeValue), 
-        ResourceType.Image, 
-        DatePickerImageUrl);
+        this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
 
       if (imageUrl == null)
         _datePickerImage.ImageUrl = DatePickerImageUrl;  
       else
         _datePickerImage.ImageUrl = imageUrl;
 
-      string pickerAction = "dp_showDatePickerFrame(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'], document.all['" + ClientID + "_frame'], document)";
-      //  TODO: DatePicker: Work in Progress, currently dirty
-      //  Script deactivated !!
-      //_datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+      string pickerActionButton = "this";
+      string pickerActionContainer = "document.all['" + ClientID + "']";
+      string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
+      string pickerActionFrame = "document.all['" + ClientID + "_frame']";
+      string pickerAction = "ShowDatePicker("
+          + pickerActionButton + ", "
+          + pickerActionContainer + ", "
+          + pickerActionTarget + ", "
+          + pickerActionFrame + ")";
+      //  TODO: DatePicker: Work in Progress, currently dirty, Script activated
+      _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";
