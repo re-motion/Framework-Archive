@@ -289,10 +289,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       }
       else
       {
-        _icon.ImageUrl = "/images/Help.gif";  // HACK: Should be String.Empty;
-        _icon.Width = Unit.Pixel(24);         // HACK: Should be Unit.Empty;
-        _icon.Height = Unit.Pixel(24);        // HACK: Should be Unit.Empty;
-        _icon.Visible = true;                 // HACK: Should be false
+        _icon.Visible = false;
+
+        //  For debugging
+        //  _icon.ImageUrl = "/images/Help.gif";  // HACK: Should be String.Empty;
+        //  _icon.Width = Unit.Pixel(24);         // HACK: Should be Unit.Empty;
+        //  _icon.Height = Unit.Pixel(24);        // HACK: Should be Unit.Empty;
+        //  _icon.Visible = true;                 // HACK: Should be false
       }
     }
     else

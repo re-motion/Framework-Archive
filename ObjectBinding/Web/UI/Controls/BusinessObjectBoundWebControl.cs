@@ -119,7 +119,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///     The following rules are used to determine the value of this property:
   ///     <list type="bullets">
   ///       <item>If the control is read-only, false is returned.</item>
-  ///       <item>If the value of the property <see cref="Required"/> is not <c>Undefined</c>, this value is returned.</item>
+  ///       <item>If the value of the property <c>Required</c> is not <see cref="NaBooleanEnum.Undefined"/>, this value is returned.</item>
   ///       <item>If the property <see cref="Property"/> contains a property definition with the <c>Required</c> 
   ///       flag set, <c>true</c> is returned. </item>
   ///       <item>Otherwise, <c>false is returned.</c></item>
@@ -142,9 +142,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   </para><para>
   ///     The following rules are used to determine the value of this property:
   ///     <list type="bullets">
-  ///       <item>If the value of the property <see cref="ReadOnly"/> is not <c>Undefined</c>, this value is returned.</item>
-  ///       <item>If the control is bound to a <see cref="FscObject"/> component and a <see cref="PropertyPath"/>, and the bound
-  ///         <see cref="FscObject"/> component's <c>EditMode</c> property is <c>false</c>, <c>false</c> 
+  ///       <item>If the value of the property <c>ReadOnly</c> is not <c>Undefined</c>, this value is returned.</item>
+  ///       <item>If the control is bound to a <c>FscObject</c> component and a <c>PropertyPath</c>, and the bound
+  ///         <c>FscObject</c> component's <c>EditMode</c> property is <c>false</c>, <c>false</c> 
   ///         is returned.</item>
   ///       <item>If the control is bound, the attributes of the property and the current object's ACL determine which
   ///         value is returned</item>
