@@ -268,14 +268,14 @@ public class PageUtility
     if (parameters != null)
       sourcePage.Session[token] = parameters;
     
-    string urlDelimeter;
+    string urlDelimiter;
     if (destinationUrl.IndexOf ("?") > 0)
-      urlDelimeter = "&";
+      urlDelimiter = "&";
     else
-      urlDelimeter = "?";
+      urlDelimiter = "?";
 
     string url = sourcePage.Request.ApplicationPath + "/" + destinationUrl 
-        + urlDelimeter + "pageToken=" + token 
+        + urlDelimiter + "pageToken=" + token 
         + supressNavigation;
     NavigateTo (sourcePage, url, returnToThisPage);
   }
