@@ -113,6 +113,11 @@
                     AssemblyName = "log4net"
                     HintPath = "..\..\prereq\Assemblies\log4net.dll"
                 />
+                <Reference
+                    Name = "system.design"
+                    AssemblyName = "System.Design"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -436,6 +441,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\MenuItemCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\SmartLabel.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -476,7 +486,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\CollectionEditorServiceProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\ControlToStringConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\MenuItemCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
