@@ -1726,7 +1726,10 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     //  Try to get the resource manager
 
-    _cachedResourceManager  = ResourceManagerUtility.GetResourceManager (this);
+    _cachedResourceManager = ResourceManagerUtility.GetResourceManager (this);
+
+    if (_cachedResourceManager == null)
+      isResourceManagerUndefined = true;
 
     return _cachedResourceManager;
   }

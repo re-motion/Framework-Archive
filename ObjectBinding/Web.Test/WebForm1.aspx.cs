@@ -56,9 +56,9 @@ public class WebForm1 : System.Web.UI.Page
 
 		reflectionBusinessObjectDataSource1.BusinessObject = person;
 
+    this.DataBind();
     if (!IsPostBack)
     {
-      this.DataBind();
       reflectionBusinessObjectDataSource1.LoadValues ();
     }
 	}
