@@ -146,6 +146,16 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Controls\BocColumnDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocColumnDefinitionSet.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocDateTimeValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -157,6 +167,11 @@
                 />
                 <File
                     RelPath = "Controls\BocEnumValue.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocItemCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -187,16 +202,6 @@
                 />
                 <File
                     RelPath = "Controls\BusinessObjectBoundWebControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ColumnDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ItemCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
