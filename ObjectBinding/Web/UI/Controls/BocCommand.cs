@@ -20,15 +20,15 @@ public class BocCommand: Command
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. 
   /// </summary>
-  protected internal new IBusinessObjectBoundWebControl OwnerControl
+  public new IBusinessObjectBoundWebControl OwnerControl
   {
     get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation;  }
-    set { base.OwnerControlImplementation = value; }
+    set { base.OwnerControlImplementation = (Control) value; }
   }
 
-  protected override IControl OwnerControlImplementation
+  protected override Control OwnerControlImplementation
   {
-    get { return OwnerControl; }
+    get { return (Control) OwnerControl; }
     set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
 }

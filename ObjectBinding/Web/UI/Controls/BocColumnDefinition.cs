@@ -19,21 +19,18 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
-public abstract class BocColumnDefinition
+public abstract class BocColumnDefinition: IControlItem
 {
   private const string c_commandIDSuffix = "_Command";
 
-  /// <summary> The programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
   private string _columnID;
-  /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
   /// <summary> The width of the column. </summary>
   private Unit _width; 
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
   private BocListItemCommand _command;
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
-  ///   <see cref="BocColumnDefinition"/> belongs. 
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this <see cref="BocColumnDefinition"/> belongs. 
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
@@ -50,12 +47,6 @@ public abstract class BocColumnDefinition
   {
   }
 
-  /// <summary>
-  ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
-  /// </summary>
-  /// <returns>
-  ///   Returns the <see cref="ColumnTitle"/>, followed by the class name of the instance.
-  /// </returns>
   public override string ToString()
   {
     string displayName = ColumnID;
@@ -179,10 +170,10 @@ public abstract class BocColumnDefinition
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> 
-  ///   to which this <see cref="BocColumnDefinition"/> belongs. 
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this <see cref="BocColumnDefinition"/> 
+  ///   belongs. 
   /// </summary>
-  protected internal IBusinessObjectBoundWebControl OwnerControl
+  public IBusinessObjectBoundWebControl OwnerControl
   {
     get
     {
@@ -198,6 +189,12 @@ public abstract class BocColumnDefinition
         OnOwnerControlChanged();
       }
     }
+  }
+
+  Control IControlItem.OwnerControl
+  {
+    get { return (Control) _ownerControl; }
+    set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
 }
 
@@ -354,14 +351,8 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   [NotifyParentProperty (true)]
   public string FormatString
   {
-    get
-    {
-      return _formatString;
-    }
-    set
-    {
-      _formatString = StringUtility.NullToEmpty (value); 
-    }
+    get { return _formatString; }
+    set { _formatString = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary>
@@ -391,26 +382,9 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   [NotifyParentProperty (true)]
   public string PropertyPathIdentifier
   { 
-    get
-    { 
-      return _propertyPathBinding.PropertyPathIdentifier; 
-    }
-    set
-    { 
-      _propertyPathBinding.PropertyPathIdentifier = value; 
-    }
+    get { return _propertyPathBinding.PropertyPathIdentifier; }
+    set { _propertyPathBinding.PropertyPathIdentifier = value; }
   }
-
-//  /// <summary> 
-//  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
-//  ///   <see cref="PropertyPathIdentifier"/>. 
-//  /// </summary>
-//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-//  [Browsable (false)]
-//  public IBusinessObjectDataSource DataSource
-//  {
-//    get { return _propertyPathBinding.DataSource; }
-//  }
 
   /// <summary> Gets the displayed value of the column title. </summary>
   /// <remarks> 

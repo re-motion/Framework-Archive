@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -19,16 +19,17 @@
     <td></td>
     <td><obc:BocList id="BocList" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children">
 <optionsmenuitems>
-<obc:BocMenuItem Icon="Open.gif" Category="Object" Text="&#214;ffnen" ItemID="Open"></obc:BocMenuItem>
-<obc:BocMenuItem Icon="Copy.gif" Category="Edit" Text="Kopieren" ItemID="Copy"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Open.gif" Category="Object" Text="&#214;ffnen" Command-Type="WxeFunction" Command-WxeFunctionCommand-TypeName="MyType, MyAssembly" ItemID="Open"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Copy.gif" Category="Edit" Text="Kopieren" Command-Type="Event" ItemID="Copy"></obc:BocMenuItem>
 <obc:BocMenuItem Icon="Cut.gif" Category="Edit" Text="Ausschneiden" ItemID="Cut"></obc:BocMenuItem>
 <obc:BocMenuItem Icon="Paste.gif" Category="Edit" Text="Einf&#252;gen" ItemID="Paste"></obc:BocMenuItem>
 <obc:BocMenuItem Icon="Duplicate.gif" Category="Edit" Text="Duplizieren" ItemID="Duplicate"></obc:BocMenuItem>
 <obc:BocMenuItem Icon="Delete.gif" Category="Edit" Text="L&#246;schen" ItemID="Delete"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="" Category="Action" Text="Link" Command-Type="Href" Command-HrefCommand-Href="link.htm" ItemID="Link"></obc:BocMenuItem>
 </OptionsMenuItems>
 
 <fixedcolumns>
-<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
+<obc:BocCommandColumnDefinition Label="Cmd" Command-Type="WxeFunction" Command-WxeFunctionCommand-Parameters="@ID" Command-WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction, OBWTest" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
 <obc:BocSimpleColumnDefinition PropertyPathIdentifier="FirstName"></obc:BocSimpleColumnDefinition>
 </FixedColumns>
 
