@@ -55,11 +55,9 @@ public class RelationEndPointCollection : CollectionBase, ICloneable
     return true;
   }
 
-  public void EndDelete (DomainObject domainObject)
+  public void EndDelete ()
   {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-
-    foreach (RelationEndPoint endPoint in GetOppositeRelationEndPoints (domainObject))
+    foreach (RelationEndPoint endPoint in this)
       endPoint.EndRelationChange ();    
   }
 

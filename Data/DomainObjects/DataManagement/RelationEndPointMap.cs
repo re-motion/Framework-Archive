@@ -269,7 +269,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
-  public RelationEndPointCollection CloneAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
+  public RelationEndPointCollection GetAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -283,7 +283,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       allRelationEndPoints.Merge (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
     }
 
-    return (RelationEndPointCollection) allRelationEndPoints.Clone ();
+    return allRelationEndPoints;
   }
 
   public void CheckMandatoryRelations (DomainObject domainObject)

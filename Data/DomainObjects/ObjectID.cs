@@ -27,18 +27,10 @@ public class ObjectID
 
   public static bool Equals (ObjectID id1, ObjectID id2)
   {
-    if (object.ReferenceEquals (id1, id2))
-      return true;
+    if (object.ReferenceEquals (id1, id2)) return true;
+    if (object.ReferenceEquals (id1, null)) return false;
 
-    if ((object) id1 == null)
-      return false;
-
-    if ((object) id2 == null)
-      return false;
-
-    return id1._storageProviderID.Equals (id2._storageProviderID)
-        && id1._classID.Equals (id2._classID)
-        && id1._value.Equals (id2._value);
+    return id1.Equals (id2);
   }
 
   /// <summary>
@@ -209,10 +201,15 @@ public class ObjectID
 
   public override bool Equals (object obj)
   {
-    if (!(obj is ObjectID))
-      return false;
+    if (obj == null) return false;
+    if (this.GetType () != obj.GetType ()) return false;
+    
+    ObjectID other = (ObjectID) obj;
+    if (!object.Equals (this._storageProviderID, other._storageProviderID)) return false;
+    if (!object.Equals (this._classID, other._classID)) return false;
+    if (!object.Equals (this._value, other._value)) return false;
 
-    return (this == (ObjectID) obj);
+    return true;
   }
 
   private void CheckValue (string argumentName, object value)

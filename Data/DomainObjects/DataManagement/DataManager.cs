@@ -105,13 +105,16 @@ public class DataManager
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
     RelationEndPointCollection allAffectedRelationEndPoints = 
-      _relationEndPointMap.CloneAllRelationEndPointsWithLazyLoad (domainObject);
+      _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
 
     if (BeginDelete (domainObject, allAffectedRelationEndPoints))
     {
+      RelationEndPointCollection allOppositeRelationEndPoints = 
+          allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
+
       _relationEndPointMap.Delete (domainObject);
 
-      EndDelete (domainObject, allAffectedRelationEndPoints);
+      EndDelete (domainObject, allOppositeRelationEndPoints);
     }
   }
 
@@ -123,10 +126,10 @@ public class DataManager
     return allAffectedRelationEndPoints.BeginDelete (domainObject);
   }
 
-  private void EndDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
+  private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)
   {
     domainObject.EndDelete ();
-    allAffectedRelationEndPoints.EndDelete (domainObject);
+    allOppositeRelationEndPoints.EndDelete ();
   }
 }
 }
