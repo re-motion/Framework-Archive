@@ -128,8 +128,13 @@ div.bocListNavigator
 {
 }
 
-/*  Style applied to the BocList's list of additionalc columns. */
-input.bocListAdditionalColumnsList
+/*  Style applied to the BocList's list of additional columns. */
+select.bocListAdditionalColumnsListDropDownList
+{
+}
+
+/*  Style applied to the BocList's list of additional columns. */
+span.bocListAdditionalColumnsListLabel
 {
 }
 
