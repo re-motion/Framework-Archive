@@ -118,6 +118,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    SubType = "Code"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "BindableDomainObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -141,6 +146,10 @@
                     RelPath = "DomainObjectProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Rubicon.Data.DomainObjects.ObjectBinding.build"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "Design\ClassPickerControl.cs"
