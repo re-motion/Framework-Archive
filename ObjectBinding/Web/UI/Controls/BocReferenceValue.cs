@@ -15,17 +15,18 @@ using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding.Web.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
-
 /// <summary> This control can be used to display or edit reference values. </summary>
 /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
+[Designer (typeof (BocReferenceValueDesigner))]
+public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBackEventHandler
 {
   // constants
 	
@@ -59,6 +60,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   private static readonly object s_selectionChangedEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();
+  private static readonly object s_commandClickEvent = new object();
 
 	// member fields
 
@@ -115,6 +117,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _optionsMenuItemsRenderPhase;
+  /// <summary> The command rendered for this reference value. </summary>
+  private SingleControlItemCollection _command = null;
 
   // construction and disposing
 
@@ -130,6 +134,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _label = new Label();
     _optionsMenu = new DropDownMenu (this);
     _notNullItemValidator = new CompareValidator();
+    _command = new SingleControlItemCollection (new BocCommand(), new Type[] {typeof (BocCommand)});
   }
 
 	// methods and properties
@@ -194,6 +199,47 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     _optionsMenu.MenuItems.Clear();
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
+  }
+
+  /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
+  /// <param name="eventArgument"> empty </param>
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
+  {
+    HandleCommand();
+  }
+
+  /// <summary> Handles post back events raised by the value's command. </summary>
+  private void HandleCommand()
+  {
+    switch (Command.Type)
+    {
+      case CommandType.Event:
+      {
+        OnCommandClick (Value);
+        break;
+      }
+      case CommandType.WxeFunction:
+      {
+        Command.ExecuteWxeFunction ((IWxePage) Page, Value);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+  }
+
+  protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
+  {
+    BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[s_commandClickEvent];
+    if (Command != null)
+      Command.OnClick (businessObject);
+    if (commandClickHandler != null)
+    {
+      BocCommandClickEventArgs e = new BocCommandClickEventArgs (businessObject);
+      commandClickHandler (this, e);
+    }
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -565,6 +611,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   protected override void RenderChildren(HtmlTextWriter writer)
   {
+    bool isReadOnly = IsReadOnly;
+
     if (Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
     else
@@ -576,29 +624,68 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
+    bool isCommandEnabled = false;
+    if (Command != null)
+    {
+      bool isActive =    Command.Show == CommandShow.Always
+                      || isReadOnly && Command.Show == CommandShow.ReadOnly
+                      || ! isReadOnly && Command.Show == CommandShow.EditMode;
+      bool isCommandLinkPossible = IsReadOnly || _icon.Visible;
+      if (   isActive
+          && Command.Type != CommandType.None
+          && isCommandLinkPossible)
+      {
+          isCommandEnabled = true;
+      }
+    }
+
+    string argument = string.Empty;
+    string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+    string objectID = string.Empty;
+    if (InternalValue != c_nullIdentifier)
+      objectID = InternalValue;
+
+
     if (_icon.Visible)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       writer.AddStyleAttribute ("padding-right", "3pt");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+      if (isCommandEnabled)
+        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
       _icon.RenderControl (writer);
+      if (isCommandEnabled)
+        Command.RenderEnd (writer);
+
       writer.RenderEndTag();
     }   
 
-    if (IsReadOnly)
+    if (isReadOnly)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+      if (isCommandEnabled)
+        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
       _label.RenderControl (writer);
+      if (isCommandEnabled)
+        Command.RenderEnd (writer);
+      
       writer.RenderEndTag();
     }
     else
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      _dropDownList.RenderControl (writer);
-      writer.RenderEndTag();
 
+      if (isCommandEnabled)
+        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
+      _dropDownList.RenderControl (writer);
+      if (isCommandEnabled)
+        Command.RenderEnd (writer);
+      
+      writer.RenderEndTag();
     }
 
     if (HasOptionsMenu)
@@ -898,6 +985,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
   }
 
+  /// <summary> This event is fired when the value's command is clicked. </summary>
+  [Category ("Action")]
+  [Description ("Fires when the value's command is clicked.")]
+  public event EventHandler CommandClick
+  {
+    add { Events.AddHandler (s_commandClickEvent, value); }
+    remove { Events.RemoveHandler (s_commandClickEvent, value); }
+  }
+
   /// <summary> The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode). </summary>
   /// <remarks>
   ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual 
@@ -960,13 +1056,69 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     get { return _icon; }
   }
 
-  /// <summary>
-  ///   Set <see langword="true"/> to display an icon for the currently selected 
-  ///   <see cref="IBusinessObjectWithIdentity"/>.
-  /// </summary>
+  /// <summary> Gets or sets the <see cref="BocCommand"/> rendered in this column. </summary>
+  /// <value> A <see cref="BocCommand"/>. </value>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Category ("Menu")]
+    [Description ("The command rendered in this column.")]
+    [NotifyParentProperty (true)]
+  // HACK: have to use collection editor, otherwise the designer doesn't realize the collection has changed
+  //[Browsable (false)]
+  public BocCommand Command
+  {
+    get { return (BocCommand) _command.Item; }
+    set 
+    { 
+      _command.Item = value; 
+      _command.Item.OwnerControl = this;
+    }
+  }
+
+  private bool ShouldSerializeCommand()
+  {
+    if (Command == null)
+      return false;
+
+    if (Command.Type == CommandType.None)
+      return false;
+    else
+      return true;
+  }
+
+  /// <summary> Sets the <see cref="Command"/> to its default value. </summary>
+  /// <remarks> 
+  ///   The default value is a <see cref="BocCommand"/> object with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
+  /// </remarks>
+  private void ResetCommand()
+  {
+    if (Command != null)
+    {
+      Command = (BocCommand) Activator.CreateInstance (Command.GetType());
+      Command.Type = CommandType.None;
+    }
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [Browsable (false)]
+  public SingleControlItemCollection PersistedCommand
+  {
+    get { return _command; }
+  }
+
+  /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
+  /// <remarks> 
+  ///   Does not persist <see cref="BocCommand"/> objects with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
+  /// </remarks>
+  private bool ShouldSerializePersistedCommand()
+  {
+    return ShouldSerializeCommand();
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("Set true to enable the icon in front of the list")]
-  [DefaultValue (true)]
+  [Description ("Flag that determines whether to show the icon in front of the value.")]
   public bool EnableIcon
   {
     get { return _enableIcon; }
