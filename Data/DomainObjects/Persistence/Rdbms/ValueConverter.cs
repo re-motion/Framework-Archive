@@ -31,7 +31,7 @@ public sealed class DBValueConverter
 
     if (type.IsEnum)
       return (int) value;
-    
+
     return value;
   }
 
@@ -61,6 +61,17 @@ public sealed class DBValueConverter
     }
 
     return new ObjectID (classDefinition.StorageProviderID, classDefinition.ID, value);
+  }
+
+  public static object GetDBValue (ObjectID id, string storageProviderID)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+
+    if (id.StorageProviderID == storageProviderID)
+      return id.Value;
+    else
+      return id.ToString ();
   }
 
   public static object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader)
