@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -79,14 +79,20 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
   {
     _eventReceiver.CancelEventNumber = 1;
     
-    _orderTicket.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket")
-    };
+      _orderTicket.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket")
+      };
 
-    _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
@@ -94,16 +100,21 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
   {
     _eventReceiver.CancelEventNumber = 2;
     
-    _orderTicket.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
-      new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
-    };
+      _orderTicket.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
+        new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
+      };
 
-    _eventReceiver.Check (expectedStates);
-
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]

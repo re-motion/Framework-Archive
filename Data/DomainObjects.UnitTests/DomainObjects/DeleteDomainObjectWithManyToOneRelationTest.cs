@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -62,14 +62,20 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
   {
     _eventReceiver.CancelEventNumber = 1;
     
-    _orderItem.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem")
-    };
+      _orderItem.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem")
+      };
 
-    _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
@@ -77,16 +83,21 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
   {
     _eventReceiver.CancelEventNumber = 2;
     
-    _orderItem.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-      new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems")
-    };
+      _orderItem.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
+        new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems")
+      };
 
-    _eventReceiver.Check (expectedStates);
-
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
@@ -94,17 +105,22 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
   {
     _eventReceiver.CancelEventNumber = 3;
     
-    _orderItem.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-      new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
-      new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order")
-    };
+      _orderItem.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
+        new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
+        new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order")
+      };
 
-    _eventReceiver.Check (expectedStates);
-
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -64,14 +64,20 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
   {
     _eventReceiver.CancelEventNumber = 1;
 
-    _supervisor.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-    };
+      _supervisor.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
+      };
 
-    _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
@@ -79,15 +85,21 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
   {
     _eventReceiver.CancelEventNumber = 2;
 
-    _supervisor.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState[]
+    try
     {
-      new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-      new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
-    };
+      _supervisor.Delete ();
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedStates = new ChangeState[]
+      {
+        new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
+        new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
+      };
 
-    _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check (expectedStates);
+    }
   }
 
   [Test]
