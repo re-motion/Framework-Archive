@@ -110,7 +110,7 @@ public class DataDropDownList: DropDownList
       for (int i = this.Items.Count - 1; i >= 0; --i)
       {
         ListItem item = this.Items[i];
-        if (! item.Selected && item.Value == "-1")
+        if (this.SelectedIndex != i && item.Value == "-1")
           this.Items.RemoveAt (i);
       }
     }
