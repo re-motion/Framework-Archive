@@ -164,8 +164,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
-    _optionsMenu.EventCommandClick += new MenuItemClickEventHandler (OptionsMenu_EventCommandClick);
-    _optionsMenu.WxeFunctionCommandClick += new MenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
+    _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
+    _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
   }
 
   /// <summary>
@@ -762,31 +762,33 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     return menuItems;
   }
 
-  private void OptionsMenu_EventCommandClick(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_EventCommandClick(object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
   protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
-    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[s_menuItemClickEvent];
+    WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
       ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
     if (menuItemClickHandler != null)
     {
-      MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
       menuItemClickHandler (this, e);
     }
   }
 
+  /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
-  public event MenuItemClickEventHandler MenuItemClick
+  [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+  public event WebMenuItemClickEventHandler MenuItemClick
   {
     add { Events.AddHandler (s_menuItemClickEvent, value); }
     remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
   }
 
-  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_WxeFunctionCommandClick(object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
   }
