@@ -38,7 +38,7 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
     _order1 = Order.GetObject (DomainObjectIDs.Order1);
     _order2 = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
 
-    _orders = new DomainObjectCollection ();
+    _orders = new OrderCollection ();
     _orders.Add (_order1);
     _orders.Add (_order2);
 
@@ -97,6 +97,17 @@ public class CollectionEndPointTest : RelationEndPointBaseTest
   public void HasChangedFalse ()
   {
     Assert.IsFalse (_customerEndPoint.HasChanged);
+  }
+
+  [Test]
+  public void OriginalOppositeDomainObjectsType ()
+  {
+    Assert.AreEqual (typeof (OrderCollection), _customerEndPoint.OriginalOppositeDomainObjects.GetType ());    
+    Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.IsReadOnly);
+    
+    Assert.AreEqual (
+        _customerEndPoint.OppositeDomainObjects.RequiredItemType, 
+        _customerEndPoint.OriginalOppositeDomainObjects.RequiredItemType);
   }
 }
 }
