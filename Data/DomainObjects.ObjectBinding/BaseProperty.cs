@@ -62,10 +62,6 @@ public class DomainObjectProperty: IBusinessObjectProperty
     {
       return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList);
     }
-    else if (itemType == typeof (char))
-    {
-      return new CharProperty (propertyInfo, propertyDefinition, itemType, isList);
-    }
     else if (itemType == typeof (byte))
     {
       return new ByteProperty (propertyInfo, propertyDefinition, itemType, isList);
