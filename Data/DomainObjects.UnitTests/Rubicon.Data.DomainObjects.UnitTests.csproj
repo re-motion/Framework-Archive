@@ -454,11 +454,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DomainObjects\IntegrationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjects\NewDomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -543,7 +538,11 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <Folder RelPath = "IntegrationTests\" />
+                <File
+                    RelPath = "IntegrationTests\DomainObjectTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
                 <File
                     RelPath = "ObjectIDs\ObjectIDTest.cs"
                     SubType = "Code"
