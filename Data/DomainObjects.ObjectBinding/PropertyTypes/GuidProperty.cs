@@ -36,7 +36,12 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
     if (IsNullableType)
       return NaGuid.ToBoxedGuid ((NaGuid)internalValue);
 
-    return new Guid (internalValue.ToString ());  
+    Guid guidValue = new Guid (internalValue.ToString ());
+
+    if (guidValue == Guid.Empty)
+      return null;
+
+    return guidValue;  
   }
 
   protected internal override object ToInternalType(object publicValue)

@@ -36,7 +36,7 @@ public class Int16Property : NullableProperty, IBusinessObjectInt32Property
     if (IsNullableType)
       return NaInt16.ToBoxedInt16 ((NaInt16)internalValue);
 
-    return short.Parse (internalValue.ToString ());  
+    return base.FromInternalType (short.Parse (internalValue.ToString ()));  
   }
 
   protected internal override object ToInternalType (object publicValue)
