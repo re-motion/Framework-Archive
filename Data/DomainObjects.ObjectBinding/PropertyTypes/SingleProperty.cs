@@ -36,7 +36,7 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsNullableType)
       return NaSingle.ToBoxedSingle ((NaSingle)internalValue);
 
-    return float.Parse (internalValue.ToString ());  
+    return base.FromInternalType (float.Parse (internalValue.ToString ()));  
   }
 
   protected internal override object ToInternalType (object publicValue)
