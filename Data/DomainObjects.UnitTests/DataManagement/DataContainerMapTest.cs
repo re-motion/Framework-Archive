@@ -82,7 +82,7 @@ public class DataContainerMapTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void RollbackDelete ()
+  public void RollbackForDeletedObject ()
   {
     _map.Register (_existingOrder);
 
@@ -95,6 +95,17 @@ public class DataContainerMapTest : ClientTransactionBaseTest
     _existingOrder = _map[_existingOrder.ID];
     Assert.IsNotNull (_existingOrder);
     Assert.AreEqual (StateType.Unchanged, _existingOrder.State);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDiscardedException))]
+  public void RollbackForNewObject ()
+  {
+    _map.Register (_newOrder);
+
+    _map.Rollback ();
+
+    ObjectID id = _newOrder.ID;
   }
 }
 }

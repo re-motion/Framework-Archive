@@ -84,8 +84,24 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
 
     Computer computerAfterRollback = Computer.GetObject (DomainObjectIDs.Computer4);
     Assert.AreSame (computer, computerAfterRollback);
-
     Assert.AreEqual (StateType.Unchanged, computer.State);
+  }
+
+  [Test]
+  public void RollbackDeletionAndPropertyChange ()
+  {
+    Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+    computer.SerialNumber = "1111111111111";
+
+    Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].OriginalValue);
+    Assert.AreEqual ("1111111111111", computer.DataContainer.PropertyValues["SerialNumber"].Value);
+
+    computer.Delete ();
+    ClientTransaction.Current.Rollback ();
+
+    Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].OriginalValue);
+    Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].Value);
+    Assert.IsFalse (computer.DataContainer.PropertyValues["SerialNumber"].HasChanged);
   }
 
   [Test]
