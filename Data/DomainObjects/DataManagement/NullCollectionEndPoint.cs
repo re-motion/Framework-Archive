@@ -31,8 +31,9 @@ public class NullCollectionEndPoint : CollectionEndPoint
   {
   }
 
-  public override void CheckMandatory()
+  public override void CheckMandatory ()
   {
+    throw new InvalidOperationException ("CheckMandatory cannot be called on a NullCollectionEndPoint.");    
   }
 
   public override void Commit ()
