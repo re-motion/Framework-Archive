@@ -29,6 +29,26 @@ public class WxeStepList: WxeStep
     InitialzeSteps();
   }
 
+  /// <summary>
+  ///   Moves all steps to <c>innerList</c> and makes <c>innerList</c> the only step of this step list.
+  /// </summary>
+  /// <param name="innerList"> This list will be the only step of this function and contain all of the function's steps. Must be empty. </param>
+  protected void Encapsulate (WxeStepList innerList)
+  {
+    if (this._nextStep != 0 || this._lastExecutedStep != -1)
+      throw new InvalidOperationException ("Cannot encapsulate executing function.");
+    if (innerList._nextStep != 0 || innerList._lastExecutedStep != -1 || innerList._steps.Count > 0)
+      throw new ArgumentException ("innerList", "List must be empty.");
+
+    innerList._steps = this._steps;
+    foreach (WxeStep step in innerList._steps)
+      step.ParentStep = innerList;
+
+    this._steps = new ArrayList(1);
+    this._steps.Add (innerList);
+    innerList.ParentStep = this;
+  }
+
   public override void Execute (WxeContext context)
   {
     for (int i = _nextStep; i < _steps.Count; ++i)
