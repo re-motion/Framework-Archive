@@ -62,7 +62,6 @@ public class TestForm : Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.BocList.MenuItemClick += new Rubicon.Web.UI.Controls.MenuItemClickEventHandler(this.BocList_MenuItemClick);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
