@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
-// TODO: Document that properties and methods are not inheritance-aware!
+// TODO documentation: Document that properties and methods are not inheritance-aware!
 public class RelationDefinition
 {
   // types

@@ -67,7 +67,7 @@ public class ClassDefinition
 
   // methods and properties
  
-  // TODO for documentation: All methods of this class are inheritance-aware. Property accessors are not.
+  // TODO documentation: All methods of this class are inheritance-aware. Property accessors are not.
 
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
   {
