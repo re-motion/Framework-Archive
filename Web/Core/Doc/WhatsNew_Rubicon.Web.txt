@@ -1,3 +1,13 @@
+3.1.6.1
+=======
+
+- Neue static Methode EntryFormGrid.GetParentEntryFormGrid (...): Gibt von einem control dessen
+  EntryFormGrid auch über mehrere Hierarchieebenen zurück.
+
+- EntryFieldBreak, EntryTitle, EntryField: Property EntryFormGrid retoruniert jetzt auch EntryFormGrid
+  über mehrere Hierarchieebenen.
+ 
+
 3.1.6.0
 =======
 
