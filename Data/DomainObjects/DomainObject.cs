@@ -23,8 +23,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   protected static DomainObject GetObject (ObjectID id)
   {
@@ -40,8 +40,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
@@ -57,8 +57,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
@@ -75,8 +75,8 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
