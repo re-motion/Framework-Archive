@@ -37,7 +37,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> This event is fired when the date is changed in the UI. </summary>
   /// <remarks> The event is fired only if the date change is caused by the user. </remarks>
-  public event EventHandler DateTimeChanged;
+  //public event EventHandler DateTimeChanged;
 
 	// member fields
 
