@@ -4,9 +4,6 @@ using Rubicon.ObjectBinding.Web.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-/// <summary>
-/// Summary description for ColumnDefinitionCollectionEditor.
-/// </summary>
 public class BocColumnDefinitionCollectionEditor: CollectionEditor
 {
   public BocColumnDefinitionCollectionEditor (Type type)
