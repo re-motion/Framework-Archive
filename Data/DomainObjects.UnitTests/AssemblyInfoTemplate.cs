@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription("Unit Tests for Rubicon DomainObjects Library")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("@productname@")]
 [assembly: AssemblyCopyright("@copyright@")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.0.1.0")]
+[assembly: AssemblyVersion("@versionnumber@")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
