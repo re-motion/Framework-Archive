@@ -546,8 +546,9 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
       if (_customCell == null)
       {
         Type type = TypeUtility.GetType (_customCellType, true, false);
-        object[] arguments = new object[] {_customCellArgument};
-        //TODO: argument == null/string.empty: argumentless constructor
+        object[] arguments = null;
+        if (! StringUtility.IsNullOrEmpty (_customCellArgument))
+          arguments = new object[] {_customCellArgument};
         _customCell = (IBocCustomColumnDefinitionCell) Activator.CreateInstance (type, arguments);
       }
       return _customCell; 
@@ -667,14 +668,18 @@ public interface IBocCustomColumnDefinitionCell
   ///    Pass this value to the <paramref name="list"/>'s <see cref="BocList.GetCustomCellPostBackClientHyperlink"/> 
   ///    or <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
   /// </param>
+  /// <param name="onClick"> 
+  ///   A function to be appended to the client side <c>OnClick</c> event handler. The function tasked with
+  ///   preventing the row from being selected/highlighted when clicking on the link itself instead of the row.
+  /// </param>
   void Render (
       HtmlTextWriter writer, 
       BocList list,
       IBusinessObject businessObject, 
       BocCustomColumnDefinition columnDefiniton, 
       int columnIndex,
-      int listIndex);
-      //TODO:  string OnClick function;
+      int listIndex,
+      string onClick);
 
   void OnClick (
       BocList list, 

@@ -460,15 +460,16 @@ public class BocTreeView: BusinessObjectBoundWebControl
       string nodeID = (string) values[0];
       bool isExpanded = (bool) values[1];
       bool isEvaluated = (bool) values[2];
-      string text = (string) values[3];
-      IconInfo icon = (IconInfo) values[4];
-      bool isBusinessObjectTreeNode = (bool) values[6];
+      bool isSelected = (bool) values[3];
+      string text = (string) values[4];
+      IconInfo icon = (IconInfo) values[5];
+      bool isBusinessObjectTreeNode = (bool) values[7];
       
       WebTreeNode node;
       if (isBusinessObjectTreeNode)
       {
         node = new BusinessObjectTreeNode (nodeID, text, icon, null, null);
-        string propertyIdentifier = (string) values[5];
+        string propertyIdentifier = (string) values[6];
         ((BusinessObjectTreeNode) node).PropertyIdentifier = propertyIdentifier;
       }
       else
@@ -477,6 +478,8 @@ public class BocTreeView: BusinessObjectBoundWebControl
       }
       node.IsExpanded = isExpanded;
       node.IsEvaluated = isEvaluated;
+      if (isSelected)
+        node.IsSelected = true;
       nodes.Add (node);
 
       LoadNodesViewStateRecursive ((Pair[]) nodeViewState.Second, node.Children);
@@ -491,20 +494,21 @@ public class BocTreeView: BusinessObjectBoundWebControl
     {
       WebTreeNode node = (WebTreeNode) nodes[i];    
       Pair nodeViewState = new Pair();
-      object[] values = new object[7];
+      object[] values = new object[8];
       values[0] = node.NodeID;
       values[1] = node.IsExpanded;
       values[2] = node.IsEvaluated;
-      values[3] = node.Text;
-      values[4] = node.Icon;
+      values[3] = node.IsSelected;
+      values[4] = node.Text;
+      values[5] = node.Icon;
       if (node is BusinessObjectTreeNode)
       { 
-        values[5] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
-        values[6] = true;
+        values[6] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
+        values[7] = true;
       }
       else
       {
-        values[6] = false;
+        values[7] = false;
       }
       nodeViewState.First = values;
       nodeViewState.Second = SaveNodesViewStateRecursive (node.Children);

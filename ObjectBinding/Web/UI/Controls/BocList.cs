@@ -1715,7 +1715,7 @@ public class BocList:
           if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
           {
             writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
+            writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
           }
           writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
           writer.AddStyleAttribute ("vertical-align", "middle");
@@ -1760,7 +1760,9 @@ public class BocList:
     }
     else if (customColumn != null)
     {
-      customColumn.CustomCell.Render (writer, this, businessObject, customColumn, columnIndex, originalRowIndex);
+      string onClick = "BocList_OnCommandClick();";
+      customColumn.CustomCell.Render (
+          writer, this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
     }
 
     writer.RenderEndTag();
