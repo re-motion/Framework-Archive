@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 using System.Reflection;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -151,7 +152,7 @@ public class WxePageStep: WxeStep
 
     if (usesEventTarget)
     {
-      _postBackCollection.Remove (ControlHelper.EventTarget);
+      _postBackCollection.Remove ( ControlHelper.EventTarget);
       _postBackCollection.Remove (ControlHelper.EventArgument);
     }
     else
