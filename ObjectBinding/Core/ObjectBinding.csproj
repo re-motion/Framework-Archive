@@ -142,7 +142,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IPropertyPathBinding.cs"
+                    RelPath = "IBusinessObjectClassSource.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
