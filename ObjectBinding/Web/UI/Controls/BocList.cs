@@ -2596,7 +2596,7 @@ public class BocList:
           default:
           {
             //  Invalid collection property
-            s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a collection property named '" + collectionID + "'.");
+            s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a collection property named '" + collectionID + "'.");
             break;
           }
         }       
@@ -2621,12 +2621,12 @@ public class BocList:
       else
       {
         //  Not supported format or invalid property
-        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid or unknown key '" + key + "'. Required format: 'property' or 'collectionID:elementID:property'.");
+        s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid or unknown key '" + key + "'. Required format: 'property' or 'collectionID:elementID:property'.");
       }
     }
 
     //  Dispatch simple properties
-    DispatchToProperties (this, propertyValues);
+    ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch to collections
     DispatchToColumns (_fixedColumns, fixedColumnValues, "FixedColumns");
@@ -2649,7 +2649,7 @@ public class BocList:
       {
         if (columnDefinition.ColumnID == columnID)
         {
-          DispatchToProperties (columnDefinition, (IDictionary) entry.Value);
+          ResourceDispatcher.DispatchGeneric (columnDefinition, (IDictionary) entry.Value);
           isValidID = true;
           break;
         }
@@ -2658,7 +2658,7 @@ public class BocList:
       if (! isValidID)
       {
         //  Invalid collection element
-        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + columnID + "' inside the collection '" + collectionName + "'.");
+        s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + columnID + "' inside the collection '" + collectionName + "'.");
       }
     }
   }
@@ -2678,7 +2678,7 @@ public class BocList:
       {
         if (menuItem.ItemID == itemID)
         {
-          DispatchToProperties (menuItem, (IDictionary) entry.Value);
+          ResourceDispatcher.DispatchGeneric (menuItem, (IDictionary) entry.Value);
           isValidID = true;
           break;
         }
@@ -2687,29 +2687,8 @@ public class BocList:
       if (! isValidID)
       {
         //  Invalid collection element
-        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + itemID + "' inside the collection '" + collectionName + "'.");
+        s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + itemID + "' inside the collection '" + collectionName + "'.");
       }
-    }
-  }
-
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
-  /// </summary>
-  /// <param name="obj"> The object receving the resources. </param>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string property-name, string value&gt;. </param>
-  private void DispatchToProperties (object obj, IDictionary values)
-  {
-    ArgumentUtility.CheckNotNull ("obj", obj);
-    ArgumentUtility.CheckNotNull ("values", values);
-
-    foreach (DictionaryEntry entry in values)
-    {
-      string propertyName = (string) entry.Key;
-      string propertyValue = (string) entry.Value;
-
-      PropertyInfo property = obj.GetType ().GetProperty (propertyName, typeof (string));
-      if (property != null)
-        property.SetValue (obj, propertyValue, new object[0]); 
     }
   }
 
