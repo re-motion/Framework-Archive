@@ -128,6 +128,27 @@ public abstract class WxeFunction: WxeStepList
     return sb.ToString();
   }
 
+  public void InitializeParameters (object[] parameters)
+  {
+    CheckParametersNotInitialized();
+    WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
+    for (int i = 0; i < parameters.Length; i++)
+    {
+      WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+      object parameter = parameters[i];
+      _variables[parameterDeclaration.Name] = parameter;
+    }
+
+    for (int i = parameters.Length; i < parameterDeclarations.Length; i++)
+    {
+      WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+      if (parameterDeclaration.Required)
+        throw new ApplicationException ("Parameter '" + parameterDeclaration.Name + "' is missing.");
+    }
+
+    _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
+  }
+
   public void InitializeParameters (NameValueCollection parameters)
   {
     CheckParametersNotInitialized();
