@@ -118,10 +118,26 @@ public class EntryField: Control
 	protected override void Render (HtmlTextWriter writer)
 	{
 		string label;
-		if (For == String.Empty)
+    string clientId = String.Empty;
+    Control labeledControl;
+    if (For == String.Empty)
+      labeledControl = this.Controls[1];
+    else
+      labeledControl = this.FindControl (For);
+
+    if (labeledControl != null)
+    {
+      // WORKAROUND: prevent the following bug in IE 6.0: clicking on the label of a <select> control
+      // selects the first item in the list (but does not fire a changed-event)
+      if (! (   labeledControl is System.Web.UI.WebControls.DropDownList 
+             || labeledControl is System.Web.UI.HtmlControls.HtmlSelect))
+        clientId = labeledControl.ClientID;
+    }
+
+		if (clientId == String.Empty)
 			label = Label;
 		else
-			label = "<label for=\"" + For + "\">" +  Label + "</label>";
+			label = "<label for=\"" + clientId + "\">" +  Label + "</label>";
 
 		writer.WriteLine ("<tr>");
 		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\">&nbsp;{0}</td>", label);
@@ -161,7 +177,7 @@ public class EntryField: Control
 
 		writer.WriteLine ("</td><td>");
 
-		RenderChildren(writer);
+    RenderChildren(writer);
 
 		writer.WriteLine ("</td>");
 		writer.WriteLine ("</tr>");
