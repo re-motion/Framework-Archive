@@ -96,7 +96,7 @@
     <ifnot propertyexists="SS.dir" >
       <property name="SS.dir" value="." />
     </ifnot>
-    <exec program="SS.EXE" append="false" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
+    <exec program="SS.EXE" output="NUL" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
@@ -129,8 +129,8 @@
     <foreach item="String" in="Core Core.Test Data Development ObjectBinding prereq Web" delim=" " property="local.project" >
       <do>
         <mkdir dir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" append="false" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" append="false" commandline="/C for /d %d in (*) do rmdir /S /Q %d" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" output="NUL" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" output="NUL" commandline="/C for /d %d in (*) do rmdir /S /Q %d" workingdir="${dir.development}\libraries\Commons\${local.project}" />
         <echo message="Get ${local.project}" />
         <property name="SS.command" value="Get $/libraries/Commons/${local.project} -R" />
         <property name="SS.dir" value="${dir.development}\libraries\Commons\${local.project}" />
@@ -244,7 +244,7 @@
   </target>
 
   <target name="Data.DomainObjects" depends="Core,initialize">
-    <property name="project.name" value="Data.DomainObjects" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
     <property name="project.extension" value="dll" />
@@ -252,7 +252,7 @@
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects,initialize">
-    <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.dir" value="Data/DomainObjects/ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.extension" value="dll" />
@@ -260,7 +260,7 @@
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding,initialize">
-    <property name="project.name" value="Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.dir" value="Data/DomainObjects/ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
@@ -326,7 +326,7 @@
   </target>
 
   <target name="Data.DomainObjects.UnitTests" depends="Data.DomainObjects">
-    <property name="project.name" value="Data.DomainObjects.UnitTests" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects/UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
