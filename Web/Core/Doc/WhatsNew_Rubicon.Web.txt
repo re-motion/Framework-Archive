@@ -1,7 +1,13 @@
 3.1.2.0 (noch kein Build)
 =======
 
-- StandardControl: Neue protected property "StandardPage" eingeführt.
+- StandardControl: 
+  * Neue protected property "StandardPage" eingeführt.
+  * StandardControl in StandardUserControl umbenannt.
+- Neues Control StandardButton
+  * Stellt Referenz auf StandardPage zur Verfügung.
+  * Wird nach dem Drücken client-seitig disabled, um visuelles Feedback zu geben und zu 
+    verhindern, dass Button mehrmals gedrückt wird.
 
 
 3.1.1.0
