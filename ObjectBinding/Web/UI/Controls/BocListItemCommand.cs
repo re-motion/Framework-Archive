@@ -108,7 +108,7 @@ public class BocListItemCommand: BocCommand
   /// </summary>
   private ListItemWxeFunctionCommandInfo _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
 
-  public BocListItemCommandClickEventHandler Click;
+  public new BocListItemCommandClickEventHandler Click;
 
   /// <summary> Initializes an instance. </summary>
   public BocListItemCommand()
