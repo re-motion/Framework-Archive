@@ -1,6 +1,16 @@
 1.2.7.0
 =======
 
+- Rubicon.Web.UI.Controls.WebButton
+  * Erweitert: WebButton zeigt den Accesskey unterstrichen an.
+  * Erweitert: WebButton bietet zusästzlich zum Text ein Icon an.
+  Im Config-File ergänzen:
+  <configuration>
+    <system.web>
+      <pages validateRequest="false" />
+    </system.web>
+  </configuration>
+  
 - TabControl:
   * 2 neue Properties "SelectedTab" und "SelectedMenu"
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -85,8 +86,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   private Label _label;
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
   private ImageButton _datePickerButton;
-  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private BocDateTimeValueValidator _dateTimeValueValidator;
 
   /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
   private Style _commonStyle;
@@ -132,6 +131,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Flag that determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
+  private string _errorMessage;
+  private ArrayList _validators;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
@@ -147,7 +149,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _datePickerButton = new ImageButton();
     _timeTextBox = new TextBox();
     _label = new Label();
-    _dateTimeValueValidator = new BocDateTimeValueValidator();
+    _validators = new ArrayList();
 	}
 
 	// methods and properties
@@ -448,10 +450,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     BaseValidator[] validators = new BaseValidator[1];
 
+    BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
     _dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
     _dateTimeValueValidator.ControlToValidate = ID;
-
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
       IResourceManager resourceManager = GetResourceManager();
       _dateTimeValueValidator.RequiredErrorMessage = 
@@ -465,11 +467,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       _dateTimeValueValidator.InvalidTimeErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.InvalidTimeErrorMessage);
     }
+    else
+    {
+      _dateTimeValueValidator.ErrorMessage = _errorMessage;
+    }
     validators[0] = _dateTimeValueValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
 
+    _validators.AddRange (validators);
     return validators;
   }
 
@@ -1121,7 +1128,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get
     {
       if (_savedDateTimeValue.IsNull)
-        return true;
+      {
+        return    StringUtility.IsNullOrEmpty (_internalDateValue) 
+               && StringUtility.IsNullOrEmpty (_internalTimeValue);
+      }
+      
       try
       {
         //  Force the evaluation of Value
@@ -1486,8 +1497,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _dateTimeValueValidator.ErrorMessage; }
-    set { _dateTimeValueValidator.ErrorMessage = value; }
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
   }
 }
 

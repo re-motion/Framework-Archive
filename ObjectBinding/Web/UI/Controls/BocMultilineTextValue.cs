@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -66,8 +67,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   private TextBox _textBox;
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
-  /// <summary> The <see cref="RequiredFieldValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private RequiredFieldValidator _requiredValidator;
 
   /// <summary> The <see cref="Style"/> applied the <see cref="TextBox"/> and the <see cref="Label"/>. </summary>
   private Style _commonStyle;
@@ -80,6 +79,9 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <remarks> Uses <c>\r\n</c> as separation characters. </remarks>
   private string _internalValue = null;
 
+  private string _errorMessage;
+  private ArrayList _validators;
+
   // construction and disposing
 
 	public BocMultilineTextValue()
@@ -89,7 +91,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     _labelStyle = new Style();
     _textBox = new TextBox();
     _label = new Label();
-    _requiredValidator = new RequiredFieldValidator();
+    _validators = new ArrayList();
 	}
 
   // methods and properties
@@ -270,20 +272,25 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   public override BaseValidator[] CreateValidators()
   {
     if (! IsRequired)
-      return new BaseValidator[]{};
+      return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
 
+    RequiredFieldValidator _requiredValidator = new RequiredFieldValidator();
     _requiredValidator.ID = ID + "_ValidatorRequired";
     _requiredValidator.ControlToValidate = TargetControl.ID;
-    if (StringUtility.IsNullOrEmpty (_requiredValidator.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
       _requiredValidator.ErrorMessage = 
           GetResourceManager().GetString (ResourceIdentifier.RequiredValidationMessage);
     }
-
+    else
+    {
+      _requiredValidator.ErrorMessage = _errorMessage;
+    }      
     validators[0] = _requiredValidator;
 
+    _validators.AddRange (validators);
     return validators;
   }
   
@@ -535,8 +542,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _requiredValidator.ErrorMessage; }
-    set { _requiredValidator.ErrorMessage = value; }
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
   }
 }
 }

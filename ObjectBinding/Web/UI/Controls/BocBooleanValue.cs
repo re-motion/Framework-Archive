@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -88,8 +89,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   private Label _label;
   /// <summary> The <see cref="BocInputHidden"/> used to hold the check state. </summary>
   private BocInputHidden _hiddenField;
-  /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator;
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
@@ -110,6 +109,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> The description displayed when the checkbox is set to <c>null</c>. </summary>
   private string _nullDescription = string.Empty;
 
+  private string _errorMessage;
+  private ArrayList _validators;
+
   // construction and disposing
 
 	public BocBooleanValue()
@@ -119,7 +121,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     _imageButton = new ImageButton();
     _image = new Image();
     _label = new Label();
-    _notNullItemValidator = new CompareValidator();
+    _validators = new ArrayList();
 	}
 
   // methods and properties
@@ -309,14 +311,21 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     if (! IsRequired)
       return new BaseValidator[0];
 
+    BaseValidator[] validators = new BaseValidator[1];
+
+    CompareValidator _notNullItemValidator = new CompareValidator();
     _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = ID;
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
       _notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+    else
+      _notNullItemValidator.ErrorMessage = _errorMessage;
+    validators[0] = _notNullItemValidator;
 
-    return new BaseValidator[] { _notNullItemValidator };
+    _validators.AddRange (validators);
+    return validators;
   }
   
   /// <summary> Prerenders the child controls. </summary>
@@ -638,8 +647,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _notNullItemValidator.ErrorMessage; }
-    set { _notNullItemValidator.ErrorMessage = value; }
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
   }
 }
 

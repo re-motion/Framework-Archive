@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -65,9 +66,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
 
-  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator;
-
   /// <summary> The actual enum value. </summary>
   private object _value = null;
 
@@ -90,6 +88,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <remarks> Used by <see cref="InternalLoadValue"/>. </remarks>
   private bool _isLoadViewState;
 
+  private string _errorMessage;
+  private ArrayList _validators;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
@@ -105,7 +106,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       ReadOnly = NaBoolean.True;
     }
     _label = new Label();
-    _notNullItemValidator = new CompareValidator();
+    _validators = new ArrayList();
 	}
 
 	// methods and properties
@@ -320,25 +321,30 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   public override BaseValidator[] CreateValidators()
   {
     if (! IsRequired)
-      return new BaseValidator[]{};
+      return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
     
+    CompareValidator _notNullItemValidator = new CompareValidator();
     _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
       _notNullItemValidator.ErrorMessage = 
           GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
     }
-
+    else
+    {
+      _notNullItemValidator.ErrorMessage = _errorMessage;
+    }      
     validators[0] = _notNullItemValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
 
+    _validators.AddRange (validators);
     return validators;
   }
 
@@ -769,8 +775,13 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _notNullItemValidator.ErrorMessage; }
-    set { _notNullItemValidator.ErrorMessage = value; }
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
   }
 }
 

@@ -77,8 +77,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   private Label _label;
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon ;
-  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator;
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/> and the <see cref="Label"/>. </summary>
   private Style _commonStyle;
@@ -118,6 +116,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary> The command rendered for this reference value. </summary>
   private SingleControlItemCollection _command = null;
 
+  private string _errorMessage;
+  private ArrayList _validators;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
@@ -131,7 +132,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _dropDownList = new DropDownList();
     _label = new Label();
     _optionsMenu = new DropDownMenu (this);
-    _notNullItemValidator = new CompareValidator();
+    _validators = new ArrayList();
     _command = new SingleControlItemCollection (new BocCommand(), new Type[] {typeof (BocCommand)});
   }
 
@@ -430,22 +431,27 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   public override BaseValidator[] CreateValidators()
   {
     if (! IsRequired)
-      return new BaseValidator[]{};
+      return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
     
+    CompareValidator _notNullItemValidator = new CompareValidator();
     _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
       _notNullItemValidator.ErrorMessage = 
           GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
     }
-
+    else
+    {
+      _notNullItemValidator.ErrorMessage = _errorMessage;
+    }      
     validators[0] = _notNullItemValidator;
 
+    _validators.AddRange (validators);
     return validators;
   }
 
@@ -1203,8 +1209,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _notNullItemValidator.ErrorMessage; }
-    set { _notNullItemValidator.ErrorMessage = value; }
+    get { return _errorMessage; }
+    set 
+    {
+      _errorMessage = value; 
+      foreach (BaseValidator validator in _validators)
+        validator.ErrorMessage = _errorMessage;
+    }
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s value. </summary>
