@@ -262,7 +262,7 @@ public class ClientTransaction
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to delete.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
-  internal protected virtual void Delete (DomainObject domainObject)
+  public virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     _dataManager.Delete (domainObject);
