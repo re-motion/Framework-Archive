@@ -17,14 +17,14 @@ public class StorageProviderConfigurationLoader : BaseLoader
 
   public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile";
 
-  private const string c_defaultConfigurationFile = "storageProviders.xml";
-  private const string c_defaultSchemaFile = "storageProviders.xsd";
+  public const string DefaultConfigurationFile = "storageProviders.xml";
+  public const string DefaultSchemaFile = "storageProviders.xsd";
 
   public static StorageProviderConfigurationLoader Create ()
   {
     return new StorageProviderConfigurationLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, c_defaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
+        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
   }
 
   // member fields
