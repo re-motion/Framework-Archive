@@ -2,12 +2,10 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
-using System.Xml.Serialization;
 
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
@@ -42,14 +40,12 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
 
     foreach (FieldInfo field in fields)
     {
-      bool isEnabled = ! field.Name.StartsWith (c_disabledPrefix);
+      bool isEnabled = !field.Name.StartsWith (c_disabledPrefix);
 
-      if ((!includeDisabledValues && isEnabled) || includeDisabledValues)
+      if (isEnabled || includeDisabledValues)
       {
         string multiLingualDisplayName = EnumDescription.GetDescription ((System.Enum) field.GetValue (null));
-
-        valueInfos.Add (
-            new EnumerationValueInfo (field.GetValue (null), field.Name, multiLingualDisplayName, isEnabled));
+        valueInfos.Add (new EnumerationValueInfo (field.GetValue (null), field.Name, multiLingualDisplayName, isEnabled));
       }
     }
 
@@ -71,12 +67,10 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
 
       //  Test if enum value is correct type, throws an exception if not
       Enum.Parse (PropertyType, valueString, false);
-      bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
+      bool isEnabled = !valueString.StartsWith (c_disabledPrefix);
 
       string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
-
       string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
-
       return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
     }
   }
@@ -85,12 +79,10 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
   {
     object value = Enum.Parse (PropertyType, identifier, false);
     string valueString = value.ToString();
-    bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
+    bool isEnabled = !valueString.StartsWith (c_disabledPrefix);
 
     string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
-
     string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
-
     return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
   }
 

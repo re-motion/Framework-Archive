@@ -1,13 +1,8 @@
 using System;
 using System.Reflection;
-using System.Diagnostics;
-using System.Collections;
-using System.Xml.Serialization;
 
-using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {

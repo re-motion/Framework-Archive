@@ -1,13 +1,8 @@
 using System;
 using System.Reflection;
-using System.Diagnostics;
-using System.Collections;
-using System.Xml.Serialization;
 
-using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
@@ -36,15 +31,15 @@ public class NullableProperty : DomainObjectProperty
     get { return ! _isNullableType; }
   }
 
-  protected internal override object FromInternalType(object internalValue)
+  protected internal override object FromInternalType (object internalValue)
   {
     if (internalValue == null)
-      return internalValue;
-    else
-      return base.FromInternalType (internalValue);
+      return null;
+
+    return base.FromInternalType (internalValue);
   }
 
-  protected internal override object ToInternalType(object publicValue)
+  protected internal override object ToInternalType (object publicValue)
   {
     if (!IsNullableType && publicValue == null)
       throw new InvalidNullAssignmentException (ItemType);

@@ -1,17 +1,12 @@
 using System;
 using System.Reflection;
-using System.Diagnostics;
 using System.Collections;
-using System.Xml.Serialization;
 
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 using Rubicon.ObjectBinding;
-
-using Rubicon.Data.DomainObjects.Mapping;
-
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
@@ -98,7 +93,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
   public bool IsReadOnly (IBusinessObject obj)
   {
-    return ! _propertyInfo.CanWrite;
+    return !_propertyInfo.CanWrite;
   }
 
   public PropertyInfo PropertyInfo
@@ -110,11 +105,11 @@ public class DomainObjectProperty: IBusinessObjectProperty
   {
     if (!IsList)
     {
-      FieldInfo fieldInfo = _itemType.GetField ("MinValue");
+      FieldInfo minValueFieldInfo = _itemType.GetField ("MinValue");
 
-      if (fieldInfo != null)
+      if (minValueFieldInfo != null)
       {
-        if (fieldInfo.GetValue (_itemType).ToString () == internalValue.ToString ())
+        if (minValueFieldInfo.GetValue (_itemType).ToString () == internalValue.ToString ())
           return null;
       }
     }

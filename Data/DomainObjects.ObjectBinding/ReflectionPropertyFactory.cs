@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public abstract class PropertyFactory
+public class PropertyFactory
 {
 	public PropertyFactory()
 	{
