@@ -50,7 +50,6 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
            
     _newCustomer.Orders.Add (_order);
 
-
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
