@@ -213,5 +213,27 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
 
     Provider.LoadDataContainer (id);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The value of the provided ObjectID is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: id")]
+  public void LoadDataContainerWithObjectIDWithValueOfInvalidType ()
+  {
+    ObjectID invalidID = new ObjectID (
+        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+
+    Provider.LoadDataContainer (invalidID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The StorageProviderID 'OtherProvider' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
+  public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
+  {
+    ObjectID invalidID = new ObjectID (
+        "OtherProvider", DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+
+    Provider.LoadDataContainer (invalidID);
+  }
 }
 }
