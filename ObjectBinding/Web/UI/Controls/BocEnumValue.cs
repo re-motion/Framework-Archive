@@ -339,16 +339,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     get { return _listControlStyle.ControlType != ListControlType.DropDownList; }
   }
-
-//  void IPostBackDataHandler.RaisePostDataChangedEvent()
-//  {
-//    HandleSelectionChange();
-//  }
-//
-//  bool IPostBackDataHandler.LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
-//  {
-//    return true;
-//  }
 }
 
 }
