@@ -569,6 +569,7 @@
         <includes name="Core/**/*" />
         <includes name="Core.Test/**/*" />
         <includes name="Development/**/*" />
+        <includes name="Data/**/*" />
         <includes name="ObjectBinding/**/*" />
         <includes name="Web/**/*" />
         <includes name="build/*.xml" />
