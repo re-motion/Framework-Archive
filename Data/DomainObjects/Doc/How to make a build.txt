@@ -1,5 +1,5 @@
 1. Voraussetzungen
-  * Installation NAnt Version 0.8.4: \\at-vie-dc-02\Install\NAnt
+  * Installation NAnt Version 0.84: \\at-vie-dc-02\Install\NAnt
 		zB nach c:\program files\nant
 		bin verzeichnis in PATH aufnehmen
   * Rubicon.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
