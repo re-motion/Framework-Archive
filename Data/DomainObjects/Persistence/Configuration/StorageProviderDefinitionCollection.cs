@@ -37,9 +37,24 @@ public class StorageProviderDefinitionCollection : CollectionBase
 
   // methods and properties
 
+  public StorageProviderDefinition GetMandatory (string storageProviderID)
+  {
+    if (!Contains (storageProviderID))
+      throw CreateStorageProviderConfigurationException ("StorageProviderDefinition '{0}' does not exist.", storageProviderID);
+
+    return this[storageProviderID];
+  }
+
   private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
   {
     return new ArgumentException (string.Format (message, args), parameterName);
+  }
+
+  private StorageProviderConfigurationException CreateStorageProviderConfigurationException (
+      string message, 
+      params object[] args)
+  {
+    return new StorageProviderConfigurationException (string.Format (message, args));
   }
 
   #region Standard implementation for "add-only" collections
