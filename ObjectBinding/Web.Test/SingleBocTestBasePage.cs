@@ -12,6 +12,8 @@ using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
+using System.Web;
 
 namespace OBWTest
 {
@@ -25,27 +27,35 @@ public class WebFormBase:
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
+  protected HtmlGenericControl HtmlHeader;
 
   protected override void OnInit(EventArgs e)
   {
-      try
-      {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-      try
-      {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
+    if (HtmlHeader == null)
+      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHeader'.");
 
+    try
+    {
+      Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
+    }
+    catch (ArgumentException)
+    {}
+    try
+    {
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+    }
+    catch (ArgumentException)
+    {}
+
+    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+    HtmlHeaderFactory.Current.RegisterHeaderStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
   }
 
+
   protected override void OnPreRender(EventArgs e)
   {
+    HtmlHeaderFactory.Current.AppendHeaders (HtmlHeader.Controls);
     base.OnPreRender (e);
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched

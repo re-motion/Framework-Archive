@@ -12,6 +12,8 @@ using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
+using System.Web;
 
 namespace OBWTest
 {
@@ -26,9 +28,13 @@ public class WxeWebFormBase:
   private static Hashtable s_chachedResourceManagers = new Hashtable();
   
   private Button _nextButton = new Button();
+  protected HtmlGenericControl HtmlHeader;
 
   protected override void OnInit(EventArgs e)
   {
+    if (HtmlHeader == null)
+      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHeader'.");
+
     if (! ControlHelper.IsDesignMode (this, Context))
     {
       try
@@ -45,19 +51,22 @@ public class WxeWebFormBase:
       {}
     }
 
-
     _nextButton.ID = "NextButton";
     _nextButton.Text = "Next";
     _nextButton.Click += new EventHandler(NextButton_Click);
     Form.Controls.Add (_nextButton);
 
+    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+    HtmlHeaderFactory.Current.RegisterHeaderStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
   }
 
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
-    
+   
+    HtmlHeaderFactory.Current.AppendHeaders (HtmlHeader.Controls);
+
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this, this.GetResourceManager());
 
