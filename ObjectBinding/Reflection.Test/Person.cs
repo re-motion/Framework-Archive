@@ -14,7 +14,12 @@ public class Person: ReflectionBusinessObject
 {
   public static Person GetObject (Guid id)
   {
-    Person person = (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
+    ReflectionBusinessObject obj = ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
+    
+    if (obj == null)
+      return null;
+
+    Person person = (Person) obj;
     
     if (person.PartnerID != Guid.Empty)
       person.Partner = (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), person.PartnerID);

@@ -41,7 +41,11 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
 
   public IBusinessObjectWithIdentity GetObject (string identifier)
   {
-   return ReflectionBusinessObjectStorage.GetObject (_type, new Guid (identifier));
+    Guid id = Guid.Empty;
+    if (! StringUtility.IsNullOrEmpty (identifier))
+      id = new Guid (identifier);
+
+    return ReflectionBusinessObjectStorage.GetObject (_type, id);
   }
 }
 

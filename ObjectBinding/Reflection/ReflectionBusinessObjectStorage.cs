@@ -13,6 +13,11 @@ public class ReflectionBusinessObjectStorage
 
   private static Hashtable _identityMap = new Hashtable(); 
 
+  public static void Reset()
+  {
+    _identityMap = new Hashtable();
+  }
+
   public static string RootPath 
   {
     get { return _rootPath; }
@@ -113,6 +118,9 @@ public class ReflectionBusinessObjectStorage
 
   private static void AddToIdentityMap (ReflectionBusinessObject obj)
   {
+    if (_identityMap.ContainsKey (obj.ID))
+      return;
+
     WeakReference reference = new WeakReference (obj, false);
     _identityMap.Add (obj.ID, reference);
   }
