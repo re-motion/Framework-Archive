@@ -156,11 +156,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "Controls\BocCalendar.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\BocColumnDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
