@@ -1240,9 +1240,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     FormGrid formGrid = (FormGrid) _formGrids[formGridID];
     EnsureTransformationStep (formGrid, TransformationStep.RenderTransformationCompleted);
 
-    table.SetRenderMethodDelegate (null);
-    table.RenderControl (writer);
-    table.SetRenderMethodDelegate (new RenderMethod (Table_Render));
+    foreach (Control row in table.Controls)
+      row.RenderControl (writer);
   }
 
   /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
@@ -1682,6 +1681,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       }
     }
 
+    FormatFormGrid (formGrid);
+
     TransformationStep completedStep = TransformationStep.PostValidationTransformationCompleted;
     _completedTransformationStep[formGrid] = completedStep;
     return completedStep;
@@ -1721,12 +1722,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           break;
         }
       }
-    }
-
-    //  Assign CSS-class to the table if none exists
-    if (formGrid.Table.Attributes["class"] == null)
-    {
-      formGrid.Table.Attributes["class"] = CssClassTable;
     }
 
     TransformationStep completedStep = TransformationStep.RenderTransformationCompleted;
@@ -1996,6 +1991,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     CreateMarkersCell (dataRow);
 
     SetOrCreateValidationMessagesCell (dataRow);
+  }
+
+  protected virtual void FormatFormGrid (FormGrid formGrid)
+  {
+    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+
+    //  Assign CSS-class to the table if none exists
+    if (formGrid.Table.Attributes["class"] == null)
+      formGrid.Table.Attributes["class"] = CssClassTable;
   }
 
   /// <summary> Formats the title row. </summary>
