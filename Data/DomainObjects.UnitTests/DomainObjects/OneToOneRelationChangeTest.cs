@@ -137,10 +137,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _newOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderOfNewOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.State);
 
     Assert.AreSame (_oldOrderTicket, _order.OrderTicket);
     Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicket.Order);
@@ -186,10 +186,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _newOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderOfNewOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.State);
 
     Assert.AreSame (_oldOrderTicket, _order.OrderTicket);
     Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicket.Order);
@@ -235,10 +235,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
   
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _newOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderOfNewOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.State);
 
     Assert.AreSame (_oldOrderTicket, _order.OrderTicket);
     Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicket.Order);
@@ -284,10 +284,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Assert.AreSame (_newOrderTicket, _oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
     Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
   
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _newOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderOfNewOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.State);
 
     Assert.AreSame (_oldOrderTicket, _order.OrderTicket);
     Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicket.Order);
@@ -298,10 +298,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
   [Test]
   public void StateTracking ()
   {
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _newOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
-    Assert.AreEqual (StateType.Original, _oldOrderOfNewOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.State);
 
     _order.OrderTicket = _newOrderTicket;
 
@@ -314,13 +314,13 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
   [Test]
   public void OldObjectAndNewObjectAreSame ()
   {
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
 
     _order.OrderTicket = _oldOrderTicket;
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldOrderTicket.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrderTicket.State);
   }
 
   [Test]
@@ -387,7 +387,7 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
     Assert.AreEqual (StateType.Changed, _order.State);
 
     _order.OrderTicket = _oldOrderTicket;
-    Assert.AreEqual (StateType.Original, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
   }
 
   [Test]

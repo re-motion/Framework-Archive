@@ -96,9 +96,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
     Assert.AreSame (_oldCustomer, _order.Customer);
     Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
@@ -126,9 +126,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
     Assert.AreSame (_oldCustomer, _order.Customer);
     Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
@@ -157,9 +157,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
     Assert.AreSame (_oldCustomer, _order.Customer);
     Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
@@ -189,9 +189,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
     Assert.AreSame (_oldCustomer, _order.Customer);
     Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
@@ -222,9 +222,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Original, _order.State);
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
     Assert.AreSame (_oldCustomer, _order.Customer);
     Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
@@ -279,9 +279,9 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
     Assert.AreEqual (StateType.Changed, _newCustomer.State);
 
     _order.Customer = _oldCustomer;
-    Assert.AreEqual (StateType.Original, _order.State); 
-    Assert.AreEqual (StateType.Original, _oldCustomer.State);
-    Assert.AreEqual (StateType.Original, _newCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _order.State); 
+    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
   }
 
   [Test]

@@ -337,7 +337,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     
     ClientTransaction.Current.Commit ();
 
-    Assert.AreEqual (StateType.Original, computer.State);
+    Assert.AreEqual (StateType.Unchanged, computer.State);
   }
 
   [Test]
