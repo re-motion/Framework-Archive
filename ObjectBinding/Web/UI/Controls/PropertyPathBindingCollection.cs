@@ -13,10 +13,10 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public sealed class PropertyPathBindingCollection : CollectionBase
 {
   /// <summary> 
-  ///   The <see cref="IBusinessObjectBoundControl"/> to which this 
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
   ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </summary>
-  private IBusinessObjectBoundControl _ownerControl;
+  private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> 
   ///   Initializes a new instance of the <see cref="PropertyPathBindingCollection"/> class
@@ -26,7 +26,7 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   ///   The <see cref="IBusinessObjectBoundControl"/> to which this 
   ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </param>
-  internal PropertyPathBindingCollection (IBusinessObjectBoundControl ownerControl)
+  internal PropertyPathBindingCollection (IBusinessObjectBoundWebControl ownerControl)
   {
     _ownerControl = ownerControl;
   }
@@ -123,10 +123,10 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> to which this 
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
   ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </summary>
-  internal IBusinessObjectBoundControl OwnerControl
+  internal IBusinessObjectBoundWebControl OwnerControl
   {
     get
     { 
