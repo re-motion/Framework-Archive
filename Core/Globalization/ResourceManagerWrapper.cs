@@ -28,7 +28,7 @@ public class ResourceManagerWrapper: IResourceManager, IList
 {
   //  static fields
 
-	private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   // member fields
 
@@ -117,6 +117,22 @@ public class ResourceManagerWrapper: IResourceManager, IList
   }
 
   /// <summary>
+  ///   Gets the value of the specified String resource. The resource is identified by
+  ///   concatenating the type's FullName and the enumvalue's string representation.
+  /// </summary>
+  /// <param name="type">The type to which the resource belongs</param>
+  /// <param name="enumValue">The last part of the reosurce identifier.</param>
+  /// <returns>
+  ///   The value of the resource. If a match is not possible, a null reference is returned
+  /// </returns>
+  public string GetString (Type type, Enum enumValue)
+  {
+    string identifier = type.FullName + "." + enumValue.ToString();
+
+    return GetString (identifier);
+  }
+
+  /// <summary>
   ///   Searches for all string resources inside the resource manager whose name is prefixed 
   ///   with a matching tag.
   /// </summary>
@@ -152,7 +168,7 @@ public class ResourceManagerWrapper: IResourceManager, IList
         }
         catch (MissingManifestResourceException ex)
         {
-          log.Error ("Missing resource.", ex);
+          s_log.Error ("Missing resource.", ex);
         }
 
         if (resourceSet == null)
@@ -200,7 +216,7 @@ public class ResourceManagerWrapper: IResourceManager, IList
       }
       catch (MissingManifestResourceException ex)
       {
-        log.Error ("Missing resource.", ex);
+        s_log.Error ("Missing resource.", ex);
       }
 
     }

@@ -15,6 +15,7 @@ using Rubicon.Web.UI.Utilities;
 using Rubicon;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -55,6 +56,19 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     ValidationError
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  protected enum ResourceIdentifiers
+  {
+    RequiredFieldAlteranteText,
+    ValidationErrorInfoAlteranteText,
+    HelpAlteranteText,
+    RequiredFieldTitle,
+    //  Not used, title always set to message
+    //  ValidationErrorInfoTitle,
+    HelpTitle
+  }
   /// <summary>
   ///   Wrapper class for a single HtmlTable plus the additional information
   ///   added through the <see cref="FormGridManager"/>.
@@ -267,7 +281,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       //  Not found, append to form grid instead of inserting at position of related form grid row
       if (relatedRow == null)
       {
-        log.Error ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' on page '" + _table.Page.ToString() + "'.");
+        s_log.Error ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' on page '" + _table.Page.ToString() + "'.");
 
         //  append html table rows
         foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
@@ -958,7 +972,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <summary>
   ///   The log4net logger
   /// </summary>
-  private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   // member fields
 
@@ -1123,13 +1137,13 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          log.Error ("FormGridManager '" + ID + "' on page '" + Page.ToString() + "' received an a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
+          s_log.Error ("FormGridManager '" + ID + "' on page '" + Page.ToString() + "' received an a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
         }
       }
       else
       {
         //  Invalid form grid
-        log.Error ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' on page '" + Page.ToString() + "'.");
+        s_log.Error ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' on page '" + Page.ToString() + "'.");
       }
     }
 
@@ -1189,7 +1203,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Invalid control
-          log.Error ("FormGrid '" + formGridID + "' is on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
+          s_log.Error ("FormGrid '" + formGridID + "' is on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
         }
       }
     }
@@ -1275,38 +1289,77 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
                                 | BindingFlags.NonPublic
                                 | BindingFlags.InvokeMethod;
 
+    //  Deleage loading the view state for individual controls to the cells that contain them
+    //  thus, reducing the reflection calls and increasing performance
+
     HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
-    
-    Triplet[][] rows = (Triplet[][])savedState;
+
+    Triplet[] rows = (Triplet[])savedState;
+
     for (int idxRows = 0; idxRows < rows.Length; idxRows++)
     {
+      Triplet row = (Triplet)rows[idxRows];
+
+      if (row.Second == null)
+        continue;
+
+      ArrayList indices = (ArrayList)row.Second;
+      ArrayList viewStates = (ArrayList)row.Third;
+
       HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
 
-      Triplet[] cells = rows[idxRows];
-
-      for (int idxCells = 0; idxCells < cells.Length; idxCells++)
+      for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
       {
-        ControlCollection controlCollection = cellCollection[idxCells].Controls;
+        int cellIndex = (int)indices[idxIndices];
+        object viewState = viewStates[idxIndices];
 
-        Triplet cell = cells[idxCells];
+        bool enableViewStateBackup = cellCollection[idxIndices].EnableViewState;
+        cellCollection[idxIndices].EnableViewState = true;
 
-        ArrayList indices = (ArrayList)cell.Second;
-        ArrayList viewStates = (ArrayList)cell.Third;
+        typeof (Control).InvokeMember (
+          "LoadViewStateRecursive",
+          bindingFlags,
+          null,
+          cellCollection[cellIndex],
+          new object[] {viewState});
 
-        for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
-        {
-          int controlIndex = (int)indices[idxIndices];
-          object viewState = viewStates[idxIndices];
-            
-          typeof (Control).InvokeMember (
-            "LoadViewStateRecursive",
-            bindingFlags,
-            null,
-            controlCollection[controlIndex],
-            new object[] {viewState});
-        }
+        cellCollection[idxIndices].EnableViewState = enableViewStateBackup;
       }
     }
+
+//    //  Load View State for individual controls
+//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
+//    
+//    Triplet[][] rows = (Triplet[][])savedState;
+//    for (int idxRows = 0; idxRows < rows.Length; idxRows++)
+//    {
+//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
+//
+//      Triplet[] cells = rows[idxRows];
+//
+//      for (int idxCells = 0; idxCells < cells.Length; idxCells++)
+//      {
+//        ControlCollection controlCollection = cellCollection[idxCells].Controls;
+//
+//        Triplet cell = cells[idxCells];
+//
+//        ArrayList indices = (ArrayList)cell.Second;
+//        ArrayList viewStates = (ArrayList)cell.Third;
+//
+//        for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
+//        {
+//          int controlIndex = (int)indices[idxIndices];
+//          object viewState = viewStates[idxIndices];
+//            
+//          typeof (Control).InvokeMember (
+//            "LoadViewStateRecursive",
+//            bindingFlags,
+//            null,
+//            controlCollection[controlIndex],
+//            new object[] {viewState});
+//        }
+//      }
+//    }
   }
 
   /// <summary>
@@ -1328,6 +1381,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   protected override object SaveViewState()
   {
     Hashtable formGridViewStates = new Hashtable (_formGrids.Count);
+
     foreach (FormGrid formGrid in _formGrids.Values)
     {
       object formGridViewState = SaveFormGridViewState (formGrid);
@@ -1361,46 +1415,97 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
                                 | BindingFlags.NonPublic
                                 | BindingFlags.InvokeMethod;
 
+    //  Deleage saving the view state for individual controls to the cells that contain them
+    //  thus, reducing the reflection calls and increasing performance
+
     HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
-    
-    Triplet[][] rows = new Triplet[rowCollection.Count][];
+
+    Triplet[] rows = new Triplet[rowCollection.Count];
 
     for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
     {
       HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
 
-      Triplet[] cells = new Triplet[cellCollection.Count];
+      ArrayList indices = new ArrayList (cellCollection.Count);
+      ArrayList viewStates = new ArrayList (cellCollection.Count);
 
       for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
       {
-        ControlCollection controlCollection = cellCollection[idxCells].Controls;
+        if (cellCollection[idxCells].Controls.Count == 0)
+          continue;
 
-        ArrayList indices = new ArrayList (controlCollection.Count);
-        ArrayList viewStates = new ArrayList (controlCollection.Count);
-
-        for (int idxControls = 0; idxControls < controlCollection.Count; idxControls++)
-        {
-          object viewState = typeof (Control).InvokeMember (
+        bool enableViewStateBackup = cellCollection[idxCells].EnableViewState;
+        cellCollection[idxCells].EnableViewState = true;
+        
+        object viewState = typeof (Control).InvokeMember (
             "SaveViewStateRecursive",
             bindingFlags,
             null,
-            controlCollection[idxControls],
+            cellCollection[idxCells],
             new object[] {});
 
-          if (viewState != null)
+        cellCollection[idxCells].EnableViewState = enableViewStateBackup;
+
+        if (viewState != null)
+        {
+          Triplet cell = (Triplet)viewState;
+
+          if (cell.Second != null)
           {
-            indices.Add (idxControls);
+            cell.First = null;
+
+            indices.Add (idxCells);
             viewStates.Add (viewState);
           }
         }
 
-        cells[idxCells] = new Triplet(null, indices, viewStates);
       }
 
-      rows[idxRows] = cells;
+      Triplet row = new Triplet(null, indices, viewStates);
+      rows[idxRows] = row;
     }
-
+  
     return rows;
+
+//    //  Save View State for individual controls
+//    Triplet[][] rows = new Triplet[rowCollection.Count][];
+//
+//    for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
+//    {
+//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
+//
+//      Triplet[] cells = new Triplet[cellCollection.Count];
+//
+//      for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
+//      {
+//        ControlCollection controlCollection = cellCollection[idxCells].Controls;
+//
+//        ArrayList indices = new ArrayList (controlCollection.Count);
+//        ArrayList viewStates = new ArrayList (controlCollection.Count);
+//
+//        for (int idxControls = 0; idxControls < controlCollection.Count; idxControls++)
+//        {
+//          object viewState = typeof (Control).InvokeMember (
+//            "SaveViewStateRecursive",
+//            bindingFlags,
+//            null,
+//            controlCollection[idxControls],
+//            new object[] {});
+//
+//          if (viewState != null)
+//          {
+//            indices.Add (idxControls);
+//            viewStates.Add (viewState);
+//          }
+//        }
+//
+//        cells[idxCells] = new Triplet(null, indices, viewStates);
+//      }
+//
+//      rows[idxRows] = cells;
+//    }
+//
+//    return rows;
   }
 
   /// <summary> 
@@ -1558,8 +1663,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     //  Create a ValidationError object for each error
     //  Create the validationIcon
 
-    Image validationIcon = new Image();
-    validationIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);
+    string toolTip = "";
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
@@ -1576,46 +1680,23 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
       //  Optimize: Expect the validated control in the same cell
       //  and look in the page only if not found locally
-      Control controlToValidate = dataRow.ControlsCell.FindControl (validator.ControlToValidate);
-      if (controlToValidate == null)
-      {
-        controlToValidate = dataRow.ControlsCell.Page.FindControl (validator.ControlToValidate);
-        if (controlToValidate == null) throw new ApplicationException ("Unable to find control id '" + validator.ControlToValidate + "' referenced by the 'ControlToValidate' property of '" + validator.ID + "'.");
-      }
+      Control controlToValidate = validator.NamingContainer.FindControl (
+        validator.ControlToValidate);
 
       //  Ignore invisible controls
       if (!controlToValidate.Visible)
         continue;
 
-
-      // Simple Controls
-      bool isTextBox = controlToValidate is TextBox;
-      bool isDropDownList = controlToValidate is DropDownList;
-
-
       //  Get validation message
+      string validationMessage = validator.ErrorMessage;
 
-      string validationMessage = String.Empty;
-
-      if (isTextBox || isDropDownList)
-        validationMessage = validator.ErrorMessage;
-      // TODO: Get validationMessage for other control types
-
-
-      //  Get tool tip
-
-      string toolTip = String.Empty;
-
-      if (isTextBox || isDropDownList)
-        toolTip = validator.ToolTip;
-      // TODO: Get tool tip for other control types
-
-      if (toolTip != null && toolTip.Length > 0)
+      //  Get tool tip, tool tip is validation message
+      if (validationMessage != null && validationMessage.Length > 0)
       {
-        if (validationIcon.ToolTip.Length > 0)
-          validationIcon.ToolTip += Environment.NewLine;
+        if (toolTip.Length > 0)
+          toolTip += Environment.NewLine;
 
-        validationIcon.ToolTip += toolTip;
+        toolTip += validationMessage;
       }
 
       //  Build ValidationError
@@ -1626,7 +1707,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     bool hasValidationErrors = validationErrorList.Count > 0;
 
     if (hasValidationErrors)
-      dataRow.ValidationMarker = validationIcon;
+      dataRow.ValidationMarker = GetValidationMarker (toolTip);
 
     dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray (typeof (ValidationError));
   }
@@ -1872,13 +1953,15 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     else
       dataRow.SetControlsCell (1, dataRow.LabelsColumn);
 
-    OverrideValidators (dataRow);
-
     CreateLabels (dataRow);
 
-    CheckForRequiredControls (dataRow);
+    CreateValidators (dataRow);
 
-    GetHelpProvider (dataRow);
+    OverrideValidators (dataRow);
+
+    CreateRequiredControls (dataRow);
+
+    CreateHelpProviders(dataRow);
 
     HandleReadOnlyControls (dataRow);
   }
@@ -2064,17 +2147,13 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       //  Query the controls for the string to be used as the labeling Text
 
-      if (!control.Visible)
-        continue;
-
       string newText = String.Empty;
 
-      // TODO: Query PropertyControl for String.
-      //  if (control is PropertyControl)
-      //  {
-      //    newText = ((PropertyControl)control).Text;
-      //  }
-      if (control is TextBox)
+      if (control is ISmartControl)
+      {
+        newText = ((ISmartControl)control).DisplayName;
+      }
+      else if (control is TextBox)
       {
         newText = ((TextBox)control).Text;
       }
@@ -2101,28 +2180,87 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
         label.Text = AccessKeyUtility.FormatLabelText (newText, false, out accessKey);
         
-        if (control is TextBox)
+        ISmartControl smartControl = control as ISmartControl;
+        if (smartControl != null && smartControl.UseLabel)
         {
           label.AccessKey = accessKey;
-          label.AssociatedControlID = control.ID;
+          newText = smartControl.ClientID;
+        }
+        else if (control is TextBox)
+        {
+          label.AccessKey = accessKey;
+          label.AssociatedControlID = control.ClientID;
         }
       }
         //  Otherwise, create default text.
-      else
+      else if (control.ID != null)
       {
         label.Text = control.ID.ToUpper();
-        log.Error ("No resource available for control '" + control.ID + "' in page '" + control.Page.ToString() + "'.");
+        s_log.Error ("No resource available for control '" + control.ID + "' in page '" + control.Page.ToString() + "'.");
       }
+
+      //  Should be default, but better safe than sorry
+      label.EnableViewState = true;
+
+      dataRow.LabelsCell.Controls.Add(label);
+
+      //  Set Visible after control is added so ViewState knows about it
+      label.Visible = control.Visible;
 
       //  Add seperator if already a control in the cell
       if (dataRow.LabelsCell.Controls.Count > 0)
       {
         LiteralControl seperator = new LiteralControl(", ");
-        
+
+        //  Not default, but ViewState is needed
+        seperator.EnableViewState = true;
+
         dataRow.LabelsCell.Controls.Add(seperator);
+        
+        //  Set Visible after control is added so ViewState knows about it
+        seperator.Visible = label.Visible;
+
+      }
+    }
+  }
+
+  /// <summary>
+  ///   Creates the validators from the controls inside <paramref name="dataRow"/>
+  ///   if they do not already exist.
+  /// </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateValidators/remarks' />
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateValidators/Parameters/*' />
+  protected virtual void CreateValidators (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+    ArrayList smartControls = new ArrayList();
+    ArrayList validators = new ArrayList();
+
+    //  Split into smart controls and validators
+    foreach (Control control in dataRow.ControlsCell.Controls)
+    {
+      if (control is ISmartControl)
+        smartControls.Add (control);
+      else if (control is BaseValidator)
+        validators.Add (control);
+    }
+    
+    foreach (ISmartControl smartControl in smartControls)
+    {
+      //  Create Validators only if none are assigned for the SmartControl
+      foreach (BaseValidator validator in validators)
+      {
+        if (validator.ControlToValidate == smartControl.ID)
+          return;
       }
 
-      dataRow.LabelsCell.Controls.Add(label);
+      BaseValidator[] newValidators = smartControl.CreateValidators();
+
+      foreach (BaseValidator validator in newValidators)
+        dataRow.ControlsCell.Controls.Add (validator);
     }
   }
 
@@ -2130,21 +2268,46 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   ///   Queries the controls in <paramref name="controlsCell"/> for their mandatory setting 
   ///   and returns a control to be used as a required marker.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CheckForRequiredControls/remarks' />
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CheckForRequiredControls/Parameters/*' />
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CheckForRequiredControls/returns' />
-  protected virtual void CheckForRequiredControls (FormGridRow dataRow)
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateRequiredControls/remarks' />
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateRequiredControls/Parameters/*' />
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateRequiredControls/returns' />
+  protected virtual void CreateRequiredControls (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+    foreach (Control control in dataRow.LabelsCell.Controls)
+    {
+      ISmartControl smartControl = control as ISmartControl;
+
+      if (smartControl == null)
+        continue;
+
+      if (smartControl.IsRequired)
+      {
+        dataRow.RequiredMarker = GetRequiredMarker();
+
+        //  We have a marker, rest would be redundant
+        return;
+      }
+    }
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
-      if (!control.Visible)
+      ISmartControl smartControl = control as ISmartControl;
+
+      if (smartControl == null)
         continue;
 
-      // TODO: Required checking
+      if (smartControl.IsRequired)
+      {
+        dataRow.RequiredMarker = GetRequiredMarker();
+
+        //  We have a marker, rest would be redundant
+        return;
+      }
     }
   }
 
@@ -2155,18 +2318,47 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetHelpProvider/remarks' />
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetHelpProvider/Parameters/*' />
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetHelpProvider/returns' />
-  protected virtual void GetHelpProvider (FormGridRow dataRow)
+  protected virtual void CreateHelpProviders(FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+    foreach (Control control in dataRow.LabelsCell.Controls)
+    {
+      ISmartControl smartControl = control as ISmartControl;
+
+      if (smartControl == null)
+        continue;
+
+      string helpUrl = smartControl.HelpUrl;
+
+      if (helpUrl != null && helpUrl != String.Empty)
+      {
+        dataRow.HelpProvider = GetHelpProvider (helpUrl);
+
+        //  We have a help provider, first come, only one served
+        return;
+      }
+    }
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
-      if (!control.Visible)
+      ISmartControl smartControl = control as ISmartControl;
+
+      if (smartControl == null)
         continue;
 
-      // TODO: Required checking
+      string helpUrl = smartControl.HelpUrl;
+
+      if (helpUrl != null && helpUrl != String.Empty)
+      {
+        dataRow.HelpProvider = GetHelpProvider (helpUrl);
+
+        //  We have a help provider, first come, only one served
+        return;
+      }
     }
   }
 
@@ -2188,7 +2380,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       if (!control.Visible)
       continue;
 
-      // TODO: Support for non-TextBox controls with read-only option
+      // TODO: Support for non-TextBox, non-ISmartControl controls with read-only option
 
       TextBox textBox = control as TextBox;
 
@@ -2310,7 +2502,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     //  Control Cell
     if (dataRow.ControlsCell.Attributes["class"] == null)
     {
-      string cssClass = CssClassControlsCell;
+      string cssClass = CssClassInputControlsCell;
 
       if (isTopDataRow && dataRow.ControlsCellDummy == null)
         cssClass += " " + CssClassTopDataRow;
@@ -2321,7 +2513,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     //  Control Cell Dummy
     if (dataRow.ControlsCellDummy != null)
     {
-      string cssClass = CssClassControlsCell;
+      string cssClass = CssClassInputControlsCell;
 
       if (isTopDataRow)
         cssClass += " " + CssClassTopDataRow;
@@ -2369,7 +2561,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       Control control = dataRow.ControlsCell.Controls[idxControl];
 
-      // TODO: Query PropertyControl
+      // TODO: Query ISmartControl
+      //  if ((Control as ISmartControl).UseInputControlStyle)
 
       TextBox textBox = control as TextBox;
       DropDownList dropDownList = control as DropDownList;
@@ -2377,12 +2570,12 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       if (textBox != null)
       {
         if (textBox.CssClass.Length == 0)
-          textBox.CssClass = CssClassControl;
+          textBox.CssClass = CssClassInputControl;
       }
       else if (dropDownList != null)
       {
         if (dropDownList.CssClass.Length == 0)
-          dropDownList.CssClass = CssClassControl;
+          dropDownList.CssClass = CssClassInputControl;
       }
       else
       {
@@ -2438,6 +2631,95 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return imageUrl;
     else
       return relativeUrl;  
+  }
+
+  protected virtual Control GetRequiredMarker()
+  {
+    Image requiredIcon = new Image();
+    requiredIcon.ImageUrl = GetImageUrl (FormGridImage.RequiredField);
+    
+    requiredIcon.AlternateText = "*";
+ 
+    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+
+    if (resourceManager != null)
+    {
+      string alternateText = resourceManager.GetString (
+        typeof (FormGridManager), 
+        ResourceIdentifiers.RequiredFieldAlteranteText);
+
+      if (alternateText != null)
+        requiredIcon.AlternateText = alternateText;
+
+      string toolTip = resourceManager.GetString (
+        typeof (FormGridManager), 
+        ResourceIdentifiers.RequiredFieldTitle);
+
+      if (toolTip != null)
+        requiredIcon.ToolTip = toolTip;
+    }
+
+    return requiredIcon;
+  }
+
+  protected virtual Control GetHelpProvider (string helpUrl)
+  {
+    Image helpIcon = new Image();
+    helpIcon.ImageUrl = GetImageUrl (FormGridImage.Help);
+
+    helpIcon.AlternateText = "?";
+ 
+    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+
+    if (resourceManager != null)
+    {
+      string alternateText = resourceManager.GetString (
+        typeof (FormGridManager), 
+        ResourceIdentifiers.HelpAlteranteText);
+
+      if (alternateText != null)
+        helpIcon.AlternateText = alternateText;
+
+      string toolTip = resourceManager.GetString (
+        typeof (FormGridManager), 
+        ResourceIdentifiers.HelpTitle);
+
+      if (toolTip != null)
+        helpIcon.ToolTip = toolTip;
+    }
+
+    HtmlAnchor helpAnchor = new HtmlAnchor();
+    helpAnchor.HRef = helpUrl;
+    helpAnchor.Controls.Add (helpIcon);
+    helpAnchor.Target = "_new";
+
+    return helpAnchor;
+  }
+
+  protected virtual Control GetValidationMarker (string toolTip)
+  {
+    Image validationErrorIcon = new Image();
+    validationErrorIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);
+
+    validationErrorIcon.AlternateText = "!";
+    validationErrorIcon.ToolTip = toolTip;
+ 
+    IObjectWithResources objectWithResources = this.Page as IObjectWithResources;
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+
+    if (resourceManager != null)
+    {
+      string alternateText = resourceManager.GetString (
+        typeof (FormGridManager), 
+        ResourceIdentifiers.ValidationErrorInfoAlteranteText);
+
+      if (alternateText != null)
+        validationErrorIcon.AlternateText = alternateText;
+    }
+
+    return validationErrorIcon;
   }
 
   /// <summary>
@@ -2697,8 +2979,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <summary>
   ///   CSS-Class applied to the cells containing the input controls
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassControlsCell/remarks' />
-  protected virtual string CssClassControlsCell
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassInputControlsCell/remarks' />
+  protected virtual string CssClassInputControlsCell
   { get { return "formGridControlsCell"; } }
 
   /// <summary>
@@ -2718,9 +3000,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <summary>
   ///   CSS-Class applied to the input controls.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassControl/remarks' />
-  protected virtual string CssClassControl
-  { get { return "formGridControl"; } }
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassInputControl/remarks' />
+  protected virtual string CssClassInputControl
+  { get { return "formGridInputControl"; } }
 
   /// <summary>
   ///   CSS-Class applied to the individual validation messages

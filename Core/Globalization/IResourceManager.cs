@@ -40,6 +40,17 @@ public interface IResourceManager
   string GetString (string id);
 
   /// <summary>
+  ///   Gets the value of the specified String resource. The resource is identified by
+  ///   concatenating the type's FullName and the enumvalue's string representation.
+  /// </summary>
+  /// <param name="type">The type to which the resource belongs</param>
+  /// <param name="enumValue">The last part of the reosurce identifier.</param>
+  /// <returns>
+  ///   The value of the resource. If a match is not possible, a null reference is returned
+  /// </returns>
+  string GetString (Type type, Enum enumValue);
+
+  /// <summary>
   ///   Gets the root names of the resource files that the <c>IResourceManager</c>
   ///   searches for resources. Multiple roots are seperated by a comma.
   /// </summary>

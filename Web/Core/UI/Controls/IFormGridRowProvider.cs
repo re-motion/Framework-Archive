@@ -16,6 +16,9 @@ public interface IFormGridRowProvider
   FormGridRowPrototypeCollection GetListOfFormGridRowPrototypes (string table);
 }
 
+/// <summary>
+/// 
+/// </summary>
 public class FormGridRowProvider
 {
   private Hashtable _hiddenRows;

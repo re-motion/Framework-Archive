@@ -226,7 +226,7 @@
           is empty.
         </item>
         <item>
-          Call to <see cref="CheckForRequiredControls"/> to test whether a required marker is needed.
+          Call to <see cref="CreateRequiredControls"/> to test whether a required marker is needed.
         </item>
         <item>
           Call to <see cref="GetHelpProvider"/> to test whether a help provider is needed.
@@ -414,7 +414,7 @@
       </param>
     </Parameters>
   </CreateLabels>
-  <CheckForRequiredControls>
+  <CreateRequiredControls>
     <remarks>
       <para>
         Only visible controls will be checked.
@@ -430,7 +430,7 @@
     <returns>
       The required marker or <see langname="null"/> if not required.
     </returns>
-  </CheckForRequiredControls>
+  </CreateRequiredControls>
   <GetHelpProvider>
     <remarks>
       <para>
@@ -648,11 +648,11 @@
       Class: <c>formGridMarkerCell</c>
     </remarks>
   </CssClassMarkerCell>
-  <CssClassControlCell>
+  <CssClassInputControlCell>
     <remarks>
       Class: <c>formGridControlCell</c>
     </remarks>
-  </CssClassControlCell>
+  </CssClassInputControlCell>
   <CssClassValidationMessageCell>
       <remarks>
         <para>
@@ -673,7 +673,7 @@
         </para>
       </remarks>
   </CssClassTopDataRow>
-  <CssClassControl>
+  <CssClassInputControl>
     <remarks>
       <para>
         Class: <c>formGridControl</c>
@@ -681,7 +681,7 @@
         Use this to refine the look of the controls relative to the parent element's style.
       </para>
     </remarks>
-  </CssClassControl>
+  </CssClassInputControl>
   <CssClassValidationMessage>
     <remarks>
       Class: <c>formGridValidationMessage</c>

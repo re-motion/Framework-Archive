@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using System.Collections.Specialized;
+using System.Text;
 
 using Rubicon.Utilities;
 
@@ -21,6 +22,9 @@ public class MultiLingualResourcesAttribute: Attribute
 
   /// <summary> Hashtable&lt;string, ResourceManager&gt; </summary>
   private static Hashtable s_resourceManagersCache = new Hashtable ();
+
+  /// <summary> Hashtable&lt;string, ResourceManagerWrapper&gt; </summary>
+  private static Hashtable s_resourceManagerWrappersCache = new Hashtable ();
 
   /// <summary> The root name of the resource container </summary>
   private string _resourceName;
@@ -164,37 +168,67 @@ public class MultiLingualResourcesAttribute: Attribute
     //  Current hierarchy level, always report missing MultiLingualResourcesAttribute
     GetResourceNameAndType (objectType, false, out definingType, out resourceNames);
 
-    resourceManagers.AddRange (
-      GetResourceManagers (definingType.Assembly, resourceNames));
+    ResourceManagerWrapper resourceManagerWrapper = null;
+
+    StringBuilder keyStringBuilder = new StringBuilder (1000);
+    keyStringBuilder.AppendFormat (
+      "{0} with hierarchy: {1}", 
+      definingType.AssemblyQualifiedName,
+      includeHierarchy.ToString());
+
+    string key = keyStringBuilder.ToString();
+   
+    //  Look in cache and continue with the cached resource manager wrapper, if one is found
+
+    resourceManagerWrapper = s_resourceManagerWrappersCache[key] as ResourceManagerWrapper;
+    
+    if (resourceManagerWrapper != null)
+      return resourceManagerWrapper;
+
+    //  Not found in cache, get new resource managers
+
+    resourceManagers.AddRange (GetResourceManagers (definingType.Assembly, resourceNames));
 
     if (includeHierarchy)
     {
       //  Walk through the class hierarchy
       //  and get the resources defined for these types
 
-      while (definingType != null)
+      Type currentType = definingType;
+      while (currentType != null)
       {
-        definingType = definingType.BaseType;
+        currentType = currentType.BaseType;
         
         //  No more base types
-        if (definingType == null)
+        if (currentType == null)
           break;
 
-        GetResourceNameAndType (definingType, true, out definingType, out resourceNames);
+        GetResourceNameAndType (currentType, true, out currentType, out resourceNames);
 
         //  No more base types defining the MultiLingualResourcesAttribute
-        if (definingType != null)
+        if (currentType != null)
         {
           //  Insert the found resources managers at the beginning of the list
           resourceManagers.InsertRange (
             0,
-            GetResourceManagers (definingType.Assembly, resourceNames));
+            GetResourceManagers (currentType.Assembly, resourceNames));
         }
       }
     }
 
-    return new ResourceManagerWrapper(
+    //  Create a new resource mananger wrapper and put it into the cache.
+
+    resourceManagerWrapper =  new ResourceManagerWrapper(
       (ResourceManager[])resourceManagers.ToArray(typeof(ResourceManager)));
+    
+    if (resourceManagerWrapper == null) throw new ResourceException ("No resource manager wrapper could be created for " + objectType.FullName + " found in assembly \"" + objectType.Assembly.FullName + "\".");
+
+    lock (s_resourceManagerWrappersCache)
+    {
+      s_resourceManagerWrappersCache[key] = resourceManagerWrapper;
+    }
+
+    return resourceManagerWrapper;
   }
 
   /// <summary>

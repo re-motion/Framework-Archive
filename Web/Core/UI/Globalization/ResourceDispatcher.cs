@@ -24,7 +24,7 @@ public sealed class ResourceDispatcher
   // types
 
   // static members and constants
-	private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   /// <summary>
   ///   Dispatches resources
@@ -101,7 +101,7 @@ public sealed class ResourceDispatcher
 
       if (targetControl == null)
       {
-        log.Error ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource " + resourceManager.BaseNameList + ".");
+        s_log.Error ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource " + resourceManager.BaseNameList + ".");
       }
       else
       {
@@ -160,7 +160,7 @@ public sealed class ResourceDispatcher
           //  Non-HtmlControls require valid property
         else
         {
-           log.Error ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
+           s_log.Error ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
         }
       }
     }
@@ -250,7 +250,7 @@ public sealed class ResourceDispatcher
 
     if (property == null)
     {
-      log.Error ("Object of type '" + objectToSetPropertyFor.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
+      s_log.Error ("Object of type '" + objectToSetPropertyFor.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
     }
 
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
