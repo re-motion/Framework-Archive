@@ -293,7 +293,7 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException), 
-      "Cannot add object 'TestDomain|Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+      "Cannot add object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
       + " already part of this collection.\r\nParameter name: domainObject")]
   public void AddObjectAlreadyInCollection ()
   {
@@ -303,7 +303,7 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException), 
-      "Cannot insert object 'TestDomain|Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+      "Cannot insert object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
       + " already part of this collection.\r\nParameter name: domainObject")]
   public void InsertObjectAlreadyInCollection ()
   {
