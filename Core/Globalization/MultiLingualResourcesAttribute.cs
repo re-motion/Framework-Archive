@@ -78,6 +78,124 @@ public class MultiLingualResourcesAttribute: Attribute
   }
 
   /// <summary>
+  ///   Returns an <c>IResourceManager</c> array for the resource containers specified
+  ///   in the class declaration of the type.
+  /// </summary>
+  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
+  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="resourceNames"]' />
+  private static ResourceManagerWrapper GetResourceManager (
+      Type objectType,
+      bool includeHierarchy,
+      out Type definingType,
+      out StringCollection resourceNames)
+  {
+    ArrayList resourceManagers = new ArrayList();
+
+    //  Current hierarchy level, always report missing MultiLingualResourcesAttribute
+    GetResourceNameAndType (objectType, false, out definingType, out resourceNames);
+
+    ResourceManagerWrapper resourceManagerWrapper = null;
+
+    StringBuilder keyStringBuilder = new StringBuilder (1000);
+    keyStringBuilder.AppendFormat (
+        "{0} with hierarchy: {1}", 
+        definingType.AssemblyQualifiedName,
+        includeHierarchy.ToString());
+
+    string key = keyStringBuilder.ToString();
+   
+    //  Look in cache and continue with the cached resource manager wrapper, if one is found
+
+    resourceManagerWrapper = s_resourceManagerWrappersCache[key] as ResourceManagerWrapper;
+    
+    if (resourceManagerWrapper != null)
+      return resourceManagerWrapper;
+
+    //  Not found in cache, get new resource managers
+
+    resourceManagers.AddRange (GetResourceManagers (definingType.Assembly, resourceNames));
+
+    if (includeHierarchy)
+    {
+      //  Walk through the class hierarchy
+      //  and get the resources defined for these types
+
+      Type currentType = definingType;
+      while (currentType != null)
+      {
+        currentType = currentType.BaseType;
+        
+        //  No more base types
+        if (currentType == null)
+          break;
+
+        GetResourceNameAndType (currentType, true, out currentType, out resourceNames);
+
+        //  No more base types defining the MultiLingualResourcesAttribute
+        if (currentType != null)
+        {
+          //  Insert the found resources managers at the beginning of the list
+          resourceManagers.InsertRange (
+              0,
+              GetResourceManagers (currentType.Assembly, resourceNames));
+        }
+      }
+    }
+
+    //  Create a new resource mananger wrapper and put it into the cache.
+
+    resourceManagerWrapper =  new ResourceManagerWrapper(
+        (ResourceManager[])resourceManagers.ToArray(typeof(ResourceManager)));
+    
+    if (resourceManagerWrapper == null) throw new ResourceException ("No resource manager wrapper could be created for " + objectType.FullName + " found in assembly '" + objectType.Assembly.FullName + "'.");
+
+    lock (s_resourceManagerWrappersCache)
+    {
+      s_resourceManagerWrappersCache[key] = resourceManagerWrapper;
+    }
+
+    return resourceManagerWrapper;
+  }
+  /// <summary>
+  ///   Returns an <c>ResourceManager</c> array for the resource containers
+  ///   specified by resourceName.
+  /// </summary>
+  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManagers/*' />
+  private static ResourceManager[] GetResourceManagers (
+      Assembly assembly,
+      StringCollection resourceNames)
+  {
+    ResourceManager[] resourceManagers = new ResourceManager [resourceNames.Count];
+
+    //  Load the ResourceManagers for the type's resources
+
+    for (int index = 0; index < resourceNames.Count; index++)
+    {
+      string key = resourceNames[index] + " in " + assembly.FullName;
+
+      //  Look in cache 
+      resourceManagers[index] = (ResourceManager) s_resourceManagersCache[key];
+      if (resourceManagers[index] == null)
+      {
+        //  Create a new resource mananger and put it into the cache.
+        lock (s_resourceManagersCache)
+        {
+          resourceManagers[index] = (ResourceManager) s_resourceManagersCache[key];
+          if (resourceManagers[index] == null)
+          {
+            resourceManagers[index] = new ResourceManager (resourceNames[index], assembly);
+            if (resourceManagers[index] == null) throw new ResourceException ("No resource with name '" + resourceNames + "' found in assembly '" + assembly.FullName + "'.");
+
+            s_resourceManagersCache[key] = resourceManagers[index];
+          }
+        }
+      }
+    }
+
+    return resourceManagers;
+  }
+  
+  /// <summary>
   ///   Loads a string resource for the specified type, identified by ID.
   /// </summary>
   /// <param name="objectTypeToGetResourceFor">
@@ -196,133 +314,15 @@ public class MultiLingualResourcesAttribute: Attribute
   }
 
   /// <summary>
-  ///   Returns an <c>IResourceManager</c> array for the resource containers specified
-  ///   in the class declaration of the type.
-  /// </summary>
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="resourceNames"]' />
-  private static ResourceManagerWrapper GetResourceManager (
-      Type objectType,
-      bool includeHierarchy,
-      out Type definingType,
-      out StringCollection resourceNames)
-  {
-    ArrayList resourceManagers = new ArrayList();
-
-    //  Current hierarchy level, always report missing MultiLingualResourcesAttribute
-    GetResourceNameAndType (objectType, false, out definingType, out resourceNames);
-
-    ResourceManagerWrapper resourceManagerWrapper = null;
-
-    StringBuilder keyStringBuilder = new StringBuilder (1000);
-    keyStringBuilder.AppendFormat (
-      "{0} with hierarchy: {1}", 
-      definingType.AssemblyQualifiedName,
-      includeHierarchy.ToString());
-
-    string key = keyStringBuilder.ToString();
-   
-    //  Look in cache and continue with the cached resource manager wrapper, if one is found
-
-    resourceManagerWrapper = s_resourceManagerWrappersCache[key] as ResourceManagerWrapper;
-    
-    if (resourceManagerWrapper != null)
-      return resourceManagerWrapper;
-
-    //  Not found in cache, get new resource managers
-
-    resourceManagers.AddRange (GetResourceManagers (definingType.Assembly, resourceNames));
-
-    if (includeHierarchy)
-    {
-      //  Walk through the class hierarchy
-      //  and get the resources defined for these types
-
-      Type currentType = definingType;
-      while (currentType != null)
-      {
-        currentType = currentType.BaseType;
-        
-        //  No more base types
-        if (currentType == null)
-          break;
-
-        GetResourceNameAndType (currentType, true, out currentType, out resourceNames);
-
-        //  No more base types defining the MultiLingualResourcesAttribute
-        if (currentType != null)
-        {
-          //  Insert the found resources managers at the beginning of the list
-          resourceManagers.InsertRange (
-            0,
-            GetResourceManagers (currentType.Assembly, resourceNames));
-        }
-      }
-    }
-
-    //  Create a new resource mananger wrapper and put it into the cache.
-
-    resourceManagerWrapper =  new ResourceManagerWrapper(
-      (ResourceManager[])resourceManagers.ToArray(typeof(ResourceManager)));
-    
-    if (resourceManagerWrapper == null) throw new ResourceException ("No resource manager wrapper could be created for " + objectType.FullName + " found in assembly '" + objectType.Assembly.FullName + "'.");
-
-    lock (s_resourceManagerWrappersCache)
-    {
-      s_resourceManagerWrappersCache[key] = resourceManagerWrapper;
-    }
-
-    return resourceManagerWrapper;
-  }
-
-  /// <summary>
-  ///   Returns an <c>ResourceManager</c> array for the resource containers
-  ///   specified by resourceName.
-  /// </summary>
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManagers/*' />
-  private static ResourceManager[] GetResourceManagers (
-    Assembly assembly,
-    StringCollection resourceNames)
-  {
-      ResourceManager[] resourceManagers = new ResourceManager [resourceNames.Count];
-
-    //  Load the ResourceManagers for the type's resources
-
-    for (int index = 0; index < resourceNames.Count; index++)
-    {
-      string key = resourceNames[index] + " in " + assembly.FullName;
-
-      //  Look in cache and continue with cached the resource manager, if one is found
-
-      resourceManagers[index] = s_resourceManagersCache[key] as ResourceManager;
-      if (resourceManagers[index] != null)
-        continue;
-
-      //  Create a new resource mananger and put it into the cache.
-
-      resourceManagers[index] = new ResourceManager (resourceNames[index], assembly);
-      if (resourceManagers[index] == null) throw new ResourceException ("No resource with name '" + resourceNames + "' found in assembly '" + assembly.FullName + "'.");
-
-      lock (s_resourceManagersCache)
-      {
-        s_resourceManagersCache[key] = resourceManagers[index];
-      }
-    }
-
-    return resourceManagers;
-  }
-  
-
-  /// <summary>
   /// Finds the class where the <c>MultiLingualResourcesAttribute</c> was defined and returns
   /// it's type and the the names of the resource containers.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceNameAndType/*' />
   private static void GetResourceNameAndType (
-    Type concreteType,
-    bool noUndefinedException,
-    out Type definingType,
-    out StringCollection resourceNames)
+      Type concreteType,
+      bool noUndefinedException,
+      out Type definingType,
+      out StringCollection resourceNames)
   {
     Type type = concreteType;
     MultiLingualResourcesAttribute[] resourceAttributes = GetResourceAttributes (type);
@@ -348,7 +348,7 @@ public class MultiLingualResourcesAttribute: Attribute
     resourceNames = new StringCollection();
 
     foreach (MultiLingualResourcesAttribute resourceAttribute in resourceAttributes)
-        resourceNames.Add (resourceAttribute.ResourceName);
+      resourceNames.Add (resourceAttribute.ResourceName);
   }
 
   /// <summary>

@@ -28,7 +28,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
 {
   //  static fields
 
-	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
   // member fields
 
@@ -38,24 +38,15 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   // construction and disposing
 
   /// <summary>
-  ///   Simple Constructor
-  /// </summary>
-  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManager"]' />
-  public ResourceManagerWrapper (ResourceManager resourceManager)
-    : this (new ResourceManager[] { resourceManager } )
-  {
-  }
-
-  /// <summary>
   ///   Constructor for wrapping multipe resource managers
   /// </summary>
   /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
-  public ResourceManagerWrapper (ResourceManager [] resourceManagers)
+  public ResourceManagerWrapper (params ResourceManager[] resourceManagers)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
     //  Do null reference checking
-    //  and build comma seperated list of BaseNames
+    //  and build comma seperated list of   
     string[] resourceManagerNames = new string[resourceManagers.Length];
     for (int index = 0; index < resourceManagers.Length; index++)
     {
@@ -227,7 +218,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   }
 
   /// <summary>
-  ///   Returns the culture hierarch, starting with the most specialized culture
+  ///   Returns the culture hierarchy, starting with the most specialized culture.
   /// </summary>
   /// <param name="mostSpecialized">
   ///   The starting point for walking the culture tree upwards. Must not be <see langame="null"/>.
