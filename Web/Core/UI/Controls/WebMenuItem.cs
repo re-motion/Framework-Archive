@@ -84,6 +84,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The ID of this menu item.")]
+  [NotifyParentProperty (true)]
+  [ParenthesizePropertyName (true)]
   [DefaultValue ("")]
   public virtual string ItemID
   {
@@ -92,6 +95,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
+  [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Category
   {
@@ -100,6 +106,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The text displayed in this menu item.")]
+  [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Text
   {
@@ -108,6 +117,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The URL of the icon displayed in this menu item.")]
+  [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Icon
   {
@@ -116,6 +128,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The URL of the icon displayed in this menu item when it is disabled. if it is not provided, the Icon's URL will be used.")]
+  [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string DisabledIcon
   {
@@ -124,6 +139,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("The selection state of a connected control that is required for enabling this menu item.")]
+  [NotifyParentProperty (true)]
   [DefaultValue (RequiredSelection.Any)]
   public RequiredSelection RequiredSelection
   {
@@ -132,6 +150,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("True to manually disable the menu item.")]
+  [NotifyParentProperty (true)]
   [DefaultValue (false)]
   public bool IsDisabled
   {
@@ -152,6 +173,9 @@ public class WebMenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The style of this menu item.")]
+  [NotifyParentProperty (true)]
   [DefaultValue (WebMenuItemStyle.IconAndText)]
   public WebMenuItemStyle Style
   {
