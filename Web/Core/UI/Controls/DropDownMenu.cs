@@ -18,6 +18,7 @@ namespace Rubicon.Web.UI.Controls
   Öffnen
   auto:list1:menu:cut:text = "Ausschneiden"
 */
+//  Disable item hook: State: Disable menu items for only 1 selected, Disable items for none selected (DHTML)
 /// <remarks>
 ///   Work in Progress
 /// </remarks>
