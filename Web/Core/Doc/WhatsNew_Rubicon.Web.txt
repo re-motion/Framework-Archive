@@ -13,6 +13,20 @@
     als IFrame an.
   * Aufruf über die Funktion ShowDatePicker in DatePicker.js.
   
+- UI.Controls.FormGridRowPrototype
+  * Umbenannt zu FormGridRowInfo
+
+- UI.Controls.FormGridRowPrototypeCollection
+  * Umbenannt zu FormGridRowInfoCollection
+ 
+- Utitilies.AccessKeyUtility
+  * FormatAccessKey (...) Methoden nach UI.Controls.SmartLabel verschoben.
+  
+- UI.Controls.FormGridRowProvider
+  * gelöscht
+  * Rubicon.Collections.AutoInitHashtable um die Funktionalität der 
+    Get...(string) Methoden nachzubauen
+ 
 1.1.21.0
 ========
 

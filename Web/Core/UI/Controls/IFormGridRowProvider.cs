@@ -20,12 +20,12 @@ public interface IFormGridRowProvider: IControl
   StringCollection GetListOfHiddenRows (string table);
 
   /// <summary>
-  ///   Returns a list of <see cref="FormGridRowPrototype"/> objects used to contrstuct and then 
+  ///   Returns a list of <see cref="FormGridRowInfo"/> objects used to contrstuct and then 
   ///   insert new rows into a form grid.
   /// </summary>
   /// <param name="table">The <see cref="HtmlTable"/> into which the new rows will be inserted.</param>
-  /// <returns>A <see cref="FormGridRowPrototypeCollection"/> containing the prototypes.</returns>
-  FormGridRowPrototypeCollection GetListOfFormGridRowPrototypes (string table);
+  /// <returns>A <see cref="FormGridRowInfoCollection"/> containing the prototypes.</returns>
+  FormGridRowInfoCollection GetListOfFormGridRowInfos (string table);
 }
 
 }

@@ -389,17 +389,17 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     public int IndexOf (object value)
     {
-      return ((IList)this).IndexOf (value);
+      return this.InnerList.IndexOf (value);
     }
 
     public void Insert (int index, object value)
     {
-      ((IList)this).Insert (index, value);
+      this.InnerList.Insert (index, value);
     }
 
     public void Add (object value)
     {
-      ((IList)this).Add (value);
+      this.InnerList.Add (value);
     }
   }
 

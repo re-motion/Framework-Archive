@@ -361,12 +361,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\FormGridRowPrototype.cs"
+                    RelPath = "UI\Controls\FormGridRowInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\FormGridRowPrototypeCollection.cs"
+                    RelPath = "UI\Controls\FormGridRowInfoCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
