@@ -170,6 +170,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "EditObject.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "EditObject.aspx.cs"
+                    DependentUpon = "EditObject.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EditObject.aspx.resx"
+                    DependentUpon = "EditObject.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Global.asax"
                     SubType = "Component"
                     BuildAction = "Content"

@@ -32,6 +32,18 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
       {
         objectWithAllDataTypes = new ClassWithAllDataTypes ();
 
+        ClassWithAllDataTypes objectWithAllDataTypes2 = CreateTestObjectWithAllDataTypes ();
+
+        ClassForRelationTest objectForRelationTest1 = new ClassForRelationTest ();
+        objectForRelationTest1.Name = "ObjectForRelationTest1";
+        objectForRelationTest1.ClassWithAllDataTypesMandatory = objectWithAllDataTypes;
+        objectWithAllDataTypes2.ClassForRelationTestMandatory = objectForRelationTest1;
+
+        ClassForRelationTest objectForRelationTest2 = new ClassForRelationTest ();
+        objectForRelationTest2.Name = "ObjectForRelationTest2";
+        objectWithAllDataTypes.ClassForRelationTestMandatory = objectForRelationTest2;
+        objectForRelationTest2.ClassWithAllDataTypesMandatory = objectWithAllDataTypes2;
+
         Session["CurrentObjectID"] = objectWithAllDataTypes.ObjectID;
       }
       else
@@ -44,15 +56,23 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
       ControlWithAllDataTypesControl.ObjectWithAllDataTypes = objectWithAllDataTypes;
 		}
 
-
-    private void SaveButton_Click(object sender, EventArgs e)
+    private ClassWithAllDataTypes CreateTestObjectWithAllDataTypes ()
     {
-      if (ControlWithAllDataTypesControl.Validate ())
-      {
-        ControlWithAllDataTypesControl.Save ();
-      
-        ClientTransaction.Current.Commit ();
-      }
+      ClassWithAllDataTypes test = new ClassWithAllDataTypes ();
+
+      test.ByteProperty = 23;
+      test.DateProperty = DateTime.Now;
+      test.DateTimeProperty = DateTime.Now;
+      test.DecimalProperty = decimal.Parse ("23.2");
+      test.DoubleProperty = 23.2;
+      test.GuidProperty = new Guid ("{00000008-0000-0000-0000-000000000009}");
+      test.Int16Property = 2;
+      test.Int32Property = 4;
+      test.Int64Property = 8;
+      test.SingleProperty = Single.Parse ("9.8");
+      test.StringProperty = "aasdf";
+
+      return test;
     }
 
     protected override void OnUnload(EventArgs e)
