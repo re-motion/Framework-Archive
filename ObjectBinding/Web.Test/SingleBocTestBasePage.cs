@@ -28,8 +28,18 @@ public class WebFormBase:
 
   protected override void OnInit(EventArgs e)
   {
-    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-    Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+      try
+      {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
+      }
+      catch (ArgumentException)
+      {}
+      try
+      {
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+      }
+      catch (ArgumentException)
+      {}
 
     base.OnInit (e);
   }

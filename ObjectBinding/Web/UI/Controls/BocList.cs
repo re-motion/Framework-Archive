@@ -21,6 +21,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
+// TODO: BocList: Comments
 // TODO: BocList: Details View
 // TODO: BocList: Sort-Buttons
 [Designer (typeof (BocListDesigner))]

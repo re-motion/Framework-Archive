@@ -16,6 +16,16 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary>
+///   This control can be used to display or edit a tri-state value (true, false, and undefined).
+/// </summary>
+/// <remarks>
+///   The control is displayed using an <see cref="ImageButton"/> (edit mode only) 
+///   or an <see cref="Image"/> (read-only mode only) to simulate a check box. It also offers 
+///   a <see cref="Label"/> containing the string representation of the current value, rendered 
+///   next to the image. Use the <see cref="ImageButton"/>, <see cref="Image"/>, and 
+///   <see cref="Label"/> properties to access these controls directly.
+/// </remarks>
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -59,7 +69,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Label"/> used to provide textual representation of the check state. </summary>
   private Label _label = new Label();
 
-  /// <summary> The <see cref="HtmlInputField"/> used to hold the check state. </summary>
+  /// <summary> The <see cref="BocInputHidden"/> used to hold the check state. </summary>
   private BocInputHidden _hiddenField = new BocInputHidden();
 
   /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>

@@ -34,7 +34,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
   ///     rmset (rm1, rm2, rm3, rm4, rm5, rm6, rm7, rm8)
   ///   </para>
   /// </example>
-  /// <param name="resourceManagerSets"> The resource manager sets, starting with the least specific. </param>
+  /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
 	public ResourceManagerSet (params IResourceManager[] resourceManagers)
 	{
     ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("resourceManagers", resourceManagers);
