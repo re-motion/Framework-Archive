@@ -1,4 +1,4 @@
-3.1.6.2
+3.1.7.0
 =======
 
 - EntryFieldBreak und EntryTitle können jetzt auch in einem ViewControl platziert werden =>
