@@ -236,6 +236,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\DataEditControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\IBusinessObjectDataSourceControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
