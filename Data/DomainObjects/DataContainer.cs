@@ -89,6 +89,12 @@ public class DataContainer
     }
   }
 
+  public void SetValue (string propertyName, object value)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    this[propertyName] = value;
+  }
+
   public RelationEndPointID[] RelationEndPointIDs
   {
     get

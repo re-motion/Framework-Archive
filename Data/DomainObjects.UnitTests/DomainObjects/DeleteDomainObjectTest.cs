@@ -148,5 +148,16 @@ public class DeleteDomainObjectTest : ClientTransactionBaseTest
     Assert.IsNotNull (_order.GetOriginalRelatedObject ("OrderTicket"));
     Assert.IsNotNull (orderTicket.GetOriginalRelatedObject ("Order"));
   }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDeletedException))]      
+  public void ModifyDeletedObject ()
+  {
+    PropertyValue propertyValue = _order.DataContainer.PropertyValues["OrderNumber"];
+
+    _order.Delete ();
+
+    propertyValue.Value = 10;
+  }
 }
 }
