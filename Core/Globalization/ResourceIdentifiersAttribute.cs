@@ -26,21 +26,24 @@ public class ResourceIdentifierAttribute: Attribute
 //      return type.FullName + "." + enumValue.ToString();
   }
 
-  private string _defaultResourceFileName;
+  private string _defaultResourceBaseName;
 
+  /// <summary> Initializes a new instance. </summary>
   public ResourceIdentifierAttribute ()
     : this (null)
   {
   }
 
-  public ResourceIdentifierAttribute (string defaultResourceFileName)
+  /// <summary> Initializes a new instance. </summary>
+  public ResourceIdentifierAttribute (string defaultResourceBaseName)
   {
-    _defaultResourceFileName = defaultResourceFileName;
+    _defaultResourceBaseName = defaultResourceFileName;
   }
 
-  public string DefaultResourceFileName
+  /// <summary> The basename of the resource container. </summary>
+  public string DefaultResourceBaseName
   {
-    get { return _defaultResourceFileName; }
+    get { return _defaultResourceBaseName; }
   }
 }
 
