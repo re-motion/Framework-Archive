@@ -1,4 +1,14 @@
-3.0.4.0 (noch kein Build verfügbar)
+3.0.5.0
+=======
+
+- ResourceDispatcher.Dispatch (...) - Änderung der Implementierung:
+    Alt: Bei Setzen von Eigenschaften von HtmlControls wurde immer die Attributes-Collection verwendet.
+    Neu: Auch bei HtmlControls wird vorher geprüft ob es ein Property gibt, ansonsten wird die 
+         Attributes-Collection verwendet
+  Grund: Bei serverseitigen HTML-Labels muss das Property "InnerText" gesetzt werden und nicht 
+         über die Attributes-Collection
+
+3.0.4.0
 =======
 
 - EntryFormGrid: Images müssen lt. HTML 4.0 einen Alt-Text definieren -> Whitespace-Images um leeren
