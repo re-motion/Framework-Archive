@@ -26,6 +26,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <remarks>
 ///   <para>
 ///     Override <see cref="GetPropertyNodes"/> to set the properties for which to display business object child nodes.
+///     Otherwise <see cref="Property"/> is used for every level in the tree.
 ///   </para><para>
 ///     Call <see cref="InvalidateTreeNodes"/> to force a refresh of the tree view in case the cached nodes
 ///     no longer represent he current object model.
