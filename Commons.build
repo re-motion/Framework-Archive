@@ -2,7 +2,7 @@
 <project xmlns="nant-schema" name="Rubicon.CooNet">
 
   <target name="debug" depends="setdebug,all" />
-  <target name="release" depends="setdebug,all" />
+  <target name="release" depends="setrelease,all" />
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
     
