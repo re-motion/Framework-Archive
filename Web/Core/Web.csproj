@@ -266,6 +266,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\TabStrip.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\TreeView.css"
                     BuildAction = "Content"
                 />

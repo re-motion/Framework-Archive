@@ -304,7 +304,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   /// <summary> Gets the tabs displayed by this tab strip. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [MergableProperty(false)]
+  [MergableProperty (false)]
   //  Default category
   [Description ("The tabs displayed by this tab strip.")]
   [DefaultValue ((string) null)]
@@ -313,9 +313,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     get { return _tabs; }
   }
 
-  [Category("Style")]
-  [Description("The style that you want to apply to a pane of tabs.")]
-  [NotifyParentProperty(true)]
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a pane of tabs.")]
+  [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style TabsPaneStyle
@@ -323,9 +323,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     get { return _tabsPaneStyle; }
   }
 
-  [Category("Style")]
-  [Description("The style that you want to apply to a tab that is neither selected nor a separator.")]
-  [NotifyParentProperty(true)]
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a tab that is neither selected nor a separator.")]
+  [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style TabStyle
@@ -333,9 +333,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     get { return _tabStyle; }
   }
 
-  [Category("Style")]
-  [Description("The style that you want to apply to the selected tab.")]
-  [NotifyParentProperty(true)]
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected tab.")]
+  [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style TabSelectedStyle
@@ -343,9 +343,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     get { return _tabSelectedStyle; }
   }
 
-  [Category("Style")]
-  [Description("The style that you want to apply to the separators.")]
-  [NotifyParentProperty(true)]
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the separators.")]
+  [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style SeparatorStyle

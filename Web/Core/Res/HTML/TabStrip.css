@@ -7,24 +7,17 @@ div.tabStrip
 div.tabStripTabsPane
 {
 	border-bottom: solid 1px #2254b1;	
-	padding: 2pt 2pt 0pt 2pt;
+	padding: 5pt 2pt 0pt 2pt;
 }
 
 /* Applied to a tab. */
 span.tabStripTab
 {
-	background-color: #e1ecfc;
-	width: 20%;
-	cursor: default;
 }
 
 /* Applied to a tab if it is selected. */
 span.tabStripTabSelected
 {
-	background-color: Highlight;
-  color: HighlightText;
-	width: 20%;
-	cursor: default;
 }
 
 /* Applied to a tab if it is a separator. */
@@ -36,28 +29,23 @@ span.tabStripSeparator
 
 span.tabStripTab a
 {
-  width: 100%;
 	border-left: solid 1px #2254b1;
 	border-top: solid 1px #2254b1;
 	border-right: solid 1px #2254b1;	
-  padding: 1px;
+  padding: 1px 5px 0px 5px;
+	background-color: #e1ecfc;
 	cursor: hand;
-}
-
-span.tabStripTabSelected a
-{
-  color: HighlightText;
-  width: 100%;
-  padding: 2px;
-	cursor: default;
 }
 
 span.tabStripTab a:hover
 {
-  color: Blue;
-	padding: 1px;
-	border-left: 1px solid #2254b1;
-	border-top: 1px solid #2254b1;
-	border-right: 1px solid #2254b1;
 	background-color: #fee197;	
+}
+
+span.tabStripTabSelected a
+{
+	background-color: Highlight;
+  color: HighlightText;
+  padding: 2px 6px 1px 6px;
+	cursor: default;
 }
