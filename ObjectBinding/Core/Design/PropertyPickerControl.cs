@@ -28,7 +28,7 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
 	public PropertyPickerControl (IBusinessObjectBoundControl control)
 	{
     if (control.DataSource == null)
-      throw new InvalidOperationException ("Cannot use PropertyPathEditor for controls without DataSource.");
+      throw new InvalidOperationException ("Cannot use PropertyPickerControl for controls without DataSource.");
 
 		// This call is required by the Windows.Forms Form Designer.
 		InitializeComponent();
