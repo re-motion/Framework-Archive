@@ -378,7 +378,6 @@
                     RelPath = "Res\Image\MovePreviousInactive.gif"
                     BuildAction = "Content"
                 />
-                <Folder RelPath = "Res\UI\" />
             </Include>
         </Files>
     </CSHARP>
