@@ -277,9 +277,34 @@ public class PageUtility
     string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
     return url + parameterSeperator + name + "=" 
         + HttpUtility.UrlEncode(value, HttpContext.Current.Response.ContentEncoding);
+  }
 
-    //System.Text.Encoding encoding = System.Text.Encoding.GetEncoding ("ISO-8859-1");
-    //return url + parameterSeperator + name + "=" + value;
+  public static string DeleteUrlParameter (string url, string name)
+  {
+    int startPos = url.IndexOf (name);
+
+    if (startPos >= 0)
+    {
+      int nextParameterPos = url.IndexOf ("&", startPos);
+      if (nextParameterPos < 0)
+        nextParameterPos = url.Length;
+      else
+        nextParameterPos++;
+
+      // Delimiter is concatenated separately
+      startPos--;
+
+      string delimiter = url.Substring (startPos, 1);
+
+      string remainingUrl = url.Substring (nextParameterPos);
+
+      if (remainingUrl.Length > 0)
+        url = url.Substring (0, startPos) + delimiter + url.Substring (nextParameterPos);
+      else
+        url = url.Substring (0, startPos);
+    }
+
+    return url;
   }
 
   public static string GetUrlParameter (string url, string name)
