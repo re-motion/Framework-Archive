@@ -130,11 +130,13 @@ public class TabControl: Control, IPostBackEventHandler
 {
 	private TabCollection _tabs = new TabCollection ();
 
-	private string _firstImage = String.Empty;
-	private string _secondImage = String.Empty;
-	private string _emptyImage = String.Empty;
-	private string _activeClass = String.Empty;
-	private string _inactiveClass = String.Empty;
+	private string _firstImage = string.Empty;
+	private string _secondImage = string.Empty;
+	private string _emptyImage = string.Empty;
+  private string _activeBackLinkImage = string.Empty;
+  private string _inactiveBackLinkImage = string.Empty;
+	private string _activeClass = string.Empty;
+	private string _inactiveClass = string.Empty;
 	
   private Color _backColor;
 	private Color _activeColor;
@@ -142,13 +144,14 @@ public class TabControl: Control, IPostBackEventHandler
   private int _height = -1;
 	private int _activeTab = 0;
 	private int _activeMenu = 0;
-	private string _target = String.Empty;
+	private string _target = string.Empty;
 	private Color _lineColor;
 	private bool _seperatorLine = false;
 	private bool _vertical = false;
   private bool _hasMenuBar = false;
   private string _statusMessage = string.Empty;
   private bool _serverSideNavigation = true;
+  private string _backLinkUrl = string.Empty;
 
   // construction and disposal
 
@@ -169,6 +172,16 @@ public class TabControl: Control, IPostBackEventHandler
 		get { return _emptyImage; }
 		set { _emptyImage = value; }
 	}
+  public string ActiveBackLinkImage
+  {
+		get { return _activeBackLinkImage; }
+		set { _activeBackLinkImage = value; }
+  }
+  public string InactiveBackLinkImage
+  {
+		get { return _inactiveBackLinkImage; }
+		set { _inactiveBackLinkImage = value; }
+  }
 	public string ActiveClass
 	{ 
 		get { return _activeClass; }
@@ -239,6 +252,11 @@ public class TabControl: Control, IPostBackEventHandler
   {
     get { return _serverSideNavigation; }
     set { _serverSideNavigation = value; }
+  }
+  public string BackLinkUrl
+  {
+    get { return _backLinkUrl; }
+    set { _backLinkUrl = value; }
   }
 
 	public TabCollection Tabs
@@ -498,17 +516,17 @@ public class TabControl: Control, IPostBackEventHandler
 		string activeColor = wcc.ConvertToString (_activeColor);
 		string lineColor = wcc.ConvertToString (_lineColor);
 
-		string heightAttrib = String.Empty;
+		string heightAttrib = string.Empty;
 		if (Height >= 0)
 			heightAttrib = "height=\"" + _height.ToString() + "\"";
-		string activeClassAttrib = String.Empty;
-		if (ActiveClass != String.Empty)
+		string activeClassAttrib = string.Empty;
+		if (ActiveClass != string.Empty)
 			activeClassAttrib = "class=\"" + _activeClass + "\"";
-		string inactiveClassAttrib = String.Empty;
-		if (InactiveClass != String.Empty)
+		string inactiveClassAttrib = string.Empty;
+		if (InactiveClass != string.Empty)
 			inactiveClassAttrib = "class=\"" + _inactiveClass + "\"";
-		string targetAttribute = String.Empty;
-		if (Target != String.Empty)
+		string targetAttribute = string.Empty;
+		if (Target != string.Empty)
 			targetAttribute = "target=\"" + _target + "\"";
 
 		output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>",
@@ -612,7 +630,26 @@ public class TabControl: Control, IPostBackEventHandler
 			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">", colspan);
 
       output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
-      output.WriteLine ("<tr class=\"tabSubLink\"><td nowrap>&nbsp;");
+      output.WriteLine ("<tr><td nowrap width=\"100%\">");
+
+      output.WriteLine ("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+      output.WriteLine ("<tr valign=\"middle\" class=\"tabSubMenuBar\"><td>&nbsp;</td><td>");
+      if (BackLinkUrl != string.Empty)
+      {
+        output.WriteLine ("<a class=\"tabActiveBackLink\" href=\"{0}\"><img src=\"{1}\" border=\"0\"></a>",
+            BackLinkUrl,
+            _activeBackLinkImage);
+        output.WriteLine ("</td><td nowrap>");
+        output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">Zur&uuml;ck</a>&nbsp;&nbsp;",
+            BackLinkUrl);
+      }
+      else
+      {
+        output.WriteLine ("<img src=\"{0}\" border=\"0\">", _inactiveBackLinkImage);
+        output.WriteLine ("</td><td nowrap>");
+        output.WriteLine ("&nbsp;<span class=\"tabInactiveBackLink\">Zur&uuml;ck</span>&nbsp;&nbsp;");
+      }
+      output.WriteLine ("</td><td width=\"100%\" class=\"tabSubMenuBar\">");
   
       Tab activeTab = Tabs[_activeTab];
       bool isFirstMenu = true;
@@ -635,10 +672,14 @@ public class TabControl: Control, IPostBackEventHandler
           }
         }
       }
+
+
       if (StatusMessage != string.Empty)
       {
-        output.WriteLine ("</td><td width=\"100%\" align=\"right\">{0}", StatusMessage);
+        output.WriteLine ("</td><td nowrap align=\"right\" class=\"tabSubLink\">{0}", StatusMessage);
       }
+      output.WriteLine ("</td></tr></table>");
+
       output.WriteLine ("</td></tr></table>");
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
