@@ -19,19 +19,29 @@ public class ControlHelper
 
   public static ArrayList GetControlsRecursive (Control parentControl, Type type)
   {
+    return GetControlsRecursive (parentControl, type, null);
+  }
+
+  public static ArrayList GetControlsRecursive (Control parentControl, Type type, Control[] stopList)
+  {
     ArrayList controlList = new ArrayList ();
-    GetControlsRecursive (parentControl, type, controlList);
+    ArrayList stopListArray = stopList == null ? new ArrayList () : new ArrayList (stopList);
+    GetControlsRecursiveInternal (parentControl, type, stopListArray, controlList);
     return controlList;
   }
 
-  private static void GetControlsRecursive (Control parentControl, Type type, ArrayList controlList)
+  private static void GetControlsRecursiveInternal 
+      (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
   {
     foreach (Control control in parentControl.Controls)
     {
-      if (type.IsInstanceOfType (control))
-        controlList.Add (control);
-      
-      GetControlsRecursive (control, type, controlList);
+      if (!stopList.Contains (control))
+      {
+        if (type.IsInstanceOfType (control))
+          controlList.Add (control);
+        
+        GetControlsRecursiveInternal (control, type, stopList, controlList);
+      }
     }
   }
   

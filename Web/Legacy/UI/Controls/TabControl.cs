@@ -244,6 +244,7 @@ public class TabControl: Control, IPostBackEventHandler
 
 	void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
 	{
+    SetSelectedItems();
     int colonPos = eventArgument.IndexOf (":");
     if (colonPos >= 0)
     {

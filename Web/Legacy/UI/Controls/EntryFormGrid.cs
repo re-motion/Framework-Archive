@@ -340,9 +340,9 @@ public class EntryField: Control
     if (parentGrid != null)
     {
       if (! parentGrid.LabelColumnWidth.IsEmpty)
-        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString());
+        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
       if (! parentGrid.ValueColumnWidth.IsEmpty)
-        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString());
+        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     string tagStyle = string.Empty;
