@@ -90,7 +90,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _label.EnableViewState = false;
     Controls.Add (_label);
 
-    if (! (this.Site != null && this.Site.DesignMode))
+    if (! IsDesignMode)
     {
       string newValue = this.Page.Request.Form[_textBox.UniqueID];
       if (newValue != null)
