@@ -126,5 +126,243 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsFalse (_customer.Orders.Contains (_oldOrder));
     Assert.IsNull (_oldOrder.Customer);
   }
+
+  [Test]
+  public void OldOrderCancelsReplace ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 1);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void NewOrderCancelsReplace ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 2);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void NewOrderCollectionCancelsRemove ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 3);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void NewOrderCollectionCancelsAdd ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 4);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
+      new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void NewCustomerCancelsReplace ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 5);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
+      new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
+      new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void OldOrderCollectionCancelsRemove ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 6);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
+      new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
+      new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer"),
+      new CollectionChangeState (_oldCustomerOfNewOrder.Orders, _newOrder, "6. Removing event of new order from oldCustomerOfNewOrder.Orders")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
+
+  [Test]
+  public void OldCustomerCancelsRemove ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = 
+        new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 7);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _newOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[]
+    {
+      new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
+      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
+      new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
+      new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer"),
+      new CollectionChangeState (_oldCustomerOfNewOrder.Orders, _newOrder, "6. Removing event of new order from oldCustomerOfNewOrder.Orders"),
+      new RelationChangeState (_oldCustomerOfNewOrder, "Orders", _newOrder, null, "7. Changing event of oldCustomerOfNewOrder")
+    };      
+
+    eventReceiver.Check (expectedChangeStates);
+
+    Assert.AreEqual (StateType.Unchanged, _customer.State);
+    Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _oldOrder.State);
+    Assert.AreEqual (StateType.Unchanged, _newOrder.State);
+
+    Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
+    Assert.AreSame (_customer, _oldOrder.Customer);
+
+    Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
+  }
 }
 }

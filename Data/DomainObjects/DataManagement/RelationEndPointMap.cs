@@ -393,14 +393,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   #region ICollectionEndPointChangeDelegate Members
 
-  void ICollectionEndPointChangeDelegate.PerformAdd  (CollectionEndPoint endPoint, DomainObject domainObject)
-  {
-    CheckDeleted (endPoint);
-    CheckDeleted (domainObject);
-
-    ((ICollectionEndPointChangeDelegate) this).PerformInsert (endPoint, domainObject, endPoint.OppositeDomainObjects.Count); 
-  }
-
   void ICollectionEndPointChangeDelegate.PerformInsert  (
       CollectionEndPoint endPoint, 
       DomainObject domainObject,
@@ -413,11 +405,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
         domainObject, endPoint.OppositeEndPointDefinition);
 
     RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) GetRelationEndPoint (
-        _clientTransaction.GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
+        GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
 
-    if (!oldRelatedEndPoint.IsNull)
-      _clientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
-    
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
         && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
         && endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index))

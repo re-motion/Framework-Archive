@@ -225,7 +225,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
 
     if (_changeDelegate != null)
     {
-      _changeDelegate.PerformAdd (this, domainObject);
+      _changeDelegate.PerformInsert (this, domainObject, Count);
     }
     else
     {

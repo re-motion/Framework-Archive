@@ -5,6 +5,7 @@
     <csc  target="library"
           output="${project.builddir}/${project.output}.${project.extension}"
           doc="${project.doc}"
+          nowarn="1591"
           debug="${build.debug}"
           define="${build.csc.define}">
       <sources failonempty="true">
@@ -12,7 +13,6 @@
         <includes name="Configuration/**/*.cs"/>
         <includes name="DataManagement/**/*.cs"/>
         <includes name="Persistence/**/*.cs"/>
-        <includes name="Relations/**/*.cs"/>
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
