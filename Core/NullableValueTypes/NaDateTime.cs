@@ -390,6 +390,18 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   }
 
   /// <summary>
+  /// Gets the value of this <see cref="NaDateTime"/> structure. This property is read-only.
+  /// </summary>
+  /// <value>
+  /// The Object value of this NaDateTime structure.
+  /// </value>
+  /// <exception cref="NaNullValueException"> The property contains <see cref="Null"/>. </exception>
+  object INaNullable.Value
+  {
+    get { return Value; }
+  }
+
+  /// <summary>
   /// Gets the date component of this instance.
   /// </summary>
   /// <value>
