@@ -16,6 +16,11 @@ public class Person: ReflectionBusinessObject
     return (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
   }
 
+  public static Person CreateObject ()
+  {
+    return (Person) ReflectionBusinessObjectStorage.CreateObject (typeof (Person));
+  }
+
   public static Person CreateObject (Guid id)
   {
     return (Person) ReflectionBusinessObjectStorage.CreateObject (typeof (Person), id);
