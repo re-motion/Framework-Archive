@@ -70,6 +70,14 @@ public class WebTreeNode: IControlItem
   //    _children.SetExpansion (true);
   //  }
 
+  /// <summary> Evaluates and expands the current node. </summary>
+  public void EvaluateExpand()
+  {
+    if (_treeView != null)
+      _treeView.EvaluateTreeNodeInternal (this);
+    IsExpanded = true;
+  }
+
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {
@@ -176,6 +184,7 @@ public class WebTreeNode: IControlItem
   }
 
   /// <summary> Gets or sets a flag that determines whether this node's child collection has been populated. </summary>
+  /// <remarks> Does not evaluate the tree node. </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public bool IsEvaluated

@@ -78,11 +78,11 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   ///   is expanded.
   /// </summary>
   /// <exception cref="NullReferenceException">
-  ///   Thrown if no method is registered for this delegate but a node with <see cref="WebTreeNode.IsEvaluated"/> 
-  ///   set to <see langword="false"/> is going to be expanded.
+  ///   Thrown by the caller if no method is registered for this delegate but a node with 
+  ///   <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/> is going to be expanded.
   /// </exception>
   /// <exception cref="InvalidOperationException"> 
-  ///   Thrown if the registered method has not set the <see cref="WebTreeNode.IsEvaluated"/> flag.
+  ///   Thrown by the caller if the registered method has not set the <see cref="WebTreeNode.IsEvaluated"/> flag.
   /// </exception>
   public EvaluateWebTreeNode EvaluateTreeNode;
 
@@ -103,7 +103,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
   //  methods and properties
 
-  void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
+  /// <summary> Implementation of the <see cref="IPostBackEventHandler"/> interface. </summary>
+  /// <param name="eventArgument"> &lt;command prefix&gt;&lt;node path&gt;</param>
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -126,16 +128,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     if (clickedNode != null)
     {
       if (clickedNode.IsEvaluated)
-      {
         clickedNode.IsExpanded = ! clickedNode.IsExpanded;
-      }
       else
-      {
-        if (EvaluateTreeNode == null) throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + clickedNode.NodeID + "' is not evaluated.");
-        EvaluateTreeNode (clickedNode);
-        if (! clickedNode.IsEvaluated) throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + clickedNode.NodeID + "' but did not evaluate the tree node.");
-        clickedNode.IsExpanded = true;
-      }
+        clickedNode.EvaluateExpand();
     }
   }
 
@@ -170,6 +165,25 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   //  {
   //    _nodes.SetExpansion (true);
   //  }
+
+  /// <summary>
+  ///   Calles the delegate <see cref="EvaluateTreeNode"/> with the passed <paramref name="node"/>.
+  /// </summary>
+  /// <exception cref="NullReferenceException">
+  ///   Thrown if no method is registered for this delegate but a node with 
+  ///   <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/> is going to be expanded.
+  /// </exception>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if the registered method has not set the <see cref="WebTreeNode.IsEvaluated"/> flag.
+  /// </exception>
+  protected internal void EvaluateTreeNodeInternal (WebTreeNode node)
+  {
+    if (EvaluateTreeNode == null) 
+      throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + node.NodeID + "' is not evaluated.");
+    EvaluateTreeNode (node);
+    if (! node.IsEvaluated) 
+      throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.NodeID + "' but did not evaluate the tree node.");
+  }
 
   /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
   protected override void OnPreRender(EventArgs e)
