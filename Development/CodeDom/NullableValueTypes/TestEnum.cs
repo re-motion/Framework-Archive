@@ -118,6 +118,15 @@ public struct NullableType: INaNullable, IComparable, ISerializable, IFormattabl
   }
 
   /// <summary>
+  /// Returns the value if the current value is not Null.
+  /// </summary>
+  /// <exception cref="NaNullValueException">The current value is Null.</exception>
+  object INaNullable.Value
+  {
+    get { return Value; }
+  }
+
+  /// <summary>
   /// Stores the current value in a serialization stream.
   /// </summary>
   public void GetObjectData (SerializationInfo info, StreamingContext context)
