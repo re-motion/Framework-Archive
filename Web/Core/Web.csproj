@@ -141,6 +141,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LengthValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PageUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
