@@ -612,37 +612,31 @@ public class TabCollection: IList
 		if (tab == null)
 			throw new ArgumentException ("argument must be an instance of class Tab", "value");
 		
-		Debug.WriteLine ("IList.Add");
 		return _tabs.Add (tab);
 	}
 
 	public void Add (Tab tab)
 	{
-		Debug.WriteLine ("Add");
 		_tabs.Add (tab);
 	}
 
 	public void Clear ()
 	{
-		Debug.WriteLine ("Clear");
 		_tabs.Clear ();
 	}
 
 	bool IList.Contains (object value)
 	{
-		Debug.WriteLine ("IList.Contains");
 		return _tabs.Contains (value);
 	}
 
 	int IList.IndexOf (object value)
 	{
-		Debug.WriteLine ("IList.IndexOf");
 		return _tabs.IndexOf (value);
 	}
 
 	void IList.Insert (int index, object value)
 	{
-		Debug.WriteLine ("IListInsert");
 		Tab tab = value as Tab;
 		if (tab == null)
 			throw new ArgumentException ("argument must be an instance of class Tab", "value");
@@ -662,25 +656,21 @@ public class TabCollection: IList
 
 	void IList.Remove (object value)
 	{
-		Debug.WriteLine ("IList.Remove");
 		_tabs.Remove (value);
 	}
 
 	public void Remove (Tab tab)
 	{
-		Debug.WriteLine ("Remove");
 		_tabs.Remove (tab);
 	}
 
 	public void RemoveAt (int index)
 	{
-		Debug.WriteLine ("RemoveAt");
 		_tabs.RemoveAt (index);
 	}
 
 	void ICollection.CopyTo (Array array, int index)
 	{
-		Debug.WriteLine ("CopyTo");
 		_tabs.CopyTo (array, index);
 	}
 
@@ -688,7 +678,6 @@ public class TabCollection: IList
 	{
 		get 
 		{ 
-			Debug.WriteLine ("Count");
 			return _tabs.Count; 
 		}
 	}
@@ -705,35 +694,20 @@ public class TabCollection: IList
 
 	IEnumerator IEnumerable.GetEnumerator ()
 	{
-		Debug.WriteLine ("GetEnumerator");
 		return _tabs.GetEnumerator ();
 	}
 
 	public Tab this [int index]
 	{
-		get 
-		{ 
-			Debug.WriteLine ("get []");
-			return (Tab) _tabs[index]; 
-		}
-		set 
-		{ 
-			Debug.WriteLine ("set []");
-			_tabs[index] = value; 
-		}
+		get { return (Tab) _tabs[index]; }
+		set { _tabs[index] = value; }
 	}
 
 	object IList.this [int index]
 	{
-		get 
-		{ 
-			Debug.WriteLine ("IList get []");
-			return _tabs[index]; 
-		}
-
+		get { return _tabs[index]; }
 		set
 		{
-			Debug.WriteLine ("IList set []");
 			Tab tab = value as Tab;
 			if (tab == null)
 				throw new ArgumentException ("argument must be instance of class Tab", "value");
