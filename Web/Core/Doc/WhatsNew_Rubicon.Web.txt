@@ -7,6 +7,10 @@
 - Utilities.HtmlUtility
   * HtmlEncode überladen: HtmlEncode (string,HttpWriter)
       schreibt encoded string direkt auf den HttpWriter
+- Form
+  * Page_RenderPostBackScript -> Die ControlID für das Eventtarget wird jetzt 
+      mit ':' als Separator für Control-Hierarchien statt '_' gesetzt 
+      (Events in UserControls funktionieren wieder)
 
 3.2.0.0
 =======
