@@ -27,14 +27,14 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   // methods and properties
 
   [Test]
-  public void ExecuteScalarQueryWithoutParameter ()
+  public void ScalarQueryWithoutParameter ()
   {
     Assert.AreEqual (42, Provider.ExecuteScalarQuery (new Query ("QueryWithoutParameter")));
   }
 
   [Test]
   [ExpectedException (typeof (StorageProviderException))]
-  public void ExecuteInvalidScalarQuery ()
+  public void InvalidScalarQuery ()
   {
     QueryDefinition definition = new QueryDefinition (
         "InvalidQuery", 
@@ -46,7 +46,7 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  public void ExecuteScalarQueryWithParameter ()
+  public void ScalarQueryWithParameter ()
   {
     Query query = new Query ("OrderNoSumByCustomerNameQuery");
     query.Parameters.Add ("@customerName", "Kunde 1");
@@ -65,13 +65,13 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException))]
-  public void ExecuteScalarQueryWithCollectionQuery ()
+  public void CollectionQuery ()
   {
     Provider.ExecuteScalarQuery (new Query ("OrderQuery"));
   }
 
   [Test]
-  public void ExecuteBulkUpdateQuery ()
+  public void BulkUpdateQuery ()
   {
     Query query = new Query ("BulkUpdateQuery");
     query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1.Value);
@@ -81,7 +81,7 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException))]
-  public void ExecuteScalarQueryWithDifferentStorageProviderID ()
+  public void DifferentStorageProviderID ()
   {
     QueryDefinition definition = new QueryDefinition (
         "QueryWithDifferentStorageProviderID", 
@@ -90,6 +90,21 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
         QueryType.Scalar);
 
     Provider.ExecuteScalarQuery (new Query (definition));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The query parameter '@customerID' is of type 'Rubicon.Data.DomainObjects.ObjectID'."
+      + " The value of this parameter is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: query")]
+  public void InvalidObjectIDValue ()
+  {
+    ObjectID invalidCustomerID = new ObjectID (
+        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+
+    Query query = new Query ("BulkUpdateQuery");
+    query.Parameters.Add ("@customerID", invalidCustomerID);
+
+    Provider.ExecuteScalarQuery (query);
   }
 }
 }
