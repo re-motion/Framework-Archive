@@ -34,6 +34,8 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Button Throw;
     protected System.Web.UI.WebControls.Label Label1;
     protected System.Web.UI.WebControls.Label RetValLabel;
+    protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -47,6 +49,12 @@ namespace Rubicon.PageTransition
 
 		private void Page_Load (object sender, System.EventArgs e)
 		{
+      NameValueCollection coll = this.GetPostBackCollection();
+      if (coll != null)
+      {
+        object o = new LosFormatter().Deserialize (coll["__VIEWSTATE"]);
+        o = null;
+      }
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
         sb.AppendFormat ("{0}<br>", step.ToString());      

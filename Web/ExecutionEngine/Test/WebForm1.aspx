@@ -1,5 +1,6 @@
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
 <%@ Register TagPrefix="uc1" TagName="UserControl1" Src="UserControl1.ascx" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -26,6 +27,26 @@
       <asp:label id="Label3" style="Z-INDEX: 109; LEFT: 280px; POSITION: absolute; TOP: 128px" runat="server">Stack</asp:label><asp:label id="Label2" style="Z-INDEX: 108; LEFT: 288px; POSITION: absolute; TOP: 24px" runat="server">Var1</asp:label><asp:label id="StackLabel" style="Z-INDEX: 107; LEFT: 376px; POSITION: absolute; TOP: 128px"
         runat="server" Height="168px" Width="480px"></asp:label><asp:button id="Sub" style="Z-INDEX: 106; LEFT: 128px; POSITION: absolute; TOP: 144px" runat="server"
         Text="Sub"></asp:button><asp:checkbox id="IsPostBackCheck" style="Z-INDEX: 105; LEFT: 88px; POSITION: absolute; TOP: 96px"
-        runat="server" Text="IsPostBack" Enabled="False"></asp:checkbox></FORM>
+        runat="server" Text="IsPostBack" Enabled="False"></asp:checkbox>
+      <rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager>
+      <TABLE id="FormGrid" style="Z-INDEX: 115; LEFT: 904px; WIDTH: 300px; POSITION: absolute; TOP: 80px; HEIGHT: 176px"
+        cellSpacing="1" cellPadding="1" width="300" border="1" runat="server">
+        <TR>
+          <TD></TD>
+          <TD></TD>
+          <TD></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD></TD>
+          <TD></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD></TD>
+          <TD></TD>
+        </TR>
+      </TABLE>
+    </FORM>
   </body>
 </HTML>
