@@ -21,11 +21,11 @@ public class PropertyValueCollection : CollectionBase
   // member fields
 
   /// <summary>
-  /// Occurs before the <see cref="Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
+  /// Occurs before the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
   public event PropertyChangingEventHandler PropertyChanging;
   /// <summary>
-  /// Occurs after the <see cref="Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
+  /// Occurs after the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
   public event PropertyChangedEventHandler PropertyChanged;
 
@@ -44,8 +44,7 @@ public class PropertyValueCollection : CollectionBase
   /// Initializes a new <b>PropertyValueCollection</b> as a shallow copy of a given <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <remarks>
-  /// The new <b>PropertyValueCollection</b> has the same <see cref="RequiredItemType"/> and the same items as the 
-  /// given <i>collection</i>.
+  /// The new <b>PropertyValueCollection</b> has the same items as the given <i>collection</i>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
