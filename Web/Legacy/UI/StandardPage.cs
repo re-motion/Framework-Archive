@@ -62,17 +62,17 @@ public class StandardPage : NavigablePage
 
   public string GetErrorImage (string errorMessage)
   {
-    return UIUtility.GetErrorImage (this, errorMessage);
+    return ImageUtility.GetErrorImage (this, errorMessage);
   }
 
   public string GetRequiredFieldImage ()
   {
-    return UIUtility.GetRequiredFieldImage (this);
+    return ImageUtility.GetRequiredFieldImage (this);
   }
 
   public string GetIconImage (string tooltip, string imagePath)
   {
-    return UIUtility.GetIconImage (this, tooltip, imagePath);
+    return ImageUtility.GetIconImage (this, tooltip, imagePath);
   }
 
   protected virtual bool SaveViewStateToSession 

@@ -484,17 +484,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\ImageUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\PageUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Utilities\ResourceManagerUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\UIUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -46,6 +46,21 @@ public class ViewControl: Control
     set { _valueColumnWidth = value; }
   }
 
+  public string GetImagePath (string imageFileName)
+  {
+    return ImageUtility.GetImagePath (ImagePath, imageFileName);
+  }
+
+  public string GetWhitespaceImage (int width, int height)
+  {
+    return ImageUtility.GetWhitespaceImage (ImagePath, width, height);
+  }
+
+  public string GetWhitespaceImage (string width, string height)
+  {
+    return ImageUtility.GetWhitespaceImage (ImagePath, width, height);
+  }
+
   protected virtual void RenderMainControl (HtmlTextWriter writer, Control control)
   {
     control.RenderControl (writer);

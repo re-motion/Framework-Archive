@@ -32,12 +32,12 @@ public class EntryFieldBreak: Control
     EntryField parentField = (EntryField) this.Parent;
 
     writer.Write ("</td></tr><tr><td colspan=\"5\">{0}</td><td>{0}", 
-        UIUtility.GetWhitespaceImage (ImagePath, 0, 0));
+        ImageUtility.GetWhitespaceImage (ImagePath, 0, 0));
   }
 
   private string ImagePath
   {
-    get { return UIUtility.GetImagePathFromParentControl (this); } 
+    get { return ImageUtility.GetImagePathFromParentControl (this); } 
   }
 }
 
@@ -81,17 +81,17 @@ public class EntryFormGrid: Control
 
   public string GetImagePath (string imageFileName)
   {
-    return UIUtility.GetImagePath (ImagePath, imageFileName);
+    return ImageUtility.GetImagePath (ImagePath, imageFileName);
   }
 
   public string GetWhitespaceImage (int width, int height)
   {
-    return UIUtility.GetWhitespaceImage (ImagePath, width, height);
+    return ImageUtility.GetWhitespaceImage (ImagePath, width, height);
   }
 
   public string GetWhitespaceImage (string width, string height)
   {
-    return UIUtility.GetWhitespaceImage (ImagePath, width, height);
+    return ImageUtility.GetWhitespaceImage (ImagePath, width, height);
   }
 
   public string InfoImagePath 
@@ -261,9 +261,21 @@ public class EntryTitle: Control
   
   private int _colSpan = 6;
 
+  public EntryFormGrid EntryFormGrid
+  {
+    get 
+    {
+      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
+      if (entryFormGrid == null)
+        throw new InvalidOperationException ("EntryTitle must be a descendant of a EntryFormGrid to access EntryFormGrid property.");
+
+      return entryFormGrid;
+    }
+  }
+
   private string ImagePath
   {
-    get { return UIUtility.GetImagePathFromParentControl (this); } 
+    get { return ImageUtility.GetImagePathFromParentControl (this); } 
   }
 
   public int ColSpan
@@ -286,7 +298,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td>{0}</td></tr>", UIUtility.GetWhitespaceImage (ImagePath, "1", Padding));
+      writer.WriteLine ("<tr><td>{0}</td></tr>", ImageUtility.GetWhitespaceImage (ImagePath, "1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -294,12 +306,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"formGroupSeparatorLine\" width=\"100%\">"
-			  	+ UIUtility.GetWhitespaceImage (ImagePath, 1, 1)
+			  	+ ImageUtility.GetWhitespaceImage (ImagePath, 1, 1)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", UIUtility.GetWhitespaceImage (ImagePath, 1, 3));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", ImageUtility.GetWhitespaceImage (ImagePath, 1, 3));
 	}
 }
 
@@ -518,7 +530,7 @@ public class EntryField: Control
       // at least one Validator is invalid
       // => display "invalid field indicator" which has higher priority than the "required field indicator"
 
-      writer.WriteLine (UIUtility.GetIconImage (
+      writer.WriteLine (ImageUtility.GetIconImage (
           Page,
           validatorMessages, 
           this.EntryFormGrid.GetImagePath ("field-error.gif")));
@@ -529,7 +541,7 @@ public class EntryField: Control
       // => display the "required field indicator" if requested
       if (this.IsRequired)
       {
-        writer.WriteLine (UIUtility.GetIconImage (
+        writer.WriteLine (ImageUtility.GetIconImage (
             Page,
             // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
             //   ResourceManagerPool.GetResourceText (this, "RequiredFieldText"), 

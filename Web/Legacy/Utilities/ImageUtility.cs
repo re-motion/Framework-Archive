@@ -8,49 +8,56 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.Utilities
 {
 
-internal sealed class UIUtility
+public class ImageUtility
 {
-	private UIUtility()
+  private const string _errorImageRelativePath = "~/images/field-error.gif";
+
+	private ImageUtility()
 	{
 	}
 
-  internal static string GetErrorImage (Page page, string errorMessage)
+  public static string GetErrorImage (Page page, string errorMessage)
   {
-    return GetIconImage (page, errorMessage, "~/images/field-error.gif");
+    return GetIconImage (page, errorMessage, _errorImageRelativePath);
   }
 
-  internal static string GetRequiredFieldImage (Page page)
+  public static string GetErrorImageUrl (Page page)
+  {
+    return page.ResolveUrl (_errorImageRelativePath);
+  }
+
+  public static string GetRequiredFieldImage (Page page)
   {
     return GetIconImage (
         page,
         // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
         //  ResourceManagerPool.GetResourceText (typeof (UIUtility), "RequiredFieldText"), 
-        MultiLingualResourcesAttribute.GetResourceText (typeof (UIUtility), "RequiredFieldText"), 
+        MultiLingualResourcesAttribute.GetResourceText (typeof (ImageUtility), "RequiredFieldText"), 
         "~/images/field-required.gif");
   }
 
-  internal static string GetIconImage (Page page, string tooltip, string imagePath)
+  public static string GetIconImage (Page page, string tooltip, string imagePath)
   {
     return string.Format (
         "<img src=\"{0}\" alt=\"{1}\" width=\"12\" height=\"20\" border=\"0\"/>", 
         page.ResolveUrl (imagePath), tooltip);
   }
 
-  internal static string GetWhitespaceImage (string imagePath, int width, int height)
+  public static string GetWhitespaceImage (string imagePath, int width, int height)
   {
     // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
       width, height, GetImagePath (imagePath, "ws.gif"));
   }
 
-  internal static string GetWhitespaceImage (string imagePath, string width, string height)
+  public static string GetWhitespaceImage (string imagePath, string width, string height)
   {
     // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
       width, height, GetImagePath (imagePath, "ws.gif"));
   }
 
-  internal static string GetImagePath (string imagePath, string imageFileName)
+  public static string GetImagePath (string imagePath, string imageFileName)
   {
     return UrlUtility.Combine (imagePath, imageFileName);
   }
@@ -60,7 +67,7 @@ internal sealed class UIUtility
   /// </summary>
   /// <param name="control">The control for which the image path should be read.</param>
   /// <returns>The image path.</returns>
-  internal static string GetImagePathFromParentControl (Control control)
+  public static string GetImagePathFromParentControl (Control control)
   {
     if (control != null)
     {
