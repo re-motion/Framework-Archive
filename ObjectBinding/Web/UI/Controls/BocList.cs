@@ -1516,7 +1516,7 @@ public class BocList:
   /// </param>
   public override void LoadValue (bool interim)
   {
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
       ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -1535,7 +1535,7 @@ public class BocList:
   /// </param>
   public override void SaveValue (bool interim)
   {
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
       DataSource.BusinessObject.SetProperty (Property, Value);
@@ -2339,10 +2339,6 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the width reserved for the menu block. </summary>
-  /// <remarks> 
-  ///   For optimum result, the <see cref="MenuBlockWidth"/> should be comaptible with
-  ///   both the <see cref="ListBlockWidth"/> and the <see cref="Width"/> of the control.
-  /// </remarks>
   [Category ("Appearance")]
   [Description ("The width reserved for the menu section.")]
   [DefaultValue (typeof (Unit), "")]
@@ -2364,7 +2360,6 @@ public class BocList:
     get { return _menuBlockOffset; }
     set { _menuBlockOffset = value; }
   }
-
 
   /// <summary>
   ///   Gets or sets a value that indicates whether the control displays a drop down list 
