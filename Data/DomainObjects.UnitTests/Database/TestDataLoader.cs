@@ -58,7 +58,7 @@ public class TestDataLoader : IDisposable
     {
       if (_connection != null)
       {
-        _connection.Dispose ();
+        _connection.Close ();
         _connection = null;
       }
       _disposed = true;
