@@ -13,14 +13,14 @@ public class WxePageSession: ISerializable, IDisposable
   private WxeFunction _function;
   private DateTime _lastAccess;
   private int _lifetime;
-  private string _pageToken;
+  private string _windowToken;
 
   public WxePageSession (WxeFunction function, int lifetime)
   {
     _function = function;
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
-    _pageToken = Guid.NewGuid().ToString();
+    _windowToken = Guid.NewGuid().ToString();
   }
 
   protected WxePageSession (SerializationInfo info, StreamingContext context)
@@ -28,7 +28,7 @@ public class WxePageSession: ISerializable, IDisposable
     _function = (WxeFunction) info.GetValue ("_function", typeof (WxeFunction));
     _lastAccess = info.GetDateTime ("_lastAccess");
     _lifetime = info.GetInt32 ("_lifetime");
-    _pageToken = info.GetString ("_pageToken");
+    _windowToken = info.GetString ("_windowToken");
   }
 
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
@@ -36,7 +36,7 @@ public class WxePageSession: ISerializable, IDisposable
     info.AddValue ("_function", _function, typeof (WxeFunction));
     info.AddValue ("_lastAccess", _lastAccess);
     info.AddValue ("_lifetime", _lifetime);
-    info.AddValue ("_pageToken", _pageToken);
+    info.AddValue ("_windowToken", _windowToken);
   }
 
   public WxeFunction Function
@@ -54,9 +54,9 @@ public class WxePageSession: ISerializable, IDisposable
     get { return _lifetime; }
   }
 
-  public string PageToken
+  public string WindowToken
   {
-    get { return _pageToken; }
+    get { return _windowToken; }
   }
 
   public void Touch()
