@@ -109,19 +109,6 @@ public sealed class ResourceManagerPool
     return GetResourceText (objectToGetResourceFor.GetType(), name);  
   }
 
-  /*
-  private static string GetResourceName (Type objectType)
-  {
-    MultiLingualResourcesAttribute[] resourceAttributes = (MultiLingualResourcesAttribute[]) objectType.GetCustomAttributes (
-      typeof (MultiLingualResourcesAttribute), false);
-
-    if (resourceAttributes.Length == 0)
-      throw new ResourceException ("Cannot dispatch resources for object types that do not have the MultiLingualResources attribute.");
-     
-    return resourceAttributes[0].ResourceName;
-  }
-  */
-
   public static ResourceSet GetResourceSet (Type objectType)
   {
     ResourceManager rm = GetOrCreateResourceManager (objectType);
