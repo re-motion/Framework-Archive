@@ -50,10 +50,11 @@ public abstract class CommandBuilder
     IDataParameter commandParameter = command.CreateParameter ();
     commandParameter.ParameterName = Provider.GetParameterName (parameterName);
 
+    DBValueConverter dbValueConverter = new DBValueConverter ();
     if (parameterValue != null && parameterValue.GetType () == typeof (ObjectID))
-      commandParameter.Value = DBValueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
+      commandParameter.Value = dbValueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
     else
-      commandParameter.Value = DBValueConverter.GetDBValue (parameterValue);
+      commandParameter.Value = dbValueConverter.GetDBValue (parameterValue);
 
     command.Parameters.Add (commandParameter);
   }
