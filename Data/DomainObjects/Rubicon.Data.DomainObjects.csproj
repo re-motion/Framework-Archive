@@ -349,6 +349,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\DataContainerMap.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\DataManagementException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
