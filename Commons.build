@@ -96,7 +96,7 @@
     <ifnot propertyexists="SS.dir" >
       <property name="SS.dir" value="." />
     </ifnot>
-    <exec program="SS.EXE" output="NUL" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
+    <exec program="SS.EXE" output="SS.log" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
@@ -129,8 +129,8 @@
     <foreach item="String" in="Core Core.Test Data Development ObjectBinding prereq Web" delim=" " property="local.project" >
       <do>
         <mkdir dir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" output="NUL" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" output="NUL" commandline="/C for /d %d in (*) do rmdir /S /Q %d" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" output="deletelog.log" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" output="deletelog.log" commandline="/C for /d %d in (*) do rmdir /S /Q %d" workingdir="${dir.development}\libraries\Commons\${local.project}" />
         <echo message="Get ${local.project}" />
         <property name="SS.command" value="Get $/libraries/Commons/${local.project} -R" />
         <property name="SS.dir" value="${dir.development}\libraries\Commons\${local.project}" />
