@@ -675,7 +675,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       _optionsMenu.TitleText = _optionsTitle;
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
 

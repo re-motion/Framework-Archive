@@ -41,8 +41,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> String inserted before the date pciker button during design mode. </summary>
   private const string c_designModeDatePickerImageSpacer = " ";
 
-  private const int c_defaultDateTextBoxWidthInPoints = 70;
-  private const int c_defaultTimeTextBoxWidthInPoints = 40;
+  private const string c_defaultControlWidth = "120pt";
   private const int c_defaultDatePickerLengthInPoints = 150;
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
@@ -320,14 +319,62 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    foreach (Control control in Controls)
-    {
-      control.RenderControl (writer);
+    bool isReadOnly = IsReadOnly;
 
-      //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-      //  and remove RenderContents.
-      if (control == _datePickerButton && control.Visible && _hasClientScript)
+    if (Width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    else
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.AddStyleAttribute ("display", "inline");
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+    if (isReadOnly)
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+      _label.RenderControl (writer);
+      
+      writer.RenderEndTag();
+    }
+    else
+    {
+      bool hasDateField =    ActualValueType == BocDateTimeValueType.DateTime
+                          || ActualValueType == BocDateTimeValueType.Date
+                          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined;
+      bool hasTimeField =    ActualValueType == BocDateTimeValueType.DateTime
+                          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined;
+      bool hasDatePicker =    hasDateField 
+                           && (   _enableClientScript && IsDesignMode 
+                               || _hasClientScript);
+
+      if (hasDateField)
       {
+        if (_dateTextBoxStyle.Width.IsEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "60%");
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _dateTextBoxStyle.Width.ToString());
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+        _dateTextBox.RenderControl (writer);  
+      
+        writer.RenderEndTag();
+      }
+
+      if (hasDatePicker)
+      {
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+        writer.AddStyleAttribute ("padding-left", "3pt");
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+        _datePickerButton.RenderControl (writer);  
+        //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+        //  and remove RenderContents.
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
         writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
@@ -342,8 +389,28 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         writer.AddStyleAttribute("display", "none");
         writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
         writer.RenderEndTag();
+      
+        writer.RenderEndTag();
       }
-    }  
+
+      if (hasTimeField)
+      {
+        if (_timeTextBoxStyle.Width.IsEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "40%");
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _timeTextBoxStyle.Width.ToString());
+        if (hasDateField)
+          writer.AddStyleAttribute ("padding-left", "3pt");
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+        _timeTextBox.RenderControl (writer);  
+      
+        writer.RenderEndTag();
+      }
+    }
+
+    writer.RenderEndTag();
+    writer.RenderEndTag();
   }
 
   /// <summary>
@@ -495,8 +562,84 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     bool isReadOnly = IsReadOnly;
 
+    if (IsReadOnly)
+    {
+      PreRenderReadOnlyValue();
+    }
+    else
+    {
+      PreRenderEditModeValueDate();
+      PreRenderEditModeValueTime();
+      PreRenderEditModeValueDatePicker();
+    }
+  }
+  
+  /// <summary>
+  ///   Prerenders the <see cref="Label"/>.
+  /// </summary>
+  private void PreRenderReadOnlyValue()
+  {
+    if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+    {
+      _label.Text = c_designModeEmptyLabelContents;
+      //  Too long, can't resize in designer to less than the content's width
+      //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+    }
+    else
+    {
+      object internalValue = Value;
+
+      if (internalValue != null)
+      {
+        DateTime dateTime = (DateTime)internalValue;
+
+        if (ActualValueType == BocDateTimeValueType.DateTime)
+          _label.Text = FormatDateTimeValue (dateTime, true);
+        else if (ActualValueType == BocDateTimeValueType.Date)
+          _label.Text = FormatDateValue (dateTime, true);
+        else
+          _label.Text = string.Empty;
+      }
+      else
+      {
+        _label.Text = string.Empty;
+      }
+    }
+
+    _label.ApplyStyle (_commonStyle);
+    _label.ApplyStyle (_labelStyle);
+  }
+
+  private void PreRenderEditModeValueDate()
+  {
+    if (ProvideMaxLength)
+      _dateTextBox.MaxLength = GetDateMaxLength();
+    _dateTextBox.Text = InternalDateValue;
+    _dateTextBox.ReadOnly = ! Enabled;
+    _dateTextBox.Width = Unit.Percentage (100);
+    _dateTextBox.Height = Height;
+    _dateTextBox.ApplyStyle (_commonStyle);
+    _dateTimeTextBoxStyle.ApplyStyle (_dateTextBox);
+    _dateTextBoxStyle.ApplyStyle (_dateTextBox);
+  }
+
+  private void PreRenderEditModeValueTime()
+  {
+    if (ProvideMaxLength)
+      _timeTextBox.MaxLength = GetTimeMaxLength();
+    _timeTextBox.Text = InternalTimeValue;
+    _timeTextBox.ReadOnly = ! Enabled;
+    _timeTextBox.Width = Unit.Percentage (100);
+    _timeTextBox.Height = Height;
+    _timeTextBox.ApplyStyle (_commonStyle);
+    _dateTimeTextBoxStyle.ApplyStyle (_timeTextBox);
+    _timeTextBoxStyle.ApplyStyle (_timeTextBox);
+  }
+
+  private void PreRenderEditModeValueDatePicker()
+  {
     DetermineClientScriptLevel();
-    if (_hasClientScript && ! isReadOnly && Enabled)
+    if (_hasClientScript && Enabled)
     {
       string key = typeof (BocDateTimeValue).FullName;
       if (! HtmlHeadAppender.Current.IsRegistered (key))
@@ -507,288 +650,43 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       }
     }
 
-    _dateTextBox.Visible = ! isReadOnly;
-    _timeTextBox.Visible = ! isReadOnly;
-    _label.Visible = isReadOnly;
-    _datePickerButton.Visible = ! isReadOnly;
-
-    if (isReadOnly)
+    //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+    //  and remove RenderContents.
+    if (   _enableClientScript && IsDesignMode 
+        || _hasClientScript)
     {
-      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      string imageUrl = ResourceUrlResolver.GetResourceUrl (
+        this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
+      if (imageUrl == null)
+        _datePickerButton.ImageUrl = DatePickerImageUrl;  
+      else
+        _datePickerButton.ImageUrl = imageUrl; 
+
+      string script;
+      if (Enabled && _hasClientScript)
       {
-        _label.Text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        string pickerActionButton = "this";
+        string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
+        string pickerActionTarget = "document.getElementById ('" + _dateTextBox.ClientID + "')";
+        string pickerActionFrame = "document.getElementById ('" + ClientID + "_frame')";
+        script = "DatePicker_ShowDatePicker("
+            + pickerActionButton + ", "
+            + pickerActionContainer + ", "
+            + pickerActionTarget + ", "
+            + pickerActionFrame + ");"
+            + "return false;";
       }
       else
       {
-        object internalValue = Value;
-
-        if (internalValue != null)
-        {
-          DateTime dateTime = (DateTime)internalValue;
-
-          if (ActualValueType == BocDateTimeValueType.DateTime)
-            _label.Text = FormatDateTimeValue (dateTime, isReadOnly);
-          else if (ActualValueType == BocDateTimeValueType.Date)
-            _label.Text = FormatDateValue (dateTime, isReadOnly);
-          else
-            _label.Text = string.Empty;
-        }
-        else
-        {
-          _label.Text = string.Empty;
-        }
+        script = "return false;";
       }
-
-      _label.Width = this.Width;
-      _label.Height = this.Height;
-      
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
+      _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
     }
-    else // Edit Mode
-    {
-      const double c_defaultTotalWidthInPoints = 
-          c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints;
-      const double dateTextBoxWidthRelative = 
-          c_defaultDateTextBoxWidthInPoints / c_defaultTotalWidthInPoints;
-      const double timeTextBoxWidthRelative = 
-          c_defaultTimeTextBoxWidthInPoints / c_defaultTotalWidthInPoints;
 
-      if (ProvideMaxLength)
-      {
-        _dateTextBox.MaxLength = GetDateMaxLength();
-        _timeTextBox.MaxLength = GetTimeMaxLength();
-      }
-
-      _dateTextBox.Text = InternalDateValue;
-      _timeTextBox.Text = InternalTimeValue;
-
-      //  Prevent a collapsed control
-      _dateTextBox.Width = Unit.Point (c_defaultDateTextBoxWidthInPoints);
-      _timeTextBox.Width = Unit.Point (c_defaultTimeTextBoxWidthInPoints);
-
-      //  Insert Spacer between Date and Time text boxes
-      
-      LiteralControl dateTimeSpacer = null;
-
-      if (   ActualValueType == BocDateTimeValueType.DateTime
-          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
-      {
-        int timeTextBoxIndex = Controls.IndexOf (_timeTextBox);
-
-        if (! IsDesignMode)
-          dateTimeSpacer = new LiteralControl (c_dateTimeSpacer);
-        else
-          dateTimeSpacer = new LiteralControl (c_designModeDateTimeSpacer);
-
-        Controls.AddAt (timeTextBoxIndex, dateTimeSpacer);
-      }
-
-
-      //  Insert Spacer before image button
-
-      LiteralControl datePickerImageSpacer = null;
-
-      if (   ActualValueType == BocDateTimeValueType.DateTime
-          || ActualValueType == BocDateTimeValueType.Date
-          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
-      {
-        int datePickerImageIndex = Controls.IndexOf (_datePickerButton);
-
-        if (! IsDesignMode)
-          datePickerImageSpacer = new LiteralControl (c_datePickerButtonSpacer);
-        else
-          datePickerImageSpacer = new LiteralControl (c_designModeDatePickerImageSpacer);
-
-        Controls.AddAt (datePickerImageIndex, datePickerImageSpacer);
-      }
-
-      Unit dateTextBoxWidth = Unit.Empty;
-      Unit timeTextBoxWidth = Unit.Empty;
-
-      if (! Width.IsEmpty)
-      {
-        int datePickerWidth = 0;
-
-        //  Icon width approximation
-        switch (Width.Type)
-        {
-          case UnitType.Percentage:
-          {
-            datePickerWidth = 20;
-            break;
-          }
-          case UnitType.Pixel:
-          {
-            datePickerWidth = 42;
-            break;
-          }
-          case UnitType.Point:
-          {
-            datePickerWidth = 15;
-            break;
-          }
-          default:
-          {
-            break;
-          }
-        }
-
-        int innerControlWidthValue = (int) (Width.Value - datePickerWidth);
-        innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-        int dateTextBoxWidthValue = 0;
-        int timeTextBoxWidthValue = 0;
-
-        //  Calculate the widths
-        if (ActualValueType == BocDateTimeValueType.DateTime)
-        {
-          dateTextBoxWidthValue = (int)(innerControlWidthValue * dateTextBoxWidthRelative);            
-          timeTextBoxWidthValue = (int)(innerControlWidthValue * timeTextBoxWidthRelative);
-        }
-        else if (ActualValueType == BocDateTimeValueType.Date)
-        {
-          dateTextBoxWidthValue = innerControlWidthValue;            
-        }
-        else if (    IsDesignMode
-                  && ActualValueType == BocDateTimeValueType.Undefined)
-        {
-          dateTextBoxWidthValue = (int)(innerControlWidthValue * dateTextBoxWidthRelative);            
-          timeTextBoxWidthValue = (int)(innerControlWidthValue * timeTextBoxWidthRelative);
-        }
-         
-        //  Assign the widths
-        switch (Width.Type)
-        {
-          case UnitType.Percentage:
-          {
-            dateTextBoxWidth = Unit.Percentage (dateTextBoxWidthValue);            
-            timeTextBoxWidth = Unit.Percentage (timeTextBoxWidthValue);            
-            break;
-          }
-          case UnitType.Pixel:
-          {
-            dateTextBoxWidth = Unit.Pixel (dateTextBoxWidthValue);            
-            timeTextBoxWidth = Unit.Pixel (timeTextBoxWidthValue);            
-            break;
-          }
-          case UnitType.Point:
-          {
-            dateTextBoxWidth = Unit.Point (dateTextBoxWidthValue);            
-            timeTextBoxWidth = Unit.Point (timeTextBoxWidthValue);            
-            break;
-          }
-          default:
-          {
-            break;
-          }
-        }
-
-        if (dateTextBoxWidthValue == 0)
-          dateTextBoxWidth = Unit.Empty;
-
-        if (timeTextBoxWidthValue == 0)
-          timeTextBoxWidth = Unit.Empty;
-     }
-
-      if (ActualValueType == BocDateTimeValueType.DateTime)
-      {
-        _dateTextBox.Visible = true;
-        _timeTextBox.Visible = true;
-      }
-      else if (ActualValueType == BocDateTimeValueType.Date)
-      {
-        _dateTextBox.Visible = true;
-        _timeTextBox.Visible = false;
-
-        if (dateTimeSpacer != null)
-          dateTimeSpacer.Visible = false;
-      }
-      else if (IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
-      {
-        _dateTextBox.Visible = true;
-        _timeTextBox.Visible = true;
-      }
-      else 
-      {
-        _dateTextBox.Visible = false;
-        _timeTextBox.Visible = false;
-        
-        if (dateTimeSpacer != null)
-          dateTimeSpacer.Visible = false;
-        
-        if (datePickerImageSpacer != null)
-          datePickerImageSpacer.Visible = false;
-      }
-
-      //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-      //  and remove RenderContents.
-      if (   _enableClientScript && IsDesignMode 
-          || _hasClientScript)
-      {
-        string imageUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
-        if (imageUrl == null)
-          _datePickerButton.ImageUrl = DatePickerImageUrl;  
-        else
-          _datePickerButton.ImageUrl = imageUrl; 
-
-       string script;
-       if (Enabled && _hasClientScript)
-       {
-          string pickerActionButton = "this";
-          string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
-          string pickerActionTarget = "document.getElementById ('" + _dateTextBox.ClientID + "')";
-          string pickerActionFrame = "document.getElementById ('" + ClientID + "_frame')";
-          script = "DatePicker_ShowDatePicker("
-              + pickerActionButton + ", "
-              + pickerActionContainer + ", "
-              + pickerActionTarget + ", "
-              + pickerActionFrame + ");"
-              + "return false;";
-        }
-        else
-        {
-         script = "return false;";
-        }
-        _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
-      }
-      else
-      {
-        _datePickerButton.Visible = false;
-      }
-
-      _dateTextBox.ReadOnly = ! Enabled;
-      _timeTextBox.ReadOnly = ! Enabled;
-
-      _dateTextBox.Style["vertical-align"] = "middle";
-      _timeTextBox.Style["vertical-align"] = "middle";
-      _datePickerButton.Style["vertical-align"] = "text-bottom";
-
-      if (! dateTextBoxWidth.IsEmpty)
-        _dateTextBox.Width = dateTextBoxWidth;
-      if (! timeTextBoxWidth.IsEmpty)
-        _timeTextBox.Width = timeTextBoxWidth;
-
-      _dateTextBox.Height = this.Height;
-      _timeTextBox.Height = this.Height;
-
-      _dateTextBox.ApplyStyle (_commonStyle);
-      _dateTimeTextBoxStyle.ApplyStyle (_dateTextBox);
-      _dateTextBoxStyle.ApplyStyle (_dateTextBox);
-
-      _timeTextBox.ApplyStyle (_commonStyle);
-      _dateTimeTextBoxStyle.ApplyStyle (_timeTextBox);
-      _timeTextBoxStyle.ApplyStyle (_timeTextBox);
-
-      //  Common style not useful with image button
-      //  _datePickerButton.ApplyStyle (_commonStyle);
-      _datePickerButton.ApplyStyle (_datePickerButtonStyle);
-    }
+    _datePickerButton.ApplyStyle (_datePickerButtonStyle);
   }
-  
+
+
   /// <summary> Formats the <see cref="DateTime"/> value according to the current culture. </summary>
   /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
   /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>

@@ -1572,7 +1572,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         controlToValidate = control.NamingContainer.FindControl (iBaseValidator.ControlToValidate);
 
       //  Only visible controls: Build ValidationError
-      if (controlToValidate.Visible)
+      if (controlToValidate == null || controlToValidate.Visible)
         validationErrorList.Add (new ValidationError (controlToValidate, validator, dataRow.LabelsCell.Controls));
     }
 
@@ -2081,8 +2081,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
 
     AssignCssClassesToCells (dataRow, isTopDataRow);
-
     AssignCssClassesToInputControls (dataRow);
+    AssignCssClassesToValidators (dataRow);
 
     AddShowEmptyCellsHack (dataRow);
 
@@ -2706,6 +2706,25 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
   }
 
+  /// <summary> Assign CSS classes to validators where none exist. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
+  protected virtual void AssignCssClassesToValidators (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+    foreach (Control control in dataRow.ControlsCell.Controls)
+    {
+      BaseValidator validator = control as BaseValidator;
+      if (   validator != null
+          && ! StringUtility.IsNullOrEmpty (validator.CssClass))
+      {
+        validator.CssClass = CssClassValidator;
+      }
+    }
+  }
+
   /// <summary>
   ///   Tests for an empty <c>class</c> attribute and assigns the <paramref name="cssClass"/> 
   ///   if empty.
@@ -3057,10 +3076,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   protected virtual string CssClassInputControl
   { get { return "formGridInputControl"; } }
 
-  /// <summary> CSS-Class applied to the individual validation messages </summary>
+  /// <summary> CSS-Class applied to the individual validation messages. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassValidationMessage/*' />
   protected virtual string CssClassValidationMessage
   { get { return "formGridValidationMessage"; } }
+
+  /// <summary> CSS-Class applied to the validators vreated by the <see cref="FormGridManager"/>. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassValidator/*' />
+  protected virtual string CssClassValidator
+  { get { return "formGridValidator"; } }
 
   #endregion
 }
