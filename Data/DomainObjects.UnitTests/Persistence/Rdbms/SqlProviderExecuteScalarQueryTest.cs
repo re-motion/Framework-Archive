@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Persistence;
@@ -48,6 +49,15 @@ public class SqlProviderQueryTest: SqlProviderBaseTest
   {
     Query query = new Query ("OrderNoSumByCustomerNameQuery");
     query.Parameters.Add ("@customerName", "Kunde 1");
+
+    Assert.AreEqual (3, Provider.ExecuteScalarQuery (query));
+  }
+
+  [Test]
+  public void ParameterNameWithDifferentCase ()
+  {
+    Query query = new Query ("OrderNoSumByCustomerNameQuery");
+    query.Parameters.Add ("@CUSTOMERNAME", "Kunde 1");
 
     Assert.AreEqual (3, Provider.ExecuteScalarQuery (query));
   }

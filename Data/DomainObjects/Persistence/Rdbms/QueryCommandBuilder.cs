@@ -30,11 +30,13 @@ public class QueryCommandBuilder : CommandBuilder
   public override IDbCommand Create ()
   {
     IDbCommand command = CreateCommand ();
-    command.CommandText = _query.Statement;
 
     foreach (QueryParameter parameter in _query.Parameters)
+    { 
       AddCommandParameter (command, parameter.Name, parameter.Value);
+    }
 
+    command.CommandText = _query.Statement;
     return command;
   }
 
