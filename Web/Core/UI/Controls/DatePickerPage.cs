@@ -57,7 +57,7 @@ public class DatePickerPage : Page
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
 
     Calendar.SelectionChanged += new EventHandler(Calendar_SelectionChanged);
-    
+
     TargetIDField = new HtmlInputHidden();
     TargetIDField.ID = "TargetIDField";
     TargetIDField.EnableViewState = false;
