@@ -16,6 +16,7 @@ namespace OBWTest
 public class StartForm : System.Web.UI.Page
 {
   protected Rubicon.Web.UI.Controls.WebButton WebButton2;
+  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.Web.UI.Controls.WebButton WebButton1;
 
 	private void Page_Load(object sender, System.EventArgs e)

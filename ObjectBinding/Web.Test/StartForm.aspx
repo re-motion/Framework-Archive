@@ -9,6 +9,7 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
+<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
