@@ -105,23 +105,33 @@ public class PageUtility
     return GetPageUrl (page, string.Empty);
   }
 
+  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
+  {
+    PageUtility.CallPage (sourcePage, destinationUrl, parameters, true);
+  }
+
   /// <summary>
   /// redirects to the page identified by the given URL 
   /// </summary>
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
-  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
+  /// <param name="viewNavigationBar" >if false, navigationbar is supressed</param>
+  public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters, bool viewNavigationBar)
   {    
     // Add referrer information for all pages
     string referrerUrl = GetPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
+
+    string supressNavigation = string.Empty ;
+    if (!viewNavigationBar)
+      supressNavigation = "&SupressNav=true";
 
     string token = GetUniqueToken ();
     if (parameters != null)
       sourcePage.Session[token] = parameters;
     
     sourcePage.Response.Redirect (
-        sourcePage.Request.ApplicationPath + "/" + destinationUrl +"?pageToken=" + token);
+        sourcePage.Request.ApplicationPath + "/" + destinationUrl +"?pageToken=" + token + supressNavigation);
   }
 
   /// <summary>
