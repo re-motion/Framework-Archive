@@ -17,17 +17,6 @@ public class DataManager
 
   // construction and disposing
 
-
-  public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
-  {
-    _relationEndPointMap.RegisterObjectEndPoint (endPointID, oppositeObjectID);
-  }
-
-  public void RegisterCollectionEndPoint (RelationEndPointID endPointID, DomainObjectCollection domainObjects)
-  {
-    _relationEndPointMap.RegisterCollectionEndPoint (endPointID, domainObjects);
-  }
-
   public DataManager (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -78,25 +67,6 @@ public class DataManager
     }
   }
 
-  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
-  {
-    if (!domainObject.BeginDelete ())
-      return false;
-
-    return oppositeEndPoints.BeginDelete (domainObject);
-  }
-
-  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
-  {
-    domainObject.EndDelete ();
-    oppositeEndPoints.EndDelete ();
-  }
-
-  public bool Contains (RelationEndPointID id)
-  {
-    return _relationEndPointMap.Contains (id);
-  }
-
   public DomainObjectCollection GetChangedDomainObjects ()
   {
     DomainObjectCollection changedDomainObjects = new DomainObjectCollection ();
@@ -108,39 +78,6 @@ public class DataManager
     }
 
     return changedDomainObjects;
-  }
-
-  public bool HasRelationChanged (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
-    {
-      RelationEndPoint endPoint = GetRelationEndPoint (endPointID);
-      if (endPoint != null && endPoint.HasChanged)
-        return true;
-    }
-
-    return false;
-  }
-
-  public void WriteAssociatedPropertiesForRelationChange (
-      ObjectEndPoint relationEndPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-    ArgumentUtility.CheckNotNull ("newRelatedEndPoint", newRelatedEndPoint);
-    ArgumentUtility.CheckNotNull ("oldRelatedEndPoint", oldRelatedEndPoint);
-    ArgumentUtility.CheckNotNull ("oldRelatedEndPointOfNewRelatedEndPoint", oldRelatedEndPointOfNewRelatedEndPoint);
-
-    relationEndPoint.SetOppositeEndPoint (newRelatedEndPoint);
-    newRelatedEndPoint.SetOppositeEndPoint (relationEndPoint);
-    oldRelatedEndPoint.SetOppositeEndPoint (RelationEndPoint.CreateNullRelationEndPoint (relationEndPoint.Definition));
-
-    oldRelatedEndPointOfNewRelatedEndPoint.SetOppositeEndPoint (
-        RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition));
   }
 
   public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)
@@ -170,32 +107,7 @@ public class DataManager
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     Register (dataContainer);
-
-    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
-    {
-      if (endPointID.Definition.IsVirtual)
-      {
-        if (endPointID.Definition.Cardinality == CardinalityType.One) 
-        {
-          _relationEndPointMap.RegisterObjectEndPoint (endPointID, null);
-        }
-        else
-        {
-          DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
-          _relationEndPointMap.RegisterCollectionEndPoint (endPointID, domainObjects);
-        }
-      }
-    }
-  }
-
-  public void ChangeLinks (
-      ObjectEndPoint relationEndPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    _relationEndPointMap.ChangeLinks (
-        relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+    _relationEndPointMap.RegisterNewDataContainer (dataContainer);
   }
 
   public void Register (DataContainer dataContainer)
@@ -206,68 +118,60 @@ public class DataManager
     _relationEndPointMap.Register (dataContainer);
   }
 
-  public RelationEndPoint GetRelationEndPoint (RelationEndPointID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-    return _relationEndPointMap[id];
-  }
-
-  public DomainObjectCollection GetRelatedObjects (RelationEndPointID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    if (_relationEndPointMap.Contains (id))
-    {
-      CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPointMap[id];
-      return collectionEndPoint.OppositeDomainObjects;
-    }
-
-    return null;
-  }
-
-  public DataContainer GetDataContainer (ObjectID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    return _dataContainerMap[id];
-  }
-
   public void Commit ()
   {
-    DomainObjectCollection changedObjects = GetChangedDomainObjects ();
+    _relationEndPointMap.Commit ();
 
-    foreach (DomainObject domainObject in changedObjects)
-    {
+    foreach (DomainObject domainObject in GetChangedDomainObjects ())
       domainObject.DataContainer.Commit ();
-
-      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      {
-        RelationEndPoint endPoint = GetRelationEndPoint (endPointID);
-        if (endPoint != null)
-          endPoint.Commit ();
-      }
-    }
   }
 
   public void Rollback ()
   {
+    _relationEndPointMap.Rollback (GetNewDomainObjects ());
+
     foreach (DomainObject domainObject in GetChangedDomainObjects ())
     {
       domainObject.DataContainer.Rollback ();
 
       if (domainObject.State == StateType.New)
         _dataContainerMap.Remove (domainObject.ID);
-
-      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      {
-        RelationEndPoint endPoint = GetRelationEndPoint (endPointID);
-        if (endPoint != null)
-          endPoint.Rollback ();
-
-        if (domainObject.State == StateType.New)
-          _relationEndPointMap.Remove (endPointID);
-      }
     }
+  }
+
+  public DataContainerCollection DataContainerMap
+  {
+    get { return _dataContainerMap; }
+  }
+  public RelationEndPointMap RelationEndPointMap
+  {
+    get { return _relationEndPointMap; }
+  }
+
+  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  {
+    if (!domainObject.BeginDelete ())
+      return false;
+
+    return oppositeEndPoints.BeginDelete (domainObject);
+  }
+
+  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  {
+    domainObject.EndDelete ();
+    oppositeEndPoints.EndDelete ();
+  }
+
+  private DomainObjectCollection GetNewDomainObjects ()
+  {
+    DomainObjectCollection newDomainObjects = new DomainObjectCollection ();
+    foreach (DataContainer dataContainer in _dataContainerMap)
+    {
+      if (dataContainer.State == StateType.New)
+        newDomainObjects.Add (dataContainer.DomainObject);
+    }
+
+    return newDomainObjects;
   }
 }
 }

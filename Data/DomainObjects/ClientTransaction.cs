@@ -67,7 +67,7 @@ public class ClientTransaction : IDisposable
 
     foreach (DomainObject domainObject in changedDomainObjects)
     {
-      CheckMandatoryRelations (domainObject);
+      _dataManager.RelationEndPointMap.CheckMandatoryRelations (domainObject);
 
       if (domainObject.DataContainer.State != StateType.Original)
         changedDataContainers.Add (domainObject.DataContainer);
@@ -98,7 +98,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    DataContainer dataContainer = _dataManager.GetDataContainer (id);
+    DataContainer dataContainer = _dataManager.DataContainerMap[id];
     if (dataContainer != null)
       return dataContainer.DomainObject;
 
@@ -109,7 +109,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (relationEndPointID);
+    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _dataManager.RelationEndPointMap[relationEndPointID];
     if (objectEndPoint == null)
       return LoadRelatedObject (relationEndPointID);
     
@@ -123,7 +123,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (relationEndPointID);
+    ObjectEndPoint objectEndPoint = (ObjectEndPoint) _dataManager.RelationEndPointMap[relationEndPointID];
     if (objectEndPoint == null)
       return LoadRelatedObject (relationEndPointID);
 
@@ -137,7 +137,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    DomainObjectCollection domainObjects = _dataManager.GetRelatedObjects (relationEndPointID);
+    DomainObjectCollection domainObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
     if (domainObjects != null)
       return domainObjects;
 
@@ -148,7 +148,7 @@ public class ClientTransaction : IDisposable
 
     domainObjects = GetDomainObjects (relationEndPointID, relatedDataContainers);
 
-    _dataManager.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
+    _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
     foreach (DataContainer loadedDataContainer in newLoadedDataContainers)
       OnLoaded (new LoadedEventArgs (loadedDataContainer.DomainObject));
@@ -160,7 +160,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _dataManager.GetRelationEndPoint (relationEndPointID);
+    CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _dataManager.RelationEndPointMap[relationEndPointID];
 
     if (collectionEndPoint != null)
       return collectionEndPoint.OriginalOppositeDomainObjects;
@@ -232,7 +232,7 @@ public class ClientTransaction : IDisposable
     }
     else
     {
-      _dataManager.RegisterObjectEndPoint (relationEndPointID, null);
+      _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
       return null;
     }
   }
@@ -276,13 +276,13 @@ public class ClientTransaction : IDisposable
 
     if (BeginRelationChange (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint))
     {
-      _dataManager.WriteAssociatedPropertiesForRelationChange (
+      _dataManager.RelationEndPointMap.WriteAssociatedPropertiesForRelationChange (
           relationEndPoint, 
           newRelatedEndPoint, 
           oldRelatedEndPoint, 
           oldRelatedEndPointOfNewRelatedEndPoint);
 
-      _dataManager.ChangeLinks (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+      _dataManager.RelationEndPointMap.ChangeLinks (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
 
       EndRelationChange (
           relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
@@ -318,15 +318,15 @@ public class ClientTransaction : IDisposable
   internal RelationEndPoint GetRelationEndPoint (RelationEndPointID endPointID)
   {
     // TODO: Move code to RelationMap
-    if (_dataManager.Contains (endPointID))
-      return _dataManager.GetRelationEndPoint (endPointID);
+    if (_dataManager.RelationEndPointMap.Contains (endPointID))
+      return _dataManager.RelationEndPointMap[endPointID];
 
     if (endPointID.Definition.Cardinality == CardinalityType.One)
       GetRelatedObject (endPointID);
     else
       GetRelatedObjects (endPointID);
 
-    return _dataManager.GetRelationEndPoint (endPointID);
+    return _dataManager.RelationEndPointMap[endPointID];
   }
 
   private bool BeginRelationChange (
@@ -360,19 +360,6 @@ public class ClientTransaction : IDisposable
     return DomainObjectCollection.Create (
         relationEndPointID.Definition.PropertyType,
         _dataManager.MergeWithExisting (relatedDataContainers));
-  }
-
-  private void CheckMandatoryRelations (DomainObject domainObject)
-  {
-    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-    {
-      if (endPointID.Definition.IsMandatory)
-      {
-        RelationEndPoint endPoint = _dataManager.GetRelationEndPoint (endPointID);
-        if (endPoint != null)
-          endPoint.CheckMandatory ();
-      }
-    }
   }
 
   internal protected DataManager DataManager

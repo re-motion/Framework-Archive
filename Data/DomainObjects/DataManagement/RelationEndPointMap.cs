@@ -28,6 +28,26 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
   // methods and properties
 
+  public void Commit ()
+  {
+    foreach (RelationEndPoint endPoint in this)
+      endPoint.Commit ();
+  }
+
+  public void Rollback (DomainObjectCollection newDomainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("newDomainObjects", newDomainObjects);
+
+    foreach (RelationEndPoint endPoint in this)
+      endPoint.Rollback ();
+
+    foreach (DomainObject newDomainObject in newDomainObjects)
+    {
+      foreach (RelationEndPointID endPointID in newDomainObject.DataContainer.RelationEndPointIDs)
+        Remove (endPointID);
+    }
+  }
+  
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
@@ -180,6 +200,88 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
       endPoint.OppositeObjectID = newRelatedObject.ID;
     else
       endPoint.OppositeObjectID = null;
+  }
+
+  public void CheckMandatoryRelations (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+    {
+      if (endPointID.Definition.IsMandatory)
+      {
+        RelationEndPoint endPoint = this[endPointID];
+        if (endPoint != null)
+          endPoint.CheckMandatory ();
+      }
+    }
+  }
+
+  public DomainObjectCollection GetRelatedObjects (RelationEndPointID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    if (Contains (id))
+    {
+      CollectionEndPoint collectionEndPoint = (CollectionEndPoint) this[id];
+      return collectionEndPoint.OppositeDomainObjects;
+    }
+
+    return null;
+  }
+
+  public void RegisterNewDataContainer (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
+    {
+      if (endPointID.Definition.IsVirtual)
+      {
+        if (endPointID.Definition.Cardinality == CardinalityType.One) 
+        {
+          RegisterObjectEndPoint (endPointID, null);
+        }
+        else
+        {
+          DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
+          RegisterCollectionEndPoint (endPointID, domainObjects);
+        }
+      }
+    }
+  }
+
+  public void WriteAssociatedPropertiesForRelationChange (
+      ObjectEndPoint relationEndPoint,
+      ObjectEndPoint newRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("newRelatedEndPoint", newRelatedEndPoint);
+    ArgumentUtility.CheckNotNull ("oldRelatedEndPoint", oldRelatedEndPoint);
+    ArgumentUtility.CheckNotNull ("oldRelatedEndPointOfNewRelatedEndPoint", oldRelatedEndPointOfNewRelatedEndPoint);
+
+    relationEndPoint.SetOppositeEndPoint (newRelatedEndPoint);
+    newRelatedEndPoint.SetOppositeEndPoint (relationEndPoint);
+    oldRelatedEndPoint.SetOppositeEndPoint (RelationEndPoint.CreateNullRelationEndPoint (relationEndPoint.Definition));
+
+    oldRelatedEndPointOfNewRelatedEndPoint.SetOppositeEndPoint (
+        RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition));
+  }
+
+  public bool HasRelationChanged (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
+    {
+      RelationEndPoint endPoint = this[endPointID];
+      if (endPoint != null && endPoint.HasChanged)
+        return true;
+    }
+
+    return false;
   }
 
   #region ICollectionEndPointChangeDelegate Members
