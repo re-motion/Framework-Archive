@@ -3,6 +3,7 @@
 
   <target name="debug" depends="setdebug,all" />
   <target name="release" depends="setrelease,all" />
+  <target name="resources" depends="setresources,all" />
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
     
@@ -18,6 +19,7 @@
 
   <target name="initNoConfig">
     <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <echo message="new version is ${build.version.noconfig}"/>
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />  
     <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
   </target>
@@ -41,6 +43,7 @@
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
   
   <target name="setdebug">
+    <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
@@ -49,6 +52,7 @@
   </target>
   
   <target name="setrelease">
+    <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
@@ -56,7 +60,14 @@
     <call target="initialize" />
   </target>
   
+  <target name="setresources">
+    <property name="project.config" value="documentation" />
+    <property name="build.copyresources" value="true" />
+    <call target="initialize" />
+  </target>
+  
   <target name="setdocumentation">
+    <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="true" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
@@ -201,28 +212,37 @@
   <!--======================= BUILD =======================-->
   
   <target name="build">
-    <echo message="building ${project.output}.${project.extension} ${build.version}"/>
-    <if if="${build.createdoc}" propertyexists="dummy">
-      <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
-    </if> <if unless="${build.createdoc}" propertyexists="dummy">
-      <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
-    </if>
+    <if if="${build.copyresources}" propertyexists="dummy">
+      <copy todir="${build.basedir}/res/${project.output}" >
+        <fileset basedir="${project.dir}/res">
+          <includes name="**/*" />
+        </fileset>
+      </copy>
+    <!-- else --> </if> <if unless="${build.copyresources}" propertyexists="dummy"> 
+      <echo message="building ${project.output}.${project.extension} ${build.version}"/>
+      
+      <if if="${build.createdoc}" propertyexists="dummy">
+        <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
+      <!-- else --> </if> <if unless="${build.createdoc}" propertyexists="dummy">
+        <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
+      </if>
 
-    <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
-    
-    <mkdir dir="${project.builddir}"/>
-    <mkdir dir="${project.tempdir}"/>
-    <call target="prepareassemblyinfo" />
-    
-    <copy todir="${project.builddir}" file="${prereq.assemblies}/log4net.dll" overwrite="true"/>
+      <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
+      
+      <mkdir dir="${project.builddir}"/>
+      <mkdir dir="${project.tempdir}"/>
+      <call target="prepareassemblyinfo" />
+      
+      <copy todir="${project.builddir}" file="${prereq.assemblies}/log4net.dll" overwrite="true"/>
 
-    <nant buildfile="${project.dir}/${project.name}.build" target="build" />
-    
-    <if unless="${build.createdoc}" propertyexists="dummy">
-      <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
+      <nant buildfile="${project.dir}/${project.name}.build" target="build" />
+      
+      <if unless="${build.createdoc}" propertyexists="dummy">
+        <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
+      </if>
     </if>
   </target>
-  
+    
   <target name="buildtest">
     <echo message="building unit tests ${project.output}.${project.extension} ${build.version}"/>
     <property name="project.doc" value="" />
