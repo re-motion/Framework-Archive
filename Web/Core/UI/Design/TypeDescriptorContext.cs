@@ -7,14 +7,17 @@ namespace Rubicon.ObjectBinding.Web.Design
 
 public class TypeDescriptorContext : ITypeDescriptorContext
 {
-  private BocListDesigner _designer;
+  private IDesigner _designer;
+  private IServiceProvider _provider;
   private PropertyDescriptor _propertyDescriptor;
 
   public TypeDescriptorContext (
-      BocListDesigner designer, 
+      IDesigner designer,
+      IServiceProvider provider,
       PropertyDescriptor propertyDescriptor)
   {
     _designer = designer;
+    _provider = provider;
     _propertyDescriptor = propertyDescriptor;
   }
 
@@ -25,7 +28,7 @@ public class TypeDescriptorContext : ITypeDescriptorContext
 
   public object GetService (Type serviceType)
   {
-    return ((IServiceProvider)_designer).GetService(serviceType);
+    return _provider.GetService(serviceType);
   }
 
   public IContainer Container

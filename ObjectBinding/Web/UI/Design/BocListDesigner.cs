@@ -32,7 +32,7 @@ public class BocListDesigner: ControlDesigner, IServiceProvider
         propertyDescriptor.PropertyType, 
         typeof(UITypeEditor));
     
-    TypeDescriptorContext context = new TypeDescriptorContext (this, propertyDescriptor);
+    TypeDescriptorContext context = new TypeDescriptorContext (this, this, propertyDescriptor);
     object value = propertyDescriptor.GetValue (Component);
     editor.EditValue (context, this, value);
   }
