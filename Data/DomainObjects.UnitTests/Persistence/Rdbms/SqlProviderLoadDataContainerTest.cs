@@ -41,30 +41,43 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException),
-      "Error while executing SQL command for class 'ClassWithKeyOfInvalidType'.")]
+  [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithInvalidIDType ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithKeyOfInvalidType", 
         new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
-    DataContainer container = Provider.LoadDataContainer (id);
+    try
+    {
+      DataContainer container = Provider.LoadDataContainer (id);
+    }
+    catch (StorageProviderException e)
+    {
+      Assert.AreEqual (typeof (SqlException), e.InnerException.GetType ());
+      throw e;
+    }
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException),
-      "Error while executing SQL command for class 'ClassWithoutIDProperty'.")]
+  [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithoutIDColumn ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutIDProperty", 
         new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
-    DataContainer container = Provider.LoadDataContainer (id);
+    try
+    {
+      DataContainer container = Provider.LoadDataContainer (id);
+    }
+    catch (StorageProviderException e)
+    {
+      Assert.AreEqual (typeof (SqlException), e.InnerException.GetType ());
+      throw e;
+    }
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException),
-      "Entity 'TableWithoutClassIDColumn' does not contain column 'ClassID'.")]
+  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'ClassID' could not be found.")]
   public void LoadDataContainerWithoutClassIDColumn ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutClassIDProperty", 
@@ -74,8 +87,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException),
-      "Entity 'TableWithoutTimestampColumn' does not contain column 'Timestamp'.")]
+  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'Timestamp' could not be found.")]
   public void LoadDataContainerWithoutTimestampColumn ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutTimestampProperty", 
@@ -86,8 +98,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
 
   [Test]
   [ExpectedException (typeof (StorageProviderException), 
-      "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf'"
-      + " in entity 'TableWithGuidKey' encountered.")]
+      "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf' encountered.")]
   public void LoadDataContainerWithNonExistingClassID ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
@@ -97,8 +108,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException),
-      "Entity 'TableWithGuidKey' does not contain column 'OrderNo'.")]
+  [ExpectedException (typeof (StorageProviderException), "The mandatory column 'OrderNo' could not be found.")]
   public void LoadDataContainerWithClassIDFromOtherClass ()
   {
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
