@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Collections;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Text;
 
@@ -69,37 +70,6 @@ public class ValidationStateViewer : WebControl, IControl
   {
   }
 
-  /// <summary>
-  ///   Registers <see cref="ParentPage_PreRender"/> with the parent page's <c>PreRender</c>
-  ///   event, before calling the base class's <c>OnInit</c>.
-  /// </summary>
-  /// <param name="e"> The <see cref="EventArgs"/>. </param>
-  protected override void OnInit (EventArgs e)
-	{
-    this.Page.PreRender += new EventHandler(ParentPage_PreRender);
-    base.OnInit(e);
-	}
-
-  /// <summary>
-  ///   Event handler for the control's <c>PreRender</c> event tasked with 
-  ///   filling the form grid manager list.
-  /// </summary>
-  /// <param name="sender"> The <see cref="Page"/> object. </param>
-  /// <param name="e"> The <see cref="EventArgs"/>. </param>
-  private void ParentPage_PreRender (object sender, EventArgs e)
-  {
-    EnsureFormGridManagerListPopulated ();
-  }
-
-  private void EnsureFormGridManagerListPopulated ()
-  {
-    if (_formGridManagers == null)
-    {
-      _formGridManagers = new ArrayList();
-      PopulateFormGridManagerList (NamingContainer);
-    }
-  }
-
   /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>
   /// <param name="parent"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control parent)
@@ -121,27 +91,18 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected override void Render (HtmlTextWriter writer)
   {
-//    base.Render (writer);
-//  }
-//
-//  protected override void RenderChildren(HtmlTextWriter writer)
-//  {
-    if (ControlHelper.IsDesignMode (this, this.Context))
-    {
-      // writer.WriteLine ("No validation at design time");
-    }
-    else
+    if (!ControlHelper.IsDesignMode (this, this.Context))
     {
       switch (_validationErrorStyle)
       {
-        case ValidationErrorStyle.DetailedMessages:
-        {
-          RenderValidationMessages (writer);
-          break;
-        }
         case ValidationErrorStyle.Notice:
         {
           RenderValidationNotice (writer);
+          break;
+        }
+        case ValidationErrorStyle.DetailedMessages:
+        {
+          RenderValidationMessages (writer);
           break;
         }
         case ValidationErrorStyle.HideErrors:
@@ -161,19 +122,18 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> Displays a short notice if validation errors where found. </summary>
   protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
-    bool hasValidationErrors = false;
-
-    foreach (FormGridManager formGridManager in _formGridManagers)
+    bool isPageValid = true;
+    foreach (IValidator validator in Page.Validators)
     {
-      if (formGridManager.GetValidationErrors().Length > 0)
+      if (! validator.IsValid)
       {
-        hasValidationErrors = true;
+        isPageValid = false;
         break;
       }
     }
 
     //  Enclose the validation error notice inside a div
-    if (hasValidationErrors)
+    if (! isPageValid)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -191,6 +151,9 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> Displays the validation messages for each error. </summary>
   protected virtual void RenderValidationMessages (HtmlTextWriter writer)
   {
+    _formGridManagers = new ArrayList();
+    PopulateFormGridManagerList (NamingContainer);
+
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
@@ -206,12 +169,21 @@ public class ValidationStateViewer : WebControl, IControl
 
         writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-        if (validationError.Label  != null)
+        if (validationError.Labels  != null)
         {
           writer.AddStyleAttribute ("padding-right", "3pt");
           writer.RenderBeginTag (HtmlTextWriterTag.Td);
-          foreach (Control control in validationError.Label)
-            control.RenderControl (writer);
+          foreach (Control control in validationError.Labels)
+          {
+            if (control is SmartLabel)
+              writer.Write (((SmartLabel) control).GetText());
+            else if (control is FormGridLabel)
+              writer.Write (((FormGridLabel) control).Text);
+            else if (control is Label)
+              writer.Write (((Label) control).Text);
+            else if (control is LiteralControl)
+              writer.Write (((LiteralControl) control).Text);
+          }
           writer.RenderEndTag();
         }
         else
@@ -222,7 +194,7 @@ public class ValidationStateViewer : WebControl, IControl
       
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
         //  Label resets the <select> element, ruining postback
-        if (validationError.ValidatedControl is TextBox)
+        if (! (validationError.ValidatedControl is DropDownList || validationError.ValidatedControl is HtmlSelect))
           validationError.ToLabel(CssClassValidationMessage).RenderControl (writer);
         else
           validationError.ToSpan(CssClassValidationMessage).RenderControl (writer);
