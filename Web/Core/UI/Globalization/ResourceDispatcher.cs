@@ -90,18 +90,27 @@ public sealed class ResourceDispatcher
       string propertyName = (string) entry.Key;
       string propertyValue = (string) entry.Value;
 
-      HtmlControl genericHtmlControl = control as HtmlControl;
-      if (genericHtmlControl != null)
+      PropertyInfo property = control.GetType ().GetProperty (propertyName, typeof (string));
+      
+      if (property != null)
       {
-        genericHtmlControl.Attributes[propertyName] = propertyValue;
+        property.SetValue (control, propertyValue, new object[0]); 
       }
-      else  
+      else
       {
-        SetProperty (control, propertyName, propertyValue);
+        HtmlControl genericHtmlControl = control as HtmlControl;
+        if (genericHtmlControl != null)
+        {
+          genericHtmlControl.Attributes[propertyName] = propertyValue;
+        }
+        else  
+        {
+          throw new InvalidOperationException ("Type " + control.GetType().FullName + " does not contain a public property " + propertyName + ".");
+        }
       }
     }
   }
-
+  
   public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
   {
     PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
@@ -114,24 +123,6 @@ public sealed class ResourceDispatcher
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
   }
   
-  /*
-  private static Type GetType (object objectToGetTypeFor)
-  {
-    Type type = objectToGetTypeFor.GetType();
-    
-    if (type != null && 
-        typeof(Control).IsAssignableFrom (type) && 
-        type.Namespace == "ASP" && 
-        (type.Name.EndsWith ("_aspx") || type.Name.EndsWith ("_ascx")))
-    {
-      type = type.BaseType;
-    }
-
-    return type;
-  }
-  */
-
-
   // member fields
 
   // construction and disposing
