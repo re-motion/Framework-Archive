@@ -81,7 +81,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     Binding.EvaluateBinding();
 
-    if (! (this.Site != null && this.Site.DesignMode))
+    if (! IsDesignMode)
     {
       string newValue = this.Page.Request.Form[_listControl.UniqueID]; // gets enum identifier
       if (newValue == c_nullIdentifier)
