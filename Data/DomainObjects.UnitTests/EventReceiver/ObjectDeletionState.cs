@@ -21,14 +21,5 @@ public class ObjectDeletionState : ChangeState
   }
 
   // methods and properties
-
-  public override bool Compare (object obj)
-  {
-    if (!base.Compare (obj))
-      return false;
-
-    ObjectDeletionState objectDeletionState = obj as ObjectDeletionState;
-    return (objectDeletionState != null);
-  }
 }
 }
