@@ -101,7 +101,7 @@ public class DatePickerPage : Page
         this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
     PageUtility.RegisterClientScriptFile (
         this,
-        typeof (DatePickerForm).FullName, 
+        typeof (DatePickerPage).FullName, 
         scriptUrl);
 
     base.OnPreRender (e);
@@ -111,7 +111,7 @@ public class DatePickerPage : Page
   {
     PageUtility.RegisterStartupScript (
       this, 
-      typeof (DatePickerForm).FullName + "_Calendar_SelectionChanged",
+      typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged",
       "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "')");
   }
 }

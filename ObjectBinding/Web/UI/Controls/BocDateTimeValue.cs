@@ -17,7 +17,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
-//  TODO: BocDateTimeValue: Date-Picker
+//  TODO: BocDateTimeValue: Try to extract the DatePickerButton functionality into a Control
+//    and add it to Rubicon.Web.UI.Controls.
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -40,6 +41,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   const int c_defaultDateTextBoxWidthInPoints = 70;
   const int c_defaultTimeTextBoxWidthInPoints = 40;
+  const int c_defaultDatePickerLengthInPoints = 80;
 
   private const string c_requiredErrorMessage = "Please enter a value.";
   private const string c_incompleteErrorMessage = "Please enter a date.";
@@ -47,6 +49,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private const string c_invalidDateErrorMessage = "Unknown date format.";
   private const string c_invalidTimeErrorMessage = "Unknown time format.";
 
+  private const string c_datePickerPopupForm = "DatePickerForm.aspx";
   private const string c_datePickerScriptUrl = "DatePicker.js";
   private const string c_datePickerDocumentClickHander = 
       "<script for=\"document\" event=\"onclick()\" language=\"JScript\" type=\"text/jscript\">"
@@ -74,66 +77,48 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="TextBox"/> used in edit mode for the date component. </summary>
   private TextBox _dateTextBox = null;
-
   /// <summary> The <see cref="TextBox"/> used in edit mode for the time component. </summary>
   private TextBox _timeTextBox = null;
-
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
-
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
   private Image _datePickerImage = null;
-
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
 
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
-
   /// <summary>  The string displayed in the time text box. </summary>
   private string _internalTimeValue = null;
-
   /// <summary> The string enterd into the date text box by the user. </summary>
   private string _newInternalDateValue = null;
-
   /// <summary> The string enterd into the time text box by the user. </summary>
   private string _newInternalTimeValue = null;
-
   /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
   private NaDateTime _savedDateTimeValue = NaDateTime.Null;
 
   /// <summary> The externally set <see cref="BocDateTimeValueType"/>. </summary>
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
-
   /// <summary> The <see cref="BocDateTimeValueType"/> this control is actually displaying. </summary>
   private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
 
   /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
   private Style _commonStyle = new Style();
-
   /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to both text boxes. </summary>
   private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
-
   /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="DateTextBox"/>. </summary>
   private SingleRowTextBoxStyle _dateTextBoxStyle = new SingleRowTextBoxStyle();
-
   /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="TimeTextBox"/>. </summary>
   private SingleRowTextBoxStyle _timeTextBoxStyle = new SingleRowTextBoxStyle();
-
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
-
   /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
   private Style _datePickerImageStyle = new Style();
 
-  //  TODO: DatePicker, remove fields
-  private TableStyle _datePickerCalendarStyle = new TableStyle();
-  private Style _datePickerDayHeaderStyle = new Style();
-  private Style _datePickerDayStyle = new Style();
-  private Style _datePickerOtherMonthDayStyle = new Style();
-  private Style _datePickerSelectedDayStyle = new Style();
-  private Style _datePickerTodayDayStyle = new Style();
-  private Style _datePickerTitleStyle = new Style();
+  /// <summary> The width of the popup window used to display the date picker. </summary>
+  private Unit _datePickerPopupWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
+  /// <summary> The height of the popup window used to display the date picker. </summary>
+  private Unit _datePickerPopupHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
 
   /// <summary> Flag that determines  whether to show the seconds.</summary>
   private bool _showSeconds = false;
@@ -281,79 +266,21 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.Render (writer);
   }
 
-  //  TODO: DatePicker: Work in Progress, currently dirty
-  bool _renderClientScript = true;
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
+  
+    Unit width = _datePickerPopupWidth;
+    if (width.IsEmpty)
+      width = Unit.Pixel (200);
+    writer.AddAttribute("dp_width", width.ToString());
 
-    if (_renderClientScript) 
-    {
-//      if (AutoPostBack) {
-//          writer.AddAttribute("dp_autoPostBack", "true", false);
-//      }
-      if (_datePickerCalendarStyle != null)
-      {
-//          Unit u = _datePickerCalendarStyle.Width;
-          Unit u = Unit.Pixel (200);
-          if (!u.IsEmpty)
-              writer.AddAttribute("dp_width", u.ToString(CultureInfo.InvariantCulture));
-//          u = _datePickerCalendarStyle.Height;
-          u = Unit.Pixel (200);
-          if (!u.IsEmpty)
-              writer.AddAttribute("dp_height", u.ToString(CultureInfo.InvariantCulture));
-
-          string s = GetCssFromStyle(_datePickerCalendarStyle);
-          if (s.Length != 0) 
-              writer.AddAttribute("dp_calendarStyle", s, false);
-      }
-      if (_datePickerTitleStyle != null) 
-      {
-          string s = GetCssFromStyle(_datePickerTitleStyle);
-          if (s.Length != 0)
-              writer.AddAttribute("dp_titleStyle", s, false);
-      }
-      if (_datePickerDayHeaderStyle != null)
-      {
-          string s = GetCssFromStyle(_datePickerDayHeaderStyle);
-          if (s.Length != 0)
-              writer.AddAttribute("dp_dayHeaderStyle", s, false);
-      }
-      if (_datePickerDayStyle != null) 
-      {
-          string s = GetCssFromStyle(_datePickerDayStyle);
-          if (s.Length != 0) 
-              writer.AddAttribute("dp_dayStyle", s, false);
-      }
-      if (_datePickerOtherMonthDayStyle != null) 
-      {
-          string s = GetCssFromStyle(_datePickerOtherMonthDayStyle);
-          if (s.Length != 0)
-              writer.AddAttribute("dp_otherMonthDayStyle", s, false);
-      }
-      if (_datePickerTodayDayStyle != null)
-      {
-          string s = GetCssFromStyle(_datePickerTodayDayStyle);
-          if (s.Length != 0)
-              writer.AddAttribute("dp_todayDayStyle", s, false);
-      }
-      if (_datePickerSelectedDayStyle != null)
-      {
-          string s = GetCssFromStyle(_datePickerSelectedDayStyle);
-          if (s.Length != 0)
-              writer.AddAttribute("dp_selectedDayStyle", s, false);
-      }
-      writer.AddAttribute("CssClassDatePickerCalendar", CssClassDatePickerCalendar, false);
-      writer.AddAttribute("CssClassDatePickerDay", CssClassDatePickerDay, false);
-      writer.AddAttribute("CssClassDatePickerDayHeader", CssClassDatePickerDayHeader, false);
-      writer.AddAttribute("CssClassDatePickerOtherMonthDay", CssClassDatePickerOtherMonthDay, false);
-      writer.AddAttribute("CssClassDatePickerSelectedDay", CssClassDatePickerSelectedDay, false);
-      writer.AddAttribute("CssClassDatePickerTitle", CssClassDatePickerTitle, false);
-      writer.AddAttribute("CssClassDatePickerTodayDay", CssClassDatePickerTodayDay, false);
-    }
+    Unit height = _datePickerPopupHeight;
+    if (height.IsEmpty)
+      height = Unit.Pixel (200);
+    writer.AddAttribute("dp_height", height.ToString());
   }
 
-  //  TODO: DatePicker: Work in Progress, currently dirty
   protected override void RenderContents(HtmlTextWriter writer)
   {
     foreach (Control control in Controls)
@@ -363,7 +290,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       if (control == _datePickerImage)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, this.GetType(), ResourceType.UI, "DatePickerForm.aspx");
+            this, Context, this.GetType(), ResourceType.UI, c_datePickerPopupForm);
         writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
         writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
         writer.AddAttribute("marginheight", "0", false);
@@ -741,7 +668,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           + pickerActionContainer + ", "
           + pickerActionTarget + ", "
           + pickerActionFrame + ")";
-      //  TODO: DatePicker: Work in Progress, currently dirty, Script activated
       _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
 
       _dateTextBox.Style["vertical-align"] = "middle";
@@ -1363,105 +1289,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     get { return _datePickerImageStyle; }
   }
-
-  //  TODO: DatePicker: Remove properties
-//  [Category("Style")]
-//  [Description("The style used to customize the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public TableStyle DatePickerCalendarStyle
-//  {
-//    get { return _datePickerCalendarStyle; }
-//    set { _datePickerCalendarStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style used to customize the day headers in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerDayHeaderStyle
-//  {
-//    get { return _datePickerDayHeaderStyle; }
-//    set { _datePickerDayHeaderStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style used to customize all days in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerDayStyle
-//  {
-//    get { return _datePickerDayStyle; }
-//    set { _datePickerDayStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style used to customize days outside the current month in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerOtherMonthDayStyle
-//  {
-//    get { return _datePickerOtherMonthDayStyle; }
-//    set { _datePickerOtherMonthDayStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style applied to the currently selected date in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerSelectedDayStyle
-//  {
-//    get { return _datePickerSelectedDayStyle; }
-//    set { _datePickerSelectedDayStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style applied to the current day in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerTitleStyle
-//  {
-//    get { return _datePickerTitleStyle; }
-//    set { _datePickerTitleStyle = value; }
-//  }
-//
-//  [Category("Style")]
-//  [Description("The style applied to the current day in the popup calendar.")]
-//  [NotifyParentProperty(true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style DatePickerTodayDayStyle
-//  {
-//    get { return _datePickerTodayDayStyle; }
-//    set { _datePickerTodayDayStyle = value; }
-//  }
-
-  public string CssClassDatePickerCalendar
-  { get { return "bocDateTimeValueDatePickerCalendar"; } }
-
-  public string CssClassDatePickerDayHeader
-  { get { return "bocDateTimeValueDatePickerDayHeader"; } }
-
-  public string CssClassDatePickerDay
-  { get { return "bocDateTimeValueDatePickerDay"; } }
-
-  public string CssClassDatePickerOtherMonthDay
-  { get { return "bocDateTimeValueDatePickerOtherMonthDay"; } }
-
-  public string CssClassDatePickerSelectedDay
-  { get { return "bocDateTimeValueDatePickerSelectedDay"; } }
-
-  public string CssClassDatePickerTitle
-  { get { return "bocDateTimeValueDatePickerTitle"; } }
-
-  public string CssClassDatePickerTodayDay
-  { get { return "bocDateTimeValueDatePickerTodayDay"; } }
 
   /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
   public TextBox DateTextBox
