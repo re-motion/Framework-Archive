@@ -135,7 +135,7 @@ public class TabbedMultiView: WebControl, IControl
   protected override void CreateChildControls()
   {
     _tabStrip.ID = ID + "_TabStrip";
-    _tabStrip.Width = Unit.Percentage (100);
+    _tabStrip.Style["width"] = "100%";
     Controls.Add (_tabStrip);
 
     _multiViewInternal.ID = ID + "_MultiView"; 
@@ -204,7 +204,7 @@ public class TabbedMultiView: WebControl, IControl
       writer.AddStyleAttribute ("border", "solid 1px black");
       writer.AddStyleAttribute ("height", "50pt");
     }
-    writer.AddAttribute (HtmlTextWriterAttribute.Width, _multiViewInternal.Width.ToString());
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _multiViewInternal.Width.ToString());
     _activeViewStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
