@@ -28,7 +28,7 @@
     <td></td>
     <td><obw:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
 <optionsmenuitems>
-<obc:BocMenuItem Text="Copy" RequiredSelection="AtLeastOne">
+<obc:BocMenuItem Text="Copy" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
