@@ -5,8 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All done
-
 /// <summary>
 /// The exception that is thrown when a <see cref="PropertyValue"/> is set with a value that is exceeds the <see cref="PropertyValue.MaxLength"/> of the property.
 /// </summary>

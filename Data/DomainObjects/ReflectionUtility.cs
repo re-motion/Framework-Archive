@@ -6,8 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All done
-
 /// <summary>
 /// Utility class for methods using reflection.
 /// </summary>
