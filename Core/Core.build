@@ -14,6 +14,7 @@
         <includes name="*.cs" />
         <includes name="NullableValueTypes/**/*.cs" />
         <includes name="Text/**/*.cs" />
+        <includes name="Utilities/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
