@@ -219,10 +219,10 @@ CREATE TABLE [TableWithoutRelatedClassIDColumn] (
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   
-  [PartnerID] uniqueidentifier NULL,
+  [DistributorID] uniqueidentifier NULL,
   
   CONSTRAINT [PK_TableWithoutRelatedClassIDColumn] PRIMARY KEY CLUSTERED ([ID]),
-  CONSTRAINT [FK_TableWithoutRelatedClassIDColumn_Partner] FOREIGN KEY ([PartnerID]) REFERENCES [Company] ([ID])
+  CONSTRAINT [FK_TableWithoutRelatedClassIDColumn_Distributor] FOREIGN KEY ([DistributorID]) REFERENCES [Company] ([ID])
 ) 
 GO
 
