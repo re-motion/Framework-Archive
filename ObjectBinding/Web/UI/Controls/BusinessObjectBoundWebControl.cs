@@ -40,7 +40,19 @@ public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundW
 [Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
-  #region IBusinessObjectBoundControl implementation
+  private BusinessObjectBinding _binding;
+  private bool _childControlsPreRendered = false;
+  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
+  private ResourceManagerSet _cachedResourceManager;
+
+  protected override void OnLoad (EventArgs e)
+  {
+    base.OnLoad (e);
+    if (! IsValid)
+      Visible = false;
+  }
+
+  #region BusinessObjectBinding implementation
 
   [Browsable(false)]
   public BusinessObjectBinding Binding
@@ -115,18 +127,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return iconInfo;
   }
 
-  private BusinessObjectBinding _binding;
-  private bool _childControlsPreRendered = false;
-  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
-  private ResourceManagerSet _cachedResourceManager;
-
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
     EnsureChildControls();
     _binding.EnsureDataSource();
   }
-
 
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.
@@ -396,12 +402,26 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
       return ControlHelper.IsDesignMode (this, Context);
     }
   }
+
+  [Browsable (false)]
+  public bool IsValid
+  {
+    get 
+    { 
+      IBusinessObjectDataSource dataSource = _binding.DataSource;
+      IBusinessObjectProperty property = _binding.Property;
+      if (dataSource == null || property == null)
+        return true;
+      return property.IsAccessible (dataSource.BusinessObjectClass, dataSource.BusinessObject);
+    } 
+  }
 }
 
 public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl
 {
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
+  private TypedArrayList _validators;
 
   /// <summary>
   ///   Explicitly specifies whether the control is required.
@@ -469,10 +489,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       return false;
     }
   }
-
-  
-  private TypedArrayList _validators;
-
+ 
   public virtual void RegisterValidator (BaseValidator validator)
   {
     if (_validators == null)
