@@ -221,6 +221,9 @@ public class DataContainer
 
   private void PropertyValues_PropertyChanging (object sender, PropertyChangingEventArgs args)
   {
+    if (_state == DataContainerStateType.Deleted)
+      throw new ObjectDeletedException (_id);
+
     OnPropertyChanging (args);
   }
 
