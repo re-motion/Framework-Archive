@@ -128,16 +128,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _dropDownList = new DropDownList();
     _label = new Label();
 
-    _icon.ID = this.ID + "_Icon";
+    _icon.ID = this.ID + "_Boc_Icon";
     _icon.EnableViewState = false;
     _icon.Visible = EnableIcon;
     Controls.Add (_icon);
 
-    _dropDownList.ID = this.ID + "_DropDownList";
+    _dropDownList.ID = this.ID + "_Boc_DropDownList";
     _dropDownList.EnableViewState = true;
     Controls.Add (_dropDownList);
 
-    _label.ID = this.ID + "_Label";
+    _label.ID = this.ID + "_Boc_Label";
     _label.EnableViewState = true;
     Controls.Add (_label);
 

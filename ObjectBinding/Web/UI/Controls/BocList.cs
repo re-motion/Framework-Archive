@@ -31,9 +31,10 @@ public class BocList:
   IResourceDispatchTarget, IPostBackEventHandler
 {
   //  constants
-  private const string c_dataRowCheckBoxIDSuffix = "_CheckBox_";
-  private const string c_titleRowCheckBoxIDSuffix = "_CheckBox_SelectAll";
-  private const string c_firstColumnCommandIDSuffix = "_FirstColumnCommand";
+  private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
+  private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
+  private const string c_firstColumnCommandIDSuffix = "_Boc_FirstColumnCommand";
+  private const string c__additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
 
   private const string c_moveFirstIcon = "MoveFirst.gif";
   private const string c_moveLastIcon = "MoveLast.gif";
@@ -165,7 +166,7 @@ public class BocList:
     movePreviousButton = new ImageButton();
     moveNextButton = new ImageButton();
 
-    _additionalColumnsList.ID = this.ID + "_ColumnConfigurationList";
+    _additionalColumnsList.ID = this.ID + c__additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);

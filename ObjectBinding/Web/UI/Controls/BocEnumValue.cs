@@ -122,11 +122,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       ReadOnly = NaBoolean.True;
     }
 
-    _listControl.ID = this.ID + "_ListControl";
+    _listControl.ID = this.ID + "_Boc_ListControl";
     _listControl.EnableViewState = true;
     Controls.Add (_listControl);
 
-    _label.ID = this.ID + "_Label";
+    _label.ID = this.ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
 

@@ -154,16 +154,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _label = new Label();
     _datePickerImage = new Image();
 
-    _dateTextBox.ID = this.ID + "_DateTextBox";
+    _dateTextBox.ID = this.ID + "_Boc_DateTextBox";
     _dateTextBox.EnableViewState = false;
 
-    _datePickerImage.ID = this.ID + "_DatePickerImage";
+    _datePickerImage.ID = this.ID + "_Boc_DatePickerImage";
     _datePickerImage.EnableViewState = false;
 
-    _timeTextBox.ID = this.ID + "_TimeTextBox";
+    _timeTextBox.ID = this.ID + "_Boc_TimeTextBox";
     _timeTextBox.EnableViewState = false;
 
-    _label.ID = this.ID + "_Label";
+    _label.ID = this.ID + "_Boc_Label";
     _label.EnableViewState = false;
 
     Controls.Add (_dateTextBox);
