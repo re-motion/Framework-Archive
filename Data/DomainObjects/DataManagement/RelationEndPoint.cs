@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public abstract class RelationEndPoint : INullable
+public abstract class RelationEndPoint : INullable, ICloneable
 {
   // types
 
@@ -93,6 +93,7 @@ public abstract class RelationEndPoint : INullable
 
   // abstract methods and properties
 
+  public abstract object Clone ();
   public abstract bool HasChanged { get; } 
   public abstract void Commit ();
   public abstract void Rollback ();
@@ -171,6 +172,11 @@ public abstract class RelationEndPoint : INullable
   public virtual RelationEndPointID ID
   {
     get { return _id; }
+  }
+
+  public ClientTransaction ClientTransaction
+  {
+    get { return _clientTransaction; }
   }
 
   protected MandatoryRelationNotSetException CreateMandatoryRelationNotSetException (
