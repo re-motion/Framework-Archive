@@ -9,7 +9,7 @@ using System.Diagnostics;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 
-namespace Rubicon.Web.UI.Utilities
+namespace Rubicon.Web.Utilities
 {
 /// <summary>
 /// Utility class for pages.
