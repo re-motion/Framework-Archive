@@ -28,12 +28,16 @@ public class PersonCustomCell: IBocCustomColumnDefinitionCell
       int columnIndex, 
       int listIndex)
   {
-    writer.AddAttribute (HtmlTextWriterAttribute.Href, list.GetPostBackClientHyperlink (columnIndex, listIndex, "1"));
+    writer.AddAttribute (
+        HtmlTextWriterAttribute.Href, 
+        list.GetCustomCellPostBackClientHyperlink (columnIndex, listIndex, "1"));
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("1 <br>");
     writer.RenderEndTag();
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Href, list.GetPostBackClientHyperlink (columnIndex, listIndex, "2"));
+    writer.AddAttribute (
+        HtmlTextWriterAttribute.Href, 
+        list.GetCustomCellPostBackClientHyperlink (columnIndex, listIndex, "2"));
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("2 <br>");
     writer.RenderEndTag();
