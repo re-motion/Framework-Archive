@@ -18,7 +18,6 @@ public class ClientTransactionTest : ClientTransactionBaseTest
 
   // member fields
   
-  private ClientTransactionMock _clientTransactionMock;
   private ClientTransactionEventReceiver _eventReceiver;
 
   // construction and disposing
@@ -33,9 +32,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _clientTransactionMock = new ClientTransactionMock ();
-    ClientTransaction.SetCurrent (_clientTransactionMock);
-    _eventReceiver = new ClientTransactionEventReceiver (_clientTransactionMock);
+    _eventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
   }
 
   public override void TearDown ()
@@ -51,12 +48,12 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     ObjectID id = new ObjectID (c_testDomainProviderID, 
         "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
-    DomainObject domainObject1 = _clientTransactionMock.GetObject (id);
+    DomainObject domainObject1 = ClientTransactionMock.GetObject (id);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
     Assert.AreSame (domainObject1, _eventReceiver.LoadedDomainObjects[0]);
     _eventReceiver.Clear ();
 
-    DomainObject domainObject2 = _clientTransactionMock.GetObject (id);
+    DomainObject domainObject2 = ClientTransactionMock.GetObject (id);
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
 
     Assert.AreSame (domainObject1, domainObject2);
@@ -71,12 +68,12 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     ObjectID id2 = new ObjectID (c_testDomainProviderID, 
         "ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
     
-    DomainObject domainObject1 = _clientTransactionMock.GetObject (id1);
+    DomainObject domainObject1 = ClientTransactionMock.GetObject (id1);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
     Assert.AreSame (domainObject1, _eventReceiver.LoadedDomainObjects[0]);
     _eventReceiver.Clear ();
 
-    DomainObject domainObject2 = _clientTransactionMock.GetObject (id2);
+    DomainObject domainObject2 = ClientTransactionMock.GetObject (id2);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
     Assert.AreSame (domainObject2, _eventReceiver.LoadedDomainObjects[0]);
     
@@ -86,26 +83,26 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetRelatedObjectForAlreadyLoadedObjects ()
   {
-    DomainObject order = _clientTransactionMock.GetObject (DomainObjectIDs.Order1);
-    DomainObject orderTicket = _clientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
+    DomainObject order = ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+    DomainObject orderTicket = ClientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
     
     _eventReceiver.Clear ();
 
-    Assert.AreSame (orderTicket, _clientTransactionMock.GetRelatedObject (
+    Assert.AreSame (orderTicket, ClientTransactionMock.GetRelatedObject (
         new RelationEndPointID (order.ID, "OrderTicket")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
 
-    Assert.AreSame (order, _clientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Order")));
+    Assert.AreSame (order, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Order")));
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
   }
 
   [Test]
   public void GetRelatedObjectWithLazyLoad ()
   {
-    DomainObject orderTicket = _clientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
+    DomainObject orderTicket = ClientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
     _eventReceiver.Clear();
-    DomainObject order = _clientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Order"));
+    DomainObject order = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Order"));
 
     Assert.IsNotNull (order);
     Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
@@ -116,10 +113,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetRelatedObjectOverVirtualEndPoint ()
   {
-    DomainObject order = _clientTransactionMock.GetObject (DomainObjectIDs.Order1);
+    DomainObject order = ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
     _eventReceiver.Clear();
 
-    DomainObject orderTicket = _clientTransactionMock.GetRelatedObject (
+    DomainObject orderTicket = ClientTransactionMock.GetRelatedObject (
         new RelationEndPointID (order.ID, "OrderTicket"));
 
     Assert.IsNotNull (orderTicket);
@@ -134,10 +131,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
         new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
-    DomainObject classWithValidRelation = _clientTransactionMock.GetObject (id);
+    DomainObject classWithValidRelation = ClientTransactionMock.GetObject (id);
     _eventReceiver.Clear ();
 
-    Assert.IsNull (_clientTransactionMock.GetRelatedObject (
+    Assert.IsNull (ClientTransactionMock.GetRelatedObject (
         new RelationEndPointID (classWithValidRelation.ID, "ClassWithGuidKeyOptional")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
@@ -149,10 +146,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
         new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
-    DomainObject classWithGuidKey = _clientTransactionMock.GetObject (id);
+    DomainObject classWithGuidKey = ClientTransactionMock.GetObject (id);
     _eventReceiver.Clear ();
 
-    Assert.IsNull (_clientTransactionMock.GetRelatedObject (
+    Assert.IsNull (ClientTransactionMock.GetRelatedObject (
         new RelationEndPointID (classWithGuidKey.ID, "ClassWithValidRelationsOptional")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
@@ -211,10 +208,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetRelatedObjectWithInheritance ()
   {
-    DomainObject expectedCeo = _clientTransactionMock.GetObject (DomainObjectIDs.Ceo6);
-    DomainObject partner = _clientTransactionMock.GetObject (DomainObjectIDs.Partner1);
+    DomainObject expectedCeo = ClientTransactionMock.GetObject (DomainObjectIDs.Ceo6);
+    DomainObject partner = ClientTransactionMock.GetObject (DomainObjectIDs.Partner1);
 
-    DomainObject actualCeo = _clientTransactionMock.GetRelatedObject (new RelationEndPointID (partner.ID, "Ceo"));
+    DomainObject actualCeo = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (partner.ID, "Ceo"));
     Assert.AreSame (expectedCeo, actualCeo);
   }
 
@@ -224,7 +221,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     _eventReceiver.Clear ();
 
-    DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
 
     Assert.IsNotNull (orders);
@@ -239,10 +236,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     _eventReceiver.Clear ();
 
-    DomainObjectCollection orders1 = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders1 = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
 
-    DomainObjectCollection orders2 = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders2 = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
     
     Assert.IsTrue (object.ReferenceEquals (orders1, orders2));
@@ -256,7 +253,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Order order = Order.GetObject (DomainObjectIDs.Order1);
     _eventReceiver.Clear ();
 
-    DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
     
     Assert.AreSame  (order, orders[DomainObjectIDs.Order1]);
@@ -268,7 +265,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
-    DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
 
     Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -281,20 +278,20 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
-    DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (customer.ID, "Orders"));
 
-    Assert.AreSame (customer, _clientTransactionMock.GetRelatedObject (
+    Assert.AreSame (customer, ClientTransactionMock.GetRelatedObject (
         new RelationEndPointID (orders[0].ID, "Customer")));
   }
 
   [Test]
   public void GetRelatedObjectsWithInheritance ()
   {
-    DomainObject industrialSector = _clientTransactionMock.GetObject (DomainObjectIDs.IndustrialSector2);
-    DomainObject expectedPartner = _clientTransactionMock.GetObject (DomainObjectIDs.Partner2);
+    DomainObject industrialSector = ClientTransactionMock.GetObject (DomainObjectIDs.IndustrialSector2);
+    DomainObject expectedPartner = ClientTransactionMock.GetObject (DomainObjectIDs.Partner2);
 
-    DomainObjectCollection companies = _clientTransactionMock.GetRelatedObjects (
+    DomainObjectCollection companies = ClientTransactionMock.GetRelatedObjects (
         new RelationEndPointID (industrialSector.ID, "Companies"));
 
     Assert.AreSame (expectedPartner, companies[DomainObjectIDs.Partner2]);
@@ -304,10 +301,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [ExpectedException (typeof (MappingException))]
   public void SetRelatedObjectWithInvalidType ()
   {
-    DomainObject order = _clientTransactionMock.GetObject (DomainObjectIDs.Order1);
-    DomainObject customer = _clientTransactionMock.GetObject (DomainObjectIDs.Customer1);
+    DomainObject order = ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+    DomainObject customer = ClientTransactionMock.GetObject (DomainObjectIDs.Customer1);
 
-    _clientTransactionMock.SetRelatedObject (new RelationEndPointID (order.ID, "OrderTicket"), customer);
+    ClientTransactionMock.SetRelatedObject (new RelationEndPointID (order.ID, "OrderTicket"), customer);
   }
 
 
@@ -315,10 +312,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [ExpectedException (typeof (MappingException))]
   public void SetRelatedObjectWithBaseType ()
   {
-    DomainObject person = _clientTransactionMock.GetObject (DomainObjectIDs.Person1);
-    DomainObject company = _clientTransactionMock.GetObject (DomainObjectIDs.Company1);
+    DomainObject person = ClientTransactionMock.GetObject (DomainObjectIDs.Person1);
+    DomainObject company = ClientTransactionMock.GetObject (DomainObjectIDs.Company1);
 
-    _clientTransactionMock.SetRelatedObject (new RelationEndPointID (person.ID, "AssociatedPartnerCompany"), company);
+    ClientTransactionMock.SetRelatedObject (new RelationEndPointID (person.ID, "AssociatedPartnerCompany"), company);
   }
 
   [Test]
@@ -369,7 +366,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     oldOrderTicket.Order = newOrderTicket.Order;
     order.OrderTicket = newOrderTicket;
 
-    ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (_clientTransactionMock);
+    ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
     ClientTransaction.Current.Commit ();    
 
     Assert.IsNotNull (eventReceiver.CommittedDomainObjects);
