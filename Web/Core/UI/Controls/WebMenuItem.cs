@@ -163,7 +163,7 @@ public class WebMenuItem: IControlItem
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
   /// <value> A <see cref="Command"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Category ("Action")]
+  [Category ("Behavior")]
   [Description ("The command rendered for this menu item.")]
   [NotifyParentProperty (true)]
   public virtual Command Command
