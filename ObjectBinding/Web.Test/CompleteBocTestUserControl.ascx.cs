@@ -68,7 +68,7 @@ public class CompleteBocUserControl :
       ReferenceField.RefreshBusinessObjectList (objects);
     }
 
-    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid.ID];
+    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid.UniqueID];
 
     BocTextValue incomeField = new BocTextValue();
     incomeField.ID = "IncomeField";
@@ -106,14 +106,14 @@ public class CompleteBocUserControl :
     }
   }
 
-  public virtual StringCollection GetHiddenRows (string table)
+  public virtual StringCollection GetHiddenRows (string tableUniqueID)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection) _listOfHiddenRows[tableUniqueID];
   }
 
-  public virtual FormGridRowInfoCollection GetAdditionalRows (string table)
+  public virtual FormGridRowInfoCollection GetAdditionalRows (string tableUniqueID)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[tableUniqueID];
   }
 
 	#region Web Form Designer generated code
