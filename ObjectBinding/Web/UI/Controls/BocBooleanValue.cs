@@ -352,7 +352,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
         string nullValue = NaBoolean.Null.ToString();
 
         script = string.Format (
-            "BocBooleanValue_InitializeValues (\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\", \"{6}\", \"{7}\", \"{8}\");",
+            "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');",
             trueValue, falseValue, nullValue, 
             trueDescription, falseDescription, nullDescription, 
             trueIconUrl, falseIconUrl, nullIconUrl);
@@ -360,11 +360,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       }
 
       string requiredFlag = IsRequired ? "true" : "false";
-      string labelID = _showDescription ? "'" + _label.ID + "'" : "null";
-      script = "BocBooleanValue_SelectNextCheckboxValue ('" 
-          + _imageButton.ID + "', " 
-          + labelID + ", '" 
-          + _hiddenField.ID + "', "
+      string imageButton = "this.parentElement.all['" + _imageButton.ID + "']";
+      string label = _showDescription ? "this.parentElement.all['" + _label.ID + "']" : "null";
+      string hiddenField = "this.parentElement.all['" + _hiddenField.ID + "']";
+      script = "BocBooleanValue_SelectNextCheckboxValue (" 
+          + imageButton + ", " 
+          + label + ", " 
+          + hiddenField + ", "
           +  requiredFlag + ");"
           + " return false;";
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);

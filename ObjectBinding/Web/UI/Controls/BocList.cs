@@ -7,6 +7,8 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
 using System.Reflection;
+using System.Data;
+using System.Text;
 using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
@@ -23,7 +25,10 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
 // TODO: BocList: Comments
 // TODO: BocList: Details View
-// TODO: BocList: Sort-Buttons
+// TODO: BocList: Sort-Buttons (Typesafe sorting using ArrayList.Sort (IComparer))
+// TODO: BocList: IsDirty
+// TODO: Accessibility for Buttons (Alt-Tags)
+// TODO: URL-Encode
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -32,10 +37,17 @@ public class BocList:
   IResourceDispatchTarget, IPostBackEventHandler
 {
   //  constants
+  private const string c_dataRowIDSuffix = "_Boc_Row_";
+  private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
   private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
-  private const string c_firstColumnCommandIDSuffix = "_Boc_FirstColumnCommand";
-  private const string c__additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
+  private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
+
+  private const string c_eventCommandPrefix = "Event=";
+
+  private const string c_sortAscendingIcon = "SortAscending.gif";
+  private const string c_sortDescendingIcon = "SortDescending.gif";
+  private const string c_sortCommandPrefix = "Sort=";
 
   private const string c_moveFirstIcon = "MoveFirst.gif";
   private const string c_moveLastIcon = "MoveLast.gif";
@@ -45,8 +57,8 @@ public class BocList:
   private const string c_moveLastInactiveIcon = "MoveLastInactive.gif";
   private const string c_movePreviousInactiveIcon = "MovePreviousInactive.gif";
   private const string c_moveNextInactiveIcon = "MoveNextInactive.gif";
-  private const string c_moveCommand = "Move";
-  private const string c_moveCommandFormatString = c_moveCommand + "={0}";
+
+  private const string c_bocListScriptUrl = "BocList.js";
 
   private const string c_whiteSpace = "&nbsp;";
 
@@ -71,6 +83,13 @@ public class BocList:
     Next
   }
 
+  private enum SortingDirection
+  {
+    None,
+    Ascending,
+    Descending
+  }
+
   // static members
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectProperty) };
@@ -88,14 +107,14 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
-  private ImageButton moveFirstButton = null;
-  private ImageButton moveLastButton = null;
-  private ImageButton movePreviousButton = null;
-  private ImageButton moveNextButton = null;
+  private ImageButton _moveFirstButton = null;
+  private ImageButton _moveLastButton = null;
+  private ImageButton _movePreviousButton = null;
+  private ImageButton _moveNextButton = null;
 
   private IList _value = null;
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="_additionalColumnsList"/>. </summary>
+  /// <summary> The <see cref="DropDownListStyle"/> applied to the <see cref="_additionalColumnsList"/>. </summary>
   private DropDownListStyle _additionalColumnsListStyle = new DropDownListStyle();
 
   /// <summary> The user independent column defintions. </summary>
@@ -105,43 +124,66 @@ public class BocList:
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
-  
-  // may be set at run time. these columnDefinitions do usually not contain commands.
-  private BocColumnDefinitionSet _selectedColumnDefinitionSet;
- 
-  //  If true, generates columns for all properties
-  private bool _showAllProperties;
-
-  // show check boxes for each object
-  private bool _showSelection = false;
-  
-  // show drop down list for selecting additional columnDefinitions
+  /// <summary> Show drop down list for selecting additional column definitions. </summary>
   private bool _showAdditionalColumnsList = true;
-
-  // Null, 0: show all objects, > 0: show n objects per page
-  private NaInt32 _pageSize = NaInt32.Null; 
-
-  // show page info ("page 1 of n") and links always (true),
-  //  or only if there is more than 1 page (false)
-  private bool _alwaysShowPageInfo = false; 
-
-  private int _currentRow = 0;
-  private int _currentPage = 0;
-  private int _pageCount = 0;
-
+  /// <summary> The current <see cref="BocComlumnDefinitionSet"/>. May be set at run time. </summary>
+  private BocColumnDefinitionSet _selectedColumnDefinitionSet;
+  /// <summary> 
+  ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
+  ///   <see cref="AvailableColumnDefinitionSets"/>.
+  /// </summary>
   private int _selectedColumnDefinitionSetIndex = -1;
+ 
+  /// <summary> If <see langword="true"/>, generates columns for all properties. </summary>
+  private bool _showAllProperties;
 
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
 
-  /// <summary>
-  ///   Hashtable&lt;string CheckBoxID, bool isChecked&gt;
+  /// <summary> <see langword="true"/> to show the sort buttons. </summary>
+  private bool _enableSorting = true;
+  /// <summary> <see langword="true"/> to show the sorting order in front of the sorting buttons. </summary>
+  private bool _showSortingOrder = false;
+
+  /// <summary> 
+  ///   Contains the sorting directions in the order of the buttons pressed.
+  ///   Pair &lt; int index, SortingDirection &gt;
   /// </summary>
+  private ArrayList _sortingOrder = new ArrayList();
+
+  /// <summary> Show check boxes for each object. </summary>
+  private bool _showSelection = false;
+  /// <summary> Hashtable&lt;string CheckBoxID, bool isChecked&gt; </summary>
   private Hashtable _checkBoxCheckedState = new Hashtable();
 
-  private MoveOption _move = MoveOption.Undefined;
-
+  /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
+  private NaInt32 _pageSize = NaInt32.Null; 
+  /// <summary>
+  ///  Show page info ("page 1 of n") and links always (true),
+  //   or only if there is more than 1 page (false)
+  /// </summary>
+  private bool _alwaysShowPageInfo = false; 
+  /// <summary> The text providing the current page information to the user. </summary>
   private string _pageInfo = "Page {0} of {1}";
+  /// <summary> 
+  ///   The navigation bar command. 
+  ///   <see cref="MoveOption.Undefined"/> unless the navigation bar caused a post back.
+  /// </summary>
+  private MoveOption _move = MoveOption.Undefined;
+  /// <summary> 
+  ///   The index of the current row in the <see cref="IBusinessObject"/> this control is bound to.
+  /// </summary>
+  private int _currentRow = 0;
+  /// <summary> The index of the current page. </summary>
+  private int _currentPage = 0;
+  /// <summary> The total number of pages required to page through the entire list. </summary>
+  private int _pageCount = 0;
+
+  /// <summary> Flag that determines whether the client script is enabled. </summary>
+  private bool _enableClientScript = true;
+
+  /// <summary> Flag that determines whether the client script will be rendered. </summary>
+  private bool _hasClientScript = false;
 
   // construction and disposing
 
@@ -162,29 +204,29 @@ public class BocList:
   {
     base.OnInit (e);
 
-    moveFirstButton = new ImageButton();
-    moveLastButton = new ImageButton();
-    movePreviousButton = new ImageButton();
-    moveNextButton = new ImageButton();
+    _moveFirstButton = new ImageButton();
+    _moveLastButton = new ImageButton();
+    _movePreviousButton = new ImageButton();
+    _moveNextButton = new ImageButton();
 
-    _additionalColumnsList.ID = this.ID + c__additionalColumnsListIDSuffix;
+    _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
 
     _additionalColumnsListStyle.AutoPostback = true;
 
-    moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
-    Controls.Add (moveFirstButton);
+    _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
+    Controls.Add (_moveFirstButton);
 
-    moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
-    Controls.Add (moveLastButton);
+    _moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
+    Controls.Add (_moveLastButton);
 
-    movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
-    Controls.Add (movePreviousButton);
+    _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
+    Controls.Add (_movePreviousButton);
 
-    moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
-    Controls.Add (moveNextButton);
+    _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
+    Controls.Add (_moveNextButton);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
@@ -217,6 +259,18 @@ public class BocList:
 
   // eventArgument: "<column-index>,<list-index>,<business-object-id>"
   public void RaisePostBackEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    eventArgument = eventArgument.Trim();
+
+    if (eventArgument.StartsWith (c_eventCommandPrefix))
+      HandeEventCommand (eventArgument.Substring (c_eventCommandPrefix.Length));
+    else if (eventArgument.StartsWith (c_sortCommandPrefix))
+      HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
+  }
+
+  private void HandeEventCommand (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -253,13 +307,15 @@ public class BocList:
     if (eventArgumentParts.Length == 3)
       businessObjectID = eventArgumentParts[2].Trim();
 
-    if (columnIndex >= _fixedColumns.Count)
-      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of fixed columns.'");
+    BocColumnDefinition[] columns = GetColumns();
+
+    if (columnIndex >= columns.Length)
+      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
 
     BocColumnDefinition column = null;
     BocItemCommand command = null;
 
-    column = _fixedColumns[columnIndex];
+    column = columns[columnIndex];
     if (column.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
     command = column.Command;
@@ -290,6 +346,72 @@ public class BocList:
       }
     }
   }
+
+  private void HandleResorting (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    int columnIndex;
+    try 
+    {
+      if (eventArgument.Length == 0)
+        throw new FormatException();
+      columnIndex = int.Parse (eventArgument);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
+    }
+
+    BocColumnDefinition[] columns = GetColumns();
+
+    if (columnIndex >= columns.Length)
+      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
+
+    BocValueColumnDefinition valueColumn = columns[columnIndex] as BocValueColumnDefinition;
+    if (valueColumn == null)
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + columnIndex + ".");
+
+    Pair sortingDirectionPair = null;
+    foreach (Pair p in _sortingOrder)
+    {
+      if ((int) p.First == columnIndex)
+      {
+        sortingDirectionPair = p;
+        break;
+      }
+    }
+
+    //  Cycle: Ascending -> Descending -> None -> Ascending
+    if (sortingDirectionPair != null)
+    {
+      _sortingOrder.Remove (sortingDirectionPair);
+      SortingDirection sortingDirection = (SortingDirection) sortingDirectionPair.Second;
+      switch (sortingDirection)
+      {
+        case SortingDirection.Ascending:
+        {
+          sortingDirectionPair.Second = SortingDirection.Descending;
+          break;
+        }
+        case SortingDirection.Descending:
+        {
+          sortingDirectionPair.Second = SortingDirection.None;
+          break;
+        }
+        case SortingDirection.None:
+        {
+          sortingDirectionPair.Second = SortingDirection.Ascending;
+          break;
+        }
+      }
+    }
+    else
+      sortingDirectionPair = new Pair (columnIndex, SortingDirection.Ascending);
+
+    _sortingOrder.Add (sortingDirectionPair);
+  }
+
   /// <summary> Simple Constructor. </summary>
   /// <param name="listIndex">
   ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
@@ -317,7 +439,9 @@ public class BocList:
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
-    
+
+    DetermineClientScriptLevel();
+
     if (_pageSize.IsNull || Value == null)
     {
       _pageCount = 1;
@@ -359,6 +483,29 @@ public class BocList:
         }
       }
     }
+
+    if (_hasClientScript)
+    {
+      string key = typeof (BocList).FullName+ "_Startup";
+      if (! Page.IsStartupScriptRegistered (key))
+      {
+        string script = string.Format (
+            "BocList_InitializeGlobals ('{0}', '{1}', '{2}', '{3}');",
+            CssClassDataCellOdd,
+            CssClassDataCellEven,
+            CssClassDataCellOddSelected,
+            CssClassDataCellEvenSelected);
+        PageUtility.RegisterStartupScriptBlock (Page, key, script);
+      }
+
+      key = typeof (BocList).FullName;
+      if (! Page.IsClientScriptBlockRegistered (key))
+      {
+        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+            this, Context, this.GetType(), ResourceType.Html, c_bocListScriptUrl);
+        PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
+      }
+    }
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -366,22 +513,7 @@ public class BocList:
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    BocColumnDefinition[] allPropertyColumns = null;
-    if (_showAllProperties)
-      allPropertyColumns = _allPropertyColumns;
-    else
-      allPropertyColumns = new BocColumnDefinition[0];
-
-    BocColumnDefinition[] selectedColumns = null;
-    if (_selectedColumnDefinitionSet != null)
-      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray();
-    else
-      selectedColumns = new BocColumnDefinition[0];
-
-    BocColumnDefinition[] columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
-      _fixedColumns.ToArray(),
-      allPropertyColumns,
-      selectedColumns);
+    BocColumnDefinition[] columnDefinitions = GetColumns();
 
     if (IsDesignMode)
     {
@@ -412,10 +544,25 @@ public class BocList:
     if (Value != null)
     {
       bool isOddRow = true;
-      for (int idxRow = firstRow; idxRow < rowCountWithOffset; idxRow++)
+
+      if (EnableSorting)
       {
-        RenderDataRow (writer, columnDefinitions, idxRow, isOddRow);
-        isOddRow = !isOddRow;
+        DataView sortedRows = SortData (columnDefinitions);
+
+        for (int idxSortedRow = firstRow; idxSortedRow < rowCountWithOffset; idxSortedRow++)
+        {
+          DataRowView rowView = sortedRows[idxSortedRow];
+          RenderDataRow (writer, columnDefinitions, (int) rowView["Index"], isOddRow);
+          isOddRow = !isOddRow;
+        }
+      }
+      else
+      {
+        for (int idxRow = firstRow; idxRow < rowCountWithOffset; idxRow++)
+        {
+          RenderDataRow (writer, columnDefinitions, idxRow, isOddRow);
+          isOddRow = !isOddRow;
+        }
       }
     }
 
@@ -423,8 +570,32 @@ public class BocList:
     if (_alwaysShowPageInfo || _pageCount > 1)
       RenderNavigator (writer);
 
+    if (_hasClientScript)
+    {
+      int count = 0;
+      if (! _pageSize.IsNull)
+        count = _pageSize.Value;
+      else if (Value != null)
+        count = Value.Count;
+
+      string script = "<script type=\"text/javascript\">\r\n<!--\r\n"
+          + "BocList_InitializeBocList ("
+          + "document.all['" + ID + "'], '"
+          + ID + c_dataRowIDSuffix + "', '"
+          + ID + c_dataRowCheckBoxIDSuffix + "', "
+          + firstRow.ToString() + ", "
+          + count.ToString() + ");"
+          + "\r\n//-->\r\n</script>";
+      writer.Write (script);
+    }
+
     writer.RenderEndTag();
   }
+
+  /// <summary>
+  ///   Triplet[] &lt; string rowID, string checkBoxID, string isOddRow &gt;
+  /// </summary>
+  private ArrayList _selections = new ArrayList();
 
   private void RenderTitle (HtmlTextWriter writer)
   {
@@ -464,8 +635,8 @@ public class BocList:
     }
     else
     {
-      moveFirstButton.ImageUrl = imageUrl;
-      moveFirstButton.RenderControl (writer);
+      _moveFirstButton.ImageUrl = imageUrl;
+      _moveFirstButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
@@ -483,8 +654,8 @@ public class BocList:
     }
     else
     {
-      movePreviousButton.ImageUrl = imageUrl;
-      movePreviousButton.RenderControl (writer);
+      _movePreviousButton.ImageUrl = imageUrl;
+      _movePreviousButton.RenderControl (writer);
     }
 
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -503,8 +674,8 @@ public class BocList:
     }
     else
     {
-      moveNextButton.ImageUrl = imageUrl;
-      moveNextButton.RenderControl (writer);
+      _moveNextButton.ImageUrl = imageUrl;
+      _moveNextButton.RenderControl (writer);
     }
 
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -523,8 +694,8 @@ public class BocList:
     }
     else
     {
-      moveLastButton.ImageUrl = imageUrl;
-      moveLastButton.RenderControl (writer);
+      _moveLastButton.ImageUrl = imageUrl;
+      _moveLastButton.RenderControl (writer);
     }
 
     writer.RenderEndTag();
@@ -581,35 +752,114 @@ public class BocList:
       HtmlTextWriter writer, 
       BocColumnDefinition[] columnDefinitions)
   {
+    bool isReadOnly = IsReadOnly;
+
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
     if (ShowSelection)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      // TODO: BocList: CheckBox SelectAll implementation
-      //string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
-      //bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
-      //RenderCheckBox (writer, checkBoxName, isChecked);
-      writer.Write ("&nbsp;");
+      string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
+      bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
+      RenderCheckBox (writer, checkBoxName, isChecked, true);
+      writer.Write (c_whiteSpace);
       writer.RenderEndTag();
     }
 
-    foreach (BocColumnDefinition column in columnDefinitions)
+    HybridDictionary sortingDirections = new HybridDictionary();
+    ArrayList sortingOrder = new ArrayList();
+    if (EnableSorting)
     {
+      foreach (Pair pair in _sortingOrder)
+      {
+        int columnIndex = (int) pair.First;
+        SortingDirection sortingDirection = (SortingDirection)pair.Second;
+        sortingDirections[columnIndex] = sortingDirection;
+        if (sortingDirection != SortingDirection.None)
+          sortingOrder.Add (columnIndex);
+      }
+    }
+
+    for (int idxColumn = 0; idxColumn < columnDefinitions.Length; idxColumn++)
+    {
+      BocColumnDefinition column = columnDefinitions[idxColumn];
+
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
+      // Click on Label or Button toggles
+      bool hasSortingButton =    EnableSorting 
+                              && column is BocValueColumnDefinition;
+      if (hasSortingButton)
+      {
+        string argument = c_sortCommandPrefix + idxColumn.ToString();
+        string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackScript);
+        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      }
       if (IsDesignMode && column.ColumnTitleDisplayValue.Length == 0)
           writer.Write (c_designModeEmptyContents);
       else
       {
         string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
         if (contents == string.Empty)
-          contents = "&nbsp;";
+          contents = c_whiteSpace;
         writer.Write (contents);
       }
-      writer.RenderEndTag();
+
+      if (hasSortingButton)
+      {
+        object obj = sortingDirections[idxColumn];
+        SortingDirection sortingDirection = SortingDirection.None; 
+        if (obj != null)
+          sortingDirection = (SortingDirection)obj;
+
+        string imageUrl = string.Empty;
+        //  Button Asc -> Button Desc -> No Button
+        switch (sortingDirection)
+        {
+          case SortingDirection.Ascending:
+          {
+            imageUrl = ResourceUrlResolver.GetResourceUrl (
+              this, Context, typeof (BocList), ResourceType.Image, c_sortAscendingIcon);
+            break;
+          }
+          case SortingDirection.Descending:
+          {
+            imageUrl = ResourceUrlResolver.GetResourceUrl (
+              this, Context, typeof (BocList), ResourceType.Image, c_sortDescendingIcon);
+            break;
+          }
+          case SortingDirection.None:
+          {
+            break;
+          }
+        }
+
+        if (_showSortingOrder && sortingDirection != SortingDirection.None)
+        {
+          //  WhiteSpace before icon
+          writer.Write (c_whiteSpace);
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
+          writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+          writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+          writer.AddStyleAttribute ("vertical-align", "middle");
+          writer.RenderBeginTag (HtmlTextWriterTag.Img);
+          writer.RenderEndTag();
+
+          if (sortingOrder.Count > 1)
+          {
+            int orderIndex = sortingOrder.IndexOf (idxColumn);
+            writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
+          }
+          writer.RenderEndTag();
+        }
+
+        writer.RenderEndTag();  //  span
+      }
+      writer.RenderEndTag();  //  td
     }
     
     if (IsDesignMode && columnDefinitions.Length == 0)
@@ -618,11 +868,11 @@ public class BocList:
       {
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
         writer.Write (string.Format (c_designModeDummyColumnTitle, i + 1));
-        writer.RenderEndTag ();
+        writer.RenderEndTag();
       }
     }
 
-    writer.RenderEndTag ();
+    writer.RenderEndTag();  // tr
   }
 
   private void RenderDataRow (
@@ -643,31 +893,62 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
 
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+    string checkBoxID = ID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
+    bool isChecked = (_checkBoxCheckedState[checkBoxID] != null);
 
-    if (ShowSelection)
+    string cssClassTableCell;
+    if (isChecked && _hasClientScript)
     {
       if (isOddRow)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellOdd);
+        cssClassTableCell = CssClassDataCellOddSelected;
       else
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellEven);
+        cssClassTableCell = CssClassDataCellEvenSelected;
+    }
+    else
+    {
+      if (isOddRow)
+        cssClassTableCell = CssClassDataCellOdd;
+      else
+        cssClassTableCell = CssClassDataCellEven;
+    }
 
+    if (_showSelection)
+    {
+      string rowID = ID + c_dataRowIDSuffix + rowIndex.ToString();
+      writer.AddAttribute (HtmlTextWriterAttribute.Id, rowID);
+
+      if (_hasClientScript)
+      {
+        string isOddRowString = (isOddRow ? "true" : "false");
+        string script = "BocList_OnRowClick ("
+            + "document.all['" + ID + "'], "
+            + "this, "
+            + "this.all['" + checkBoxID + "'], "
+            + isOddRowString 
+            + ");";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+        writer.AddAttribute ("onSelectStart", "return false");
+
+        if (isChecked)
+          _selections.Add (new Triplet (rowID, checkBoxID, isOddRowString));
+      }
+    }
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+    if (_showSelection)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      string checkBoxName = ID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
-      bool isChecked = (_checkBoxCheckedState[checkBoxName] != null);
-      RenderCheckBox (writer, checkBoxName, isChecked);
+      RenderCheckBox (writer, checkBoxID, isChecked, false);
       writer.RenderEndTag();
     }
 
-    for (int idxColumns = 0; idxColumns < columnDefinitions.Length; idxColumns++)
+    for (int idxColumn = 0; idxColumn < columnDefinitions.Length; idxColumn++)
     {
-      BocColumnDefinition column = columnDefinitions[idxColumns];
+      BocColumnDefinition column = columnDefinitions[idxColumn];
 
-      if (isOddRow)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellOdd);
-      else
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellEven);
-
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
       BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
@@ -690,7 +971,7 @@ public class BocList:
 
       if (isCommandEnabled)
       {    
-        string argument = string.Format ("{0},{1}", idxColumns, rowIndex);
+        string argument = c_eventCommandPrefix + idxColumn + "," + rowIndex;
         if (businessObjectWithIdentity != null)
           argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
@@ -744,7 +1025,7 @@ public class BocList:
         string contents = compoundColumn.GetStringValue (businessObject);
         contents = HttpUtility.HtmlEncode (contents);
         if (contents == string.Empty)
-          contents = "&nbsp;";
+          contents = c_whiteSpace;
         writer.Write (contents);
       }
       else if (simpleColumn != null)
@@ -752,25 +1033,54 @@ public class BocList:
         string contents = simpleColumn.GetStringValue (businessObject);
         contents = HttpUtility.HtmlEncode (contents);
         if (contents == string.Empty)
-          contents = "&nbsp;";
+          contents = c_whiteSpace;
         writer.Write (contents);
       }
 
       if (isCommandEnabled)
         column.Command.RenderEnd (writer);
 
-      writer.RenderEndTag ();
+      writer.RenderEndTag();
     }
     
-    writer.RenderEndTag ();
+    writer.RenderEndTag();
   }
 
-  private void RenderCheckBox (HtmlTextWriter writer, string name, bool isChecked)
+  private void RenderCheckBox (HtmlTextWriter writer, string id, bool isChecked, bool isSelectAllCheckBox)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
-    writer.AddAttribute (HtmlTextWriterAttribute.Name, name);
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
+    writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
     if (isChecked)
       writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");      
+    if (isSelectAllCheckBox)
+    {
+      int firstRow = 0;
+      int count = 0;
+      if (! _pageSize.IsNull)
+      {
+        firstRow = _currentPage * _pageSize.Value;
+        count = _pageSize.Value;
+      }
+      else if (Value != null)
+      {
+        count = Value.Count;
+      }
+
+      string script = "BocList_OnSelectAllCheckBoxClick ("
+          + "document.all['" + ID + "'], "
+          + "this , '"
+          + ID + c_dataRowIDSuffix + "', '"
+          + ID + c_dataRowCheckBoxIDSuffix + "', "
+          + firstRow.ToString() + ", "
+          + count.ToString() + ");";
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+    }
+    else
+    {
+      string script = "BocList_OnSelectionCheckBoxClick();";
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+    }
     writer.RenderBeginTag (HtmlTextWriterTag.Input);
     writer.RenderEndTag();
   }
@@ -788,6 +1098,7 @@ public class BocList:
     base.LoadViewState (values[0]);
     SelectedColumnDefinitionSetIndex = (int) values[1];
     _currentRow = (int) values[2];
+    _sortingOrder = (ArrayList) values[3];
     //  _isDirty = (bool) values[];
   }
 
@@ -804,6 +1115,7 @@ public class BocList:
     values[0] = base.SaveViewState();
     values[1] = _selectedColumnDefinitionSetIndex;
     values[2] = _currentRow;
+    values[3] = _sortingOrder;
 
     //  values[] = _isDirty;
 
@@ -918,6 +1230,11 @@ public class BocList:
     SelectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
   }
 
+  private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
+  {
+    PopulateAdditionalColumnsList();
+  }
+
   private void MoveFirstButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.First;
@@ -938,6 +1255,125 @@ public class BocList:
     _move = MoveOption.Next;
   }
 
+  private BocColumnDefinition[] GetColumns()
+  {
+    BocColumnDefinition[] allPropertyColumns = null;
+    if (_showAllProperties)
+      allPropertyColumns = _allPropertyColumns;
+    else
+      allPropertyColumns = new BocColumnDefinition[0];
+
+    BocColumnDefinition[] selectedColumns = null;
+    if (_selectedColumnDefinitionSet != null)
+      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray();
+    else
+      selectedColumns = new BocColumnDefinition[0];
+
+    BocColumnDefinition[] columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
+      _fixedColumns.ToArray(),
+      allPropertyColumns,
+      selectedColumns);
+
+    return columnDefinitions;
+  }
+
+  private void RemoveDynamicColumnsFromSortingOrder()
+  {
+    if (EnableSorting)
+    {
+      int fixedColumnCount = _fixedColumns.Count;
+      if (_showAllProperties)
+        fixedColumnCount += _allPropertyColumns.Length;
+      ArrayList keysToBeRemoved = new ArrayList();
+      for (int idxSortingKeys = 0; idxSortingKeys < _sortingOrder.Count; idxSortingKeys++)
+      {
+        Pair pair = (Pair) _sortingOrder[idxSortingKeys];
+        int columnIndex = (int) pair.First;
+        if (columnIndex >= fixedColumnCount)
+          keysToBeRemoved.Add (pair);
+      }
+      foreach (Pair key in keysToBeRemoved)
+        _sortingOrder.Remove (key);
+    }
+  }
+
+  /// <summary>
+  ///   Sorts the <see cref="IBusinessObject"/> instances returned by <see cref="Value"/>.
+  /// </summary>
+  /// <param name="columnDefinitions"> The <see cref="ColumnDefinition"/> array. </param>
+  /// <returns> 
+  ///   A DataView, the rows sorted using values in <see cref="_sortingOrder"/>.
+  ///   &lt; int BusinessObjectIndex, ... &gt;
+  /// </returns>
+  private DataView SortData (BocColumnDefinition[] columnDefinitions)
+  {
+    DataTable sortingTable = new DataTable();
+
+    //  Build the table: 
+    //  Insert a column for the row index plus the columns that are part of the sorting key
+    sortingTable.BeginInit();
+    sortingTable.Columns.Add ("Index", typeof (int));
+    foreach (Pair pair in _sortingOrder)
+    {
+      SortingDirection sortingDirection = (SortingDirection)pair.Second;
+      if (sortingDirection != SortingDirection.None)
+      {
+        int columnIndex = (int) pair.First;
+        sortingTable.Columns.Add (columnIndex.ToString(), typeof (string));
+      } 
+    }
+    sortingTable.EndInit();
+
+    //  Load the data into the table: 
+    //  Add the row index plus the columns taht are part of the sorting key
+    sortingTable.BeginLoadData();
+    for (int idxRow = 0; idxRow < Value.Count; idxRow++)
+    {
+      IBusinessObject businessObject = Value[idxRow] as IBusinessObject;
+      if (businessObject == null)
+        continue;
+
+      object[] row = new object [sortingTable.Columns.Count];
+      int idxSortingColumn = 0;
+      row[idxSortingColumn] = idxRow;
+      idxSortingColumn++;
+      foreach (Pair pair in _sortingOrder)
+      {
+        SortingDirection sortingDirection = (SortingDirection)pair.Second;
+        if (sortingDirection != SortingDirection.None)
+        {
+          int columnIndex = (int) pair.First;
+          BocValueColumnDefinition valueColumn = 
+              columnDefinitions[columnIndex] as BocValueColumnDefinition;
+          if (valueColumn == null)
+            throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + columnIndex + ".");
+          row[idxSortingColumn] = valueColumn.GetStringValue (businessObject);
+          idxSortingColumn++;
+        } 
+      }
+      sortingTable.Rows.Add (row);
+    }
+    sortingTable.EndLoadData();
+
+    //  Sort the rows
+    StringBuilder sortingKey = new StringBuilder (sortingTable.Columns.Count * 5);
+    foreach (Pair pair in _sortingOrder)
+    {
+      SortingDirection sortingDirection = (SortingDirection)pair.Second;
+      if (sortingDirection != SortingDirection.None)
+      {
+        if (sortingKey.Length > 0)
+          sortingKey.Append (", ");
+        int columnIndex = (int) pair.First;
+        sortingKey.Append (
+              columnIndex.ToString()
+            + ((sortingDirection == SortingDirection.Ascending) ? " ASC" : " DESC"));
+
+      } 
+    }
+    sortingTable.DefaultView.Sort = sortingKey.ToString();
+    return sortingTable.DefaultView;
+  }
 
   public void Dispatch(IDictionary values)
   {
@@ -1053,6 +1489,39 @@ public class BocList:
     }
   }
 
+  private void DetermineClientScriptLevel() 
+  {
+    _hasClientScript = false;
+
+    if (! ControlHelper.IsDesignMode (this, Context))
+    {
+      if (EnableClientScript) 
+      {
+        bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
+                                ||   Context.Request.Browser.MajorVersion == 5 
+                                  && Context.Request.Browser.MinorVersion >= 0.5;
+        bool isInternetExplorer55AndHigher = 
+            Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
+
+        _hasClientScript = isInternetExplorer55AndHigher;
+
+        // // The next set of checks involve looking at the capabilities of the
+        // // browser making the request.
+        // //
+        // // The DatePicker needs to verify whether the browser has EcmaScript (JavaScript)
+        // // version 1.2+, and whether the browser supports DHTML, and optionally,
+        // // DHTML behaviors.
+        //
+        // HttpBrowserCapabilities browserCaps = Page.Request.Browser;
+        // bool hasEcmaScript = (browserCaps.EcmaScriptVersion.CompareTo(new Version(1, 2)) >= 0);
+        // bool hasDOM = (browserCaps.MSDomVersion.Major >= 4);
+        // bool hasBehaviors = (browserCaps.MajorVersion > 5) ||
+        //                     ((browserCaps.MajorVersion == 5) && (browserCaps.MinorVersion >= .5));
+        //
+        // _hasClientScript = hasEcmaScript && hasDOM;
+      }
+    }
+  }
 
   /// <summary>
   ///   Gets or sets the current value.
@@ -1150,6 +1619,19 @@ public class BocList:
   }
 
   /// <summary>
+  /// Gets or sets a value that indicates whether the control displays a drop down list 
+  /// containing the available column definition sets.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
+  [DefaultValue (true)]
+  public bool ShowAdditionalColumnsList
+  {
+    get { return _showAdditionalColumnsList; }
+    set { _showAdditionalColumnsList = value; }
+  }
+
+  /// <summary>
   ///   The currently selected <see cref="BocColumnDefinitionSet"/> used to supplement the 
   ///   <see cref="FixedColumns"/>.
   /// </summary>
@@ -1181,12 +1663,8 @@ public class BocList:
       }
 
       _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex;
+      RemoveDynamicColumnsFromSortingOrder();
     }
-  }
-
-  private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
-  {
-    PopulateAdditionalColumnsList();
   }
 
   [Browsable (false)]
@@ -1216,6 +1694,7 @@ public class BocList:
       {
         _selectedColumnDefinitionSet = null;
       }
+      RemoveDynamicColumnsFromSortingOrder();
     }
   }
 
@@ -1243,11 +1722,15 @@ public class BocList:
   public int[] GetSelectedRows()
   {
     string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
+    string titleCheckBoxID = ID + c_titleRowCheckBoxIDSuffix;
     int commonCheckBoxIDLength = commonCheckBoxID.Length;
     ArrayList selectedRows = new ArrayList();
     foreach (DictionaryEntry entry in _checkBoxCheckedState)
     {
       string checkBoxID = (string) entry.Key;
+      if (checkBoxID == titleCheckBoxID)
+        continue;
+
       bool isChecked = (bool) entry.Value;
 
       if (checkBoxID.StartsWith (commonCheckBoxID) && isChecked)
@@ -1258,6 +1741,71 @@ public class BocList:
       }
     }
     return (int[]) selectedRows.ToArray (typeof (int));
+  }
+
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control automatically generates a column for
+  /// each property of the bound object.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
+  [DefaultValue (false)]
+  public bool ShowAllProperties
+  {
+    get { return _showAllProperties; }
+    set { _showAllProperties = value; }
+  }
+
+  /// <summary>
+  ///   Set <see langword="true"/> to display an icon in front of the first value column.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Enables the icon in front of the first value column.")]
+  [DefaultValue (true)]
+  public bool EnableIcon
+  {
+    get { return _enableIcon; }
+    set
+    { _enableIcon = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to to display a sorting button 
+  ///   in front of each <see cref="BocValueColumn"/>'s header.
+  /// </summary>
+  [Category ("Behavior")]
+  [Description ("Enables the sorting button in front of each value column's header.")]
+  [DefaultValue (true)]
+  public bool EnableSorting
+  {
+    get { return _enableSorting; }
+    set { _enableSorting = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to display the sorting index 
+  ///   in front of eavh sorting button.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Enables the sorting order display in front of each sorting button.")]
+  [DefaultValue (false)]
+  public bool ShowSortingOrder
+  {
+    get { return _showSortingOrder; }
+    set { _showSortingOrder = value; }
+  }
+
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control displays a checkbox 
+  /// in front of each row.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Indicates whether the control displays a checkbox in front of each row.")]
+  [DefaultValue (false)]
+  public bool ShowSelection
+  {
+    get { return _showSelection; }
+    set { _showSelection = value; }
   }
 
   [Category ("Behavior")]
@@ -1288,58 +1836,6 @@ public class BocList:
     set { _alwaysShowPageInfo = value; }
   }
 
-  /// <summary>
-  /// Gets or sets a value that indicates whether the control displays a drop down list 
-  /// containing the available column definition sets.
-  /// </summary>
-  [Category ("Appearance")]
-  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
-  [DefaultValue (true)]
-  public bool ShowAdditionalColumnsList
-  {
-    get { return _showAdditionalColumnsList; }
-    set { _showAdditionalColumnsList = value; }
-  }
-
-  /// <summary>
-  /// Gets or sets a value that indicates whether the control displays a checkbox 
-  /// in front of each row.
-  /// </summary>
-  [Category ("Appearance")]
-  [Description ("Indicates whether the control displays a checkbox in front of each row.")]
-  [DefaultValue (false)]
-  public bool ShowSelection
-  {
-    get { return _showSelection; }
-    set { _showSelection = value; }
-  }
-
-  /// <summary>
-  /// Gets or sets a value that indicates whether the control automatically generates a column for
-  /// each property of the bound object.
-  /// </summary>
-  [Category ("Appearance")]
-  [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
-  [DefaultValue (false)]
-  public bool ShowAllProperties
-  {
-    get { return _showAllProperties; }
-    set { _showAllProperties = value; }
-  }
-
-  /// <summary>
-  ///   Set <see langword="true"/> to display an icon in front of the first value column.
-  /// </summary>
-  [Category ("Appearance")]
-  [Description ("Enables the icon in front of the first value column.")]
-  [DefaultValue (true)]
-  public bool EnableIcon
-  {
-    get { return _enableIcon; }
-    set
-    { _enableIcon = value; }
-  }
-
   /// <summary> The text providing the current page information to the user. </summary>
   /// <remarks> Use {0} for the current page and {1} for the total page count. </remarks>
   [Category ("Appearance")]
@@ -1349,6 +1845,17 @@ public class BocList:
   {
     get { return _pageInfo; }
     set { _pageInfo = value; }
+  }
+
+  /// <summary> Flag that determines whether the client script is enabled. </summary>
+  /// <value> <see langref="true"/> to enable the client script. </value>
+  [Category ("Behavior")]
+  [Description (" True to enable the client script for the pop-up calendar. ")]
+  [DefaultValue (true)]
+  public bool EnableClientScript
+  {
+    get { return _enableClientScript; }
+    set { _enableClientScript = value; }
   }
 
   /// <summary> 
@@ -1400,6 +1907,26 @@ public class BocList:
   /// <remarks> Class: <c>bocListDataCellEven</c> </remarks>
   protected virtual string CssClassDataCellEven
   { get { return "bocListDataCellEven"; } }
+
+  /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows when the row is selected. </summary>
+  /// <remarks> Class: <c>bocListDataCellOddSelected</c> </remarks>
+  protected virtual string CssClassDataCellOddSelected
+  { get { return "bocListDataCellOddSelected"; } }
+
+  /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s even data rows when the row is selected. </summary>
+  /// <remarks> Class: <c>bocListDataCellEvenSelected</c> </remarks>
+  protected virtual string CssClassDataCellEvenSelected
+  { get { return "bocListDataCellEvenSelected"; } }
+
+  //  /// <summary> CSS-Class applied to the checkboxes used for selecting data rows. </summary>
+  //  /// <remarks> Class: <c>bocListDataCellEvenSelected</c> </remarks>
+  //  protected virtual string CssClassSelectionCheckBox
+  //  { get { return "bocListSelectionCheckBox"; } }
+
+  /// <summary> CSS-Class applied to the text providing the sorting order's index. </summary>
+  /// <remarks> Class: <c>bocListSortingOrder</c> </remarks>
+  protected virtual string CssClassSortingOrder
+  { get { return "bocListSortingOrder"; } }
 
   /// <summary> CSS-Class applied to the <see cref="BocList"/>'s navigator. </summary>
   /// <remarks> Class: <c>bocListNavigator</c> </remarks>
