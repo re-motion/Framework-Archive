@@ -63,6 +63,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon = null;
 
+  private LiteralControl _iconSpacer = null; 
+
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator = new CompareValidator();
 
@@ -124,6 +126,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     base.OnInit (e);
 
     _icon = new Image();
+    _iconSpacer = new LiteralControl();
     _dropDownList = new DropDownList();
     _label = new Label();
 
@@ -131,6 +134,14 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _icon.EnableViewState = false;
     _icon.Visible = EnableIcon;
     Controls.Add (_icon);
+
+    _iconSpacer.EnableViewState = false;
+    _iconSpacer.Visible = EnableIcon;
+    if (IsDesignMode)
+      _iconSpacer.Text = c_designModeWhiteSpace;
+    else
+      _iconSpacer.Text = c_whiteSpace;
+    Controls.Add (_iconSpacer);
 
     _dropDownList.ID = this.ID + "_Boc_DropDownList";
     _dropDownList.EnableViewState = true;
@@ -537,15 +548,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
 
     if (_icon.Visible)
-    {
-      int iconIndex = Controls.IndexOf (_icon);
-      int whiteSpaceIndex = iconIndex + 1;
-      if (IsDesignMode)
-        Controls.AddAt (whiteSpaceIndex, new LiteralControl (c_designModeWhiteSpace));
-      else
-        Controls.AddAt (whiteSpaceIndex, new LiteralControl (c_whiteSpace));
       Style.Add ("white-space", "nowrap");
-    }
 
       //  Common style not useful with icon
       //  _icon.ApplyStyle (_commonStyle);
@@ -643,10 +646,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         _icon.Height = iconIcon.Height;
 
         _icon.Visible = EnableIcon;
+        _iconSpacer.Visible = EnableIcon;
       }
       else
       {
         _icon.Visible = false;
+        _iconSpacer.Visible = false;
 
         //  For debugging
         //  _icon.ImageUrl = "/images/Help.gif";
@@ -658,6 +663,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     else
     {
       _icon.Visible = false;
+      _iconSpacer.Visible = false;
     }
   }
 
