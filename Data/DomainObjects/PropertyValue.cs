@@ -16,73 +16,6 @@ public class PropertyValue
 
   // static members and constants
 
-  private static object GetDefaultValue (PropertyDefinition propertyDefinition)
-  {
-    switch (propertyDefinition.PropertyType.FullName)
-    {
-      case "Rubicon.Data.DomainObjects.ObjectID":
-        return null;
-
-      case "System.Boolean":
-        return false;
-
-      case "System.Byte":
-        return (byte) 0;
-
-      case "System.DateTime":
-        return DateTime.MinValue;
-
-      case "System.Decimal":
-        return (decimal) 0;
-
-      case "System.Double":
-        return (double) 0.0;
-
-      case "System.Guid":
-        return Guid.Empty;
-
-      case "System.Int16":
-        return (short) 0;
-
-      case "System.Int32":
-        return (int) 0;
-
-      case "System.Int64":
-        return (long) 0;
-
-      case "System.Single":
-        return (float) 0.0;
-
-      case "System.String":
-        if (propertyDefinition.IsNullable)
-          return null;
-        else
-          return string.Empty;
-
-      case "System.Char":
-        return ' ';
-
-      // TODO: Move this code to TypeConversion. Review when adding new Na* types.
-      case "Rubicon.NullableValueTypes.NaBoolean":
-        return NaBoolean.Null;
-
-      case "Rubicon.NullableValueTypes.NaDateTime":
-        return NaDateTime.Null;
-
-      case "Rubicon.NullableValueTypes.NaDouble":
-        return NaDouble.Null;
-
-      case "Rubicon.NullableValueTypes.NaInt32":
-        return NaInt32.Null;
-
-      default:
-        if (propertyDefinition.PropertyType.IsEnum)
-          return GetDefaultEnumValue (propertyDefinition);
-
-        throw new UnknownPropertyTypeException (propertyDefinition.PropertyType);
-    }
-  }
-
   private static object GetDefaultEnumValue (PropertyDefinition propertyDefinition)
   {
     Array enumValues = Enum.GetValues (propertyDefinition.PropertyType);
@@ -117,7 +50,7 @@ public class PropertyValue
   /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
   /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
   /// <exception cref="InvalidEnumDefinitionException"><i>definition</i> is a reference to an invalid enum.</exception>
-  public PropertyValue (PropertyDefinition definition) : this (definition, GetDefaultValue (definition))
+  public PropertyValue (PropertyDefinition definition) : this (definition, definition.DefaultValue)
   {
   }
 

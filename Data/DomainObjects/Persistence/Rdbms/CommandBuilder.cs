@@ -49,7 +49,7 @@ public abstract class CommandBuilder
 
     IDataParameter commandParameter = command.CreateParameter ();
     commandParameter.ParameterName = Provider.GetParameterName (parameterName);
-    commandParameter.Value = ConvertToDBType (parameterValue);
+    commandParameter.Value = DBValueConverter.GetDBValue (parameterValue);
 
     command.Parameters.Add (commandParameter);
   }
@@ -124,32 +124,6 @@ public abstract class CommandBuilder
       return id.Value;
     else
       return id.ToString ();
-  }
-
-  // TODO: Move this method to TypeConversion. Review when adding new Na* types.
-  protected object ConvertToDBType (object value)
-  {
-    if (value == null)
-      return DBNull.Value;
-
-    Type type = value.GetType ();
-
-    INaNullable naValueType = value as INaNullable;
-    if (naValueType != null)
-    {
-      if (!naValueType.IsNull)
-        return naValueType.Value;
-      else
-        return DBNull.Value;
-    }
-
-    if (type.IsEnum)
-      return (int) value;
-
-    if (type == typeof (char))
-      return value.ToString ();
-    
-    return value;
   }
 
   public RdbmsProvider Provider
