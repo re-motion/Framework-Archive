@@ -136,5 +136,78 @@ public class RelationEndPointIDTest
     Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[2].PropertyName) >= 0);
     Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[3].PropertyName) >= 0);
   }
+
+  [Test]
+  public void StaticEquals ()
+  {
+    RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+    RelationEndPointID id2 = new RelationEndPointID (_objectID, _propertyName);
+
+    Assert.IsTrue (RelationEndPointID.Equals (id1, id2));
+  }
+
+  [Test]
+  public void StaticNotEquals ()
+  {
+    RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+    RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+
+    Assert.IsFalse (RelationEndPointID.Equals (id1, id2));
+  }
+
+  [Test]
+  public void EqualityOperatorTrue ()
+  {
+    RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+    RelationEndPointID id2 = new RelationEndPointID (_objectID, _propertyName);
+
+    Assert.IsTrue (id1 == id2);
+    Assert.IsFalse (id1 != id2);
+  }
+
+  [Test]
+  public void EqualityOperatorFalse ()
+  {
+    RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+    RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+
+    Assert.IsFalse (id1 == id2);
+    Assert.IsTrue (id1 != id2);
+  }
+
+  [Test]
+  public void EqualityOperatorForSameObject ()
+  {
+    RelationEndPointID id = new RelationEndPointID (_objectID, _propertyName);
+
+    Assert.IsTrue (id == id);
+    Assert.IsFalse (id != id);
+  }
+
+  [Test]
+  public void EqualityOperatorWithBothNull ()
+  {
+    Assert.IsTrue ((RelationEndPointID) null == (RelationEndPointID) null);
+    Assert.IsFalse ((RelationEndPointID) null != (RelationEndPointID) null);
+
+  }
+ 
+  [Test]
+  public void EqualityOperatorID1Null ()
+  {
+    RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+
+    Assert.IsFalse (null == id2);
+    Assert.IsTrue (null != id2);
+  }
+
+  [Test]
+  public void EqualityOperatorID2Null ()
+  {
+    RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+
+    Assert.IsFalse (id1 == null);
+    Assert.IsTrue (id1 != null);
+  }
 }
 }

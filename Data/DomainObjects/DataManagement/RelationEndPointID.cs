@@ -26,6 +26,24 @@ public class RelationEndPointID
     return relationEndPointIDs;
   }
 
+  public static bool operator == (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+  {
+    return Equals (endPointID1, endPointID2);
+  }
+
+  public static bool operator != (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+  {
+    return !Equals (endPointID1, endPointID2);
+  }
+
+  public static bool Equals (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+  {
+    if (object.ReferenceEquals (endPointID1, endPointID2)) return true;
+    if (object.ReferenceEquals (endPointID1, null)) return false;
+
+    return endPointID1.Equals (endPointID2);
+  }
+  
   // member fields
 
   private IRelationEndPointDefinition _definition;
