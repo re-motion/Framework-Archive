@@ -15,6 +15,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
+[ToolboxItemFilter("System.Web.UI")]
 public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
 {
 	// constants

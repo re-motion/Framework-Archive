@@ -339,10 +339,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\DatePicker.js"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Res\Image\DatePicker.gif"
                     BuildAction = "Content"
                 />

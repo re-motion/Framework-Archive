@@ -26,6 +26,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
+[ToolboxItemFilter("System.Web.UI")]
 public class BocList:
   BusinessObjectBoundModifiableWebControl, 
   IResourceDispatchTarget, IPostBackEventHandler
