@@ -21,7 +21,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
 
     _type = type;
 
-    _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (_type);
+    _classDefinition = MappingConfiguration.Current.ClassDefinitions[_type];
   }
 
   public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
