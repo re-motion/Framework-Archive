@@ -93,11 +93,6 @@
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\..\References\Rubicon.Core.dll"
                 />
-                <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\References\nunit.framework.dll"
-                />
             </References>
         </Build>
         <Files>

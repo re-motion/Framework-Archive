@@ -1,10 +1,11 @@
 using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Transaction;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {

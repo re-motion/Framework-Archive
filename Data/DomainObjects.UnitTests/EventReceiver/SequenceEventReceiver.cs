@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.UnitTests.EventSequence
 {
 public class SequenceEventReceiver

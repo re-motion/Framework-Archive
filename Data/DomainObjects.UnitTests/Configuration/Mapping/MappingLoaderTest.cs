@@ -232,5 +232,19 @@ public class LoaderTest
         @"storageProvidersWithXmlException.xml", 
         @"storageProviders.xsd");
   }
+
+
+  [Test]
+  [ExpectedException (typeof (MappingException), 
+      "Virtual end point of relation 'OrderToOrderTicket' must not contain element 'collectionType'."
+      + " Element 'collectionType' is only valid for virtual end points with cardinality equal 'many'.")]
+  public void MappingWithCollectionTypeAndOneToOneRelation ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithCollectionTypeAndOneToOneRelation.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  }
 }
 }
