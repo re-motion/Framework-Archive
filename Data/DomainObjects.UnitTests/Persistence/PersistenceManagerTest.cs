@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -49,8 +50,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (PersistenceException),
-      "Storage Provider with ID 'NonExistingProviderID' could not be created.")]
+  [ExpectedException (typeof (StorageProviderConfigurationException))]
   public void LoadDataContainerWithNonExistingProviderID ()
   {
     ObjectID id = new ObjectID ("NonExistingProviderID", "ClassWithAllDataTypes",
