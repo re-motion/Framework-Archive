@@ -29,10 +29,10 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
     get { return _id; }
   }
 
-  public override IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
-  {
-    return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
-  }
+//  public override IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
+//  {
+//    return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
+//  }
 
   [XmlIgnore]
   [EditorBrowsable (EditorBrowsableState.Never)]
