@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects
 {
+//TODO documentation: Write summary for class
 [Serializable]
 public class DomainObjectException : Exception
 {
