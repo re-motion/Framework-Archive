@@ -197,14 +197,21 @@ public class BocList:
 
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList;
-
-  /// <summary> 
-  ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
-  /// </summary>
+  /// <summary> The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>. </summary>
   private string _additionalColumnsTitle;
-
   /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
   private Unit _additionalColumnsListWidth = Unit.Empty;
+  /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
+  private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
+  /// <summary> Determines whether to show the drop down list for selecting additional column definitions. </summary>
+  private bool _showAdditionalColumnsList = true;
+  /// <summary> The current <see cref="BocColumnDefinitionSet"/>. May be set at run time. </summary>
+  private BocColumnDefinitionSet _selectedColumnDefinitionSet;
+  /// <summary> 
+  ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
+  ///   <see cref="AvailableColumnDefinitionSets"/>.
+  /// </summary>
+  private int _selectedColumnDefinitionSetIndex = -1;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton;
@@ -252,20 +259,6 @@ public class BocList:
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _listMenuItemsRenderPhase;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
-
-  /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
-  private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
-  /// <summary> 
-  ///   Determines whether to show the drop down list for selecting additional column definitions. 
-  /// </summary>
-  private bool _showAdditionalColumnsList = true;
-  /// <summary> The current <see cref="BocColumnDefinitionSet"/>. May be set at run time. </summary>
-  private BocColumnDefinitionSet _selectedColumnDefinitionSet;
-  /// <summary> 
-  ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
-  ///   <see cref="AvailableColumnDefinitionSets"/>.
-  /// </summary>
-  private int _selectedColumnDefinitionSetIndex = -1;
  
   /// <summary> Determines wheter an empty list will still render its headers. </summary>
   private bool _showEmptyList = true;
@@ -289,7 +282,7 @@ public class BocList:
   private bool _showOptionsMenu = true;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
-  private bool _enableSelection = false;
+  private RowSelection _selection = RowSelection.Disabled;
   /// <summary> 
   ///   Contains the checked state for each of the selection checkBoxes in the <see cref="BocList"/>.
   ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
@@ -1265,7 +1258,7 @@ public class BocList:
       RenderTableClosingTag (writer);
     }
 
-    if (_hasClientScript && _enableSelection)
+    if (_hasClientScript && IsSelectionEnabled)
     {
       //  Render the init script for the client side selection handling
       int count = 0;
@@ -1414,7 +1407,7 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
-    if (EnableSelection)
+    if (IsSelectionEnabled)
     {
       //  1% would lead to automatic resizing if all widths don't add up to 100%
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(0).ToString());
@@ -1455,7 +1448,7 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-    if (EnableSelection)
+    if (IsSelectionEnabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1616,7 +1609,7 @@ public class BocList:
         cssClassTableCell = CssClassDataCellEven;
     }
 
-    if (_enableSelection)
+    if (IsSelectionEnabled)
     {
       if (_hasClientScript)
       {
@@ -1633,7 +1626,7 @@ public class BocList:
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-    if (_enableSelection)
+    if (IsSelectionEnabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1868,7 +1861,9 @@ public class BocList:
     object[] values = (object[]) savedState;
     
     base.LoadViewState (values[0]);
-    SelectedColumnDefinitionSetIndex = (int) values[1];
+    _selectedColumnDefinitionSetIndex = (int) values[1];
+    if (ShowAdditionalColumnsList)
+      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
     _currentRow = (int) values[2];
     _sortingOrder = (ArrayList) values[3];
     _isDirty = (bool) values[4];
@@ -2984,20 +2979,24 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets or sets a flag that indicates whether row selection is enabled.
+  ///   Gets or sets a value that indicating the row selection mode.
   /// </summary>
   /// <remarks> 
   ///   If row selection is enabled, the control displays a checkbox in front of each row
   ///   and highlights selected data rows.
   /// </remarks>
-  /// <value> <see langword="true"/> to enable row selection. </value>
   [Category ("Behavior")]
   [Description ("Indicates whether row selection is enabled.")]
-  [DefaultValue (false)]
-  public bool EnableSelection
+  [DefaultValue (RowSelection.Disabled)]
+  public RowSelection Selection
   {
-    get { return _enableSelection; }
-    set { _enableSelection = value; }
+    get { return _selection; }
+    set { _selection = value; }
+  }
+
+  protected bool IsSelectionEnabled
+  {
+    get { return _selection != RowSelection.Disabled; }
   }
 
   /// <summary> The number of rows displayed per page. </summary>
@@ -3142,7 +3141,15 @@ public class BocList:
   public bool ShowAdditionalColumnsList
   {
     get { return _showAdditionalColumnsList; }
-    set { _showAdditionalColumnsList = value; }
+    set
+    { 
+      if ( _showAdditionalColumnsList != value)
+      {
+        _showAdditionalColumnsList = value; 
+        if (value == true)
+          SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+      }
+    }
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
@@ -3241,6 +3248,13 @@ public enum SortingDirection
   Ascending,
   /// <summary> Sort descending. </summary>
   Descending
+}
+
+public enum RowSelection
+{ 
+  Disabled,
+  //  Single,
+  Multiple  
 }
 
 public enum ListMenuLineBreaks

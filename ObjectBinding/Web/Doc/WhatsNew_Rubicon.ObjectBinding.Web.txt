@@ -1,3 +1,13 @@
+1.2.8.0
+=======
+
+- BocList
+  * EnableSelection wurde zu Selection vom Typ RowSelection geändert.
+    Muss in allen aspx/ascx Dateien angepasst werden, wo eine BocList mit eingeschalteter Selection ist.
+  * AdditionColumns
+    Können die AdditionalColumns erst nach dem LoadViewState wieder hergestellt werden, so muss bis zur erfolgten 
+    Wiederherstellung ShowAdditionalColumns auf false gesetzt werden.
+    
 1.2.7.0
 =======
 
