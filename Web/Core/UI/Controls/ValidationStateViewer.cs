@@ -24,8 +24,17 @@ public class ValidationStateViewer : WebControl, IControl
 {
   // types
 
+  /// <summary> A list of validation state viewer wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.Web.UI.Globalization.ValidationStateViewer")]
+  protected enum ResourceIdentifier
+  {
+    /// <summary>The summary message displayed if validation errors where found. </summary>
+    NoticeText
+  }
+
   // constants
-  private const string c_noticeText = "Incorrect input found.";
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
@@ -51,6 +60,8 @@ public class ValidationStateViewer : WebControl, IControl
   private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
   private bool _showLabels = true;
   private bool _skipNamingContainers = false;
+  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
+  private ResourceManagerSet _cachedResourceManager;
 
   // construction and disposing
 
@@ -164,7 +175,10 @@ public class ValidationStateViewer : WebControl, IControl
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       if (StringUtility.IsNullOrEmpty (_noticeText))
-        writer.WriteLine (c_noticeText);
+      {
+        IResourceManager resourceManager = GetResourceManager();
+        writer.WriteLine (resourceManager.GetString (ResourceIdentifier.NoticeText));
+      }
       else
         writer.WriteLine (_noticeText);
       writer.RenderEndTag();
@@ -215,6 +229,27 @@ public class ValidationStateViewer : WebControl, IControl
       }
     }
     writer.RenderEndTag();
+  }
+
+  /// <summary>
+  ///   Find the <see cref="IResourceManager"/> for this <see cref="ValidationStateViewer"/>.
+  /// </summary>
+  /// <returns></returns>
+  protected IResourceManager GetResourceManager()
+  {
+    //  Provider has already been identified.
+    if (_cachedResourceManager != null)
+        return _cachedResourceManager;
+
+    //  Get the resource managers
+
+    IResourceManager localResourceManager = 
+        MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), true);
+    IResourceManager namingContainerReosurceManager = 
+        ResourceManagerUtility.GetResourceManager (NamingContainer);
+    _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerReosurceManager);
+
+    return _cachedResourceManager;
   }
 
   /// <summary>
