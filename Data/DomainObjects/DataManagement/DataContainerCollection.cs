@@ -20,7 +20,7 @@ public class DataContainerCollection : CollectionBase
   }
 
   // standard constructor for collections
-  public DataContainerCollection (DataContainerCollection collection, bool isCollectionReadOnly)
+  public DataContainerCollection (DataContainerCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -29,7 +29,7 @@ public class DataContainerCollection : CollectionBase
       Add (dataContainer);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
