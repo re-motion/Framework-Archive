@@ -445,7 +445,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DomainObjects\Integrationstests.cs"
+                    RelPath = "DomainObjects\IntegrationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

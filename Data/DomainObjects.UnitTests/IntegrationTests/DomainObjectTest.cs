@@ -41,14 +41,6 @@ public class IntegrationTest: ClientTransactionBaseTest
   // methods and properties
 
 // TODO: Reactivate this test
-//  [Test]
-//  public void NewOfficialTest ()
-//  {
-//    new Official ();
-//  }
-//
-
-// TODO: Reactivate this test
 //  // The same column should not be referenced twice !!!
 //  [Test]
 //  public void AddPropertyValueWithExistingColumnTest ()
@@ -69,22 +61,6 @@ public class IntegrationTest: ClientTransactionBaseTest
 //    Assert.Fail ();
 //  }
 //
-
-
-// TODO: Reactivate this test
-//  [Test]
-//  public void DiscardSinglePropertyValueTest ()
-//  {
-//    Employee employee = new Employee ();
-//
-//    PropertyValue propertyValue = employee.DataContainer.PropertyValues["Name"];
-//
-//    //should not be valid
-//    propertyValue.Discard ();
-//
-//    employee.Name = "newName";
-//    //expectation: no exception
-//  }
 
   [Test]
   public void RelationEventTest ()
@@ -336,21 +312,22 @@ public class IntegrationTest: ClientTransactionBaseTest
 //      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
 //      new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
 //    };
-//
-//    eventReceiver.Compare (expectedChangeStates);
-//    eventReceiver.Unregister ();
+
+    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Unregister ();
 
     //17
     //Todo: reactivate this line    
-    //newOrderTicket1.Order = newOrder1;
-    expectedChangeStates = new ChangeState[]
-    { 
-      // Todo: reactivate these lines
-      //      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
-      //      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
-      //      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
-      //      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
-    };
+//    newOrderTicket1.Order = newOrder1;
+//    expectedChangeStates = new ChangeState[]
+//    { 
+//      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
+//      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
+//      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
+//      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
+//    };
+//    eventReceiver.Compare (expectedChangeStates);
+//    eventReceiver.Unregister ();
   }
 
   [Test]
