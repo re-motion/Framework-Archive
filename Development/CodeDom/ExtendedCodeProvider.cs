@@ -233,6 +233,34 @@ public abstract class ExtendedCodeProvider
       }
     }
   }
+
+  /// <summary>
+  /// Creates a type that contains integer values.
+  /// </summary>
+  /// <param name="name">The name of the new type.</param>
+  /// <returns>The default implementation returns a <c>CodeTypeDeclaration</c> object with its <c>IsEnum</c> property set to <c>true</c>.</returns>
+  public virtual CodeTypeDeclaration CreateEnumeDeclaration (string name)
+  {
+    CodeTypeDeclaration enumDeclaration = new CodeTypeDeclaration (GetValidName (name));
+    enumDeclaration.IsEnum = true;
+    return enumDeclaration;
+  }
+
+  /// <summary>
+  /// Creates a member for an enum type.
+  /// </summary>
+  /// <param name="enumDeclaration">A reference to the enum type this member is intended for.</param>
+  /// <param name="numericValue">The numeric enumeration value.</param>
+  /// <param name="name">The name of the member.</param>
+  /// <returns>Returns a <c>CodeTypeMember</c> that can be added to the <c>Members</c> collection of an enum type created 
+  /// using <see cref="CreateEnumDeclaration"/>. </returns>
+  public virtual CodeTypeMember CreateEnumValue (CodeTypeReference enumDeclaration, int numericValue, string name)
+  {
+    CodeMemberField enumValueField = new CodeMemberField (enumDeclaration, name);
+    enumValueField.InitExpression = new CodePrimitiveExpression (numericValue);
+    enumValueField.Attributes = MemberAttributes.Public | MemberAttributes.Static | MemberAttributes.Const;
+    return enumValueField;
+  }
 }
 
 }
