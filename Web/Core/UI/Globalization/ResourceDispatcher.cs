@@ -1,90 +1,137 @@
 using System;
 using System.Globalization;
 using System.Resources;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
-using System.Diagnostics;
-using System.Runtime.Serialization;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+
+using log4net;
+
 using Rubicon.Utilities;
 using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Globalization
 {
-
+/// <summary>
+///   Provides methods for dispatching the resources inside an IResourceManager container
+///   to a control.
+/// </summary>
+/// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Class/example' />
 public sealed class ResourceDispatcher
 {
   // types
 
   // static members and constants
+	private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+  /// <summary>
+  ///   Dispatches resources
+  ///   provided by <see cref="IObjectWithResources.GetResourceManager()"/>
+  /// </summary>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/Common/*' />
+  /// <param name="control">The control to be dispatched. Must not be <see langname="null"/>.</param>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/param[@name="resourceManager"]' />
+  public static void Dispatch (Control control, IResourceManager resourceManager)
+  {
+    const string autoPrefix = "auto:";
+
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+
+    IDictionary elements = ResourceDispatcher.GetResources (resourceManager, autoPrefix);
+
+    ResourceDispatcher.Dispatch (control, elements, resourceManager);
+  }
+
+  /// <summary>
+  ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
+  ///   to a control that implements interface <see cref="IObjectWithResources"/>.
+  /// </summary>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/Common/*' />
+  /// <param name="control">
+  ///   The control to be dispatched
+  ///   Must implement the interface <see cref="IObjectWithResources"/>.
+  ///   Must not be <see langname="null"/>.
+  /// </param>
+  /// <exception cref="ResourceException">
+  ///   Thrown if control does not support interface IObjectWithResources
+  /// </exception>
   public static void Dispatch (Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
-    ResourceManager resourceManager = ResourceManagerPool.GetOrCreateResourceManager (control.GetType());
-    Dispatch (control, resourceManager);
+    IObjectWithResources objectWithResources = control as IObjectWithResources;
+    if (objectWithResources == null)
+      throw new ResourceException ("Control does not support interface IObjectWithResources");
+
+    ResourceDispatcher.Dispatch (control, objectWithResources.GetResourceManager());
   }
 
-  public static void Dispatch (Control control, Type controlType)
+  /// <summary>
+  ///   Dispatches an IDictonary of elementID/IDictonary pairs to the specified control.
+  /// </summary>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/remarks' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/param[@name="control"]' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/param[@name="elements"]' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/param[@name="resourceManager"]' />
+  public static void Dispatch (
+    Control control,
+    IDictionary elements,
+    IResourceManager resourceManager)
   {
+    const string thisElementID = "this";
+
     ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("elements", elements);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    ResourceManager resourceManager = ResourceManagerPool.GetOrCreateResourceManager (controlType);
-    Dispatch (control, resourceManager);
-  }
-
-  public static void Dispatch (Control control, ResourceManager resourceManager)
-  {
-    // Hashtable<string elementID, IDictionary<string argument, string value> elementValues>
-    IDictionary elements = new Hashtable (); 
-
-    ResourceSet resources = ResourceManagerPool.GetResourceSet (resourceManager, true);
-
-    foreach (DictionaryEntry resourceEntry in resources)
-    {
-      string key = (string) resourceEntry.Key;
-      if (key.StartsWith ("auto:"))
-      {
-        key = key.Substring (5);
-        int posColon = key.IndexOf (':');
-        if (posColon >= 0)
-        {
-          string elementID = key.Substring (0, posColon);
-          string argument = key.Substring (posColon + 1);
-
-          IDictionary elementValues = (IDictionary) elements[elementID];
-          if (elementValues == null)
-          {
-            elementValues = new HybridDictionary ();
-            elements[elementID] = elementValues;
-          }
-          elementValues.Add (argument, resourceEntry.Value);
-        }
-      }
-    }
-
+    //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)
     {
       string elementID = (string) elementsEntry.Key;
-      Control childControl = control.FindControl (elementID);
-      if (childControl == null)
-        throw new InvalidOperationException ("No control with ID " + elementID + " found. ID was read from resource " + resourceManager.BaseName + ".");
 
-      IDictionary values = (IDictionary) elementsEntry.Value;
-      IResourceDispatchTarget resourceDispatchTarget = childControl as IResourceDispatchTarget;
-      if (resourceDispatchTarget != null)
-        resourceDispatchTarget.Dispatch (values);
+      Control targetControl = null;
+
+      if (elementID == thisElementID)
+        targetControl = control;
       else
-        DispatchGeneric (childControl, values);
+        targetControl = control.FindControl (elementID);
+
+      if (targetControl == null)
+      {
+        log.Error ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource " + resourceManager.BaseNameList + ".");
+      }
+      else
+      {
+        //  Pass the value to the control
+        IDictionary values = (IDictionary) elementsEntry.Value;
+        IResourceDispatchTarget resourceDispatchTarget = targetControl as IResourceDispatchTarget;
+
+        if (resourceDispatchTarget != null) //  Control knows how to dispatch
+        {
+          resourceDispatchTarget.Dispatch (values);       
+        }
+        else
+        {
+          ResourceDispatcher.DispatchGeneric (targetControl, values);
+        }
+      }
     }
   }
 
+  /// <summary>
+  ///   Dispatch a dictonary to a control's properties.
+  /// </summary>
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/param[@name="control"]' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/param[@name="values"]' />
   public static void DispatchGeneric (Control control, IDictionary values)
   {
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("values", values);
+
     foreach (DictionaryEntry entry in values)
     {
       string propertyName = (string) entry.Key;
@@ -94,50 +141,147 @@ public sealed class ResourceDispatcher
       
       if (property != null)
       {
-        property.SetValue (control, propertyValue, new object[0]); 
+        object propertyOldValue = property.GetValue (control, new object[0]);
+
+        //  Only dispatch to empty properies
+        if (propertyOldValue.ToString().Length == 0)
+          property.SetValue (control, propertyValue, new object[0]); 
       }
       else
       {
+        //  Test for HtmlControl, they can take anything
         HtmlControl genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
         {
-          genericHtmlControl.Attributes[propertyName] = propertyValue;
+          //  Only dispatch to empty properies
+          if (genericHtmlControl.Attributes[propertyName].Length == 0)
+            genericHtmlControl.Attributes[propertyName] = propertyValue;
         }
-        else  
+          //  Non-HtmlControls require valid property
+        else
         {
-          throw new InvalidOperationException ("Type " + control.GetType().FullName + " does not contain a public property " + propertyName + ".");
+           log.Error ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
         }
       }
     }
   }
+
+  /// <summary>
+  ///   Selects all resources matching the <c>prefix</c> into a HashTable.
+  /// </summary>
+  /// <param name="resourceManager">
+  ///   The <see cref="IResourceManager"/> to select from. Must not be <see langname="null"/>.
+  /// </param>
+  /// <param name="prefix">
+  ///   The filter prefix, can be empty. Must not be <see langname="null"/>.
+  /// </param>
+  /// <returns>
+  ///   Hashtable<string elementID, IDictionary<string property, string value> elementValues>
+  /// </returns>
+  public static IDictionary GetResources (IResourceManager resourceManager, string prefix)
+  {
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+
+    if (prefix == null)
+      prefix = String.Empty;
+
+    // Hashtable<string elementID, IDictionary<string property, string value> elementValues>
+    IDictionary elements = new Hashtable (); 
+
+    NameValueCollection resources = resourceManager.GetAllStrings (prefix);
+
+    for (int index = 0; index < resources.Count; index++)
+    {
+      //  Compound key: "prfx:elementID:argument"
+      //  The argument (including the colon) is optional
+      //  resources contain only keys with the prefix "auto" because of the applied filter
+
+      string key = resources.GetKey(index);
+
+      //  Remove the prefix and colon
+      key = key.Substring (prefix.Length);
+
+      //  Test for a second colon in the key
+      int posColon = key.IndexOf (':');
+
+      if (posColon >= 0)
+      {
+        //  If one is found, this indicates an argument attached to the elementID
   
+        string elementID = key.Substring (0, posColon);
+        string property = key.Substring (posColon + 1);
+
+        //  Now there can be more than one argument provided for a specific element
+        //  Create a dictonary for the element,
+        //  using the argument as key and the resources' value as the value.
+
+        //  Get the dictonary for the current element
+        IDictionary elementValues = (IDictionary) elements[elementID];
+
+        //  If no dictonary exists, create it and insert it into the elements hashtable.
+        if (elementValues == null)
+        {
+          elementValues = new HybridDictionary ();
+          elements[elementID] = elementValues;
+        }
+
+        //  Insert the argument and resource's value into the dictonary for the specified element.
+        elementValues.Add (property, resources[index]);
+      }
+    }
+
+    return elements;
+  }
+
+  /// <summary>
+  ///   Dispatch a value to a single property. Will be replaced using the reflection utility
+  /// </summary>
+  /// <exception cref="InvalidOperationException">
+  ///   Thrown if propertyName is unknown in objectToSetPropertyFor
+  /// </exception>
+  // TODO: Replace using the reflection utility
   public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
   {
+    ArgumentUtility.CheckNotNull ("objectToSetPropertyFor", objectToSetPropertyFor);
+    ArgumentUtility.CheckNotNull ("propertyName", propertyName);
+    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+
     PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
 
     if (property == null)
     {
-      throw new InvalidOperationException ("Type " + objectToSetPropertyFor.GetType().FullName + " does not contain a public property " + propertyName + ".");
+      log.Error ("Object of type '" + objectToSetPropertyFor.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
     }
 
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
   }
-  
-  // member fields
 
-  // construction and disposing
-
-  private ResourceDispatcher()
+  [Obsolete("Use Dispatch (Control controll instead")]
+  public static void Dispatch (Control control, Type controlType)
   {
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("controlType", controlType);
+
+    ResourceDispatcher.Dispatch(control);
   }
 
-  // methods and properties
+  [Obsolete ("Use Dispatch (Control control, IResourceManager resourceManager) instead")]
+  public static void Dispatch (Control control, ResourceManager resourceManager)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-}
+    ResourceDispatcher.Dispatch (control, new ResourceManagerWrapper (resourceManager));
+  }
 
-public interface IResourceDispatchTarget
-{
-  void Dispatch (IDictionary values);
+  //  construction and disposing
+  
+  /// <summary>
+  /// Empty private instance constructor to prevent accidental cosntruction,
+  /// since class is only used static
+  /// </summary>
+  private ResourceDispatcher ()
+  {}
 }
 
 }

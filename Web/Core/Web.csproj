@@ -113,6 +113,11 @@
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
                 />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\References\log4net.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -163,7 +168,32 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\FormGridManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\FormGridRowPrototype.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\FormGridRowPrototypeCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\IFormGridRowProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\INavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\IUrlResolver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -213,6 +243,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\ValidationError.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ValidationStateViewer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\ViewControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -235,11 +275,11 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\IResourceDispatchTarget.xml"
+                    RelPath = "Doc\include\FormGridManager.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\IResourceDispatchTargetWithChildren.xml"
+                    RelPath = "Doc\include\IUrlResolver.xml"
                     BuildAction = "Content"
                 />
                 <File
@@ -263,6 +303,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\IResourceDispatchTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Globalization\ResourceDispatcher.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -284,6 +329,31 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Res\HTML\FormGridTemplate.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Images\Help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Images\RequiredField.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Images\Spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Images\ValidationError.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Utilities\AccessKeyUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\ControlHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -300,6 +370,11 @@
                 />
                 <File
                     RelPath = "Utilities\UIUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\UrlResolver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
