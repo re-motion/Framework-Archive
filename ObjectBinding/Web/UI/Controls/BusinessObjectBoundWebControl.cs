@@ -40,7 +40,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable(false)]
   public BusinessObjectBinding Binding
   {
-    get { return _binding; }
+    get 
+    { 
+      return _binding;
+    }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -48,25 +51,42 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   //[TypeConverter (typeof (BusinessObjectDataSourceObjectConverter))]
   public IBusinessObjectDataSource DataSource
   {
-    get { return _binding.DataSource; }
-    set { _binding.DataSource = value; }
+    get 
+    { 
+      return _binding.DataSource; 
+    }
+    set 
+    { 
+      _binding.DataSource = value; 
+    }
   }
 
   [Category ("Data")]
   [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
   public string PropertyIdentifier
   {
-    get { return _binding.PropertyIdentifier; }
-    set { _binding.PropertyIdentifier = value; }
+    get
+    { 
+      return _binding.PropertyIdentifier; 
+    }
+    set
+    { 
+      _binding.PropertyIdentifier = value; 
+    }
   }
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectProperty Property
   {
-    get { return _binding.Property; }
+    get 
+    { 
+      return _binding.Property; 
+    }
     set
-    { _binding.Property = value; }
+    {
+      _binding.Property = value; 
+    }
   }
 
   #endregion
