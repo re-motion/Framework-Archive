@@ -428,7 +428,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>Order</class>
 				<property>
 					<name>Customer</name>
@@ -445,7 +445,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>OrderTicket</class>
 				<property>
 					<name>Order</name>
@@ -458,10 +458,9 @@
 				<class>Order</class>
 				<property>
 					<name>OrderItems</name>
-					<type>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>OrderItem</class>
 				<property>
 					<name>Order</name>
@@ -474,10 +473,9 @@
 				<class>Official</class>
 				<property>
 					<name>Orders</name>
-					<type>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>Order</class>
 				<property>
 					<name>Official</name>
@@ -493,7 +491,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>Ceo</class>
 				<property>
 					<name>Company</name>
@@ -502,7 +500,7 @@
 		</relation>
 
 		<relation id="PartnerToPerson">
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>Partner</class>
 				<property>
 					<name>ContactPerson</name>
@@ -525,7 +523,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>ClassWithoutRelatedClassIDColumn</class>
 				<property>
 					<name>Partner</name>
@@ -541,7 +539,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>ClassWithoutRelatedClassIDColumnAndDerivation</class>
 				<property>
 					<name>Company</name>
@@ -557,7 +555,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>ClassWithValidRelations</class>
 				<property>
 					<name>ClassWithGuidKeyOptional</name>
@@ -573,7 +571,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="true">
+			<endPoint isMandatory="true">
 				<class>ClassWithValidRelations</class>
 				<property>
 					<name>ClassWithGuidKeyNonOptional</name>
@@ -589,7 +587,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>ClassWithInvalidRelation</class>
 				<property>
 					<name>ClassWithGuidKey</name>
@@ -602,10 +600,9 @@
 				<class>IndustrialSector</class>
 				<property>
 					<name>Companies</name>
-					<type>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>Company</class>
 				<property>
 					<name>IndustrialSector</name>
@@ -618,10 +615,9 @@
 				<class>Employee</class>
 				<property>
 					<name>Subordinates</name>
-					<type>Rubicon.Data.DomainObjects.DomainObjectCollection, Rubicon.Data.DomainObjects</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>Employee</class>
 				<property>
 					<name>Supervisor</name>
@@ -638,7 +634,7 @@
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
-			<endPoint cardinality="one" isMandatory="false">
+			<endPoint isMandatory="false">
 				<class>Computer</class>
 				<property>
 					<name>Employee</name>

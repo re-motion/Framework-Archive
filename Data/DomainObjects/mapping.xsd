@@ -99,7 +99,7 @@
             <xs:complexType>
               <xs:sequence>
                 <xs:element name="name" type="t:requiredStringType" />
-                <xs:element name="type" type="t:dotNetType" />
+                <xs:element name="type" type="t:dotNetType" minOccurs="0" />
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -128,7 +128,6 @@
             </xs:complexType>
           </xs:element>
         </xs:sequence>
-        <xs:attribute name="cardinality" use="required" fixed="one" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

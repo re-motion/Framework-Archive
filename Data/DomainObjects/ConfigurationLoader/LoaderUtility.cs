@@ -33,14 +33,20 @@ public sealed class LoaderUtility
       return Type.GetType (shortHandTypeName, true);
   }
 
+  public static Type GetTypeFromNode (XmlNode node)
+  {
+    ArgumentUtility.CheckNotNull ("node", node);
+
+    return MapType (node.InnerText.Trim ());    
+  }
+
   public static Type GetTypeFromNode (XmlNode node, string xPath, XmlNamespaceManager namespaceManager)
   {
     ArgumentUtility.CheckNotNull ("node", node);
     ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
     ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
 
-    string typeName = node.SelectSingleNode (xPath, namespaceManager).InnerText;
-    return MapType (typeName.Trim ());
+    return GetTypeFromNode (node.SelectSingleNode (xPath, namespaceManager));
   }
 
   public static Type GetTypeFromOptionalNode (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
@@ -52,7 +58,7 @@ public sealed class LoaderUtility
     XmlNode typeNode = selectionNode.SelectSingleNode (xPath, namespaceManager);
 
     if (typeNode != null)
-      return MapType (typeNode.InnerText.Trim ());
+      return GetTypeFromNode (typeNode);
     else
       return null;
   }
