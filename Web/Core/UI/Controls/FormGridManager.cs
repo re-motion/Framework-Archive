@@ -2713,6 +2713,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     }
   }
 
+  [Browsable (false)]
   public HtmlTable[] Tables
   {
     get 
