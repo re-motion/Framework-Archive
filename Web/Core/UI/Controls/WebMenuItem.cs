@@ -14,11 +14,9 @@ public class MenuItem: IControlItem
   string _category;
   string _text;
   string _icon;
-  /// <summary> The <see cref="Command"/> rendered for this menu item. </summary>
-  private Command _command;
-  /// <summary>
-  ///   The <see cref="IControl"/> to which this object belongs. 
-  /// </summary>
+  /// <summary> The command rendered for this menu item. </summary>
+  private SingleControlItemCollection _command;
+  /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl;
 
   public MenuItem (string itemID, string category, string text, string icon, Command command)
@@ -27,7 +25,7 @@ public class MenuItem: IControlItem
     _category = StringUtility.NullToEmpty (category);
     _text = StringUtility.NullToEmpty (text);
     _icon = StringUtility.NullToEmpty (icon);
-    _command = command;
+    _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
   public MenuItem ()
@@ -40,12 +38,8 @@ public class MenuItem: IControlItem
   {
   }
 
-  /// <summary>
-  ///   Returns a <see cref="string"/> that represents this <see cref="MenuItem"/>.
-  /// </summary>
-  /// <returns>
-  ///   Returns the <see cref="Text"/>, followed by the class name of the instance.
-  /// </returns>
+  /// <summary> Returns a <see cref="string"/> that represents this <see cref="MenuItem"/>. </summary>
+  /// <returns> Returns the <see cref="Text"/>, followed by the class name of the instance. </returns>
   public override string ToString()
   {
     string displayName = ItemID;
@@ -99,33 +93,50 @@ public class MenuItem: IControlItem
   [NotifyParentProperty (true)]
   public virtual Command Command
   {
-    get { return _command; }
-    set 
-    { 
-      _command = value; 
-      if (_ownerControl != null)
-        _command.OwnerControl = OwnerControl;
+    get { return (Command) _command.Item; }
+    set { _command.Item = value; }
+  }
+
+  protected bool ShouldSerializeCommand()
+  {
+    if (Command == null)
+      return false;
+
+    if (Command.Type == CommandType.None)
+      return false;
+    else
+      return true;
+  }
+
+  /// <summary> Sets the <see cref="Command"/> to it's default value. </summary>
+  /// <remarks> 
+  ///   The default value is a <see cref="Command"/> object with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
+  /// </remarks>
+  protected void ResetCommand()
+  {
+    if (Command != null)
+    {
+      Command = (Command) Activator.CreateInstance (Command.GetType());
+      Command.Type = CommandType.None;
     }
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [Browsable (false)]
-  public Command[] PersistedCommand
+  public SingleControlItemCollection PersistedCommand
   {
-    get
-    {
-      if (Command != null)
-        return new Command[] {Command}; 
-      else
-        return new Command[0];
-    }
-    set 
-    { 
-      if (value == null || value.Length != 1 || value[0] == null)
-        Command = null;
-      else
-        Command = value[0]; 
-    }
+    get { return _command; }
+  }
+
+  /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
+  /// <remarks> 
+  ///   Does not persist <see cref="Command"/> objects with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
+  /// </remarks>
+  protected bool ShouldSerializePersistedCommand()
+  {
+    return ShouldSerializeCommand();
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>
@@ -145,8 +156,8 @@ public class MenuItem: IControlItem
       if (_ownerControl != value)
       {
         _ownerControl = value;
-        if (_command != null)
-          _command.OwnerControl = value;
+        if (Command != null)
+          Command.OwnerControl = value;
         OnOwnerControlChanged();
       }
     }

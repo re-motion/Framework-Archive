@@ -122,7 +122,7 @@ public class ControlItemCollection: CollectionBase
     EndEdit();
   }
 
-  /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </summary>
+  /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
   public IControlItem[] ToArray()
   {
     ArrayList arrayList = new ArrayList (List);
@@ -133,14 +133,14 @@ public class ControlItemCollection: CollectionBase
   ///   Do not redefine the indexer as a public member in any derived class if you intend to use it in a peristed
   ///   property. Otherwise ASP.net will not know which property to use, this one or the new one.
   ///   It is possible to redefine it as a non-public member.
-  /// <remarks>
+  /// </remarks>
   public IControlItem this[int index]
   {
     get { return (IControlItem) List[index]; }
     set { List[index] = value; }
   }
 
-  /// <summary>Tests whether the specified control item's type is supported by the collection. </summary>
+  /// <summary> Tests whether the specified control item's type is supported by the collection. </summary>
   private bool IsSupportedType (IControlItem controlItem)
   {
     Type controlItemType = controlItem.GetType();

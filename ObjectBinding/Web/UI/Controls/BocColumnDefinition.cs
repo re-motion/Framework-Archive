@@ -285,10 +285,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     _propertyPathBinding = new PropertyPathBinding();
   }
 
-  /// <summary>
-  ///   Passes the new <see cref="BocColumnDefinition.OwnerControl"/> to the 
-  ///   <see cref="PropertyPathBindingCollection"/>.
-  /// </summary>
+  /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
   protected override void OnOwnerControlChanged()
   {
     _propertyPathBinding.OwnerControl = OwnerControl;
@@ -432,10 +429,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     return string.Format (_formatString, formatters);
   }
 
-  /// <summary>
-  ///   Passes the new <see cref="BocColumnDefinition.OwnerControl"/> to the 
-  ///   <see cref="PropertyPathBindingCollection"/>.
-  /// </summary>
+  /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
   protected override void OnOwnerControlChanged()
   {
     _propertyPathBindings.OwnerControl = OwnerControl;
