@@ -25,6 +25,10 @@ public class InsertCommandBuilder : CommandBuilder
   public InsertCommandBuilder (RdbmsProvider provider, DataContainer dataContainer) : base (provider)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    if (dataContainer.State != StateType.New)
+      throw CreateArgumentException ("dataContainer", "State of provided dataContainer must be 'New', but is '{0}'.", dataContainer.State);
+
     _dataContainer = dataContainer;
   }
 
@@ -32,9 +36,6 @@ public class InsertCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    if (_dataContainer.State != StateType.New)
-      return null;
-
     IDbCommand command = CreateCommand ();
 
     _columnBuilder = new StringBuilder ();
