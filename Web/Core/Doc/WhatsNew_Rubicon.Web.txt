@@ -1,3 +1,12 @@
+3.1.7.1
+=======
+
+- Bugfix in StandardButton: OnClick Event MUSS im OnPreRender überschrieben und nicht 
+  aneinandergehängt werden, da ansonsten gesamtes OnClick immer wieder wiederholt wird 
+  => Das daraus resultierende Verhalten im IE führt dazu, dass die Postbacks nicht
+  mehr korrekt funktionieren => Rubicon.Web.UI Build 3.1.7.0 NICHT verwenden.
+  
+
 3.1.7.0
 =======
 
