@@ -8,6 +8,13 @@ using System.Security.Principal;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <summary>
+///   This interface contains all public members of System.Web.UI.TemplateControl. It is used to derive interfaces that will be
+///   implemented by deriving from System.Web.UI.TemplateControl.
+/// </summary>
+/// <remarks>
+///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.TemplateControl.
+/// </remarks>
 public interface ITemplateControl: IControl
 {
   event EventHandler AbortTransaction;
@@ -20,7 +27,12 @@ public interface ITemplateControl: IControl
 }
 
 /// <summary>
+///   This interface contains all public members of System.Web.UI.Page. It is used to derive interfaces that will be
+///   implemented by deriving from System.Web.UI.Page.
 /// </summary>
+/// <remarks>
+///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.Page.
+/// </remarks>
 public interface IPage: ITemplateControl, IHttpHandler
 {
   void DesignerInitialize();
