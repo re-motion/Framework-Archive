@@ -32,8 +32,8 @@
     <td></td>
     <td><obw:BocDateTimeValue id="DateTimeField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth"></obw:BocDateTimeValue></td></tr>
   <tr>
-    <td style="HEIGHT: 18px"></td>
-    <td style="HEIGHT: 18px"><obw:BocEnumValue id="EnumField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="MarriageStatus"><listcontrolstyle 
+    <td></td>
+    <td><obw:BocEnumValue id="EnumField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="MarriageStatus"><listcontrolstyle 
       radiobuttonlistcellpadding="" 
       radiobuttonlistcellspacing=""></LISTCONTROLSTYLE></obw:BocEnumValue></td></tr>
   <tr>
@@ -51,7 +51,7 @@
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="Title"></obw:BocSimpleColumnDefinition>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate"></obw:BocSimpleColumnDefinition>
 </FixedColumns></obw:BocList></td></tr></table></p>
-<p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBWTest.Person, OBWTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
+<p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
 <p><asp:button id="SaveButton" runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p></form>
   </body>
 </html>
