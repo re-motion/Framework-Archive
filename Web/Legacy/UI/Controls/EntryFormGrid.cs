@@ -9,7 +9,7 @@ using System.Globalization;
 
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary>
@@ -271,7 +271,7 @@ public class EntryTitle: Control
 }
 
 [ParseChildren (false)]
-[MultiLingualResources ("Rubicon.Findit.Client.Controls.Globalization.EntryFormGrid")] 
+[MultiLingualResources ("Rubicon.Web.UI.Controls.Globalization.EntryFormGrid")] 
 public class EntryField: Control
 {
 	private string _label = String.Empty;
