@@ -547,6 +547,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
       {
         Type type = TypeUtility.GetType (_customCellType, true, false);
         object[] arguments = new object[] {_customCellArgument};
+        //TODO: argument == null/string.empty: argumentless constructor
         _customCell = (IBocCustomColumnDefinitionCell) Activator.CreateInstance (type, arguments);
       }
       return _customCell; 
@@ -673,7 +674,7 @@ public interface IBocCustomColumnDefinitionCell
       BocCustomColumnDefinition columnDefiniton, 
       int columnIndex,
       int listIndex);
-      //  string OnClick function;
+      //TODO:  string OnClick function;
 
   void OnClick (
       BocList list, 
