@@ -27,8 +27,12 @@ public class MultiLingualPage : Page
 
   protected override void OnInit(EventArgs e)
   {
-    ResourceDispatcher.Dispatch (this);
-    this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
+    // TODO: Delete line below:
+    if (this.Request.Url.AbsolutePath.IndexOf ("AdminEditContacts.aspx") >= 0 )
+    {
+      ResourceDispatcher.Dispatch (this);
+      this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
+    }
 
     base.OnInit (e);
   }
