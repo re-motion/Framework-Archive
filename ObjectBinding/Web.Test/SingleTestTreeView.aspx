@@ -1,24 +1,29 @@
-<%@ Page language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
     <title>SingleTestTreeView</title>
-    <meta name="GENERATOR" Content="Microsoft Visual Studio .NET 7.1">
-    <meta name="CODE_LANGUAGE" Content="C#">
-    <meta name=vs_defaultClientScript content="JavaScript">
-    <meta name=vs_targetSchema content="http://schemas.microsoft.com/intellisense/ie5">
-    <rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
+<meta content=C# name=CODE_LANGUAGE>
+<meta content=JavaScript name=vs_defaultClientScript>
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
-  <body MS_POSITIONING="FlowLayout">
-	
-    <form id="Form" method="post" runat="server">
-<h1>SingleTest TreeView</h1>
-<p><rubicon:WebTreeView id="WebTreeView" runat="server"></rubicon:WebTreeView></p>
-<p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
-<rubicon:FormGridManager id="FormGridManager" runat="server"></rubicon:FormGridManager>
-<p><asp:Label id="TreeViewLabel" runat="server" EnableViewState="False">#</asp:Label></p>
-    </form>
+<body MS_POSITIONING="FlowLayout">
+<form id=Form method=post runat="server">
+<h1>SingleTest TreeView</H1>
+<p><obc:boctreeview id=BocTreeView runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children"></obc:boctreeview></P>
+<p>&nbsp;</P>
+<p><rubicon:webtreeview id=WebTreeView runat="server"></rubicon:webtreeview></P>
+<p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></P><rubicon:formgridmanager 
+id=FormGridManager 
+runat="server"></rubicon:formgridmanager>
+<p><obr:reflectionbusinessobjectdatasourcecontrol 
+id=ReflectionBusinessObjectDataSourceControl runat="server" 
+typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
+<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label></p></FORM>
 	
   </body>
 </html>
