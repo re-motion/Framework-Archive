@@ -2,81 +2,92 @@ using System;
 using System.Collections;
 using System.Runtime.Serialization;
 using System.Web;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
 
+// TODO: ASP.NET 2.0 deserializes session state items only as they are requested. therefore, store each window
+// state, each lifetime and each access time  in a seperate session state key, e.g.:
+// WxeFunction-<token>, WxeFunctionLifetime-<token>, WxeFunctionLastAccess-<token>
 [Serializable]
-public class WxeWindowStateCollection
+public class WxeFunctionStateCollection
 {
-  public static WxeWindowStateCollection Instance
+  public static WxeFunctionStateCollection Instance
   {
-    get { return (WxeWindowStateCollection) HttpContext.Current.Session["WxeWindowStates"]; }
-    set { HttpContext.Current.Session["WxeWindowStates"] = value; }
+    get { return (WxeFunctionStateCollection) HttpContext.Current.Session["WxeFunctionStates"]; }
+    set { HttpContext.Current.Session["WxeFunctionStates"] = value; }
   }
 
-  private ArrayList _windowStates = new ArrayList();
+  private ArrayList _functionStates = new ArrayList();
 
   public void DisposeExpired()
   {
-    for (int i = _windowStates.Count - 1; i >= 0; --i)
+    for (int i = _functionStates.Count - 1; i >= 0; --i)
     {
-      WxeWindowState window = (WxeWindowState) _windowStates[i];
+      WxeFunctionState window = (WxeFunctionState) _functionStates[i];
       if (window.IsExpired)
       {
-        _windowStates.RemoveAt (i);
+        _functionStates.RemoveAt (i);
         window.Dispose();
       }
     }
   }
 
-  public void Add (WxeWindowState windowState)
+  public void Add (WxeFunctionState functionState)
   {
-    _windowStates.Add (windowState);
+    _functionStates.Add (functionState);
   }
 
-  public WxeWindowState GetItem (string windowToken)
+  public WxeFunctionState GetItem (string functionToken)
   {
-    foreach (WxeWindowState window in _windowStates)
+    foreach (WxeFunctionState window in _functionStates)
     {
-      if (window.WindowToken == windowToken)
+      if (window.FunctionToken == functionToken)
         return window;
     }
     return null;
   }
 
-  public void Remove (WxeWindowState windowState)
+  public void Remove (WxeFunctionState functionState)
   {
-    _windowStates.Remove (windowState);
-    windowState.Dispose();
+    _functionStates.Remove (functionState);
+    functionState.Dispose();
   }
 }
 
 /// <summary>
-///   Stores the session state for a single page token.
+///   Stores the session state for a single function token.
 /// </summary>
 [Serializable]
-public class WxeWindowState: ISerializable, IDisposable
+public class WxeFunctionState: ISerializable, IDisposable
 {
   private WxeFunction _function;
   private DateTime _lastAccess;
   private int _lifetime;
-  private string _windowToken;
+  private string _functionToken;
 
-  public WxeWindowState (WxeFunction function, int lifetime)
+  public WxeFunctionState (WxeFunction function, string functionToken, int lifetime)
   {
+    ArgumentUtility.CheckNotNull ("function", function);
+    ArgumentUtility.CheckNotNull ("functionToken", functionToken);
     _function = function;
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
-    _windowToken = Guid.NewGuid().ToString();
+    _functionToken = functionToken;
   }
 
-  protected WxeWindowState (SerializationInfo info, StreamingContext context)
+  public WxeFunctionState (WxeFunction function, int lifetime)
+    : this (function, Guid.NewGuid().ToString(), lifetime)
+  {
+  }
+
+  protected WxeFunctionState (SerializationInfo info, StreamingContext context)
   {
     _function = (WxeFunction) info.GetValue ("_function", typeof (WxeFunction));
     _lastAccess = info.GetDateTime ("_lastAccess");
     _lifetime = info.GetInt32 ("_lifetime");
-    _windowToken = info.GetString ("_windowToken");
+    _functionToken = info.GetString ("_functionToken");
   }
 
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
@@ -84,7 +95,7 @@ public class WxeWindowState: ISerializable, IDisposable
     info.AddValue ("_function", _function, typeof (WxeFunction));
     info.AddValue ("_lastAccess", _lastAccess);
     info.AddValue ("_lifetime", _lifetime);
-    info.AddValue ("_windowToken", _windowToken);
+    info.AddValue ("_functionToken", _functionToken);
   }
 
   public WxeFunction Function
@@ -102,9 +113,9 @@ public class WxeWindowState: ISerializable, IDisposable
     get { return _lifetime; }
   }
 
-  public string WindowToken
+  public string FunctionToken
   {
-    get { return _windowToken; }
+    get { return _functionToken; }
   }
 
   public void Touch()
@@ -132,7 +143,7 @@ public class WxeWindowState: ISerializable, IDisposable
     }
   }
 
-  ~WxeWindowState()
+  ~WxeFunctionState()
   {
     Dispose (false);
   }
