@@ -246,6 +246,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
   [Char] char (1) NOT NULL,
+  [Date] dateTime NOT NULL,
   [DateTime] dateTime NOT NULL,
   [Decimal] decimal (38, 3) NOT NULL,
   [Double] float (53) NOT NULL,
@@ -258,12 +259,14 @@ CREATE TABLE [TableWithAllDataTypes] (
   [String] nvarchar (100) NOT NULL,
   
   [NaBoolean] bit NULL,
+  [NaDate] dateTime NULL,
   [NaDateTime] dateTime NULL,
   [NaDouble] float NULL,
   [NaInt32] int NULL,
   
   [StringWithNullValue] nvarchar (100) NULL,
   [NaBooleanWithNullValue] bit NULL,
+  [NaDateWithNullValue] dateTime NULL,
   [NaDateTimeWithNullValue] dateTime NULL,
   [NaDoubleWithNullValue] float NULL,
   [NaInt32WithNullValue] int NULL,
