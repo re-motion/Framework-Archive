@@ -404,7 +404,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\RelationLink.cs"
+                    RelPath = "DataManagement\RelationEndPointMap.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
