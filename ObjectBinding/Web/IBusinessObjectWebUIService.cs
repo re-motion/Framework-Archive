@@ -10,7 +10,16 @@ namespace Rubicon.ObjectBinding.Web
 /// </summary>
 public interface IBusinessObjectWebUIService: IBusinessObjectService
 {
+  IconPrototype GetIcon (IBusinessObject obj);
   IconPrototype GetIcon (IBusinessObjectWithIdentity obj);
+
+  /// <summary>
+  ///   Returns a white space icon matching the icon dimensions of
+  ///   GetIcon (IBusinessObject)
+  /// </summary>
+  /// <param name="obj"></param>
+  /// <returns></returns>
+  IconPrototype GetIcon (IBusinessObjectClass obj);
 
   /// <summary>
   ///   Returns a white space icon matching the icon dimensions of
