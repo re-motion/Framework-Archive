@@ -411,9 +411,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       {
         //  No null item in the list
         if (_listControl.Items.FindByValue (c_nullIdentifier) == null)
-        {
           _listControl.Items.Insert (0, CreateNullItem());
-        }
 
         _listControl.SelectedValue = c_nullIdentifier;
       }
