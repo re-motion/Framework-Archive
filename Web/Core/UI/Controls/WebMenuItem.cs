@@ -12,7 +12,7 @@ public class MenuItem: IControlItem
 {
   public static MenuItem GetSeparator()
   {
-    return new MenuItem (null, null, "-", null, null, RequiredSelection.Any, null);
+    return new MenuItem (null, null, "-", null, null, RequiredSelection.Any, false, null);
   }
 
   private string _itemID = "";
@@ -21,6 +21,8 @@ public class MenuItem: IControlItem
   private string _icon = "";
   private string _iconDisabled = "";
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
+  private bool _isDisabled = false;
+
   /// <summary> The command rendered for this menu item. </summary>
   private SingleControlItemCollection _command = null;
   /// <summary> The control to which this object belongs. </summary>
@@ -33,6 +35,7 @@ public class MenuItem: IControlItem
       string icon, 
       string iconDisabled, 
       RequiredSelection requiredSelection, 
+      bool isDisabled,
       Command command)
   {
     _itemID = itemID;
@@ -41,11 +44,12 @@ public class MenuItem: IControlItem
     _icon = icon;
     _iconDisabled = iconDisabled;
     _requiredSelection = requiredSelection;
+    _isDisabled = isDisabled;
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
   public MenuItem ()
-    : this (null, null, null, null, null, RequiredSelection.Any, new Command())
+    : this (null, null, null, null, null, RequiredSelection.Any, false, new Command (CommandType.Event))
   {
   }
 
@@ -121,6 +125,14 @@ public class MenuItem: IControlItem
     set { _requiredSelection = value; }
   }
 
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue (false)]
+  public bool IsDisabled
+  {
+    get { return _isDisabled; }
+    set { _isDisabled = value; }
+  }
+
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
   /// <value> A <see cref="Command"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -138,7 +150,7 @@ public class MenuItem: IControlItem
     if (Command == null)
       return false;
 
-    if (Command.Type == CommandType.None)
+    if (Command.IsDefaultType)
       return false;
     else
       return true;
