@@ -3141,7 +3141,16 @@ public class BocList:
   {
     foreach (Control control in _rowEditModeControls)
       Controls.Remove (control);
+    
+    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
+    {
+      if (columnValidators == null)
+        continue;
+      foreach (BaseValidator validator in columnValidators)
+        Controls.Remove (validator);
+    }
   }
+
   protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
   {
     if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
