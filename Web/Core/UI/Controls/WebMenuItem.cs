@@ -12,14 +12,16 @@ public class MenuItem: IControlItem
 {
   public static MenuItem GetSeparator()
   {
-    return new MenuItem (null, null, "-", null, null, RequiredSelection.Any, false, null);
+    return new MenuItem (
+        null, null, "-", null, null, MenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
   }
 
   private string _itemID = "";
   private string _category = "";
   private string _text = "";
   private string _icon = "";
-  private string _iconDisabled = "";
+  private string _disabledIcon = "";
+  private MenuItemStyle _style = MenuItemStyle.IconAndText;
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
   private bool _isDisabled = false;
 
@@ -34,6 +36,7 @@ public class MenuItem: IControlItem
       string text, 
       string icon, 
       string iconDisabled, 
+      MenuItemStyle style,
       RequiredSelection requiredSelection, 
       bool isDisabled,
       Command command)
@@ -42,14 +45,17 @@ public class MenuItem: IControlItem
     _category = category;
     _text = text;
     _icon = icon;
-    _iconDisabled = iconDisabled;
+    _disabledIcon = iconDisabled;
+    _style = style;
     _requiredSelection = requiredSelection;
     _isDisabled = isDisabled;
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
   public MenuItem ()
-    : this (null, null, null, null, null, RequiredSelection.Any, false, new Command (CommandType.Event))
+    : this (
+        null, null, null, null, null, 
+        MenuItemStyle.IconAndText, RequiredSelection.Any, false, new Command (CommandType.Event))
   {
   }
 
@@ -111,10 +117,10 @@ public class MenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue ("")]
-  public virtual string IconDisabled
+  public virtual string DisabledIcon
   {
-    get { return _iconDisabled; }
-    set { _iconDisabled = value; }
+    get { return _disabledIcon; }
+    set { _disabledIcon = value; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -143,6 +149,14 @@ public class MenuItem: IControlItem
   {
     get { return (Command) _command.Item; }
     set { _command.Item = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue (MenuItemStyle.IconAndText)]
+  public MenuItemStyle Style
+  {
+    get { return _style; }
+    set { _style = value; }
   }
 
   protected bool ShouldSerializeCommand()
@@ -218,6 +232,13 @@ public enum RequiredSelection
   Any = 0,
   ExactlyOne = 1,
   OneOrMore = 2
+}
+
+public enum MenuItemStyle
+{
+  IconAndText,
+  Icon,
+  Text
 }
 
 /// <summary>

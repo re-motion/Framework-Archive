@@ -276,15 +276,23 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       }
     }
 
-    string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
-    string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
+    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+    string icon = "null";
+    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
+      icon =  "'" + menuItem.Icon + "'";
+    string disabledIcon = "null";
+    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.DisabledIcon))
+      disabledIcon =  "'" + menuItem.DisabledIcon + "'";
+    string text = showText ? "'" +  menuItem.Text + "'" : "null";
+    
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7}, {8})",
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuItemIndex.ToString(), 
         menuItem.Category, 
-        menuItem.Text, 
+        text, 
         icon, 
-        iconDisabled, 
+        disabledIcon, 
         (int) menuItem.RequiredSelection, 
         menuItem.IsDisabled ? "true" : "false",
         href, 
