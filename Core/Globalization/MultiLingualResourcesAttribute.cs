@@ -13,7 +13,7 @@ namespace Rubicon.Globalization
 /// <summary>
 ///   Attribute for specifying the resource container for a type.
 /// </summary>
-[AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+[AttributeUsage (AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = true, Inherited = false)]
 public class MultiLingualResourcesAttribute: Attribute
 {
 	// types
@@ -26,26 +26,29 @@ public class MultiLingualResourcesAttribute: Attribute
   /// <summary> Hashtable&lt;string, ResourceManagerWrapper&gt; </summary>
   private static Hashtable s_resourceManagerWrappersCache = new Hashtable ();
 
-  /// <summary> The root name of the resource container </summary>
-  private string _resourceName;
+  /// <summary> The base name of the resource container </summary>
+  private string _baseName;
 
   // construction and disposing
 
-  /// <summary> Simple constructor. </summary>
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/Constructor/param[@name="resourceName"]' />
-  public MultiLingualResourcesAttribute (string resourceName)
+  /// <summary> Initalizes an instance. </summary>
+  public MultiLingualResourcesAttribute (string baseName)
   {
-    _resourceName = resourceName;
+    _baseName = baseName;
   }
 
   // methods and properties
 
   /// <summary>
-  ///   The root name of the resource container as specified by the attributes construction.
+  ///   Gets the base name of the resource container as specified by the attributes construction.
   /// </summary>
-  public string ResourceName 
+  /// <remarks>
+  /// The base name of the resource conantainer to be used by this type
+  /// (&lt;assembly&gt;.&lt;path inside project&gt;.&lt;resource file name without extension&gt;).
+  /// </remarks>
+  public string BaseName 
   {
-    get { return _resourceName; }
+    get { return _baseName; }
   }
   
   /// <summary>
@@ -57,13 +60,13 @@ public class MultiLingualResourcesAttribute: Attribute
   public static ResourceManagerSet GetResourceManager (Type objectType, bool includeHierarchy)
   {
     Type definingType;
-    StringCollection resourceNames;
+    StringCollection baseNames;
 
     return GetResourceManager (
       objectType,
       includeHierarchy,
       out definingType,
-      out resourceNames);
+      out baseNames);
   }
 
   /// <summary>
@@ -82,17 +85,17 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   in the class declaration of the type.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="resourceNames"]' />
+  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="baseNames"]' />
   private static ResourceManagerSet GetResourceManager (
       Type objectType,
       bool includeHierarchy,
       out Type definingType,
-      out StringCollection resourceNames)
+      out StringCollection baseNames)
   {
     ArrayList resourceManagers = new ArrayList();
 
     //  Current hierarchy level, always report missing MultiLingualResourcesAttribute
-    GetResourceNameAndType (objectType, false, out definingType, out resourceNames);
+    GetResourceNameAndType (objectType, false, out definingType, out baseNames);
 
     ResourceManagerSet resourceManagerSet = null;
 
@@ -106,7 +109,7 @@ public class MultiLingualResourcesAttribute: Attribute
 
     //  Not found in cache, get new resource managers
 
-    resourceManagers.AddRange (GetResourceManagers (definingType.Assembly, resourceNames));
+    resourceManagers.AddRange (GetResourceManagers (definingType.Assembly, baseNames));
 
     if (includeHierarchy)
     {
@@ -122,7 +125,7 @@ public class MultiLingualResourcesAttribute: Attribute
         if (currentType == null)
           break;
 
-        GetResourceNameAndType (currentType, true, out currentType, out resourceNames);
+        GetResourceNameAndType (currentType, true, out currentType, out baseNames);
 
         //  No more base types defining the MultiLingualResourcesAttribute
         if (currentType != null)
@@ -130,7 +133,7 @@ public class MultiLingualResourcesAttribute: Attribute
           //  Insert the found resources managers at the beginning of the list
           resourceManagers.InsertRange (
               0,
-              GetResourceManagers (currentType.Assembly, resourceNames));
+              GetResourceManagers (currentType.Assembly, baseNames));
         }
       }
     }
@@ -149,20 +152,20 @@ public class MultiLingualResourcesAttribute: Attribute
   }
   /// <summary>
   ///   Returns an <c>ResourceManager</c> array for the resource containers
-  ///   specified by resourceName.
+  ///   specified by baseName.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManagers/*' />
   private static ResourceManager[] GetResourceManagers (
       Assembly assembly,
-      StringCollection resourceNames)
+      StringCollection baseNames)
   {
-    ResourceManager[] resourceManagers = new ResourceManager [resourceNames.Count];
+    ResourceManager[] resourceManagers = new ResourceManager [baseNames.Count];
 
     //  Load the ResourceManagers for the type's resources
 
-    for (int index = 0; index < resourceNames.Count; index++)
+    for (int index = 0; index < baseNames.Count; index++)
     {
-      string key = resourceNames[index] + " in " + assembly.FullName;
+      string key = baseNames[index] + " in " + assembly.FullName;
 
       //  Look in cache 
       resourceManagers[index] = (ResourceManager) s_resourceManagersCache[key];
@@ -174,8 +177,8 @@ public class MultiLingualResourcesAttribute: Attribute
           resourceManagers[index] = (ResourceManager) s_resourceManagersCache[key];
           if (resourceManagers[index] == null)
           {
-            resourceManagers[index] = new ResourceManager (resourceNames[index], assembly);
-            if (resourceManagers[index] == null) throw new ResourceException ("No resource with name '" + resourceNames + "' found in assembly '" + assembly.FullName + "'.");
+            resourceManagers[index] = new ResourceManager (baseNames[index], assembly);
+            if (resourceManagers[index] == null) throw new ResourceException ("No resource with name '" + baseNames + "' found in assembly '" + assembly.FullName + "'.");
 
             s_resourceManagersCache[key] = resourceManagers[index];
           }
@@ -275,11 +278,11 @@ public class MultiLingualResourcesAttribute: Attribute
     try
     {
       Type definingType;
-      StringCollection resourceNames;
+      StringCollection baseNames;
 
-      GetResourceNameAndType (objectTypeToGetResourceFor, false, out definingType, out resourceNames);
+      GetResourceNameAndType (objectTypeToGetResourceFor, false, out definingType, out baseNames);
 
-      if (GetResourceManagers (definingType.Assembly, resourceNames).Length > 0)
+      if (GetResourceManagers (definingType.Assembly, baseNames).Length > 0)
         return true;
       else
         return false;
@@ -313,7 +316,7 @@ public class MultiLingualResourcesAttribute: Attribute
       Type concreteType,
       bool noUndefinedException,
       out Type definingType,
-      out StringCollection resourceNames)
+      out StringCollection baseNames)
   {
     Type type = concreteType;
     MultiLingualResourcesAttribute[] resourceAttributes = GetResourceAttributes (type);
@@ -336,10 +339,10 @@ public class MultiLingualResourcesAttribute: Attribute
     } 
 
     definingType = type;
-    resourceNames = new StringCollection();
+    baseNames = new StringCollection();
 
     foreach (MultiLingualResourcesAttribute resourceAttribute in resourceAttributes)
-      resourceNames.Add (resourceAttribute.ResourceName);
+      baseNames.Add (resourceAttribute.BaseName);
   }
 
   /// <summary>
