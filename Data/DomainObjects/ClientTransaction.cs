@@ -97,7 +97,7 @@ public class ClientTransaction
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
   /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
-  /// <exception cref="Persistence.StorageProviderException">An error occured while committing the changes to the datasource.</exception>
+  /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
     BeginCommit ();
@@ -132,8 +132,8 @@ public class ClientTransaction
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   public virtual DomainObject GetObject (ObjectID id)
   {
@@ -150,8 +150,8 @@ public class ClientTransaction
   /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
@@ -279,8 +279,8 @@ public class ClientTransaction
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
@@ -318,8 +318,8 @@ public class ClientTransaction
   /// </exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
-  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occured while accessing the datasource.
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
   /// </exception>
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
