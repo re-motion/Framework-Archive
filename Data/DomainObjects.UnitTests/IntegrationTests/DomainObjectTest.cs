@@ -384,7 +384,7 @@ public class IntegrationTest: ClientTransactionBaseTest
     Employee employee = new Employee ();
     //Why is this method public?
     PropertyDefinition propertyDefinition = new PropertyDefinition (
-      "testproperty", "testproperty", typeof (string), true, 10);
+      "testproperty", "testproperty", "string", true, 10);
     PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
     Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -404,7 +404,7 @@ public class IntegrationTest: ClientTransactionBaseTest
     Employee employee = new Employee ();
 
     PropertyDefinition propertyDefinition = new PropertyDefinition (
-      "Name", "Name", typeof (string), true, 10);
+      "Name", "Name", "string", true, 10);
     PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
     Assert.IsTrue (propertyValues.Contains ("Name"));
