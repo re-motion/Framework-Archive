@@ -135,8 +135,8 @@ public sealed class ResourceDispatcher
 
   private static string GetResourceName (Type objectType)
   {
-    ControlResourcesAttribute[] resourceAttributes = (ControlResourcesAttribute[]) objectType.GetCustomAttributes (
-      typeof (ControlResourcesAttribute), false);
+    MultiLingualResourcesAttribute[] resourceAttributes = (MultiLingualResourcesAttribute[]) objectType.GetCustomAttributes (
+      typeof (MultiLingualResourcesAttribute), false);
 
     if (resourceAttributes.Length == 0)
       throw new ApplicationException ("Cannot dispatch resources for controls that do not have the ControlResourcesAttribute attribute.");
@@ -207,11 +207,11 @@ public interface IResourceDispatchTarget
 }
 
 [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class ControlResourcesAttribute: Attribute
+public class MultiLingualResourcesAttribute: Attribute
 {
   private string _resourceName;
 
-  public ControlResourcesAttribute (string resourceName)
+  public MultiLingualResourcesAttribute (string resourceName)
   {
     _resourceName = resourceName;
   }
