@@ -116,5 +116,36 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
 
     Provider.ExecuteCollectionQuery (new Query (definition));
   }
+
+  [Test]
+  public void ExecuteCollectionQueryWithObjectIDParameter ()
+  {
+    Query query = new Query ("OrderQuery");
+    query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
+
+    DataContainerCollection orderContainers = Provider.ExecuteCollectionQuery (query);
+
+    Assert.IsNotNull (orderContainers);
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order1));
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.OrderWithoutOrderItem));    
+  }
+
+  [Test]
+  public void ExecuteCollectionQueryWithObjectIDOfDifferentStorageProvider ()
+  {
+    Query query = new Query ("OrderByOfficialQuery");
+    query.Parameters.Add ("@officialID", DomainObjectIDs.Official1);
+
+    DataContainerCollection orderContainers = Provider.ExecuteCollectionQuery (query);
+
+    Assert.IsNotNull (orderContainers);
+    Assert.AreEqual (5, orderContainers.Count);
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order1));
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order2));
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order3));
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order4));
+    Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.OrderWithoutOrderItem));    
+
+  }
 }
 }

@@ -42,6 +42,12 @@
     <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
+  <query id="OrderByOfficialQuery" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select [Order].* from [Order] where [Order].OfficialID = @officialID order by OrderNo asc;</statement>
+    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>select * from Company where CustomerType = @customerType order by Name asc;</statement>
