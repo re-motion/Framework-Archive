@@ -12,15 +12,15 @@ public sealed class ResourceUrlResolver
 {
   /// <summary>
   ///   Walks the control hierarchy upwards until an implementation of 
-  ///   <see cref="IImageUrlResolver"/> is found.
+  ///   <see cref="ResourceUrlResolver"/> is found.
   /// </summary>
   /// <param name="control"> The <see cref="Control"/> where to start the hierarchy walk.</param>
   /// <param name="relativeUrl">
-  ///   The relative URL used by the implementation of <see cref="IImageUrlResolver"/> to build a 
+  ///   The relative URL used by the implementation of <see cref="ResourceUrlResolver"/> to build a 
   ///   URL.
   /// </param>
   /// <returns>
-  ///   The URL or <see langword="null"/> if no <see cref="IImageUrlResolver"/> could be found.
+  ///   The URL or <see langword="null"/> if no <see cref="ResourceUrlResolver"/> could be found.
   /// </returns>
   public static string GetResourceUrl (Control control, Type definingType, ResourceType resourceType, string relativeUrl)
   {
@@ -40,18 +40,10 @@ public sealed class ResourceUrlResolver
     return imageUrl;
   }
 
-  /// <summary>
-  ///   Walks the control hierarchy upwards until an implementation of 
-  ///   <see cref="IHelpUrlResolver"/> is found.
-  /// </summary>
-  /// <param name="control"> The <see cref="Control"/> where to start the hierarchy walk.</param>
-  /// <param name="relativeUrl">
-  ///   The relative URL used by the implementation of <see cref="IHelpUrlResolver"/> to build a 
-  ///   URL.
-  /// </param>
-  /// <returns>
-  ///   The URL or <see langword="null"/> if no <see cref="IHelpUrlResolver"/> could be found.
-  /// </returns>
+  /// <summary> Not Supported. </summary>
+  /// <param name="control"> </param>
+  /// <param name="relativeUrl">  </param>
+  /// <returns> </returns>
   [Obsolete]
   public static string GetHelpUrl (Control control, string relativeUrl)
   {
