@@ -276,7 +276,7 @@
   </target>
   
   <target name="zip" depends="setdocumentation">
-    <property name="local.zipfile" value="${build.basedir}/RubiconLibraries_${build.version.noconfig}.zip" />
+    <property name="local.zipfile" value="${build.basedir}/RubiconCommons_${build.version.noconfig}.zip" />
     <delete file="${local.zipfile}" failonerror="false" />
     <zip zipfile="${local.zipfile}">
       <fileset basedir="${build.basedir}">
@@ -287,4 +287,22 @@
     </zip>
   </target>
 
+  <target name="sourcezip" depends="setdocumentation">
+    <property name="local.zipfile" value="${build.basedir}/RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
+    <delete file="${local.zipfile}" failonerror="false" />
+    <zip zipfile="${local.zipfile}">
+      <fileset>
+        <includes name="Core/**/*" />
+        <includes name="CoreTest/**/*" />
+        <includes name="DevelopmentCore/**/*" />
+        <includes name="DevelopmentCoreTest/**/*" />
+        <includes name="CodeDom/**/*" />
+        <includes name="build/*.xml" />
+        <excludes name="**/*.zip" />
+        <excludes name="**/*.dll" />
+        <excludes name="**/*.exe" />
+        <excludes name="**/*.pdb" />
+      </fileset>
+    </zip>
+  </target>
 </project>

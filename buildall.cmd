@@ -1,4 +1,5 @@
-nant incversion
+rem nant incversion
+nant clean
   if errorlevel 1 pause "build error"
 nant setdebug all alltests
   if errorlevel 1 pause "build error"

@@ -1,14 +1,82 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTest", "CoreTest\CoreTest.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevelopmentCore", "DevelopmentCore\DevelopmentCore.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevelopmentCoreTest", "DevelopmentCoreTest\DevelopmentCoreTest.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeDom", "CodeDom\CodeDom.csproj", "{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 1
+		SccNumberOfProjects = 6
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
+		SccProjectUniqueName1 = Core\\Core.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath1 = Core
+		CanCheckoutShared = false
+		SccProjectUniqueName2 = CoreTest\\CoreTest.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/CoreTest\u0022,\u0020LNDAAAAA
+		SccLocalPath2 = CoreTest
+		CanCheckoutShared = false
+		SccProjectUniqueName3 = DevelopmentCore\\DevelopmentCore.csproj
+		SccProjectName3 = \u0022$/libraries/Commons/DevelopmentCore\u0022,\u0020LQAAAAAA
+		SccLocalPath3 = DevelopmentCore
+		CanCheckoutShared = false
+		SccProjectUniqueName4 = DevelopmentCoreTest\\DevelopmentCoreTest.csproj
+		SccProjectName4 = \u0022$/libraries/Commons/DevelopmentCoreTest\u0022,\u0020TQAAAAAA
+		SccLocalPath4 = DevelopmentCoreTest
+		CanCheckoutShared = false
+		SccProjectUniqueName5 = CodeDom\\CodeDom.csproj
+		SccProjectName5 = \u0022$/libraries/Commons/CodeDom\u0022,\u0020ERAAAAAA
+		SccLocalPath5 = CodeDom
+		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.ActiveCfg = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
+		{C216DEC9-8820-4298-B10F-FB4131466B69}.Debug.ActiveCfg = Debug|.NET
+		{C216DEC9-8820-4298-B10F-FB4131466B69}.Debug.Build.0 = Debug|.NET
+		{C216DEC9-8820-4298-B10F-FB4131466B69}.Release.ActiveCfg = Release|.NET
+		{C216DEC9-8820-4298-B10F-FB4131466B69}.Release.Build.0 = Release|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.ActiveCfg = Debug|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.Build.0 = Debug|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.ActiveCfg = Release|.NET
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release.Build.0 = Release|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.ActiveCfg = Debug|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug.Build.0 = Debug|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.ActiveCfg = Release|.NET
+		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release.Build.0 = Release|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.ActiveCfg = Debug|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
+		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(SolutionItems) = postSolution
+		buildall.cmd = buildall.cmd
+		build\buildversion.xml = build\buildversion.xml
+		Commons.build = Commons.build
+		build\properties.include.xml = build\properties.include.xml
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
