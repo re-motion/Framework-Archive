@@ -537,20 +537,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 		output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>",
         backColor);
 
-    //Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
-    if (!Tabs[_activeTab].Visible)
-    {
-		  for (int i=0; i<Tabs.Count; ++i)
-		  {
-			  Tab tab = Tabs[i];    
-
-        if (tab.Visible)
-        {
-          _activeTab = i;
-          break;
-        }
-      }
-    }
+    CheckActiveTab();
 
     int numVisibleTabs = 0;
     int activeVisibleTab = 0;
@@ -598,6 +585,26 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     output.WriteLine ("</table>");
 	}
 
+  /// <summary>
+  /// Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
+  /// </summary>
+  private void CheckActiveTab()
+  {
+    if (!Tabs[_activeTab].Visible)
+    {
+      for (int i=0; i<Tabs.Count; ++i)
+      {
+        Tab tab = Tabs[i];    
+
+        if (tab.Visible)
+        {
+          _activeTab = i;
+          break;
+        }
+      }
+    }
+  }
+
   public void RenderSeperatorLine (HtmlTextWriter output, string lineColor, string activeClassAttrib, 
       int numVisibleTabs, int activeVisibleTab)
   {
@@ -637,6 +644,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
       output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
       output.WriteLine ("<tr class=\"tabSubMenuBar\"><td >&nbsp;");
 
+      CheckActiveMenu();
+
       Tab activeTab = Tabs[_activeTab];
       bool isFirstMenu = true;
       for (int i = 0; i < activeTab.Controls.Count; ++i)
@@ -658,7 +667,6 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
           }
         }
       }
-
 
       if (StatusMessage != string.Empty)
       {
@@ -682,6 +690,25 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
+    }
+  }
+
+  private void CheckActiveMenu()
+  {
+    TabMenu activeMenu = Tabs[ActiveTab].Controls[ActiveMenu] as TabMenu;
+
+    if (!activeMenu.Visible)
+    {
+      for (int i=0; i<Tabs[ActiveTab].Controls.Count; i++)
+      {
+        TabMenu menu = Tabs[ActiveTab].Controls[i] as TabMenu;
+
+        if (menu.Visible)
+        {
+          ActiveMenu = i;
+          break;
+        }
+      }
     }
   }
 
