@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web;
-
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web
@@ -10,7 +10,8 @@ namespace Rubicon.Web
 /// <summary> Utility methods for URL resolving. </summary>
 public sealed class ResourceUrlResolver
 {
-  private const string c_designTimeDefaultRoot = "C:\\Rubicon.Resources";
+  private const string c_designTimeRootDefault = "C:\\Rubicon.Resources";
+  private const string c_designTimeRootEnvironmentVaribaleName = "RUBICONRESOURCES";
 
   private static bool s_resolverInitialized = false;
   private static IResourceUrlResolver s_resolver = null;
@@ -73,7 +74,12 @@ public sealed class ResourceUrlResolver
 
   private static string GetTheDesignTimeRoot()
   { 
-    return c_designTimeDefaultRoot;
+    string designTimeRoot = System.Environment.GetEnvironmentVariable (c_designTimeRootEnvironmentVaribaleName);
+    if (StringUtility.IsNullOrEmpty (designTimeRoot))
+      return c_designTimeRootDefault;
+    else
+      return designTimeRoot;
+
     //EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
     //if(environment != null)
     //{
