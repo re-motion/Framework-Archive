@@ -128,7 +128,7 @@ namespace Rubicon.PageTransition
       if (! IsReturningPostBack)
       {
         SubFunction subFunction = new SubFunction ("subext var 1", "vall var2");
-        ExecuteFunction (subFunction, "_blank", (Control) sender);
+        ExecuteFunction (subFunction, "_blank", (Control) sender, true);
       }
       else
       {

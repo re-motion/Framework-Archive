@@ -82,7 +82,7 @@ public abstract class WxeFunction: WxeStepList
     if (! ExecutionStarted)
     {
       NameObjectCollection parentVariables = (ParentStep != null) ? ParentStep.Variables : null;
-      EnsureParametersInitialized();
+      EnsureParametersInitialized (null);
     }
 
     base.Execute (context);
@@ -168,6 +168,16 @@ public abstract class WxeFunction: WxeStepList
     _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
   }
 
+  public void InitializeParameters (string parameterString, bool delayInitialization)
+  {
+    InitializeParameters (parameterString, null, delayInitialization);
+  }
+
+  public void InitializeParameters (string parameterString, NameObjectCollection additionalParameters)
+  {
+    InitializeParameters (parameterString, additionalParameters, false);
+  }
+
   /// <summary>
   ///   Parses a string of comma separated actual parameters.
   /// </summary>
@@ -194,14 +204,15 @@ public abstract class WxeFunction: WxeStepList
   /// <example>
   ///   "the first \"string\" argument, containing quotes and a comma", "true", "12/30/04 12:00", variableName
   /// </example>
-  public void InitializeParameters (string parameterString)
+  private void InitializeParameters (string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
   {
     CheckParametersNotInitialized();
 
     object[] _actualParameters = ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
-    // since parameterString may contain variable references, actual initialization is delayed to Execute()
+  
+    if (! delayInitialization)
+      EnsureParametersInitialized (additionalParameters);
   }
-
 
   private static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, IFormatProvider format)
   {
@@ -333,13 +344,14 @@ public abstract class WxeFunction: WxeStepList
   }
 
   /// <summary> Pass actualParameters to Variables. </summary>
-  private void EnsureParametersInitialized()
+  private void EnsureParametersInitialized (NameObjectCollection additionalParameters)
   {
     if (_parametersInitialized)
       return;
 
     WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
     NameObjectCollection callerVariables = (ParentStep != null) ? ParentStep.Variables : null;
+    callerVariables = NameObjectCollection.Merge (callerVariables, additionalParameters);
 
     if (_actualParameters.Length > parameterDeclarations.Length)
       throw new ApplicationException (string.Format ("{0} parameters provided but only {1} were expected.", _actualParameters.Length, parameterDeclarations.Length));

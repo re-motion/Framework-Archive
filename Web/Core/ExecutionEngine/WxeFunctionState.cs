@@ -19,11 +19,12 @@ public class WxeWindowStateCollection
 
   public void DisposeExpired()
   {
-    foreach (WxeWindowState window in _windowStates)
+    for (int i = _windowStates.Count - 1; i >= 0; --i)
     {
+      WxeWindowState window = (WxeWindowState) _windowStates[i];
       if (window.IsExpired)
       {
-        _windowStates.Remove (window);
+        _windowStates.RemoveAt (i);
         window.Dispose();
       }
     }

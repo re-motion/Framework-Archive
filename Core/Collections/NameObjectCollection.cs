@@ -11,7 +11,7 @@ namespace Rubicon.Collections
 /// Case-sensitive name/object dictionary.
 /// </summary>
 [Serializable]
-public class NameObjectCollection: ICollection, IDictionary, ISerializable
+public class NameObjectCollection: ICollection, IDictionary, ISerializable, ICloneable
 {
   private Hashtable _hashtable;
 
@@ -127,6 +127,39 @@ public class NameObjectCollection: ICollection, IDictionary, ISerializable
     get { return false; }
   }
 
+  /// <summary>
+  /// Merges two collections. If a key occurs in both collections, the value of the second collection is taken.
+  /// </summary>
+  public static NameObjectCollection Merge (NameObjectCollection first, NameObjectCollection second)
+  {
+    if (first == null && second == null)
+      return null;
+    else if (first == null)
+      return second.Clone();
+    if (second == null)
+      return first.Clone();
+
+    NameObjectCollection result = first.Clone();
+
+    foreach (DictionaryEntry entry in second)
+      result[(string)entry.Key] = entry.Value;
+
+    return result;
+  }
+
+  public NameObjectCollection Clone()
+  {
+    NameObjectCollection result = new NameObjectCollection();
+    foreach (DictionaryEntry entry in this)
+      result.Add ((string)entry.Key, entry.Value);
+
+    return result;
+  }
+
+  object ICloneable.Clone()
+  {
+    return Clone();
+  }
 }
 
 }

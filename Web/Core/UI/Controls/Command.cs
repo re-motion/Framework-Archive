@@ -107,6 +107,7 @@ public class Command: IControlItem
   {
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
+    private string _target = string.Empty;
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandInfo()
@@ -177,20 +178,23 @@ public class Command: IControlItem
         _parameters = _parameters.Trim();
       }
     }
+
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behaviour")]
+    [Description ("Link target (_blank, etc.)")]
+    [DefaultValue ("")]
+    [NotifyParentProperty (true)]
+    public string Target
+    {
+      get { return _target; }
+      set { _target = value; }
+    }
   }
 
-  /// <summary>
-  ///   The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>.
-  /// </summary>
   private CommandType _type = CommandType.None;
-  /// <summary>
-  ///   Determines when the item command is shown to the user in regard of the parent control's read-only setting.
-  /// </summary>
   private CommandShow _show = CommandShow.Always;
-  /// <summary>
-  ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
-  /// </summary>
   private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
+
   /// <summary>
   ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
@@ -321,19 +325,19 @@ public class Command: IControlItem
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
 
-    if (! WxeContext.Current.IsReturningPostBack)
+    if (! wxePage.IsReturningPostBack)
     {
-      if (parameters != null)
-      {
-        foreach (string key in parameters.Keys)
-          wxePage.CurrentFunction.Variables[key] = parameters[key];
-      }
-
+      string target = WxeFunctionCommand.Target;
+      bool hasTarget = StringUtility.IsNullOrEmpty (target);
       Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
-      function.InitializeParameters (WxeFunctionCommand.Parameters);
-      
-      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
+
+      function.InitializeParameters (WxeFunctionCommand.Parameters, parameters);
+
+      if (hasTarget)
+        wxePage.ExecuteFunction (function, target, null, false);
+      else
+        wxePage.ExecuteFunction (function);
     }
   }
 

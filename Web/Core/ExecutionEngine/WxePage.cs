@@ -19,10 +19,11 @@ public interface IWxePage: IPage, IWxeTemplateControl
 {
   NameValueCollection GetPostBackCollection ();
   void ExecuteNextStep ();
-  void ExecuteFunction (WxeFunction function, string target, Control sender);
+  void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback);
   void ExecuteFunction (WxeFunction function);
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
+  bool IsReturningPostBack { get; }
   WxeFunction ReturningFunction { get; }
 }
 
@@ -132,7 +133,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page.Visible = false; // suppress prerender and render events
   }
 
-  public void ExecuteFunction (WxeFunction function, string target, Control sender)
+  public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
     WxeWindowState windowState = new WxeWindowState (function, 20);
     WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
@@ -143,7 +144,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
     string returnScript;
-    if (UsesEventTarget)
+    if (! returningPostback)
+    {
+      returnScript = "window.close();";
+    }
+    else if (UsesEventTarget)
     {
       string eventtarget = _page.GetPostBackCollection()["__EVENTTARGET"];
       string eventargument = _page.GetPostBackCollection()["__EVENTARGUMENT"];
@@ -239,14 +244,14 @@ public class WxePage: Page, IWxePage
     _wxeInfo.ExecuteNextStep();
   }
 
-  protected bool IsReturningPostBack
+  public bool IsReturningPostBack
   {
     get { return WxeContext.Current.IsReturningPostBack; }
   }
 
-  public void ExecuteFunction (WxeFunction function, string target, Control sender)
+  public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    _wxeInfo.ExecuteFunction (function, target, sender);
+    _wxeInfo.ExecuteFunction (function, target, sender, returningPostback);
   }
 
   public void ExecuteFunction (WxeFunction function)
