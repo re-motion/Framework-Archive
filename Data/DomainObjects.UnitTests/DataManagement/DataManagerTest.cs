@@ -105,7 +105,7 @@ public class DataManagerTest : ClientTransactionBaseTest
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
     Assert.AreEqual (42, container.PropertyValues["OrderNumber"].OriginalValue);
     Assert.AreEqual (42, container["OrderNumber"]);
-    Assert.AreEqual (StateType.Original, container.State);
+    Assert.AreEqual (StateType.Unchanged, container.State);
   }
 
   [Test]
