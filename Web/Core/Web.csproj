@@ -229,6 +229,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\DropDownMenu.htc"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\DropDownMenu.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\FormGrid.css"
                     BuildAction = "Content"
                 />

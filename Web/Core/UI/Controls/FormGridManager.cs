@@ -1156,6 +1156,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       }
     }
   }
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+  }
 
   protected override void OnLoad (EventArgs e)
   {
@@ -2662,7 +2666,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   {
     if (! _formGridListPopulated)
     {
-      PopulateFormGridList (this.Parent);
+      PopulateFormGridList (NamingContainer);
       _formGridListPopulated = true;
     }
   }
