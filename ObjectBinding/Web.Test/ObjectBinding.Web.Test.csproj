@@ -189,6 +189,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestListPage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestListPage.aspx.cs"
+                    DependentUpon = "TestListPage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestListPage.aspx.resx"
+                    DependentUpon = "TestListPage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestReferenceValuePage.aspx"
                     BuildAction = "Content"
                 />

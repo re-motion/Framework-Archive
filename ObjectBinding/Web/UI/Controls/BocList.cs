@@ -79,9 +79,8 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   // may be set at run time. these columnDefinitions do usually not contain commands.
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
   
-  //  WORKAROUND: Implement Commands other than HrefItemCommand
   // the command to be used for the first ValueColumnDefinition column
-  private BocHrefItemCommand _firstColumnCommand;
+  private BocItemCommand _firstColumnCommand;
   
   // show check boxes for each object
   private bool _showSelection = false;
@@ -735,7 +734,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   [Category ("Column Definition")]
   [Description ("The ItemCommand added to the first value column.")]
   [DefaultValue ((string) null)]
-  public BocHrefItemCommand FirstColumnCommand
+  public BocItemCommand FirstColumnCommand
   {
     get { return _firstColumnCommand; }
     set { _firstColumnCommand = value; }
@@ -751,12 +750,13 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     get { return _fixedColumns; }
   }
 
- // [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [PersistenceMode(PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Column Definition")]
-  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
-  [DefaultValue ((string) null)]
+  //  No designer support intended
+  //  [PersistenceMode(PersistenceMode.InnerProperty)]
+  //  [ListBindable (false)]
+  //  [Category ("Column Definition")]
+  //  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
+  //  [DefaultValue ((string) null)]
+  [Browsable (false)]
   public BocColumnDefinitionSetCollection AvailableColumnDefinitionSets
   {
     get { return _availableColumnDefinitionSets; }
@@ -767,10 +767,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     PopulateAdditionalColumnsList();
   }
 
-  //[Category ("Column Definition")]
-  //[Description ("The active column definition set")]
   [Browsable (false)]
-  //  TODO: Designer support for selecting a ColumnDefinitionSet
   public BocColumnDefinitionSet SelectedColumnDefinitionSet
   {
     get { return _selectedColumnDefinitionSet; }

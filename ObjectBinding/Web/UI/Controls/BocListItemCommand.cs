@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.ComponentModel;
@@ -8,50 +9,84 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-public abstract class BocItemCommand
-{
-  public abstract void RenderBegin (HtmlTextWriter writer, int index, string id);
-  public abstract void RenderEnd (HtmlTextWriter writer);
-}
-
-[TypeConverter (typeof (BocHrefItemCommandConverter))]
-public class BocHrefItemCommand: BocItemCommand
+[TypeConverter (typeof (BocItemCommandConverter))]
+public class BocItemCommand
 {
   private string _href;
   private string _target;
+  private BocItemCommandType _type;
 
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="href">{0}: index, {1}: ID</param>
-  /// <param name="target"></param>
-  public BocHrefItemCommand (string href, string target)
-  {
-    _href = href;
-    _target = target;
-  }
-
-  public BocHrefItemCommand()
-    : this (".aspx?{0}", null)
+  public BocItemCommand()
   {}
 
-  [Description ("The hyperlink reference of the command.")]
-  [DefaultValue(".aspx?{0}")]
-  public string Href 
+  /// <summary>
+  ///   Instantiates a <see cref="BocItemCommand"/> of type <see cref="BocItemCommandType.Href"/>.
+  /// </summary>
+  /// <param name="href"> 
+  ///   The hyperlink reference of the command. Use {0} for the index and {1} for the ID.
+  /// </param>
+  /// <param name="target"> The targetframe of the <see cref="BocItemCommand"/>. </param>
+  /// <returns> A <see cref="BocItemCommand"/>. </returns>
+  public static BocItemCommand CreateHrefItemCommand (string href, string target)
   {
-    get { return _href; }
-    set { _href = value; }
+    BocItemCommand command = new BocItemCommand();
+    command.Type = BocItemCommandType.Href;
+    command.Href = href;
+    command.Target = target;
+    return command;
   }
 
+  public static BocItemCommand CreateHrefItemCommand (string href)
+  {
+    return BocItemCommand.CreateHrefItemCommand (href, null);
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The hyperlink reference of the command.")]
+  [DefaultValue(".aspx?{1}")]
+  public string Href 
+  {
+    get
+    {
+      if (_type == BocItemCommandType.Href)
+        return _href; 
+      else
+        return null;
+    }
+    set
+    {
+      _href = value; 
+    }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The target frame of the command. Leave it blank for no target.")]
   [DefaultValue("")]
   public string Target 
   { 
-    get { return _target; }
-    set { _target = value; }
+    get
+    { 
+      if (_type == BocItemCommandType.Href)
+        return _target; 
+      else
+        return null;
+    }
+    set
+    {
+      _target = value; 
+    }
   }
 
-  public override void RenderBegin (HtmlTextWriter writer, int index, string id)
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The type of the command.")]
+  //  No default value
+  public BocItemCommandType Type
+  {
+    get { return _type; }
+    set { _type = value; }
+  }
+
+  public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
   {
     string href = string.Format (_href, index, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
@@ -60,21 +95,40 @@ public class BocHrefItemCommand: BocItemCommand
     writer.RenderBeginTag (HtmlTextWriterTag.A);    
   }
 
-  public override void RenderEnd (HtmlTextWriter writer)
+  public virtual void RenderEnd (HtmlTextWriter writer)
   {
     writer.RenderEndTag();
   }
 
   public override string ToString()
   {
-    if (StringUtility.IsNullOrEmpty (Href))
-      return string.Empty;
-    else if (StringUtility.IsNullOrEmpty (Target))
-      return Href;
-    else
-      return string.Format ("{0}, {1}", Href, Target);
+    StringBuilder stringBuilder = new StringBuilder (50);
+
+    stringBuilder.Append (_type.ToString());
+
+    switch (_type)
+    {
+      case BocItemCommandType.Href:
+      {
+        if (! StringUtility.IsNullOrEmpty (Href))
+          stringBuilder.AppendFormat (": {0}", Href);
+        if (! StringUtility.IsNullOrEmpty (Target))
+          stringBuilder.AppendFormat (", {0}", Target);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+
+    return stringBuilder.ToString();
   }
 
 }
 
+public enum BocItemCommandType
+{
+  Href
+}
 }

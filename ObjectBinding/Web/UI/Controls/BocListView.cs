@@ -79,6 +79,14 @@ public class BocColumnDefinitionSet
   {
     get { return _columnDefinitionCollection; }
   }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (Title))
+      return "Column Set";
+    else
+      return Title;
+  }
 }
 
   

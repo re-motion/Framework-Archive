@@ -93,14 +93,12 @@ public abstract class BocColumnDefinition
 /// </summary>
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
-  //  WORKAROUND: Implement Commands other than HrefItemCommand
-
-  private BocHrefItemCommand _command;
+  private BocItemCommand _command;
   private object _label;
   private string _iconPath;
 
   public BocCommandColumnDefinition (
-      BocHrefItemCommand command, 
+      BocItemCommand command, 
       object label, 
       string iconPath, 
       string columnHeader, 
@@ -117,7 +115,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   public BocCommandColumnDefinition()
     : base (null, Unit.Empty)
   {
-    _command = new BocHrefItemCommand (".aspx?{0}", null);
+    _command = BocItemCommand.CreateHrefItemCommand (".aspx?{0}");
   }
 
 //  protected void RenderLabel (HtmlTextWriter writer)
@@ -152,10 +150,18 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  public BocHrefItemCommand Command
+  public BocItemCommand Command
   {
     get { return _command; }
     set { _command = value; }
+  }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (Label))
+      return "Command Column";
+    else
+      return Label;
   }
 }
 
@@ -271,6 +277,14 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     else
       return string.Empty;
   }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (ColumnHeader))
+      return "Simple Value Column";
+    else
+      return ColumnHeader;
+  }
 }
 
 /// <summary>
@@ -282,7 +296,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 [ParseChildren (true, "PropertyPathBindings")]
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
-//  private string _columnHeader;
   private string _formatString;
 
   private PropertyPathBindingCollection _propertyPathBindings;
@@ -370,6 +383,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
       ArgumentUtility.CheckNotNullOrEmpty ("ColumnHeader", value);
       base.ColumnHeader = value;
     }
+  }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (ColumnHeader))
+      return "Simple Value Column";
+    else
+      return ColumnHeader;
   }
 }
 
