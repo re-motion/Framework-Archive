@@ -284,10 +284,11 @@ public class PageUtility
 
   public static string GetUrlParameter (string url, string name)
   {
-    int startPos = url.IndexOf (name) + name.Length + 1;
+    int startPos = url.IndexOf (name);
     
     if (startPos >= 0)
     {
+      startPos += name.Length + 1;
       int endPos = url.IndexOf ("&", startPos);
       if (endPos == -1)
         endPos = url.Length;
