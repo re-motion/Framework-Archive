@@ -124,16 +124,16 @@ public class QueryParameterCollection : CommonCollection
     get { return (QueryParameter) BaseGetObject (name); }
   }
 
-  /// <summary>value
+  /// <summary>
   /// Adds a <see cref="QueryParameter"/> to the collection.
   /// </summary>
-  /// <param name="value">The <see cref="QueryParameter"/> to add.</param>
-  /// <returns>The zero-based index where <i>value</i> has been added.</returns>
-  public int Add (QueryParameter value)  
+  /// <param name="parameter">The <see cref="QueryParameter"/> to add.</param>
+  /// <returns>The zero-based index where <i>parameter</i> has been added.</returns>
+  public int Add (QueryParameter parameter)  
   {
-    ArgumentUtility.CheckNotNull ("value", value);
+    ArgumentUtility.CheckNotNull ("parameter", parameter);
     
-    return BaseAdd (value.Name, value);
+    return BaseAdd (parameter.Name, parameter);
   }
 
   #endregion
