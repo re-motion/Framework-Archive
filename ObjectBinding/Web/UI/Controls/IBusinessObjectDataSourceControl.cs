@@ -131,6 +131,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// </returns>
   protected abstract IBusinessObjectDataSource GetDataSource();
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return GetDataSource().BoundControls; }

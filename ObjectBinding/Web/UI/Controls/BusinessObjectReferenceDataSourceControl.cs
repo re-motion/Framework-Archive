@@ -94,6 +94,8 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
     _internalDataSource.SaveValue (interim);
   }
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return _internalDataSource.BoundControls; }
