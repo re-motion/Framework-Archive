@@ -7,8 +7,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All done
-
 /// <summary>
 /// Represents a property of a domain object that is persisted by the framework.
 /// </summary>
