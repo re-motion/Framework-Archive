@@ -11,6 +11,7 @@ namespace OBWTest
 	/// <summary>
 	///		Summary description for WebUserControl1.
 	/// </summary>
+	[Obsolete ("DataSourceUserControl is obsolete, rendering this implementation obsoelte as well.")]
 	public class WebUserControl1 : DataSourceUserControl
 	{
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
