@@ -58,6 +58,13 @@ public class AutoInitHashtable: Hashtable
       throw new NotSupportedException ();
     }
   }
+
+  [Obsolete ("Explicitly adding or setting keys or values is not supported.")]
+  public override void Add(object key, object value)
+  {
+    throw new NotSupportedException();
+  }
+
 }
 
 }
