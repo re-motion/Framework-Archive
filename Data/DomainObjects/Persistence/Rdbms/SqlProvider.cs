@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {

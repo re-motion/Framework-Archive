@@ -1,6 +1,6 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Configuration.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries

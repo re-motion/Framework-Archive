@@ -19,9 +19,9 @@ public class StorageProviderConfigurationLoader : BaseLoader
   {
     return new StorageProviderConfigurationLoader (
         LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Configuration.StorageProviderConfigurationFile", c_defaultConfigurationFile),
+            "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile", c_defaultConfigurationFile),
         LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Configuration.StorageProviderSchemaFile", c_defaultSchemaFile));
+            "Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile", c_defaultSchemaFile));
   }
 
   // member fields
@@ -92,7 +92,7 @@ public class StorageProviderConfigurationLoader : BaseLoader
       throw CreateStorageProviderConfigurationException (
           "Error loading configuration for storage provider '{0}'. " +
           "Configuration class is not derived from " + 
-          "Rubicon.Data.DomainObjects.Configuration.StorageProviders.StorageProviderDefinition.",
+          "Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderDefinition.",
           id);
     }
 

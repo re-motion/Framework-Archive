@@ -22,8 +22,8 @@ public class MappingLoader : BaseLoader
   public static MappingLoader Create ()
   {
     return new MappingLoader (
-        LoaderUtility.GetXmlFileName ("Rubicon.Data.DomainObjects.Configuration.MappingConfigurationFile", c_defaultConfigurationFile),
-        LoaderUtility.GetXmlFileName ("Rubicon.Data.DomainObjects.Configuration.MappingSchemaFile", c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", c_defaultConfigurationFile),
+        LoaderUtility.GetXmlFileName ("Rubicon.Data.DomainObjects.Mapping.SchemaFile", c_defaultSchemaFile));
   }
 
   // member fields

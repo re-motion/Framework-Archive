@@ -2,8 +2,8 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 
-using Rubicon.Data.DomainObjects.Configuration.Queries;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -20,9 +20,9 @@ public class QueryConfigurationLoader : BaseLoader
   {
     return new QueryConfigurationLoader (
         LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Configuration.QueryConfigurationFile", c_defaultConfigurationFile),
+            "Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile", c_defaultConfigurationFile),
         LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Configuration.QuerySchemaFile", c_defaultSchemaFile));
+            "Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile", c_defaultSchemaFile));
   }
 
   // member fields

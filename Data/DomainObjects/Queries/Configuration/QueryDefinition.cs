@@ -1,9 +1,8 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Queries
+namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
 public class QueryDefinition
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Queries
+namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
 [Serializable]
 public class QueryConfigurationException : ConfigurationException

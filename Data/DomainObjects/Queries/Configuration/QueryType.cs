@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Queries
+namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
 public enum QueryType
 {

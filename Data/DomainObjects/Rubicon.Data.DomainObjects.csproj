@@ -123,6 +123,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ConfigurationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -213,11 +218,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\ConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Configuration\Queries\QueryConfiguration.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -239,31 +239,6 @@
                 />
                 <File
                     RelPath = "Configuration\Queries\QueryType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\RdbmsProviderDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderDefinitionCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -568,6 +543,31 @@
                 />
                 <File
                     RelPath = "Persistence\WhereClauseBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\RdbmsProviderDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\StorageProviderConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\StorageProviderConfigurationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\StorageProviderDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\StorageProviderDefinitionCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.Queries;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 

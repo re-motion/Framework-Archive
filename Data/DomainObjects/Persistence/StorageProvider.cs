@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence

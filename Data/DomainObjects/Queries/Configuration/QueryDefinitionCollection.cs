@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Queries
+namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
 public class QueryDefinitionCollection : CollectionBase
 {

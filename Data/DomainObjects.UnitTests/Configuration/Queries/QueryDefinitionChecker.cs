@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
