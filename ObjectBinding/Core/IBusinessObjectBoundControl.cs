@@ -11,14 +11,14 @@ public interface IBusinessObjectBoundControl: IComponent
   IBusinessObjectProperty Property { get; set; }
   object Value { get; set; }
 
-  void LoadValue();
+  void LoadValue (bool interim);
 
   bool SupportsProperty (IBusinessObjectProperty property);
 }
 
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
 {
-  void SaveValue();
+  void SaveValue (bool interim);
 }
 
 }
