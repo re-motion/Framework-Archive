@@ -59,29 +59,6 @@ public class ClassDefinitionCollection : CommonCollection
     return classDefinition;
   }
 
-  public ClassDefinitionCollection GetDirectlyDerivedClassDefinitions (ClassDefinition classDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-    ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection ();
-
-    foreach (ClassDefinition definition in this)
-    {
-      if (definition.BaseClass == classDefinition)
-        derivedClasses.Add (definition);
-    }
-
-    return derivedClasses;
-  }
-
-  public bool IsPartOfInheritanceHierarchy (ClassDefinition classDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-    ClassDefinitionCollection derivedClasses = GetDirectlyDerivedClassDefinitions (classDefinition);
-    return (classDefinition.BaseClass != null || derivedClasses.Count > 0);
-  }
-
   #region Standard implementation for "add-only" collections
 
   public bool Contains (ClassDefinition classDefinition)
