@@ -53,6 +53,7 @@ public class WebTreeNodeCollection: ControlItemCollection
     if (node.IsSelected)
       node.SetSelected (true);
   }
+
   protected override void OnSet(int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTreeNode));
