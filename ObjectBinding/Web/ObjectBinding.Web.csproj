@@ -99,11 +99,6 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
                 />
                 <Reference
-                    Name = "ObjectBinding"
-                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "System.XML"
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
@@ -117,6 +112,11 @@
                     Name = "log4net"
                     AssemblyName = "log4net"
                     HintPath = "..\..\prereq\Assemblies\log4net.dll"
+                />
+                <Reference
+                    Name = "ObjectBinding"
+                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
