@@ -19,7 +19,8 @@ public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
     return new Type[] {
       typeof (BocSimpleColumnDefinition), 
       typeof (BocCompoundColumnDefinition),
-      typeof (BocCommandColumnDefinition)};
+      typeof (BocCommandColumnDefinition),
+      typeof (BocCustomColumnDefinition)};
   }
 }
 
