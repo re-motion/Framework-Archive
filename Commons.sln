@@ -19,10 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeDom", "CodeDom\CodeDom.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCore", "WebCore\WebCore.csproj", "{156E610A-6ED1-4E83-AE3C-1A44EA881F44}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "ObjectBinding\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -39,9 +35,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "h
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "Web.UI\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 13
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -65,27 +73,35 @@ Global
 		SccProjectName5 = \u0022$/libraries/Commons/CodeDom\u0022,\u0020ERAAAAAA
 		SccLocalPath5 = CodeDom
 		CanCheckoutShared = false
-		SccProjectUniqueName6 = WebCore\\WebCore.csproj
-		SccLocalPath6 = .
+		SccProjectUniqueName6 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj
+		SccProjectName6 = \u0022$/libraries/Commons/ObjectBinding/Web.Test\u0022,\u0020QQTAAAAA
+		SccLocalPath6 = ObjectBinding\\Web.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection6 = WebCore\\
-		SccProjectUniqueName7 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj
-		SccProjectName7 = \u0022$/libraries/Commons/ObjectBinding/Web.Test\u0022,\u0020QQTAAAAA
-		SccLocalPath7 = ObjectBinding\\Web.Test
+		SccProjectEnlistmentChoice6 = 2
+		SccProjectUniqueName7 = ObjectBinding\\Core\\ObjectBinding.csproj
+		SccLocalPath7 = .
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice7 = 2
-		SccProjectUniqueName8 = ObjectBinding\\Core\\ObjectBinding.csproj
+		SccProjectFilePathRelativizedFromConnection7 = ObjectBinding\\Core\\
+		SccProjectUniqueName8 = ObjectBinding\\Reflection\\ObjectBinding.Reflection.csproj
 		SccLocalPath8 = .
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection8 = ObjectBinding\\Core\\
-		SccProjectUniqueName9 = ObjectBinding\\Reflection\\ObjectBinding.Reflection.csproj
+		SccProjectFilePathRelativizedFromConnection8 = ObjectBinding\\Reflection\\
+		SccProjectUniqueName9 = ObjectBinding\\Web\\ObjectBinding.Web.csproj
 		SccLocalPath9 = .
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection9 = ObjectBinding\\Reflection\\
-		SccProjectUniqueName10 = ObjectBinding\\Web\\ObjectBinding.Web.csproj
-		SccLocalPath10 = .
+		SccProjectFilePathRelativizedFromConnection9 = ObjectBinding\\Web\\
+		SccProjectUniqueName10 = Globalization\\Globalization.csproj
+		SccProjectName10 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath10 = Globalization
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection10 = ObjectBinding\\Web\\
+		SccProjectUniqueName11 = Web.UI\\Web.UI.csproj
+		SccProjectName11 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
+		SccLocalPath11 = Web.UI
+		CanCheckoutShared = false
+		SccProjectUniqueName12 = prereq\\prereq.csproj
+		SccLocalPath12 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection12 = prereq\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -112,10 +128,6 @@ Global
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
-		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Debug.ActiveCfg = Debug|.NET
-		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Debug.Build.0 = Debug|.NET
-		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.ActiveCfg = Release|.NET
-		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.Build.0 = Release|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.ActiveCfg = Debug|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.Build.0 = Debug|.NET
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.ActiveCfg = Release|.NET
@@ -132,6 +144,18 @@ Global
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
+		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.ActiveCfg = Debug|.NET
+		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.Build.0 = Debug|.NET
+		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.ActiveCfg = Release|.NET
+		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
