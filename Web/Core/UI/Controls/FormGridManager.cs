@@ -1272,6 +1272,21 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
   }
 
+  protected static void InvokeLoadViewStateRecursive (object target, object viewState)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
+
+    typeof (Control).InvokeMember (
+      "LoadViewStateRecursive",
+      bindingFlags,
+      null,
+      target,
+      new object[] {viewState});
+  }
+
   /// <summary>
   /// 
   /// </summary>
@@ -1284,48 +1299,46 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     if (savedState == null)
       return;
 
-    BindingFlags bindingFlags =   BindingFlags.DeclaredOnly 
-                                | BindingFlags.Instance 
-                                | BindingFlags.NonPublic
-                                | BindingFlags.InvokeMethod;
+    bool enableViewStateBackup = formGrid.Table.EnableViewState;
+    formGrid.Table.EnableViewState = true;
 
-    //  Deleage loading the view state for individual controls to the cells that contain them
-    //  thus, reducing the reflection calls and increasing performance
+    FormGridManager.InvokeLoadViewStateRecursive (formGrid.Table, savedState);
 
-    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
+    formGrid.Table.EnableViewState = enableViewStateBackup;
 
-    Triplet[] rows = (Triplet[])savedState;
-
-    for (int idxRows = 0; idxRows < rows.Length; idxRows++)
-    {
-      Triplet row = (Triplet)rows[idxRows];
-
-      if (row.Second == null)
-        continue;
-
-      ArrayList indices = (ArrayList)row.Second;
-      ArrayList viewStates = (ArrayList)row.Third;
-
-      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-
-      for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
-      {
-        int cellIndex = (int)indices[idxIndices];
-        object viewState = viewStates[idxIndices];
-
-        bool enableViewStateBackup = cellCollection[idxIndices].EnableViewState;
-        cellCollection[idxIndices].EnableViewState = true;
-
-        typeof (Control).InvokeMember (
-          "LoadViewStateRecursive",
-          bindingFlags,
-          null,
-          cellCollection[cellIndex],
-          new object[] {viewState});
-
-        cellCollection[idxIndices].EnableViewState = enableViewStateBackup;
-      }
-    }
+//
+//    //  Delegate loading the view state for individual controls to the cells that contain them
+//    //  thus, reducing the reflection calls and increasing performance
+//
+//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
+//
+//    Triplet[] rows = (Triplet[])savedState;
+//
+//    for (int idxRows = 0; idxRows < rows.Length; idxRows++)
+//    {
+//      Triplet row = (Triplet)rows[idxRows];
+//
+//      if (row.Second == null)
+//        continue;
+//
+//      ArrayList indices = (ArrayList)row.Second;
+//      ArrayList viewStates = (ArrayList)row.Third;
+//
+//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
+//
+//      for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
+//      {
+//        int cellIndex = (int)indices[idxIndices];
+//        object viewState = viewStates[idxIndices];
+//
+//        bool enableViewStateBackup = cellCollection[idxIndices].EnableViewState;
+//        cellCollection[idxIndices].EnableViewState = true;
+//
+//        FormGridManager.InvokeLoadViewStateRecursive (cellCollection[idxIndices], viewState);
+//
+//        cellCollection[idxIndices].EnableViewState = enableViewStateBackup;
+//      }
+//    }
 
 //    //  Load View State for individual controls
 //    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
@@ -1401,6 +1414,23 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     return base.SaveViewState ();
   }
 
+  private static object InvokeSaveViewStateRecursive (object target)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
+
+    object viewState = typeof (Control).InvokeMember (
+        "SaveViewStateRecursive",
+        bindingFlags,
+        null,
+        target,
+        new object[] {});
+
+    return viewState;
+  }
+
   /// <summary>
   /// 
   /// </summary>
@@ -1410,62 +1440,85 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
 
-    BindingFlags bindingFlags =   BindingFlags.DeclaredOnly 
-                                | BindingFlags.Instance 
-                                | BindingFlags.NonPublic
-                                | BindingFlags.InvokeMethod;
-
-    //  Deleage saving the view state for individual controls to the cells that contain them
+    //  Delegate saving the view state for individual controls to the cells that contain them
     //  thus, reducing the reflection calls and increasing performance
 
-    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
+    bool enableViewStateBackup = formGrid.Table.EnableViewState;
+    formGrid.Table.EnableViewState = true;
 
-    Triplet[] rows = new Triplet[rowCollection.Count];
+    object viewState = FormGridManager.InvokeSaveViewStateRecursive (formGrid.Table);
 
-    for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
+    formGrid.Table.EnableViewState = enableViewStateBackup;
+
+    // recursive table view state: Triplet
+    // 1: table view state
+    // 2: row indices: ArrayList<int> 
+    // 3: row view states: ArrayList<Triplet>:
+    //    1: row view state
+    //    2: cell indices: ArrayList<int>
+    //    3: cell view states: ArrayList<Triplet>:
+    //       1: cell view state                   - should not be saved/loaded
+    //       2: control indices
+    //       3: control view states
+    
+    Triplet table = (Triplet)viewState;
+    
+    ArrayList rows = (ArrayList)table.Third;
+    foreach (Triplet row in rows)
     {
-      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-
-      ArrayList indices = new ArrayList (cellCollection.Count);
-      ArrayList viewStates = new ArrayList (cellCollection.Count);
-
-      for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
+      ArrayList cells = (ArrayList)row.Third;
+      foreach (Triplet cell in cells)
       {
-        if (cellCollection[idxCells].Controls.Count == 0)
-          continue;
-
-        bool enableViewStateBackup = cellCollection[idxCells].EnableViewState;
-        cellCollection[idxCells].EnableViewState = true;
-        
-        object viewState = typeof (Control).InvokeMember (
-            "SaveViewStateRecursive",
-            bindingFlags,
-            null,
-            cellCollection[idxCells],
-            new object[] {});
-
-        cellCollection[idxCells].EnableViewState = enableViewStateBackup;
-
-        if (viewState != null)
-        {
-          Triplet cell = (Triplet)viewState;
-
-          if (cell.Second != null)
-          {
-            cell.First = null;
-
-            indices.Add (idxCells);
-            viewStates.Add (viewState);
-          }
-        }
-
+        //  Remove the cell's view state
+        cell.First = null;
       }
-
-      Triplet row = new Triplet(null, indices, viewStates);
-      rows[idxRows] = row;
     }
-  
-    return rows;
+
+    return viewState;
+
+//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
+//
+//    Triplet[] rows = new Triplet[rowCollection.Count];
+//
+//    for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
+//    {
+//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
+//
+//      ArrayList indices = new ArrayList (cellCollection.Count);
+//      ArrayList viewStates = new ArrayList (cellCollection.Count);
+//
+//      for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
+//      {
+//        if (cellCollection[idxCells].Controls.Count == 0)
+//          continue;
+//
+//        bool enableViewStateBackup = cellCollection[idxCells].EnableViewState;
+//        cellCollection[idxCells].EnableViewState = true;
+//        
+//        object viewState = FormGridManager.InvokeSaveViewStateRecursive (cellCollection[idxCells]);
+//
+//        cellCollection[idxCells].EnableViewState = enableViewStateBackup;
+//
+//        if (viewState != null)
+//        {
+//          Triplet cell = (Triplet) viewState;
+//
+//          //  Only cells with a control's viewstate not null
+//          if (cell.Second != null)
+//          {
+//            cell.First = null; 
+//
+//            indices.Add (idxCells);
+//            viewStates.Add (viewState);
+//          }
+//        }
+//      }
+//
+//      Triplet row = new Triplet(null, indices, viewStates);
+//      rows[idxRows] = row;
+//    }
+//  
+//    return rows;
 
 //    //  Save View State for individual controls
 //    Triplet[][] rows = new Triplet[rowCollection.Count][];
