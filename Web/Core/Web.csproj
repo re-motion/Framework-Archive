@@ -221,6 +221,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\PopupCalendar.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\Help.gif"
                     BuildAction = "Content"
                 />
@@ -373,6 +377,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\LengthValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\PopUpCalendar.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
