@@ -164,6 +164,19 @@ public class PageUtility
       return appPath + relativeUrl;
   }
 
+  public static string GetPhysicalHttpPageUrl (Page page, string relativeUrl)
+  {
+    return RemoveHttps (GetPhysicalPageUrl (page, relativeUrl));
+  }
+
+  public static string RemoveHttps (string url)
+  {
+    if (url.ToLower().StartsWith ("https://"))
+      return "http://" + url.Substring ("https://".Length);
+    else
+      return url;
+  }
+
 /*  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
   { 
     if (page.Session.IsCookieless)

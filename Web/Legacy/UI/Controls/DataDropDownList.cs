@@ -39,7 +39,7 @@ public class DataDropDownList: DropDownList
   /// The drop down list contains an empty item that represents the state 'no item selected'. If IsRequired
   /// is true and an item is already selected, the empty item is not displayed.
   /// This property is not saved in the control's view state. Default is false;
-  /// </remarks>
+  /// </remarks>  
   public bool IsRequired
   {
     get { return _isRequired; }
@@ -50,6 +50,19 @@ public class DataDropDownList: DropDownList
   {
     get { return _emptyValue; }
     set { _emptyValue = value; }
+  }
+
+  public static void SetSelectedValue (System.Web.UI.WebControls.ListControl list, string value)
+  {
+    for (int i = 0; i < list.Items.Count; ++i)
+    {
+      if (list.Items[i].Value == value)
+      {
+        list.SelectedIndex = i;
+        return;
+      }
+    }
+    throw new ArgumentOutOfRangeException ("value", value, "No item with specified value found.");
   }
 
   /// <summary>

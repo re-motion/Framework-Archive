@@ -25,21 +25,32 @@ public class EntryFieldBreak: Control
 {
   protected override void Render (HtmlTextWriter writer)
   {
-    writer.Write ("</td></tr><tr><td colspan=\"4\">{0}</td><td>{0}", 
-      EntryFormGrid.GetWhitespaceImage (this.Page, 0, 0));
+    EntryField parentField = (EntryField) this.Parent;
+    writer.Write ("</td></tr><tr><td colspan=\"6\">{0}</td><td>{0}", 
+      parentField.ParentGrid.GetWhitespaceImage (this.Page, 0, 0));
   }
 }
-  
-  
 
 [ParseChildren (false, "Controls")]
 [ControlBuilder (typeof (EntryFormGridControlBuilder))]
 public class EntryFormGrid: Control
 {
+
+  // member fields
+
   private Unit _labelColumnWidth;
   private Unit _width;
   private FontUnit _fieldFontSize;
   private string _infoBase = string.Empty;
+  private string _infoImage = "field-info.gif";
+
+  // methods and properties
+
+  public string InfoImage 
+  {
+    get { return _infoImage; }
+    set { _infoImage = value; }
+  }
 
   public string InfoBase
   {
@@ -126,6 +137,7 @@ public class EntryFormGrid: Control
     if (FixedLayout)
     {
       writer.WriteLine ("<colgroup>");
+      writer.WriteLine ("  <col style=\"width: 7\">");
 
       // label column
       if (!_labelColumnWidth.IsEmpty)
@@ -143,7 +155,8 @@ public class EntryFormGrid: Control
       writer.WriteLine ("  <col style=\"width: 3\">");
 
       // indicator columns
-      writer.WriteLine ("  <col style=\"width: 32\">");
+      writer.WriteLine ("  <col style=\"width: 16\">");
+      writer.WriteLine ("  <col style=\"width: 16\">");
 
       // value column
       writer.WriteLine ("  <col style=\"width: 100%\">");
@@ -165,29 +178,28 @@ public class EntryFormGrid: Control
 		writer.WriteLine ("</table>");
 	}
 
-  private static string _relativeImagePath = "Images/";
-
-  public static string RelativeImagePath
+  [Obsolete]
+  public string GetImagePath (Page sourcePage, string imgFileName)
   {
-    get { return _relativeImagePath; }
-    set { _relativeImagePath = value; }
+    return "../images/" + imgFileName;
+    //return PageUtility.GetPhysicalPageUrl (sourcePage, RelativeImagePath + imgFileName);
   }
 
-  public static string GetImagePath (Page sourcePage, string imgFileName)
+  internal string InfoImagePath 
   {
-    return PageUtility.GetPhysicalPageUrl (sourcePage, RelativeImagePath + imgFileName);
+    get { return GetImagePath (this.Page, InfoImage); }
   }
 	
-  internal static string GetWhitespaceImage (Page sourcePage, int width, int height)
+  internal string GetWhitespaceImage (Page sourcePage, int width, int height)
   {
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
-        width, height, EntryFormGrid.GetImagePath (sourcePage, "ws.gif"));
+        width, height, GetImagePath (sourcePage, "ws.gif"));
   }
 
-  internal static string GetWhitespaceImage (Page sourcePage, string width, string height)
+  internal string GetWhitespaceImage (Page sourcePage, string width, string height)
   {
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
-        width, height, EntryFormGrid.GetImagePath (sourcePage, "ws.gif"));
+        width, height, GetImagePath (sourcePage, "ws.gif"));
   }
 }
 
@@ -221,6 +233,11 @@ public class EntryTitle: Control
   
   private int _colSpan = 6;
 
+  public EntryFormGrid ParentGrid
+  {
+    get { return (EntryFormGrid) this.Parent; }
+  }
+
   public int ColSpan
   {
     get { return _colSpan; }
@@ -241,7 +258,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (this.Page, "1", Padding));
+      writer.WriteLine ("<tr><td>{0}</td></tr>", ParentGrid.GetWhitespaceImage (this.Page, "1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -249,12 +266,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table bgcolor=\"black\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"100%\">"
-			  	+ EntryFormGrid.GetWhitespaceImage (this.Page, 1, 2)
+			  	+ ParentGrid.GetWhitespaceImage (this.Page, 1, 2)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (this.Page, 1, 3));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", ParentGrid.GetWhitespaceImage (this.Page, 1, 3));
 	}
 }
 
@@ -266,7 +283,6 @@ public class EntryField: Control
 	private string _infoUrl = String.Empty;
 	private bool _isRequired = false;
   private string _title = string.Empty;
-
   private bool   _showErrors = true;
 
 //  private int _height = -1;
@@ -298,6 +314,11 @@ public class EntryField: Control
     set { _title = value; }
   }
 
+  internal EntryFormGrid ParentGrid
+  {
+    get { return (EntryFormGrid) this.Parent; }
+  }
+
   /// <summary>
   /// Validate all controls.
   /// </summary>
@@ -320,9 +341,11 @@ public class EntryField: Control
           isValid = false;
       }
       else
-        if( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
       {
-        isValid = false;
+        if( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
+        {
+          isValid = false;
+        }
       }
     }
 
@@ -364,14 +387,19 @@ public class EntryField: Control
   {
     bool isValid = true;
 
-    if (   validator != null
-        && ! (    ignoreRequiredFieldValidators 
-                && (    validator is RequiredFieldValidator
-                    || validator.ID.EndsWith ("RequiredValidator"))))
+    if (   validator != null)
     {
-      validator.Validate();
-      if (! validator.IsValid)
-        isValid = false;
+      validator.ForeColor = Color.Empty;
+      validator.CssClass = "inlineValidator";
+
+      if (! (      ignoreRequiredFieldValidators 
+              && (    validator is RequiredFieldValidator
+                   || validator.ID.EndsWith ("RequiredValidator"))))
+      {
+        validator.Validate();
+        if (! validator.IsValid)
+          isValid = false;
+      }
     }
 
     return isValid;
@@ -419,9 +447,9 @@ public class EntryField: Control
       labelTitleAttribute = string.Format ("title=\"{0}\"", Title);
 
     if (clientId == String.Empty)
-      label = string.Format ("<div {0}>&nbsp;{1}</div>", labelTitleAttribute, Label);
+      label = string.Format ("<span {0}>{1}</span>", labelTitleAttribute, Label);
 		else
-      label = string.Format ("<label for=\"{0}\" {1}>&nbsp;{2}</label>", clientId, labelTitleAttribute, Label);
+      label = string.Format ("<label for=\"{0}\" {1}>{2}</label>", clientId, labelTitleAttribute, Label);
 
     string labelWidthAttribute = string.Empty;
     string valueWidthAttribute = string.Empty;
@@ -434,13 +462,14 @@ public class EntryField: Control
 
     string tagStyle = string.Empty;
     if (! Visible)
-      tagStyle = " style=\"display:none\"";
+      tagStyle = "style=\"display:none\"";
 
-		writer.WriteLine ("<tr{0}>", tagStyle);
-		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >{1}</td>", 
+		writer.WriteLine ("<tr valign=\"middle\" {0}>", tagStyle);
+    writer.WriteLine ("<td style=\"width: 1ex;\"></td>");
+		writer.WriteLine ("<td class=\"label\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
-		writer.WriteLine ("<td class=\"label\">{0}</td>", EntryFormGrid.GetWhitespaceImage (this.Page, 7, 1));
-		writer.WriteLine ("<td>{0}</td>", EntryFormGrid.GetWhitespaceImage (this.Page, 3, 1));
+		writer.WriteLine ("<td class=\"label\">{0}</td>", ParentGrid.GetWhitespaceImage (this.Page, 7, 1));
+		writer.WriteLine ("<td>{0}</td>", ParentGrid.GetWhitespaceImage (this.Page, 3, 1));
 		writer.WriteLine ("<td nowrap>");
 
     if (validatorsInvalid)
@@ -449,7 +478,7 @@ public class EntryField: Control
       // => display "invalid field indicator" which has higher priority than the "required field indicator"
       writer.WriteLine ("<img src=\"{0}\" alt=\"" + validatorMessages + "\""
         + "width=\"12\" height=\"20\" border=\"0\"/>", 
-        EntryFormGrid.GetImagePath (this.Page, "field-error.gif"));
+        ParentGrid.GetImagePath (this.Page, "field-error.gif"));
     }
     else
     {
@@ -459,13 +488,15 @@ public class EntryField: Control
       {
         writer.WriteLine ("<img src=\"{0}\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
           + "width=\"12\" height=\"20\" border=\"0\"/>",
-          EntryFormGrid.GetImagePath (this.Page, "field-required.gif"));
+          ParentGrid.GetImagePath (this.Page, "field-required.gif"));
       }
       else
       {
-        writer.WriteLine (EntryFormGrid.GetWhitespaceImage (this.Page, 12, 20));
+        writer.WriteLine (ParentGrid.GetWhitespaceImage (this.Page, 12, 20));
       }
     }
+
+    writer.WriteLine ("</td><td>");
     
 		if (this.InfoUrl != String.Empty)
 		{
@@ -475,11 +506,11 @@ public class EntryField: Control
 						+ "<img src=\"{1}\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 					infoUrl,
-          EntryFormGrid.GetImagePath (this.Page, "field-info.gif"));
+          ParentGrid.InfoImagePath);
     }
 		else
 		{
-			writer.WriteLine (EntryFormGrid.GetWhitespaceImage (this.Page, 12, 20));
+			writer.WriteLine (ParentGrid.GetWhitespaceImage (this.Page, 12, 20));
 		}
 
 		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);
@@ -488,7 +519,7 @@ public class EntryField: Control
 
 		writer.Write ("</td>");
 		writer.WriteLine ("</tr>");
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (this.Page, 1, 1));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", ParentGrid.GetWhitespaceImage (this.Page, 1, 1));
 	}
 
   private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
