@@ -188,6 +188,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Doc\WhatsNew.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\EntryFormGrid.en.resx"
                     BuildAction = "EmbeddedResource"
                 />

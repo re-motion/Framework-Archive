@@ -401,9 +401,6 @@ public class EntryField: Control
 
     if (   validator != null)
     {
-      validator.ForeColor = Color.Empty;
-      validator.CssClass = "inlineValidator";
-
       if (! (      ignoreRequiredFieldValidators 
               && (    validator is RequiredFieldValidator
                    || validator.ID.EndsWith ("RequiredValidator"))))

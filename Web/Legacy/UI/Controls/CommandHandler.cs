@@ -77,7 +77,7 @@ public class CommandHandler : Control, IPostBackEventHandler
     HyperLink hyperLink = new HyperLink ();
 
     if (cssClass != null && cssClass != string.Empty)
-      hyperLink.CssClass = "standardLink";
+      hyperLink.CssClass = cssClass;
 
     hyperLink.Text = linkText;
     hyperLink.NavigateUrl = GetHref (eventArgument);
@@ -148,7 +148,7 @@ public class CommandHandler : Control, IPostBackEventHandler
     HyperLink hyperLink = new HyperLink ();
 
     if (cssClass != null && cssClass != string.Empty)
-      hyperLink.CssClass = "standardLink";
+      hyperLink.CssClass = cssClass;
 
     hyperLink.Text = linkText;
     hyperLink.NavigateUrl = "#";
