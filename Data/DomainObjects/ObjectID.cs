@@ -145,7 +145,7 @@ public class ObjectID
   /// class ID and ID value.
   /// </summary>
   /// <param name="storageProviderID">
-  ///   The ID of the <see cref="StorageProvider"/> which stores the object.
+  ///   The ID of the <see cref="Persistence.StorageProvider"/> which stores the object.
   /// </param>
   /// <param name="classID">The ID of the class of the object.</param>
   /// <param name="value">The ID value used to identify the object in the storage provider.</param>
@@ -173,7 +173,7 @@ public class ObjectID
   // methods and properties
 
   /// <summary>
-  /// Gets the ID of the <see cref="StorageProvider"/> which stores the object.
+  /// Gets the ID of the <see cref="Persistence.StorageProvider"/> which stores the object.
   /// </summary>
   public string StorageProviderID
   {

@@ -9,16 +9,16 @@ namespace Rubicon.Data.DomainObjects
 //Documentation: All done
 
 /// <summary>
-/// Represents the method that will handle the <see cref="DomainObjectCollection.Changing"/> event of a <see cref="DomainObjectCollection"/>.
+/// Represents the method that will handle the <see cref="DomainObjectCollection.Adding"/> and <see cref="DomainObjectCollection.Removing"/> events of a <see cref="DomainObjectCollection"/>.
 /// </summary>
 public delegate void DomainObjectCollectionChangingEventHandler (object sender, DomainObjectCollectionChangingEventArgs args);
 /// <summary>
-/// Represents the method that will handle the <see cref="DomainObjectCollection.Changed"/> event of a <see cref="DomainObjectCollection"/>.
+/// Represents the method that will handle the <see cref="DomainObjectCollection.Added"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
 public delegate void DomainObjectCollectionChangedEventHandler (object sender, DomainObjectCollectionChangedEventArgs args);
 
 /// <summary>
-/// Provides data for the <see cref="DomainObjectCollection.Changing"/> event of a <see cref="DomainObjectCollection"/>.
+/// Provides data for the <see cref="DomainObjectCollection.Adding"/> and <see cref="DomainObjectCollection.Removing"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
 public class DomainObjectCollectionChangingEventArgs : EventArgs
 {
@@ -45,7 +45,7 @@ public class DomainObjectCollectionChangingEventArgs : EventArgs
 }
 
 /// <summary>
-/// Provides data for the <see cref="DomainObjectCollection.Changing"/> event of a <see cref="DomainObjectCollection"/>.
+/// Provides data for the <see cref="DomainObjectCollection.Added"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
 public class DomainObjectCollectionChangedEventArgs : EventArgs
 {
