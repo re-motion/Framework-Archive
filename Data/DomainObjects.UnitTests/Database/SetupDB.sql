@@ -57,6 +57,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithInvalidRelation]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithRelatedClassIDColumnAndNoInheritance') 
+DROP TABLE [TableWithRelatedClassIDColumnAndNoInheritance]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithGuidKey') 
 DROP TABLE [TableWithGuidKey]
 GO
@@ -356,4 +360,18 @@ CREATE TABLE [TableWithInvalidRelation] (
 ) 
 GO
 
+CREATE TABLE [TableWithRelatedClassIDColumnAndNoInheritance] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [TableWithGuidKeyID] uniqueidentifier NULL,
+  [TableWithGuidKeyIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableWithRelatedClassIDColumnAndNoInheritance] PRIMARY KEY CLUSTERED ([ID]),
+  
+  CONSTRAINT [FK_TableWithGuidKey_TableWithRelatedClassIDColumnAndNoInheritance] 
+      FOREIGN KEY ([TableWithGuidKeyID]) REFERENCES [TableWithGuidKey] ([ID])
+) 
+GO
 

@@ -14,6 +14,7 @@ delete from [Person]
 delete from [TableWithAllDataTypes]
 delete from [TableWithValidRelations]
 delete from [TableWithInvalidRelation]
+delete from [TableWithRelatedClassIDColumnAndNoInheritance]
 delete from [TableWithGuidKey]
 delete from [TableWithKeyOfInvalidType]
 delete from [TableWithoutIDColumn]
@@ -355,3 +356,7 @@ insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, 
 insert into [TableWithInvalidRelation] (ID, ClassID, TableWithGuidKeyID) 
     values ('{35BA182C-C836-490e-AF79-74C72145BCE5}', 'ClassWithInvalidRelation', 
     '{A53F679D-0E91-4504-AEE8-59250DE249B3}')
+
+-- TableWithRelatedClassIDColumnAndNoInheritance
+insert into [TableWithRelatedClassIDColumnAndNoInheritance] (ID, ClassID, TableWithGuidKeyID, TableWithGuidKeyIDClassID)
+    values ('{CB72715D-F419-4ab9-8D49-ABCBA4E9EDB4}', 'ClassWithRelatedClassIDColumnAndNoInheritance', null, null)

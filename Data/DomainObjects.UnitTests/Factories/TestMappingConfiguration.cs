@@ -84,7 +84,7 @@ public class TestMappingConfiguration
 
     classDefinitions.Add (CreateCeoDefinition ());
     classDefinitions.Add (CreatePersonDefinition ());
-    classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivation ());
+    classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ());
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition ());
     classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
     classDefinitions.Add (CreateClassWithGuidKeyDefinition ());
@@ -97,6 +97,7 @@ public class TestMappingConfiguration
     classDefinitions.Add (CreateIndustrialSectorDefinition ());
     classDefinitions.Add (CreateEmployeeDefinition ());
     classDefinitions.Add (CreateComputerDefinition ());
+    classDefinitions.Add (CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition  ());
 
     return classDefinitions;
   }
@@ -284,7 +285,7 @@ public class TestMappingConfiguration
     return classWithAllDataTypes;
   }
 
-  private static ClassDefinition CreateClassWithGuidKeyDefinition ()
+  private ClassDefinition CreateClassWithGuidKeyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
         typeof (ClassWithGuidKey), DatabaseTest.c_testDomainProviderID);
@@ -292,7 +293,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
+  private ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
         typeof (ClassWithKeyOfInvalidType), DatabaseTest.c_testDomainProviderID);
@@ -300,7 +301,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithoutIDPropertyDefinition ()
+  private ClassDefinition CreateClassWithoutIDPropertyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDProperty", "TableWithoutIDColumn",
         typeof (ClassWithoutIDProperty), DatabaseTest.c_testDomainProviderID);
@@ -308,7 +309,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithoutClassIDPropertyDefinition ()
+  private ClassDefinition CreateClassWithoutClassIDPropertyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutClassIDProperty", "TableWithoutClassIDColumn",
         typeof (ClassWithoutClassIDProperty), DatabaseTest.c_testDomainProviderID);
@@ -316,7 +317,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithoutTimestampPropertyDefinition ()
+  private ClassDefinition CreateClassWithoutTimestampPropertyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampProperty", "TableWithoutTimestampColumn",
         typeof (ClassWithoutTimestampProperty), DatabaseTest.c_testDomainProviderID);
@@ -324,7 +325,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithValidRelationsDefinition ()
+  private ClassDefinition CreateClassWithValidRelationsDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
         typeof (ClassWithValidRelations), DatabaseTest.c_testDomainProviderID);
@@ -338,7 +339,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithInvalidRelationDefinition ()
+  private ClassDefinition CreateClassWithInvalidRelationDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithInvalidRelation", "TableWithInvalidRelation",
         typeof (ClassWithInvalidRelation), DatabaseTest.c_testDomainProviderID);
@@ -349,7 +350,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
+  private ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition (
         "ClassWithoutRelatedClassIDColumn", 
@@ -363,7 +364,7 @@ public class TestMappingConfiguration
     return classDefinition;
   }
 
-  private static ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivation ()
+  private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition (
         "ClassWithoutRelatedClassIDColumnAndDerivation", 
@@ -408,7 +409,18 @@ public class TestMappingConfiguration
 
     return computer;
   }
-  
+
+  private static ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
+  {
+    ClassDefinition classDefinition = new ClassDefinition (
+        "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance", 
+        typeof (ClassWithRelatedClassIDColumnAndNoInheritance), DatabaseTest.c_testDomainProviderID);
+
+    classDefinition.PropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
+
+    return classDefinition;
+  }
+
   #endregion
 
   #region Methods for creating relation definitions
@@ -428,6 +440,7 @@ public class TestMappingConfiguration
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsOptional ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithInvalidRelation ());
+    relationDefinitions.Add (CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation ());
     relationDefinitions.Add (CreateIndustrialSectorToCompanyRelationDefinition ());
     relationDefinitions.Add (CreateSupervisorToSubordinateRelationDefinition ());
     relationDefinitions.Add (CreateEmployeeToComputerRelationDefinition ());
@@ -667,6 +680,28 @@ public class TestMappingConfiguration
 
     classWithGuidKey.RelationDefinitions.Add (relation);
     classWithInvalidRelation.RelationDefinitions.Add (relation);
+
+    return relation;
+  }
+
+  private RelationDefinition CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation ()
+  {
+    ClassDefinition classWithGuidKey = _classDefinitions["ClassWithGuidKey"];
+
+    VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
+        classWithGuidKey, "ClassWithRelatedClassIDColumnAndNoInheritance", false, CardinalityType.One, 
+        typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
+
+    ClassDefinition classWithRelatedClassIDColumnAndNoInheritance = _classDefinitions["ClassWithRelatedClassIDColumnAndNoInheritance"];
+
+    RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
+        classWithRelatedClassIDColumnAndNoInheritance, "ClassWithGuidKey", false);
+
+    RelationDefinition relation = new RelationDefinition ("ClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritance",
+        endPoint1, endPoint2);
+
+    classWithGuidKey.RelationDefinitions.Add (relation);
+    classWithRelatedClassIDColumnAndNoInheritance.RelationDefinitions.Add (relation);
 
     return relation;
   }
