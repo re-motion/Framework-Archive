@@ -133,9 +133,18 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    SubType = "Code"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "DomainObjectDataSourceControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Rubicon.Data.DomainObjects.ObjectBinding.Web.build"
+                    BuildAction = "None"
                 />
             </Include>
         </Files>
