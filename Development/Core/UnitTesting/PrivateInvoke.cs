@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 
-namespace Rubicon.UnitTests
+namespace Rubicon.Development.UnitTesting
 {
 
 /// <summary>

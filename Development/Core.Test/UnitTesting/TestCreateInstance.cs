@@ -44,9 +44,9 @@ public class PublicClass
 [TestFixture]
 public class TestCreateInstance
 {
-  const string c_assemblyName = "UnitTestsTest";
-  const string c_publicClassName = "Rubicon.UnitTests.Test.PublicClass";
-  const string c_internalClassName = "Rubicon.UnitTests.Test.PublicClass+InternalClass";
+  const string c_assemblyName = "Rubicon.Development.UnitTests";
+  const string c_publicClassName = "Rubicon.Development.UnitTests.UnitTesting.PublicClass";
+  const string c_internalClassName = "Rubicon.Development.UnitTests.UnitTesting.PublicClass+InternalClass";
 
   [Test]
   public void TestCreateInstances()
