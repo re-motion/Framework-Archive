@@ -324,7 +324,7 @@
       <item>
         <term>SQL-style Equality</term>
         <description>
-          The SQL-style equality methods of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
+          The SQL-style equality methods of <c>NaInt32</c> return <c>NaInt32.Null</c> if either of the compared values
           is <see cref="Null"/>. 
           <para>
             Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
@@ -334,7 +334,7 @@
       <item>
         <term>Relative Comparison</term>
         <description>
-          The standard compare methods and operators of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
+          The standard compare methods and operators of <c>NaInt32</c> return <c>NaInt32.Null</c> if either of the compared values
           is <see cref="Null"/>. 
           <para>
             Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
@@ -387,6 +387,559 @@
     </list>
   </remarks>
 </NaInt32>
+
+<NaByte>
+  <remarks>
+    <para>
+      <c>NaByte</c> is basically a structure that can contain any 8-bit unsigned integer value or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaByte.Null</c> to assign <c>Null</c> to a <c>NaByte</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>Byte</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaByte can be used as a replacement for <c>System.Data.SqlTypes.SqlByte</c> if you prefer the null-value semantics of <c>NaByte</c>
+      or need serializability. Implicit conversion operators for <c>SqlByte </c>allow <c>NaByte</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaByte</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaByte</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaByte</c> return <c>NaByte.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparison</term>
+        <description>
+          The standard compare methods and operators of <c>NaByte</c> return <c>NaByte.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+            <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparision using <c>CompareTo</c></term>
+        <description>
+          The CompareTo methods of <c>NaByte</c> consider <see cref="Null"/> and null references to be less than any other value.
+          <para>
+            Applies to <see cref="CompareTo"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Arithmetics</term>
+        <description>
+          The arithmetic methods and operators of <c>NaByte</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
+          All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+          <para>
+            Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+            <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaByte</c> null-value is converted to a <c>Byte</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Byte</c> to <c>NaByte</c>, and conversions to and from <c>SqlByte</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting and Parsing</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Byte.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+          <para>
+            <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+            Otherwise, it returns the same value that <c>Byte.Parse</c> would return.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaByte>
+
+<NaDecimal>
+  <remarks>
+    <para>
+      <c>NaDecimal</c> is basically a structure that can contain any decimal value or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaDecimal.Null</c> to assign <c>Null</c> to a <c>NaDecimal</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the decimal value, or the explicit <c>Decimal</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaDecimal can be used as a replacement for <c>System.Data.SqlTypes.SqlDecimal</c> if you prefer the null-value semantics of <c>NaDecimal</c>
+      or need serializability. Implicit conversion operators for <c>SqlDecimal </c>allow <c>NaDecimal</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaDecimal</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaDecimal</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaDecimal</c> return <c>NaDecimal.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparison</term>
+        <description>
+          The standard compare methods and operators of <c>NaDecimal</c> return <c>NaDecimal.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+            <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparision using <c>CompareTo</c></term>
+        <description>
+          The CompareTo methods of <c>NaDecimal</c> consider <see cref="Null"/> and null references to be less than any other value.
+          <para>
+            Applies to <see cref="CompareTo"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Arithmetics</term>
+        <description>
+          The arithmetic methods and operators of <c>NaDecimal</c> return <see cref="Null"/> if either of their arguments are <c>Null</c>.
+          All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+          <para>
+            Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+            <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaDecimal</c> null-value is converted to a <c>Decimal</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Decimal</c> to <c>NaDecimal</c>, and conversions to and from <c>SqlDecimal</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting and Parsing</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Decimal.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+          <para>
+            <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+            Otherwise, it returns the same value that <c>Decimal.Parse</c> would return.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaDecimal>
+
+<NaInt16>
+  <remarks>
+    <para>
+      <c>NaInt16</c> is basically a structure that can contain any 16-bit integer value or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaInt16.Null</c> to assign <c>Null</c> to a <c>NaInt16</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>Int16</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaInt16 can be used as a replacement for <c>System.Data.SqlTypes.SqlInt16</c> if you prefer the null-value semantics of <c>NaInt16</c>
+      or need serializability. Implicit conversion operators for <c>SqlInt16 </c>allow <c>NaInt16</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaInt16</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaInt16</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaInt16</c> return <c>NaInt16.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparison</term>
+        <description>
+          The standard compare methods and operators of <c>NaInt16</c> return <c>NaInt16.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+            <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparision using <c>CompareTo</c></term>
+        <description>
+          The CompareTo methods of <c>NaInt16</c> consider <see cref="Null"/> and null references to be less than any other value.
+          <para>
+            Applies to <see cref="CompareTo"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Arithmetics</term>
+        <description>
+          The arithmetic methods and operators of <c>NaInt16</c> return <see cref="Null"/> if either of their arguments are <c>Null</c>.
+          All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+          <para>
+            Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+            <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaInt16</c> null-value is converted to a <c>Int16</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Int16</c> to <c>NaInt16</c>, and conversions to and from <c>SqlInt16</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting and Parsing</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Int16.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+          <para>
+            <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+            Otherwise, it returns the same value that <c>Int16.Parse</c> would return.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaInt16>
+
+<NaInt64>
+  <remarks>
+    <para>
+      <c>NaInt64</c> is basically a structure that can contain any 64-bit integer value or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaInt64.Null</c> to assign <c>Null</c> to a <c>NaInt64</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>Int64</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaInt64 can be used as a replacement for <c>System.Data.SqlTypes.SqlInt64</c> if you prefer the null-value semantics of <c>NaInt64</c>
+      or need serializability. Implicit conversion operators for <c>SqlInt64 </c>allow <c>NaInt64</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaInt64</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaInt64</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaInt64</c> return <c>NaInt64.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparison</term>
+        <description>
+          The standard compare methods and operators of <c>NaInt64</c> return <c>NaInt64.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+            <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparision using <c>CompareTo</c></term>
+        <description>
+          The CompareTo methods of <c>NaInt64</c> consider <see cref="Null"/> and null references to be less than any other value.
+          <para>
+            Applies to <see cref="CompareTo"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Arithmetics</term>
+        <description>
+          The arithmetic methods and operators of <c>NaInt64</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
+          All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+          <para>
+            Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+            <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaInt64</c> null-value is converted to an <c>Int32</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Int64</c> to <c>NaInt64</c>, and conversions to and from <c>SqlInt64</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting and Parsing</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Int64.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+          <para>
+            <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+            Otherwise, it returns the same value that <c>Int64.Parse</c> would return.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaInt64>
+
+<NaSingle>
+  <remarks>
+    <para>
+      <c>NaSingle</c> is basically a structure that can contain any single-precision floating point number or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaSingle.Null</c> to assign <c>Null</c> to a <c>NaSingle</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the Single value, or the explicit <c>Single</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaSingle can be used as a replacement for <c>System.Data.SqlTypes.SqlSingle</c> if you prefer the null-value semantics of <c>NaSingle</c>
+      or need serializability. Implicit conversion operators for <c>SqlSingle </c>allow <c>NaSingle</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaSingle</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaSingle</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaSingle</c> return <c>NaSingle.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparison</term>
+        <description>
+          The standard compare methods and operators of <c>NaSingle</c> return <c>NaSingle.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+            <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Relative Comparision using <c>CompareTo</c></term>
+        <description>
+          The CompareTo methods of <c>NaSingle</c> consider <see cref="Null"/> and null references to be less than any other value.
+          <para>
+            Applies to <see cref="CompareTo"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Arithmetics</term>
+        <description>
+          The arithmetic methods and operators of <c>NaSingle</c> return <see cref="Null"/> if either of their arguments are <c>Null</c>.
+          All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+          <para>
+            Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+            <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaSingle</c> null-value is converted to a <c>Single</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Single</c> to <c>NaSingle</c>, and conversions to and from <c>SqlSingle</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting and Parsing</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Single.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+          <para>
+            <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+            Otherwise, it returns the same value that <c>Single.Parse</c> would return.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaSingle>
+
+<NaGuid>
+  <remarks>
+    <para>
+      <c>NaGuid</c> is basically a structure that can contain any globally unique identifier (GUID) or <c>Null</c>. Use <see cref="IsNull"/> to find 
+      out whether a specific structure contains <c>Null</c>, or <c>NaGuid.Null</c> to assign <c>Null</c> to a <c>NaGuid</c> variable.
+    </para>
+    <para>
+      You can use the <see cref="Value"/> property to access the Guid value, or the explicit <c>Guid</c> conversion operator. Either
+      method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+    </para>
+    <para>
+      NaGuid can be used as a replacement for <c>System.Data.SqlTypes.SqlGuid</c> if you prefer the null-value semantics of <c>NaGuid</c>
+      or need serializability. Implicit conversion operators for <c>SqlGuid </c>allow <c>NaGuid</c> to be used seamlessly with ADO.NET.
+    </para>
+    <para>
+      The following null-value semantics are used for <c>NaGuid</c> structures:
+    </para>
+    <list type="table">
+      <listheader>
+        <term>Category</term>
+        <description>Semantics</description>
+      </listheader>
+      <item>
+        <term>Equality</term>
+        <description>
+          The standard equality methods and operators of <c>NaGuid</c> consider two <see cref="Null"/> values equal.
+          <para>
+            Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>SQL-style Equality</term>
+        <description>
+          The SQL-style equality methods of <c>NaGuid</c> return <c>NaGuid.Null</c> if either of the compared values
+          is <see cref="Null"/>. 
+          <para>
+            Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+          </para>
+        </description>
+      </item>
+      <item>
+        <term>Type Conversion</term>
+        <description>
+          If a <c>NaGuid</c> null-value is converted to a <c>Guid</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+          from <c>Guid</c> to <c>NaGuid</c>, and conversions to and from <c>SqlGuid</c> never throw exceptions.
+        </description>
+      </item>
+      <item>
+        <term>Formatting</term>
+        <description>
+          <para>
+            If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Guid.ToString</c> would return. If it is
+            <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+            symbol ("~") to return a
+            zero-length string for <c>Null</c>.
+          </para>
+        </description>
+      </item>
+    </list>
+  </remarks>
+</NaGuid>
 
 <WorkContext>
   <Class>

@@ -16,9 +16,15 @@ public sealed class NaTypeUtility
   }
 
   private static Type[][] s_typeMappings = {
-      new Type[] { typeof(Int32), typeof (NaInt32) },
       new Type[] { typeof(Boolean), typeof (NaBoolean) },
+      new Type[] { typeof(Byte), typeof (NaByte) },
+      new Type[] { typeof(Int16), typeof (NaInt16) },
+      new Type[] { typeof(Int32), typeof (NaInt32) },
+      new Type[] { typeof(Int64), typeof (NaInt64) },
+      new Type[] { typeof(Single), typeof (NaSingle) },
+      new Type[] { typeof(Decimal), typeof (NaDecimal) },
       new Type[] { typeof(DateTime), typeof (NaDateTime) },
+      new Type[] { typeof(Guid), typeof (NaGuid) },
       new Type[] { typeof(Double), typeof (NaDouble) }};
 
 
@@ -45,12 +51,40 @@ public sealed class NaTypeUtility
   ///       <description>Returned Type</description>
   ///     </listheader>
   ///     <item>
+  ///       <term>Boolean</term>
+  ///       <description>NaBoolean</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>Byte</term>
+  ///       <description>NaByte</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>Int16</term>
+  ///       <description>NaInt16</description>
+  ///     </item>
+  ///     <item>
   ///       <term>Int32</term>
   ///       <description>NaInt32</description>
   ///     </item>
   ///     <item>
-  ///       <term>Boolean</term>
-  ///       <description>NaBoolean</description>
+  ///       <term>Int64</term>
+  ///       <description>NaInt64</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>Single</term>
+  ///       <description>NaSingle</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>Decimal</term>
+  ///       <description>NaDecimal</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>Double</term>
+  ///       <description>NaDouble</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>DateTime</term>
+  ///       <description>NaDateTime</description>
   ///     </item>
   ///     <item>
   ///       <term>UserDefinedType</term>
@@ -108,12 +142,40 @@ public sealed class NaTypeUtility
   ///       <description>Returned Type</description>
   ///     </listheader>
   ///     <item>
+  ///       <term>NaBoolean</term>
+  ///       <description>Boolean</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaByte</term>
+  ///       <description>Byte</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaInt16</term>
+  ///       <description>Int16</description>
+  ///     </item>
+  ///     <item>
   ///       <term>NaInt32</term>
   ///       <description>Int32</description>
   ///     </item>
   ///     <item>
-  ///       <term>NaBoolean</term>
-  ///       <description>Boolean</description>
+  ///       <term>NaInt64</term>
+  ///       <description>Int64</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaSingle</term>
+  ///       <description>Single</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaDecimal</term>
+  ///       <description>Decimal</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaDouble</term>
+  ///       <description>Double</description>
+  ///     </item>
+  ///     <item>
+  ///       <term>NaDateTime</term>
+  ///       <description>DateTime</description>
   ///     </item>
   ///     <item>
   ///       <term>NaUserDefinedType</term>
