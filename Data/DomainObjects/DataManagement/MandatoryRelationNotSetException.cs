@@ -14,7 +14,7 @@ public class MandatoryRelationNotSetException : DataManagementException
 
   // construction and disposing
 
-  public MandatoryRelationNotSetException () {}
+  public MandatoryRelationNotSetException () : this ("A mandatory relation was not set.") {}
   public MandatoryRelationNotSetException (string message) : base (message) {}
   public MandatoryRelationNotSetException (string message, Exception inner) : base (message, inner) {}
   protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base (info, context) {}

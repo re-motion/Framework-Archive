@@ -14,7 +14,7 @@ public class DataManagementException : DomainObjectException
 
   // construction and disposing
 
-  public DataManagementException () {}
+  public DataManagementException () : this ("A data management exception occurred.") {}
   public DataManagementException (string message) : base (message) {}
   public DataManagementException (string message, Exception inner) : base (message, inner) {}
   protected DataManagementException (SerializationInfo info, StreamingContext context) : base (info, context) {}
