@@ -97,6 +97,10 @@ insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID])
 insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID]) 
     values ('{A21A9EC2-17D6-44de-9F1A-2AB6FC3742DF}', 'Company', 'Firma 2', '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
 
+-- The CompanyIDClassID of the CEO pointing to this company is invalid:
+insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID]) 
+    values ('{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Company', 'Company with invalid CEO', null)
+
 
 -- Customer
 insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
@@ -110,6 +114,10 @@ insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [Indust
 
 insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
     values ('{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Kunde 4', '1999/03/01', 2, null)
+
+-- The Order pointing to this customer is invalid
+insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
+    values ('{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Customer', 'Customer with invalid Order', '1999/03/01', 2, null)
 
 
 -- Partner
@@ -163,6 +171,12 @@ insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDC
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{90E26C86-611F-4735-8D1B-E1D0918515C2}', 'Order', 5, '2006/03/01', 
     '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+
+-- This order does not conform to mapping: CustomerIDClassID is invalid, no OrderTicket points to this Order and
+-- this Order has no OrderItems and the Official does not exist
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Order', 6, '2006/03/01', 
+    '{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Company', 'UnitTestStorageProviderStub|Official|2|System.Int32')
 
 
 -- OrderItem
@@ -252,6 +266,11 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
     values ('{FD1B587C-3E26-43f8-9866-8B770194D70F}', 'Ceo', 'Harry Fleischer', 
     '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer')
+
+-- The CompanyIDClassID of this CEO is invalid:
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Ceo', 'Ceo with invalid CompanyIDClassID', 
+    '{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Customer')
 
 
 -- ClassWithoutRelatedClassIDColumn
