@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Globalization;
 
 using Rubicon.Globalization;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
