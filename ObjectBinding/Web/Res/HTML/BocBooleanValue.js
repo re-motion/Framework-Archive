@@ -46,7 +46,14 @@ function BocBooleanValue_InitializeGlobals (
 // label: The label containing the description for the value. null for no description.
 // hiddenField: The hidden input field used to store the value between postbacks.
 // isRequired: true to enqable the null value, false to limit the choices to true and false.
-function BocBooleanValue_SelectNextCheckboxValue (icon, label, hiddenField, isRequired)
+function BocBooleanValue_SelectNextCheckboxValue (
+  icon,
+  label,
+  hiddenField,
+  isRequired,
+  trueDescription,
+  falseDescription,
+  nullDescription)
 {
   var trueValue = _bocBooleanValue_trueValue;
   var falseValue = _bocBooleanValue_falseValue;
@@ -76,25 +83,45 @@ function BocBooleanValue_SelectNextCheckboxValue (icon, label, hiddenField, isRe
  
  // Update the controls
   hiddenField.value = newValue;
+  var iconSrc;
+  var iconAlt;
+  var labelText;
+  
   if (newValue == falseValue)
   {
-    icon.src = _bocBooleanValue_falseIconUrl;
-    icon.alt = _bocBooleanValue_falseDescription;
-    if (label != null)
-      label.innerHTML = _bocBooleanValue_falseDescription;
+    iconSrc = _bocBooleanValue_falseIconUrl;
+    var description;
+    if (falseDescription == null)
+      description = _bocBooleanValue_falseDescription;
+    else
+      description = falseDescription;
+    iconAlt = description;
+    labelText = description;
   }
   else if (newValue == nullValue)
   {
-    icon.src = _bocBooleanValue_nullIconUrl;
-    icon.alt = _bocBooleanValue_nullDescription;
-    if (label != null)
-      label.innerHTML = _bocBooleanValue_nullDescription;
+    iconSrc = _bocBooleanValue_nullIconUrl;
+    var description;
+    if (nullDescription == null)
+      description = _bocBooleanValue_nullDescription;
+    else
+      description = nullDescription;
+    iconAlt = description;
+    labelText = description;
   }
   else if (newValue == trueValue)
   {
-    icon.src = _bocBooleanValue_trueIconUrl;
-    icon.alt = _bocBooleanValue_trueDescription;
-    if (label != null)
-      label.innerHTML = _bocBooleanValue_trueDescription;
+    iconSrc = _bocBooleanValue_trueIconUrl;
+    var description;
+    if (trueDescription == null)
+      description = _bocBooleanValue_trueDescription;
+    else
+      description = trueDescription;
+    iconAlt = description;
+    labelText = description;
   }
+  icon.src = iconSrc;
+  icon.alt = iconAlt;
+  if (label != null)
+    label.innerHTML = labelText;
 }
