@@ -44,11 +44,11 @@ public class PropertyValueCollection : CollectionBase
   /// Initializes a new <b>PropertyValueCollection</b> as a shallow copy of a given <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <remarks>
-  /// The new <b>PropertyValueCollection</b> has the same <see cref="RequiredItemType"/> and the same elements as the 
+  /// The new <b>PropertyValueCollection</b> has the same <see cref="RequiredItemType"/> and the same items as the 
   /// given <i>collection</i>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
-  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
   // standard constructor for collections
   public PropertyValueCollection (PropertyValueCollection collection, bool makeCollectionReadOnly)  
@@ -213,16 +213,16 @@ public class PropertyValueCollection : CollectionBase
   #endregion
 
   /// <summary>
-  /// Copies the elements of the <see cref="PropertyValueCollection"/> to an Array, starting at a particular Array index.
+  /// Copies the items of the <see cref="PropertyValueCollection"/> to an array, starting at a particular array index.
   /// </summary>
-  /// <param name="array">The one-dimensional Array that is the destination of the elements copied from <see cref="PropertyValueCollection"/>. The Array must have zero-based indexing.</param>
+  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="PropertyValueCollection"/>. The array must have zero-based indexing.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
   /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
   ///   <i>array</i> is not a one-dimensional array.
   ///   <i>index</i> is greater than the current length of the array.
-  ///   The number of elements is greater than the available space from <i>index</i> to the end of <i>array</i>.
+  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
   /// </exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public override void CopyTo (Array array, int index)
@@ -232,7 +232,7 @@ public class PropertyValueCollection : CollectionBase
   }
 
   /// <summary>
-  /// Gets the number of elements contained in the <see cref="PropertyValueCollection"/>.
+  /// Gets the number of items contained in the <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public override int Count
