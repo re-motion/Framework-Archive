@@ -117,8 +117,31 @@ public class PageUtility
   /// </remarks>
   public static string GetPhysicalPageUrl (Page page)
   {
-    return InternalGetPhysicalPageUrl (page, string.Empty);
+    string returnUrl;
+
+    Uri pageUrl = page.Request.Url;
+
+    // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
+    // removes cookie information from the URL => manually add cookie information to URL
+    if (page.Session.IsCookieless)
+    { 
+      string tempUrl = pageUrl.PathAndQuery;
+      string appPath = page.Request.ApplicationPath;
+      int appPathPositionEnd = appPath.Length;
+
+      returnUrl = 
+            tempUrl.Substring (0, appPathPositionEnd) 
+          + "/(" + page.Session.SessionID + ")" 
+          + tempUrl.Substring (appPathPositionEnd);
+    }
+    else
+    {
+      returnUrl = pageUrl.PathAndQuery;
+    }
+    
+    return returnUrl;  
   }
+
   /// <summary>
   /// Returns the physical URL for a specified page.
   /// </summary>  
@@ -130,17 +153,20 @@ public class PageUtility
     if (relativeUrl == null || relativeUrl == string.Empty)
       throw new ArgumentException ("Argument must contain a valid relative URL", "relativeURL");
 
-    return InternalGetPhysicalPageUrl (page, relativeUrl);
+    if (page.Session.IsCookieless)
+      return page.Request.ApplicationPath + "/(" + page.Session.SessionID + ")/" + relativeUrl;
+    else
+      return page.Request.ApplicationPath + "/" + relativeUrl;
   }
 
-  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
+/*  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
   { 
     if (page.Session.IsCookieless)
       return page.Request.ApplicationPath + "/(" + page.Session.SessionID + ")/" + relativeUrl;
     else
       return page.Request.ApplicationPath + "/" + relativeUrl;
 
-    /*
+  
     string returnUrl;
 
     //Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
@@ -165,13 +191,13 @@ public class PageUtility
     }
     
     return returnUrl;
+  }
     */
-  }
 
-  public static string AddCleanupToken (Page page, string url)
-  {
-    return AddUrlParameter (url, "cleanupToken", GetToken(page));
-  }
+    public static string AddCleanupToken (Page page, string url)
+    {
+      return AddUrlParameter (url, "cleanupToken", GetToken(page));
+    }
 
   public static string AddParentToken (Page page, string url)
   {
