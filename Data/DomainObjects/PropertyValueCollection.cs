@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// A typed collection for <see cref="PropertyValue"/> objects.
 /// </summary>
-public class PropertyValueCollection : CollectionBase
+public class PropertyValueCollection : BaseCollection
 {
   // types
 
@@ -253,7 +253,7 @@ public class PropertyValueCollection : CollectionBase
   }
 
   /// <summary>
-  /// Gets a value indicating whether the <see cref="CollectionBase"/> is read-only.
+  /// Gets a value indicating whether the <see cref="BaseCollection"/> is read-only.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override bool IsReadOnly
