@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Web;
 using System.Web.UI;
 using System.Runtime.Remoting.Messaging;
 
@@ -15,6 +17,9 @@ namespace Rubicon.Web.UI
 /// </example>
 public class HeaderFactory
 {
+  /// <summary> Hashtable&lt;string key, string header&gt; </summary>
+  private Hashtable _registeredHeaders = new Hashtable();
+
   public static HeaderFactory Current
   {
     get 
@@ -41,7 +46,7 @@ public class HeaderFactory
   {
     foreach (string header in _registeredHeaders.Values)
     {
-      context.Response.Write ("...");
+      context.Response.Write (header);
     }
   }
 

@@ -246,6 +246,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "UI\HeaderFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\IControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
