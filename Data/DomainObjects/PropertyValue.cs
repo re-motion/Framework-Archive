@@ -194,6 +194,18 @@ public class PropertyValue
   {
     return _definition.PropertyName.GetHashCode () ^ _value.GetHashCode () ^ _originalValue.GetHashCode ();
   }
+  protected virtual void OnChanging (ValueChangingEventArgs args)
+  {
+    if (Changing != null)
+      Changing (this, args);
+  }
+
+  protected virtual void OnChanged (EventArgs args)
+  {
+    if (Changed != null)
+      Changed (this, args);
+  }
+
   internal void Commit ()
   {
     if (HasChanged)
@@ -249,18 +261,6 @@ public class PropertyValue
     if (value1 == null && value2 == null) return false;
 
     return !value1.Equals (value2);
-  }
-
-  protected virtual void OnChanging (ValueChangingEventArgs args)
-  {
-    if (Changing != null)
-      Changing (this, args);
-  }
-
-  protected virtual void OnChanged (EventArgs args)
-  {
-    if (Changed != null)
-      Changed (this, args);
   }
 
   private ArgumentException CreateArgumentException (string message, params object[] args)
