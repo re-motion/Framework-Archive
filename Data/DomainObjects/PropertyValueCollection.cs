@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
