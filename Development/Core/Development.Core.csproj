@@ -87,8 +87,8 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "DevelopmentCore.build"
-                    BuildAction = "Content"
+                    RelPath = "Development.Core.build"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "UnitTesting\PrivateInvoke.cs"
