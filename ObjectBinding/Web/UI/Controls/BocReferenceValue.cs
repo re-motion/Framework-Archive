@@ -715,8 +715,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
                 &&  (     _value == null
                       ||  _value.UniqueIdentifier != InternalValue))
       {
-        _value = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (
-          InternalValue);
+        _value = 
+          ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (InternalValue);
       }
 
       return _value;
@@ -762,7 +762,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       else
         _internalValue = value;
 
-      bool removeNullItem =    IsRequired 
+      bool removeNullItem =     IsRequired 
                             &&  isOldInternalValueNull
                             &&  _internalValue != null;
       
