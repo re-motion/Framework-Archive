@@ -887,7 +887,8 @@ public class BocList:
 
     //  The tables data-section
     int firstRow = 0;
-    int rowCountWithOffset = (Value != null) ? Value.Count : 0;
+    int totalRowCount = (Value != null) ? Value.Count : 0;
+    int rowCountWithOffset = totalRowCount;
 
     if (!_pageSize.IsNull && Value != null)
     {      
@@ -903,8 +904,19 @@ public class BocList:
 
       ArrayList rows = new ArrayList (Value);
 
+      Hashtable originalRowIndices = null;
+    
       if (EnableSorting)
+      {
+        originalRowIndices = new Hashtable();
+        for (int idxRows = 0; idxRows < rowCountWithOffset; idxRows++)
+        {
+          if (rows[idxRows] == null)
+            continue;
+          originalRowIndices.Add (rows[idxRows], idxRows);
+        }
         rows.Sort (this);
+      }
       for (int idxRows = firstRow; idxRows < rowCountWithOffset; idxRows++)
       {
         if (rows[idxRows] == null)
@@ -912,7 +924,10 @@ public class BocList:
         IBusinessObject businessObject = rows[idxRows] as IBusinessObject;
         if (businessObject == null)
           throw new InvalidCastException ("List item " + idxRows + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-        RenderDataRow (writer, businessObject, idxRows, isOddRow);
+        int originalRowIndex = idxRows;
+        if (EnableSorting)
+          originalRowIndex = (int) originalRowIndices[businessObject];
+        RenderDataRow (writer, businessObject, originalRowIndex, isOddRow);
         isOddRow = !isOddRow;
       }
     }
@@ -1360,13 +1375,12 @@ public class BocList:
         if (icon != null)
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
-
           if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
           {
             writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
             writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
           }
-          
+          writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
           writer.RenderEndTag();
           writer.Write (c_whiteSpace);
@@ -1751,23 +1765,11 @@ public class BocList:
         if (simpleColumn != null)
         {
           //  Simple column, one value
-          object valueA = simpleColumn.PropertyPath.GetValue (businessObjectA);
-          object valueB = simpleColumn.PropertyPath.GetValue (businessObjectB);
           int compareResult = 0;
-          if (currentEntry.Direction != SortingDirection.Ascending)
-          {
-            if (valueA is IComparable && valueB is IComparable)
-              compareResult = Comparer.Default.Compare (valueA, valueB);
-            else
-              compareResult = Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
-          }
+          if (currentEntry.Direction == SortingDirection.Ascending)
+            compareResult = ComparePropertyPathValues (simpleColumn.PropertyPath, businessObjectA, businessObjectB);
           else
-          {
-            if (valueA is IComparable && valueB is IComparable)
-              compareResult = Comparer.Default.Compare (valueB, valueA);
-            else
-              compareResult = Comparer.Default.Compare (valueB.ToString(), valueA.ToString());
-          }
+            compareResult = ComparePropertyPathValues (simpleColumn.PropertyPath, businessObjectB, businessObjectA);
           if (compareResult != 0)
             return compareResult;
         }
@@ -1776,13 +1778,11 @@ public class BocList:
           //  Compund column, list of values.
           foreach (PropertyPathBinding propertyPathBinding in compoundColumn.PropertyPathBindings)
           {
-            object valueA = propertyPathBinding.PropertyPath.GetValue (businessObjectA);
-            object valueB = propertyPathBinding.PropertyPath.GetValue (businessObjectB);
             int compareResult = 0;
-            if (currentEntry.Direction != SortingDirection.Ascending)
-              compareResult = Comparer.Default.Compare (valueA, valueB);
+            if (currentEntry.Direction == SortingDirection.Ascending)
+              compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectA, businessObjectB);
             else
-              compareResult = Comparer.Default.Compare (valueB, valueA);
+              compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectB, businessObjectA);
             if (compareResult != 0)
               return compareResult;
           }
@@ -1790,6 +1790,25 @@ public class BocList:
       } 
     }
     return 0;
+  }
+
+  private int ComparePropertyPathValues (
+      BusinessObjectPropertyPath propertyPath, 
+      IBusinessObject businessObjectA, 
+      IBusinessObject businessObjectB)
+  {
+    object valueA = propertyPath.GetValue (businessObjectA);
+    object valueB = propertyPath.GetValue (businessObjectB);
+
+    if (valueA == null && valueB == null)
+      return 0;
+    if (valueA == null)
+      return -1;
+    if (valueB == null)
+      return 1;
+    if (valueA is IComparable && valueB is IComparable)
+      return Comparer.Default.Compare (valueA, valueB);
+    return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
   }
 
   /// <summary>
