@@ -27,7 +27,7 @@ public class UnitTestStorageProviderStub : StorageProvider
   public override DataContainer LoadDataContainer (ObjectID id)
   {
     DataContainer container = DataContainer.CreateForExisting (id, null);
-    PropertyDefinition definition = new PropertyDefinition ("Name", "Name", typeof (string), new NaInt32 (100));
+    PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
     container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
     return container;
   }
