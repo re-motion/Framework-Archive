@@ -25,12 +25,17 @@
 //     WxePageStep ("WebForm1.aspx");
 // 
 //     Var1 = "exit SampleWxeSubFunction";
-//     Var2 = "this should never appear";
 //   }
-//   catch (ApplicationException)
+//   catch (ApplicationException e)
 //   {
-//     Var1 = "Exception var1";
+//     Var1 = "Exception: " + e.Message;
 // 
+//     WxePageStep ("WebForm1.aspx");
+//   }
+//   finally 
+//   {
+//     Var2 = "finally";
+//
 //     WxePageStep ("WebForm1.aspx");
 //   }
 // }
@@ -68,24 +73,22 @@ public class SampleWxeFunction: WxeFunction, ISampleFunctionVariables
   {
     Var1 = "SampleWxeFunction Step1";
     Var2 = "Var2 - Step1";
-  }
-
+  } 
   WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
-
   WxeStep Step3 = new SampleWxeSubFunction ("@Var2", "constant for Var2");
-
-  void Step4 (WxeContext context)
-  {
-    // Var1 = Var2;
-    // Var1 = "SampleWxeFunction Step4";
-  }
-
-  WxeStep Step5 = new WxePageStep ("WebForm1.aspx");
+  WxeStep Step4 = new WxePageStep ("WebForm1.aspx");
 }
 
 public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 {
-  public SampleWxeSubFunction (object var1, object var2)
+  public SampleWxeSubFunction ()
+  {
+  }
+  public SampleWxeSubFunction (params object[] args)
+    : base (args)
+  {
+  }
+  public SampleWxeSubFunction (string var1, string var2)
     : base (var1, var2)
   {
   }
@@ -128,10 +131,9 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 
       WxeStep Step4  = new WxePageStep ("WebForm1.aspx");
 
-      void Step5 (WxeContext context)
+      void Step5 ()
       {
         Function.Var1 = "exit SampleWxeSubFunction";
-        Function.Var2 = "this should never appear";
       }    
     }
 
@@ -142,9 +144,20 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 
       void Step1 (WxeContext context)
       {
-        Function.Var1 = "Exception var1";
+        Function.Var1 = "Exception: " + Exception.Message;
       }
 
+      WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+    }
+
+    class Finally: WxeFinallyBlock
+    {
+      SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
+
+      void Step1()
+      {
+        Function.Var2 = "finally";
+      }
       WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
     }
   }

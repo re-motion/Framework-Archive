@@ -276,6 +276,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\UI\WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "UI\HtmlHeadAppender.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
