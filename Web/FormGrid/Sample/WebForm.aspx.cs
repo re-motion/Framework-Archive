@@ -76,13 +76,13 @@ public class WebForm :
     //  This would either have to happen during page initialization
     //  or dynamically when the interface methods are called.
 
-    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[MainFormGrid.ID];
+    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[MainFormGrid.UniqueID];
 
     //  This row should be hidden
     hiddenRows.Add (FirstNameField.ID);
   
     FormGridRowInfoCollection newRows = 
-        (FormGridRowInfoCollection)_listOfFormGridRowInfos[MainFormGrid.ID];
+        (FormGridRowInfoCollection)_listOfFormGridRowInfos[MainFormGrid.UniqueID];
 
     TextBox textBox = new TextBox();
     textBox.ID = "MyNewTextBox";
@@ -161,10 +161,10 @@ public class WebForm :
   /// </summary>
   /// <param name="table"></param>
   /// <returns></returns>
-  public virtual StringCollection GetHiddenRows (string table)
+  public virtual StringCollection GetHiddenRows (string tableUniqueID)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection) _listOfHiddenRows[tableUniqueID];
   }
 
   /// <summary>
@@ -172,10 +172,10 @@ public class WebForm :
   /// </summary>
   /// <param name="table"></param>
   /// <returns></returns>
-  public virtual FormGridRowInfoCollection GetAdditionalRows (string table)
+  public virtual FormGridRowInfoCollection GetAdditionalRows (string tableUniqueID)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[tableUniqueID];
   }
 
   /// <summary>
