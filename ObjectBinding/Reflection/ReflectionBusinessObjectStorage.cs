@@ -73,8 +73,13 @@ public class ReflectionBusinessObjectStorage
 
   public static ReflectionBusinessObject CreateObject (Type concreteType)
   {
+    return CreateObject (concreteType, Guid.NewGuid());
+  }
+
+  public static ReflectionBusinessObject CreateObject (Type concreteType, Guid id)
+  {
     ReflectionBusinessObject obj = (ReflectionBusinessObject) Activator.CreateInstance (concreteType);
-    obj._id = Guid.NewGuid();
+    obj._id = id;
     AddToIdentityMap (obj);
     return obj;
   }

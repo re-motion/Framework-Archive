@@ -38,11 +38,12 @@ public class WebForm1 : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Person person = Person.GetObject (new Guid(0,0,0,0,0,0,0,0,0,0,1));
+    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
+    Person person = Person.GetObject (personID);
     Person partner;
     if (person == null)
     {
-      person = Person.CreateObject();
+      person = Person.CreateObject (personID);
       person.FirstName = "Hugo";
       person.LastName = "Meier";
       person.DateOfBirth = new DateTime (1959, 4, 15);
