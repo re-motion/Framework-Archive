@@ -58,7 +58,7 @@ public class QueryManager
     {
       StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
       DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
-      return _clientTransaction.GetLoadedDomainObjects (dataContainers, query.CollectionType);  
+      return _clientTransaction.MergeLoadedDomainObjects (dataContainers, query.CollectionType);  
     }    
   }
 }
