@@ -6,6 +6,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//Documentation: All done
+
 /// <summary>
 /// Base class for all objects that are persisted by the framework.
 /// </summary>
