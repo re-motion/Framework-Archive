@@ -1617,7 +1617,11 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
           }
 
           LoadMarkersIntoCell (formGridRow);
-          LoadValidationMessagesIntoCell (formGridRow);
+          if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
+              ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
+          {
+            LoadValidationMessagesIntoCell (formGridRow);
+          }
         }
 
         if (!formGridRow.CheckVisibility())
