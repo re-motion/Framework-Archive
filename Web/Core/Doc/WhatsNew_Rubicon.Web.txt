@@ -1,3 +1,11 @@
+1.2.6.0
+=======
+
+- Rubicon.Web.UI.Controls.WebLinkButton
+  * Neue Klasse
+  * Bietet einen AccessKey-Aware LinkButton an.
+    Der AccessKey kann direkt in den Text codiert werden mittels des Prefixes '&'.
+    
 1.2.5.0
 =======
 
