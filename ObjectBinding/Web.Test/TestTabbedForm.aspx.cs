@@ -9,7 +9,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Microsoft.Web.UI.WebControls;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.Controls;
@@ -17,6 +16,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
+using Rubicon.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -28,7 +28,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected System.Web.UI.WebControls.LinkButton CancelButton;
   private IDataEditControl[] _dataEditControls;
   protected Rubicon.Web.UI.Controls.MultiPage PagesMultiPage;
-  protected Rubicon.Web.UI.Controls.TabStrip PagesTabStrip;
+  protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected System.Web.UI.WebControls.Button ValidateButton;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
@@ -41,12 +41,9 @@ public class TestTabbedForm : TestWxeBasePage
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    if (! IsPostBack)
-    {
-      // add tabs 
-      AddTab ("TestTabbedPersonDetailsUserControl", "Person Details");
-      AddTab ("TestTabbedPersonJobsUserControl", "Jobs");
-    }
+    // add tabs 
+    AddTab ("TestTabbedPersonDetailsUserControl", "Person Details");
+    AddTab ("TestTabbedPersonJobsUserControl", "Jobs");
 
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages
@@ -63,15 +60,14 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void AddTab (string id, string text)
   {
-    Tab tab = new Tab ();
+    PageViewTab tab = new PageViewTab ();
     tab.Text = text;
-    tab.ID = id + "_tab";
-    tab.TargetID = id + "_view";
+    tab.TabID = id + "_tab";
+    tab.Target = id + "_view";
+    tab.MultiPage = PagesMultiPage.UniqueID;
     PagesTabStrip.Items.Add (tab);
     
-    TabSeparator seperator = new TabSeparator ();
-    seperator.DefaultStyle.Add ("width", "10px");
-    PagesTabStrip.Items.Add (seperator);
+    PagesTabStrip.Items.Add (WebTab.GetSeparator());
   }
 
   private IDataEditControl AddPage (string id, string path)
@@ -121,7 +117,6 @@ public class TestTabbedForm : TestWxeBasePage
 	{    
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-    this.ValidateButton.Click += new System.EventHandler(this.ValidateButton_Click);
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 
