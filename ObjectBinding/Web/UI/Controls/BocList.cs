@@ -136,6 +136,7 @@ public class BocList:
     ///   Tests whether the specified object is a <see cref="SortingOrderEntry"/> structure 
     ///   and is equivalent to this <see cref="SortingOrderEntry"/> structure.
     /// </summary>
+    /// <remarks> Required for identifying the <see cref="SortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
     /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Equals/*' />
     public override bool Equals (object obj)
     {
@@ -1049,15 +1050,23 @@ public class BocList:
       }
     }
 
-    string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
-    string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
+    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+    string icon = "null";
+    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
+      icon =  "'" + menuItem.Icon + "'";
+    string disabledIcon = "null";
+    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.DisabledIcon))
+      disabledIcon =  "'" + menuItem.DisabledIcon + "'";
+    string text = showText ? "'" +  menuItem.Text + "'" : "null";
+
     stringBuilder.AppendFormat (
-        "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7}, {8})",
+        "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 
         menuItem.Category, 
-        menuItem.Text, 
+        text, 
         icon, 
-        iconDisabled, 
+        disabledIcon, 
         (int) menuItem.RequiredSelection,
         menuItem.IsDisabled ? "true" : "false",
         href,
@@ -1066,19 +1075,24 @@ public class BocList:
 
   private void RenderListMenuItem (HtmlTextWriter writer, MenuItem menuItem, string menuID, int index)
   {
+    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+
     writer.AddAttribute (HtmlTextWriterAttribute.Id, menuID + "_" + index.ToString());
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
-    if (! StringUtility.IsNullOrEmpty (menuItem.Icon))
+    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
       writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.AddStyleAttribute ("vertical-align", "middle");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
-      writer.Write (c_whiteSpace);
+      if (showText)
+        writer.Write (c_whiteSpace);
     }
-    writer.Write (menuItem.Text);
+    if (showText)
+      writer.Write (menuItem.Text);
     writer.RenderEndTag();
     writer.RenderEndTag();
   }

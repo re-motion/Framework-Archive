@@ -3,12 +3,12 @@
 
 - BocList
   * OptionsMenu und ListMenu unterstützen WxeCommands
-  * OptionsMenu und ListMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
+  * OptionsMenu und ListMenu: IconDisabled zu DisabledIcon geändert.
+  * OptionsMenu und ListMenu: Neue Property: Style.
   * BugFix: Sortieren hat nur bedingt auf Änderungen der Sortierreihenfolge reagiert.
   
 - BocReferenceValue
   * OptionsMenu integriert
-  * OptionsMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
 
 - BocBooleanValue
   * BugFix: Die Description Werte wurden jeweils vom ersten BocBooleanValue Control auf der Seite übernommen.
