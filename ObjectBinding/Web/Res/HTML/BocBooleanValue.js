@@ -1,33 +1,106 @@
-var _trueValue;
-var _falseValue;
-var _nullValue;
+//  BocBooleanValue.js contains client side scripts used by BocBooleanValue.
 
-function SetValues (trueValue, falseValue, nullValue)
+//  The string representation of the true, false, and null values.
+var _bocBooleanValue_trueValue;
+var _bocBooleanValue_falseValue;
+var _bocBooleanValue_nullValue;
+
+//  The descriptions used for the true, false, and null values
+var _bocBooleanValue_trueDescription;
+var _bocBooleanValue_falseDescription;
+var _bocBooleanValue_nullDescription;
+
+//  The descriptions used to represent the true, false, and null values
+var _bocBooleanValue_trueIconUrl;
+var _bocBooleanValue_falseIconUrl;
+var _bocBooleanValue_nullIconUrl;
+
+//  Initializes the strings used to represent the true, false and null values.
+//  Call this method once in a startup script.
+function BocBooleanValue_InitializeValues (
+  trueValue, 
+  falseValue, 
+  nullValue, 
+  trueDescription,
+  falseDescription,
+  nullDescription,
+  trueIconUrl, 
+  falseIconUrl, 
+  nullIconUrl)
 {
-  _trueValue = trueValue;
-  _falseValue = falseValue;
-  _nullValue = nullValue;
+  _bocBooleanValue_trueValue = trueValue;
+  _bocBooleanValue_falseValue = falseValue;
+  _bocBooleanValue_nullValue = nullValue;
+
+  _bocBooleanValue_trueDescription = trueDescription;
+  _bocBooleanValue_falseDescription = falseDescription;
+  _bocBooleanValue_nullDescription = nullDescription;
+
+  _bocBooleanValue_trueIconUrl = trueIconUrl;
+  _bocBooleanValue_falseIconUrl = falseIconUrl;
+  _bocBooleanValue_nullIconUrl = nullIconUrl;
 }
 
-function SelectNextCheckboxValue (checkBox, label, hidden, isRequired)
+// Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
+// iconID: The ID of the icon representing the tri-state checkbox.
+// labelID: The ID of the label containing the description for the value. null for no description.
+// hiddenID: The ID of the hidden input field used to store the value between postbacks.
+// isRequired: true to enqable the null value, false to limit the choices to true and false.
+function BocBooleanValue_SelectNextCheckboxValue (iconID, labelID, hiddenID, isRequired)
 {
-  var oldValue = document.all['hidden'].value;
+  var trueValue = _bocBooleanValue_trueValue;
+  var falseValue = _bocBooleanValue_falseValue;
+  var nullValue = _bocBooleanValue_nullValue;
+  
+  var hiddenField = document.all[hiddenID];
+  var icon = document.all[iconID];
+  var label = null;
+  if (labelID != null)
+    label = document.all[labelID];
+  
+  var oldValue = hiddenField.value;
   var newValue;
   
+  //  Select the next value.
+  //  true -> false -> null -> true
   if (isRequired)
   {
     if (oldValue == falseValue)
-      newValue = nullValue + "';
+      newValue = trueValue;
+    else
+      newValue = falseValue;
+  }   
+  else
+  {
+    if (oldValue == falseValue)
+      newValue = nullValue;
     else if (oldValue == nullValue)
       newValue = trueValue;
     else
       newValue = falseValue;
   }
-  else
+ 
+ // Update the controls
+  hiddenField.value = newValue;
+  if (newValue == falseValue)
   {
-    if (oldValue == falseValue)
-      newValue = trueValue;
-    else
-      newValue = falseValue;
-  }    
+    icon.src = _bocBooleanValue_falseIconUrl;
+    icon.alt = _bocBooleanValue_falseDescription;
+    if (label != null)
+      label.innerText = _bocBooleanValue_falseDescription;
+  }
+  else if (newValue == nullValue)
+  {
+    icon.src = _bocBooleanValue_nullIconUrl;
+    icon.alt = _bocBooleanValue_nullDescription;
+    if (label != null)
+      label.innerText = _bocBooleanValue_nullDescription;
+  }
+  else if (newValue == trueValue)
+  {
+    icon.src = _bocBooleanValue_trueIconUrl;
+    icon.alt = _bocBooleanValue_trueDescription;
+    if (label != null)
+      label.innerText = _bocBooleanValue_trueDescription;
+  }
 }

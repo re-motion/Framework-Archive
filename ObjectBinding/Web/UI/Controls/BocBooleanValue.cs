@@ -100,10 +100,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
   /// </summary>
-  /// <remarks>
-  ///   If the <see cref="ListControl"/> could not be created from <see cref="ListControlStyle"/>,
-  ///   the control is set to read-only.
-  /// </remarks>
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnInit(EventArgs e)
   {

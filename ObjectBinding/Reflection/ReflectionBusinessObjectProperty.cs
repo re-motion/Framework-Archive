@@ -34,13 +34,13 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
         return new ReflectionBusinessObjectDateProperty (propertyInfo, itemType, isList, isNullableType);
     }
 
-    if (propertyInfo.PropertyType == typeof (string))
+    if (propertyInfo.PropertyType == typeof (string) || propertyInfo.PropertyType == typeof (string[]))
       return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
-    else if (itemType == typeof (int))
+    else if (itemType == typeof (int) || propertyInfo.PropertyType == typeof (int[]))
       return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
-    else if (itemType == typeof (bool))
+    else if (itemType == typeof (bool) || propertyInfo.PropertyType == typeof (bool[]))
       return new ReflectionBusinessObjectBooleanProperty (propertyInfo, itemType, isList, isNullableType);
-    else if (propertyInfo.PropertyType == typeof (DateTime))
+    else if (propertyInfo.PropertyType == typeof (DateTime) || propertyInfo.PropertyType == typeof (DateTime[]))
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType.IsEnum)
       return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, isList);

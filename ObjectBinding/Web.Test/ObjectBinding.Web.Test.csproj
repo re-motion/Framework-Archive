@@ -209,7 +209,7 @@
                 <File
                     RelPath = "TestBooleanValuePage.aspx.cs"
                     DependentUpon = "TestBooleanValuePage.aspx"
-                    SubType = "ASPXCodeBehind"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -263,6 +263,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestMultilineTextValuePage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestMultilineTextValuePage.aspx.cs"
+                    DependentUpon = "TestMultilineTextValuePage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestMultilineTextValuePage.aspx.resx"
+                    DependentUpon = "TestMultilineTextValuePage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestReferenceValuePage.aspx"
                     BuildAction = "Content"
                 />
@@ -284,7 +299,7 @@
                 <File
                     RelPath = "TestTextValuePage.aspx.cs"
                     DependentUpon = "TestTextValuePage.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
