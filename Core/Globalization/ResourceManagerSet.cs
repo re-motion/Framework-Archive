@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Text;
+using Rubicon.Collections;
 
 namespace Rubicon.Globalization
 {
@@ -13,42 +15,48 @@ namespace Rubicon.Globalization
 /// </summary>
 public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
 {
-  /// <summary>
-  ///   Combines several ResourceManagerSets to a single ResourceManagerSet, starting with the first entry of the first set.
-  /// </summary>
-  /// <param name="resourceManagerSets"> The resource manager sets, starting with the least specific. </param>
-  public static ResourceManagerSet Combine (params ResourceManagerSet[] resourceManagerSets)
-  {
-    ArrayList list = new ArrayList();
-    foreach (ResourceManagerSet set in resourceManagerSets)
-      list.AddRange (set.InnerList);
-
-    return new ResourceManagerSet ((IResourceManager[]) list.ToArray (typeof (IResourceManager)));
-  }
-
   private string _name;
 
   /// <summary>
-  ///   Creates a new ResourceManagerSet.
+  ///   Combines several IResourceManager instances to a single ResourceManagerSet, starting with the first entry of the first set.
   /// </summary>
-  /// <param name="resourceManagers"> The resource managers, starting with the least specific. </param>
+  /// <remarks>
+  ///   For parameters that are ResourceManagerSet instances, the contained IResourceManagers are added directly.
+  /// </remarks>
+  /// <example>
+  ///   <para>
+  ///     Given the following parameter list of resource managers (rm) and resource manager sets (rmset):
+  ///   </para><para>
+  ///     rm1, rm2, rmset (rm3, rm4, rm5), rm6, rmset (rm7, rm8)
+  ///   </para><para>
+  ///     The following resource manager set is created:
+  ///   </para><para>
+  ///     rmset (rm1, rm2, rm3, rm4, rm5, rm6, rm7, rm8)
+  ///   </para>
+  /// </example>
+  /// <param name="resourceManagerSets"> The resource manager sets, starting with the least specific. </param>
 	public ResourceManagerSet (params IResourceManager[] resourceManagers)
 	{
-    ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
+    ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("resourceManagers", resourceManagers);
 
-    StringBuilder sb = new StringBuilder (30 * resourceManagers.Length);
-    for (int i = 0; i < resourceManagers.Length; ++i)
+    TypedArrayList list = new TypedArrayList (typeof (IResourceManager));
+    foreach (IResourceManager rm in resourceManagers)
     {
-      if (resourceManagers[i] == null)
-        throw new ArgumentNullException ("resourceManagers[" + i + "]");
-
-      if (i > 0)
-        sb.Append (", ");
-      sb.Append (resourceManagers[i].Name);
+      ResourceManagerSet rmset = rm as ResourceManagerSet;
+      if (rmset != null)
+        list.AddRange (rmset.InnerList);
+      else
+        list.Add (rm);
     }
+
+    IResourceManager[] concreteResourceManagers = (IResourceManager[]) list.ToArray ();
+
+    SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * concreteResourceManagers.Length);
+    foreach (IResourceManager rm in concreteResourceManagers)
+      sb.Append (rm.Name);
     _name = sb.ToString();
 
-    InnerList.AddRange (resourceManagers);
+    InnerList.AddRange (concreteResourceManagers);
 	}
 
   public IResourceManager this[int index]
