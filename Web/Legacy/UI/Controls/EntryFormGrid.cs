@@ -171,16 +171,28 @@ public class EntryField: Control
 		}
 		else
 		{
-			if (this.IsRequired)
-			{
-				writer.WriteLine ("<img src=\"../Images/field-required.gif\" alt=\"Dieses Feld muss ausgef&uuml;llt sein\" "
-							+ "width=\"12\" height=\"20\" border=\"0\"/>");
-			}
-			else
-			{
-				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
-			}
-
+      if (validatorsInvalid)
+      {
+        // at least one Validator is invalid
+        // => display "invalid field indicator" which has higher priority than the "required field indicator"
+        writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
+          + "width=\"12\" height=\"20\" border=\"0\"/>");
+      }
+      else
+      {
+        // all Validators are valid
+        // => display the "required field indicator" if requested
+        if (this.IsRequired)
+        {
+          writer.WriteLine ("<img src=\"../Images/field-required.gif\" alt=\"Dieses Feld muss ausgef&uuml;llt werden\" "
+            + "width=\"12\" height=\"20\" border=\"0\"/>");
+        }
+        else
+        {
+          writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
+        }
+      }
+      
 			if (this.InfoUrl != String.Empty)
 			{
 				writer.WriteLine (
@@ -193,16 +205,6 @@ public class EntryField: Control
 			{
 				writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
 			}
-
-      if (validatorsInvalid)
-      {
-        writer.WriteLine ("<img src=\"../Images/field-error.gif\" alt=\"" + validatorMessages + "\""
-          + "width=\"12\" height=\"20\" border=\"0\"/>");
-      }
-      else
-      {
-        writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\"/>");
-      }
 		}
 
 		writer.WriteLine ("</td><td>");
