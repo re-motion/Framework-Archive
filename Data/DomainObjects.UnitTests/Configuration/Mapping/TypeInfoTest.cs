@@ -8,8 +8,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
 [TestFixture]
-// TODO: rename this test to typeinfo test and move it to root namespace!
-public class TypeMappingTest
+public class TypeInfoTest
 {
   // types
 
@@ -25,7 +24,7 @@ public class TypeMappingTest
 
   // construction and disposing
 
-  public TypeMappingTest ()
+  public TypeInfoTest ()
   {
   }
 
