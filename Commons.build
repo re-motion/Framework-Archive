@@ -444,6 +444,9 @@
         <includes name="Rubicon.Core.dll" />
         <includes name="Rubicon.Development.dll" />
         <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Data.DomainObjects.dll" />
+        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
@@ -490,6 +493,9 @@
         <includes name="Rubicon.Core.dll" />
         <includes name="Rubicon.Development.dll" />
         <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Data.DomainObjects.dll" />
+        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
