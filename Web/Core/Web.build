@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.Web.UI">  
+<project xmlns="nant-schema" name="Rubicon.Web">  
 
   <target name="build" description="perform a build">
   
@@ -31,7 +31,7 @@
         <includes asis="true" name="System.Windows.Forms.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web.UI">
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web">
         <includes name="Globalization/*.resx" />
       </resources>
     </csc>
