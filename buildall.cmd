@@ -1,5 +1,5 @@
 rem nant incversion
-nant clean
+nant clean resources
       if errorlevel 1 pause "build error"
 nant setdebug all alltests
       if errorlevel 1 pause "build error"
