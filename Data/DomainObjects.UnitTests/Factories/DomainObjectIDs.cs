@@ -42,6 +42,19 @@ public sealed class DomainObjectIDs
   public static readonly ObjectID Employee5 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "Employee", new Guid ("{43329F84-D8BB-4988-BFD2-96D4F48EE5DE}"));
 
+  // Supervisor: -
+  // Subordinates: Employee7
+  // Computer: -
+  public static readonly ObjectID Employee6 = new ObjectID (
+    DatabaseTest.c_testDomainProviderID, "Employee", new Guid ("{3A24D098-EAAD-4dd7-ADA2-932D9B6935F1}"));
+
+
+  // Supervisor: Employee6
+  // Subordinates: -
+  // Computer: -
+  public static readonly ObjectID Employee7 = new ObjectID (
+    DatabaseTest.c_testDomainProviderID, "Employee", new Guid ("{DBD9EA74-8C97-4411-AC02-9205D1D6D031}"));
+
   #endregion
 
   #region Computer
@@ -135,9 +148,16 @@ public sealed class DomainObjectIDs
 
   // IndustrialSector: IndustrialSector2
   // Ceo: Ceo5
-  // Orders: Order3
+  // Orders: Order2
   public static readonly ObjectID Customer3 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "Customer", new Guid ("{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}"));
+
+
+  // IndustrialSector: -
+  // Ceo: Ceo6
+  // Orders: Order3, Order4
+  public static readonly ObjectID Customer4 = new ObjectID (
+    DatabaseTest.c_testDomainProviderID, "Customer", new Guid ("{B3F0A333-EC2A-4ddd-9035-9ADA34052450}"));
   
   #endregion
 
@@ -223,6 +243,20 @@ public sealed class DomainObjectIDs
   // Official: Official1
   public static readonly ObjectID OrderWithoutOrderItem = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "Order", new Guid ("{F4016F41-F4E4-429e-B8D1-659C8C480A67}"));
+
+  // OrderTicket: OrderTicket4
+  // OrderItems: OrderItem4
+  // Customer: Customer4
+  // Official: Official1
+  public static readonly ObjectID Order3 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "Order", new Guid ("{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}"));
+
+  // OrderTicket: OrderTicket5
+  // OrderItems: OrderItem5
+  // Customer: Customer4
+  // Official: Official1
+  public static readonly ObjectID Order4 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "Order", new Guid ("{90E26C86-611F-4735-8D1B-E1D0918515C2}"));
   
   #endregion
 
@@ -239,6 +273,14 @@ public sealed class DomainObjectIDs
   // Order: Order2
   public static readonly ObjectID OrderItem3 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "OrderItem", new Guid ("{0D7196A5-8161-4048-820D-B1BBDABE3293}"));
+
+  // Order: Order3
+  public static readonly ObjectID OrderItem4 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "OrderItem", new Guid ("{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}"));
+
+  // Order: Order4
+  public static readonly ObjectID OrderItem5 = new ObjectID (
+     DatabaseTest.c_testDomainProviderID, "OrderItem", new Guid ("{EA505094-770A-4505-82C1-5A4F94F56FE2}"));
   
   #endregion
 
@@ -255,6 +297,14 @@ public sealed class DomainObjectIDs
   // Order: Order2
   public static readonly ObjectID OrderTicket3 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "OrderTicket", new Guid ("{BCF6C5F6-323F-4471-9CA5-7DF0A48C7A59}"));
+
+  // Order: Order3
+  public static readonly ObjectID OrderTicket4 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "OrderTicket", new Guid ("{6768DB2B-9C66-4e2f-BBA2-89C56718FF2B}"));
+
+  // Order: Order4
+  public static readonly ObjectID OrderTicket5 = new ObjectID (
+    DatabaseTest.c_testDomainProviderID, "OrderTicket", new Guid ("{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}"));
 
   #endregion
 

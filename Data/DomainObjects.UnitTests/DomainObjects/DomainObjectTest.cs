@@ -250,5 +250,96 @@ public class DomainObjectTest : ClientTransactionBaseTest
     int invalidName = 123;
     customer.NamePropertyOfInvalidType = invalidName;
   }
+
+  [Test]
+  public void TestAllOperations ()
+  {
+    Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+    Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+    Customer customer1 = order1.Customer;
+    Customer customer4 = Customer.GetObject (DomainObjectIDs.Customer4);
+
+    Order order3 = customer4.Orders[DomainObjectIDs.Order3];
+    Order order4 = customer4.Orders[DomainObjectIDs.Order4];
+
+    OrderTicket orderTicket1 = order1.OrderTicket;
+    OrderTicket orderTicket3 = order2.OrderTicket;
+
+    Official official1 = order1.Official;
+
+    OrderItem orderItem1 = (OrderItem) order1.OrderItems[DomainObjectIDs.OrderItem1];
+    OrderItem orderItem2 = (OrderItem) order1.OrderItems[DomainObjectIDs.OrderItem2];
+    OrderItem orderItem4 = (OrderItem) order3.OrderItems[DomainObjectIDs.OrderItem4];
+
+    order1.Delete ();
+    orderItem1.Delete ();
+    orderItem2.Delete ();
+  
+    order3.OrderNumber = 7;
+
+    Order newOrder = new Order ();
+    newOrder.DeliveryDate = DateTime.Now;
+    newOrder.Official = official1;
+    customer1.Orders.Add (newOrder);
+
+    newOrder.OrderTicket = orderTicket1;
+    orderTicket1.FileName = @"C:\NewFile.tif";
+
+    OrderItem newOrderItem1 = new OrderItem ();
+    newOrderItem1.Position = 1;
+    newOrder.OrderItems.Add (newOrderItem1);
+
+    OrderItem newOrderItem2 = new OrderItem ();
+    newOrderItem2.Position = 2;
+    order3.OrderItems.Add (newOrderItem2);
+
+    Customer newCustomer = new Customer ();
+    newCustomer.Ceo = new Ceo ();
+    order2.Customer = newCustomer;
+
+    orderTicket3.FileName = @"C:\NewFile.gif";
+
+    Order deletedNewOrder = new Order ();
+    deletedNewOrder.Delete ();
+
+    ClientTransaction.Current.Commit ();
+
+    // expectation: no exception
+  }
+
+  [Test]
+  public void TestAllOperationsWithHirarchy ()
+  {
+    Employee newSupervisor1 = new Employee ();
+    Employee newSubordinate1 = new Employee ();
+    newSubordinate1.Supervisor = newSupervisor1;
+
+    Employee supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
+    Employee subordinate4 = Employee.GetObject (DomainObjectIDs.Employee4);
+
+    Employee supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
+    Employee subordinate3 = Employee.GetObject (DomainObjectIDs.Employee3);
+    supervisor2.Supervisor = supervisor1;
+    supervisor2.Name = "New name of supervisor";
+    subordinate3.Name = "New name of subordinate";
+
+    Employee supervisor6 = Employee.GetObject (DomainObjectIDs.Employee6);
+    Employee subordinate7 = Employee.GetObject (DomainObjectIDs.Employee7);
+
+    Employee newSubordinate2 = new Employee ();
+    Employee newSubordinate3 = new Employee ();
+
+    newSupervisor1.Supervisor = supervisor2;
+    newSubordinate2.Supervisor = supervisor1;
+    newSubordinate3.Supervisor = supervisor6;
+
+    supervisor1.Delete ();
+    subordinate4.Delete ();
+
+    ClientTransaction.Current.Commit ();
+
+    // expectation: no exception
+  }
 }
 }

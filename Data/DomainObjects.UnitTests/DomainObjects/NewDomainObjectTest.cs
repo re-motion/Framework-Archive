@@ -253,7 +253,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (1, order.OrderItems.Count);
     Assert.AreSame (orderItem, order.OrderItems[0]);
     Assert.AreSame (official, order.Official);
-    Assert.AreEqual (4, official.Orders.Count);
+    Assert.AreEqual (6, official.Orders.Count);
     Assert.IsNotNull (official.Orders[orderID]);
 
     Assert.AreEqual ("Ford Prefect", ceo.Name);

@@ -32,7 +32,8 @@ public class DataManager
     DataContainerCollection changedDataContainers = new DataContainerCollection ();
     foreach (DomainObject domainObject in GetChangedDomainObjects ())
     {
-      _relationEndPointMap.CheckMandatoryRelations (domainObject);
+      if (domainObject.State != StateType.Deleted)
+        _relationEndPointMap.CheckMandatoryRelations (domainObject);
 
       if (domainObject.DataContainer.State != StateType.Unchanged)
         changedDataContainers.Add (domainObject.DataContainer);

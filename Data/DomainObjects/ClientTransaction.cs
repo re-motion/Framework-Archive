@@ -37,7 +37,6 @@ public class ClientTransaction
   public event CommittedEventHandler Committed;
   
   private DataManager _dataManager;
-  private PersistenceManager _persistenceManager;
 
   // construction and disposing
 
@@ -51,9 +50,9 @@ public class ClientTransaction
   public void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
-    using (_persistenceManager)
+    using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      _persistenceManager.Save (changedDataContainers);
+      persistenceManager.Save (changedDataContainers);
     }
 
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
@@ -72,9 +71,9 @@ public class ClientTransaction
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
     
-    using (_persistenceManager)
+    using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainer newDataContainer = _persistenceManager.CreateNewDataContainer (classDefinition); 
+      DataContainer newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition); 
       _dataManager.RegisterNewDataContainer (newDataContainer);
 
       return newDataContainer;
@@ -134,9 +133,9 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    using (_persistenceManager)
+    using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
+      DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
 
       _dataManager.RegisterExistingDataContainer (dataContainer);
 
@@ -152,9 +151,9 @@ public class ClientTransaction
 
     DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
-    using (_persistenceManager)
+    using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
+      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (
           domainObject.DataContainer, relationEndPointID);
 
       if (relatedDataContainer != null)
@@ -175,9 +174,9 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    using (_persistenceManager)
+    using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPointID);
+      DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
 
       DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
       _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
@@ -217,15 +216,9 @@ public class ClientTransaction
     get { return _dataManager; }
   }
 
-  protected PersistenceManager PersistenceManager 
-  {
-    get { return _persistenceManager; }
-  }
-
   private void Initialize ()
   {
     _dataManager = new DataManager (this);
-    _persistenceManager = new PersistenceManager ();
   }
 }
 }
