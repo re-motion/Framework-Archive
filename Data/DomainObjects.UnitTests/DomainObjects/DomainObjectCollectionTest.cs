@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
@@ -714,6 +715,24 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void ChangeObjectThroughIListInterface ()
+  {
+    IList list = (IList) _collection;
+    list[0] = _customer3NotInCollection;
+
+    Assert.AreSame (_customer3NotInCollection, list[0]);
+    Assert.AreEqual (2, list.Count);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentTypeException))]
+  public void ChangeToObjectOfInvalidType ()
+  {
+    IList list = (IList) _collection;
+    list[0] = new object ();
+  }
+
+  [Test]
   public void InsertEvents ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
@@ -729,7 +748,65 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
     Assert.AreSame (_customer1, eventReceiver.AddedDomainObject);
   }
-  
+
+  [Test]
+  public void ChangeEvents ()
+  {
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (_collection);
+
+    _collection[0] = _customer3NotInCollection;
+
+    ChangeState[] expectedStates = new ChangeState[] 
+    {
+      new CollectionChangeState (_collection, _customer1, "1. Removing event"),
+      new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event"),
+      new CollectionChangeState (_collection, _customer1, "3. Removed event"),
+      new CollectionChangeState (_collection, _customer3NotInCollection, "4. Added event")
+    };
+
+    Assert.AreSame (_customer3NotInCollection, _collection[0]);
+    Assert.AreEqual (2, _collection.Count);
+
+    eventReceiver.Compare (expectedStates);
+  }
+
+  [Test]
+  public void ChangeEventsWithRemovalCancelled ()
+  {
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (_collection, 1);
+
+    _collection[0] = _customer3NotInCollection;
+
+    ChangeState[] expectedStates = new ChangeState[] 
+    {
+      new CollectionChangeState (_collection, _customer1, "1. Removing event")
+    };
+
+    Assert.AreSame (_customer1, _collection[0]);
+    Assert.AreEqual (2, _collection.Count);
+
+    eventReceiver.Compare (expectedStates);
+  }
+
+  [Test]
+  public void ChangeEventsWithAdditionCancelled ()
+  {
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (_collection, 2);
+
+    _collection[0] = _customer3NotInCollection;
+
+    ChangeState[] expectedStates = new ChangeState[] 
+    {
+      new CollectionChangeState (_collection, _customer1, "1. Removing event"),
+      new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event")
+    };
+
+    Assert.AreSame (_customer1, _collection[0]);
+    Assert.AreEqual (2, _collection.Count);
+
+    eventReceiver.Compare (expectedStates);
+  }
+ 
   private DomainObjectCollection CreateCustomerCollection ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
