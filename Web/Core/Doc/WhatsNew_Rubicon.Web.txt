@@ -1,3 +1,13 @@
+3.1.8.0
+=======
+
+- ResourceDispatcher:
+  * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
+    zu unterstützen.
+  * Methoden, die noch direkt den FCL ResourceManager unterstützen, sind als obsolete
+    gekennzeichnet.
+    
+    
 3.1.7.1
 =======
 
