@@ -155,7 +155,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      string newInternalValue = PageUtility.GetRequestCollection(Page)[_dropDownList.UniqueID];
+      string newInternalValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
 
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;

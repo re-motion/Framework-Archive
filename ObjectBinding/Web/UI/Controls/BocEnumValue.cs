@@ -146,7 +146,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     if (! IsDesignMode)
     {
-      string newInternalValue = PageUtility.GetRequestCollection(Page)[_listControl.UniqueID]; // gets enum identifier
+      string newInternalValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID); // gets enum identifier
 
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;

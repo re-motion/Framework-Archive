@@ -149,7 +149,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      string newValue = PageUtility.GetRequestCollection(Page)[_hiddenField.UniqueID];
+      string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
       _newValue = NaBoolean.Parse (newValue);
 
       if (newValue != null && _newValue != _value)

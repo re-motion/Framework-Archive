@@ -119,7 +119,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      _newInternalValue = PageUtility.GetRequestCollection(Page)[_internalValueBox.UniqueID];
+      _newInternalValue = PageUtility.GetRequestCollectionItem (Page, _internalValueBox.UniqueID);
       
       if (_newInternalValue != null && _newInternalValue != _internalValue)
         _isDirty = true;

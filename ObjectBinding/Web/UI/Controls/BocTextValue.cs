@@ -68,7 +68,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-
     _textBox.ID = this.ID + "_Boc_TextBox";
     _textBox.EnableViewState = false;
     Controls.Add (_textBox);
@@ -79,7 +78,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      string newValue = PageUtility.GetRequestCollection(Page)[_textBox.UniqueID];
+      string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
       if (newValue != null)
         _newText = newValue;
     }

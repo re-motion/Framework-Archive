@@ -30,10 +30,10 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
-  BusinessObjectBoundModifiableWebControl, 
-  IResourceDispatchTarget, 
-  IPostBackEventHandler, 
-  IComparer
+    BusinessObjectBoundModifiableWebControl, 
+    IResourceDispatchTarget, 
+    IPostBackEventHandler, 
+    IComparer
 {
   //  constants
   private const string c_dataRowIDSuffix = "_Boc_Row_";
@@ -367,16 +367,19 @@ public class BocList:
     {
       string dataRowCheckBoxFilter = ID + c_dataRowCheckBoxIDSuffix;
       string titleRowCheckBoxFilter = ID + c_titleRowCheckBoxIDSuffix;
+
       NameValueCollection formVariables = PageUtility.GetRequestCollection(Page);
-
-      for (int i = 0; i < formVariables.Count; i++)
+      if (formVariables != null)
       {
-        string key = formVariables.Keys[i];
+        for (int i = 0; i < formVariables.Count; i++)
+        {
+          string key = formVariables.Keys[i];
 
-        if (key.StartsWith (dataRowCheckBoxFilter))
-          _checkBoxCheckedState[key] = true; 
-        else if (key == titleRowCheckBoxFilter)
-          _checkBoxCheckedState[key] = true; 
+          if (key.StartsWith (dataRowCheckBoxFilter))
+            _checkBoxCheckedState[key] = true; 
+          else if (key == titleRowCheckBoxFilter)
+            _checkBoxCheckedState[key] = true; 
+        }
       }
     }
   }

@@ -609,6 +609,14 @@ public class PageUtility
     else
       return page.Request.Form;
   }
+
+  public static string GetRequestCollectionItem (Page page, string name)
+  {
+    NameValueCollection collection = GetRequestCollection (page);
+    if (collection == null)
+      return null;
+    return collection[name];
+  }
 }
 
 [Serializable]
