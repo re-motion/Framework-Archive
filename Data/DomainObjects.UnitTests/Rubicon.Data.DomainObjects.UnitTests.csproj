@@ -294,12 +294,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Queries\QueryConfigurationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Queries\QueryDefinitionChecker.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Queries\StorageProviderConfigurationTest.cs"
+                    RelPath = "Configuration\Queries\QueryDefinitionCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -556,6 +561,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Factories\QueryFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Factories\StorageProviderDefinitionFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -656,7 +666,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Queries\QueryParameterCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Queries\QueryParameterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\QueryTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -37,9 +37,24 @@ public class QueryDefinitionCollection : CollectionBase
 
   // methods and properties
 
+  public QueryDefinition GetMandatory (string queryID)
+  {
+    if (!Contains (queryID))
+      throw CreateQueryConfigurationException ("QueryDefinition '{0}' does not exist.", queryID);
+
+    return this[queryID];
+  }
+
   private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
   {
     return new ArgumentException (string.Format (message, args), parameterName);
+  }
+
+  private QueryConfigurationException CreateQueryConfigurationException (
+      string message, 
+      params object[] args)
+  {
+    return new QueryConfigurationException (string.Format (message, args));
   }
 
   #region Standard implementation for "add-only" collections
