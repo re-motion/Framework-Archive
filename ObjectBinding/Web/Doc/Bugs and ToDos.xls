@@ -1,0 +1,31 @@
+BocItemCommand: 
+  Script Command. Implement ScriptCommandInfo and other logic required for Script Command
+
+BocColumnDefinition: 
+  Move long comment blocks to xml-file
+  
+BocColumnDefinitionSet: 
+  Move long comment blocks to xml-file
+
+BocBooleanValue:
+  Accessibility for Buttons (Alt-Tags)
+  
+BocDateTimeValue:
+  Try to extract the DatePickerButton functionality into a Control and add it to Rubicon.Web.UI.Controls.
+      See TODO comments in BocDateTimeValue for reference on what to move
+  DatePicker only actived for Internet Explorer 5.5 and higher
+  DatePicker only closes on DateClick if other Date selected
+      Problem: Calendar only offers a SelectionChanged Event.
+
+BocList:
+  Details View
+  IsDirty. Not required until details view.
+  Accessibility for Buttons (Alt-Tags)
+  Shift+Click (Start) - Shift+Click (Stop) selects range
+  TypeResolution using TypeUtility
+  RenderTableOpeningTag: Add a Browser Switch
+  
+BocReferenceValue: 
+  Menu like SharePoint for creating new items and stuff.
+  Page changes?
+  Link to DetailsPage?

@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   next to the image. Use the <see cref="ImageButton"/>, <see cref="Image"/>, and 
 ///   <see cref="Label"/> properties to access these controls directly.
 /// </remarks>
-// TODO: Accessibility for Buttons (Alt-Tags)
+// TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
