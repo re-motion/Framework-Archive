@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
@@ -162,6 +163,8 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
+    if (query.QueryType == QueryType.Collection)
+      throw new ArgumentException ("A collection query cannot be used with ExecuteScalarQuery.", "query");
 
     Connect ();
 
