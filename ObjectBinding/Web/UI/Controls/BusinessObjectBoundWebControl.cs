@@ -331,6 +331,8 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
   {
     get 
     {
+      if (IsReadOnly)
+        return false;
       if (_required != NaBooleanEnum.Undefined)
         return _required == NaBooleanEnum.True;
       Binding.EvaluateBinding();
