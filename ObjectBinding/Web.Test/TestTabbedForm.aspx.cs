@@ -42,8 +42,15 @@ public class TestTabbedForm : TestWxeBasePage
 	private void Page_Load(object sender, System.EventArgs e)
 	{
     // add tabs 
-    AddTab ("TestTabbedPersonDetailsUserControl", "Person Details");
-    AddTab ("TestTabbedPersonJobsUserControl", "Jobs");
+    AddTab ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"));
+    AddTab ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"));
+    AddTab ("1", "Test Tab 1", null);
+    AddTab ("2", "Test Tab 2", null);
+    AddTab ("3", "Test Tab 3", null);
+    AddTab ("4", "Test Tab 4", null);
+    AddTab ("5", "Test Tab 5", null);
+    AddTab ("6", "Test Tab 6", null);
+    AddTab ("7", "Test Tab 7", null);
 
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages
@@ -58,12 +65,13 @@ public class TestTabbedForm : TestWxeBasePage
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
 	}
 
-  private void AddTab (string id, string text)
+  private void AddTab (string id, string text, IconInfo icon)
   {
     MultiPageTab tab = new MultiPageTab ();
     tab.Text = text;
     tab.TabID = id + "_tab";
     tab.Target = id + "_view";
+    tab.Icon = icon;
     PagesTabStrip.Tabs.Add (tab);
     
     PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
