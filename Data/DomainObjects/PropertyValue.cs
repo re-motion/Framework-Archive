@@ -7,7 +7,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: Write summary for class
+//Documentation: All done
+
+/// <summary>
+/// Represents a property of a domain object that is persisted by the framework.
+/// </summary>
 public class PropertyValue
 {
   // types
@@ -113,6 +117,7 @@ public class PropertyValue
   /// </summary>
   /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
   /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
+  /// <exception cref="InvalidEnumDefinitionException"><i>definition</i> is a reference to an invalid enum.</exception>
   public PropertyValue (PropertyDefinition definition) : this (definition, GetDefaultValue (definition))
   {
   }
