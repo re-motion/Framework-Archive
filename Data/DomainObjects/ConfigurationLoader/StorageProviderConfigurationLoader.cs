@@ -75,13 +75,13 @@ public class StorageProviderConfigurationLoader : BaseLoader
   {
     string id = storageProviderNode.SelectSingleNode ("@id", NamespaceManager).InnerText;
     
-    Type storageProviderType = LoaderUtility.GetTypeFromNode (storageProviderNode, 
+    Type storageProviderType = LoaderUtility.GetType (storageProviderNode, 
         FormatXPath ("{0}:type"), NamespaceManager);
 
     XmlNode configurationNode = storageProviderNode.SelectSingleNode (FormatXPath (
         "{0}:configuration"), NamespaceManager);
 
-    Type storageProviderDefinitionType = LoaderUtility.GetTypeFromNode (
+    Type storageProviderDefinitionType = LoaderUtility.GetType (
         configurationNode, "@type", NamespaceManager);
 
     object storageProviderDefinitionObject = ReflectionUtility.CreateObject (
