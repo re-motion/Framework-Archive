@@ -70,7 +70,7 @@ public class WebForm1 :
   protected System.Web.UI.WebControls.CompareValidator Comparevalidator4;
   protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
   protected System.Web.UI.WebControls.Label Label1;
-  protected Rubicon.Web.UI.Controls.FormGridLabel AddressFieldLabel;
+  protected Rubicon.Web.UI.Controls.FormGridLabel AddressLabel;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
 	
   override protected void OnLoad(System.EventArgs e)
@@ -195,7 +195,7 @@ public class WebForm1 :
   protected override void OnPreRender (System.EventArgs e)
   {
     base.OnPreRender (e);
-    ResourceDispatcher.Dispatch (this);
+    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
   }
 	
   protected override void RenderChildren(HtmlTextWriter writer)

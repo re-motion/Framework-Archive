@@ -43,7 +43,7 @@
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td></TR>
   <TR>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td>
-    <TD><rwc:FormGridLabel id="AddressFieldLabel" runat="server" AssociatedControlID="AddressField"></rwc:FormGridLabel></TD>
+    <TD><rwc:FormGridLabel id="AddressLabel" runat="server" AssociatedControlID="AddressField"></rwc:FormGridLabel></TD>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td>
     <TD><asp:textbox id=AddressField runat="server" ReadOnly="True">Die Adresse ist Read-Only</asp:textbox></TD>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td></TR>

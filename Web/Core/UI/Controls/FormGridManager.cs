@@ -1790,7 +1790,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       HandleReadOnlyControls (formGridRow);
 
       CreateLabels (formGridRow);
-
     }
   }
 
