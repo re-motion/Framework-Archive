@@ -2,12 +2,11 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Collections;
-
+using System.Reflection;
 using Rubicon.Text;
 
 namespace Rubicon.Text.CommandLine
 {
-
 /// <summary>
 /// Provides methods for declaring command line syntax and providing values.
 /// </summary>
@@ -27,6 +26,7 @@ public class CommandLineParser
   {
     Arguments = new CommandLineArgumentCollection (this);
   }
+
 
   // properties and methods
 
@@ -58,65 +58,7 @@ public class CommandLineParser
   /// <summary>
   /// Splits a command line string into an array of command line arguments, separated by spaces.
   /// </summary>
-  /// <param name="commandLine">The command line (as available from <see cref="System.Environment.CommandLine"/>.)</param>
-  /// <param name="includeFirstArgument">If <c>true</c>, the first argument (which is usually the file name of the
-  /// program) is included, otherwise only the arguments after the first one are returned.</param>
-  /// <returns>An array of command line arguments.</returns>
-  /// <remarks>
-  /// The following rules apply:
-  /// <list type="bullet">
-  ///   <item>Use spaces to separate arguments.</item>
-  ///   <item>Embed arguments within double quotation marks to treat them as a single argument even if they contain spaces..</item>
-  ///   <item>Within double quotation marks, use two double quotation marks if you need one double quotation mark in the argument.</item>
-  /// </list>
-  /// This resembles the logic that is applied to the arguments of the C# Main method. However, the parameters passed to
-  /// the Main method are parsed a little bit differently in special situations, according to an unknown and undocumented 
-  /// algorithm.
-  /// </remarks>
-  /// <example>
-  /// <list type="table">
-  ///   <listheader>
-  ///     <term>Command Line</term>
-  ///     <description>Parsing Result</description>
-  ///   </listheader>
-  ///   <item>
-  ///     <term>
-  ///       Hello world!
-  ///     </term>
-  ///     <description>
-  ///       <para>
-  ///         Hello
-  ///       </para><para>
-  ///         world!
-  ///       </para>
-  ///     </description>
-  ///   </item>
-  ///   <item>
-  ///     <term>
-  ///       Hello "new world!"
-  ///     </term>
-  ///     <description>
-  ///       <para>
-  ///         Hello
-  ///       </para><para>
-  ///         new world!
-  ///       </para>
-  ///     </description>
-  ///   </item>
-  ///   <item>
-  ///     <term>
-  ///       Hello """new"" world!"
-  ///     </term>
-  ///     <description>
-  ///       <para>
-  ///         Hello
-  ///       </para><para>
-  ///         "new" world!
-  ///       </para>
-  ///     </description>
-  ///   </item>
-  /// </list>
-  /// </example>
+  /// <include file='doc\include\include.xml' path='Comments/CommandLineParser/SplitCommandLine/*' />
   public static string[] SplitCommandLine (string commandLine, bool includeFirstArgument)
   {
     StringBuilder current = new StringBuilder();
@@ -203,13 +145,14 @@ public class CommandLineParser
   /// </summary>
   /// <param name="commandLine">The string that contains the command line arguments. See <see cref="SplitCommandLine"/> for information on how
   /// command lines are parsed.</param>
+  /// <include file='doc\include\include.xml' path='/Comments/CommandLineParser/Parameters/param[@name="includeFirstArgument"]' />
   /// <exception cref="InvalidCommandLineArgumentValueException">The value of a parameter cannot be interpreted.</exception>
   /// <exception cref="InvalidCommandLineArgumentNameException">The command line contains a named argument that is not defined.</exception>
   /// <exception cref="InvalidNumberOfCommandLineArgumentsException">The command line contains too many unnamed arguments.</exception>
   /// <exception cref="MissingRequiredCommandLineParameterException">A non-optional command line argument is not contained in the command line.</exception>
-  public void Parse (string commandLine)
+  public void Parse (string commandLine, bool includeFirstArgument)
   {
-    Parse (SplitCommandLine (commandLine, false));
+    Parse (SplitCommandLine (commandLine, includeFirstArgument));
   }
 
   /// <summary>
@@ -392,6 +335,7 @@ public class CommandLineParser
 
     return sb.ToString();
   }
+
 }
 
 }

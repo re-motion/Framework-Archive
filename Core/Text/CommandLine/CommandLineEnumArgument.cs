@@ -20,8 +20,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   public CommandLineEnumArgument (string name, bool isOptional, Type enumType)
     : base (name, isOptional)
   {
-    if (! enumType.IsEnum) throw new ArgumentOutOfRangeException ("enumType", enumType, "Argument must be an enumeration type.");
-    _enumType = enumType;
+    EnumType = enumType;
   }
 
   public CommandLineEnumArgument (bool isOptional, Type enumType)
@@ -30,6 +29,16 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   }
 
   // properties and methods
+
+  public Type EnumType
+  {
+    get { return _enumType; }
+    set 
+    { 
+      if (value != null && ! value.IsEnum) throw new ArgumentOutOfRangeException ("enumType", value, "Argument must be an enumeration type.");
+      _enumType = value; 
+    }
+  }
 
   protected internal override void SetStringValue (string value)
   {
@@ -124,6 +133,11 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   public bool HasValue
   {
     get { return _hasValue; }
+  }
+
+  public override object ValueObject
+  {
+    get { return Value; }
   }
 
   public System.Enum Value

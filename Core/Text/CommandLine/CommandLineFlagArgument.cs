@@ -58,6 +58,12 @@ public class CommandLineFlagArgument: CommandLineArgument
     base.SetStringValue (value);
   }
 
+
+  public override object ValueObject
+  {
+    get { return Value; }
+  }
+  
   public NaBoolean Value
   {
     get { return _value.IsNull ? _defaultValue : _value; }

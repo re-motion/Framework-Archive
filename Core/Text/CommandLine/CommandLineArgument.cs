@@ -115,6 +115,8 @@ public abstract class CommandLineArgument
       return _parser.Arguments.IndexOf (this);
     }
   }
+
+  public abstract object ValueObject { get; }
 }
 
 }

@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Text.CommandLine
 {
 
-public class CommandLineValueArgument: CommandLineArgument
+public abstract class CommandLineValueArgument: CommandLineArgument
 {
   public CommandLineValueArgument (string name, bool isOptional)
     : base (name, isOptional)
@@ -43,6 +43,11 @@ public class CommandLineStringArgument: CommandLineValueArgument
   {
   }
 
+  public override object ValueObject
+  {
+    get { return Value; }
+  }
+  
   public string Value
   {
     get { return StringValue; }
@@ -61,6 +66,11 @@ public class CommandLineInt32Argument: CommandLineValueArgument
   public CommandLineInt32Argument (bool isOptional)
     : base (isOptional)
   {
+  }
+
+  public override object ValueObject
+  {
+    get { return Value; }
   }
 
   public NaInt32 Value

@@ -11,12 +11,12 @@ using Rubicon.Text.CommandLine;
 namespace Rubicon.UnitTests.Text.CommandLine
 {
 
+public enum IncrementalTestOptions { no, nor, normal, anything };
+public enum TestOption { yes, no, almost };
+
 [TestFixture]
 public class CommandLineParserTest
 {
-  private enum IncrementalTestOptions { no, nor, normal, anything };
-  private enum TestOption { yes, no, almost };
-
   private CommandLineParser CreateParser (
       out CommandLineStringArgument argSourceDir, 
       out CommandLineStringArgument argDestinationDir, 
