@@ -1,3 +1,16 @@
+3.1.1.0 (noch kein Build)
+=======
+
+- Neue Methoden in PageUtility: 
+  * RegisterWindowOpenJavascript: Registriert eine Javascript Methode zum Öffnen von URLs 
+    in neuem Fenster optimiert für Anzeigen >= 1024x768.
+  * GetWindowOpenJavascript: Gibt den Javascript Methodenaufruf zum Öffnen von URLs in 
+    neuem Fenster zurück.
+- Neue Methode in StandardPage:
+  * GetWindowOpenJavascriptWithRegistration: Registriert Javascript Methode zum Öffnen
+    von URLs in neuem Fenster und liefert den Javascript Methodenaufruf zurück.        
+
+
 3.1.0.0
 =======
 

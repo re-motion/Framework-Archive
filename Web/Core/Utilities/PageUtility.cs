@@ -18,6 +18,8 @@ public class PageUtility
 {
   public const string c_supressNavParam = "SupressNav";
   public const string c_supressNavValue = "true";
+  
+  private const string c_windowOpenJavascriptKey = "WindowOpenJavascript";
 
   /// <summary>
   /// Used by method "CallPage" to indicate whether the navigation bar shall be shown.
@@ -488,6 +490,46 @@ public class PageUtility
         page.Session.Remove (key);
     }
   }  
+
+  public static void RegisterWindowOpenJavascript (Page page)
+  {
+    string script = @"
+        <script language=""javascript"" type=""text/javascript"">
+
+	        function WindowOpen (url, useScrollBars)
+	        { 
+	          <%-- Set height so that IE window fits for 1024x768 with windows taskbar --%>
+	          var windowMaxWidth = 1010;
+	          var windowMaxHeight = 700;
+	          var windowLeft = (screen.width - windowMaxWidth) / 2;
+    	      
+	          var windowTop;
+	          if (screen.height > 768)
+	          {
+	            <%-- Center window vertical for resolutions greater than 1024x768 --%>  
+	            windowTop = (screen.height - windowMaxHeight) / 2;
+	          }
+            else  	      
+            {
+              <%-- Do not center window because of window taskbar --%>  
+	            windowTop = 5; 
+	          }   
+    	      
+		        window.open (url, ""_blank"", 
+  			        ""width="" + windowMaxWidth + "",height="" + windowMaxHeight + 
+                "",top="" + windowTop + "",left="" + windowLeft + "","" + 
+	  		        ""resizable=yes,location=no,menubar=no,status=no,toolbar=no,scrollbars="" + useScrollBars);
+	        }	    
+	      </script>";
+
+    page.RegisterClientScriptBlock (c_windowOpenJavascriptKey, script);
+  }
+
+  public static string GetWindowOpenJavascript (string url, bool useScrollbars)
+  {
+    return string.Format ("WindowOpen ({0}, {1}", url, useScrollbars ? "yes" : "no");
+  }
+
 }
 
 [Serializable]
