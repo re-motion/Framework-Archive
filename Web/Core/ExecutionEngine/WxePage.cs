@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -115,6 +116,57 @@ public class WxePage: Page, IWxePage
   public NameObjectCollection Variables 
   {
     get { return _wxeInfo.Variables; }
+  }
+
+  private bool _executeNextStep = false;
+  private HttpResponse _response; // used for cleanup in Dispose
+
+  public void ExecuteNextStep ()
+  {
+    _executeNextStep = true;
+    _response = Response;
+    this.Visible = false; // suppress prerender and render events
+  }
+
+  public override void Dispose()
+  {
+    base.Dispose ();
+    if (_executeNextStep)
+    {
+      _response.Clear(); // throw away page trace output
+      throw new WxeExecuteNextStepException();
+    }
+  }
+
+  protected bool IsReturningPostBack
+  {
+    get { return WxeContext.Current.IsReturningPostBack; }
+  }
+
+  public void ExecuteFunction (WxeFunction function, string target, Control sender)
+  {
+    ArrayList pages = (ArrayList) Session["WxePages"];
+    WxePageSession pageSession = new WxePageSession (function, 20);
+    pages.Add (pageSession);
+    string href = Request.Path + "?WxePageToken=" + pageSession.PageToken;
+    string script = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
+
+    // string eventtarget = GetPostBackCollection()["__EVENTTARGET"];
+    // string eventargument = GetPostBackCollection()["__EVENTARGUMENT"];
+    // subFunction.ReturnUrl = "javascript:window.opener.__doPostBack(\"" + eventtarget + "\",\"" + eventargument + "\"); window.close();";
+    function.ReturnUrl = "javascript:window.opener.doSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
+
+    PageUtility.RegisterStartupScriptBlock (this, "WxeExecuteFunction", script);
+  }
+
+  public void ExecuteFunction (WxeFunction function)
+  {
+    CurrentStep.ExecuteFunction (this, function);
+  }
+
+  public WxeFunction ReturningFunction
+  {
+    get { return WxeContext.Current.ReturningFunction; }
   }
 }
 
