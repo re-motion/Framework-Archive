@@ -676,7 +676,7 @@ public class BocList:
     }
 
     if (_showOptionsMenu)
-      _optionsMenu.MenuItems.AddRange (EnsureGetOptionsMenuItemsForCurrentLifeCycle());
+      _optionsMenu.MenuItems.AddRange (EnsureGetOptionsMenuItems());
      
     base.OnPreRender (e);
   }
@@ -692,7 +692,7 @@ public class BocList:
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
+    BocColumnDefinition[] renderColumns = EnsureGetColumns();
 
     if (IsDesignMode)
     {
@@ -1133,7 +1133,7 @@ public class BocList:
   /// </param>
   private void RenderColGroup (HtmlTextWriter writer)
   {
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
+    BocColumnDefinition[] renderColumns = EnsureGetColumns();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
@@ -1191,7 +1191,7 @@ public class BocList:
   private void RenderColumnTitlesRow (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
+    BocColumnDefinition[] renderColumns = EnsureGetColumns();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -1329,7 +1329,7 @@ public class BocList:
       bool isOddRow)
   {
     bool isReadOnly = IsReadOnly;
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
+    BocColumnDefinition[] renderColumns = EnsureGetColumns();
 
     string objectID = null;
     IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
@@ -1730,7 +1730,7 @@ public class BocList:
     return _columnDefinitionsPostBackEventHandlingPhase;
   }
 
-  private BocColumnDefinition[] EnsureGetColumnsForCurrentLifeCycle()
+  private BocColumnDefinition[] EnsureGetColumns()
   {
     if (_columnDefinitionsRenderPhase == null)
       _columnDefinitionsRenderPhase = GetColumns (false);
@@ -1765,7 +1765,7 @@ public class BocList:
     if (isPostBackEventPhase)
       return GetColumnsForPreviousLifeCycle (columnDefinitions);
     else
-      return GetColumnsForCurrentLifeCycle (columnDefinitions);
+      return GetColumns (columnDefinitions);
   }
 
   /// <summary>
@@ -1789,7 +1789,7 @@ public class BocList:
   private BocColumnDefinition[] GetColumnsForPreviousLifeCycle (BocColumnDefinition[] columnDefinitions)
   {
     //  return columnDefinitions;
-    return EnsureGetColumnsForCurrentLifeCycle();
+    return EnsureGetColumns();
   }
 
   /// <summary>
@@ -1800,7 +1800,7 @@ public class BocList:
   ///   The <see cref="BocColumnDefinition"/> array containing the columns defined by the <see cref="BocList"/>. 
   /// </param>
   /// <returns> The <see cref="BocColumnDefinition"/> array. </returns>
-  protected virtual BocColumnDefinition[] GetColumnsForCurrentLifeCycle (BocColumnDefinition[] columnDefinitions)
+  protected virtual BocColumnDefinition[] GetColumns (BocColumnDefinition[] columnDefinitions)
   {
     return columnDefinitions;
   }
@@ -1815,10 +1815,10 @@ public class BocList:
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureGetOptionsMenuItemsForCurrentLifeCycle()
+  private BocMenuItem[] EnsureGetOptionsMenuItems()
   {
     if (_optionsMenuItemsRenderPhase == null)
-      _optionsMenuItemsRenderPhase = GetOptionsMenuItemsForCurrentLifeCycle (_optionsMenuItems.ToArray());
+      _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
     return _optionsMenuItemsRenderPhase;
   }
 
@@ -1843,7 +1843,7 @@ public class BocList:
   private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
     //  return menuItems;
-    return EnsureGetOptionsMenuItemsForCurrentLifeCycle();
+    return EnsureGetOptionsMenuItems();
   }
 
   /// <summary>
@@ -1854,7 +1854,7 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual BocMenuItem[] GetOptionsMenuItemsForCurrentLifeCycle (BocMenuItem[] menuItems)
+  protected virtual BocMenuItem[] GetOptionsMenuItems (BocMenuItem[] menuItems)
   {
     return menuItems;
   }
@@ -1869,10 +1869,10 @@ public class BocList:
     return _listMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureGetListMenuItemsForCurrentLifeCycle()
+  private BocMenuItem[] EnsureGetListMenuItems()
   {
     if (_listMenuItemsRenderPhase == null)
-      _listMenuItemsRenderPhase = GetListMenuItemsForCurrentLifeCycle (_listMenuItems.ToArray());
+      _listMenuItemsRenderPhase = GetListMenuItems (_listMenuItems.ToArray());
     return _listMenuItemsRenderPhase;
   }
 
@@ -1897,7 +1897,7 @@ public class BocList:
   private BocMenuItem[] GetListMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
     //  return menuItems;
-    return EnsureGetListMenuItemsForCurrentLifeCycle();
+    return EnsureGetListMenuItems();
   }
 
   /// <summary>
@@ -1908,7 +1908,7 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual BocMenuItem[] GetListMenuItemsForCurrentLifeCycle (BocMenuItem[] menuItems)
+  protected virtual BocMenuItem[] GetListMenuItems (BocMenuItem[] menuItems)
   {
     return menuItems;
   }
@@ -1973,7 +1973,7 @@ public class BocList:
     IBusinessObject businessObjectA = objectA as IBusinessObject;
     IBusinessObject businessObjectB = objectB as IBusinessObject;
 
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
+    BocColumnDefinition[] renderColumns = EnsureGetColumns();
     foreach (SortingOrderEntry currentEntry in _sortingOrder)
     {
       if (currentEntry.Direction != SortingDirection.None)
