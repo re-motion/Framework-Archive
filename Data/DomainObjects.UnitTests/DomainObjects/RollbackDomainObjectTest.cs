@@ -31,7 +31,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
 
     ClientTransaction.Current.Rollback ();
     
-    Assert.AreEqual (StateType.Original, customer.State);
+    Assert.AreEqual (StateType.Unchanged, customer.State);
     Assert.AreEqual ("Kunde 1", customer.Name);
   }
 
