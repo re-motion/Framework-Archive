@@ -1,0 +1,22 @@
+/*  */
+div.dropDownMenuTitle
+{
+	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; CURSOR: hand; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fafafa
+}
+
+/*  */
+div.dropDownMenuButton
+{
+}
+
+/*  */
+div.dropDownMenuPopUpTextPane
+{
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 66.67%; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; FONT-FAMILY: Verdana, sans-serif; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+
+
+/*  */
+div.dropDownMenuPopUpIconPane
+{
+}
