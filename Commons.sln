@@ -28,10 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "h
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625} = {2AA369EC-A4E7-4D75-9101-EFA90E902625}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "Web.UI\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -54,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.CodeDom", "Deve
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 12
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -79,34 +75,30 @@ Global
 		SccLocalPath5 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection5 = ObjectBinding\\Web\\
-		SccProjectUniqueName6 = Globalization\\Globalization.csproj
-		SccProjectName6 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
-		SccLocalPath6 = Globalization
+		SccProjectUniqueName6 = prereq\\prereq.csproj
+		SccLocalPath6 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName7 = prereq\\prereq.csproj
-		SccLocalPath7 = .
+		SccProjectFilePathRelativizedFromConnection6 = prereq\\
+		SccProjectUniqueName7 = Web.UI\\Core\\Web.UI.csproj
+		SccProjectName7 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
+		SccLocalPath7 = Web.UI
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection7 = prereq\\
-		SccProjectUniqueName8 = Web.UI\\Core\\Web.UI.csproj
-		SccProjectName8 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
-		SccLocalPath8 = Web.UI
+		SccProjectFilePathRelativizedFromConnection7 = Core\\
+		SccProjectUniqueName8 = Core.Test\\Core.Test.csproj
+		SccProjectName8 = \u0022$/libraries/Commons/Core.Test\u0022,\u0020LNDAAAAA
+		SccLocalPath8 = Core.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection8 = Core\\
-		SccProjectUniqueName9 = Core.Test\\Core.Test.csproj
-		SccProjectName9 = \u0022$/libraries/Commons/Core.Test\u0022,\u0020LNDAAAAA
-		SccLocalPath9 = Core.Test
+		SccProjectUniqueName9 = Development\\Core\\Development.Core.csproj
+		SccProjectName9 = \u0022$/libraries/Commons/Development/Core\u0022,\u0020LQAAAAAA
+		SccLocalPath9 = Development\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName10 = Development\\Core\\Development.Core.csproj
-		SccProjectName10 = \u0022$/libraries/Commons/Development/Core\u0022,\u0020LQAAAAAA
-		SccLocalPath10 = Development\\Core
+		SccProjectUniqueName10 = Development\\Core.Test\\Development.Core.Test.csproj
+		SccProjectName10 = \u0022$/libraries/Commons/Development/Core.Test\u0022,\u0020TQAAAAAA
+		SccLocalPath10 = Development\\Core.Test
 		CanCheckoutShared = false
-		SccProjectUniqueName11 = Development\\Core.Test\\Development.Core.Test.csproj
-		SccProjectName11 = \u0022$/libraries/Commons/Development/Core.Test\u0022,\u0020TQAAAAAA
-		SccLocalPath11 = Development\\Core.Test
-		CanCheckoutShared = false
-		SccProjectUniqueName12 = Development\\CodeDom\\Development.CodeDom.csproj
-		SccProjectName12 = \u0022$/libraries/Commons/Development/CodeDom\u0022,\u0020ERAAAAAA
-		SccLocalPath12 = Development\\CodeDom
+		SccProjectUniqueName11 = Development\\CodeDom\\Development.CodeDom.csproj
+		SccProjectName11 = \u0022$/libraries/Commons/Development/CodeDom\u0022,\u0020ERAAAAAA
+		SccLocalPath11 = Development\\CodeDom
 		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -138,10 +130,6 @@ Global
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
-		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
