@@ -6,6 +6,7 @@ public enum StateType
 {
   Original = 0,
   Changed = 1,
-  New = 2
+  New = 2,
+  Deleted = 3
 }
 }
