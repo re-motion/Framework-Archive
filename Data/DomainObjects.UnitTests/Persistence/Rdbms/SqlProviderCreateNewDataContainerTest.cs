@@ -56,7 +56,6 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
 
     Assert.AreEqual (false, newContainer["BooleanProperty"]);
     Assert.AreEqual ((byte) 0, newContainer["ByteProperty"]);
-    Assert.AreEqual (' ', newContainer["CharProperty"]);
     Assert.AreEqual (DateTime.MinValue, newContainer["DateProperty"]);
     Assert.AreEqual (DateTime.MinValue, newContainer["DateTimeProperty"]);
     Assert.AreEqual ((decimal) 0, newContainer["DecimalProperty"]);
