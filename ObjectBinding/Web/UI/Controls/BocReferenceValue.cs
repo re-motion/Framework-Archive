@@ -419,10 +419,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     if (! IsReadOnly)
     {
+      _dropDownList.Items.Clear();
+
       if (businessObjects != null)
-      {
-        _dropDownList.Items.Clear();
-      
+      {      
         //  Add Undefined item
         if (! IsRequired)
           _dropDownList.Items.Add (CreateNullItem());
