@@ -1,6 +1,6 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
