@@ -9,15 +9,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 {
   // types
 
-  private enum RelationChangeOperation
-  {
-    Unspecified = -1,
-    Add = 0,
-    Remove = 1,
-    Insert = 2,
-    Replace = 3
-  }
-
   // static members and constants
 
   // member fields
@@ -27,11 +18,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
 
-  private RelationChangeOperation _relationChangeOperation = RelationChangeOperation.Unspecified;
-  private RelationEndPoint _oldEndPoint = null;
-  private DomainObject _oldRelatedObject = null;
-  private RelationEndPoint _newEndPoint = null;
-  private int _index = -1;
+  private CollectionEndPointChangeWorker _changeWorker;
 
   // construction and disposing
 
@@ -141,29 +128,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    _relationChangeOperation = RelationChangeOperation.Unspecified;
-    _oldEndPoint = oldEndPoint;
-    _oldRelatedObject = oldEndPoint.GetDomainObject ();
-    _newEndPoint = newEndPoint;
-    _index = -1;
+    if (!oldEndPoint.IsNull)
+       _changeWorker = CollectionEndPointChangeWorker.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
-    if (IsRemoveOperation ())
-    {
-      _relationChangeOperation = RelationChangeOperation.Remove;
+    if (!newEndPoint.IsNull)
+      _changeWorker = CollectionEndPointChangeWorker.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
-      if (!_oppositeDomainObjects.BeginRemove (_oldRelatedObject))
-        return false;
-    }
-
-    if (IsAddOperation ())
-    {
-      _relationChangeOperation = RelationChangeOperation.Add;
-
-      if (!_oppositeDomainObjects.BeginAdd (_newEndPoint.GetDomainObject ()))
-        return false;
-    }
-
-    return base.BeginRelationChange (oldEndPoint, newEndPoint);
+    return BeginRelationChange ();
   }
 
   public bool BeginInsert (
@@ -174,12 +145,9 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    bool result = BeginRelationChange (oldEndPoint, newEndPoint);
+    _changeWorker = CollectionEndPointChangeWorker.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index);
 
-    _relationChangeOperation = RelationChangeOperation.Insert;
-    _index = index;
-  
-    return result;
+    return BeginRelationChange ();
   }
 
   public bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
@@ -187,42 +155,18 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    bool result = BeginRelationChange (oldEndPoint, newEndPoint);
+    _changeWorker = CollectionEndPointChangeWorker.CreateForReplace (
+        _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ()));
 
-    _relationChangeOperation = RelationChangeOperation.Replace;
-    _index = _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ());
-
-    return result;
+    return BeginRelationChange ();
   }
 
   public override void PerformRelationChange ()
   {
-    if (_relationChangeOperation == RelationChangeOperation.Unspecified || _oldEndPoint == null || _newEndPoint == null)
+    if (_changeWorker == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
-    if (_relationChangeOperation == RelationChangeOperation.Remove)
-    {
-      _oppositeDomainObjects.PerformRemove (_oldRelatedObject);
-      return;
-    }
-
-    if (_relationChangeOperation == RelationChangeOperation.Add)
-    {
-      _oppositeDomainObjects.PerformAdd (_newEndPoint.GetDomainObject ());
-      return;
-    }
-
-    if (_relationChangeOperation == RelationChangeOperation.Insert)
-    {
-      _oppositeDomainObjects.PerformInsert (_index, _newEndPoint.GetDomainObject ());
-      return;
-    }
-
-    if (_relationChangeOperation == RelationChangeOperation.Replace)
-    {
-      _oppositeDomainObjects.PerformRemove (_oldRelatedObject);
-      _oppositeDomainObjects.PerformInsert (_index, _newEndPoint.GetDomainObject ());
-    }
+    _changeWorker.PerformRelationChange ();
   }
 
   public override void PerformDelete ()
@@ -232,20 +176,11 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override void EndRelationChange ()
   {
-    if (_relationChangeOperation == RelationChangeOperation.Unspecified || _oldEndPoint == null || _newEndPoint == null)
+    if (_changeWorker == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
 
-    if (_relationChangeOperation == RelationChangeOperation.Remove)
-      _oppositeDomainObjects.EndRemove (_oldRelatedObject);
-
-    if (_relationChangeOperation == RelationChangeOperation.Insert || _relationChangeOperation == RelationChangeOperation.Add)
-      _oppositeDomainObjects.EndAdd (_newEndPoint.GetDomainObject ());
-
-    _relationChangeOperation = RelationChangeOperation.Unspecified;
-    _oldEndPoint = null;
-    _oldRelatedObject = null;
-    _newEndPoint = null;
-    _index = -1;
+    _changeWorker.EndRelationChange ();
+    _changeWorker = null;
 
     base.EndRelationChange ();
   }
@@ -265,14 +200,12 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     set { _changeDelegate = value; }
   }
 
-  private bool IsAddOperation ()
+  private bool BeginRelationChange ()
   {
-    return (!_newEndPoint.IsNull);
-  }
+    if (!_changeWorker.BeginRelationChange ())
+      return false;
 
-  private bool IsRemoveOperation ()
-  {
-    return (!_oldEndPoint.IsNull);
+    return base.BeginRelationChange (_changeWorker.OldEndPoint, _changeWorker.NewEndPoint);
   }
 
   #region ICollectionChangeDelegate Members
