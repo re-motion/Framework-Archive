@@ -1,0 +1,11 @@
+1.1.32.0
+========
+
+- BocList
+  * Direktes Setzen eines Wertes über Value, 
+    für die Spaltendefinitionen muss der Liste eine (gerne auch leere) DataSource zugewiesen sein.
+  * Menübereich rendert zusätzliche Menüeinträge (ListMenu) im Anschluss an das OptionsMenu
+  * Menübereich wird ausgeblendet, falls kein Inhalt vorhanden ist.
+    (keine zusätzlichen Spaltendefinitionen, leeres OptionsMenu, leeres ListMenu)
+  * Zusätzliche Spaltendefinitionen, OptionsMenu, ListMenu
+    werden individuell augeblendet, wenn sie keine Einträge besitzen.
