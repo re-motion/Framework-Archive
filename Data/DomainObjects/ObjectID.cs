@@ -4,6 +4,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//Documentation: All done
+
 /// <summary>
 /// Uniquely identifies a domain object.
 /// </summary>
