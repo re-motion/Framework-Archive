@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
