@@ -184,6 +184,22 @@
                     DependentUpon = "WebForm2.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
+                <File
+                    RelPath = "WebForm3.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebForm3.aspx.cs"
+                    DependentUpon = "WebForm3.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebForm3.aspx.resx"
+                    DependentUpon = "WebForm3.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
             </Include>
         </Files>
     </CSHARP>
