@@ -12,7 +12,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
-// TODO: Methoden mit classdefintion parameter: storageProviderID checken
 public abstract class RdbmsProvider : StorageProvider
 {
   // types
@@ -217,6 +216,7 @@ public abstract class RdbmsProvider : StorageProvider
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("relatedID", relatedID);
+    CheckClassDefinition (classDefinition, "classDefinition");
     CheckObjectIDValue (relatedID, "relatedID");
 
     Connect ();
@@ -248,7 +248,8 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
-    CheckObjectID (id, "id");
+    CheckStorageProviderID (id, "id");
+    CheckObjectIDValue (id, "id");
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (id.ClassID);
     if (classDefinition == null)
@@ -326,6 +327,7 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    CheckClassDefinition (classDefinition, "classDefinition");
 
     return DataContainer.CreateNew (CreateNewObjectID (classDefinition));
   }
@@ -352,6 +354,7 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    CheckClassDefinition (classDefinition, "classDefinition");
 
     return new ObjectID (this.ID, classDefinition.ID, Guid.NewGuid ());
   }
@@ -400,7 +403,8 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
-    CheckObjectID (id, "id");
+    CheckStorageProviderID (id, "id");
+    CheckObjectIDValue (id, "id");
 
     if (command == null)
       return;
@@ -524,7 +528,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  private void CheckObjectID (ObjectID id, string argumentName)
+  private void CheckStorageProviderID (ObjectID id, string argumentName)
   {
     if (id.StorageProviderID != ID)
     {
@@ -547,6 +551,18 @@ public abstract class RdbmsProvider : StorageProvider
           "The value of the provided ObjectID is of type '{0}', but only 'System.Guid' is supported.",
           id.Value.GetType ());
     }  
+  }
+
+  private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
+  {
+    if (classDefinition.StorageProviderID != ID)
+    {
+      throw CreateArgumentException (
+          argumentName,
+          "The StorageProviderID '{0}' of the provided ClassDefinition does not match with this StorageProvider's ID '{1}'.",
+          classDefinition.StorageProviderID,
+          ID);
+    }
   }
 }
 }
