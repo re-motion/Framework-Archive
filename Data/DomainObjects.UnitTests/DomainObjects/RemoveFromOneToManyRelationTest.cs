@@ -191,7 +191,7 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void SingleObjectRelationLinkMap ()
+  public void RelationEndPointMap ()
   {
     _supervisor.Subordinates.Remove (_subordinate.ID);
     

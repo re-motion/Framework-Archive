@@ -74,27 +74,26 @@ public class PersistenceManager : IDisposable
     return dataContainer;
   }
 
-  public DataContainerCollection LoadRelatedDataContainers (RelationEndPoint relationEndPoint)
+  public DataContainerCollection LoadRelatedDataContainers (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    if (!relationEndPoint.IsVirtual)
+    if (!relationEndPointID.IsVirtual)
     {
       throw CreatePersistenceException (
           "A DataContainerCollection cannot be loaded for a relation with a non-virtual end point,"
           + " relation: '{0}', property: '{1}'. Check your mapping configuration.",
-          relationEndPoint.RelationDefinition.ID, relationEndPoint.PropertyName);
+          relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName);
     }
 
-    if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
+    if (relationEndPointID.Definition.Cardinality == CardinalityType.One)
     {
       throw CreatePersistenceException (
           "Cannot load multiple related data containers for one-to-one relation '{0}'.",
-          relationEndPoint.RelationDefinition.ID);
+          relationEndPointID.RelationDefinition.ID);
     }
 
-    IRelationEndPointDefinition oppositeEndPointDefinition = relationEndPoint.OppositeEndPointDefinition;
+    IRelationEndPointDefinition oppositeEndPointDefinition = relationEndPointID.OppositeEndPointDefinition;
 
     StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (
         oppositeEndPointDefinition.ClassDefinition.StorageProviderID);
@@ -102,66 +101,59 @@ public class PersistenceManager : IDisposable
     DataContainerCollection dataContainers = oppositeProvider.LoadDataContainersByRelatedID (
         oppositeEndPointDefinition.ClassDefinition,
         oppositeEndPointDefinition.PropertyName,
-        relationEndPoint.ObjectID);
+        relationEndPointID.ObjectID);
 
-    if (relationEndPoint.Definition.IsMandatory && dataContainers.Count == 0)
+    if (relationEndPointID.Definition.IsMandatory && dataContainers.Count == 0)
     {
       throw CreatePersistenceException (
           "Collection for mandatory relation '{0}' (property: '{1}') contains no elements.", 
-          relationEndPoint.RelationDefinition.ID, relationEndPoint.PropertyName);
+          relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName);
     }
 
     return dataContainers;
   }
 
-  public DataContainer LoadRelatedDataContainer (RelationEndPoint relationEndPoint)
+  public DataContainer LoadRelatedDataContainer (DataContainer dataContainer, RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    if (!relationEndPoint.IsVirtual)
-      return GetOppositeDataContainerForEndPoint (relationEndPoint);
+    if (!relationEndPointID.IsVirtual)
+      return GetOppositeDataContainerForEndPoint (dataContainer, relationEndPointID);
 
-    return GetOppositeDataContainerForVirtualEndPoint (relationEndPoint);
+    return GetOppositeDataContainerForVirtualEndPoint (relationEndPointID);
   }
 
-
-  private void CheckRelationEndPoint (RelationEndPoint relationEndPoint, string argumentName)  
+  private DataContainer GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)
   {
-    if (relationEndPoint.IsNull)
-      throw new ArgumentNullException ("argumentName", "End point cannot be null."); 
-  }
-
-  private DataContainer GetOppositeDataContainerForVirtualEndPoint (RelationEndPoint relationEndPoint)
-  {
-    if (relationEndPoint.Definition.Cardinality == CardinalityType.Many)
+    if (relationEndPointID.Definition.Cardinality == CardinalityType.Many)
     {
       throw CreatePersistenceException (
           "Cannot load a single related data container for one-to-many relation '{0}'.", 
-          relationEndPoint.RelationDefinition.ID);
+          relationEndPointID.RelationDefinition.ID);
     }
 
     StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (
-        relationEndPoint.OppositeEndPointDefinition.ClassDefinition.StorageProviderID);
+        relationEndPointID.OppositeEndPointDefinition.ClassDefinition.StorageProviderID);
 
     DataContainerCollection oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID (
-        relationEndPoint.OppositeEndPointDefinition.ClassDefinition, 
-        relationEndPoint.OppositeEndPointDefinition.PropertyName, 
-        relationEndPoint.ObjectID);
+        relationEndPointID.OppositeEndPointDefinition.ClassDefinition, 
+        relationEndPointID.OppositeEndPointDefinition.PropertyName, 
+        relationEndPointID.ObjectID);
 
     if (oppositeDataContainers.Count == 0)
-      return GetNullDataContainerWithRelationCheck (relationEndPoint);
+      return GetNullDataContainerWithRelationCheck (relationEndPointID);
     else
       return oppositeDataContainers[0];
   }
 
-  private DataContainer GetOppositeDataContainerForEndPoint (RelationEndPoint relationEndPoint)
+  private DataContainer GetOppositeDataContainerForEndPoint (
+      DataContainer dataContainer, 
+      RelationEndPointID relationEndPointID)
   {
-    IRelationEndPointDefinition endPointDefinition = relationEndPoint.Definition;
-
-    ObjectID id = relationEndPoint.DataContainer.GetObjectID (endPointDefinition.PropertyName);
+    ObjectID id = dataContainer.GetObjectID (relationEndPointID.PropertyName);
     if (id == null)
-      return GetNullDataContainerWithRelationCheck (relationEndPoint);
+      return GetNullDataContainerWithRelationCheck (relationEndPointID);
 
     StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (id.StorageProviderID);
     DataContainer oppositeDataContainer = oppositeProvider.LoadDataContainer (id);
@@ -169,22 +161,22 @@ public class PersistenceManager : IDisposable
     {
       throw CreatePersistenceException (
           "Property '{0}' of class '{1}' refers to non-existing object with ID '{2}'.",
-          endPointDefinition.PropertyName,
-          endPointDefinition.ClassDefinition.ID, 
+          relationEndPointID.PropertyName,
+          relationEndPointID.ClassDefinition.ID, 
           id.Value);
     }
 
     return oppositeDataContainer;
   }
 
-  private DataContainer GetNullDataContainerWithRelationCheck (RelationEndPoint relationEndPoint)
+  private DataContainer GetNullDataContainerWithRelationCheck (RelationEndPointID relationEndPointID)
   {
-    if (!relationEndPoint.Definition.IsMandatory)
+    if (!relationEndPointID.Definition.IsMandatory)
       return null;
 
     throw CreatePersistenceException (
         "Cannot load related DataContainer of object '{0}' over mandatory relation '{1}'.",
-        relationEndPoint.DataContainer.ID, relationEndPoint.RelationDefinition.ID);     
+        relationEndPointID.ObjectID, relationEndPointID.RelationDefinition.ID);     
   }
 
   private PersistenceException CreatePersistenceException (string message, params object[] args)

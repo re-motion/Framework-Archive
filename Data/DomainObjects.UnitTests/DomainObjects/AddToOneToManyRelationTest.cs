@@ -193,7 +193,7 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void SingleObjectRelationLinkMap ()
+  public void RelationEndPointMap ()
   {
     _supervisor.Subordinates.Add (_subordinate);
     
