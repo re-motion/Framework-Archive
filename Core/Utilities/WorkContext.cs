@@ -2,6 +2,8 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Diagnostics;
+using System.Configuration;
+using System.Globalization;
 
 namespace Rubicon 
 {
@@ -9,41 +11,7 @@ namespace Rubicon
 /// <summary>
 ///   Provides context information for error messages.
 /// </summary>
-/// <remarks>
-///   <para>
-///   Exceptions contain a stack trace of the time the exception was thrown, so it is easy to identify the code that 
-///   caused the exception. However, there is no information as to which data this code was processing, or which iteration
-///   of a certain loop caused a problem. For programs that process large amount of data and fail for specific data, it 
-///   can be tedious to find the state or data that caused an error. 
-///   <para></para>
-///   WorkContexts provide an easy way to specify which data is currently being processed. In an exception handling block,
-///   the current context stack can be used to get diagnostic information about the state of the application when the
-///   exception occured. 
-///   </para>
-/// </remarks>
-/// <example>
-/// The following example demonstrates the use of WorkContexts to provide information about the data that is currently being
-/// processed. Note the <c>using</c> statement and the call to <see cref="WorkContext.Done"/>. 
-/// <code><![CDATA[
-/// void f (string[] document)
-/// {
-///   try
-///   {
-///     for (int i = 0; i < document.Lenght; ++i)
-///     {
-///       using (WorkContext ctxLine = WorkContext.EnterNew ("Processing line {0}: \"{1}\".", i, line[i]))
-///       {
-///         Console.WriteLine (line[i].Trim()); // this causes a NullReferenceException if line[i] is a null reference
-///         ctxLine.Done();
-///       }
-///     }
-/// }
-/// catch (Exception e)
-/// {
-///   Console.WriteLine ("Error \"{0}\" occured during:\n{1}", e.Message, WorkContext.Stack);
-/// }
-/// ]]></code>
-/// </example>
+/// <include file='doc\include\include.xml' path='Comments/WorkContext/Class/*' />
 public class WorkContext: IDisposable
 {
   public class ContextStack
@@ -136,7 +104,42 @@ public class WorkContext: IDisposable
 
   /// <summary> Stack&lt;WorkContext&gt; </summary>
   [ThreadStatic]
-  private static ContextStack _stack; // defaults to null for each new thread
+  private static ContextStack s_stack; // defaults to null for each new thread
+  private static bool s_enableTracingFlagInitialized = false;
+  private static bool s_enableTracing = false;
+
+  /// <summary>
+  /// Use this flag to specify (or learn) whether trace output should be generated when contexts are entered, left or done.
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/EnableTracing/*' />
+  public static bool EnableTracing
+  {
+    get 
+    {
+      if (! s_enableTracingFlagInitialized)
+      {
+        lock (typeof (WorkContext))
+        {
+          if (! s_enableTracingFlagInitialized)
+          {
+            if (0 == string.Compare (ConfigurationSettings.AppSettings ["Rubicon.WorkContext.EnableTracing"], "true", true, CultureInfo.InvariantCulture))
+              s_enableTracing = true;
+            s_enableTracingFlagInitialized = true;
+          }
+        }
+      }
+      return s_enableTracing;      
+    }
+
+    set
+    {
+      lock (typeof (WorkContext))
+      {
+        s_enableTracing = value;
+        s_enableTracingFlagInitialized = true;
+      }
+    }
+  }
 
   /// <summary>
   ///   Gets the work context stack of the current thread.
@@ -148,11 +151,11 @@ public class WorkContext: IDisposable
   {
     get 
     {
-      ContextStack stack = _stack;
+      ContextStack stack = s_stack;
       if (stack == null)
       {
         stack = new ContextStack();
-        _stack = stack;
+        s_stack = stack;
       }
       return stack;
     }    
@@ -195,26 +198,94 @@ public class WorkContext: IDisposable
   /// <summary>
   /// Enters a context.
   /// </summary>
-  /// <param name="text">The description of the context.</param>
-  [Conditional("TRACE")]
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Text/*' />
   void Enter (string text)
   {
     _text = text;
     _entered = true;
-    Debug.WriteLine ("Enter Context: " + text);
-    Debug.Indent();
+    if (EnableTracing)
+    {
+      Trace.WriteLine ("Enter Context: " + text);
+      Trace.Indent();
+    }
     Stack.Push (this);
   }
 
   /// <summary>
   /// Enters a context.
   /// </summary>
-  /// <param name="format">A string containing zero or more format items for the description of the context.</param>
-  /// <param name="args">An array containing zero or more objects to format.</param>
-  [Conditional("TRACE")]
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Format_Args/*' />
   void Enter (string format, params object[] args)
   {
     Enter (string.Format (format, args));
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol DEBUG is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Text/*' />
+  void EnterIfDebug (string text)
+  {
+    Enter (text);
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol DEBUG is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Format_Args/*' />
+  void EnterIfDebug (string format, params object[] args)
+  {
+    Enter (format, args);
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol TRACE is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Text/*' />
+  void EnterIfTrace (string text)
+  {
+    Enter (text);
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol TRACE is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Format_Args/*' />
+  void EnterIfTrace (string format, params object[] args)
+  {
+    Enter (format, args);
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol WORKCONTEXT is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Text/*' />
+  void EnterIfWorkContext (string text)
+  {
+    Enter (text);
+  }
+
+  /// <summary>
+  /// Enters a context. Calls to this method are only compiled if the symbol WORKCONTEXT is defined.
+  /// <see cref="ConditionalAttribute"/>
+  /// </summary>
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Method/*' />
+  /// <include file='doc\include\include.xml' path='Comments/WorkContext/Enter/Signature_Format_Args/*' />
+  void EnterIfWorkContext (string format, params object[] args)
+  {
+    Enter (format, args);
   }
 
   /// <summary>
@@ -240,31 +311,37 @@ public class WorkContext: IDisposable
   ///   In C# it is generally recommended to use a <c>using</c> statement rather than calling <c>Leave</c> explicitly.
   ///   </para>
   /// </remarks>
-  [Conditional("TRACE")]
   public void Leave ()
   {
     if (_entered)
     {
-      Debug.Unindent();
-      Debug.WriteLine ("Leave Context: " + _text);
+      if (EnableTracing)
+      {
+        Trace.Unindent();
+        Trace.WriteLine ("Leave Context: " + _text);
+      }
       Stack.Leave (this);
       _entered = false;
-    }
+      }
   }
 
   /// <summary>
   ///   Marks the context as done.
   /// </summary>
   /// <remarks>
-  ///   Call this method if the work within a context has been processed successfully (i.e., no uncaught exception has been 
-  ///   raised).
+  ///   <para>
+  ///     Call this method if the work within a context has been processed successfully (i.e., no uncaught exception has been 
+  ///     raised).
+  ///   <para></para>
+  ///     For C# users, it is recommended to call this method at the end of the <c>using</c> block that contains the context.
+  ///   </para>
   /// </remarks>
-  [Conditional("TRACE")]
   public void Done()
   {
     if (_entered)
     {
-      Debug.WriteLine ("Work done in Context: " + _text);
+      if (EnableTracing)
+        Trace.WriteLine ("Work done in Context: " + _text);
       Stack.PopIncluding (this);
     }
   }
@@ -276,49 +353,6 @@ public class WorkContext: IDisposable
   {
     get { return _text; }
     set { _text = value; }
-  }
-}
-
-public class TestWorkContext
-{
-  public static void Test()
-  {
-    using (WorkContext ctxMain = WorkContext.EnterNew ("main"))
-    {
-      try
-      {
-        using (WorkContext ctxSub1 = WorkContext.EnterNew ("sub 1"))
-        {
-          throw new Exception ("text exception 1");
-
-          ctxSub1.Done();
-        }
-      }
-      catch (Exception e)
-      {
-        string context = WorkContext.Stack.ToString();
-        Console.WriteLine (e.Message + "\n" + e.StackTrace + "\n\nContext:\n" + context);
-      }
-      try
-      {
-        using (WorkContext ctxSub2 = WorkContext.EnterNew ("sub 2"))
-        {
-          using (WorkContext ctxSub2_1 = WorkContext.EnterNew ("sub 2.1"))
-          {
-            //ctxSub2_1.Done();
-          }
-            throw new Exception ("text exception 2");
-          ctxSub2.Done();
-        }
-      }
-      catch (Exception e)
-      {
-        string context = WorkContext.Stack.ToString();
-        Console.WriteLine (e.Message + "\n" + e.StackTrace + "\n\nContext:\n" + context);
-      }
-
-      ctxMain.Done();
-    }
   }
 }
 
