@@ -181,6 +181,8 @@ public class PropertyPathBinding: IReferencePropertySource
     set { _ownerControl = value; }
   }
 
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public IBusinessObjectReferenceProperty ReferenceProperty
   {
     get 

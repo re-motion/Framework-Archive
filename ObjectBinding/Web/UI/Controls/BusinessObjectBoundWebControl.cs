@@ -98,8 +98,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    //if (!ControlHelper.IsDesignMode (this, this.Context))
     _binding.EnsureDataSource();
   }
 

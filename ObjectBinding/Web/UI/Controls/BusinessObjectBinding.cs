@@ -6,6 +6,7 @@ using System.Web.UI;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web.Utilities;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -14,13 +15,23 @@ public class BusinessObjectBinding
 {
   private readonly IBusinessObjectBoundWebControl _control;
 
-  private bool _dataSourceChanged = false;
   private IBusinessObjectDataSource _dataSource;
-  private string _dataSourceControl;
+  private string _dataSourceControl;  
+  private bool _dataSourceChanged = false;
 
   private bool _bindingChanged = false;
   private IBusinessObjectProperty _property;
   private string _propertyIdentifier;
+  /// <summary>
+  ///   Set after the <see cref="DataSource"/> returned a value for the first time
+  ///   in the <c>get accessor</c> of <see cref="Property"/>.
+  /// </summary>
+  private bool _isDesignModePropertyInitalized = false;
+  /// <summary>
+  ///   Set in the <c>get accessor</c> of <see cref="Property"/> when <see cref="_dataSourceChanged"/> is set.
+  ///   Reset after the <see cref="Property"/> is bound.
+  /// </summary>
+  private bool _hasDesignModePropertyChanged = false;
 
   public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
   {
@@ -63,12 +74,32 @@ public class BusinessObjectBinding
       }
       else
       {
+        bool isDesignMode = ControlHelper.IsDesignMode (_control);
+
         if (_control.NamingContainer == null)
-          throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
+        {
+          if (isDesignMode)
+            return;
+          else
+            throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
+        }
 
         Control control = ControlHelper.FindControl (_control.NamingContainer, _dataSourceControl);
         if (control == null)
-          throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+        {
+          if (isDesignMode)
+          {
+            // HACK: Find a way to restart the page's lifecycle.
+            // On the first round-trip, not only the controls up to the current control exist.
+            SetDataSource (null);
+            _dataSourceChanged = true;
+            return;
+          }
+          else
+          {
+            throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+          }
+        }
 
         IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
         if (dataSource == null)
@@ -109,13 +140,20 @@ public class BusinessObjectBinding
       }
     }
   }
-  
+
   public IBusinessObjectProperty Property
   {
     get 
     { 
+      if (ControlHelper.IsDesignMode (_control))
+      {
+        if (! _isDesignModePropertyInitalized && DataSource != null)
+          _isDesignModePropertyInitalized = true;
+        _hasDesignModePropertyChanged |= _dataSourceChanged;
+      }
+
       // evaluate binding
-      if (_bindingChanged)
+      if (_bindingChanged || _hasDesignModePropertyChanged && _isDesignModePropertyInitalized)
       {
         if (_property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
         {
@@ -124,7 +162,10 @@ public class BusinessObjectBinding
             throw new ArgumentException ("Property 'Property' does not support the property '" + _propertyIdentifier + "'.");
           _property = property;
         }
+
         _bindingChanged = false;
+        if (_isDesignModePropertyInitalized)
+          _hasDesignModePropertyChanged = false;
 
         this.OnBindingChanged();
       }
