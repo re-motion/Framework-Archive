@@ -152,13 +152,17 @@ public class CommandHandler : Control, IPostBackEventHandler
 
     hyperLink.Text = linkText;
     hyperLink.NavigateUrl = "#";
-
-    string onClick = string.Format (
-        "if confirm ({0}) {1}", confirmationText, Page.GetPostBackEventReference (this, eventArgument));
-
-    hyperLink.Attributes["onClick"] = onClick;
+    hyperLink.Attributes["onClick"] = GetConfirmationJavaScript (confirmationText, eventArgument);
 
     return hyperLink;
+  }
+
+  private string GetConfirmationJavaScript (string confirmationText, string eventArgument)
+  {
+    return string.Format (
+        @"if (window.confirm ('{0}')) {{{1}; return true;}}"
+        + @"else {{return false;}}", 
+        confirmationText, Page.GetPostBackEventReference (this, eventArgument));
   }
 
   public string GetLinkWithConfirmation (int eventArgument, string linkText, string confirmationText)
@@ -188,17 +192,17 @@ public class CommandHandler : Control, IPostBackEventHandler
   {
     if (cssClass != null && cssClass != string.Empty)
     {
-      string link = "<a class=\"{0}\" href=\"#\" onClick=\"if confirm ({1}) {2}\">{3}</a>";
+      string link = "<a class=\"{0}\" href=\"#\" onClick=\"{1}\">{2}</a>";
       
-      return string.Format (link, cssClass, confirmationText,
-          Page.GetPostBackEventReference (this, eventArgument), linkText);
+      return string.Format (
+          link, cssClass, GetConfirmationJavaScript (confirmationText, eventArgument), linkText);
     }
     else
     {
-      string link = "<a href=\"#\" onClick=\"if confirm ({0}) {1}\">{2}</a>";
+      string link = "<a href=\"#\" onClick=\"{0}\">{1}</a>";
 
-      return string.Format (link, confirmationText,
-          Page.GetPostBackEventReference (this, eventArgument), linkText);
+      return string.Format (
+          link, GetConfirmationJavaScript (confirmationText, eventArgument), linkText);
     }
   }
 }
