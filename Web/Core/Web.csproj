@@ -345,6 +345,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\PostLoad.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\StandardPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
