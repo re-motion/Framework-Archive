@@ -10,6 +10,11 @@ public class TestDomainBase : DomainObject
 
   // static members and constants
 
+  public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
+  {
+    return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
+  }
+
   // member fields
 
   // construction and disposing
