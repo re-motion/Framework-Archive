@@ -539,6 +539,5 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
     Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);
   }
-
 }
 }
