@@ -24,8 +24,10 @@ public class MultiLingualUserControl : UserControl
     {
       ResourceDispatcher.Dispatch (this);
     }
-    catch
+    catch (Exception exception)
     {
+      
+      System.Diagnostics.Trace.WriteLine(exception.Message);
     }
 
     base.OnInit (e);

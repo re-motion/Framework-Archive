@@ -33,11 +33,12 @@ public class MultiLingualPage : Page
       ResourceDispatcher.Dispatch (this);
       this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
     }
-    catch 
+
+    catch (Exception exception)
     {
-
+      
+      System.Diagnostics.Trace.WriteLine(exception.Message);
     }
-
     base.OnInit (e);
   }
 
