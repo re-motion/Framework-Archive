@@ -5,11 +5,12 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
 [TestFixture]
-public class SqlProviderExecuteScalarQueryTest: SqlProviderBaseTest
+public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
 {
   // types
 
@@ -86,6 +87,15 @@ public class SqlProviderExecuteScalarQueryTest: SqlProviderBaseTest
   public void ExecuteScalarQueryWithCollectionQuery ()
   {
     Provider.ExecuteScalarQuery (new Query ("OrderQuery"));
+  }
+
+  [Test]
+  public void ExecuteBulkUpdateQuery ()
+  {
+    Query query = new Query ("BulkUpdateQuery");
+    query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1.Value);
+
+    Assert.AreEqual (2, Provider.ExecuteScalarQuery (query));
   }
 }
 }
