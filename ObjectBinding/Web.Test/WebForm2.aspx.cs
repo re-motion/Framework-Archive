@@ -33,7 +33,7 @@ public class WebForm2: System.Web.UI.Page
 		reflectionBusinessObjectDataSource1.BusinessObject = p;
 
     this.DataBind();
-    reflectionBusinessObjectDataSource1.LoadValues ();
+    reflectionBusinessObjectDataSource1.LoadValues (false);
 
 	}
 
@@ -68,7 +68,7 @@ public class WebForm2: System.Web.UI.Page
 
   private void SaveButton_Click (object sender, System.EventArgs e)
   {
-    reflectionBusinessObjectDataSource1.SaveValues();
+    reflectionBusinessObjectDataSource1.SaveValues (false);
     string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
   }
 }

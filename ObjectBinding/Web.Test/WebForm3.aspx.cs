@@ -36,7 +36,7 @@ namespace OBWTest
 			reflectionBusinessObjectDataSource1.BusinessObject = p;
 
       this.DataBind();
-      reflectionBusinessObjectDataSource1.LoadValues();
+      reflectionBusinessObjectDataSource1.LoadValues (false);
 		}
 
 		#region Web Form Designer generated code
@@ -73,7 +73,7 @@ namespace OBWTest
       Page.Validate();
       if (IsValid)
       {
-        reflectionBusinessObjectDataSource1.SaveValues();
+        reflectionBusinessObjectDataSource1.SaveValues (false);
         string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
       }
     }
