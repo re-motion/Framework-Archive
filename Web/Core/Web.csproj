@@ -676,6 +676,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Globalization\ResourceManagerUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Globalization\TabControl.en.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -712,11 +717,6 @@
                 />
                 <File
                     RelPath = "Utilities\PageUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ResourceManagerUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
