@@ -13,10 +13,9 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs" />
-        <includes name="Controls/**/*.cs" />
-        <includes name="Design/**/*.cs" />
-        <includes name="Globalization/**/*.cs" />
+        <includes name="UI/**/*.cs" />
         <includes name="Utilities/**/*.cs" />
+        <includes name="ExecutionEngine/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
@@ -32,7 +31,7 @@
         <includes asis="true" name="System.Xml.dll"/>
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web">
-        <includes name="Globalization/*.resx" />
+        <includes name="UI/Globalization/*.resx" />
       </resources>
     </csc>
         
