@@ -115,7 +115,7 @@ public class DataContainer
   /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is null; otherwise, <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNull (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -141,7 +141,7 @@ public class DataContainer
   /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is equal to null or empty; otherwise, <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNullOrEmpty (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -166,7 +166,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object this[string propertyName]
   {
     get 
@@ -192,7 +192,7 @@ public class DataContainer
   /// <returns>The value of the <see cref="PropertyValue"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object GetValue (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -208,7 +208,7 @@ public class DataContainer
   /// <param name="value">The value the <see cref="PropertyValue"/> is set to.</param>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public void SetValue (string propertyName, object value)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -221,7 +221,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> which the <see cref="DataContainer"/> is part of.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public ClientTransaction ClientTransaction 
   {
     get 
@@ -238,7 +238,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> associated with the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public DomainObject DomainObject
   {
     get 
@@ -255,7 +255,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="ObjectID"/> of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public ObjectID ID
   {
     get 
@@ -268,7 +268,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="Mapping.ClassDefinition"/> of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public ClassDefinition ClassDefinition
   {
     get 
@@ -281,7 +281,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="Type"/> of the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public Type DomainObjectType
   {
     get 
@@ -295,7 +295,7 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="PropertyValueCollection"/> of all <see cref="PropertyValue"/>s that are part of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValueCollection PropertyValues
   {
     get 
@@ -309,7 +309,7 @@ public class DataContainer
   /// <summary>
   /// Gets the state of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public StateType State
   {
     get 
@@ -329,7 +329,7 @@ public class DataContainer
   /// <summary>
   /// Gets the timestamp of the last committed change of the data in the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object Timestamp
   {
     get 
@@ -487,7 +487,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="ObjectID"/>.</exception>
   public ObjectID GetObjectID (string propertyName)
   {
@@ -515,7 +515,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="bool"/>.</exception>
   public bool GetBoolean (string propertyName)
   {
@@ -530,7 +530,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="byte"/>.</exception>
   public byte GetByte (string propertyName)
   {
@@ -545,7 +545,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="char"/>.</exception>
   public char GetChar (string propertyName)
   {
@@ -560,7 +560,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="System.DateTime"/>.</exception>
   public DateTime GetDateTime (string propertyName)
   {
@@ -575,7 +575,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="decimal"/>.</exception>
   public decimal GetDecimal (string propertyName)
   {
@@ -590,7 +590,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="double"/>.</exception>
   public double GetDouble (string propertyName)
   {
@@ -605,7 +605,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="System.Guid"/>.</exception>
   public Guid GetGuid (string propertyName)
   {
@@ -620,7 +620,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="short"/>.</exception>
   public short GetInt16 (string propertyName)
   {
@@ -635,7 +635,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="int"/>.</exception>
   public int GetInt32 (string propertyName)
   {
@@ -650,7 +650,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="long"/>.</exception>
   public long GetInt64 (string propertyName)
   {
@@ -665,7 +665,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="float"/>.</exception>
   public float GetSingle (string propertyName)
   {
@@ -680,7 +680,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="string"/>.</exception>
   public string GetString (string propertyName)
   {
@@ -695,7 +695,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.</exception>
   public NaBoolean GetNaBoolean (string propertyName)
   {
@@ -710,7 +710,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.</exception>
   public NaDateTime GetNaDateTime (string propertyName)
   {
@@ -725,7 +725,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaDouble"/>.</exception>
   public NaDouble GetNaDouble (string propertyName)
   {
@@ -740,7 +740,7 @@ public class DataContainer
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaInt32"/>.</exception>
   public NaInt32 GetNaInt32 (string propertyName)
   {
