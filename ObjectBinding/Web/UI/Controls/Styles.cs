@@ -357,7 +357,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
     return _textMode != _defaultTextMode;
   }
 
-  /// <summary> Sets the <see cref="TextMode"/> to it's default value. </summary>
+  /// <summary> Sets the <see cref="TextMode"/> to its default value. </summary>
   private void ResetTextMode()
   {
     _textMode = _defaultTextMode;
