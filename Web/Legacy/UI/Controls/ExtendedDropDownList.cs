@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 
-using Rubicon;
+using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
