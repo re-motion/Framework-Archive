@@ -60,12 +60,6 @@ public class ClientTransaction : IDisposable
 
   // methods and properties
 
-  [Obsolete]
-  internal RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
-  {
-    return _dataManager.RelationEndPointMap.GetRelationEndPoint (domainObject, definition);
-  }
-
   public void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
@@ -79,6 +73,13 @@ public class ClientTransaction : IDisposable
   public void Rollback ()
   {
     _dataManager.Rollback ();
+  }
+
+  internal protected bool HasRelationChanged (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
   }
 
   internal DataContainer CreateNewDataContainer (Type type)
@@ -144,7 +145,7 @@ public class ClientTransaction : IDisposable
     ArgumentUtility.CheckNotNull ("id", id);
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
-    _dataManager.Register (dataContainer);
+    _dataManager.RegisterExistingDataContainer (dataContainer);
 
     OnLoaded (new LoadedEventArgs (dataContainer.DomainObject));
 
@@ -162,7 +163,7 @@ public class ClientTransaction : IDisposable
 
     if (relatedDataContainer != null)
     {
-      _dataManager.Register (relatedDataContainer);
+      _dataManager.RegisterExistingDataContainer (relatedDataContainer);
       OnLoaded (new LoadedEventArgs (relatedDataContainer.DomainObject));
       return relatedDataContainer.DomainObject;
     }
@@ -179,8 +180,8 @@ public class ClientTransaction : IDisposable
 
     DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPointID);
 
-    DataContainerCollection newLoadedDataContainers = _dataManager.GetNotExisting (relatedDataContainers);
-    _dataManager.Register (newLoadedDataContainers);
+    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
+    _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
     DomainObjectCollection domainObjects = GetDomainObjects (relationEndPointID, relatedDataContainers);
 
@@ -209,6 +210,16 @@ public class ClientTransaction : IDisposable
       Committed (this, args);
   }
 
+  protected DataManager DataManager
+  {
+    get { return _dataManager; }
+  }
+
+  protected PersistenceManager PersistenceManager 
+  {
+    get { return _persistenceManager; }
+  }
+
   private void Initialize ()
   {
     _dataManager = new DataManager (this);
@@ -221,12 +232,7 @@ public class ClientTransaction : IDisposable
   {
     return DomainObjectCollection.Create (
         relationEndPointID.Definition.PropertyType,
-        _dataManager.MergeWithExisting (relatedDataContainers));
-  }
-
-  internal protected DataManager DataManager
-  {
-    get { return _dataManager; }
+        _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
   }
 }
 }

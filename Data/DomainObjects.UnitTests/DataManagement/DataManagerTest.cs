@@ -48,7 +48,7 @@ public class DataManagerTest : ClientTransactionBaseTest
   public void GetChangedDomainObjects ()
   {
     DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
-    _dataManager.Register (container);
+    _dataManager.RegisterExistingDataContainer (container);
     container["OrderNumber"] = 42;
 
     DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
@@ -61,8 +61,8 @@ public class DataManagerTest : ClientTransactionBaseTest
   {
     DataContainer container1 = TestDataContainerFactory.CreateOrder1DataContainer ();
     DataContainer container2 = TestDataContainerFactory.CreateOrderTicket1DataContainer ();
-    _dataManager.Register (container1);
-    _dataManager.Register (container2);
+    _dataManager.RegisterExistingDataContainer (container1);
+    _dataManager.RegisterExistingDataContainer (container2);
 
     container2["FileName"] = @"C:\NewFile.jpg";
 
@@ -81,10 +81,10 @@ public class DataManagerTest : ClientTransactionBaseTest
     DataContainer orderWithoutOrderItemDataContainer = 
         TestDataContainerFactory.CreateOrderWithoutOrderItemDataContainer ();
 
-    _dataManager.Register (order1);
-    _dataManager.Register (orderTicket1);
-    _dataManager.Register (orderTicket2);
-    _dataManager.Register (orderWithoutOrderItemDataContainer);
+    _dataManager.RegisterExistingDataContainer (order1);
+    _dataManager.RegisterExistingDataContainer (orderTicket1);
+    _dataManager.RegisterExistingDataContainer (orderTicket2);
+    _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
     RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
     _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
@@ -97,7 +97,7 @@ public class DataManagerTest : ClientTransactionBaseTest
   public void Commit ()
   {
     DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
-    _dataManager.Register (container);
+    _dataManager.RegisterExistingDataContainer (container);
     container["OrderNumber"] = 42;
 
     _dataManager.Commit ();
@@ -118,10 +118,10 @@ public class DataManagerTest : ClientTransactionBaseTest
     DataContainer orderWithoutOrderItemDataContainer = 
         TestDataContainerFactory.CreateOrderWithoutOrderItemDataContainer ();
 
-    _dataManager.Register (order1);
-    _dataManager.Register (orderTicket1);
-    _dataManager.Register (orderTicket2);
-    _dataManager.Register (orderWithoutOrderItemDataContainer);
+    _dataManager.RegisterExistingDataContainer (order1);
+    _dataManager.RegisterExistingDataContainer (orderTicket1);
+    _dataManager.RegisterExistingDataContainer (orderTicket2);
+    _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
     RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
     _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);

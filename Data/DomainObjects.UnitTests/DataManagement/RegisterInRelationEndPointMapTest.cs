@@ -39,7 +39,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
         DatabaseTest.c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     DataContainer container = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
-    _endPoints.Register (container);
+    _endPoints.RegisterExistingDataContainer (container);
     
     Assert.AreEqual (0, _endPoints.Count);
   }
@@ -48,7 +48,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   public void OrderTicket ()
   {
     DataContainer orderTicketContainer = TestDataContainerFactory.CreateOrderTicket1DataContainer ();
-    _endPoints.Register (orderTicketContainer);
+    _endPoints.RegisterExistingDataContainer (orderTicketContainer);
    
     Assert.AreEqual (2, _endPoints.Count, "Count");
 
@@ -77,7 +77,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   public void VirtualEndPoint ()
   {
     DataContainer container = TestDataContainerFactory.CreateClassWithGuidKeyDataContainer ();
-    _endPoints.Register (container);
+    _endPoints.RegisterExistingDataContainer (container);
 
     Assert.AreEqual (0, _endPoints.Count);
   }
@@ -86,7 +86,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   public void DerivedDataContainer ()
   {
     DataContainer distributorContainer = TestDataContainerFactory.CreateDistributor2DataContainer ();
-    _endPoints.Register (distributorContainer);
+    _endPoints.RegisterExistingDataContainer (distributorContainer);
 
     Assert.AreEqual (3, _endPoints.Count);
   }
@@ -95,7 +95,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   public void DataContainerWithOneToManyRelation ()
   {
     DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-    _endPoints.Register (orderContainer);
+    _endPoints.RegisterExistingDataContainer (orderContainer);
 
     Assert.AreEqual (2, _endPoints.Count, "Count");
 
