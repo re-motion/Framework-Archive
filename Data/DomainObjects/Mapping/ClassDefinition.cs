@@ -91,50 +91,50 @@ public class ClassDefinition
     return relationEndPointDefinition;
   }
 
-  public PropertyDefinitionCollection GetAllPropertyDefinitions ()
+  public PropertyDefinitionCollection GetPropertyDefinitions ()
   {
     PropertyDefinitionCollection propertyDefinitions = new PropertyDefinitionCollection (
         _propertyDefinitions, false);
     
     if (_baseClass != null)
     {
-      foreach (PropertyDefinition basePropertyDefinition in _baseClass.GetAllPropertyDefinitions ())
+      foreach (PropertyDefinition basePropertyDefinition in _baseClass.GetPropertyDefinitions ())
         propertyDefinitions.Add (basePropertyDefinition);
     }
 
     return propertyDefinitions;
   }
 
-  public RelationDefinitionCollection GetAllRelationDefinitions ()
+  public RelationDefinitionCollection GetRelationDefinitions ()
   {
     RelationDefinitionCollection relations = new RelationDefinitionCollection (_relationDefinitions, false);
 
     if (_baseClass != null)
     {
-      foreach (RelationDefinition baseRelation in _baseClass.GetAllRelationDefinitions ())
+      foreach (RelationDefinition baseRelation in _baseClass.GetRelationDefinitions ())
         relations.Add (baseRelation);
     }
 
     return relations;
   }
 
-  public IRelationEndPointDefinition[] GetAllRelationEndPointDefinitions ()
+  public IRelationEndPointDefinition[] GetRelationEndPointDefinitions ()
   {
     ArrayList relationEndPointDefinitions = new ArrayList ();
 
-    foreach (IRelationEndPointDefinition relationEndPointDefinition in GetRelationEndPointDefinitions ())
+    foreach (IRelationEndPointDefinition relationEndPointDefinition in GetMyRelationEndPointDefinitions ())
       relationEndPointDefinitions.Add (relationEndPointDefinition);
 
     if (_baseClass != null)
     {
-      foreach (IRelationEndPointDefinition baseRelationEndPointDefinition in _baseClass.GetAllRelationEndPointDefinitions ())
+      foreach (IRelationEndPointDefinition baseRelationEndPointDefinition in _baseClass.GetRelationEndPointDefinitions ())
         relationEndPointDefinitions.Add (baseRelationEndPointDefinition);
     }
 
     return (IRelationEndPointDefinition[]) relationEndPointDefinitions.ToArray (typeof (IRelationEndPointDefinition));
   }
 
-  public IRelationEndPointDefinition[] GetRelationEndPointDefinitions ()
+  public IRelationEndPointDefinition[] GetMyRelationEndPointDefinitions ()
   {
     ArrayList relationEndPointDefinitions = new ArrayList ();
 
@@ -301,7 +301,7 @@ public class ClassDefinition
     if (baseClass == this)
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
-    PropertyDefinitionCollection basePropertyDefinitions = baseClass.GetAllPropertyDefinitions ();
+    PropertyDefinitionCollection basePropertyDefinitions = baseClass.GetPropertyDefinitions ();
     foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
     {
       if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
@@ -329,7 +329,7 @@ public class ClassDefinition
 
   private void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
   {
-    PropertyDefinitionCollection allPropertyDefinitions = GetAllPropertyDefinitions ();
+    PropertyDefinitionCollection allPropertyDefinitions = GetPropertyDefinitions ();
     if (allPropertyDefinitions.Contains (args.PropertyDefinition.PropertyName))
     {
       throw CreateMappingException ("Class '{0}' already contains the property '{1}'.",
