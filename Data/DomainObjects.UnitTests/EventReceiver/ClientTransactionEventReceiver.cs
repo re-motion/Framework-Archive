@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using NUnit.Framework;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -53,11 +54,15 @@ public class ClientTransactionEventReceiver
 
   private void ClientTransaction_Committing (object sender, ClientTransactionEventArgs args)
   {
+    Assert.IsTrue (args.DomainObjects.IsReadOnly);
+
     _committingDomainObjects.Add (args.DomainObjects);
   }
 
   private void ClientTransaction_Committed (object sender, ClientTransactionEventArgs args)
   {
+    Assert.IsTrue (args.DomainObjects.IsReadOnly);
+
     _committedDomainObjects.Add (args.DomainObjects);
   }
 
