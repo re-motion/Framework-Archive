@@ -19,12 +19,14 @@ function DropDownMenu_AddMenuInfo (menuInfo)
   _dropDownMenu_menuInfos[menuInfo.ID] = menuInfo;
 }
 
-function DropDownMenu_ItemInfo (id, category, text, icon)
+function DropDownMenu_ItemInfo (id, category, text, icon, href, target)
 {
   this.ID = id;
   this.Category = category;
   this.Text = text;
   this.Icon = icon;
+  this.Href = href;
+  this.Target = target;
 }
 
 function DropDownMenu_OnClick (context, menuID)
@@ -71,9 +73,9 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   //  IE
   //popUp.style.display = 'none';
   popUpBody = popUpDocument.body
-  popUpDocument.createStyleSheet ("res/Rubicon.Web/HTML/DropDownMenu.css");
   DropDownMenu_AppendChild (popUpBody, popUp);
-	popUpWindow.show(0, 0, 0, 0, context);
+  popUpDocument.createStyleSheet ("res/Rubicon.Web/HTML/DropDownMenu.css");
+  popUpWindow.show(0, 0, 0, 0, context);
 	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth;
 	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight;
 	if (nRealWidth > window.screen.width) nRealWidth = window.screen.width;
@@ -156,17 +158,33 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 {
   if (itemInfo == null)
     return null;
-	var item = popUpDocument.createElement("div");
+	var item = popUpDocument.createElement ('div');
 	if(item == null)
 	  return null;
 	  
 	//  item.setAttribute("type", "option");
 	item.setAttribute ('id', itemInfo.ID);
-	item.innerHTML = itemInfo.Text;
+	if (itemInfo.Href != null)
+	{
+	  var anchor = popUpDocument.createElement ('a');
+	  anchor.innerHTML = itemInfo.Text;
+	  anchor.setAttribute ('href', '#');
+	  anchor.onclick = function () { window.location = itemInfo.Href; };
+	  item.appendChild (anchor);
+	}
+	else
+	{
+  	item.innerHTML = itemInfo.Text;
+  }
 	item.className = _dropDownMenu_itemClassName;
 	//item.setAttribute("onClick", wzAct);
 	//AImg(mo,wzISrc,wzIAlt);
 	return item;
+}
+
+function DropDownMenu_ItemClick()
+{
+  alert("hello");
 }
 
 function AImg(mi,wzISrc,wzIAlt)
