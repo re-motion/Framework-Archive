@@ -1787,9 +1787,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       else
         formGridRow.SetControlsCell (1, formGridRow.LabelsColumn);
 
+      HandleReadOnlyControls (formGridRow);
+
       CreateLabels (formGridRow);
 
-      HandleReadOnlyControls (formGridRow);
     }
   }
 
@@ -2286,6 +2287,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         if (textBox.ReadOnly)
         {
           LiteralControl readOnlyValue = new LiteralControl (textBox.Text);
+          readOnlyValue.ID = textBox.ID;
           dataRow.ControlsCell.Controls.RemoveAt (idxControl);
           dataRow.ControlsCell.Controls.AddAt (idxControl, readOnlyValue);
         }
