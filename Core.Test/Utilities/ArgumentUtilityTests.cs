@@ -3,7 +3,7 @@ using System.Collections;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
-namespace Rubicon.UnitTests
+namespace Rubicon.UnitTests.Utilities
 {
 
 [TestFixture]
