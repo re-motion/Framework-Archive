@@ -146,12 +146,7 @@ public class ObjectEndPoint : RelationEndPoint, INullable
   public ObjectID OppositeObjectID
   {
     get { return _oppositeObjectID; }
-    
-    set 
-    {
-      // TODO: Perform the changement through BeginRelationChange and EndRelationChange instead!
-      _oppositeObjectID = value; 
-    }
+    set { _oppositeObjectID = value; }
   }
 }
 }
