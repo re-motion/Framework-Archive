@@ -20,7 +20,13 @@ class MainClass
     }
     catch (Exception ex)
     {
-      PrintException (ex);
+      PrintException (ex, true);
+      BuilderFactory.PrintHelp ();
+      return;
+    }
+
+    if (builderFactory.IsOperationModeSet (OperationMode.Help))
+    {
       BuilderFactory.PrintHelp ();
       return;
     }
@@ -39,14 +45,22 @@ class MainClass
 
   private static void PrintException (Exception ex)
   {
+    PrintException (ex, false);
+  }
+
+  private static void PrintException (Exception ex, bool hideStackTrace)
+  {
       while (ex != null)
       {
         System.Console.Error.WriteLine ("");
         System.Console.Error.WriteLine ("Exception: " + ex.GetType ().Name);
         System.Console.Error.WriteLine (ex.Message);
         System.Console.Error.WriteLine ("");
-        System.Console.Error.WriteLine (ex.StackTrace);
-        System.Console.Error.WriteLine ("");
+        if (!hideStackTrace)
+        {
+          System.Console.Error.WriteLine (ex.StackTrace);
+          System.Console.Error.WriteLine ("");
+        }
 
         ex = ex.InnerException;
       }
