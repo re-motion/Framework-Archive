@@ -19,7 +19,7 @@ public class QueryParameterCollection : CollectionBase
   }
 
   // standard constructor for collections
-  public QueryParameterCollection (QueryParameterCollection collection, bool isCollectionReadOnly)  
+  public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -28,7 +28,7 @@ public class QueryParameterCollection : CollectionBase
       Add (parameter);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties

@@ -270,7 +270,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (PersistenceException), 
-      "Collection for mandatory relation 'OrderToOrderItem' (property: 'OrderItems') contains no elements.")]
+      "Collection for mandatory relation 'OrderToOrderItem' (property: 'OrderItems') contains no items.")]
   public void LoadEmptyRelatedDataContainersForMandatoryRelation ()
   {
     _persistenceManager.LoadRelatedDataContainers (

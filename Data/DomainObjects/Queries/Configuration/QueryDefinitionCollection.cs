@@ -23,7 +23,7 @@ public class QueryDefinitionCollection : CollectionBase
   // standard constructor for collections
   public QueryDefinitionCollection (
       QueryDefinitionCollection collection,
-      bool isCollectionReadOnly)
+      bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -32,7 +32,7 @@ public class QueryDefinitionCollection : CollectionBase
       Add (queryDefinition);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
