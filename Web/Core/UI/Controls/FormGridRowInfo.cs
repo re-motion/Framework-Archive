@@ -6,7 +6,7 @@ using System.Web.UI;
 namespace Rubicon.Web.UI.Controls
 {
 /// <summary> The prototype for the automatic creation of a new <see cref="FormGridManager.FormGridRow"/>. </summary>
-public class FormGridRowPrototype
+public class FormGridRowInfo
 {
   /// <summary> The possible positions for inserting the new row relative to a given ID. </summary>
   public enum RowPosition
@@ -61,7 +61,7 @@ public class FormGridRowPrototype
   ///   The <see cref="RowPosition"/> for inserting the new 
   ///   <see cref="FormGridManager.FormGridRow"/>.
   /// </param>
-  public FormGridRowPrototype (
+  public FormGridRowInfo (
       Control control, 
       RowType newRowType,
       string relatedRowID,
