@@ -117,7 +117,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (_oppositeDomainObjects.Count == 0)
     {
       throw CreateMandatoryRelationNotSetException (
-          "Mandatory relation property '{0}' of domain object '{1}' contains no elements.", 
+          "Mandatory relation property '{0}' of domain object '{1}' contains no items.", 
           PropertyName, 
           ObjectID);
     }
