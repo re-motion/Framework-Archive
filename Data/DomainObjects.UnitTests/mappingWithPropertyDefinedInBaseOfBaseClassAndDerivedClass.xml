@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping ..\mapping.xsd">
+	<classes>
+		<class id="Company">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Company</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+				</property>
+				<property name="IndustrialSector">
+				  <type>objectID</type>
+				  <column>IndustrialSectorID</column>
+				</property>
+			</properties>
+		</class>
+		<class id="Partner" baseClass="Company">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Company</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="ContactPerson">
+					<type>objectID</type>
+					<column>ContactPersonID</column>
+				</property>
+			</properties>
+		</class>
+		<class id="Supplier" baseClass="Partner">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Company</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+				</property>
+				<property name="SupplierQuality">
+					<type>int32</type>
+					<column>SupplierQuality</column>
+				</property>
+			</properties>
+		</class>
+	</classes>
+</mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects">
+  
+  <target name="debug" description="test build script">
+    <property name="project.builddir" value="build\Rubicon.Data.DomainObjects"/>
+    <property name="project.output" value="Rubicon.Data.DomainObjects"/>
+    <property name="project.extension" value="dll"/>
+    <property name="build.debug" value="true"/>
+    <property name="build.csc.define" value="DEBUG;TRACE"/>
+    
+    <mkdir dir="${project.builddir}"/>
+    <copy todir="${project.builddir}" file="../References/Rubicon.Core.dll" overwrite="true"/>
+    <call target="build"/>
+  </target>
+  
+  <target name="release" description="test build script">
+    <property name="project.builddir" value="build\Rubicon.Data.DomainObjects"/>
+    <property name="project.output" value="Rubicon.Data.DomainObjects"/>
+    <property name="project.extension" value="dll"/>
+    <property name="build.debug" value="false"/>
+    <property name="build.csc.define" value=""/>
+    
+    <mkdir dir="${project.builddir}"/>
+    <copy todir="${project.builddir}" file="../References/Rubicon.Core.dll" overwrite="true"/>
+    <call target="build"/>
+  </target>
+  
+  <target name="build" description="perform a build">
+    <csc  target="library"
+          output="${project.builddir}/${project.output}.${project.extension}"
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <sources failonempty="true">
+        <includes name="*.cs"/>
+        <includes name="Configuration/**/*.cs"/>
+        <includes name="DataManagement/**/*.cs"/>
+        <includes name="Persistence/**/*.cs"/>
+        <includes name="Relations/**/*.cs"/>
+      </sources>
+      <references failonempty="true">
+        <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="System.Xml.dll"/>
+      </references>
+    </csc>
+    <copy todir="${project.builddir}" file="mapping.xsd" overwrite="true"/>
+    <copy todir="${project.builddir}" file="storageProviders.xsd" overwrite="true"/>
+    <copy todir="${project.builddir}" file="types.xsd" overwrite="true"/>
+  </target>
+  
+</project>

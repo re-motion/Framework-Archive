@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping ..\mapping.xsd">
+  <classes>
+		<class id="Company">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Company</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+				</property>
+			</properties>
+		</class>
+		<class id="Customer" baseClass="Company">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Customer</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="CustomerSince">
+					<type>dateTime</type>
+					<column>CustomerSince</column>
+					<nullable>true</nullable>					
+				</property>
+				<property name="CustomerType">
+					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
+					<column>CustomerType</column>
+				</property>
+			</properties>
+		</class>
+  </classes>
+</mapping>  

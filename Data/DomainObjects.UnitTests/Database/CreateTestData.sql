@@ -1,0 +1,301 @@
+use TestDomain
+
+delete from [Computer]
+delete from [Employee]
+delete from [TableWithoutRelatedClassIDColumnAndDerivation]
+delete from [TableWithoutRelatedClassIDColumn]
+delete from [Ceo]
+delete from [OrderTicket]
+delete from [OrderItem]
+delete from [Order]
+delete from [Company]
+delete from [IndustrialSector]
+delete from [Person]
+delete from [TableWithAllDataTypes]
+delete from [TableWithValidRelations]
+delete from [TableWithInvalidRelation]
+delete from [TableWithGuidKey]
+delete from [TableWithKeyOfInvalidType]
+delete from [TableWithoutIDColumn]
+delete from [TableWithoutClassIDColumn]
+delete from [TableWithoutTimestampColumn]
+
+-- Employee
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{51ECE39B-F040-45b0-8B72-AD8B45353990}', 'Employee', 'Zaphod Beeblebrox', null)
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{C3B2BBC3-E083-4974-BAC7-9CEE1FB85A5E}', 'Employee', 'Ford Prefect', null)
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{3C4F3FC8-0DB2-4c1f-AA00-ADE72E9EDB32}', 'Employee', 'Arthur Dent', '{C3B2BBC3-E083-4974-BAC7-9CEE1FB85A5E}')
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{890BF138-7559-40d6-9C7F-436BC1AD4F59}', 'Employee', 'Trillian', '{51ECE39B-F040-45b0-8B72-AD8B45353990}')
+    
+insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
+    values ('{43329F84-D8BB-4988-BFD2-96D4F48EE5DE}', 'Employee', 'Marvin', '{51ECE39B-F040-45b0-8B72-AD8B45353990}')
+
+
+-- Computer
+insert into [Computer] (ID, ClassID, [SerialNumber], [EmployeeID])
+    values ('{C7C26BF5-871D-48c7-822A-E9B05AAC4E5A}', 'Computer', '12345-xzy-56', '{3C4F3FC8-0DB2-4c1f-AA00-ADE72E9EDB32}');
+
+insert into [Computer] (ID, ClassID, [SerialNumber], [EmployeeID])
+    values ('{176A0FF6-296D-4934-BD1A-23CF52C22411}', 'Computer', '98678-abc-43', '{890BF138-7559-40d6-9C7F-436BC1AD4F59}');
+
+insert into [Computer] (ID, ClassID, [SerialNumber], [EmployeeID])
+    values ('{704CE38C-4A08-4ef2-A6FE-9ED849BA31E5}', 'Computer', '34554-def-87', '{43329F84-D8BB-4988-BFD2-96D4F48EE5DE}');
+
+insert into [Computer] (ID, ClassID, [SerialNumber], [EmployeeID])
+    values ('{D6F50E77-2041-46b8-A840-AAA4D2E1BF5A}', 'Computer', '63457-kol-34', null);
+
+insert into [Computer] (ID, ClassID, [SerialNumber], [EmployeeID])
+    values ('{AEAC0C5D-44E0-45cc-B716-103B0A4981A4}', 'Computer', '93756-ndf-23', null);
+
+
+-- Person
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', 'Person', 'Franz Huber')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{DC50A962-EC95-4cf6-A4E7-A6608EAA23C8}', 'Person', 'Gisela Maier')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{10F36130-E97B-4078-A535-B79E07F16AB2}', 'Person', 'Margarethe Gans')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{45C6730A-DE0B-40d2-9D35-C1E56B8A89D6}', 'Person', 'Meister Eder')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{70C91528-4DB4-4e6a-B3F8-70C53A728DCC}', 'Person', 'Ulrike Giftzahn')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{19C04A28-094F-4d1f-9705-E2FC7107A68F}', 'Person', 'Pippi Langstrumpf')
+
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}', 'Person', 'Hans Dampf')
+
+-- IndustrialSector
+insert into [IndustrialSector] (ID, ClassID, [Name]) 
+    values ('{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}', 'IndustrialSector', 'Raumschiffproduktion')
+
+insert into [IndustrialSector] (ID, ClassID, [Name]) 
+    values ('{8565A077-EA01-4b5d-BEAA-293DC484BDDC}', 'IndustrialSector', 'Tellerwäscherei')
+
+
+-- Company
+insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID]) 
+    values ('{C4954DA8-8870-45c1-B7A3-C7E5E6AD641A}', 'Company', 'Firma 1', '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID]) 
+    values ('{A21A9EC2-17D6-44de-9F1A-2AB6FC3742DF}', 'Company', 'Firma 2', '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+
+-- Customer
+insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
+    values ('{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'Kunde 1', '2000/01/01', 0, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
+    values ('{F577F879-2DB4-4a3c-A18A-AFB4E57CE098}', 'Customer', 'Kunde 2', '2000/02/01', 1, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
+    values ('{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'Kunde 3', '2000/03/01', 2, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+
+-- Partner
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
+    values ('{5587A9C0-BE53-477d-8C0A-4803C7FAE1A9}', 'Partner', 'Partner 1', '{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
+    values ('{B403E58E-9FA5-47ed-883C-73420D64DEB3}', 'Partner', 'Partner 2', '{DC50A962-EC95-4cf6-A4E7-A6608EAA23C8}', '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+-- This row does not conform to mapping, because no CEO row points to this:
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
+    values ('{A65B123A-6E17-498e-A28E-946217C0AE30}', 'Partner', 'Partner 3', '{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}', '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+-- Supplier
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, SupplierQuality, [IndustrialSectorID]) 
+    values ('{FD392135-1FDD-42a3-8E2F-232BAB9893A2}', 'Supplier', 'Lieferant 1', '{10F36130-E97B-4078-A535-B79E07F16AB2}', 1, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, SupplierQuality, [IndustrialSectorID]) 
+    values ('{92A8BB6A-412A-4fe3-9B09-3E1B6136E425}', 'Supplier', 'Lieferant 2', '{45C6730A-DE0B-40d2-9D35-C1E56B8A89D6}', 50, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+
+-- Distributor
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
+    values ('{E4087155-D60A-4d31-95B3-9A401A3E4E78}', 'Distributor', 'Händler 1', '{70C91528-4DB4-4e6a-B3F8-70C53A728DCC}', 1, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
+    values ('{247206C3-7B48-4e17-91DD-3363B568D7E4}', 'Distributor', 'Händler 2', '{19C04A28-094F-4d1f-9705-E2FC7107A68F}', 10, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+-- This row does not conform to mapping, because it lacks a pointer to a contact person:
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
+    values ('{1514D668-A0A5-40e9-AC22-F24900E0EB39}', 'Distributor', 'Händler 3', null, 5, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+-- Order
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'Order', 1, '2005/01/01', 
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{83445473-844A-4d3f-A8C3-C27F8D98E8BA}', 'Order', 3, '2005/03/01', 
+    '{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+
+-- No OrderItem points to this Order => This leads to a PersistenceException when navigating over relation
+insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
+    values ('{F4016F41-F4E4-429e-B8D1-659C8C480A67}', 'Order', 2, '2005/02/01', 
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+
+
+-- OrderItem
+insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}', 'OrderItem', 
+    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 1, 'Mainboard')
+
+insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}', 'OrderItem', 
+    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 2, 'CPU Fan')
+
+insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{0D7196A5-8161-4048-820D-B1BBDABE3293}', 'OrderItem', 
+    '{83445473-844A-4d3f-A8C3-C27F8D98E8BA}', 1, 'Harddisk')
+
+-- OrderTicket
+insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
+    values ('{058EF259-F9CD-4cb1-85E5-5C05119AB596}', 'OrderTicket', 'C:\order1.png', '{5682F032-2F0B-494b-A31C-C97F02B89C36}')
+
+insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
+    values ('{0005BDF4-4CCC-4a41-B9B5-BAAB3EB95237}', 'OrderTicket', 'C:\order2.png', '{F4016F41-F4E4-429e-B8D1-659C8C480A67}')
+
+insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
+    values ('{BCF6C5F6-323F-4471-9CA5-7DF0A48C7A59}', 'OrderTicket', 'C:\order3.png', '{83445473-844A-4d3f-A8C3-C27F8D98E8BA}')
+
+-- Ceo
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{A1691AF1-F96D-42e1-B021-B5099840D572}', 'Ceo', 'Hermann Boss', 
+    '{C4954DA8-8870-45c1-B7A3-C7E5E6AD641A}', 'Company')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{A6A848CE-505F-4cd3-A337-1F5EEA1D2260}', 'Ceo', 'Sepp Boss', 
+    '{A21A9EC2-17D6-44de-9F1A-2AB6FC3742DF}', 'Company')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{481C7840-9D8A-4872-BBCD-B41A9BD85528}', 'Ceo', 'Hermann Chef', 
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{BE7F24E2-600C-4cd8-A7C3-8669AFD54154}', 'Ceo', 'Sepp Fischer', 
+    '{F577F879-2DB4-4a3c-A18A-AFB4E57CE098}', 'Customer')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{7236BA88-48C6-415f-A0BA-A328A1A22DFE}', 'Ceo', 'Hugo Boss', 
+    '{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{C7837D11-C1D6-458f-A3F7-7D5C96C1F726}', 'Ceo', 'Thomas Friedrich', 
+    '{5587A9C0-BE53-477d-8C0A-4803C7FAE1A9}', 'Partner')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{9F0AC953-E78E-4939-8AFE-0EFF9B3B3ED9}', 'Ceo', 'Sabine Karl', 
+    '{B403E58E-9FA5-47ed-883C-73420D64DEB3}', 'Partner')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{394C69B2-BD40-48d1-A2AE-A73FB63C0B66}', 'Ceo', 'Zenzi Tischler', 
+    '{FD392135-1FDD-42a3-8E2F-232BAB9893A2}', 'Supplier')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{421D04B4-BC77-4682-B0FE-58B96802C524}', 'Ceo', 'Brunhilde von Island', 
+    '{92A8BB6A-412A-4fe3-9B09-3E1B6136E425}', 'Supplier')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{6B801331-2163-4837-B20C-973BD9B8768E}', 'Ceo', 'Siegfried Drachentöter', 
+    '{E4087155-D60A-4d31-95B3-9A401A3E4E78}', 'Distributor')
+
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{2E8AE776-DC3A-45a5-9B0C-35900CC78FDC}', 'Ceo', 'Gitti Linzer', 
+    '{247206C3-7B48-4e17-91DD-3363B568D7E4}', 'Distributor')
+
+
+-- ClassWithoutRelatedClassIDColumn
+insert into [TableWithoutRelatedClassIDColumn] (ID, ClassID, PartnerID) 
+    values ('{CD3BE83E-FBB7-4251-AAE4-B216485C5638}', 'ClassWithoutRelatedClassIDColumn', 
+    '{5587A9C0-BE53-477d-8C0A-4803C7FAE1A9}')
+
+-- ClassWithoutRelatedClassIDColumnAndDerivation
+insert into [TableWithoutRelatedClassIDColumnAndDerivation] (ID, ClassID, CompanyID) 
+    values ('{4821D7F7-B586-4435-B572-8A96A44B113E}', 'ClassWithoutRelatedClassIDColumnAndDerivation', 
+    '{C4954DA8-8870-45c1-B7A3-C7E5E6AD641A}')
+
+-- TableWithAllDataTypes
+insert into [TableWithAllDataTypes] (ID, ClassID, [Boolean], [Byte], [Char], [DateTime], [Decimal], [Double], 
+    [Enum], [Guid], [Int16], [Int32], [Int64], [Single], [String], [NaBoolean], [NaDateTime],
+    [NaDouble], [NaInt32], [StringWithNullValue], [NaBooleanWithNullValue], [NaDateTimeWithNullValue],
+    [NaDoubleWithNullValue], [NaInt32WithNullValue]) 
+    values ('{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}', 'ClassWithAllDataTypes', 0, 85, 'a', '2005/01/01', 123456.789, 987654.321,
+    1, '{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}', 32767, 2147483647, 9223372036854775807, 6789.321, 'abcdeföäü', 1, '2005/02/01',
+    654321.789, -2147483647, null, null, null, null, null)
+    
+insert into [TableWithAllDataTypes] (ID, ClassID, [Boolean], [Byte], [Char], [DateTime], [Decimal], [Double], 
+    [Enum], [Guid], [Int16], [Int32], [Int64], [Single], [String], [NaBoolean], [NaDateTime],
+    [NaDouble], [NaInt32], [StringWithNullValue], [NaBooleanWithNullValue], [NaDateTimeWithNullValue],
+    [NaDoubleWithNullValue], [NaInt32WithNullValue]) 
+    values ('{583EC716-8443-4b55-92BF-09F7C8768529}', 'ClassWithAllDataTypes', 1, 86, 'b', '2005/01/02', 654321.987, 456789.123,
+    0, '{D2146236-FBD4-4b93-A835-26563FE3F043}', -32767, -2147483647, -9223372036854775807, -6789.321, 'üäöfedcba', 1, '2005/02/02',
+    -654321.789, 2147483647, null, null, null, null, null)
+
+
+-- TableWithGuidKey
+insert into [TableWithGuidKey] (ID, ClassID) 
+    values ('{7D1F5F2E-D111-433b-A675-300B55DC4756}', 'ClassWithGuidKey')
+
+insert into [TableWithGuidKey] (ID, ClassID) 
+    values ('{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}', 'ClassWithGuidKey')
+
+-- This row contains an invalid ClassID => Thus an error occurs when loaded:
+insert into [TableWithGuidKey] (ID, ClassID) 
+    values ('{C9F16F93-CF42-4357-B87B-7493882AAEAF}', 'NonExistingClassID')
+    
+-- This row contains a ClassID from another class => Thus an error occurs when loaded:
+insert into [TableWithGuidKey] (ID, ClassID) 
+    values ('{895853EB-06CD-4291-B467-160560AE8EC1}', 'Order')
+
+-- No other row should refer to this row:
+insert into [TableWithGuidKey] (ID, ClassID) 
+    values ('{672C8754-C617-4b7a-890C-BFEF8AC86564}', 'ClassWithGuidKey')
+
+-- TableWithKeyOfInvalidType
+insert into [TableWithKeyOfInvalidType] (ID, ClassID) 
+    values ('2005/01/01', 'ClassWithKeyOfInvalidType')
+
+-- TableWithoutIDColumn
+insert into [TableWithoutIDColumn] (ClassID) 
+    values ('ClassWithoutIDColumn')
+    
+-- TableWithoutClassIDColumn
+insert into [TableWithoutClassIDColumn] (ID) 
+    values ('{DDD02092-355B-4820-90B6-7F1540C0547E}')
+
+-- TableWithoutTimestampColumn
+insert into [TableWithoutTimestampColumn] (ID, ClassID) 
+    values ('{027DCBD7-ED68-461d-AE80-B8E145A7B816}', 'ClassWithoutTimestampColumn')
+ 
+-- TableWithValidRelations
+insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, TableWithGuidKeyNonOptionalID) 
+    values ('{35BA182C-C836-490e-AF79-74C72145BCE5}', 'ClassWithValidRelations', 
+    '{7D1F5F2E-D111-433b-A675-300B55DC4756}', '{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}')
+    
+insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, TableWithGuidKeyNonOptionalID)  
+    values ('{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}', 'ClassWithValidRelations', 
+    null, '{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}')
+
+-- This row does not conform to mapping, because TableWithGuidKeyNonOptionalID is mandatory, but null:
+insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, TableWithGuidKeyNonOptionalID)  
+    values ('{3E5AED0E-C6F9-4dca-A901-4DA50F5A97AB}', 'ClassWithValidRelations', 
+    '{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}', null)
+
+-- TableWithInvalidRelation
+-- This row points to non-existing row in TableWithGuidKey
+insert into [TableWithInvalidRelation] (ID, ClassID, TableWithGuidKeyID) 
+    values ('{35BA182C-C836-490e-AF79-74C72145BCE5}', 'ClassWithInvalidRelation', 
+    '{A53F679D-0E91-4504-AEE8-59250DE249B3}')

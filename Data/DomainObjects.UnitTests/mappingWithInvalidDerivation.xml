@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping ..\mapping.xsd">
+  <classes>
+		<class id="Company" baseClass="Company">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity>Company</entity>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+				</property>
+			</properties>
+		</class>
+  </classes>
+</mapping>  

@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects", "DomainObjects\Rubicon.Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.UnitTests", "DomainObjects\UnitTests\Rubicon.Data.DomainObjects.UnitTests.csproj", "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {15D953AA-128D-410E-90E9-33617BB62CB3}
+		SccProjectUniqueName1 = DomainObjects\\Rubicon.Data.DomainObjects.csproj
+		SccLocalPath1 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection1 = DomainObjects\\
+		SccProjectUniqueName2 = DomainObjects\\UnitTests\\Rubicon.Data.DomainObjects.UnitTests.csproj
+		SccLocalPath2 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection2 = DomainObjects\\UnitTests\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug.ActiveCfg = Debug|.NET
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug.Build.0 = Debug|.NET
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release.ActiveCfg = Release|.NET
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release.Build.0 = Release|.NET
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Debug.ActiveCfg = Debug|.NET
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Debug.Build.0 = Debug|.NET
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release.ActiveCfg = Release|.NET
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(SolutionItems) = postSolution
+		References\Rubicon.Core.dll = References\Rubicon.Core.dll
+		References\Rubicon.Core.pdb = References\Rubicon.Core.pdb
+		References\Rubicon.Core.xml = References\Rubicon.Core.xml
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
