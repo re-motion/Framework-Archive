@@ -851,7 +851,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using it's ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
   /// </summary>
   public override Control TargetControl 
   {
