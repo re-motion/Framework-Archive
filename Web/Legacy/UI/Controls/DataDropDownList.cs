@@ -14,7 +14,7 @@ namespace Rubicon.Findit.Client.Controls
 /// <remarks>
 /// Can be used for accessing database IDs of list entries.
 /// </remarks>
-public class DataDropDownList: DropDownList, IResourceDispatchTarget
+public class DataDropDownList: ExtendedDropDownList
 {
   // types
 
@@ -35,37 +35,6 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
 
   // methods and properties
 
-  public void Dispatch (IDictionary values)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string key = entry.Key.ToString ();
-      int posColon = key.IndexOf (":");
-      if (posColon >=0)
-      {
-        string value = key.Substring (0, posColon);
-        string text = entry.Value.ToString ();        
-
-        ListItem item = GetListItemByValue (value);
-        if (item != null)
-          item.Text = text;
-      }
-    }
-  }
-
-  public ListItem GetListItemByValue (string value)
-  {
-    foreach (ListItem item in this.Items)
-    {
-      if (item.Value == value)
-      {
-        return item;
-      }
-    }
-
-    return null;
-  }
-
   /// <summary>
   /// Specifies whether the user must select a valid item in this list.
   /// </summary>
@@ -84,19 +53,6 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
   {
     get { return _emptyValue; }
     set { _emptyValue = value; }
-  }
-
-  public static void SetSelectedValue (System.Web.UI.WebControls.ListControl list, string value)
-  {
-    for (int i = 0; i < list.Items.Count; ++i)
-    {
-      if (list.Items[i].Value == value)
-      {
-        list.SelectedIndex = i;
-        return;
-      }
-    }
-    throw new ArgumentOutOfRangeException ("value", value, "No item with specified value found.");
   }
 
   /// <summary>
@@ -132,23 +88,7 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
         return;
       }
 
-      for (int i = 0; i < this.Items.Count; ++i)
-      {
-        try
-        {
-          if (val == int.Parse (this.Items[i].Value))
-          {
-            SelectedIndex = i;
-            return;
-          }
-        }
-        catch (FormatException)
-        {
-        }
-      }
-
-      throw new ArgumentOutOfRangeException (
-          "value", value, "List does not contain an item with the specified value.");
+      base.SelectedValue = val;
     }
   }
 
@@ -174,7 +114,7 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
   /// <remarks>
   /// Do not use Items.Clear().
   /// </remarks>
-  public void ClearItems()
+  public override void ClearItems()
   {
     this.Items.Clear();
     AddEmptyItem();
@@ -190,11 +130,6 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
     if (this.Items.Count < 1 || this.Items[0].Value != "-1")
       AddEmptyItem();
     this.SelectedIndex = 0;
-  }
-
-  public void Add (string text, int value)
-  {
-    this.Items.Add (new ListItem (text, value.ToString()));
   }
 
   private void AddEmptyItem()
