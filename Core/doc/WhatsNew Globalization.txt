@@ -1,24 +1,3 @@
-Version 3.0.1.0
-===============
-
-- Klasse ResourceManagerPool ist nun obsolete.
-  * Funktionalität ist nun teilweise nach MultiLingualResourcesAttribute ausgegliedert.
-  * Zugriff auf Resourcen soll einheitlich sein, egal woher sie kommen (IResourceManager)
-  
-- Klasse MultiLingualResourcesAttribute
-  übernommen aus ResourceManagerPool:
-  * Neue public static Methoden GetResourceManager(...) + overloads
-  * Neue private static Methode GetResourceNameAndType(...)
-  * Neue private static GetResourceAttributes()
-
-- Interface IResourceManager erstellt
-  Generisches Interface um beliebige Resource Container einheitlich anzusprechen
-  (Resource Files, Fabasoft)
-
-
-- Klasse ResourceManagerWrapper:
-  Implementierung von IResourceManager für FCL ResourceManager.
-  
 Verson 3.0.0.1
 ==============
 

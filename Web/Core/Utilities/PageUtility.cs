@@ -538,11 +538,27 @@ public class PageUtility
     string refreshParentScript = string.Empty;
 
     if (refreshParent)
-      refreshParentScript = "window.opener.Refresh();\n";
+    {
+      refreshParentScript = @"
+        if (window.opener != null)
+        { 
+          alert (window.opener.Refresh);
+          alert (window.opener.document.forms[0].name);
+
+          if (window.opener.Refresh != null) 
+          {
+            window.opener.Refresh();
+          }
+          else if (window.opener.document.forms != null && window.opener.document.forms.length > 0)
+          {
+            window.opener.document.forms[0].submit ();    
+          }
+        }";
+    }
 
     string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
       refreshParentScript +
-      "window.close ();\n" +
+      "\nwindow.close ();\n" +
       "</script>";
 
     page.RegisterStartupScript ("CloseWindowKey", script);

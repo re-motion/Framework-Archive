@@ -1,13 +1,10 @@
 3.1.8.0
 =======
 
-- ResourceDispatcher:
-  * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
-    zu unterstützen.
-  * Methoden, die noch direkt den FCL ResourceManager unterstützen, sind als obsolete
-    gekennzeichnet.
-- LabelUtility:
-  Offers functionality for access key support (access key highlighting)
+- PageUtility.RegisterWindowOpenJavascript (): Javascript-Methode "Refresh ()" ist nur unter speziellen Umständen
+  vorhanden => Wenn keine "Refresh ()" Methode vorhanden ist, dann wird das erste Form auf der Seite submitted =>
+  Achtung: In diesem Fall sollte die Page.Validate () Methode überschrieben werden, da bei einem Submit ohne
+  Quellcontrol die Page im Normalfall automatisch validiert!
     
     
 3.1.7.1
