@@ -50,8 +50,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   private string _text = string.Empty;
   private string _newText = null;
   private bool _isDirty = true;
-  private TextBox _textBox = null;
-  private Label _label = null;
+  private TextBox _textBox;
+  private Label _label;
 
   private Style _commonStyle = new Style ();
   private TextBoxStyle _textBoxStyle = new TextBoxStyle ();
@@ -60,16 +60,16 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
 	public BocTextValue()
 	{
+    _textBox = new TextBox();
+    _label = new Label ();
 	}
 
   protected override void CreateChildControls()
   {
-    _textBox = new TextBox();
     _textBox.ID = ID + "_Boc_TextBox";
     _textBox.EnableViewState = false;
     Controls.Add (_textBox);
 
-    _label = new Label ();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
