@@ -137,7 +137,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Web.UI.build"
+                    RelPath = "Web.build"
                     BuildAction = "None"
                 />
                 <File
