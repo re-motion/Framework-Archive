@@ -57,6 +57,7 @@ public class ProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual (false, newContainer["BooleanProperty"]);
     Assert.AreEqual ((byte) 0, newContainer["ByteProperty"]);
     Assert.AreEqual (' ', newContainer["CharProperty"]);
+    Assert.AreEqual (DateTime.MinValue, newContainer["DateProperty"]);
     Assert.AreEqual (DateTime.MinValue, newContainer["DateTimeProperty"]);
     Assert.AreEqual ((decimal) 0, newContainer["DecimalProperty"]);
     Assert.AreEqual ((double) 0, newContainer["DoubleProperty"]);
@@ -68,11 +69,13 @@ public class ProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual ((float) 0, newContainer["SingleProperty"]);
     Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);
+    Assert.AreEqual (NaDateTime.Null, newContainer["NaDateProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeProperty"]);
     Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleProperty"]);
     Assert.AreEqual (NaInt32.Null, newContainer["NaInt32Property"]);
     Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanWithNullValueProperty"]);
+    Assert.AreEqual (NaDateTime.Null, newContainer["NaDateWithNullValueProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeWithNullValueProperty"]);
     Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleWithNullValueProperty"]);
     Assert.AreEqual (NaInt32.Null, newContainer["NaInt32WithNullValueProperty"]);
