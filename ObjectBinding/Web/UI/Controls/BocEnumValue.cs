@@ -102,7 +102,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
     _listControl = _listControlStyle.Create (false);
     _label = new Label();
@@ -121,6 +120,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     _label.EnableViewState = false;
     Controls.Add (_label);
 
+    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _listControl.SelectedIndexChanged += new EventHandler(ListControl_SelectedIndexChanged);
   }
 

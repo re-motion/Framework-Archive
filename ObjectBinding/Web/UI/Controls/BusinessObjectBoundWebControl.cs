@@ -12,6 +12,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -64,7 +65,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public IBusinessObjectProperty Property
   {
     get { return _binding.Property; }
-    set { _binding.Property = value; }
+    set
+    { _binding.Property = value; }
   }
 
   #endregion
@@ -283,7 +285,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   protected bool IsDesignMode
   {
-    get { return this.Site != null && this.Site.DesignMode;  }
+    get
+    { 
+      return ControlHelper.IsDesignMode (this, Context);
+    }
   }
 }
 
@@ -333,7 +338,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       Binding.EvaluateBinding();
       if (Property == null || DataSource == null)
         return false;
-      if (DataSource.BusinessObject == null)
+      if (! IsDesignMode && DataSource.BusinessObject == null)
         return true;
       if (! DataSource.IsWritable)
         return true;

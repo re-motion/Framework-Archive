@@ -108,8 +108,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-
     //  Prevent a collapsed control
     if (Width == Unit.Empty)
       Width = Unit.Pixel (150);
@@ -131,6 +129,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _label.EnableViewState = true;
     Controls.Add (_label);
 
+    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
   }
 
@@ -415,7 +414,28 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         int innerControlWidthValue = (int) (Width.Value - _icon.Width.Value);
         innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
-        innerControlWidth = Unit.Pixel (innerControlWidthValue);
+        switch (Width.Type)
+        {
+          case UnitType.Percentage:
+          {
+          innerControlWidth = Unit.Percentage (innerControlWidthValue);
+          break;
+          }
+          case UnitType.Pixel:
+          {
+            innerControlWidth = Unit.Pixel (innerControlWidthValue);
+            break;
+          }
+          case UnitType.Point:
+          {
+            innerControlWidth = Unit.Point (innerControlWidthValue);
+            break;
+          }
+          default:
+          {
+            break;
+          }
+        }
       }
       else
       {

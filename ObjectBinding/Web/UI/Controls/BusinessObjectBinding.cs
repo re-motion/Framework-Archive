@@ -96,7 +96,9 @@ public class BusinessObjectBinding
       //  Must be before OnBindingChanged to prevent infinite Loops
       //  IsReadOnly and IsRequired both call EvaluateBinding and are essential for displaying 
       //  bound objects
+      //  TODO: Check if side effects
       _bindingChanged = false;
+
       this.OnBindingChanged();
     }
   }
