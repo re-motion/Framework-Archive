@@ -88,7 +88,7 @@ public class CompleteBocUserControl :
     incomeField.ID = "IncomeField";
     incomeField.DataSourceControl = ReflectionBusinessObjectDataSourceControl.ID;
     incomeField.PropertyIdentifier = "Income";
-
+    incomeField.Visible = false;
     //  A new row
     newRows.Add (new FormGridRowInfo(
         incomeField, 
