@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
 
-namespace Rubicon.Findit.Clients.Controls
+namespace Rubicon.Findit.Client.Controls
 {
 
 
