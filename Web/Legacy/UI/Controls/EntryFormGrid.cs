@@ -26,7 +26,7 @@ public class EntryFieldBreak: Control
   protected override void Render (HtmlTextWriter writer)
   {
     EntryField parentField = (EntryField) this.Parent;
-    writer.Write ("</td></tr><tr><td colspan=\"6\">{0}</td><td>{0}", 
+    writer.Write ("</td></tr><tr><td colspan=\"5\">{0}</td><td>{0}", 
       parentField.ParentGrid.GetWhitespaceImage (this.Page, 0, 0));
   }
 }

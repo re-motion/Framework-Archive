@@ -242,7 +242,11 @@ public class PageUtility
   public static string AddUrlParameter (string url, string name, string value)
   {
     string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
-    return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode(value);
+    return url + parameterSeperator + name + "=" 
+        + HttpUtility.UrlEncode(value, HttpContext.Current.Response.ContentEncoding);
+
+    //System.Text.Encoding encoding = System.Text.Encoding.GetEncoding ("ISO-8859-1");
+    //return url + parameterSeperator + name + "=" + value;
   }
 
   public static string GetToken (Page page)
@@ -254,6 +258,20 @@ public class PageUtility
   {
     return page.Request.QueryString["parentToken"];
   }
+
+  public static void Redirect (HttpResponse response, string destinationUrl)
+  {
+	  destinationUrl = response.ApplyAppPathModifier (destinationUrl);
+  	response.Clear();
+
+		response.StatusCode = 302;
+    response.AppendHeader ("location", destinationUrl);
+		response.Write("<html><head><title>Object moved</title></head><body>\r\n");
+		response.Write("<h2>Object moved to <a href='" + destinationUrl + "'>here</a>.</h2>\r\n");
+		response.Write("</body></html>\r\n");
+
+    response.End ();
+	}
 
   /// <summary>
   /// Redirects to the page identified by the given URL 
@@ -309,7 +327,7 @@ public class PageUtility
     if (navigablePage != null)
       navigablePage.NavigateTo (url, returnToThisPage);
     else
-      sourcePage.Response.Redirect (url);
+      PageUtility.Redirect (sourcePage.Response, url);
   }
 
   /// <summary>

@@ -304,7 +304,7 @@ public class TabControl: Control, IPostBackEventHandler
     if (AllowNavigation (url))
     {
       _activeTab = tab;      
-      Page.Response.Redirect (url);
+      PageUtility.Redirect (Page.Response, url);
     }
   }
 
@@ -319,7 +319,7 @@ public class TabControl: Control, IPostBackEventHandler
     if (AllowNavigation (url))
     {
       _activeMenu = menu;
-      Page.Response.Redirect (url);
+      PageUtility.Redirect (Page.Response, url);
     }
   }
 
