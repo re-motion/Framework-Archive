@@ -15,8 +15,7 @@ public class RelationEndPointID
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    IRelationEndPointDefinition[] endPointDefinitions = 
-        dataContainer.ClassDefinition.GetAllRelationEndPointDefinitions ();
+    IRelationEndPointDefinition[] endPointDefinitions = dataContainer.ClassDefinition.GetRelationEndPointDefinitions ();
 
     RelationEndPointID[] relationEndPointIDs = new RelationEndPointID[endPointDefinitions.Length];
 
