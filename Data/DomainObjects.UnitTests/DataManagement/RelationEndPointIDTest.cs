@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -54,6 +55,17 @@ public class RelationEndPointIDTest
   public void InitializeWithInvalidObjectID ()
   {
     RelationEndPointID endPointID = new RelationEndPointID (null, _propertyName);
+  }
+
+
+  [Test]
+  [ExpectedException (typeof (MappingException))]
+  public void InitializeWithInvalidClassID ()
+  {
+    ObjectID objectIDWithInvalidClass = new ObjectID (
+        DatabaseTest.c_testDomainProviderID, "InvalidClassID", Guid.NewGuid ());
+
+    RelationEndPointID invalidEndPointID = new RelationEndPointID (objectIDWithInvalidClass, "PropertyName");
   }
 
   [Test]
