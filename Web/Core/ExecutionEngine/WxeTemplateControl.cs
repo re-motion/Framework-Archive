@@ -4,6 +4,7 @@ using System.Web.UI;
 using Rubicon.Collections;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -22,7 +23,13 @@ public class WxeTemplateControlInfo
 
   public void OnInit (IWxeTemplateControl control, HttpContext context)
   {
+    if (ControlHelper.IsDesignMode (control, context))
+      return;
+
     WxeHandler wxeHandler = context.Handler as WxeHandler;
+    if (wxeHandler == null)
+      throw new HttpException ("No current WxeHandler found.");
+
     _currentStep = (wxeHandler == null) ? null : wxeHandler.CurrentFunction.ExecutingStep as WxePageStep;
 
     WxeStep step = _currentStep;

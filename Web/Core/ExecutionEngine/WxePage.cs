@@ -8,6 +8,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -23,9 +24,12 @@ public class WxePageInfo: WxeTemplateControlInfo
   {
     OnInit (page, context);
 
-    if (form == null)
-      throw new HttpException (page.GetType().FullName + " does not initialize field 'Form'.");
-    form = WxeForm.Replace (form);
+    if (! ControlHelper.IsDesignMode (page, context))
+    {
+      if (form == null)
+        throw new HttpException (page.GetType().FullName + " does not initialize field 'Form'.");
+      form = WxeForm.Replace (form);
+    }
   }
 
   public NameValueCollection DeterminePostBackMode (HttpContext context)

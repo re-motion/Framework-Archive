@@ -92,24 +92,6 @@ public class ControlHelper
   ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
   ///   design mode.
   /// </summary>
-  /// <param name="control"> 
-  ///   The <see cref="Control"/> to be tested for being in design mode. 
-  /// </param>
-  /// <param name="context"> 
-  ///   The <see cref="HttpContext"/> of the <paramref name="control"/>. 
-  /// </param>
-  /// <returns> 
-  ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
-  /// </returns>
-  public static bool IsDesignMode (Control control, HttpContext context)
-  {
-    return context == null || ControlHelper.IsDesignMode (control);
-  }
-
-  /// <summary>
-  ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
-  ///   design mode.
-  /// </summary>
   /// <remarks>
   ///   Does not verify the control's context.
   /// </remarks>
@@ -123,6 +105,24 @@ public class ControlHelper
   {
     return   (control.Site != null && control.Site.DesignMode)
           || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
+  }
+
+  /// <summary>
+  ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
+  ///   design mode.
+  /// </summary>
+  /// <param name="control"> 
+  ///   The <see cref="Control"/> to be tested for being in design mode. 
+  /// </param>
+  /// <param name="context"> 
+  ///   The <see cref="HttpContext"/> of the <paramref name="control"/>. 
+  /// </param>
+  /// <returns> 
+  ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
+  /// </returns>
+  public static bool IsDesignMode (IControl control, HttpContext context)
+  {
+    return context == null || ControlHelper.IsDesignMode (control);
   }
 
   /// <summary>
@@ -143,6 +143,25 @@ public class ControlHelper
     return   (control.Site != null && control.Site.DesignMode)
           || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
   }
+
+  public static Control FindControl (Control namingContainer, string controlID)
+  {
+    try
+    {
+      //  WORKAROUND: In Designmode the very first call to FindControl results in a duplicate entry.
+      //  Once that initial confusion has passed, everything seems to work just fine.
+      //  Reason unknown (bug in Rubicon-code or bug in Framework-code)
+      return namingContainer.FindControl (controlID);
+    }
+    catch (HttpException)
+    {
+      if (ControlHelper.IsDesignMode (namingContainer))
+        return namingContainer.FindControl (controlID);
+      else
+        throw;
+    }
+  }
+
   // member fields
 
   // construction and disposing

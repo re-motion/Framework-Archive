@@ -20,7 +20,7 @@ namespace Rubicon.Web.UI.Controls
 /// </summary>
 [ToolboxData("<{0}:ValidationStateViewer runat='server' visible='true'></{0}:ValidationStateViewer>")]
 [ToolboxItemFilter("System.Web.UI")]
-public class ValidationStateViewer : WebControl
+public class ValidationStateViewer : WebControl, IControl
 {
   // types
 

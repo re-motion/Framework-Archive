@@ -33,6 +33,7 @@ public class ResourceType
 {
   public static readonly ResourceType Image = new ResourceType ("Image");
   public static readonly ResourceType Html = new ResourceType ("Html");
+  public static readonly ResourceType Aspx = new ResourceType ("UI");
   public static readonly ResourceType HelpPage = new ResourceType ("HelpPage");
 
   private string _name;
