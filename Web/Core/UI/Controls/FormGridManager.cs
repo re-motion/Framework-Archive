@@ -575,11 +575,20 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
     private void CheckCellRange (int rowIndex, int cellIndex)
     {
-      if (rowIndex >= _htmlTableRows.Count) throw new ArgumentOutOfRangeException ("rowIndex");
-      if (rowIndex < 0) throw new ArgumentOutOfRangeException ("rowIndex");
+      if (   rowIndex >= _htmlTableRows.Count
+          && rowIndex < 0)
+      {
+        string tableID = _formGrid.Table.ID;
+        throw new ArgumentOutOfRangeException ("rowIndex", rowIndex, string.Format ("Error while formatting HtmlTable '{0}': The rowIndex exceeds the number of rows in the row-group being formatted. Rows in the row-group:", tableID, _htmlTableRows.Count));
+      }
 
-      if (cellIndex >= _htmlTableRows[rowIndex].Cells.Count) throw new ArgumentOutOfRangeException ("cellIndex");
-      if (cellIndex < 0) throw new ArgumentOutOfRangeException ("cellIndex");
+      if (   cellIndex >= _htmlTableRows[rowIndex].Cells.Count
+          || cellIndex < 0)
+      {
+        string tableID = _formGrid.Table.ID;
+        int htmlRowIndex = _formGrid.Table.Controls.IndexOf (_htmlTableRows[rowIndex]);
+        throw new ArgumentOutOfRangeException ("cellIndex", cellIndex, string.Format ("Error while formatting HtmlTable '{0}', row {1}: The row has no cell at index {2}.", tableID, htmlRowIndex, cellIndex));
+      }
     }
 
     /// <summary>
@@ -1462,20 +1471,38 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     for (int i = formGridRows.Count; i < rows.Count; i++)
     {
+      bool isDataRow = rows[i].Cells.Count > _controlsColumn;
+
       //  If ControlsColumn cell contains controls: single row constellation
-      bool hasOneDataRow =    rows[i].Cells.Count > _controlsColumn
-                          &&  rows[i].Cells[_controlsColumn].Controls.Count > 0;
+      bool hasOneDataRow =   isDataRow
+                          && rows[i].Cells[_controlsColumn].Controls.Count > 0;
 
       //  If it is not a single row constellation
       //  and the table still has another row left
       //  and the next row contains at the label's cell
-      bool hasTwoDataRows =     !hasOneDataRow
-                            &&  i + 1 < rows.Count
-                            &&  rows[i + 1].Cells.Count > _labelsColumn;
+      bool hasTwoDataRows =    isDataRow
+                            && !hasOneDataRow
+                            && i + 1 < rows.Count
+                            && rows[i + 1].Cells.Count > _labelsColumn;
 
-      //  One HtmlTableRow is one FormGrid DataRow
-      if (hasOneDataRow)
+      if (! isDataRow)
       {
+        //  One HtmlTableRow is one FormGrid DataRow
+        HtmlTableRow[] tableRows = new HtmlTableRow[1];
+        tableRows[0] = table.Rows[i];
+
+        FormGridRow formGridRow = new FormGridRow (
+          tableRows, 
+          FormGridRowType.UnknownRow,
+          labelsColumn,
+          controlsColumn,
+          false);
+        
+        formGridRows.Add (formGridRow);
+      }
+      else if (hasOneDataRow)
+      {
+        //  One HtmlTableRow is one FormGrid DataRow
         HtmlTableRow[] tableRows = new HtmlTableRow[1];
         tableRows[0] = table.Rows[i];
 
@@ -1488,9 +1515,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         
         formGridRows.Add (formGridRow);
       }
-        //  Two HtmlTableRows get combined into one FormGrid DataRow
       else if (hasTwoDataRows)
       {
+        //  Two HtmlTableRows get combined into one FormGrid DataRow
         HtmlTableRow[] tableRows = new HtmlTableRow[2];
         tableRows[0] = rows[i];
         tableRows[1] = rows[i + 1];
@@ -1669,7 +1696,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ApplyExternalHiddenSettings (formGrid);
     ComposeFormGridContents (formGrid);
     FormatFormGrid (formGrid);
-
     TransformationStep completedStep = TransformationStep.PreLoadViewStateTransformationCompleted;
     _completedTransformationStep[formGrid] = completedStep;
     return completedStep;
@@ -1919,6 +1945,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           isTopDataRow = false;
           break;
         }
+        case FormGridRowType.UnknownRow:
+        {
+          FormatUnknownRow (formGridRow);
+          break;
+        }
         default:
         {
           break;
@@ -1963,6 +1994,35 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       titleRow.Hide();
 
     AddShowEmptyCellsHack (titleRow);
+  }
+
+  /// <summary> Custom formats the unknown rows. </summary>
+  protected virtual void FormatUnknownRow (FormGridRow row)
+  {
+    ArgumentUtility.CheckNotNull ("row", row);
+    CheckFormGridRowType ("row", row, FormGridRowType.UnknownRow);
+
+    HtmlTableCell cell;
+    if (row.HtmlTableRows[0].Cells.Count > row.LabelsColumn)
+      cell = row.SetLabelsCell (0, row.LabelsColumn);
+    else
+      cell = row.HtmlTableRows[0].Cells[row.HtmlTableRows[0].Cells.Count - 1];
+   
+    //  Adapt ColSpan for added markers column
+    if (HasMarkersColumn)
+    {
+      cell.ColSpan++;
+      row.ControlsColumn++;
+    }
+
+    //  Adapt ColSpan for added validation error message column
+    if (HasValidationMessageColumn)
+      cell.ColSpan++;
+
+    if (!row.CheckVisibility())
+      row.Hide();
+
+    AddShowEmptyCellsHack (row);
   }
 
   /// <summary> Custom formats a data row. </summary>
