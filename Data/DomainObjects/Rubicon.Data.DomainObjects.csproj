@@ -419,6 +419,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Doc\How to make a build.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Persistence\CommandBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
