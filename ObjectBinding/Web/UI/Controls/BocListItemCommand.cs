@@ -143,16 +143,16 @@ public class BocItemCommand
     }
 
     /// <summary> 
-    ///   Gets or sets the list of parameters passed to the WxeFunction when the rendered 
+    ///   Gets or sets the comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. 
     /// </summary>
     /// <value> 
-    ///   The list of parameters passed to the WxeFunction when the rendered 
+    ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("A list of parameters for the command.")]
+    [Description ("A comma separated list of parameters for the command.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
     public string Parameters
@@ -335,19 +335,15 @@ public class BocItemCommand
     {
       Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
 
-      object [] arguments = new object[WxeFunctionCommand.Parameters.Length];
-      for (int i = 0; i < WxeFunctionCommand.Parameters.Length; i++)
-      {
-        //  TODO: BocItemCommand: Interpret BocItemCommand Parameters
-//        if (WxeFunctionCommand.Parameters[i] == "%ID")
-//          arguments[i] = businessObjectID;
-//        else if (WxeFunctionCommand.Parameters[i] == "%Index")
-//          arguments[i] = listIndex;
-//        else
-//          arguments[i] = WxeFunctionCommand.Parameters[i];
-      }
+      throw new NotImplementedException ("WxeFunctionParameterDeclaration parsing logic not completed.");
 
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
+      WxeParameterDeclaration[] parameterDeclarations = null;
+      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
+          parameterDeclarations,
+          WxeFunctionCommand.Parameters,
+          null);
+
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
       
       wxePage.CurrentStep.ExecuteFunction (wxePage, function);
     }
