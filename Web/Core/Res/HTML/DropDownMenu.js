@@ -160,7 +160,7 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
 	parentLeft += window.screenLeft;
 	var parentWidth = (context != null) ? context.offsetWidth : 0;
 	var left = parentWidth - popUpWidth;
-	var top = context.offsetHeight; 
+	var top = context.offsetHeight - 1; 
 	//  popUpHeight + 7: corrective offset, reason unkown but it works
 	popUpWindow.show(left, top, popUpWidth, popUpHeight, context);
 
@@ -210,8 +210,6 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo, selectionCount, showE
   if (itemInfo == null)
     return null;
 	var item = popUpDocument.createElement ('div');
-	if(item == null)
-	  return null;
 
 	if (itemInfo.Text == '-')
 	  DropDownMenu_CreateSeparatorItem (popUpDocument, item, showExpandSeparators);
