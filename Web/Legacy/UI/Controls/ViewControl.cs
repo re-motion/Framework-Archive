@@ -13,6 +13,13 @@ namespace Rubicon.Findit.Client.Controls
 [ControlBuilder (typeof (ViewControlBuilder))]
 public class ViewControl: Control
 {
+  private string _title = string.Empty;
+
+  public string Title
+  {
+    get { return _title; }
+    set { _title = value; }
+  }
 
 	/// <summary> 
 	/// Render this control to the output parameter specified.
@@ -23,12 +30,30 @@ public class ViewControl: Control
 		
     writer.WriteLine ("<table cellpadding=\"2\" cellspacing=\"3\">");
     
-    RenderChildren(writer);
+		
+    for (int i = 0; i < this.Controls.Count; ++i)
+		{
+			Control control = this.Controls[i];
+      
+      if (control.GetType() == typeof(EntryTitle))
+      {
+          writer.WriteLine("<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">"
+              + "<tr><td>");
+          control.RenderControl (writer);
+          writer.WriteLine ("</td></tr></table></td></tr>");
+      }
+      else
+      {
+        control.RenderControl (writer);
+      }
+		}
+    
+    
 
     writer.WriteLine ("</table>");
 	}
 }
-
+  
 public class ViewControlBuilder: ControlBuilder
 {
 	public override bool AllowWhitespaceLiterals ()
