@@ -52,6 +52,20 @@ function dp_showDatePickerPopup(elemPicker, elemTarget, elemContainer) {
     if (elemContainer.dp_selectedDayStyle != null) {
         strContent = strContent + "selectedDayStyle=\"" + elemContainer.dp_selectedDayStyle + "\" ";
     }
+    if (elemContainer.CssClassDatePickerCalendar != null)
+        strContent = strContent + "CssClassCalendar=\"" + elemContainer.CssClassDatePickerCalendar + "\" ";
+    if (elemContainer.CssClassDatePickerTitle != null)
+        strContent = strContent + "CssClassTitle=\"" + elemContainer.CssClassDatePickerTitle + "\" ";
+    if (elemContainer.CssClassDatePickerDayHeader != null)
+        strContent = strContent + "CssClassDayHeader=\"" + elemContainer.CssClassDatePickerDayHeader + "\" ";
+    if (elemContainer.CssClassDatePickerDay != null)
+        strContent = strContent + "CssClassDay=\"" + elemContainer.CssClassDatePickerDay + "\" ";
+    if (elemContainer.CssClassDatePickerOtherMonthDay != null)
+        strContent = strContent + "CssClassOtherMonthDay=\"" + elemContainer.CssClassDatePickerOtherMonthDay + "\" ";
+    if (elemContainer.CssClassDatePickerTodayDay != null)
+        strContent = strContent + "CssClassTodayDay=\"" + elemContainer.CssClassDatePickerTodayDay + "\" ";
+    if (elemContainer.CssClassDatePickerSelectedDay != null)
+        strContent = strContent + "CssClassSelectedDay=\"" + elemContainer.CssClassDatePickerSelectedDay + "\" ";
 
     strContent = strContent + " />" +
                  "<body></html>"
