@@ -83,6 +83,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   private void ParentPage_PreRender (object sender, EventArgs e)
   {
+    _formGridManagers = new ArrayList();
     PopulateFormGridManagerList (this.Parent);
     OutputValidationState();
   }
@@ -93,11 +94,10 @@ public class ValidationStateViewer : WebControl, IControl
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
-    //  Has already pupulated
-    if (_formGridManagers != null)
-      return;
-
-    _formGridManagers = new ArrayList();
+//    //  Has already pupulated
+//    if (_formGridManagers != null)
+//      return;
+//
 
     //  Add all FormGridManager instances
     foreach (Control childControl in control.Controls)

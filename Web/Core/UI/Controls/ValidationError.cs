@@ -111,7 +111,7 @@ public class ValidationError
     Label label = new Label();
 
     label.Text = this.ValidationMessage;
-    label.AssociatedControlID = this.ValidatedControl.ID;
+    label.AssociatedControlID = this.ValidatedControl.UniqueID;
 
     if (cssClass != null && cssClass != String.Empty)
       label.CssClass = cssClass;
