@@ -334,7 +334,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
         default:
         {
           throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
-          break;
         }
       }
       validators.Add (typeValidator);
