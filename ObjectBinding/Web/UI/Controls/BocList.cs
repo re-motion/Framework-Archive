@@ -25,13 +25,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
-// TODO: BocList: Comments
-// TODO: BocList: Details View
-// TODO: BocList: IsDirty
-// TODO: Accessibility for Buttons (Alt-Tags)
-// TODO: BocList: Shift+Click (Start) - Shift+Click (Stop) selects range
-// TODO: BocList: Sorting: Last sorting criteria: RowIndex
-// TODO: BocList: TypeResolution using TypeUtility
+// TODO: see "Doc\Bugs and ToDos.txt"
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]

@@ -18,13 +18,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
-//  TODO: BocDateTimeValue: Try to extract the DatePickerButton functionality into a Control
-//      and add it to Rubicon.Web.UI.Controls.
-//  WORKAROUND: BocDateTimeValue: DatePicker only actived for Internet Explorer 5.5 and higher
-//      IFrame does not hidden with Firefox. Opera and Netscape not testet.
-//      Internet Explorer 5.01 does not open IFrame
-//  TODO: BocDateTimeValue: DatePicker only closes on DateClick if other Date selected
-//      Problem: Calendar only offers a SelectionChanged Event.
+// TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
