@@ -143,6 +143,9 @@ public abstract class ExtendedCodeProvider
   public virtual void AddDocumentationComment (
       CodeTypeMember item, string elementName, string elementArguments, string alternativeHeadline, string description)
   {
+    if (description == null)
+      description = string.Empty;
+
     StringBuilder sb = new StringBuilder();
     if (SupportsDocumentationComments)
     {
