@@ -355,6 +355,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\TypeUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\WorkContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
