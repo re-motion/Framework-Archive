@@ -9,7 +9,7 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding
 {
 
-public interface IObjectBindingDataSource
+public interface IBusinessObjectDataSource
 {
   bool IsWritable { get; }
 
@@ -40,15 +40,7 @@ public interface IObjectBindingDataSource
 
   IBusinessObjectClass BusinessObjectClass { get; }
   IBusinessObjectProvider BusinessObjectProvider { get; }
-}
 
-public interface IBusinessObjectListDataSource
-{
-  IList BusinessObjectList { get; set; }
-}
-
-public interface IBusinessObjectDataSource: IObjectBindingDataSource
-{
   IBusinessObject BusinessObject { get; set; }
 }
 
@@ -56,7 +48,6 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 {
   private ArrayList _boundControls = null;
   private bool _editMode = true;
-  // TODO: private bool _dataBindCalled = false;
 
   [Category ("Data")]
   public bool EditMode
@@ -66,7 +57,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   }
 
   [Browsable (false)]
-  bool IObjectBindingDataSource.IsWritable
+  bool IBusinessObjectDataSource.IsWritable
   {
     get { return EditMode; }
   }
@@ -108,9 +99,6 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   }
 
   [Browsable (false)]
-  public abstract IBusinessObject BusinessObject { get; set; }
-
-  [Browsable (false)]
   public abstract IBusinessObjectClass BusinessObjectClass { get; }
 
   [Browsable (false)]
@@ -118,6 +106,15 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   { 
     get { return (BusinessObjectClass == null) ? null : BusinessObjectClass.BusinessObjectProvider; }
   }
+
+  [Browsable (false)]
+  public abstract IBusinessObject BusinessObject { get; set; }
 }
+
+//public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
+//{
+//  [Browsable (false)]
+//  public abstract IBusinessObject BusinessObject { get; set; }
+//}
 
 }

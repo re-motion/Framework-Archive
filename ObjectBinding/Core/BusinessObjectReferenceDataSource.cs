@@ -27,7 +27,7 @@ public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusine
   private bool _propertyDirty = true;
 
   [Browsable (false)]
-  bool IObjectBindingDataSource.IsWritable
+  bool IBusinessObjectDataSource.IsWritable
   {
     get { return EditMode && _dataSource.IsWritable; }
   }

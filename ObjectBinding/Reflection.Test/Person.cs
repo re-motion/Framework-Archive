@@ -44,7 +44,7 @@ public class Person: ReflectionBusinessObject
   private NaInt32 _income = 1;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
-  private DateTime _dateofDeath_Date;
+  private DateTime _dateofDeath;
 
   private Guid _partnerID; 
 
@@ -112,11 +112,11 @@ public class Person: ReflectionBusinessObject
     set { _partnerID = ReflectionBusinessObjectStorage.GetID (value); }
   }
 
-  [XmlAttribute]
-  public ReflectionDate DateofDeath_Date
+  [XmlAttribute (DataType="date")]
+  public DateTime DateofDeath
   {
-    get { return _dateofDeath_Date; }
-    set { _dateofDeath_Date = value; }
+    get { return _dateofDeath; }
+    set { _dateofDeath = value; }
   }
 
   public override string DisplayName
