@@ -304,7 +304,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
   }
 
   public TextBoxStyle() 
-      : this (TextBoxMode.SingleLine)
+    : this (TextBoxMode.SingleLine)
   {
   }
 

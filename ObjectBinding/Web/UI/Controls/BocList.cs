@@ -887,8 +887,9 @@ public class BocList:
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      for (int idxItems = 0; idxItems < _listMenuItems.Count; idxItems++)
-        RenderListMenuItem (writer, _listMenuItems[idxItems], idxItems);
+      MenuItem[] listMenuItems = _listMenuItems.GroupMenuItems (false);
+      for (int idxItems = 0; idxItems < listMenuItems.Length; idxItems++)
+        RenderListMenuItem (writer, (BocMenuItem)listMenuItems[idxItems], idxItems);
       writer.RenderEndTag();
     }
   }
@@ -1370,13 +1371,13 @@ public class BocList:
         firstValueColumnRendered = true;
         showIcon = EnableIcon;
       }
-      RenderDataColumn (writer, idxColumn, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
+      RenderDataCell (writer, idxColumn, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
     }
     
     writer.RenderEndTag();
   }
 
-  private void RenderDataColumn (
+  private void RenderDataCell (
       HtmlTextWriter writer, 
       int idxColumn, BocColumnDefinition column, 
       int originalRowIndex, IBusinessObject businessObject,
@@ -1963,8 +1964,8 @@ public class BocList:
     ArgumentUtility.CheckNotNullAndType ("objectA", objectA, typeof (IBusinessObject));
     ArgumentUtility.CheckNotNullAndType ("objectB", objectB, typeof (IBusinessObject));
 
-    IBusinessObject businessObjectA = objectA as IBusinessObject;
-    IBusinessObject businessObjectB = objectB as IBusinessObject;
+    IBusinessObject businessObjectA = (IBusinessObject) objectA;
+    IBusinessObject businessObjectB = (IBusinessObject) objectB;
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot();
     foreach (SortingOrderEntry currentEntry in _sortingOrder)

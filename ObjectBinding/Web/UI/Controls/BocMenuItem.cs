@@ -11,13 +11,19 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class BocMenuItem: MenuItem
 {
-  public BocMenuItem (string id, string category, string text, string icon, BocMenuItemCommand command)
-      : base (id, category, text, icon, command)
+  public BocMenuItem (
+      string id, 
+      string category, 
+      string text, 
+      string icon, 
+      string iconDisabled, 
+      BocMenuItemCommand command)
+    : base (id, category, text, icon, iconDisabled, command)
   {
   }
 
   public BocMenuItem ()
-      : this (null, null, null, null, new BocMenuItemCommand())
+    : this (null, null, null, null, null, new BocMenuItemCommand())
   {
   }
 

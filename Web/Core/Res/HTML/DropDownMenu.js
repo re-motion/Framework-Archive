@@ -5,6 +5,7 @@ var _dropDownMenu_itemClassName = 'dropDownMenuItem';
 var _dropDownMenu_itemHoverClassName = 'dropDownMenuItemHover';
 var _dropDownMenu_itemTextPaneClassName = 'dropDownMenuItemTextPane';
 var _dropDownMenu_itemIconPaneClassName = 'dropDownMenuItemIconPane';
+var _dropDownMenu_itemSeparatorClassName = 'dropDownMenuTextPaneSeparator';
 var _dropDownMenu_currentMenu = null;
 var _dropDownMenu_currentPopUp = null;
 var _dropDownMenu_currentPopUpWidth = null;
@@ -29,12 +30,13 @@ function DropDownMenu_AddMenuInfo (menuInfo)
   _dropDownMenu_menuInfos[menuInfo.ID] = menuInfo;
 }
 
-function DropDownMenu_ItemInfo (id, category, text, icon, href, target)
+function DropDownMenu_ItemInfo (id, category, text, icon, iconDisabled, href, target)
 {
   this.ID = id;
   this.Category = category;
   this.Text = text;
   this.Icon = icon;
+  this.IconDisabled = iconDisabled;
   this.Href = href;
   this.Target = target;
 }
@@ -50,8 +52,9 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
 {
   //  IE55up
   popUpWindow = window.createPopup();
-	//  IE55up
   var popUpDocument = popUpWindow.document;
+  var styleSheet = popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
+  
 	//  Other
 	//  var popUpDocument = window.document;
 	var popUp = popUpDocument.createElement("div");
@@ -59,14 +62,15 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
 	  return null;
 	if(id != null)
 	  popUp.id = id;
-	popUp.style.position = 'absolute';
+  popUpBody = popUpDocument.body
+  popUpBody.appendChild (popUp);
 	popUp.className = _dropDownMenu_popUpClassName;
   var itemInfos = _dropDownMenu_menuInfos[menuID].ItemInfos;
 	for (var index in itemInfos)
 	{
 	  var item = DropDownMenu_CreateItem (popUpDocument, itemInfos[index]);
 	  if(item != null)
-  	  DropDownMenu_AppendChild (popUp, item);
+  	  popUp.appendChild (item);
 	}
 
 	_dropDownMenu_currentPopUp = popUp;
@@ -79,12 +83,9 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   //	window.onresize = DropDownMenu_RepositionPopUp;
   //  IE
   //popUp.style.display = 'none';
-  popUpBody = popUpDocument.body
-  DropDownMenu_AppendChild (popUpBody, popUp);
-  popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
   popUpWindow.show(0, 0, 0, 0, context);
 	var nRealWidth	= popUpBody.scrollWidth + popUpBody.offsetWidth - popUpBody.clientWidth + 1;
-	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight + 1;
+	var nRealHeight = popUpBody.scrollHeight + popUpBody.offsetHeight - popUpBody.clientHeight;
 	if (nRealWidth > window.screen.width) nRealWidth = window.screen.width;
 	if (nRealHeight > window.screen.height) nRealHeight = window.screen.height;
 	popUpWindow.hide();
@@ -115,12 +116,7 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
 	var nParentWidth = context ? context.offsetWidth : 0;
 	xDefault = 0;
 	var MenuRightDefault = ParentLeft + xDefault + nRealWidth;
-	var MenuLeftFlipped = ParentLeft - nRealWidth;
-	MenuLeftFlipped += nParentWidth;
-	xFlipped = MenuLeftFlipped - ParentLeft;
-	fFlippedDefault = MenuRightDefault > EdgeRight && MenuLeftFlipped > EdgeLeft;
-	fFlippedNonDefault = !(MenuLeftFlipped < EdgeLeft && MenuRightDefault < EdgeRight);
-	var x = xFlipped;
+	var x = nParentWidth - nRealWidth;
 	var y = context.offsetHeight - 1;
 	popUpWindow.show(x, y, nRealWidth, nRealHeight, context);
 	//popUp.style.behavior = 'url(res/Rubicon.Web/HTML/DropDownMenu.htc)';
@@ -166,34 +162,42 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 	var item = popUpDocument.createElement ('div');
 	if(item == null)
 	  return null;
+
+	if (itemInfo.Text == '-')
+	  DropDownMenu_CreateSeparatorItem (popUpDocument, item);
+	 else
+	  DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo);
 	  
-	//  item.setAttribute("type", "option");
-	item.setAttribute (_dropDownMenu_menuItemIDPrefix + 'id', itemInfo.ID);
+	return item;
+}
+
+function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo)
+{
+	item.id = itemInfo.ID;
 	item.className = _dropDownMenu_itemClassName;
 	if (itemInfo.Href != null)
 	{
   	item.onclick = function () { window.location = itemInfo.Href; };
   }	
 
-	var iconPane = popUpDocument.createElement ('span');
+	var iconPane = popUpDocument.createElement ('div');
 	iconPane.className = _dropDownMenu_itemIconPaneClassName;
 	if (itemInfo.Icon != null)
 	{
   	var icon = popUpDocument.createElement ('img');
-	  icon.setAttribute ('src', itemInfo.Icon);
-	  //icon.setAttribute ('style', 'border-style: none; vertical-align: middle;');
-	  icon.setAttribute ('align', 'middle');
+	  icon.src = itemInfo.Icon;
+	  icon.align = 'middle';
 	  iconPane.appendChild (icon);
 	}
 	item.appendChild (iconPane);
 
-	var textPane = popUpDocument.createElement ('span');
+	var textPane = popUpDocument.createElement ('div');
 	textPane.className = _dropDownMenu_itemTextPaneClassName;	
-	if (itemInfo.Href != null)
+  if (itemInfo.Href != null)
 	{
 	  var anchor = popUpDocument.createElement ('a');
 	  anchor.innerHTML = itemInfo.Text;
-	  anchor.setAttribute ('href', '#');
+	  anchor.href = '#';
 	  textPane.appendChild (anchor);
 	}
 	else
@@ -204,7 +208,14 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo)
 
 	item.onmouseover = function () { SelectItem (item); };
 	item.onmouseleave = function () { UnselectItem (item); };
-	return item;
+}
+
+function DropDownMenu_CreateSeparatorItem (popUpDocument, item)
+{
+	var textPane = popUpDocument.createElement ('div');
+	textPane.className = _dropDownMenu_itemSeparatorClassName;
+	textPane.innerHTML = '&nbsp;';
+	item.appendChild (textPane);
 }
 
 function AImg(mi,wzISrc,wzIAlt)
@@ -215,12 +226,6 @@ function AImg(mi,wzISrc,wzIAlt)
         mi.setAttribute("iconAltText",wzIAlt);
     else
         mi.setAttribute("iconAltText","");
-}
-
-function DropDownMenu_AppendChild (parent, child)
-{
-	if(parent != null && child != null)
-	  parent.appendChild (child);
 }
 
 function SelectItem (menuItem)

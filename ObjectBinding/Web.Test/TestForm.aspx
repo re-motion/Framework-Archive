@@ -33,6 +33,36 @@
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
+<obc:bocmenuitem ItemID="Open" Text="&#214;ffnen" Category="Object">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
+<obc:bocmenuitem ItemID="Copy" Icon="Images/CopyItem.gif" Text="Kopieren" Category="Edit">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
+<obc:bocmenuitem ItemID="Cut" Text="Ausschneiden" Category="Edit">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
+<obc:bocmenuitem ItemID="Paste" Text="Einf&#252;gen" Category="Edit">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
+<obc:bocmenuitem ItemID="Duplicate" Text="Duplizieren" Category="Edit">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
+<obc:bocmenuitem ItemID="Delete" Icon="Images/DeleteItem.gif" Text="L&#246;schen" Category="Edit">
+<persistedcommand>
+<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+</PersistedCommand>
+</obc:bocmenuitem>
 </OptionsMenuItems>
 
 <fixedcolumns>

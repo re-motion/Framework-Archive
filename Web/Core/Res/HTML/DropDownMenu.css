@@ -73,10 +73,11 @@ div.dropDownMenuItemHover a
 }
 
 /*  */
-span.dropDownMenuItemTextPane
+div.dropDownMenuItemTextPane
 {
-  padding: 4px;
-  margin: 0px;
+  display: inline;
+  padding-left: 8px;
+  padding-right: 4px;
   font-size: 66.67%;
   font-family: Verdana, sans-serif;
   border-style: none;
@@ -85,34 +86,24 @@ span.dropDownMenuItemTextPane
 
 
 /*  */
-span.dropDownMenuItemIconPane
+div.dropDownMenuItemIconPane
 {
-  width: 21px;
-	padding-right: 3px;
-	margin-right: 5px;
+  display: inline;
+  width: 20px;
+	padding-right: 2px;
   border-style: none;
 	vertical-align: middle;
 	text-align: center;
 }
 
-.ms-MenuUIPopupBody {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 66.67%; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; FONT-FAMILY: Verdana, sans-serif; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
-}
-.ms-MenuUIPopupBody TABLE {
-	FONT-SIZE: 100%; WIDTH: 100%; COLOR: #003399
-}
-.ms-MenuUIPopupBody IMG {
-	WIDTH: 16px; HEIGHT: 16px
-}
-.ms-MenuUI {
-	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; CURSOR: hand; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fafafa
-}
-.ms-MenuUIItemTableCell {
-	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
-}
-.ms-MenuUIItemTableCellHover {
-	PADDING-RIGHT: 1px; PADDING-LEFT: 1px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px
-}
-.ms-MenuUIItemTableHover {
-	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fee197
+div.dropDownMenuTextPaneSeparator
+{
+  display: inline;
+	margin-left: 32px;
+	margin-right: 0px;
+	width: 100%;
+  font-size: 1px;
+  line-height: 1px;
+  height: 1px;
+  background-color: #6a8ccb;
 }
