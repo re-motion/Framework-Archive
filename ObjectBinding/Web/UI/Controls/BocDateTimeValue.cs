@@ -12,6 +12,7 @@ using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -24,6 +25,19 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 {
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocDateTimeValue")]
+  protected enum ResourceIdentifier
+  {
+  }
+
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return null;//GetResourceManager (typeof (ResourceIdentifier));
+  }
+
   //  constants
 
   /// <summary> 

@@ -13,6 +13,7 @@ using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -47,6 +48,22 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   private const string c_nullIcon = "CheckBoxNull.gif";
 
   // types
+
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocBooleanValue")]
+  protected enum ResourceIdentifier
+  {
+    /// <summary> The descripton rendered next the check box when it is checked. </summary>
+    TrueDescription,
+    /// <summary> The descripton rendered next the check box when it is not checked.  </summary>
+    FalseDescription,
+    /// <summary> The descripton rendered next the check box when its state is undefined.  </summary>
+    NullDescription,
+    /// <summary> Validation error message displayed when the null item is selected. </summary>
+    NullItemValidationMessage
+  }
 
   // static members
 	
@@ -274,6 +291,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
   /// <summary>
   ///   Generates the validators depending on the control's configuration.
   /// </summary>
@@ -294,7 +316,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
-      _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    {
+      _notNullItemValidator.ErrorMessage = 
+          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+    }
 
     validators[0] = _notNullItemValidator;
 
@@ -313,9 +338,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     string nullIconUrl = ResourceUrlResolver.GetResourceUrl (
         this, Context, typeof (BocBooleanValue), ResourceType.Image, c_nullIcon);
     
-    string defaultTrueDescription = c_trueDescription;
-    string defaultFalseDescription = c_falseDescription;
-    string defaultNullDescription = c_nullDescription;
+    IResourceManager resourceManager = GetResourceManager();
+    string defaultTrueDescription = resourceManager.GetString (ResourceIdentifier.TrueDescription);
+    string defaultFalseDescription = resourceManager.GetString (ResourceIdentifier.FalseDescription);
+    string defaultNullDescription = resourceManager.GetString (ResourceIdentifier.NullDescription);
 
     string trueDescription = 
         (StringUtility.IsNullOrEmpty (_trueDescription) ? defaultTrueDescription : _trueDescription);
@@ -577,9 +603,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     get { return _label; }
   }
 
-  /// <summary>
-  ///   Gets or sets the flag that determines whether to show the description next to the checkbox.
-  /// </summary>
+  /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
   /// <value> <see langword="true"/> to enable the description. </value>
   [Description("The flag that determines whether to show the description next to the checkbox")]
   [Category ("Appearance")]
@@ -620,18 +644,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     set { _nullDescription = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the validation message if the null item is selected 
-  ///   but a valid selection is required.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the null item is selected but a valid selection is required.")]
+  /// <summary> Gets or sets the validation error message. </summary>
+  [Description("Validation error message displayed if the selcted value is invalid.")]
   [Category ("Validator")]
   [DefaultValue("")]
-  public string NullItemErrorMessage
+  public string ErrorMessage
   {
     get { return _notNullItemValidator.ErrorMessage; }
     set { _notNullItemValidator.ErrorMessage = value; }
