@@ -398,6 +398,18 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     CheckDeleted (endPoint);
     CheckDeleted (domainObject);
 
+    ((ICollectionEndPointChangeDelegate) this).PerformInsert (endPoint, domainObject, -1); 
+  }
+
+
+  void ICollectionEndPointChangeDelegate.PerformInsert  (
+      CollectionEndPoint endPoint, 
+      DomainObject domainObject,
+      int index)
+  {
+    CheckDeleted (endPoint);
+    CheckDeleted (domainObject);
+
     ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
 
@@ -408,16 +420,24 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       _clientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
     
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
-        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
-        && endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint))
+        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
     {
-      addingEndPoint.PerformRelationChange ();
-      oldRelatedEndPoint.PerformRelationChange ();
-      endPoint.PerformRelationChange ();
+      bool beginEndPointRelationChange;
+      if (index >= 0)
+        beginEndPointRelationChange = endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index);
+      else
+        beginEndPointRelationChange = endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint);
 
-      addingEndPoint.EndRelationChange ();
-      oldRelatedEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
+      if (beginEndPointRelationChange)
+      {
+        addingEndPoint.PerformRelationChange ();
+        oldRelatedEndPoint.PerformRelationChange ();
+        endPoint.PerformRelationChange ();
+
+        addingEndPoint.EndRelationChange ();
+        oldRelatedEndPoint.EndRelationChange ();
+        endPoint.EndRelationChange ();
+      }
     }
   }
 
