@@ -25,24 +25,11 @@ namespace OBWTest
 
 public class TestForm : Page
 {
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected System.Web.UI.WebControls.Button PostBackButton;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList BocList;
-  protected System.Web.UI.WebControls.Button Button1;
-  protected System.Web.UI.WebControls.Label EventLabel;
-  protected System.Web.UI.WebControls.Button Button2;
   protected Rubicon.ObjectBinding.Web.Controls.BocList BocList1;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
-
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;    
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
 	}
 
 	override protected void OnInit(EventArgs e)
@@ -66,12 +53,6 @@ public class TestForm : Page
 
   }
 	#endregion
-
-  private void BocList_MenuItemClick(object sender, MenuItemClickEventArgs e)
-  {
-    EventLabel.Text = e.Item.Text;
-
-  }
 }
 
 }
