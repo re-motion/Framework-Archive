@@ -62,7 +62,9 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
   //  TODO:
   /// <summary>  </summary>
-  private string[] _value = null;
+  private string _text = null;
+
+  private string _newText = null;
 
   //  TODO:
   /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
@@ -79,27 +81,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 	}
 
   // methods and properties
-
-  private bool AreStringsEqual (string[] strA, string[] strB)
-  {
-    return AreStringsEqual (strA, strB, false);
-  }
-
-  private bool AreStringsEqual (string[] strA, string[] strB, bool ignoreCase)
-  {
-    if (strA == strB)
-      return true;
-    if (strA == null || strB == null)
-      return false;
-    if (strA.Length != strB.Length)
-      return false;
-    for (int i = 0; i < strA.Length; i++)
-    {
-      if (! StringUtility.AreEqual (strA[i], strB[i], ignoreCase))
-        return false;
-    }
-    return true;
-  }
 
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
@@ -131,6 +112,14 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     base.OnLoad (e);
 
     Binding.EvaluateBinding();
+
+    if (! IsDesignMode)
+    {
+      _newText = Page.Request.Form[_textBox.UniqueID];
+      
+      if (_newText != null && _newText != _text)
+        _isDirty = true;
+    }
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
@@ -182,7 +171,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
-    _value = (string[]) values[1];
+    _text = (string) values[1];
     _isDirty = (bool)  values[2];
   }
 
@@ -197,7 +186,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     object[] values = new object[3];
 
     values[0] = base.SaveViewState();
-    values[1] = _value;
+    values[1] = _text;
     values[2] = _isDirty;
 
     return values;
@@ -278,7 +267,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
     if (isReadOnly)
     {
-      _label.Text = StringUtility.ConcatWithSeperator (_value, "<br />");
+      if (Value != null)
+        _label.Text = StringUtility.ConcatWithSeperator (Value, "<br />");
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
@@ -310,10 +300,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   
   private void TextBox_TextChanged(object sender, EventArgs e)
   {
-    string newValue = Page.Request.Form[_textBox.UniqueID];
-    newValue = newValue.Replace ("\r", "");
-    _value = newValue.Split ('\n');
-    _isDirty = true;
+    _text = _newText;
     OnTextChanged (EventArgs.Empty);
   }
 
@@ -352,11 +339,23 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     {
-      return _value;
+      if (_text == null)
+      {
+        return null;
+      }
+      else
+      {
+        //  Allows for an optional \r
+        string temp = _text.Replace ("\r", "");
+        return temp.Split ('\n');
+      }
     }
     set
     {
-        _value = value;
+      if (value == null)
+        _text = null;
+      else
+        _text = StringUtility.ConcatWithSeperator (value, "\r\n");
     }
   }
 
@@ -374,15 +373,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     { 
-      if (ArrayUtility.IsNullOrEmpty (_value))
-        return string.Empty;
-      else
-        return StringUtility.ConcatWithSeperator (_value, "\r\n");
+      return _text;
     }
     set 
     {
-      value = value.Replace ("\r", "");
-      _value = value.Split ('\n');
+      _text = value;
     }
   }
 

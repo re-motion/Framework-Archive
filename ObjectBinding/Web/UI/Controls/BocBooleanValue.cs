@@ -389,11 +389,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   
   private void HiddenField_ValueChanged(object sender, EventArgs e)
   {
-    if (_newValue != _value)
-    {
-      _value = _newValue;
-      OnCheckedChanged (EventArgs.Empty);
-    }
+    _value = _newValue;
+    OnCheckedChanged (EventArgs.Empty);
   }
 
   /// <summary> Handles refreshing the bound control. </summary>
