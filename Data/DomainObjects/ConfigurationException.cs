@@ -16,7 +16,7 @@ public class ConfigurationException : DomainObjectException
 
   // construction and disposing
 
-  public ConfigurationException () {}
+  public ConfigurationException () : this ("A configuration exception occurred.") {}
   public ConfigurationException (string message) : base (message) {}
   public ConfigurationException (string message, Exception inner) : base (message, inner) {}
   protected ConfigurationException (SerializationInfo info, StreamingContext context) : base (info, context) {}
