@@ -1184,7 +1184,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary>
-  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/>.
+  ///   Calls <see cref="EnsureTransformationStep"/> with 
+  ///   <see cref="TransformationStep.PreLoadViewStateTransformationCompleted"/>.
   /// </summary>
   private void Table_Load (object sender, EventArgs e)
   {
@@ -1202,7 +1203,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary>
-  ///   Calls <see cref="TransformIntoFormGridPostValidation"/>.
+  ///   Calls <see cref="EnsureTransformationStep"/> with 
+  ///   <see cref="TransformationStep.PostValidationTransformationCompleted"/>.
   /// </summary>
   private void Table_PreRender (object sender, EventArgs e)
   {

@@ -38,7 +38,7 @@ public class ValidatableControlInitializer
   ///   Registers validators with their <see cref="IValidatableControl"/> web controls.
   /// </summary>
   /// <remarks>
-  ///   All <see cref="BaseValidator"/> controls within <paramref cref="page"/> that validate a 
+  ///   All <see cref="BaseValidator"/> controls within <paramref name="page"/> that validate a 
   ///   <see cref="IValidatableControl"/> control are registered. This method is best called
   ///   from a postback event handler.
   /// </remarks>
