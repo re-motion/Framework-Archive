@@ -3,6 +3,8 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using System.Threading;
+using System.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Design;
@@ -19,36 +21,32 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <para>
 ///     This class does not provide client-side validation.
 ///   </para><para>
-///     Cannot detect a 0:0 time component after the date string.
-///     Since this will not falsify the result, this is acceptable.
+///     Cannot detect a 0:0 time component included in the date string.
+///     Since a time-offset of 0:0 will not falsify the result, this is acceptable.
+///     Prevented by setting the MaxLength attribute of the input field.
 ///   </para>
 /// </remarks>
 public class DateValidator: BaseValidator
 {
   protected override bool EvaluateIsValid()
   {
-    string dateTimeValue = GetControlValidationValue (ControlToValidate);
+    string dateValue =  GetControlValidationValue (ControlToValidate);
 
-    string[] strings = dateTimeValue.Split ('\n');
+    //  Test for empty
 
-    if (strings.Length < 1)
+    if (dateValue == null)
       return true;
 
-    string dateValue = strings[0];
-
-    if (dateValue == null )
-      return true;
-
-    dateValue = dateValue.Trim();
-    
+    dateValue = dateValue.Trim();    
     if (dateValue.Length == 0)
       return true;
 
     try
     {
+      //  Is a valid date/time value? If not, FormatException will be thrown
       DateTime dateTime = DateTime.Parse (dateValue);
 
-      //  Has a time component
+      //  Has a time component?
       if (dateTime.TimeOfDay != TimeSpan.Zero)
         return false;
     }
@@ -59,13 +57,27 @@ public class DateValidator: BaseValidator
 
     try
     {
-      TimeSpan.Parse (dateValue);
+      //  If there is only a time value in the date field, 
+      //  it will be detected if dateTimeToday and dateTimeFirstDay differ
+
+      //  Empty date defaults to 01.01.0001
+      DateTime dateTimeFirstDay = DateTime.Parse (
+        dateValue, 
+        Thread.CurrentThread.CurrentCulture);
+
+      //  Empty date defaults to today
+      DateTime dateTimeToday = DateTime.Parse (
+        dateValue, 
+        Thread.CurrentThread.CurrentCulture,
+        DateTimeStyles.NoCurrentDateDefault);
+
       //  That's actually a time instead of a date
-      return false;
+      if (dateTimeToday.Date != dateTimeFirstDay.Date)
+        return false;
     }
     catch (FormatException)
     {
-      //  should be an exception if valid
+      //  This exception will most likely never happen
     }
 
     return true;
@@ -76,32 +88,39 @@ public class DateValidator: BaseValidator
 ///   Valitimes time values in the current culture.
 /// </summary>
 /// <remarks>
-///   This class does not provide client-side validation.
+///   <para>
+///     This class does not provide client-side validation.
+///   </para><para>
+///     Does not detect an included date of 01.01.0001. 
+///   </para>
 /// </remarks>
 public class TimeValidator: BaseValidator
 {
   protected override bool EvaluateIsValid()
   {
-    string timeTimeValue = GetControlValidationValue (ControlToValidate);
+    string timeValue =  GetControlValidationValue (ControlToValidate);
 
-    string[] strings = timeTimeValue.Split ('\n');
+    //  Test for empty
 
-    if (strings.Length < 1)
+    if (timeValue == null)
       return true;
 
-    string timeValue = strings[0];
-
-    if (timeValue == null )
-      return true;
-
-    timeValue = timeValue.Trim();
-    
+    //  Test for empty
+    timeValue = timeValue.Trim();    
     if (timeValue.Length == 0)
       return true;
 
     try
     {
-      TimeSpan.Parse (timeValue);
+      //  Is a valid/time value? If not, FormatException will be thrown
+      DateTime dateTime = DateTime.Parse (
+        timeValue, 
+        Thread.CurrentThread.CurrentCulture,
+        DateTimeStyles.NoCurrentDateDefault);
+
+      //  If only time, date will default to 01.01.0001
+      if (dateTime.Year != 1 || dateTime.Month != 1 || dateTime.Day != 1)
+        return false;
     }
     catch (FormatException)
     {
@@ -123,8 +142,31 @@ public class TimeValidator: BaseValidator
 ///       <description>Condition</description>
 ///     </listheader>
 ///     <item>
-///       <term><see cref="DateTimeRequiredFieldValidator"/></term>
-///       <description></description>
+///       <term><see cref="RequiredFieldValidator"/></term>
+///       <description>
+///         <para>
+///           The validated <see cref="BocDateTimeValue"/> control's 
+///           <c>IsRequired</c> property is <see langword="true"/>.
+///         </para><para>
+///           Only the date component will be validated for 
+///           <see cref="BocDateTimeValue"/> controls.
+///         </para>
+///     </description>
+///     </item>
+///     <item>
+///       <term><see cref="DateValidator"/></term>
+///       <description>
+///         The validated <see cref="BocDateTimeValue"/> control
+///         is bound to an <see cref="IBusinessObjectDateTimeProperty"/> 
+///         or an <see cref="IBusinessObjectDateProperty"/>.
+///       </description>
+///     </item>
+///     <item>
+///       <term><see cref="TimeValidator"/></term>
+///       <description>
+///         The validated <see cref="BocDateTimeValue"/> control
+///         is bound to an <see cref="IBusinessObjectDateTimeProperty"/>.
+///       </description>
 ///     </item>
 ///   </list>
 /// </remarks>

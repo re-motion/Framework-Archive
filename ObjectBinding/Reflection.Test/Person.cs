@@ -44,7 +44,7 @@ public class Person: ReflectionBusinessObject
   private NaInt32 _income = 1;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
-  private DateTime _dateofDeath;
+  private DateTime _dateOfDeath;
 
   private Guid _partnerID; 
 
@@ -113,10 +113,10 @@ public class Person: ReflectionBusinessObject
   }
 
   [XmlAttribute (DataType="date")]
-  public DateTime DateofDeath
+  public DateTime DateOfDeath
   {
-    get { return _dateofDeath; }
-    set { _dateofDeath = value; }
+    get { return _dateOfDeath; }
+    set { _dateOfDeath = value; }
   }
 
   public override string DisplayName
