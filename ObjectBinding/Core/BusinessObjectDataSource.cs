@@ -75,7 +75,10 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
     if (_boundControls != null)
     {
       foreach (IBusinessObjectBoundControl control in _boundControls)
-        control.LoadValue (interim);
+      {
+        if (control.IsValid)
+          control.LoadValue (interim);
+      }
     }
   }
 
@@ -87,7 +90,11 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
       {
         IBusinessObjectBoundModifiableControl writeableControl = control as IBusinessObjectBoundModifiableControl;
         if (writeableControl != null)
-          writeableControl.SaveValue (interim);
+        {
+          if (writeableControl.IsValid)
+            writeableControl.SaveValue (interim);
+        }
+
       }
     }
   }
@@ -111,7 +118,17 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
-    get { return (IBusinessObjectBoundControl[]) _boundControls.ToArray (); }
+    get 
+    {
+      ArrayList bindableControls = new ArrayList (_boundControls.Count);
+      for (int i = 0; i < _boundControls.Count; ++i)
+      {
+        IBusinessObjectBoundControl control = (IBusinessObjectBoundControl) _boundControls[i];
+        if (control.IsValid)
+          bindableControls.Add (control);
+      }
+      return (IBusinessObjectBoundControl[]) bindableControls.ToArray (); 
+    }
   }
 }
 
