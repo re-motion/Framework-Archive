@@ -14,6 +14,27 @@ public abstract class CodeBuilder : BaseBuilder
 
   // static members and constants
 
+  #region CSharp 
+
+  //TODO: implement this
+ 
+  /* bool
+   * byte
+   * char
+   * decimal
+   * double
+   * float
+   * int
+   * long
+   * sbyte
+   * short
+   * string
+   * uint
+   * ulong
+   * ushort
+   */
+  #endregion
+
   #region Tags
 
   protected readonly string s_commentTag = "%comment%";
