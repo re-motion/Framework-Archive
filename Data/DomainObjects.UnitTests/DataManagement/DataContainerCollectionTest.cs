@@ -123,7 +123,7 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void MergeeCollectionAndEmptyCollection ()
+  public void MergeCollectionAndEmptyCollection ()
   {
     _collection.Add (_dataContainer);
     DataContainerCollection mergedCollection = _collection.Merge (new DataContainerCollection ());
