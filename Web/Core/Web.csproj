@@ -101,6 +101,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "CommandHandler.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ControlHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -142,7 +147,7 @@
                 />
                 <File
                     RelPath = "TabControl.cs"
-                    SubType = "ASPXCodeBehind"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
