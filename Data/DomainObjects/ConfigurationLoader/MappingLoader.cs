@@ -15,8 +15,6 @@ public class MappingLoader : BaseLoader
   // types
 
   // static members and constants
-
-  // TODO: Throw MappingException, when type of property is invalid.
  
   public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
   public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.SchemaFile";
