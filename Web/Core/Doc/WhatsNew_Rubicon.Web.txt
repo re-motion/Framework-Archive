@@ -6,6 +6,8 @@
     zu unterstützen.
   * Methoden, die noch direkt den FCL ResourceManager unterstützen, sind als obsolete
     gekennzeichnet.
+- LabelUtility:
+  Offers functionality for access key support (access key highlighting)
     
     
 3.1.7.1

@@ -9,6 +9,9 @@
     <param name="objectType">
       The type for which the resource manager is wanted.
     </param>
+    <param name="includeHierarchy">
+      Include the resource managers for the base types.
+    </param>
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>

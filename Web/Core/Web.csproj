@@ -239,6 +239,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\IResourceDispatchTargetWithChildren.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\ResourceDispatcher.xml"
                     BuildAction = "Content"
                 />
@@ -260,6 +264,11 @@
                 />
                 <File
                     RelPath = "Globalization\IResourceDispatchTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Globalization\IResourceDispatchTargetWithChildren.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
