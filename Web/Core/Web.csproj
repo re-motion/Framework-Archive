@@ -108,11 +108,6 @@
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\ExternalReferences\Rubicon.Core.dll"
                 />
-                <Reference
-                    Name = "Rubicon.Globalization"
-                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
             </References>
         </Build>
         <Files>
