@@ -2266,7 +2266,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
       if (helpUrl != null && helpUrl != String.Empty)
       {
-        helpUrl = UrlResolverUtility.GetHelpUrl (this, helpUrl);
+        helpUrl = ResourceUrlResolver.GetResourceUrl (this, null, ResourceType.HelpPage, helpUrl);
         dataRow.HelpProvider = GetHelpProvider (helpUrl);
 
         //  We have a help provider, first come, only one served
@@ -2536,14 +2536,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
   protected virtual string GetImageUrl (FormGridImage image)
   {
-    StringBuilder imageUrlBuilder = new StringBuilder (100);
+    string relativeUrl = image.ToString() + ImageExtension;
 
-    imageUrlBuilder.Append (image.ToString());
-    imageUrlBuilder.Append (ImageExtension);
-
-    string relativeUrl = imageUrlBuilder.ToString();
-
-    string imageUrl = UrlResolverUtility.GetImageUrl (this, relativeUrl);
+    string imageUrl = ResourceUrlResolver.GetResourceUrl (this, typeof (FormGridManager), ResourceType.Image, relativeUrl);
 
     if (imageUrl != null)
       return imageUrl;

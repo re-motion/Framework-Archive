@@ -127,6 +127,16 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "IResourceUrlResolver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ResourceUrlResolver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Web.UI.build"
                     BuildAction = "None"
                 />
@@ -222,11 +232,6 @@
                 />
                 <File
                     RelPath = "Controls\ISmartControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\IUrlResolver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -377,19 +382,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Images\Help.gif"
+                    RelPath = "Res\Image\Help.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Images\RequiredField.gif"
+                    RelPath = "Res\Image\RequiredField.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Images\Spacer.gif"
+                    RelPath = "Res\Image\Spacer.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Images\ValidationError.gif"
+                    RelPath = "Res\Image\ValidationError.gif"
                     BuildAction = "Content"
                 />
                 <File
@@ -419,11 +424,6 @@
                 />
                 <File
                     RelPath = "Utilities\UIUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\UrlResolverUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
