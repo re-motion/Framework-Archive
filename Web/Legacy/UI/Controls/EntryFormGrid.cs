@@ -173,6 +173,10 @@ public class EntryField: Control
 
   private bool   _showErrors = true;
 
+//  private int _height = -1;
+//  private int _width = -1;
+  private bool _hide = false;
+
 	public string Label 
 	{
 		get { return _label; }
@@ -197,6 +201,12 @@ public class EntryField: Control
   {
     get { return _title; }
     set { _title = value; }
+  }
+
+  public bool Hide
+  {
+    get { return _hide; }
+    set { _hide = value; }
   }
 
   /// <summary>
@@ -329,7 +339,11 @@ public class EntryField: Control
         valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString());
     }
 
-		writer.WriteLine ("<tr>");
+    string tagStyle = string.Empty;
+    if (_hide)
+      tagStyle = " style=\"display:none\"";
+
+		writer.WriteLine ("<tr{0}>", tagStyle);
 		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
 		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
