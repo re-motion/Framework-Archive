@@ -1,7 +1,13 @@
-; append this to %programfiles%\Microsoft Visual Studio .NET 2003\Common7\Packages\Debugger\autoexp.dat
+; append this to %programfiles%\Microsoft Visual Studio .NET 2003\Common7\Packages\Debugger\mcee_cs.dat
+
+; Rubicon.Collections
+<Rubicon.Collections.TypedArrayList>=Count=<Count>
+<Rubicon.Collections.TypedHashtable>=Count=<Count>
+<Rubicon.Collections.AutoInitHashtable>=Count=<Count>
+<Rubicon.Collections.NameObjectCollection>=Count=<Count>
 
 ; Rubicon.NullableValueTypes
-Rubicon.NullableValueTypes.NaInt32=<DebuggingValue>
-Rubicon.NullableValueTypes.NaBoolean=<DebuggingValue>
-Rubicon.NullableValueTypes.NaDateTime=<DebuggingValue>
-Rubicon.NullableValueTypes.NaDouble=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaInt32>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaBoolean>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaDateTime>=<DebuggingValue>
+<Rubicon.NullableValueTypes.NaDouble>=<DebuggingValue>
