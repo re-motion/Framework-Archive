@@ -585,5 +585,26 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreSame (order.OrderItems[0], items[1]);
     Assert.AreSame (order.OrderItems[1], items[2]);
   }
+
+  [Test]
+  public void Clone ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+    
+    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+    collection.Add (customer1);
+    collection.Add (customer2);
+
+    ICloneable cloneableCollection = (ICloneable) collection;
+    DomainObjectCollection clonedCollection = (DomainObjectCollection) cloneableCollection.Clone ();
+
+    Assert.IsNotNull (clonedCollection);
+    Assert.AreEqual (collection.Count, clonedCollection.Count);
+    Assert.AreEqual (collection.IsReadOnly, clonedCollection.IsReadOnly);
+    Assert.AreEqual (collection.RequiredItemType, clonedCollection.RequiredItemType);
+    Assert.AreSame (collection[0], clonedCollection[0]);
+    Assert.AreSame (collection[1], clonedCollection[1]);
+  }
 }
 }
