@@ -1,12 +1,11 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
 using NUnit.Framework;
 
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Data.NullableValueTypes.UnitTests
+namespace Rubicon.Data.UnitTests.NullableValueTypes
 {
 
 [TestFixture]

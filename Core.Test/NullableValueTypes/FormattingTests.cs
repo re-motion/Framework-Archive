@@ -3,9 +3,8 @@ using System.Globalization;
 using NUnit.Framework;
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Data.NullableValueTypes.UnitTests
+namespace Rubicon.Data.UnitTests.NullableValueTypes
 {
-
 
 [TestFixture]
 public class FormattingTests
