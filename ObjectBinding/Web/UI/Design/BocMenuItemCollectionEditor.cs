@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding.Web.Controls;
 namespace Rubicon.ObjectBinding.Web.Design
 {
 
-public class BocMenuItemCollectionEditor: MenuItemCollectionEditor
+public class BocMenuItemCollectionEditor: WebMenuItemCollectionEditor
 {
   public BocMenuItemCollectionEditor (Type type)
     : base (type)
