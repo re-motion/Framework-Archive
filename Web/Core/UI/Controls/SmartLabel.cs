@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using Rubicon.Web.UI.Design;
+using System.Text;
 
 namespace Rubicon.Web.UI.Controls
 {

@@ -98,23 +98,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       _rows = new FormGridRowCollection (this, rows);
     }
 
-    /// <summary> Uses the wrapped HtmlTable's ID's GetHashCode method. </summary>
-    /// <returns> The hash code </returns>
-    [Obsolete]
-    public override int GetHashCode()
-    {
-      return _table.ID.GetHashCode ();
-    }
-
-    /// <summary> Compares by reference. </summary>
-    /// <param name="obj"> The object to compare with. </param>
-    /// <returns> <see langname="true"/> if a match. </returns>
-    [Obsolete]
-    public override bool Equals(object obj)
-    {
-      return object.ReferenceEquals (this, obj);
-    }
-
     /// <summary>
     ///   Returns all <see cref="ValidationError"/> objects defined in the 
     ///   <see cref="FormGridRow"/> objects collection.
@@ -1046,18 +1029,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       string tableID = key.Substring (0, key.IndexOf (":"));
       string elementIDProperty = key.Substring (posColon + 1);
 
-      FormGrid formGrid = (FormGrid)_formGridsByTableID[tableID];
+      FormGrid formGrid = (FormGrid)_formGrids[tableID];
 
       if (formGrid != null)
       {
         //  Get the controls for the current FormGrid
-        Hashtable controls = (Hashtable) formGridControls[formGridID];
+        Hashtable controls = (Hashtable) formGridControls[tableID];
 
         //  If no hashtable exists, create it and insert it into the formGridControls hashtable.
         if (controls == null)
         {
           controls = new Hashtable();
-          formGridControls[formGridID] = controls;
+          formGridControls[tableID] = controls;
         }
 
         //  Test for a second colon in the key
@@ -1086,13 +1069,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
+          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableID:controlID:property'.");
         }
       }
       else
       {
         //  Invalid form grid
-        s_log.Warn ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "'.");
+        s_log.Warn ("FormGrid '" + tableID + "' is not managed by FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "'.");
       }
     }
 
@@ -1101,7 +1084,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     foreach (DictionaryEntry formGridEntry in formGridControls)
     {
       string tableID = (string)formGridEntry.Key;
-      FormGrid formGrid = (FormGrid)_formGridsByTableID[tableID];
+      FormGrid formGrid = (FormGrid)_formGrids[tableID];
       
       Hashtable controls = (Hashtable)formGridEntry.Value;
 
@@ -1146,20 +1129,20 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
               }
               else
               {
-                label.Text = SmartLabel.FormatLabelText (label.Text);
+                label.Text = SmartLabel.FormatLabelText (label.Text, false);
                 label.AccessKey = "";
               }
             }
             else
             {
-              label.Text = SmartLabel.FormatLabelText (label.Text);
+              label.Text = SmartLabel.FormatLabelText (label.Text, false);
             }
           }
         }
         else
         {
           //  Invalid control
-          s_log.Warn ("FormGrid '" + formGridID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
+          s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
         }
       }
     }
@@ -2067,9 +2050,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       //  Query the controls for the string to be used as the labeling Text
 
       Control label = null;
-
       string newID = control.ID + c_generatedLabelSuffix;
-
       if (control is ISmartControl)
       {
         SmartLabel smartLabel = new SmartLabel();
