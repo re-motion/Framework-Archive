@@ -395,6 +395,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocReferenceValue.js"
+                    SubType = "Code"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\CheckBoxFalse.gif"
                     BuildAction = "Content"
                 />
