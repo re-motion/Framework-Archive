@@ -29,5 +29,11 @@ public class StringProperty : DomainObjectProperty, IBusinessObjectStringPropert
       return (PropertyDefinition != null) ? PropertyDefinition.MaxLength : NaInt32.Null; 
     }
   }
+
+  protected internal override object ToInternalType(object publicValue)
+  {
+    return publicValue;
+  }
+
 }
 }
