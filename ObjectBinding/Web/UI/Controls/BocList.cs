@@ -2508,6 +2508,8 @@ public class BocList:
   //  [Category ("Column Definition")]
   //  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
   //  [DefaultValue ((string) null)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public BocColumnDefinitionSetCollection AvailableColumnDefinitionSets
   {
     get { return _availableColumnDefinitionSets; }
