@@ -28,6 +28,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <para>
 ///     Open the date picker using the <c>ShowDatePicker</c> function located in <c>DatePicker.js</c>.
 ///   </para>
+///   <para>
+///     Popup does not work on FireFox, Internet Explorer 5.1 and below
+///   </para>
 /// </remarks>
 public class DatePickerPage : Page
 {

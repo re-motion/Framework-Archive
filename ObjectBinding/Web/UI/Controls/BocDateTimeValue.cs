@@ -19,6 +19,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
 //  TODO: BocDateTimeValue: Try to extract the DatePickerButton functionality into a Control
 //    and add it to Rubicon.Web.UI.Controls.
+//  TODO: BocDateTimeValue: Deactivate popup for all Browsers not Internet Explorer 5.5 or higher.
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
