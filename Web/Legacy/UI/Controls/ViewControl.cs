@@ -93,7 +93,7 @@ public class ViewControl: Control
 	/// <summary> 
 	/// Render this control to the output parameter specified.
 	/// </summary>
-	/// <param name="output"> The HTML writer to write out to </param>
+	/// <param name="writer"> The HTML writer to write out to </param>
 	protected override void Render(HtmlTextWriter writer)
 	{
     RenderViewControl (writer, 2, 3);

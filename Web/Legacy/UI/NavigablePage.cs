@@ -202,7 +202,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   /// </summary>
   /// <param name="requireParameters">If false, no exception is thrown if parameters are not found.</param>
   /// <exception cref="NoPageParametersException">Thrown when a page is called without parameters.</exception>
-  /// <exception cref="SessionTimeout">Thrown when the session is timed out.</exception>
+  /// <exception cref="SessionTimeoutException">Thrown when the session is timed out.</exception>
   /// <returns>IDictionary containing parameters</returns>
   public IDictionary GetCallParameters (bool requireParameters)
   {

@@ -936,7 +936,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   private bool _showHelpProviders;
 
   /// <summary> State variable for the two part transformation process. </summary>
-  private bool _hasCompletedTransformationStep1;
+  private bool _hasCompletedTransformationStepPreLoadViewState;
 
   /// <summary>
   ///   Caches the <see cref="IFormGridRowProvider"/> for this <see cref="FormGridManager"/>.
@@ -1146,13 +1146,13 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   }
 
   /// <summary>
-  ///   Calls <see cref="TransformIntoFormGridStep1"/> and <see cref="TransformIntoFormGridStep2"/>.
+  ///   Calls <see cref="TransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
   /// </summary>
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnPreRender (EventArgs e)
   {
-    TransformIntoFormGridStep1();
-    TransformIntoFormGridStep2();
+    TransformIntoFormGridPreLoadViewState();
+    TransformIntoFormGridPostValidation();
 
     base.OnPreRender (e);
   }
@@ -1197,7 +1197,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
 
     //  Rebuild the HTML tables used as form grids
-    TransformIntoFormGridStep1();
+    TransformIntoFormGridPreLoadViewState();
 
 
     //  Restore the view state to the form grids
@@ -1533,11 +1533,10 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   }
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridStep1/*' />
-  /// <remarks> This step is executed before the <see cref="HtmlTable"/>'s view state is restored. </remarks>
-  protected virtual void TransformIntoFormGridStep1()
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
+  protected virtual void TransformIntoFormGridPreLoadViewState()
   {
-    if (_hasCompletedTransformationStep1)
+    if (_hasCompletedTransformationStepPreLoadViewState)
       return;
 
     PopulateFormGridList (Parent);
@@ -1557,13 +1556,12 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       FormatFormGrid (formGrid);
     }
 
-    _hasCompletedTransformationStep1 = true;
+    _hasCompletedTransformationStepPreLoadViewState = true;
   }
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridStep2/*' />
-  /// <remarks> This step is executed after the validation occured. </remarks>
-  protected virtual void TransformIntoFormGridStep2()
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPostValidation/*' />
+  protected virtual void TransformIntoFormGridPostValidation()
   {
     foreach (FormGrid formGrid in _formGrids.Values)
     {

@@ -199,14 +199,63 @@
       The <see cref="FormGridRow"/> to be validated.
     </param>
   </ValidateDataRow>
-  <TransformIntoFormGridStep1>
+  <TransformIntoFormGridPreLoadViewState>
     <remarks>
+      <para>
+        This step is executed before the <see cref="HtmlTable"/>'s view state is restored
+        so the <see cref="HtmlTable"/> is in the same configuration as it was when the view state
+        was saved.
+      </para><para>
+        <list type="number">
+          <item>
+            Call to <see cref="PopulateFormGridList"/>.
+          </item>
+          <item>
+            Disable the <see cref="HtmlTable"/> object's view state.
+          </item>
+          <item>
+            Call to <see cref="FormGrid.BuildIDCollection"/>.
+          </item>
+          <item>
+            Call to <see cref="LoadNewFormGridRows"/> get all additional <see cref="FormGridRow"/>
+            objects from the <see cref="IFormGridRowProvider"/>.
+          </item>
+          <item>
+            Call to <see cref="ApplyExternalHiddenSettings"/> get all <see cref="FormGridRow"/>
+            objects from the <see cref="IFormGridRowProvider"/> are to be hidden.
+          </item>
+          <item>
+            Call to <see cref="ComposeFormGridContents"/>.
+          </item>
+          <item>
+            Call to <see cref="FormatFormGrid"/>.
+          </item>
+        </list>
+    </para>
     </remarks>
-  </TransformIntoFormGridStep1>
-  <TransformIntoFormGridStep2>
+  </TransformIntoFormGridPreLoadViewState>
+  <TransformIntoFormGridPostValidation>
     <remarks>
+      <para>
+        This step is executed after the validation occured.
+      </para><para>
+        <list type="number">
+          <item>
+            Call to <see cref="LoadMarkersIntoCell"/>.
+          </item>
+          <item>
+            Call to <see cref="LoadValidationMessagesIntoCell"/>.
+          </item>
+          <item>
+            Hide all <see cref="FormGridRow"/> objects that have no visible contents.
+          </item>
+          <item>
+            Call to <see cref="AddShowEmptyCellsHack"/>.
+          </item>
+        </list>
+    </para>
     </remarks>
-  </TransformIntoFormGridStep2>
+  </TransformIntoFormGridPostValidation>
   <LoadNewFormGridRows>
     <remarks>
       Knows how to build rows from the base implementation of <see cref="FormGridRowPrototype"/>.
