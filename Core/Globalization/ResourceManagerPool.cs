@@ -11,6 +11,10 @@ namespace Rubicon.Findit.Globalization.Classes
 
 public sealed class ResourceDispatcher
 {
+  // types
+
+  // static members and constants
+
   public static string GetResourceText (Page page, string name)
   {
     return GetResourceText (page, GetPageType (page), name);  
@@ -146,9 +150,16 @@ public sealed class ResourceDispatcher
     }
   }
 
-	private ResourceDispatcher()
-	{
-	}
+  // member fields
+
+  // construction and disposing
+
+  private ResourceDispatcher()
+  {
+  }
+
+  // methods and properties
+
 }
 
 public interface IResourceDispatchTarget
