@@ -2,7 +2,7 @@ using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.DataManagement;
