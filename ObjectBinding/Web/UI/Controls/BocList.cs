@@ -71,6 +71,10 @@ public class BocList:
 
   /// <summary> The key identifying a fixed column resource entry. </summary>
   private const string c_resourceKeyFixedColumns = "FixedColumns";
+  /// <summary> The key identifying a options menu item resource entry. </summary>
+  private const string c_resourceKeyOptionsMenuItems = "OptionsMenuItems";
+  /// <summary> The key identifying a list menu item resource entry. </summary>
+  private const string c_resourceKeyListMenuItems = "ListMenuItems";
 
   private const string c_defaultMenuBlockItemOffset = "5pt";
   private const string c_defaultMenuBlockWidth = "70pt";
@@ -990,7 +994,7 @@ public class BocList:
     }
     writer.RenderEndTag();
 
-    string key = typeof (BocList).FullName + "_ListMenuItems";
+    string key = UniqueID + "_ListMenuItems";
     if (! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
@@ -2262,7 +2266,9 @@ public class BocList:
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
   public void Dispatch (IDictionary values)
   {
-    Hashtable fixedColumns = new Hashtable();
+    HybridDictionary fixedColumnValues = new HybridDictionary();
+    HybridDictionary optionsMenuItemValues = new HybridDictionary();
+    HybridDictionary listMenuItemValues = new HybridDictionary();
     HybridDictionary propertyValues = new HybridDictionary();
 
     //  Parse the values
@@ -2286,14 +2292,24 @@ public class BocList:
         string elementID = keyParts[1];
         string property = keyParts[2];
 
-        Hashtable currentCollection = null;
+        IDictionary currentCollection = null;
 
         //  Switch to the right collection
         switch (collectionID)
         {
           case c_resourceKeyFixedColumns:
           {
-            currentCollection = fixedColumns;
+            currentCollection = fixedColumnValues;
+            break;
+          }
+          case c_resourceKeyOptionsMenuItems:
+          {
+            currentCollection = optionsMenuItemValues;
+            break;
+          }
+          case c_resourceKeyListMenuItems:
+          {
+            currentCollection = listMenuItemValues;
             break;
           }
           default:
@@ -2331,17 +2347,28 @@ public class BocList:
     //  Dispatch simple properties
     DispatchToProperties (this, propertyValues);
 
-    //  Dispatch fixed column definition properties
-    foreach (DictionaryEntry fixedColumnEntry in fixedColumns)
+    //  Dispatch to collections
+    DispatchToColumns (_fixedColumns, fixedColumnValues, "FixedColumns");
+    DispatchToMenuItems (_optionsMenuItems, optionsMenuItemValues, "OptionsMenuItems");
+    DispatchToMenuItems (_listMenuItems, listMenuItemValues, "ListMenuItems");
+  }
+
+  /// <summary>
+  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
+  ///   <see cref="BocColumnDefinitions"/> objects in the collection <paramref name="columns"/>.
+  /// </summary>
+  private void DispatchToColumns (BocColumnDefinitionCollection columns, IDictionary values, string collectionName)
+  {
+    foreach (DictionaryEntry entry in values)
     {
-      string columnID = (string) fixedColumnEntry.Key;
+      string columnID = (string) entry.Key;
       
       bool isValidID = false;
-      foreach (BocColumnDefinition columnDefinition in _fixedColumns)
+      foreach (BocColumnDefinition columnDefinition in columns)
       {
         if (columnDefinition.ColumnID == columnID)
         {
-          DispatchToProperties (columnDefinition, (IDictionary) fixedColumnEntry.Value);
+          DispatchToProperties (columnDefinition, (IDictionary) entry.Value);
           isValidID = true;
           break;
         }
@@ -2350,10 +2377,40 @@ public class BocList:
       if (! isValidID)
       {
         //  Invalid collection element
-        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a fixed column definition with an ID of '" + columnID + "'.");
+        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + columnID + "' inside the collection '" + collectionName + "'.");
       }
     }
   }
+
+  /// <summary>
+  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
+  ///   <see cref="BocMenuItem"/> objects in the collection <paramref name="menuItems"/>.
+  /// </summary>
+  private void DispatchToMenuItems (BocMenuItemCollection menuItems, IDictionary values, string collectionName)
+  {
+    foreach (DictionaryEntry entry in values)
+    {
+      string itemID = (string) entry.Key;
+      
+      bool isValidID = false;
+      foreach (BocMenuItem menuItem in menuItems)
+      {
+        if (menuItem.ItemID == itemID)
+        {
+          DispatchToProperties (menuItem, (IDictionary) entry.Value);
+          isValidID = true;
+          break;
+        }
+      }
+
+      if (! isValidID)
+      {
+        //  Invalid collection element
+        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + itemID + "' inside the collection '" + collectionName + "'.");
+      }
+    }
+  }
+
 
   /// <summary>
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
