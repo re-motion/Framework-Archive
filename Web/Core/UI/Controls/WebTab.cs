@@ -265,33 +265,36 @@ public class WebTab: IControlItem
   public virtual void OnClick()
   {
   }
+
+  public virtual void OnSelectionChanged()
+  {
+  }
 }
 
-public class PageViewTab: WebTab
+public class MultiPageTab: WebTab
 {
   string _target;
-  string _multiPage;
 
   /// <summary> Initalizes a new instance. </summary>
-  public PageViewTab (string tabID, string text, IconInfo icon)
+  public MultiPageTab (string tabID, string text, IconInfo icon)
     : base (tabID, text, icon)
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public PageViewTab (string tabID, string text, string iconUrl)
+  public MultiPageTab (string tabID, string text, string iconUrl)
     : this (tabID, text, new IconInfo (iconUrl))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public PageViewTab (string tabID, string text)
+  public MultiPageTab (string tabID, string text)
     : this (tabID, text, string.Empty)
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public PageViewTab()
+  public MultiPageTab()
     : this (null, null, new IconInfo ())
   {
   }
@@ -302,19 +305,46 @@ public class PageViewTab: WebTab
     set { _target = value; }
   }
 
-  public string MultiPage
+  public override void OnSelectionChanged()
   {
-    get { return _multiPage; }
-    set { _multiPage = value; }
+    PageView pageView = (PageView) TabStrip.FindControl (_target);
+    MultiPage multiPage = (MultiPage) pageView.Parent;
+    int selectedPageView = multiPage.Controls.IndexOf (pageView);
+    multiPage.SelectedIndex = selectedPageView;
+//    if (multiPage != null)
+//    {
+//      if (_OldMultiPageIndex < 0)
+//      {
+//        this.SetTargetSelectedIndex();
+//      }
+//      if ((_OldMultiPageIndex >= 0) && (multiPage.SelectedIndex != _OldMultiPageIndex))
+//      {
+//        multiPage.FireSelectedIndexChangeEvent();
+//      }
+//    }
   }
 
-  public override void OnClick()
-  {
-    Microsoft.Web.UI.WebControls.PageView pageView = 
-        (Microsoft.Web.UI.WebControls.PageView) TabStrip.FindControl (_target);
-    Microsoft.Web.UI.WebControls.MultiPage multiPage = 
-        (Microsoft.Web.UI.WebControls.MultiPage) TabStrip.FindControl (_target);
-  }
+//  private void SetTargetSelectedIndex()
+//  {
+//    int num1 = this.Tabs.ToArrayIndex(this.SelectedIndex);
+//    if (num1 >= 0)
+//    {
+//      Tab tab1 = (Tab) this.Tabs[num1];
+//      MultiPage page1 = this.Target;
+//      if (page1 != null)
+//      {
+//        PageView view1 = (tab1 == null) ? null : tab1.Target;
+//        if ((view1 != null) && !view1.Selected)
+//        {
+//          if (this._OldMultiPageIndex < 0)
+//          {
+//            this._OldMultiPageIndex = page1.SelectedIndex;
+//          }
+//          view1.Activate();
+//        }
+//      }
+//    }
+//  }
 
 }
 }
