@@ -7,7 +7,7 @@ namespace Rubicon.Data.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a boolean value that can be <c>Null</c>.
+/// Represents a boolean value that can be <c>Null</c>. The corresponding system type is System.Boolean.
 /// </summary>
 /// <remarks>
 ///   <para>
@@ -68,7 +68,7 @@ namespace Rubicon.Data.NullableValueTypes
 ///         The logical methods and operators of <c>NaBoolean</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
 ///         <para>
 ///           Applies to <see cref="And"/>, <see cref="Or"/>, <see cref="Xor"/>, <see cref="Not"/>, 
-///           <see cref="operator &"/>, <see cref="operator |"/>, <see cref="operator ^"/>, <see cref="operator !"/>.
+///           <see cref="operator &amp;"/>, <see cref="operator |"/>, <see cref="operator ^"/>, <see cref="operator !"/>.
 ///         </para>
 ///       </description>
 ///     </item>
@@ -89,7 +89,7 @@ namespace Rubicon.Data.NullableValueTypes
 ///         </para>
 ///         <para>
 ///           <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
-///           Otherwise, it returns the same value that <c>Boolean.Parse</c> would return.///           
+///           Otherwise, it returns the same value that <c>Boolean.Parse</c> would return.
 ///         </para>
 ///       </description>
 ///     </item>
@@ -229,7 +229,7 @@ public struct NaBoolean: INullable, IComparable, ISerializable, IFormattable
   /// <returns>
   /// An <c>NaBoolean</c> equivalent to the value contained in the specified string. If the string is a null reference, 
   /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaBoolean.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// <see cref="Value"/> contains the same value that <c>Boolean.Parse</c> would return.
   /// </returns>
   public static NaBoolean Parse (string s)
   {
@@ -298,14 +298,94 @@ public struct NaBoolean: INullable, IComparable, ISerializable, IFormattable
       return new SqlBoolean (value.Value);
   }
 
+  /// <summary>
+  /// The true operator can be used to test the <see cref="Value"/> of the <c>SqlBoolean</c> to determine whether it is true.
+  /// </summary>
+  /// <returns><c>true</c> if the supplied parameter is true, <c>false</c> otherwise.</returns>
   public static bool operator true (NaBoolean x)
   {
     return x._byteValue == c_true;
   }
 
+  /// <summary>
+  /// The false operator can be used to test the <see cref="Value"/> of the <c>SqlBoolean</c> to determine whether it is false.
+  /// </summary>
+  /// <returns><c>true</c> if the supplied parameter is false, <c>false</c> otherwise.</returns>
   public static bool operator false (NaBoolean x)
   {
     return x._byteValue == c_false;
+  }
+
+  /// <summary>
+  /// Converts a <see cref="NaBoolean"/> value to a boxed <c>Boolean</c> value or a null reference.
+  /// </summary>
+  /// <returns>The integer value of <c>value</c> as an <c>Boolean</c> if it is not null, a null reference otherwise.</returns>
+  /// <remarks>
+  /// Use this method to easily pass <c>NaBoolean</c> values to methods that expect an untyped parameter which is either an <c>Boolean</c>
+  /// value or a null reference.
+  /// </remarks>
+  public static object ToBoxedBoolean (NaBoolean value)
+  {
+    if (value.IsNull )
+      return null;
+    else
+      return value.Value;
+  }
+
+  /// <summary>
+  /// Converts a boxed <c>Boolean</c> value or a null reference to a <see cref="NaBoolean"/> value.
+  /// </summary>
+  /// <returns>A <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Boolean</c>, 
+  /// <c>NaBoolean.Null</c> if it is a null reference.</returns>
+  /// <remarks>
+  /// Use this method to easily create an <c>NaBoolean</c> value from an untyped value which is either an <c>Boolean</c> value or a null reference.
+  /// </remarks>
+  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Boolean</c> value.</exception>
+  public static NaBoolean FromBoxedBoolean (object value)
+  {
+    if (value == null)
+      return NaBoolean.Null;
+
+    if (! (value is Boolean))
+      throw new ArgumentException ("Must be a Boolean value", "value");
+
+    return new NaBoolean ((Boolean) value);
+  }
+
+  /// <summary>
+  /// Converts a <see cref="NaBoolean"/> value to a boxed <c>Boolean</c> value or to DBNull.Value.
+  /// </summary>
+  /// <returns>The integer value of <c>value</c> as an <c>Boolean</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <remarks>
+  /// Use this method to easily pass <c>NaBoolean</c> values to methods that expect an untyped parameter which is either an <c>Boolean</c>
+  /// value or DBNull.Value.
+  /// </remarks>
+  public static object ToBoxedBooleanDBNull (NaBoolean value)
+  {
+    if (value.IsNull )
+      return DBNull.Value;
+    else
+      return value.Value;
+  }
+
+  /// <summary>
+  /// Converts a boxed <c>Boolean</c> value or DBNull.Value to a <see cref="NaBoolean"/> value.
+  /// </summary>
+  /// <returns>A <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Boolean</c>, 
+  /// <c>NaBoolean.Null</c> if it is DBNull.Value.</returns>
+  /// <remarks>
+  /// Use this method to easily create an <c>NaBoolean</c> value from an untyped value which is either an <c>Boolean</c> value or DBNull.Value.
+  /// </remarks>
+  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Boolean</c> value.</exception>
+  public static NaBoolean FromBoxedBooleanDBNull (object value)
+  {
+    if (value == DBNull.Value)
+      return NaBoolean.Null;
+
+    if (! (value is Boolean))
+      throw new ArgumentException ("Must be a Boolean value", "value");
+
+    return new NaBoolean ((Boolean) value);
   }
 
   #endregion
@@ -316,12 +396,12 @@ public struct NaBoolean: INullable, IComparable, ISerializable, IFormattable
   /// Gets the value of this <see cref="NaBoolean"/> structure. This property is read-only.
   /// </summary>
   /// <value>
-  /// An integer representing the value of this NaBoolean structure.
+  /// A Boolean representing the value of this NaBoolean structure.
   /// </value>
   /// <exception cref="NaNullValueException">
   /// The property contains <see cref="Null"/>.
   /// </exception>
-  public bool Value 
+  public Boolean Value 
   {
     get 
     { 
@@ -524,7 +604,7 @@ public struct NaBoolean: INullable, IComparable, ISerializable, IFormattable
   /// <summary>
   /// Compares this instance to the supplied object and returns an indication of their relative values.
   /// </summary>
-  /// <param name="value">The object to be compared.</param>
+  /// <param name="obj">The object to be compared.</param>
   /// <returns>
   ///   A signed number indicating the relative values of the instance and the object.
   ///   <list type="table">

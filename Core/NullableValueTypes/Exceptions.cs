@@ -42,6 +42,7 @@ internal class NaResources
 {
   internal static readonly string NullValueMemberAccessMsg = "Cannot access the member \"{0}\" because the value is null.";
   internal static readonly string ArithmeticOverflowMsg = "Arithmetic overflow in operation.";
+  internal static readonly string DivideByZeroMsg = "Division by zero attempted in operation.";
 }
 
 
