@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
+using System.Xml.Serialization;
 
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -22,6 +23,15 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
     {
       isNullableType = true;
       itemType = NaTypeUtility.GetBasicType (itemType);
+    }
+
+    XmlAttributeAttribute[] xmlAttributes = (XmlAttributeAttribute[]) propertyInfo.GetCustomAttributes (typeof (XmlAttributeAttribute), true);
+    if (xmlAttributes.Length == 1)
+    {
+      XmlAttributeAttribute xmlAttribute = xmlAttributes[0];
+      // create ReflectionBusinessObjectDateProperty for [XmlAttribute (DataType="date")] DateTime
+      if (propertyInfo.PropertyType == typeof (DateTime) && xmlAttribute.DataType == "date")
+        return new ReflectionBusinessObjectDateProperty (propertyInfo, itemType, isList, isNullableType);
     }
 
     if (propertyInfo.PropertyType == typeof (string))
@@ -172,6 +182,35 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNull
       return NaInt32.FromBoxedInt32 (publicValue);
     else
       return publicValue;
+  }
+}
+
+public class ReflectionBusinessObjectDateProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDateProperty
+{
+  public ReflectionBusinessObjectDateProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    : base (propertyInfo, itemType, isList, isNullable)
+  {
+  }
+
+  protected internal override object FromInternalType (object internalValue)
+  {
+    if (! IsList && IsNullableType)
+    {
+      NaDateTime value = (NaDateTime) internalValue;
+      return NaDateTime.ToBoxedDateTime (value.Date);
+    }
+    else
+    {
+      return ((DateTime)internalValue).Date;
+    }
+  }
+
+  protected internal override object ToInternalType (object publicValue)
+  {
+    if (! IsList && IsNullableType)
+      return NaDateTime.FromBoxedDateTime (publicValue).Date;
+    else
+      return ((DateTime)publicValue).Date;
   }
 }
 
