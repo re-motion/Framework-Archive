@@ -96,7 +96,7 @@
     <ifnot propertyexists="SS.dir" >
       <property name="SS.dir" value="." />
     </ifnot>
-    <exec program="SS.EXE" commandline="${SS.command} -I- -Ybuild,buildpw > NUL" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
+    <exec program="SS.EXE" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
