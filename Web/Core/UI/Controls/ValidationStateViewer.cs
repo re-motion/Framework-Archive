@@ -26,7 +26,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   /// <summary> A list of validation state viewer wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
+  [ResourceIdentifier]
   [MultiLingualResources ("Rubicon.Web.UI.Globalization.ValidationStateViewer")]
   protected enum ResourceIdentifier
   {
