@@ -164,6 +164,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestReferenceValue.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestReferenceValue.aspx.cs"
+                    DependentUpon = "TestReferenceValue.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestReferenceValue.aspx.resx"
+                    DependentUpon = "TestReferenceValue.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />

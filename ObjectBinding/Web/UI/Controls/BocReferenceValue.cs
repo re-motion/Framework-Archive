@@ -12,18 +12,18 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   This control can be used to display or edit reference values.
-/// </summary>
+/// <summary> This control can be used to display or edit reference values. </summary>
+/// <include file='doc\include\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
+public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 {
 	// constants
 	
   private const string c_nullIdentifier = "--null--";
   private const string c_nullDisplayName = "Undefined";
+  private const string c_nullItemValidationMessage = "Please select an item.";
 
   // types
 
@@ -42,9 +42,19 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
   /// </remarks>
   public event EventHandler SelectionChanged;
 
+  /// <summary>
+  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
+  ///   <see cref="SaveValue"/>.
+  /// </summary>
   private bool _isDirty = true;
+
+  /// <summary> The <see cref="DropDownList"/> used in modifiable mode. </summary>
   private DropDownList _dropDownList = null;
+
+  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
+
+  /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon = null;
 
   /// <summary> The object returned by <see cref="Value"/>. </summary>
@@ -55,40 +65,62 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
   ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
   /// </summary>
   private string _internalValue = null;
+
+  /// <summary> The <see cref="DropDownList.SelectedValue"/> of <see cref="_dropDownList"/>. </summary>
   private string _newInternalValue = null;
 
-  private IBusinessObjectWithIdentity[] _listedBusinessObjects = new IBusinessObjectWithIdentity[]{};
-
+  /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
   private Style _commonStyle = new Style();
+
+    /// <summary> The <see cref="Style"/> applied to the <see cref="_dropDownList"/>. </summary>
   private Style _dropDownListStyle = new Style();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="_label"/>. </summary>
   private Style _labelStyle = new Style();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="_icon"/>. </summary>
   private Style _iconStyle = new Style();
 
   /// <summary> State field for special behaviour during load view state. </summary>
+  /// <remarks> Used by <see cref="InternalLoadValue"/>. </remarks>
   private bool _isLoadViewState;
 
+  /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
+
+  /// <summary> 
+  ///   The <see cref="string"/> with the search expression for populating the 
+  ///   <see cref="_dropDownList"/>.
+  /// </summary>
   private string _select = String.Empty;
 
   // construction and disposing
 
+  /// <summary> Simple constructor. </summary>
 	public BocReferenceValue()
 	{
-	}
+    //  empty
+  }
 
 	// methods and properties
 
+  /// <summary>
+  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
+
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
+    //  Prevent a collapsed control
     if (Width == Unit.Empty)
       Width = Unit.Pixel (150);
 
+    _icon = new Image();
     _dropDownList = new DropDownList();
     _label = new Label();
-    _icon = new Image();
 
     _icon.ID = this.ID + "_Icon";
     _icon.EnableViewState = false;
@@ -106,20 +138,25 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
   }
 
+  /// <summary>
+  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
 
     Binding.EvaluateBinding();
 
-    bool isDesignMode = this.Site != null && this.Site.DesignMode;
-    if (! isDesignMode)
+    if (! IsDesignMode)
     {
       string newInternalValue = this.Page.Request.Form[_dropDownList.UniqueID];
       if (newInternalValue == c_nullIdentifier)
         _newInternalValue = null;
       else if (newInternalValue != null)
         _newInternalValue = newInternalValue;
+      else
+        _newInternalValue = null;
 
       if (! Page.IsPostBack)
         RefreshBusinessObjectsList();
@@ -129,6 +166,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
       _isDirty = true;
   }
 
+  /// <summary>
+  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
+  ///   through the <see cref="_dropDownList"/>.
+  /// </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
   {
     if (_newInternalValue != null && _newInternalValue != _internalValue)
@@ -138,26 +181,34 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
     }
   }
 
-  /// <summary>
-  /// Fires the <see cref="SelectionChanged"/> event.
-  /// </summary>
-  /// <param name="e"> Empty. </param>
+  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
+  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnSelectionChanged (EventArgs e)
   {
     if (SelectionChanged != null)
       SelectionChanged (this, e);
   }
 
+  /// <summary> Handles refreshing the bound control. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
     InternalLoadValue();
   }
 
+  /// <summary> Refreshes the sub-controls for the new value. </summary>
   private void InternalLoadValue()
   {
     InternalLoadValue (false);
   }
 
+  /// <overloads>Overloaded.</overloads>
+  /// <summary> Refreshes the sub-controls for the new value. </summary>
+  /// <param name="removeUndefined">
+  ///   <see langword="true"/> to remove the item specifying a null reference.
+  ///   Used for required values once they are set to an item different from the null item.
+  /// </param>
   private void InternalLoadValue (bool removeUndefined)
   {
     if (IsReadOnly)
@@ -167,21 +218,21 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
       else
         _label.Text = String.Empty;
     }
-    else
+    else // Not Read-Only
     {
-      if (_dropDownList == null)
-        return;
-
       if (removeUndefined)
       {
         ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
         if (itemToRemove != null)
-          _dropDownList.Items.Remove(itemToRemove);
+          _dropDownList.Items.Remove (itemToRemove);
       }
 
-      if (    StringUtility.IsNullOrEmpty (InternalValue)
-          ||  (! _isLoadViewState && Property == null))
+      //  Check if null item is to be selected
+      bool hasProperty = ! _isLoadViewState && Property == null;
+
+      if (InternalValue == null || ! hasProperty)
       {
+        //  No
         if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
         {
           _dropDownList.Items.Insert (0, CreateEmptyItem());
@@ -265,13 +316,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
   protected virtual void RefreshDropDownList(IBusinessObjectWithIdentity[] businessObjects)
   {
     if (    Property != null 
-        &&  businessObjects != null
-        &&  _dropDownList != null)
+        &&  businessObjects != null)
     {
       _dropDownList.Items.Clear();
     
       //  Add Undefined item
-      if (StringUtility.IsNullOrEmpty (InternalValue) || !IsRequired)
+      if (InternalValue == null || !IsRequired)
       {
         _dropDownList.Items.Add (CreateEmptyItem());
       }
@@ -347,13 +397,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
 
   protected override void InitializeChildControls()
   {
-    bool isDesignMode = Site != null && Site.DesignMode;
-
     _dropDownList.Visible = ! IsReadOnly;
     _label.Visible = IsReadOnly;
 
     Unit innerControlWidth = Unit.Empty;
-    if (! isDesignMode)
+    if (! IsDesignMode)
     {
       if (this.Width.Type == _icon.Width.Type)
       {
@@ -416,7 +464,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
       _label.ApplyStyle (_commonStyle);
       _label.ApplyStyle (_labelStyle);
 
-      if (isDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
           _label.Text = c_nullDisplayName;
     }
     else
@@ -508,7 +556,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
     notNullItemValidator.ValueToCompare = c_nullIdentifier;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     //  TODO: Get Message from ResourceProvider
-    notNullItemValidator.ErrorMessage = "Please select an item";
+    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = notNullItemValidator;
 
@@ -631,14 +679,18 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPos
                             &&  (     _internalValue == c_nullIdentifier
                                   ||  _internalValue == null);
 
-      _internalValue = value; 
+      if (StringUtility.IsNullOrEmpty (value))
+        _internalValue = null;
+      else
+        _internalValue = value;
+      
       InternalLoadValue (removeUndefined);
     }
   }
 
   public override Control TargetControl 
   {
-    get { return (_dropDownList != null) ? _dropDownList : (Control) this; }
+    get { return (! IsReadOnly) ? _dropDownList : (Control) this; }
   }
 
   /// <summary>
