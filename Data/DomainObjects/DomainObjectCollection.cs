@@ -458,7 +458,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected void PerformAdd (DomainObject domainObject)
   {
-//TODO: Added by ES, check with ML
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckItemType (_requiredItemType, domainObject.GetType ());
 
@@ -494,7 +493,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected void PerformRemove (DomainObject domainObject)
   {
-//TODO: Added by ES, check with ML
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
     base.Remove (domainObject.ID);
