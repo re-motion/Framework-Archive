@@ -312,9 +312,27 @@ public class PageUtility
       bool returnToThisPage,
       ShowNavigationBar showNavBar)
   {    
+    string referrerUrl = GetPhysicalPageUrl (sourcePage);
+
+    CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar, referrerUrl);
+  }
+
+  /// <summary>
+  /// Redirects to the page identified by the given URL 
+  /// </summary>
+  /// <param name="destinationUrl">URL redirecting to</param>
+  /// <param name="parameters">parameters for the page redirected to</param>
+  /// <param name="viewNav">Specifies the display status of the navigation bar for the page redirected to.</param>
+  public static void CallPage (
+      Page sourcePage, 
+      string destinationUrl, 
+      IDictionary parameters, 
+      bool returnToThisPage,
+      ShowNavigationBar showNavBar,
+      string referrerUrl)
+  {    
 
     // Add referrer information for all pages
-    string referrerUrl = GetPhysicalPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
 
     string supressNavigation = string.Empty ;
