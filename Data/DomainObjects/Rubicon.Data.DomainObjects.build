@@ -36,6 +36,7 @@
         <includes name="DataManagement/**/*.cs"/>
         <includes name="Persistence/**/*.cs"/>
         <includes name="Relations/**/*.cs"/>
+        <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
