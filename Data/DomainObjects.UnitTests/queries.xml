@@ -44,7 +44,7 @@
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select * from Customer where CustomerType = @customerType order by Name asc;</statement>
+    <statement>select * from Company where CustomerType = @customerType order by Name asc;</statement>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">

@@ -163,8 +163,10 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
+    CheckStorageProviderID (query);
+
     if (query.QueryType == QueryType.Scalar)
-      throw new ArgumentException ("A scalar query cannot be used with ExecuteCollectionQuery.", "query");
+      throw CreateArgumentException ("query", "A scalar query cannot be used with ExecuteCollectionQuery.");
 
     Connect ();
 
@@ -183,8 +185,10 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
+    CheckStorageProviderID (query);
+
     if (query.QueryType == QueryType.Collection)
-      throw new ArgumentException ("A collection query cannot be used with ExecuteScalarQuery.", "query");
+      throw CreateArgumentException ("query", "A collection query cannot be used with ExecuteScalarQuery.");
 
     Connect ();
 
@@ -348,7 +352,7 @@ public abstract class RdbmsProvider : StorageProvider
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (dataContainer.State == StateType.Deleted)
-      throw new ArgumentException ("Timestamp cannot be set for a deleted DataContainer.", "dataContainer");
+      throw CreateArgumentException ("dataContainer", "Timestamp cannot be set for a deleted DataContainer.");
 
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
         this, "Timestamp", dataContainer.ClassDefinition, "ID", dataContainer.ID.Value);
@@ -453,6 +457,11 @@ public abstract class RdbmsProvider : StorageProvider
     return new ConcurrencyViolationException (string.Format (formatString, args), innerException);
   }
 
+  protected ArgumentException CreateArgumentException (string argumentName, string formatString, params object[] args)
+  {
+    return new ArgumentException (string.Format (formatString, args), argumentName);
+  }
+
   private void DisposeTransaction ()
   {
     if (_transaction != null)
@@ -467,6 +476,19 @@ public abstract class RdbmsProvider : StorageProvider
       _connection.Close ();
     
     _connection = null;
+  }
+
+  private void CheckStorageProviderID (Query query)
+  {
+    if (query.StorageProviderID != ID)
+    {
+      throw CreateArgumentException (
+          "query", 
+          "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
+          query.StorageProviderID, 
+          query.QueryID,
+          ID);
+    }
   }
 }
 }

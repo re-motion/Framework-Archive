@@ -317,13 +317,16 @@ public class ClientTransaction
   /// Creates a new <see cref="DomainObjectCollection"/>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainers"/>, raises the <see cref="Load"/> event and optionally registers the relation with the specified <see cref="RelationEndPointID"/>.
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
-  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   internal protected virtual DomainObjectCollection GetLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       RelationEndPointID relationEndPointID)
   {
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+
     return GetLoadedDomainObjects (
         dataContainers, 
         relationEndPointID.Definition.PropertyType,
@@ -342,6 +345,9 @@ public class ClientTransaction
       DataContainerCollection dataContainers, 
       Type collectionType)
   {
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+    ArgumentUtility.CheckNotNull ("collectionType", collectionType);
+
     return GetLoadedDomainObjects (dataContainers, collectionType, null, null);
   }
 
@@ -360,6 +366,9 @@ public class ClientTransaction
       Type requiredItemType,
       RelationEndPointID relationEndPointID)
   {
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+    ArgumentUtility.CheckNotNull ("collectionType", collectionType);
+
     DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (dataContainers);
     SetClientTransaction (newLoadedDataContainers);
     _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
