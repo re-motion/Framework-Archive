@@ -151,6 +151,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocDateTimeValueValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocEnumValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
