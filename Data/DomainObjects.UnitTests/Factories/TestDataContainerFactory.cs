@@ -54,7 +54,6 @@ public class TestDataContainerFactory
     
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["BooleanProperty"], false));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["ByteProperty"], (byte) 85));
-    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["CharProperty"], 'a'));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DateProperty"], new DateTime (2005, 1, 1)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DateTimeProperty"], new DateTime (2005, 1, 1, 17, 0, 0)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DecimalProperty"], (decimal) 123456.789));
