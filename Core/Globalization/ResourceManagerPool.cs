@@ -9,8 +9,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-
-using Rubicon.Findit.Globalization.Globalization;
+using System.Threading;
 
 namespace Rubicon.Findit.Globalization.Classes
 {
@@ -29,11 +28,11 @@ public sealed class ResourceManagerPool
     while (type != null && resourceAttributes.Length == 0) 
     {
       type = type.BaseType;
+      if (type == null)
+        throw new ResourceException ("Type " + concreteType.FullName + " and its base classes do not define the attribute MultiLingualResourcesAttribute.");
+
       resourceAttributes = GetResourceAttributes (type);
     } 
-
-    if (type == null)
-      throw new ResourceException ("Type " + concreteType.FullName + " and its base classes do not define the attribute MultiLingualResourcesAttribute.");
 
     definingType = type;
     resourceName = resourceAttributes[0].ResourceName;
@@ -97,7 +96,7 @@ public sealed class ResourceManagerPool
     string resourceName;
     ResourceManager rm = GetOrCreateResourceManager (objectTypeToGetResourceFor, out definingType, out resourceName);
 
-    string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
+    string text = rm.GetString (name, GetUICulture ());
 
     if (text == null)
       throw new ResourceException (string.Format ("The resource '{0}' in '{1}' could not be found", name, resourceName));
@@ -134,9 +133,9 @@ public sealed class ResourceManagerPool
 
   public static ResourceSet GetResourceSet (ResourceManager resourceManager, bool throwExceptionIfNotFound)
   {
-    ResourceSet resourceSet = resourceManager.GetResourceSet (MultiLingualUtility.GetUICulture (), true, true);
+    ResourceSet resourceSet = resourceManager.GetResourceSet (GetUICulture (), true, true);
     if (throwExceptionIfNotFound && resourceSet == null)
-      throw new ResourceException (string.Format ("No resource set in culture {0} found for resource {1}.", MultiLingualUtility.GetUICulture().Name, resourceManager.BaseName));
+      throw new ResourceException (string.Format ("No resource set in culture {0} found for resource {1}.", GetUICulture().Name, resourceManager.BaseName));
     return resourceSet;
   }
 
@@ -193,6 +192,11 @@ public sealed class ResourceManagerPool
   }
   */
 
+  private static CultureInfo GetUICulture ()
+  {
+    return Thread.CurrentThread.CurrentUICulture;
+  }
+  
   // construction and disposal
 
   private ResourceManagerPool()
