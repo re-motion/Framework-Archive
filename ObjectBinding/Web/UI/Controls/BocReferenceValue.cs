@@ -32,8 +32,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
-
   private const int c_defaultDropDownListWidthInPoints = 120;
+
+  private const string c_whiteSpace = "&nbsp;";
+  private const string c_designModeWhiteSpace = " ";
 
   // types
 
@@ -532,6 +534,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _dropDownList.Height = Height;
       _dropDownListStyle.ApplyStyle (_dropDownList);
 
+    }
+
+    if (_icon.Visible)
+    {
+      int iconIndex = Controls.IndexOf (_icon);
+      int whiteSpaceIndex = iconIndex + 1;
+      if (IsDesignMode)
+        Controls.AddAt (whiteSpaceIndex, new LiteralControl (c_designModeWhiteSpace));
+      else
+        Controls.AddAt (whiteSpaceIndex, new LiteralControl (c_whiteSpace));
+      Style.Add ("white-space", "nowrap");
     }
 
       //  Common style not useful with icon
