@@ -690,6 +690,8 @@ public class DataContainer
     return (string) this[propertyName];
   }
 
+  // TODO: Provide typed accessor methods for new Na* types.
+
   /// <summary>
   /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.
   /// </summary>
