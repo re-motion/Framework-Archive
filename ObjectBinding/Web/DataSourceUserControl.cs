@@ -7,6 +7,7 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding.Web
 {
 
+[Obsolete]
 public interface IDataSourceContainer
 {
   IBusinessObjectDataSource DataSource { get; }

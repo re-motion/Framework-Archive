@@ -64,13 +64,13 @@ public abstract class WxeStep
   {
     get 
     {
-      WxeStep s = this;
-      while (s.ParentStep != null)
+      for (WxeStep step = ParentStep;
+           step != null;
+           step = step.ParentStep)
       {
-        WxeFunction f = s as WxeFunction;
-        if (f != null)
-          return f;
-        s = s.ParentStep;
+        WxeFunction function = step as WxeFunction;
+        if (function != null)
+          return function;
       }
       return null;
     }

@@ -2,14 +2,19 @@ using System;
 using System.Runtime.Serialization;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace Rubicon.Collections
 {
 
+/// <summary>
+/// Case-sensitive name/object dictionary.
+/// </summary>
 [Serializable]
 public class NameObjectCollection: NameObjectCollectionBase
 {
   public NameObjectCollection()
+    : base (null, null)
   {
   }
 

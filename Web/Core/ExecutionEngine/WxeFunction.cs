@@ -68,7 +68,7 @@ public abstract class WxeFunction: WxeStepList
 
   public WxeFunction (params object[] actualParameters)
   {
-    _variables = new NameObjectCollection();
+    _variables = new NameObjectCollection(); // TODO: use a case sensitive collection
     _returnUrl = null;
     _actualParameters = WxeParameterDeclaration.ParseVariableReferences (actualParameters);
   }
@@ -83,13 +83,16 @@ public abstract class WxeFunction: WxeStepList
     if (_returnUrl != null)
     {
       Variables.Clear();
-      context.HttpContext.Response.Redirect (_returnUrl);
+      context.HttpContext.Response.Redirect (_returnUrl, true);
     }
 
     if (ParentStep != null)
       WxeParameterDeclaration.CopyToCaller (ParameterDeclarations, _actualParameters, this.Variables, ParentStep.Variables);
     
     Variables.Clear();
+
+    if (ParentStep == null)
+      context.HttpContext.Response.End();
   }
 
   public string ReturnUrl
