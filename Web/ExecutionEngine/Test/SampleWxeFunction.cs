@@ -119,7 +119,8 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 }
 
 /// <summary>
-/// This interface exists so that WebForm1.aspx can access both SampleWxeFunction and SampleWxeSubFunction variables in a type safe way.
+/// This interface exists so that WebForm1.aspx can access both SampleWxeFunction and 
+/// SampleWxeSubFunction variables in a type safe way.
 /// Outside of demo scenarios, this would usually not make sense.
 /// </summary>
 public interface ISampleFunctionVariables

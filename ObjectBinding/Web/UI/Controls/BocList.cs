@@ -23,6 +23,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Details View
 // TODO: BocList: Sort-Buttons
 // TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
+// TODO: BocList: Add Flag: Show all properties. Insert after fixed columns
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatchTarget
 {

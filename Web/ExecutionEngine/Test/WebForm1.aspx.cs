@@ -129,6 +129,11 @@ namespace Rubicon.PageTransition
       }
 
       private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+
+      private void Step3 (WxeContext context)
+      {
+        Variables["Var1"] = "SubFunction Step3";
+      }
     }
 	}
 }

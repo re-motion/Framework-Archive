@@ -274,6 +274,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 ///   Note that using the methods of <see cref="BusinessObjectPropertyPath"/>, 
 ///   the original value of this property can be retreived or changed.
 /// </remarks>
+// TODO: BocSimpleColumnDefinition: PropertyPathPicker
 public class BocSimpleColumnDefinition: BocValueColumnDefinition
 {
   /// <summary>
@@ -419,6 +420,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 /// <remarks>
 ///   Note that values in these columnDefinitions can usually not be modified directly.
 /// </remarks>
+// TODO: BocSimpleColumnDefinition: PropertyPathPicker
 [ParseChildren (true, "PropertyPathBindings")]
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
