@@ -5,7 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-// TODO documentation:
 [Serializable]
 public class MandatoryMappingTypeNotFoundException : DomainObjectException
 {

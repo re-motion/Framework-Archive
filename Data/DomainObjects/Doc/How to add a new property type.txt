@@ -1,5 +1,5 @@
-Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
---------------------------------------------------------------------------------
+Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte in RPF:
+---------------------------------------------------------------------------------------
 
 1. Folgende Tests in Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TypeInfoTest erweitern:
     - MappingTypes
@@ -44,9 +44,20 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
 13. Neue Datentypen in Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetValue ergänzen.
     Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetDBValue ergänzt werden.
 
-14. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding ergänzen.
 
-15. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
+
+Neue Datentypen in RPA ergänzen:
+--------------------------------
+
+14. Evtl. neue Property im Namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes anlegen.
+
+15. Bei Anpassung von bestehenden Properties folgende Methoden erweitern: 
+    - FromInternalType
+    - ToInternalType
+    
+16. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create ergänzen.
+
+17. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
     - mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\Data\DomainObjects\ObjectBinding\Web\Test\bin" kopieren
     - SetupDB.sql erweitern und ausführen
     - CreateTestData.sql erweitern und ausführen
