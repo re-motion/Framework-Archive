@@ -109,34 +109,7 @@ public class DataManager
 
     if (BeginDelete (domainObject, allAffectedRelationEndPoints))
     {
-      /*
-      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      {
-        RelationEndPoint relationEndPoint = GetRelationEndPoint (endPointID);
-        if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
-        {
-          // TODO: opposite object can be null!
-          DomainObject oppositeDomainObject = GetRelatedObject (relationEndPoint);
-          RelationEndPoint oppositeEndPoint = GetRelationEndPoint (oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition);
-
-          _dataManager.WriteAssociatedPropertiesForRelationChange (
-              relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));
-
-          _dataManager.ChangeLinks (
-            relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));    
-        }
-        else
-        {
-          // TODO: visit every domain object of opposite collection        
-        }
-      }
-      */
+      _relationEndPointMap.Delete (domainObject);
 
       EndDelete (domainObject, allAffectedRelationEndPoints);
     }

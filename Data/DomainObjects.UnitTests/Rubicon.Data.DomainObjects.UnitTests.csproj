@@ -111,7 +111,7 @@
                 <File
                     RelPath = "AssemblyInfoTemplate.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "ClientTransactionBaseTest.cs"
@@ -308,6 +308,16 @@
                 />
                 <File
                     RelPath = "DataManagement\DataManagerTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\NullCollectionEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\NullObjectEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

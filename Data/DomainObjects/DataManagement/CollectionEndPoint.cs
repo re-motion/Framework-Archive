@@ -133,7 +133,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     get { return _oppositeDomainObjects; }
   }
 
-  internal ICollectionEndPointChangeDelegate ChangeDelegate
+  public ICollectionEndPointChangeDelegate ChangeDelegate
   {
     set { _changeDelegate = value; }
   }
@@ -192,6 +192,21 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformRemove (this, domainObject);
+  }
+
+  #endregion
+
+  #region ICloneable Members
+
+  public override object Clone ()
+  {
+    CollectionEndPoint newCollectionEndPoint = new CollectionEndPoint (
+        this.ClientTransaction, this.ID, (DomainObjectCollection) this.OppositeDomainObjects.Clone ());
+
+    newCollectionEndPoint._originalOppositeDomainObjects = 
+        (DomainObjectCollection) this._originalOppositeDomainObjects.Clone ();
+
+    return newCollectionEndPoint;
   }
 
   #endregion
