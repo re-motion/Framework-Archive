@@ -80,7 +80,10 @@ public class DataDropDownList: DropDownList
     {
       int val = value;
       if (val == _emptyValue)
-        val = -1;
+      {
+        SelectedIndex = -1;
+        return;
+      }
 
       for (int i = 0; i < this.Items.Count; ++i)
       {
