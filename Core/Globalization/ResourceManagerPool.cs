@@ -47,8 +47,6 @@ public sealed class ResourceDispatcher
     if (text == null)
       text = "###";
 
-    text = GlobalResources.ReplaceGlobalPlaceholders (text);
-
     return text;
   }
 
@@ -87,7 +85,7 @@ public sealed class ResourceDispatcher
             elementValues = new HybridDictionary ();
             elements[elementID] = elementValues;
           }
-          elementValues.Add (argument, GlobalResources.ReplaceGlobalPlaceholders ((string) resourceEntry.Value));
+          elementValues.Add (argument, resourceEntry.Value);
         }
       }
     }
