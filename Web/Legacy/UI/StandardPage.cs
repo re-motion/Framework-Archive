@@ -46,12 +46,12 @@ public class StandardPage : NavigablePage
 
   // methods and properties
 
-  protected virtual void CloseBrowserWindow ()
+  public virtual void CloseBrowserWindow ()
   {
     CloseBrowserWindow (false);
   }
 
-  protected virtual void CloseBrowserWindow (bool refreshParent)
+  public virtual void CloseBrowserWindow (bool refreshParent)
   {
     _saveViewStateToSession = false;
     CleanupSession ();
