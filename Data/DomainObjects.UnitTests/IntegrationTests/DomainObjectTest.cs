@@ -311,6 +311,13 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
     eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
+
+    //cleanup for commit
+    newCustomer2.Delete ();
+    newCeo1.Delete ();
+    newOrderItem1.Delete ();
+
+    ClientTransaction.Current.Commit ();
   }
 
   [Test]
@@ -353,8 +360,14 @@ public class DomainObjectTest : ClientTransactionBaseTest
     order1.Official = Official.GetObject (DomainObjectIDs.Official2);
     customer.Orders.Add (order1);
   
-    ClientTransactionMock.Commit ();
-    //assertion: no exception
+    try
+    {
+      ClientTransactionMock.Commit ();
+    }
+    catch (MandatoryRelationNotSetException e)
+    {
+      Assert.Fail ("MandatoryRelationNotSetException was thrown when none was expected.");
+    }
 
     customer.Delete ();
     ClientTransaction.Current.Commit ();
@@ -365,7 +378,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   public void AddInvalidPropertyValueTest ()
   {
     Employee employee = new Employee ();
-    //Why is this method public?
+
     PropertyDefinition propertyDefinition = new PropertyDefinition (
       "testproperty", "testproperty", "string", true, 10);
     PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;

@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -419,9 +420,13 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
   [Test]
   public void OldObjectAndNewObjectAreSameRelationInherited ()
   {
-    // TODO: Check events in this test, no events may be raised.
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer4);
+
     Ceo ceo = customer.Ceo;
+
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
+        new DomainObject[] { customer, ceo },
+        new DomainObjectCollection[0]);
 
     Assert.AreEqual (StateType.Unchanged, customer.State);
     Assert.AreEqual (StateType.Unchanged, ceo.State);
@@ -430,6 +435,10 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
 
     Assert.AreEqual (StateType.Unchanged, customer.State);
     Assert.AreEqual (StateType.Unchanged, ceo.State);
+
+    ChangeState[] expectedStates = new ChangeState[0];
+
+    eventReceiver.Check (expectedStates);
   }
 }
 }
