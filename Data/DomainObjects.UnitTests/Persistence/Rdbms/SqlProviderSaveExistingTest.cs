@@ -48,7 +48,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["EnumProperty"]);
     }
@@ -99,7 +99,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (true, classWithAllDataTypes["BooleanProperty"]);
       Assert.AreEqual (42, classWithAllDataTypes["ByteProperty"]);
@@ -145,7 +145,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2007, 1, 18)), classWithAllDataTypes["NaDateProperty"]);
@@ -182,7 +182,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (NaBoolean.Null, classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes["NaDateProperty"]);
@@ -232,8 +232,8 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
-      DataContainer orderItemContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderItem1);
+      DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
+      DataContainer orderItemContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.OrderItem1);
 
       Assert.AreEqual (10, orderContainer["OrderNumber"]);
       Assert.AreEqual ("Raumschiff", orderItemContainer["Product"]);
@@ -284,7 +284,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+      DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
       Assert.AreEqual (10, orderContainer["OrderNumber"]);
     }
   }
