@@ -40,6 +40,35 @@ public class EntryFieldBreak: Control
 public class EntryFormGrid: Control
 {
 
+  // static members and constants
+
+  private static string s_imagePath = Path.Combine (HttpContext.Current.Request.ApplicationPath, "images");
+
+  private static string ImagePath
+  {
+    get { return s_imagePath; }
+    set { s_imagePath = value; }
+  }
+
+  public static string GetImagePath (string imgFileName)
+  {
+    return Path.Combine (s_imagePath, imgFileName);
+  }
+
+  public static string GetWhitespaceImage (int width, int height)
+  {
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
+        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
+  }
+
+  public static string GetWhitespaceImage (string width, string height)
+  {
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
+        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
+  }
+
   // member fields
 
   private Unit _labelColumnWidth;
@@ -49,6 +78,11 @@ public class EntryFormGrid: Control
   private string _infoImage = "field-info.gif";
 
   // methods and properties
+
+  public string InfoImagePath 
+  {
+    get { return EntryFormGrid.GetImagePath (InfoImage); }
+  }
 
   public string InfoImage 
   {
@@ -180,30 +214,6 @@ public class EntryFormGrid: Control
 
 		writer.WriteLine ("</table>");
 	}
-
-  public static string GetImagePath (string imgFileName)
-  {
-    return Path.Combine (HttpContext.Current.Request.ApplicationPath, "images/" + imgFileName);
-  }
-
-  public string InfoImagePath 
-  {
-    get { return EntryFormGrid.GetImagePath (InfoImage); }
-  }
-	
-  public static string GetWhitespaceImage (int width, int height)
-  {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
-  }
-
-  public static string GetWhitespaceImage (string width, string height)
-  {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-        width, height, EntryFormGrid.GetImagePath ("ws.gif"));
-  }
 }
 
 public class EntryFormGridControlBuilder: ControlBuilder
