@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> 
