@@ -28,7 +28,7 @@ public class ControlHelper
   {
     foreach (Control control in parentControl.Controls)
     {
-      if (control.GetType() == type)
+      if (type.IsInstanceOfType (control))
         controlList.Add (control);
       
       GetControlsRecursive (control, type, controlList);
