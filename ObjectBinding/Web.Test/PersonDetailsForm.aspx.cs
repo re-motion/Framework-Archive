@@ -14,6 +14,8 @@ using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Reflection;
 
 namespace OBWTest
 {
@@ -31,11 +33,14 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue DeceasedField;
+  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue CVField;
+  protected Rubicon.ObjectBinding.Web.Controls.BocList JobList;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    string id = (string) Variables["ID"];
+    string id = (string) Variables["id"];
     Guid personID = Guid.Empty;
     if (! StringUtility.IsNullOrEmpty (id))
       personID = new Guid (id);
@@ -46,8 +51,13 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
       partner = person.Partner;
 
     ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+
+    if (! IsPostBack)
+    {
+      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      PartnerField.RefreshBusinessObjectList (objects);
+    }
 	}
 
 	override protected void OnInit(EventArgs e)

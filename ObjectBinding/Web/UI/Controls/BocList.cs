@@ -1295,7 +1295,7 @@ public class BocList:
   /// </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> whose data will be rendered. </param>
   /// <param name="rowIndex"> The row number in the current view. </param>
-  /// <param name="listIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
+  /// <param name="originalRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
   /// <param name="isOddRow"> Whether the data row is rendered in an odd or an even table row. </param>
   private void RenderDataRow (
       HtmlTextWriter writer, 
@@ -1833,7 +1833,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Compares the values of the <see cref="IBusinessObjectProperties"/> identified by <paramref ="propertyPath"/>
+  ///   Compares the values of the <see cref="IBusinessObjectProperties"/> identified by <paramref name="propertyPath"/>
   ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
   /// </summary>
   /// <param name="propertyPath">
