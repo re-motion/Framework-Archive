@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = "App.ico"
                 AssemblyKeyContainerName = ""
-                AssemblyName = "RpfGen"
+                AssemblyName = "DOGen"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -85,8 +85,13 @@
                 />
                 <Reference
                     Name = "system.xml"
-                    AssemblyName = "system.xml"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.xml.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.UnitTests"
+                    Project = "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
@@ -122,29 +127,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "mapping.xsd"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "OperationMode.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "queries.xsd"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "Rubicon.Data.DomainObjects.CodeGenerator.Console.build"
                     BuildAction = "None"
-                />
-                <File
-                    RelPath = "storageProviders.xsd"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "types.xsd"
-                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "Doc\readme.txt"

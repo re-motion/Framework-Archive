@@ -17,8 +17,7 @@ public class StubsBuilder : CodeBuilder
   // member fields
 
   private XmlDocument _mappingDocument;
-  private ConfigurationNamespaceManager _namespaceManager;
-  private string[] _uris;
+  private XmlNamespaceManager _namespaceManager;
   private Regex _typeRegex = new Regex (@"^(?<namespacename>\w+(\.\w+)*)\.(?<typename>\w+)(\+(?<membername>\w*))?, (?<assemblyname>(\w+\.)*\w+)$");
 
   // construction and disposing
@@ -27,20 +26,17 @@ public class StubsBuilder : CodeBuilder
   {
     _mappingDocument = CreateXmlDocuemt (mappingFile);
 
-    //TODO: improve this with XMLNamespaceManager
     PrefixNamespace[] prefixNamespaces = new PrefixNamespace[1] { PrefixNamespace.MappingNamespace } ;
 
-    _namespaceManager = new ConfigurationNamespaceManager (_mappingDocument, prefixNamespaces);
-    _uris = new string[1] { PrefixNamespace.MappingNamespace.Uri } ;
+    _namespaceManager = new XmlNamespaceManager (_mappingDocument.NameTable);
+    _namespaceManager.AddNamespace ("m", PrefixNamespace.MappingNamespace.Uri);
   }
 
   // methods and properties
 
   private string[] GetClassStrings ()
   {
-    XmlNodeList classTypeNodes = _mappingDocument.SelectNodes (
-        _namespaceManager.FormatXPath("{0}:mapping/{0}:classes/{0}:class/{0}:type", _uris), 
-        _namespaceManager);
+    XmlNodeList classTypeNodes = _mappingDocument.SelectNodes ("m:mapping/m:classes/m:class/m:type", _namespaceManager);
 
     ArrayList classTypes = new ArrayList ();
     foreach (XmlNode classTypeNode in classTypeNodes)
@@ -53,9 +49,7 @@ public class StubsBuilder : CodeBuilder
 
   private string[] GetEnumStrings ()
   {
-    XmlNodeList propertyTypeNodes = _mappingDocument.SelectNodes (
-        _namespaceManager.FormatXPath("{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:property/{0}:type", _uris), 
-        _namespaceManager);
+    XmlNodeList propertyTypeNodes = _mappingDocument.SelectNodes ("m:mapping/m:classes/m:class/m:properties/m:property/m:type", _namespaceManager);
 
     ArrayList enumTypes = new ArrayList ();
     foreach (XmlNode enumTypeNode in propertyTypeNodes)
@@ -70,8 +64,7 @@ public class StubsBuilder : CodeBuilder
   private string[] GetCollectionStrings ()
   {
     XmlNodeList collectionTypeNodes = _mappingDocument.SelectNodes (
-        _namespaceManager.FormatXPath("{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:relationProperty/{0}:collectionType", _uris), 
-        _namespaceManager);
+        "m:mapping/m:classes/m:class/m:properties/m:relationProperty/m:collectionType", _namespaceManager);
 
     ArrayList collectionTypes = new ArrayList ();
     foreach (XmlNode collectionTypeNode in collectionTypeNodes)

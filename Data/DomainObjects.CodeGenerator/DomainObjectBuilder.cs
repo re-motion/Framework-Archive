@@ -6,14 +6,13 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-//TODO: implement mapping from CLS Type to C# value types (string, int, double, ...)
 public class DomainObjectBuilder : CodeBuilder
 {
   // types
 
   // static members and constants
 
-  private static readonly string s_defaultBaseClass = "BindableDomainObject";
+  public static readonly string DefaultBaseClass = "BindableDomainObject";
 
   #region templates
 
@@ -58,13 +57,11 @@ public class DomainObjectBuilder : CodeBuilder
       : base (filename)
 	{
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
     _classDefinition = classDefinition;
 
-    if (baseClass != null)
-      _baseClass = baseClass;
-    else
-      _baseClass = s_defaultBaseClass;
+    _baseClass = baseClass;
 	}
 
   // methods and properties
@@ -117,16 +114,16 @@ public class DomainObjectBuilder : CodeBuilder
       if (propertyDefinition.PropertyType == typeof (ObjectID))
         continue;
 
-      WriteValueProperty (propertyDefinition.PropertyName, propertyDefinition.PropertyType.Name);
+      WriteValueProperty (propertyDefinition.PropertyName, TypeToCSharpString (propertyDefinition.PropertyType));
     }
 
     foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetMyRelationEndPointDefinitions ())
     {
       if (endPointDefinition.Cardinality == CardinalityType.One)
-        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
+        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, TypeToCSharpString (endPointDefinition.PropertyType));
 
       if (endPointDefinition.Cardinality == CardinalityType.Many)
-        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
+        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, TypeToCSharpString (endPointDefinition.PropertyType));
     }
 
     EndClass ();

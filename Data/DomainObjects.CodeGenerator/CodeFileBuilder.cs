@@ -16,20 +16,20 @@ public abstract class CodeBuilder : BaseBuilder
 
   #region CSharp 
 
-  private static Hashtable s_CtsTypeToCSharpType;
+  private static Hashtable s_TypeToCSharpType;
 
   static CodeBuilder ()
   {
-    s_CtsTypeToCSharpType = new Hashtable ();
-    s_CtsTypeToCSharpType.Add (typeof(bool), "bool");
-    s_CtsTypeToCSharpType.Add (typeof(byte), "byte");
-    s_CtsTypeToCSharpType.Add (typeof(decimal), "decimal");
-    s_CtsTypeToCSharpType.Add (typeof(double), "double");
-    s_CtsTypeToCSharpType.Add (typeof(float), "float");
-    s_CtsTypeToCSharpType.Add (typeof(int), "int");
-    s_CtsTypeToCSharpType.Add (typeof(long), "long");
-    s_CtsTypeToCSharpType.Add (typeof(short), "short");
-    s_CtsTypeToCSharpType.Add (typeof(string), "string");
+    s_TypeToCSharpType = new Hashtable ();
+    s_TypeToCSharpType.Add (typeof(bool), "bool");
+    s_TypeToCSharpType.Add (typeof(byte), "byte");
+    s_TypeToCSharpType.Add (typeof(decimal), "decimal");
+    s_TypeToCSharpType.Add (typeof(double), "double");
+    s_TypeToCSharpType.Add (typeof(float), "float");
+    s_TypeToCSharpType.Add (typeof(int), "int");
+    s_TypeToCSharpType.Add (typeof(long), "long");
+    s_TypeToCSharpType.Add (typeof(short), "short");
+    s_TypeToCSharpType.Add (typeof(string), "string");
   }
 
   #endregion
@@ -138,10 +138,14 @@ public abstract class CodeBuilder : BaseBuilder
   
   // methods and properties
 
-  //TODO: implement this method
-//  protected virtual string TypeToCSharpString (Type type)
-//  {
-//  }
+  protected virtual string TypeToCSharpString (Type type)
+  {
+    string cSharpTypeString = (string) s_TypeToCSharpType[type];
+    if (cSharpTypeString != null)
+      return cSharpTypeString;
+    else
+      return type.Name;
+  }
 
   protected override void CloseFile ()
   {

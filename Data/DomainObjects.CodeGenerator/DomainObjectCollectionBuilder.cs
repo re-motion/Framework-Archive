@@ -48,16 +48,14 @@ public class DomainObjectCollectionBuilder : CodeBuilder
     ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
     ArgumentUtility.CheckNotNull ("type", type);
     ArgumentUtility.CheckNotNull ("requiredTypename", requiredItemTypeName);
+    ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
     _type = type;
     _namespacename = type.Namespace;
     _classname = type.Name;
     _requiredItemTypeName = requiredItemTypeName;
 
-    if (baseClass != null)
-      _baseClass = baseClass;
-    else
-      _baseClass = DefaultBaseClass;
+    _baseClass = baseClass;
 	}
 
   // methods and properties
