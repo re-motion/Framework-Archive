@@ -56,6 +56,9 @@ namespace Rubicon.Web.UI.Controls
 
   auto:list1:menu:cut:text = "Ausschneiden"
 */
+/// <remarks>
+///   Work in Progress
+/// </remarks>
 public class DropDownMenu: WebControl
 {
 	public DropDownMenu()
