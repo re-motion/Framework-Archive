@@ -40,6 +40,7 @@
 					<collectionType>
 						Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests
 					</collectionType>
+					<!-- <sortExpression>OrderNumber desc</sortExpression> -->
 				</relationProperty>
 			</properties>
 		</class>
