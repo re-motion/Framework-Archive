@@ -6,13 +6,8 @@ var _bocList_TdEvenClassName = '';
 var _bocList_TdOddClassNameSelected = '';
 var _bocList_TdEvenClassNameSelected = '';
 
-//  A two-dimensional associative array containing the selected rows 
-//  grouped by the BocList instances.
-//  First Vector: BocList ID
-//  Second Vector: Selected rows (non-null values) for this BocList
+//  Associative array: <BocList ID>, <BocList_SelectedRows>
 var _bocList_selectedRows = new Array();
-//  An associative array containing the number of selected rows (non-null values) for each BocList.
-var _bocList_selectedRowsLength = new Array();
 
 //  A flag that indicates that the OnClick event for a selection checkBox has been raised
 //  prior to the row's OnClick event.
@@ -22,6 +17,10 @@ var _bocList_isCheckBoxClick = false;
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
 
+var _bocList_rowSelectionDisabled = 0;
+var _bocList_rowSelectionSingle = 1;
+var _bocList_rowSelectionMultiple = 2;
+
 var _bocList_listMenuInfos = new Array();
 
 var _contentMenu_itemClassName = 'contentMenuItem';
@@ -30,6 +29,19 @@ var _contentMenu_itemDisabledClassName = 'contentMenuItemDisabled';
 var _contentMenu_requiredSelectionAny = 0;
 var _contentMenu_requiredSelectionExactlyOne = 1;
 var _contentMenu_requiredSelectionOneOrMore = 2;
+
+function BocList_SelectedRows (selection)
+{
+  this.Selection = selection;
+  //  Associative Array: <CheckBox ID>, <BocList_RowBlock>
+  this.Length = 0;
+  this.Rows = new Array();
+  this.Clear = function()
+  {
+    this.Length = 0;
+    this.Rows = new Array();
+  }
+}
 
 function BocList_RowBlock (row, checkBox, isOdd)
 {
@@ -58,26 +70,31 @@ function BocList_InitializeGlobals (
 //  bocList: The BocList to which the row belongs.
 //  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
 //  count: The number of data rows in the BocList.
-function BocList_InitializeList (bocList, checkBoxPrefix, count)
+//  selection: The RowSelection enum value defining the selection mode (disabled/single/multiple)
+function BocList_InitializeList (bocList, checkBoxPrefix, count, selection)
 {
-  var selectedRows = new Array();
-  var selectedRowsLength = 0
-  for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
+  var selectedRows = new BocList_SelectedRows (selection);
+  if (selectedRows.Selection != _bocList_rowSelectionDisabled)
   {
-    var checkBoxID = checkBoxPrefix + i;
-    var checkBox = document.getElementById (checkBoxID);
-    if (checkBox == null)
-      continue;
-    var row =  checkBox.parentElement.parentElement;
-    if (checkBox.checked)      
+    for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
     {
-      var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
-      selectedRows[checkBox.id] = rowBlock;
-      selectedRowsLength++;
+      var checkBoxID = checkBoxPrefix + i;
+      var checkBox = document.getElementById (checkBoxID);
+      if (checkBox == null)
+        continue;
+      var row =  checkBox.parentElement.parentElement;
+      if (checkBox.checked)      
+      {
+        var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
+        selectedRows.Rows[checkBox.id] = rowBlock;
+        selectedRows.Length++;
+        
+        if (selectedRows.Selection == _bocList_rowSelectionSingle)
+          break;
+      }
     }
   }
   _bocList_selectedRows[bocList.id] = selectedRows;
-  _bocList_selectedRowsLength[bocList.id] = selectedRowsLength;
 }
 
 //  Event handler for a table row in the BocList. 
@@ -98,47 +115,41 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
   
   var currentRowBlock = new BocList_RowBlock (currentRow, checkBox, isOdd);
   var selectedRows = _bocList_selectedRows[bocList.id];
-  var selectedRowsLength = _bocList_selectedRowsLength[bocList.id];
   var className; //  The css-class
   var isCtrlKeyPress = window.event.ctrlKey;
-  
+    
+  if (selectedRows.Selection == _bocList_rowSelectionDisabled)
+    return;
+    
   if (isCtrlKeyPress || _bocList_isCheckBoxClick)
   {
-    if (selectedRows[checkBox.id] == null)
+    //  Is current row selected?
+    if (selectedRows.Rows[checkBox.id] != null)
     {
-      //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRowBlock);
+      //  Remove currentRow from list and unselect it
+      BocList_UnselectRow (bocList, currentRowBlock);
     }
     else
     {
-      //  Remove currentRow to list and unselect it
-      BocList_UnselectRow (bocList, currentRowBlock);
+      if (   selectedRows.Selection == _bocList_rowSelectionSingle
+          && selectedRows.Length > 0)
+      {
+        //  Unselect all rows and clear the list
+        BocList_UnselectAllRows (bocList);
+      }
+      //  Add currentRow to list and select it
+      BocList_SelectRow (bocList, currentRowBlock);
     }
   }
-  else // ! isCtrlKeyPress
+  else // cancel previous selection and select a new row
   {
-    if (selectedRowsLength > 1)
+    if (selectedRows.Length > 0)
     {
       //  Unselect all rows and clear the list
       BocList_UnselectAllRows (bocList);
-      //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRowBlock);
     }
-    else if (selectedRowsLength == 1)
-    {
-      //  Unselect row and clear the list
-      BocList_UnselectAllRows (bocList);
-      if (selectedRows[checkBox.id] == null)
-      {
-        //  Add current row to list and select it
-        BocList_SelectRow (bocList, currentRowBlock);
-      }
-    }
-    else
-    {
-      //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRowBlock);
-    }
+    //  Add currentRow to list and select it
+    BocList_SelectRow (bocList, currentRowBlock);
   }
   checkBox.focus();
   _bocList_isCheckBoxClick = false;
@@ -153,8 +164,9 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
 function BocList_SelectRow (bocList, rowBlock)
 {
   //  Add currentRow to list  
-  _bocList_selectedRows[bocList.id][rowBlock.CheckBox.id] = rowBlock;
-  _bocList_selectedRowsLength[bocList.id]++;
+  var selectedRows = _bocList_selectedRows[bocList.id];
+  selectedRows.Rows[rowBlock.CheckBox.id] = rowBlock;
+  selectedRows.Length++;
     
   // Select currentRow
   var className;
@@ -174,9 +186,9 @@ function BocList_SelectRow (bocList, rowBlock)
 function BocList_UnselectAllRows (bocList)
 {
   var selectedRows = _bocList_selectedRows[bocList.id];
-  for (var rowID in selectedRows)
+  for (var rowID in selectedRows.Rows)
   {
-    var rowBlock = selectedRows[rowID];
+    var rowBlock = selectedRows.Rows[rowID];
     if (rowBlock != null)
     {
       BocList_UnselectRow (bocList, rowBlock);
@@ -184,8 +196,7 @@ function BocList_UnselectAllRows (bocList)
   }
   
   //  Start over with a new array
-  selectedRows = new Array();
-  _bocList_selectedRowsLength[bocList.id] = 0;
+  selectedRows.Clear();
 }
 
 //  Unselects a row.
@@ -195,9 +206,10 @@ function BocList_UnselectAllRows (bocList)
 function BocList_UnselectRow (bocList, rowBlock)
 {
   //  Remove currentRow from list
-  _bocList_selectedRows[bocList.id][rowBlock.CheckBox.id] = null;
-  _bocList_selectedRowsLength[bocList.id]--;
-  
+  var selectedRows = _bocList_selectedRows[bocList.id];
+  selectedRows.Rows[rowBlock.CheckBox.id] = null;
+  selectedRows.Length--;
+    
   // Select currentRow
   var className;
   if (rowBlock.IsOdd)
@@ -217,9 +229,13 @@ function BocList_UnselectRow (bocList, rowBlock)
 //  count: The number of data rows in the BocList.
 function BocList_OnSelectAllCheckBoxClick (bocList, selectAllCheckBox, checkBoxPrefix, count)
 {
+  var selectedRows = _bocList_selectedRows[bocList.id];
+  if (selectedRows.Selection != _bocList_rowSelectionMultiple)
+    return;
+
   //  BocList_SelectRow will increment the length, therefor initialize it to zero.
   if (selectAllCheckBox.checked)      
-    _bocList_selectedRowsLength[bocList.id] = 0;
+    selectedRows.Length = 0;
 
   for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
   {
@@ -236,7 +252,7 @@ function BocList_OnSelectAllCheckBoxClick (bocList, selectAllCheckBox, checkBoxP
   }
   
   if (! selectAllCheckBox.checked)      
-    _bocList_selectedRowsLength[bocList.id] = 0;
+    selectedRows.Length = 0;
     
   BocList_UpdateListMenu (bocList);
 }
@@ -258,10 +274,10 @@ function BocList_OnCommandClick()
 //  Returns the number of rows selected for the specified BocList
 function BocList_GetSelectionCount (bocListID)
 {
-  var selectionCount = _bocList_selectedRowsLength[bocListID];
-  if (selectionCount == null)
+  var selectedRows = _bocList_selectedRows[bocListID];
+  if (selectedRows == null)
     return 0;
-  return selectionCount;
+  return selectedRows.Length;
 }
 
 function ContentMenu_MenuInfo (id, itemInfos)
