@@ -934,8 +934,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <summary> Enable/Disable the help providers. </summary>
   private bool _showHelpProviders;
 
-  /// <summary> State variable for the two part transformation process. </summary>
-  private bool _hasCompletedTransformationStepPreLoadViewState;
+  /// <summary> 
+  ///   State variable for the two part transformation process. 
+  ///   Hashtable&lt;string uniqueID, bool&gt;
+  /// </summary>
+  private Hashtable _hasCompletedTransformationStepPreLoadViewState = new Hashtable();
 
   /// <summary> State variable for automatic validators creation. </summary>
   private bool _hasValidatorsCreated;
@@ -1154,7 +1157,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     }
   }
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
     if (    ! ControlHelper.IsDesignMode (this, Context)
@@ -1163,17 +1166,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       throw new InvalidOperationException ("FormGrid '" + ID + "' did not receive a view state.");
     }
+
+    Page.PreRender += new EventHandler(Page_PreRender);
   }
 
-  /// <summary>
-  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
-  /// </summary>
-  /// <param name="e"> The <see cref="EventArgs"/>. </param>
-  protected override void OnPreRender (EventArgs e)
+  private void Page_PreRender (object sender, EventArgs e)
   {
-    EnsureTransformIntoFormGridPreLoadViewState();
-    TransformIntoFormGridPostValidation();
-
+    EnsureFormGridListPopulated();
     string key = typeof (FormGridManager).FullName + "_Style";
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
@@ -1181,8 +1180,17 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
           this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
+  }
 
-    base.OnPreRender (e);
+  /// <summary>
+  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
+  /// </summary>
+  private void Table_PreRender (object sender, EventArgs e)
+  {
+    string formGridID = ((HtmlTable) sender).UniqueID;
+    FormGrid formGrid = (FormGrid) _formGrids[formGridID];
+    EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+    TransformIntoFormGridPostValidation (formGrid);
   }
 
   /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
@@ -1227,6 +1235,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
 
     //  Rebuild the HTML tables used as form grids
+    EnsureFormGridListPopulated();
     EnsureTransformIntoFormGridPreLoadViewState();
 
 
@@ -1575,27 +1584,27 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
   protected virtual void EnsureTransformIntoFormGridPreLoadViewState()
   {
-    if (_hasCompletedTransformationStepPreLoadViewState)
+    foreach (FormGrid formGrid in _formGrids.Values)
+      EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+  }
+  
+  protected virtual void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
+  {
+    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+
+    object hasCompleted = _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID];
+    if (hasCompleted != null && (bool) hasCompleted)
       return;
 
-    EnsureFormGridListPopulated();
+    formGrid.Table.EnableViewState = false;
 
-    foreach (FormGrid formGrid in _formGrids.Values)
-    {
-      formGrid.Table.EnableViewState = false;
+    formGrid.BuildIDCollection();
+    LoadNewFormGridRows (formGrid);
+    ApplyExternalHiddenSettings (formGrid);
+    ComposeFormGridContents (formGrid);
+    FormatFormGrid (formGrid);
 
-      formGrid.BuildIDCollection();
-
-      LoadNewFormGridRows (formGrid);
-
-      ApplyExternalHiddenSettings (formGrid);
-
-      ComposeFormGridContents (formGrid);
-
-      FormatFormGrid (formGrid);
-    }
-
-    _hasCompletedTransformationStepPreLoadViewState = true;
+    _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID] = true;
   }
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
@@ -1603,33 +1612,37 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   protected virtual void TransformIntoFormGridPostValidation()
   {
     foreach (FormGrid formGrid in _formGrids.Values)
+      TransformIntoFormGridPostValidation (formGrid);
+  }
+
+  protected virtual void TransformIntoFormGridPostValidation (FormGrid formGrid)
+  {
+    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+    foreach (FormGridRow formGridRow in formGrid.Rows)
     {
-      foreach (FormGridRow formGridRow in formGrid.Rows)
+      if (formGridRow.Type == FormGridRowType.DataRow)
       {
-        if (formGridRow.Type == FormGridRowType.DataRow)
+        CreateRequiredMarker (formGridRow);
+        CreateHelpProvider(formGridRow);
+
+        if (! _hasValidatorsCreated)
         {
-          CreateRequiredMarker (formGridRow);
-          CreateHelpProvider(formGridRow);
-
-          if (! _hasValidatorsCreated)
-          {
-            CreateValidators (formGridRow);
-            OverrideValidators (formGridRow);
-          }
-
-          LoadMarkersIntoCell (formGridRow);
-          if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
-              ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
-          {
-            LoadValidationMessagesIntoCell (formGridRow);
-          }
+          CreateValidators (formGridRow);
+          OverrideValidators (formGridRow);
         }
 
-        if (!formGridRow.CheckVisibility())
-          formGridRow.Hide();
-
-        AddShowEmptyCellsHack (formGridRow);
+        LoadMarkersIntoCell (formGridRow);
+        if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
+            ||  ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
+        {
+          LoadValidationMessagesIntoCell (formGridRow);
+        }
       }
+
+      if (!formGridRow.CheckVisibility())
+        formGridRow.Hide();
+
+      AddShowEmptyCellsHack (formGridRow);
     }
   }
 
@@ -2675,6 +2688,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       FormGridRow[] rows = CreateFormGridRows (table, _labelsColumn, _controlsColumn);
       _formGrids[table.UniqueID] = new FormGrid (table, rows, _labelsColumn, _controlsColumn);
+      table.PreRender += new EventHandler (Table_PreRender);
+
     }
   }
 
