@@ -1,5 +1,7 @@
 using System;
+using System.Runtime.Serialization;
 
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -8,7 +10,7 @@ namespace Rubicon.Data.DomainObjects
 /// Uniquely identifies a domain object.
 /// </summary>
 [Serializable]
-public class ObjectID
+public class ObjectID : ISerializable
 {
   // types
 
@@ -72,7 +74,7 @@ public class ObjectID
 
     string[] parts = objectIDString.Split (c_delimiter);
 
-    if (parts.Length != 4)
+    if (parts.Length != 3)
     {
       throw new FormatException (string.Format (
           "Serialized ObjectID '{0}' is not correctly formatted.",
@@ -84,9 +86,9 @@ public class ObjectID
       parts[i] = Unescape (parts[i]);
     }
 
-    object value = GetValue (parts[3], parts[2]);
+    object value = GetValue (parts[2], parts[1]);
 
-    return new ObjectID (parts[0], parts[1], value);
+    return new ObjectID (parts[0], value);
   }
 
   /// <summary>
@@ -132,39 +134,109 @@ public class ObjectID
 
   // member fields
 
-  private string _storageProviderID;
+  private ClassDefinition _classDefinition;
   private object _value;
-  private string _classID;
 
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified storage provider ID,
-  /// class ID and ID value.
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
-  /// <param name="storageProviderID">
-  ///   The ID of the <see cref="Persistence.StorageProvider"/> which stores the object.
-  /// </param>
   /// <param name="classID">The ID of the class of the object.</param>
   /// <param name="value">The ID value used to identify the object in the storage provider.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>storageProviderID</i>, <i>classID</i> or <i>value</i> is a null reference.
+  ///   <i>classID</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <i>storageProviderID</i> or <i>classID</i> is an empty string.
+  ///   <i>classID</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
   /// </exception>
   /// <exception cref="System.ArgumentException">
   ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
   /// </exception>
-  public ObjectID (string storageProviderID, string classID, object value)
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classID</i> could not be found in the mapping configuration.
+  public ObjectID (string classID, object value)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+    Initialize (classID, value);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+  /// </summary>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classType</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classType</i> could not be found in the mapping configuration.
+  public ObjectID (Type classType, object value)
+  {
+    ArgumentUtility.CheckNotNull ("classType", classType);
+
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classType);
+    Initialize (classDefinition.ID, value);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+  /// </summary>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classDefinition</i> could not be found in the mapping configuration.
+  public ObjectID (ClassDefinition classDefinition, object value)
+  {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+    // TODO: check if classType and classID refer to same object
+    MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinition.ClassType);
+
+    Initialize (classDefinition.ID, value);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ObjectID"/> class from the specified instances of the <see cref="System.Runtime.Serialization.SerializationInfo"/> and <see cref="System.Runtime.Serialization.StreamingContext"/> classes.
+  /// </summary>
+  /// <param name="info">An instance of the <see cref="System.Runtime.Serialization.SerializationInfo"/> class containing the information required to deserialize the new <see cref="ObjectID"/> instance.</param>
+  /// <param name="context">An instance of the <see cref="System.Runtime.Serialization.StreamingContext"/> class containing the source of the serialized stream associated with the new <see cref="ObjectID"/> instance.</param>
+  protected ObjectID (SerializationInfo info, StreamingContext context)
+  {
+    string classID = info.GetString ("ClassID");
+    Type valueType = (Type) info.GetValue ("ValueType", typeof (Type));
+    object value = info.GetValue ("Value", valueType);
+
+    Initialize (classID, value);
+  }
+
+  private void Initialize (string classID, object value)
+  {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
     ArgumentUtility.CheckNotNull ("value", value);
     CheckValue ("value", value);
 
-    _classID = classID;
-    _storageProviderID = storageProviderID;
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+
+    _classDefinition = classDefinition;
     _value = value;
   }
 
@@ -175,7 +247,7 @@ public class ObjectID
   /// </summary>
   public string StorageProviderID
   {
-    get { return _storageProviderID; }
+    get { return _classDefinition.StorageProviderID; }
   }
 
   /// <summary>
@@ -191,7 +263,7 @@ public class ObjectID
   /// </summary>
   public string ClassID
   {
-    get { return _classID; }
+    get { return _classDefinition.ID; }
   }
 
   /// <summary>
@@ -200,11 +272,10 @@ public class ObjectID
   /// <returns>A <see cref="String"/> that represents the current <see cref="ObjectID"/>.</returns>
   public override string ToString ()
   {
-    Type valueType = _value.GetType();
+    Type valueType = Value.GetType();
 
-    return Escape (_storageProviderID) + c_delimiter + 
-        Escape (_classID) + c_delimiter + 
-        Escape (_value.ToString ()) + c_delimiter + 
+    return Escape (ClassID) + c_delimiter + 
+        Escape (Value.ToString ()) + c_delimiter + 
         Escape (valueType.FullName);
   }
 
@@ -214,7 +285,7 @@ public class ObjectID
   /// <returns>A 32-bit signed integer hash code.</returns>
   public override int GetHashCode()
   {
-    return _storageProviderID.GetHashCode () ^ _classID.GetHashCode () ^ _value.GetHashCode ();
+    return ClassID.GetHashCode () ^ Value.GetHashCode ();
   }
 
   /// <summary>
@@ -228,9 +299,8 @@ public class ObjectID
     if (this.GetType () != obj.GetType ()) return false;
     
     ObjectID other = (ObjectID) obj;
-    if (!object.Equals (this._storageProviderID, other._storageProviderID)) return false;
-    if (!object.Equals (this._classID, other._classID)) return false;
-    if (!object.Equals (this._value, other._value)) return false;
+    if (!object.Equals (this.ClassID, other.ClassID)) return false;
+    if (!object.Equals (this.Value, other.Value)) return false;
 
     return true;
   }
@@ -251,6 +321,16 @@ public class ObjectID
       throw new ArgumentException (string.Format (
           "Value cannot contain '{0}'.", c_escapedDelimiterPlaceholder), "value");
     }
+
+    if (valueType == typeof (string) && string.Empty.Equals (value))
+    {
+      throw new ArgumentEmptyException (argumentName);
+    }
+
+    if (valueType == typeof (Guid) && Guid.Empty.Equals (value))
+    {
+      throw new ArgumentEmptyException (argumentName);
+    }
   }
 
   private string Escape (string value)
@@ -263,5 +343,21 @@ public class ObjectID
 
     return value;
   }
+
+  #region ISerializable Members
+
+  /// <summary>
+  /// Gets serialization information with all of the data needed to reinstantiate this <b>ObjectID</b>.
+  /// </summary>
+  /// <param name="info">The object to be populated with serialization information.</param>
+  /// <param name="context">The destination context of the serialization.</param>
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("ClassID", ClassID);
+    info.AddValue ("Value", Value);
+    info.AddValue ("ValueType", Value.GetType ());
+  }
+
+  #endregion
 }
 }
