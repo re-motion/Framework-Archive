@@ -148,6 +148,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Rubicon.Data.DomainObjects.CodeGenerator.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "SqlBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
