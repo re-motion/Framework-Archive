@@ -91,16 +91,11 @@ public class WxeStepList: WxeStep
   private void InitialzeSteps ()
   {
     Type type = this.GetType();
-    MemberInfo[] members = type.FindMembers (
-        MemberTypes.Field | MemberTypes.Method, 
-        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly, 
-        new MemberFilter (PrefixMemberFilter), 
-        null);
-
-    int[] numbers = new int[members.Length];
-    for (int i = 0; i < members.Length; ++i)
-      numbers[i] = GetStepNumber (members[i].Name);
-    Array.Sort (numbers, members);
+    MemberInfo[] members = NumberedMemberFinder.FindMembers (
+        type, 
+        "Step", 
+        MemberTypes.Field | MemberTypes.Method | MemberTypes.NestedType, 
+        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
     foreach (MemberInfo member in members)
     {
@@ -123,26 +118,13 @@ public class WxeStepList: WxeStep
           Add (method);
         }
       }
+      else if (member is Type)
+      {
+        Type subtype = member as Type;
+        if (typeof (WxeStep).IsAssignableFrom (subtype))
+          Add ((WxeStep) Activator.CreateInstance (subtype));
+      }
     }
-  }
-
-  private bool PrefixMemberFilter (MemberInfo member, object param)
-  {
-    return GetStepNumber (member.Name) != -1;
-  }
-
-  private int GetStepNumber (string memberName)
-  {
-    const string prefix = "Step";
-    if (! memberName.StartsWith (prefix))
-      return -1;
-    string numStr = memberName.Substring (prefix.Length);
-    if (numStr.Length == 0)
-      return -1;
-    double num;
-    if (! double.TryParse (numStr, System.Globalization.NumberStyles.Integer, null, out num))
-      return -1;
-    return (int) num;
   }
 }
 

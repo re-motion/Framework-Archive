@@ -29,20 +29,6 @@ public class WxeExceptionAttribute: Attribute
   }
 }
 
-public class WxeCatchBlock: WxeStepList
-{
-  public virtual Type ExceptionType 
-  { 
-    get 
-    { 
-      WxeExceptionAttribute exceptionAttribute = WxeExceptionAttribute.GetAttribute (this.GetType());
-      if (exceptionAttribute == null)
-        return typeof (Exception); 
-      else
-        return exceptionAttribute.ExceptionType;
-    }
-  }
-}
 
 /// <summary>
 ///   Try-Catch block.
@@ -68,9 +54,27 @@ public class WxeTryCatch: WxeStep
 
   public WxeTryCatch()
   {
-    _catchBlocks = new ArrayList();
-    _trySteps = new WxeStepList();
+    InitializeSteps();
+  }
+
+  private void InitializeSteps ()
+  {
+    Type type = this.GetType();
+    Type tryBlockType = type.GetNestedType ("Try", BindingFlags.Public | BindingFlags.NonPublic);
+    if (tryBlockType == null)
+      throw new ApplicationException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
+    _trySteps = (WxeStepList) Activator.CreateInstance (tryBlockType);
     _trySteps.ParentStep = this;
+
+    MemberInfo[] catchBlockTypes = NumberedMemberFinder.FindMembers (
+        type, 
+        "Catch",
+        MemberTypes.NestedType,
+        BindingFlags.Public | BindingFlags.NonPublic);
+
+    _catchBlocks = new ArrayList();
+    foreach (Type catchBlockType in catchBlockTypes)
+      Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType));
   }
 
   public override void Execute (WxeContext context)
@@ -159,6 +163,25 @@ public class WxeTryCatch: WxeStep
   public Exception CurrentException 
   {
     get { return _currentException; }
+  }
+}
+
+public class WxeTryBlock: WxeStepList
+{
+}
+
+public class WxeCatchBlock: WxeStepList
+{
+  public virtual Type ExceptionType 
+  { 
+    get 
+    { 
+      WxeExceptionAttribute exceptionAttribute = WxeExceptionAttribute.GetAttribute (this.GetType());
+      if (exceptionAttribute == null)
+        return typeof (Exception); 
+      else
+        return exceptionAttribute.ExceptionType;
+    }
   }
 }
 
