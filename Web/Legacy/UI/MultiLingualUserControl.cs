@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 
 using Rubicon.Findit.Globalization.Classes;
+
 namespace Rubicon.Findit.Globalization.UI
 {
 public class MultiLingualUserControl : UserControl
