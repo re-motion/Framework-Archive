@@ -293,21 +293,27 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
+    Unit width = Width;
+    Width = Unit.Empty;
+    Unit height = Height;
+    Height = Unit.Empty;
     base.AddAttributesToRender (writer);
+    Width = width;
+    Height = height;
   
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
     //  and remove AddAttributesToRender.
     if (_datePickerButton.Visible && _hasClientScript)
     {
-      Unit width = _datePickerPopupWidth;
-      if (width.IsEmpty)
-        width = Unit.Point (c_defaultDatePickerLengthInPoints);
-      writer.AddAttribute("dp_width", width.ToString());
+      Unit popUpWidth = _datePickerPopupWidth;
+      if (popUpWidth.IsEmpty)
+        popUpWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
+      writer.AddAttribute("dp_width", popUpWidth.ToString());
 
-      Unit height = _datePickerPopupHeight;
-      if (height.IsEmpty)
-        height = Unit.Point (c_defaultDatePickerLengthInPoints);
-      writer.AddAttribute("dp_height", height.ToString());
+      Unit popUpHeight = _datePickerPopupHeight;
+      if (popUpHeight.IsEmpty)
+        popUpHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
+      writer.AddAttribute("dp_height", popUpHeight.ToString());
     }
   }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -107,11 +108,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
 
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
-  {
-    //  The data control's changed event is sufficient.
-  }
-
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -122,6 +118,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       _isDirty = true;
     }
     return isDataChanged;
+  }
+
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
   }
 
   private void TextBox_TextChanged (object sender, EventArgs e)
@@ -232,14 +233,21 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _label.Visible = isReadOnly;
     if (isReadOnly)
     {
-      _label.Text = _text;
-
-      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      string text = HttpUtility.HtmlEncode (_text);
+      if (StringUtility.IsNullOrEmpty (text))
       {
-        _label.Text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        if (IsDesignMode)
+        {
+          text = c_designModeEmptyLabelContents;
+          //  Too long, can't resize in designer to less than the content's width
+          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        }
+        else
+        {
+          text = "&nbsp;";
+        }
       }
+      _label.Text = text;
 
       _label.Width = Width;
       _label.Height = Height;
