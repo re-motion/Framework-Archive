@@ -90,6 +90,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public DomainObject GetRelatedObject (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    CheckCardinality (endPointID, CardinalityType.One, "GetRelatedObject", "endPointID");
 
     ObjectEndPoint objectEndPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
     if (objectEndPoint == null)
@@ -104,6 +105,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public DomainObject GetOriginalRelatedObject (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    CheckCardinality (endPointID, CardinalityType.One, "GetOriginalRelatedObject", "endPointID");
 
     ObjectEndPoint objectEndPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
     if (objectEndPoint == null)
@@ -118,6 +120,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public DomainObjectCollection GetRelatedObjects (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    CheckCardinality (endPointID, CardinalityType.Many, "GetRelatedObjects", "endPointID");
 
     CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
     if (collectionEndPoint == null)  
@@ -129,6 +132,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    CheckCardinality (endPointID, CardinalityType.Many, "GetOriginalRelatedObjects", "endPointID");
 
     CollectionEndPoint collectionEndPoint = (CollectionEndPoint) _relationEndPoints[endPointID];
     if (collectionEndPoint == null)
@@ -143,6 +147,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public void SetRelatedObject (RelationEndPointID endPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    CheckCardinality (endPointID, CardinalityType.One, "SetRelatedObject", "endPointID");
     CheckDeleted (newRelatedObject);
  
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
@@ -391,6 +396,27 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
 
     _relationEndPoints.Add (endPoint);
+  }
+
+  private void CheckCardinality (
+      RelationEndPointID endPointID, 
+      CardinalityType expectedCardinality,
+      string methodName,
+      string argumentName)
+  {
+    if (endPointID.Definition.Cardinality != expectedCardinality)
+    {
+      throw CreateArgumentException (
+          argumentName, 
+          "{0} can only be called for end points with a cardinality of '{1}'.", 
+          methodName,
+          expectedCardinality);
+    }
+  }
+
+  private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), argumentName);
   }
 
   #region ICollectionEndPointChangeDelegate Members
