@@ -1,3 +1,9 @@
+table.tabbedMultiView
+{
+  width:100%;
+  height:100%;
+}
+
 /* Applied to the tabbed multi view's tab strip.*/
 div.tabbedMultiViewTabStrip
 {
@@ -9,8 +15,15 @@ div.tabbedMultiViewActiveView
 	border-left: solid 1px #2254b1;	
 	border-right: solid 1px #2254b1;	
 	border-bottom: solid 1px #2254b1;	
-	height: 300pt;
 	padding: 2pt;
-	overflow: auto;
 }
 
+td.tabbedMultiViewTopControls
+{
+  padding-bottom: 10pt;
+}
+
+td.tabbedMultiViewBottomControls
+{
+  padding-top: 10pt;
+}

@@ -15,8 +15,6 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:TabbedMultiView runat=server></{0}:TabbedMultiView>")]
-[ParseChildren (true, "Controls")]
-[PersistChildren (false)]
 public class TabbedMultiView: WebControl, IControl
 {
   // constants
@@ -119,28 +117,41 @@ public class TabbedMultiView: WebControl, IControl
   // fields
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
+  private PlaceHolder _topControl;
+  private PlaceHolder _bottomControl;
+
   private Style _tabStripStyle;
   private Style _activeViewStyle;
+  private Style _topControlsStyle;
+  private Style _bottomControlsStyle;
 
   // construction and destruction
   public TabbedMultiView()
   {
     _tabStrip = new WebTabStrip (this);
     _multiViewInternal = new TabbedMultiView.MultiView ();
+    _topControl = new PlaceHolder();
+    _bottomControl = new PlaceHolder();
     _tabStripStyle = new Style();
     _activeViewStyle = new Style();
+    _topControlsStyle = new Style();
+    _bottomControlsStyle = new Style();
   }
 
   // methods and properties
   protected override void CreateChildControls()
   {
     _tabStrip.ID = ID + "_TabStrip";
-    _tabStrip.Style["width"] = "100%";
     Controls.Add (_tabStrip);
 
     _multiViewInternal.ID = ID + "_MultiView"; 
-    _multiViewInternal.Width = Unit.Percentage (100);
     Controls.Add (_multiViewInternal);
+
+    _topControl.ID = ID + "_TopControl";
+    Controls.Add (_topControl);
+
+    _bottomControl.ID = ID + "_BottomControl";
+    Controls.Add (_bottomControl);
   }
   
   private void OnTabViewInserted (TabView view)
@@ -171,7 +182,7 @@ public class TabbedMultiView: WebControl, IControl
 
   protected override HtmlTextWriterTag TagKey
   {
-    get { return HtmlTextWriterTag.Div; }
+    get { return HtmlTextWriterTag.Table; }
   }
 
   protected override void OnPreRender(EventArgs e)
@@ -188,34 +199,106 @@ public class TabbedMultiView: WebControl, IControl
     base.OnPreRender (e);
   }
 
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (ControlHelper.IsDesignMode (this, Context))
+      writer.AddStyleAttribute ("height", "50pt");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+  }
+
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EnsureChildControls();
-  
-    _tabStripStyle.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (_tabStripStyle.CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabStrip);
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    _tabStrip.RenderControl (writer);
-    writer.RenderEndTag();
+    
+    RenderTopControls (writer);
+    RenderTabStrip (writer);
+    RenderActiveView (writer);
+    RenderBottomControls (writer);
+  }
 
+  protected virtual void RenderTabStrip (HtmlTextWriter writer)
+  {
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
+    
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    _tabStripStyle.AddAttributesToRender (writer);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+
+    _tabStrip.Style["width"] = "100%";
+    if (StringUtility.IsNullOrEmpty (_tabStripStyle.CssClass))
+      _tabStrip.CssClass = CssClassTabStrip;
+    _tabStrip.RenderControl (writer);
+
+    writer.RenderEndTag(); // end td
+    writer.RenderEndTag(); // end tr
+  }
+
+  protected virtual void RenderActiveView (HtmlTextWriter writer)
+  {
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
+    
     if (ControlHelper.IsDesignMode (this, Context))
-    {
       writer.AddStyleAttribute ("border", "solid 1px black");
-      writer.AddStyleAttribute ("height", "50pt");
-    }
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _multiViewInternal.Width.ToString());
+    writer.AddStyleAttribute ("vertical-align", "top");
+    _tabStripStyle.AddAttributesToRender (writer);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+    
     _activeViewStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+    writer.AddStyleAttribute ("overflow", "auto");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
+    
     Control view = _multiViewInternal.GetActiveView();
     if (view != null)
     {
       foreach (Control control in view.Controls)
         control.RenderControl (writer);
     }
-    writer.RenderEndTag();
+    writer.RenderEndTag(); // end div
+    writer.RenderEndTag(); // end td
+    writer.RenderEndTag(); // end tr
+  }
+
+  protected virtual void RenderTopControls (HtmlTextWriter writer)
+  {
+    if (_topControl.Controls.Count == 0)
+      return;
+    
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    _topControlsStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_topControlsStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopControls);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+
+    _topControl.RenderControl (writer);
+
+    writer.RenderEndTag(); // end td
+    writer.RenderEndTag(); // end tr
+  }
+
+  protected virtual void RenderBottomControls (HtmlTextWriter writer)
+  {
+    if (_bottomControl.Controls.Count == 0)
+      return;
+    
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    _bottomControlsStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_bottomControlsStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBottomControls);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+
+    _bottomControl.RenderControl (writer);
+
+    writer.RenderEndTag(); // end td
+    writer.RenderEndTag(); // end tr
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -323,6 +406,44 @@ public class TabbedMultiView: WebControl, IControl
     get { return _tabStrip.SeparatorStyle; }
   }
 
+  [Category ("Style")]
+  [Description ("The style that you want to the top section.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TopControlsStyle
+  {
+    get { return _topControlsStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the bottom section.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style BottomControlsStyle
+  {
+    get { return _bottomControlsStyle; }
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Browsable (false)]
+  public ControlCollection TopControls
+  {
+    get { return _topControl.Controls; }
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Browsable (false)]
+  public ControlCollection BottomControls
+  {
+    get { return _bottomControl.Controls; }
+  }
+
+
+
 //  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
 //  /// <value> 
 //  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
@@ -347,7 +468,7 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewTabStrip</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="TabStripStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassTabStrip
   {
@@ -357,11 +478,31 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiActiveView"/>'s active view. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewActiveView</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="ActiveViewStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassActiveView
   {
     get { return "tabbedMultiViewActiveView"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the top section. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabbedMultiViewTopControls</c>. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="TopControlsStyle"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassTopControls
+  {
+    get { return "tabbedMultiViewTopControls"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the bottom section. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabbedMultiViewBottomControls</c>. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="BottomControlsStyle"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBottomControls
+  {
+    get { return "tabbedMultiViewBottomControls"; }
   }
   #endregion
 }
