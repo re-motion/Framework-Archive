@@ -15,7 +15,7 @@ namespace OBWTest
 /// <summary>
 /// Summary description for Start.
 /// </summary>
-public class StartPage : System.Web.UI.Page
+public class StartForm : System.Web.UI.Page
 {
 	private void Page_Load(object sender, System.EventArgs e)
 	{
