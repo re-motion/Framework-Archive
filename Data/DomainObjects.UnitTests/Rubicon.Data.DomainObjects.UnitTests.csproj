@@ -445,6 +445,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DomainObjects\Integrationstests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjects\NewDomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
