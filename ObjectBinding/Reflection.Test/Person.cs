@@ -48,6 +48,8 @@ public class Person: ReflectionBusinessObject
 
   private Guid _partnerID; 
 
+  private Guid[] _childIDs;
+
   [XmlAttribute]
   public string FirstName
   {
@@ -97,7 +99,7 @@ public class Person: ReflectionBusinessObject
     set { _marriageStatus = value; }
   }
 
-  [XmlAttribute]
+  [XmlElement]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public Guid PartnerID
   {
@@ -110,6 +112,43 @@ public class Person: ReflectionBusinessObject
   {
     get { return Person.GetObject (_partnerID); }
     set { _partnerID = ReflectionBusinessObjectStorage.GetID (value); }
+  }
+
+  [XmlElement]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public Guid[] ChildIDs
+  {
+    get { return _childIDs; }
+    set { _childIDs = value; }
+  }
+
+  [XmlIgnore]
+  public Person[] Children
+  {
+    get 
+    {
+      if (_childIDs == null)
+        return new Person[0];
+
+      Person[] children = new Person[_childIDs.Length];
+      for (int i = 0; i < _childIDs.Length; i++)
+        children[i] = Person.GetObject (_childIDs[i]);
+        
+      return children; 
+    }
+    set
+    {
+      if  (value != null)
+      {
+        _childIDs = new Guid[value.Length];
+        for (int i = 0; i < value.Length; i++)
+          _childIDs[i] = ReflectionBusinessObjectStorage.GetID (value[i]); 
+      }
+      else
+      {
+        _childIDs = new Guid[0];
+      }
+    }
   }
 
   [XmlAttribute (DataType="date")]
