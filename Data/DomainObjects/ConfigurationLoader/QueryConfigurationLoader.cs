@@ -81,8 +81,11 @@ public class QueryConfigurationLoader : BaseLoader
     string statement = queryNode.SelectSingleNode (FormatXPath (
         "{0}:statement"), NamespaceManager).InnerText;
 
-    Type collectionType = LoaderUtility.GetTypeFromOptionalNode (queryNode, 
+    Type collectionType = LoaderUtility.GetOptionalType (queryNode, 
         FormatXPath ("{0}:collectionType"), NamespaceManager);
+
+    if (queryType == QueryType.Value && collectionType != null)
+      throw CreateQueryConfigurationException ("Value query '{0}' must not specify a collectionType.", queryID);
 
     if (queryType == QueryType.Collection && collectionType == null)
       collectionType = typeof (DomainObjectCollection);
