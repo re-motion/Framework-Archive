@@ -479,9 +479,11 @@ public class EntryField: Control
     {
       // at least one Validator is invalid
       // => display "invalid field indicator" which has higher priority than the "required field indicator"
-      writer.WriteLine ("<img src=\"{0}\" alt=\"" + validatorMessages + "\""
-        + "width=\"12\" height=\"20\" border=\"0\"/>", 
-        EntryFormGrid.GetImagePath ("field-error.gif"));
+
+      writer.WriteLine (UIUtility.GetIconImage (
+          Page,
+          validatorMessages, 
+          EntryFormGrid.GetImagePath ("field-error.gif")));
     }
     else
     {
@@ -489,10 +491,10 @@ public class EntryField: Control
       // => display the "required field indicator" if requested
       if (this.IsRequired)
       {
-        writer.WriteLine ("<img src=\"{0}\" alt=\"{1}\" "
-          + "width=\"12\" height=\"20\" border=\"0\"/>",
-          EntryFormGrid.GetImagePath ("field-required.gif"),
-          ResourceManagerPool.GetResourceText (this, "RequiredFieldText"));
+        writer.WriteLine (UIUtility.GetIconImage (
+            Page,
+            ResourceManagerPool.GetResourceText (this, "RequiredFieldText"), 
+            EntryFormGrid.GetImagePath ("field-required.gif")));
       }
       else
       {

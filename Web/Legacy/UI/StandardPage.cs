@@ -45,6 +45,21 @@ public class StandardPage : NavigablePage
 
   // methods and properties
 
+  public string GetErrorImage (string errorMessage)
+  {
+    return UIUtility.GetErrorImage (this, errorMessage);
+  }
+
+  public string GetRequiredFieldImage ()
+  {
+    return UIUtility.GetRequiredFieldImage (this);
+  }
+
+  public string GetIconImage (string tooltip, string imagePath)
+  {
+    return UIUtility.GetIconImage (this, tooltip, imagePath);
+  }
+
   protected virtual bool SaveViewStateToSession 
   {
     get { return true; }
