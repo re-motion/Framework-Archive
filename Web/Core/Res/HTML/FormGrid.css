@@ -1,6 +1,12 @@
-body
+body, td
 {
 	background-color: #ffffff;
+	
+	font-weight: normal;
+	font-size: .8em;
+	color: #000000;
+	text-decoration: none;
+	line-height: 1em;
 }
 
 body, input, textarea
@@ -8,18 +14,16 @@ body, input, textarea
 	font-family: 'Arial' , 'Helvetica';
 }
 
-.formGridTable
+table.formGridTable
 {
   border-collapse: separate;
   border-width: 1px;
 }
 
-.formGridTitleCell
+td.formGridTitleCell
 {
 	font-weight: bold;
 	font-size: 1em;
-	color: #000000;
-	text-decoration: none;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
@@ -30,14 +34,9 @@ body, input, textarea
   border-color: Black;
 }
 
-.formGridLabelsCell
+td.formGridLabelsCell
 {
-	font-weight: normal;
-	font-size: .8em;
-	color: #000000;
-	text-decoration: none;
 	background-color: #E0E0E0;
-	line-height: 1em;
 	text-align: right;
 
   padding: 2px 5px 2px 5px;
@@ -49,7 +48,7 @@ body, input, textarea
   border-color: Black;
 }
 
-.formGridMarkersCell
+td.formGridMarkersCell
 {
   white-space: nowrap;
 
@@ -62,14 +61,8 @@ body, input, textarea
   border-color: Black;
 }
 
-.formGridControlsCell
+td.formGridControlsCell
 {
-	font-weight: normal;
-	font-size: .8em;
-	color: #000000;
-	text-decoration: none;
-	line-height: 1em;
-
   padding: 0px 5px 0px 5px;
   border-style: solid;
   border-top-width: 1px;
@@ -79,14 +72,8 @@ body, input, textarea
   border-color: Black;
 }
 
-.formGridValidationMessagesCell
+td.formGridValidationMessagesCell
 {
-	font-weight: normal;
-	font-size: .8em;
-	color: #000000;
-	text-decoration: none;
-	line-height: 1em;
-
   padding: 2px 7px 2px 7px;
   border-style: solid;
   border-top-width: 1px;
@@ -96,7 +83,7 @@ body, input, textarea
   border-color: Black;
 }
 
-.formGridTopDataRow
+td.formGridTopDataRow
 {
   border-style: solid;
   border-top-width: 3px;

@@ -19,6 +19,7 @@ namespace Rubicon.Web.UI.Controls
 ///   and displays the validation state.
 /// </summary>
 [ToolboxData("<{0}:ValidationStateViewer runat='server' visible='true'></{0}:ValidationStateViewer>")]
+[ToolboxItemFilter("System.Web.UI")]
 public class ValidationStateViewer : WebControl
 {
   // types
@@ -52,6 +53,12 @@ public class ValidationStateViewer : WebControl
   private ArrayList _formGridManagers;
 
   /// <summary>
+  ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
+  ///   <see cref="ValidationErrorStyle.Notice"/>
+  /// </summary>
+  private string _noticeText;
+
+  /// <summary>
   ///   The style in which the validation errors should be displayed on the page
   /// </summary>
   private ValidationErrorStyle _validationErrorStyle;
@@ -75,25 +82,11 @@ public class ValidationStateViewer : WebControl
     _noticeText = String.Empty;
   }
 
-  private string _noticeText;
-
-  public string NoticeText
-  {
-    get 
-    { 
-      return _noticeText;
-    }
-    set
-    {
-      _noticeText = value; 
-    }
-  }
-
   /// <summary>
   ///   Registers <see cref="ParentPage_PreRender"/> with the parent page's <c>PreRender</c>
   ///   event, before calling the base class's <c>OnInit</c>
   /// </summary>
-  /// <param name="e"></param>
+  /// <param name="e">The <see cref="EventArgs"/>.</param>
   protected override void OnInit(EventArgs e)
 	{
     this.Page.PreRender += new EventHandler(ParentPage_PreRender);
@@ -105,8 +98,8 @@ public class ValidationStateViewer : WebControl
   ///   Event handler for the control's PreRender event tasked with 
   ///   filling the form grid manager list.
   /// </summary>
-  /// <param name="sender">Page object</param>
-  /// <param name="e"></param>
+  /// <param name="sender">The <see cref="Page"/> object.</param>
+  /// <param name="e">The <see cref="EventArgs"/>.</param>
   private void ParentPage_PreRender(object sender, EventArgs e)
   {
     PopulateFormGridManagerList (this.Parent);
@@ -248,12 +241,26 @@ public class ValidationStateViewer : WebControl
   }
 
   /// <summary>
+  ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
+  ///   <see cref="ValidationErrorStyle.Notice"/>
+  /// </summary>
+  /// <value>A string.</value>
+  [CategoryAttribute("Appearance")]
+  [DefaultValue("")]
+  [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
+  public string NoticeText
+  {
+    get { return _noticeText; }
+    set { _noticeText = value; }
+  }
+
+  /// <summary>
   ///   Defines how the validation errors are displayed on the page.
   /// </summary>
   /// <value>A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration.</value>
-  [CategoryAttribute("Valisation State Viewer Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(ValidationErrorStyle.Notice)]
-  [Description("Defines how the validation messages are displayed")]
+  [Description("Defines how the validation messages are displayed.")]
   public ValidationErrorStyle ValidationErrorStyle
   {
     get { return _validationErrorStyle; }

@@ -188,6 +188,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\FormGridRowProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\IControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -291,6 +296,10 @@
                     RelPath = "Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Doc\FormGridManager.doc"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "Doc\how to make a build.txt"

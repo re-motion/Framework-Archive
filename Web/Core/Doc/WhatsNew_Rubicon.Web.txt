@@ -2,17 +2,46 @@
 =======
 
 - Moved von Rubicon nach Commons.
-
-- Utilities.AccessKeyUtility:
-  * Hinzugefügt
-  * AccesskeyUtility.FormatLabelText (...)
-    Methode zum Parsen von Strings mit AccessKey-Syntax (&), highlighten des Keys und Rückgabe des 
-    Chars der als Key verwendet wird.
-  * AccesskeyUtility.RemoveAccessKey (...)
-    Methode um die AccessKey-Syntax aus einem String zu entfernen.
     
-- Controls:
-  * Muss erst wieder durch übernehmen der Controls in Rubicon.Web.UI.Controls befüllt werden.  
+- Controls - Form-Grid:
+  * Neue Implementierung des EntryFormGrid-Funktionalität
+    Form-Grids können nun im Designer via Drag'n'Drop erstellt werden.
+  * Siehe Doku: FormGridManager.doc
+  * Besteht aus:
+    FormGridManager:
+      Zuständig für die Formatierung einer oder mehrerer HTML-Tables als Form-Grids.
+      Zuständig für das automatische Hinzufügen fehlender Komponeneten
+      Zuständig für eine Form-Grid-weite Validierung
+      Enthällt dieSub-Klassen
+        FormGrid, FormGridRow, FormGridRowCollection und ReadOnlyHtmlTableRowCollection.
+    IFormGridRowProvider:
+      Kann in einem Parent-Control des FormGridManager implementiert werden.
+      Stellt dem FormGridManager neue Zeilen bzw zu entfernende Zeilen zur Verfügung.
+    FormGridRowProvider:
+      Implementierungshilfe
+      Kapselt die Funktionalität des IFormGridRowProvider Interfaces
+    FormGridRowPrototype, FormGridRowPrototypeCollection:
+      Wrapper-Klasse und zugehörige Liste um zur Laufzeit erstellte Zeilen in das Form-Grid
+      einzufügen.
+    ValidationError:
+      Wrapper-Klasse für einen Validierungsfehler
+   
+- Controls.IImageUrlResolver, Controls.IHelpUrlResolver:
+  * Wird implementiert falls das jeweilige Control einem Child-Control 
+    (ins besondere dem FormGridManager) den Pfad zu Bildern oder Hilfe-Texten zur Verfügung stellen
+    soll.
+
+- Controls.ISmartControl:
+  * Definiert die Bereitstellung sämlticher Informationen die benötigt werden, damit ein Control
+    durch simples Drag'n'Drop in das Form-Grid integriert werden kann.
+  * Definiert die Bereitstellung von: 
+      Validatoren, Label, Hilfe, Input-Required Flag
+  
+- Controls.ValidationStateViewer:
+  * Zubau für den FormGridManager
+  * Liest sämtliche FormGridManager der Page aus und
+      ermöglicht deren Validierung.
+      die gruppierte Anzeige der Validierungsfehler.
   
 - Globalization.ResourceDispatcher:
   * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
@@ -23,7 +52,19 @@
     um Teilfunktionialität nach außen zur Verfügung zu stellen.
   * Fehlerhafte Resourcenangaben werden mit Hilfe von log4net geloggt.
   * Abwärtskompatibilität ist gewährt (vorbehaltlich Bugs)
-  
+
+- Utilities.AccessKeyUtility:
+  * Hinzugefügt
+  * AccesskeyUtility.FormatLabelText (...)
+    Methode zum Parsen von Strings mit AccessKey-Syntax (&), highlighten des Keys und Rückgabe des 
+    Chars der als Key verwendet wird.
+  * AccesskeyUtility.RemoveAccessKey (...)
+    Methode um die AccessKey-Syntax aus einem String zu entfernen.
+    
+- Utilities.UrlResolverUtility
+  * Sucht die Control-Hierarchie nach implementierungen von Controls.IImageUrlResolver, bzw
+    Controls.IHelpUrlResolver ab und kapselt die Abfrage der jeweiligen Interface-Methode.
+    
 - log4net
   * Die Binary für log4net 1.2beta wurde in the References aufgenommen.
 

@@ -23,6 +23,7 @@ namespace Rubicon.Web.UI.Controls
 /// <summary> Transforms one or more tables into form grids. </summary>
 /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Class/*' />
 [ToolboxData("<{0}:FormGridManager runat='server' visible='true'></{0}:FormGridManager>")]
+[ToolboxItemFilter("System.Web.UI")]
 public class FormGridManager : WebControl, IResourceDispatchTarget
 {
   // types
@@ -2626,7 +2627,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> The suffix identifying all tables managed by this <c>FormGridManager</c>. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(c_formGridSuffix)]
   [Description("The suffix that must be appended to all tables to be used as a form grid.")]
   public string FormGridSuffix
@@ -2640,7 +2641,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   ///   Must be less than the value of <see cref="ControlsColumn"/>.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LabelsColumn/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Appearance")]
   [DefaultValue(0)]
   [Description("The index of the label column in the form grid tables. Must be less than the ControlsColumn's index")]
   public int LabelsColumn
@@ -2663,7 +2664,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   ///   Must be higher than the value of <see cref="LabelsColumn"/>.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ControlsColumn/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Appearance")]
   [DefaultValue(1)]
   [Description("The index of the control column in the form grid tables. Must be higher than the LabelsColumn's index")]
   public int ControlsColumn
@@ -2683,7 +2684,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Defines how the validation messages are displayed. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(ValidatorVisibility.ValidationMessageInControlsColumn)]
   [Description("The position of the validation messages in the form grids.")]
   public ValidatorVisibility ValidatorVisibility
@@ -2696,7 +2697,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the validation markers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(true)]
   [Description("Enables/Disables the validation markers.")]
   public bool ShowValidationMarkers
@@ -2707,7 +2708,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the required markers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(true)]
   [Description("Enables/Disables the required markers.")]
   public bool ShowRequiredMarkers
@@ -2718,7 +2719,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Enables/Disables the help providers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
-  [CategoryAttribute("Form Grid Configuration")]
+  [CategoryAttribute("Behaviour")]
   [DefaultValue(true)]
   [Description("Enables/Disables the help providers.")]
   public bool ShowHelpProviders
