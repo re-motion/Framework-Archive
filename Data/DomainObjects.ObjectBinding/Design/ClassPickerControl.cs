@@ -5,7 +5,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Design
 {

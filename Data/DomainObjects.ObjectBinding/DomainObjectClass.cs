@@ -5,7 +5,7 @@ using System.Collections;
 using Rubicon.Utilities;
 
 using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
