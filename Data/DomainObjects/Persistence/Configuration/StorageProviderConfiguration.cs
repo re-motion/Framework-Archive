@@ -39,6 +39,7 @@ public class StorageProviderConfiguration
 
   // member fields
 
+  private string _applicationName;
   private StorageProviderDefinitionCollection _storageProviderDefinitions;
   private string _configurationFile;
   private string _schemaFile;
@@ -54,6 +55,7 @@ public class StorageProviderConfiguration
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
+    _applicationName = loader.GetApplicationName ();
     _storageProviderDefinitions = loader.GetStorageProviderDefinitions ();
     _configurationFile = loader.ConfigurationFile;
     _schemaFile = loader.SchemaFile;
@@ -68,6 +70,11 @@ public class StorageProviderConfiguration
       ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
       return _storageProviderDefinitions[storageProviderID]; 
     }
+  }
+
+  public string ApplicationName 
+  {
+    get { return _applicationName; }
   }
 
   public StorageProviderDefinitionCollection StorageProviderDefinitions

@@ -79,6 +79,11 @@ public class BaseLoader
     }
   }
 
+  public string GetApplicationName ()
+  {
+    return _document.SelectSingleNode ("/*/@application", _namespaceManager).InnerText;
+  }
+
   public string ConfigurationFile
   {
     get { return _configurationFile; }

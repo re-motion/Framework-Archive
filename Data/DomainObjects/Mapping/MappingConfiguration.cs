@@ -39,6 +39,7 @@ public class MappingConfiguration
 
   // member fields
 
+  private string _appliationName;
   private ClassDefinitionCollection _classDefinitions;
   private RelationDefinitionCollection _relationDefinitions;
   private string _configurationFile;
@@ -55,6 +56,7 @@ public class MappingConfiguration
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
+    _appliationName = loader.GetApplicationName ();
     _classDefinitions = loader.GetClassDefinitions ();
     _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
     _configurationFile = loader.ConfigurationFile;
@@ -62,6 +64,11 @@ public class MappingConfiguration
   }
 
   // methods and properties
+
+  public string ApplicationName
+  {
+    get { return _appliationName; }
+  }
 
   public ClassDefinitionCollection ClassDefinitions
   {
