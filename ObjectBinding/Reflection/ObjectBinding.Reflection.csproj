@@ -93,6 +93,21 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.xml.dll"
                 />
+                <Reference
+                    Name = "system.web"
+                    AssemblyName = "System.Web"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.web.dll"
+                />
+                <Reference
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding.Web"
+                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -123,6 +138,11 @@
                 <File
                     RelPath = "ReflectionBusinessObjectDataSource.cs"
                     SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ReflectionBusinessObjectDataSourceControl.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
