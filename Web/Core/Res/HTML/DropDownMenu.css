@@ -10,9 +10,14 @@ div.dropDownMenuHeadFocus
 .dropDownMenuHeadTitle,
 .dropDownMenuHeadTitleFocus
 {
-  color: Blue;
   vertical-align: middle;
   cursor: default;
+}
+
+.dropDownMenuHeadTitle a,
+.dropDownMenuHeadTitleFocus a
+{
+  color: Blue;
 }
 
 /*  */
