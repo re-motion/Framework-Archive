@@ -25,6 +25,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <para> 
 ///     The inherited aspx form's form instance must named <c>Form</c>.
 ///   </para>
+///   <para>
+///     Open the date picker using the <c>ShowDatePicker</c> function located in <c>DatePicker.js</c>.
+///   </para>
 /// </remarks>
 public class DatePickerPage : Page
 {

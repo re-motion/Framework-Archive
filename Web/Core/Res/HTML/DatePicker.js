@@ -1,3 +1,6 @@
+//  DatePicker.js contains client side scripts used by DatePickerPage 
+//  and the caller of the DatePickerFrom.aspx IFrame contents page.
+
 //  The currently displayed date picker
 //  Belongs to the parent page.
 var _currentDatePicker = null;
