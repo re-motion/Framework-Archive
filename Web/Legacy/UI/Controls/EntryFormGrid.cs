@@ -112,7 +112,7 @@ public class EntryField: Control
 			label = "<label for=\"" + For + "\">" +  Label + "</label>";
 
 		writer.WriteLine ("<tr>");
-		writer.WriteLine ("<td class=\"label\" align=\"right\"> &nbsp{0}</td>", label);
+		writer.WriteLine ("<td class=\"label\" align=\"right\"> &nbsp {0}</td>", label);
 		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td nowrap>");
