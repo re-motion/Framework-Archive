@@ -106,6 +106,15 @@ public class EntryTitle: Control
 {
 	private string _title = String.Empty;
   private string _padding = String.Empty;
+  
+  private int _colSpan = 6;
+
+  public int ColSpan
+  {
+    get { return _colSpan; }
+    set { _colSpan = value; }
+  }
+
 	public string Title 
 	{
 		get { return _title; }
@@ -124,10 +133,10 @@ public class EntryTitle: Control
           Padding);
     }
 
-		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"6\"> {0} </td></tr>", this.Title);
+		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
     if (this.Title != String.Empty)
     {
-		  writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"6\"> "
+		  writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"" + ColSpan + "\"> "
 			  	+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");
     }
 
