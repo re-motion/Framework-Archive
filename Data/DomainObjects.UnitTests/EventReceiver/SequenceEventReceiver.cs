@@ -154,7 +154,7 @@ public class SequenceEventReceiver
     _states.Add (new RelationChangeState (sender, args.PropertyName, null, null));
   }
 
-  private void DomainObject_Deleting (object sender, DeletingEventArgs args)
+  private void DomainObject_Deleting (object sender, EventArgs args)
   {
     _states.Add (new ObjectDeletionState (sender));
 
