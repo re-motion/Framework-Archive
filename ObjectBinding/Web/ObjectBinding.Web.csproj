@@ -196,10 +196,9 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Doc\include\BocReferenceValue.xml"
+                    RelPath = "Doc\include\Controls\BocReferenceValue.xml"
                     BuildAction = "Content"
                 />
-                <Folder RelPath = "Doc\include\Controls\" />
             </Include>
         </Files>
     </CSHARP>

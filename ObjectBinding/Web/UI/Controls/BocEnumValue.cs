@@ -439,7 +439,13 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   public new IBusinessObjectEnumerationProperty Property
   {
     get { return (IBusinessObjectEnumerationProperty) base.Property; }
-    set { base.Property = (IBusinessObjectEnumerationProperty) value; }
+    set 
+    { 
+      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectEnumerationProperty));
+    
+      base.Property = (IBusinessObjectEnumerationProperty) value; 
+      RefreshEnumList();
+    }
   }
 
   
