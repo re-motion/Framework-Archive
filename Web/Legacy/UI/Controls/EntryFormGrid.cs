@@ -39,6 +39,13 @@ public class EntryFormGrid: Control
   private Unit _labelColumnWidth;
   private Unit _width;
   private FontUnit _fieldFontSize;
+  private string _infoBase = string.Empty;
+
+  public string InfoBase
+  {
+    get { return _infoBase; }
+    set { _infoBase = value; }
+  }
 
   public Unit LabelColumnWidth 
   {
@@ -462,11 +469,12 @@ public class EntryField: Control
     
 		if (this.InfoUrl != String.Empty)
 		{
+      string infoUrl = parentGrid.InfoBase + this.InfoUrl;
 			writer.WriteLine (
 					"<a href=\"{0}\" target=\"_new\">"
 						+ "<img src=\"{1}\" alt=\"Hilfe zum Ausfüllen per Mausklick\""
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
-					this.InfoUrl,
+					infoUrl,
           EntryFormGrid.GetImagePath (this.Page, "field-info.gif"));
     }
 		else
