@@ -67,17 +67,31 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual ((long) 0, newContainer["Int64Property"]);
     Assert.AreEqual ((float) 0, newContainer["SingleProperty"]);
     Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
+
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);
+    Assert.AreEqual (NaByte.Null, newContainer["NaByteProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeProperty"]);
+    Assert.AreEqual (NaDecimal.Null, newContainer["NaDecimalProperty"]);
     Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleProperty"]);
+    Assert.AreEqual (NaGuid.Null, newContainer["NaGuidProperty"]);
+    Assert.AreEqual (NaInt16.Null, newContainer["NaInt16Property"]);
     Assert.AreEqual (NaInt32.Null, newContainer["NaInt32Property"]);
-    Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
+    Assert.AreEqual (NaInt64.Null, newContainer["NaInt64Property"]);
+    Assert.AreEqual (NaSingle.Null, newContainer["NaSingleProperty"]);
+
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanWithNullValueProperty"]);
+    Assert.AreEqual (NaByte.Null, newContainer["NaByteWithNullValueProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateWithNullValueProperty"]);
     Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeWithNullValueProperty"]);
+    Assert.AreEqual (NaDecimal.Null, newContainer["NaDecimalWithNullValueProperty"]);
     Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleWithNullValueProperty"]);
+    Assert.AreEqual (NaGuid.Null, newContainer["NaGuidWithNullValueProperty"]);
+    Assert.AreEqual (NaInt16.Null, newContainer["NaInt16WithNullValueProperty"]);
     Assert.AreEqual (NaInt32.Null, newContainer["NaInt32WithNullValueProperty"]);
+    Assert.AreEqual (NaInt64.Null, newContainer["NaInt64WithNullValueProperty"]);
+    Assert.AreEqual (NaSingle.Null, newContainer["NaSingleWithNullValueProperty"]);
+    Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
   }
 }
 }

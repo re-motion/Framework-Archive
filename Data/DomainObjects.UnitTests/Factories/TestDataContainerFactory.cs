@@ -65,17 +65,31 @@ public class TestDataContainerFactory
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Int64Property"], (long) 9223372036854775807));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["SingleProperty"], (float) 6789.321));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringProperty"], "abcdeföäü"));
+
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanProperty"], new NaBoolean (true)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaByteProperty"], new NaByte (78)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateProperty"], new NaDateTime (new DateTime (2005, 2, 1))));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateTimeProperty"], new NaDateTime (new DateTime (2005, 2, 1, 5, 0 , 0))));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDecimalProperty"], new NaDecimal (new decimal (765.098))));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDoubleProperty"], new NaDouble (654321.789)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaGuidProperty"], new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"))));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt16Property"], new NaInt16 (12000)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt32Property"], new NaInt32 (-2147483647)));
-    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringWithNullValueProperty"], null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt64Property"], new NaInt64 (3147483647)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaSingleProperty"], new NaSingle (12.456F)));
+
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanWithNullValueProperty"], NaBoolean.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaByteWithNullValueProperty"], NaByte.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateWithNullValueProperty"], NaDateTime.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateTimeWithNullValueProperty"], NaDateTime.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDecimalWithNullValueProperty"], NaDecimal.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDoubleWithNullValueProperty"], NaDouble.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaGuidWithNullValueProperty"], NaGuid.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt16WithNullValueProperty"], NaInt16.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt32WithNullValueProperty"], NaInt32.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt64WithNullValueProperty"], NaInt64.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaSingleWithNullValueProperty"], NaSingle.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringWithNullValueProperty"], null));
 
     _clientTransactionMock.SetClientTransaction (dataContainer);
 

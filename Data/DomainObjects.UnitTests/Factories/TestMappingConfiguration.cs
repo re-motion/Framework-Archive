@@ -227,22 +227,12 @@ public class TestMappingConfiguration
     ClassDefinition classWithAllDataTypes = new ClassDefinition (
         "ClassWithAllDataTypes", "TableWithAllDataTypes", typeof (ClassWithAllDataTypes), DatabaseTest.c_testDomainProviderID);
     
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "BooleanProperty", "Boolean", "boolean"));
-
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DateProperty", "Date", "date"));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DateTimeProperty", "DateTime", "dateTime"));
-    
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DecimalProperty", "Decimal", "decimal"));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DoubleProperty", "Double", "double"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("DateProperty", "Date", "date"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("DateTimeProperty", "DateTime", "dateTime"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("DecimalProperty", "Decimal", "decimal"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("DoubleProperty", "Double", "double"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
         "EnumProperty", 
@@ -253,45 +243,33 @@ public class TestMappingConfiguration
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int16Property", "Int16", "int16"));
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int32Property", "Int32", "int32"));
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", "int64"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("SingleProperty", "Single", "single"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("StringProperty", "String", "string", 100));
 
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "SingleProperty", "Single", "single"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaBooleanProperty", "NaBoolean", "boolean", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaByteProperty", "NaByte", "byte", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDateProperty", "NaDate", "date", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeProperty", "NaDateTime", "dateTime", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDecimalProperty", "NaDecimal", "decimal", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDoubleProperty", "NaDouble", "double", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaGuidProperty", "NaGuid", "guid", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt16Property", "NaInt16", "int16", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt32Property", "NaInt32", "int32", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt64Property", "NaInt64", "int64", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaSingleProperty", "NaSingle", "single", true));
 
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "StringProperty", "String", "string", 100));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaBooleanProperty", "NaBoolean", "boolean", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateProperty", "NaDate", "date", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateTimeProperty", "NaDateTime", "dateTime", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDoubleProperty", "NaDouble", "double", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaInt32Property", "NaInt32", "int32", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "StringWithNullValueProperty", "StringWithNullValue", "string", true, 100));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, 100));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDecimalWithNullValueProperty", "NaDecimalWithNullValue", "decimal", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaGuidWithNullValueProperty", "NaGuidWithNullValue", "guid", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt16WithNullValueProperty", "NaInt16WithNullValue", "int16", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
 
     return classWithAllDataTypes;
   }

@@ -136,6 +136,18 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaBooleanProperty", value); }
   }
 
+  public NaByte NaByteProperty
+  {
+    get { return DataContainer.GetNaByte ("NaByteProperty"); }
+    set { DataContainer.SetValue ("NaByteProperty", value); }
+  }
+
+  public NaDecimal NaDecimalProperty
+  {
+    get { return DataContainer.GetNaDecimal ("NaDecimalProperty"); }
+    set { DataContainer.SetValue ("NaDecimalProperty", value); }
+  }
+
   public NaDateTime NaDateProperty
   {
     get { return DataContainer.GetNaDateTime ("NaDateProperty"); }
@@ -154,10 +166,34 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaDoubleProperty", value); }
   }
 
+  public NaGuid NaGuidProperty
+  {
+    get { return DataContainer.GetNaGuid ("NaGuidProperty"); }
+    set { DataContainer.SetValue ("NaGuidProperty", value); }
+  }
+
+  public NaInt16 NaInt16Property
+  {
+    get { return DataContainer.GetNaInt16 ("NaInt16Property"); }
+    set { DataContainer.SetValue ("NaInt16Property", value); }
+  }
+
   public NaInt32 NaInt32Property
   {
     get { return DataContainer.GetNaInt32 ("NaInt32Property"); }
     set { DataContainer.SetValue ("NaInt32Property", value); }
+  }
+
+  public NaInt64 NaInt64Property
+  {
+    get { return DataContainer.GetNaInt64 ("NaInt64Property"); }
+    set { DataContainer.SetValue ("NaInt64Property", value); }
+  }
+
+  public NaSingle NaSingleProperty
+  {
+    get { return DataContainer.GetNaSingle ("NaSingleProperty"); }
+    set { DataContainer.SetValue ("NaSingleProperty", value); }
   }
 
   public string StringWithNullValueProperty
@@ -170,6 +206,18 @@ public class ClassWithAllDataTypes : TestDomainBase
   {
     get { return DataContainer.GetNaBoolean ("NaBooleanWithNullValueProperty"); }
     set { DataContainer.SetValue ("NaBooleanWithNullValueProperty", value); }
+  }
+
+  public NaByte NaByteWithNullValueProperty
+  {
+    get { return DataContainer.GetNaByte ("NaByteWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaByteWithNullValueProperty", value); }
+  }
+
+  public NaDecimal NaDecimalWithNullValueProperty
+  {
+    get { return DataContainer.GetNaDecimal ("NaDecimalWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaDecimalWithNullValueProperty", value); }
   }
 
   public NaDateTime NaDateWithNullValueProperty
@@ -190,10 +238,34 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaDoubleWithNullValueProperty", value); }
   }
 
+  public NaGuid NaGuidWithNullValueProperty
+  {
+    get { return DataContainer.GetNaGuid ("NaGuidWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaGuidWithNullValueProperty", value); }
+  }
+
+  public NaInt16 NaInt16WithNullValueProperty
+  {
+    get { return DataContainer.GetNaInt16 ("NaInt16WithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaInt16WithNullValueProperty", value); }
+  }
+
   public NaInt32 NaInt32WithNullValueProperty
   {
     get { return DataContainer.GetNaInt32 ("NaInt32WithNullValueProperty"); }
     set { DataContainer.SetValue ("NaInt32WithNullValueProperty", value); }
+  }
+
+  public NaInt64 NaInt64WithNullValueProperty
+  {
+    get { return DataContainer.GetNaInt64 ("NaInt64WithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaInt64WithNullValueProperty", value); }
+  }
+
+  public NaSingle NaSingleWithNullValueProperty
+  {
+    get { return DataContainer.GetNaSingle ("NaSingleWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaSingleWithNullValueProperty", value); }
   }
 }
 }

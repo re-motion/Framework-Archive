@@ -112,14 +112,32 @@ public sealed class DBValueConverter
     if (propertyDefinition.PropertyType == typeof (NaBoolean))
       return new NaBoolean (dataReader.GetBoolean (columnOrdinal));
 
+    if (propertyDefinition.PropertyType == typeof (NaByte))
+      return new NaByte (dataReader.GetByte (columnOrdinal));
+
     if (propertyDefinition.PropertyType == typeof (NaDateTime))
       return new NaDateTime (dataReader.GetDateTime (columnOrdinal));
 
     if (propertyDefinition.PropertyType == typeof (NaDouble))
       return new NaDouble (dataReader.GetDouble (columnOrdinal));
 
+    if (propertyDefinition.PropertyType == typeof (NaDecimal))
+      return new NaDecimal (dataReader.GetDecimal (columnOrdinal));
+
+    if (propertyDefinition.PropertyType == typeof (NaGuid))
+      return new NaGuid (dataReader.GetGuid (columnOrdinal));
+
+    if (propertyDefinition.PropertyType == typeof (NaInt16))
+      return new NaInt16 (dataReader.GetInt16 (columnOrdinal));
+
     if (propertyDefinition.PropertyType == typeof (NaInt32))
       return new NaInt32 (dataReader.GetInt32 (columnOrdinal));
+
+    if (propertyDefinition.PropertyType == typeof (NaInt64))
+      return new NaInt64 (dataReader.GetInt64 (columnOrdinal));
+
+    if (propertyDefinition.PropertyType == typeof (NaSingle))
+      return new NaSingle (dataReader.GetFloat (columnOrdinal));
 
     return dataReader.GetValue (columnOrdinal);
   }

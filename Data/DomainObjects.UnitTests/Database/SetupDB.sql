@@ -258,17 +258,29 @@ CREATE TABLE [TableWithAllDataTypes] (
   [String] nvarchar (100) NOT NULL,
   
   [NaBoolean] bit NULL,
+  [NaByte] tinyint NULL,
   [NaDate] dateTime NULL,
   [NaDateTime] dateTime NULL,
+  [NaDecimal] decimal (38, 3) NULL,
   [NaDouble] float NULL,
+  [NaGuid] uniqueidentifier NULL,
+  [NaInt16] smallint NULL,
   [NaInt32] int NULL,
+  [NaInt64] bigint NULL,
+  [NaSingle] real NULL,
   
   [StringWithNullValue] nvarchar (100) NULL,
   [NaBooleanWithNullValue] bit NULL,
+  [NaByteWithNullValue] tinyint NULL,
   [NaDateWithNullValue] dateTime NULL,
   [NaDateTimeWithNullValue] dateTime NULL,
+  [NaDecimalWithNullValue] decimal (38, 3) NULL,
   [NaDoubleWithNullValue] float NULL,
+  [NaGuidWithNullValue] uniqueidentifier NULL,
+  [NaInt16WithNullValue] smallint NULL,
   [NaInt32WithNullValue] int NULL,
+  [NaInt64WithNullValue] bigint NULL,
+  [NaSingleWithNullValue] real NULL,
       
   CONSTRAINT [PK_TableWithAllDataTypes] PRIMARY KEY CLUSTERED ([ID])
 ) 

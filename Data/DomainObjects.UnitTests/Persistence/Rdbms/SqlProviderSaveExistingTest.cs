@@ -123,16 +123,28 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["NaBooleanProperty"]);
+      Assert.AreEqual (new NaByte (78), classWithAllDataTypes["NaByteProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1)), classWithAllDataTypes["NaDateProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)), classWithAllDataTypes["NaDateTimeProperty"]);
+      Assert.AreEqual (new NaDecimal (new decimal (765.098)), classWithAllDataTypes["NaDecimalProperty"]);
       Assert.AreEqual (new NaDouble (654321.789), classWithAllDataTypes["NaDoubleProperty"]);
+      Assert.AreEqual (new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")), classWithAllDataTypes["NaGuidProperty"]);
+      Assert.AreEqual (new NaInt16 (12000), classWithAllDataTypes["NaInt16Property"]);
       Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes["NaInt32Property"]);
+      Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes["NaInt64Property"]);
+      Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes["NaSingleProperty"]);
 
       classWithAllDataTypes["NaBooleanProperty"] = new NaBoolean (false);
+      classWithAllDataTypes["NaByteProperty"] = new NaByte (100);
       classWithAllDataTypes["NaDateProperty"] = new NaDateTime (new DateTime (2007, 1, 18));
       classWithAllDataTypes["NaDateTimeProperty"] = new NaDateTime (new DateTime (2005, 1, 18, 10, 10, 10));
+      classWithAllDataTypes["NaDecimalProperty"] = new NaDecimal (new decimal (20.123));
       classWithAllDataTypes["NaDoubleProperty"] = new NaDouble (56.87);
+      classWithAllDataTypes["NaGuidProperty"] = new NaGuid (new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}"));
+      classWithAllDataTypes["NaInt16Property"] = new NaInt16 (-43);
       classWithAllDataTypes["NaInt32Property"] = new NaInt32 (-42);
+      classWithAllDataTypes["NaInt64Property"] = new NaInt64 (-41);
+      classWithAllDataTypes["NaSingleProperty"] = new NaSingle (-40F);
 
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
@@ -145,10 +157,16 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);
+      Assert.AreEqual (new NaByte (100), classWithAllDataTypes["NaByteProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2007, 1, 18)), classWithAllDataTypes["NaDateProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2005, 1, 18, 10, 10, 10)), classWithAllDataTypes["NaDateTimeProperty"]);
+      Assert.AreEqual (new NaDecimal (new decimal (20.123)), classWithAllDataTypes["NaDecimalProperty"]);
       Assert.AreEqual (new NaDouble (56.87), classWithAllDataTypes["NaDoubleProperty"]);
+      Assert.AreEqual (new NaGuid (new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}")), classWithAllDataTypes["NaGuidProperty"]);
+      Assert.AreEqual (new NaInt16 (-43), classWithAllDataTypes["NaInt16Property"]);
       Assert.AreEqual (new NaInt32 (-42), classWithAllDataTypes["NaInt32Property"]);
+      Assert.AreEqual (new NaInt64 (-41), classWithAllDataTypes["NaInt64Property"]);
+      Assert.AreEqual (new NaSingle (-40F), classWithAllDataTypes["NaSingleProperty"]);
     }
   }
 
@@ -160,16 +178,28 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["NaBooleanProperty"]);
+      Assert.AreEqual (new NaByte (78), classWithAllDataTypes["NaByteProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1)), classWithAllDataTypes["NaDateProperty"]);
       Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)), classWithAllDataTypes["NaDateTimeProperty"]);
+      Assert.AreEqual (new NaDecimal (new decimal (765.098)), classWithAllDataTypes["NaDecimalProperty"]);
       Assert.AreEqual (new NaDouble (654321.789), classWithAllDataTypes["NaDoubleProperty"]);
+      Assert.AreEqual (new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")), classWithAllDataTypes["NaGuidProperty"]);
+      Assert.AreEqual (new NaInt16 (12000), classWithAllDataTypes["NaInt16Property"]);
       Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes["NaInt32Property"]);
+      Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes["NaInt64Property"]);
+      Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes["NaSingleProperty"]);
 
       classWithAllDataTypes["NaBooleanProperty"] = NaBoolean.Null;
+      classWithAllDataTypes["NaByteProperty"] = NaByte.Null;
       classWithAllDataTypes["NaDateProperty"] = NaDateTime.Null;
       classWithAllDataTypes["NaDateTimeProperty"] = NaDateTime.Null;
+      classWithAllDataTypes["NaDecimalProperty"] = NaDecimal.Null;
       classWithAllDataTypes["NaDoubleProperty"] = NaDouble.Null;
+      classWithAllDataTypes["NaGuidProperty"] = NaGuid.Null;
+      classWithAllDataTypes["NaInt16Property"] = NaInt16.Null;
       classWithAllDataTypes["NaInt32Property"] = NaInt32.Null;
+      classWithAllDataTypes["NaInt64Property"] = NaInt64.Null;
+      classWithAllDataTypes["NaSingleProperty"] = NaSingle.Null;
 
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
@@ -182,10 +212,16 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
 
       Assert.AreEqual (NaBoolean.Null, classWithAllDataTypes["NaBooleanProperty"]);
+      Assert.AreEqual (NaByte.Null, classWithAllDataTypes["NaByteProperty"]);
       Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes["NaDateProperty"]);
       Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes["NaDateTimeProperty"]);
+      Assert.AreEqual (NaDecimal.Null, classWithAllDataTypes["NaDecimalProperty"]);
       Assert.AreEqual (NaDouble.Null, classWithAllDataTypes["NaDoubleProperty"]);
+      Assert.AreEqual (NaGuid.Null, classWithAllDataTypes["NaGuidProperty"]);
+      Assert.AreEqual (NaInt16.Null, classWithAllDataTypes["NaInt16Property"]);
       Assert.AreEqual (NaInt32.Null, classWithAllDataTypes["NaInt32Property"]);
+      Assert.AreEqual (NaInt64.Null, classWithAllDataTypes["NaInt64Property"]);
+      Assert.AreEqual (NaSingle.Null, classWithAllDataTypes["NaSingleProperty"]);
     }
   }
 

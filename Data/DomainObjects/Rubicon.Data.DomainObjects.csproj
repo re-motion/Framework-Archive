@@ -358,6 +358,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Doc\How to add a new property type.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\How to make a build.txt"
                     BuildAction = "Content"
                 />

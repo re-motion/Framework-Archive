@@ -60,17 +60,32 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
     query.Parameters.Add ("@singleLowerBound", (float) 6789);
     query.Parameters.Add ("@singleUpperBound", (float) 6790);
     query.Parameters.Add ("@string", "abcdeföäü");
+
     query.Parameters.Add ("@naBoolean", new NaBoolean (true));
+    query.Parameters.Add ("@naByte", new NaByte (78));
     query.Parameters.Add ("@naDate", new NaDateTime (new DateTime (2005, 2, 1)));
     query.Parameters.Add ("@naDateTime", new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)));
+    query.Parameters.Add ("@naDecimal", new NaDecimal (new decimal (765.098)));
     query.Parameters.Add ("@naDouble", new NaDouble (654321.789));
+    query.Parameters.Add ("@naGuid", new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
+    query.Parameters.Add ("@naInt16", new NaInt16 (12000));
     query.Parameters.Add ("@naInt32", new NaInt32 (-2147483647));
-    query.Parameters.Add ("@stringWithNullValue", (string) null);
+    query.Parameters.Add ("@naInt64", new NaInt64 (3147483647));
+    query.Parameters.Add ("@naSingleLowerBound", new NaSingle (12F));
+    query.Parameters.Add ("@naSingleUpperBound", new NaSingle (13F));
+
     query.Parameters.Add ("@naBooleanWithNullValue", NaBoolean.Null);
+    query.Parameters.Add ("@naByteWithNullValue", NaByte.Null);
     query.Parameters.Add ("@naDateWithNullValue", NaDateTime.Null);
     query.Parameters.Add ("@naDateTimeWithNullValue", NaDateTime.Null);
+    query.Parameters.Add ("@naDecimalWithNullValue", NaDecimal.Null);
     query.Parameters.Add ("@naDoubleWithNullValue", NaDouble.Null);
+    query.Parameters.Add ("@naGuidWithNullValue", NaGuid.Null);
+    query.Parameters.Add ("@naInt16WithNullValue", NaInt16.Null);
     query.Parameters.Add ("@naInt32WithNullValue", NaInt32.Null);
+    query.Parameters.Add ("@naInt64WithNullValue", NaInt64.Null);
+    query.Parameters.Add ("@naSingleWithNullValue", NaSingle.Null);
+    query.Parameters.Add ("@stringWithNullValue", (string) null);
 
     DataContainerCollection actualContainers = Provider.ExecuteCollectionQuery (query);
 
