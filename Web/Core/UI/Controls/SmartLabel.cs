@@ -2,10 +2,9 @@ using System;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.ComponentModel;
-using Rubicon.ObjectBinding;
-using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxItemFilter("System.Web.UI")]
@@ -18,7 +17,7 @@ public class SmartLabel: WebControl
 	{
 	}
 
-  [TypeConverter (typeof (BusinessObjectBoundControlToStringConverter))]
+  [TypeConverter (typeof (SmartControlToStringConverter))]
   public string ForControl
   {
     get { return _forControl; }

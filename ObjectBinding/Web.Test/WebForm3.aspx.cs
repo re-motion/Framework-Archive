@@ -15,17 +15,18 @@ namespace OBWTest
 	/// <summary>
 	/// Summary description for WebForm3.
 	/// </summary>
-	public class WebForm3 : System.Web.UI.Page
+	public class WebForm3: System.Web.UI.Page
 	{
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-    protected Rubicon.ObjectBinding.Web.Controls.BocPropertyLabel BocPropertyLabel1;
+    protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
     protected System.Web.UI.WebControls.Button SaveButton;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue HeightField;
-    protected Rubicon.ObjectBinding.Web.Controls.BocPropertyLabel BocPropertyLabel2;
+    protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
+    protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
     protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
   
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load (object sender, System.EventArgs e)
 		{
       Person p = new Person();
       p.FirstName = "Hugo";
@@ -35,7 +36,7 @@ namespace OBWTest
 			reflectionBusinessObjectDataSource1.BusinessObject = p;
 
       this.DataBind();
-      reflectionBusinessObjectDataSource1.LoadValues("dummy");
+      reflectionBusinessObjectDataSource1.LoadValues();
 		}
 
 		#region Web Form Designer generated code
@@ -67,12 +68,12 @@ namespace OBWTest
     }
 		#endregion
 
-    private void SaveButton_Click(object sender, System.EventArgs e)
+    private void SaveButton_Click (object sender, System.EventArgs e)
     {
       Page.Validate();
       if (IsValid)
       {
-        reflectionBusinessObjectDataSource1.SaveValues("dummy");
+        reflectionBusinessObjectDataSource1.SaveValues();
         string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
       }
     }

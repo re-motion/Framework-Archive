@@ -14,15 +14,15 @@ using Rubicon.ObjectBinding.Reflection;
 namespace OBWTest
 {
 
-public class WebForm2 : System.Web.UI.Page
+public class WebForm2: System.Web.UI.Page
 {
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue DateOfBirthField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocPropertyLabel BocPropertyLabel3;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load (object sender, System.EventArgs e)
 	{
     Person p = new Person();
     p.FirstName = "Hugo";
@@ -33,7 +33,7 @@ public class WebForm2 : System.Web.UI.Page
 		reflectionBusinessObjectDataSource1.BusinessObject = p;
 
     this.DataBind();
-    reflectionBusinessObjectDataSource1.LoadValues ("dummy");
+    reflectionBusinessObjectDataSource1.LoadValues ();
 
 	}
 
@@ -66,9 +66,9 @@ public class WebForm2 : System.Web.UI.Page
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click (object sender, System.EventArgs e)
   {
-    reflectionBusinessObjectDataSource1.SaveValues("dummy");
+    reflectionBusinessObjectDataSource1.SaveValues();
     string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
   }
 }

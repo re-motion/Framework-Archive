@@ -233,6 +233,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\SmartLabel.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\StandardButton.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -274,6 +279,16 @@
                 />
                 <File
                     RelPath = "Controls\WebControls.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\ControlToStringConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

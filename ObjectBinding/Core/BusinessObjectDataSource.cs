@@ -13,8 +13,8 @@ public interface IBusinessObjectDataSource
   void Register (IBusinessObjectBoundControl control);
   void Unregister (IBusinessObjectBoundControl control);
 
-  void LoadValues (object controlOrPage);
-  void SaveValues (object controlOrPage);
+  void LoadValues ();
+  void SaveValues ();
 
   IBusinessObject BusinessObject { get; set; }
   IBusinessObjectClass BusinessObjectClass { get; }
@@ -51,20 +51,8 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
     _boundControls.Remove (control);
   }
 
-  protected void EnsureDataBind (object parentControl)
+  public void LoadValues ()
   {
-    // TODO: remove parentControl altogether?
-    // throw new NotSupportedException();
-//    if (! _dataBindCalled)
-//    {
-//      parentControl.DataBind ();
-//      _dataBindCalled = true;
-//    }
-  }
-
-  public void LoadValues (object parentControl)
-  {
-    EnsureDataBind (parentControl);
     if (_boundControls != null)
     {
       foreach (IBusinessObjectBoundControl control in _boundControls)
@@ -72,9 +60,8 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
     }
   }
 
-  public void SaveValues (object parentControl)
+  public void SaveValues ()
   {
-    EnsureDataBind (parentControl);
     if (_boundControls != null)
     {
       foreach (IBusinessObjectBoundControl control in _boundControls)

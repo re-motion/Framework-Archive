@@ -24,6 +24,7 @@ public class Person: ReflectionBusinessObject
   private DateTime _dateOfBirth;
   private int _height;
   private Gender _gender;
+  private MarriageStatus _marriageStatus;
 
   public void SaveToXml (string fileName)
   {
@@ -68,12 +69,25 @@ public class Person: ReflectionBusinessObject
     get { return _gender; }
     set { _gender = value; }
   }
+
+  public MarriageStatus MarriageStatus
+  {
+    get { return _marriageStatus; }
+    set { _marriageStatus = value; }
+  }
 }
 
 public enum Gender
 {
   Male,
   Female
+}
+
+public enum MarriageStatus
+{
+  Married,
+  Single, 
+  Divorced
 }
 
 }

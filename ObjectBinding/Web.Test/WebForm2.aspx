@@ -1,5 +1,6 @@
 <%@ Register TagPrefix="cc1" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="WebForm2.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebForm2" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -14,8 +15,8 @@
       <cc1:BocTextValue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 376px; POSITION: absolute; TOP: 192px" runat="server" 
         PropertyIdentifier="DateOfBirth" DataSource="<%# reflectionBusinessObjectDataSource1 %>">
       </cc1:BocTextValue>
-      <cc1:BocPropertyLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 64px; POSITION: absolute; TOP: 192px"
-        runat="server" ForControl="DateOfBirthField"></cc1:BocPropertyLabel>
+      <rwc:SmartLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 64px; POSITION: absolute; TOP: 192px"
+        runat="server" ForControl="DateOfBirthField"></rwc:SmartLabel>
       <cc1:BocTextValueValidator id="BocTextValueValidator1" style="Z-INDEX: 108; LEFT: 584px; POSITION: absolute; TOP: 200px"
         runat="server" ControlToValidate="DateOfBirthField"></cc1:BocTextValueValidator>
       <asp:button id="SaveButton" style="Z-INDEX: 103; LEFT: 48px; POSITION: absolute; TOP: 400px"

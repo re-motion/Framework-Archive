@@ -7,15 +7,6 @@ using System.CodeDom;
 namespace Rubicon.ObjectBinding
 {
 
-public class BusinessObjectBoundControlToStringConverter: ControlToStringConverter
-{
-  public BusinessObjectBoundControlToStringConverter ()
-    : base (typeof (IBusinessObjectBoundControl))
-  {
-  }
-}
-
-
 /// <summary>
 /// Converts the name of an IBusinessObjectDataSource to an object reference. Used by the GUI designer.
 /// </summary>

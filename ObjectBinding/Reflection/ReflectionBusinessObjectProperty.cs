@@ -121,16 +121,24 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
 
   public IEnumerationValueInfo[] GetAllValues()
   {
-    Type type = PropertyInfo.GetType();
-    Debug.Assert (type.IsEnum, "type.IsEnum");
-    FieldInfo[] fields = type.GetFields (BindingFlags.Static | BindingFlags.Public);
+    Debug.Assert (PropertyInfo.PropertyType.IsEnum, "type.IsEnum");
+    FieldInfo[] fields = PropertyInfo.PropertyType.GetFields (BindingFlags.Static | BindingFlags.Public);
     IEnumerationValueInfo[] valueInfos = new IEnumerationValueInfo [fields.Length];
-    if (Enum.GetUnderlyingType (type) != typeof (int))
-      throw new NotSupportedException ("Only Int32-based enumerations are supported by Rubicon.ObjectBinding.Reflection.");
 
     for (int i = 0; i < fields.Length; ++i)
-      valueInfos[i] = new EnumerationValueInfo ((int)fields[i].GetValue (null), fields[i].Name, fields[i].Name, true);
+      valueInfos[i] = new EnumerationValueInfo (fields[i].GetValue (null), fields[i].Name, fields[i].Name, true);
     return valueInfos;
+  }
+
+  public IEnumerationValueInfo GetValueInfo (object value)
+  {
+    return new EnumerationValueInfo (value, value.ToString(), value.ToString(), true);
+  }
+
+  public IEnumerationValueInfo GetValueInfo (string identifier)
+  {
+    object value = Enum.Parse (PropertyType, identifier, false);
+    return new EnumerationValueInfo (value, identifier, identifier, true);
   }
 }
 

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.Web.UI.Design
 {
 
 /// <summary>

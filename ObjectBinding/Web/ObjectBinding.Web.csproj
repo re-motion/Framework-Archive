@@ -103,6 +103,11 @@
                     Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "Web.UI"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -118,11 +123,6 @@
                 />
                 <File
                     RelPath = "Controls\BocEnumValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\BocPropertyLabel.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

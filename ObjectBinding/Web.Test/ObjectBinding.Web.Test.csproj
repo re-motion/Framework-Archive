@@ -118,6 +118,11 @@
                     AssemblyName = "Rubicon.ObjectBinding.Web"
                     HintPath = "..\Web\bin\Debug\Rubicon.ObjectBinding.Web.dll"
                 />
+                <Reference
+                    Name = "Rubicon.Web.UI"
+                    AssemblyName = "Rubicon.Web.UI"
+                    HintPath = "..\..\Web.UI\bin\debug\Rubicon.Web.UI.dll"
+                />
             </References>
         </Build>
         <Files>

@@ -41,9 +41,9 @@ public class FormGridLabel: Label, ISmartControl
     return null;
   }
 
-  string ISmartControl.TargetControlClientID
+  Control ISmartControl.TargetControl
   {
-    get { return ClientID; }
+    get { return this; }
   }
 
   bool ISmartControl.UseLabel

@@ -90,17 +90,17 @@
                 />
                 <Reference
                     Name = "system.design"
-                    AssemblyName = "system.design"
+                    AssemblyName = "System.Design"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
                 />
                 <Reference
                     Name = "system.windows.forms"
-                    AssemblyName = "system.windows.forms"
+                    AssemblyName = "System.Windows.Forms"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
                 />
                 <Reference
                     Name = "system.drawing"
-                    AssemblyName = "system.drawing"
+                    AssemblyName = "System.Drawing"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
                 />
             </References>
@@ -133,11 +133,6 @@
                 />
                 <File
                     RelPath = "BusinessObjectProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

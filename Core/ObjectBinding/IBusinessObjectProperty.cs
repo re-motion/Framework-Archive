@@ -57,24 +57,42 @@ public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
 {
   IEnumerationValueInfo[] GetAllValues ();
   IEnumerationValueInfo[] GetEnabledValues ();
+
+  IEnumerationValueInfo GetValueInfo (object value);
+  IEnumerationValueInfo GetValueInfo (string identifier);
 }
 
 public interface IEnumerationValueInfo
 {
-  int Value { get; }
+  /// <summary>
+  ///   The object representing the original value, e.g. a System.Enum type.
+  /// </summary>
+  object Value { get; }
+
+  /// <summary>
+  ///   The string identifier representing the value.
+  /// </summary>
   string Identifier { get; }
+
+  /// <summary>
+  ///   The string presented to the user.
+  /// </summary>
   string DisplayName { get; }
+
+  /// <summary>
+  ///   Indicates whether this value should be presented as an option to the user. (If not, existing objects might still use this value.)
+  /// </summary>
   bool IsEnabled { get; }
 }
 
 public class EnumerationValueInfo: IEnumerationValueInfo
 {
-  private int _value;
+  private object _value;
   private string _identifier;
   private string _displayName;
   private bool _isEnabled; 
 
-  public EnumerationValueInfo (int value, string identifier, string displayName, bool isEnabled)
+  public EnumerationValueInfo (object value, string identifier, string displayName, bool isEnabled)
   {
     _value = value;
     _identifier = identifier;
@@ -82,7 +100,7 @@ public class EnumerationValueInfo: IEnumerationValueInfo
     _isEnabled = isEnabled;
   }
 
-  public int Value
+  public object Value
   {
     get { return _value; }
   }

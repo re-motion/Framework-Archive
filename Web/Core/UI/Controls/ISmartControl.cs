@@ -29,13 +29,13 @@ public interface ISmartControl: IControl
   BaseValidator[] CreateValidators(); 
 
   /// <summary>
-  ///   Gets the ID of the (sub-)control that can be referenced by HTML &lt;label for=...&gt;.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
   /// </summary>
   /// <remarks>
-  ///   For simple controls, this is the ID of the control itself. For compound controls, this is the ID of the form element that
-  ///   should receive the focus when the label is selected.
+  ///   For compound controls that accept user input in text boxes, lists etc., this is the control that
+  ///   actually accepts user input. For all other controls, this is the control itself.
   /// </remarks>
-  string TargetControlClientID { get; }
+  Control TargetControl { get; }
 
   /// <summary>
   ///   If UseLabel is true, it is valid to generate HTML &lt;label&gt; tags referencing <see cref="TargetControlClientID"/>.
