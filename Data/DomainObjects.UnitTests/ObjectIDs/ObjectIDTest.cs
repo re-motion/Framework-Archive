@@ -111,7 +111,49 @@ public class ObjectIDTest
   }
 
   [Test]
-  public void TestEquals ()
+  public void HashCode ()
+  {
+    ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id3 = new ObjectID ("sqlserver1", "Order", 41);
+
+    Assert.IsTrue (id1.GetHashCode() == id2.GetHashCode());
+    Assert.IsFalse (id1.GetHashCode() == id3.GetHashCode());
+    Assert.IsFalse (id2.GetHashCode() == id3.GetHashCode());
+  }
+
+  [Test]
+  public void TestEqualsForStorageProvider ()
+  {
+    ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id3 = new ObjectID ("sqlserver2", "Order", 42);
+
+    Assert.IsTrue (id1.Equals (id2));
+    Assert.IsFalse (id1.Equals (id3));
+    Assert.IsFalse (id2.Equals (id3));
+    Assert.IsTrue (id2.Equals (id1));
+    Assert.IsFalse (id3.Equals (id1));
+    Assert.IsFalse (id3.Equals (id2));
+  }
+
+  [Test]
+  public void TestEqualsForClassID ()
+  {
+    ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
+    ObjectID id3 = new ObjectID ("sqlserver1", "Customer", 42);
+
+    Assert.IsTrue (id1.Equals (id2));
+    Assert.IsFalse (id1.Equals (id3));
+    Assert.IsFalse (id2.Equals (id3));
+    Assert.IsTrue (id2.Equals (id1));
+    Assert.IsFalse (id3.Equals (id1));
+    Assert.IsFalse (id3.Equals (id2));
+  }
+
+  [Test]
+  public void TestEqualsForValue ()
   {
     ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
     ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
@@ -134,19 +176,14 @@ public class ObjectIDTest
   }
 
   [Test]
-  public void HashCode ()
+  public void EqualsWithNull ()
   {
-    ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
-    ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
-    ObjectID id3 = new ObjectID ("sqlserver1", "Order", 41);
-
-    Assert.IsTrue (id1.GetHashCode() == id2.GetHashCode());
-    Assert.IsFalse (id1.GetHashCode() == id3.GetHashCode());
-    Assert.IsFalse (id2.GetHashCode() == id3.GetHashCode());
+    ObjectID id = new ObjectID ("sqlserver1", "Order", 42);
+    Assert.IsFalse (id.Equals (null));
   }
 
   [Test]
-  public void EqualityOperator ()
+  public void EqualityOperatorTrue ()
   {
     ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
     ObjectID id2 = new ObjectID ("sqlserver1", "Order", 42);
@@ -156,7 +193,7 @@ public class ObjectIDTest
   }
 
   [Test]
-  public void InequalityOperator ()
+  public void EqualityOperatorFalse ()
   {
     ObjectID id1 = new ObjectID ("sqlserver1", "Order", 42);
     ObjectID id2 = new ObjectID ("sqlserver2", "Customer", 1);
