@@ -15,11 +15,11 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
 {
   public BooleanProperty (      
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired,
       Type itemType, 
       bool isList, 
       bool isNullableType)
-      : base (propertyInfo, propertyDefinition, itemType, isList, isNullableType)
+      : base (propertyInfo, isRequired, itemType, isList, isNullableType)
   {
   }
 

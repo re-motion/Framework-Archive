@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
@@ -15,11 +14,11 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
 {
   public ByteProperty (      
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired, 
       Type itemType, 
       bool isList, 
       bool isNullableType)
-      : base (propertyInfo, propertyDefinition, itemType, isList, isNullableType)
+      : base (propertyInfo, isRequired, itemType, isList, isNullableType)
   {
   }
 
