@@ -264,6 +264,7 @@
         <includes name="${project.basedir}/AssemblyInfo.cs" />
       </fileset>
     </replace>
+    <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
   </target>
     
   <target name="vsassemblyinfo" description="prepare assembly info for VS.NET">
@@ -283,6 +284,7 @@
         <includes name="${project.basedir}/AssemblyInfo.cs" />
       </fileset>
     </replace>
+    <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
   </target>
     
   <!--======================= DOCUMENTATION =======================-->
