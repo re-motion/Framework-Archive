@@ -22,8 +22,8 @@ public class BocItemCommand
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class HrefCommandProperties
   {
-    private string _href;
-    private string _target;
+    private string _href = string.Empty;
+    private string _target = string.Empty;
 
     /// <summary> Simple constructor. </summary>
     public HrefCommandProperties()
@@ -36,40 +36,10 @@ public class BocItemCommand
     {
       StringBuilder stringBuilder = new StringBuilder (50);
 
-      if (! StringUtility.IsNullOrEmpty (Href))
-      {
-        stringBuilder.Append (Href);
-        if (! StringUtility.IsNullOrEmpty (Target))
-          stringBuilder.AppendFormat (", {0}", Target);
-      }
-
-      return stringBuilder.ToString();
-    }
-
-    /// <exclude />
-    [Obsolete ("Only used for HrefCommandPropertiesConverter.")]
-    internal static HrefCommandProperties Parse (string value)
-    {
-      // parse the format "href" or "href, target"
-      string[] properties = ((string) value).Split (',');
-
-      if (properties.Length > 0 && properties.Length < 3) 
-      {          
-        BocItemCommand.HrefCommandProperties hrefProperties = 
-          new BocItemCommand.HrefCommandProperties();
-
-        hrefProperties.Href = properties[0].Trim();                
-        if (StringUtility.IsNullOrEmpty (hrefProperties.Href))
-          return null;
-
-        hrefProperties.Target = string.Empty;
-        if (properties.Length == 2)
-          hrefProperties.Target  = properties[1].Trim();
-
-        return hrefProperties;
-      }
-
-      throw new FormatException ("The string '" + value + "' could not be converted to type BocItemCommand.HrefCommandProperties. Expected format is 'href' or 'href, target'.");
+      if (_href == string.Empty || _target == string.Empty)
+        return _href;
+      else
+        return _href + ", " + _target;
     }
 
     /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
@@ -86,11 +56,12 @@ public class BocItemCommand
     {
       get
       {
-        return StringUtility.NullToEmpty (_href); 
+        return _href; 
       }
       set
       {
-        _href = value; 
+        _href = StringUtility.NullToEmpty (value); 
+        _href = _href.Trim();
       }
     }
 
@@ -111,11 +82,12 @@ public class BocItemCommand
     { 
       get
       { 
-        return StringUtility.NullToEmpty (_target); 
+        return _target; 
       }
       set
       {
-        _target = value; 
+         _target = StringUtility.NullToEmpty (value); 
+         _target = _target.Trim();
       }
     }
   }
@@ -124,14 +96,12 @@ public class BocItemCommand
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class WxeFunctionCommandProperties
   {
-    private string _typeName;
-    private string[] _parameters;
+    private string _typeName = string.Empty;
+    private string _parameters = string.Empty;
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandProperties()
-    {
-      ParameterList = string.Empty;
-    }
+    {}
 
     /// <summary>
     ///   Returns a string representation of this <see cref="WxeFunctionCommandProperties"/>.
@@ -140,45 +110,10 @@ public class BocItemCommand
     /// <returns> A <see cref="string"/>. </returns>
     public override string ToString()
     {
-      StringBuilder stringBuilder = new StringBuilder (50);
-
-      if (! StringUtility.IsNullOrEmpty (TypeName))
-      {
-        stringBuilder.Append (TypeName);
-        if (Parameters != null)
-          stringBuilder.AppendFormat (" ({0})", StringUtility.ConcatWithSeperator (Parameters, ", "));
-      }
-
-      return stringBuilder.ToString();
-    }
-
-    /// <exclude />
-    [Obsolete ("Only used for WxeFunctionCommandPropertiesConverter.")]
-    internal static WxeFunctionCommandProperties Parse (string value)
-    {
-      // parse the format "functionTypeName ([parameter1[, parameter2[, ...]]])"
-      string[] properties = ((string) value).Split ('(');
-
-      if (properties.Length == 2) 
-      {
-        BocItemCommand.WxeFunctionCommandProperties wxeFunctionProperties = 
-          new BocItemCommand.WxeFunctionCommandProperties();
-
-        wxeFunctionProperties.TypeName = properties[0].Trim();
-        if (StringUtility.IsNullOrEmpty (wxeFunctionProperties.TypeName))
-          return null;
-
-        properties[1].Trim();
-        if (properties[1].EndsWith (")"))
-        {
-          wxeFunctionProperties.ParameterList = 
-            properties[1].Substring (0, properties[1].Length - 1);
-        }
-
-        return wxeFunctionProperties;
-      }
-
-      throw new FormatException ("The string '" + value + "' could not be converted to type BocItemCommand.WxeFunctionCommandProperties. Expected format is 'typename ([parameter1[, parameter2[, ...]]])'.");
+      if (_typeName == string.Empty)
+        return string.Empty;
+      else
+        return _typeName + " (" + _parameters + ")";
     }
 
     /// <summary> 
@@ -198,28 +133,12 @@ public class BocItemCommand
     {
       get
       {
-        return StringUtility.NullToEmpty (_typeName); 
+        return _typeName; 
       }
       set
       {
-        _typeName = value; 
-      }
-    }
-
-    //  TODO: WxeFunctionCommandProperties: comment string[] Parameters
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public string[] Parameters
-    {
-      get
-      {
-        if (_parameters == null)
-            return new string[0];
-        return _parameters; 
-      }
-      set
-      {
-        _parameters = value; 
+        _typeName = StringUtility.NullToEmpty (value); 
+        _typeName = _typeName.Trim();
       }
     }
 
@@ -231,41 +150,21 @@ public class BocItemCommand
     ///   The list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
-    //  TODO: WxeFunctionCommandProperties: comment string ParameterList
-    //  Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("A list of parameters for the command.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string ParameterList
+    public string Parameters
     {
       get
       {
-        if (Parameters == null)
-          return "";
-        return StringUtility.ConcatWithSeperator (Parameters, ", ");
+        return _parameters;
       }
       set
       {
-        value = StringUtility.NullToEmpty (value);
-        value = value.Trim();
-        if (value.Length == 0)
-        {
-          _parameters = new string[0];
-        }
-        else
-        {
-          string[] paramters = value.Split (',');   
-          _parameters = new string[paramters.Length];
-          for (int i = 0; i < paramters.Length; i++)
-          {
-            paramters[i] = paramters[i].Trim();
-            if (paramters[i].Length == 0)
-              throw new ArgumentEmptyException ("Parameter name missing for parameter No. " + i + " in ParameterList + '" + value + "'.");
-            _parameters[i] = paramters[i];
-          }
-        }
+        _parameters = StringUtility.NullToEmpty (value);
+        _parameters = _parameters.Trim();
       }
     }
   }
@@ -440,12 +339,12 @@ public class BocItemCommand
       for (int i = 0; i < WxeFunctionCommand.Parameters.Length; i++)
       {
         //  TODO: BocItemCommand: Interpret BocItemCommand Parameters
-        if (WxeFunctionCommand.Parameters[i] == "%ID")
-          arguments[i] = businessObjectID;
-        else if (WxeFunctionCommand.Parameters[i] == "%Index")
-          arguments[i] = listIndex;
-        else
-          arguments[i] = WxeFunctionCommand.Parameters[i];
+//        if (WxeFunctionCommand.Parameters[i] == "%ID")
+//          arguments[i] = businessObjectID;
+//        else if (WxeFunctionCommand.Parameters[i] == "%Index")
+//          arguments[i] = listIndex;
+//        else
+//          arguments[i] = WxeFunctionCommand.Parameters[i];
       }
 
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);

@@ -70,7 +70,7 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
   {
     const string collectionEditorCollectionFormTypeName = "System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm";
 
-    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+    BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic;
 
     Type collectionEditorCollectionFormType = editor.GetType();
     if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
@@ -82,7 +82,8 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
           collectionEditorCollectionFormType), "editor");
     }
 
-    //  private PropertyGrid CollectionEditorCollection.propertyBrowser
+    //  HACK: CollectionEditorServiceProvider: Reflection on private PropertyGrid CollectionEditorCollectionForm.propertyBrowser
+    //  private PropertyGrid System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm.propertyBrowser
     FieldInfo propertyBrowserFieldInfo = collectionEditorCollectionFormType.GetField (
         "propertyBrowser",
         bindingFlags);
@@ -93,15 +94,19 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
 
   private void SetPropertyGridSplitter (PropertyGrid propertyGrid, double labelRatio)
   {
-    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+    BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic;
 
-    //  private PropertyGridView PropertyGrid.gridView
+    //  class PropertyGridView is internal
+
+    //  HACK: CollectionEditorServiceProvider: Reflection on private PropertyGridView PropertyGrid.GetPropertyGridView()
+    //  private PropertyGridView System.Windows.Forms.PropertyGrid.GetPropertyGridView()
     MethodInfo getPropertyGridViewMethodInfo = typeof (PropertyGrid).GetMethod (
         "GetPropertyGridView",
         bindingFlags);
     object propertyGridView = getPropertyGridViewMethodInfo.Invoke (propertyGrid, null);
 
-    //  public double PropertyGridView.labelRatio
+    //  HACK: CollectionEditorServiceProvider: Reflection on public double PropertyGridView.labelRatio
+    //  public double System.Windows.Forms.PropertyGridInternal.GetPropertyGridView.labelRatio
     Type propertyGridViewType = propertyGridView.GetType();
     FieldInfo labelRatioFieldInfo = propertyGridViewType.GetField ("labelRatio");
     labelRatioFieldInfo.SetValue(propertyGridView, labelRatio);

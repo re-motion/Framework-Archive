@@ -1349,6 +1349,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
                                     | BindingFlags.NonPublic
                                     | BindingFlags.InvokeMethod;
 
+    //  HACK: FormGridManager: Reflection on internal void Control.LoadViewStateRecursive (object)
+    //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
     typeof (Control).InvokeMember (
       "LoadViewStateRecursive",
       bindingFlags,
@@ -1368,6 +1370,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
                                     | BindingFlags.NonPublic
                                     | BindingFlags.InvokeMethod;
 
+    //  HACK: FormGridManager: Reflection on internal object Control.SaveViewStateRecursive()
+    //  internal object System.Web.UI.Control.LoadViewStateRecursive()
     object viewState = typeof (Control).InvokeMember (
         "SaveViewStateRecursive",
         bindingFlags,

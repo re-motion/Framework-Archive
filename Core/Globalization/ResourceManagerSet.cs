@@ -68,10 +68,10 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
     foreach (IResourceManager resourceManager in this)
     {
       NameValueCollection strings = resourceManager.GetAllStrings (prefix);
-      foreach (DictionaryEntry entry in strings)
+      for (int i = 0; i < strings.Count; i++)
       {
-        string key = (string)entry.Key;
-        result[key] = (string)entry.Value;
+        string key = strings.Keys[i];
+        result[key] = strings[i];
       }
     }
     return result;
