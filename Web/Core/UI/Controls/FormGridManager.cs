@@ -1664,6 +1664,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     FormGridRowInfoCollection formGridRowInfos =
         rowProvider.GetAdditionalRows (formGrid.Table.ID);
+    if (formGridRowInfos == null)
+      return;
 
     foreach (FormGridRowInfo prototype in formGridRowInfos)
     {
@@ -1723,6 +1725,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       return;
 
     StringCollection strings = rowProvider.GetHiddenRows (formGrid.Table.ID);
+    if (strings == null)
+      return; 
 
     foreach (string id in strings)
     {
