@@ -78,9 +78,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   private bool _enableWordWrap = false;
   private bool _showLines = true;
   private bool _enableTreeNodeViewState = true;
-
   private bool _hasTreeNodesCreated = false;
-
+  private WebTreeNode _selectedNode = null;
 
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
@@ -143,6 +142,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   {
     string[] pathSegments;
     WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
+    SetSelectedNode (clickedNode);
     OnClick (clickedNode, pathSegments);
   }
 
@@ -255,6 +255,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
           if (isEvaluated)
             EvaluateTreeNodeInternal (node);
         }
+        bool isSelected = (bool) values[2];
+        if (isSelected)
+          node.IsSelected = true;
         LoadNodesViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
       }
     }
@@ -269,9 +272,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       WebTreeNode node = nodes[i];    
       Triplet nodeViewState = new Triplet();
       nodeViewState.First = node.NodeID;
-      object[] values = new object[2];
+      object[] values = new object[3];
       values[0] = node.IsExpanded;
       values[1] = node.IsEvaluated;
+      values[2] = node.IsSelected;
       nodeViewState.Second = values;
       nodeViewState.Third = SaveNodesViewStateRecursive (node.Children);
       nodesViewState[i] = nodeViewState;
@@ -400,7 +404,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <summary> Renders the <paramref name="node"/>'s head (i.e. icon and text) onto the <paremref name="writer"/>. </summary>
   private void RenderNodeHead (HtmlTextWriter writer, WebTreeNode node, string nodePath)
   {
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);  
+    if (node.IsSelected)
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);  
+    else
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);  
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
     string argument = c_clickCommandPrefix + nodePath;
@@ -616,6 +623,21 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
         ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconWhite);
   }
   
+  /// <summary> Sets the selected tree node. </summary>
+  internal void SetSelectedNode (WebTreeNode node)
+  {
+    if (node != null && node.TreeView != this)
+      throw new InvalidOperationException ("Only tree nodes that are part of this tree can be selected.");
+    if (_selectedNode != node)
+    {
+      if ((_selectedNode != null) && _selectedNode.IsSelected)
+        _selectedNode.SetSelected (false);
+      _selectedNode = node;
+      if ((_selectedNode != null) && ! _selectedNode.IsSelected)
+        _selectedNode.SetSelected (true);
+    }
+  }
+
   /// <summary> Gets the tree nodes displayed by this tree view. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
@@ -701,6 +723,14 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     remove { Events.RemoveHandler (s_clickEvent, value); }
   }
 
+  /// <summary> Gets the currently selected tree node. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public WebTreeNode SelectedNode
+  {
+    get { return _selectedNode; }
+  }
+ 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/> node. </summary>
   /// <remarks> Class: <c>treeViewNode</c> </remarks>
@@ -714,6 +744,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   protected virtual string CssClassNodeHead
   {
     get { return "treeViewNodeHead"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node head if it is selected. </summary>
+  /// <remarks> Class: <c>treeViewNodeHeadSelected</c> </remarks>
+  protected virtual string CssClassNodeHeadSelected
+  {
+    get { return "treeViewNodeHeadSelected"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node children. </summary>
