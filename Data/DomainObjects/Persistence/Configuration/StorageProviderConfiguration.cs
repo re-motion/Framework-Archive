@@ -1,6 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Loader;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
 {

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
 {
 public class StorageProviderDefinitionCollection : CollectionBase

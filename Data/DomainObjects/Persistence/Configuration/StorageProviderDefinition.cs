@@ -1,5 +1,7 @@
 using System;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
 {
 public abstract class StorageProviderDefinition
