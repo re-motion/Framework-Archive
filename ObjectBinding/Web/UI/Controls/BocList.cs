@@ -22,6 +22,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
 // TODO: BocList: Details View
 // TODO: BocList: Sort-Buttons
+// TODO: BocList Designer: DesignerVerb "Edit Fixed Columns"
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatchTarget
 {

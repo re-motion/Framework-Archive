@@ -147,15 +147,15 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 {
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   private BocItemCommand _command;
-  /// <summary> The text symbolizing the command on the rendered page. </summary>
+  /// <summary> The text representing the command on the rendered page. </summary>
   private object _label;
-  /// <summary> The image symbolizing the command on the rendered page. </summary>
+  /// <summary> The image representing the command on the rendered page. </summary>
   private string _iconPath;
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
-  /// <param name="label"> The text symbolizing the command on the rendered page. </param>
-  /// <param name="iconPath"> The image symbolizing the command on the rendered page. </param>
+  /// <param name="label"> The text representing the command on the rendered page. </param>
+  /// <param name="iconPath"> The image representing the command on the rendered page. </param>
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
   public BocCommandColumnDefinition (
@@ -211,7 +211,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
     set { _command = value; }
   }
 
-  /// <summary> The text symbolizing the command in the rendered page. </summary>
+  /// <summary> The text representing the command in the rendered page. </summary>
   /// <value> A <see cref="string"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
@@ -223,7 +223,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
     set { _label = value; }
   }
 
-  /// <summary> The image symbolizing the command in the rendered page. </summary>
+  /// <summary> The image representing the command in the rendered page. </summary>
   /// <value> An <see cref="Image"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]

@@ -115,8 +115,9 @@ public class WxeParameterDeclaration
   ///   Take the values of actualParameters and pass them to calleeVariables.
   /// </summary>
   /// <remarks>
-  ///   Actual parameters can either be constant values or variable names referring to callerVariables. Use strings with the '@' prefix character to
-  ///   reference variables in callerVariables. Only in- and inout-parameters are copied.
+  ///   Actual parameters can either be constant values or variable names referring to 
+  ///   callerVariables. Use strings with the '@' prefix character to reference variables in 
+  ///   callerVariables. Only in- and inout-parameters are copied.
   /// </remarks>
   public static void CopyToCallee (
       WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters, 
@@ -146,8 +147,9 @@ public class WxeParameterDeclaration
   ///   Take the parameter values of calleeVariables and pass them back to callerVariables.
   /// </summary>
   /// <remarks>
-  ///   Actual parameters can either be constant values or variable names referring to callerVariables. Use strings with the '@' prefix character to
-  ///   reference variables in callerVariables. Only out- and inout-parameters referring to variable names are copied.
+  ///   Actual parameters can either be constant values or variable names referring to 
+  ///   callerVariables. Use strings with the '@' prefix character to reference variables in 
+  ///   callerVariables. Only out- and inout-parameters referring to variable names are copied.
   /// </remarks>
   public static void CopyToCaller (
       WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters, 
@@ -165,7 +167,8 @@ public class WxeParameterDeclaration
   }
 
   /// <summary>
-  ///   If actualParameterValue is a string like "@param", "param" is returned. Otherwise, null is returned.
+  ///   If actualParameterValue is a string like "@param", "param" is returned. 
+  ///   Otherwise, null is returned.
   /// </summary>
   internal static string GetParameterName (object actualParameterValue)
   {
