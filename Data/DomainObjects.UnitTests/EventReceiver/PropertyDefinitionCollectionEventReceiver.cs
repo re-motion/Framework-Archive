@@ -2,9 +2,9 @@ using System;
 
 using Rubicon.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-public class PropertyDefinitionCollectionEventReceiver
+public class PropertyDefinitionCollectionEventReceiver : EventReceiverBase
 {
   // types
 
@@ -44,7 +44,9 @@ public class PropertyDefinitionCollectionEventReceiver
   private void PropertyDefinitionCollection_Adding (object sender, PropertyDefinitionAddingEventArgs args)
   {
     _addingPropertyDefinition = args.PropertyDefinition;
-    args.Cancel = _cancel;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
   private void PropertyDefinitionCollection_Added (object sender, PropertyDefinitionAddedEventArgs args)

@@ -2,9 +2,9 @@ using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-public class PropertyValueEventReceiver
+public class PropertyValueEventReceiver : EventReceiverBase
 {
   // types
 
@@ -26,8 +26,8 @@ public class PropertyValueEventReceiver
 
   public PropertyValueEventReceiver (PropertyValue propertyValue, bool cancel)
   {
-    propertyValue.Changing += new ValueChangingEventHandler (propertyValue_Changing);
-    propertyValue.Changed += new EventHandler(propertyValue_Changed);
+    propertyValue.Changing += new ValueChangingEventHandler (PropertyValue_Changing);
+    propertyValue.Changed += new EventHandler(PropertyValue_Changed);
     _cancel = cancel;
   }
 
@@ -53,15 +53,17 @@ public class PropertyValueEventReceiver
     get { return _newValue; }
   }
 
-  private void propertyValue_Changing(object sender, ValueChangingEventArgs e)
+  private void PropertyValue_Changing(object sender, ValueChangingEventArgs e)
   {
     _hasChangingEventBeenCalled = true;
-    e.Cancel = _cancel;
     _oldValue = e.OldValue;
     _newValue = e.NewValue;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
-  private void propertyValue_Changed(object sender, EventArgs e)
+  private void PropertyValue_Changed(object sender, EventArgs e)
   {
     _hasChangedEventBeenCalled = true;
   }
