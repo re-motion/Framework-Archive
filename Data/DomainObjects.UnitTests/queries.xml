@@ -7,23 +7,18 @@
     
 	<query id="OrderQuery" type="collection">
 	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>
-	    		select Order.* from Order 
-	    			  inner join Customer 
-	    			  where Customer.ID = @customerID 
-	    			  order by OrderNo asc 
-	    </statement>
-	    <collectionType>OrderCollection</collectionType>
+	    <statement>select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
+	    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
 	</query>
 	
 	<query id="CustomerTypeQuery" type="collection">
 	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc</statement>
+	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
 	</query>
 	
 	<query id="OrderSumQuery" type="value">
 	    <storageProviderID>TestDomain</storageProviderID>        
-	    <statement>select sum(quantity) from Order where CustomerID = @customerID</statement>
+	    <statement>select sum(quantity) from Order where CustomerID = @customerID;</statement>
 	</query>
 	
 </queries>
