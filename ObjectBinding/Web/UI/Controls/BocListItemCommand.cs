@@ -64,25 +64,25 @@ public class BocListItemCommand: BocCommand
     ///       <description> Contents </description>
     ///     </listheader>
     ///     <item>
-    ///       <term> @index </term>
+    ///       <term> index </term>
     ///       <description> 
     ///         The index of the <see cref="IBusinessObject"/> in the <see cref="IBusinessObjectProperty"/>.
     ///       </description>
     ///     </item>
     ///     <item>
-    ///       <term> @id </term>
+    ///       <term> id </term>
     ///       <description> The ID, if the object is of type <see cref="IBusinessObjectWithIdentity"/>. </description>
     ///     </item>
     ///     <item>
-    ///       <term> @object </term>
+    ///       <term> object </term>
     ///       <description> The <see cref="IBusinessObject"/> itself. </description>
     ///     </item>
     ///     <item>
-    ///       <term> @parent </term>
+    ///       <term> parent </term>
     ///       <description> The containing <see cref="IBusinessObject"/>. </description>
     ///     </item>
     ///     <item>
-    ///       <term> @parentproperty </term>
+    ///       <term> parentproperty </term>
     ///       <description> The <see cref="IBusinessObjectReferenceProperty"/> used to acess the object. </description>
     ///     </item>
     ///   </list>
@@ -91,7 +91,7 @@ public class BocListItemCommand: BocCommand
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
-    [Description ("A comma separated list of parameters for the command. The following reference parameter are available: @index, @id, @object, @parent, @parentproperty.")]
+    [Description ("A comma separated list of parameters for the command. The following reference parameter are available: index, id, object, parent, parentproperty.")]
     public override string Parameters
     {
       get { return base.Parameters; }

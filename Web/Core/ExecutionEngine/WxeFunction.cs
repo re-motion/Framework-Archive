@@ -208,7 +208,7 @@ public abstract class WxeFunction: WxeStepList
   {
     CheckParametersNotInitialized();
 
-    object[] _actualParameters = ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
+    _actualParameters = ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
   
     if (! delayInitialization)
       EnsureParametersInitialized (additionalParameters);
