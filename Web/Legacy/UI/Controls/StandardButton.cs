@@ -5,7 +5,8 @@ namespace Rubicon.Web.UI.Controls
 {
 	/// <summary>
 	/// StandardButton to be used in web applications. 
-	/// Note: The StandardButton does not support client-side validation.
+	/// Note: The StandardButton does not support client-side validation and
+	/// the client-side onClick event.
 	/// </summary>
 	public class StandardButton : Button
 	{
@@ -16,9 +17,11 @@ namespace Rubicon.Web.UI.Controls
     protected override void OnPreRender (EventArgs e)
     {
       // Disable button client-side to give visual feedback and avoid that user clicks multiple times.
-      Attributes["onClick"] = AppendTrailingSemicolonOnDemand (Attributes["onClick"]);
-      Attributes["onClick"] += "this.disabled=true; " + Page.GetPostBackClientEvent (this, string.Empty);
-      Attributes["onClick"] = AppendTrailingSemicolonOnDemand (Attributes["onClick"]);
+
+      string onClickJavaScript = "this.disabled=true; " + Page.GetPostBackClientEvent (this, string.Empty);
+      onClickJavaScript = AppendTrailingSemicolonOnDemand (onClickJavaScript);
+
+      Attributes["onClick"] = onClickJavaScript;
 
       base.OnPreRender (e);
     }
