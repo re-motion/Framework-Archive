@@ -9,6 +9,17 @@ using System.Drawing;
 namespace Rubicon.Findit.Client.Controls
 {
 
+public interface INavigablePage
+{
+  bool AllowImmediateClose {get; }
+}
+
+public interface ITabItem
+{
+  string Href { get; set; }
+  bool RequiresPageToken { get; set; }
+}
+
 public class TabControlBuilder: ControlBuilder
 {
 	public override bool AllowWhitespaceLiterals ()
@@ -35,11 +46,11 @@ public class TabControlBuilder: ControlBuilder
 /// </summary>
 [ParseChildren (false, "Controls")]
 [ControlBuilder (typeof (TabControlBuilder))]
-public class Tab: Control
+public class Tab: Control, ITabItem
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
-  private bool _pageToken = false;
+  private bool _requiresPageToken = false;
 
 	public string Label
 	{
@@ -51,21 +62,21 @@ public class Tab: Control
 		get { return _href; }
 		set { _href = value; }
 	}
-  public bool PageToken
+  public bool RequiresPageToken
   {
-    get { return _pageToken; }
-    set { _pageToken = value; }
+    get { return _requiresPageToken; }
+    set { _requiresPageToken = value; }
   }
 }
 
 /// <summary>
 /// A menu item within a tab
 /// </summary>
-public class TabMenu: Control
+public class TabMenu: Control, ITabItem
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
-  private bool _pageToken = false;
+  private bool _requiresPageToken = false;
 
 
 	public string Label
@@ -79,10 +90,10 @@ public class TabMenu: Control
 		set { _href = value; }
 	}
 
-  public bool PageToken
+  public bool RequiresPageToken
   {
-    get { return _pageToken; }
-    set { _pageToken = value; }    
+    get { return _requiresPageToken; }
+    set { _requiresPageToken = value; }    
   }
 }
 
@@ -108,6 +119,7 @@ public class TabControl: Control, IPostBackEventHandler
 	private bool _vertical = false;
   private bool _hasMenuBar = false;
   private string _statusMessage = string.Empty;
+  private bool _serverSideNavigation = false;
 
 	public string FirstImage
 	{ 
@@ -184,6 +196,11 @@ public class TabControl: Control, IPostBackEventHandler
     get { return _statusMessage; }
     set { _statusMessage = value; }
   }
+  public bool ServerSideNavigation
+  {
+    get { return _serverSideNavigation; }
+    set { _serverSideNavigation = value; }
+  }
 
 	public TabCollection Items
 	{
@@ -211,20 +228,61 @@ public class TabControl: Control, IPostBackEventHandler
     }
 	}
 
-  protected void MoveToTab (int activeTab)
+  public void MoveToTab (int tab)
   {
-    _activeTab = activeTab;
-    Page.Session["navTab"]= _activeTab;
+    if (tab >= _items.Count) throw new ArgumentOutOfRangeException ("tab");
+
+    _activeTab = tab;
     Tab selectedTab = _items[_activeTab];
-    string href = selectedTab.Href;
-    href = PageUtility.GetPageUrl (this.Page, href);
-    if (selectedTab.PageToken)
-      href= AddPageToken(href);
-      /*
-      Page.RegisterStartupScript ("OpenPage", 
-      "<script language='JavaScript'>location.replace ('" + href + "' );</script>");
-      */
-      Page.Response.Redirect (href);
+
+    string href = GetCompleteUrl (selectedTab, tab);
+    Page.Response.Redirect (href);
+  }
+
+  private string GetCompleteUrl (TabMenu tabMenu, int newSelectedTabIndex, int newSelectedMenuIndex)
+  {
+    return InternalGetCompleteUrl (tabMenu, newSelectedTabIndex, newSelectedMenuIndex);
+  }
+  private string GetCompleteUrl (Tab tab, int newSelectedTabIndex)
+  {
+    string href = tab.Href;
+    if (href == string.Empty)
+    {
+      if (tab.Controls.Count > 0)
+      {
+        TabMenu firstMenu = tab.Controls[0] as TabMenu;
+        if (firstMenu != null)
+        {
+          href = InternalGetCompleteUrl (firstMenu, newSelectedTabIndex, 0);
+        }
+      }
+    }
+    else
+    {
+      href = InternalGetCompleteUrl (tab, newSelectedTabIndex, 0);
+    }
+    return href;
+  }
+
+  private string InternalGetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
+  {
+    /*if (tabItem.Href == string.Empty)
+      return string.Empty;*/
+
+    string url = PageUtility.GetPageUrl (this.Page, tabItem.Href);
+    if (tabItem.RequiresPageToken)
+      url = AddParameter (url, "pageToken", PageUtility.GetUniqueToken());
+
+    url = AddParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
+    url = AddParameter (url, "navSelectedMenu", newSelectedMenuIndex.ToString());
+
+    return url;
+  }
+
+  private string AddParameter (string url, string name, string value)
+  {
+    string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
+    return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode(value);
   }
 
   /*
@@ -244,70 +302,56 @@ public class TabControl: Control, IPostBackEventHandler
 	}
 
   */
-  private string GetHref (string eventName, int itemIndex, Tab tab)
+  private string GetHref (int tabIndex, Tab tab)
+  {
+    return GetHref ("TabSelected", tabIndex, tabIndex, 0, tab);
+  }
+  private string GetHref (int tabIndex, int menuIndex, TabMenu tabMenu)
+  {
+    return GetHref ("MenuSelected", menuIndex, tabIndex, menuIndex, tabMenu);
+  }
+
+  private string GetHref (string eventName, int itemIndex, int tabIndex, int menuIndex, ITabItem tabItem)
   {
 		string resultHref = null;
     string eventArgument = eventName + ":" + itemIndex.ToString();
 		string script = Page.GetPostBackClientEvent (this, eventArgument);
 
-    string href = tab.Href;
-		/*
+    string href = InternalGetCompleteUrl (tabItem, tabIndex, menuIndex);
+
     if (href != string.Empty)
-		{
-      if (tab.PageToken)
-        href = AddPageToken (href);
+    {
+      INavigablePage navigablePage = this.Page as INavigablePage;
+      bool isNavigablePage = navigablePage != null;
+      bool allowImmediateClose = isNavigablePage && navigablePage.AllowImmediateClose;
 
-			if (_target != string.Empty)
-				script = "window.open('" + href + "', '" + _target + "'); " + script;
-			else
-				resultHref = "href=\"" + href + "\"";
-		}
-    */
+      if (   ! _serverSideNavigation 
+          || ! isNavigablePage 
+          || allowImmediateClose)
+		  {
+			  if (_target != string.Empty)
+				  script = "window.open('" + href + "', '" + _target + "'); " + script;
+			  else
+				  resultHref = "href=\"" + href + "\"";
+		  }
+    }
 		if (resultHref == null)
 			resultHref = "href=\"javascript:" + script + "\"";
 
     return resultHref;
   }
 
-  private string GetHref (string eventName, int itemIndex, TabMenu tabMenu)
-  {
-		string resultHref = null;
-    string eventArgument = eventName + ":" + itemIndex.ToString();
-		string script = Page.GetPostBackClientEvent (this, eventArgument);
-
-    string href = tabMenu.Href;
-		if (href != string.Empty)
-		{
-      if (tabMenu.PageToken)
-        href = AddPageToken (href);
-
-			if (_target != string.Empty)
-				script = "window.open('" + href + "', '" + _target + "'); " + script;
-			else
-				resultHref = "href=\"" + href + "\"";
-		}
-		if (resultHref == null)
-			resultHref = "href=\"javascript:" + script + "\"";
-
-    return resultHref;
-  }
   
-  
-  protected string AddPageToken (string href)
-  {
-    if (href.IndexOf ("?") == -1)
-      return href += "?pageToken=" + PageUtility.GetUniqueToken();
-    else
-      return href += "&pageToken=" + PageUtility.GetUniqueToken();
-  }
+
 
 	protected override void Render (HtmlTextWriter output)
 	{
-		object o= Page.Session["navTab"];
-    if (o != null)
-      _activeTab = (int) o;
+		string selectedTab = Page.Request.QueryString["navSelectedTab"];
+    if (selectedTab != null)
+      _activeTab = int.Parse (selectedTab);
     else
       _activeTab = 0;
+
     if (this.Site != null && this.Site.DesignMode)
 		{
 			output.WriteLine ("[TabControl - edit in HTML view]");
@@ -344,7 +388,7 @@ public class TabControl: Control, IPostBackEventHandler
 			if (i == _activeTab)
 				classAttrib = activeClassAttrib;
 
-      string href = GetHref ("TabSelected", i, tab);
+      string href = GetHref (i, tab);
 
 			// write seperator cell
 			if (i > 0)
@@ -421,7 +465,7 @@ public class TabControl: Control, IPostBackEventHandler
             output.WriteLine (" | ");
 
           // string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
-          string menuHref = GetHref ("MenuSelected", i, menu);
+          string menuHref = GetHref (_activeTab, i, menu);
           output.WriteLine ("<a class=\"tabSubLink\" {0}>{1}</a> ", menuHref, menu.Label);
           isFirstMenu = false;
         }

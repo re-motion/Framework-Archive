@@ -62,7 +62,7 @@ public class PageUtility
   /// <returns></returns>
   public static string GetUniqueToken ()
   {
-    return Guid.NewGuid ().ToString ("B") ;
+    return Guid.NewGuid ().ToString ("N") ;
   }
 
   /// <summary>
