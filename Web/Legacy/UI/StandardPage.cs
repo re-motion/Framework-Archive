@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Web.UI;
 
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {

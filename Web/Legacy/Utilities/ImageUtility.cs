@@ -5,7 +5,7 @@ using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.Web.UI.Utilities
+namespace Rubicon.Web.Utilities
 {
 
 internal sealed class UIUtility
