@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocReferenceValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
+public class BocReferenceValue//: //BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
 {
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectReferenceProperty) };
