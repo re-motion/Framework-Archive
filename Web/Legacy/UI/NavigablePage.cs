@@ -12,7 +12,7 @@ namespace Rubicon.Web.UI.Controls
 /// <summary>
 /// Provides a common implementation for interface INavigablePage with a TabControl for navigation.
 /// </summary>
-public class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEventHandler
+internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEventHandler
 {
   // types
 
