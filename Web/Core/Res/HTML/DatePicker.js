@@ -61,6 +61,7 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   _datePicker_currentDatePicker = frame;
   frame.style.display = '';
   _datePicker_isEventAfterDatePickerButtonClick = true;
+  target.document.onclick = DatePicker_OnDocumentClick;
 }
 
 //  Closes the currently visible date picker frame.
@@ -91,12 +92,12 @@ function DatePicker_CloseVisibleDatePickerFrame (newDatePicker)
 //  frame: The IFrame containing the date picker that will be shown.
 function DatePicker_InitializeCalendarFrame (target, frame)
 {
-  document.all['TargetIDField'].value = target.id;
-  document.all['FrameIDField'].value = frame.id;
+  document.getElementById ('TargetIDField').value = target.id;
+  document.getElementById ('FrameIDField').value = frame.id;
   
-  if (document.all['DateValueField'].value == '' && target.value != '')
+  if (document.getElementById ('DateValueField').value == '' && target.value != '')
   {
-    document.all['DateValueField'].value = target.value;
+    document.getElementById ('DateValueField').value = target.value;
     __doPostBack('','');
   }
 }
@@ -105,7 +106,7 @@ function DatePicker_InitializeCalendarFrame (target, frame)
 //  Belongs to the date picker frame.
 function DatePicker_Calendar_SelectionChanged (value)
 {
-  target = window.parent.document.all[document.all['TargetIDField'].value];
+  target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
   target.value = value;
 
   DatePicker_CloseDatePicker();
@@ -115,9 +116,10 @@ function DatePicker_Calendar_SelectionChanged (value)
 //  Belongs to the date picker frame.
 function DatePicker_CloseDatePicker() 
 {
-  document.all['DateValueField'].value = '';
-  target = window.parent.document.all[document.all['TargetIDField'].value];
-  frame = window.parent.document.all[document.all['FrameIDField'].value];
+  document.getElementById ('DateValueField').value = '';
+  target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
+  frame = window.parent.document.getElementById (document.getElementById ('FrameIDField').value);
+  target.document.onclick = null;
   target.focus();
   frame.style.display = 'none';
 }
@@ -138,9 +140,3 @@ function DatePicker_OnDocumentClick()
     _datePicker_currentDatePicker = null;
   }  
 }
-
-//  Eventhandler for the parent page's document onclick event. 
-//  Must be rendered inside the parent page.
-//  <script for="document" event="onclick()" language="JScript" type="text/jscript">
-//  { DatePicker_OnDocumentClick(); return true; }
-//  </script>
