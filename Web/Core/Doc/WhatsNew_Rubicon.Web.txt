@@ -6,9 +6,12 @@
     in neuem Fenster optimiert für Anzeigen >= 1024x768.
   * GetWindowOpenJavascript: Gibt den Javascript Methodenaufruf zum Öffnen von URLs in 
     neuem Fenster zurück.
-- Neue Methode in StandardPage:
+- Neue Methoden in StandardPage:
   * GetWindowOpenJavascriptWithRegistration: Registriert Javascript Methode zum Öffnen
     von URLs in neuem Fenster und liefert den Javascript Methodenaufruf zurück.        
+  * CloseBrowserWindow: Räumt Session Variablen auf und schließt Browser Fenster. In diesem 
+    Fall wird der ViewState nicht mehr in die Session geschrieben, damit kein Memory Leak
+    entsteht.    
 - Neues Control "StandardControl" eingeführt:
   Unterstützt aktuell den Zugriff auf Session Variablen der NavigablePage (pageToken-Handling)
 

@@ -18,6 +18,7 @@ public class StandardPage : NavigablePage
   // member fields
 
   private Control _focusControl = null;
+  private bool _saveViewStateToSession = true;
 
   // construction and disposing
 
@@ -45,6 +46,14 @@ public class StandardPage : NavigablePage
 
   // methods and properties
 
+  protected virtual void CloseBrowserWindow ()
+  {
+    _saveViewStateToSession = false;
+    CleanupSession ();
+    RegisterStartupScript ("CloseWindowKey", 
+        "<script language=\"javascript\" type=\"text/javascript\">\nwindow.close ();\n</script>");
+  }
+
   public string GetErrorImage (string errorMessage)
   {
     return UIUtility.GetErrorImage (this, errorMessage);
@@ -62,7 +71,7 @@ public class StandardPage : NavigablePage
 
   protected virtual bool SaveViewStateToSession 
   {
-    get { return true; }
+    get { return _saveViewStateToSession; }
   }
 
   protected virtual bool PreventClientCaching
