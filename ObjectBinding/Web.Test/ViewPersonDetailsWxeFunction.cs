@@ -9,18 +9,10 @@ public class ViewPersonDetailsWxeFunction: WxeFunction
   static readonly WxeParameterDeclaration[] s_parameters =  { 
       new WxeParameterDeclaration ("id", true, WxeParameterDirection.In, typeof (string))};
 
-  public ViewPersonDetailsWxeFunction (params object[] actualParameters)
-    : base (actualParameters)
-  {
-  }
-
   // parameters and local variables
   public override WxeParameterDeclaration[] ParameterDeclarations
   {
-    get
-    {
-      return s_parameters;
-    }
+    get { return s_parameters; }
   }
 
   [WxeParameter (1, true, WxeParameterDirection.In)]
