@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Globalization;
+using System.Collections.Specialized;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -18,15 +19,6 @@ public enum BocTextValueType
   Date,
   DateTime,
   Double
-}
-
-/// <summary>
-/// This interface is defined by compound web controls that define a primary child control that
-/// can be used as a target for labels etc.
-/// </summary>
-public interface IGetTargetControl
-{
-  Control GetTargetControl();
 }
 
 /// <summary>
@@ -46,7 +38,7 @@ public interface IGetTargetControl
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetControl
+public class BocTextValue: BusinessObjectBoundModifiableWebControl
 {
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
@@ -98,9 +90,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
     _label.EnableViewState = false;
     Controls.Add (_label);
 
-    string newValue = this.Page.Request.Form[_textBox.UniqueID];
-    if (newValue != null)
-      _newText = newValue;
+    if (! (this.Site != null && this.Site.DesignMode))
+    {
+      string newValue = this.Page.Request.Form[_textBox.UniqueID];
+      if (newValue != null)
+        _newText = newValue;
+    }
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
   }
@@ -394,9 +389,9 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
     }
   }
 
-  public Control GetTargetControl() // IGetTargetControl.GetTargetControl()
+  public override Control TargetControl
   {
-    return _textBox;
+    get { return (_textBox != null) ? _textBox : (Control) this; }
   }
 
   /// <summary>
@@ -440,7 +435,7 @@ internal class BocTextValueTextBox: TextBox, IPostBackDataHandler
     _parent.HandleTextChange();    
   }
 
-  public bool LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+  public bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     // always call RaisePostDataChangedEvent 
     return true;

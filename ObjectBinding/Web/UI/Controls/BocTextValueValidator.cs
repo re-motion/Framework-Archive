@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.ObjectBinding;
+using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -80,6 +82,46 @@ public class BocTextValueValidator: CompoundValidator
     set { base.ControlToValidate = value; }
   }
 
+  static BaseValidator[] CreateValidators (BocTextValue textValueControl, string baseID)
+  {
+    ArrayList validators = new ArrayList();
+
+    if (textValueControl.IsRequired)
+    {
+      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+      requiredValidator.ID = baseID + "Required";
+      requiredValidator.ControlToValidate = textValueControl.TargetControl.ID;
+      requiredValidator.ErrorMessage = "Enter a value.";
+      requiredValidator.Display = ValidatorDisplay.Dynamic;
+      validators.Add (requiredValidator);
+    }
+
+    BocTextValueType valueType = textValueControl.ActualValueType;
+    if (valueType == BocTextValueType.DateTime)
+    {
+      DateTimeValidator typeValidator = new DateTimeValidator();
+      typeValidator.ID = baseID + "Type";
+      typeValidator.ControlToValidate = textValueControl.TargetControl.ID;
+      typeValidator.ErrorMessage = "Wrong type.";
+      typeValidator.Display = ValidatorDisplay.Dynamic;
+      validators.Add (typeValidator);
+    }
+    else if (valueType != BocTextValueType.Undefined && valueType != BocTextValueType.String)
+    {
+      CompareValidator typeValidator = new CompareValidator();
+      typeValidator.ID = baseID + "Type";
+      typeValidator.ControlToValidate = textValueControl.TargetControl.ID;
+      typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
+      typeValidator.Type = GetValidationDataType (valueType);
+      typeValidator.ErrorMessage = "Wrong type.";
+      typeValidator.Display = ValidatorDisplay.Dynamic;
+      //typeValidator.EnableClientScript = false;
+      validators.Add (typeValidator);
+    }
+
+    return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
+  }
+
   protected override void CreateChildValidators ()
   {
     if (this.Site != null && this.Site.DesignMode)
@@ -91,45 +133,14 @@ public class BocTextValueValidator: CompoundValidator
     if (textValueControl.IsReadOnly)
       return;
 
-    string controlToValidateId = textValueControl.ID + "_TextBox";
-
-    if (textValueControl.IsRequired)
-    {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-      requiredValidator.ID = this.ID + "_RequiredValidator";
-      requiredValidator.ControlToValidate = controlToValidateId;
-      requiredValidator.ErrorMessage = "Enter a value.";
-      requiredValidator.Display = ValidatorDisplay.Dynamic;
-      Controls.Add (requiredValidator);
-    }
-
-    BocTextValueType valueType = textValueControl.ActualValueType;
-    if (valueType == BocTextValueType.DateTime)
-    {
-      DateTimeValidator typeValidator = new DateTimeValidator();
-      typeValidator.ID = this.ID + "_TypeValidator";
-      typeValidator.ControlToValidate = controlToValidateId;
-      typeValidator.ErrorMessage = "Wrong type.";
-      typeValidator.Display = ValidatorDisplay.Dynamic;
-      Controls.Add (typeValidator);
-    }
-    else if (valueType != BocTextValueType.Undefined && valueType != BocTextValueType.String)
-    {
-      CompareValidator typeValidator = new CompareValidator();
-      typeValidator.ID = this.ID + "_TypeValidator";
-      typeValidator.ControlToValidate = controlToValidateId;
-      typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
-      typeValidator.Type = GetValidationDataType (valueType);
-      typeValidator.ErrorMessage = "Wrong type.";
-      typeValidator.Display = ValidatorDisplay.Dynamic;
-      //typeValidator.EnableClientScript = false;
-      Controls.Add (typeValidator);
-    }
+    string baseID = this.ID + "_Validator";
+    foreach (BaseValidator validator in CreateValidators (textValueControl, baseID))
+      Controls.Add (validator);
   }
 
-  private ValidationDataType GetValidationDataType (BocTextValueType fscValueType)
+  private static ValidationDataType GetValidationDataType (BocTextValueType valueType)
   {
-    switch (fscValueType)
+    switch (valueType)
     {
       case BocTextValueType.Date:
         return ValidationDataType.Date;
@@ -140,7 +151,7 @@ public class BocTextValueValidator: CompoundValidator
       case BocTextValueType.Double:
         return ValidationDataType.Double;
       default:
-        throw new ArgumentException ("Cannot convert " + fscValueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
+        throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
     }
   }
 }

@@ -6,6 +6,177 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+public enum ListControlType
+{
+  DropDownList = 0,
+  ListBox = 1,
+  RadioButtonList = 2
+}
+
+public class ListControlStyle: Style
+{
+  private ListControlType _controlType = ListControlType.DropDownList;
+  private bool _autoPostback = false;
+  private int _listBoxRows = 4;
+  private int _radioButtonListCellPadding = -1;
+  private int _radioButtonListCellSpacing = -1;
+  private int _radioButtonListRepeatColumns = 0;
+  private RepeatDirection _radioButtonListRepeatDirection = RepeatDirection.Vertical;
+  private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
+  private TextAlign _radioButtonListTextAlign = TextAlign.Right;
+
+  [Description("The type of control that is used in edit mode.")]
+  [Category("Behavior")]
+  [DefaultValue (0)]
+  [NotifyParentProperty (true)]
+  public ListControlType ControlType
+  {
+    get { return _controlType; }
+    set { _controlType = value; }
+  }
+
+  [Description("Automatically postback to the server after the text is modified.")]
+  [Category("Behavior")]
+  [DefaultValue (false)]
+  [NotifyParentProperty (true)]
+  public bool AutoPostback
+  {
+    get { return _autoPostback; }
+    set { _autoPostback = value; }
+  }
+
+  [Description("The number of visible rows to display.")]
+  [Category("Appearance")]
+  [DefaultValue (4)]
+  [NotifyParentProperty (true)]
+  public int ListBoxRows
+  {
+    get { return _listBoxRows; }
+    set { _listBoxRows = value; }
+  }
+
+  [Description("The padding between each item.")]
+  [Category("Layout")]
+  [DefaultValue (-1)]
+  [NotifyParentProperty (true)]
+  public int RadioButtonListCellPadding
+  {
+    get { return _radioButtonListCellPadding; }
+    set { _radioButtonListCellPadding = value; }
+  }
+
+  [Description("The spacing between each item.")]
+  [Category("Layout")]
+  [DefaultValue (-1)]
+  [NotifyParentProperty (true)]
+  public int RadioButtonListCellSpacing
+  {
+    get { return _radioButtonListCellSpacing; }
+    set { _radioButtonListCellSpacing = value; }
+  }
+
+  [Description("The number of columns to use to lay out the items.")]
+  [Category("Layout")]
+  [DefaultValue (0)]
+  [NotifyParentProperty (true)]
+  public int RadioButtonListRepeatColumns
+  {
+    get { return _radioButtonListRepeatColumns; }
+    set { _radioButtonListRepeatColumns = value; }
+  }
+
+  [Description("The direction in which items are laid out.")]
+  [Category("Layout")]
+  [DefaultValue (1)]
+  [NotifyParentProperty (true)]
+  public RepeatDirection RadioButtonListRepeatDirection
+  {
+    get { return _radioButtonListRepeatDirection; }
+    set { _radioButtonListRepeatDirection = value; }
+  }
+
+  [Description("Whether items are repeated in a table or in-flow.")]
+  [Category("Layout")]
+  [DefaultValue (0)]
+  [NotifyParentProperty (true)]
+  public RepeatLayout RadionButtonListRepeatLayout
+  {
+    get { return _radionButtonListRepeatLayout; }
+    set { _radionButtonListRepeatLayout = value; }
+  }
+
+  [Description("The alignment of the text label with respect to each item.")]
+  [Category("Appearance")]
+  [DefaultValue (2)]
+  [NotifyParentProperty (true)]
+  public TextAlign RadioButtonListTextAlign
+  {
+    get { return _radioButtonListTextAlign; }
+    set { _radioButtonListTextAlign = value; }
+  }
+
+  public ListControl Create (bool applyStyle)
+  {
+    ListControl control;
+    switch (_controlType)
+    {
+      case ListControlType.DropDownList:
+        control = new DropDownList ();
+        break;
+      case ListControlType.ListBox:
+        control = new ListBox ();
+        break;
+      case ListControlType.RadioButtonList:
+        control = new RadioButtonList ();
+        break;
+      default:
+        throw new NotSupportedException ("Control type " + _controlType.ToString());
+    }
+    if (applyStyle)
+      ApplyStyle (control);
+    return control;
+  }
+
+  public void ApplyCommonStyle (ListControl listControl)
+  {
+    listControl.AutoPostBack = _autoPostback;
+  }
+
+  public void ApplyStyle (ListControl listControl)
+  {
+    if (listControl is ListBox)
+      ApplyStyle ((ListBox) listControl);
+    else if (listControl is DropDownList)
+      ApplyStyle ((DropDownList) listControl);
+    else if (listControl is RadioButtonList)
+      ApplyStyle ((RadioButtonList) listControl);
+    else
+      ApplyCommonStyle (listControl);
+  }
+
+  public void ApplyStyle (ListBox listBox)
+  {
+    ApplyCommonStyle (listBox);
+    listBox.Rows = _listBoxRows;
+  }
+
+  public void ApplyStyle (DropDownList dropDownList)
+  {
+    ApplyCommonStyle (dropDownList);
+  }
+
+  public void ApplyStyle (RadioButtonList radioButtonList)
+  {
+    ApplyCommonStyle (radioButtonList);
+    radioButtonList.CellPadding = _radioButtonListCellPadding;
+    radioButtonList.CellSpacing = _radioButtonListCellSpacing;
+    radioButtonList.RepeatColumns = _radioButtonListRepeatColumns;
+    radioButtonList.RepeatDirection = _radioButtonListRepeatDirection;
+    radioButtonList.TextAlign = _radioButtonListTextAlign;
+    radioButtonList.RepeatLayout = _radionButtonListRepeatLayout;
+  }
+}
+
 /// <summary>
 /// Styles for TextBox controls.
 /// </summary>
@@ -17,6 +188,7 @@ public class TextBoxStyle: Style
   private int _rows = 0;
   private TextBoxMode _textMode = TextBoxMode.SingleLine;
   private bool _wrap = true;
+  private bool _autoPostback = false;
 
   public void ApplyStyle (TextBox textBox)
   {
@@ -29,6 +201,8 @@ public class TextBoxStyle: Style
       textBox.Rows = _rows;
     if (_wrap != true)
       textBox.Wrap = _wrap;
+
+    textBox.AutoPostBack = _autoPostback;
 
     textBox.ReadOnly = _readOnly;
     textBox.TextMode = _textMode;
@@ -107,6 +281,16 @@ public class TextBoxStyle: Style
   {
     get { return _wrap; }
     set { _wrap = value; }
+  }
+
+  [Description("Automatically postback to the server after the text is modified.")]
+  [Category("Behavior")]
+  [DefaultValue (false)]
+  [NotifyParentProperty (true)]
+  public bool AutoPostBack
+  {
+    get { return _autoPostback; }
+    set { _autoPostback = value; }
   }
 }
 

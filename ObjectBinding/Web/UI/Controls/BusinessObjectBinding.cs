@@ -87,10 +87,12 @@ public class BusinessObjectBinding
   public void EvaluateBinding()
   {
     if (_bindingChanged && _property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
+    {
       _property = DataSource.BusinessObjectClass.GetProperty (_propertyIdentifier); 
 
-    this.OnBindingChanged ();
-    _bindingChanged = false;
+      this.OnBindingChanged ();
+      _bindingChanged = false;
+    }
   }
 
   protected void OnBindingChanged()

@@ -5,16 +5,19 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 public interface IBusinessObjectBoundWebControl: 
   IBusinessObjectBoundControl, 
+  ISmartControl,
   IDataBindingsAccessor, IParserAccessor // these interfaces are implemented by System.Web.UI.Control
 {
 }
@@ -32,6 +35,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   #region IBusinessObjectBoundControl implementation
   private BusinessObjectBinding _binding;
 
+  [Browsable(false)]
   public BusinessObjectBinding Binding
   {
     get { return _binding; }
@@ -86,8 +90,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 //  /// </remarks>
 //  public event BindingChangedEventHandler BindingChanged;
 
-  private NaBooleanEnum _required = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
   private bool _childControlsInitialized = false;
 //  private bool _onLoadCalled = false;
 //  private bool _propertyBindingChangedBeforeOnLoad = false;
@@ -120,36 +122,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 //  }
 
   /// <summary>
-  ///   Explicitly specifies whether the control is required.
-  /// </summary>
-  /// <remarks>
-  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsRequired"/>).
-  /// </remarks>
-  [Description("Explicitly specifies whether the control is required.")]
-  [Category("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
-  public NaBooleanEnum Required
-  {
-    get { return _required; }
-    set { _required = value; }
-  }
-
-  /// <summary>
-  ///   Explicitly specifies whether the control should be displayed in read-only mode.
-  /// </summary>
-  /// <remarks>
-  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsReadOnly"/>).
-  /// </remarks>
-  [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
-  [Category("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
-  public NaBooleanEnum ReadOnly
-  {
-    get { return _readOnly; }
-    set { _readOnly = value; }
-  }
-
-  /// <summary>
   ///   Determines whether the control is to be treated as a required value.
   /// </summary>
   /// <remarks>
@@ -167,17 +139,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   </para>
   /// </remarks>
   [Browsable(false)]
-  public bool IsRequired 
+  public virtual bool IsRequired 
   {
-    get 
-    {
-      if (_required != NaBooleanEnum.Undefined)
-        return _required == NaBooleanEnum.True;
-      Binding.EvaluateBinding();
-      if (Property != null && ! Property.IsRequired.IsNull)
-        return (bool) Property.IsRequired;
-      return false;
-    }
+    get { return false; }
   }
 
   /// <summary>
@@ -201,19 +165,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   </para>
   /// </remarks>
   [Browsable(false)]
-  public bool IsReadOnly
+  public virtual bool IsReadOnly
   {
-    get 
-    {
-      if (_readOnly != NaBooleanEnum.Undefined)
-        return _readOnly == NaBooleanEnum.True;
-      Binding.EvaluateBinding();
-      if (Property == null || DataSource == null)
-        return false;
-      if (! DataSource.IsWritable)
-        return true;
-      return Property.IsReadOnly (DataSource.BusinessObject);
-    }
+    get { return true; }
   }
 
   public abstract void LoadValue ();
@@ -258,11 +212,105 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   [Browsable(false)]
   public abstract Type[] SupportedPropertyInterfaces { get; }
+
+  public virtual BaseValidator[] CreateValidators()
+  {
+    return new BaseValidator[0];
+  }
+
+  [Browsable(false)]
+  public virtual string DisplayName 
+  {
+    get 
+    {
+      Binding.EvaluateBinding();
+      return (Property != null) ? Property.DisplayName : null;
+    }
+  }
+
+  [Browsable(false)]
+  public virtual string HelpUrl
+  {
+    get { return null; }
+  }
+
+  [Browsable(false)]
+  public virtual Control TargetControl
+  {
+    get { return this; }
+  }
+
+  [Browsable(false)]
+  public virtual bool UseLabel
+  {
+    get { return ! (TargetControl is DropDownList || TargetControl is HtmlSelect); }
+  }
 }
 
 public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl
 {
+  private NaBooleanEnum _required = NaBooleanEnum.Undefined;
+  private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
+
+  /// <summary>
+  ///   Explicitly specifies whether the control is required.
+  /// </summary>
+  /// <remarks>
+  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsRequired"/>).
+  /// </remarks>
+  [Description("Explicitly specifies whether the control is required.")]
+  [Category("Data")]
+  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
+  public NaBooleanEnum Required
+  {
+    get { return _required; }
+    set { _required = value; }
+  }
+
+  /// <summary>
+  ///   Explicitly specifies whether the control should be displayed in read-only mode.
+  /// </summary>
+  /// <remarks>
+  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsReadOnly"/>).
+  /// </remarks>
+  [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
+  [Category("Data")]
+  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
+  public NaBooleanEnum ReadOnly
+  {
+    get { return _readOnly; }
+    set { _readOnly = value; }
+  }
+
   public abstract void SaveValue ();
+
+  public override bool IsReadOnly
+  {
+    get
+    {
+      if (_readOnly != NaBooleanEnum.Undefined)
+        return _readOnly == NaBooleanEnum.True;
+      Binding.EvaluateBinding();
+      if (Property == null || DataSource == null)
+        return false;
+      if (! DataSource.IsWritable)
+        return true;
+      return Property.IsReadOnly (DataSource.BusinessObject);
+    }
+  }
+
+  public override bool IsRequired
+  {
+    get 
+    {
+      if (_required != NaBooleanEnum.Undefined)
+        return _required == NaBooleanEnum.True;
+      Binding.EvaluateBinding();
+      if (Property != null && ! Property.IsRequired.IsNull)
+        return (bool) Property.IsRequired;
+      return false;
+    }
+  }
 }
 
 ///// <summary>
