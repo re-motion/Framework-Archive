@@ -93,7 +93,6 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
 
 // TODO: Implement this test: Collection must be cloned. Be aware that this conflicts with a
 // many to one relation change!!!
-
 //  [Test]
 //  public void Relations ()
 //  {
@@ -104,6 +103,10 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
 //    Assert.AreEqual (numberOfSubordinatesBeforeDelete, _supervisor.Subordinates.Count);
 //    Assert.IsNull (_subordinate1.Supervisor);
 //    Assert.IsNull (_subordinate2.Supervisor);
+//    Assert.IsNull (_subordinate1.DataContainer["Order"]);
+//    Assert.IsNull (_subordinate2.DataContainer["Order"]);
+//    Assert.AreEqual (StateType.Changed, _subordinate1.DataContainer.State);
+//    Assert.AreEqual (StateType.Changed, _subordinate2.DataContainer.State);
 //  }
 }
 }

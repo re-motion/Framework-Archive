@@ -117,6 +117,9 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
     Assert.IsNull (_orderItem.Order);
     Assert.AreEqual (numberOfOrderItemsBeforeDelete - 1, _order.OrderItems.Count);
     Assert.IsFalse (_order.OrderItems.Contains (_orderItem.ID));
+    Assert.IsNull (_orderItem.DataContainer["Order"]);
+    Assert.AreEqual (StateType.Changed, _order.State);
+    Assert.AreEqual (StateType.Original, _order.DataContainer.State);
   }
 }
 }

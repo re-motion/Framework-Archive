@@ -108,12 +108,27 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
   }
 
   [Test]
-  public void Relations ()
+  public void DomainObjectWithNonVirtualProperty ()
   {
     _orderTicket.Delete ();
 
     Assert.IsNull (_orderTicket.Order);
     Assert.IsNull (_order.OrderTicket);
+    Assert.IsNull (_orderTicket.DataContainer["Order"]);
+    Assert.AreEqual (StateType.Changed, _order.State);
+    Assert.AreEqual (StateType.Original, _order.DataContainer.State);
   }
+
+// TODO: Implement this test:
+//  [Test]
+//  public void DomainObjectWithVirtualProperty ()
+//  {
+//    _order.Delete ();
+//
+//    Assert.IsNull (_orderTicket.Order);
+//    Assert.IsNull (_order.OrderTicket);
+//    Assert.IsNull (_orderTicket.DataContainer["Order"]);
+//    Assert.AreEqual (StateType.Changed, _orderTicket.DataContainer.State);
+//  }
 }
 }
