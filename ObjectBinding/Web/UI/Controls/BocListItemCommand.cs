@@ -10,6 +10,7 @@ using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -19,38 +20,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class BocColumnCommand: Command
 {
-  public class CommandParameters: ICommandParameters
-  {
-    private int _listIndex;
-    private IBusinessObject _businessObject;
-    private string _businessObjectID;
-
-    public CommandParameters (int listIndex, IBusinessObject businessObject, string businessObjectID)
-    {
-      _listIndex = listIndex;
-      _businessObject = businessObject;
-      _businessObjectID = businessObjectID;
-    }
-
-    public int ListIndex
-    {
-      get { return _listIndex; }
-      set { _listIndex = value; }
-    }
-
-    public IBusinessObject BusinessObject
-    {
-      get { return _businessObject; }
-      set { _businessObject = value; }
-    }
-
-    public string BusinessObjectID
-    {
-      get { return _businessObjectID; }
-      set { _businessObjectID = value; }
-    }
-  }
-
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class ColumnHrefCommandInfo: Command.HrefCommandInfo
@@ -176,17 +145,6 @@ public class BocColumnCommand: Command
     base.RenderBegin (writer, postBackLink, onClick, listIndex.ToString(), businessObjectID);
   }
 
-  public override void RenderBegin (
-      HtmlTextWriter writer, 
-      string postBackLink,
-      string onClick,
-      ICommandParameters parameters)
-  {
-    ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
-    CommandParameters columnParameters = (CommandParameters) parameters;
-    this.RenderBegin (writer, postBackLink, onClick, columnParameters.ListIndex, columnParameters.BusinessObjectID);
-  }
-
   /// <summary>
   ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/>.
   /// </summary>
@@ -201,44 +159,22 @@ public class BocColumnCommand: Command
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject, string businessObjectID)
   {
-    ArgumentUtility.CheckNotNull ("wxePage", wxePage);
-
-    if (Type != CommandType.WxeFunction)
-      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to BocCommandType.WxeFunction.");
-
     if (! WxeContext.Current.IsReturningPostBack)
     {
-      wxePage.CurrentFunction.Variables["index"] = listIndex;
-      wxePage.CurrentFunction.Variables["object"] = businessObject;
+      NameObjectCollection parameters = new NameObjectCollection();
+      parameters["index"] = listIndex;
+      parameters["object"] = businessObject;
       if (businessObjectID != null)
-        wxePage.CurrentFunction.Variables["id"] = businessObjectID;
+        parameters["id"] = businessObjectID;
       if (_ownerControl != null)
       {
         if (_ownerControl.DataSource != null && _ownerControl.Value != null)
-          wxePage.CurrentFunction.Variables ["parent"] = _ownerControl.DataSource.BusinessObject;
+          parameters["parent"] = _ownerControl.DataSource.BusinessObject;
         if (_ownerControl.Property != null)
-          wxePage.CurrentFunction.Variables ["parentproperty"] = _ownerControl.Property;
+          parameters["parentproperty"] = _ownerControl.Property;
       }
-
-      Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
-
-      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
-          functionType,
-          WxeFunctionCommand.Parameters,
-          null);
-
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
-      
-      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
+      ExecuteWxeFunction (wxePage, parameters);
     }
-  }
-
-  public override void ExecuteWxeFunction (IWxePage wxePage, ICommandParameters parameters)
-  {
-    ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
-    CommandParameters columnParameters = (CommandParameters) parameters;
-    this.ExecuteWxeFunction (
-        wxePage, columnParameters.ListIndex, columnParameters.BusinessObject, columnParameters.BusinessObjectID);
   }
 
   /// <summary>

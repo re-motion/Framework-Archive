@@ -8,12 +8,13 @@ using System.Drawing.Design;
 using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Collections;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 //  TODO: Command: Move long comment blocks to xml-file
-/// <summary> An <see cref="Command"/> defines an action the user can invoke on an item. </summary>
+/// <summary> An <see cref="Command"/> defines an action the user can invoke. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public abstract class Command
 {
@@ -196,12 +197,6 @@ public abstract class Command
 
   //private ScriptCommandInfo _scriptCommand = null;
 
-  public abstract void RenderBegin (
-      HtmlTextWriter writer, 
-      string postBackLink,
-      string onClick,
-      ICommandParameters parameters);
-
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   /// <param name="postBackLink">
@@ -317,9 +312,35 @@ public abstract class Command
   ///   Executes the <see cref="WxeFunction"/> defined by the 
   ///   <see cref="WxeFunctionCommandInfo"/>.
   /// </summary>
-  /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
-  /// <param name="parameters"> The <see cref="ICommandParameters"/> passed to the <see cref="WxeFunction"/>. </param>
-  public abstract void ExecuteWxeFunction (IWxePage wxePage, ICommandParameters parameters);
+  /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. Must not be null</param>
+  /// <param name="parameters"> The parameters passed to the <see cref="WxeFunction"/>. </param>
+  public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection parameters)
+  {
+    ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
+
+    if (! WxeContext.Current.IsReturningPostBack)
+    {
+      if (parameters != null)
+      {
+        foreach (string key in parameters.Keys)
+          wxePage.CurrentFunction.Variables[key] = parameters[key];
+      }
+
+      Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
+
+      object [] actualParameters = WxeParameterDeclaration.ParseActualParameters (
+          functionType,
+          WxeFunctionCommand.Parameters,
+          null);
+
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, actualParameters);
+      
+      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
+    }
+  }
 
   /// <summary>
   ///   The <see cref="CommandType"/> represented by this instance of 
@@ -416,10 +437,6 @@ public abstract class Command
       _wxeFunctionCommand = value; 
     }
   }
-}
-
-public interface ICommandParameters
-{
 }
 
 /// <summary> The possible command types of a <see cref="Command"/>. </summary>
