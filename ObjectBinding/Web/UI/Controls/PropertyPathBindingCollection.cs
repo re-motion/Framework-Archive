@@ -27,6 +27,10 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   {
     _ownerControl = ownerControl;
   }
+  protected override void OnValidate(object value)
+  {
+    base.OnValidate (value);
+  }
 
   /// <summary> Performs additional custom processes before inserting a new element. </summary>
   /// <param name="index"> The zero-based index at which to insert value. </param>
@@ -35,7 +39,8 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (PropertyPathBinding));
     base.OnInsert (index, value);    
-    ((PropertyPathBinding) value).DataSource = _ownerControl.DataSource;
+    if (_ownerControl != null)
+      ((PropertyPathBinding) value).DataSource = _ownerControl.DataSource;
   }
 
   /// <summary> Performs additional custom processes before setting a value. </summary>
@@ -46,7 +51,8 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (PropertyPathBinding));
     base.OnSet (index, oldValue, newValue);    
-    ((PropertyPathBinding) newValue).DataSource = _ownerControl.DataSource;
+    if (_ownerControl != null)
+      ((PropertyPathBinding) newValue).DataSource = _ownerControl.DataSource;
   }
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>
@@ -67,7 +73,6 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   public void AddRange (PropertyPathBinding[] values)
   {
     ArgumentUtility.CheckNotNull ("values", values);
-    
     foreach (PropertyPathBinding propertyPathBinding in values)
       Add (propertyPathBinding);
   }
@@ -107,8 +112,18 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   /// <value> The element at the specified index. </value>
   public PropertyPathBinding this[int index]
   {
-    get { return (PropertyPathBinding) List[index]; }
-    set { List[index] = value; }
+    get
+    {
+      PropertyPathBinding propertyPathBinding = (PropertyPathBinding) List[index];
+      if (propertyPathBinding.DataSource == null)
+        propertyPathBinding.DataSource = _ownerControl.DataSource;
+
+      return propertyPathBinding;
+    }
+    set
+    {
+      List[index] = value; 
+    }
   }
 
   /// <summary>
