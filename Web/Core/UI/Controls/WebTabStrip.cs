@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 
@@ -23,20 +24,21 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   private string _tabToBeSelected = null;
   private bool _hasTabsRestored;
   private Triplet[] _tabsViewState;
+  private Style _tabsPaneStyle;
   private Style _separatorStyle;
   private Style _tabStyle;
-  private Style _tabHoverStyle;
   private Style _tabSelectedStyle;
+  private NaInt32 _tabsPaneSize = NaInt32.Null;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTabStrip (Control ownerControl)
   {
     _tabs = new WebTabCollection (ownerControl);
-    _tabs.SetParent (this);
-    this._tabStyle = new Style();
-    this._tabHoverStyle = new Style();
-    this._tabSelectedStyle = new Style();
-    this._separatorStyle = new Style();
+    Tabs.SetParent (this);
+    _tabsPaneStyle = new Style();
+    _tabStyle = new Style();
+    _tabSelectedStyle = new Style();
+    _separatorStyle = new Style();
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -90,7 +92,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
       return;
 
     if (_tabsViewState != null)
-      LoadTabsViewStateRecursive (_tabsViewState, _tabs);
+      LoadTabsViewStateRecursive (_tabsViewState, Tabs);
 
     _hasTabsRestored = true;
   }
@@ -110,7 +112,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   {
     object[] values = new object[3];
     values[0] = base.SaveViewState();
-    values[1] = SaveNodesViewStateRecursive (_tabs);
+    values[1] = SaveNodesViewStateRecursive (Tabs);
     values[2] = _selectedTabID;
     return values;
   }
@@ -122,7 +124,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     foreach (Triplet tabViewState in tabsViewState)
     {
       string tabID = (string) tabViewState.First;
-      WebTab tab = _tabs.Find (tabID);
+      WebTab tab = Tabs.Find (tabID);
       if (tab != null)
       {
         object[] values = (object[]) tabViewState.Second;
@@ -141,7 +143,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     Triplet[] tabsViewState = new Triplet[tabs.Count];
     for (int i = 0; i < tabs.Count; i++)
     {
-      WebTab tab = _tabs[i];    
+      WebTab tab = Tabs[i];    
       Triplet tabViewState = new Triplet();
       tabViewState.First = tab.TabID;
       object[] values = new object[1];
@@ -155,9 +157,100 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   
   protected override void OnPreRender(EventArgs e)
   {
-    base.OnPreRender (e);
-    if (! ControlHelper.IsDesignMode ((IControl)this, Context) && Enabled)
+    string key = typeof (WebTabStrip).FullName + "_Style";
+    string styleSheetUrl = null;
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (WebTreeView), ResourceType.Html, "TabStrip.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
+    }
+
+   if (! ControlHelper.IsDesignMode ((IControl)this, Context) && Enabled)
       Page.RegisterRequiresPostBack (this);
+
+    EnsureTabsRestored();
+    base.OnPreRender (e);
+  }
+
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Div; }
+  }
+
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
+  protected override void RenderContents(HtmlTextWriter writer)
+  {
+    int tabsOnPane = 0;
+    bool isTabsPaneOpen = false;
+    foreach (WebTab tab in Tabs)
+    {
+      if (   ! tab.IsSeparator
+          && ! _tabsPaneSize.IsNull 
+          && tabsOnPane == _tabsPaneSize.Value
+          && isTabsPaneOpen)
+      {
+        RenderEndTabsPane (writer);
+        tabsOnPane = 0;
+        isTabsPaneOpen = false;
+      }
+    
+      if (! isTabsPaneOpen)
+      {
+        RenderBeginTabsPane (writer);
+        isTabsPaneOpen = true;
+      }
+
+      Style style = _tabStyle;
+      string cssClass = CssClassTab;
+      if (tab.IsSeparator)
+      {
+        style = _separatorStyle;
+        cssClass = CssClassSeparator;
+      }
+      else if (tab.IsSelected)
+      {
+        style = _tabSelectedStyle;
+        cssClass = CssClassTabSelected;
+      }
+      style.AddAttributesToRender (writer);
+      if (StringUtility.IsNullOrEmpty (style.CssClass))
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+      
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      string postBackLink = null;
+      if (! tab.IsSeparator && ! tab.IsSelected)
+        postBackLink = Page.GetPostBackClientHyperlink (this, tab.TabID);
+      tab.RenderContents(writer, postBackLink);
+
+      writer.RenderEndTag();
+
+      if (! tab.IsSeparator)
+        tabsOnPane++;
+    }
+    if (isTabsPaneOpen)
+      RenderEndTabsPane (writer);
+  }
+
+  protected virtual void RenderBeginTabsPane (HtmlTextWriter writer)
+  {
+    _tabsPaneStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabsPane);
+    writer.AddStyleAttribute ("white-space", "nowrap");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+  }
+
+  protected virtual void RenderEndTabsPane (HtmlTextWriter writer)
+  {
+    writer.RenderEndTag();
   }
 
   /// <summary> Sets the selected tab. </summary>
@@ -185,7 +278,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     ArgumentUtility.CheckNotNullOrEmpty ("tabID", tabID);
     if (_selectedTab == null || _selectedTab.TabID != tabID)
     {
-      WebTab tab = _tabs.Find (tabID);
+      WebTab tab = Tabs.Find (tabID);
       if (tab != _selectedTab)
         SetSelectedTab (tab);
     }
@@ -198,7 +291,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   {
     get
     { 
-      if (_tabs.Count > 0)
+      if (Tabs.Count > 0)
       {
         EnsureTabsRestored();
         if (! StringUtility.IsNullOrEmpty (_tabToBeSelected))
@@ -217,11 +310,21 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
   [DefaultValue ((string) null)]
   public virtual WebTabCollection Tabs
   {
-    get { return this._tabs; }
+    get { return _tabs; }
   }
 
   [Category("Style")]
-  [Description("The style that you want to apply to a tab if it is not the selected tab.")]
+  [Description("The style that you want to apply to a pane of tabs.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabsPaneStyle
+  {
+    get { return _tabsPaneStyle; }
+  }
+
+  [Category("Style")]
+  [Description("The style that you want to apply to a tab that is neither selected nor a separator.")]
   [NotifyParentProperty(true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -259,9 +362,82 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
     remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
   }
 
+  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
+  /// <value> 
+  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
+  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
+  /// </value>
+  [Category ("Appearance")]
+  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
+  [DefaultValue (typeof(NaInt32), "null")]
+  public NaInt32 TabsPaneSize
+  {
+    get { return _tabsPaneSize; }
+    set
+    {
+      if (value.IsNull || value.Value <= 0)
+        _tabsPaneSize = NaInt32.Null;
+      else
+        _tabsPaneSize = value; 
+    }
+  }
 
-/******************************************************************************************************************/
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTabStrip"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStrip</c>. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  {
+    get { return "tabStrip"; }
+  }
 
+  /// <summary> Gets the CSS-Class applied to a pane of <see cref="WebTab"/> items. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabsPane</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabsPaneStyle"/>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabsPane
+  {
+    get { return "tabStripTabsPane"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/>. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTab</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabStyle"/>. </para>
+  /// </remarks>
+  protected virtual string CssClassTab
+  {
+    get { return "tabStripTab"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/> if it is selected. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabSelected</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabSelectedStyle"/>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabSelected
+  {
+    get { return "tabStripTabSelected"; }
+  }
+
+  /// <summary> 
+  ///   Gets the CSS-Class applied to a <see cref="WebTab"/> with <see cref="WebTab.IsSeparator"/> set 
+  ///   <see langword="true"/>. 
+  /// </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripSeparator</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="SeparatorStyle"/>. </para>
+  /// </remarks>
+  protected virtual string CssClassSeparator
+  {
+    get { return "tabStripSeparator"; }
+  }
+  #endregion
+
+  #region Old stuff, all commented out
 
 //  private int _CachedSelectedIndex;
 //  private int _OldMultiPageIndex;
@@ -334,25 +510,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //    }
 //    return false;
 //  }
-
-  protected override void RenderContents(HtmlTextWriter writer)
-  {
-    foreach (WebTab tab in this.Tabs)
-    {
-      if (tab.IsSelected)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, null);  
-      else
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, null);  
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      string postBackLink = null;
-      if (! tab.IsSeparator)
-        postBackLink = Page.GetPostBackClientHyperlink (this, tab.TabID);
-      tab.RenderContents(writer, postBackLink);
-
-      writer.RenderEndTag();
-    }
-  }
 
 //  protected override void RenderDesignerPath(HtmlTextWriter writer)
 //  {
@@ -466,14 +623,14 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //    writer.RenderEndTag();
 //  }
 //
-  internal void ResetSelectedIndex()
-  {
-    if (this.ViewState["SelectedIndex"] != null)
-    {
-      this.ViewState.Remove("SelectedIndex");
-    }
-  }
-
+//  internal void ResetSelectedIndex()
+//  {
+//    if (this.ViewState["SelectedIndex"] != null)
+//    {
+//      this.ViewState.Remove("SelectedIndex");
+//    }
+//  }
+//
 
   //protected override void TrackViewState()
   //{
@@ -516,14 +673,14 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //    }
 //  }
 
-  [Description("TabStripSelectedIndex")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  [Category("Behavior")]
-  [DefaultValue(0)]
-  public int SelectedIndex
-  {
-    get
-    {
+//  [Description("TabStripSelectedIndex")]
+//  [PersistenceMode(PersistenceMode.Attribute)]
+//  [Category("Behavior")]
+//  [DefaultValue(0)]
+//  public int SelectedIndex
+//  {
+//    get
+//    {
 //      int num1 = this.Tabs.NumTabs;
 //      if (num1 != 0)
 //      {
@@ -542,10 +699,10 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //          return num2;
 //        }
 //      }
-      return -1;
-    }
-    set
-    {
+//      return -1;
+//    }
+//    set
+//    {
 //      if ((this.Tabs.NumTabs == 0) && (value > -2))
 //      {
 //        this._CachedSelectedIndex = value;
@@ -563,29 +720,29 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //          this.SetTargetSelectedIndex();
 //        }
 //      }
-    }
-  }
+//    }
+//  }
 
-  [Category("Separator Defaults")]
-  [DefaultValue("")]
-  [PersistenceMode(PersistenceMode.Attribute)]
-  [Description("SepDefaultImageUrl")]
-  public string SepDefaultImageUrl
-  {
-    get
-    {
-      object obj1 = this.ViewState["SepDefaultImageUrl"];
-      if (obj1 != null)
-      {
-        return (string) obj1;
-      }
-      return string.Empty;
-    }
-    set
-    {
-      this.ViewState["SepDefaultImageUrl"] = value;
-    }
-  }
+//  [Category("Separator Defaults")]
+//  [DefaultValue("")]
+//  [PersistenceMode(PersistenceMode.Attribute)]
+//  [Description("SepDefaultImageUrl")]
+//  public string SepDefaultImageUrl
+//  {
+//    get
+//    {
+//      object obj1 = this.ViewState["SepDefaultImageUrl"];
+//      if (obj1 != null)
+//      {
+//        return (string) obj1;
+//      }
+//      return string.Empty;
+//    }
+//    set
+//    {
+//      this.ViewState["SepDefaultImageUrl"] = value;
+//    }
+//  }
 
 //  [Browsable(false)]
 //  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -637,6 +794,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 //      this.ViewState["TargetID"] = value;
 //    }
 //  }
+  #endregion
 }
 
 }
