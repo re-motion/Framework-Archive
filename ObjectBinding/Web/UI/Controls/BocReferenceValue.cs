@@ -437,7 +437,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Initializes the child controls.
+  ///   Prerenders the child controls.
   /// </summary>
   /// <remarks>
   ///   <para>

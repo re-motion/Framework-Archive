@@ -301,7 +301,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     return validators;
   }
   
-  /// <summary> Initializes the child controls. </summary>
+  /// <summary> Prerenders the child controls. </summary>
   protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
@@ -313,12 +313,16 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     string nullIconUrl = ResourceUrlResolver.GetResourceUrl (
         this, Context, typeof (BocBooleanValue), ResourceType.Image, c_nullIcon);
     
+    string defaultTrueDescription = c_trueDescription;
+    string defaultFalseDescription = c_falseDescription;
+    string defaultNullDescription = c_nullDescription;
+
     string trueDescription = 
-        (StringUtility.IsNullOrEmpty (_trueDescription) ? c_trueDescription : _trueDescription);
+        (StringUtility.IsNullOrEmpty (_trueDescription) ? defaultTrueDescription : _trueDescription);
     string falseDescription = 
-        (StringUtility.IsNullOrEmpty (_falseDescription) ? c_falseDescription : _falseDescription);
+        (StringUtility.IsNullOrEmpty (_falseDescription) ? defaultFalseDescription : _falseDescription);
     string nullDescription = 
-        (StringUtility.IsNullOrEmpty (_nullDescription) ? c_nullDescription : _nullDescription);
+        (StringUtility.IsNullOrEmpty (_nullDescription) ? defaultNullDescription : _nullDescription);
     
     string imageUrl;
     string description;
@@ -363,7 +367,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
         script = string.Format (
             "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');",
             trueValue, falseValue, nullValue, 
-            trueDescription, falseDescription, nullDescription, 
+            defaultTrueDescription, defaultFalseDescription, defaultNullDescription, 
             trueIconUrl, falseIconUrl, nullIconUrl);
         PageUtility.RegisterStartupScriptBlock (Page, key, script);
       }
@@ -376,7 +380,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
           + imageButton + ", " 
           + label + ", " 
           + hiddenField + ", "
-          +  requiredFlag + ");"
+          + requiredFlag + ", "
+          + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
+          + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ", "
+          + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");"
           + "return false;";
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);

@@ -436,7 +436,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     return validators;
   }
 
-  /// <summary> Initializes the child controls. </summary>
+  /// <summary> Prerenders the child controls. </summary>
   protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
