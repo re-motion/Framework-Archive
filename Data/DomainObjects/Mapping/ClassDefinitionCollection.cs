@@ -14,6 +14,8 @@ public class ClassDefinitionCollection : CommonCollection
 
   // member fields
 
+  private Hashtable _classIDs = new Hashtable ();
+
   // construction and disposing
 
   public ClassDefinitionCollection ()
@@ -50,7 +52,7 @@ public class ClassDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
-    ClassDefinition classDefinition = GetByClassID (classID);
+    ClassDefinition classDefinition = this[classID];
     if (classDefinition == null)
       throw CreateMappingException ("Mapping does not contain class '{0}'.", classID);
 
@@ -86,6 +88,13 @@ public class ClassDefinitionCollection : CommonCollection
     return BaseContainsKey (classType);
   }
 
+  public bool Contains (string classID)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+
+    return _classIDs.Contains (classID);
+  }
+
   public ClassDefinition this [int index]  
   {
     get { return (ClassDefinition) BaseGetObject (index); }
@@ -96,24 +105,27 @@ public class ClassDefinitionCollection : CommonCollection
     get { return (ClassDefinition) BaseGetObject (classType); }
   }
 
-  public ClassDefinition GetByClassID (string classID)
+  public ClassDefinition this [string classID]
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-
-    foreach (ClassDefinition classDefinition in this)
+    get
     {
-      if (classDefinition.ID == classID)
-        return classDefinition;
-    }
+      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
-    return null;
+      return (ClassDefinition) _classIDs[classID];
+    }
   }
 
   public int Add (ClassDefinition value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    
-    return BaseAdd (value.ClassType, value);
+  
+    if (_classIDs.Contains (value.ID))
+      throw new ArgumentException (string.Format ("A ClassDefinition with ID '{0}' is already part of this collection.", value.ID), "value");
+
+    int position = BaseAdd (value.ClassType, value);
+    _classIDs.Add (value.ID, value);
+
+    return position;
   }
 
   #endregion

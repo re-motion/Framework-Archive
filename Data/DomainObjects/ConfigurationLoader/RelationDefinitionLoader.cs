@@ -120,7 +120,7 @@ public class RelationDefinitionLoader
   private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode)
   {
     string classAsString = relationPropertyNode.SelectSingleNode ("../../@id", _namespaceManager).InnerText;
-    ClassDefinition classDefinition = _classDefinitions.GetByClassID (classAsString);
+    ClassDefinition classDefinition = _classDefinitions[classAsString];
 
     bool isMandatory = bool.Parse (relationPropertyNode.SelectSingleNode ("@isMandatory", _namespaceManager).InnerText);
 
