@@ -159,42 +159,57 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "IndependentUserControl.ascx"
+                    RelPath = "IntegrationTestForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "IndependentUserControl.ascx.cs"
-                    DependentUpon = "IndependentUserControl.ascx"
+                    RelPath = "IntegrationTestForm.aspx.cs"
+                    DependentUpon = "IntegrationTestForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IndependentUserControl.ascx.resx"
-                    DependentUpon = "IndependentUserControl.ascx.cs"
+                    RelPath = "IntegrationTestForm.aspx.resx"
+                    DependentUpon = "IntegrationTestForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "IndependentUserControlTestForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndependentUserControlTestForm.aspx.cs"
-                    DependentUpon = "IndependentUserControlTestForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndependentUserControlTestForm.aspx.resx"
-                    DependentUpon = "IndependentUserControlTestForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Job.cs"
+                    RelPath = "IntegrationTestMainWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainWxeFunction.cs"
+                    RelPath = "IntegrationTestUserControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IntegrationTestUserControl.ascx.cs"
+                    DependentUpon = "IntegrationTestUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IntegrationTestUserControl.ascx.resx"
+                    DependentUpon = "IntegrationTestUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IntegrationTestUserControlForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IntegrationTestUserControlForm.aspx.cs"
+                    DependentUpon = "IntegrationTestUserControlForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IntegrationTestUserControlForm.aspx.resx"
+                    DependentUpon = "IntegrationTestUserControlForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Job.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -208,154 +223,154 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PersonDetailsPage.aspx"
+                    RelPath = "PersonDetailsForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "PersonDetailsPage.aspx.cs"
-                    DependentUpon = "PersonDetailsPage.aspx"
+                    RelPath = "PersonDetailsForm.aspx.cs"
+                    DependentUpon = "PersonDetailsForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PersonDetailsPage.aspx.resx"
-                    DependentUpon = "PersonDetailsPage.aspx.cs"
+                    RelPath = "PersonDetailsForm.aspx.resx"
+                    DependentUpon = "PersonDetailsForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Startpage.aspx"
+                    RelPath = "StartForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Startpage.aspx.cs"
-                    DependentUpon = "Startpage.aspx"
+                    RelPath = "StartForm.aspx.cs"
+                    DependentUpon = "StartForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Startpage.aspx.resx"
-                    DependentUpon = "Startpage.aspx.cs"
+                    RelPath = "StartForm.aspx.resx"
+                    DependentUpon = "StartForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestBooleanValuePage.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestBooleanValuePage.aspx.cs"
-                    DependentUpon = "TestBooleanValuePage.aspx"
+                    RelPath = "UnitTestBasePage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestBooleanValuePage.aspx.resx"
-                    DependentUpon = "TestBooleanValuePage.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestDateTimeValuePage.aspx"
+                    RelPath = "UnitTestBooleanValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestDateTimeValuePage.aspx.cs"
-                    DependentUpon = "TestDateTimeValuePage.aspx"
+                    RelPath = "UnitTestBooleanValueForm.aspx.cs"
+                    DependentUpon = "UnitTestBooleanValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestDateTimeValuePage.aspx.resx"
-                    DependentUpon = "TestDateTimeValuePage.aspx.cs"
+                    RelPath = "UnitTestBooleanValueForm.aspx.resx"
+                    DependentUpon = "UnitTestBooleanValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestEnumValuePage.aspx"
+                    RelPath = "UnitTestDateTimeValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestEnumValuePage.aspx.cs"
-                    DependentUpon = "TestEnumValuePage.aspx"
+                    RelPath = "UnitTestDateTimeValueForm.aspx.cs"
+                    DependentUpon = "UnitTestDateTimeValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestEnumValuePage.aspx.resx"
-                    DependentUpon = "TestEnumValuePage.aspx.cs"
+                    RelPath = "UnitTestDateTimeValueForm.aspx.resx"
+                    DependentUpon = "UnitTestDateTimeValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestForm.aspx"
+                    RelPath = "UnitTestEnumValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestForm.aspx.cs"
-                    DependentUpon = "TestForm.aspx"
+                    RelPath = "UnitTestEnumValueForm.aspx.cs"
+                    DependentUpon = "UnitTestEnumValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestForm.aspx.resx"
-                    DependentUpon = "TestForm.aspx.cs"
+                    RelPath = "UnitTestEnumValueForm.aspx.resx"
+                    DependentUpon = "UnitTestEnumValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestListPage.aspx"
+                    RelPath = "UnitTestListForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestListPage.aspx.cs"
-                    DependentUpon = "TestListPage.aspx"
+                    RelPath = "UnitTestListForm.aspx.cs"
+                    DependentUpon = "UnitTestListForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestListPage.aspx.resx"
-                    DependentUpon = "TestListPage.aspx.cs"
+                    RelPath = "UnitTestListForm.aspx.resx"
+                    DependentUpon = "UnitTestListForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestMultilineTextValuePage.aspx"
+                    RelPath = "UnitTestMainWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UnitTestMultilineTextValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestMultilineTextValuePage.aspx.cs"
-                    DependentUpon = "TestMultilineTextValuePage.aspx"
+                    RelPath = "UnitTestMultilineTextValueForm.aspx.cs"
+                    DependentUpon = "UnitTestMultilineTextValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestMultilineTextValuePage.aspx.resx"
-                    DependentUpon = "TestMultilineTextValuePage.aspx.cs"
+                    RelPath = "UnitTestMultilineTextValueForm.aspx.resx"
+                    DependentUpon = "UnitTestMultilineTextValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestReferenceValuePage.aspx"
+                    RelPath = "UnitTestReferenceValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestReferenceValuePage.aspx.cs"
-                    DependentUpon = "TestReferenceValuePage.aspx"
+                    RelPath = "UnitTestReferenceValueForm.aspx.cs"
+                    DependentUpon = "UnitTestReferenceValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestReferenceValuePage.aspx.resx"
-                    DependentUpon = "TestReferenceValuePage.aspx.cs"
+                    RelPath = "UnitTestReferenceValueForm.aspx.resx"
+                    DependentUpon = "UnitTestReferenceValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestTextValuePage.aspx"
+                    RelPath = "UnitTestTextValueForm.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestTextValuePage.aspx.cs"
-                    DependentUpon = "TestTextValuePage.aspx"
+                    RelPath = "UnitTestTextValueForm.aspx.cs"
+                    DependentUpon = "UnitTestTextValueForm.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestTextValuePage.aspx.resx"
-                    DependentUpon = "TestTextValuePage.aspx.cs"
+                    RelPath = "UnitTestTextValueForm.aspx.resx"
+                    DependentUpon = "UnitTestTextValueForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UnitTestWxeBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "ViewPersonDetailsWxeFunction.cs"
@@ -415,11 +430,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "WebFormBase.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "WebFormMK.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
@@ -456,11 +466,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "WxeWebFormBase.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Globalization\RMTest.de-at.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -469,11 +474,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Globalization\TestListPage.resx"
+                    RelPath = "Globalization\UnitTestBasePage.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Globalization\WebFormBase.resx"
+                    RelPath = "Globalization\UnitTestListForm.resx"
                     BuildAction = "EmbeddedResource"
                 />
             </Include>

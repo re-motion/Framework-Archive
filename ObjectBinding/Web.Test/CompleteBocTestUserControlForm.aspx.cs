@@ -16,7 +16,7 @@ using Rubicon.Utilities;
 namespace OBWTest
 {
 
-  public class NamingContainerTestForm : WebFormBase
+  public class IntegrationTestUserControlForm : UnitTestWxeBasePage
 
 {
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
