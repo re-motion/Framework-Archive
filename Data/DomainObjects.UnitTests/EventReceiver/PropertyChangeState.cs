@@ -60,22 +60,35 @@ public class PropertyChangeState : ChangeState
     get { return _newValue; }
   }
 
-  public override bool Compare (object obj)
+  public override void Check (ChangeState expectedState)
   {
-    if (!base.Compare (obj))
-      return false;
+    base.Check (expectedState);
 
-    PropertyChangeState propertyChangeState = obj as PropertyChangeState;
-    if (propertyChangeState == null)
-      return false;
+    PropertyChangeState propertyChangeState = (PropertyChangeState) expectedState;
 
-    if (!Equals (_propertyValue.Name, propertyChangeState.PropertyValue.Name))
-      return false;
+    if (_propertyValue.Name != propertyChangeState.PropertyValue.Name)
+    {
+      throw CreateApplicationException (
+          "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
+          _propertyValue.Name, 
+          propertyChangeState.PropertyValue.Name);
+    }
 
-    if (!Equals (_oldValue, propertyChangeState.OldValue))
-      return false;
+    if (!object.Equals (_oldValue, propertyChangeState.OldValue))
+    {
+      throw CreateApplicationException (
+          "Actual old value '{0}' and expected old value '{1}' do not match.",
+          _oldValue, 
+          propertyChangeState.OldValue);
+    }
 
-    return Equals (_newValue, propertyChangeState.NewValue);
+    if (!object.Equals (_newValue, propertyChangeState.NewValue))
+    {
+      throw CreateApplicationException (
+          "Actual new value '{0}' and expected new value '{1}' do not match.",
+          _newValue, 
+          propertyChangeState.NewValue);
+    }
   }
 }
 }

@@ -59,22 +59,43 @@ public class RelationChangeState : ChangeState
     get { return _newDomainObject; }
   }
 
-  public override bool Compare (object obj)
+  public override void Check (ChangeState expectedState)
   {
-    if (!base.Compare (obj))
-      return false;
+    base.Check (expectedState);
 
-    RelationChangeState relationChangeState = obj as RelationChangeState;
-    if (relationChangeState == null)
-      return false;
+    RelationChangeState relationChangeState = (RelationChangeState) expectedState;
 
-    if (!Equals (_propertyName, relationChangeState.PropertyName))
-      return false;
+    if (_propertyName != relationChangeState.PropertyName)
+    {
+      throw CreateApplicationException (
+          "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
+          _propertyName, 
+          relationChangeState.PropertyName);
+    }
 
-    if (!Equals (_oldDomainObject, relationChangeState.OldDomainObject))
-      return false;
+    if (!object.ReferenceEquals (_oldDomainObject, relationChangeState.OldDomainObject))
+    {
+      throw CreateApplicationException (
+          "Actual old related DomainObject '{0}' and expected old related DomainObject '{1}' do not match.",
+          GetObjectIDAsText (_oldDomainObject), 
+          GetObjectIDAsText (relationChangeState.OldDomainObject));
+    }
 
-    return Equals (_newDomainObject, relationChangeState.NewDomainObject);
+    if (!object.ReferenceEquals (_newDomainObject, relationChangeState.NewDomainObject))
+    {
+      throw CreateApplicationException (
+          "Actual new related DomainObject '{0}' and expected new related DomainObject '{1}' do not match.",
+          GetObjectIDAsText (_newDomainObject), 
+          GetObjectIDAsText (relationChangeState.NewDomainObject));
+    }
+  }
+
+  private string GetObjectIDAsText (DomainObject domainObject)
+  {
+    if (domainObject != null)
+      return domainObject.ID.ToString ();
+    else
+      return "null";
   }
 }
 }
