@@ -190,13 +190,13 @@ public class EntryFormGrid: Control
     get { return EntryFormGrid.GetImagePath (InfoImage); }
   }
 	
-  internal static string GetWhitespaceImage (int width, int height)
+  public static string GetWhitespaceImage (int width, int height)
   {
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
         width, height, EntryFormGrid.GetImagePath ("ws.gif"));
   }
 
-  internal static string GetWhitespaceImage (string width, string height)
+  public static string GetWhitespaceImage (string width, string height)
   {
     return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
         width, height, EntryFormGrid.GetImagePath ("ws.gif"));
@@ -232,12 +232,6 @@ public class EntryTitle: Control
   private string _padding = String.Empty;
   
   private int _colSpan = 6;
-
-  [Obsolete]
-  public EntryFormGrid ParentGrid
-  {
-    get { return (EntryFormGrid) this.Parent; }
-  }
 
   public int ColSpan
   {
