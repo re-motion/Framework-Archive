@@ -19,14 +19,14 @@ public class MappingLoader : BaseLoader
   public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
   public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.SchemaFile";
 
-  private const string c_defaultConfigurationFile = "mapping.xml";
-  private const string c_defaultSchemaFile = "mapping.xsd";
+  public const string DefaultConfigurationFile = "mapping.xml";
+  public const string DefaultSchemaFile = "mapping.xsd";
   
   public static MappingLoader Create ()
   {
     return new MappingLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, c_defaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
+        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
   }
 
   // member fields
