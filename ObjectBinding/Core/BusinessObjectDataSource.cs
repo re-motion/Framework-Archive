@@ -127,7 +127,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
         if (control.IsValid)
           bindableControls.Add (control);
       }
-      return (IBusinessObjectBoundControl[]) bindableControls.ToArray (); 
+      return (IBusinessObjectBoundControl[]) bindableControls.ToArray (typeof(IBusinessObjectBoundControl)); 
     }
   }
 }
