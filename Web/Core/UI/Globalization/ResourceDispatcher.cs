@@ -140,11 +140,7 @@ public sealed class ResourceDispatcher
       
       if (property != null)
       {
-        object propertyOldValue = property.GetValue (control, new object[0]);
-
-        //  Only dispatch to empty properies
-        if (propertyOldValue.ToString().Length == 0)
-          property.SetValue (control, propertyValue, new object[0]); 
+        property.SetValue (control, propertyValue, new object[0]); 
       }
       else
       {
@@ -152,9 +148,7 @@ public sealed class ResourceDispatcher
         HtmlControl genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
         {
-          //  Only dispatch to empty properies
-          if (genericHtmlControl.Attributes[propertyName].Length == 0)
-            genericHtmlControl.Attributes[propertyName] = propertyValue;
+          genericHtmlControl.Attributes[propertyName] = propertyValue;
         }
           //  Non-HtmlControls require valid property
         else

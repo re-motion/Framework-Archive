@@ -24,7 +24,12 @@ public class MultiLingualUserControl : UserControl
     // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
     //  if (ResourceManagerPool.ExistsResource (this))
     if (MultiLingualResourcesAttribute.ExistsResource (this))
-      ResourceDispatcher.Dispatch (this);
+    {
+      IResourceManager resourceManager
+        = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
+
+      ResourceDispatcher.Dispatch (this, resourceManager);
+    }
 
     base.OnInit (e);
   }
