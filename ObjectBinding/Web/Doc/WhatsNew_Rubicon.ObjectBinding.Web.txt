@@ -1,3 +1,15 @@
+1.1.44.0
+========
+
+- BocList
+  * MenuItemClick: Signatur geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+
+- BocReferenceValue
+  * MenuItemClick: Signatur geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+  
+- BocMenuItemCommand
+  * Click: Signator geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+  
 1.1.40.0
 ========
 
