@@ -43,6 +43,14 @@ public class Command
         return _href + ", " + _target;
     }
 
+    public virtual string FormatHref (params string[] parameters)
+    {
+      string[] encodedParameters = new string[parameters.Length];
+      for (int i = 0; i < parameters.Length; i++)
+        encodedParameters[i] = HttpUtility.UrlEncode (parameters[i], HttpContext.Current.Response.ContentEncoding);
+      return string.Format (Href, encodedParameters);
+    }
+
     /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
     /// <value> 
     ///   The URL to link to when the rendered command is clicked. The default value is 
@@ -223,11 +231,8 @@ public class Command
     {
       case CommandType.Href:
       {
-        string[] encodedParameters = new string[parameters.Length];
-        for (int i = 0; i < parameters.Length; i++)
-          encodedParameters[i] = HttpUtility.UrlEncode (parameters[i], HttpContext.Current.Response.ContentEncoding);
-        string href = string.Format (HrefCommand.Href, encodedParameters);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+        ArgumentUtility.CheckNotNull ("parameters", postBackLink);        
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, HrefCommand.FormatHref (parameters));
         if (HrefCommand.Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
         break;
