@@ -517,6 +517,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\RdbmsExpression.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\RdbmsExpressionSecurityException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\RdbmsProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
