@@ -4,6 +4,9 @@
 - BocList
   * OptionsMenu und ListMenu unterstützen WxeCommands
 
+- BocReferenceValue
+  * OptionsMenu integriert
+  
 1.1.36.0
 ========
 

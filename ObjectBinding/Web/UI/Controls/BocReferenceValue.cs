@@ -13,6 +13,7 @@ using Rubicon.Web;
 using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -50,7 +51,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       typeof (IBusinessObjectReferenceProperty) };
 
   private static readonly object s_selectionChangedEvent = new object();
-  private static readonly object EventMenuItemClick = new object();
+  private static readonly object s_menuItemClickEvent = new object();
 
 	// member fields
 
@@ -748,18 +749,14 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     return menuItems;
   }
 
-  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
-  {
-  }
-
   private void OptionsMenu_EventCommandClick(object sender, MenuItemClickEventArgs e)
   {
-    OnMenuItemClick ((BocMenuItem) e.Item);
+    OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
-  protected virtual void OnMenuItemClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
-    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[EventMenuItemClick];
+    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
       ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
     if (menuItemClickHandler != null)
@@ -772,8 +769,29 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   [Category ("Action")]
   public event MenuItemClickEventHandler MenuItemClick
   {
-    add { Events.AddHandler (EventMenuItemClick, value); }
-    remove { Events.RemoveHandler (EventMenuItemClick, value); }
+    add { Events.AddHandler (s_menuItemClickEvent, value); }
+    remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
+  }
+
+  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
+  {
+    OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
+  }
+
+  protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
+  {
+    if (menuItem != null && menuItem.Command != null)
+    {
+      int[] indices = new int[0];
+      IBusinessObject[] businessObjects;
+      if (Value != null)
+        businessObjects = new IBusinessObject[] { Value };
+      else
+        businessObjects = new IBusinessObject[0];
+ 
+      BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+      command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+    }
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>

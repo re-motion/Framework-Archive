@@ -158,7 +158,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   }
 
-  /// <summary> Fires the <see cref="Click"/> event. </summary>
+  /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
   protected virtual void OnEventCommandClick (MenuItem item)
   {
     MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_eventCommandClickEvent];
@@ -169,7 +169,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     }
   }
 
-  /// <summary> Fires the <see cref="Click"/> event. </summary>
+  /// <summary> Fires the <see cref="WxeFunctionCommandClick"/> event. </summary>
   protected virtual void OnWxeFunctionCommandClick (MenuItem item)
   {
     MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_wxeFunctionCommandClickEvent];

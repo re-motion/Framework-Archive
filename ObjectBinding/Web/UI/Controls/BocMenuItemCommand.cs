@@ -96,7 +96,7 @@ public class BocMenuItemCommand: BocCommand
   ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/>.
   /// </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
-  /// <param name="listIndeces"> 
+  /// <param name="listIndices"> 
   ///   The array of indices for the <see cref="IBusinessObject"/> instances on which the rendered 
   ///   command is applied on.
   /// </param>
@@ -132,7 +132,7 @@ public class BocMenuItemCommand: BocCommand
   ///   The <see cref="MenuItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
   /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.WxeFunction"/>. </remarks>
-  /// <value> A <see cref="ColumnWxeFunctionCommandInfo"/> object. </value>
+  /// <value> A <see cref="MenuItemWxeFunctionCommandInfo"/> object. </value>
   public override WxeFunctionCommandInfo WxeFunctionCommand
   {
     get { return _wxeFunctionCommand; }

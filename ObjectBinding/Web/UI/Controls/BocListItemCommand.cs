@@ -193,7 +193,7 @@ public class BocListItemCommand: BocCommand
 
   /// <summary> The <see cref="ListItemHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>
   /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>. </remarks>
-  /// <value> A <see cref="ColumnHrefCommandInfo"/> object. </value>
+  /// <value> A <see cref="ListItemHrefCommandInfo"/> object. </value>
   public override HrefCommandInfo HrefCommand
   {
     get { return _hrefCommand;  }
