@@ -116,7 +116,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// given <i>collection</i>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
-  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read only.</param>
+  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
   public DomainObjectCollection (DomainObjectCollection collection, bool isCollectionReadOnly)
   {
