@@ -50,8 +50,6 @@ public class WebTreeNodeCollection: ControlItemCollection
     base.OnInsertComplete (index, value);
     WebTreeNode node = (WebTreeNode) value;
     node.SetParent (_treeView, _parentNode);
-    if (node.IsSelected)
-      node.SetSelected (true);
   }
 
   protected override void OnSet(int index, object oldValue, object newValue)
@@ -67,8 +65,6 @@ public class WebTreeNodeCollection: ControlItemCollection
     base.OnSetComplete (index, oldValue, newValue);
     WebTreeNode node = (WebTreeNode) newValue;
     node.SetParent (_treeView, _parentNode);
-    if (node.IsSelected)
-      node.SetSelected (true);
   }
 
   private void CheckNode (string arguemntName, WebTreeNode node)

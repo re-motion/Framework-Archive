@@ -48,8 +48,7 @@ public class WebTabCollection: ControlItemCollection
     base.OnInsertComplete (index, value);
     WebTab tab = (WebTab) value;
     tab.SetParent (_tabStrip);
-    if (tab.IsSelected)
-      tab.SetSelected (true);
+    InitalizeSelectedTab();
   }
 
   protected override void OnSet(int index, object oldValue, object newValue)
@@ -65,8 +64,6 @@ public class WebTabCollection: ControlItemCollection
     base.OnSetComplete (index, oldValue, newValue);
     WebTab tab = (WebTab) newValue;
     tab.SetParent (_tabStrip);
-    if (tab.IsSelected)
-      tab.SetSelected (true);
   }
 
   private void CheckTab (string arguemntName, WebTab tab)
@@ -88,6 +85,7 @@ public class WebTabCollection: ControlItemCollection
     _tabStrip = tabStrip; 
     foreach (WebTab tab in List)
       tab.SetParent (_tabStrip);
+    InitalizeSelectedTab();
   }
 
   /// <summary>
@@ -103,6 +101,17 @@ public class WebTabCollection: ControlItemCollection
         return tab;
     }
     return null;
+  }
+
+  private void InitalizeSelectedTab()
+  {
+    if (   _tabStrip != null 
+        && _tabStrip.Page != null && ! _tabStrip.Page.IsPostBack 
+        && _tabStrip.SelectedTab == null 
+        && InnerList.Count > 0)
+    {
+      _tabStrip.SetSelectedTab ((WebTab) InnerList[0]);
+    }
   }
 }
 

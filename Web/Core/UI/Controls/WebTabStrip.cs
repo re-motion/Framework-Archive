@@ -3,12 +3,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
-public class WebTabStrip : WebControl, IPostBackEventHandler
+public class WebTabStrip : WebControl, IControl, IPostBackDataHandler
 {
   // statics
   private static readonly object s_selectedIndexChangedEvent = new object();
@@ -18,7 +19,9 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   // fields
   private WebTabCollection _tabs;
   private WebTab _selectedTab;
-  private bool _hasTabsCreated;
+  private string _selectedTabID;
+  private string _tabToBeSelected = null;
+  private bool _hasTabsRestored;
   private Triplet[] _tabsViewState;
   private Style _separatorStyle;
   private Style _tabStyle;
@@ -42,38 +45,54 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   {
   }
 
-  /// <summary> Implementation of the <see cref="IPostBackEventHandler"/> interface. </summary>
-  /// <param name="eventArgument"> &lt;node path&gt;</param>
-  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
-    EnsureTabsCreated();
+    //  Is PostBack caused by this tab strip ?
+    if (postCollection[ControlHelper.EventTarget] == ClientID)
+    {
+      _tabToBeSelected = postCollection[ControlHelper.EventArgument];
+      ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected);
+      if (_tabToBeSelected != _selectedTabID)
+        return true;
+    }
+    return false;
+  }
 
-    eventArgument = eventArgument.Trim();
-    HandleClickEvent (eventArgument);
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    EnsureTabsRestored();
+    HandleSelectionChangeEvent (_tabToBeSelected);
   }
 
   /// <summary> Handles the click event for a tab. </summary>
-  /// <param name="eventArgument"> The id of the tab. </param>
-  private void HandleClickEvent (string eventArgument)
+  /// <param name="tabID"> The id of the tab. </param>
+  private void HandleSelectionChangeEvent (string tabID)
   {
-    WebTab clickedTab = _tabs.Find (eventArgument);
-    if (clickedTab != SelectedTab)
-    {
-      SetSelectedTab (clickedTab);
-      OnSelectedIndexChange();
-    }
+    WebTab currentTab = _selectedTab;
+    SetSelectedTab (tabID);
+    if (currentTab != _selectedTab)
+      OnSelectedIndexChanged();
   }
 
-  private void EnsureTabsCreated()
+  protected virtual void OnSelectedIndexChanged()
   {
-    if (_hasTabsCreated)
+    if (_selectedTab != null)
+      _selectedTab.OnSelectionChanged();
+
+    EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
+    if (handler != null)
+      handler (this, EventArgs.Empty);
+  }
+
+  private void EnsureTabsRestored()
+  {
+    if (_hasTabsRestored)
       return;
 
     if (_tabsViewState != null)
       LoadTabsViewStateRecursive (_tabsViewState, _tabs);
 
-    _hasTabsCreated = true;
+    _hasTabsRestored = true;
   }
 
   protected override void LoadViewState(object savedState)
@@ -83,14 +102,16 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
       object[] values = (object[]) savedState;
       base.LoadViewState(values[0]);
       _tabsViewState = (Triplet[]) values[1];
+      _selectedTabID = (string) values[2];
     }
   }
 
   protected override object SaveViewState()
   {
-    object[] values = new object[2];
+    object[] values = new object[3];
     values[0] = base.SaveViewState();
     values[1] = SaveNodesViewStateRecursive (_tabs);
+    values[2] = _selectedTabID;
     return values;
   }
 
@@ -131,17 +152,14 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
     }
     return tabsViewState;
   }
-
-  protected virtual void OnSelectedIndexChange ()
-  {
-    if (_selectedTab != null)
-      _selectedTab.OnSelectionChanged();
-
-    EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
-    if (handler != null)
-      handler (this, EventArgs.Empty);
-  }
   
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+    if (! ControlHelper.IsDesignMode ((IControl)this, Context) && Enabled)
+      Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Sets the selected tab. </summary>
   internal void SetSelectedTab (WebTab tab)
   {
@@ -154,6 +172,22 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
       _selectedTab = tab;
       if ((_selectedTab != null) && ! _selectedTab.IsSelected)
         _selectedTab.SetSelected (true);
+      
+      if (_selectedTab == null)
+        _selectedTabID = null;
+      else
+        _selectedTabID = _selectedTab.TabID;
+    }
+  }
+
+  private void SetSelectedTab (string tabID)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("tabID", tabID);
+    if (_selectedTab == null || _selectedTab.TabID != tabID)
+    {
+      WebTab tab = _tabs.Find (tabID);
+      if (tab != _selectedTab)
+        SetSelectedTab (tab);
     }
   }
 
@@ -162,7 +196,16 @@ public class WebTabStrip : WebControl, IPostBackEventHandler
   [Browsable (false)]
   public WebTab SelectedTab
   {
-    get { return _selectedTab; }
+    get
+    { 
+      if (_tabs.Count > 0)
+      {
+        EnsureTabsRestored();
+        if (! StringUtility.IsNullOrEmpty (_tabToBeSelected))
+          SetSelectedTab (_tabToBeSelected);
+      }
+      return _selectedTab; 
+    }
   }
 
   /// <summary> Gets the tabs displayed by this tab strip. </summary>
