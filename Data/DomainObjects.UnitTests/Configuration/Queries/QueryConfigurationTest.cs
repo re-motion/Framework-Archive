@@ -36,6 +36,15 @@ public class QueryConfigurationTest
     checker.Check (expectedQueries, actualQueries);
   }
 
+  [Test]
+  [ExpectedException (typeof (QueryConfigurationException),
+      "Value query 'OrderSumQuery' must not specify a collectionType.")]    
+  public void ValueQueryWithCollectionType ()
+  {
+    QueryConfigurationLoader loader = new QueryConfigurationLoader (@"valueQueryWithCollectionType.xml", @"queries.xsd");
+    loader.GetQueryDefinitions ();
+  }
+  
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
   {
     QueryDefinitionCollection queries = new QueryDefinitionCollection ();

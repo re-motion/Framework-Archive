@@ -210,6 +210,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "valueQueryWithCollectionType.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Configuration\Mapping\ClassDefinitionChecker.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
