@@ -8,7 +8,7 @@ namespace Rubicon.Web.UI.Utilities
 {
 
 /// <summary> Utility methods for URL resolving. </summary>
-public sealed class UrlResolverUtility
+public sealed class ResourceUrlResolver
 {
   /// <summary>
   ///   Walks the control hierarchy upwards until an implementation of 
@@ -22,20 +22,20 @@ public sealed class UrlResolverUtility
   /// <returns>
   ///   The URL or <see langword="null"/> if no <see cref="IImageUrlResolver"/> could be found.
   /// </returns>
-  public static string GetImageUrl (Control control, string relativeUrl)
+  public static string GetResourceUrl (Control control, Type definingType, ResourceType resourceType, string relativeUrl)
   {
     if (control == null)
       return null;
 
-    IImageUrlResolver imageUrlResolver = control as IImageUrlResolver;
+    IResourceUrlResolver resourceUrlResolver = control as IResourceUrlResolver;
     
-    if (imageUrlResolver == null)
-      return UrlResolverUtility.GetImageUrl (control.Parent, relativeUrl);
+    if (resourceUrlResolver == null)
+      return ResourceUrlResolver.GetResourceUrl (control.Parent, definingType, resourceType, relativeUrl);
     
-    string imageUrl = imageUrlResolver.GetImageUrl (relativeUrl);
+    string imageUrl = resourceUrlResolver.GetResourceUrl (definingType, resourceType, relativeUrl);
 
     if (imageUrl == null)
-      return UrlResolverUtility.GetImageUrl (control.Parent, relativeUrl);
+      return ResourceUrlResolver.GetResourceUrl (control.Parent, definingType, resourceType, relativeUrl);
 
     return imageUrl;
   }
@@ -52,22 +52,25 @@ public sealed class UrlResolverUtility
   /// <returns>
   ///   The URL or <see langword="null"/> if no <see cref="IHelpUrlResolver"/> could be found.
   /// </returns>
+  [Obsolete]
   public static string GetHelpUrl (Control control, string relativeUrl)
   {
-    if (control == null)
-      return null;
-
-    IHelpUrlResolver helpUrlResolver = control as IHelpUrlResolver;
-    
-    if (helpUrlResolver == null)
-      return UrlResolverUtility.GetHelpUrl (control.Parent, relativeUrl);
-    
-    string helpUrl = helpUrlResolver.GetHelpUrl (relativeUrl);
-
-    if (helpUrl == null)
-      return UrlResolverUtility.GetHelpUrl (control.Parent, relativeUrl);
-
-    return helpUrl;
+    throw new NotSupportedException ();
+//
+//    if (control == null)
+//      return null;
+//
+//    IResourceUrlResolver helpUrlResolver = control as IResourceUrlResolver;
+//    
+//    if (helpUrlResolver == null)
+//      return ResourceUrlResolver.GetHelpUrl (control.Parent, relativeUrl);
+//    
+//    string helpUrl = helpUrlResolver.GetHelpUrl (relativeUrl);
+//
+//    if (helpUrl == null)
+//      return UrlResolverUtility.GetHelpUrl (control.Parent, relativeUrl);
+//
+//    return helpUrl;
   }
 }
 
