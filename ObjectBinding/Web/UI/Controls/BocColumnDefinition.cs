@@ -275,6 +275,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 ///   the original value of this property can be retreived or changed.
 /// </remarks>
 // TODO: BocSimpleColumnDefinition: PropertyPathPicker
+// TODO: FormatString Property
 public class BocSimpleColumnDefinition: BocValueColumnDefinition
 {
   /// <summary>

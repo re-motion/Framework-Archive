@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.ComponentModel;
+using System.Drawing.Design;
+using System.Reflection;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -24,9 +28,16 @@ public class BocItemCommand
   private string _href;
   private string _target;
 
+  private string _functionTypeName;
+
+  private string[] _functionParameters;
+
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
-  {}
+  {
+    FunctionParameterList = " ";
+    FunctionParameterList = "";
+  }
 
   /// <summary>
   ///   Instantiates a <see cref="BocItemCommand"/> of type <see cref="BocItemCommandType.Href"/>.
@@ -80,6 +91,12 @@ public class BocItemCommand
         writer.RenderBeginTag (HtmlTextWriterTag.A);    
         break;
       }
+      case BocItemCommandType.WxeFunction:
+      {
+        WxeFunction function = Function;
+
+        break;
+      }
       default:
       {
         break;
@@ -124,9 +141,25 @@ public class BocItemCommand
       case BocItemCommandType.Href:
       {
         if (! StringUtility.IsNullOrEmpty (Href))
+        {
           stringBuilder.AppendFormat (": {0}", Href);
-        if (! StringUtility.IsNullOrEmpty (Target))
-          stringBuilder.AppendFormat (", {0}", Target);
+          if (! StringUtility.IsNullOrEmpty (Target))
+            stringBuilder.AppendFormat (", {0}", Target);
+        }
+        break;
+      }
+      case BocItemCommandType.WxeFunction:
+      {
+        if (! StringUtility.IsNullOrEmpty (FunctionTypeName))
+        {
+          stringBuilder.AppendFormat (": {0}", FunctionTypeName);
+          if (FunctionParameters != null)
+          {
+            stringBuilder.AppendFormat (
+              " ({0})", 
+              StringUtility.ConcatWithSeperator (FunctionParameters, ", "));
+          }
+        }
         break;
       }
       default:
@@ -159,18 +192,18 @@ public class BocItemCommand
   /// <summary> The hyperlink reference; used for <see cref="BocItemCommandType.Href"/>. </summary>
   /// <value> A <see cref="string"/> representing the hyperlink reference. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
   [Category ("Type: Href")]
+  [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string Href 
   {
     get
     {
-      if (_type == BocItemCommandType.Href)
-        return StringUtility.NullToEmpty (_href); 
-      else
+      if (_type != BocItemCommandType.Href)
         return null;
+
+      return StringUtility.NullToEmpty (_href); 
     }
     set
     {
@@ -181,22 +214,109 @@ public class BocItemCommand
   /// <summary> The hyperlink target; used for <see cref="BocItemCommandType.Href"/>. </summary>
   /// <value> A <see cref="string"/> representing the hyperlink target. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The target frame of the command. Leave it blank for no target.")]
   [Category ("Type: Href")]
+  [Description ("The target frame of the command. Leave it blank for no target.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string Target 
   { 
     get
     { 
-      if (_type == BocItemCommandType.Href)
-        return StringUtility.NullToEmpty (_target); 
-      else
+      if (_type != BocItemCommandType.Href)
         return null;
+      return StringUtility.NullToEmpty (_target); 
     }
     set
     {
       _target = value; 
+    }
+  }
+
+  [Browsable (false)]
+  public WxeFunction Function
+  {
+    get
+    {
+      if (_type != BocItemCommandType.WxeFunction)
+        return null;
+
+      Type functionType = System.Type.GetType (FunctionTypeName); 
+
+
+      return null;
+    }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Type: WxeFunction")]
+  [Description ("The type name of the WxeFunction used for this command.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string FunctionTypeName
+  {
+    get
+    {
+      if (_type != BocItemCommandType.WxeFunction)
+        return null;
+      return StringUtility.NullToEmpty (_functionTypeName); 
+    }
+    set 
+    {
+      _functionTypeName = value; 
+    }
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Category ("Type: WxeFunction")]
+  [Description ("A comma seperated list of parameters for this command.")]
+  [DefaultValue((string) null)]
+  [NotifyParentProperty (true)]
+  public string[] FunctionParameters
+  {
+    get
+    {
+      if (_type != BocItemCommandType.WxeFunction)
+        return null;
+      if (_functionParameters == null)
+          return new string[0];
+      return _functionParameters; 
+    }
+    set { _functionParameters = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
+  [Browsable (false)]
+  public string FunctionParameterList
+  {
+    get
+    {
+      if (_type != BocItemCommandType.WxeFunction)
+        return null;
+      if (FunctionParameters == null)
+        return "";
+      return StringUtility.ConcatWithSeperator (FunctionParameters, ", ");
+    }
+    set
+    {
+      value = StringUtility.NullToEmpty (value);
+      value = value.Trim();
+      if (value.Length == 0)
+      {
+        _functionParameters = new string[0];
+      }
+      else
+      {
+        string[] functionParamters = value.Split (',');   
+        _functionParameters = new string[functionParamters.Length];
+        for (int i = 0; i < functionParamters.Length; i++)
+        {
+          functionParamters[i] = functionParamters[i].Trim();
+          if (functionParamters[i].Length == 0)
+            throw new ArgumentEmptyException ("Parameter name missing for parameter No. " + i + " in FunctionParameterList + '" + value + "'.");
+          _functionParameters[i] = functionParamters[i];
+        }
+      }
     }
   }
 
@@ -223,7 +343,8 @@ public class BocItemCommand
 // TODO: BocItemCommandType: Documentation
 public enum BocItemCommandType
 {
-  Href
+  Href,
+  WxeFunction
 }
 
 // TODO: BocItemCommandShow: Documentation
