@@ -132,7 +132,7 @@ public class EntryFormGrid: Control
 		}
 
     writer.WriteLine (
-        "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"width: {0}; {1}\">",
+        "<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"width: {0}; {1}\">",
         Width.ToString (CultureInfo.InvariantCulture),
         FixedLayout ? "table-layout: fixed;" : string.Empty);
 
@@ -171,7 +171,7 @@ public class EntryFormGrid: Control
 
 			// write vertical empty space before titles
 			if (i != 0 && (control is EntryTitle) && control.Visible)
-				writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (1, 10));
+				writer.WriteLine ("<tr><td colspan=\"6\">{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (1, 10));
 
 			control.RenderControl (writer);
 		}
@@ -531,7 +531,7 @@ public class EntryField: Control
 
 		writer.Write ("</td>");
 		writer.WriteLine ("</tr>");
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
+		writer.WriteLine ("<tr> <td colspan=\"6\">{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
 	}
 
   private void CheckExternalValidState (ref string errorMessages, ref bool invalid)
