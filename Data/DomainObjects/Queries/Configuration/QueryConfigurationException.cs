@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
+/// <summary>
+/// The exception that is thrown when a problem occurs while constructing a <see cref="QueryConfiguration"/>.
+/// </summary>
 [Serializable]
 public class QueryConfigurationException : ConfigurationException
 {
