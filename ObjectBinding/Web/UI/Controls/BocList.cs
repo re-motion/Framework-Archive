@@ -1715,8 +1715,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Compares <see cref="IBusinessObject"/> <paramref name="objectA"/> 
-  ///   and <paramref name="objectB"/>.
+  ///   Compares <paramref name="objectA"/> and <paramref name="objectB"/>.
   /// </summary>
   /// <param name="objectA"> 
   ///   First <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
@@ -1792,6 +1791,19 @@ public class BocList:
     return 0;
   }
 
+  /// <summary>
+  ///   Compares the values of the <see cref="IBusinessObjectProperties"/> identified by <paramref ="propertyPath"/>
+  ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
+  /// </summary>
+  /// <param name="propertyPath">
+  ///   The <see cref="BusinessObjectPropertyPath"/> to be used for accessing the values.
+  /// </param>
+  /// <param name="businessObjectA"> 
+  ///   First <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="businessObjectB"> 
+  ///   Second <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
+  /// </param>
   private int ComparePropertyPathValues (
       BusinessObjectPropertyPath propertyPath, 
       IBusinessObject businessObjectA, 
