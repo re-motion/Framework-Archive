@@ -60,7 +60,7 @@ public sealed class DBValueConverter
         return id;
     }
 
-    return new ObjectID (classDefinition.StorageProviderID, classDefinition.ID, value);
+    return new ObjectID (classDefinition.ID, value);
   }
 
   public static object GetDBValue (ObjectID id, string storageProviderID)
