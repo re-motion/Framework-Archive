@@ -223,6 +223,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       ArgumentUtility.CheckNotNull ("newFormGridRow", newFormGridRow);
 
+      newFormGridRow.SetFormGrid (this);
       FormGridRow relatedRow = GetRowForID (relatedRowID);
 
       //  Not found, append to form grid instead of inserting at position of related form grid row
@@ -651,6 +652,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
       foreach (HtmlTableRow row in _htmlTableRows)
         row.Visible = true;
+    }
+
+    internal void SetFormGrid (FormGrid formGrid)
+    {
+      _formGrid = formGrid;
     }
 
     /// <summary>
