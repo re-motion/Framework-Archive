@@ -36,7 +36,7 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
     if (IsNullableType)
       return NaByte.ToBoxedByte ((NaByte)internalValue);
 
-    return int.Parse (internalValue.ToString ());  
+    return base.FromInternalType (int.Parse (internalValue.ToString ()));  
   }
 
   protected internal override object ToInternalType (object publicValue)
