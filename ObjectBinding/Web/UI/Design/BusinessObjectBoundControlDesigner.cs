@@ -11,6 +11,7 @@ namespace Rubicon.ObjectBinding.Web.Design
 /// <summary>
 /// Provides a desinger for the DataSource property of BusinessObject-bound controls.
 /// </summary>
+[Obsolete ("Place a IBusinessObjectDataSourceControl onto the page instead and link it to the BusinessObjectBoundWebControl.")]
 public class BusinessObjectBoundControlDesigner: ControlDesigner
 {
   private IBusinessObjectBoundControl _boundControl;
