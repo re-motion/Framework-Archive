@@ -34,7 +34,7 @@ public class ValidationError
   /// <summary>
   ///   The validator used to validate the <see cref="_validatedControl"/>.
   /// </summary>
-  private BaseValidator _validator;
+  private IValidator _validator;
 
   // construction and disposing
 
@@ -48,7 +48,7 @@ public class ValidationError
 	public ValidationError (
     Control validatedControl,
     string validationMessage,
-    BaseValidator validator)
+    IValidator validator)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
@@ -91,8 +91,8 @@ public class ValidationError
   /// <summary>
   ///   The validator used to validate the <see cref="ValidatedControl"/>.
   /// </summary>
-  /// <value>A <see cref="BaseValidator"/> instance or <see langname="null" /></value>
-  public BaseValidator Validator
+  /// <value>A <see cref="IValidator"/> instance or <see langname="null" /></value>
+  public IValidator Validator
   {
     get { return _validator; }
   }
