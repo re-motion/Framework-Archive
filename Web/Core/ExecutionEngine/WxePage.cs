@@ -95,7 +95,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     if (! _postbackCollectionInitialized)
     {
-      if (! WxeContext.Current.IsPostBack)
+      if (WxeContext.Current == null)
+      {
+        _postbackCollection = null;
+      }
+      else if (! WxeContext.Current.IsPostBack)
       {
         _postbackCollection = null;
       }
@@ -246,7 +250,7 @@ public class WxePage: Page, IWxePage
 
   public bool IsReturningPostBack
   {
-    get { return WxeContext.Current.IsReturningPostBack; }
+    get { return ((WxeContext.Current == null) ? false : WxeContext.Current.IsReturningPostBack); }
   }
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
@@ -284,7 +288,7 @@ public class WxePage: Page, IWxePage
 
   public WxeFunction ReturningFunction
   {
-    get { return WxeContext.Current.ReturningFunction; }
+    get { return ((WxeContext.Current == null) ? null : WxeContext.Current.ReturningFunction); }
   }
 
   protected WxeForm WxeForm
