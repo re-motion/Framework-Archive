@@ -23,7 +23,7 @@ public class PageUtility
   /// Used by method "CallPage" to indicate whether the navigation bar shall be shown.
   /// If "UseDefault" the display status of the navigation bar is retrieved from the calling page's URL.
   /// </summary>
-  public enum ShowNavigationBar 
+  public enum NavigationBar 
   {
     Show, 
     Hide, 
@@ -368,7 +368,7 @@ public class PageUtility
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      ShowNavigationBar showNavBar)
+      NavigationBar showNavBar)
   {    
     string referrerUrl = GetPhysicalPageUrl (sourcePage);
 
@@ -386,16 +386,16 @@ public class PageUtility
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      ShowNavigationBar showNavBar,
+      NavigationBar showNavBar,
       string referrerUrl)
   {    
     // Add referrer information for all pages
     parameters.Add ("Referrer", referrerUrl); 
 
     string supressNavigation = string.Empty ;
-    if (showNavBar == ShowNavigationBar.Show)
+    if (showNavBar == NavigationBar.Hide)
       supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
-    else if (showNavBar == ShowNavigationBar.UseDefault)
+    else if (showNavBar == NavigationBar.UseDefault)
     {
       if (sourcePage.Request.QueryString[c_supressNavParam] == c_supressNavValue)
         supressNavigation = "&" + c_supressNavParam + "=" + c_supressNavValue;
