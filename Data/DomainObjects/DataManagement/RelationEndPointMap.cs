@@ -25,6 +25,15 @@ public class RelationEndPointMap : RelationEndPointCollection
 
   // methods and properties
 
+  public override void Add (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+    if (endPoint.IsNull)
+      throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
+
+    base.Add (endPoint);
+  }
+
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);

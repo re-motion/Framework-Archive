@@ -94,76 +94,6 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
     return newDataContainer;
   }
 
-  internal protected void Delete (DomainObject domainObject)
-  {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-
-    // TODO: Move BeginDelete and EndDelete to DomainObject!!!
-
-    RelationEndPointCollection oppositeEndPoints = domainObject.GetOppositeRelationEndPoints ();
-    if (BeginDelete (domainObject, oppositeEndPoints))
-    {
-      /*
-      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      {
-        RelationEndPoint relationEndPoint = GetRelationEndPoint (endPointID);
-        if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
-        {
-          // TODO: opposite object can be null!
-          DomainObject oppositeDomainObject = GetRelatedObject (relationEndPoint);
-          RelationEndPoint oppositeEndPoint = GetRelationEndPoint (oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition);
-
-          _dataManager.WriteAssociatedPropertiesForRelationChange (
-              relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));
-
-          _dataManager.ChangeLinks (
-            relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));    
-        }
-        else
-        {
-          // TODO: visit every domain object of opposite collection        
-        }
-      }
-      */
-
-      EndDelete (domainObject, oppositeEndPoints);
-    }
-  }
-
-  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
-  {
-    if (!domainObject.BeginDelete ())
-      return false;
-
-    // TODO: Move code below to RelationEndPointList
-    foreach (RelationEndPoint oppositeEndPoint in oppositeEndPoints)
-    {
-      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
-      RelationEndPoint oldEndPoint = GetRelationEndPoint (domainObject, endPointDefinition);
-      RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
-
-      if (!oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint))
-        return false;
-    }
-    return true;
-  }
-
-  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
-  {
-    domainObject.EndDelete ();
-
-    // TODO: Move code below to RelationEndPointList
-
-    foreach (RelationEndPoint oppositeEndPoint in oppositeEndPoints)
-      oppositeEndPoint.EndRelationChange ();
-  }
-
   internal protected DomainObject GetObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -266,7 +196,13 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
           newRelatedEndPoint, 
           oldRelatedEndPoint);
   }
-
+  
+  internal protected void Delete (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    _dataManager.Delete (domainObject);
+  }
+  
   protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -371,8 +307,9 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
     }
   }
 
-  private RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
+  internal RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
   {
+    // TODO: Move code to RelationMap
     if (domainObject != null)
       return GetRelationEndPoint (new RelationEndPointID (domainObject.ID, definition));
     else
@@ -381,6 +318,7 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
 
   private RelationEndPoint GetRelationEndPoint (RelationEndPointID endPointID)
   {
+    // TODO: Move code to RelationMap
     if (_dataManager.Contains (endPointID))
       return _dataManager.GetRelationEndPoint (endPointID);
 

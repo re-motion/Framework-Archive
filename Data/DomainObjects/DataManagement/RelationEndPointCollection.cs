@@ -56,7 +56,7 @@ public class RelationEndPointCollection : CollectionBase
     get { return (RelationEndPoint) GetObject (id); }
   }
 
-  public void Add (RelationEndPoint endPoint)
+  public virtual void Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
     base.Add (endPoint.ID, endPoint);
