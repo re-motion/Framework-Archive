@@ -121,7 +121,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary>
   ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
-  ///   <see cref="Property"/>.
+  ///   <see cref="IBusinessObjectBoundControl.Property"/>.
   /// </summary>
   private void RefreshPropertiesFromObjectModel()
   {
@@ -144,7 +144,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         Value = DataSource.BusinessObject.GetProperty (Property);
@@ -173,7 +173,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
@@ -424,7 +424,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       RefreshPropertiesFromObjectModel();
       return _actualValueType;
     }

@@ -14,7 +14,7 @@ namespace Rubicon.Web.UI
 ///   Insert the following line into the head element of the webform you want to add 
 ///   the registered controls to.
 ///   <code>
-///     &lt;rwc:htmlheadcontents runat="server" id="HtmlHeadContents"&lgt;&lt;/rwc:htmlheadcontents&gt;
+///     &lt;rwc:htmlheadcontents runat="server" id="HtmlHeadContents"&gt;&lt;/rwc:htmlheadcontents&gt;
 ///   </code>
 ///   Register a new <c>HTML head element</c> using the following syntax.
 ///   <code>

@@ -143,15 +143,15 @@ public class DropDownMenu: WebControl
     writer.RenderEndTag();  // End Drop Down Head-Div
 
     //  Options Drop Down PopUp
-//    writer.AddStyleAttribute ("position", "absolute");
-//    writer.AddStyleAttribute ("right", "0px");
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassPopUpTextPane);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.WriteLine ("<div>Item 1</div>"); // width: 100% spans menu across the whole options-div
-//    writer.WriteLine ("<div>Item 2</div>");
-//    writer.WriteLine ("<div>Item 3</div>");
-//    writer.WriteLine ("<div>Item 4</div>");
-//    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "absolute");
+    writer.AddStyleAttribute ("right", "0px");
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassPopUpTextPane);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.WriteLine ("<div>Item 1</div>"); // width: 100% spans menu across the whole options-div
+    writer.WriteLine ("<div>Item 2</div>");
+    writer.WriteLine ("<div>Item 3</div>");
+    writer.WriteLine ("<div>Item 4</div>");
+    writer.RenderEndTag();
 
     writer.RenderEndTag(); // End Menu-Div
 

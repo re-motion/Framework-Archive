@@ -306,7 +306,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     get 
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       return (Property != null) ? Property.DisplayName : null;
     }
   }
@@ -382,7 +382,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
     {
       if (_readOnly != NaBooleanEnum.Undefined)
         return _readOnly == NaBooleanEnum.True;
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property == null || DataSource == null)
         return false;
       if (! IsDesignMode && DataSource.BusinessObject == null)
@@ -401,7 +401,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
         return false;
       if (_required != NaBooleanEnum.Undefined)
         return _required == NaBooleanEnum.True;
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null)
         return (bool) Property.IsRequired;
       return false;
