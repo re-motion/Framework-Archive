@@ -32,8 +32,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   [Test]
   public void LoadingOfSimpleObject ()
   {
-    ObjectID id = new ObjectID (DatabaseTest.c_testDomainProviderID,
-        "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
     
@@ -114,8 +113,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   [Test]
   public void OnLoaded ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
     
