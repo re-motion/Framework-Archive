@@ -433,10 +433,10 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     private ValidationError[] _validationErrors;
 
     /// <summary> The validation marker for this <c>FormGridRow</c>. </summary>
-    private Control _validationMarker;
+    private Image _validationMarker;
 
     /// <summary>The required marker for this <c>FormGridRow</c>. </summary>
-    private Control _requiredMarker;
+    private Image _requiredMarker;
 
     /// <summary> The help provider for this <c>FormGridRow</c>. </summary>
     private Control _helpProvider;
@@ -707,8 +707,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary> The validation marker for this <c>FormGridRow</c>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMarker/*' />
-    public Control ValidationMarker
+    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/whether/*' />
+    public Image ValidationMarker
     {
       get { return _validationMarker; }
       set { _validationMarker = value; }
@@ -716,7 +716,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     /// <summary> The required marker for this <c>FormGridRow</c>. </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/RequiredMarker/*' />
-    public Control RequiredMarker
+    public Image RequiredMarker
     {
       get { return _requiredMarker; }
       set { _requiredMarker = value; }
@@ -1534,8 +1534,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     //  Create a ValidationError object for each error
     //  Create the validationIcon
 
-    string toolTip = "";
-
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
       IValidator validator = control as IValidator;
@@ -1560,31 +1558,15 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       else if (iBaseValidator != null)
         controlToValidate = control.NamingContainer.FindControl (iBaseValidator.ControlToValidate);
 
-      //  Ignore invisible controls
-      if (!controlToValidate.Visible)
-        continue;
-
-      //  Get validation message
-      string validationMessage = validator.ErrorMessage;
-
-      //  Get tool tip, tool tip is validation message
-      if (validationMessage != null && validationMessage.Length > 0)
-      {
-        if (toolTip.Length > 0)
-          toolTip += Environment.NewLine;
-
-        toolTip += validationMessage;
-      }
-
-      //  Build ValidationError
-      validationErrorList.Add (
-        new ValidationError (controlToValidate, validationMessage, validator));
+      //  Only visible controls: Build ValidationError
+      if (controlToValidate.Visible)
+        validationErrorList.Add (new ValidationError (controlToValidate, validator));
     }
 
     bool hasValidationErrors = validationErrorList.Count > 0;
 
     if (hasValidationErrors)
-      dataRow.ValidationMarker = GetValidationMarker (toolTip);
+      dataRow.ValidationMarker = GetValidationMarker (string.Empty);
 
     dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray (typeof (ValidationError));
   }
@@ -1986,6 +1968,20 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
     if (ShowValidationMarkers && dataRow.ValidationMarker != null)
     {
+      string toolTip = string.Empty;
+      foreach (ValidationError validationError in dataRow.ValidationErrors)
+      {
+        //  Get validation message
+        string validationMessage = validationError.ValidationMessage;
+        //  Get tool tip, tool tip is validation message
+        if (validationMessage != null && validationMessage.Length > 0)
+        {
+          if (toolTip.Length > 0)
+            toolTip += Environment.NewLine;
+          toolTip += validationMessage;
+        }
+      }
+      dataRow.ValidationMarker.ToolTip = toolTip;
       dataRow.MarkersCell.Controls.Add(dataRow.ValidationMarker);
     }
     else if (ShowRequiredMarkers && dataRow.RequiredMarker != null)
@@ -2409,8 +2405,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         if (validationError == null)
           continue;
 
-        dataRow.ValidationMessagesCell.Controls.Add (
-          validationError.ToDiv (CssClassValidationMessage));
+        dataRow.ValidationMessagesCell.Controls.Add (validationError.ToDiv (CssClassValidationMessage));
       }
     }
   }
@@ -2571,7 +2566,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Builds the input required marker. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetRequiredMarker/*' />
-  protected virtual Control GetRequiredMarker()
+  protected virtual Image GetRequiredMarker()
   {
     Image requiredIcon = new Image();
     requiredIcon.ImageUrl = GetImageUrl (FormGridImage.RequiredField);
@@ -2638,7 +2633,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   /// <summary> Builds a new marker for validation errors. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetValidationMarker/*' />
-  protected virtual Control GetValidationMarker (string toolTip)
+  protected virtual Image GetValidationMarker (string toolTip)
   {
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);

@@ -77,6 +77,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="ImageButton"/> used in edit mode to enter the date using a date picker. </summary>
   private ImageButton _imageButton = null;
 
+  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
+  private BocDateTimeValueValidator _dateTimeValidator = new BocDateTimeValueValidator();
+
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
 
@@ -352,18 +355,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     BaseValidator[] validators = new BaseValidator[1];
 
-    BocDateTimeValueValidator dateTimeValidator = new BocDateTimeValueValidator();
+    _dateTimeValidator.ID = this.ID + "_ValidatorDateTime";
+    _dateTimeValidator.ControlToValidate = ID;
 
-    dateTimeValidator.ID = this.ID + "_ValidatorDateTime";
-    dateTimeValidator.ControlToValidate = ID;
     //  TODO: BocDateTimeValue: Get validation messages from ResourceProvider
-    dateTimeValidator.RequiredErrorMessage = c_requiredErrorMessage;
-    dateTimeValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
-    dateTimeValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
-    dateTimeValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
-    dateTimeValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.RequiredErrorMessage))
+      _dateTimeValidator.RequiredErrorMessage = c_requiredErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.IncompleteErrorMessage))
+      _dateTimeValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidDateAndTimeErrorMessage))
+      _dateTimeValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidDateErrorMessage))
+      _dateTimeValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidTimeErrorMessage))
+      _dateTimeValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
 
-    validators[0] = dateTimeValidator;
+    validators[0] = _dateTimeValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
@@ -1251,6 +1258,66 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         return "\n";
 
     }
+  }
+
+  /// <summary>
+  ///   Validation message if the control is not filled out.
+  /// </summary>
+  [Description("Validation message if the control is not filled out.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string RequiredErrorMessage
+  {
+    get { return _dateTimeValidator.RequiredErrorMessage; }
+    set { _dateTimeValidator.RequiredErrorMessage = value; }
+  }
+
+  /// <summary>
+  ///   Validation message if the control's contents is incomplete.
+  /// </summary>
+  [Description("Validation message if the control's contents is incomplete.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string IncompleteErrorMessage
+  {
+    get { return _dateTimeValidator.IncompleteErrorMessage; }
+    set { _dateTimeValidator.IncompleteErrorMessage = value; }
+  }
+
+  /// <summary>
+  ///   Validation message if the date value is invalid.
+  /// </summary>
+  [Description("Validation message if the date value is invalid.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string InvalidDateErrorMessage
+  {
+    get { return _dateTimeValidator.InvalidDateErrorMessage; }
+    set { _dateTimeValidator.InvalidDateErrorMessage = value; }
+  }
+
+  /// <summary>
+  ///   Validation message if the time value is invalid.
+  /// </summary>
+  [Description("Validation message if the time value is invalid.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string InvalidTimeErrorMessage
+  {
+    get { return _dateTimeValidator.InvalidTimeErrorMessage; }
+    set { _dateTimeValidator.InvalidTimeErrorMessage = value; }
+  }
+
+  /// <summary>
+  ///   Validation message if the date and time values are invalid.
+  /// </summary>
+  [Description("Validation message if the date and time values are invalid.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string InvalidDateAndTimeErrorMessage
+  {
+    get { return _dateTimeValidator.InvalidDateAndTimeErrorMessage; }
+    set { _dateTimeValidator.InvalidDateAndTimeErrorMessage = value; }
   }
 }
 

@@ -22,7 +22,7 @@ using Rubicon.Globalization;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.WebFormMK")]
+[MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WebFormMK :
   Page,
   IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 

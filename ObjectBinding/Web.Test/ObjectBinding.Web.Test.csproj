@@ -388,6 +388,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\WebFormBase.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "HTML\style.css"
                     BuildAction = "Content"
                 />
