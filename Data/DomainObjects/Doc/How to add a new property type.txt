@@ -44,11 +44,9 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
 13. Neue Datentypen in Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetValue ergänzen.
     Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.DBValueConverter.GetDBValue ergänzt werden.
 
-14. Alle UnitTests laufen lassen. Wenn diese grün sind, dann weiter zu 14.
+14. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding ergänzen.
 
-15. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding ergänzen.
-
-16. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
+15. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
     - mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\Data\DomainObjects\ObjectBinding\Web\Test\bin" kopieren
     - SetupDB.sql erweitern und ausführen
     - CreateTestData.sql erweitern und ausführen
