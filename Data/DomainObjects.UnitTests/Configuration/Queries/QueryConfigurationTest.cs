@@ -66,6 +66,12 @@ public class QueryConfigurationTest
       QueryConfiguration.SetCurrent (null);
     }
   }
+
+  [Test]
+  public void ApplicationName ()
+  {
+    Assert.AreEqual ("UnitTests", QueryConfiguration.Current.ApplicationName);
+  }
   
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
   {

@@ -54,5 +54,11 @@ public class StorageProviderConfigurationTest
       StorageProviderConfiguration.SetCurrent (null);
     }
   }
+
+  [Test]
+  public void ApplicationName ()
+  {
+    Assert.AreEqual ("UnitTests", StorageProviderConfiguration.Current.ApplicationName);
+  }
 }
 }
