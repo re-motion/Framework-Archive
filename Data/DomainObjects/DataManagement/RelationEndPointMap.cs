@@ -57,6 +57,69 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
+  public void Delete (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    // TODO: Reactivate code below
+//    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+//    {
+//      if (endPointID.Definition.Cardinality == CardinalityType.One)
+//      {
+//        ObjectEndPoint objectEndPoint = (ObjectEndPoint) GetRelationEndPointWithLazyLoad (endPointID);
+//        
+//        RelationEndPointCollection allOppositeEndPoints = 
+//            _relationEndPoints.GetOppositeRelationEndPoints (objectEndPoint);
+//
+//        foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
+//        {
+//          if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
+//          {
+//            ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
+//                RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
+//          }
+//          else
+//          {
+//            CollectionEndPoint oppositeCollectionEndPoint = (CollectionEndPoint) oppositeEndPoint;
+//            oppositeCollectionEndPoint.OppositeDomainObjects.PerformRemove (domainObject);
+//          }
+//        }
+//
+//        objectEndPoint.SetOppositeEndPoint (
+//          RelationEndPoint.CreateNullRelationEndPoint (objectEndPoint.OppositeEndPointDefinition));
+//      }
+//    }
+
+    /*
+      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+      {
+        RelationEndPoint relationEndPoint = GetRelationEndPoint (endPointID);
+        if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
+        {
+          // TODO: opposite object can be null!
+          DomainObject oppositeDomainObject = GetRelatedObject (relationEndPoint);
+          RelationEndPoint oppositeEndPoint = GetRelationEndPoint (oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition);
+
+          _dataManager.WriteAssociatedPropertiesForRelationChange (
+              relationEndPoint, 
+              new NullRelationEndPoint (oppositeEndPoint.Definition), 
+              oppositeEndPoint, 
+              new NullRelationEndPoint (relationEndPoint.Definition));
+
+          _dataManager.ChangeLinks (
+            relationEndPoint, 
+              new NullRelationEndPoint (oppositeEndPoint.Definition), 
+              oppositeEndPoint, 
+              new NullRelationEndPoint (relationEndPoint.Definition));    
+        }
+        else
+        {
+          // TODO: visit every domain object of opposite collection        
+        }
+      }
+      */
+  }
+
   public DomainObject GetRelatedObject (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
