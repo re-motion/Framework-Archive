@@ -69,6 +69,8 @@ public class DataSourcePage: Page, IBusinessObjectDataSource, IGetComponentBindi
     DataSource.SaveValues (interim);
   }
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return DataSource.BoundControls; }

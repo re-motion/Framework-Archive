@@ -74,6 +74,8 @@ public class DataSourceUserControl: UserControl, IBusinessObjectDataSource, IGet
     DataSource.SaveValues (interim);
   }
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return DataSource.BoundControls; }
