@@ -184,6 +184,24 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     {
       // TODO: Check index for validity
 
+      // If new value is null: This is actually a remove operation
+      if (value == null)
+      {
+        RemoveAt (index);
+        return;
+      }
+
+      // If old and new objects are the same: Perform no operation
+      if (object.ReferenceEquals (this[index], value))
+        return;
+
+      if (Contains (value))
+      {
+        throw CreateInvalidOperationException (
+            "Cannot replace an object '{0}' with another object '{1}' already part of this collection.", 
+            this[index].ID, value.ID);
+      }
+
       if (_changeDelegate != null)
       {
         _changeDelegate.PerformReplace (this, value, index);
@@ -350,7 +368,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     set 
     {
-      ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+      ArgumentUtility.CheckType ("value", value, typeof (DomainObject));
 
       this[index] = (DomainObject) value; 
     } 
@@ -582,5 +600,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
       Removed (this, args);
   }
 
+  private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+  {
+    return new InvalidOperationException (string.Format (message, args));
+  }
 }
 }

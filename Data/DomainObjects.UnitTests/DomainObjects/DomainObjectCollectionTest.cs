@@ -91,7 +91,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [ExpectedException (typeof (ArgumentException), 
       "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. " 
       + "Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' "
-      + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.")]
+      + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
   public void InvalidDerivedType ()
   {
     Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor2);

@@ -364,5 +364,38 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
     Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
   }
+
+  [Test]
+  public void ReplaceWithSameObject ()
+  {
+    DomainObject[] domainObjectEventSources = new DomainObject[] {_customer, _oldCustomerOfNewOrder, _oldOrder, _newOrder};
+    DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {_customer.Orders, _oldCustomerOfNewOrder.Orders}; 
+    
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources);
+
+    int replaceIndex = _customer.Orders.IndexOf (_oldOrder);
+    _customer.Orders[replaceIndex] = _oldOrder;
+
+    ChangeState[] expectedChangeStates = new ChangeState[0];
+    eventReceiver.Check (expectedChangeStates);
+  }
+
+  [Test]
+  public void ReplaceWithObjectAlreadyInCollection ()
+  {
+    try
+    {
+      _customer.Orders[0] = _customer.Orders[1];
+      Assert.Fail ("Expected test to raise exception.");
+    }
+    catch (InvalidOperationException e)
+    {
+      string expectedMessage = string.Format (
+          "Cannot replace an object '{0}' with another object '{1}' already part of this collection.",
+          _customer.Orders[0].ID, _customer.Orders[1].ID);
+
+      Assert.AreEqual (expectedMessage, e.Message);
+    }
+  }
 }
 }

@@ -271,5 +271,25 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
     Assert.AreSame (_supervisor, _subordinate.Supervisor);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "Cannot add object 'TestDomain|Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+      + " already part of this collection.\r\nParameter name: domainObject")]
+  public void AddObjectAlreadyInCollection ()
+  {
+    _supervisor.Subordinates.Add (_subordinate);
+    _supervisor.Subordinates.Add (_subordinate);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "Cannot insert object 'TestDomain|Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+      + " already part of this collection.\r\nParameter name: domainObject")]
+  public void InsertObjectAlreadyInCollection ()
+  {
+    _supervisor.Subordinates.Insert (0, _subordinate);
+    _supervisor.Subordinates.Insert (0, _subordinate);
+  }
 }
 }
