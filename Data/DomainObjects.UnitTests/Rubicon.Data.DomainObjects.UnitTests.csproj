@@ -538,12 +538,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Relations\ObjectEndPointTest.cs"
+                    RelPath = "Relations\RelationEndPointListTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Relations\RelationEndPointListTest.cs"
+                    RelPath = "Relations\RelationEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class ObjectEndPoint : RelationEndPoint, INullable
+public class ObjectEndPoint : RelationEndPoint
 {
   // types
 
@@ -13,102 +13,75 @@ public class ObjectEndPoint : RelationEndPoint, INullable
 
   // member fields
 
-  private DataContainer _dataContainer;
+  private DataContainer _oppositeDataContainer;
+  private RelationEndPoint _newEndPoint;
 
   // construction and disposing
 
   // TODO: New ctor parameter: destinationDomainObject
   //       Make destinationDomainObject optional and use ClientTx, if not provided
 
-  public ObjectEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
-    : this (domainObject.DataContainer, definition)
+  public ObjectEndPoint (
+      DomainObject domainObject, 
+      IRelationEndPointDefinition definition, 
+      DomainObject oppositeDomainObject) 
+      : this (domainObject.DataContainer, definition, oppositeDomainObject.DataContainer)
   {
   }
 
-  public ObjectEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
-  {
-    ArgumentUtility.CheckNotNull ("definition", definition);
-
-    Initialize (dataContainer, definition.PropertyName);
-  }
-
-
-  public ObjectEndPoint (DomainObject domainObject, string propertyName) 
-      : this (domainObject.DataContainer, propertyName)
+  public ObjectEndPoint (
+      DataContainer dataContainer, 
+      IRelationEndPointDefinition definition, 
+      DataContainer oppositeDataContainer) 
+      : this (dataContainer, definition.PropertyName, oppositeDataContainer)
   {
   }
 
-  public ObjectEndPoint (DataContainer dataContainer, string propertyName)
+  public ObjectEndPoint (
+      DomainObject domainObject, 
+      string propertyName,
+      DomainObject oppositeDomainObject) 
+      : this (domainObject.DataContainer, propertyName, oppositeDomainObject.DataContainer)
   {
-    Initialize (dataContainer, propertyName);
   }
 
-  protected ObjectEndPoint ()
+  public ObjectEndPoint (
+      DataContainer dataContainer, 
+      string propertyName,
+      DataContainer oppositeDataContainer) 
+      : base (dataContainer, propertyName)
   {
-  }
-
-  private void Initialize (DataContainer dataContainer, string propertyName)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-    base.Initialize (dataContainer.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName));
-    _dataContainer = dataContainer;
+    ArgumentUtility.CheckNotNull ("oppositeDataContainer", oppositeDataContainer);
+    _oppositeDataContainer = oppositeDataContainer;
   }
 
   // methods and properties
 
-  public virtual void SetOppositeEndPoint (ObjectEndPoint relationEndPoint)
+  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    _newEndPoint = newEndPoint;
 
-    if (!IsVirtual)
-      _dataContainer.PropertyValues[PropertyName].SetRelationValue (relationEndPoint.ObjectID);
-  }
-
-  public virtual RelationLinkID CreateRelationLinkID ()
-  {
-    return new RelationLinkID (_dataContainer.ID, PropertyName);
-  }
-
-  public virtual bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint)
-  {
-    return BeginRelationChange (oldRelatedEndPoint, new NullObjectEndPoint (oldRelatedEndPoint.Definition));    
-  }
-
-  public override bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint, ObjectEndPoint newRelatedEndPoint)
-  {
-    return DomainObject.BeginRelationChange (
-        PropertyName, oldRelatedEndPoint.DomainObject, newRelatedEndPoint.DomainObject);
+    return base.BeginRelationChange (oldEndPoint, newEndPoint);
   }
 
   public override void EndRelationChange ()
   {
-    DomainObject.EndRelationChange (PropertyName);
+    if (_newEndPoint == null)
+      throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
+
+    base.EndRelationChange ();
+
+    _oppositeDataContainer = _newEndPoint.DataContainer;
   }
 
-  public virtual DataContainer DataContainer
+  public DataContainer OppositeDataContainer
   {
-    get { return _dataContainer; }
+    get { return _oppositeDataContainer; }
   }
 
-  public virtual DomainObject DomainObject
+  public DomainObject OppositeDomainObject 
   {
-    get { return _dataContainer.DomainObject; }
+    get { return _oppositeDataContainer.DomainObject; }
   }
-
-  public virtual ObjectID ObjectID
-  {
-    get { return _dataContainer.ID; }
-  }
-
-  #region INullable Members
-
-  public virtual bool IsNull
-  {
-    get { return false; }
-  }
-
-  #endregion
 }
 }

@@ -144,13 +144,11 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     // TODO: Move code below to RelationEndPointList
     foreach (RelationEndPoint oppositeEndPoint in oppositeEndPoints)
     {
-      IRelationEndPointDefinition objectEndPointDefinition = 
-          oppositeEndPoint.Definition.ClassDefinition.GetOppositeEndPointDefinition (oppositeEndPoint.PropertyName);
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = new RelationEndPoint (domainObject, endPointDefinition);
+      RelationEndPoint newEndPoint = new NullRelationEndPoint (endPointDefinition);
 
-      ObjectEndPoint oldObjectEndPoint = new ObjectEndPoint (domainObject, objectEndPointDefinition);
-      ObjectEndPoint newObjectEndPoint = new NullObjectEndPoint (objectEndPointDefinition);
-
-      if (!oppositeEndPoint.BeginRelationChange (oldObjectEndPoint, newObjectEndPoint))
+      if (!oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint))
         return false;
     }
     return true;
@@ -163,15 +161,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     // TODO: Move code below to RelationEndPointList
 
     foreach (RelationEndPoint oppositeEndPoint in oppositeEndPoints)
-    {
-      IRelationEndPointDefinition objectEndPointDefinition = 
-        oppositeEndPoint.Definition.ClassDefinition.GetOppositeEndPointDefinition (oppositeEndPoint.PropertyName);
-
-      ObjectEndPoint oldObjectEndPoint = new ObjectEndPoint (domainObject, objectEndPointDefinition);
-      ObjectEndPoint newObjectEndPoint = new NullObjectEndPoint (objectEndPointDefinition);
-
       oppositeEndPoint.EndRelationChange ();
-    }
   }
 
   internal protected DomainObject GetObject (ObjectID id)
@@ -185,14 +175,14 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return LoadObject (id);
   }
 
-  internal protected DomainObject GetRelatedObject (ObjectEndPoint objectEndPoint)
+  internal protected DomainObject GetRelatedObject (RelationEndPoint relationEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    SingleObjectRelationLink relationLink = _dataManager.GetSingleObjectRelationLink (objectEndPoint);
+    SingleObjectRelationLink relationLink = _dataManager.GetSingleObjectRelationLink (relationEndPoint);
     if (relationLink == null)
-      return LoadRelatedObject (objectEndPoint);
+      return LoadRelatedObject (relationEndPoint);
     
     if (relationLink.DestinationObjectID != null)
       return GetObject (relationLink.DestinationObjectID);
@@ -200,14 +190,14 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return null;
   }
 
-  internal protected DomainObject GetOriginalRelatedObject (ObjectEndPoint objectEndPoint)
+  internal protected DomainObject GetOriginalRelatedObject (RelationEndPoint relationEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    SingleObjectRelationLink relationLink = _dataManager.GetSingleObjectRelationLink (objectEndPoint);
+    SingleObjectRelationLink relationLink = _dataManager.GetSingleObjectRelationLink (relationEndPoint);
     if (relationLink == null)
-      return LoadRelatedObject (objectEndPoint);
+      return LoadRelatedObject (relationEndPoint);
 
     if (relationLink.OriginalDestinationObjectID != null)
       return GetObject (relationLink.OriginalDestinationObjectID);
@@ -215,22 +205,22 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return null;
   }
 
-  internal protected DomainObjectCollection GetRelatedObjects (ObjectEndPoint objectEndPoint)
+  internal protected DomainObjectCollection GetRelatedObjects (RelationEndPoint relationEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    DomainObjectCollection domainObjects = _dataManager.GetRelatedObjects (objectEndPoint);
+    DomainObjectCollection domainObjects = _dataManager.GetRelatedObjects (relationEndPoint);
     if (domainObjects != null)
       return domainObjects;
 
-    DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (objectEndPoint);
+    DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPoint);
     DataContainerCollection newLoadedDataContainers = _dataManager.GetNotExisting (relatedDataContainers);
     _dataManager.Register (newLoadedDataContainers);
 
-    domainObjects = GetDomainObjects (objectEndPoint, relatedDataContainers);
+    domainObjects = GetDomainObjects (relationEndPoint, relatedDataContainers);
 
-    _dataManager.RegisterInMultipleObjectsRelationLinkMap (objectEndPoint, domainObjects);
+    _dataManager.RegisterInMultipleObjectsRelationLinkMap (relationEndPoint, domainObjects);
 
     foreach (DataContainer loadedDataContainer in newLoadedDataContainers)
       OnLoaded (new LoadedEventArgs (loadedDataContainer.DomainObject));
@@ -238,36 +228,36 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return domainObjects;
   }
 
-  internal protected DomainObjectCollection GetOriginalRelatedObjects (ObjectEndPoint objectEndPoint)
+  internal protected DomainObjectCollection GetOriginalRelatedObjects (RelationEndPoint relationEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    MultipleObjectsRelationLink relationLink = _dataManager.GetMultipleObjectsRelationLink (objectEndPoint);
+    MultipleObjectsRelationLink relationLink = _dataManager.GetMultipleObjectsRelationLink (relationEndPoint);
 
     if (relationLink != null)
       return relationLink.OriginalDestinationDomainObjects;
     else
-      return GetRelatedObjects (objectEndPoint); 
+      return GetRelatedObjects (relationEndPoint); 
   }  
 
-  internal protected void SetRelatedObject (ObjectEndPoint objectEndPoint, DomainObject newRelatedObject)
+  internal protected void SetRelatedObject (RelationEndPoint relationEndPoint, DomainObject newRelatedObject)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    ObjectEndPoint newRelatedEndPoint = CreateRelationEndPoint (newRelatedObject, objectEndPoint.OppositeEndPointDefinition);
+    RelationEndPoint newRelatedEndPoint = CreateRelationEndPoint (newRelatedObject, relationEndPoint.OppositeEndPointDefinition);
 
-    ObjectEndPoint oldRelatedEndPoint = 
-        CreateRelationEndPoint (GetRelatedObject (objectEndPoint), newRelatedEndPoint.Definition);
+    RelationEndPoint oldRelatedEndPoint = 
+        CreateRelationEndPoint (GetRelatedObject (relationEndPoint), newRelatedEndPoint.Definition);
 
     if (object.ReferenceEquals (newRelatedEndPoint.DomainObject, oldRelatedEndPoint.DomainObject))
       return;
 
     if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
-      SetRelatedObjectForOneToOneRelation (objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint);
+      SetRelatedObjectForOneToOneRelation (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint);
     else
-      SetRelatedObjectForOneToManyRelation (objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint);
+      SetRelatedObjectForOneToManyRelation (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint);
   }
 
   protected virtual DomainObject LoadObject (ObjectID id)
@@ -282,12 +272,12 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return dataContainer.DomainObject;
   }
 
-  protected virtual DomainObject LoadRelatedObject (ObjectEndPoint objectEndPoint)
+  protected virtual DomainObject LoadRelatedObject (RelationEndPoint relationEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    CheckRelationEndPoint (objectEndPoint, "objectEndPoint");
+    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    CheckRelationEndPoint (relationEndPoint, "relationEndPoint");
 
-    DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (objectEndPoint);
+    DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (relationEndPoint);
     if (relatedDataContainer != null)
     {
       _dataManager.Register (relatedDataContainer);
@@ -296,7 +286,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     }
     else
     {
-      _dataManager.RegisterInSingleObjectRelationLinkMap (objectEndPoint, null);
+      _dataManager.RegisterInSingleObjectRelationLinkMap (relationEndPoint, null);
       return null;
     }
   }
@@ -324,40 +314,40 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     _persistenceManager = new PersistenceManager ();
   }
 
-  private void CheckRelationEndPoint (ObjectEndPoint objectEndPoint, string argumentName)  
+  private void CheckRelationEndPoint (RelationEndPoint relationEndPoint, string argumentName)  
   {
-    if (objectEndPoint.IsNull)
+    if (relationEndPoint.IsNull)
       throw new ArgumentNullException ("argumentName", "End point cannot be null."); 
   }
 
   private void SetRelatedObjectForOneToOneRelation (
-      ObjectEndPoint objectEndPoint, 
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint)
+      RelationEndPoint relationEndPoint, 
+      RelationEndPoint newRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPoint)
   {
-    ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint = new NullObjectEndPoint (objectEndPoint.Definition);
+    RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint = new NullRelationEndPoint (relationEndPoint.Definition);
     if (!newRelatedEndPoint.IsNull)
     {
       oldRelatedEndPointOfNewRelatedEndPoint = CreateRelationEndPoint (
-          GetRelatedObject (newRelatedEndPoint), objectEndPoint.Definition);
+          GetRelatedObject (newRelatedEndPoint), relationEndPoint.Definition);
     }
 
-    if (BeginRelationChange (objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint))
+    if (BeginRelationChange (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint))
     {
       _dataManager.WriteAssociatedPropertiesForRelationChange (
-          objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+          relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
 
-      _dataManager.ChangeLinks (objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+      _dataManager.ChangeLinks (relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
 
       EndRelationChange (
-          objectEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+          relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
     }
   }
 
   private void SetRelatedObjectForOneToManyRelation (
-      ObjectEndPoint relationEndPoint, 
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint)
+      RelationEndPoint relationEndPoint, 
+      RelationEndPoint newRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPoint)
   {
     if (!newRelatedEndPoint.IsNull)
     {
@@ -371,31 +361,31 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     }
   }
 
-  private ObjectEndPoint CreateRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
+  private RelationEndPoint CreateRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
   {
     if (domainObject != null)
-      return new ObjectEndPoint (domainObject, definition);
+      return new RelationEndPoint (domainObject, definition);
     else
-      return new NullObjectEndPoint (definition);
+      return new NullRelationEndPoint (definition);
   }
 
   private bool BeginRelationChange (
-      ObjectEndPoint relationEndPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+      RelationEndPoint relationEndPoint,
+      RelationEndPoint newRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
   {
     return relationEndPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint)
-        && oldRelatedEndPoint.BeginRelationChange (relationEndPoint, new NullObjectEndPoint (relationEndPoint.Definition))
+        && oldRelatedEndPoint.BeginRelationChange (relationEndPoint, new NullRelationEndPoint (relationEndPoint.Definition))
         && newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, relationEndPoint)
-        && oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, new NullObjectEndPoint (newRelatedEndPoint.Definition));
+        && oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, new NullRelationEndPoint (newRelatedEndPoint.Definition));
   }
 
   private void EndRelationChange (
-      ObjectEndPoint relationEndPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+      RelationEndPoint relationEndPoint,
+      RelationEndPoint newRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPoint,
+      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
   {
     relationEndPoint.EndRelationChange ();
     oldRelatedEndPoint.EndRelationChange ();
@@ -414,11 +404,11 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
 
   private void CheckMandatoryRelations (DomainObject domainObject)
   {
-    foreach (ObjectEndPoint objectEndPoint in domainObject.DataContainer.ObjectEndPoints)
+    foreach (RelationEndPoint relationEndPoint in domainObject.DataContainer.RelationEndPoints)
     {
-      if (objectEndPoint.Definition.IsMandatory)
+      if (relationEndPoint.Definition.IsMandatory)
       {
-        RelationLink link = _dataManager.GetRelationLink (objectEndPoint);
+        RelationLink link = _dataManager.GetRelationLink (relationEndPoint);
         if (link != null)
           link.CheckMandatory ();
       }
@@ -433,12 +423,12 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
 
   void ILinkChangeDelegate.PerformAdd  (MultipleObjectsRelationLink link, DomainObject domainObject)
   {
-    ObjectEndPoint relationEndPoint = new ObjectEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
+    RelationEndPoint relationEndPoint = new RelationEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
 
-    ObjectEndPoint addingEndPoint = new ObjectEndPoint (
+    RelationEndPoint addingEndPoint = new RelationEndPoint (
         domainObject, relationEndPoint.OppositeEndPointDefinition);
 
-    ObjectEndPoint oldRelatedEndPoint = CreateRelationEndPoint (
+    RelationEndPoint oldRelatedEndPoint = CreateRelationEndPoint (
         GetRelatedObject (addingEndPoint), relationEndPoint.Definition);
 
     DomainObjectCollection oldCollection = null;
@@ -448,7 +438,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, relationEndPoint)
         && BeginRemove (oldRelatedEndPoint, oldCollection, domainObject)
         && link.DestinationDomainObjects.BeginAdd (domainObject)
-        && relationEndPoint.BeginRelationChange (new NullObjectEndPoint (addingEndPoint.Definition), addingEndPoint))
+        && relationEndPoint.BeginRelationChange (new NullRelationEndPoint (addingEndPoint.Definition), addingEndPoint))
     {
       addingEndPoint.SetOppositeEndPoint (relationEndPoint);
       _dataManager.ChangeLink (addingEndPoint, relationEndPoint.DomainObject);
@@ -464,42 +454,42 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     }
   }
 
-  private bool BeginRemove (ObjectEndPoint objectEndPoint, DomainObjectCollection collection, DomainObject domainObject)
+  private bool BeginRemove (RelationEndPoint relationEndPoint, DomainObjectCollection domainObjects, DomainObject domainObject)
   {
-    if (objectEndPoint.IsNull)
+    if (relationEndPoint.IsNull)
       return true;
     
-    return collection.BeginRemove (domainObject)
-        && objectEndPoint.BeginRelationChange (
-            new ObjectEndPoint (domainObject, objectEndPoint.OppositeEndPointDefinition), 
-            new NullObjectEndPoint (objectEndPoint.OppositeEndPointDefinition));
+    return domainObjects.BeginRemove (domainObject)
+        && relationEndPoint.BeginRelationChange (
+            new RelationEndPoint (domainObject, relationEndPoint.OppositeEndPointDefinition), 
+            new NullRelationEndPoint (relationEndPoint.OppositeEndPointDefinition));
   }
 
-  private void EndRemove (ObjectEndPoint objectEndPoint, DomainObjectCollection collection, DomainObject domainObject)
+  private void EndRemove (RelationEndPoint relationEndPoint, DomainObjectCollection collection, DomainObject domainObject)
   {
-    if (objectEndPoint.IsNull)
+    if (relationEndPoint.IsNull)
       return;
 
     collection.EndRemove (domainObject);
-    objectEndPoint.EndRelationChange (); 
+    relationEndPoint.EndRelationChange (); 
   }
 
   void ILinkChangeDelegate.PerformRemove (MultipleObjectsRelationLink link, DomainObject domainObject)
   {
-    ObjectEndPoint objectEndPoint = new ObjectEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
+    RelationEndPoint relationEndPoint = new RelationEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
 
-    ObjectEndPoint removingEndPoint = new ObjectEndPoint (
-        domainObject, objectEndPoint.OppositeEndPointDefinition);
+    RelationEndPoint removingEndPoint = new RelationEndPoint (
+        domainObject, relationEndPoint.OppositeEndPointDefinition);
 
-    if (removingEndPoint.BeginRelationChange (objectEndPoint, new NullObjectEndPoint (objectEndPoint.Definition))
-        && BeginRemove (objectEndPoint, link.DestinationDomainObjects, domainObject))
+    if (removingEndPoint.BeginRelationChange (relationEndPoint, new NullRelationEndPoint (relationEndPoint.Definition))
+        && BeginRemove (relationEndPoint, link.DestinationDomainObjects, domainObject))
     {
-      removingEndPoint.SetOppositeEndPoint (new NullObjectEndPoint (objectEndPoint.Definition));
+      removingEndPoint.SetOppositeEndPoint (new NullRelationEndPoint (relationEndPoint.Definition));
       _dataManager.ChangeLink (removingEndPoint, null);
       link.DestinationDomainObjects.PerformRemove (domainObject);
 
       removingEndPoint.EndRelationChange ();
-      EndRemove (objectEndPoint, link.DestinationDomainObjects, domainObject);
+      EndRemove (relationEndPoint, link.DestinationDomainObjects, domainObject);
     }
   }
 

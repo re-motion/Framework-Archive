@@ -93,11 +93,11 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     Assert.AreSame (orderTicket, _clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (order, "OrderTicket")));
+        new RelationEndPoint (order, "OrderTicket")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
 
-    Assert.AreSame (order, _clientTransactionMock.GetRelatedObject (new ObjectEndPoint (orderTicket, "Order")));
+    Assert.AreSame (order, _clientTransactionMock.GetRelatedObject (new RelationEndPoint (orderTicket, "Order")));
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
   }
 
@@ -106,7 +106,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     DomainObject orderTicket = _clientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
     _eventReceiver.Clear();
-    DomainObject order = _clientTransactionMock.GetRelatedObject (new ObjectEndPoint (orderTicket, "Order"));
+    DomainObject order = _clientTransactionMock.GetRelatedObject (new RelationEndPoint (orderTicket, "Order"));
 
     Assert.IsNotNull (order);
     Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
@@ -121,7 +121,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear();
 
     DomainObject orderTicket = _clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (order, "OrderTicket"));
+        new RelationEndPoint (order, "OrderTicket"));
 
     Assert.IsNotNull (orderTicket);
     Assert.AreEqual (DomainObjectIDs.OrderTicket1, orderTicket.ID);
@@ -139,7 +139,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     Assert.IsNull (_clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional")));
+        new RelationEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
   }
@@ -154,7 +154,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     Assert.IsNull (_clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional")));
+        new RelationEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional")));
 
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
   }
@@ -172,13 +172,13 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
     Assert.IsNull (clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional")));
+        new RelationEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional")));
 
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
     Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
     
     clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional"));
+        new RelationEndPoint (classWithValidRelation, "ClassWithGuidKeyOptional"));
 
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
     Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);     
@@ -197,13 +197,13 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
     Assert.IsNull (clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional")));
+        new RelationEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional")));
 
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
     clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional"));
+        new RelationEndPoint (classWithGuidKey, "ClassWithValidRelationsOptional"));
 
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
     Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
@@ -215,7 +215,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     DomainObject expectedCeo = _clientTransactionMock.GetObject (DomainObjectIDs.Ceo6);
     DomainObject partner = _clientTransactionMock.GetObject (DomainObjectIDs.Partner1);
 
-    DomainObject actualCeo = _clientTransactionMock.GetRelatedObject (new ObjectEndPoint (partner, "Ceo"));
+    DomainObject actualCeo = _clientTransactionMock.GetRelatedObject (new RelationEndPoint (partner, "Ceo"));
     Assert.AreSame (expectedCeo, actualCeo);
   }
 
@@ -226,7 +226,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
 
     Assert.IsNotNull (orders);
     Assert.AreEqual (typeof (OrderCollection), orders.GetType (), "Type of collection");
@@ -241,10 +241,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     DomainObjectCollection orders1 = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
 
     DomainObjectCollection orders2 = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
     
     Assert.IsTrue (object.ReferenceEquals (orders1, orders2));
     Assert.AreEqual (2, _eventReceiver.LoadedDomainObjects.Count);
@@ -258,7 +258,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     _eventReceiver.Clear ();
 
     DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
     
     Assert.AreSame  (order, orders[DomainObjectIDs.Order1]);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
@@ -270,7 +270,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
     DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
 
     Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -283,10 +283,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
     DomainObjectCollection orders = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (customer, "Orders"));
+        new RelationEndPoint (customer, "Orders"));
 
     Assert.AreSame (customer, _clientTransactionMock.GetRelatedObject (
-        new ObjectEndPoint (orders[0], "Customer")));
+        new RelationEndPoint (orders[0], "Customer")));
   }
 
   [Test]
@@ -296,7 +296,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     DomainObject expectedPartner = _clientTransactionMock.GetObject (DomainObjectIDs.Partner2);
 
     DomainObjectCollection companies = _clientTransactionMock.GetRelatedObjects (
-        new ObjectEndPoint (industrialSector, "Companies"));
+        new RelationEndPoint (industrialSector, "Companies"));
 
     Assert.AreSame (expectedPartner, companies[DomainObjectIDs.Partner2]);
   }
@@ -308,7 +308,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     DomainObject order = _clientTransactionMock.GetObject (DomainObjectIDs.Order1);
     DomainObject customer = _clientTransactionMock.GetObject (DomainObjectIDs.Customer1);
 
-    _clientTransactionMock.SetRelatedObject (new ObjectEndPoint (order, "OrderTicket"), customer);
+    _clientTransactionMock.SetRelatedObject (new RelationEndPoint (order, "OrderTicket"), customer);
   }
 
 
@@ -319,7 +319,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     DomainObject person = _clientTransactionMock.GetObject (DomainObjectIDs.Person1);
     DomainObject company = _clientTransactionMock.GetObject (DomainObjectIDs.Company1);
 
-    _clientTransactionMock.SetRelatedObject (new ObjectEndPoint (person, "AssociatedPartnerCompany"), company);
+    _clientTransactionMock.SetRelatedObject (new RelationEndPoint (person, "AssociatedPartnerCompany"), company);
   }
 
   [Test]

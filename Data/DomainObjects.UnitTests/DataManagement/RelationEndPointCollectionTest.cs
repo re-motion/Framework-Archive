@@ -16,8 +16,8 @@ public class RelationEndPointListTest : ClientTransactionBaseTest
 
   // member fields
 
-  private ObjectEndPoint _objectEndPoint;
-  private RelationEndPointList _relationEndPointList;
+  private RelationEndPoint _endPoint;
+  private RelationEndPointList _endPointList;
 
   // construction and disposing
 
@@ -31,80 +31,80 @@ public class RelationEndPointListTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _objectEndPoint = new ObjectEndPoint (Order.GetObject (DomainObjectIDs.Order1), "OrderTicket");
-    _relationEndPointList = new RelationEndPointList ();
+    _endPoint = new RelationEndPoint (Order.GetObject (DomainObjectIDs.Order1), "OrderTicket");
+    _endPointList = new RelationEndPointList ();
   }
 
   [Test]
   public void Initialize ()
   {
-    Assert.AreEqual (0, _relationEndPointList.Count);
+    Assert.AreEqual (0, _endPointList.Count);
   }
 
   [Test]
   public void Add ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
+    _endPointList.Add (_endPoint);
 
-    Assert.AreEqual (1, _relationEndPointList.Count);
-    Assert.AreSame (_objectEndPoint, _relationEndPointList[0]);
+    Assert.AreEqual (1, _endPointList.Count);
+    Assert.AreSame (_endPoint, _endPointList[0]);
   }
 
   [Test]
   public void RemoveAt ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
-    Assert.AreEqual (1, _relationEndPointList.Count);
+    _endPointList.Add (_endPoint);
+    Assert.AreEqual (1, _endPointList.Count);
 
-    _relationEndPointList.RemoveAt (0);
-    Assert.AreEqual (0, _relationEndPointList.Count);
+    _endPointList.RemoveAt (0);
+    Assert.AreEqual (0, _endPointList.Count);
   }
 
   [Test]
   public void Remove ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
-    Assert.AreEqual (1, _relationEndPointList.Count);
+    _endPointList.Add (_endPoint);
+    Assert.AreEqual (1, _endPointList.Count);
 
-    _relationEndPointList.Remove (_objectEndPoint);
-    Assert.AreEqual (0, _relationEndPointList.Count);
+    _endPointList.Remove (_endPoint);
+    Assert.AreEqual (0, _endPointList.Count);
   }
 
   [Test]
   public void Contains ()
   {
-    Assert.IsFalse (_relationEndPointList.Contains (_objectEndPoint));
+    Assert.IsFalse (_endPointList.Contains (_endPoint));
 
-    _relationEndPointList.Add (_objectEndPoint);
+    _endPointList.Add (_endPoint);
     
-    Assert.IsTrue (_relationEndPointList.Contains (_objectEndPoint));
+    Assert.IsTrue (_endPointList.Contains (_endPoint));
   }
 
   [Test]
   public void Clear ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
-    Assert.AreEqual (1, _relationEndPointList.Count);
+    _endPointList.Add (_endPoint);
+    Assert.AreEqual (1, _endPointList.Count);
 
-    _relationEndPointList.Clear ();
-    Assert.AreEqual (0, _relationEndPointList.Count);
+    _endPointList.Clear ();
+    Assert.AreEqual (0, _endPointList.Count);
   }
 
   [Test]
   public void IndexOf ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
+    _endPointList.Add (_endPoint);
 
-    Assert.AreEqual (0, _relationEndPointList.IndexOf (_objectEndPoint));
+    Assert.AreEqual (0, _endPointList.IndexOf (_endPoint));
   }
 
   [Test]
   public void Enumeration ()
   {
-    _relationEndPointList.Add (_objectEndPoint);
+    _endPointList.Add (_endPoint);
     
-    foreach (RelationEndPoint relationEndPoint in _relationEndPointList)
-      Assert.AreSame (_objectEndPoint, relationEndPoint);
+    foreach (RelationEndPoint relationEndPoint in _endPointList)
+      Assert.AreSame (_endPoint, relationEndPoint);
   }
 }
 }

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class NullObjectEndPoint : ObjectEndPoint
+public class NullRelationEndPoint : RelationEndPoint
 {
   // types
 
@@ -15,21 +15,26 @@ public class NullObjectEndPoint : ObjectEndPoint
 
   // construction and disposing
 
-  public NullObjectEndPoint (IRelationEndPointDefinition definition)
+  public NullRelationEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
-    base.Initialize (definition);
   }
 
   // methods and properties
 
-  public override bool IsNull
+  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
-    get { return true; }
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+    return true;
   }
 
-  public override RelationLinkID CreateRelationLinkID()
+  public override void EndRelationChange ()
   {
-    return null;
+  }
+
+  public override void SetOppositeEndPoint (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
   }
 
   public override DataContainer DataContainer
@@ -42,33 +47,19 @@ public class NullObjectEndPoint : ObjectEndPoint
     get { return null; }
   }
 
-  public override IRelationEndPointDefinition OppositeEndPointDefinition
-  {
-    get { return null; }
-  }
-
-  public override RelationDefinition RelationDefinition
-  {
-    get { return null; }
-  }
-
-  public override void SetOppositeEndPoint (ObjectEndPoint relationEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-  }
-
-  public override bool BeginRelationChange(ObjectEndPoint oldRelationEndPoint, ObjectEndPoint newRelationEndPoint)
-  {
-    return true;
-  }
-
-  public override void EndRelationChange()
-  {
-  }
-
   public override ObjectID ObjectID
   {
     get { return null; }
+  }
+
+  public override RelationLinkID LinkID
+  {
+    get { return null; }
+  }
+
+  public override bool IsNull
+  {
+    get { return true; }
   }
 }
 }
