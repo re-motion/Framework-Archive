@@ -211,13 +211,12 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
     if (domainObjects != null)
       return domainObjects;
 
-    RelationEndPoint relationEndPoint = new RelationEndPoint (relationEndPointID);
-    DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPoint);
+    DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPointID);
 
     DataContainerCollection newLoadedDataContainers = _dataManager.GetNotExisting (relatedDataContainers);
     _dataManager.Register (newLoadedDataContainers);
 
-    domainObjects = GetDomainObjects (relationEndPoint, relatedDataContainers);
+    domainObjects = GetDomainObjects (relationEndPointID, relatedDataContainers);
 
     _dataManager.Register (new CollectionEndPoint (relationEndPointID, domainObjects));
 
@@ -284,8 +283,10 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID);
+
     DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (relationEndPointID));
+        domainObject.DataContainer, relationEndPointID);
 
     if (relatedDataContainer != null)
     {
@@ -416,11 +417,11 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
   }
 
   private DomainObjectCollection GetDomainObjects (
-      RelationEndPoint relationEndPoint,
+      RelationEndPointID relationEndPointID,
       DataContainerCollection relatedDataContainers)
   {
     return DomainObjectCollection.Create (
-        relationEndPoint.Definition.PropertyType,
+        relationEndPointID.Definition.PropertyType,
         _dataManager.MergeWithExisting (relatedDataContainers));
   }
 

@@ -173,7 +173,6 @@ public class DomainObject
 
     foreach (RelationEndPointID endPointID in _dataContainer.RelationEndPointIDs)
     {
-      RelationEndPoint relationEndPoint = new RelationEndPoint (endPointID);
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {
         DomainObject oppositeDomainObject = ClientTransaction.Current.GetRelatedObject (endPointID);
@@ -182,20 +181,20 @@ public class DomainObject
           if (endPointID.OppositeEndPointDefinition.Cardinality == CardinalityType.One)
           {
             ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-                oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this.ID);
+                oppositeDomainObject, endPointID.OppositeEndPointDefinition, this.ID);
 
-            oppositeEndPoints.Add (relationEndPoint);    
+            oppositeEndPoints.Add (oppositeEndPoint);    
           }
           else
           {
-            RelationEndPoint oppositeEndPoint = new RelationEndPoint (
-                oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition); 
+            RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+                oppositeDomainObject.ID, endPointID.OppositeEndPointDefinition); 
 
-            DomainObjectCollection domainObjects = ClientTransaction.Current.GetRelatedObjects (oppositeEndPoint.ID);
+            DomainObjectCollection domainObjects = ClientTransaction.Current.GetRelatedObjects (oppositeEndPointID);
             
             CollectionEndPoint oppositeCollectionEndPoint = new CollectionEndPoint (
                 oppositeDomainObject, 
-                (VirtualRelationEndPointDefinition) oppositeEndPoint.Definition, 
+                (VirtualRelationEndPointDefinition) oppositeEndPointID.Definition, 
                 domainObjects);
 
             oppositeEndPoints.Add (oppositeCollectionEndPoint);
@@ -204,10 +203,10 @@ public class DomainObject
       }
       else
       {
-        foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (relationEndPoint.ID))
+        foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (endPointID))
         {
           ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-              oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this.ID);
+              oppositeDomainObject, endPointID.OppositeEndPointDefinition, this.ID);
 
           oppositeEndPoints.Add (oppositeEndPoint);
         }

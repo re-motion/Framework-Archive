@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class RelationEndPoint : INullable
+public abstract class RelationEndPoint : INullable
 {
   // types
 
@@ -25,37 +25,37 @@ public class RelationEndPoint : INullable
 
   // construction and disposing
 
-  public RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
+  protected RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
       : this (domainObject.ID, definition)
   {
   }
 
-  public RelationEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
+  protected RelationEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
       : this (dataContainer.ID, definition.PropertyName) 
   {
   }
 
 
-  public RelationEndPoint (DomainObject domainObject, string propertyName) 
+  protected RelationEndPoint (DomainObject domainObject, string propertyName) 
       : this (domainObject.ID, propertyName)
   {
   }
 
-  public RelationEndPoint (DataContainer dataContainer, string propertyName)
+  protected RelationEndPoint (DataContainer dataContainer, string propertyName)
       : this (dataContainer.ID, propertyName)
   {
   }
 
-  public RelationEndPoint (ObjectID objectID, IRelationEndPointDefinition definition) 
+  protected RelationEndPoint (ObjectID objectID, IRelationEndPointDefinition definition) 
       : this (objectID, definition.PropertyName) 
   {
   }
 
-  public RelationEndPoint (ObjectID objectID, string propertyName) : this (new RelationEndPointID (objectID, propertyName))
+  protected RelationEndPoint (ObjectID objectID, string propertyName) : this (new RelationEndPointID (objectID, propertyName))
   {
   }
   
-  public RelationEndPoint (RelationEndPointID id)
+  protected RelationEndPoint (RelationEndPointID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
@@ -68,6 +68,13 @@ public class RelationEndPoint : INullable
     ArgumentUtility.CheckNotNull ("definition", definition);
     _definition = definition;
   }
+
+  // abstract methods and properties
+
+  public abstract bool HasChanged { get; } 
+  public abstract void Commit ();
+  public abstract void Rollback ();
+  public abstract void CheckMandatory ();
 
   // methods and properties
 
@@ -90,11 +97,6 @@ public class RelationEndPoint : INullable
     DomainObject.EndRelationChange (PropertyName);
   }
 
-  public IRelationEndPointDefinition Definition 
-  {
-    get { return _definition; }
-  }
-
   public virtual DomainObject DomainObject
   {
     get 
@@ -114,19 +116,29 @@ public class RelationEndPoint : INullable
     get { return _id.ObjectID; }
   }
 
-  public RelationDefinition RelationDefinition
+  public IRelationEndPointDefinition Definition 
   {
-    get { return _definition.ClassDefinition.GetRelationDefinition (PropertyName); }
-  }
-
-  public IRelationEndPointDefinition OppositeEndPointDefinition
-  {
-    get { return _definition.ClassDefinition.GetOppositeEndPointDefinition (PropertyName); }
+    get { return _definition; }
   }
 
   public string PropertyName
   {
     get { return _definition.PropertyName; }
+  }
+
+  public ClassDefinition ClassDefinition
+  {
+    get { return _definition.ClassDefinition; }
+  }
+
+  public IRelationEndPointDefinition OppositeEndPointDefinition
+  {
+    get { return ClassDefinition.GetOppositeEndPointDefinition (PropertyName); }
+  }
+
+  public RelationDefinition RelationDefinition
+  {
+    get { return ClassDefinition.GetRelationDefinition (PropertyName); }
   }
 
   public bool IsVirtual
@@ -137,34 +149,6 @@ public class RelationEndPoint : INullable
   public virtual RelationEndPointID ID
   {
     get { return _id; }
-  }
-
-
-  public virtual bool HasChanged 
-  {
-    get 
-    { 
-      // TODO: Make this property abstract
-      throw new InvalidOperationException ("HasChanged must be overridden in a derived class.");
-    }
-  }
-
-  public virtual void Commit ()
-  {
-    // TODO: Make this method abstract
-    throw new InvalidOperationException ("Commit must be overridden in a derived class.");
-  }
-
-  public virtual void Rollback ()
-  {
-    // TODO: Make this method abstract
-    throw new InvalidOperationException ("Rollback must be overridden in a derived class.");
-  }
-
-  public virtual void CheckMandatory ()
-  {
-    // TODO: Make this method abstract
-    throw new InvalidOperationException ("CheckMandatory must be overridden in a derived class.");
   }
 
   protected MandatoryRelationNotSetException CreateMandatoryRelationNotSetException (

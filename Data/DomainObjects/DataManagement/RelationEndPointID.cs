@@ -12,8 +12,7 @@ public class RelationEndPointID
 
   // member fields
 
-  private ClassDefinition _classDefinition;
-  private string _propertyName;
+  private IRelationEndPointDefinition _definition;
   private ObjectID _objectID;
 
   // construction and disposing
@@ -30,16 +29,16 @@ public class RelationEndPointID
 
     // TODO: Check if objectID.ClassID and propertyName match!
 
-    _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (objectID.ClassID);
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (objectID.ClassID);
+    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
     _objectID = objectID;
-    _propertyName = propertyName;
   }
 
   // methods and properties
 
   public override int GetHashCode ()
   {
-    return _objectID.GetHashCode () ^ _propertyName.GetHashCode ();
+    return _objectID.GetHashCode () ^ PropertyName.GetHashCode ();
   }
 
   public override bool Equals (object obj)
@@ -49,37 +48,47 @@ public class RelationEndPointID
       return false;
 
     return this._objectID.Equals (endPointID.ObjectID)
-        && this._propertyName.Equals (endPointID.PropertyName);
+        && this.PropertyName.Equals (endPointID.PropertyName);
   }
 
   public override string ToString ()
   {
-    return string.Format ("{0}/{1}", _objectID.ToString (), _propertyName);
+    return string.Format ("{0}/{1}", _objectID.ToString (), PropertyName);
   }
 
-  public ClassDefinition ClassDefinition
+  public IRelationEndPointDefinition Definition
   {
-    get { return _classDefinition; }
+    get { return _definition; }
   }
 
   public string PropertyName
   {
-    get { return _propertyName; }
+    get { return _definition.PropertyName; }
+  }
+
+  public ClassDefinition ClassDefinition
+  {
+    get { return _definition.ClassDefinition; }
+  }
+
+  public IRelationEndPointDefinition OppositeEndPointDefinition
+  {
+    get { return ClassDefinition.GetOppositeEndPointDefinition (PropertyName); }
+  }
+
+  public RelationDefinition RelationDefinition
+  {
+    get { return ClassDefinition.GetRelationDefinition (PropertyName); }
+  }
+
+  public bool IsVirtual
+  {
+    get { return _definition.IsVirtual; }
   }
 
   public ObjectID ObjectID
   {
     get { return _objectID; }
-  }
-
-  public IRelationEndPointDefinition Definition
-  {
-    get { return _classDefinition.GetMandatoryRelationEndPointDefinition (_propertyName); }
-  }
-
-  public IRelationEndPointDefinition OppositeEndPointDefinition
-  {
-    get { return _classDefinition.GetOppositeEndPointDefinition (_propertyName); }
   }
 }
 }
