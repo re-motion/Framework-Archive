@@ -11,14 +11,15 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class Int16Property : DomainObjectProperty, IBusinessObjectInt32Property
+public class Int16Property : NullableProperty, IBusinessObjectInt32Property
 {
   public Int16Property (      
       PropertyInfo propertyInfo, 
       PropertyDefinition propertyDefinition, 
       Type itemType, 
-      bool isList)
-      : base (propertyInfo, propertyDefinition, itemType, isList)
+      bool isList, 
+      bool isNullableType)
+      : base (propertyInfo, propertyDefinition, itemType, isList, isNullableType)
   {
   }
 
