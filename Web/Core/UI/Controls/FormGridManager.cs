@@ -1166,7 +1166,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   }
 
   /// <summary>
-  ///   Calls <see cref="TransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
+  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
   /// </summary>
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnPreRender (EventArgs e)
