@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Serialization;
 using System.IO;
+using System.ComponentModel;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
@@ -86,6 +87,7 @@ public class Person: ReflectionBusinessObject
   }
 
   [XmlAttribute]
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public Guid PartnerID
   {
     get { return _partnerID; }

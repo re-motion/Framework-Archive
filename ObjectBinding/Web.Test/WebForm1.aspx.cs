@@ -53,6 +53,9 @@ public class WebForm1 : System.Web.UI.Page
       partner = person.Partner = Person.CreateObject();
       partner.FirstName = "Sepp";
       partner.LastName = "Forcher";
+
+      person.SaveObject();
+      partner.SaveObject();
     }
     else
     {
