@@ -12,12 +12,6 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.Utilities
 {
 
-/// <summary>
-/// Summary description for ClassName.
-/// </summary>
-/// <remarks>
-/// 
-/// </remarks>
 public class ControlHelper
 {
   // types
@@ -230,6 +224,48 @@ public class ControlHelper
     }
 
     return null;
+  }
+
+  /// <summary> Encapsulates the invokation of <see cref="Control"/>'s LoadViewStateRecursive method. </summary>
+  /// <param name="target"> The <see cref="Control"/> to be restored. </param>
+  /// <param name="viewState"> The view state object used for restoring. </param>
+  public static void LoadViewStateRecursive (Control target, object viewState)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
+
+    //  HACK: Reflection on internal void Control.LoadViewStateRecursive (object)
+    //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
+    typeof (Control).InvokeMember (
+      "LoadViewStateRecursive",
+      bindingFlags,
+      null,
+      target,
+      new object[] {viewState});
+  }
+
+  /// <summary> Encapsulates the invokation of <see cref="Control"/>'s SaveViewStateRecursive method. </summary>
+  /// <param name="target"> The <see cref="Control"/> to be saved. </param>
+  /// <returns> The view state object for <paramref name="target"/>. </returns>
+  public static object SaveViewStateRecursive (Control target)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
+
+    //  HACK: Reflection on internal object Control.SaveViewStateRecursive()
+    //  internal object System.Web.UI.Control.LoadViewStateRecursive()
+    object viewState = typeof (Control).InvokeMember (
+        "SaveViewStateRecursive",
+        bindingFlags,
+        null,
+        target,
+        new object[] {});
+
+    return viewState;
   }
 
   // member fields
