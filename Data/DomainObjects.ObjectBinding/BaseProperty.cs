@@ -60,11 +60,11 @@ public class DomainObjectProperty: IBusinessObjectProperty
     }
     if (itemType == typeof (Guid))
     {
-      return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (byte))
     {
-      return new ByteProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new ByteProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (int))
     {
@@ -72,11 +72,11 @@ public class DomainObjectProperty: IBusinessObjectProperty
     }
     else if (itemType == typeof (Int16))
     {
-      return new Int16Property (propertyInfo, propertyDefinition, itemType, isList);
+      return new Int16Property (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (Single))
     {
-      return new SingleProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new SingleProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (double))
     {
@@ -84,7 +84,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
     }
     else if (itemType == typeof (decimal))
     {
-      return new DecimalProperty (propertyInfo, propertyDefinition, itemType, isList);
+      return new DecimalProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
     }
     else if (itemType == typeof (bool))
     {
