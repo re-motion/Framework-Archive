@@ -159,10 +159,17 @@ public class CommandHandler : Control, IPostBackEventHandler
 
   private string GetConfirmationJavaScript (string confirmationText, string eventArgument)
   {
+    confirmationText = FormatConfirmationText (confirmationText);
     return string.Format (
         @"if (window.confirm ('{0}')) {{{1}; return true;}}"
         + @"else {{return false;}}", 
         confirmationText, Page.GetPostBackEventReference (this, eventArgument));
+  }
+
+  private string FormatConfirmationText (string confirmationText)
+  {
+    confirmationText = confirmationText.Replace ("'", "\\&#39;");
+    return confirmationText.Replace ("\"", "&quot;");
   }
 
   public string GetLinkWithConfirmation (int eventArgument, string linkText, string confirmationText)

@@ -6,6 +6,8 @@
     vorhanden.
   * GetCurrentUrl liefert HRef von Tag wenn TabMenu nicht vorhanden
 - Neue Klassen NavigablePage und StandardPage.
+- CommandHandler unterstützt jetzt auch " und ' bei Text in Benutzerrückfragen (Confirmation Methoden).
+
 
 3.0.0.0
 =======
