@@ -250,27 +250,5 @@ public class DomainObjectTest : ClientTransactionBaseTest
     int invalidName = 123;
     customer.NamePropertyOfInvalidType = invalidName;
   }
-
-  [Test]
-  public void Delete ()
-  {
-    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    orderTicket.Delete ();
-
-    Assert.AreEqual (StateType.Deleted, orderTicket.State);
-    Assert.AreEqual (StateType.Deleted, orderTicket.DataContainer.State);
-  }
-
-  [Test]
-  public void DeleteTwice ()
-  {
-    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    orderTicket.Delete ();
-
-    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (orderTicket);
-    orderTicket.Delete ();
-
-    Assert.AreEqual (0, eventReceiver.Count);
-  }
 }
 }
