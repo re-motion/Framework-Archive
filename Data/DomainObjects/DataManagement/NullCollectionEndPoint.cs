@@ -28,6 +28,20 @@ public class NullCollectionEndPoint : CollectionEndPoint
     return true;
   }
 
+  public override bool BeginInsert (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint, int index)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+    return true;
+  }
+
+  public override bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+    return true;    
+  }
+
   public override void PerformRelationChange ()
   {
   }
