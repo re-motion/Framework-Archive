@@ -104,11 +104,6 @@
                     HintPath = "References\Rubicon.Core.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Globalization"
-                    AssemblyName = "Rubicon.Globalization"
-                    HintPath = "References\Rubicon.Globalization.dll"
-                />
-                <Reference
                     Name = "Rubicon.Web.UI"
                     AssemblyName = "Rubicon.Web.UI"
                     HintPath = "References\Rubicon.Web.UI.dll"
@@ -119,6 +114,7 @@
             <Include>
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -169,19 +165,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\Help.gif"
+                    RelPath = "Image\Help.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\RequiredField.gif"
+                    RelPath = "Image\RequiredField.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\Spacer.gif"
+                    RelPath = "Image\Spacer.gif"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Images\ValidationError.gif"
+                    RelPath = "Image\ValidationError.gif"
                     BuildAction = "Content"
                 />
                 <File
@@ -201,6 +197,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "References\Rubicon.Core.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "References\Rubicon.Globalization.dll"
                     BuildAction = "Content"
                 />
@@ -214,6 +214,10 @@
                 />
                 <File
                     RelPath = "References\Rubicon.Web.UI.pdb"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Web.UI.xml"
                     BuildAction = "Content"
                 />
                 <File

@@ -13,6 +13,7 @@ using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.UI;
 
 namespace FormGrid.Sample
 {
@@ -27,9 +28,7 @@ public class WebForm :
   System.Web.UI.Page,
   IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
   IFormGridRowProvider, //  Provides new rows and rows to hide to the FormGridManager
-  IImageUrlResolver,    //  Provides the image URLs for this WebForm (i.e. to the FormGridManager)
-  IHelpUrlResolver      //  Provides the help URLs for this WebForm (i.e. to the FormGridManager)
-
+  IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
   /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
   private static IResourceManager s_chachedResourceManager;
@@ -173,45 +172,13 @@ public class WebForm :
   }
 
   /// <summary>
-  ///   Interface method: IImageUrlResolver
+  ///   Implementation of <see cref="IResourceUrlResolver.GetResourceUrl"/>.
   /// </summary>
   /// <param name="relativeUrl"></param>
   /// <returns></returns>
-  public virtual string GetImageUrl (string relativeUrl)
+  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
   {
-    //  Build the relative URL appended to the application root
-    StringBuilder imageUrlBuilder = new StringBuilder (200);
-
-    //  Insert your own logic to get translate the relatveURL passed to this method
-    //  into a relative URL compatible with this applications folder structure.
-    imageUrlBuilder.Append (ImageDirectory);
-    imageUrlBuilder.Append (relativeUrl);
-
-    //  Join the relative URL with the applications root
-    return UrlUtility.Combine (
-        HttpContext.Current.Request.ApplicationPath,
-        imageUrlBuilder.ToString());
-  }
-
-  /// <summary>
-  ///   Interface method: IImageUrlResolver
-  /// </summary>
-  /// <param name="relativeUrl"></param>
-  /// <returns></returns>
-  public virtual string GetHelpUrl (string relativeUrl)
-  {
-    //  Build the relative URL appended to the application root
-    StringBuilder helpUrlBuilder = new StringBuilder (200);
-
-    //  Insert your own logic to get translate the relatveURL passed to this method
-    //  into a relative URL compatible with this applications folder structure.
-    helpUrlBuilder.Append (HelpDirectory);
-    helpUrlBuilder.Append (relativeUrl);
-
-    //  Join the relative URL with the applications root
-    return UrlUtility.Combine (
-        HttpContext.Current.Request.ApplicationPath,
-        helpUrlBuilder.ToString());
+    return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 
   private void WebForm_PreRender(object sender, System.EventArgs e)
@@ -225,18 +192,5 @@ public class WebForm :
     //  Validate the form grid manager
     GlobalFormGridManager.Validate();
   }
-
-  /// <summary>
-  ///   Directory for the images, starting at application root.
-  /// </summary>
-  protected virtual string ImageDirectory
-  { get { return "images/"; } }
-
-  /// <summary>
-  ///   Directory for the help files, starting at application root.
-  /// </summary>
-  protected virtual string HelpDirectory
-  { get { return "help/"; } }
-
 }
 }
