@@ -60,7 +60,7 @@ public class DataContainerFactory
     ObjectID id = valueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
     DataContainer dataContainer = DataContainer.CreateForExisting (id, _dataReader["Timestamp"]);
 
-    foreach (PropertyDefinition propertyDefinition in classDefinition.GetAllPropertyDefinitions ())
+    foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions ())
     {
       CheckColumn (propertyDefinition.ColumnName);
 
