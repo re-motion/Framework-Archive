@@ -58,7 +58,7 @@ public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
   [Test]
   public void LoadWithOrderBy ()
   {    
-    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order");
+    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
     DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (
         orderDefinition, "Customer", DomainObjectIDs.Customer1);
@@ -76,7 +76,7 @@ public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
     ObjectID invalidCustomerID = new ObjectID (
         DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
 
-    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order");
+    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
     Provider.LoadDataContainersByRelatedID (orderDefinition, "Customer", invalidCustomerID);
   }
