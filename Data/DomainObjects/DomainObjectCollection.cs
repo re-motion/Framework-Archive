@@ -843,8 +843,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   ///     to allow derived collections to adjust their internal state or to unsubscribe from events raised by <see cref="DomainObject"/>s that are part of the <b>DomainObjectCollection</b>.
   ///     </description>
   ///   </item>
-  /// </list><br/>
-  /// A derived collection overriding this method must not raise an exception.
+  /// </list>
+  /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
   protected virtual void OnClearing ()
   {
@@ -866,6 +866,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   ///     </description>
   ///   </item>
   /// </list>
+  /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
   protected virtual void OnCleared ()
   {
