@@ -76,6 +76,22 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     WxeContext.SetCurrent (wxeContext);
 
     _currentFunction.Execute (wxeContext);
+
+    string returnUrl = _currentFunction.ReturnUrl;
+    if (returnUrl != null)
+    {
+      // Variables.Clear();
+      if (returnUrl.StartsWith ("javascript:"))
+      {
+        context.Response.Clear();
+        string script = returnUrl.Substring ("javascript:".Length);
+        context.Response.Write ("<html><script language=\"JavaScript\">" + script + "</script></html>");
+      }
+      else
+      {
+        context.Response.Redirect (returnUrl);
+      }
+    }
   }
 
   public bool IsReusable
