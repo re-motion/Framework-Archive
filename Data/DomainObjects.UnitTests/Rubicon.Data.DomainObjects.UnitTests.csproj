@@ -188,6 +188,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "scalarQueryWithCollectionType.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "storageProviders.xml"
                     BuildAction = "Content"
                 />
@@ -208,10 +212,6 @@
                     RelPath = "UnitTestStorageProviderStubDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "valueQueryWithCollectionType.xml"
-                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "Configuration\Mapping\ClassDefinitionChecker.cs"
@@ -647,6 +647,11 @@
                 />
                 <File
                     RelPath = "Persistence\SqlProviderLoadDataContainerTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\SqlProviderQueryTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

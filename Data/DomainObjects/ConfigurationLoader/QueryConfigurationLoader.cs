@@ -84,8 +84,8 @@ public class QueryConfigurationLoader : BaseLoader
     Type collectionType = LoaderUtility.GetOptionalType (queryNode, 
         FormatXPath ("{0}:collectionType"), NamespaceManager);
 
-    if (queryType == QueryType.Value && collectionType != null)
-      throw CreateQueryConfigurationException ("Value query '{0}' must not specify a collectionType.", queryID);
+    if (queryType == QueryType.Scalar && collectionType != null)
+      throw CreateQueryConfigurationException ("Scalar query '{0}' must not specify a collectionType.", queryID);
 
     if (queryType == QueryType.Collection && collectionType == null)
       collectionType = typeof (DomainObjectCollection);

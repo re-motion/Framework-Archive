@@ -36,7 +36,7 @@
       <xs:simpleType>
    	   <xs:restriction base="xs:string">
    	     <xs:enumeration value="collection" />
-   	     <xs:enumeration value="value" />
+   	     <xs:enumeration value="scalar" />
    	   </xs:restriction>
    	 </xs:simpleType>
     </xs:attribute>

@@ -16,7 +16,7 @@
 	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
 	</query>
 	
-	<query id="OrderSumQuery" type="value">
+	<query id="OrderSumQuery" type="scalar">
 	    <storageProviderID>TestDomain</storageProviderID>        
 	    <statement>select sum(quantity) from Order where CustomerID = @customerID;</statement>
 	</query>

@@ -5,6 +5,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\queries.xsd">
     
+	<query id="QueryWithoutParameter" type="scalar">
+	    <storageProviderID>TestDomain</storageProviderID>
+	    <statement>select 42</statement>
+	</query>
+    
 	<query id="OrderQuery" type="collection">
 	    <storageProviderID>TestDomain</storageProviderID>
 	    <statement>select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
@@ -16,7 +21,7 @@
 	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
 	</query>
 	
-	<query id="OrderSumQuery" type="value">
+	<query id="OrderSumQuery" type="scalar">
 	    <storageProviderID>TestDomain</storageProviderID>        
 	    <statement>select sum(quantity) from Order where CustomerID = @customerID;</statement>
 	</query>
