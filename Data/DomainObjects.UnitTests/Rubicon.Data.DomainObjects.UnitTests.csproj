@@ -475,6 +475,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DomainObjects\ReplaceInOneToManyRelationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjects\RollbackDomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
