@@ -95,6 +95,7 @@ public class DataContainer
     this[propertyName] = value;
   }
 
+  // TODO: Make this property internal proteced
   public RelationEndPointID[] RelationEndPointIDs
   {
     get

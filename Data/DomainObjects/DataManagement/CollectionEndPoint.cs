@@ -154,7 +154,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override void PerformDelete ()
   {
-    _oppositeDomainObjects.PerformClear ();
+    _oppositeDomainObjects.ClearCollection ();
   }
 
   public override void EndRelationChange ()

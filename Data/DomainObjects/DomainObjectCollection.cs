@@ -248,7 +248,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     OnRemoved (new DomainObjectCollectionChangedEventArgs (domainObject));
   }
 
-  internal void PerformClear ()
+  internal protected new void ClearCollection ()
   {
     base.ClearCollection ();
   }
