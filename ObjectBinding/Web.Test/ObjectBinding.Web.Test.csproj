@@ -373,6 +373,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SingleTestTreeView.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleTestTreeView.aspx.cs"
+                    DependentUpon = "SingleTestTreeView.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleTestTreeView.aspx.resx"
+                    DependentUpon = "SingleTestTreeView.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "StartForm.aspx"
                     BuildAction = "Content"
                 />
