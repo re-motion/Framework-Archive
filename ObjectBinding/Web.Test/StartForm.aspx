@@ -18,6 +18,8 @@ Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWx
 <p>Wxe-Enabled Tests containing all the Business Object 
 Controls in a single Form or User Control<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</A></p>
 <p>Wxe-Enabled Test for a Tabbed Form<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false" >WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false</A></p>
+<p>Ego Page Layout Form<br><a 
+href="WxeHandler.ashx?WxeFunctionType=OBWTest.EgoPageLayoutFormWxeFunction,OBWTest&amp;ReadOnly=false">WxeHandler.ashx?WxeFunctionType=OBWTest.EgoPageLayoutFormWxeFunction,OBWTest&amp;ReadOnly=false</a></p>
 <p>Test Tree View<br><A href="SingleTestTreeView.aspx" >SingleTestTreeView.aspx</A></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p></form>
