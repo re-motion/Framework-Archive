@@ -11,7 +11,7 @@
     <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
   </HEAD>
   <body MS_POSITIONING="GridLayout">
-    <FORM id="Form" method="post" runat="server">
+    <FORM id="Form1" method="post" runat="server">
       <asp:textbox id="TextBox1" style="Z-INDEX: 100; LEFT: 80px; POSITION: absolute; TOP: 48px" runat="server"></asp:textbox>
       <asp:Button id="ThrowText" style="Z-INDEX: 118; LEFT: 128px; POSITION: absolute; TOP: 200px"
         runat="server" Text='Throw ("test")'></asp:Button><asp:label id="Var2Label" style="Z-INDEX: 110; LEFT: 376px; POSITION: absolute; TOP: 56px"
