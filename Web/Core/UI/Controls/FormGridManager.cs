@@ -1174,6 +1174,14 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     EnsureTransformIntoFormGridPreLoadViewState();
     TransformIntoFormGridPostValidation();
 
+    string key = typeof (FormGridManager).FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+    }
+
     base.OnPreRender (e);
   }
 
