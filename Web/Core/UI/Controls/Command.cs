@@ -331,7 +331,7 @@ public class Command
           wxePage.CurrentFunction.Variables[key] = parameters[key];
       }
 
-      Type functionType = System.Type.GetType (WxeFunctionCommand.TypeName); 
+      Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
 
       object [] actualParameters = WxeParameterDeclaration.ParseActualParameters (
           functionType,
