@@ -246,7 +246,7 @@ public class EntryField: Control
   {
     //  check if given control is a user control
 
-    UserControl userControl = control as UserControl;
+    Control userControl = control as Control;
 
     if (userControl == null)
       return true;
@@ -257,8 +257,14 @@ public class EntryField: Control
     {
       BaseValidator validator = subControl as BaseValidator;
 
-      if( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
-        isValid = false;
+      if (validator == null)
+      {
+        if( !ValidateSubControls (subControl, ignoreRequiredFieldValidators) )
+          isValid = false;
+      }
+      else
+        if ( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
+          isValid = false;
     }
 
     return isValid;
@@ -297,7 +303,7 @@ public class EntryField: Control
 
     // search for Validator child controls and keep if at least one is invalid
 
-    CheckForInvalidValidators (out validatorMessages, out validatorsInvalid);
+    CheckForInvalidValidators (this.Controls, ref validatorMessages, ref validatorsInvalid);
 
     Control labeledControl = null;
     if (For == String.Empty)
@@ -401,15 +407,11 @@ public class EntryField: Control
 		writer.WriteLine ("<tr> <td><img height=\"1\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
 	}
 
-  private void CheckForInvalidValidators(out string validatorMessages, out bool validatorsInvalid)
+  private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
   {
-    validatorMessages = String.Empty;
-    validatorsInvalid = false;
-
-
     // search for Validator child controls and keep if at least one is invalid
 
-    foreach ( Control childControl in this.Controls )
+    foreach ( Control childControl in controls )
     {
       if ( childControl is BaseValidator && _showErrors)
       {
@@ -417,13 +419,10 @@ public class EntryField: Control
       }
       else
       {
-        UserControl userControl = childControl as UserControl;
+        Control subControl = childControl as Control;
 
-        if (userControl != null)
-        {
-          foreach (Control subControl in userControl.Controls)
-            CheckInvalidValidator (subControl, ref validatorMessages, ref validatorsInvalid);
-        }
+        if ( (subControl != null) && (subControl.Controls != null) )
+          CheckForInvalidValidators (subControl.Controls, ref validatorMessages, ref validatorsInvalid);
       }
     }
   }
