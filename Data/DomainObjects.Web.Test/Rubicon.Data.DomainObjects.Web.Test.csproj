@@ -1,0 +1,362 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Web"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Core"
+                    AssemblyName = "Rubicon.Core"
+                    HintPath = "..\References\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects"
+                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding.Web"
+                    Project = "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding"
+                    Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Web"
+                    AssemblyName = "Rubicon.Web"
+                    HintPath = "..\References\Rubicon.Web.dll"
+                />
+                <Reference
+                    Name = "Rubicon.ObjectBinding"
+                    AssemblyName = "Rubicon.ObjectBinding"
+                    HintPath = "..\References\Rubicon.ObjectBinding.dll"
+                />
+                <Reference
+                    Name = "Rubicon.ObjectBinding.Web"
+                    AssemblyName = "Rubicon.ObjectBinding.Web"
+                    HintPath = "..\References\Rubicon.ObjectBinding.Web.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "default.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "default.aspx.cs"
+                    DependentUpon = "default.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "default.aspx.resx"
+                    DependentUpon = "default.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Global.asax"
+                    SubType = "Component"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Global.asax.cs"
+                    DependentUpon = "Global.asax"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Global.asax.resx"
+                    DependentUpon = "Global.asax.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\mapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\mapping.xsd"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\storageProviders.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\storageProviders.xsd"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\types.xsd"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateDB.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateTestData.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\SetupDB.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Domain\ClassForRelationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\ClassWithAllDataTypes.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Globalization\ClassForRelationTest.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\ClassWithAllDataTypes.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocBooleanValue.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocList.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocList.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\bocListTemplate.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocReferenceValue.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxFalse.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxNull.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxTrue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\DatePicker.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveFirst.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveFirstInactive.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveLast.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveLastInactive.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveNext.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveNextInactive.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MovePrevious.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MovePreviousInactive.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\SortAscending.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\SortDescending.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\DatePicker.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.htc"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\FormGrid.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\FormGridTemplate.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\HTML\PopupCalendar.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\DropDownMenuArrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\DropDownMenuItemIconPane.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\Help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\RequiredField.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\Spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\Image\ValidationError.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\UI\DatePickerForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Rubicon.Web\UI\WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+

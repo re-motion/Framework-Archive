@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="RplObjectBindingTest" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping ..\mapping.xsd">
+	<classes>
+		<class id="ClassWithAllDataTypes">
+			<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+			<entity>TableWithAllDataTypes</entity>
+			<storageProviderID>RpaTest</storageProviderID>
+			<properties>
+				<property name="BooleanProperty">
+					<type>boolean</type>
+					<column>Boolean</column>
+				</property>
+				<property name="ByteProperty">
+					<type>byte</type>
+					<column>Byte</column>
+				</property>
+				<property name="CharProperty">
+					<type>char</type>
+					<column>Char</column>
+				</property>
+				<property name="DateProperty">
+					<type>date</type>
+					<column>Date</column>
+				</property>
+				<property name="DateTimeProperty">
+					<type>dateTime</type>
+					<column>DateTime</column>
+				</property>
+				<property name="DecimalProperty">
+					<type>decimal</type>
+					<column>Decimal</column>
+				</property>
+				<property name="DoubleProperty">
+					<type>double</type>
+					<column>Double</column>
+				</property>
+				<property name="EnumProperty">
+					<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+					<column>Enum</column>
+				</property>
+				<property name="GuidProperty">
+					<type>guid</type>
+					<column>Guid</column>
+				</property>
+				<property name="Int16Property">
+					<type>int16</type>
+					<column>Int16</column>
+				</property>
+				<property name="Int32Property">
+					<type>int32</type>
+					<column>Int32</column>
+				</property>
+				<property name="Int64Property">
+					<type>int64</type>
+					<column>Int64</column>
+				</property>
+				<property name="SingleProperty">
+					<type>single</type>
+					<column>Single</column>
+				</property>
+				<property name="StringProperty">
+					<type>string</type>
+					<column>String</column>
+					<maxLength>100</maxLength>
+				</property>
+				<property name="NaBooleanProperty">
+					<type>boolean</type>
+					<column>NaBoolean</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDateProperty">
+					<type>date</type>
+					<column>NaDate</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDateTimeProperty">
+					<type>dateTime</type>
+					<column>NaDateTime</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDoubleProperty">
+					<type>double</type>
+					<column>NaDouble</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaInt32Property">
+					<type>int32</type>
+					<column>NaInt32</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="StringWithNullValueProperty">
+					<type>string</type>
+					<column>StringWithNullValue</column>
+					<nullable>true</nullable>
+					<maxLength>100</maxLength>
+				</property>
+				<property name="NaBooleanWithNullValueProperty">
+					<type>boolean</type>
+					<column>NaBooleanWithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDateWithNullValueProperty">
+					<type>date</type>
+					<column>NaDateWithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDateTimeWithNullValueProperty">
+					<type>dateTime</type>
+					<column>NaDateTimeWithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDoubleWithNullValueProperty">
+					<type>double</type>
+					<column>NaDoubleWithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaInt32WithNullValueProperty">
+					<type>int32</type>
+					<column>NaInt32WithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="ClassForRelationTestMandatory">
+					<type>objectID</type>
+					<column>TableForRelationTestMandatory</column>
+				</property>
+				<property name="ClassForRelationTestOptional">
+					<type>objectID</type>
+					<column>TableForRelationTestOptional</column>
+				</property>					
+			</properties>
+		</class>
+				
+		<class id="ClassForRelationTest">
+			<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassForRelationTest, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+			<entity>TableForRelationTest</entity>
+			<storageProviderID>RpaTest</storageProviderID>
+			<properties>
+				<property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+				</property>
+				<property name="ClassWithAllDataTypesMandatory">
+					<type>objectID</type>
+					<column>TableWithAllDataTypesMandatory</column>
+				</property>
+				<property name="ClassWithAllDataTypesOptional">
+					<type>objectID</type>
+					<column>TableWithAllDataTypesOptional</column>
+				</property>				
+			</properties>
+		</class>
+					
+	</classes>
+
+	
+	<relations>
+		<relation id="ClassWithAllDataTypesToClassForRelationTestMandatory">
+			<virtualEndPoint cardinality="one" isMandatory="true">
+				<class id="ClassForRelationTest" />
+				<property name="ClassWithAllDataTypesMandatoryNavigateOnly" />
+			</virtualEndPoint>
+			<endPoint isMandatory="true">
+				<class id="ClassWithAllDataTypes" />
+				<property name="ClassForRelationTestMandatory" />
+			</endPoint>
+		</relation>
+		
+		<relation id="ClassWithAllDataTypesToClassForRelationTestOptional">
+			<virtualEndPoint cardinality="one" isMandatory="false">
+				<class id="ClassForRelationTest" />
+				<property name="ClassWithAllDataTypesOptionalNavigateOnly" />
+			</virtualEndPoint>
+			<endPoint isMandatory="false">
+				<class id="ClassWithAllDataTypes" />
+				<property name="ClassForRelationTestOptional" />
+			</endPoint>
+		</relation>	
+		
+		<relation id="ClassForRelationTestToClassWithAllDataTypesMandatory">
+			<virtualEndPoint cardinality="many" isMandatory="true">
+				<class id="ClassWithAllDataTypes" />
+				<property name="ClassesForRelationTestMandatoryNavigateOnly" />
+			</virtualEndPoint>
+			<endPoint isMandatory="true">
+				<class id="ClassForRelationTest" />
+				<property name="ClassWithAllDataTypesMandatory" />
+			</endPoint>
+		</relation>
+	
+		<relation id="ClassForRelationTestToClassWithAllDataTypesOptional">
+			<virtualEndPoint cardinality="many" isMandatory="false">
+				<class id="ClassWithAllDataTypes" />
+				<property name="ClassesForRelationTestOptionalNavigateOnly" />
+			</virtualEndPoint>
+			<endPoint isMandatory="false">
+				<class id="ClassForRelationTest" />
+				<property name="ClassWithAllDataTypesOptional" />
+			</endPoint>
+		</relation>
+		
+	</relations>
+</mapping>
