@@ -479,7 +479,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Relations\NullRelationEndPoint.cs"
+                    RelPath = "Relations\NullObjectEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
