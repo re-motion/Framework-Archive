@@ -31,7 +31,7 @@ public class Ceo : TestDomainBase
   public string Name
   {
     get { return DataContainer.GetString ("Name"); }
-    set { DataContainer["Name"] = value; }
+    set { DataContainer.SetValue ("Name", value); }
   }
 
   public Company Company

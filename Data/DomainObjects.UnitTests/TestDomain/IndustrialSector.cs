@@ -29,7 +29,7 @@ public class IndustrialSector : TestDomainBase
 
   public string Name
   {
-    get { return DataContainer.GetString ("Name"); }
+    get { return (string) DataContainer["Name"]; }
     set { DataContainer["Name"] = value; }
   }
 

@@ -29,13 +29,13 @@ public class Order : TestDomainBase
 
   public int OrderNumber
   {
-    get { return DataContainer.GetInt32 ("OrderNumber"); }
+    get { return (int) DataContainer["OrderNumber"]; }
     set { DataContainer["OrderNumber"] = value; }
   }
 
   public DateTime DeliveryDate
   {
-    get { return DataContainer.GetDateTime ("DeliveryDate"); }
+    get { return (DateTime) DataContainer["DeliveryDate"]; }
     set { DataContainer["DeliveryDate"] = value; }
   }
 

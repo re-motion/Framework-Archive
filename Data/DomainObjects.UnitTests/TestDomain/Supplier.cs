@@ -30,7 +30,7 @@ public class Supplier : Partner
   public int SupplierQuality
   {
     get { return DataContainer.GetInt32 ("SupplierQuality"); }
-    set { DataContainer["SupplierQuality"] = value; }
+    set { DataContainer.SetValue ("SupplierQuality", value); }
   }
 }
 }

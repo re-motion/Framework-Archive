@@ -39,13 +39,13 @@ public class Customer : Company
   public NaDateTime CustomerSince
   {
     get { return DataContainer.GetNaDateTime ("CustomerSince"); }
-    set { DataContainer["CustomerSince"] = value; }
+    set { DataContainer.SetValue ("CustomerSince", value); }
   }
 
   public CustomerType Type
   {
     get { return (CustomerType) DataContainer["CustomerType"]; }
-    set { DataContainer["CustomerType"] = value; }
+    set { DataContainer.SetValue ("CustomerType", value); }
   }
 
   public OrderCollection Orders 

@@ -29,7 +29,7 @@ public class Distributor : Partner
 
   public int NumberOfShops
   {
-    get { return DataContainer.GetInt32 ("NumberOfShops"); }
+    get { return (int) DataContainer["NumberOfShops"]; }
     set { DataContainer["NumberOfShops"] = value; }
   }
 }

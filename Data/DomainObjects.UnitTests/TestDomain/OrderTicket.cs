@@ -32,7 +32,7 @@ public class OrderTicket : TestDomainBase
   public string FileName
   {
     get { return DataContainer.GetString ("FileName"); }
-    set { DataContainer["FileName"] = value; }
+    set { DataContainer.SetValue ("FileName", value); }
   }
 
   public Order Order

@@ -32,7 +32,7 @@ public class Computer : TestDomainBase
   public string SerialNumber
   {
     get { return DataContainer.GetString ("SerialNumber"); }
-    set { DataContainer["SerialNumber"] = value; }
+    set { DataContainer.SetValue ("SerialNumber", value); }
   }
 
   public Employee Employee
