@@ -7,7 +7,7 @@ nant setrelease all alltests
       if errorlevel 1 pause "build error"
 
 if "%1"=="nodoc" goto nodoc  
-nant doc
+nant doc-public
       if errorlevel 1 pause "build error"
 :nodoc
 
