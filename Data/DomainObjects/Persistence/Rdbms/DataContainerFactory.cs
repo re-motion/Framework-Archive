@@ -16,17 +16,13 @@ public class DataContainerFactory
 
   // member fields
 
-  private ClassDefinition _classDefinition;
   private IDataReader _dataReader;
 
   // construction and disposing
 
-  public DataContainerFactory (ClassDefinition classDefinition, IDataReader dataReader)
+  public DataContainerFactory (IDataReader dataReader)
   {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
-
-    _classDefinition = classDefinition;
     _dataReader = dataReader;
   }
 
@@ -60,8 +56,7 @@ public class DataContainerFactory
     if (classDefinition == null)
     {
       throw CreateStorageProviderException (
-          "Invalid ClassID '{0}' for ID '{1}' in entity '{2}' encountered.",
-          classID, _dataReader["ID"], _classDefinition.EntityName);
+          "Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
     }
 
     ObjectID id = GetObjectID (classDefinition, _dataReader["ID"]);
@@ -131,14 +126,15 @@ public class DataContainerFactory
 
   protected virtual void CheckColumn (string columnName)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
+
     try
     {  
       _dataReader.GetOrdinal (columnName);
     }
     catch (IndexOutOfRangeException)
     {
-      throw CreateStorageProviderException ("Entity '{0}' does not contain column '{1}'.",
-          _classDefinition.EntityName, columnName);
+      throw CreateStorageProviderException ("The mandatory column '{0}' could not be found.", columnName);
     }
   }
 
