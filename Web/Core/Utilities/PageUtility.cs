@@ -363,7 +363,7 @@ public class PageUtility
   /// </summary>
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
-  /// <param name="viewNav">Specifies the display status of the navigation bar for the page redirected to.</param>
+  /// <param name="showNavBar">Specifies the display status of the navigation bar for the page redirected to.</param>
   public static void CallPage (
       Page sourcePage, 
       string destinationUrl, 
@@ -381,7 +381,7 @@ public class PageUtility
   /// </summary>
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
-  /// <param name="viewNav">Specifies the display status of the navigation bar for the page redirected to.</param>
+  /// <param name="showNavBar">Specifies the display status of the navigation bar for the page redirected to.</param>
   public static void CallPage (
       Page sourcePage, 
       string destinationUrl, 
@@ -439,7 +439,7 @@ public class PageUtility
   /// </summary>
   /// <param name="requireParameters">If false, no exception is thrown if parameters are not found.</param>
   /// <exception cref="NoPageParametersException">Thrown when a page is called without parameters.</exception>
-  /// <exception cref="SessionTimeout">Thrown when the session is timed out.</exception>
+  /// <exception cref="SessionTimeoutException">Thrown when the session is timed out.</exception>
   /// <returns>IDictionary containing parameters</returns>
   public static IDictionary GetCallParameters (Page page, bool requireParameters)
   {
