@@ -419,7 +419,7 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
   [Test]
   public void OldObjectAndNewObjectAreSameRelationInherited ()
   {
-    // TODO: Events überprüfen
+    // TODO: Check events in this test, no events may be raised.
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer4);
     Ceo ceo = customer.Ceo;
 
