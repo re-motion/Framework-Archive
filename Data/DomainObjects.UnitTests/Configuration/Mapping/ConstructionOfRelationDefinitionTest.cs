@@ -47,7 +47,7 @@ public class ConstructionOfRelationDefinitionTest
   public void TwoRelationEndPointDefinitions ()
   {
     ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
-    customerDefinition.PropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));  
+    customerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));  
 
     RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
         customerDefinition, "Order", false);
@@ -55,7 +55,7 @@ public class ConstructionOfRelationDefinitionTest
     ClassDefinition orderDefinition = new ClassDefinition (
         "Order", "Order", typeof (Order), "TestDomain");
 
-    orderDefinition.PropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", "objectID"));
+    orderDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", "objectID"));
 
     RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (
         orderDefinition, "Customer", false);
