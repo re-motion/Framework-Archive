@@ -11,14 +11,6 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-public class LoadRequiredDesigner: ControlDesigner
-{
-  public override bool DesignTimeHtmlRequiresLoadComplete
-  {
-    get { return true; }
-  } 
-}
-
 /// <summary>
 ///   This control can be used to display or edit enumeration values.
 /// </summary>
