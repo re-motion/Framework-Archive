@@ -21,6 +21,8 @@ namespace OBWTest
 
 		public Global()
 		{
+      //  Initialize Logger
+	    log4net.LogManager.GetLogger (typeof (Global));
 			InitializeComponent();
 		}	
 		
