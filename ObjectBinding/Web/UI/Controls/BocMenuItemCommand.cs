@@ -13,7 +13,7 @@ public class BocMenuItemCommand: BocCommand
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class MenuItemWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
   {
-    /// <summary> Initalizes a new instance </summary>
+    /// <summary> Create a new instance. </summary>
     public MenuItemWxeFunctionCommandInfo()
     {
     }

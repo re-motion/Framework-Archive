@@ -172,6 +172,7 @@ public class MenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public SingleControlItemCollection PersistedCommand
   {
     get { return _command; }
@@ -216,7 +217,7 @@ public enum RequiredSelection
 {
   Any = 0,
   ExactlyOne = 1,
-  AtLeastOne = 2
+  OneOrMore = 2
 }
 
 /// <summary>
