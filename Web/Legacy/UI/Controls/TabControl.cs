@@ -12,6 +12,7 @@ namespace Rubicon.Findit.Client.Controls
 public interface INavigablePage
 {
   bool AllowImmediateClose {get; }
+  bool NavigationRequest (string url);
 }
 
 public interface ITabItem
@@ -132,6 +133,7 @@ public class TabControl: Control, IPostBackEventHandler
 	
   private int _height = -1;
 	private int _activeTab = 0;
+	private int _activeMenu = 0;
 	private string _target = String.Empty;
 	private Color _lineColor;
 	private bool _seperatorLine = false;
@@ -185,6 +187,11 @@ public class TabControl: Control, IPostBackEventHandler
 		get { return _activeTab; }
 		set { _activeTab = value; }
 	}
+  public int ActiveMenu
+  {
+    get { return _activeMenu; }
+    set { _activeMenu = value; }
+  }
 	public string Target
 	{
 		get { return _target; }
@@ -235,17 +242,25 @@ public class TabControl: Control, IPostBackEventHandler
       string argument = eventArgument.Substring (colonPos + 1);
       switch (eventName)
       {
-        // TODO: raise events
         case "TabSelected":
-        {
-          MoveToTab (Int32.Parse (argument));
+          MoveToTab (int.Parse (argument));
           break;
-        }
+
         case "MenuSelected":
+          MoveToMenu (int.Parse (argument));
           break;
       }
     }
 	}
+
+  private bool AllowNavigation (string url)
+  {
+    INavigablePage navigablePage = this.Page as INavigablePage;
+    if (navigablePage == null)
+      return true;
+
+    return navigablePage.NavigationRequest (url);
+  }
 
   public void MoveToTab (int tab)
   {
@@ -254,8 +269,22 @@ public class TabControl: Control, IPostBackEventHandler
     _activeTab = tab;
     Tab selectedTab = _items[_activeTab];
 
-    string href = GetCompleteUrl (selectedTab, tab, 0);
-    Page.Response.Redirect (href);
+    string url = GetCompleteUrl (selectedTab, tab, 0);
+    if (AllowNavigation (url))
+      Page.Response.Redirect (url);
+  }
+
+  public void MoveToMenu (int menu)
+  {
+    Tab activeTab = (Tab) Items[_activeTab];
+    if (menu >= activeTab.Controls.Count) throw new ArgumentOutOfRangeException ("menu");
+
+    _activeMenu = menu;
+    TabMenu selectedMenu = (TabMenu) activeTab.Controls[menu];
+
+    string url = GetCompleteUrl (selectedMenu, _activeTab, menu);
+    if (AllowNavigation (url))
+      Page.Response.Redirect (url);
   }
 
   private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
@@ -264,21 +293,16 @@ public class TabControl: Control, IPostBackEventHandler
     /*if (tabItem.Href == string.Empty)
       return string.Empty;*/
 
-    string url = PageUtility.GetPageUrl (this.Page, navigableItem.Href);
+    string url = PageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
     if (navigableItem.RequiresPageToken)
-      url = AddParameter (url, "pageToken", PageUtility.GetUniqueToken());
+      url = PageUtility.AddPageToken (url);
 
-    url = AddParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
-    url = AddParameter (url, "navSelectedMenu", newSelectedMenuIndex.ToString());
+    url = PageUtility.AddUrlParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
+    url = PageUtility.AddUrlParameter (url, "navSelectedMenu", newSelectedMenuIndex.ToString());
 
     return url;
   }
 
-  private string AddParameter (string url, string name, string value)
-  {
-    string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
-    return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode(value);
-  }
 
   /*
     
@@ -347,6 +371,12 @@ public class TabControl: Control, IPostBackEventHandler
     else
       _activeTab = 0;
 
+		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+    if (selectedMenu != null)
+      _activeMenu = int.Parse (selectedMenu);
+    else
+      _activeMenu = 0;
+
     if (this.Site != null && this.Site.DesignMode)
 		{
 			output.WriteLine ("[TabControl - edit in HTML view]");
@@ -383,7 +413,6 @@ public class TabControl: Control, IPostBackEventHandler
 			if (i == _activeTab)
 				classAttrib = activeClassAttrib;
 
-      string href = GetHref (i, tab);
 
 			// write seperator cell
 			if (i > 0)
@@ -395,6 +424,7 @@ public class TabControl: Control, IPostBackEventHandler
 			output.WriteLine ("</td>");
 
 			// write cell with tab text
+      string href = GetHref (i, tab);
 			output.WriteLine ("<td {0}> <a {0} {1}>{2}</a></td>", classAttrib, href, tab.Label);
 
 			// write cell with second image
@@ -459,9 +489,11 @@ public class TabControl: Control, IPostBackEventHandler
           if (! isFirstMenu)
             output.WriteLine (" | ");
 
-          // string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
           string menuHref = GetHref (_activeTab, i, menu);
-          output.WriteLine ("<a class=\"tabSubLink\" {0}>{1}</a> ", menuHref, menu.Label);
+          output.WriteLine ("<a class=\"{0}\" {1}>{2}</a> ", 
+              (i==_activeMenu) ? "tabActiveSubLink" : "tabSubLink",
+              menuHref, 
+              menu.Label);
           isFirstMenu = false;
         }
       }

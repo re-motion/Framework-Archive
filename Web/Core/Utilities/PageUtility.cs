@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Web.UI;
+using System.Web;
 
 using System.Diagnostics;
 
@@ -70,14 +71,34 @@ public class PageUtility
   /// <returns></returns>
   public static string GetUniqueToken ()
   {
-    return Guid.NewGuid ().ToString ("B") ;
+    return Guid.NewGuid ().ToString ("N") ;
   }
 
   /// <summary>
-  /// Returns the correct Url for a specified page with a relative Url 
-  /// even if cookieless mode is activated.
+  /// Returns the physical URL for the current page.
   /// </summary>  
-  public static string GetPageUrl (Page page, string relativeUrl)
+  /// <remarks>
+  /// For cookieless sessions, the session ID is inserted into the URL.
+  /// </remarks>
+  public static string GetPhysicalPageUrl (Page page)
+  {
+    return InternalGetPhysicalPageUrl (page, string.Empty);
+  }
+  /// <summary>
+  /// Returns the physical URL for a specified page.
+  /// </summary>  
+  /// <remarks>
+  /// For cookieless sessions, the session ID is inserted into the URL.
+  /// </remarks>
+  public static string GetPhysicalPageUrl (Page page, string relativeUrl)
+  {
+    if (relativeUrl == null || relativeUrl == string.Empty)
+      throw new ArgumentException ("Argument must contain a valid relative URL", "relativeURL");
+
+    return InternalGetPhysicalPageUrl (page, relativeUrl);
+  }
+
+  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
   { 
     string returnUrl;
 
@@ -104,13 +125,15 @@ public class PageUtility
     return returnUrl;
   }
 
-
-  /// <summary>
-  /// Returns the correct page's URL even if cookieless mode is activated.
-  /// </summary>
-  public static string GetPageUrl (Page page)
+  public static string AddPageToken (string url)
   {
-    return GetPageUrl (page, string.Empty);
+    return AddUrlParameter (url, "pageToken", GetUniqueToken());
+  }
+
+  public static string AddUrlParameter (string url, string name, string value)
+  {
+    string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
+    return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode(value);
   }
 
   public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
@@ -127,7 +150,7 @@ public class PageUtility
   public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters, ViewNavBar viewNav)
   {    
     // Add referrer information for all pages
-    string referrerUrl = GetPageUrl (sourcePage);
+    string referrerUrl = GetPhysicalPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
 
     string supressNavigation = string.Empty ;
