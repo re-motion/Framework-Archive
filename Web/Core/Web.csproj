@@ -207,6 +207,7 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
+                <Folder RelPath = "Controls\" />
                 <File
                     RelPath = "Globalization\EntryFormGrid.en.resx"
                     BuildAction = "EmbeddedResource"
@@ -239,6 +240,7 @@
                     RelPath = "Globalization\TabControl.resx"
                     BuildAction = "EmbeddedResource"
                 />
+                <Folder RelPath = "Utilities\" />
             </Include>
         </Files>
     </CSHARP>
