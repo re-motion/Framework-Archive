@@ -15,7 +15,7 @@ public abstract class ReflectionBusinessObject: BusinessObject
 {
   public override IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
   {
-    return BusinessObjectClass.GetProperty (propertyIdentifier);
+    return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
   }
 
   [XmlIgnore]

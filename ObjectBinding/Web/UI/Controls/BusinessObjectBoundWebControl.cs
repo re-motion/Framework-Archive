@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public interface IBusinessObjectBoundWebControl: 
   IBusinessObjectBoundControl, 
   ISmartControl,
-  IDataBindingsAccessor, IParserAccessor // these interfaces are implemented by System.Web.UI.Control
+  IControl
 {
 }
 
@@ -48,12 +48,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public IBusinessObjectDataSource DataSource
   {
     get { return _binding.DataSource; }
-    set 
-    { 
-//      IBusinessObjectDataSource _previousDataSource = _binding.DataSource;
-      _binding.DataSource = value; 
-//      OnBindingChanged (Property, _previousDataSource);
-    }
+    set { _binding.DataSource = value; }
   }
 
   [Category ("Data")]
@@ -61,12 +56,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public string PropertyIdentifier
   {
     get { return _binding.PropertyIdentifier; }
-    set 
-    { 
-//      IBusinessObjectProperty previousProperty = _binding.Property;
-      _binding.PropertyIdentifier = value; 
-//      OnBindingChanged (previousProperty, DataSource);
-    }
+    set { _binding.PropertyIdentifier = value; }
   }
 
   [Browsable (false)]
@@ -74,12 +64,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public IBusinessObjectProperty Property
   {
     get { return _binding.Property; }
-    set 
-    { 
-//      IBusinessObjectProperty previousProperty = _binding.Property;
-      _binding.Property = value; 
-//      OnBindingChanged (previousProperty, DataSource);
-    }
+    set { _binding.Property = value; }
   }
   #endregion
 
@@ -94,11 +79,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   private bool _childControlsInitialized = false;
 //  private bool _onLoadCalled = false;
 //  private bool _propertyBindingChangedBeforeOnLoad = false;
-
-  public BusinessObjectBoundWebControl ()
-  {
-    _binding = new BusinessObjectBinding (this);
-  }
 
 //  protected override void OnLoad (EventArgs e)
 //  {
@@ -121,6 +101,11 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 //    if (BindingChanged != null)
 //      BindingChanged (this, new BindingChangedEventArgs (previousProperty, previousDataSource));
 //  }
+
+  public BusinessObjectBoundWebControl ()
+  {
+    _binding = new BusinessObjectBinding (this);
+  }
 
   /// <summary>
   ///   Determines whether the control is to be treated as a required value.
@@ -239,7 +224,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Used by <see cref="SupportsProperty"/>.
   /// </remarks>
   [Browsable(false)]
-  protected abstract Type[] SupportedPropertyInterfaces { get; }
+  protected virtual Type[] SupportedPropertyInterfaces 
+  { 
+    get { return null; }
+  }
 
   /// <summary>
   ///   Indicates whether properties with the specified multiplicity are supported.

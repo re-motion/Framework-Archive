@@ -7,9 +7,6 @@ using Rubicon.ObjectBinding;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-// issues: data source and property identifier may be set/modified in any order
-// only when a load/save request is made, the combination of both must be valid
-// changes are noted in _bindingChanged, but only evaluated on EvaluateBinding().
 public class BusinessObjectBinding
 {
   private readonly IBusinessObjectBoundWebControl _control;
@@ -88,7 +85,7 @@ public class BusinessObjectBinding
   {
     if (_bindingChanged && _property == null && DataSource != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
     {
-      _property = DataSource.BusinessObjectClass.GetProperty (_propertyIdentifier); 
+      _property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
 
       this.OnBindingChanged ();
       _bindingChanged = false;

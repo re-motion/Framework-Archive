@@ -44,7 +44,7 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     PropertiesList.Items.Clear();
 
     string filter = FilterField.Text.ToLower().Trim();
-    IBusinessObjectProperty[] properties = _control.DataSource.BusinessObjectClass.GetProperties();
+    IBusinessObjectProperty[] properties = _control.DataSource.BusinessObjectClass.GetPropertyDefinitions();
 
     foreach (IBusinessObjectProperty property in properties)
     {

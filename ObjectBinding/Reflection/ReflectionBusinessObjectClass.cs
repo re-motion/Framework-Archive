@@ -15,13 +15,13 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClass
     _type = type;
   }
 
-  public IBusinessObjectProperty GetProperty (string propertyIdentifier)
+  public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
   {
     PropertyInfo propertyInfo = _type.GetProperty (propertyIdentifier);
     return (propertyInfo == null) ? null : ReflectionBusinessObjectProperty.Create (propertyInfo);
   }
 
-  public IBusinessObjectProperty[] GetProperties()
+  public IBusinessObjectProperty[] GetPropertyDefinitions()
   {
     PropertyInfo[] propertyInfos = _type.GetProperties ();
     if (propertyInfos == null)

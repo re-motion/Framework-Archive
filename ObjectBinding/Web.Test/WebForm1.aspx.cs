@@ -32,6 +32,8 @@ public class WebForm1 : System.Web.UI.Page
   protected System.Web.UI.WebControls.Label Label1;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
   protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
+  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -54,8 +56,11 @@ public class WebForm1 : System.Web.UI.Page
 
 		reflectionBusinessObjectDataSource1.BusinessObject = person;
 
-    this.DataBind();
-    reflectionBusinessObjectDataSource1.LoadValues ();
+    if (!IsPostBack)
+    {
+      this.DataBind();
+      reflectionBusinessObjectDataSource1.LoadValues ();
+    }
 	}
 
 	#region Web Form Designer generated code
