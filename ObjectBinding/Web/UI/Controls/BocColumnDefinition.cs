@@ -22,12 +22,16 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition
 {
+  private const string c_commandIDSuffix = "_Command";
+
   /// <summary> The programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
   private string _id;
   /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
   /// <summary> The width of the column. </summary>
   private Unit _width; 
+  /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
+  private BocItemCommand _command;
   /// <summary>
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this column definition belongs to. 
   /// </summary>
@@ -36,14 +40,23 @@ public abstract class BocColumnDefinition
   /// <summary> Simple Constructor. </summary>
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
-  public BocColumnDefinition (string columnTitle, Unit width)
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
+  public BocColumnDefinition (string columnTitle, Unit width, BocItemCommand command)
   {
-    _width = width;
     _columnTitle = StringUtility.NullToEmpty (columnTitle);
+    _width = width;
+    _command = command;
   }
 
   /// <summary> Simple Constructor. </summary>
-  private BocColumnDefinition()
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
+  public BocColumnDefinition (string columnTitle, Unit width)
+    : this (columnTitle, width, new BocItemCommand())
+  {}
+
+  /// <summary> Simple Constructor. </summary>
+  public BocColumnDefinition()
     : this (null, Unit.Empty)
   {}
 
@@ -124,6 +137,67 @@ public abstract class BocColumnDefinition
     set { _width = value; }
   }
 
+  /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
+  /// <value> A <see cref="BocItemCommand"/>. </value>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Action")]
+  [Description ("The command rendered in this column.")]
+  [NotifyParentProperty (true)]
+  public BocItemCommand Command
+  {
+    get
+    {
+      return _command; 
+    }
+    set
+    {
+      _command = value;
+    }
+  }
+
+  private bool ShouldSerializeCommand()
+  {
+    if (_command == null)
+      return false;
+
+    switch (_command.Type)
+    {
+      case BocItemCommandType.None:
+      {
+        return false;
+      }
+      case BocItemCommandType.Event:
+      {
+        return true;
+      }
+      case BocItemCommandType.WxeFunction:
+      {
+        return true;
+      }
+      case BocItemCommandType.Href:
+      {
+        if (_command.HrefCommand == null)
+          return false;
+        
+        if (   StringUtility.IsNullOrEmpty (_command.HrefCommand.Href)
+            && StringUtility.IsNullOrEmpty (_command.HrefCommand.Target))
+        {
+          return false;
+        }
+
+        return true;
+      }
+    }
+    return true;
+  }
+
+  private void ResetCommand()
+  {
+    _command = new BocItemCommand();
+    _command.Type = BocItemCommandType.None;
+  }
+
   /// <summary> The human readable name of this type. </summary>
   protected virtual string DisplayedTypeName
   {
@@ -153,42 +227,35 @@ public abstract class BocColumnDefinition
 /// <summary> A column definition containing no data, but a <see cref="BocItemCommand"/>. </summary>
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
-  private const string c_commandIDSuffix = "_Command";
-
-  /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
-  private BocItemCommand _command;
   /// <summary> The text representing the command on the rendered page. </summary>
   private object _label;
   /// <summary> The image representing the command on the rendered page. </summary>
   private string _iconPath;
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
   /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   /// <param name="label"> The text representing the command on the rendered page. </param>
   /// <param name="iconPath"> The image representing the command on the rendered page. </param>
-  /// <param name="columnTitle"> The text displayed in the title row. </param>
-  /// <param name="width"> The width of the rendered column. </param>
   public BocCommandColumnDefinition (
+      string columnTitle, 
+      Unit width, 
       BocItemCommand command, 
       object label, 
-      string iconPath, 
-      string columnTitle, 
-      Unit width)
-    : base (columnTitle, width)
+      string iconPath)
+    : base (columnTitle, width, command)
   {
     ArgumentUtility.CheckNotNull ("command", command);
 
-    _command = command;
     _iconPath = iconPath;
     _label = label;
   }
 
   /// <summary> Simple Constructor. </summary>
   public BocCommandColumnDefinition()
-    : base (null, Unit.Empty)
-  {
-    _command = new BocItemCommand();
-  }
+    : base ()
+  {}
 
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
@@ -207,26 +274,6 @@ public class BocCommandColumnDefinition: BocColumnDefinition
       return DisplayedTypeName;
     else
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
-  }
-
-  /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
-  /// <value> A <see cref="BocItemCommand"/>. </value>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [Category ("Action")]
-  [Description ("The command rendered in this column.")]
-  //  No default value
-  [NotifyParentProperty (true)]
-  public BocItemCommand Command
-  {
-    get
-    {
-      return _command; 
-    }
-    set
-    {
-      _command = value;
-    }
   }
 
   /// <summary> The text representing the command in the rendered page. </summary>
@@ -268,13 +315,21 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
   /// <summary> Simple Constructor. </summary>
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
+  public BocValueColumnDefinition (string columnTitle, Unit width, BocItemCommand command)
+    : base (columnTitle, width, command)
+  {}
+
+  /// <summary> Simple Constructor. </summary>
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
   public BocValueColumnDefinition (string columnTitle, Unit width)
     : base (columnTitle, width)
   {}
 
   /// <summary> Simple Constructor. </summary>
   private BocValueColumnDefinition()
-    : this (null, Unit.Empty)
+    : base (null, Unit.Empty)
   {}
 
   /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -309,6 +364,9 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   private PropertyPathBinding _propertyPathBinding;
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   /// <param name="formatString"> 
   ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
@@ -317,14 +375,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   ///   The <see cref="BusinessObjectPropertyPath"/> used by <see cref="GetStringValue"/> 
   ///   to access the value of an <see cref="IBusinessObject"/>. Must not be <see langword="null"/>.
   /// </param>
-  /// <param name="columnTitle"> The text displayed in the title row. </param>
-  /// <param name="width"> The width of the rendered column. </param>
   public BocSimpleColumnDefinition (
-      string formatString,
-      BusinessObjectPropertyPath propertyPath,
       string columnTitle, 
-      Unit width)
-    : base (columnTitle, width)
+      Unit width,
+      BocItemCommand command,
+      string formatString,
+      BusinessObjectPropertyPath propertyPath)
+    : base (columnTitle, width, command)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
     FormatString = formatString;
@@ -332,6 +389,9 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   }
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   /// <param name="formatString"> 
   ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
@@ -340,14 +400,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   ///   The string representation of the <see cref="PropertyPath"/>. Must not be 
   ///   <see langword="null"/> or emtpy.
   /// </param>
-  /// <param name="columnTitle"> The text displayed in the title row. </param>
-  /// <param name="width"> The width of the rendered column. </param>
   public BocSimpleColumnDefinition (
-      string formatString,
-      string propertyPathIdentifier,
       string columnTitle, 
-      Unit width)
-    : base (columnTitle, width)
+      Unit width,
+      BocItemCommand command, 
+      string formatString,
+      string propertyPathIdentifier)
+    : base (columnTitle, width, command)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
     FormatString = formatString;
@@ -355,7 +414,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   }
 
   /// <summary> Simple Constructor. </summary>
-  public BocSimpleColumnDefinition ()
+  public BocSimpleColumnDefinition()
     : base (string.Empty, Unit.Empty)
   {
     _formatString = string.Empty;
@@ -540,6 +599,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   private PropertyPathBindingCollection _propertyPathBindings;
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   /// <param name="formatString"> 
   ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
@@ -551,11 +611,12 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
   public BocCompoundColumnDefinition (
-      string formatString,
-      BusinessObjectPropertyPath[] propertyPaths, 
       string columnTitle, 
-      Unit width)
-    : base (columnTitle, width)
+      Unit width,
+      BocItemCommand command, 
+      string formatString,
+      BusinessObjectPropertyPath[] propertyPaths)
+    : base (columnTitle, width, command)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPaths", propertyPaths);
     ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
@@ -567,6 +628,9 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="columnTitle"> The text displayed in the title row. </param>
+  /// <param name="width"> The width of the rendered column. </param>
+  /// <param name="command"> The <see cref="BocItemCommand"/> rendered in this column. </param>
   /// <param name="formatString"> 
   ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
@@ -575,14 +639,13 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   The strings identifying the <see cref="BusinessObjectPropertyPath"/> objects used to access
   ///   the values that will be rendered in this column.
   /// </param>
-  /// <param name="columnTitle"> The text displayed in the title row. </param>
-  /// <param name="width"> The width of the rendered column. </param>
   public BocCompoundColumnDefinition (
-      string formatString,
-      string[] propertyPathIdentifiers, 
       string columnTitle, 
-      Unit width)
-    : base (columnTitle, width)
+      Unit width,
+      BocItemCommand command, 
+      string formatString,
+      string[] propertyPathIdentifiers)
+    : base (columnTitle, width, command)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifiers", propertyPathIdentifiers);
     ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
