@@ -612,6 +612,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\WebTab.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebTabCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\WebTabStrip.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -657,6 +667,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\WebTabStripDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\WebTreeNodeCollectionEditor.cs"
                     BuildAction = "Compile"
                 />
@@ -674,6 +689,10 @@
                 />
                 <File
                     RelPath = "UI\Globalization\EntryFormGrid.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Globalization\FormGridManager.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -709,6 +728,10 @@
                 />
                 <File
                     RelPath = "UI\Globalization\TabControl.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Globalization\ValidationStateViewer.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
