@@ -2,7 +2,8 @@
 Features BocList
 
 - Definition von Spalten als ColumnDefinition[] (FixedColumns)
-- Auswahl einer Sammlung von zusätzlichen Spaltendefinitionen (AdditionalColumns: Name + ColumnDefinition[])
+- Ergänzt um Auswahl aus einer Sammlung von zusätzlichen Spaltendefinitionen
+  (AdditionalColumns: Name + ColumnDefinition[])
 - Sortierung nach einer Spalte
 - Selektion (checkbox) optional 
 - Laden eines User Controls (ASCX) für Detail-Bearbeitung
@@ -15,7 +16,8 @@ Features BocList
 Beispiel (Links in BLOCKBUCHSTABEN)
 
 FirstColumnCommand:
-  new HrefItemCommand (null, "/view.aspx?obj={0}", "_blank") // replace: {0} -> IBusinessObjectWithIdentity.ID bzw. 0-based index
+  new HrefItemCommand (null, "/view.aspx?obj={0}", "_blank") 
+  // replace: {0} -> IBusinessObjectWithIdentity.ID bzw. 0-based index
 
 FixedColumns:
   CommandColumnDefinition ( 
@@ -32,7 +34,7 @@ AdditionalColumns:
 Ansicht: [Meine Spaltenkonfiguration     |v]                    (drop down liste, optional)
 
 [ ]            Name ^v                    Geb.Dat. ^v
------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 [ ] BEARBEITEN [ICON] MEIER, HANS            1.2.1991
 [ ] BEARBEITEN [ICON] HUBER, GERHARD        30.4.2000
 [ ] BEARBEITEN [ICON] POLSTER, TONI         12.5.1967
