@@ -17,6 +17,8 @@ public class BaseLoader
 
   private XmlDocument _document;
   private ConfigurationNamespaceManager _namespaceManager;
+  private string _configurationFile;
+  private string _schemaFile;
 
   // construction and disposing
 
@@ -38,8 +40,10 @@ public class BaseLoader
     if (!File.Exists (configurationFile)) throw new FileNotFoundException (string.Format ("Configuration file '{0}' could not be found.", configurationFile) , configurationFile);
     if (!File.Exists (schemaFile)) throw new FileNotFoundException (string.Format ("Schema file '{0}' could not be found.", schemaFile), schemaFile);
 
-    _document = LoadConfigurationFile (configurationFile, schemaFile, schemaNamespace.Uri);
+    _configurationFile = Path.GetFullPath (configurationFile);
+    _schemaFile = Path.GetFullPath (schemaFile);
 
+    _document = LoadConfigurationFile (_configurationFile, _schemaFile, schemaNamespace.Uri);
     _namespaceManager = new ConfigurationNamespaceManager (_document, namespaces);
   }
 
@@ -73,6 +77,16 @@ public class BaseLoader
       if (validatingReader != null)
         validatingReader.Close ();
     }
+  }
+
+  public string ConfigurationFile
+  {
+    get { return _configurationFile; }
+  }
+
+  public string SchemaFile
+  {
+    get { return _schemaFile; }
   }
 
   protected XmlDocument Document
