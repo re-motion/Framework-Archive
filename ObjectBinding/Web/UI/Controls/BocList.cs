@@ -374,6 +374,7 @@ public class BocList:
   private bool _isRowEditModeValidatorsRestored = false;
   /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
   private BaseValidator[][] _rowEditModeValidators;
+  private bool _enableEditDetailsValidator = true;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -882,7 +883,7 @@ public class BocList:
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
-    if (IsReadOnly)
+    if (IsReadOnly || ! IsRowEditMode || ! _enableEditDetailsValidator)
       return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
@@ -1230,6 +1231,7 @@ public class BocList:
       else
         _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
+      _optionsMenu.Enabled = ! IsRowEditMode;
       _optionsMenu.RenderControl (writer);
     }
 
@@ -1353,6 +1355,7 @@ public class BocList:
       disabledIcon =  "'" + menuItem.DisabledIcon + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
+    bool isDisabled = menuItem.IsDisabled || IsRowEditMode;
     stringBuilder.AppendFormat (
         "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 
@@ -1361,7 +1364,7 @@ public class BocList:
         icon, 
         disabledIcon, 
         (int) menuItem.RequiredSelection,
-        menuItem.IsDisabled ? "true" : "false",
+        isDisabled ? "true" : "false",
         href,
         target);
   }
@@ -1887,10 +1890,7 @@ public class BocList:
         cssClassTableCell = CssClassDataCellEven;
     }
 
-    if (   IsSelectionEnabled 
-      )
-//        && (   EditableRowIndex.IsNull 
-//            || EditableRowIndex.Value != originalRowIndex))
+    if (IsSelectionEnabled && ! IsRowEditMode)
     {
       if (_hasClientScript)
       {
@@ -1957,8 +1957,6 @@ public class BocList:
     }
 
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
-    if (IsSelectionEnabled && hasEditModeControl)
-      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
     if (commandEnabledColumn != null)
@@ -1970,7 +1968,7 @@ public class BocList:
 
       //  Render the command
       bool isCommandEnabled = RenderBeginTagDataCellCommand (
-          writer, commandEnabledColumn, businessObject, hasEditModeControl, columnIndex, originalRowIndex);
+          writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
 
       //  Render the icon
       if (showIcon)
@@ -2025,7 +2023,9 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
     if (isChecked)
-      writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");      
+      writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");    
+    if (IsRowEditMode)
+      writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "true");
     if (isSelectAllSelectorControl)
     {
       int count = 0;
@@ -2232,7 +2232,6 @@ public class BocList:
       HtmlTextWriter writer, 
       BocCommandEnabledColumnDefinition column,
       IBusinessObject businessObject,
-      bool hasEditModeControl,
       int columnIndex,
       int originalRowIndex)
   {
@@ -2247,7 +2246,7 @@ public class BocList:
                     || ! isReadOnly && command.Show == CommandShow.EditMode;
     if (   isActive
         && command.Type != CommandType.None
-        && ! hasEditModeControl
+        && ! IsRowEditMode
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
@@ -2296,6 +2295,10 @@ public class BocList:
   /// <summary>
   ///   Obtains a reference to a client-side script function that causes, when invoked, a server postback to the form.
   /// </summary>
+  /// <remarks> 
+  ///   If the <see cref="BocList"/> is in row edit mode, <c>return false;</c> will be returned to prevent actions on 
+  ///   this list.
+  /// </remarks>
   /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
   /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
   /// <param name="customCellArgument"> 
@@ -2305,6 +2308,8 @@ public class BocList:
   /// <returns></returns>
   public string GetCustomCellPostBackClientEvent (int columnIndex, int listIndex, string customCellArgument)
   {
+    if (IsRowEditMode)
+      return "return false;";
     string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
     return Page.GetPostBackClientEvent (this, postBackArgument);
   }
@@ -2312,6 +2317,10 @@ public class BocList:
   /// <summary>
   ///   Obtains a hyperlink reference that causes, when invoked, a server postback to the form.
   /// </summary>
+  /// <remarks> 
+  ///   If the <see cref="BocList"/> is in row edit mode, <c>javascript: function() { return false; }</c> will be 
+  ///   returned to prevent actions on this list.
+  /// </remarks>
   /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
   /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
   /// <param name="customCellArgument"> 
@@ -2321,6 +2330,8 @@ public class BocList:
   /// <returns></returns>
   public string GetCustomCellPostBackClientHyperlink (int columnIndex, int listIndex, string customCellArgument)
   {
+    if (IsRowEditMode)
+      return "javascript: function() { return false; }";
     string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
     return Page.GetPostBackClientHyperlink (this, postBackArgument);
   }
@@ -3174,6 +3185,16 @@ public class BocList:
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
   /// </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     Once the list is in edit mode, it is important not to change to index of the edited 
+  ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
+  ///     Use <see cref="IsRowEditMode"/> to programatically check whether it is save to insert a row.
+  ///   </para><para>
+  ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
+  ///     those rendered in the <see cref="BocEditDetailsColumnDefinition"/> column.
+  ///   </para>
+  /// </remarks>
   /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index)
   {
@@ -3419,7 +3440,7 @@ public class BocList:
   ///   Queried where the rendering depends on whether the list is in edit mode. 
   ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
   /// </remarks>
-  protected bool IsRowEditMode
+  public bool IsRowEditMode
   {
     get { return ! _editableRowIndex.IsNull; } 
   }
@@ -3998,10 +4019,23 @@ public class BocList:
     set { _listMenuLineBreaks = value; }
   }
 
-  /// <summary>
-  ///   Validation message if the control is not filled correctly.
-  /// </summary>
-  [Description("Validation message if the control is not filled correctly.")]
+  /// <summary> Gets or sets a flag that enables the <see cref="EditDetailsValidator"/>. </summary>
+  /// <remarks> 
+  ///   <see langword="false"/> to prevent the <see cref="EditDetailsValidator"/> from being created by
+  ///   <see cref="CreateValidators"/>.
+  /// </remarks>
+  [Description("Enables the EditDetailsValidator.")]
+  [Category ("Behavior")]
+  [DefaultValue(true)]
+  public bool EnableEditDetailsValidator
+  {
+    get { return _enableEditDetailsValidator; }
+    set { _enableEditDetailsValidator = value; }
+  }
+
+
+  /// <summary> Gets or sets the validation error message. </summary>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

@@ -1403,10 +1403,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     remove { Events.RemoveHandler (s_dateTimeChangedEvent, value); }
   }
 
-  /// <summary>
-  ///   Validation message if the control is not filled correctly.
-  /// </summary>
-  [Description("Validation message if the control is not filled correctly.")]
+  /// <summary> Gets or sets the validation error message. </summary>
+  [Description("Validation message displayed if the control is not filled correctly.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage
