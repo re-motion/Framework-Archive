@@ -141,7 +141,11 @@ public class ResourceManagerWrapper: IResourceManager
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    return _resourceManager.GetString (id);
+    string result = _resourceManager.GetString (id);
+    if (result != null)
+      return result;
+    else
+      return id;
   }
 
   /// <summary>
