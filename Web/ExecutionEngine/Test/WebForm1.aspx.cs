@@ -92,17 +92,17 @@ namespace Rubicon.PageTransition
 //      currentFunction.ExecutingStep.ExecuteNextStep (Context);
     }
 
-    private void Sub_Click(object sender, System.EventArgs e)
+    private void Sub_Click (object sender, System.EventArgs e)
     {
       CurrentStep.ExecuteFunction (sender, this, new SubFunction("call var1", "call var2"));
     }
 
-    private void Throw_Click(object sender, System.EventArgs e)
+    private void Throw_Click (object sender, System.EventArgs e)
     {
       throw new ApplicationException ("test exception");
     }
 
-    private class SubFunction: WxeFunction, ISampleFunctionVariables
+    public class SubFunction: WxeFunction, ISampleFunctionVariables
     {
       public SubFunction (object var1, object var2)
         : base (var1, var2)

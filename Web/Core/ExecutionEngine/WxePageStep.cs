@@ -64,7 +64,7 @@ public class WxePageStep: WxeStep
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
     if (sender is Control)
-      _postBackCollection.Remove (((Control)sender).ClientID);
+      _postBackCollection.Remove (((Control)sender).UniqueID);
 
     //_postBackCollection.Remove ("Sub");
     if (_function != null)
