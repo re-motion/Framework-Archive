@@ -401,7 +401,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Globalization\BocBooleanValue.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\BocBooleanValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocDateTimeValue.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -409,7 +417,15 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\BocEnumValue.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\BocEnumValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocList.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -417,11 +433,23 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\BocMultilineTextValue.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\BocMultilineTextValue.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\BocReferenceValue.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\BocReferenceValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocTextValue.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
