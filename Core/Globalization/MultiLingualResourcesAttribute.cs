@@ -309,7 +309,7 @@ public class MultiLingualResourcesAttribute: Attribute
 
   /// <summary>
   /// Finds the class where the <c>MultiLingualResourcesAttribute</c> was defined and returns
-  /// it's type and the the names of the resource containers.
+  /// its type and the the names of the resource containers.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceNameAndType/*' />
   private static void GetResourceNameAndType (
