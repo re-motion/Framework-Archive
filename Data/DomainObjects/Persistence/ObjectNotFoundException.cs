@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Persistence
 {
 [Serializable]
-public class ObjectNotFoundException : PersistenceException
+public class ObjectNotFoundException : StorageProviderException
 {
   // types
 
