@@ -13,7 +13,21 @@ namespace Rubicon.Findit.Client.Controls
 [ControlBuilder (typeof (EntryFormGridControlBuilder))]
 public class EntryFormGrid: Control
 {
+  private Unit _labelColumnWidth;
+  private Unit _valueColumnWidth;
+
+  public Unit LabelColumnWidth 
+  {
+    get { return _labelColumnWidth; }
+    set { _labelColumnWidth = value; }
+  }
 	
+  public Unit ValueColumnWidth 
+  {
+    get { return _valueColumnWidth; }
+    set { _valueColumnWidth = value; }
+  }
+
   /// <summary>
   /// Validate all EntryFields
   /// </summary>
@@ -47,7 +61,7 @@ public class EntryFormGrid: Control
 			return;
 		}
 
-    writer.WriteLine ("<table border=\"0\" cellspacing=\"\0\" cellpadding=\"0\">");
+    writer.WriteLine ("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
 
 		for (int i = 0; i < this.Controls.Count; ++i)
 		{
@@ -226,8 +240,20 @@ public class EntryField: Control
 		else
 			label = "<label for=\"" + clientId + "\">" +  Label + "</label>";
 
+    string labelWidthAttribute = string.Empty;
+    string valueWidthAttribute = string.Empty;
+    EntryFormGrid parentGrid = Parent as EntryFormGrid;
+    if (parentGrid != null)
+    {
+      if (! parentGrid.LabelColumnWidth.IsEmpty)
+        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString());
+      if (! parentGrid.ValueColumnWidth.IsEmpty)
+        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString());
+    }
+
 		writer.WriteLine ("<tr>");
-		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\">&nbsp;{0}</td>", label);
+		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >&nbsp;{1}</td>", 
+        labelWidthAttribute, label);
 		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td nowrap>");
@@ -274,7 +300,7 @@ public class EntryField: Control
 			}
 		}
 
-		writer.WriteLine ("</td><td>");
+		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);
 
     RenderChildren(writer);
 
