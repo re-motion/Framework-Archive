@@ -375,8 +375,7 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable
   #region nullable
 
   /// <summary>
-  /// Represents a null value that can be assigned to the <see cref="Value"/> property of 
-  /// an instance of the <see cref="NaInt32"/> structure.
+  /// Represents a null value that can be assigned to an instance of the <see cref="NaInt32"/> structure.
   /// </summary>
   /// <remarks>
   /// Null functions as a constant for the <see cref="NaInt32"/> structure.

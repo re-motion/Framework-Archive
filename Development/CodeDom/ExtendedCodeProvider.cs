@@ -154,7 +154,7 @@ public abstract class ExtendedCodeProvider
         sb.Append (elementArguments);
       }
       sb.Append (">");
-      sb.Append (description.Replace ("<", "&lt;").Replace(">", "&gt;"));
+      sb.Append (description.Replace("&", "&amp;").Replace ("<", "&lt;").Replace(">", "&gt;"));
       sb.Append ("</");
       sb.Append (elementName);
       sb.Append (">");
@@ -185,7 +185,7 @@ public abstract class ExtendedCodeProvider
   /// </summary>
   public virtual void AddRemarksComment (CodeTypeMember item, string remarks)
   {
-    AddDocumentationComment (item, "remarks", null, null, remarks);
+    AddDocumentationComment (item, "remarks", null, "Remarks", remarks);
   }
 
   /// <summary>
@@ -194,6 +194,21 @@ public abstract class ExtendedCodeProvider
   public virtual void AddParameterComment (CodeTypeMember item, string parameterName, string description)
   {
     AddDocumentationComment (item, "param", "name=\"" + parameterName + "\"", "Parameter " + parameterName, description);
+  }
+
+  public virtual void AddExceptionComment (CodeTypeMember item, Type exceptionType, string condition)
+  {
+    AddDocumentationComment (item, "exception", "cref=\"" + exceptionType.FullName + "\"", "Exception " + exceptionType, condition);
+  }
+
+  public virtual void AddValueComment (CodeTypeMember item, string description)
+  {
+    AddDocumentationComment (item, "value", null, "Value", description);
+  }
+
+  public virtual void AddReturnsComment (CodeTypeMember item, string description)
+  {
+    AddDocumentationComment (item, "returns", null, "Returns", description);
   }
 
   /// <summary>
@@ -212,7 +227,7 @@ public abstract class ExtendedCodeProvider
   /// <summary>
   /// If implemented by a derived class, modifies the specified <c>CompilerParameters</c> to create an XML documentation file.
   /// </summary>
-  public virtual void AddOptionCreateXmlDocumentation (CompilerParameters parameters, string xmlFilename)
+  public virtual void AddOptionCreateXmlDocumentation (CompilerParameters parameters, string xmlFilename, bool missingXmlWarnings)
   {
   }
 
@@ -273,6 +288,31 @@ public abstract class ExtendedCodeProvider
   }
 
   public abstract CodeExpression CreateUnaryOperatorExpression (CodeUnaryOperatorType operatorType, CodeExpression expression);
+
+  /// <summary>
+  /// Use this method to create value types if you want to create constructors.
+  /// </summary>
+  /// <remarks>
+  /// This method allows the VB provider to create a workaround for a CodeDOM bug. See <see cref="CreateStructConstructor"/>.
+  /// </remarks>
+  public virtual CodeTypeDeclaration CreateStructWithConstructors (string name)
+  {
+    CodeTypeDeclaration type = new CodeTypeDeclaration (name);
+    type.IsStruct = true;
+    return type;
+  }
+
+  /// <summary>
+  /// Use this method to create constructors for value types.
+  /// </summary>
+  /// <remarks>
+  /// This method allows the VB provider to create a workaround for a CodeDOM bug. See <see cref="CreateStructWithConstructors"/>.
+  /// </remarks>
+  public virtual CodeConstructor CreateStructConstructor ()
+  {
+    CodeConstructor ctor = new CodeConstructor ();
+    return ctor;
+  }
 }
 
 /// <summary>

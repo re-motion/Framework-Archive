@@ -113,13 +113,13 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
     get { return true; }
   }
 
-  public override void AddOptionCreateXmlDocumentation(CompilerParameters parameters, string xmlFilename)
+  public override void AddOptionCreateXmlDocumentation(CompilerParameters parameters, string xmlFilename, bool missingXmlWarnings)
   {
-    string option = "/doc:" + xmlFilename + " /nowarn:1591";
-    if (parameters.CompilerOptions == null || parameters.CompilerOptions.Length == 0)
-      parameters.CompilerOptions = option;
-    else
-      parameters.CompilerOptions += " " + option;
+    StringBuilder sb = new StringBuilder (parameters.CompilerOptions);
+    sb.Append (" /doc:" + xmlFilename);
+    if (! missingXmlWarnings)
+      sb.Append (" /nowarn:1591");
+    parameters.CompilerOptions = sb.ToString();
   }
 
   public override string GetValidName (string name)
