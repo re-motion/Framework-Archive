@@ -63,6 +63,22 @@ public class UrlUtility
     return path.Replace (@"\", "/");
   }
 
+  /// <summary>
+  /// Formats a URL string with URL encoding. (The <c>format</c> argument is not encoded.)
+  /// </summary>
+  public static string FormatUrl (string format, params object[] args)
+  {
+    if (args == null)
+      return format;
+
+    string[] encodedArgs = new string[args.Length];
+    System.Text.Encoding encoding = HttpContext.Current.Response.ContentEncoding;
+    for (int i = 0; i < args.Length; ++i)
+      encodedArgs[i] = HttpUtility.UrlDecode (args.ToString(), encoding);
+  
+    return string.Format (format, encodedArgs);
+  }
+
 	private UrlUtility()
 	{
 	}
