@@ -7,6 +7,7 @@ using System.Web.UI.HtmlControls;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Diagnostics;
 
 using Rubicon.Findit.Globalization.Globalization;
 
@@ -113,6 +114,8 @@ public sealed class ResourceDispatcher
       string propertyName = (string) entry.Key;
       string propertyValue = (string) entry.Value;
 
+      string line = string.Format("Control: ID={0} {1}={2} ", control.ID, propertyName, propertyValue);
+      Trace.WriteLine(line);
       HtmlControl genericHtmlControl = control as HtmlControl;
       if (genericHtmlControl != null)
       {
