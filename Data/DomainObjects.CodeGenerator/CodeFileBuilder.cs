@@ -16,39 +16,38 @@ public abstract class CodeBuilder : BaseBuilder
 
   #region CSharp 
 
-  //TODO: implement this
- 
-  /* bool
-   * byte
-   * char
-   * decimal
-   * double
-   * float
-   * int
-   * long
-   * sbyte
-   * short
-   * string
-   * uint
-   * ulong
-   * ushort
-   */
+  private static Hashtable s_CtsTypeToCSharpType;
+
+  static CodeBuilder ()
+  {
+    s_CtsTypeToCSharpType = new Hashtable ();
+    s_CtsTypeToCSharpType.Add (typeof(bool), "bool");
+    s_CtsTypeToCSharpType.Add (typeof(byte), "byte");
+    s_CtsTypeToCSharpType.Add (typeof(decimal), "decimal");
+    s_CtsTypeToCSharpType.Add (typeof(double), "double");
+    s_CtsTypeToCSharpType.Add (typeof(float), "float");
+    s_CtsTypeToCSharpType.Add (typeof(int), "int");
+    s_CtsTypeToCSharpType.Add (typeof(long), "long");
+    s_CtsTypeToCSharpType.Add (typeof(short), "short");
+    s_CtsTypeToCSharpType.Add (typeof(string), "string");
+  }
+
   #endregion
 
   #region Tags
 
-  protected readonly string s_commentTag = "%comment%";
-  protected readonly string s_namespaceTag = "%namespace%";
-  protected readonly string s_classnameTag = "%classname%";
-  protected readonly string s_baseClassnameTag = "%baseclassname%";
-  protected readonly string s_accessibilityTag = "%accessibility%";
-  protected readonly string s_returntypeTag = "%returntype%";
-  protected readonly string s_methodnameTag = "%methodname%";
-  protected readonly string s_parameterlistTag = "%parameterlist%";
-  protected readonly string s_baseConstructorTag = "%baseconstructor%";
-  protected readonly string s_enumTag = "%enumname%";
-  protected readonly string s_propertytypeTag = "%propertytype%";
-  protected readonly string s_propertynameTag = "%propertyname%";
+  protected static readonly string s_commentTag = "%comment%";
+  protected static readonly string s_namespaceTag = "%namespace%";
+  protected static readonly string s_classnameTag = "%classname%";
+  protected static readonly string s_baseClassnameTag = "%baseclassname%";
+  protected static readonly string s_accessibilityTag = "%accessibility%";
+  protected static readonly string s_returntypeTag = "%returntype%";
+  protected static readonly string s_methodnameTag = "%methodname%";
+  protected static readonly string s_parameterlistTag = "%parameterlist%";
+  protected static readonly string s_baseConstructorTag = "%baseconstructor%";
+  protected static readonly string s_enumTag = "%enumname%";
+  protected static readonly string s_propertytypeTag = "%propertytype%";
+  protected static readonly string s_propertynameTag = "%propertyname%";
 
   #endregion
 
@@ -138,6 +137,11 @@ public abstract class CodeBuilder : BaseBuilder
   }
   
   // methods and properties
+
+  //TODO: implement this method
+//  protected virtual string TypeToCSharpString (Type type)
+//  {
+//  }
 
   protected override void CloseFile ()
   {
