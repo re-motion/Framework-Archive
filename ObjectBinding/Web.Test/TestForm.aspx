@@ -17,10 +17,13 @@
     <td colSpan=2>Person</td></tr>
   <tr>
     <td></td>
-    <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px">
-<textboxstyle autopostback="True" cssclass="MyCssClass">
+    <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px" required="True">
+<textboxstyle cssclass="MyCssClass" autopostback="True">
 </TextBoxStyle>
-</obc:boctextvalue></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></form>
+</obc:boctextvalue><obc:BocTextValueValidator id="BocTextValueValidator1" runat="server" ControlToValidate="FirstNameField"></obc:BocTextValueValidator></td></tr>
+  <tr>
+    <td></td>
+    <td><obc:BocTextValue id="BirthdayField" runat="server" DataSource="<%# reflectionBusinessObjectDataSource %>" PropertyIdentifier="DateOfBirth"></obc:BocTextValue><obc:BocTextValueValidator id="BocTextValueValidator2" runat="server" ControlToValidate="BirthdayField"></obc:BocTextValueValidator></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></form>
 	
   </body>
 </html>

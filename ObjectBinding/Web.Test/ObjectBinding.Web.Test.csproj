@@ -164,48 +164,48 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestDateTimeValue.aspx"
+                    RelPath = "TestDateTimeValuePage.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestDateTimeValue.aspx.cs"
-                    DependentUpon = "TestDateTimeValue.aspx"
+                    RelPath = "TestDateTimeValuePage.aspx.cs"
+                    DependentUpon = "TestDateTimeValuePage.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestDateTimeValue.aspx.resx"
-                    DependentUpon = "TestDateTimeValue.aspx.cs"
+                    RelPath = "TestDateTimeValuePage.aspx.resx"
+                    DependentUpon = "TestDateTimeValuePage.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestEnumValue.aspx"
+                    RelPath = "TestEnumValuePage.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestEnumValue.aspx.cs"
-                    DependentUpon = "TestEnumValue.aspx"
+                    RelPath = "TestEnumValuePage.aspx.cs"
+                    DependentUpon = "TestEnumValuePage.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestEnumValue.aspx.resx"
-                    DependentUpon = "TestEnumValue.aspx.cs"
+                    RelPath = "TestEnumValuePage.aspx.resx"
+                    DependentUpon = "TestEnumValuePage.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestReferenceValue.aspx"
+                    RelPath = "TestReferenceValuePage.aspx"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "TestReferenceValue.aspx.cs"
-                    DependentUpon = "TestReferenceValue.aspx"
+                    RelPath = "TestReferenceValuePage.aspx.cs"
+                    DependentUpon = "TestReferenceValuePage.aspx"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestReferenceValue.aspx.resx"
-                    DependentUpon = "TestReferenceValue.aspx.cs"
+                    RelPath = "TestReferenceValuePage.aspx.resx"
+                    DependentUpon = "TestReferenceValuePage.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
