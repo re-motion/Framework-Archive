@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <summary> This control can be used to display or edit reference values. </summary>
-/// <include file='doc\include\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
+/// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]

@@ -196,6 +196,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocEnumValue.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocReferenceValue.xml"
                     BuildAction = "Content"
                 />

@@ -14,6 +14,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   This control can be used to display or edit enumeration values.
 /// </summary>
+/// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
