@@ -11,18 +11,25 @@ public class RelationEndPointCollection : CollectionBase
 
   // static members and constants
 
-
   // member fields
+
+  private ClientTransaction _clientTransaction;
 
   // construction and disposing
 
-  public RelationEndPointCollection ()
+  public RelationEndPointCollection (ClientTransaction clientTransaction)
   {
+    Initialize (clientTransaction);
   }
 
-  public RelationEndPointCollection (RelationEndPointCollection collection, bool isCollectionReadOnly)
+  public RelationEndPointCollection (
+      ClientTransaction clientTransaction, 
+      RelationEndPointCollection collection, 
+      bool isCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
+    
+    Initialize (clientTransaction);
 
     foreach (RelationEndPoint endPoint in collection)
     {
@@ -30,6 +37,12 @@ public class RelationEndPointCollection : CollectionBase
     }
 
     this.SetIsReadOnly (isCollectionReadOnly);
+  }
+
+  private void Initialize (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    _clientTransaction = clientTransaction;
   }
 
   // methods and properties
@@ -41,7 +54,7 @@ public class RelationEndPointCollection : CollectionBase
     foreach (RelationEndPoint endPoint in this)
     {
       IRelationEndPointDefinition endPointDefinition = endPoint.OppositeEndPointDefinition;
-      RelationEndPoint oldEndPoint = ClientTransaction.Current.GetRelationEndPoint (domainObject, endPointDefinition);
+      RelationEndPoint oldEndPoint = _clientTransaction.GetRelationEndPoint (domainObject, endPointDefinition);
       RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
 
       if (!endPoint.BeginRelationChange (oldEndPoint, newEndPoint))
@@ -54,6 +67,11 @@ public class RelationEndPointCollection : CollectionBase
   {
     foreach (RelationEndPoint endPoint in this)
       endPoint.EndRelationChange ();    
+  }
+
+  protected ClientTransaction ClientTransaction 
+  {
+    get { return _clientTransaction; }
   }
 
   #region Standard implementation for collections

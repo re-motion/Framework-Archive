@@ -19,54 +19,64 @@ public class ObjectEndPoint : RelationEndPoint, INullable
   // construction and disposing
 
   public ObjectEndPoint (
+      ClientTransaction clientTransaction,
       DomainObject domainObject, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (domainObject.ID, definition, oppositeObjectID)
+      : this (clientTransaction, domainObject.ID, definition, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
+      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (dataContainer.ID, definition, oppositeObjectID)
+      : this (clientTransaction, dataContainer.ID, definition, oppositeObjectID)
   {
   }
 
-  public ObjectEndPoint (
+  public ObjectEndPoint ( 
+      ClientTransaction clientTransaction,
       DomainObject domainObject, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (domainObject.ID, propertyName, oppositeObjectID)
+      : this (clientTransaction, domainObject.ID, propertyName, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
+      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (dataContainer.ID, propertyName, oppositeObjectID)
+      : this (clientTransaction, dataContainer.ID, propertyName, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
+      ClientTransaction clientTransaction,
       ObjectID objectID, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (objectID, definition.PropertyName, oppositeObjectID)
+      : this (clientTransaction, objectID, definition.PropertyName, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
+      ClientTransaction clientTransaction,
       ObjectID objectID, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (new RelationEndPointID (objectID, propertyName), oppositeObjectID)
+      : this (clientTransaction, new RelationEndPointID (objectID, propertyName), oppositeObjectID)
   {
   }
 
-  public ObjectEndPoint (RelationEndPointID id, ObjectID oppositeObjectID) : base (id)
+  public ObjectEndPoint (
+      ClientTransaction clientTransaction, 
+      RelationEndPointID id, 
+      ObjectID oppositeObjectID) 
+      : base (clientTransaction, id)
   {
     _oppositeObjectID = oppositeObjectID;
     _originalOppositeObjectID = oppositeObjectID;
@@ -118,7 +128,10 @@ public class ObjectEndPoint : RelationEndPoint, INullable
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
     if (!IsVirtual)
-      DataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
+    {
+      DataContainer dataContainer = GetDataContainer ();
+      dataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
+    }
   }
 
   public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)

@@ -20,45 +20,67 @@ public abstract class RelationEndPoint : INullable
 
   // member fields
 
+  private ClientTransaction _clientTransaction;
   private IRelationEndPointDefinition _definition;
   private RelationEndPointID _id;
 
   // construction and disposing
 
-  protected RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
-      : this (domainObject.ID, definition)
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      DomainObject domainObject, 
+      IRelationEndPointDefinition definition) 
+      : this (clientTransaction, domainObject.ID, definition)
   {
   }
 
-  protected RelationEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
-      : this (dataContainer.ID, definition.PropertyName) 
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      DataContainer dataContainer, 
+      IRelationEndPointDefinition definition) 
+      : this (clientTransaction, dataContainer.ID, definition.PropertyName) 
   {
   }
 
 
-  protected RelationEndPoint (DomainObject domainObject, string propertyName) 
-      : this (domainObject.ID, propertyName)
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      DomainObject domainObject, 
+      string propertyName) 
+      : this (clientTransaction, domainObject.ID, propertyName)
   {
   }
 
-  protected RelationEndPoint (DataContainer dataContainer, string propertyName)
-      : this (dataContainer.ID, propertyName)
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      DataContainer dataContainer, 
+      string propertyName)
+      : this (clientTransaction, dataContainer.ID, propertyName)
   {
   }
 
-  protected RelationEndPoint (ObjectID objectID, IRelationEndPointDefinition definition) 
-      : this (objectID, definition.PropertyName) 
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      ObjectID objectID, 
+      IRelationEndPointDefinition definition) 
+      : this (clientTransaction, objectID, definition.PropertyName) 
   {
   }
 
-  protected RelationEndPoint (ObjectID objectID, string propertyName) : this (new RelationEndPointID (objectID, propertyName))
+  protected RelationEndPoint (
+      ClientTransaction clientTransaction,
+      ObjectID objectID, 
+      string propertyName) 
+      : this (clientTransaction, new RelationEndPointID (objectID, propertyName))
   {
   }
   
-  protected RelationEndPoint (RelationEndPointID id)
+  protected RelationEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
   {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
     ArgumentUtility.CheckNotNull ("id", id);
 
+    _clientTransaction = clientTransaction;
     _id = id;
     _definition = _id.Definition;
   }
@@ -88,27 +110,27 @@ public abstract class RelationEndPoint : INullable
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return DomainObject.BeginRelationChange (
-        PropertyName, oldEndPoint.DomainObject, newEndPoint.DomainObject);
+    DomainObject domainObject = GetDomainObject ();
+    return domainObject.BeginRelationChange (
+        PropertyName, oldEndPoint.GetDomainObject (), newEndPoint.GetDomainObject ());
   }
 
   public virtual void EndRelationChange ()
   {
-    DomainObject.EndRelationChange (PropertyName);
+    DomainObject domainObject = GetDomainObject (); 
+    domainObject.EndRelationChange (PropertyName);
   }
 
-  public virtual DomainObject DomainObject
+  public virtual DomainObject GetDomainObject ()
   {
-    get 
-    {
-      // TODO: This property should return a deleted domainObject too!
-      return ClientTransaction.Current.GetObject (ObjectID); 
-    }
+    // TODO: This method should return a deleted domainObject too!
+    return _clientTransaction.GetObject (ObjectID); 
   }
 
-  public virtual DataContainer DataContainer
+  public virtual DataContainer GetDataContainer ()
   {
-    get { return DomainObject.DataContainer; }
+    DomainObject domainObject = GetDomainObject ();
+    return domainObject.DataContainer;
   }
 
   public virtual ObjectID ObjectID

@@ -14,16 +14,35 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
   // construction and disposing
 
-  public RelationEndPointMap ()
+  public RelationEndPointMap (ClientTransaction clientTransaction) : base (clientTransaction)
   {
   }
 
-  public RelationEndPointMap (RelationEndPointCollection collection, bool isCollectionReadOnly) 
-      : base (collection, isCollectionReadOnly)
+  public RelationEndPointMap (
+      ClientTransaction clientTransaction,
+      RelationEndPointCollection collection, 
+      bool isCollectionReadOnly) 
+      : base (clientTransaction, collection, isCollectionReadOnly)
   {
   }
 
   // methods and properties
+
+  public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
+  {
+    ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    Add (new ObjectEndPoint (ClientTransaction, endPointID, oppositeObjectID));
+  }
+
+  public void RegisterCollectionEndPoint (RelationEndPointID endPointID, DomainObjectCollection domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+    CollectionEndPoint collectionEndPoint = new CollectionEndPoint (ClientTransaction, endPointID, domainObjects);
+    collectionEndPoint.ChangeDelegate = this;
+    Add (collectionEndPoint);
+  }
 
   public override void Add (RelationEndPoint endPoint)
   {
@@ -49,13 +68,19 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
           if (classDefinition.IsRelationEndPoint (endPointDefinition))
           {
             ObjectID oppositeObjectID = dataContainer.GetObjectID (endPointDefinition.PropertyName);
-            ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer, endPointDefinition, oppositeObjectID);
+            
+            ObjectEndPoint endPoint = new ObjectEndPoint (
+                ClientTransaction, dataContainer, endPointDefinition, oppositeObjectID);
+            
             Add (endPoint);
 
             if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.One && endPoint.OppositeObjectID != null)
             {
               ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-                  endPoint.OppositeObjectID, endPoint.OppositeEndPointDefinition, endPoint.ObjectID);
+                  ClientTransaction, 
+                  endPoint.OppositeObjectID, 
+                  endPoint.OppositeEndPointDefinition, 
+                  endPoint.ObjectID);
 
               Add (oppositeEndPoint);
             }
@@ -69,19 +94,19 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection (ClientTransaction);
 
     foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
     {
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {
-        DomainObject oppositeDomainObject = ClientTransaction.Current.GetRelatedObject (endPointID);
+        DomainObject oppositeDomainObject = ClientTransaction.GetRelatedObject (endPointID);
         if (oppositeDomainObject != null)
         {
           if (endPointID.OppositeEndPointDefinition.Cardinality == CardinalityType.One)
           {
             ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-                oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
+                ClientTransaction, oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
 
             oppositeEndPoints.Add (oppositeEndPoint);    
           }
@@ -90,9 +115,10 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
             RelationEndPointID oppositeEndPointID = new RelationEndPointID (
                 oppositeDomainObject.ID, endPointID.OppositeEndPointDefinition); 
 
-            DomainObjectCollection domainObjects = ClientTransaction.Current.GetRelatedObjects (oppositeEndPointID);
+            DomainObjectCollection domainObjects = ClientTransaction.GetRelatedObjects (oppositeEndPointID);
             
             CollectionEndPoint oppositeCollectionEndPoint = new CollectionEndPoint (
+                ClientTransaction, 
                 oppositeDomainObject, 
                 (VirtualRelationEndPointDefinition) oppositeEndPointID.Definition, 
                 domainObjects);
@@ -103,10 +129,10 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
       }
       else
       {
-        foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (endPointID))
+        foreach (DomainObject oppositeDomainObject in ClientTransaction.GetRelatedObjects (endPointID))
         {
           ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-              oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
+              ClientTransaction, oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
 
           oppositeEndPoints.Add (oppositeEndPoint);
         }
@@ -129,8 +155,8 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
     if (!newRelatedEndPoint.IsNull)
     {
-      ChangeLink (relationEndPoint.ID, newRelatedEndPoint.DomainObject);
-      ChangeLink (newRelatedEndPoint.ID, relationEndPoint.DomainObject);
+      ChangeLink (relationEndPoint.ID, newRelatedEndPoint.GetDomainObject ());
+      ChangeLink (newRelatedEndPoint.ID, relationEndPoint.GetDomainObject ());
     }
     else
     {
@@ -160,22 +186,22 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
   void ICollectionEndPointChangeDelegate.PerformAdd  (CollectionEndPoint endPoint, DomainObject domainObject)
   {
-    ObjectEndPoint addingEndPoint = (ObjectEndPoint) ClientTransaction.Current.GetRelationEndPoint (
+    ObjectEndPoint addingEndPoint = (ObjectEndPoint) ClientTransaction.GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
 
-    RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) ClientTransaction.Current.GetRelationEndPoint (
-        ClientTransaction.Current.GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
+    RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) ClientTransaction.GetRelationEndPoint (
+        ClientTransaction.GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
 
     DomainObjectCollection oldCollection = null;
     if (!oldRelatedEndPoint.IsNull)
-      oldCollection = ClientTransaction.Current.GetRelatedObjects (oldRelatedEndPoint.ID);
+      oldCollection = ClientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
     
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
-        && oldRelatedEndPoint.BeginRelationChange (ClientTransaction.Current.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
+        && oldRelatedEndPoint.BeginRelationChange (ClientTransaction.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
         && endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint))
     {
       addingEndPoint.SetOppositeEndPoint (endPoint);
-      ChangeLink (addingEndPoint.ID, endPoint.DomainObject);
+      ChangeLink (addingEndPoint.ID, endPoint.GetDomainObject ());
       endPoint.OppositeDomainObjects.PerformAdd (domainObject);
 
       if (oldCollection != null)
@@ -189,10 +215,10 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
 
   void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
   {
-    ObjectEndPoint removingEndPoint = (ObjectEndPoint) ClientTransaction.Current.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
+    ObjectEndPoint removingEndPoint = (ObjectEndPoint) ClientTransaction.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
 
     if (removingEndPoint.BeginRelationChange (endPoint)
-        && endPoint.BeginRelationChange (ClientTransaction.Current.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
+        && endPoint.BeginRelationChange (ClientTransaction.GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
     {
       removingEndPoint.SetOppositeEndPoint (RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition));
       ChangeLink (removingEndPoint.ID, null);
