@@ -297,12 +297,6 @@ public class PropertyValue
     return _definition.PropertyName.GetHashCode () ^ _value.GetHashCode () ^ _originalValue.GetHashCode ();
   }
 
-//TODO: should be internal, document it if it stays public or protected
-  public void Discard ()
-  {
-    _isDiscarded = true;
-  }
-
   /// <summary>
   /// Raises the <see cref="Changing"/> event.
   /// </summary>
@@ -342,6 +336,11 @@ public class PropertyValue
       CheckValue (id, _definition);
       _value = id;
     }
+  }
+
+  internal void Discard ()
+  {
+    _isDiscarded = true;
   }
 
   private void CheckValue (object value, PropertyDefinition definition)
