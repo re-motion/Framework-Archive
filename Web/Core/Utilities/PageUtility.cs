@@ -55,6 +55,31 @@ public class PageUtility
     page.Session[GetUniqueKey (page, key)] = null;
   }
 
+  public static object GetSessionValue (Page page, string token, string key, bool required)
+  {
+    object o = page.Session[GetUniqueKey (token, key)];
+    
+    if (required && o == null)
+    {
+      if (page.Session.IsNewSession)
+        throw new SessionTimeoutException ();
+      else
+        throw new SessionVariableNotFound (key);
+    }
+
+    return o;
+  }
+
+  public static void SetSessionValue (Page page, string token, string key, object sessionValue)
+  {
+    page.Session[GetUniqueKey (token, key)] = sessionValue;
+  }
+
+  public static void ClearSessionValue (Page page, string token, string key)
+  {
+    page.Session[GetUniqueKey (token, key)] = null;
+  }
+
   /// <summary>
   /// converts a given key value to a page specific value
   /// </summary>
@@ -68,6 +93,11 @@ public class PageUtility
       throw new NoPageTokenException (page);
 
     return pageToken + ":" + key;
+  }
+
+  public static string GetUniqueKey (string token, string key)
+  {
+    return token + ":" + key;
   }
 
   /// <summary>
@@ -135,6 +165,23 @@ public class PageUtility
     return AddUrlParameter (url, "cleanupToken", GetToken(page));
   }
 
+  public static string AddParentToken (Page page, string url)
+  {
+    return AddUrlParameter (url, "parentToken", GetToken(page));
+  }
+
+  public static string AddActiveTabParameters (Page sourcePage, string url)
+  {
+		string selectedTab = sourcePage.Request.QueryString["navSelectedTab"];
+    if (selectedTab != null)
+      url = AddUrlParameter (url, "navSelectedTab", selectedTab);
+
+		string selectedMenu = sourcePage.Request.QueryString["navSelectedMenu"];
+    if (selectedMenu != null)
+      url = AddUrlParameter (url, "navSelectedMenu", selectedMenu);
+    return url;
+  }
+  
   public static string AddPageToken (string url)
   {
     return AddUrlParameter (url, "pageToken", GetUniqueToken());
@@ -149,6 +196,11 @@ public class PageUtility
   public static string GetToken (Page page)
   {
     return page.Request.QueryString["pageToken"];
+  }
+
+  public static string GetParentToken (Page page)
+  {
+    return page.Request.QueryString["parentToken"];
   }
 
   /// <summary>
