@@ -4,7 +4,8 @@
 - BocList
   * OptionsMenu und ListMenu unterstützen WxeCommands
   * OptionsMenu und ListMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
-
+  * BugFix: Sortieren hat nur bedingt auf Änderungen der Sortierreihenfolge reagiert.
+  
 - BocReferenceValue
   * OptionsMenu integriert
   * OptionsMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
