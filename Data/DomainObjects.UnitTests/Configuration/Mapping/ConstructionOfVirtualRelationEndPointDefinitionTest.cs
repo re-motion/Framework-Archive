@@ -79,5 +79,26 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.Many, typeof (Company));
   }
+
+  [Test]
+  public void InitializeWithSortExpression ()
+  {
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+
+    VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
+        customerDefinition, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
+
+    Assert.AreEqual ("OrderNumber desc", endPointDefinition.SortExpression);    
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Property 'Orders' of class 'Customer' must not specify a SortExpression, because cardinality is equal to 'one'.")]
+  public void InitializeWithSortExpressionAndCardinalityOfOne ()
+  {
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+
+    VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
+        customerDefinition, "Orders", false, CardinalityType.One, typeof (Order), "OrderNumber desc");
+  }
 }
 }
