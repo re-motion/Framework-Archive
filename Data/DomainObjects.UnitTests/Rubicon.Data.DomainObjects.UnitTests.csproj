@@ -328,7 +328,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\RegisterInRelationEndPointCollectionTest.cs"
+                    RelPath = "DataManagement\RegisterInRelationEndPointMapTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
