@@ -45,11 +45,19 @@ public class DataManager
 
   public DomainObjectCollection GetChangedDomainObjects ()
   {
+    return GetChangedDomainObjects (true);
+  }
+  
+  public DomainObjectCollection GetChangedDomainObjects (bool includeDeleted)
+  {
     DomainObjectCollection changedDomainObjects = new DomainObjectCollection ();
 
     foreach (DataContainer dataContainer in _dataContainerMap)
     {
-      if (dataContainer.DomainObject.State != StateType.Unchanged)
+      if (dataContainer.DomainObject.State == StateType.New || dataContainer.DomainObject.State == StateType.Changed)
+        changedDomainObjects.Add (dataContainer.DomainObject);
+
+      if (includeDeleted && dataContainer.DomainObject.State == StateType.Deleted)
         changedDomainObjects.Add (dataContainer.DomainObject);
     }
 
