@@ -441,6 +441,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocReferenceValue.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\BocReferenceValue.js"
                     SubType = "Code"
                     BuildAction = "Content"
