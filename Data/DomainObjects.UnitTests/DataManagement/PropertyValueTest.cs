@@ -242,7 +242,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (ValueTooLongException))]
   public void MaxLengthCheck ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (string), 10);
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", 10);
     PropertyValue propertyValue = new PropertyValue (definition, "12345");
     propertyValue.Value = "12345678901";
   }
@@ -251,7 +251,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (ValueTooLongException))]
   public void MaxLengthCheckInConstructor ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (string), 10);
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", 10);
     PropertyValue propertyValue = new PropertyValue (definition, "12345678901");
   }
   
@@ -259,7 +259,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (InvalidTypeException))]
   public void TypeCheckInConstructor ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (string), new NaInt32 (10));
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", new NaInt32 (10));
     PropertyValue propertyValue = new PropertyValue (definition, 123);    
   }
 
@@ -267,7 +267,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (InvalidTypeException))]
   public void TypeCheck ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (string), new NaInt32 (10));
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", new NaInt32 (10));
     PropertyValue propertyValue = new PropertyValue (definition, "123");
     propertyValue.Value = 123;
   }
@@ -276,7 +276,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
   public void SetNotNullableStringToNull ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", typeof (string), false, new NaInt32 (10));
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", false, new NaInt32 (10));
     PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
     propertyValue.Value = null;
@@ -284,32 +284,32 @@ public class PropertyValueTest
 
   private PropertyValue CreateIntPropertyValue (string name, int intValue)
   {
-    return CreatePropertyValue (name, typeof (int), false, intValue);
+    return CreatePropertyValue (name, "int32", false, intValue);
   }
 
   private PropertyValue CreateStringPropertyValue (string name, string stringValue)
   {
     bool isNullable = (stringValue == null) ? true : false;
-    return CreatePropertyValue (name, typeof (string), isNullable, stringValue);
+    return CreatePropertyValue (name, "string", isNullable, stringValue);
   }
 
   private PropertyDefinition CreateIntPropertyDefinition (string name)
   {
-    return CreatePropertyDefinition (name, typeof (int), false);
+    return CreatePropertyDefinition (name, "int32", false);
   }
 
-  private PropertyDefinition CreatePropertyDefinition (string name, Type propertyType, bool isNullable)
+  private PropertyDefinition CreatePropertyDefinition (string name, string mappingType, bool isNullable)
   {
     NaInt32 maxLength = NaInt32.Null;
-    if (propertyType == typeof (string))
+    if (mappingType == "string")
       maxLength = new NaInt32 (100);
 
-    return new PropertyDefinition (name, name, propertyType, isNullable, maxLength);
+    return new PropertyDefinition (name, name, mappingType, isNullable, maxLength);
   }
 
-  private PropertyValue CreatePropertyValue (string name, Type propertyType, bool isNullable, object value)
+  private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
   {
-    return new PropertyValue (CreatePropertyDefinition (name, propertyType, isNullable), value);
+    return new PropertyValue (CreatePropertyDefinition (name, mappingType, isNullable), value);
   }
 }
 }

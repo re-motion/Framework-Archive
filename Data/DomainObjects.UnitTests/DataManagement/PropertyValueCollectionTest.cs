@@ -27,9 +27,9 @@ public class PropertyValueCollectionTest
   [Test]
   public void Events ()
   {
-    PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", typeof (int), 42);
-    PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", typeof (string), "Arthur Dent");
-    PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", typeof (string), true, null);
+    PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
+    PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
+    PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
     PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
 
     propertyValueCollection.Add (propertyValue1);
@@ -50,9 +50,9 @@ public class PropertyValueCollectionTest
   [Test]
   public void CancelEvents ()
   {
-    PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", typeof (int), 42);
-    PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", typeof (string), "Arthur Dent");
-    PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", typeof (string), true, null);
+    PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
+    PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
+    PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
     PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
 
     propertyValueCollection.Add (propertyValue1);
@@ -75,8 +75,8 @@ public class PropertyValueCollectionTest
   public void NonExistingPropertyName ()
   {
     PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 1", typeof (int), 42));
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 2", typeof (int), 43));
+    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 1", "int32", 42));
+    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 2", "int32", 43));
 
     PropertyValue propertyValue = propertyValueCollection["DoesNotExist"];
   }
@@ -86,14 +86,14 @@ public class PropertyValueCollectionTest
   public void DuplicatePropertyNames ()
   {
     PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", typeof (int), 42));
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", typeof (int), 43));
+    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", "int32", 42));
+    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", "int32", 43));
   }
 
   [Test]
   public void DoNotOverrideCancelFlagOfPreviousEvents ()
   {
-    PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
+    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
     PropertyValueEventReceiver valueEventReceiver = new PropertyValueEventReceiver (value, true);
 
     PropertyValueCollection collection = new PropertyValueCollection ();
@@ -108,18 +108,18 @@ public class PropertyValueCollectionTest
     Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
   }
 
-  private PropertyValue CreatePropertyValue (string name, Type propertyType, object value)
+  private PropertyValue CreatePropertyValue (string name, string mappingType, object value)
   {
-    return CreatePropertyValue (name, propertyType, false, value);
+    return CreatePropertyValue (name, mappingType, false, value);
   }
 
-  private PropertyValue CreatePropertyValue (string name, Type propertyType, bool isNullable, object value)
+  private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
   {
     NaInt32 maxLength = NaInt32.Null;
-    if (propertyType == typeof (string))
+    if (mappingType == "string")
       maxLength = new NaInt32 (100);
 
-    PropertyDefinition definition = new PropertyDefinition (name, name, propertyType, isNullable, maxLength);
+    PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, isNullable, maxLength);
     return new PropertyValue (definition, value);
   }
 
@@ -127,7 +127,7 @@ public class PropertyValueCollectionTest
   public void ContainsPropertyValue ()
   {
     PropertyValueCollection collection = new PropertyValueCollection ();
-    PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
+    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
 
     collection.Add (value);
     
