@@ -48,4 +48,13 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.AdditionalColumnsTitle">
         <value>View</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsErrorMessage">
+        <value>Errors have been found in the row currently being edited.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldTitle">
+        <value>Input required in the row currently being edited</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldIcon">
+        <value>*</value>
+    </data>
 </root>
