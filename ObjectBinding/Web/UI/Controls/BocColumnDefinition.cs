@@ -167,11 +167,11 @@ public abstract class BocColumnDefinition
   /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
   /// <remarks> 
   ///   Does not persist <see cref="BocColumnCommand"/> objects with a 
-  ///   <see cref="ItemCommand.Type"/> set to <see cref="ItemCommandType.None"/>.
+  ///   <c>Command.Type</c> set to <see cref="CommandType.None"/>.
   /// </remarks>
   /// <returns> 
   ///   <see langref="true"/> if the <see cref="BocColumnCommand"/> object's
-  ///   <see cref="ItemCommand.Type"/> is set to <see cref="ItemCommandType.None"/>.
+  ///   <c>Command.Type</c> is set to <see cref="CommandType.None"/>.
   /// </returns>
   private bool ShouldSerializeCommand()
   {
@@ -187,7 +187,7 @@ public abstract class BocColumnDefinition
   /// <summary> Sets the <see cref="Command"/> to it's default value. </summary>
   /// <remarks> 
   ///   The defualt value is a <see cref="BocColumnCommand"/> object with a 
-  ///   <see cref="ItemCommand.Type"/> set to <see cref="ItemCommandType.None"/>.
+  ///   <c>Command.Type</c> set to <see cref="CommandType.None"/>.
   /// </remarks>
   private void ResetCommand()
   {
