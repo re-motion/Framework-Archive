@@ -10,6 +10,14 @@ public class RelationEndPoint : INullable
 
   // static members and constants
 
+  public static RelationEndPoint CreateNullRelationEndPoint (IRelationEndPointDefinition definition)
+  {
+    if (definition.Cardinality == CardinalityType.One)
+      return new NullObjectEndPoint (definition);
+    else
+      return new NullCollectionEndPoint (definition);
+  }
+
   // member fields
 
   private IRelationEndPointDefinition _definition;
@@ -51,9 +59,8 @@ public class RelationEndPoint : INullable
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (id.ObjectID.ClassID);
-    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (id.PropertyName);
     _id = id;
+    _definition = _id.Definition;
   }
 
   protected RelationEndPoint (IRelationEndPointDefinition definition)
@@ -66,7 +73,7 @@ public class RelationEndPoint : INullable
 
   public bool BeginRelationChange (RelationEndPoint oldEndPoint)
   {
-    return BeginRelationChange (oldEndPoint, new NullRelationEndPoint (oldEndPoint.Definition));    
+    return BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    
   }
 
   public virtual bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
@@ -81,14 +88,6 @@ public class RelationEndPoint : INullable
   public virtual void EndRelationChange ()
   {
     DomainObject.EndRelationChange (PropertyName);
-  }
-
-  public virtual void SetOppositeEndPoint (RelationEndPoint endPoint)
-  {
-    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-
-    if (!IsVirtual)
-      DataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
   }
 
   public IRelationEndPointDefinition Definition 

@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class ObjectEndPoint : RelationEndPoint
+public class ObjectEndPoint : RelationEndPoint, INullable
 {
   // types
 
@@ -72,6 +72,10 @@ public class ObjectEndPoint : RelationEndPoint
     _originalOppositeObjectID = oppositeObjectID;
   }
 
+  protected ObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
+  {
+  }
+
   // methods and properties
 
   public override void Commit ()
@@ -107,6 +111,14 @@ public class ObjectEndPoint : RelationEndPoint
       throw CreateMandatoryRelationNotSetException (
           "Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID);
     }    
+  }
+
+  public virtual void SetOppositeEndPoint (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+
+    if (!IsVirtual)
+      DataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
   }
 
   public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)

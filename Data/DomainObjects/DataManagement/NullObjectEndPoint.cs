@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class NullRelationEndPoint : RelationEndPoint
+public class NullObjectEndPoint : ObjectEndPoint
 {
   // types
 
@@ -14,7 +14,7 @@ public class NullRelationEndPoint : RelationEndPoint
 
   // construction and disposing
 
-  public NullRelationEndPoint (IRelationEndPointDefinition definition) : base (definition)
+  public NullObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
   }
 
@@ -34,6 +34,25 @@ public class NullRelationEndPoint : RelationEndPoint
   public override void SetOppositeEndPoint (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+  }
+
+  public override void CheckMandatory ()
+  {
+  }
+
+  public override void Commit ()
+  {
+    throw new InvalidOperationException ("Commit cannot be called on a NullObjectEndPoint.");    
+  }
+
+  public override void Rollback ()
+  {
+    throw new InvalidOperationException ("Rollback cannot be called on a NullObjectEndPoint.");
+  }
+
+  public override bool HasChanged
+  {
+    get { return false; }
   }
 
   public override DataContainer DataContainer

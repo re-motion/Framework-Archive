@@ -1,5 +1,7 @@
 using System;
 
+using Rubicon.Data.DomainObjects.Configuration.Mapping;
+
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class RelationEndPointID
@@ -10,16 +12,25 @@ public class RelationEndPointID
 
   // member fields
 
+  private ClassDefinition _classDefinition;
   private string _propertyName;
   private ObjectID _objectID;
 
   // construction and disposing
+
+  public RelationEndPointID (ObjectID objectID, IRelationEndPointDefinition definition) 
+      : this (objectID, definition.PropertyName)
+  {
+  }
 
   public RelationEndPointID (ObjectID objectID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
+    // TODO: Check if objectID.ClassID and propertyName match!
+
+    _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (objectID.ClassID);
     _objectID = objectID;
     _propertyName = propertyName;
   }
@@ -46,6 +57,11 @@ public class RelationEndPointID
     return string.Format ("{0}/{1}", _objectID.ToString (), _propertyName);
   }
 
+  public ClassDefinition ClassDefinition
+  {
+    get { return _classDefinition; }
+  }
+
   public string PropertyName
   {
     get { return _propertyName; }
@@ -54,6 +70,16 @@ public class RelationEndPointID
   public ObjectID ObjectID
   {
     get { return _objectID; }
+  }
+
+  public IRelationEndPointDefinition Definition
+  {
+    get { return _classDefinition.GetMandatoryRelationEndPointDefinition (_propertyName); }
+  }
+
+  public IRelationEndPointDefinition OppositeEndPointDefinition
+  {
+    get { return _classDefinition.GetOppositeEndPointDefinition (_propertyName); }
   }
 }
 }
