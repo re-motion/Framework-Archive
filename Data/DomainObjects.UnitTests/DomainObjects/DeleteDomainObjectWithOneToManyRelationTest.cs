@@ -56,7 +56,7 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
       new RelationChangeState (_subordinate2, "Supervisor", null, null, "6. Relation changed of subordinate2")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -71,7 +71,7 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
       new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -87,7 +87,7 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
       new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -120,7 +120,7 @@ public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBase
       new ObjectDeletionState (_supervisor, "2. Deleted of supervisor"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]

@@ -52,7 +52,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new RelationChangeState (_order, "OrderTicket", null, null, "4. Relation changed event of order")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -71,7 +71,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new ObjectDeletionState (computer, "2. Deleted of computer")
     };
 
-    eventReceiver.Compare (expectedStates); 
+    eventReceiver.Check (expectedStates); 
   }
 
   [Test]
@@ -86,7 +86,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -102,7 +102,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
 
   }
 
@@ -143,7 +143,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new ObjectDeletionState (_orderTicket, "2. Deleted event of orderTicket"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -160,7 +160,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new ObjectDeletionState (_order, "2. Deleted event of order"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]

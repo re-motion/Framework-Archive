@@ -54,7 +54,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
       new RelationChangeState (_order, "OrderItems", null, null, "6. Relation changed event of order"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -69,7 +69,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
       new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -85,7 +85,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
       new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
 
   }
 
@@ -103,7 +103,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
       new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order")
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
 
   }
 
@@ -135,7 +135,7 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
       new ObjectDeletionState (_orderItem, "2. Deleted event of orderItem"),
     };
 
-    _eventReceiver.Compare (expectedStates);
+    _eventReceiver.Check (expectedStates);
   }
 
   [Test]
