@@ -119,21 +119,36 @@ public class RelationDefinitionLoader
 
   private Type GetTypeFromPropertyNode (XmlNode propertyNode, CardinalityType cardinality, string relationDefinitionID)
   {
-    XmlNode typeNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager);
+    XmlNode typeNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:collectionType"), _namespaceManager);
+
     if (typeNode != null)
-      return LoaderUtility.GetTypeFromNode (typeNode);
-
-    if (cardinality == CardinalityType.One)
     {
-      string oppositeClassID = 
-          propertyNode.SelectSingleNode (FormatXPath ("../../{0}:endPoint/{0}:class/@id"), _namespaceManager).InnerText;
-
-      string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class[@id = \"" + oppositeClassID + "\"]/{0}:type");
-      return LoaderUtility.GetTypeFromNode (propertyNode, FormatXPath (xPath), _namespaceManager);
+      if (cardinality == CardinalityType.One)
+      {
+        throw CreateMappingException (
+            "Virtual end point of relation '{0}' must not contain element 'collectionType'."
+                + " Element 'collectionType' is only valid for virtual end points with cardinality equal 'many'.",
+            relationDefinitionID);
+      }
+      else
+      {
+        return LoaderUtility.GetTypeFromNode (typeNode);
+      }
     }
     else
     {
-      return typeof (DomainObjectCollection);
+      if (cardinality == CardinalityType.One)
+      {
+        string oppositeClassID = 
+            propertyNode.SelectSingleNode (FormatXPath ("../../{0}:endPoint/{0}:class/@id"), _namespaceManager).InnerText;
+
+        string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class[@id = \"" + oppositeClassID + "\"]/{0}:type");
+        return LoaderUtility.GetTypeFromNode (propertyNode, FormatXPath (xPath), _namespaceManager);
+      }
+      else
+      {
+        return typeof (DomainObjectCollection);
+      }
     }
   }
 

@@ -98,7 +98,7 @@
           <xs:element name="property">
             <xs:complexType>
               <xs:sequence>
-                <xs:element name="type" type="t:dotNetType" minOccurs="0" />
+                <xs:element name="collectionType" type="t:dotNetType" minOccurs="0" />
               </xs:sequence>
               <xs:attribute name="name" type="t:requiredStringType" use="required" /> 	  	              
             </xs:complexType>
