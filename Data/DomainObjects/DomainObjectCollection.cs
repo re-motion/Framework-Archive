@@ -155,16 +155,16 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// given <i>collection</i>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
-  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
-  public DomainObjectCollection (DomainObjectCollection collection, bool isCollectionReadOnly)
+  public DomainObjectCollection (DomainObjectCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
     foreach (DomainObject domainObject in collection)
       Add (domainObject);
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
     _requiredItemType = collection.RequiredItemType;    
   }
 
@@ -172,32 +172,32 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given array of <see cref="DomainObject"/>s.
   /// </summary>
   /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy.</param>
-  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
-  public DomainObjectCollection (DomainObject[] domainObjects, bool isCollectionReadOnly)
+  public DomainObjectCollection (DomainObject[] domainObjects, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
     foreach (DomainObject domainObject in domainObjects)
       Add (domainObject);
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   /// <summary>
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a <see cref="DataManagement.DataContainerCollection"/>s.
   /// </summary>
   /// <param name="dataContainers">The <see cref="DataManagement.DataContainerCollection"/> to copy.</param>
-  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <param name="makeCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is a null reference.</exception>
-  public DomainObjectCollection (DataContainerCollection dataContainers, bool isCollectionReadOnly)
+  public DomainObjectCollection (DataContainerCollection dataContainers, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     foreach (DataContainer dataContainer in dataContainers)
       Add (dataContainer.DomainObject);
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
