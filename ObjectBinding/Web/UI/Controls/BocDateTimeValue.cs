@@ -31,11 +31,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> String inserted between the date and the time text boxes. </summary>
   private const string c_dateTimeSpacer = "&nbsp;";
   /// <summary> String inserted before the date pciker button. </summary>
-  private const string c_imageButtonSpacer = "&nbsp;";
+  private const string c_datePickerImageSpacer = "&nbsp;";
   /// <summary> String inserted between the date and the time text boxes during design mode. </summary>
   private const string c_designModeDateTimeSpacer = " ";
   /// <summary> String inserted before the date pciker button during design mode. </summary>
-  private const string c_designModeImageButtonSpacer = " ";
+  private const string c_designModeDatePickerImageSpacer = " ";
 
   const int c_defaultDateTextBoxWidthInPoints = 75;
   const int c_defaultTimeTextBoxWidthInPoints = 50;
@@ -74,8 +74,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
 
-  /// <summary> The <see cref="ImageButton"/> used in edit mode to enter the date using a date picker. </summary>
-  private ImageButton _imageButton = null;
+  /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
+  private Image _datePickerImage = null;
 
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
@@ -116,8 +116,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="ImageButton"/>. </summary>
-  private Style _imageButtonStyle = new Style();
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
+  private Style _datePickerImageStyle = new Style();
 
   /// <summary> Flag that determines  whether to show the seconds.</summary>
   private bool _showSeconds = false;
@@ -148,22 +148,23 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBox = new TextBox();
     _timeTextBox = new TextBox();
     _label = new Label();
-    _imageButton = new ImageButton();
+    _datePickerImage = new Image();
 
     _dateTextBox.ID = this.ID + "_DateTextBox";
     _dateTextBox.EnableViewState = false;
-    Controls.Add (_dateTextBox);
 
-    _imageButton.ID = this.ID + "_ImageButton";
-    _imageButton.EnableViewState = false;
-    Controls.Add (_imageButton);
+    _datePickerImage.ID = this.ID + "_DatePickerImage";
+    _datePickerImage.EnableViewState = false;
 
     _timeTextBox.ID = this.ID + "_TimeTextBox";
     _timeTextBox.EnableViewState = false;
-    Controls.Add (_timeTextBox);
 
     _label.ID = this.ID + "_Label";
     _label.EnableViewState = false;
+
+    Controls.Add (_dateTextBox);
+    Controls.Add (_datePickerImage);
+    Controls.Add (_timeTextBox);
     Controls.Add (_label);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
@@ -233,9 +234,20 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnPreRender (e);
 
+    string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+        this, 
+        this.GetType(),
+        ResourceType.Html,
+        c_datePickerScriptUrl);
+
+    Page.RegisterClientScriptBlock(typeof(BocDateTimeValue).FullName, string.Format (c_scriptBlock, scriptUrl));
+
     //  First call
     EnsureChildControlsInitialized ();
   }
+  private const string c_datePickerScriptUrl = "DatePicker.js";
+  private const string c_scriptBlock = 
+    "<script language=\"Javascript\" type=\"text/javascript\" src=\"{0}\"></script>\r\n";
 
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
@@ -251,6 +263,121 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     EnsureChildControlsInitialized ();
 
     base.Render (writer);
+  }
+
+  bool _renderClientScript = true;
+  bool _renderPopupScript = true;
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    // We do not call the base class AddAttributesToRender
+    // because, in the DatePicker, the attributes and styles applied to the
+    // control affect the contained TextBox. The DatePicker itself renders
+    // out as a <span>, which only contains only the ID attribute and any
+    // attributes needed for the pop-up calendar and client script.
+
+    writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+
+    if (_renderClientScript) 
+    {
+      if (_renderPopupScript) 
+      {
+        string calendarDhtmlUrl = ResourceUrlResolver.GetResourceUrl (
+            this, 
+            this.GetType(),
+            ResourceType.Html,
+            "Calendar.htc");
+        calendarDhtmlUrl = "Html/Calendar.htc";
+          writer.AddAttribute("dp_htcURL", calendarDhtmlUrl, false);
+      }
+//      if (AutoPostBack) {
+//          writer.AddAttribute("dp_autoPostBack", "true", false);
+//      }
+//      if (__calendarStyle != null) {
+//          Unit u = _calendarStyle.Width;
+          Unit u = Unit.Pixel (200);
+          if (!u.IsEmpty) {
+              writer.AddAttribute("dp_width", u.ToString(CultureInfo.InvariantCulture));
+          }
+//          u = _calendarStyle.Height;
+          if (!u.IsEmpty) {
+              writer.AddAttribute("dp_height", u.ToString(CultureInfo.InvariantCulture));
+          }
+//          string s = GetCssFromStyle(_calendarStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_calendarStyle", s, false);
+//          }
+//      }
+//      if (_titleStyle != null) {
+//          string s = GetCssFromStyle(_titleStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_titleStyle", s, false);
+//          }
+//      }
+//      if (_dayHeaderStyle != null) {
+//          string s = GetCssFromStyle(_dayHeaderStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_dayHeaderStyle", s, false);
+//          }
+//      }
+//      if (_dayStyle != null) {
+//          string s = GetCssFromStyle(_dayStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_dayStyle", s, false);
+//          }
+//      }
+//      if (_otherMonthDayStyle != null) {
+//          string s = GetCssFromStyle(_otherMonthDayStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_otherMonthDayStyle", s, false);
+//          }
+//      }
+//      if (_todayDayStyle != null) {
+//          string s = GetCssFromStyle(_todayDayStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_todayDayStyle", s, false);
+//          }
+//      }
+//      if (_selectedDayStyle != null) {
+//          string s = GetCssFromStyle(_selectedDayStyle);
+//          if (s.Length != 0) {
+//              writer.AddAttribute("dp_selectedDayStyle", s, false);
+//          }
+//      }
+    }
+  }
+
+  protected override void RenderContents(HtmlTextWriter writer)
+  {
+    foreach (Control control in Controls)
+    {
+      control.RenderControl (writer);
+
+      if (control == _datePickerImage)
+      {
+        if (_renderPopupScript == false)
+        {
+          string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
+              this, 
+              this.GetType(),
+              ResourceType.Html,
+              "CalendarFrame.htm");
+          calendarFrameUrl = "Html/CalendarFrame.htm";
+          // Use an IFRAME instead of a DHTML popup
+          writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
+          writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
+          writer.AddAttribute("marginheight", "0", false);
+          writer.AddAttribute("marginwidth", "0", false);
+          writer.AddAttribute("noresize", "noresize", false);
+          writer.AddAttribute("frameborder", "0", false);
+          writer.AddAttribute("scrolling", "no", false);
+          writer.AddStyleAttribute("position", "absolute");
+          writer.AddStyleAttribute("z-index", "100");
+          writer.AddStyleAttribute("display", "none");
+          writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
+          writer.RenderEndTag();
+        }
+      }
+    }  
   }
 
   /// <summary>
@@ -385,7 +512,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBox.Visible = ! isReadOnly;
     _timeTextBox.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
-    _imageButton.Visible = ! isReadOnly;
+    _datePickerImage.Visible = ! isReadOnly;
 
     if (isReadOnly)
     {
@@ -463,20 +590,20 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Insert Spacer before image button
 
-      LiteralControl imageButtonSpacer = null;
+      LiteralControl datePickerImageSpacer = null;
 
       if (   ActualValueType == BocDateTimeValueType.DateTime
           || ActualValueType == BocDateTimeValueType.Date
           || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
-        int imageButtonIndex = Controls.IndexOf (_imageButton);
+        int datePickerImageIndex = Controls.IndexOf (_datePickerImage);
 
         if (! IsDesignMode)
-          imageButtonSpacer = new LiteralControl (c_imageButtonSpacer);
+          datePickerImageSpacer = new LiteralControl (c_datePickerImageSpacer);
         else
-          imageButtonSpacer = new LiteralControl (c_designModeImageButtonSpacer);
+          datePickerImageSpacer = new LiteralControl (c_designModeDatePickerImageSpacer);
 
-        Controls.AddAt (imageButtonIndex, imageButtonSpacer);
+        Controls.AddAt (datePickerImageIndex, datePickerImageSpacer);
       }
 
       Unit dateTextBoxWidth = Unit.Empty;
@@ -484,24 +611,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       if (! Width.IsEmpty)
       {
-        int imageButtonWidth = 0;
+        int datePickerImageWidth = 0;
 
         //  Icon width approximation
         switch (Width.Type)
         {
           case UnitType.Percentage:
           {
-            imageButtonWidth = 20;
+            datePickerImageWidth = 20;
             break;
           }
           case UnitType.Pixel:
           {
-            imageButtonWidth = 30;
+            datePickerImageWidth = 34;
             break;
           }
           case UnitType.Point:
           {
-            imageButtonWidth = 15;
+            datePickerImageWidth = 15;
             break;
           }
           default:
@@ -510,7 +637,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           }
         }
 
-        int innerControlWidthValue = (int) (Width.Value - imageButtonWidth);
+        int innerControlWidthValue = (int) (Width.Value - datePickerImageWidth);
         innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
         int dateTextBoxWidthValue = 0;
@@ -593,24 +720,31 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         if (dateTimeSpacer != null)
           dateTimeSpacer.Visible = false;
         
-        if (imageButtonSpacer != null)
-          imageButtonSpacer.Visible = false;
+        if (datePickerImageSpacer != null)
+          datePickerImageSpacer.Visible = false;
       }
 
       string imageUrl = ResourceUrlResolver.GetResourceUrl (
         this, 
         typeof (BocDateTimeValue), 
         ResourceType.Image, 
-        ImageButtonImageUrl);
+        DatePickerImageUrl);
 
       if (imageUrl == null)
-        _imageButton.ImageUrl = ImageButtonImageUrl;  
+        _datePickerImage.ImageUrl = DatePickerImageUrl;  
       else
-        _imageButton.ImageUrl = imageUrl;
+        _datePickerImage.ImageUrl = imageUrl;
+
+      string pickerAction;
+      if (_renderPopupScript)
+          pickerAction = "dp_showDatePickerPopup(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'])";
+      else
+          pickerAction = "dp_showDatePickerFrame(this, document.all['" + _dateTextBox.ClientID + "'], document.all['" + ClientID + "'], document.all['" + ClientID + "_frame'], document)";
+      _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";
-      _imageButton.Style["vertical-align"] = "middle";
+      _datePickerImage.Style["vertical-align"] = "text-bottom";
 
       if (! dateTextBoxWidth.IsEmpty)
         _dateTextBox.Width = dateTextBoxWidth;
@@ -629,8 +763,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       _timeTextBoxStyle.ApplyStyle (_timeTextBox);
 
       //  Common style not useful with image button
-      //  _imageButton.ApplyStyle (_commonStyle);
-      _imageButton.ApplyStyle (_imageButtonStyle);
+      //  _datePickerImage.ApplyStyle (_commonStyle);
+      _datePickerImage.ApplyStyle (_datePickerImageStyle);
     }
   }
   
@@ -1144,7 +1278,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style ButtonStyle
   {
-    get { return _imageButtonStyle; }
+    get { return _datePickerImageStyle; }
   }
 
   /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
@@ -1168,11 +1302,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="ImageButton"/> used in edit mode for opening the date picker. </summary>
+  /// <summary> Gets the <see cref="Image"/> used in edit mode for opening the date picker. </summary>
   [Browsable (false)]
-  public ImageButton ImageButton
+  public Image DatePickerImage
   {
-    get { return _imageButton; }
+    get { return _datePickerImage; }
   }
 
   /// <summary> Flag that determines whether to display the seconds. </summary>
@@ -1233,11 +1367,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  /// <summary> The URL of the image used by the <see cref="ImageButton"/>. </summary>
+  /// <summary> The URL of the image used by the <see cref="DatePickerImage"/>. </summary>
   [Browsable (false)]
-  protected virtual string ImageButtonImageUrl
+  protected virtual string DatePickerImageUrl
   {
-    get { return "Calendar.gif"; }
+    get { return "DatePicker.gif"; }
   }
 
   /// <summary>

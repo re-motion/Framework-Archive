@@ -380,6 +380,9 @@ public class BocList:
 
   protected override void Render (HtmlTextWriter writer)
   {
+    if (Page != null)
+      Page.VerifyRenderingInServerForm(this);
+
     BocColumnDefinition[] allPropertyColumns = null;
     if (_showAllProperties)
       allPropertyColumns = _allPropertyColumns;
