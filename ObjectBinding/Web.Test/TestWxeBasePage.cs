@@ -101,7 +101,7 @@ public class TestWxeBasePage:
 
   private void NextButton_Click(object sender, System.EventArgs e)
   {
-    CurrentStep.ExecuteNextStep();
+    ExecuteNextStep();
   }
 }
 

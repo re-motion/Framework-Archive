@@ -28,7 +28,7 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
 
   public void AddService (Type serviceType, IBusinessObjectService service)
   {
-    ServiceDictionary.Add (serviceType, service);
+    ServiceDictionary[serviceType] = service;
   }
 
   public virtual char GetPropertyPathSeparator ()

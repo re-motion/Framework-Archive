@@ -136,7 +136,7 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void CancelButton_Click(object sender, System.EventArgs e)
   {
-    CurrentStep.ExecuteNextStep();
+    ExecuteNextStep();
   }
 
   private void SaveButton_Click(object sender, System.EventArgs e)
@@ -153,7 +153,7 @@ public class TestTabbedForm : TestWxeBasePage
     foreach (IDataEditControl control in _dataEditControls)
       control.DataSource.SaveValues (false);
 
-    CurrentStep.ExecuteNextStep();
+    ExecuteNextStep();
   }
 }
 

@@ -18,24 +18,76 @@ namespace Rubicon.Web.ExecutionEngine
 public interface IWxePage: IPage, IWxeTemplateControl
 {
   NameValueCollection GetPostBackCollection ();
+  void ExecuteNextStep ();
+  void ExecuteFunction (WxeFunction function, string target, Control sender);
+  void ExecuteFunction (WxeFunction function);
+  void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
+  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
+  WxeFunction ReturningFunction { get; }
 }
 
-public class WxePageInfo: WxeTemplateControlInfo
+public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 {
-  public void OnInit (IWxePage page, HttpContext context, ref HtmlForm form)
-  {
-    OnInit (page, context);
-
-    if (! ControlHelper.IsDesignMode (page, context))
-    {
-      if (form == null)
-        throw new HttpException (page.GetType().FullName + " does not initialize field 'Form'.");
-      form = WxeForm.Replace (form);
-    }
-  }
-
+  private IWxePage _page;
+  private WxeForm _form;
   private bool _postbackCollectionInitialized = false;
   private NameValueCollection _postbackCollection = null;
+
+  private bool _executeNextStep = false;
+  private HttpResponse _response; // used for cleanup in Dispose
+
+  public WxePageInfo (IWxePage page)
+  {
+    _page = page;
+  }
+
+  public void OnInit (HttpContext context, ref HtmlForm form)
+  {
+    OnInit (_page, context);
+
+    if (! ControlHelper.IsDesignMode (_page, context))
+    {
+      if (form == null)
+        throw new HttpException (_page.GetType().FullName + " does not initialize field 'Form'.");
+      _form = WxeForm.Replace (form);
+      form = _form;
+    }
+
+    _page.Load += new EventHandler (Page_Load);
+  }
+
+  private void Page_Load (object sender, EventArgs e)
+  {
+    // GetPostBackEventReference (this); // force __doPostBack script
+
+    PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeDoSubmit",
+        "function wxeDoSubmit (button, pageToken) { \n"
+        + "  var theForm = document." + _form.ClientID + "; \n"
+        + "  theForm.returningToken.value = pageToken; \n"
+        + "  document.getElementById(button).click(); \n"
+        + "}");
+
+    NameValueCollection postBackCollection = _page.GetPostBackCollection();
+    if (postBackCollection != null)
+    {
+      string returningToken = _form.ReturningToken;
+      // string returningToken = postBackCollection["returningToken"];
+      if (! StringUtility.IsNullOrEmpty (returningToken))
+      {
+        ArrayList pages = (ArrayList) _page.Session["WxePages"];
+        foreach (WxePageSession pageSession in pages)
+        {
+          if (pageSession.PageToken == returningToken)
+          {
+            WxeContext.Current.ReturningFunction = pageSession.Function;
+            WxeContext.Current.IsReturningPostBack = true;
+          }
+        }
+      }
+    }
+
+    _form.ReturningToken = string.Empty;    
+  }
 
   public NameValueCollection DeterminePostBackMode (HttpContext context)
   {
@@ -71,6 +123,38 @@ public class WxePageInfo: WxeTemplateControlInfo
     }
     return _postbackCollection;
   }  
+
+  public void ExecuteNextStep ()
+  {
+    _executeNextStep = true;
+    _response = _page.Response;
+    _page.Visible = false; // suppress prerender and render events
+  }
+
+  public void ExecuteFunction (WxeFunction function, string target, Control sender)
+  {
+    ArrayList pages = (ArrayList) _page.Session["WxePages"];
+    WxePageSession pageSession = new WxePageSession (function, 20);
+    pages.Add (pageSession);
+    string href = _page.Request.Path + "?WxePageToken=" + pageSession.PageToken;
+    string script = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
+
+    // string eventtarget = GetPostBackCollection()["__EVENTTARGET"];
+    // string eventargument = GetPostBackCollection()["__EVENTARGUMENT"];
+    // subFunction.ReturnUrl = "javascript:window.opener.__doPostBack(\"" + eventtarget + "\",\"" + eventargument + "\"); window.close();";
+    function.ReturnUrl = "javascript:window.opener.wxeDoSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
+
+    PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", script);
+  }
+
+  public void Dispose ()
+  {
+    if (_executeNextStep)
+    {
+      _response.Clear(); // throw away page trace output
+      throw new WxeExecuteNextStepException();
+    }
+  }
 }
 
 /// <summary>
@@ -84,48 +168,19 @@ public class WxePageInfo: WxeTemplateControlInfo
 /// </remarks>
 public class WxePage: Page, IWxePage
 {
-  private WxePageInfo _wxeInfo = new WxePageInfo(); 
+  private WxePageInfo _wxeInfo;
 
   protected HtmlForm Form;
 
-  protected override void OnInit (EventArgs e)
+  public WxePage ()
   {
-    _wxeInfo.OnInit (this, Context, ref Form);
-    base.OnInit (e);
-    Load += new EventHandler (Page_Load);
+    _wxeInfo = new WxePageInfo (this);
   }
 
-  private void Page_Load (object sender, EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
-      // GetPostBackEventReference (this); // force __doPostBack script
-
-      PageUtility.RegisterClientScriptBlock (this, "wxeDoSubmit",
-          "function wxeDoSubmit (button, pageToken) { \n"
-          + "  var theForm = document." + Form.ClientID + "; \n"
-          + "  theForm.returningToken.value = pageToken; \n"
-          + "  document.getElementById(button).click(); \n"
-          + "}");
-
-      NameValueCollection postBackCollection = GetPostBackCollection();
-      if (postBackCollection != null)
-      {
-        string returningToken = WxeForm.ReturningToken;
-        // string returningToken = postBackCollection["returningToken"];
-        if (! StringUtility.IsNullOrEmpty (returningToken))
-        {
-          ArrayList pages = (ArrayList) Session["WxePages"];
-          foreach (WxePageSession pageSession in pages)
-          {
-            if (pageSession.PageToken == returningToken)
-            {
-              WxeContext.Current.ReturningFunction = pageSession.Function;
-              WxeContext.Current.IsReturningPostBack = true;
-            }
-          }
-        }
-      }
-
-      WxeForm.ReturningToken = string.Empty;    
+    _wxeInfo.OnInit (Context, ref Form);
+    base.OnInit (e);
   }
 
   protected override NameValueCollection DeterminePostBackMode()
@@ -153,24 +208,9 @@ public class WxePage: Page, IWxePage
     get { return _wxeInfo.Variables; }
   }
 
-  private bool _executeNextStep = false;
-  private HttpResponse _response; // used for cleanup in Dispose
-
   public void ExecuteNextStep ()
   {
-    _executeNextStep = true;
-    _response = Response;
-    this.Visible = false; // suppress prerender and render events
-  }
-
-  public override void Dispose()
-  {
-    base.Dispose ();
-    if (_executeNextStep)
-    {
-      _response.Clear(); // throw away page trace output
-      throw new WxeExecuteNextStepException();
-    }
+    _wxeInfo.ExecuteNextStep();
   }
 
   protected bool IsReturningPostBack
@@ -180,23 +220,36 @@ public class WxePage: Page, IWxePage
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender)
   {
-    ArrayList pages = (ArrayList) Session["WxePages"];
-    WxePageSession pageSession = new WxePageSession (function, 20);
-    pages.Add (pageSession);
-    string href = Request.Path + "?WxePageToken=" + pageSession.PageToken;
-    string script = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
-
-    // string eventtarget = GetPostBackCollection()["__EVENTTARGET"];
-    // string eventargument = GetPostBackCollection()["__EVENTARGUMENT"];
-    // subFunction.ReturnUrl = "javascript:window.opener.__doPostBack(\"" + eventtarget + "\",\"" + eventargument + "\"); window.close();";
-    function.ReturnUrl = "javascript:window.opener.wxeDoSubmit(\"" + sender.ClientID + "\", \"" + pageSession.PageToken + "\"); window.close();";
-
-    PageUtility.RegisterStartupScriptBlock (this, "WxeExecuteFunction", script);
+    _wxeInfo.ExecuteFunction (function, target, sender);
   }
 
   public void ExecuteFunction (WxeFunction function)
   {
     CurrentStep.ExecuteFunction (this, function);
+  }
+
+  /// <summary>
+  ///   Executes the specified WXE function, then returns to this page without causing the current event again.
+  /// </summary>
+  /// <remarks>
+  ///   This overload tries to determine automatically whether the current event was caused by the __EVENTTARGET field.
+  /// </remarks>
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
+  {
+    bool usesEventTarget = ! StringUtility.IsNullOrEmpty (GetPostBackCollection()["__EVENTTARGET"]);
+    ExecuteFunctionNoRepost (function, sender, usesEventTarget);
+  }
+
+  /// <summary>
+  ///   Executes the specified WXE function, then returns to this page without causing the current event again.
+  /// </summary>
+  /// <remarks>
+  ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
+  ///   When in doubt, use <see cref="ExecuteFunctionNoRepost (IWxePage, WxeFunction, Control)"/>.
+  /// </remarks>
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
+  {
+    CurrentStep.ExecuteFunctionNoRepost (this, function, sender, usesEventTarget);
   }
 
   public WxeFunction ReturningFunction
@@ -207,6 +260,12 @@ public class WxePage: Page, IWxePage
   protected WxeForm WxeForm
   {
     get { return (WxeForm) Form; }
+  }
+
+  public override void Dispose()
+  {
+    base.Dispose ();
+    _wxeInfo.Dispose();
   }
 }
 
