@@ -56,6 +56,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
 
+  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
+  private CompareValidator _notNullItemValidator = new CompareValidator();
+
   /// <summary> The actual enum value. </summary>
   private object _value = null;
 
@@ -290,16 +293,16 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    CompareValidator notNullItemValidator = new CompareValidator();
+    _notNullItemValidator = new CompareValidator();
     
-    notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
-    notNullItemValidator.ControlToValidate = TargetControl.ID;
-    notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
+    _notNullItemValidator.ControlToValidate = TargetControl.ID;
+    _notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     //  TODO: BocEnumValue: Get validation message from ResourceProvider
-    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
-    validators[0] = notNullItemValidator;
+    validators[0] = _notNullItemValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
@@ -733,6 +736,17 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     get { return _label; }
   }
 
+  /// <summary>
+  ///   Validation message if the null item is selected but a valid selection is required.
+  /// </summary>
+  [Description("Validation message if the null item is selected but a valid selection is required.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string NullItemErrorMessage
+  {
+    get { return _notNullItemValidator.ErrorMessage; }
+    set { _notNullItemValidator.ErrorMessage = value; }
+  }
 }
 
 }

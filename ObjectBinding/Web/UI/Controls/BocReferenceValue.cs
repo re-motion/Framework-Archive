@@ -64,6 +64,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon = null;
 
+  /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
+  private CompareValidator _notNullItemValidator = new CompareValidator();
+
   /// <summary> The object returned by <see cref="BocReferenceValue"/>. </summary>
   /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
   private IBusinessObjectWithIdentity _value = null;
@@ -305,16 +308,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    CompareValidator notNullItemValidator = new CompareValidator();
+    _notNullItemValidator = new CompareValidator();
     
-    notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
-    notNullItemValidator.ControlToValidate = TargetControl.ID;
-    notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
+    _notNullItemValidator.ControlToValidate = TargetControl.ID;
+    _notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     //  TODO: BocReferenceValue: Get validation message from ResourceProvider
-    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
-    validators[0] = notNullItemValidator;
+    validators[0] = _notNullItemValidator;
 
     return validators;
   }
@@ -937,6 +940,18 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         RefreshBusinessObjectList();
       }
     }
+  }
+
+  /// <summary>
+  ///   Validation message if the null item is selected but a valid selection is required.
+  /// </summary>
+  [Description("Validation message if the null item is selected but a valid selection is required.")]
+  [Category ("Validator")]
+  [DefaultValue("")]
+  public string NullItemErrorMessage
+  {
+    get { return _notNullItemValidator.ErrorMessage; }
+    set { _notNullItemValidator.ErrorMessage = value; }
   }
 }
 

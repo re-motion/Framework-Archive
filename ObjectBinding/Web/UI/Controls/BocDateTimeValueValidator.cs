@@ -19,13 +19,23 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocDateTimeValueValidator.xml' path='BocDateTimeValueValidator/Class/*' />
 public class BocDateTimeValueValidator: BaseValidator
 {
+  protected enum ValidationError
+  {
+    None,
+    Required,
+    Incomplete,
+    InvalidDateAndTime,
+    InvalidDate,
+    InvalidTime
+  }
+
   private string _requiredErrorMessage = null;
   private string _incompleteErrorMessage = null;
   private string _invalidDateAndTimeErrorMessage = null;
   private string _invalidDateErrorMessage = null;
   private string _invalidTimeErrorMessage = null;
 
-  private BocDateTimeValueValidationError _error;
+  private ValidationError _error;
 
   /// <summary> Checks the input fields for for valid contents. </summary>
   /// <returns> <see langword="true"/> if all fields are filled out according to the requirements. </returns>
@@ -40,13 +50,13 @@ public class BocDateTimeValueValidator: BaseValidator
 
     if (! EvaluateIsRequiredValid (dateTimeValueControl))
     {
-      _error = BocDateTimeValueValidationError.Required;
+      Error = ValidationError.Required;
       return false;
     }
 
     if (! EvaluateIsCompleteValid (dateTimeValueControl))
     {
-      _error = BocDateTimeValueValidationError.Incomplete;
+      Error = ValidationError.Incomplete;
       return false;
     }
 
@@ -54,13 +64,11 @@ public class BocDateTimeValueValidator: BaseValidator
     bool isValidTime = EvaluateIsValidTime (dateTimeValueControl);
 
     if (! isValidDate && ! isValidTime)
-      _error = BocDateTimeValueValidationError.InvalidDateAndTime;
+      Error = ValidationError.InvalidDateAndTime;
     else if (! isValidDate)
-      _error = BocDateTimeValueValidationError.InvalidDate;
+      Error = ValidationError.InvalidDate;
     else if (! isValidTime)
-      _error = BocDateTimeValueValidationError.InvalidTime;
-
-    RefreshBaseErrorMessage();
+      Error = ValidationError.InvalidTime;
 
     return isValidDate && isValidTime;
   }
@@ -251,31 +259,31 @@ public class BocDateTimeValueValidator: BaseValidator
   {
     switch (_error)
     {
-      case BocDateTimeValueValidationError.Required:
+      case ValidationError.Required:
       {
         if (! StringUtility.IsNullOrEmpty (RequiredErrorMessage))
           base.ErrorMessage = RequiredErrorMessage;
         break;
       }
-      case BocDateTimeValueValidationError.Incomplete:
+      case ValidationError.Incomplete:
       {
         if (! StringUtility.IsNullOrEmpty (IncompleteErrorMessage))
           base.ErrorMessage = IncompleteErrorMessage;
         break;
       }
-      case BocDateTimeValueValidationError.InvalidDateAndTime:
+      case ValidationError.InvalidDateAndTime:
       {
         if (! StringUtility.IsNullOrEmpty (InvalidDateAndTimeErrorMessage))
           base.ErrorMessage = InvalidDateAndTimeErrorMessage;
         break;
       }
-      case BocDateTimeValueValidationError.InvalidDate:
+      case ValidationError.InvalidDate:
       {
         if (! StringUtility.IsNullOrEmpty (InvalidDateErrorMessage))
           base.ErrorMessage = InvalidDateErrorMessage;
         break;
       }
-      case BocDateTimeValueValidationError.InvalidTime:
+      case ValidationError.InvalidTime:
       {
         if (! StringUtility.IsNullOrEmpty (InvalidTimeErrorMessage))
           base.ErrorMessage = InvalidTimeErrorMessage;
@@ -318,7 +326,7 @@ public class BocDateTimeValueValidator: BaseValidator
     set
     {
       _requiredErrorMessage = value; 
-      if (_error == BocDateTimeValueValidationError.Required)
+      if (_error == ValidationError.Required)
         base.ErrorMessage = value;
     }
   }
@@ -332,7 +340,7 @@ public class BocDateTimeValueValidator: BaseValidator
     set
     {
       _incompleteErrorMessage = value; 
-      if (_error == BocDateTimeValueValidationError.Incomplete)
+      if (_error == ValidationError.Incomplete)
         base.ErrorMessage = value;
     }
   }
@@ -346,7 +354,7 @@ public class BocDateTimeValueValidator: BaseValidator
     set
     {
       _invalidDateErrorMessage = value; 
-      if (_error == BocDateTimeValueValidationError.InvalidDate)
+      if (_error == ValidationError.InvalidDate)
         base.ErrorMessage = value;
     }
   }
@@ -360,7 +368,7 @@ public class BocDateTimeValueValidator: BaseValidator
     set
     {
       _invalidTimeErrorMessage = value; 
-      if (_error == BocDateTimeValueValidationError.InvalidTime)
+      if (_error == ValidationError.InvalidTime)
         base.ErrorMessage = value;
     }
   }
@@ -374,10 +382,21 @@ public class BocDateTimeValueValidator: BaseValidator
     set
     {
       _invalidDateAndTimeErrorMessage = value; 
-      if (_error == BocDateTimeValueValidationError.InvalidDateAndTime)
+      if (_error == ValidationError.InvalidDateAndTime)
         base.ErrorMessage = value;
     }
   }
+
+  protected ValidationError Error
+  {
+    get { return _error; }
+    set 
+    {
+      _error = value; 
+      RefreshBaseErrorMessage();
+    }
+  }
+
 }
 
 /// <summary>
@@ -393,16 +412,6 @@ public class BocDateTimeValueControlToStringConverter: ControlToStringConverter
     : base (typeof (BocDateTimeValue))
   {
   }
-}
-
-internal enum BocDateTimeValueValidationError
-{
-  None,
-  Required,
-  Incomplete,
-  InvalidDateAndTime,
-  InvalidDate,
-  InvalidTime
 }
 
 }

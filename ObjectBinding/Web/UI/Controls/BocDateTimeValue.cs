@@ -78,7 +78,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private ImageButton _imageButton = null;
 
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private BocDateTimeValueValidator _dateTimeValidator = new BocDateTimeValueValidator();
+  private BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
 
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
@@ -355,22 +355,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     BaseValidator[] validators = new BaseValidator[1];
 
-    _dateTimeValidator.ID = this.ID + "_ValidatorDateTime";
-    _dateTimeValidator.ControlToValidate = ID;
+    _dateTimeValueValidator.ID = this.ID + "_ValidatorDateTime";
+    _dateTimeValueValidator.ControlToValidate = ID;
 
     //  TODO: BocDateTimeValue: Get validation messages from ResourceProvider
-    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.RequiredErrorMessage))
-      _dateTimeValidator.RequiredErrorMessage = c_requiredErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.IncompleteErrorMessage))
-      _dateTimeValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidDateAndTimeErrorMessage))
-      _dateTimeValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidDateErrorMessage))
-      _dateTimeValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValidator.InvalidTimeErrorMessage))
-      _dateTimeValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.RequiredErrorMessage))
+      _dateTimeValueValidator.RequiredErrorMessage = c_requiredErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.IncompleteErrorMessage))
+      _dateTimeValueValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidDateAndTimeErrorMessage))
+      _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidDateErrorMessage))
+      _dateTimeValueValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidTimeErrorMessage))
+      _dateTimeValueValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
 
-    validators[0] = _dateTimeValidator;
+    validators[0] = _dateTimeValueValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
@@ -1268,8 +1268,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [DefaultValue("")]
   public string RequiredErrorMessage
   {
-    get { return _dateTimeValidator.RequiredErrorMessage; }
-    set { _dateTimeValidator.RequiredErrorMessage = value; }
+    get { return _dateTimeValueValidator.RequiredErrorMessage; }
+    set { _dateTimeValueValidator.RequiredErrorMessage = value; }
   }
 
   /// <summary>
@@ -1280,8 +1280,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [DefaultValue("")]
   public string IncompleteErrorMessage
   {
-    get { return _dateTimeValidator.IncompleteErrorMessage; }
-    set { _dateTimeValidator.IncompleteErrorMessage = value; }
+    get { return _dateTimeValueValidator.IncompleteErrorMessage; }
+    set { _dateTimeValueValidator.IncompleteErrorMessage = value; }
   }
 
   /// <summary>
@@ -1292,8 +1292,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [DefaultValue("")]
   public string InvalidDateErrorMessage
   {
-    get { return _dateTimeValidator.InvalidDateErrorMessage; }
-    set { _dateTimeValidator.InvalidDateErrorMessage = value; }
+    get { return _dateTimeValueValidator.InvalidDateErrorMessage; }
+    set { _dateTimeValueValidator.InvalidDateErrorMessage = value; }
   }
 
   /// <summary>
@@ -1304,8 +1304,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [DefaultValue("")]
   public string InvalidTimeErrorMessage
   {
-    get { return _dateTimeValidator.InvalidTimeErrorMessage; }
-    set { _dateTimeValidator.InvalidTimeErrorMessage = value; }
+    get { return _dateTimeValueValidator.InvalidTimeErrorMessage; }
+    set { _dateTimeValueValidator.InvalidTimeErrorMessage = value; }
   }
 
   /// <summary>
@@ -1316,8 +1316,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [DefaultValue("")]
   public string InvalidDateAndTimeErrorMessage
   {
-    get { return _dateTimeValidator.InvalidDateAndTimeErrorMessage; }
-    set { _dateTimeValidator.InvalidDateAndTimeErrorMessage = value; }
+    get { return _dateTimeValueValidator.InvalidDateAndTimeErrorMessage; }
+    set { _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = value; }
   }
 }
 
