@@ -807,6 +807,29 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     eventReceiver.Check (expectedStates);
   }
  
+  [Test]
+  [ExpectedException (typeof (ArgumentOutOfRangeException), 
+      "Index is out of range. Must be non-negative and less than the size of the collection."
+      + "\r\nParameter name: index\r\nActual value was 2.")]
+  public void SetInvalidNumericIndex ()
+  {
+    _collection[_collection.Count] = new Customer ();
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentOutOfRangeException))]
+  public void GetInvalidNumericIndex ()
+  {
+    Customer customer = (Customer) _collection[_collection.Count];
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void SetNumericIndexerWithInvalidType ()
+  {
+    _collection[0] = new Order ();
+  }
+
   private DomainObjectCollection CreateCustomerCollection ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));

@@ -27,7 +27,8 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Add, -1);
+    return new CollectionEndPointChangeWorker (
+        oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Add, oppositeDomainObjects.Count);
   }
 
   public static CollectionEndPointChangeWorker CreateForRemove (
@@ -39,7 +40,9 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Remove, -1);
+    return new CollectionEndPointChangeWorker (
+        oppositeDomainObjects, oldEndPoint, newEndPoint, 
+        OperationType.Remove, oppositeDomainObjects.IndexOf (oldEndPoint.ObjectID));
   }
 
   public static CollectionEndPointChangeWorker CreateForInsert (
