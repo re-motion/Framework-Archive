@@ -36,10 +36,9 @@ public class DataContainerTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _newDataContainer = DataContainer.CreateNew (new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5));
+    _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", 5));
 
-    _existingDataContainer = DataContainer.CreateForExisting (
-        new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5), null);
+    _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", 5), null);
 
     _nameDefinition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
     _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
@@ -168,7 +167,7 @@ public class DataContainerTest : ClientTransactionBaseTest
   [Test]
   public void GetNullObjectID ()
   {
-    ObjectID id = new ObjectID ("UnitTestStorageProviderStub", "Official", 1);
+    ObjectID id = new ObjectID ("Official", 1);
     DataContainer container = DataContainer.CreateNew (id);
 
     PropertyDefinition reportsToDefinition = new PropertyDefinition (
