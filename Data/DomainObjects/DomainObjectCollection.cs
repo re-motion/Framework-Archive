@@ -700,6 +700,36 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     OnAdding (new DomainObjectCollectionChangingEventArgs (domainObject));
   }
 
+  // TODO documentation:
+  internal protected virtual void Rollback (DomainObjectCollection originalDomainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("originalDomainObjects", originalDomainObjects);
+    
+    ReplaceItems (originalDomainObjects);
+  }
+
+  // TODO documentation:
+  internal protected virtual void Commit (DomainObjectCollection domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+    
+    ReplaceItems (domainObjects);
+  }
+
+  // TODO documentation:
+  protected virtual void ReplaceItems (DomainObjectCollection domainObjects)
+  {
+    bool isReadOnly = IsReadOnly;
+    
+    SetIsReadOnly (false);
+
+    BaseClear ();
+    foreach (DomainObject domainObject in domainObjects)
+      PerformAdd (domainObject);
+
+    SetIsReadOnly (isReadOnly);
+  }
+
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
   /// </summary>
@@ -774,7 +804,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Clears the <see cref="DomainObjectCollection"/> without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
   /// </summary>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  internal void PerformClear ()
+  internal void PerformDelete ()
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
