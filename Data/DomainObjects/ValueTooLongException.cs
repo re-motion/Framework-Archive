@@ -17,7 +17,7 @@ public class ValueTooLongException : DomainObjectException
 
   // construction and disposing
 
-  public ValueTooLongException () : base ("Property value too long.") 
+  public ValueTooLongException () : this ("Property value too long.") 
   {
   }
 
