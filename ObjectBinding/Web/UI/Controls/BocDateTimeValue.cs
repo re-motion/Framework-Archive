@@ -1104,12 +1104,37 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Gets a flag describing whether it's save (i.e. the data is valid) to read the contents of 
+  ///   <see cref="Value"/>.
+  /// </summary>
+  [Browsable(false)]
+  public bool IsValidValue
+  {
+    get
+    {
+      if (_savedDateTimeValue.IsNull)
+        return true;
+      try
+      {
+        //  Force the evaluation of Value
+        if (Value != null)
+          return true;
+      }
+      catch (FormatException)
+      {
+        return false;
+      }
+
+      return true;
+    }
+  }
+
   protected override object ValueImplementation
   {
     get { return Value; }
     set { Value = value; }
   }
-
   /// <summary> The string displayed in the date text box. </summary>
   protected virtual string InternalDateValue
   {
