@@ -388,6 +388,34 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Globalization\BocBooleanValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocDateTimeValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocEnumValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocList.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocMultilineTextValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocReferenceValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocTextValue.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Res\HTML\BocBooleanValue.js"
                     BuildAction = "Content"
                 />
