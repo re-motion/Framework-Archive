@@ -17,9 +17,7 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
-  /// <summary>
-  ///   Constructor.
-  /// </summary>
+  /// <summary> Simple Constructor. </summary>
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
@@ -57,7 +55,7 @@ public sealed class PropertyPathBindingCollection : CollectionBase
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="PropertyPathBindingSet"/> to add to the <see cref="IList"/>. 
+  ///   The <see cref="PropertyPathBinding"/> to add to the <see cref="IList"/>. 
   /// </param>
   /// <returns> The position into which the new element was inserted. </returns>
   public int Add (PropertyPathBinding value)

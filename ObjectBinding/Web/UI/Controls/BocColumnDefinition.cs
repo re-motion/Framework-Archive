@@ -206,7 +206,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   }
 
   /// <summary> The image symbolizing the command in the rendered page. </summary>
-  /// <value> An <see cref="image"/> representing the command. </value>
+  /// <value> An <see cref="Image"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [DefaultValue("")]
@@ -355,8 +355,8 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 
   /// <summary> The displayed value of the column title. </summary>
   /// <remarks> 
-  ///   If <see cref="ColumnTitle"/> is empty or <see langowrd="null"/>, the <c>DisplayName</c>
-  ///   of the <see cref="BusinessObjectProperty"/> is returned.
+  ///   If <see cref="BocColumnDefinition.ColumnTitle"/> is empty or <see langowrd="null"/>, 
+  ///   the <c>DisplayName</c> of the <see cref="IBusinessObjectProperty"/> is returned.
   /// </remarks>
   /// <value> A <see cref="string"/> representing this column's title row contents. </value>
   public override string ColumnTitleDisplayValue
@@ -471,7 +471,8 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 
   /// <summary>
-  ///   Passes the new <see cref="OwnerControl"/> to the <see cref="PropertyPathBindingCollection"/>.
+  ///   Passes the new <see cref="BocColumnDefinition.OwnerControl"/> to the 
+  ///   <see cref="PropertyPathBindingCollection"/>.
   /// </summary>
   protected override void OnOwnerControlChanged()
   {

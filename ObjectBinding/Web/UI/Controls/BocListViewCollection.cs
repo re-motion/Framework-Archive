@@ -102,7 +102,7 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocColumnDefinitionSetSet"/> to add to the <see cref="IList"/>. 
+  ///   The <see cref="BocColumnDefinitionSet"/> to add to the <see cref="IList"/>. 
   /// </param>
   /// <returns> The position into which the new element was inserted. </returns>
   public int Add (BocColumnDefinitionSet value)

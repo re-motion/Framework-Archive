@@ -18,7 +18,7 @@ public class BocColumnDefinitionSet
 {
   /// <summary> The displayed name of the set. </summary>
   private object _title;
-  /// <summary> The <see cref="BocColumnDefintion"/> objects stored in the set. </summary>
+  /// <summary> The <see cref="BocColumnDefinition"/> objects stored in the set. </summary>
   private BocColumnDefinitionCollection _columnDefinitionCollection;
   /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
@@ -95,7 +95,7 @@ public class BocColumnDefinitionSet
     set { _title = value; }
   }
 
-  /// <summary> The <see cref="BocColumnDefintion"/> objects stored in the set. </summary>
+  /// <summary> The <see cref="BocColumnDefinition"/> objects stored in the set. </summary>
   /// <value>
   ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
   ///   <see cref="BocColumnDefinitionSet"/>.
