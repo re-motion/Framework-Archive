@@ -100,6 +100,27 @@ public class SequenceEventReceiver
     Assert.AreEqual (states.Length, _states.Count, "Length");
   }
 
+  public void Unregister ()
+  {
+    foreach (DomainObject domainObject in _domainObjects)
+    {
+      domainObject.Deleting -= new DeletingEventHandler (DomainObject_Deleting);
+      domainObject.Deleted -= new EventHandler (DomainObject_Deleted);
+      domainObject.PropertyChanging -= new PropertyChangingEventHandler (DomainObject_PropertyChanging);
+      domainObject.PropertyChanged -= new PropertyChangedEventHandler (DomainObject_PropertyChanged);
+      domainObject.RelationChanging -= new RelationChangingEventHandler (DomainObject_RelationChanging);
+      domainObject.RelationChanged -= new RelationChangedEventHandler (DomainObject_RelationChanged);
+    }
+
+    foreach (DomainObjectCollection collection in _collections)
+    {
+      collection.Adding -= new DomainObjectCollectionChangingEventHandler (Collection_Changing);
+      collection.Added -= new DomainObjectCollectionChangedEventHandler (Collection_Changed);
+      collection.Removing -= new DomainObjectCollectionChangingEventHandler (Collection_Changing);
+      collection.Removed -= new DomainObjectCollectionChangedEventHandler (Collection_Changed);
+    }
+  }
+
   private void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     _states.Add (new PropertyChangeState (sender, args.PropertyValue, null, null));
