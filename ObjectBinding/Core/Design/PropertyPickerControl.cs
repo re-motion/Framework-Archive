@@ -92,17 +92,17 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     this.FilterLabel.AutoSize = true;
     this.FilterLabel.Location = new System.Drawing.Point(8, 11);
     this.FilterLabel.Name = "FilterLabel";
-    this.FilterLabel.Size = new System.Drawing.Size(29, 16);
+    this.FilterLabel.Size = new System.Drawing.Size(33, 16);
     this.FilterLabel.TabIndex = 1;
-    this.FilterLabel.Text = "&Filter";
+    this.FilterLabel.Text = "&Filter:";
     // 
     // FilterField
     // 
     this.FilterField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
       | System.Windows.Forms.AnchorStyles.Right)));
-    this.FilterField.Location = new System.Drawing.Point(50, 8);
+    this.FilterField.Location = new System.Drawing.Point(49, 8);
     this.FilterField.Name = "FilterField";
-    this.FilterField.Size = new System.Drawing.Size(246, 20);
+    this.FilterField.Size = new System.Drawing.Size(243, 20);
     this.FilterField.TabIndex = 2;
     this.FilterField.Text = "";
     this.FilterField.TextChanged += new System.EventHandler(this.FilterField_TextChanged);
@@ -110,7 +110,7 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     // SelectButton
     // 
     this.SelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-    this.SelectButton.Location = new System.Drawing.Point(8, 248);
+    this.SelectButton.Location = new System.Drawing.Point(8, 239);
     this.SelectButton.Name = "SelectButton";
     this.SelectButton.Size = new System.Drawing.Size(64, 24);
     this.SelectButton.TabIndex = 3;
@@ -124,18 +124,18 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
       | System.Windows.Forms.AnchorStyles.Right)));
     this.PropertiesList.Location = new System.Drawing.Point(8, 32);
     this.PropertiesList.Name = "PropertiesList";
-    this.PropertiesList.Size = new System.Drawing.Size(288, 199);
+    this.PropertiesList.Size = new System.Drawing.Size(284, 199);
     this.PropertiesList.TabIndex = 5;
     // 
     // PropertyPickerControl
     // 
     this.BackColor = System.Drawing.SystemColors.Control;
+    this.Controls.Add(this.FilterLabel);
     this.Controls.Add(this.PropertiesList);
     this.Controls.Add(this.SelectButton);
     this.Controls.Add(this.FilterField);
-    this.Controls.Add(this.FilterLabel);
     this.Name = "PropertyPickerControl";
-    this.Size = new System.Drawing.Size(304, 272);
+    this.Size = new System.Drawing.Size(300, 271);
     this.Load += new System.EventHandler(this.PropertyPathPicker_Load);
     this.ResumeLayout(false);
 
