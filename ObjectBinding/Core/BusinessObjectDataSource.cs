@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using Rubicon.NullableValueTypes;
-
 using System.Drawing.Design;
+using Rubicon.NullableValueTypes;
+using Rubicon.Collections;
 using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding
@@ -42,11 +42,13 @@ public interface IBusinessObjectDataSource
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   IBusinessObject BusinessObject { get; set; }
+
+  IBusinessObjectBoundControl[] BoundControls { get; }
 }
 
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
-  private ArrayList _boundControls = null;
+  private TypedArrayList _boundControls = null;
   private bool _editMode = true;
 
   [Category ("Data")]
@@ -59,7 +61,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   public void Register (IBusinessObjectBoundControl control)
   {
     if (_boundControls == null)
-      _boundControls = new ArrayList (5);
+      _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
     if (! _boundControls.Contains (control))
       _boundControls.Add (control);
   }
@@ -103,6 +105,11 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   [Browsable (false)]
   public abstract IBusinessObject BusinessObject { get; set; }
+
+  public IBusinessObjectBoundControl[] BoundControls
+  {
+    get { return (IBusinessObjectBoundControl[]) _boundControls.ToArray (); }
+  }
 }
 
 //public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
