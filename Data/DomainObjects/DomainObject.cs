@@ -301,6 +301,12 @@ public class DomainObject
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
 
+  // TODO documentation:
+  protected bool IsDiscarded 
+  {
+    get { return _dataContainer.IsDiscarded; }
+  }
+
   /// <summary>
   /// Method is invoked after the loading process of the object is completed.
   /// </summary>
@@ -426,7 +432,7 @@ public class DomainObject
 
   private void CheckDiscarded ()
   {
-    if (_dataContainer.IsDiscarded)
+    if (IsDiscarded)
       throw new ObjectDiscardedException (_dataContainer.GetID ());
   }
 
