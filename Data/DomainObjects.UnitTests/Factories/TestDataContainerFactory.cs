@@ -134,6 +134,20 @@ public sealed class TestDataContainerFactory
     return container;
   }
 
+  public static DataContainer CreateNewOrderDataContainer ()
+  {
+    ObjectID newID = new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", Guid.NewGuid ());
+    DataContainer container = DataContainer.CreateNew (newID);
+    ClassDefinition classDefinition = container.ClassDefinition;
+    
+    container["OrderNumber"] = 10;
+    container["DeliveryDate"] = new DateTime (2006, 1, 1);
+    container["Official"] = DomainObjectIDs.Official1;
+    container["Customer"] = DomainObjectIDs.Customer1;
+
+    return container;
+  }
+
   public static DataContainer CreateOrderTicket1DataContainer ()
   {
     DataContainer container = DataContainer.CreateForExisting (DomainObjectIDs.OrderTicket1, null);
