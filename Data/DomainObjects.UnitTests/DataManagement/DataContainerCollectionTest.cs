@@ -179,7 +179,7 @@ public class DataContainerCollectionTest
   public void GetByOriginalState ()
   {
     _collection.Add (_dataContainer);
-    DataContainerCollection originalContainers = _collection.GetByState (StateType.Original);
+    DataContainerCollection originalContainers = _collection.GetByState (StateType.Unchanged);
 
     Assert.IsNotNull (originalContainers);
     Assert.AreEqual (1, originalContainers.Count);
