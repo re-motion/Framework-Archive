@@ -223,8 +223,8 @@ public class ClientTransaction
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>
-  ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.
+  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/><br />
+  ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.<br />
   ///   <i>newRelatedObject</i> has been deleted.
   /// </exception>
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
@@ -254,7 +254,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> object that was loaded.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   Mapping does not contain a class definition for the given <i>id</i>.<br />
+  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br />
   ///   An error occured while accessing the datasource.
   /// </exception>
   internal protected virtual DomainObject LoadObject (ObjectID id)
@@ -287,8 +287,8 @@ public class ClientTransaction
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
   /// <exception cref="Persistence.PersistenceException">
-  ///   The related object could not be loaded, but is mandatory.
-  ///   The relation refers to non-existing object.
+  ///   The related object could not be loaded, but is mandatory.<br />
+  ///   The relation refers to non-existing object.<br />
   ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>
   /// </exception>
   // Todo documentation: all exceptions from ClientTransaction.LoadObject
@@ -328,7 +328,7 @@ public class ClientTransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="Persistence.PersistenceException">
-  ///   <i>relationEndPointID</i> does not refer to 1-to-n relation. <br />
+  ///   <i>relationEndPointID</i> does not refer to 1-to-n relation.<br />
   ///   The StorageProvider for the related objects could not be initialized.
   /// </exception>
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
