@@ -120,7 +120,7 @@ public class TabbedMultiView: WebControl, IControl
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
   private Style _tabStripStyle;
-  private Style _viewStyle;
+  private Style _activeViewStyle;
 
   // construction and destruction
   public TabbedMultiView()
@@ -128,7 +128,7 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip = new WebTabStrip (this);
     _multiViewInternal = new TabbedMultiView.MultiView ();
     _tabStripStyle = new Style();
-    _viewStyle = new Style();
+    _activeViewStyle = new Style();
   }
 
   // methods and properties
@@ -186,13 +186,6 @@ public class TabbedMultiView: WebControl, IControl
     base.OnPreRender (e);
   }
 
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    base.AddAttributesToRender (writer);
-    if (ControlHelper.IsDesignMode (this, Context))
-      writer.AddStyleAttribute ("border", "solid 1px black");
-  }
-
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EnsureChildControls();
@@ -204,9 +197,14 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip.RenderControl (writer);
     writer.RenderEndTag();
 
+    if (ControlHelper.IsDesignMode (this, Context))
+    {
+      writer.AddStyleAttribute ("border", "solid 1px black");
+      writer.AddStyleAttribute ("height", "50pt");
+    }
     writer.AddAttribute (HtmlTextWriterAttribute.Width, _multiViewInternal.Width.ToString());
-    _viewStyle.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (_viewStyle.CssClass))
+    _activeViewStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
     Control view = _multiViewInternal.GetActiveView();
@@ -274,13 +272,13 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   [Category ("Style")]
-  [Description ("The style that you want to apply to the view section.")]
+  [Description ("The style that you want to apply to the active view.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style ViewStyle
+  public Style ActiveViewStyle
   {
-    get { return _viewStyle; }
+    get { return _activeViewStyle; }
   }
 
   [Category ("Style")]

@@ -10,11 +10,6 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
-<style>SepDefaultStyle { BORDER-BOTTOM: #000000 1px solid }
-	TabHoverStyle { BACKGROUND-COLOR: #e0e0e0; TEXT-DECORATION: underline }
-	TabSelectedStyle { COLOR: #000000; BORDER-BOTTOM: medium none; BACKGROUND-COLOR: #ffffff }
-	TabDefaultStyle { BORDER-RIGHT: #000000 2px solid; BORDER-TOP: #000000 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 0.8em; BORDER-LEFT: #000000 1px solid; WIDTH: 10em; COLOR: #000000; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: verdana,arial; HEIGHT: 1.6em; BACKGROUND-COLOR: #e0e0e0; TEXT-ALIGN: center }
-	</style>
 </head>
 <body>
 <form id=Form method=post runat="server">
@@ -23,7 +18,8 @@
 <asp:linkbutton id=CancelButton runat="server">Cancel</asp:linkbutton></div><rwc:validationstateviewer id=ValidationStateViewer runat="server" DESIGNTIMEDRAGDROP="119" visible="true"></rwc:validationstateviewer>
 <rwc:webtabstrip id=PagesTabStrip runat="server" width="100%" tabspanesize="4"></rwc:webtabstrip>
 <p></p>
-<rwc:tabbedMultiView id=MultiView runat="server" SelectedIndex="-1" ></rwc:tabbedMultiView>
+<rwc:tabbedMultiView id=MultiView runat="server">
+</rwc:tabbedMultiView>
 <asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button>
 <asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form></FORM>
   </body>

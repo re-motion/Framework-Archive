@@ -196,15 +196,26 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-    if (ControlHelper.IsDesignMode (this, Context))
-      writer.AddStyleAttribute ("border", "solid 1px black");
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
     int tabsOnPane = 0;
     bool isTabsPaneOpen = false;
-    foreach (WebTab tab in Tabs)
+    WebTabCollection tabs = Tabs;
+    
+    if (   ControlHelper.IsDesignMode (this, Context)
+        && tabs.Count == 0)
+    {
+      tabs = new WebTabCollection (null);
+      for (int i = 0; i < 5; i++)
+      {
+        tabs.Add (new WebTab (i.ToString(), "Tab " + (i + 1).ToString())); 
+        tabs.Add (WebTab.GetSeparator());
+      }
+    }
+
+    foreach (WebTab tab in tabs)
     {
       if (   ! tab.IsSeparator
           && ! _tabsPaneSize.IsNull 
