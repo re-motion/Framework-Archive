@@ -520,6 +520,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\WebTreeView.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\AdvancedCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

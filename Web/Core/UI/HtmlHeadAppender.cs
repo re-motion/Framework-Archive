@@ -104,6 +104,7 @@ public class HtmlHeadAppender
     else
     {
       HtmlGenericControl headElement = new HtmlGenericControl ("title");
+      headElement.EnableViewState = false;
       headElement.InnerText = title;
       RegisterHeadElement ("title", headElement);
     }
@@ -122,6 +123,7 @@ public class HtmlHeadAppender
   public void RegisterStylesheetLink (string key, string href)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("link");
+    headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/css");
     headElement.Attributes.Add ("rel", "stylesheet");
     headElement.Attributes.Add ("href", href);
@@ -141,6 +143,7 @@ public class HtmlHeadAppender
   public void RegisterJavaScriptInclude (string key, string src)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("script");
+    headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/javascript");
     headElement.Attributes.Add ("src", src);
     RegisterHeadElement (key, headElement);
