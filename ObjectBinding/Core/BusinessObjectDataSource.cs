@@ -166,7 +166,10 @@ public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusine
   public IBusinessObjectProperty Property
   {
     get { return ReferenceProperty; }
-    set { _property = (IBusinessObjectReferenceProperty) value; }
+    set 
+    { 
+      _property = (IBusinessObjectReferenceProperty) value; 
+    }
   }
 
   [Browsable(false)]
@@ -184,7 +187,10 @@ public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusine
       }
       return _property; 
     }
-    set { _property = value; }
+    set 
+    {
+      _property = value;
+    }
   }
 
   [Browsable (false)]
