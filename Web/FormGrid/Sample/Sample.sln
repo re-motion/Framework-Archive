@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "http://localhost/FormGrid/Sample/Sample.csproj", "{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectUniqueName0 = http://localhost/FormGrid/Sample/Sample.csproj
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice0 = 2
+		SccLocalPath1 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {64BE7283-C70A-492F-9272-217D61F8CB9C}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Debug.ActiveCfg = Debug|.NET
+		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Debug.Build.0 = Debug|.NET
+		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.ActiveCfg = Release|.NET
+		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
