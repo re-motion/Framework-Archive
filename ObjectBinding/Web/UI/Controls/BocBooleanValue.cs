@@ -338,7 +338,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     {
       string script;
 
-      string key = typeof (BocBooleanValue).FullName;
+      string key = typeof (BocBooleanValue).FullName + "_Script";
       if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
@@ -362,15 +362,15 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       }
 
       string requiredFlag = IsRequired ? "true" : "false";
-      string imageButton = "this.parentElement.all['" + _imageButton.UniqueID + "']";
-      string label = _showDescription ? "this.parentElement.all['" + _label.UniqueID + "']" : "null";
-      string hiddenField = "this.parentElement.all['" + _hiddenField.UniqueID + "']";
+      string imageButton = "document.getElementById ('" + _imageButton.ClientID + "')";
+      string label = _showDescription ? "document.getElementById ('" + _label.ClientID + "')" : "null";
+      string hiddenField = "document.getElementById ('" + _hiddenField.ClientID + "')";
       script = "BocBooleanValue_SelectNextCheckboxValue (" 
           + imageButton + ", " 
           + label + ", " 
           + hiddenField + ", "
           +  requiredFlag + ");"
-          + " return false;";
+          + "return false;";
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
     }
