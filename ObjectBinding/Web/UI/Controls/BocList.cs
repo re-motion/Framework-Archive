@@ -2785,7 +2785,7 @@ public delegate void BocCommandClickEventHandler (object sender, BocCommandClick
 public class BocCommandClickEventArgs: EventArgs
 {
   /// <summary>
-  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the clicked command 
+  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the clicked command 
   ///   belongs to.
   /// </summary>
   private string _columnID;
@@ -2803,7 +2803,7 @@ public class BocCommandClickEventArgs: EventArgs
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="columnID">
-  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the command belongs.
+  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the command belongs.
   /// </param>
   /// <param name="listIndex">
   ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
@@ -2825,7 +2825,7 @@ public class BocCommandClickEventArgs: EventArgs
   }
 
   /// <summary>
-  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the command belongs.
+  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the command belongs.
   /// </summary>
   public string ColumnID
   {
