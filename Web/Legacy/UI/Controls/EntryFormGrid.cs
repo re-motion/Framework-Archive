@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -182,7 +183,7 @@ public class EntryFormGrid: Control
 
   public static string GetImagePath (string imgFileName)
   {
-    return HttpContext.Current.Server.MapPath ("~/images/" + imgFileName);
+    return Path.Combine (HttpContext.Current.Request.ApplicationPath, "images/" + imgFileName);
   }
 
   public string InfoImagePath 
