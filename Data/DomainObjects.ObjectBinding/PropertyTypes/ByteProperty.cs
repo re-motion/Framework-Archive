@@ -30,18 +30,29 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
 
   protected internal override object FromInternalType (object internalValue)
   {
-    if (!IsList)
-      return int.Parse (internalValue.ToString ());
-    else
+    if (IsList)
       return internalValue;
+
+    if (IsNullableType)
+      return NaByte.ToBoxedByte ((NaByte)internalValue);
+
+    return int.Parse (internalValue.ToString ());  
   }
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (!IsList)
-      return byte.Parse (publicValue.ToString ());
-    else
+    if (IsList)
       return publicValue;
+
+    if (IsNullableType)
+    {
+      if (publicValue != null)
+        return NaByte.Parse (publicValue.ToString ());
+      else
+        return NaByte.Null;
+    }
+
+    return byte.Parse (publicValue.ToString ());
   }
 }
 }

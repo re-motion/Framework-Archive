@@ -30,18 +30,29 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
 
   protected internal override object FromInternalType (object internalValue)
   {
-    if (!IsList)
-      return decimal.Parse (internalValue.ToString ());
-    else
+    if (IsList)
       return internalValue;
+
+    if (IsNullableType)
+      return NaDecimal.ToBoxedDecimal ((NaDecimal)internalValue);
+
+    return decimal.Parse (internalValue.ToString ());  
   }
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (!IsList)
-      return decimal.Parse (publicValue.ToString ());
-    else
+    if (IsList)
       return publicValue;
+
+    if (IsNullableType)
+    {
+      if (publicValue != null)
+        return NaDecimal.Parse (publicValue.ToString ());
+      else
+        return NaDecimal.Null;
+    }
+
+    return decimal.Parse (publicValue.ToString ());
   }
 }
 }

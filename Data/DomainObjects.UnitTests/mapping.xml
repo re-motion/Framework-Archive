@@ -360,14 +360,14 @@
           <column>NaDateTimeWithNullValue</column>
           <nullable>true</nullable>
         </property>
-        <property name="NaDoubleWithNullValueProperty">
-          <type>double</type>
-          <column>NaDoubleWithNullValue</column>
-          <nullable>true</nullable>
-        </property>
         <property name="NaDecimalWithNullValueProperty">
           <type>decimal</type>
           <column>NaDecimalWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaDoubleWithNullValueProperty">
+          <type>double</type>
+          <column>NaDoubleWithNullValue</column>
           <nullable>true</nullable>
         </property>
         <property name="NaGuidWithNullValueProperty">

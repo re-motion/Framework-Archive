@@ -30,18 +30,29 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
 
   protected internal override object FromInternalType (object internalValue)
   {
-    if (!IsList)
-      return Single.Parse (internalValue.ToString ());
-    else
+    if (IsList)
       return internalValue;
+
+    if (IsNullableType)
+      return NaSingle.ToBoxedSingle ((NaSingle)internalValue);
+
+    return float.Parse (internalValue.ToString ());  
   }
 
   protected internal override object ToInternalType (object publicValue)
   {
-    if (!IsList)
-      return Single.Parse (publicValue.ToString ());
-    else
+    if (IsList)
       return publicValue;
+
+    if (IsNullableType)
+    {
+      if (publicValue != null)
+        return NaSingle.Parse (publicValue.ToString ());
+      else
+        return NaSingle.Null;
+    }
+
+    return float.Parse (publicValue.ToString ());
   }
 }
 }

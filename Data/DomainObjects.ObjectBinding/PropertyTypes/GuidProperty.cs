@@ -30,18 +30,29 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
 
   protected internal override object FromInternalType(object internalValue)
   {
-    if (!IsList)
-      return new Guid (internalValue.ToString ());
-    else
+    if (IsList)
       return internalValue;
+
+    if (IsNullableType)
+      return NaGuid.ToBoxedGuid ((NaGuid)internalValue);
+
+    return new Guid (internalValue.ToString ());  
   }
 
   protected internal override object ToInternalType(object publicValue)
   {
-    if (!IsList)
-      return new Guid (publicValue.ToString ());
-    else
+    if (IsList)
       return publicValue;
+
+    if (IsNullableType)
+    {
+      if (publicValue != null)
+        return new NaGuid (new Guid (publicValue.ToString ()));
+      else
+        return NaGuid.Null;
+    }
+
+    return new Guid (publicValue.ToString ());
   }
 }
 }

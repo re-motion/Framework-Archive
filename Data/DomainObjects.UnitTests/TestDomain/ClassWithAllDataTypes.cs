@@ -142,12 +142,6 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaByteProperty", value); }
   }
 
-  public NaDecimal NaDecimalProperty
-  {
-    get { return DataContainer.GetNaDecimal ("NaDecimalProperty"); }
-    set { DataContainer.SetValue ("NaDecimalProperty", value); }
-  }
-
   public NaDateTime NaDateProperty
   {
     get { return DataContainer.GetNaDateTime ("NaDateProperty"); }
@@ -158,6 +152,12 @@ public class ClassWithAllDataTypes : TestDomainBase
   {
     get { return DataContainer.GetNaDateTime ("NaDateTimeProperty"); }
     set { DataContainer.SetValue ("NaDateTimeProperty", value); }
+  }
+
+  public NaDecimal NaDecimalProperty
+  {
+    get { return DataContainer.GetNaDecimal ("NaDecimalProperty"); }
+    set { DataContainer.SetValue ("NaDecimalProperty", value); }
   }
 
   public NaDouble NaDoubleProperty
@@ -214,12 +214,6 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaByteWithNullValueProperty", value); }
   }
 
-  public NaDecimal NaDecimalWithNullValueProperty
-  {
-    get { return DataContainer.GetNaDecimal ("NaDecimalWithNullValueProperty"); }
-    set { DataContainer.SetValue ("NaDecimalWithNullValueProperty", value); }
-  }
-
   public NaDateTime NaDateWithNullValueProperty
   {
     get { return DataContainer.GetNaDateTime ("NaDateWithNullValueProperty"); }
@@ -230,6 +224,12 @@ public class ClassWithAllDataTypes : TestDomainBase
   {
     get { return DataContainer.GetNaDateTime ("NaDateTimeWithNullValueProperty"); }
     set { DataContainer.SetValue ("NaDateTimeWithNullValueProperty", value); }
+  }
+
+  public NaDecimal NaDecimalWithNullValueProperty
+  {
+    get { return DataContainer.GetNaDecimal ("NaDecimalWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaDecimalWithNullValueProperty", value); }
   }
 
   public NaDouble NaDoubleWithNullValueProperty
