@@ -59,7 +59,6 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
   private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
   private bool _showLabels = true;
-  private bool _skipNamingContainers = false;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
   private ResourceManagerSet _cachedResourceManager;
 
@@ -116,8 +115,7 @@ public class ValidationStateViewer : WebControl, IControl
         _formGridManagers.Add(formGridManager);
 
       bool isChildNamingContainer = childControl is INamingContainer;
-      if (! _skipNamingContainers || isChildNamingContainer)
-        PopulateFormGridManagerList (childControl);
+      PopulateFormGridManagerList (childControl);
     }
   }
 
@@ -289,20 +287,6 @@ public class ValidationStateViewer : WebControl, IControl
   {
     get { return _showLabels; }
     set { _showLabels = value; }
-  }
-
-  /// <summary>
-  ///   Gets or sets a flag that determines whether the <see cref="ValidationStateViewer"/> skips
-  ///   <see cref="INamingContainer"/> controls when searching for <see cref="FormGridManager"/> controls.
-  /// </summary>
-  /// <value> <see langword="false"/> to include the naming containers in the search path. </value>
-  [Category ("Behavior")]
-  [Description ("false to branch into naming containers when searching for FormGridManagers.")]  
-  [DefaultValue (false)]
-  public bool SkipNamingContainers
-  {
-    get { return _skipNamingContainers; }
-    set { _skipNamingContainers = value; }
   }
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
