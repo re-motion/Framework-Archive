@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -14,6 +15,10 @@ public class RelationEndPointIDTest
 
   // member fields
 
+  private ObjectID _objectID;
+  private string _propertyName;
+  private RelationEndPointID _endPointID;
+
   // construction and disposing
 
   public RelationEndPointIDTest ()
@@ -22,63 +27,55 @@ public class RelationEndPointIDTest
 
   // methods and properties
 
+  [SetUp]
+  public void SetUp ()
+  {
+    _objectID = DomainObjectIDs.Order1;
+    _propertyName = "OrderTicket";
+    _endPointID = new RelationEndPointID (_objectID, _propertyName);
+  }
+
   [Test]
   public void Initialize ()
   {
-    ObjectID id = new ObjectID ("StorageProviderID", "ClassID", Guid.NewGuid ());
-    RelationEndPointID endPointID = new RelationEndPointID (id, "PropertyName");
-
-    Assert.AreEqual ("PropertyName", endPointID.PropertyName);
-    Assert.AreEqual (id, endPointID.ObjectID);
+    Assert.AreEqual (_propertyName, _endPointID.PropertyName);
+    Assert.AreEqual (_objectID, _endPointID.ObjectID);
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentNullException))]
   public void InitializeWithInvalidPropertyName ()
   {
-    ObjectID id = new ObjectID ("StorageProviderID", "ClassID", Guid.NewGuid ());
-    RelationEndPointID endPointID = new RelationEndPointID (id, null);
+    RelationEndPointID endPointID = new RelationEndPointID (_objectID, (string) null);
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentNullException))]
   public void InitializeWithInvalidObjectID ()
   {
-    RelationEndPointID endPointID = new RelationEndPointID (null, "PropertyName");
+    RelationEndPointID endPointID = new RelationEndPointID (null, _propertyName);
   }
 
   [Test]
   public void HashCode ()
   {
-    ObjectID id = new ObjectID ("StorageProviderID", "ClassID", Guid.NewGuid ());
-    RelationEndPointID endPointID = new RelationEndPointID (id, "PropertyName");
-    
-    int expectedHashCode = id.GetHashCode () ^ "PropertyName".GetHashCode ();
-    Assert.AreEqual (expectedHashCode, endPointID.GetHashCode ());
+    int expectedHashCode = _objectID.GetHashCode () ^ _propertyName.GetHashCode ();
+    Assert.AreEqual (expectedHashCode, _endPointID.GetHashCode ());
   }
 
   [Test]
   public void TestEquals ()
   {
-    Guid guid = Guid.NewGuid ();
+    RelationEndPointID endPointID2 = new RelationEndPointID (_objectID, _propertyName);
 
-    ObjectID id1 = new ObjectID ("StorageProviderID", "ClassID", guid);
-    RelationEndPointID endPointID1 = new RelationEndPointID (id1, "PropertyName");
-  
-    ObjectID id2 = new ObjectID ("StorageProviderID", "ClassID", guid);
-    RelationEndPointID endPointID2 = new RelationEndPointID (id2, "PropertyName");
-
-    Assert.IsTrue (endPointID1.Equals (endPointID2));
+    Assert.IsTrue (_endPointID.Equals (endPointID2));
   }
 
   [Test]
   public void TestToString ()
   {
-    ObjectID id = new ObjectID ("StorageProviderID", "ClassID", Guid.NewGuid ());
-    RelationEndPointID endPointID = new RelationEndPointID (id, "PropertyName");
-    
-    string expected = id.ToString () + "/PropertyName";
-    Assert.AreEqual (expected, endPointID.ToString ());
+    string expected = _objectID.ToString () + "/" + _propertyName;
+    Assert.AreEqual (expected, _endPointID.ToString ());
   }
 }
 }

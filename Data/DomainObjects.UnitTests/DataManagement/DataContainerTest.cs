@@ -202,15 +202,15 @@ public class DataContainerTest
   {
     string[] expectedPropertyNames = new string[] {"Customer", "OrderTicket", "OrderItems", "Official"};
 
-    Assert.AreEqual (4, _existingDataContainer.RelationEndPoints.Length);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPoints[0].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPoints[1].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPoints[2].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPoints[3].ObjectID);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPoints[0].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPoints[1].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPoints[2].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPoints[3].PropertyName) >= 0);
+    Assert.AreEqual (4, _existingDataContainer.RelationEndPointIDs.Length);
+    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[0].ObjectID);
+    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[1].ObjectID);
+    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[2].ObjectID);
+    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[3].ObjectID);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[0].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[1].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[2].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[3].PropertyName) >= 0);
   }
 }
 }

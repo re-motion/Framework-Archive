@@ -86,8 +86,8 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.Register (orderTicket2);
     _dataManager.Register (orderWithoutOrderItemDataContainer);
 
-    RelationEndPoint order1EndPoint = new RelationEndPoint (order1, "OrderTicket");
-    _clientTransaction.SetRelatedObject (order1EndPoint, orderTicket2.DomainObject);
+    RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
+    _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
     DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
     Assert.AreEqual (4, changedObjects.Count);
@@ -123,16 +123,16 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.Register (orderTicket2);
     _dataManager.Register (orderWithoutOrderItemDataContainer);
 
-    RelationEndPoint order1EndPoint = new RelationEndPoint (order1, "OrderTicket");
-    _clientTransaction.SetRelatedObject (order1EndPoint, orderTicket2.DomainObject);
+    RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "OrderTicket");
+    _clientTransaction.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
     _dataManager.Commit ();
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
-    Assert.AreSame (orderTicket2.DomainObject, _clientTransaction.GetRelatedObject (order1EndPoint));
-    Assert.AreSame (order1.DomainObject, _clientTransaction.GetRelatedObject (new RelationEndPoint (orderTicket2, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPoint (orderTicket1, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPoint (orderWithoutOrderItemDataContainer, "OrderTicket")));
+    Assert.AreSame (orderTicket2.DomainObject, _clientTransaction.GetRelatedObject (order1EndPointID));
+    Assert.AreSame (order1.DomainObject, _clientTransaction.GetRelatedObject (new RelationEndPointID (orderTicket2.ID, "Order")));
+    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPointID (orderTicket1.ID, "Order")));
+    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPointID (orderWithoutOrderItemDataContainer.ID, "OrderTicket")));
     Assert.IsFalse (_dataManager.HasRelationChanged (order1));
     Assert.IsFalse (_dataManager.HasRelationChanged (orderWithoutOrderItemDataContainer));
     Assert.IsFalse (_dataManager.HasRelationChanged (orderTicket1));
@@ -150,7 +150,7 @@ public class DataManagerTest : ClientTransactionBaseTest
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
     Assert.IsNull (order1.Customer);
-    Assert.AreEqual (0, _clientTransaction.GetOriginalRelatedObjects(new RelationEndPoint (customer1, "Orders")).Count);
+    Assert.AreEqual (0, _clientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (customer1.ID, "Orders")).Count);
     Assert.AreEqual (0, customer1.Orders.Count);
   }
 
@@ -160,57 +160,62 @@ public class DataManagerTest : ClientTransactionBaseTest
     Computer computer = new Computer ();
     ObjectID id = computer.ID;
 
-    Assert.AreSame (computer.DataContainer, _dataManager.GetObject (id));
+    Assert.AreSame (computer.DataContainer, _dataManager.GetDataContainer (id));
 
     _dataManager.Rollback ();
     
-    Assert.IsNull (_dataManager.GetObject (id));
+    Assert.IsNull (_dataManager.GetDataContainer (id));
   }
 
   [Test]
-  public void RollbackSingleObjectRelationLinkMap ()
+  public void RollbackObjectEndPoint ()
   {
     Computer computer = new Computer ();
     Employee employee = new Employee ();
 
     computer.Employee = employee;
 
-    RelationEndPoint computerEndPoint = new RelationEndPoint (computer, "Employee");
-    RelationEndPoint employeeEndPoint = new RelationEndPoint (employee, "Computer");
+    RelationEndPointID employeeEndPointID = new RelationEndPointID (employee.ID, "Computer");
+    RelationEndPointID computerEndPointID = new RelationEndPointID (computer.ID, "Employee");
 
-    Assert.AreSame (computer.ID, _dataManager.GetSingleObjectRelationLink (employeeEndPoint).DestinationObjectID);
-    Assert.AreSame (employee.ID, _dataManager.GetSingleObjectRelationLink (computerEndPoint).DestinationObjectID);
+    ObjectEndPoint employeeEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (employeeEndPointID);
+    ObjectEndPoint computerEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (computerEndPointID);
+
+    Assert.AreSame (computer.ID, employeeEndPoint.OppositeObjectID);
+    Assert.AreSame (employee.ID, computerEndPoint.OppositeObjectID);
 
     _dataManager.Rollback ();
 
-    Assert.IsNull (_dataManager.GetSingleObjectRelationLink (employeeEndPoint));
-    Assert.IsNull (_dataManager.GetSingleObjectRelationLink (computerEndPoint));
+    Assert.IsNull (_dataManager.GetRelationEndPoint (employeeEndPointID));
+    Assert.IsNull (_dataManager.GetRelationEndPoint (computerEndPointID));
   }
 
   [Test]
-  public void RollbackMultipleObjectRelationLinkMap ()
+  public void RollbackCollectionEndPoint()
   {
     Order order = new Order ();
     OrderItem orderItem = new OrderItem ();
   
     orderItem.Order = order;
 
-    RelationEndPoint orderEndPoint = new RelationEndPoint (order, "OrderItems");
-    RelationEndPoint orderItemEndPoint = new RelationEndPoint (orderItem, "Order");
+    RelationEndPointID orderEndPointID = new RelationEndPointID (order.ID, "OrderItems");
+    RelationEndPointID orderItemEndPointID = new RelationEndPointID (orderItem.ID, "Order");
 
-    Assert.AreSame (order.ID, _dataManager.GetSingleObjectRelationLink (orderItemEndPoint).DestinationObjectID);
+    ObjectEndPoint orderItemEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (orderItemEndPointID); 
+    Assert.AreEqual (order.ID, orderItemEndPoint.OppositeObjectID);
 
-    DomainObjectCollection orderItems = 
-        _dataManager.GetMultipleObjectsRelationLink (orderEndPoint).DestinationDomainObjects;
+    CollectionEndPoint orderEndPoint = (CollectionEndPoint) _dataManager.GetRelationEndPoint (orderEndPointID);
 
-    Assert.AreEqual (1, orderItems.Count);
-    Assert.IsNotNull (orderItems[orderItem.ID]);
-    Assert.AreSame (order.ID, _dataManager.GetSingleObjectRelationLink (orderItemEndPoint).DestinationObjectID);
+    Assert.AreEqual (1, orderEndPoint.OppositeDomainObjects.Count);
+    Assert.IsNotNull (orderEndPoint.OppositeDomainObjects[orderItem.ID]);
 
     _dataManager.Rollback ();
 
-    Assert.IsNull (_dataManager.GetMultipleObjectsRelationLink (orderEndPoint));
-    Assert.IsNull (_dataManager.GetSingleObjectRelationLink (orderItemEndPoint));
+    orderItemEndPoint = (ObjectEndPoint) _dataManager.GetRelationEndPoint (orderItemEndPointID); 
+    orderEndPoint = (CollectionEndPoint) _dataManager.GetRelationEndPoint (orderEndPointID);
+
+    Assert.IsNull (orderEndPoint);
+    Assert.IsNull (orderItemEndPoint);
   }
 }
 }

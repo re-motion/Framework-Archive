@@ -12,7 +12,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   // member fields
 
-  private ILinkChangeDelegate _changeDelegate = null;
+  private ICollectionEndPointChangeDelegate _changeDelegate = null;
 
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
@@ -80,6 +80,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _oppositeDomainObjects.ChangeDelegate = this;
   }
 
+  protected CollectionEndPoint (IRelationEndPointDefinition definition) : base (definition)
+  {
+  }
+
   // methods and properties
 
   public override void Commit ()
@@ -108,7 +112,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects); } 
   }
 
-  public override void CheckMandatory()
+  public override void CheckMandatory ()
   {
     if (_oppositeDomainObjects.Count == 0)
     {
@@ -129,7 +133,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     get { return _oppositeDomainObjects; }
   }
 
-  internal ILinkChangeDelegate ChangeDelegate
+  internal ICollectionEndPointChangeDelegate ChangeDelegate
   {
     set { _changeDelegate = value; }
   }
@@ -179,8 +183,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (_changeDelegate == null)
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
-    // TODO: Uncomment this:
-    //_changeDelegate.PerformAdd (this, domainObject);
+    _changeDelegate.PerformAdd (this, domainObject);
   }
 
   void ICollectionChangeDelegate.PerformRemove (DomainObjectCollection collection, DomainObject domainObject)
@@ -188,8 +191,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (_changeDelegate == null)
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
-    // TODO: Uncomment this:
-    //_changeDelegate.PerformRemove (this, domainObject);
+    _changeDelegate.PerformRemove (this, domainObject);
   }
 
   #endregion

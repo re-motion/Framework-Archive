@@ -51,7 +51,7 @@ public class DataContainer
   private DataContainerStateType _state;
   private DomainObject _domainObject;
   private ClassDefinition _classDefinition;
-  private RelationEndPoint[] _relationEndPoints = null;
+  private RelationEndPointID[] _relationEndPointIDs = null;
 
   // construction and disposing
 
@@ -88,20 +88,20 @@ public class DataContainer
     }
   }
 
-  public RelationEndPoint[] RelationEndPoints
+  public RelationEndPointID[] RelationEndPointIDs
   {
     get
     {
-      if (_relationEndPoints != null)
-        return _relationEndPoints;
+      if (_relationEndPointIDs != null)
+        return _relationEndPointIDs;
 
       IRelationEndPointDefinition[] endPointDefinitions = _classDefinition.GetAllRelationEndPointDefinitions ();
-      _relationEndPoints = new RelationEndPoint[endPointDefinitions.Length];
+      _relationEndPointIDs = new RelationEndPointID[endPointDefinitions.Length];
 
       for (int i = 0; i < endPointDefinitions.Length; i++)
-        _relationEndPoints[i] = new RelationEndPoint (this, endPointDefinitions[i]);
+        _relationEndPointIDs[i] = new RelationEndPointID (_id, endPointDefinitions[i].PropertyName);
 
-      return _relationEndPoints;
+      return _relationEndPointIDs;
     }
   }
 

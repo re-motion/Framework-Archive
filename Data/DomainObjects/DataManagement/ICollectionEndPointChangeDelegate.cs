@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-internal interface ILinkChangeDelegate
+internal interface ICollectionEndPointChangeDelegate
 {
-  void PerformAdd (MultipleObjectsRelationLink link, DomainObject domainObject);
-  void PerformRemove (MultipleObjectsRelationLink link, DomainObject domainObject);
+  void PerformAdd (CollectionEndPoint endPoint, DomainObject domainObject);
+  void PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject);
 }
 }
