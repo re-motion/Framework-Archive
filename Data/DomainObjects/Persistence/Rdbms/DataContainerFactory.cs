@@ -51,7 +51,7 @@ public class DataContainerFactory
     CheckForMandatoryColumns ();
 
     string classID = _dataReader.GetString (_dataReader.GetOrdinal ("ClassID"));
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (classID);
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
 
     if (classDefinition == null)
     {
