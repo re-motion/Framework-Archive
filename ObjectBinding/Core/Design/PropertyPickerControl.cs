@@ -89,9 +89,10 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     // 
     // FilterLabel
     // 
-    this.FilterLabel.Location = new System.Drawing.Point(8, 8);
+    this.FilterLabel.AutoSize = true;
+    this.FilterLabel.Location = new System.Drawing.Point(8, 11);
     this.FilterLabel.Name = "FilterLabel";
-    this.FilterLabel.Size = new System.Drawing.Size(32, 23);
+    this.FilterLabel.Size = new System.Drawing.Size(29, 16);
     this.FilterLabel.TabIndex = 1;
     this.FilterLabel.Text = "&Filter";
     // 
@@ -99,9 +100,9 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     // 
     this.FilterField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
       | System.Windows.Forms.AnchorStyles.Right)));
-    this.FilterField.Location = new System.Drawing.Point(48, 8);
+    this.FilterField.Location = new System.Drawing.Point(50, 8);
     this.FilterField.Name = "FilterField";
-    this.FilterField.Size = new System.Drawing.Size(248, 20);
+    this.FilterField.Size = new System.Drawing.Size(246, 20);
     this.FilterField.TabIndex = 2;
     this.FilterField.Text = "";
     this.FilterField.TextChanged += new System.EventHandler(this.FilterField_TextChanged);
@@ -118,6 +119,9 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     // 
     // PropertiesList
     // 
+    this.PropertiesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+      | System.Windows.Forms.AnchorStyles.Left) 
+      | System.Windows.Forms.AnchorStyles.Right)));
     this.PropertiesList.Location = new System.Drawing.Point(8, 32);
     this.PropertiesList.Name = "PropertiesList";
     this.PropertiesList.Size = new System.Drawing.Size(288, 199);
