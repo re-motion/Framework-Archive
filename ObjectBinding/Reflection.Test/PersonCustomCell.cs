@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding.Web.Controls;
 
 namespace OBRTest
 {
-public class PersonCustomCell: IBocCustomCell
+public class PersonCustomCell: IBocCustomColumnDefinitionCell
 {
   public PersonCustomCell()
   {

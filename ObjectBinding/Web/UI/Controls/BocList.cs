@@ -263,7 +263,7 @@ public class BocList:
   /// </summary>
   private int _selectedColumnDefinitionSetIndex = -1;
  
-  /// <summary> Determines wheter an empty list will still render it's headers. </summary>
+  /// <summary> Determines wheter an empty list will still render its headers. </summary>
   private bool _showEmptyList = true;
 
   /// <summary> Determines whether to generate columns for all properties. </summary>
@@ -2627,7 +2627,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using it's ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
   /// </summary>
   public override Control TargetControl 
   {
@@ -2837,7 +2837,7 @@ public class BocList:
       _checkBoxCheckedState[rowIndex] = true;
   }
 
-  /// <summary> Gets or sets a flag that determines wheter an empty list will still render it's headers. </summary>
+  /// <summary> Gets or sets a flag that determines wheter an empty list will still render its headers. </summary>
   /// <value> <see langword="false"/> to hide the headers if the list is empty. </value>
   [Category ("Behavior")]
   [Description ("Determines whether the list headers will be rendered if no data is provided.")]

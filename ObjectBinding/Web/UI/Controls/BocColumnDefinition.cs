@@ -110,7 +110,7 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
   private SingleControlItemCollection _command;
 
-  /// <summary> Initializes a new instance of the <see cref="BocRenderedColumnDefinition"/> class. </summary>
+  /// <summary> Initializes a new instance of the <see cref="BocCommandEnabledColumnDefinition"/> class. </summary>
   public BocCommandEnabledColumnDefinition()
   {
     _command = new SingleControlItemCollection (new BocListItemCommand(), new Type[] {typeof (BocListItemCommand)});
@@ -151,7 +151,7 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
       return true;
   }
 
-  /// <summary> Sets the <see cref="Command"/> to it's default value. </summary>
+  /// <summary> Sets the <see cref="Command"/> to its default value. </summary>
   /// <remarks> 
   ///   The default value is a <see cref="BocListItemCommand"/> object with a <c>Command.Type</c> set to 
   ///   <see cref="CommandType.None"/>.
@@ -516,16 +516,16 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 }
 
-/// <summary> A column definition using <see cref="IBocListCustomCell"/> for rendering. </summary>
+/// <summary> A column definition using <see cref="IBocCustomColumnDefinitionCell"/> for rendering. </summary>
 public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
 {
   /// <summary> The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> internally. </summary>
   private PropertyPathBinding _propertyPathBinding;
-  private IBocCustomCell _customCell;
+  private IBocCustomColumnDefinitionCell _customCell;
   private string _customCellType;
   private string _customCellArgument;
 
-  /// <summary> Initializes a new instance of the <see cref="BocSimpleColumnDefinition"/> class. </summary>
+  /// <summary> Initializes a new instance of the <see cref="BocCustomColumnDefinition"/> class. </summary>
   public BocCustomColumnDefinition()
   {
     _propertyPathBinding = new PropertyPathBinding();
@@ -540,7 +540,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public IBocCustomCell CustomCell
+  public IBocCustomColumnDefinitionCell CustomCell
   {
     get 
     {
@@ -550,7 +550,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
         object[] argument = null;
         if (! StringUtility.IsNullOrEmpty (_customCellArgument))
           argument = new object[] {argument};
-        _customCell = (IBocCustomCell) Activator.CreateInstance (type, argument);
+        _customCell = (IBocCustomColumnDefinitionCell) Activator.CreateInstance (type, argument);
       }
       return _customCell; 
     }
@@ -643,7 +643,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   } 
 }
 
-public interface IBocCustomCell
+public interface IBocCustomColumnDefinitionCell
 {
   void Render (
       HtmlTextWriter writer, 

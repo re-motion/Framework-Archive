@@ -1,9 +1,3 @@
-1.1.50.0
-========
-
-- BocValueColumnDefinition und BocCommandColumnDefinition
-  * Ableitungshierachie geändert: statt von BocColumnDefinition nun von BocCommandEnabledColumnDefinition abgeleitet.
-  
 1.1.49.0
 ========
 
@@ -12,6 +6,9 @@
   * Bietet einen Read-Only Object-Bound Tree View.
   * Nodes werden gecached um Abfragen auf das Objectmodell so gering wie möglich zu halten.
     (Kann deaktiviert werden: EnableTreeNodeCaching.)
+
+- BocValueColumnDefinition und BocCommandColumnDefinition
+  * Ableitungshierachie geändert: statt von BocColumnDefinition nun von BocCommandEnabledColumnDefinition abgeleitet.
   
 1.1.46.0
 ========
