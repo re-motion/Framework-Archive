@@ -83,16 +83,9 @@ public class PropertyDefinitionCollection : CollectionBase
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
-    PropertyDefinitionAddingEventArgs addingArgs = new PropertyDefinitionAddingEventArgs (value);
-    OnAdding (addingArgs);
-
-    if (!addingArgs.Cancel)
-    {
-      base.Add (value.PropertyName, value);
-
-      PropertyDefinitionAddedEventArgs addedArgs = new PropertyDefinitionAddedEventArgs (value);
-      OnAdded (addedArgs);
-    }
+    OnAdding (new PropertyDefinitionAddingEventArgs (value));
+    base.Add (value.PropertyName, value);
+    OnAdded (new PropertyDefinitionAddedEventArgs (value));
   }
 
   #endregion

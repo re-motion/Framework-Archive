@@ -9,19 +9,15 @@ namespace Rubicon.Data.DomainObjects.Mapping
 public delegate void PropertyDefinitionAddingEventHandler (object sender, PropertyDefinitionAddingEventArgs args);
 public delegate void PropertyDefinitionAddedEventHandler (object sender, PropertyDefinitionAddedEventArgs args);
 
-public class PropertyDefinitionAddingEventArgs : CancelEventArgs
+public class PropertyDefinitionAddingEventArgs : EventArgs
 {
   private PropertyDefinition _propertyDefinition;
 
-  public PropertyDefinitionAddingEventArgs (bool cancel, PropertyDefinition propertyDefinition) : base (cancel)
+  public PropertyDefinitionAddingEventArgs (PropertyDefinition propertyDefinition)
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
     _propertyDefinition = propertyDefinition;
-  }
-
-  public PropertyDefinitionAddingEventArgs (PropertyDefinition propertyDefinition) : this (false, propertyDefinition)
-  {
   }
 
   public PropertyDefinition PropertyDefinition

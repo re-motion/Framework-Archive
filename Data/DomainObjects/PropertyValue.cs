@@ -200,11 +200,8 @@ public class PropertyValue
         ValueChangingEventArgs changingArgs = new ValueChangingEventArgs (_value, value);
         OnChanging (changingArgs);
 
-        if (!changingArgs.Cancel)
-        {
-          _value = value;
-          OnChanged (new EventArgs ());
-        }
+        _value = value;
+        OnChanged (new EventArgs ());
       }
     }
   }
