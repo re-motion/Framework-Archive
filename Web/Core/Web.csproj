@@ -20,7 +20,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                RootNamespace = "Rubicon.Findit.Clients.Controls"
+                RootNamespace = "Rubicon.Findit.Client.Controls"
                 StartupObject = ""
             >
                 <Config

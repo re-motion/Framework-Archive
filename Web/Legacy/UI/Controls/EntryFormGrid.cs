@@ -53,20 +53,32 @@ public class EntryFormGridControlBuilder: ControlBuilder
 		if (unqualifiedTag == "EntryTitle")
 			return typeof (EntryTitle);
 
-		throw new ApplicationException ("Only EntryField and EntryTitle tags are allowed in EntryFormGrid controls");
+    throw new ApplicationException ("Only EntryField and EntryTitle tags are allowed in EntryFormGrid controls");
 	}
 }
 
 public class EntryTitle: Control
 {
 	private string _title = String.Empty;
+  private string _padding = String.Empty;
 	public string Title 
 	{
 		get { return _title; }
 		set { _title = value; }
 	}
+	public string Padding
+	{
+		get { return _padding; }
+		set { _padding = value; }
+	}
 	protected override void Render (HtmlTextWriter writer)
 	{
+    if (Padding != String.Empty)
+    {
+      writer.WriteLine ("<tr><td><img src=\"../Images/ws.gif\" width=\"1\" height=\"{0}\"/></td></tr>",
+          Padding);
+    }
+
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"6\"> {0} </td></tr>", this.Title);
 		writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"6\"> "
 				+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");
@@ -112,7 +124,7 @@ public class EntryField: Control
 			label = "<label for=\"" + For + "\">" +  Label + "</label>";
 
 		writer.WriteLine ("<tr>");
-		writer.WriteLine ("<td class=\"label\" align=\"right\"> &nbsp {0}</td>", label);
+		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\">&nbsp;{0}</td>", label);
 		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td nowrap>");
