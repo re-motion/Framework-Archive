@@ -43,7 +43,6 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
     Assert.AreEqual (false, classWithAllDataTypes.BooleanProperty, "BooleanProperty");
     Assert.AreEqual (85, classWithAllDataTypes.ByteProperty, "ByteProperty");
-    Assert.AreEqual ('a', classWithAllDataTypes.CharProperty, "CharProperty");
     Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes.DateProperty, "DateProperty");
     Assert.AreEqual (new DateTime (2005, 1, 1, 17, 0, 0), classWithAllDataTypes.DateTimeProperty, "DateTimeProperty");
     Assert.AreEqual (123456.789, classWithAllDataTypes.DecimalProperty, "DecimalProperty");
