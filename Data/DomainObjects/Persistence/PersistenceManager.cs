@@ -24,9 +24,13 @@ public class PersistenceManager : IDisposable
 
   #region IDisposable Members
 
-  public void Dispose()
+  public virtual void Dispose ()
   {
-    _storageProviderManager.Dispose ();
+    if (_storageProviderManager != null)
+      _storageProviderManager.Dispose ();
+    
+    _storageProviderManager = null;
+    GC.SuppressFinalize (this);
   }
 
   #endregion
