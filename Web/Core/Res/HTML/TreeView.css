@@ -1,9 +1,14 @@
-/*  */
+/* Applied to the node itself */
 div.treeViewNode
 {
 }
 
-/*  */
+/* Applied to the top level node's children area if the expandre is hidden for the top level nodes. */
+div.treeViewTopLevelNodeChildren
+{
+}
+
+/* Applied to the node's children area. */
 div.treeViewNodeChildren
 {
   background-image: url(../Image/TreeViewI.gif);
@@ -11,19 +16,22 @@ div.treeViewNodeChildren
   padding-left: 16px;
 }
 
-/*  */
+/* Applied to the last node's children area in each group. */
 div.treeViewLastNodeChildren
 {
   padding-left: 16px;
 }
 
-/*  */
+/* Applied to the node's head. */
+span.treeViewNodeHead
+{
+}
+
 span.treeViewNodeHead a
 {
   padding: 2px;
 }
 
-/*  */
 span.treeViewNodeHead a:hover
 {
 	padding: 1px;

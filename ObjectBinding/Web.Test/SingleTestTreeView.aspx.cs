@@ -17,6 +17,7 @@ public class SingleTestTreeView : System.Web.UI.Page
   protected System.Web.UI.WebControls.Label TreeViewLabel;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
 
 	override protected void OnInit(EventArgs e)
@@ -89,7 +90,6 @@ public class SingleTestTreeView : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.WebTreeView_Click);
 
   }
 

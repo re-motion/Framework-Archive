@@ -71,6 +71,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <summary> The nodes in this tree view. </summary>
   private WebTreeNodeCollection _nodes;
 
+  private bool _enableTopLevelExpander = true;
+
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
   ///   is expanded.
@@ -253,13 +255,13 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   protected override void RenderContents (HtmlTextWriter writer)
   {
     ResolveNodeIcons();
-    RenderNodes (writer, _nodes);
+    RenderNodes (writer, _nodes, true);
     if (ControlHelper.IsDesignMode (this, Context) && _nodes.Count == 0)
       RenderDesignModeContents (writer);
   }
 
   /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
-  private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes)
+  private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel)
   {
     for (int i = 0; i < nodes.Count; i++)
     {
@@ -269,10 +271,15 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
       writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin node block
 
-      RenderNode (writer, node, isFirstNode, isLastNode); 
+      bool hasExpander =   ! isTopLevel 
+                        || isTopLevel && _enableTopLevelExpander;
+
+      RenderNode (writer, node, isFirstNode, isLastNode, hasExpander); 
       bool hasChildren = node.Children.Count > 0;
+      if (! hasExpander)
+        node.IsExpanded = true;
       if (hasChildren && node.IsExpanded)
-        RenderNodeChildren (writer, node, isLastNode);       
+        RenderNodeChildren (writer, node, isLastNode, hasExpander);       
 
       writer.RenderEndTag(); // End node block
     }
@@ -281,7 +288,12 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <summary> Renders the <paramref name="node"/> onto the <paremref name="writer"/>. </summary>
   /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
   /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
-  private void RenderNode (HtmlTextWriter writer, WebTreeNode node, bool isFirstNode, bool isLastNode)
+  private void RenderNode (
+      HtmlTextWriter writer, 
+      WebTreeNode node, 
+      bool isFirstNode, 
+      bool isLastNode, 
+      bool hasExpander)
   {
     writer.AddStyleAttribute ("white-space", "nowrap");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);  
@@ -289,7 +301,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
     string nodePath = FormatNodePath (node);
 
-    RenderNodeExpander (writer, node, nodePath, isFirstNode, isLastNode);
+    if (hasExpander)
+      RenderNodeExpander (writer, node, nodePath, isFirstNode, isLastNode);
     RenderNodeHead (writer, node, nodePath);
 
     writer.RenderEndTag();
@@ -298,7 +311,12 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <summary> Renders the <paramref name="node"/>'s expander (i.e. +/-) onto the <paremref name="writer"/>. </summary>
   /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
   /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
-  private void RenderNodeExpander (HtmlTextWriter writer, WebTreeNode node, string nodePath, bool isFirstNode, bool isLastNode)
+  private void RenderNodeExpander (
+      HtmlTextWriter writer, 
+      WebTreeNode node, 
+      string nodePath, 
+      bool isFirstNode, 
+      bool isLastNode)
   {
     string nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
     bool hasChildren = node.Children.Count > 0;
@@ -348,15 +366,17 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
   /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
   /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
-  private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode)
+  private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander)
   {
-    if (isLastNode)
+    if (! hasExpander)
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);  
+    else if (isLastNode)
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLastNodeChildren);  
     else
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);  
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin child nodes
 
-    RenderNodes (writer, node.Children);
+    RenderNodes (writer, node.Children, false);
 
     writer.RenderEndTag(); // End child nodes
   }
@@ -370,7 +390,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     nodes.Add (new WebTreeNode ("node0", "Node 0"));
     nodes.Add (new WebTreeNode ("node1", "Node 1"));
     nodes.Add (new WebTreeNode ("node2", "Node 2"));
-    RenderNodes (writer, designModeNodes);
+    RenderNodes (writer, designModeNodes, true);
   }
 
   /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
@@ -535,6 +555,21 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     get { return _nodes; }
   }
 
+  /// <summary> 
+  ///   Gets or sets a flag taht determines whether to show the top level expander and automatically expand the 
+  ///   child nodes if the expander is hidden.
+  /// </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("If cleared, the top level expender will be hidden and the child nodes expanded for the top level nodes.")]
+  [DefaultValue (true)]
+  public bool EnableTopLevelExpander
+  {
+    get { return _enableTopLevelExpander; }
+    set { _enableTopLevelExpander = value; }
+  }
+
+
   /// <summary> Occurs when a node is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a node is clicked.")]
@@ -571,6 +606,16 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   protected virtual string CssClassLastNodeChildren
   {
     get { return "treeViewLastNodeChildren"; }
+  }
+
+  /// <summary> 
+  ///   Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s top level node's children if the expander is 
+  ///   hidden.
+  /// </summary>
+  /// <remarks> Class: <c>treeViewTopLevelNodeChildren</c> </remarks>
+  protected virtual string CssClassTopLevelNodeChildren
+  {
+    get { return "treeViewTopLevelNodeChildren"; }
   }
   #endregion
 }
