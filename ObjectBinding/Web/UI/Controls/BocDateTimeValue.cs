@@ -315,6 +315,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         popUpHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
       writer.AddAttribute("dp_height", popUpHeight.ToString());
     }
+
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
@@ -459,28 +460,28 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
-    _dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
-    _dateTimeValueValidator.ControlToValidate = ID;
+    BocDateTimeValueValidator dateTimeValueValidator = new BocDateTimeValueValidator();
+    dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
+    dateTimeValueValidator.ControlToValidate = ID;
     if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
       IResourceManager resourceManager = GetResourceManager();
-      _dateTimeValueValidator.RequiredErrorMessage = 
+      dateTimeValueValidator.RequiredErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.RequiredErrorMessage);
-      _dateTimeValueValidator.IncompleteErrorMessage = 
+      dateTimeValueValidator.IncompleteErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.IncompleteErrorMessage);
-      _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = 
+      dateTimeValueValidator.InvalidDateAndTimeErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
-      _dateTimeValueValidator.InvalidDateErrorMessage = 
+      dateTimeValueValidator.InvalidDateErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
-      _dateTimeValueValidator.InvalidTimeErrorMessage = 
+      dateTimeValueValidator.InvalidTimeErrorMessage = 
           resourceManager.GetString (ResourceIdentifier.InvalidTimeErrorMessage);
     }
     else
     {
-      _dateTimeValueValidator.ErrorMessage = _errorMessage;
+      dateTimeValueValidator.ErrorMessage = _errorMessage;
     }
-    validators[0] = _dateTimeValueValidator;
+    validators[0] = dateTimeValueValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour

@@ -339,21 +339,21 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     BaseValidator[] validators = new BaseValidator[1];
     
-    CompareValidator _notNullItemValidator = new CompareValidator();
-    _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-    _notNullItemValidator.ControlToValidate = TargetControl.ID;
-    _notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    CompareValidator notNullItemValidator = new CompareValidator();
+    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
+    notNullItemValidator.ControlToValidate = TargetControl.ID;
+    notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     if (StringUtility.IsNullOrEmpty (_errorMessage))
     {
-      _notNullItemValidator.ErrorMessage = 
+      notNullItemValidator.ErrorMessage = 
           GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
     }
     else
     {
-      _notNullItemValidator.ErrorMessage = _errorMessage;
+      notNullItemValidator.ErrorMessage = _errorMessage;
     }      
-    validators[0] = _notNullItemValidator;
+    validators[0] = notNullItemValidator;
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
