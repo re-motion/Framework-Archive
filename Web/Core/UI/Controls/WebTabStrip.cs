@@ -15,7 +15,6 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
-[Designer (typeof (WebTabStripDesigner))]
 public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget
 {
   //  constants
@@ -176,7 +175,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
       styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (WebTreeView), ResourceType.Html, "TabStrip.css");
+          this, Context, typeof (WebTabStrip), ResourceType.Html, "TabStrip.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
     }
 
@@ -197,6 +196,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    if (ControlHelper.IsDesignMode (this, Context))
+      writer.AddStyleAttribute ("border", "solid 1px black");
   }
 
   protected override void RenderContents(HtmlTextWriter writer)

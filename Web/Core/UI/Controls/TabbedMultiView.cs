@@ -15,7 +15,9 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:TabbedMultiView runat=server></{0}:TabbedMultiView>")]
-public class TabbedMultiView: WebControl
+[ParseChildren (true, "Controls")]
+[PersistChildren (false)]
+public class TabbedMultiView: WebControl, IControl
 {
   // constants
 
@@ -117,12 +119,16 @@ public class TabbedMultiView: WebControl
   // fields
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
+  private Style _tabStripStyle;
+  private Style _viewStyle;
 
   // construction and destruction
   public TabbedMultiView()
   {
     _tabStrip = new WebTabStrip (this);
     _multiViewInternal = new TabbedMultiView.MultiView ();
+    _tabStripStyle = new Style();
+    _viewStyle = new Style();
   }
 
   // methods and properties
@@ -166,18 +172,54 @@ public class TabbedMultiView: WebControl
     get { return HtmlTextWriterTag.Div; }
   }
 
+  protected override void OnPreRender(EventArgs e)
+  {
+    string key = typeof (TabbedMultiView).FullName + "_Style";
+    string styleSheetUrl = null;
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
+    }
+
+    base.OnPreRender (e);
+  }
+
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (ControlHelper.IsDesignMode (this, Context))
+      writer.AddStyleAttribute ("border", "solid 1px black");
+  }
+
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EnsureChildControls();
+  
+    _tabStripStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_tabStripStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabStrip);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
     _tabStrip.RenderControl (writer);
+    writer.RenderEndTag();
+
     writer.AddAttribute (HtmlTextWriterAttribute.Width, _multiViewInternal.Width.ToString());
+    _viewStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_viewStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
     Control view = _multiViewInternal.GetActiveView();
     if (view != null)
-      view.RenderControl (writer);
+    {
+      foreach (Control control in view.Controls)
+        control.RenderControl (writer);
+    }
     writer.RenderEndTag();
   }
 
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public override ControlCollection Controls
   {
     get
@@ -187,6 +229,9 @@ public class TabbedMultiView: WebControl
     }
   }
 
+  [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Browsable (false)]
   public TabViewCollection Views
   { 
     get { return (TabViewCollection) MultiViewInternal.Controls; }
@@ -217,6 +262,108 @@ public class TabbedMultiView: WebControl
       return _multiViewInternal; 
     }
   }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the tab strip section.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabStripStyle
+  {
+    get { return _tabStripStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the view section.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style ViewStyle
+  {
+    get { return _viewStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a pane of tabs.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabsPaneStyle
+  {
+    get { return _tabStrip.TabsPaneStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a tab that is neither selected nor a separator.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabStyle
+  {
+    get { return _tabStrip.TabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style TabSelectedStyle
+  {
+    get { return _tabStrip.TabSelectedStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the separators.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style SeparatorStyle
+  {
+    get { return _tabStrip.SeparatorStyle; }
+  }
+
+  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
+  /// <value> 
+  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
+  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
+  /// </value>
+  [Category ("Appearance")]
+  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
+  [DefaultValue (typeof(NaInt32), "null")]
+  public NaInt32 TabsPaneSize
+  {
+    get { return _tabStrip.TabsPaneSize; }
+    set
+    {
+      if (value.IsNull || value.Value <= 0)
+        _tabStrip.TabsPaneSize = NaInt32.Null;
+      else
+        _tabStrip.TabsPaneSize = value; 
+    }
+  }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabbedMultiViewTabStrip</c>. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassTabStrip
+  {
+    get { return "tabbedMultiViewTabStrip"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiActiveView"/>'s active view. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabbedMultiViewActiveView</c>. </para>
+  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassActiveView
+  {
+    get { return "tabbedMultiViewActiveView"; }
+  }
+  #endregion
 }
 
 }
