@@ -16,9 +16,9 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
 {
   #region constants
 
-  private const byte c_null = 0;
-  private const byte c_true = 1;
-  private const byte c_false = 2;
+  internal const byte c_null = 0;
+  internal const byte c_true = 1;
+  internal const byte c_false = 2;
 
   #endregion
 
@@ -39,9 +39,9 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
     _byteValue = value ? c_true : c_false;
   }
 
-  private NaBoolean (int isNull)
+  private NaBoolean (byte byteValue)
   {
-    _byteValue = c_null;
+    _byteValue = byteValue;
   }
 
   #endregion
@@ -214,6 +214,16 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
       return new SqlBoolean (value.Value);
   }
 
+  public static implicit operator NaBooleanEnum (NaBoolean value)
+  {
+    return (NaBooleanEnum)(int) value._byteValue;
+  }
+
+  public static implicit operator NaBoolean (NaBooleanEnum value)
+  {
+    return new NaBoolean ((byte)value);
+  }
+
   /// <summary>
   /// The true operator can be used to test the <see cref="Value"/> of the <c>SqlBoolean</c> to determine whether it is true.
   /// </summary>
@@ -347,6 +357,17 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
         return Value;
     }
   }
+
+  public bool IsTrue
+  {
+    get { return _byteValue == c_true; }
+  }
+
+  public bool IsFalse
+  {
+    get { return _byteValue == c_false; }
+  }
+
   #endregion
 
   #region nullable
@@ -634,54 +655,62 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
 
   #region logical
 
-  /// <summary>
-  /// Computes the bitwise AND of two specified <see cref="NaBoolean"/> structures.
-  /// </summary>
-  /// <returns>
-  /// The result of the bitwise AND operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
-  /// </returns>
-  public static NaBoolean And (NaBoolean x, NaBoolean y)
-  {
-    return x & y;
-  }
+// not implemented since the & operator is used for locical AND, not bitwise AND.
+//  /// <summary>
+//  /// Computes the bitwise AND of two specified <see cref="NaBoolean"/> structures.
+//  /// </summary>
+//  /// <returns>
+//  /// The result of the bitwise AND operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+//  /// </returns>
+//  public static NaBoolean And (NaBoolean x, NaBoolean y)
+//  {
+//    return x & y;
+//  }
 
   /// <summary>
-  /// Computes the bitwise AND of two specified <see cref="NaBoolean"/> structures.
+  /// Used by the logical AND (&amp;&amp;) operator in combination with the 'false' operator.
   /// </summary>
   /// <returns>
-  /// The result of the bitwise AND operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+  /// Beacause of the very specific short circuit rules of this construct, this is considered unintuitive 
+  /// and unreadable. Instead of x && y, consider using x.IsTrue && y.IsTrue.
   /// </returns>
+  [Obsolete ("This is considered unintuitive and unreadable. Instead of x && y, consider using x.IsTrue && y.IsTrue.")]
   public static NaBoolean operator & (NaBoolean x, NaBoolean y)
   {
-	  if (x.IsNull || y.IsNull)
-		  return NaBoolean.Null;
-
-    return (x._byteValue == c_true && y._byteValue == c_true);
+//	  if (x.IsNull || y.IsNull)
+//		  return NaBoolean.Null;
+//
+//    return (x._byteValue == c_true && y._byteValue == c_true);
+    return x.IsTrue && y.IsTrue;
   }
 
-  /// <summary>
-  /// Computes the bitwise OR of two specified <see cref="NaBoolean"/> structures.
-  /// </summary>
-  /// <returns>
-  /// The result of the bitwise OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
-  /// </returns>
-  public static NaBoolean Or (NaBoolean x, NaBoolean y)
-  {
-    return x | y;
-  }
+// not implemented since the | operator is used for locical OR, not bitwise OR.
+//  /// <summary>
+//  /// Computes the bitwise OR of two specified <see cref="NaBoolean"/> structures.
+//  /// </summary>
+//  /// <returns>
+//  /// The result of the bitwise OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+//  /// </returns>
+//  public static NaBoolean Or (NaBoolean x, NaBoolean y)
+//  {
+//    return x | y;
+//  }
 
   /// <summary>
-  /// Computes the bitwise OR of two specified <see cref="NaBoolean"/> structures.
+  /// Used by the logical OR (||) operator in combination with the 'true' operator.
   /// </summary>
   /// <returns>
-  /// The result of the bitwise OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+  /// Beacause of the very specific short circuit rules of this construct, this is considered unintuitive 
+  /// and unreadable. Instead of x || y, consider using x.IsTrue || y.IsTrue.
   /// </returns>
+  [Obsolete ("This is considered unintuitive and unreadable. Instead of x || y, consider using x.IsTrue || y.IsTrue.")]
   public static NaBoolean operator | (NaBoolean x, NaBoolean y)
   {
-    if (x.IsNull || y.IsNull)
-      return NaBoolean.Null;
-
-    return (x._byteValue == c_true || y._byteValue == c_true);
+//    if (x.IsNull || y.IsNull)
+//      return NaBoolean.Null;
+//
+//    return (x._byteValue == c_true || y._byteValue == c_true);
+    return x.IsTrue || y.IsTrue;
   }
 
   /// <summary>
@@ -745,5 +774,11 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
 
 }
 
+public enum NaBooleanEnum
+{
+  Undefined = NaBoolean.c_null,
+  True = NaBoolean.c_true,
+  False = NaBoolean.c_false
+}
 
 }
