@@ -293,8 +293,20 @@ public class SingleRowTextBoxStyle: Style
 public class TextBoxStyle: SingleRowTextBoxStyle
 {
   private NaInt32 _rows = NaInt32.Null;
-  private TextBoxMode _textMode = TextBoxMode.SingleLine;
+  private TextBoxMode _textMode;
+  private TextBoxMode _defaultTextMode = TextBoxMode.SingleLine;
   private NaBoolean _wrap = NaBoolean.Null;
+
+  public TextBoxStyle (TextBoxMode defaultTextMode)
+  {
+    _defaultTextMode = defaultTextMode;
+    _textMode = _defaultTextMode;
+  }
+
+  public TextBoxStyle() 
+      : this (TextBoxMode.SingleLine)
+  {
+  }
 
   public override void ApplyStyle (TextBox textBox)
   {
@@ -332,12 +344,23 @@ public class TextBoxStyle: SingleRowTextBoxStyle
 
   [Description("The behavior mode of the textbox.")]
   [Category("Behavior")]
-  [DefaultValue (TextBoxMode.SingleLine)]
   [NotifyParentProperty (true)]
   public TextBoxMode TextMode
   {
     get { return _textMode; }
     set { _textMode = value; }
+  }
+
+  /// <summary> Controls the persisting of the <see cref="TextMode"/>. </summary>
+  private bool ShouldSerializeTextMode()
+  {
+    return _textMode != _defaultTextMode;
+  }
+
+  /// <summary> Sets the <see cref="TextMode"/> to it's default value. </summary>
+  private void ResetTextMode()
+  {
+    _textMode = _defaultTextMode;
   }
 
   [Description("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
