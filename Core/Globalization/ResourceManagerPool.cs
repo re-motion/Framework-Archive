@@ -46,7 +46,10 @@ public sealed class ResourceDispatcher
     string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
 
     if (text == null)
-      text = "###";
+    {
+      string message = string.Format ("The resource '{0}' in '{1}' could not be found", name, resourceName);
+      throw new InvalidOperationException (message);
+    }
 
     return text;
   }
