@@ -72,4 +72,7 @@
     <data name="auto:GlobalFormGridManager:TableDesignTimeFormGrid:PlaceField_Label:Text">
         <value>&amp;Ort</value>
     </data>
+    <data name="auto:AddressLabel:Text">
+        <value>Adresse</value>
+    </data>
 </root>
