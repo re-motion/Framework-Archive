@@ -89,6 +89,22 @@ public abstract class WxeStep: IDisposable
   {
     return new WxeVariableReference (localVariable);
   }
+
+  protected Exception CurrentException
+  {
+    get 
+    {
+      for (WxeStep step = this;
+           step != null;
+           step = step.ParentStep)
+      {
+        if (step is WxeCatchBlock)
+          return ((WxeCatchBlock)step).Exception;
+      }
+
+      return null;
+    }
+  }
 }
 
 public delegate void WxeMethod ();

@@ -117,7 +117,7 @@ public class WxeTryCatch: WxeStep
       }
       catch (Exception e)
       {
-        if (e is System.Threading.ThreadAbortException)
+        if (e is System.Threading.ThreadAbortException || e is WxeExecuteNextStepException)
           throw;
 
         // if the exception was wrapped by the framework, get the original exception
