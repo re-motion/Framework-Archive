@@ -120,9 +120,8 @@ public class WxeParameterDeclaration
   ///   Take the values of actualParameters and pass them to calleeVariables.
   /// </summary>
   /// <remarks>
-  ///   Actual parameters can either be constant values or variable names referring to 
-  ///   callerVariables. Use strings with the '@' prefix character to reference variables in 
-  ///   callerVariables. Only in- and inout-parameters are copied.
+  ///   Actual parameters can either be constant values or variable names referring to callerVariables
+  ///   using <see cref="WxeVariableReference"/>. Only in- and inout-parameters are copied.
   /// </remarks>
   public static void CopyToCallee (
       WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters, 
@@ -203,9 +202,8 @@ public class WxeParameterDeclaration
   ///   Take the parameter values of calleeVariables and pass them back to callerVariables.
   /// </summary>
   /// <remarks>
-  ///   Actual parameters can either be constant values or variable names referring to 
-  ///   callerVariables. Use strings with the '@' prefix character to reference variables in 
-  ///   callerVariables. Only out- and inout-parameters referring to variable names are copied.
+  ///   Actual parameters can either be constant values or variable names using 
+  ///   <see cref="WxeVariableReference"/>.Only out- and inout-parameters referring to variable names are copied.
   /// </remarks>
   public static void CopyToCaller (
       WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters, 
@@ -222,26 +220,15 @@ public class WxeParameterDeclaration
     }
   }
 
-  public static object[] ParseVariableReferences (object[] actualParameters)
-  {
-    object[] replacedParameters = new object[actualParameters.Length];
-
-    for (int i = 0; i < actualParameters.Length; ++i)
-    {
-      string strval = actualParameters[i] as string;
-      if (strval != null && strval.Length > 0 && strval[0] == '@')
-        replacedParameters[i] = new WxeVariableReference (strval.Substring (1));
-      else
-        replacedParameters[i] = actualParameters[i];
-    }
-
-    return replacedParameters;
-  }
-
 
   public static object[] ParseActualParameters (Type wxeFunctionType, string actualParameters, IFormatProvider format)
   {
     return ParseActualParameters (WxeFunction.GetParamaterDeclarations (wxeFunctionType), actualParameters, format);
+  }
+
+  public static object[] ParseActualParameters (Type wxeFunctionType, string actualParameters)
+  {
+    return ParseActualParameters (wxeFunctionType, actualParameters, CultureInfo.InvariantCulture);
   }
 
   /// <summary>
@@ -258,17 +245,17 @@ public class WxeParameterDeclaration
   ///       <description> A quoted string. Escape quotes and line breaks using the backslash character.</description>
   ///     </item>
   ///     <item>
-  ///       <term> Any type that has a <see langword="static"/><c>Parse</c> method. </term>
-  ///       <description> A quoted or unquoted string that can be passed to the type's <c>Parse</c> method. </description>
+  ///       <term> Any type that has a <see langword="static"/> <c>Parse</c> method. </term>
+  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. </description>
   ///     </item>
   ///     <item>
   ///       <term> Variable Reference </term>
-  ///       <description> An unquoted variable name prefixed with the at (@) character. </description>
+  ///       <description> An unquoted variable name. </description>
   ///     </item>
   ///   </list>
   /// </remarks>
   /// <example>
-  ///   "the first \"string\" argument, containing quotes and a comma", true, "12/30/04 12:00", @variableName
+  ///   "the first \"string\" argument, containing quotes and a comma", "true", "12/30/04 12:00", variableName
   /// </example>
   public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, IFormatProvider format)
   {
@@ -328,7 +315,7 @@ public class WxeParameterDeclaration
         {
           case '\"':
             if ((i + 1) < len && actualParameters[i+1] != ',')
-              throw new ApplicationException ("Errpr at " + i + " while parsing " + actualParameters);
+              throw new ApplicationException ("Error at " + i + " while parsing " + actualParameters);
             state = 1;
             break;
           case '\\':
@@ -388,8 +375,8 @@ public class WxeParameterDeclaration
       string arg = (string) argsArray[i];
       WxeParameterDeclaration paramDecl = parameterDeclarations[i];
 
-      if (! (bool) isQuotedArray[i] && arg[0] == '@')
-        arguments.Add (new WxeVariableReference (arg.Substring(1)));
+      if (! (bool) isQuotedArray[i])
+        arguments.Add (new WxeVariableReference (arg));
       else if (paramDecl.Type == typeof (string))
         arguments.Add (arg);
       else 
@@ -397,6 +384,11 @@ public class WxeParameterDeclaration
     }
 
     return arguments.ToArray ();
+  }
+
+  public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters)
+  {
+    return ParseActualParameters (parameterDeclarations, actualParameters, CultureInfo.InvariantCulture);
   }
 }
 

@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Web;
 using System.Web.UI;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
+
+public class WxeExecuteNextStepException: Exception
+{
+}
 
 public class WxePageStep: WxeStep
 {
@@ -24,6 +29,7 @@ public class WxePageStep: WxeStep
     if (_function != null)
     {
       _function.Execute (context);
+      context.ReturningFunction = _function;
       _function = null;
       context.IsPostBack = true;
       context.PostBackCollection = _postBackCollection;
@@ -36,19 +42,23 @@ public class WxePageStep: WxeStep
       context.IsReturningPostBack = false;
     }
 
-    context.HttpContext.Server.Transfer (_page, context.IsPostBack);
+    try 
+    {
+      context.HttpContext.Server.Transfer (_page, context.IsPostBack);
+    }
+    catch (HttpException e)
+    {
+      if (e.InnerException is WxeExecuteNextStepException)
+        return;
+      if (e.InnerException is HttpUnhandledException && e.InnerException.InnerException is WxeExecuteNextStepException)
+        return;
+      throw;
+    }
   }
 
-  public override void ExecuteNextStep (WxeContext context)
+  public void ExecuteNextStep ()
   {
-    if (_function != null)
-    {
-      _function.ExecuteNextStep (context);
-      _function = null;
-      context.IsPostBack = false;
-    }
-
-    base.ExecuteNextStep (context);
+    throw new WxeExecuteNextStepException();
   }
 
   public override WxeStep ExecutingStep
