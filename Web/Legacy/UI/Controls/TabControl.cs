@@ -5,6 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
+using System.Reflection;
+
+using Rubicon;
+using Rubicon.Findit.Globalization.UI;
+using Rubicon.Findit.Globalization.Classes;
 
 namespace Rubicon.Findit.Client.Controls
 {
@@ -126,7 +131,7 @@ public class TabMenu: Control, ITabItem
 }
 
 [ParseChildren (true, "Tabs")]
-public class TabControl: Control, IPostBackEventHandler
+public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 {
 	private TabCollection _tabs = new TabCollection ();
 
@@ -678,6 +683,66 @@ public class TabControl: Control, IPostBackEventHandler
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
     }
+  }
+
+  public void Dispatch(IDictionary values)
+  {
+    foreach (DictionaryEntry entry in values)
+    {
+      string key = entry.Key.ToString ();
+      string text = entry.Value.ToString ();        
+      string[] ctrlIDs = key.Split( ':' );
+
+      if (ctrlIDs.Length != 1)
+      {
+        if( ctrlIDs.Length > 2 )
+        {
+          //  menu handling
+
+          TabMenu menu = GetMenuByName( GetTabByName (ctrlIDs[0]), ctrlIDs[1] );
+          menu.Label = text;
+        }
+        else
+        {
+          //  tab handling
+
+          Tab tab = GetTabByName ( ctrlIDs[0] );
+          tab.Label = text;
+        }
+      }      
+      else
+      {
+        // TODO: for multible use pleace implement in base class (ResourceDispatcher)
+
+        PropertyInfo propInfo = this.GetType().GetProperty( key );
+
+        if( propInfo != null )
+          propInfo.SetValue( this, entry.Value.ToString(), new object[0] );
+      }
+    }
+  }
+
+  private TabMenu GetMenuByName (Tab tab, string menuName)
+  {
+    foreach (TabMenu menu in tab.Controls)
+    {
+      if (menu.ID == menuName)
+        return menu;
+    }
+
+    return null;
+  }
+  
+
+  private Tab GetTabByName (string ctrlName)
+  {
+    foreach (Tab tab in this.Tabs)
+    {
+      if (tab.ID == ctrlName)
+        return tab;
+    }
+
+    return null;
   }
 }
 
