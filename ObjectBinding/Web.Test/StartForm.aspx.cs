@@ -37,8 +37,9 @@ public class StartForm : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-		this.Load += new System.EventHandler(this.Page_Load);
-	}
+    this.Load += new System.EventHandler(this.Page_Load);
+
+  }
 	#endregion
 }
 
