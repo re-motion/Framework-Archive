@@ -1,0 +1,17 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 1
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {8EDFEBB2-0421-47F7-9790-CE7B47484E86}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
