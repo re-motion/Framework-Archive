@@ -6,9 +6,9 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Queries
 {
 /// <summary>
-/// Represents a concrete query that can be executed
+/// Represents a default implementation of <see cref="IQuery"/>.
 /// </summary>
-public class Query
+public class Query : IQuery
 {
   // types
 
