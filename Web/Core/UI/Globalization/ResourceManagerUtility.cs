@@ -33,12 +33,12 @@ public class ResourceManagerUtility
     if (resourceManagers.Count == 0)
       return null;
     else if (resourceManagers.Count == 1)
-      return resourceManagers[0];
+      return (IResourceManager) resourceManagers[0];
     else
-      return new ResourceManagerSet ((IResourceManger[]) resourceManagers.ToArray());
+      return new ResourceManagerSet ((IResourceManager[]) resourceManagers.ToArray());
   }
 
-  private void GetResourceManagersRecursive (Control control, TypedArrayList resourceManagers)
+  private static void GetResourceManagersRecursive (Control control, TypedArrayList resourceManagers)
   {
     if (control == null)
       return;
@@ -46,7 +46,7 @@ public class ResourceManagerUtility
     IObjectWithResources objectWithResources  = control as IObjectWithResources;
 
     if (objectWithResources != null)
-      return resourceManagers.Add (objectWithResources.GetResourceManager());
+      resourceManagers.Add (objectWithResources.GetResourceManager());
 
     GetResourceManagersRecursive (control.Parent, resourceManagers);
   }
