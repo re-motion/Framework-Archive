@@ -10,11 +10,12 @@
   <include buildfile="build/properties.include.xml"/>
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
-  <property name="global.dir" value="\development\global" />
+  <property name="dir.development" value="\development" overwrite="false"/>
+  <property name="global.dir" value="${dir.development}\global"/>
   <property name="solution.basedir" value="${nant.project.basedir}" />
   <property name="prereq.assemblies" value="${nant.project.basedir}/prereq/assemblies" />
 
-  <property name="build.keyfile" value="\development\global\rubicon.snk" />
+  <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <property name="dummy" value="true" />
   
   <target name="local" depends="initNoConfig" description="make local build into directory build/current">
@@ -92,7 +93,18 @@
 
   <!--======================= SS Command =======================-->
   <target name="SSCommandline">
-    <exec program="SS" append="true" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+    <ifnot propertyexists="SS.dir" >
+      <property name="SS.dir" value="." /> 
+    </ifnot>
+    <exec program="cmd" append="true" commandline="/C SET"
+                                     workingdir="${SS.dir}" >
+      <environment>
+        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
+      </environment>  
+    </exec>
+
+    <exec program="SS.EXE" append="true" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
+                                     workingdir="${SS.dir}" >
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
       </environment>  
@@ -113,10 +125,33 @@
     <call target="SSCommandline" />
     <echo message="Add ${zipfile.name}"/>
     <property name="SS.command" value="Add ${zipfile.name}" />
-    <call target="SSCommandline" force="true"/>
+    <call target="SSCommandline" />
     <echo message="Add ${sourcezipfile.name}"/>
     <property name="SS.command" value="Add ${sourcezipfile.name}" />
-    <call target="SSCommandline" force="true"/>
+    <call target="SSCommandline" />
+  </target>
+
+  <!--======================= GetAll=======================-->
+  <target name="getall" >
+    <foreach item="String" in="Core Core.Test Development ObjectBinding prereq Web" delim=" " property="local.project" >
+      <do>
+        <mkdir dir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" append="true" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <exec program="cmd" append="true" commandline="/C for /d %d in (*) do rmdir /S /Q %d" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <echo message="Get ${local.project}" />
+        <property name="SS.command" value="Get $/libraries/Commons/${local.project} -R" />
+        <property name="SS.dir" value="${dir.development}\libraries\Commons\${local.project}" />
+        <call target="SSCommandline" />
+      </do>
+    </foreach>
+
+    <mkdir dir="${dir.development}\libraries\Commons\build" />
+    <property name="SS.dir" value="${dir.development}\libraries\Commons\build" />
+    <property name="SS.command" value="Get $/libraries/Commons/build/properties.include.xml" />
+    <call target="SSCommandline" />
+    <property name="SS.command" value="Get $/libraries/Commons/build/buildversion.xml" />
+    <call target="SSCommandline" />
+
   </target>
 
   <!--======================= VS.NET =======================-->
