@@ -29,8 +29,8 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BirthdayField;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
-  protected System.Web.UI.WebControls.Button NextButton;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -71,7 +71,6 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 	private void InitializeComponent()
 	{    
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -88,11 +87,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
       if (person.Partner != null)
         person.Partner.SaveObject();
     }
-  }
-
-  private void NextButton_Click(object sender, System.EventArgs e)
-  {
-    CurrentStep.ExecuteNextStep();
+    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
   }
 }
 
