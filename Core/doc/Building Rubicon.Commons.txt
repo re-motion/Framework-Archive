@@ -1,0 +1,24 @@
+1. Prerequisites
+  * Installation NAnt Version 0.8.4: \\at-vie-dc-02\Install\NAnt
+  * Rubicon.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
+	  NAnt-bin Verzeichnis (C:\Program Files\NAnt\bin) kopieren.
+  * xmldoc.xslt von SourceSafe rubicon\global\xslt holen
+  
+2. Build-Prozess
+  1.	Überprüfen dass die lokale Kopie der Solution kompieliert.
+  2.	Einchecken was noch nicht eingecheckt ist.
+  3.	Get Latest Version auf die Solution durchführen.
+  4.	Überprüfen dass die Solution immer noch fehlerfrei kompiliert.
+  5.	.net Kommandozeile öffnen, aktuelles Verzeichnis auf C:\Development\libraries\Commons setzen
+  6.	buildversion.xml auschecken
+  7.	.net Kommandozeile: nant incversion
+  8.	buildversion.xml einchecken
+  9.	Source Safe Label mit der Versionsnummer vergeben (angenäherter Stand).
+  10.	Solution schließen
+  11.	.net Kommandozeile: buildall [nodoc]
+  12.	Falls die Solution erfolgreich kompiliert
+      Einchecken von: C:\Development\libraries\Commons\build\VERSION
+      RubiconCommons_VERSION.zip und RubiconCommons_SourceCode_VERSION.zip
+      nach SourceSafe rubicon\libraries\Commons\build.
+  13.	Falls bei NAnt Kompilierungsfehler auftreten, diese beheben, neu einchecken und das
+      Source Safe Label neu vergeben. Anschließend zurück zu Punkt 11.
