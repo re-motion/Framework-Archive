@@ -139,7 +139,6 @@ Global
 		{82A9FBD7-2272-43F2-8B66-E4B5A836676D}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
-		Rubicon.Data.DomainObjects.Solution.build = Rubicon.Data.DomainObjects.Solution.build
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
