@@ -18,10 +18,6 @@
 					<type>byte</type>
 					<column>Byte</column>
 				</property>
-				<property name="CharProperty">
-					<type>char</type>
-					<column>Char</column>
-				</property>
 				<property name="DateProperty">
 					<type>date</type>
 					<column>Date</column>

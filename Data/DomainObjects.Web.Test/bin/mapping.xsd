@@ -117,7 +117,6 @@
       <xs:enumeration value="int64" />
       <xs:enumeration value="single" />
       <xs:enumeration value="string" />
-      <xs:enumeration value="char" />
     </xs:restriction>
   </xs:simpleType>
 
