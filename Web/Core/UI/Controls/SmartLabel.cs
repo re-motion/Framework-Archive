@@ -77,7 +77,8 @@ public class SmartLabel: WebControl
 
   private string _forControl = null;
   //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
-  //  private string _text = string.Empty;
+  //private string _text = string.Empty;
+  //private string _accessKey = string.Empty
 
   public SmartLabel()
     : base (HtmlTextWriterTag.Label)
@@ -118,39 +119,41 @@ public class SmartLabel: WebControl
       {
         text = smartControl.DisplayName;
       }
-      // TODO: use access key (nicht für texte aus dem control)
-      //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
-      //    else if (!StringUtility.IsNullOrEmpty (_text))
+      // Unfinished implementation of SmartLabel populated by ResourceDispatchter
+      // SmartLabel not supposed to be populated
+      //else if (! StringUtility.IsNullOrEmpty (_text))
+      //{
+      //  // TODO: use access key (nicht für texte aus dem control)
+      //  Control associatedControl = null;
+      //  if (NamingContainer != null)
+      //    associatedControl = ControlHelper.FindControl (NamingContainer, ForControl);
+      //
+      //  if (associatedControl != null)
+      //  {
+      //    ISmartControl smartControl = control as ISmartControl;
+      //    if (smartControl != null && smartControl.UseLabel)
       //    {
-      //      // TODO: use access key (nicht für texte aus dem control)
-      //      Control associatedControl = NamingContainer.FindControl (ForControl);
-      //    
-      //      if (associatedControl != null)
-      //      {
-      //        ISmartControl smartControl = control as ISmartControl;
-      //        if (smartControl != null && smartControl.UseLabel)
-      //        {
-      //          string accessKey;
-      //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
-      //          label.AccessKey = accessKey;
-      //        }
-      //        else if (control is DropDownList || control is HtmlSelect)
-      //        {
-      //          text = SmartLabel.FormatLabelText (label.Text, false);
-      //          label.AccessKey = "";
-      //        }
-      //        else
-      //        {
-      //          string accessKey;
-      //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
-      //          label.AccessKey = accessKey;
-      //        }
-      //      }
-      //      else
-      //      {
-      //        text = SmartLabel.FormatLabelText (label.Text, false);
-      //      }
+      //      string accessKey;
+      //      text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+      //      _accessKey = accessKey;
       //    }
+      //    else if (control is DropDownList || control is HtmlSelect)
+      //    {
+      //      text = SmartLabel.FormatLabelText (label.Text, false);
+      //      _accessKey = "";
+      //    }
+      //    else
+      //    {
+      //      string accessKey;
+      //      text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+      //      _accessKey = accessKey;
+      //    }
+      //  }
+      //  else
+      //  {
+      //    text = SmartLabel.FormatLabelText (label.Text, false);
+      //  }
+      //}
       else
       {
         text = "[Label for " + ForControl + "]";
@@ -185,19 +188,19 @@ public class SmartLabel: WebControl
   }
 
   //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
-  //  /// <summary>
-  //  ///   Gets or sets the text displayed if the <see cref="SmartLabel"/> is not bound to an 
-  //  ///   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
-  //  ///   <see cref="ISmartControl.DisplayName"/>.
-  //  /// </summary>
-  //  [Category ("Appearance")]
-  //  [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
-  //  [DefaultValue ("")]
-  //  public string Text
-  //  {
-  //    get { return _text; }
-  //    set { _text = value; }
-  //  }
+  ///// <summary>
+  /////   Gets or sets the text displayed if the <see cref="SmartLabel"/> is not bound to an 
+  /////   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
+  /////   <see cref="ISmartControl.DisplayName"/>.
+  ///// </summary>
+  //[Category ("Appearance")]
+  //[Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
+  //[DefaultValue ("")]
+  //public string Text
+  //{
+  //  get { return _text; }
+  //  set { _text = value; }
+  //}
 }
 
 }
