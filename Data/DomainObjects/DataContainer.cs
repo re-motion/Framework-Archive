@@ -39,7 +39,7 @@ public class DataContainer
     DataContainer newDataContainer = new DataContainer (id);
     newDataContainer._state = DataContainerStateType.New;
     
-    foreach (PropertyDefinition propertyDefinition in newDataContainer.ClassDefinition.GetAllPropertyDefinitions ())
+    foreach (PropertyDefinition propertyDefinition in newDataContainer.ClassDefinition.GetPropertyDefinitions ())
       newDataContainer.PropertyValues.Add (new PropertyValue (propertyDefinition));
 
     return newDataContainer;
