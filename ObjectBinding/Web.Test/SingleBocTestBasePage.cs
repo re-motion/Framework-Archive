@@ -18,7 +18,7 @@ namespace OBWTest
 
 [MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WebFormBase:
-    WxePage, 
+    Page, 
     IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
     IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
@@ -39,16 +39,6 @@ public class WebFormBase:
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this);
-
-    LiteralControl stack = new LiteralControl();
-
-    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-    sb.Append ("<b>Stack:</b><br>");
-    for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
-      sb.AppendFormat ("{0}<br>", step.ToString());      
-    stack.Text = sb.ToString();
-    
-    Controls.Add (stack);
   }
 
   public virtual IResourceManager GetResourceManager()

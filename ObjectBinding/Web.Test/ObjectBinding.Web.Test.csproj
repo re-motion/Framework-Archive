@@ -269,7 +269,7 @@
                 <File
                     RelPath = "TestTextValuePage.aspx.cs"
                     DependentUpon = "TestTextValuePage.aspx"
-                    SubType = "ASPXCodeBehind"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -376,6 +376,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "WxeWebFormBase.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Globalization\RMTest.de-at.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -392,11 +397,27 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "HTML\Calendar.htc"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "HTML\CalendarFrame.htm"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "HTML\DatePicker.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "HTML\style.css"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "Image\Calendar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\DatePicker.gif"
                     BuildAction = "Content"
                 />
                 <File

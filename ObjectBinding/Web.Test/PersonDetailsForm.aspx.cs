@@ -18,7 +18,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace OBWTest
 {
 
-public class PersonDetailsPage : WebFormBase
+public class PersonDetailsPage : WxeWebFormBase
 
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
