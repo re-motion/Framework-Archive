@@ -59,5 +59,21 @@ public class StorageProviderDefinitionCollectionTest
   {
     _collection.Contains ((StorageProviderDefinition) null);
   }
+
+  [Test]
+  public void GetMandatory ()
+  {
+    _collection.Add (_definition);
+
+    Assert.AreSame (_definition, _collection.GetMandatory (_definition.StorageProviderID));
+  }
+
+  [Test]
+  [ExpectedException (typeof (StorageProviderConfigurationException), 
+      "StorageProviderDefinition 'UnitTestStorageProviderStub' does not exist.")]
+  public void GetMandatoryForNonExisting ()
+  {
+    _collection.GetMandatory ("UnitTestStorageProviderStub");
+  }
 }
 }
