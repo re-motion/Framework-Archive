@@ -81,7 +81,7 @@ public class WxeStepList: WxeStep
     Add (new WxeMethodStep (method));
   }
 
-  public void AddList (WxeStepList steps)
+  public void AddStepList (WxeStepList steps)
   {
     for (int i = 0; i < steps.Count; i++)
     {
