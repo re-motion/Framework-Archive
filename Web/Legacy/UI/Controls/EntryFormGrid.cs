@@ -38,7 +38,7 @@ public class EntryFieldBreak: Control
   {
     get 
     {
-      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
       if (entryFormGrid == null)
         throw new InvalidOperationException ("EntryFieldBreak must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
 
@@ -53,6 +53,20 @@ public class EntryFormGrid: Control
 {
 
   // static members and constants
+
+  public static EntryFormGrid GetParentEntryFormGrid (Control control)
+  {
+    if (control != null)
+    {
+      EntryFormGrid entryFormGrid = control as EntryFormGrid;
+      if (entryFormGrid != null)
+        return entryFormGrid;
+      else 
+        return GetParentEntryFormGrid (control.Parent);
+    }
+    else
+      return null;
+  }
 
   // member fields
 
@@ -261,7 +275,7 @@ public class EntryTitle: Control
   {
     get 
     {
-      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
       if (entryFormGrid == null)
         throw new InvalidOperationException ("EntryTitle must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
 
@@ -323,9 +337,9 @@ public class EntryField: Control
   {
     get 
     {
-      EntryFormGrid entryFormGrid = this.Parent as EntryFormGrid;
+      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
       if (entryFormGrid == null)
-        throw new InvalidOperationException ("EntryField must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
+        throw new InvalidOperationException ("EntryField must be a descendant of a EntryFormGrid to access EntryFormGrid property.");
 
       return entryFormGrid;
     }
