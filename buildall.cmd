@@ -10,5 +10,5 @@ nant doc
       if errorlevel 1 pause "build error"
 :nodoc
 
-nant deploy
+nant cleantemp zip sourcezip getcurrent
       if errorlevel 1 pause "build error"
