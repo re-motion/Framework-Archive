@@ -24,10 +24,10 @@ public class WebFormBase: Page, IResourceUrlResolver
 
   public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
   {
-    if (! ControlHelper.IsDesignMode (this, this.Context))
-      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
-    else
+    if (ControlHelper.IsDesignMode (this, this.Context))
       return resourceType.Name + "/" + relativeUrl;
+    else
+      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 }
 

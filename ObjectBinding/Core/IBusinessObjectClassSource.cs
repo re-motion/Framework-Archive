@@ -37,6 +37,17 @@ public class PropertyPathBinding
   public PropertyPathBinding()
   {}
 
+  /// <summary>
+  ///   Returns a <see cref="string"/> that represents this <see cref="PropertyPathBinding"/>.
+  /// </summary>
+  /// <returns>
+  ///   Returns the class name of the instance.
+  /// </returns>
+  public override string ToString()
+  {
+    return GetType().Name;
+  }
+
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public IBusinessObjectDataSource DataSource
@@ -76,6 +87,7 @@ public class PropertyPathBinding
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Data")]
   [DefaultValue("")]
   public string PropertyPathIdentifier
   {

@@ -71,7 +71,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private IList _value = null;
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="_additionalColumnsList"/>. </summary>
-  private DropDownListStyle _additionalColumnsListStyle = null;
+  private DropDownListStyle _additionalColumnsListStyle = new DropDownListStyle();
 
   // can only be set at design time.
   private BocColumnDefinitionCollection _fixedColumns;
@@ -140,6 +140,8 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     _additionalColumnsList.EnableViewState = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
+
+    _additionalColumnsListStyle.AutoPostback = true;
 
     goToFirstButton.Text = c_goToFirstLabel;
     goToFirstButton.Click += new EventHandler (GoToFirstButton_Click);
@@ -274,7 +276,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private void RenderHeader (HtmlTextWriter writer)
   {
     if (_showAdditionalColumnsList)
-    _additionalColumnsList.RenderControl (writer);
+    {
+      _additionalColumnsListStyle.ApplyStyle (_additionalColumnsList);
+      _additionalColumnsList.RenderControl (writer);
+    }
   }
 
   private void RenderNavigator (HtmlTextWriter writer)
@@ -402,7 +407,19 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
+    bool isReadOnly = IsReadOnly;
     bool isFirstValueColumnRendered = false;
+    bool isFirstValueColumnCommandEnabled = false;
+
+    if (FirstColumnCommand != null)
+    {
+      if (    FirstColumnCommand.Show == BocItemCommandShow.Always
+          ||  isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.ReadOnly
+          ||  ! isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.EditMode)
+      {
+        isFirstValueColumnCommandEnabled = true;
+      }
+    }
 
     if (ShowSelection)
     {
@@ -425,7 +442,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       if (! isFirstValueColumnRendered && valueColumn != null)
       {
         //  Render FirstColumnCommand BeginTag
-        if (FirstColumnCommand != null)
+        if (isFirstValueColumnCommandEnabled)
         {
           FirstColumnCommand.RenderBegin (writer, rowIndex, objectID);
         }
@@ -465,7 +482,17 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
       if (commandColumn != null)
       {
-        commandColumn.Command.RenderBegin (writer, rowIndex, objectID);
+        bool isCommandEnabled = false;
+
+        if (    commandColumn.Command.Show == BocItemCommandShow.Always
+            ||  isReadOnly && commandColumn.Command.Show == BocItemCommandShow.ReadOnly
+            ||  ! isReadOnly && commandColumn.Command.Show == BocItemCommandShow.EditMode)
+        {
+          isCommandEnabled = true;
+        }
+
+        if (isCommandEnabled)
+          commandColumn.Command.RenderBegin (writer, rowIndex, objectID);
         
         if (commandColumn.IconPath != null)
         {
@@ -478,8 +505,9 @@ public class BocList: BusinessObjectBoundModifiableWebControl
         {
           writer.Write (commandColumn.Label);
         }
-        
-        commandColumn.Command.RenderEnd (writer);
+          
+        if (isCommandEnabled)
+          commandColumn.Command.RenderEnd (writer);
       }
       else if (compoundColumn != null)
       {
@@ -493,7 +521,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       if (! isFirstValueColumnRendered && valueColumn != null)
       {
         //  Render FirstColumnCommand EndTag
-        if (FirstColumnCommand != null)
+        if (isFirstValueColumnCommandEnabled)
         {
           FirstColumnCommand.RenderEnd (writer);
         }

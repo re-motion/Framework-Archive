@@ -15,26 +15,15 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   A BocColumnDefinitionSet is a named collection of column definitions.
 /// </summary>
-//[Designer (typeof(ColumnDefinitionSetDesigner), typeof (ControlDesigner))]
-//[TypeConverter (typeof (ColumnDefinitionSetConverter))]
-//[DefaultProperty ("ColumnDefinitionCollection")]
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocColumnDefinitionSet
 {
+  /// <summary> The displayed name of the set. </summary>
   private object _title;
+  /// <summary> The <see cref="BocColumnDefintion"/> objects stored in the set. </summary>
   private BocColumnDefinitionCollection _columnDefinitionCollection;
-
+  /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
-
-  internal IBusinessObjectBoundWebControl OwnerControl
-  {
-    get { return _ownerControl; }
-    set 
-    {
-      _ownerControl = value; 
-      _columnDefinitionCollection.OwnerControl = _ownerControl;
-    }
-  }
 
   public BocColumnDefinitionSet (
     IBusinessObjectBoundWebControl ownerControl, 
@@ -62,6 +51,21 @@ public class BocColumnDefinitionSet
     : this (null, string.Empty, null)
   {}
 
+  /// <summary>
+  ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinitionSet"/>.
+  /// </summary>
+  /// <returns>
+  ///   Returns the class name of the instance, followed by the <see cref="Title"/>.
+  /// </returns>
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (Title))
+      return GetType().Name;
+    else
+      return string.Format ("{0} ({1})", GetType().Name, Title);
+  }
+
+  /// <summary> The displayed name of the set. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue("")]
   public string Title
@@ -70,6 +74,7 @@ public class BocColumnDefinitionSet
     set { _title = value; }
   }
 
+  /// <summary> The <see cref="BocColumnDefintion"/> objects stored in the set. </summary>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
   [ListBindable (false)]
@@ -80,12 +85,15 @@ public class BocColumnDefinitionSet
     get { return _columnDefinitionCollection; }
   }
 
-  public override string ToString()
+  /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
+  internal IBusinessObjectBoundWebControl OwnerControl
   {
-    if (StringUtility.IsNullOrEmpty (Title))
-      return "Column Set";
-    else
-      return Title;
+    get { return _ownerControl; }
+    set 
+    {
+      _ownerControl = value; 
+      _columnDefinitionCollection.OwnerControl = _ownerControl;
+    }
   }
 }
 

@@ -9,12 +9,17 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary>
+///   A <see cref="BocItemCommand"/> defines an action the user can invoke on a datarow.
+/// </summary>
 [TypeConverter (typeof (BocItemCommandConverter))]
 public class BocItemCommand
 {
+  private BocItemCommandType _type = BocItemCommandType.Href;
+  private BocItemCommandShow _show = BocItemCommandShow.Always;
+
   private string _href;
   private string _target;
-  private BocItemCommandType _type = BocItemCommandType.Href;
 
   public BocItemCommand()
   {}
@@ -41,6 +46,10 @@ public class BocItemCommand
     return BocItemCommand.CreateHrefItemCommand (href, null);
   }
 
+  /// <summary> Renders the opening tag for the command. </summary>
+  /// <param name="writer"></param>
+  /// <param name="index"></param>
+  /// <param name="id"></param>
   public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
   {
     switch (_type)
@@ -61,11 +70,32 @@ public class BocItemCommand
     }
   }
 
+  /// <summary> Renders the closing tag for the command. </summary>
+  /// <param name="writer"></param>
   public virtual void RenderEnd (HtmlTextWriter writer)
   {
     writer.RenderEndTag();
   }
 
+  /// <summary>
+  ///   Returns a string representation of this <see cref="BocItemCommand"/>.
+  /// </summary>
+  /// <remarks>
+  ///   <list type="table">
+  ///     <listheader>
+  ///     <term>Type</term> 
+  ///     <description>Format</description>
+  ///     </listheader>
+  ///     <item>
+  ///       <term>Href</term>
+  ///       <description>
+  ///         <para>Href: Href, Target</para>
+  ///         <para>Href: Href</para>
+  ///       </description>
+  ///     </item>
+  ///   </list>
+  /// </remarks>
+  /// <returns> A <see cref="string"/>. </returns>
   public override string ToString()
   {
     StringBuilder stringBuilder = new StringBuilder (50);
@@ -91,6 +121,20 @@ public class BocItemCommand
     return stringBuilder.ToString();
   }
 
+  /// <summary>
+  ///   The <see cref="BocItemCommandType"/> represented by this instance of 
+  ///   <see cref="BocItemCommand"/>.
+  /// </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The type of the command.")]
+  //  No default value
+  public BocItemCommandType Type
+  {
+    get { return _type; }
+    set { _type = value; }
+  }
+
+  /// <summary> The hyperlink reference; used for <see cref="BocItemCommandType.Href"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
   [DefaultValue("")]
@@ -109,6 +153,7 @@ public class BocItemCommand
     }
   }
 
+  /// <summary> The hyperlink target; used for <see cref="BocItemCommandType.Href"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The target frame of the command. Leave it blank for no target.")]
   [DefaultValue("")]
@@ -127,19 +172,29 @@ public class BocItemCommand
     }
   }
 
+  /// <summary>
+  ///   Determines when the item command is shown to the user in regard of the parent control's 
+  ///   read-only setting.
+  /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The type of the command.")]
-  //  No default value
-  public BocItemCommandType Type
+  [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
+  [DefaultValue (BocItemCommandShow.Always)]
+  public BocItemCommandShow Show
   {
-    get { return _type; }
-    set { _type = value; }
+    get { return _show; }
+    set { _show = value; }
   }
 }
 
 public enum BocItemCommandType
 {
-  Undefined,
   Href
+}
+
+public enum BocItemCommandShow
+{
+  Always,
+  ReadOnly,
+  EditMode
 }
 }
