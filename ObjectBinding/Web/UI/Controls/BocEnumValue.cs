@@ -208,12 +208,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
-    
     Value = values[1];
-    
     if (values[2] != null)
       _internalValue = (string) values[2];
-    
     _isDirty = (bool)  values[3];
 
     _isLoadViewState = false;
@@ -228,10 +225,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   protected override object SaveViewState()
   {
     object[] values = new object[4];
+
     values[0] = base.SaveViewState();
     values[1] = Value;
     values[2] = _internalValue;
     values[3] = _isDirty;
+
     return values;
   }
 

@@ -72,13 +72,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <c>SelectedValue</c> of <see cref="DropDownList"/>. </summary>
   private string _newInternalValue = null;
 
-  /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
+  /// <summary> 
+  ///   The <see cref="Style"/> applied to the <see cref="DropDownList"/> and the <see cref="Label"/>.
+  /// </summary>
   private Style _commonStyle = new Style();
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
   private Style _dropDownListStyle = new Style();
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="_label"/>. </summary>
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="_icon"/>. </summary>
@@ -214,6 +216,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _isLoadViewState = true;
 
     object[] values = (object[]) savedState;
+
     base.LoadViewState (values[0]);
     if (values[1] != null)    
       InternalValue = (string) values[1];    
@@ -230,10 +233,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[4];
+    object[] values = new object[3];
+
     values[0] = base.SaveViewState();
     values[1] = InternalValue;
     values[2] = _isDirty;
+
     return values;
   }
 

@@ -13,8 +13,8 @@ using Rubicon.Web.UI.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-/// </summary>
+/// <summary> This control can be used to display or edit date/time values. </summary>
+//  TODO: Date-Picker
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -51,47 +51,80 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
-  /// <summary> This event is fired when the date is changed in the UI. </summary>
+	// member fields
+
+  /// <summary> This event is fired when the date or time is changed in the UI. </summary>
   /// <remarks> The event is fired only if the date change is caused by the user. </remarks>
   public event EventHandler DateTimeChanged;
 
-	// member fields
-
+  /// <summary>
+  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
+  ///   <see cref="SaveValue"/>.
+  /// </summary>
   private bool _isDirty = true;
 
+  /// <summary> The <see cref="TextBox"/> used in edit mode for the date component. </summary>
   private TextBox _dateTextBox = null;
+
+  /// <summary> The <see cref="TextBox"/> used in edit mode for the time component. </summary>
   private TextBox _timeTextBox = null;
+
+  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
+
+  /// <summary> The <see cref="ImageButton"/> used in edit mode to enter the date using a date picker. </summary>
   private ImageButton _imageButton = null;
 
-  /// <summary>  </summary>
+  /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
 
-  /// <summary>  </summary>
+  /// <summary>  The string displayed in the time text box. </summary>
   private string _internalTimeValue = null;
 
-  /// <summary>  </summary>
+  /// <summary> The string enterd into the date text box by the user. </summary>
   private string _newInternalDateValue = null;
 
-  /// <summary>  </summary>
+  /// <summary> The string enterd into the time text box by the user. </summary>
   private string _newInternalTimeValue = null;
 
-  /// <summary>  </summary>
+  /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
+  private NaDateTime _originalDateTimeValue = NaDateTime.Null;
+
+  /// <summary> The externally set <see cref="BocDateTimeValueType"/>. </summary>
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
+
+  /// <summary> The <see cref="BocDateTimeValueType"/> this control is actually displaying. </summary>
   private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
 
+  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
   private Style _commonStyle = new Style();
-  private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
-  private SingleRowTextBoxStyle _dateTextBoxStyle = new SingleRowTextBoxStyle();
-  private SingleRowTextBoxStyle _timeTextBoxStyle = new SingleRowTextBoxStyle();
-  private Style _labelStyle = new Style();
-  private Style _buttonStyle = new Style();
 
-  private bool _showSeconds = false;
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to both text boxes. </summary>
+  private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
+
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="DateTextBox"/>. </summary>
+  private SingleRowTextBoxStyle _dateTextBoxStyle = new SingleRowTextBoxStyle();
+
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="TimeTextBox"/>. </summary>
+  private SingleRowTextBoxStyle _timeTextBoxStyle = new SingleRowTextBoxStyle();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
+  private Style _labelStyle = new Style();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="ImageButton"/>. </summary>
+  private Style _imageButtonStyle = new Style();
+
+  /// <summary> Flag that determines  whether to show the seconds.</summary>
+  private bool _showSeconds = true;
+
+  /// <summary> 
+  ///   Flag that determines whether to provide an automatic maximun length for the text boxes.
+  /// </summary>
   private bool _provideMaxLength = true;
 
   // construction and disposing
 
+  /// <summary> Simple constructor. </summary>
 	public BocDateTimeValue()
 	{
     //  empty
@@ -99,6 +132,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
 	// methods and properties
 
+  /// <summary>
+  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
+  /// </summary>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
@@ -129,6 +166,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _timeTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
   }
 
+  /// <summary>
+  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
@@ -207,6 +248,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.Render (writer);
   }
 
+  /// <summary>
+  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
+  /// </summary>
+  /// <param name="savedState">
+  ///   An <see cref="Object"/> that represents the control state to be restored.
+  /// </param>
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -215,24 +262,26 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
     if ( values[1] != null)
       _internalDateValue = (string) values[1];
-    
     if ( values[2] != null)
       _internalTimeValue = (string) values[2];
-
     _valueType = (BocDateTimeValueType) values[3];
-
     _actualValueType = (BocDateTimeValueType) values[4];
-
     _showSeconds = (bool) values[5];
-
     _provideMaxLength = (bool) values[6];
-    
-    _isDirty = (bool) values[7];
+    _originalDateTimeValue = (NaDateTime) values[7];
+    _isDirty = (bool) values[8];
   }
 
+  /// <summary>
+  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
+  /// </summary>
+  /// <returns>
+  ///   Returns the server control's current view state.
+  /// </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[8];
+    object[] values = new object[9];
+
     values[0] = base.SaveViewState();
     values[1] = _internalDateValue;
     values[2] = _internalTimeValue;
@@ -240,10 +289,21 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     values[4] = _actualValueType;
     values[5] = _showSeconds;
     values[6] = _provideMaxLength;
-    values[7] = _isDirty;
+    values[7] = _originalDateTimeValue;
+    values[8] = _isDirty;
+
     return values;
   }
 
+  /// <summary>
+  ///   Loads the <see cref="Value"/> from the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
+  ///   information if <paramref name="interim"/> is <see langword="false"/>.
+  /// </summary>
+  /// <param name="interim">
+  ///   <see langword="true"/> to load the <see cref="Value"/> from the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+  /// </param>
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -257,6 +317,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Writes the <see cref="Value"/> into the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
+  ///   is <see langword="true"/>.
+  /// </summary>
+  /// <param name="interim">
+  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
+  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+  /// </param>
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -274,11 +343,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Generates the validators depending on the control's configuration.
+  ///   Generates a <see cref="BocDateTimeValueValidator"/>.
   /// </summary>
-  /// <remarks>
-  ///   
-  /// </remarks>
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
@@ -303,6 +369,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     return validators;
   }
 
+  /// <summary> Initializes the child controls. </summary>
   protected override void InitializeChildControls()
   {
     bool isReadOnly = IsReadOnly;
@@ -357,13 +424,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       if (ProvideMaxLength)
       {
-        NaInt32 dateMaxLength = GetDateMaxLength();
-        if (! dateMaxLength.IsNull)
-          _dateTextBox.MaxLength = dateMaxLength.Value;
-
-        NaInt32 timeMaxLength = GetTimeMaxLength();
-        if (! timeMaxLength.IsNull)
-          _timeTextBox.MaxLength = timeMaxLength.Value;
+        _dateTextBox.MaxLength = GetDateMaxLength();
+        _timeTextBox.MaxLength = GetTimeMaxLength();
       }
 
       _dateTextBox.Text = InternalDateValue;
@@ -560,10 +622,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Common style not useful with image button
       //  _imageButton.ApplyStyle (_commonStyle);
-      _imageButton.ApplyStyle (_buttonStyle);
+      _imageButton.ApplyStyle (_imageButtonStyle);
     }
   }
   
+  /// <summary> Formats the <see cref="DateTime"/> value according to the current culture. </summary>
+  /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <returns> A formatted string representing the <see cref="DateTime"/> value. </returns>
   protected virtual string FormatDateTimeValue (DateTime dateValue, bool isReadOnly)
   {
     isReadOnly = false;
@@ -596,11 +662,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> Formats the <see cref="DateTime"/> value according to the current culture. </summary>
+  /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <returns> A formatted string representing the <see cref="DateTime"/> value. </returns>
   protected virtual string FormatDateTimeValue (DateTime dateValue)
   {
     return FormatDateTimeValue (dateValue, false);
   }
 
+  /// <summary> 
+  ///   Formats the <see cref="DateTime"/> value's date component according to the current culture.
+  /// </summary>
+  /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <returns> 
+  ///   A formatted string representing the <see cref="DateTime"/> value's date component. 
+  /// </returns>
   protected virtual string FormatDateValue (DateTime dateValue, bool isReadOnly)
   {
     isReadOnly = false;
@@ -617,11 +694,26 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> 
+  ///   Formats the <see cref="DateTime"/> value's date component according to the current culture.
+  /// </summary>
+  /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <returns> 
+  ///   A formatted string representing the <see cref="DateTime"/> value's date component. 
+  /// </returns>
   protected virtual string FormatDateValue (DateTime dateValue)
   {
     return FormatDateValue (dateValue, false);
   }
 
+  /// <summary> 
+  ///   Formats the <see cref="DateTime"/> value's time component according to the current culture.
+  /// </summary>
+  /// <param name="timeValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <returns> 
+  ///   A formatted string representing the <see cref="DateTime"/> value's time component. 
+  /// </returns>
   protected virtual string FormatTimeValue (DateTime timeValue, bool isReadOnly)
   {
     //  ignore Read-Only
@@ -638,31 +730,30 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> 
+  ///   Formats the <see cref="DateTime"/> value's time component according to the current culture.
+  /// </summary>
+  /// <param name="timeValue"> The <see cref="DateTime"/> value to be formatted. </param>
+  /// <returns> 
+  ///   A formatted string representing the <see cref="DateTime"/> value's time component. 
+  /// </returns>
   protected virtual string FormatTimeValue (DateTime timeValue)
   {
     return FormatTimeValue (timeValue, false);
   }
 
-  protected virtual string FormatTimeValue (TimeSpan timeValue, bool isReadOnly)
-  {
-    return FormatTimeValue (DateTime.MinValue.Add(timeValue));
-  }
-
-  protected virtual string FormatTimeValue (TimeSpan timeValue)
-  {
-    return FormatTimeValue (DateTime.MinValue.Add(timeValue), false);
-  }
-
-  protected virtual NaInt32 GetDateMaxLength()
+  /// <summary> Calculates the maximum length for required for entering the date component. </summary>
+  /// <returns> The length. </returns>
+  protected virtual int GetDateMaxLength()
   {
     string maxDate = new DateTime (2000, 12, 31).ToString ("d");
     
-    int maxLength = maxDate.Length;
-
-    return new NaInt32 (maxLength);
+    return maxDate.Length;
   }
 
-  protected virtual NaInt32 GetTimeMaxLength()
+  /// <summary> Calculates the maximum length for required for entering the time component. </summary>
+  /// <returns> The length. </returns>
+  protected virtual int GetTimeMaxLength()
   {
     string maxTime = "";
 
@@ -671,11 +762,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     else
       maxTime = new DateTime (1, 1, 1, 23, 30, 30).ToString ("t");
 
-    int maxLength = maxTime.Length;
-
-    return new NaInt32 (maxLength);
+    return maxTime.Length;
   }
 
+  /// <summary>
+  ///   Raises this control's <see cref="DateTimeChanged"/> event if the value was changed 
+  ///   through the text boxes.
+  /// </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void DateTimeTextBoxes_TextChanged (object sender, EventArgs e)
   {
     bool isDateChanged = _newInternalDateValue != _internalDateValue;
@@ -691,12 +786,21 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       OnDateTimeChanged (EventArgs.Empty);
   }
 
+  /// <summary> Handles refreshing the bound control. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
     if (_valueType == BocDateTimeValueType.Undefined)
       _actualValueType = GetBocDateTimeValueType (Property);
   }
 
+  /// <summary>
+  ///   Evaluates the type of <paramref name="Property"/> and returns the appropriate 
+  ///   <see cref="BocDateTimeValueType"/>.
+  /// </summary>
+  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be evaluated. </param>
+  /// <returns> The matching <see cref="BocDateTimeValueType"/></returns>
   private BocDateTimeValueType GetBocDateTimeValueType (IBusinessObjectProperty property)
   {
     if (property == null)
@@ -714,10 +818,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   ///   Gets or sets the current value.
   /// </summary>
   /// <value> 
-  ///   The value has the type specified in the <see cref="ActualValueType"/> property (<see cref="String"/>, <see cref="Int32"/>, 
-  ///   <see cref="Double"/> or <see cref="DateTime"/>).
+  ///   The value has the type specified in the <see cref="ActualValueType"/> property.
   /// </value>
-  /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ActualValueType"/>.</exception>
+  /// <exception cref="FormatException">
+  ///   The value of the <see cref="InternalDateValue"/> and <see cref="InternalTimeValue"/> 
+  ///   properties cannot be converted to the specified <see cref="ActualValueType"/>.
+  /// </exception>
   [Description("Gets or sets the current value.")]
   [Browsable(false)]
   public override object Value
@@ -757,8 +863,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {        
         try
         {
-          
-          dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+          dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+
+          if (! _originalDateTimeValue.IsNull && ! ShowSeconds)
+            dateTimeValue = dateTimeValue.AddSeconds (_originalDateTimeValue.Second);
         }
         catch (FormatException ex)
         {
@@ -774,15 +882,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {
         InternalDateValue = null;
         InternalTimeValue = null;
+        _originalDateTimeValue = NaDateTime.Null;
         return;
       }
+
+      DateTime dateTimeValue = (DateTime) value;
+      _originalDateTimeValue = new NaDateTime (dateTimeValue);
 
       if (    ActualValueType == BocDateTimeValueType.DateTime
           ||  ActualValueType == BocDateTimeValueType.Date)
       {
         try
         {
-          DateTime dateTimeValue = (DateTime) value;
 
           InternalDateValue = FormatDateValue (dateTimeValue);
           InternalTimeValue = FormatTimeValue (dateTimeValue);
@@ -800,6 +911,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> The string displayed in the date text box. </summary>
   protected virtual string InternalDateValue
   {
     get{ return _internalDateValue; }
@@ -812,6 +924,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> The string displayed in the time text box. </summary>
   protected virtual string InternalTimeValue
   {
     get{ return _internalTimeValue; }
@@ -843,6 +956,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     set { _isDirty = value; }
   }
 
+  /// <summary>
+  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
+  ///   implementations that can be bound to this control.
+  /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
@@ -972,35 +1089,41 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style ButtonStyle
   {
-    get { return _buttonStyle; }
+    get { return _imageButtonStyle; }
   }
 
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
   [Browsable (false)]
   public TextBox DateTextBox
   {
     get { return _dateTextBox; }
   }
 
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the time component. </summary>
   [Browsable (false)]
   public TextBox TimeTextBox
   {
     get { return _timeTextBox; }
   }
 
+  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
   [Browsable (false)]
   public Label Label
   {
     get { return _label; }
   }
 
+  /// <summary> Gets the <see cref="ImageButton"/> used in edit mode for opening the date picker. </summary>
   [Browsable (false)]
   public ImageButton ImageButton
   {
     get { return _imageButton; }
   }
 
+  /// <summary> Flag that determines whether to display the seconds. </summary>
+  /// <value> <see langword="true"/> to enable the seconds. </value>
   [Category ("Appearance")]
-  [Description ("")]
+  [Description ("Ture to display the seconds. ")]
   [DefaultValue (true)]
   public bool ShowSeconds
   {
@@ -1008,8 +1131,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     set { _showSeconds = value; }
   }
 
+  /// <summary> Flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
+  /// <value> <see langword="true"/> to enable the maximum length. </value>
   [Category ("Behavior")]
-  [Description ("")]
+  [Description (" True to automatically limit the maxmimum length of the date and time input fields. ")]
   [DefaultValue (true)]
   public bool ProvideMaxLength
   {
@@ -1017,6 +1142,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     set { _provideMaxLength = value; }
   }
 
+  /// <summary> The <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
   [Description("Gets or sets a fixed value type.")]
   [Category("Data")]
   [DefaultValue(typeof(BocDateTimeValueType), "Undefined")]
@@ -1041,6 +1167,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> The <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
   [Browsable (false)]
   public BocDateTimeValueType ActualValueType
   {
@@ -1051,12 +1178,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> The URL of the image used by the <see cref="ImageButton"/>. </summary>
   [Browsable (false)]
   protected virtual string ImageButtonImageUrl
   {
     get { return "Calendar.gif"; }
   }
 
+  /// <summary>
+  ///   The contents of the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>, 
+  ///   seperated by a newline character.
+  /// </summary>
   [Browsable (false)]
   public string ValidationValue
   {
