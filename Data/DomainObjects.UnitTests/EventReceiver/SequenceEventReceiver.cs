@@ -87,17 +87,24 @@ public class SequenceEventReceiver
     get { return _states.Count; }
   }
 
-  public void Compare (ChangeState[] states)
+  public void Check (ChangeState[] expectedStates)
   {
-    for (int i = 0; i < states.Length; i++)
+    for (int i = 0; i < expectedStates.Length; i++)
     {
       if (i >= _states.Count)
-        Assert.Fail ("Missing event: " + states[i].Message);
+        Assert.Fail ("Missing event: " + expectedStates[i].Message);
 
-      Assert.IsTrue (((ChangeState) _states[i]).Compare (states[i]), states[i].Message);
+      try
+      {
+        ((ChangeState) _states[i]).Check (expectedStates[i]);
+      }
+      catch (Exception e)
+      {
+        Assert.Fail (string.Format ("{0}: {1}", expectedStates[i].Message, e.Message));
+      }
     }
 
-    Assert.AreEqual (states.Length, _states.Count, "Length");
+    Assert.AreEqual (expectedStates.Length, _states.Count, "Length");
   }
 
   public void Unregister ()
