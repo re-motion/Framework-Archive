@@ -203,6 +203,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestBooleanValuePage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestBooleanValuePage.aspx.cs"
+                    DependentUpon = "TestBooleanValuePage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestBooleanValuePage.aspx.resx"
+                    DependentUpon = "TestBooleanValuePage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestDateTimeValuePage.aspx"
                     BuildAction = "Content"
                 />
@@ -397,11 +412,27 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "HTML\BocBooleanValue.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "HTML\style.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\CheckBoxFalse.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\CheckBoxNull.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\CheckBoxTrue.gif"
                     BuildAction = "Content"
                 />
                 <File
