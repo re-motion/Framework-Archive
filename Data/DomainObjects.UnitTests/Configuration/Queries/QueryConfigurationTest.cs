@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration.Loader;
 using Rubicon.Data.DomainObjects.Configuration.Queries;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
@@ -63,40 +64,11 @@ public class QueryConfigurationTest
   {
     QueryDefinitionCollection queries = new QueryDefinitionCollection ();
 
-    queries.Add (CreateOrderQueryDefinition ());
-    queries.Add (CreateCustomerTypeQueryDefinition ());
-    queries.Add (CreateOrderSumQueryDefinition ());
+    queries.Add (QueryFactory.CreateOrderQueryDefinition ());
+    queries.Add (QueryFactory.CreateCustomerTypeQueryDefinition ());
+    queries.Add (QueryFactory.CreateOrderSumQueryDefinition ());
 
     return queries;
-  }
-
-  private QueryDefinition CreateOrderQueryDefinition ()
-  {
-    return new QueryDefinition (
-        "OrderQuery", 
-        "TestDomain", 
-        "select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;", 
-        QueryType.Collection, 
-        typeof (OrderCollection));
-  }
-
-  private QueryDefinition CreateCustomerTypeQueryDefinition ()
-  {
-    return new QueryDefinition (
-        "CustomerTypeQuery", 
-        "TestDomain", 
-        "select Customer.* from Customer where CustomerType = @customerType order by Name asc;", 
-        QueryType.Collection, 
-        typeof (DomainObjectCollection));
-  }
-
-  private QueryDefinition CreateOrderSumQueryDefinition ()
-  {
-    return new QueryDefinition (
-        "OrderSumQuery", 
-        "TestDomain", 
-        "select sum(quantity) from Order where CustomerID = @customerID;", 
-        QueryType.Value);
   }
 }
 }
