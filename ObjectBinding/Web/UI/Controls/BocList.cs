@@ -557,8 +557,12 @@ public class BocList:
 
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
-    if (! (columns[columnIndex] is BocValueColumnDefinition))
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + columnIndex + ".");
+    if (   ! (columns[columnIndex] is BocValueColumnDefinition) 
+        && ! (   columns[columnIndex] is BocCustomColumnDefinition
+              && ((BocCustomColumnDefinition) columns[columnIndex]).IsSortable))
+    {
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or custom column at index" + columnIndex + ".");
+    }
 
     SortingOrderEntry sortingOrderEntry = SortingOrderEntry.Empty;
     foreach (SortingOrderEntry currentEntry in _sortingOrder)
@@ -1479,16 +1483,18 @@ public class BocList:
 
       // Click on Label or Button toggles direction -> span-tag around both
       bool hasSortingButton =    EnableSorting 
-                              && column is BocValueColumnDefinition;
+                              && (   column is BocValueColumnDefinition
+                                  || (   column is BocCustomColumnDefinition 
+                                      && ((BocCustomColumnDefinition) column).IsSortable));
       if (hasSortingButton)
       {
         string argument = c_sortCommandPrefix + idxColumns.ToString();
         if (_hasClientScript)
         {
           string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
-          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackScript);
+          writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackScript);
         }
-        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
       }
       if (IsDesignMode && column.ColumnTitleDisplayValue.Length == 0)
       {
@@ -1539,6 +1545,7 @@ public class BocList:
           writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
           writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+          writer.AddStyleAttribute ("border", "none");
           writer.AddStyleAttribute ("vertical-align", "middle");
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
           writer.RenderEndTag();
@@ -1551,7 +1558,7 @@ public class BocList:
           writer.RenderEndTag();
         }
 
-        writer.RenderEndTag();  //  span
+        writer.RenderEndTag();  //  close A sorting
       }
       writer.RenderEndTag();  //  td
     }
@@ -2318,20 +2325,31 @@ public class BocList:
     {
       if (currentEntry.Direction != SortingDirection.None)
       {
-        if (! (renderColumns[currentEntry.ColumnIndex] is BocValueColumnDefinition))
-          throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + currentEntry.ColumnIndex + ".");
-
-        BocSimpleColumnDefinition simpleColumn = renderColumns[currentEntry.ColumnIndex] as BocSimpleColumnDefinition;
-        BocCompoundColumnDefinition compoundColumn = renderColumns[currentEntry.ColumnIndex] as BocCompoundColumnDefinition;
-        
-        if (simpleColumn != null)
+        BocColumnDefinition column = renderColumns[currentEntry.ColumnIndex];
+        if (   ! (column is BocValueColumnDefinition) 
+            && ! (   column is BocCustomColumnDefinition
+                  && ((BocCustomColumnDefinition) column).IsSortable))
         {
-          //  Simple column, one value
+          throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + currentEntry.ColumnIndex + ".");
+        }
+
+        BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
+        BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
+        BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
+        
+        if (simpleColumn != null || customColumn != null)
+        {
+          BusinessObjectPropertyPath propertyPath;
+          if (simpleColumn != null)
+            propertyPath = simpleColumn.PropertyPath;
+          else
+            propertyPath = customColumn.PropertyPath;
+          //  one value
           int compareResult = 0;
           if (currentEntry.Direction == SortingDirection.Ascending)
-            compareResult = ComparePropertyPathValues (simpleColumn.PropertyPath, businessObjectA, businessObjectB);
+            compareResult = ComparePropertyPathValues (propertyPath, businessObjectA, businessObjectB);
           else
-            compareResult = ComparePropertyPathValues (simpleColumn.PropertyPath, businessObjectB, businessObjectA);
+            compareResult = ComparePropertyPathValues (propertyPath, businessObjectB, businessObjectA);
           if (compareResult != 0)
             return compareResult;
         }
