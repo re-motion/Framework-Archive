@@ -2,72 +2,79 @@
 <BocReferenceValue>
   <Class>
     <remarks>
-      <list type="definition">
-        <listheader>
-          <term>State</term>
-          <description>Behaviour</description>
-        </listheader>
-        <item>
-          <term>
-            Read-Only / <see cref="Value"/> is not <see langword="null"/>
-          </term>
-          <description>
-            Displays the <see cref="IBusinessObjectWithIdentity.DisplayName"/> 
-            for <see cref="Value"/> 
-            and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
-            if <see cref="EnableIcon"/> is <see langword="true"/>.
-          </description>
-        </item>
-        <item>
-          <term>
-            Read-Only / <see cref="Value"/> is <see langword="null"/>
-          </term>
-          <description>
-            Displays no text
-            and the spacer returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
-            if <see cref="EnableIcon"/> is <see langword="true"/>.
-          </description>
-        </item>
-        <item>
-          <term>
-            Modifiable / <see cref="Value"/> is not <see langword="null"/>
-          </term>
-          <description>
-            Text is automatically provided by the <see cref="DropDownList"/>.
-            Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
-            if <see cref="EnableIcon"/> is <see langword="true"/>.
-          </description>
-        </item>
-        <item>
-          <term>
-            Modifiable / <see cref="Value"/> is <see langword="null"/>
-          </term>
-          <description>
-            <para>
+      <para>
+        <list type="definition">
+          <listheader>
+            <term>State</term>
+            <description>Behaviour</description>
+          </listheader>
+          <item>
+            <term>
+              Read-Only / <see cref="Value"/> is not <see langword="null"/>
+            </term>
+            <description>
+              Displays the <see cref="IBusinessObjectWithIdentity.DisplayName"/> 
+              for <see cref="Value"/> 
+              and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+              if <see cref="EnableIcon"/> is <see langword="true"/>.
+            </description>
+          </item>
+          <item>
+            <term>
+              Read-Only / <see cref="Value"/> is <see langword="null"/>
+            </term>
+            <description>
+              Displays no text
+              and the spacer returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+              if <see cref="EnableIcon"/> is <see langword="true"/>.
+            </description>
+          </item>
+          <item>
+            <term>
+              Edit Mode / <see cref="Value"/> is not <see langword="null"/>
+            </term>
+            <description>
               Text is automatically provided by the <see cref="DropDownList"/>.
               Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
               if <see cref="EnableIcon"/> is <see langword="true"/>.
-            </para><para>
-              If the control is required, the undefined item is removed, once a valid item is
-              selected.
-            </para>
-          </description>
-        </item>
-        <item>
-          <term>
-            Modifiable / <see cref="Value"/> is set to an item not in the list.
-          </term>
-          <description>
-            <para>
-              The new item is added to the list and displayed in the <see cref="DropDownList"/>. 
-            </para><para>
-              If <see cref="Value"/> is null but the control is required, the undefined item is
-              added to the <see cref="DropDownList"/> unitl the selection is again changed to a
-              valid item.
-            </para>
-          </description>
-        </item>
-      </list>
+            </description>
+          </item>
+          <item>
+            <term>
+              Edit Mode / <see cref="Value"/> is <see langword="null"/>
+            </term>
+            <description>
+              <para>
+                Text is automatically provided by the <see cref="DropDownList"/>.
+                Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
+                if <see cref="EnableIcon"/> is <see langword="true"/>.
+              </para><para>
+                If the control is required, the undefined item is removed, once a valid item is
+                selected.
+              </para>
+            </description>
+          </item>
+          <item>
+            <term>
+              Modifiable / <see cref="Value"/> is set to an item not in the list.
+            </term>
+            <description>
+              <para>
+                The new item is added to the list and displayed in the <see cref="DropDownList"/>. 
+              </para><para>
+                If <see cref="Value"/> is null but the control is required, the undefined item is
+                added to the <see cref="DropDownList"/> unitl the selection is again changed to a
+                valid item.
+              </para>
+            </description>
+          </item>
+        </list>
+      </para><para>
+        If <see cref="DataSource"/> and <see cref="PropertyIdentifier"/> are not set, the 
+        control is unbound. In that case, <see cref="Property"/> must be set programmatically and
+        <see cref="Value"/> must be set to display the current item and queried to save it back 
+        into the <see cref="IBusinessObject"/>.
+      </para>
     </remarks>
   </Class>
 </BocReferenceValue>

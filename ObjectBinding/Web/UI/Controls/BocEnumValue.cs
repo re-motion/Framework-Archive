@@ -11,9 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   This control can be used to display or edit enumeration values.
-/// </summary>
+/// <summary> This control can be used to display or edit enumeration values. </summary>
 /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
@@ -35,35 +33,48 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
 	// member fields
 
-  /// <summary>
-  ///   This event is fired when the selection is changed in the UI.
-  /// </summary>
-  /// <remarks>
-  ///   The event is fired only if the selection change is caused by the user.
-  /// </remarks>
+  /// <summary> This event is fired when the selection is changed in the UI. </summary>
+  /// <remarks> The event is fired only if the selection change is caused by the user. </remarks>
   public event EventHandler SelectionChanged;
 
+  /// <summary>
+  ///   <see langword="true"/> if <see cref="ReferenceValue"/> has been changed since last call to
+  ///   <see cref="SaveValue"/>.
+  /// </summary>
   private bool _isDirty = true;
-  private ListControl _listControl;
+
+  /// <summary> The <see cref="ListControl"/> used in edit mode. </summary>
+  private ListControl _listControl = null;
+
+  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = null;
 
-  /// <summary> The enum value. </summary>
+  /// <summary> The actual enum value. </summary>
   private object _value = null;
+
   /// <summary> 
   ///   The <see cref="IEnumerationValueInfo.Identifier"/> matching the <see cref="_value"/>.
   /// </summary>
   private string _internalValue = null;
+
   /// <summary> 
-  ///   The <see cref="IEnumerationValueInfo.Identifier"/> set through the <see cref="ListControl"/>. 
+  ///   The <see cref="IEnumerationValueInfo.Identifier"/> set through the 
+  ///   <see cref="ListControl"/>. 
   /// </summary>
   private string _newInternalValue = null;
+
   /// <summary>
   ///   The chached <see cref="IEnumerationValueInfo"/> object matching the <see cref="_value"/>.
   /// </summary>
   private IEnumerationValueInfo _enumerationValueInfo = null;
  
+  /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
   private Style _commonStyle = new Style ();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="ListControl"/>. </summary>
   private ListControlStyle _listControlStyle = new ListControlStyle ();
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="_label"/>. </summary>
   private Style _labelStyle = new Style ();
 
   /// <summary> State field for special behaviour during load view state. </summary>
@@ -72,8 +83,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
   // construction and disposing
 
+  /// <summary> Simple constructor. </summary>
 	public BocEnumValue()
 	{
+    //  empty
 	}
 
 	// methods and properties
@@ -85,7 +98,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   If the <see cref="ListControl"/> could not be created from <see cref="ListControlStyle"/>,
   ///   the control is set to read-only.
   /// </remarks>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
@@ -114,7 +127,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// <summary>
   ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
   /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
@@ -132,7 +145,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       else
         _newInternalValue = null;
 
-      if (_newInternalValue != null &&  _newInternalValue != InternalValue)
+      if (newInternalValue != null && _newInternalValue != InternalValue)
         _isDirty = true;
     }
   }
@@ -149,7 +162,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
   ///   properly initialized.
   /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -185,10 +198,14 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     _isLoadViewState = true;
 
     object[] values = (object[]) savedState;
+
     base.LoadViewState (values[0]);
+    
     Value = values[1];
+    
     if (values[2] != null)
       _internalValue = (string) values[2];
+    
     _isDirty = (bool)  values[3];
 
     _isLoadViewState = false;
@@ -283,12 +300,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   }
 
   /// <summary>
-  ///   Populates the <see cref="ListControl"/> with the items passes in 
-  ///   <paramref name="businessObjects"/> before calling <see cref="InternalLoadValue"/>.
+  ///   Populates the <see cref="ListControl"/> from the <see cref="Property"/>'s 
+  ///   list of enabled enum values before calling <see cref="InternalLoadValue"/>.
   /// </summary>
-  /// <remarks>
-  ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
-  /// </remarks>
   protected virtual void RefreshEnumList()
   {
     if (! IsReadOnly)
@@ -353,7 +367,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
   /// <overloads>Overloaded.</overloads>
   /// <summary> Refreshes the sub-controls for the new value. </summary>
-  /// <param name="removeItemWithIdentifier"></param>
+  /// <param name="removeItemWithIdentifier">
+  ///   if not <see langword="null"/> it removes the item with the matching identifier 
+  ///   from the <see cref="ListControl"/>.
+  ///   Used for required values once they are set to an item different from the null item,
+  ///   or after a disabled value get's deselected.
+  /// </param>
   private void InternalLoadValue (string removeItemWithIdentifier)
   {
     bool hasPropertyAfterInitializion = ! _isLoadViewState && Property != null;
@@ -386,7 +405,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
           //  Item currently not in the list
         if (_listControl.Items.FindByValue (InternalValue) == null)
         {
-          ListItem item = new ListItem (EnumerationValueInfo.DisplayName, EnumerationValueInfo.Identifier);
+          ListItem item = new ListItem (
+            EnumerationValueInfo.DisplayName, 
+            EnumerationValueInfo.Identifier);
+
           _listControl.Items.Add (item);
         }
 
@@ -405,8 +427,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     if (_newInternalValue != InternalValue)
     {
-      if (Property != null)
-        InternalValue = _newInternalValue;
+      InternalValue = _newInternalValue;
 
       OnSelectionChanged (EventArgs.Empty);
     }
@@ -455,6 +476,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// </summary>
   /// <remarks>
   ///   <para>
+  ///     Used for communicating with the outside world.
+  ///   </para><para>
+  ///     Must be serializable.
+  ///   </para><para>
   ///      Must be part of the enum identified by 
   ///      <see cref="IBusinessObjectEnumerationProperty.PropertyType"/>.
   ///   </para><para>
@@ -466,7 +491,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   ///   </para>
   /// </remarks>
   /// <value> 
-  ///   The <see cref=""/> currently displayed 
+  ///   The enumeration value currently displayed 
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
   public override object Value
@@ -491,10 +516,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// <summary>
   ///   Gets or sets the current value.
   /// </summary>
+  /// <remarks> Only used to simplify access to the <see cref="IEnumerationValueInfo"/>. </remarks>
   /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> for the current 
-  ///   <see cref="IBusinessObjectWithIdentity"/> object
-  ///   or <see langword="null"/> if no item / the null item is selected.
+  ///   The <see cref="EnumerationValueInfo"/> object
+  ///   or <see langword="null"/> if no item / the null item is selected 
+  ///   or <see cref="Property"/> is <see langword="null"/>.
   /// </value>
   protected IEnumerationValueInfo EnumerationValueInfo
   {
@@ -507,6 +533,21 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     }
   }
 
+  /// <summary>
+  ///   Gets or sets the current value.
+  /// </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     Used to identifiy the currently selected item.
+  ///   </para><para>
+  ///     If <see cref="Property"/> is not set when the selection changed event fires,
+  ///     <see cref="Value"/> will not be properly set to the new value.
+  ///   </para>
+  /// </remarks>
+  /// <value> 
+  ///   The <see cref="EnumerationValueInfo.Identifier"/> object
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
   protected virtual string InternalValue
   {
     get 
@@ -574,12 +615,14 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   }
 
   /// <summary>
-  ///   Specifies whether the text within the control has been changed since the last load/save operation.
+  ///   Specifies whether the text within the control has been changed since the last load/save
+  ///   operation.
   /// </summary>
   /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Text changes by the user cause <c>IsDirty</c> to be reset to <c>false</c> during the
-  ///   loading phase of the request (i.e., before the page's <c>Load</c> event is raised).
+  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> 
+  ///   during loading and saving values. Text changes by the user cause <c>IsDirty</c> to be 
+  ///   reset to <c>false</c> during the loading phase of the request (i.e., before the page's 
+  ///   <c>Load</c> event is raised).
   /// </remarks>
   public override bool IsDirty
   {
@@ -596,20 +639,26 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     get { return s_supportedPropertyInterfaces; }
   }
 
-  // TODO: works for list box??
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
   public override bool UseLabel
   {
-    get { return _listControlStyle.ControlType != ListControlType.DropDownList; }
+    get 
+    {
+      bool isDropDownList = _listControlStyle.ControlType == ListControlType.DropDownList;
+      bool isListBox = _listControlStyle.ControlType == ListControlType.ListBox;
+    
+      return ! (isDropDownList || isListBox);
+    }
   }
 
   /// <summary>
   ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
   /// </summary>
   /// <remarks>
-  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
-  ///   the respective modes. Note that if you set one of the <c>Font</c> attributes (Bold, Italic etc.) to 
-  ///   <c>true</c>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
-  ///   properties.
+  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual 
+  ///   style settings for the respective modes. Note that if you set one of the <c>Font</c> 
+  ///   attributes (Bold, Italic etc.) to <c>true</c>, this cannot be overridden using 
+  ///   <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/>  properties.
   /// </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]

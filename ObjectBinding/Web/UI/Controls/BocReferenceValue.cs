@@ -34,12 +34,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
 	// member fields
 
-  /// <summary>
-  ///   This event is fired when the selection is changed in the UI.
-  /// </summary>
-  /// <remarks>
-  ///   The event is fired only if the selection change is caused by the user.
-  /// </remarks>
+  /// <summary> This event is fired when the selection is changed in the UI. </summary>
+  /// <remarks> The event is fired only if the selection change is caused by the user. </remarks>
   public event EventHandler SelectionChanged;
 
   /// <summary>
@@ -786,10 +782,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
   /// </summary>
   /// <remarks>
-  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
-  ///   the respective modes. Note that if you set one of the <c>Font</c> attributes (Bold, Italic etc.) to 
-  ///   <c>true</c>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
-  ///   properties.
+  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual 
+  ///   style settings for the respective modes. Note that if you set one of the <c>Font</c> 
+  ///   attributes (Bold, Italic etc.) to <c>true</c>, this cannot be overridden using 
+  ///   <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/>  properties.
   /// </remarks>
   [Category ("Style")]
   [Description ("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
