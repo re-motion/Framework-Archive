@@ -3,9 +3,9 @@ using System.CodeDom;
 using System.Runtime.Serialization;
 
 using Rubicon.Data.NullableValueTypes;
-using Rubicon.CodeDom;
+using Rubicon.Development.CodeDom;
 
-namespace Rubicon.CodeDom.NullableValueTypes
+namespace Rubicon.Development.CodeDom.NullableValueTypes
 {
 
 public sealed class NullableTypeCreator

@@ -5,9 +5,9 @@ namespace Rubicon.Text
 {
 
 /// <summary>
-/// Utility functions for formatting ASCII text.
+/// Utility functions for formatting text with fixed character widths.
 /// </summary>
-public sealed class AsciiTextFormat
+public sealed class MonospaceTextFormat
 {
   // static members
 
@@ -91,7 +91,7 @@ public sealed class AsciiTextFormat
 
   // construction and disposal
 
-  private AsciiTextFormat ()
+  private MonospaceTextFormat ()
   {
   }
 }

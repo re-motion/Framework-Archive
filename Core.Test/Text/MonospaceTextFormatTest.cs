@@ -7,7 +7,7 @@ namespace Rubicon.Text.UnitTests
 {
 
 [TestFixture]
-public class AsciiTextFormatTest
+public class MonospaceTextFormatTest
 {
   [Test]
   public void TestSplitTextOnSeperator ()
@@ -26,7 +26,7 @@ public class AsciiTextFormatTest
   {
     string before;
     string after;
-    AsciiTextFormat.SplitTextOnSeperator (text, out before, out after, splitAt, new char[] {' '});
+    MonospaceTextFormat.SplitTextOnSeperator (text, out before, out after, splitAt, new char[] {' '});
     Assertion.AssertEquals (expectedBefore, before);
     Assertion.AssertEquals (expectedAfter, after);
   }
@@ -37,7 +37,7 @@ public class AsciiTextFormatTest
     string label = "this is the label  ";
     string description = "the quick brown fox jumps over the lazy dog. THE (VERY QUICK) FOX JUMPS OVER THE LAZY DOG.";
     StringBuilder sb = new StringBuilder (label);
-    AsciiTextFormat.AppendIndentedText (sb, label.Length, 30, description);
+    MonospaceTextFormat.AppendIndentedText (sb, label.Length, 30, description);
     string expectedText = 
             "this is the label  the quick"
         + "\n                   brown fox"

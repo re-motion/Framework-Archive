@@ -379,7 +379,7 @@ public class CommandLineParser
     // insert word breaks
     string synopsis = sb.ToString();
     sb.Length = 0;
-    AsciiTextFormat.AppendWrappedText (sb, maxWidth, synopsis);
+    MonospaceTextFormat.AppendWrappedText (sb, maxWidth, synopsis);
 
     // create parameter name/description table
     sb.Append ("\n");
@@ -387,7 +387,7 @@ public class CommandLineParser
     {
       sb.AppendFormat ("\n  {0,-" + maxLength.ToString() + "}  ", 
           (argument.Name != null) ? "/" + argument.Name : argument.Placeholder);
-      AsciiTextFormat.AppendIndentedText (sb, maxLength + 4, maxWidth, argument.Description);
+      MonospaceTextFormat.AppendIndentedText (sb, maxLength + 4, maxWidth, argument.Description);
     }
 
     return sb.ToString();

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.CodeDom;
 
-namespace Rubicon.CodeDom
+namespace Rubicon.Development.CodeDom
 {
 
 public class ExtendedJSharpCodeProvider: ExtendedCodeProvider

@@ -3,7 +3,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Text;
 
-namespace Rubicon.CodeDom
+namespace Rubicon.Development.CodeDom
 {
 /// <summary>
 /// Base class for extended code providers.

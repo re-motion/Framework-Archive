@@ -8,7 +8,7 @@ using Rubicon.UnitTests;
 
 using Rubicon.Text.CommandLine;
 
-namespace Rubicon.Text.CommandLine.UnitTests
+namespace Rubicon.Text.UnitTests.CommandLine
 {
 
 [TestFixture]
