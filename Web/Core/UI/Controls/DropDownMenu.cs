@@ -11,52 +11,10 @@ namespace Rubicon.Web.UI.Controls
 {
 
 /*
-
-  <script>
-	  function getmenuforlist1()
-	  {
-		  var menu = new array();
-		  array.add ("editattributes.gif", "Bearbeiten", "edit");
-		  ...
-		  return menu;
-	  }
-
-	  var menu1 = new array();
-	  addmenuitem ("menu1", "edid.gif", "Bearbeiten", "edit");
-	  addseperator ("menu1");
-	  addmenuitem ("menu1", "edid.gif", "Bearbeiten", "edit");
-  </>
-
-
-
-  <table id=list1 onclick="showmenu(getmenuforlist1())"
-
-
-
-  ID = cut
-  category = edit
-  icon = cut.gif
-  text = "Ausschneiden"
-
-  ID = open
-  category = object
-  icon = opne.gif
-  text = "Öffnen"
-
-  ID = duplicate
-  category = edit
-  icon = dup.gif
-  text = "Duplizieren"
-
-
-
   Edit
   Duplicate
   ---------
   Öffnen
-
-
-
   auto:list1:menu:cut:text = "Ausschneiden"
 */
 /// <remarks>
