@@ -17,10 +17,23 @@ public class DataManager
 
   // construction and disposing
 
-  public DataManager ()
+
+  public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
   {
+    _relationEndPointMap.RegisterObjectEndPoint (endPointID, oppositeObjectID);
+  }
+
+  public void RegisterCollectionEndPoint (RelationEndPointID endPointID, DomainObjectCollection domainObjects)
+  {
+    _relationEndPointMap.RegisterCollectionEndPoint (endPointID, domainObjects);
+  }
+
+  public DataManager (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
     _dataContainerMap = new DataContainerCollection ();
-    _relationEndPointMap = new RelationEndPointMap ();
+    _relationEndPointMap = new RelationEndPointMap (clientTransaction);
   }
 
   // methods and properties
@@ -154,6 +167,8 @@ public class DataManager
 
   public void RegisterNewDataContainer (DataContainer dataContainer)
   {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
     Register (dataContainer);
 
     foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
@@ -162,16 +177,12 @@ public class DataManager
       {
         if (endPointID.Definition.Cardinality == CardinalityType.One) 
         {
-          Register (new ObjectEndPoint (dataContainer, endPointID.Definition, null));
+          _relationEndPointMap.RegisterObjectEndPoint (endPointID, null);
         }
         else
         {
           DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
-
-          CollectionEndPoint collectionEndPoint = new CollectionEndPoint (
-              dataContainer, (VirtualRelationEndPointDefinition) endPointID.Definition, domainObjects);
-
-          Register (collectionEndPoint);
+          _relationEndPointMap.RegisterCollectionEndPoint (endPointID, domainObjects);
         }
       }
     }
@@ -193,20 +204,6 @@ public class DataManager
 
     _dataContainerMap.Add (dataContainer);
     _relationEndPointMap.Register (dataContainer);
-  }
-
-  public void Register (ObjectEndPoint objectEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
-    _relationEndPointMap.Add (objectEndPoint);
-  }
-
-  public void Register (CollectionEndPoint collectionEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-
-    collectionEndPoint.ChangeDelegate = _relationEndPointMap;
-    _relationEndPointMap.Add (collectionEndPoint);
   }
 
   public RelationEndPoint GetRelationEndPoint (RelationEndPointID id)

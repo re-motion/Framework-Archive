@@ -148,7 +148,7 @@ public class ClientTransaction : IDisposable
 
     domainObjects = GetDomainObjects (relationEndPointID, relatedDataContainers);
 
-    _dataManager.Register (new CollectionEndPoint (relationEndPointID, domainObjects));
+    _dataManager.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
     foreach (DataContainer loadedDataContainer in newLoadedDataContainers)
       OnLoaded (new LoadedEventArgs (loadedDataContainer.DomainObject));
@@ -180,7 +180,7 @@ public class ClientTransaction : IDisposable
     RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (
         GetRelatedObject (relationEndPointID), newRelatedEndPoint.Definition);
 
-    if (object.ReferenceEquals (newRelatedEndPoint.DomainObject, oldRelatedEndPoint.DomainObject))
+    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
       return;
 
     if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
@@ -232,7 +232,7 @@ public class ClientTransaction : IDisposable
     }
     else
     {
-      _dataManager.Register (new ObjectEndPoint (relationEndPointID, null));
+      _dataManager.RegisterObjectEndPoint (relationEndPointID, null);
       return null;
     }
   }
@@ -256,7 +256,7 @@ public class ClientTransaction : IDisposable
 
   private void Initialize ()
   {
-    _dataManager = new DataManager ();
+    _dataManager = new DataManager (this);
     _persistenceManager = new PersistenceManager ();
   }
 
@@ -297,12 +297,12 @@ public class ClientTransaction : IDisposable
     if (!newRelatedEndPoint.IsNull)
     {
       DomainObjectCollection collection = GetRelatedObjects (newRelatedEndPoint.ID);
-      collection.Add (relationEndPoint.DomainObject);
+      collection.Add (relationEndPoint.GetDomainObject ());
     }
     else
     {
       DomainObjectCollection collection = GetRelatedObjects (oldRelatedEndPoint.ID);
-      collection.Remove (relationEndPoint.DomainObject);
+      collection.Remove (relationEndPoint.GetDomainObject ());
     }
   }
 

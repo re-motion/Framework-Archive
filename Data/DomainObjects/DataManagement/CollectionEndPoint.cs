@@ -23,54 +23,64 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   // construction and disposing
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction, 
       DomainObject domainObject, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.ID, definition, oppositeDomainObjects)
+      : this (clientTransaction, domainObject.ID, definition, oppositeDomainObjects)
   {
   }
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (dataContainer.ID, definition, oppositeDomainObjects)
+      : this (clientTransaction, dataContainer.ID, definition, oppositeDomainObjects)
   {
   }
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction,
       DomainObject domainObject, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.ID, propertyName, oppositeDomainObjects)
+      : this (clientTransaction, domainObject.ID, propertyName, oppositeDomainObjects)
   {
   }
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : this (dataContainer.ID, propertyName, oppositeDomainObjects)
+      : this (clientTransaction, dataContainer.ID, propertyName, oppositeDomainObjects)
   {
   }
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction,
       ObjectID objectID, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (objectID, definition.PropertyName, oppositeDomainObjects)
+      : this (clientTransaction, objectID, definition.PropertyName, oppositeDomainObjects)
   {
   }
 
   public CollectionEndPoint (
+      ClientTransaction clientTransaction,
       ObjectID objectID, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : this (new RelationEndPointID (objectID, propertyName), oppositeDomainObjects)
+      : this (clientTransaction, new RelationEndPointID (objectID, propertyName), oppositeDomainObjects)
   {
   }
 
-  public CollectionEndPoint (RelationEndPointID id, DomainObjectCollection oppositeDomainObjects) : base (id)
+  public CollectionEndPoint (
+      ClientTransaction clientTransaction,
+      RelationEndPointID id, 
+      DomainObjectCollection oppositeDomainObjects) 
+      : base (clientTransaction, id)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
 
@@ -143,10 +153,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _oldEndPoint = oldEndPoint;
     _newEndPoint = newEndPoint;
 
-    if (IsAddOperation () && !_oppositeDomainObjects.BeginAdd (_newEndPoint.DomainObject))
+    if (IsAddOperation () && !_oppositeDomainObjects.BeginAdd (_newEndPoint.GetDomainObject ()))
       return false;
 
-    if (IsRemoveOperation () && !_oppositeDomainObjects.BeginRemove (_oldEndPoint.DomainObject))
+    if (IsRemoveOperation () && !_oppositeDomainObjects.BeginRemove (_oldEndPoint.GetDomainObject ()))
       return false;
 
     return base.BeginRelationChange (oldEndPoint, newEndPoint);
@@ -158,10 +168,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
 
     if (IsAddOperation ())
-      _oppositeDomainObjects.EndAdd (_newEndPoint.DomainObject);
+      _oppositeDomainObjects.EndAdd (_newEndPoint.GetDomainObject ());
 
     if (IsRemoveOperation ())
-      _oppositeDomainObjects.EndRemove (_oldEndPoint.DomainObject);
+      _oppositeDomainObjects.EndRemove (_oldEndPoint.GetDomainObject ());
 
     base.EndRelationChange ();
   }
