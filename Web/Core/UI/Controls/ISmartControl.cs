@@ -19,6 +19,7 @@ public interface ISmartControl: IComponent
 
   string TargetControlID { get; }
   string DisplayName { get; }
+  string ID { get; set;}
 }
 
 }
