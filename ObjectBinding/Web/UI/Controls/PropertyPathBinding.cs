@@ -22,11 +22,6 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   /// <summary> <see langword="true"/> once the <see cref="PropertyPath"/> has been set. </summary>
   private bool _isPopertyPathEvaluated;
   /// <summary> 
-  ///   The <see cref="IBusinessObjectDataSource"/> used to evaluate the 
-  ///   <see cref="PropertyPathIdentifier"/>. 
-  /// </summary>
-  private IBusinessObjectDataSource _dataSource;
-  /// <summary> 
   ///   The <see cref="BusinessObjectPropertyPath"/> mananged by this 
   ///   <see cref="PropertyPathBinding"/>.
   /// </summary>
@@ -94,8 +89,12 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   [Browsable (false)]
   public IBusinessObjectDataSource DataSource
   {
-    get { return _dataSource; }
-    set { _dataSource = value; }
+    get
+    {
+      if (OwnerControl != null)
+        return OwnerControl.DataSource; 
+      return null;
+    }
   }
 
   /// <summary> 
@@ -187,29 +186,17 @@ public class PropertyPathBinding: IBusinessObjectClassSource
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public IBusinessObjectReferenceProperty ReferenceProperty
-  {
-    get 
-    {
-      if (OwnerControl != null)
-        return OwnerControl.Property as IBusinessObjectReferenceProperty;
-      return null; 
-    }
-  } 
-
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
   public IBusinessObjectClass BusinessObjectClass
   {
     get 
     {
-      IBusinessObjectReferenceProperty property = ReferenceProperty;
+      IBusinessObjectReferenceProperty property = null;
+      if (OwnerControl != null)
+        property = OwnerControl.Property as IBusinessObjectReferenceProperty;
       if (property != null)
         return property.ReferenceClass;
-
       if (DataSource != null)
         return DataSource.BusinessObjectClass;
-
       return null;
     }
   }

@@ -37,9 +37,10 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   protected override void OnInsert(int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (PropertyPathBinding));
-    base.OnInsert (index, value);    
-    if (_ownerControl != null)
-      ((PropertyPathBinding) value).DataSource = _ownerControl.DataSource;
+    base.OnInsert (index, value);   
+    PropertyPathBinding propertyPathBinding = (PropertyPathBinding) value;
+    if (propertyPathBinding.OwnerControl != OwnerControl)
+      propertyPathBinding.OwnerControl = OwnerControl;
   }
 
   /// <summary> Performs additional custom processes before setting a value. </summary>
@@ -50,8 +51,9 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (PropertyPathBinding));
     base.OnSet (index, oldValue, newValue);    
-    if (_ownerControl != null)
-      ((PropertyPathBinding) newValue).DataSource = _ownerControl.DataSource;
+    PropertyPathBinding propertyPathBinding = (PropertyPathBinding) newValue;
+    if (propertyPathBinding.OwnerControl != OwnerControl)
+      propertyPathBinding.OwnerControl = OwnerControl;
   }
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>

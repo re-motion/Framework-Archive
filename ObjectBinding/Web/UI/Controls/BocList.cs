@@ -2704,19 +2704,6 @@ public class BocList:
     set { _additionalColumnsTitle = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the width that you want to apply to the drop down list used to display the 
-  ///   user selectable columns.
-  /// </summary>
-  [Category ("Menu")]
-  [Description ("The width that you want to apply to the drop down list used to display the user selectable columns.")]
-  [DefaultValue (typeof (Unit), "")]
-  public Unit AdditionalColumnsListWidth
-  {
-    get { return _additionalColumnsListWidth; }
-    set { _additionalColumnsListWidth = value; }
-  }
-
   /// <summary> 
   ///   Gets or sets the text that is rendered as a label for the <c>Options</c> menu.
   /// </summary>

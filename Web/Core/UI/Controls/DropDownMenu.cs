@@ -70,8 +70,9 @@ public class DropDownMenu: WebControl, IControl
           "new DropDownMenu_MenuInfo ('{0}', new Array (\r\n",
           _groupID);
       bool isFirstItem = true;
-      foreach (MenuItem menuItem in MenuItems)
+      for (int i = 0; i < MenuItems.Count; i++)
       {
+        MenuItem menuItem = MenuItems[i];
         if (isFirstItem)
           isFirstItem = false;
         else
@@ -79,7 +80,7 @@ public class DropDownMenu: WebControl, IControl
 
         script.AppendFormat (
             "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}')",
-            ID + " _" + menuItem.ItemID, menuItem.Category, menuItem.Text, menuItem.Icon);
+            i.ToString(), menuItem.Category, menuItem.Text, menuItem.Icon);
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
