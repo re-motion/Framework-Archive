@@ -63,15 +63,18 @@
     <data name="Rubicon.Web.UI.Controls.FormGridManager.HelpTitle" mimetype="	">
         <value>zur Hilfe</value>
     </data>
-    <data name="ASP.WebForm_aspx.MainFormGrid.GenderList_Label">
+    <data name="auto:GlobalFormGridManager:MainFormGrid:GenderList_Label:Text">
         <value>&amp;Geschlecht</value>
     </data>
-    <data name="ASP.WebForm_aspx.MainFormGrid.ZipField_Label">
+    <data name="auto:GlobalFormGridManager:MainFormGrid:ZipField_Label:Text">
         <value>&amp;Plz</value>
     </data>
-    <data name="ASP.WebForm_aspx.MainFormGrid.PlaceField_Label">
+    <data name="auto:GlobalFormGridManager:MainFormGrid:PlaceField_Label:Text">
     </data>
-    <data name="ASP.WebForm_aspx.MainFormGrid.CompaniesTable_Label">
+    <data name="auto:GlobalFormGridManager:MainFormGrid:CompaniesTable_Label:Text">
         <value>&amp;Firmenliste</value>
+    </data>
+    <data name="auto:AddressLabel:Text">
+        <value>Adresse</value>
     </data>
 </root>
