@@ -9,14 +9,45 @@ using System.Drawing;
 namespace Rubicon.Findit.Client.Controls
 {
 
-
 [ParseChildren (false, "Controls")]
 [ControlBuilder (typeof (EntryFormGridControlBuilder))]
 public class EntryFormGrid: Control
 {
-	protected override void Render (HtmlTextWriter writer)
+	
+  /// <summary>
+  /// Validate all EntryFields
+  /// </summary>
+  /// <remarks>
+  /// Calls Validate() on all EntryFields.
+  /// </remarks>
+  /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators are not validated when
+  /// this parameter is true.</param>
+  /// <returns> Returns false if any EntryField is not valid. </returns>
+  public bool Validate (bool ignoreRequiredFieldValidators)
+  {
+    bool isValid = true;
+    foreach (Control control in Controls)
+    {
+      EntryField field = control as EntryField;
+      if (field != null)
+      {
+        if (! field.Validate (ignoreRequiredFieldValidators))
+          isValid = false;
+      }
+    }
+    return isValid;
+  }
+  
+  
+  protected override void Render (HtmlTextWriter writer)
 	{
-		writer.WriteLine ("<table border=\"0\" cellspacing=\"\0\" cellpadding=\"0\">");
+		if (this.Site != null && this.Site.DesignMode)
+		{
+			writer.WriteLine ("[EntryFormGrid - edit in HTML view]");
+			return;
+		}
+
+    writer.WriteLine ("<table border=\"0\" cellspacing=\"\0\" cellpadding=\"0\">");
 
 		for (int i = 0; i < this.Controls.Count; ++i)
 		{
@@ -115,7 +146,34 @@ public class EntryField: Control
 		set { _isRequired = value; }
 	}
 
-	protected override void Render (HtmlTextWriter writer)
+  /// <summary>
+  /// Validate all controls.
+  /// </summary>
+  /// <remarks>
+  /// Validates all Validators.
+  /// </remarks>
+  /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators are not validated when
+  /// this parameter is true.</param>
+  /// <returns> Returns false if any Validator is not valid. </returns>
+  public bool Validate (bool ignoreRequiredFieldValidators)
+  {
+    bool isValid = true;
+    foreach (Control control in Controls)
+    {
+      BaseValidator validator = control as BaseValidator;
+      if (   validator != null
+          && (   ! ignoreRequiredFieldValidators 
+              || ! (validator is RequiredFieldValidator)))
+      {
+        validator.Validate();
+        if (! validator.IsValid)
+          isValid = false;
+      }
+    }
+    return isValid;
+  }
+
+  protected override void Render (HtmlTextWriter writer)
 	{
 		string label;
     string clientId = String.Empty;
