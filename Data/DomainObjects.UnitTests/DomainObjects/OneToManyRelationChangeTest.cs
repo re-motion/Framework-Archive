@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
@@ -85,23 +85,29 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
         _oldCustomer.Orders, _newCustomer.Orders}; 
 
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 1);
-           
-    _newCustomer.Orders.Add (_order);
 
-    ChangeState[] expectedChangeStates = new ChangeState[]
+    try
+    { 
+      _newCustomer.Orders.Add (_order);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
     {
-      new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer")
-    };      
+      ChangeState[] expectedChangeStates = new ChangeState[]
+      {
+        new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer")
+      };      
 
-    eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Unchanged, _order.State);
-    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
-    Assert.AreSame (_oldCustomer, _order.Customer);
-    Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-    Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      Assert.AreSame (_oldCustomer, _order.Customer);
+      Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+      Assert.IsNull (_newCustomer.Orders[_order.ID]);
+    }
   }
 
   [Test]
@@ -114,24 +120,30 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
         _oldCustomer.Orders, _newCustomer.Orders}; 
 
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 2);
-           
-    _newCustomer.Orders.Add (_order);
 
-    ChangeState[] expectedChangeStates = new ChangeState[]
+    try
+    { 
+      _newCustomer.Orders.Add (_order);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
     {
-      new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer")
-    };      
+      ChangeState[] expectedChangeStates = new ChangeState[]
+      {
+        new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
+        new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer")
+      };      
 
-    eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Unchanged, _order.State);
-    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
-    Assert.AreSame (_oldCustomer, _order.Customer);
-    Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-    Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      Assert.AreSame (_oldCustomer, _order.Customer);
+      Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+      Assert.IsNull (_newCustomer.Orders[_order.ID]);
+    }
   }
 
   [Test]
@@ -145,24 +157,30 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 3);
            
-    _newCustomer.Orders.Add (_order);
-
-    ChangeState[] expectedChangeStates = new ChangeState[]
+    try
     {
-      new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
-      new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
-    };      
+      _newCustomer.Orders.Add (_order);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedChangeStates = new ChangeState[]
+      {
+        new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
+        new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+        new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+      };      
 
-    eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Unchanged, _order.State);
-    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
-    Assert.AreSame (_oldCustomer, _order.Customer);
-    Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-    Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      Assert.AreSame (_oldCustomer, _order.Customer);
+      Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+      Assert.IsNull (_newCustomer.Orders[_order.ID]);
+    }
   }
 
   [Test]
@@ -176,25 +194,31 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 4);
            
-    _newCustomer.Orders.Add (_order);
-
-    ChangeState[] expectedChangeStates = new ChangeState[]
+    try
     {
-      new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
-      new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
-      new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection")
-    };      
+      _newCustomer.Orders.Add (_order);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedChangeStates = new ChangeState[]
+      {
+        new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
+        new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+        new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+        new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection")
+      };      
 
-    eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Unchanged, _order.State);
-    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
-    Assert.AreSame (_oldCustomer, _order.Customer);
-    Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-    Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      Assert.AreSame (_oldCustomer, _order.Customer);
+      Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+      Assert.IsNull (_newCustomer.Orders[_order.ID]);
+    }
   }
 
   [Test]
@@ -208,26 +232,32 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 5);
            
-    _newCustomer.Orders.Add (_order);
-
-    ChangeState[] expectedChangeStates = new ChangeState[]
+    try
     {
-      new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
-      new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
-      new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection"),
-      new RelationChangeState (_newCustomer, "Orders", null, _order, "5. Changing event of new customer")
-    };      
+      _newCustomer.Orders.Add (_order);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      ChangeState[] expectedChangeStates = new ChangeState[]
+      {
+        new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
+        new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+        new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+        new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection"),
+        new RelationChangeState (_newCustomer, "Orders", null, _order, "5. Changing event of new customer")
+      };      
 
-    eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check (expectedChangeStates);
 
-    Assert.AreEqual (StateType.Unchanged, _order.State);
-    Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-    Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
 
-    Assert.AreSame (_oldCustomer, _order.Customer);
-    Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-    Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      Assert.AreSame (_oldCustomer, _order.Customer);
+      Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+      Assert.IsNull (_newCustomer.Orders[_order.ID]);
+    }
   }
 
   [Test]
