@@ -23,9 +23,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCore", "WebCore\WebCore.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "ObjectBinding\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection", "ObjectBinding\Reflection\ObjectBinding.Reflection.csproj", "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 11
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -53,6 +69,23 @@ Global
 		SccLocalPath6 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection6 = WebCore\\
+		SccProjectUniqueName7 = http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj
+		SccProjectName7 = \u0022$/libraries/Commons/ObjectBinding/Web.Test\u0022,\u0020QQTAAAAA
+		SccLocalPath7 = ObjectBinding\\Web.Test
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice7 = 2
+		SccProjectUniqueName8 = ObjectBinding\\Core\\ObjectBinding.csproj
+		SccLocalPath8 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection8 = ObjectBinding\\Core\\
+		SccProjectUniqueName9 = ObjectBinding\\Reflection\\ObjectBinding.Reflection.csproj
+		SccLocalPath9 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection9 = ObjectBinding\\Reflection\\
+		SccProjectUniqueName10 = ObjectBinding\\Web\\ObjectBinding.Web.csproj
+		SccLocalPath10 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection10 = ObjectBinding\\Web\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -83,6 +116,22 @@ Global
 		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Debug.Build.0 = Debug|.NET
 		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.ActiveCfg = Release|.NET
 		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.Build.0 = Release|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.ActiveCfg = Debug|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug.Build.0 = Debug|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.ActiveCfg = Release|.NET
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release.Build.0 = Release|.NET
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug.ActiveCfg = Debug|.NET
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug.Build.0 = Debug|.NET
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release.ActiveCfg = Release|.NET
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release.Build.0 = Release|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug.ActiveCfg = Debug|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug.Build.0 = Debug|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.ActiveCfg = Release|.NET
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.Build.0 = Release|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.ActiveCfg = Debug|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
