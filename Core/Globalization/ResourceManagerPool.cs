@@ -126,18 +126,23 @@ public sealed class ResourceDispatcher
       }
       else  
       {
-        PropertyInfo property = control.GetType().GetProperty (propertyName, typeof (string));
-
-        if (property == null)
-        {
-          throw new ApplicationException ("Type " + control.GetType().FullName + " does not contain a public property " + propertyName + ".");
-        }
-
-        property.SetValue (control, propertyValue, new object[0]);
+        SetProperty (control, propertyName, propertyValue);
       }
     }
   }
 
+  public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
+  {
+    PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
+
+    if (property == null)
+    {
+      throw new ApplicationException ("Type " + objectToSetPropertyFor.GetType().FullName + " does not contain a public property " + propertyName + ".");
+    }
+
+    property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
+  }
+  
   private static Type GetType (object objectToGetTypeFor)
   {
     Type type = objectToGetTypeFor.GetType();
