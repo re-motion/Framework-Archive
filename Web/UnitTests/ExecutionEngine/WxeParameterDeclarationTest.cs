@@ -19,8 +19,8 @@ public class WxeParameterDeclarationTest
   [Test]
   public void TestParse1 ()
   {
-    // "this \"special\", value", true, "2004-03-25 12:00", @var1
-    string args = "\"this \\\"special\\\", value\", true, \"2004-03-25 12:00\", @var1";
+    // "this \"special\", value", "true", "2004-03-25 12:00", var1
+    string args = @"""this \""special\"", value"", ""true"", ""2004-03-25 12:00"", var1";
     object[] result = WxeParameterDeclaration.ParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
     Assert.AreEqual (4, result.Length);
     Assert.AreEqual ("this \"special\", value", result[0]);
@@ -40,7 +40,7 @@ public class WxeParameterDeclarationTest
   [ExpectedException (typeof (ApplicationException))]
   public void TestParseEx2 ()
   {
-    WxeParameterDeclaration.ParseActualParameters (s_parameters, "a, xyz", CultureInfo.InvariantCulture);
+    WxeParameterDeclaration.ParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture);
   }
 }
 
