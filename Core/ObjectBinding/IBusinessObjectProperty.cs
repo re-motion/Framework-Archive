@@ -197,7 +197,7 @@ public class EnumerationValueInfo: IEnumerationValueInfo
     get { return _identifier; }
   }
 
-  public string DisplayName
+  public virtual string DisplayName
   {
     get { return _displayName; }
   }
