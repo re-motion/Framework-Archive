@@ -315,8 +315,8 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\Bugs and ToDos.txt"
-                    BuildAction = "Content"
+                    RelPath = "Doc\Bugs and ToDos.xls"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "Doc\ReadMe.txt"
