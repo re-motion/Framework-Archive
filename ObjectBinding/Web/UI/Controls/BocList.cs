@@ -1324,6 +1324,8 @@ public class BocList:
       BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
+      bool isFirstValueColumn = valueColumn != null && !isFirstValueColumnRendered;
+
       //  Render the command
       bool isCommandEnabled = false;
       if (column.Command != null)
@@ -1349,7 +1351,7 @@ public class BocList:
       }
 
       //  Render the icon
-      if (EnableIcon && !isFirstValueColumnRendered)
+      if (EnableIcon && isFirstValueColumn)
       {
         IBusinessObjectService service
           = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
@@ -1410,7 +1412,7 @@ public class BocList:
       if (isCommandEnabled)
         column.Command.RenderEnd (writer);
 
-      if (valueColumn != null && !isFirstValueColumnRendered)
+      if (isFirstValueColumn)
         isFirstValueColumnRendered = true;
       writer.RenderEndTag();
     }
@@ -1759,9 +1761,19 @@ public class BocList:
           object valueB = simpleColumn.PropertyPath.GetValue (businessObjectB);
           int compareResult = 0;
           if (currentEntry.Direction != SortingDirection.Ascending)
-            compareResult = Comparer.Default.Compare (valueA, valueB);
+          {
+            if (valueA is IComparable && valueB is IComparable)
+              compareResult = Comparer.Default.Compare (valueA, valueB);
+            else
+              compareResult = Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
+          }
           else
-            compareResult = Comparer.Default.Compare (valueB, valueA);
+          {
+            if (valueA is IComparable && valueB is IComparable)
+              compareResult = Comparer.Default.Compare (valueB, valueA);
+            else
+              compareResult = Comparer.Default.Compare (valueB.ToString(), valueA.ToString());
+          }
           if (compareResult != 0)
             return compareResult;
         }
