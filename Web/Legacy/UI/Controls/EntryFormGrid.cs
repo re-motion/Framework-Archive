@@ -231,7 +231,7 @@ public class EntryTitle: Control
 	private string _title = String.Empty;
   private string _padding = String.Empty;
   
-  private int _colSpan = 6;
+  private int _colSpan = 7;
 
   public EntryFormGrid ParentGrid
   {
@@ -465,7 +465,7 @@ public class EntryField: Control
       tagStyle = "style=\"display:none\"";
 
 		writer.WriteLine ("<tr valign=\"middle\" {0}>", tagStyle);
-    writer.WriteLine ("<td style=\"width: 1ex;\"></td>");
+    writer.WriteLine ("<td class=\"label\" style=\"width: 1ex;\"></td>");
 		writer.WriteLine ("<td class=\"label\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
 		writer.WriteLine ("<td class=\"label\">{0}</td>", ParentGrid.GetWhitespaceImage (this.Page, 7, 1));
