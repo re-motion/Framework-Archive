@@ -40,7 +40,7 @@ public interface IResourceManager
   ///   Gets the value of the specified string resource. The resource is identified by
   ///   concatenating type and value name.
   /// </summary>
-  /// <remarks> See <see cref=""/> for resource identifier syntax. </remarks>
+  /// <remarks> See <see cref="ResourceIdentifiersAttribute.GetResourceIdentifier"/> for resource identifier syntax. </remarks>
   /// <returns>
   ///   The value of the resource. If no match is possible, the identifier is returned.
   /// </returns>
