@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.Mapping
 {
 
 public delegate void PropertyDefinitionAddingEventHandler (object sender, PropertyDefinitionAddingEventArgs args);
