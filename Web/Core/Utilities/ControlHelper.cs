@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Utilities
 {
@@ -101,11 +102,46 @@ public class ControlHelper
   /// </returns>
   public static bool IsDesignMode (Control control, HttpContext context)
   {
-    return   context == null 
-          || (control.Site != null && control.Site.DesignMode)
+    return context == null || ControlHelper.IsDesignMode (control);
+  }
+
+  /// <summary>
+  ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
+  ///   design mode.
+  /// </summary>
+  /// <remarks>
+  ///   Does not verify the control's context.
+  /// </remarks>
+  /// <param name="control"> 
+  ///   The <see cref="Control"/> to be tested for being in design mode. 
+  /// </param>
+  /// <returns> 
+  ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
+  /// </returns>
+  public static bool IsDesignMode (Control control)
+  {
+    return   (control.Site != null && control.Site.DesignMode)
           || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
   }
 
+  /// <summary>
+  ///   This method returns <see langword="true"/> if the <paramref name="control"/> is in 
+  ///   design mode.
+  /// </summary>
+  /// <remarks>
+  ///   Does not verify the control's context.
+  /// </remarks>
+  /// <param name="control"> 
+  ///   The <see cref="IControl"/> to be tested for being in design mode. 
+  /// </param>
+  /// <returns> 
+  ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
+  /// </returns>
+  public static bool IsDesignMode (IControl control)
+  {
+    return   (control.Site != null && control.Site.DesignMode)
+          || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
+  }
   // member fields
 
   // construction and disposing
