@@ -3,8 +3,9 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Collections;
 using System.CodeDom;
+using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.Design
 {
 
 /// <summary>
@@ -78,11 +79,9 @@ public abstract class StringObjectConverter: TypeConverter
           if (component.Site == null || component.Site.Name == null)
             continue;
 
-          string typeName = component.GetType().FullName;
-          if (typeName == "System.Web.UI.Page")
-            standardValues.Add ("Page");
-          else if (typeName == "System.Web.UI.UserControl")
-            standardValues.Add ("this");
+          IGetComponentBindingExpression getBindingExpression = component as IGetComponentBindingExpression;
+          if (getBindingExpression != null)
+            standardValues.Add (getBindingExpression.BindingExpression);
           else
             standardValues.Add (component.Site.Name);
         }
