@@ -491,11 +491,11 @@ public class PageUtility
     }
   }  
 
-  public static void RegisterClientScriptBlock (Page page, string key, string javascriptMethode)
+  public static void RegisterClientScriptBlock (Page page, string key, string javascript)
   {
     string script = 
         @"<script language=""javascript"" type=""text/javascript"">" +
-        javascriptMethode +
+        javascript +
 	      "</script>";
 
     page.RegisterClientScriptBlock (key, script);
