@@ -604,12 +604,17 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     get { return "SimpleColumnDefinition"; }
   }
 
-  IBusinessObjectReferenceProperty IReferencePropertySource.ReferenceProperty
+  IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
   {
     get 
     {
       if (OwnerControl != null)
-        return OwnerControl.Property as IBusinessObjectReferenceProperty;
+      {
+        if (OwnerControl.Property is IBusinessObjectReferenceProperty)
+          return ((IBusinessObjectReferenceProperty)OwnerControl.Property).ReferenceClass;
+        else if (OwnerControl.DataSource != null)
+          return OwnerControl.DataSource.BusinessObjectClass;
+      }
       return null; 
     }
   } 

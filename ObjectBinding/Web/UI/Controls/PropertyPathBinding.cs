@@ -192,6 +192,16 @@ public class PropertyPathBinding: IBusinessObjectClassSource
       return null; 
     }
   } 
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
+  {
+    get 
+    {
+      throw new NotImplementedException();
+    }
+  }
 }
 
 }
