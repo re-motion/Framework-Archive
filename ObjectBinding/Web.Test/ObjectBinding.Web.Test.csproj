@@ -203,6 +203,26 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "EgoPageLayoutForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "EgoPageLayoutForm.aspx.cs"
+                    DependentUpon = "EgoPageLayoutForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EgoPageLayoutForm.aspx.resx"
+                    DependentUpon = "EgoPageLayoutForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "EgoPageLayoutFormWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Global.asax"
                     SubType = "Component"
                     BuildAction = "Content"
