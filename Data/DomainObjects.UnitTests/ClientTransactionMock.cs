@@ -2,7 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Rubicon.Data.DomainObjects.UnitTests
 {
 public class ClientTransactionMock : ClientTransaction
 {
