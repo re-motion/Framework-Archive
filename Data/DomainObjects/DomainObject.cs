@@ -211,6 +211,12 @@ public class DomainObject
   {
     CheckDiscarded ();
     ClientTransaction.Delete (this);
+
+    if (IsDiscarded)
+    {
+      _dataContainer.PropertyChanging -= new PropertyChangingEventHandler (DataContainer_PropertyChanging);
+      _dataContainer.PropertyChanged -= new PropertyChangedEventHandler (DataContainer_PropertyChanged);
+    }
   }
 
 //TODO documentation: check if the statement about the invalidCastOperation is right
