@@ -68,10 +68,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// </summary>
   protected class FormGrid
   {
-    /// <summary> The <c>HtmlTable</c> used as a base for form grid. </summary>
+    /// <summary> The <see cref="HtmlTable"/> used as a base for the form grid. </summary>
     private HtmlTable _table;
 
-    /// <summary> The <see cref="FormGridRow"/> collection for this <c>FormGrid</c>. </summary>
+    /// <summary> The <see cref="FormGridRow"/> collection for this <see cref="FormGrid"/>. </summary>
     private FormGridRowCollection _rows;
 
     /// <summary> The column normally containing the labels. </summary>
@@ -80,7 +80,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     /// <summary> The column normally containing the controls. </summary>
     private int _defaultControlsColumn;
 
-    /// <summary> Simple contructor. </summary>
+    /// <summary> 
+    ///   Initializes a new isntance of the <see cref="FormGrid"/> class with the 
+    ///   <see cref="HtmlTable"/> used as a form grid, the <see cref="FormGridRow"/> array 
+    ///   and the indeces of the columns normally containing the labels and the controls.
+    /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
     public FormGrid (
         HtmlTable table, 
