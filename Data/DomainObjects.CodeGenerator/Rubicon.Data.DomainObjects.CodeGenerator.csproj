@@ -108,7 +108,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "BuilderUtility.cs"
+                    RelPath = "BaseBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

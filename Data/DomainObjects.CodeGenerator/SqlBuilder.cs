@@ -85,12 +85,21 @@ public class SqlBuilder
 
   // methods and properties
 
+  // TODO: eliminate this method and use it from BaseBuilder
+  public string ReplaceTag (string original, string tag, string value)
+  {
+    string newString = original.Replace (tag, value);
+    if (newString == original)
+      throw new ApplicationException (string.Format ("ReplaceTag did not replace tag '{0}' with '{1}' in string '{2}'. Tag was not found.", tag, value, original));
+    return newString;
+  }
+
   public void AddConstraints (ConstraintDefinition[] constraints)
   {
     if (constraints.Length == 0)
       return;
 
-    _sqlWriter.Write (BuilderUtility.ReplaceTag (s_alterTableHeader, s_tablenameTag, constraints[0].Tablename));
+    _sqlWriter.Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, constraints[0].Tablename));
 
     foreach (ConstraintDefinition constraint in constraints)
     {
@@ -104,23 +113,23 @@ public class SqlBuilder
   private string GetConstraintText (ConstraintDefinition constraint)
   {
     string constraintText = s_foreignKey;
-    constraintText = BuilderUtility.ReplaceTag (constraintText, s_columnnameTag, constraint.Columnname);
-    constraintText = BuilderUtility.ReplaceTag (constraintText, s_refTablenameTag, constraint.ReferencedTable);
-    constraintText = BuilderUtility.ReplaceTag (constraintText, s_refColumnnameTag, constraint.ReferencedColumn);
-    constraintText = BuilderUtility.ReplaceTag (constraintText, s_classnameTag, constraint.ClassName);
-    constraintText = BuilderUtility.ReplaceTag (constraintText, s_refClassnameTag, constraint.ReferencedClassName);
+    constraintText = ReplaceTag (constraintText, s_columnnameTag, constraint.Columnname);
+    constraintText = ReplaceTag (constraintText, s_refTablenameTag, constraint.ReferencedTable);
+    constraintText = ReplaceTag (constraintText, s_refColumnnameTag, constraint.ReferencedColumn);
+    constraintText = ReplaceTag (constraintText, s_classnameTag, constraint.ClassName);
+    constraintText = ReplaceTag (constraintText, s_refClassnameTag, constraint.ReferencedClassName);
     return constraintText;
   }
 
   public void DropTable (string tableName)
   {
-    _sqlWriter.Write (BuilderUtility.ReplaceTag (s_dropTable, s_tablenameTag, tableName));
+    _sqlWriter.Write (ReplaceTag (s_dropTable, s_tablenameTag, tableName));
     _sqlWriter.Write (s_go);
   }
 
   public void CreateTable (string tableName, bool hasChildClasses, ColumnDefinition[] columnDefinitions)
   {
-    _sqlWriter.Write (BuilderUtility.ReplaceTag (s_tableHeader, s_tablenameTag, tableName));
+    _sqlWriter.Write (ReplaceTag (s_tableHeader, s_tablenameTag, tableName));
 
     _sqlWriter.Write (s_idColumn);
 
@@ -139,7 +148,7 @@ public class SqlBuilder
         {
           string comment = columnDefinition.Classname + " columns";
           _sqlWriter.WriteLine ();
-          _sqlWriter.Write (BuilderUtility.ReplaceTag (s_columnComment, s_commentTag, comment));
+          _sqlWriter.Write (ReplaceTag (s_columnComment, s_commentTag, comment));
           lastClassName = columnDefinition.Classname;
         }
       }
@@ -147,18 +156,18 @@ public class SqlBuilder
       {
         lastClassName = string.Empty;
       }
-      string column = BuilderUtility.ReplaceTag (s_column, s_columnnameTag, columnDefinition.ColumnName);
-      column = BuilderUtility.ReplaceTag (column, s_datatypeTag, columnDefinition.DataType);
+      string column = ReplaceTag (s_column, s_columnnameTag, columnDefinition.ColumnName);
+      column = ReplaceTag (column, s_datatypeTag, columnDefinition.DataType);
       if (columnDefinition.IsNullable)
-        column = BuilderUtility.ReplaceTag (column, s_nullableTag, "NULL");
+        column = ReplaceTag (column, s_nullableTag, "NULL");
       else
-        column = BuilderUtility.ReplaceTag (column, s_nullableTag, "NOT NULL");
+        column = ReplaceTag (column, s_nullableTag, "NOT NULL");
 
       _sqlWriter.Write (column);
     }
 
     _sqlWriter.WriteLine ();
-    _sqlWriter.Write (BuilderUtility.ReplaceTag (s_primaryKey, s_tablenameTag, tableName));
+    _sqlWriter.Write (ReplaceTag (s_primaryKey, s_tablenameTag, tableName));
 
     _sqlWriter.Write (s_tableFooter);
     _sqlWriter.Write (s_go);
@@ -166,7 +175,7 @@ public class SqlBuilder
 
   private void BeginFile (string databasename)
   {
-    _sqlWriter.Write (BuilderUtility.ReplaceTag (s_fileHeader, s_databasenameTag, databasename));
+    _sqlWriter.Write (ReplaceTag (s_fileHeader, s_databasenameTag, databasename));
     _sqlWriter.Write (s_go);
   }
 }
