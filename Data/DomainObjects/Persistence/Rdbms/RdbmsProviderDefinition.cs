@@ -1,6 +1,8 @@
 using System;
 using System.Xml;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
 {
 public class RdbmsProviderDefinition : StorageProviderDefinition

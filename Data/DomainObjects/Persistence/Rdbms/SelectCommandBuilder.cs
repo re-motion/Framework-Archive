@@ -3,6 +3,7 @@ using System.Data;
 using System.Text;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
