@@ -9,18 +9,18 @@ namespace OBWTest
 {
 
 [XmlType]
-public class Person: ReflectionBusinessObject, IBusinessObjectWithIdentity
+public class Person: ReflectionBusinessObject
 {
-  public static Person LoadFromXml (string fileName)
+  public static Person GetObject (Guid id)
   {
-    XmlSerializer serializer = new XmlSerializer (typeof (Person));
-
-    using (FileStream stream = new FileStream (fileName, FileMode.Open, FileAccess.Read))
-    {
-      return (Person) serializer.Deserialize (stream);
-    }
+    return (Person) ReflectionBusinessObjectStorage.GetObject (typeof (Person), id);
   }
 
+  public static Person CreateObject()
+  {
+    return (Person) ReflectionBusinessObjectStorage.CreateObject (typeof (Person));
+  }
+  
   private string _firstName;
   private string _lastName;
   private DateTime _dateOfBirth;
@@ -28,17 +28,8 @@ public class Person: ReflectionBusinessObject, IBusinessObjectWithIdentity
   private NaInt32 _income = 1;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
-  private Person _partner;
 
-  public void SaveToXml (string fileName)
-  {
-    XmlSerializer serializer = new XmlSerializer (typeof (Person));
-
-    using (FileStream stream = new FileStream (fileName, FileMode.Create, FileAccess.Write))
-    {
-      serializer.Serialize (stream, this);
-    }
-  }
+  private Guid _partnerID; 
 
   [XmlAttribute]
   public string FirstName
@@ -89,27 +80,23 @@ public class Person: ReflectionBusinessObject, IBusinessObjectWithIdentity
     set { _marriageStatus = value; }
   }
 
+  [XmlAttribute]
+  public Guid PartnerID
+  {
+    get { return _partnerID; }
+    set { _partnerID = value; }
+  }
+
+  [XmlIgnore]
   public Person Partner
   {
-    get { return _partner; }
-    set { _partner = value; }
+    get { return Person.GetObject (_partnerID); }
+    set { _partnerID = ReflectionBusinessObjectStorage.GetID (value); }
   }
 
-  public string DisplayName
+  public override string DisplayName
   {
-    get
-    {
-      return LastName + ", " + FirstName;
-    }
-  }
-
-  public string UniqueIdentifier
-  {
-    get
-    {
-      // TODO:  Add Person.UniqueIdentifier getter implementation
-      return null;
-    }
+    get { return LastName + ", " + FirstName; }
   }
 }
 
