@@ -4,6 +4,10 @@
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
         ProjectGuid = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+        SccProjectName = "SAK"
+        SccLocalPath = "SAK"
+        SccAuxPath = "SAK"
+        SccProvider = "SAK"
     >
         <Build>
             <Settings
@@ -80,11 +84,6 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Data.DomainObjects"
-                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\References\Rubicon.Core.dll"
@@ -96,13 +95,18 @@
                 />
                 <Reference
                     Name = "system.windows.forms"
-                    AssemblyName = "system.windows.forms"
+                    AssemblyName = "System.Windows.Forms"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
                 />
                 <Reference
                     Name = "system.drawing"
-                    AssemblyName = "system.drawing"
+                    AssemblyName = "System.Drawing"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects"
+                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
