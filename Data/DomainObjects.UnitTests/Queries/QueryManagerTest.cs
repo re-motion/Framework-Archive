@@ -58,5 +58,20 @@ public class QueryManagerTest : ClientTransactionBaseTest
     Assert.AreEqual (DomainObjectIDs.Customer1, customers[0].ID);
     Assert.AreEqual (typeof (Customer), customers[0].GetType ());
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void GetCollectionWithScalarQuery ()
+  {
+    _queryManager.GetCollection (new Query ("OrderNoSumByCustomerNameQuery"));
+  }
+
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void GetScalarWithCollectionQuery ()
+  {
+    _queryManager.GetScalar (new Query ("OrderQuery"));
+  }
 }
 }
