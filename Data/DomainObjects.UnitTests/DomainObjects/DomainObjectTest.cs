@@ -523,5 +523,25 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
     Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));    
   }
+
+  [Test]
+  public void GetRelatedObjectsWithCorrectOrder ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    
+    Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
+    Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);
+  }
+
+  [Test]
+  public void GetRelatedObjectsWithCorrectOrderWithLazyLoad ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    
+    Order orderWithoutOrderItem = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
+
+    Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
+    Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);
+  }
 }
 }
