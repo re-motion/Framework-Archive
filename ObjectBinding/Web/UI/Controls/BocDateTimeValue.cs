@@ -1193,15 +1193,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return IsReadOnly ? (Control) this : _dateTextBox; }
   }
 
-  /// <summary>
-  ///   Specifies whether the date/time value within the control has been changed 
-  ///   since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Text changes by the user cause <c>IsDirty</c> to be reset to <c>false</c> during the
-  ///   loading phase of the request (i.e., before the page's <c>Load</c> event is raised).
-  /// </remarks>
   public override bool IsDirty
   {
     get { return _isDirty; }

@@ -605,14 +605,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return (_textBox != null) ? _textBox : (Control) this; }
   }
 
-  /// <summary>
-  ///   Specifies whether the text within the control has been changed since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Text changes by the user cause <c>IsDirty</c> to be reset to <c>false</c> during the
-  ///   loading phase of the request (i.e., before the page's <c>Load</c> event is raised).
-  /// </remarks>
   public override bool IsDirty
   {
     get { return _isDirty; }

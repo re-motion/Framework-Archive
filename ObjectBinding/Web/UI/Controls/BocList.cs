@@ -410,6 +410,8 @@ public class BocList:
     
     _optionsMenu.MenuItems.Clear();
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
+
+    EnsureRowEditModeRestored();
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -825,8 +827,6 @@ public class BocList:
           this, Context, typeof (BocList), ResourceType.Html, "BocList.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
-
-    EnsureRowEditModeRestored();
 
     base.OnPreRender (e);
   }
@@ -1650,7 +1650,9 @@ public class BocList:
         cssClassTableCell = CssClassDataCellEven;
     }
 
-    if (IsSelectionEnabled)
+    if (   IsSelectionEnabled 
+        && (   EditableRowIndex.IsNull 
+            || EditableRowIndex.Value != originalRowIndex))
     {
       if (_hasClientScript)
       {
@@ -1683,7 +1685,8 @@ public class BocList:
       if ( (!firstValueColumnRendered) && column is BocValueColumnDefinition)
       {
         firstValueColumnRendered = true;
-        showIcon = EnableIcon;
+        if (EditableRowIndex.IsNull || EditableRowIndex.Value != originalRowIndex)
+          showIcon = EnableIcon;
       }
       RenderDataCell (writer, idxColumns, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
     }
@@ -1796,6 +1799,9 @@ public class BocList:
         if (hasEditModeControl)
         {
           _rowEditModeControls[columnIndex].RenderControl (writer);
+          BaseValidator[] validators = _rowEditModeValidators[columnIndex];
+          foreach (BaseValidator validator in validators)
+            validator.RenderControl (writer);
         }
         else
         {
@@ -2748,8 +2754,10 @@ public class BocList:
   }
 
   private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
-  private IBusinessObjectBoundWebControl[] _rowEditModeControls;
+  private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
   private bool _isRowEditModeRestored = false;
+  /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
+  private BaseValidator[][] _rowEditModeValidators;
 
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
@@ -2761,7 +2769,7 @@ public class BocList:
 
     if (IsRowEditMode)
       EndRowEditMode (true);
-    if (IsReadOnly)
+    if (IsReadOnly || IsRowEditMode)
       return;
 
     if (Value.Count > index)
@@ -2770,6 +2778,7 @@ public class BocList:
       throw new ArgumentOutOfRangeException ("index");
 
     CreateRowEditModeControls (EnsureColumnsGot());
+    _rowEditModeDataSource.LoadValues (false);
   }
 
   public void EndRowEditMode (bool saveChanges)
@@ -2781,6 +2790,19 @@ public class BocList:
 
     if (saveChanges && ! IsReadOnly)
     {
+      bool isValid = ValiadateModifiableRow();
+      if (!isValid)
+        return;
+
+      if (! _isDirty)
+      {
+        foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
+        {
+          if (control != null)
+            _isDirty |= control.IsDirty;
+        }
+      }
+      _rowEditModeDataSource.SaveValues (false);
     }
 
     RemoveEditModeControls();
@@ -2804,7 +2826,8 @@ public class BocList:
       return;
 
     _rowEditModeDataSource = CreateRowEditModeDataSource ((IBusinessObject) Value[_editableRowIndex.Value]);
-    _rowEditModeControls = new IBusinessObjectBoundWebControl[columns.Length];
+    _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
+    _rowEditModeValidators = new BaseValidator[columns.Length][];
 
     for (int i = 0; i < columns.Length; i++)
     {
@@ -2814,12 +2837,39 @@ public class BocList:
       if (simpleColumn.PropertyPath.Properties.Length > 1)
         continue;
 
-      IBusinessObjectBoundWebControl control = CreateRowEditModeControl (simpleColumn, i);
+      IBusinessObjectBoundModifiableWebControl control = CreateRowEditModeControl (simpleColumn, i);
       control.DataSource = _rowEditModeDataSource;
       _rowEditModeControls[i] = control;
       if (control != null)
+      {
         Controls.Add ((Control) control);
-    }                 
+        _rowEditModeValidators[i] = control.CreateValidators();
+      }
+    }    
+    
+    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
+    {
+      if (columnValidators == null)
+        continue;
+      foreach (BaseValidator validator in columnValidators)
+        Controls.Add (validator);
+    }
+  }
+
+  private bool ValiadateModifiableRow()
+  {
+    bool isValid = true;
+    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
+    {
+      if (columnValidators == null)
+        continue;
+      foreach (BaseValidator validator in columnValidators)
+      {
+        validator.Validate();
+        isValid &= validator.IsValid;
+      }
+    }
+    return isValid;
   }
 
   protected virtual IBusinessObjectReferenceDataSource CreateRowEditModeDataSource (IBusinessObject businessObject)
@@ -2829,11 +2879,11 @@ public class BocList:
     return dataSource;
   }
 
-  protected virtual IBusinessObjectBoundWebControl CreateRowEditModeControl (
+  protected virtual IBusinessObjectBoundModifiableWebControl CreateRowEditModeControl (
     BocSimpleColumnDefinition column,
     int columnIndex)
   {
-    IBusinessObjectBoundWebControl control;
+    IBusinessObjectBoundModifiableWebControl control;
     IBusinessObjectProperty property = column.PropertyPath.LastProperty;
 
     if (IsBocReferenceValueSupported (property))
@@ -2853,7 +2903,10 @@ public class BocList:
     
     control.ID = ID + "_RowEditControl_" + columnIndex.ToString();
     control.Property = property;
-
+    if (control is WebControl)
+      ((WebControl) control).Width = Unit.Percentage (100);
+    else if (control is System.Web.UI.HtmlControls.HtmlControl)
+      ((System.Web.UI.HtmlControls.HtmlControl) control).Attributes["Width"] = "100%";
     return control;
   }
 
