@@ -78,8 +78,11 @@ public abstract class StringObjectConverter: TypeConverter
           if (component.Site == null || component.Site.Name == null)
             continue;
 
-          if (component.GetType().FullName == "System.Web.UI.Page")
+          string typeName = component.GetType().FullName;
+          if (typeName == "System.Web.UI.Page")
             standardValues.Add ("Page");
+          else if (typeName == "System.Web.UI.UserControl")
+            standardValues.Add ("this");
           else
             standardValues.Add (component.Site.Name);
         }
