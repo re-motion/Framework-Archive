@@ -169,22 +169,6 @@ public class TestDataContainerFactory
     return dataContainer;
   }
 
-  public DataContainer CreateNewOrderDataContainer ()
-  {
-    ObjectID newID = new ObjectID ("Order", Guid.NewGuid ());
-    DataContainer dataContainer = DataContainer.CreateNew (newID);
-    ClassDefinition classDefinition = dataContainer.ClassDefinition;
-    
-    dataContainer["OrderNumber"] = 10;
-    dataContainer["DeliveryDate"] = new DateTime (2006, 1, 1);
-    dataContainer["Official"] = DomainObjectIDs.Official1;
-    dataContainer["Customer"] = DomainObjectIDs.Customer1;
-
-    _clientTransactionMock.SetClientTransaction (dataContainer);
-
-    return dataContainer;
-  }
-
   public DataContainer CreateOrderTicket1DataContainer ()
   {
     DataContainer dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.OrderTicket1, null);

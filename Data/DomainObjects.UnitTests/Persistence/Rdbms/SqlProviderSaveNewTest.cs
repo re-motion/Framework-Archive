@@ -141,39 +141,36 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   public void ExistingObjectRelatesToNew ()
   {
     ClassDefinition employeeClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Employee)];
-    DataContainer newSupervisor = Provider.CreateNewDataContainer (employeeClass);
-    DataContainer existingSubordinate = Provider.LoadDataContainer (DomainObjectIDs.Employee1);
+    Employee newSupervisor = new Employee ();
+    Employee existingSubordinate = Employee.GetObject (DomainObjectIDs.Employee1);
 
-    newSupervisor["Name"] = "Supervisor";
-    existingSubordinate["Supervisor"] = newSupervisor.ID;
+    newSupervisor.Name = "Supervisor";
+    existingSubordinate.Supervisor = newSupervisor;
 
     DataContainerCollection collection = new DataContainerCollection ();
-    collection.Add (existingSubordinate);
-    collection.Add (newSupervisor);
+    collection.Add (existingSubordinate.DataContainer);
+    collection.Add (newSupervisor.DataContainer);
 
     Provider.Save (collection);
 
-    newSupervisor = Provider.LoadDataContainer (newSupervisor.ID);
-    existingSubordinate = Provider.LoadDataContainer (existingSubordinate.ID);
+    DataContainer newSupervisorContainer = Provider.LoadDataContainer (newSupervisor.ID);
+    DataContainer existingSubordinateContainer = Provider.LoadDataContainer (existingSubordinate.ID);
 
-    Assert.IsNotNull (newSupervisor);
-    Assert.AreEqual (newSupervisor.ID, existingSubordinate.GetObjectID ("Supervisor"));
+    Assert.IsNotNull (newSupervisorContainer);
+    Assert.AreEqual (newSupervisorContainer.ID, existingSubordinateContainer.GetObjectID ("Supervisor"));
   }
 
   [Test]
   public void NewObjectRelatesToExisting ()
   {
-    DataContainer newDataContainer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
+    Order order = new Order ();
+    order.DeliveryDate = new DateTime (2005, 12, 24);
+    order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
-    newDataContainer["DeliveryDate"] = new DateTime (2005, 12, 24);
-
-    newDataContainer["Customer"] = DomainObjectIDs.Customer1;
-
-    ObjectID newObjectID = newDataContainer.ID;
+    ObjectID newObjectID = order.ID;
 
     DataContainerCollection collection = new DataContainerCollection ();
-    collection.Add (newDataContainer);
+    collection.Add (order.DataContainer);
 
     Provider.Save (collection);
 
@@ -186,29 +183,24 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   [Test]
   public void NewRelatedObjects ()
   {
-    DataContainer newCustomer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions["Customer"]);
+    Customer newCustomer = new Customer ();
+    Order newOrder = new Order ();
 
-    DataContainer newOrder = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
-
-    newOrder["DeliveryDate"] = new DateTime (2005, 12, 24);
-
-    newOrder["Customer"] = newCustomer.ID;
+    newOrder.DeliveryDate = new DateTime (2005, 12, 24);
+    newOrder.Customer = newCustomer;
 
     DataContainerCollection collection = new DataContainerCollection ();
-    collection.Add (newOrder);
-    collection.Add (newCustomer);
+    collection.Add (newOrder.DataContainer);
+    collection.Add (newCustomer.DataContainer);
 
     Provider.Save (collection);
 
-    newCustomer = Provider.LoadDataContainer (newCustomer.ID);
-    newOrder = Provider.LoadDataContainer (newOrder.ID);
+    DataContainer newCustomerContainer = Provider.LoadDataContainer (newCustomer.ID);
+    DataContainer newOrderContainer = Provider.LoadDataContainer (newOrder.ID);
 
-    Assert.IsNotNull (newCustomer);
-    Assert.IsNotNull (newOrder);
-    Assert.AreEqual (newCustomer.ID, newOrder.GetObjectID ("Customer"));
+    Assert.IsNotNull (newCustomerContainer);
+    Assert.IsNotNull (newOrderContainer);
+    Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetObjectID ("Customer"));
   }
-
 }
 }

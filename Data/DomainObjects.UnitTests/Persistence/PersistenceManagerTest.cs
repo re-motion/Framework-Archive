@@ -328,8 +328,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
       + " refers to ClassID 'Company', but the ClassID of the loaded DataContainer is 'Customer'.")]
   public void LoadRelatedDataContainerWithInvalidClassIDOverEndPoint ()
   {
-    DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-    orderContainer["Customer"] = new ObjectID ("Company", (Guid) DomainObjectIDs.Customer1.Value);
+    DataContainer orderContainer = CreateOrder1DataContainerWithInvalidCustomer ();
     RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Customer");
 
     _persistenceManager.LoadRelatedDataContainer (orderContainer, endPointID);
@@ -360,6 +359,21 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
     RelationEndPointID endPointID = new RelationEndPointID (customerID, "Orders");
 
     _persistenceManager.LoadRelatedDataContainers (endPointID);
+  }
+
+  private DataContainer CreateOrder1DataContainerWithInvalidCustomer ()
+  {
+    DataContainer dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null);
+    ClassDefinition classDefinition = dataContainer.ClassDefinition;
+    
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["OrderNumber"], 1));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DeliveryDate"], new DateTime (2005, 1, 1)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Official"], DomainObjectIDs.Official1));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Customer"], new ObjectID ("Company", (Guid) DomainObjectIDs.Customer1.Value)));
+
+    ClientTransactionMock.SetClientTransaction (dataContainer);
+
+    return dataContainer;
   }
 }
 }

@@ -586,11 +586,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer orderTicketContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1);
-      orderTicketContainer["Order"] = DomainObjectIDs.Order2;
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      orderTicket.Order = Order.GetObject (DomainObjectIDs.Order2);
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (orderTicketContainer);
+      collection.Add (orderTicket.DataContainer);
 
       Provider.Save (collection);
     }
@@ -603,11 +603,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderWithoutOrderItem);
-      orderContainer["Official"] = DomainObjectIDs.Official2;
+      Order order = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
+      order.Official = (Official) ClientTransactionMock.GetObject (DomainObjectIDs.Official2);
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (orderContainer);
+      collection.Add (order.DataContainer);
 
       Provider.Save (collection);
     }
@@ -624,11 +624,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo1);
-      ceoContainer["Company"] = DomainObjectIDs.Partner1;
+      Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+      ceo.Company = Partner.GetObject (DomainObjectIDs.Partner1);
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (ceoContainer);
+      collection.Add (ceo.DataContainer);
 
       Provider.Save (collection);
     }
@@ -645,11 +645,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo1);
-      ceoContainer["Company"] = DomainObjectIDs.Supplier1;
+      Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+      ceo.Company = Supplier.GetObject (DomainObjectIDs.Supplier1);
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (ceoContainer);
+      collection.Add (ceo.DataContainer);
 
       Provider.Save (collection);
     }
@@ -666,11 +666,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer orderTicketContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1);
-      orderTicketContainer["Order"] = null;
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      orderTicket.Order = null;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (orderTicketContainer);
+      collection.Add (orderTicket.DataContainer);
 
       Provider.Save (collection);
     }
@@ -688,11 +688,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo1);
-      ceoContainer["Company"] = null;
+      Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+      ceo.Company = null;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (ceoContainer);
+      collection.Add (ceo.DataContainer);
 
       Provider.Save (collection);
     }
