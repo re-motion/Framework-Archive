@@ -103,7 +103,8 @@ public class ViewField: Control
   
   private string _title = string.Empty;
   private string _value = string.Empty;
-
+  
+  
   public string Title
   {
     get { return _title; }
