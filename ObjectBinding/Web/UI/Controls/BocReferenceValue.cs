@@ -942,7 +942,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (_select != value)
       {
         _select = value; 
-        RefreshBusinessObjectList();
+
+        try
+        {
+          //TODO: so geht das natürlich nicht, "Select" wird ja typischerweise schon in FrameworkInitialize gesetzt!
+          RefreshBusinessObjectList();
+        }
+        catch
+        {
+        }
       }
     }
   }
