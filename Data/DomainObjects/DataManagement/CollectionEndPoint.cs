@@ -143,7 +143,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     return BeginRelationChange ();
   }
 
-  public bool BeginInsert (
+  public virtual bool BeginInsert (
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint,
       int index)
@@ -156,7 +156,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     return BeginRelationChange ();
   }
 
-  public bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public virtual bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);

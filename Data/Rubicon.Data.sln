@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj", "{2B87506D-9250-43A0-B0D0-E807410196C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -45,7 +45,6 @@ Global
 		SccProjectName5 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
 		SccLocalPath5 = DomainObjects.ObjectBinding.Web.Test
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice5 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -68,10 +67,10 @@ Global
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug.Build.0 = Debug|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.ActiveCfg = Release|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.Build.0 = Release|.NET
-		{2B87506D-9250-43A0-B0D0-E807410196C1}.Debug.ActiveCfg = Debug|.NET
-		{2B87506D-9250-43A0-B0D0-E807410196C1}.Debug.Build.0 = Debug|.NET
-		{2B87506D-9250-43A0-B0D0-E807410196C1}.Release.ActiveCfg = Release|.NET
-		{2B87506D-9250-43A0-B0D0-E807410196C1}.Release.Build.0 = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.ActiveCfg = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		References\log4net.dll = References\log4net.dll
