@@ -105,7 +105,7 @@ public class DataManager
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
     RelationEndPointCollection allAffectedRelationEndPoints = 
-      _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
+      _relationEndPointMap.CloneAllRelationEndPointsWithLazyLoad (domainObject);
 
     if (BeginDelete (domainObject, allAffectedRelationEndPoints))
     {

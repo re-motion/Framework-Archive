@@ -201,10 +201,9 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override object Clone ()
   {
     CollectionEndPoint newCollectionEndPoint = new CollectionEndPoint (
-        this.ClientTransaction, this.ID, (DomainObjectCollection) this.OppositeDomainObjects.Clone ());
+        this.ClientTransaction, this.ID, this.OppositeDomainObjects);
 
-    newCollectionEndPoint._originalOppositeDomainObjects = 
-        (DomainObjectCollection) this._originalOppositeDomainObjects.Clone ();
+    newCollectionEndPoint._originalOppositeDomainObjects = this._originalOppositeDomainObjects;
 
     return newCollectionEndPoint;
   }
