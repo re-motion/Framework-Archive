@@ -161,6 +161,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocList.cs"
+                    SubType = "Code"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "Controls\BocReferenceValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -186,6 +191,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\ColumnDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ItemCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\Styles.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
@@ -204,6 +219,10 @@
                     RelPath = "Design\ComponentBindingExpressionUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Doc\BocList.txt"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
