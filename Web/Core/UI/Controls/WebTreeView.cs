@@ -547,28 +547,28 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/> node. </summary>
   /// <remarks> Class: <c>treeViewNode</c> </remarks>
-  public virtual string CssClassNode
+  protected virtual string CssClassNode
   {
     get { return "treeViewNode"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node head. </summary>
   /// <remarks> Class: <c>treeViewNodeHead</c> </remarks>
-  public virtual string CssClassNodeHead
+  protected virtual string CssClassNodeHead
   {
     get { return "treeViewNodeHead"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node children. </summary>
   /// <remarks> Class: <c>treeViewNodeChildren</c> </remarks>
-  public virtual string CssClassNodeChildren
+  protected virtual string CssClassNodeChildren
   {
     get { return "treeViewNodeChildren"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s last node's children. </summary>
   /// <remarks> Class: <c>treeViewLastNodeChildren</c> </remarks>
-  public virtual string CssClassLastNodeChildren
+  protected virtual string CssClassLastNodeChildren
   {
     get { return "treeViewLastNodeChildren"; }
   }
