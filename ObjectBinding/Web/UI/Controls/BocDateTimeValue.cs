@@ -19,7 +19,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
 //  TODO: BocDateTimeValue: Try to extract the DatePickerButton functionality into a Control
 //    and add it to Rubicon.Web.UI.Controls.
-//  TODO: BocDateTimeValue: Deactivate popup for all Browsers not Internet Explorer 5.5 or higher.
+//  WORKAROUND: BocDateTimeValue: DatePicker only actived for Internet Explorer 5.5 and higher
+//    IFrame does not hidden with Firefox. Opera and Netscape not testet.
+//    Internet Explorer 5.01 does not open IFrame
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -272,16 +274,19 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.AddAttributesToRender (writer);
   
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-      //  and remove AddAttributesToRender.
-    Unit width = _datePickerPopupWidth;
-    if (width.IsEmpty)
-      width = Unit.Point (c_defaultDatePickerLengthInPoints);
-    writer.AddAttribute("dp_width", width.ToString());
+    //  and remove AddAttributesToRender.
+    if (_datePickerImage.Visible)
+    {
+      Unit width = _datePickerPopupWidth;
+      if (width.IsEmpty)
+        width = Unit.Point (c_defaultDatePickerLengthInPoints);
+      writer.AddAttribute("dp_width", width.ToString());
 
-    Unit height = _datePickerPopupHeight;
-    if (height.IsEmpty)
-      height = Unit.Point (c_defaultDatePickerLengthInPoints);
-    writer.AddAttribute("dp_height", height.ToString());
+      Unit height = _datePickerPopupHeight;
+      if (height.IsEmpty)
+        height = Unit.Point (c_defaultDatePickerLengthInPoints);
+      writer.AddAttribute("dp_height", height.ToString());
+    }
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
@@ -292,7 +297,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
       //  and remove RenderContents.
-      if (control == _datePickerImage)
+      if (control == _datePickerImage && control.Visible)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.UI, c_datePickerPopupForm);
@@ -657,24 +662,39 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           datePickerImageSpacer.Visible = false;
       }
 
-      string imageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
+      bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
+                              ||   Context.Request.Browser.MajorVersion == 5 
+                                && Context.Request.Browser.MinorVersion >= 5;
+      bool isInternetExplorer55AndHigher = 
+          Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
 
-      if (imageUrl == null)
-        _datePickerImage.ImageUrl = DatePickerImageUrl;  
+      //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+      //  and remove RenderContents.
+      if (isInternetExplorer55AndHigher)
+      {
+        string imageUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
+
+        if (imageUrl == null)
+          _datePickerImage.ImageUrl = DatePickerImageUrl;  
+        else
+          _datePickerImage.ImageUrl = imageUrl;
+
+        string pickerActionButton = "this";
+        string pickerActionContainer = "document.all['" + ClientID + "']";
+        string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
+        string pickerActionFrame = "document.all['" + ClientID + "_frame']";
+        string pickerAction = "ShowDatePicker("
+            + pickerActionButton + ", "
+            + pickerActionContainer + ", "
+            + pickerActionTarget + ", "
+            + pickerActionFrame + ")";
+        _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+      }
       else
-        _datePickerImage.ImageUrl = imageUrl;
-
-      string pickerActionButton = "this";
-      string pickerActionContainer = "document.all['" + ClientID + "']";
-      string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
-      string pickerActionFrame = "document.all['" + ClientID + "_frame']";
-      string pickerAction = "ShowDatePicker("
-          + pickerActionButton + ", "
-          + pickerActionContainer + ", "
-          + pickerActionTarget + ", "
-          + pickerActionFrame + ")";
-      _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+      {
+        _datePickerImage.Visible = false;
+      }
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";
