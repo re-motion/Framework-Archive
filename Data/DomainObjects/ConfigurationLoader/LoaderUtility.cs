@@ -5,6 +5,8 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Loader
 {
 public sealed class LoaderUtility
