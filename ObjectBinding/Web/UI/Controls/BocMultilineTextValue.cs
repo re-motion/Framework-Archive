@@ -57,12 +57,17 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="TextBox"/> used in edit mode. </summary>
   private TextBox _textBox;
-
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
-
   /// <summary> The <see cref="RequiredFieldValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private RequiredFieldValidator _requiredValidator;
+
+  /// <summary> The <see cref="Style"/> applied the <see cref="TextBox"/> and the <see cref="Label"/>. </summary>
+  private Style _commonStyle;
+  /// <summary> The <see cref="TextBoxStyle"/> applied to the <see cref="TextBox"/>. </summary>
+  private TextBoxStyle _textBoxStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
+  private Style _labelStyle;
 
   /// <summary>  The concatenated string build from the string array. </summary>
   /// <remarks> Uses <c>\r\n</c> as separation characters. </remarks>
@@ -72,34 +77,29 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. </remarks>
   private string _newInternalValue = null;
 
-  /// <summary> The <see cref="Style"/> applied the <see cref="TextBox"/> and the <see cref="Label"/>. </summary>
-  private Style _commonStyle = new Style();
-  /// <summary> The <see cref="TextBoxStyle"/> applied to the <see cref="TextBox"/>. </summary>
-  private TextBoxStyle _textBoxStyle = new TextBoxStyle (TextBoxMode.MultiLine);
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
-  private Style _labelStyle = new Style();
-
   // construction and disposing
 
 	public BocMultilineTextValue()
 	{
+    _commonStyle = new Style();
+    _textBoxStyle = new TextBoxStyle (TextBoxMode.MultiLine);
+    _labelStyle = new Style();
+    _textBox = new TextBox();
+    _label = new Label();
+    _requiredValidator = new RequiredFieldValidator();
 	}
 
   // methods and properties
 
   protected override void CreateChildControls()
   {
-    _textBox = new TextBox();
     _textBox.ID = ID + "_Boc_TextBox";
     _textBox.EnableViewState = false;
     Controls.Add (_textBox);
 
-    _label = new Label();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
-
-    _requiredValidator = new RequiredFieldValidator();
   }
 
   /// <summary>
@@ -261,7 +261,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
     _requiredValidator.ID = ID + "_ValidatorRequired";
     _requiredValidator.ControlToValidate = TargetControl.ID;
-    _requiredValidator.ErrorMessage = c_requiredValidationMessage;
+    if (StringUtility.IsNullOrEmpty (_requiredValidator.ErrorMessage))
+      _requiredValidator.ErrorMessage = c_requiredValidationMessage;
 
     validators[0] = _requiredValidator;
 

@@ -64,18 +64,19 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="ImageButton"/> used in edit mode. </summary>
   private ImageButton _imageButton;
-
   /// <summary> The <see cref="Image"/> used in read-only mode. </summary>
   private Image _image;
-
   /// <summary> The <see cref="Label"/> used to provide textual representation of the check state. </summary>
   private Label _label;
-
   /// <summary> The <see cref="BocInputHidden"/> used to hold the check state. </summary>
   private BocInputHidden _hiddenField;
-
   /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator;
+
+  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
+  private Style _commonStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
+  private Style _labelStyle;
 
   /// <summary> The tristate value of the checkbox. </summary>
   private NaBoolean _value = NaBoolean.Null;
@@ -85,11 +86,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> Flag that determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
-
-  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
-  private Style _commonStyle = new Style();
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
-  private Style _labelStyle = new Style();
 
   /// <summary> Flag that determines whether to show the description. </summary>
   private bool _showDescription = true;
@@ -105,33 +101,34 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
 	public BocBooleanValue()
 	{
+    _commonStyle = new Style();
+    _labelStyle = new Style();
+    _hiddenField = new BocInputHidden();
+    _imageButton = new ImageButton();
+    _image = new Image();
+    _label = new Label();
+    _notNullItemValidator = new CompareValidator();
 	}
 
   // methods and properties
 
   protected override void CreateChildControls()
   {
-    _hiddenField = new BocInputHidden();
     _hiddenField.ID = ID + "_Boc_HiddenField";
     _hiddenField.EnableViewState = false;
     Controls.Add (_hiddenField);
 
-    _imageButton = new ImageButton();
     _imageButton.ID = ID + "_Boc_ImageButton";
     _imageButton.EnableViewState = false;
     Controls.Add (_imageButton);
 
-    _image = new Image();
     _image.ID = ID + "_Boc_Image";
     _image.EnableViewState = false;
     Controls.Add (_image);
 
-    _label = new Label();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
- 
-    _notNullItemValidator = new CompareValidator();
   }
 
   /// <summary>
@@ -296,7 +293,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     _notNullItemValidator.ControlToValidate = ID;
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+      _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = _notNullItemValidator;
 

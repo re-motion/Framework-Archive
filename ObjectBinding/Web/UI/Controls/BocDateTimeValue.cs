@@ -80,6 +80,19 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private BocDateTimeValueValidator _dateTimeValueValidator;
 
+  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
+  private Style _commonStyle;
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to both text boxes. </summary>
+  private SingleRowTextBoxStyle _dateTimeTextBoxStyle;
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="DateTextBox"/>. </summary>
+  private SingleRowTextBoxStyle _dateTextBoxStyle;
+  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="TimeTextBox"/>. </summary>
+  private SingleRowTextBoxStyle _timeTextBoxStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
+  private Style _labelStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
+  private Style _datePickerImageStyle;
+
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
   /// <summary>  The string displayed in the time text box. </summary>
@@ -95,19 +108,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
   /// <summary> The <see cref="BocDateTimeValueType"/> this control is actually displaying. </summary>
   private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
-
-  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
-  private Style _commonStyle = new Style();
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to both text boxes. </summary>
-  private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="DateTextBox"/>. </summary>
-  private SingleRowTextBoxStyle _dateTextBoxStyle = new SingleRowTextBoxStyle();
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="TimeTextBox"/>. </summary>
-  private SingleRowTextBoxStyle _timeTextBoxStyle = new SingleRowTextBoxStyle();
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
-  private Style _labelStyle = new Style();
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
-  private Style _datePickerImageStyle = new Style();
 
   /// <summary> The width of the IFrame used to display the date picker. </summary>
   private Unit _datePickerPopupWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
@@ -133,34 +133,38 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> Simple constructor. </summary>
 	public BocDateTimeValue()
 	{
-    //  empty
+    _commonStyle = new Style();
+    _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
+    _dateTextBoxStyle = new SingleRowTextBoxStyle();
+    _timeTextBoxStyle = new SingleRowTextBoxStyle();
+    _labelStyle = new Style();
+    _datePickerImageStyle = new Style();
+    _dateTextBox = new TextBox();
+    _datePickerImage = new Image();
+    _timeTextBox = new TextBox();
+    _label = new Label();
+    _dateTimeValueValidator = new BocDateTimeValueValidator();
 	}
 
 	// methods and properties
 
   protected override void CreateChildControls()
   {
-    _dateTextBox = new TextBox();
     _dateTextBox.ID = ID + "_Boc_DateTextBox";
     _dateTextBox.EnableViewState = false;
     Controls.Add (_dateTextBox);
 
-    _datePickerImage = new Image();
     _datePickerImage.ID = ID + "_Boc_DatePickerImage";
     _datePickerImage.EnableViewState = false;
     Controls.Add (_datePickerImage);
 
-    _timeTextBox = new TextBox();
     _timeTextBox.ID = ID + "_Boc_TimeTextBox";
     _timeTextBox.EnableViewState = false;
     Controls.Add (_timeTextBox);
 
-    _label = new Label();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
-
-    _dateTimeValueValidator = new BocDateTimeValueValidator();
   }
 
   /// <summary>

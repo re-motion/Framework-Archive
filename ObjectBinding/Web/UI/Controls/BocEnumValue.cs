@@ -78,13 +78,13 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   private IEnumerationValueInfo _enumerationValueInfo = null;
  
   /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
-  private Style _commonStyle = new Style ();
+  private Style _commonStyle;
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="ListControl"/>. </summary>
-  private ListControlStyle _listControlStyle = new ListControlStyle ();
+  private ListControlStyle _listControlStyle;
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="_label"/>. </summary>
-  private Style _labelStyle = new Style ();
+  private Style _labelStyle;
 
   /// <summary> State field for special behaviour during load view state. </summary>
   /// <remarks> Used by <see cref="InternalLoadValue"/>. </remarks>
@@ -95,29 +95,31 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   /// <summary> Simple constructor. </summary>
 	public BocEnumValue()
 	{
-    //  empty
-	}
-
-	// methods and properties
-
-  protected override void CreateChildControls()
-  {
+    _commonStyle = new Style ();
+    _listControlStyle = new ListControlStyle ();
+    _labelStyle = new Style ();
     _listControl = _listControlStyle.Create (false);
     if (_listControl == null)
     {
       _listControl = new DropDownList();
       ReadOnly = NaBoolean.True;
     }
+    _label = new Label();
+    _notNullItemValidator = new CompareValidator();
+	}
+
+	// methods and properties
+
+  protected override void CreateChildControls()
+  {
     _listControl.ID = ID + "_Boc_ListControl";
     _listControl.EnableViewState = true;
     Controls.Add (_listControl);
 
-    _label = new Label();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
 
-    _notNullItemValidator = new CompareValidator();
   }
 
   /// <summary>
@@ -297,7 +299,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+      _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = _notNullItemValidator;
 

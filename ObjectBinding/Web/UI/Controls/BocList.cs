@@ -271,6 +271,12 @@ public class BocList:
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
 	public BocList()
 	{
+    _moveFirstButton = new ImageButton();
+    _moveLastButton =  new ImageButton();
+    _movePreviousButton = new ImageButton();
+    _moveNextButton = new ImageButton();
+    _additionalColumnsList = new DropDownList();
+    _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new BocMenuItemCollection (this);
     _optionsMenuItems = new BocMenuItemCollection (this);
     _fixedColumns = new BocColumnDefinitionCollection (this);
@@ -281,24 +287,15 @@ public class BocList:
 
   protected override void CreateChildControls()
   {
-    _optionsMenu = new DropDownMenu (this);
     _optionsMenu.ID = ID + c_optionsMenuIDSuffix;
     _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
 
-    _moveFirstButton = new ImageButton();
     Controls.Add (_moveFirstButton);
-
-    _moveLastButton =  new ImageButton();
     Controls.Add (_moveLastButton);
-
-    _movePreviousButton = new ImageButton();
     Controls.Add (_movePreviousButton);
-
-    _moveNextButton = new ImageButton();
     Controls.Add (_moveNextButton);
 
-    _additionalColumnsList = new DropDownList();
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
     _additionalColumnsList.AutoPostBack = true;
@@ -2590,14 +2587,20 @@ public class BocList:
       return;
     IList value = (IList) Value;
 
-    ArrayList selectedRows = new ArrayList (selectedObjects.Count);
-    foreach (IBusinessObject selectedObject in selectedObjects)
+    try
     {
-      int index = value.IndexOf (selectedObject);
-      if (index != -1)
-        selectedRows.Add (index);
+      ArrayList selectedRows = new ArrayList (selectedObjects.Count);
+      foreach (IBusinessObject selectedObject in selectedObjects)
+      {
+        int index = value.IndexOf (selectedObject);
+        if (index != -1)
+          selectedRows.Add (index);
+      }
+      SetSelectedRows ((int[]) selectedRows.ToArray (typeof (int)));
     }
-    SetSelectedRows ((int[]) selectedRows.ToArray (typeof (int)));
+    catch (NotSupportedException)
+    {
+    }
   }
 
   /// <summary> Sets indeces for the rows selected in the <see cref="BocList"/>. </summary>
