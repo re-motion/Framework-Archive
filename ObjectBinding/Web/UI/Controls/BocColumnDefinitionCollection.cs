@@ -47,8 +47,9 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
         throw new ArgumentException ("Type '" + type.FullName + "' in 'supportedTypes' is not derived from BocColumnDefiniton.");
     }
 
-    _ownerControl = ownerControl;
     _supportedTypes = supportedTypes;
+    // Do not use ownerControl for more than storing the reference inside the constructor
+    _ownerControl = ownerControl;
   }
 
   /// <summary> 

@@ -228,7 +228,9 @@ public class BocItemCommand
     {
       case BocItemCommandType.Href:
       {
-        string href = string.Format (HrefCommand.Href, listIndex, businessObjectID);
+        string encodedBusinessObjectID = 
+            HttpUtility.UrlEncode (businessObjectID, HttpContext.Current.Response.ContentEncoding);
+        string href = string.Format (HrefCommand.Href, listIndex, encodedBusinessObjectID);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
         if (HrefCommand.Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);

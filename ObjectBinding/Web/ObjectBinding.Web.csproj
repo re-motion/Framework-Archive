@@ -327,6 +327,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocList.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocReferenceValue.xml"
                     BuildAction = "Content"
                 />

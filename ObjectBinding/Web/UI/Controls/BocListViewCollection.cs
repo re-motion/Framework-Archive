@@ -43,6 +43,7 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
   /// </param>
   internal BocColumnDefinitionSetCollection (IBusinessObjectBoundWebControl ownerControl)
   {
+    // Do not use ownerControl for more than storing the reference inside the constructor
     _ownerControl = ownerControl;
   }
 
