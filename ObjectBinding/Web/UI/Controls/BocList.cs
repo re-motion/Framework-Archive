@@ -1218,35 +1218,45 @@ public class BocList:
     }
   }
 
-  /// <summary>
-  ///   Gets the list of <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>.
-  /// </summary>
+  /// <summary> Gets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
   /// <value> An array of <see cref="IBusinessObject"/> objects. </value>
   [Browsable (false)]
-  public IBusinessObject[] SelectedBusinessObjects
+  public IBusinessObject[] GetSelectedBusinessObjects()
   {
-    get
-    {
-      string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
-      int commonCheckBoxIDLength = commonCheckBoxID.Length;
-      ArrayList selectedBusinessObjects = new ArrayList();
-      foreach (DictionaryEntry entry in _checkBoxCheckedState)
-      {
-        string checkBoxID = (string) entry.Key;
-        bool isChecked = (bool) entry.Value;
+    int[] selectedRows = GetSelectedRows();
+    IBusinessObject[] selectedBusinessObjects = new IBusinessObject[selectedRows.Length];
 
-        if (checkBoxID.StartsWith (commonCheckBoxID) && isChecked)
-        {
-          string checkBoxIndex = checkBoxID.Remove (0, commonCheckBoxIDLength);
-          int rowIndex = int.Parse (checkBoxIndex);
-          
-          IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
-          if (businessObject != null)
-            selectedBusinessObjects.Add (businessObject);
-        }
-      }
-      return (IBusinessObject[]) selectedBusinessObjects.ToArray (typeof (IBusinessObject));
+    for (int i = 0; i < selectedRows.Length; i++)
+    {  
+      int rowIndex = selectedRows[i];
+      IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
+      if (businessObject != null)
+        selectedBusinessObjects[i] = businessObject;      
     }
+    return selectedBusinessObjects;
+  }
+
+  /// <summary> Gets indeces for the rows selected in the <see cref="BocList"/>. </summary>
+  /// <value> An array of <see cref="int"/> values. </value>
+  [Browsable (false)]
+  public int[] GetSelectedRows()
+  {
+    string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
+    int commonCheckBoxIDLength = commonCheckBoxID.Length;
+    ArrayList selectedRows = new ArrayList();
+    foreach (DictionaryEntry entry in _checkBoxCheckedState)
+    {
+      string checkBoxID = (string) entry.Key;
+      bool isChecked = (bool) entry.Value;
+
+      if (checkBoxID.StartsWith (commonCheckBoxID) && isChecked)
+      {
+        string checkBoxIndex = checkBoxID.Remove (0, commonCheckBoxIDLength);
+        int rowIndex = int.Parse (checkBoxIndex);
+        selectedRows.Add (rowIndex);
+      }
+    }
+    return (int[]) selectedRows.ToArray (typeof (int));
   }
 
   [Category ("Behavior")]
