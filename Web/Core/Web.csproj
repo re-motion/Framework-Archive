@@ -221,7 +221,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\DropDownMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\FormGrid.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\DropDownArrow.gif"
                     BuildAction = "Content"
                 />
                 <File
