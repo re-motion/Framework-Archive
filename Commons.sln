@@ -19,9 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeDom", "CodeDom\CodeDom.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCore", "WebCore\WebCore.csproj", "{156E610A-6ED1-4E83-AE3C-1A44EA881F44}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -45,6 +49,10 @@ Global
 		SccProjectName5 = \u0022$/libraries/Commons/CodeDom\u0022,\u0020ERAAAAAA
 		SccLocalPath5 = CodeDom
 		CanCheckoutShared = false
+		SccProjectUniqueName6 = WebCore\\WebCore.csproj
+		SccLocalPath6 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection6 = WebCore\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -71,6 +79,10 @@ Global
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
+		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Debug.ActiveCfg = Debug|.NET
+		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Debug.Build.0 = Debug|.NET
+		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.ActiveCfg = Release|.NET
+		{156E610A-6ED1-4E83-AE3C-1A44EA881F44}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
