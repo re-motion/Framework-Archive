@@ -140,6 +140,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ObjectBinding\IBusinessObject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjectBinding\IBusinessObjectClass.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjectBinding\IBusinessObjectProperty.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Text\IdentifierGenerator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
