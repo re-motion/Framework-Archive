@@ -142,6 +142,7 @@ public class EntryField: Control
 	private string _for = String.Empty;
 	private string _infoUrl = String.Empty;
 	private bool _isRequired = false;
+  private string _title = string.Empty;
 
 	public string Label 
 	{
@@ -163,6 +164,11 @@ public class EntryField: Control
 		get { return _isRequired; }
 		set { _isRequired = value; }
 	}
+  public string Title
+  {
+    get { return _title; }
+    set { _title = value; }
+  }
 
   /// <summary>
   /// Validate all controls.
@@ -235,10 +241,14 @@ public class EntryField: Control
         clientId = labeledControl.ClientID;
     }
 
-		if (clientId == String.Empty)
-			label = Label;
+    string labelTitleAttribute = string.Empty;
+    if (Title != string.Empty)
+      labelTitleAttribute = string.Format ("title=\"{0}\"", Title);
+
+    if (clientId == String.Empty)
+      label = string.Format ("<div {0}>&nbsp;{1}</div>", labelTitleAttribute, Label);
 		else
-			label = "<label for=\"" + clientId + "\">" +  Label + "</label>";
+      label = string.Format ("<label for=\"{0}\" {1}>&nbsp;{2}</label>", clientId, labelTitleAttribute, Label);
 
     string labelWidthAttribute = string.Empty;
     string valueWidthAttribute = string.Empty;
@@ -252,7 +262,7 @@ public class EntryField: Control
     }
 
 		writer.WriteLine ("<tr>");
-		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >&nbsp;{1}</td>", 
+		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
 		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
 		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
