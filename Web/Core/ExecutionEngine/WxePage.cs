@@ -42,10 +42,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page = page;
   }
 
-  public void OnInit (HttpContext context, ref HtmlForm form)
+  public void Initialize (HttpContext context, ref HtmlForm form)
   {
-    OnInit (_page, context);
-
+    base.OnInit (_page, context);
     if (! ControlHelper.IsDesignMode (_page, context))
     {
       if (form == null)
@@ -213,17 +212,16 @@ public class WxePage: Page, IWxePage
     _wxeInfo = new WxePageInfo (this);
   }
 
-  protected override void OnInit (EventArgs e)
-  {
-    _wxeInfo.OnInit (Context, ref Form);
-    base.OnInit (e);
-  }
-
   protected override NameValueCollection DeterminePostBackMode()
   {
-    return _wxeInfo.DeterminePostBackMode (Context);
+    NameValueCollection result = _wxeInfo.DeterminePostBackMode (Context);
+    _wxeInfo.Initialize (Context, ref Form);
+    OnBeforeInit();
+    return result;
   }
-
+  protected virtual void OnBeforeInit ()
+  {
+  }
   public NameValueCollection GetPostBackCollection ()
   {
     return _wxeInfo.DeterminePostBackMode (Context);
