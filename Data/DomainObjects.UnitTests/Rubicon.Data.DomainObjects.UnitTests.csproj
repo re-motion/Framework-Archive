@@ -176,6 +176,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "queries.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Rubicon.Data.DomainObjects.UnitTests.build"
                     BuildAction = "None"
                 />
