@@ -34,7 +34,7 @@ public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundW
 /// <summary>
 /// Provides a GUI designer for BusinessObjectBoundControl
 /// </summary>
-//[Designer (typeof (BusinessObjectBoundControlDesigner))]
+[Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
   #region IBusinessObjectBoundControl implementation
