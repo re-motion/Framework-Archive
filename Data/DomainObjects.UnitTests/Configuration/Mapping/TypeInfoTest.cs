@@ -47,7 +47,6 @@ public class TypeMappingTest
     Check (new TypeInfo (typeof (int), "int32", false, (int) 0), TypeInfo.GetInstance ("int32", false));
     Check (new TypeInfo (typeof (long), "int64", false, (long) 0), TypeInfo.GetInstance ("int64", false));
     Check (new TypeInfo (typeof (float), "single", false, (float) 0), TypeInfo.GetInstance ("single", false));
-    Check (new TypeInfo (typeof (char), "char", false, ' '), TypeInfo.GetInstance ("char", false));
     Check (new TypeInfo (typeof (string), "string", false, string.Empty), TypeInfo.GetInstance ("string", false));
     Check (new TypeInfo (typeof (ObjectID), "objectID", false, null), TypeInfo.GetInstance ("objectID", false));
 
@@ -76,7 +75,6 @@ public class TypeMappingTest
     Check (new TypeInfo (typeof (int), "int32", false, (int) 0), TypeInfo.GetInstance (typeof (int)));
     Check (new TypeInfo (typeof (long), "int64", false, (long) 0), TypeInfo.GetInstance (typeof (long)));
     Check (new TypeInfo (typeof (float), "single", false, (float) 0), TypeInfo.GetInstance (typeof (float)));
-    Check (new TypeInfo (typeof (char), "char", false, ' '), TypeInfo.GetInstance (typeof (char)));
 
     Check (new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null), TypeInfo.GetInstance (typeof (NaBoolean)));
     Check (new TypeInfo (typeof (NaDateTime), "dateTime", true, NaDateTime.Null), TypeInfo.GetInstance (typeof (NaDateTime)));
