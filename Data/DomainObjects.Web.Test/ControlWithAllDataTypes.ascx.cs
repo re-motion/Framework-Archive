@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+using Rubicon.ObjectBinding;
+
 using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
@@ -121,6 +123,16 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
     CurrentObject.SaveValues (false);
   }
 
+  private void SaveButton_Click(object sender, EventArgs e)
+  {
+    if (Validate ())
+    {
+      Save ();
+      
+      ClientTransaction.Current.Commit ();
+    }
+  }
+
 	#region Web Form Designer generated code
 	override protected void OnInit(EventArgs e)
 	{
@@ -138,6 +150,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
 	private void InitializeComponent()
 	{
     this.Load += new System.EventHandler(this.Page_Load);
+    this.SaveButton.Click += new EventHandler(SaveButton_Click);
 
   }
 	#endregion
