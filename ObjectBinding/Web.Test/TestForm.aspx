@@ -15,7 +15,7 @@
 <form id=Form method=post runat="server">
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td></TD>
+    <td></td>
     <td><obc:boclist id=BocList runat="server" listmenulinebreaks="BetweenGroups" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children" enableselection="True">
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Text="Event">
@@ -120,13 +120,13 @@
 </PersistedCommand>
 </obc:BocMenuItem>
 </ListMenuItems>
-</obc:boclist></TD></TR></TABLE>
+</obc:boclist></td></tr></table>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
-<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></P>
-<p><asp:label id=EventLabel runat="server">###</asp:label></P></FORM>
+TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
+<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
+<p><asp:label id=EventLabel runat="server">###</asp:label></p></form>
 
   </body>
 </html>
