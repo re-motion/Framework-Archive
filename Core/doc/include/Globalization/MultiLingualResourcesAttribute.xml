@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<MultiLingualResourcesAttribute>
+  <GetResourceManager>
+    <Common>
+      <remarks>
+        ResourceManagers are cached after their first initalization.
+      </remarks>
+    </Common>
+    <param name="objectType">
+      The type for which the resource manager is wanted.
+    </param>
+    <param name="definingType">
+      The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
+    </param>
+    <param name="resourceName">
+      The root name of the resource container.
+    </param>
+    <returns>
+      The <c>IResourceManager</c> for the type's resource container.
+    </returns>
+  </GetResourceManager>
+</MultiLingualResourcesAttribute>
