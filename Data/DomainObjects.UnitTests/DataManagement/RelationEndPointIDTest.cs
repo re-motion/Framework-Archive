@@ -62,8 +62,7 @@ public class RelationEndPointIDTest
   [ExpectedException (typeof (MappingException))]
   public void InitializeWithInvalidClassID ()
   {
-    ObjectID objectIDWithInvalidClass = new ObjectID (
-        DatabaseTest.c_testDomainProviderID, "InvalidClassID", Guid.NewGuid ());
+    ObjectID objectIDWithInvalidClass = new ObjectID ("InvalidClassID", Guid.NewGuid ());
 
     RelationEndPointID invalidEndPointID = new RelationEndPointID (objectIDWithInvalidClass, "PropertyName");
   }
@@ -121,8 +120,7 @@ public class RelationEndPointIDTest
   {
     string[] expectedPropertyNames = new string[] {"Customer", "OrderTicket", "OrderItems", "Official"};
 
-    DataContainer existingDataContainer = DataContainer.CreateForExisting (
-        new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5), null);
+    DataContainer existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", 5), null);
     
     RelationEndPointID[] endPointIDs = RelationEndPointID.GetAllRelationEndPointIDs (existingDataContainer);
 
