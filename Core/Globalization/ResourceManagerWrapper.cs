@@ -24,16 +24,13 @@ namespace Rubicon.Globalization
 ///     make sure to sort the resource managers in the order of inheritance before wrapping them.
 ///   </para>
 /// </remarks>
-public class ResourceManagerWrapper: IResourceManager, IList
+public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
 {
   //  static fields
 
 	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   // member fields
-
-  /// <summary> Wrapped resource managers </summary>
-  private ResourceManager [] _resourceManagers;
 
   /// <summary> BaseNames of the wrapped resource managers as a comma seperated list. </summary>
   private string _baseNameList = "";
@@ -57,8 +54,6 @@ public class ResourceManagerWrapper: IResourceManager, IList
   {
     ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
-    _resourceManagers = resourceManagers;
-
     //  Do null reference checking
     //  and build comma seperated list of BaseNames
     string[] resourceManagerNames = new string[resourceManagers.Length];
@@ -72,6 +67,8 @@ public class ResourceManagerWrapper: IResourceManager, IList
     }
 
     _baseNameList = StringUtility.ConcatWithSeperator (resourceManagerNames, ", ");
+
+    InnerList.AddRange (resourceManagers);
   }
 
   // methods and properties
@@ -82,18 +79,9 @@ public class ResourceManagerWrapper: IResourceManager, IList
   /// <remarks>
   ///   Always contains at least one ResourceManager and no null references.
   /// </remarks>
-  public ResourceManager this [int index]
+  public ResourceManager this[int index]
   {
-    get 
-    {
-      if (index < 0 || index >= _resourceManagers.Length) throw new ArgumentOutOfRangeException ("index");
-
-      return _resourceManagers[index];
-    }
-    set
-    {
-      throw new NotSupportedException ("The list of ResourceMangers is read only");
-    }
+    get { return (ResourceManager)InnerList[index]; }
   }
 
   /// <summary>
@@ -158,13 +146,13 @@ public class ResourceManagerWrapper: IResourceManager, IList
     // Loop from most neutral to current UICulture
     foreach (CultureInfo culture in cultureHierarchy)
     {
-      for (int index = 0; index < _resourceManagers.Length; index++)
+      for (int index = 0; index < Count; index++)
       {
         ResourceSet resourceSet = null;
 
         try
         {
-          resourceSet = _resourceManagers[index].GetResourceSet (culture, true, false);
+          resourceSet = this[index].GetResourceSet (culture, true, false);
         }
         catch (MissingManifestResourceException ex)
         {
@@ -207,12 +195,12 @@ public class ResourceManagerWrapper: IResourceManager, IList
     //  Loop through the resource managers and look for a resource with a matching ID
     //  Return the found resource
 
-    for (int index = 0; index < _resourceManagers.Length; index++)
+    for (int index = 0; index < Count; index++)
     {
       try
       {
         //  Implicit fallback to more neutral cultures if no match found
-        result = _resourceManagers[index].GetString (id, GetUICulture());
+        result = this[index].GetString (id, GetUICulture());
       }
       catch (MissingManifestResourceException ex)
       {
@@ -267,106 +255,6 @@ public class ResourceManagerWrapper: IResourceManager, IList
 
     return (CultureInfo[])hierarchyTopDown.ToArray (typeof (CultureInfo));
   }
-
-  #region IList Members
-
-  public bool IsReadOnly
-  {
-    get { return true; }
-  }
-
-  object System.Collections.IList.this[int index]
-  {
-    get { return this[index]; }
-    set { throw new NotSupportedException ("The list of ResourceMangers is read only"); }
-  }
-
-  public void RemoveAt (int index)
-  {
-    throw new NotSupportedException ("The list of ResourceMangers is read only");
-  }
-
-  public void Insert (int index, object value)
-  {
-    throw new NotSupportedException ("The list of ResourceMangers is read only");
-  }
-
-  public void Remove (object value)
-  {
-    throw new NotSupportedException ("The list of ResourceMangers is read only");
-  }
-
-  public bool Contains (object value)
-  {
-    return (IndexOf (value) == -1) ? false : true;
-  }
-
-  public void Clear ()
-  {
-    throw new NotSupportedException ("The list of ResourceMangers is read only");
-  }
-
-  public int IndexOf (object value)
-  {
-    int index = -1;
-
-    for (; index < _resourceManagers.Length; index++)
-    {
-      if (_resourceManagers[index].Equals(value))
-        break;
-    }
-
-    //  Item found before end of list?
-    if (index < _resourceManagers.Length)
-      return index;
-    else
-      return -1;
-  }
-
-  public int Add (object value)
-  {
-    throw new NotSupportedException ("The list of ResourceMangers is read only");
-  }
-
-  public bool IsFixedSize
-  {
-    get { return true; }
-  }
-
-  #endregion
-
-  #region ICollection Members
-
-  public bool IsSynchronized
-  {
-    get { return _resourceManagers.IsSynchronized; }
-  }
-
-  public int Count
-  {
-    get { return _resourceManagers.Length; }
-  }
-
-  public void CopyTo (Array array, int index)
-  {
-    _resourceManagers.CopyTo (array, index);
-  }
-
-  public object SyncRoot
-  {
-    get { return _resourceManagers.SyncRoot; }
-  }
-
-  #endregion
-
-  #region IEnumerable Members
-
-  public IEnumerator GetEnumerator ()
-  {
-    return _resourceManagers.GetEnumerator();
-  }
-
-  #endregion
 }
 
 }

@@ -672,7 +672,7 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
   /// </summary>
   /// <returns>
   /// Beacause of the very specific short circuit rules of this construct, this is considered unintuitive 
-  /// and unreadable. Instead of x && y, consider using x.IsTrue && y.IsTrue.
+  /// and unreadable. Instead of x &amp;&amp; y, consider using x.IsTrue &amp;&amp; y.IsTrue.
   /// </returns>
   [Obsolete ("This is considered unintuitive and unreadable. Instead of x && y, consider using x.IsTrue && y.IsTrue.")]
   public static NaBoolean operator & (NaBoolean x, NaBoolean y)

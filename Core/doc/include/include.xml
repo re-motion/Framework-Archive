@@ -61,7 +61,7 @@
         <description>
           The logical methods and operators of <c>NaBoolean</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
           <para>
-            Applies to <see cref="And"/>, <see cref="Or"/>, <see cref="Xor"/>, <see cref="Not"/>, 
+            Applies to <see cref="Xor"/>, <see cref="Not"/>, 
             <see cref="operator &amp;"/>, <see cref="operator |"/>, <see cref="operator ^"/>, <see cref="operator !"/>.
           </para>
         </description>

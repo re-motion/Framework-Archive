@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?> 
-<class>
+<Class>
   <Constructor>
     <param name="resourceName">
       The root name of the resource conantainer to be used by this type
@@ -8,7 +8,7 @@
   <GetResourceManager>
     <Common>
       <remarks>
-        ResourceManagers are cached after their first initalization.
+        ResourceManagerWrappers are cached after their first initalization.
       </remarks>
       <returns>
         The <c>ResourceManagerWrapper</c> containing the type's resource containers.
@@ -23,14 +23,20 @@
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>
+    <param name="resourceNames">
+      The root names of the resource containers matching the value of <c>resourceType</c>.
+    </param>
+  </GetResourceManager>
+  <GetResourceManagers>
+    <remarks>
+      ResourceManagers are cached after their first initalization.
+    </remarks>
     <param name="assembly">
       The assembly containing the resources.
     </param>
     <param name="resourceNames">
       The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
-  </GetResourceManager>
-  <GetResourceManagers>
     <returns>
       A <c>ResourceManager</c> Array containing the type's resource containers.
     </returns>
@@ -48,4 +54,4 @@
       The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
   </GetResourceNameAndType>
-</class>
+</Class>

@@ -25,45 +25,37 @@
     </example>
   </Class>
   <Dispatch>
-    <Common>
-      <remarks>
-        Each key must consist of the following three parts, seperated by colons, to be dispatched:
-        <list type="table">
-          <listheader>
-            <term>Key Part</term>
-            <description>function</description>
-          </listheader>
-          <item>
-            <term>prefix</term>
-            <description>
-              Indicates all resources to be dispatched automatically (prefix = "auto").
-            </description>
-          </item>
-          <item>
-            <term>ElementID</term>
-            <description>
-              The ID of the child control inside the passed control or "this" for the control 
-              itself.
-            </description>
-          </item>
-          <item>
-            <term>Parameter</term>
-            <description>
-              The parameter can denote a single property or contain prefixes itself.
-            </description>
-          </item>
-        </list>
-        If the parameter section of the key contains prefixes, the child control must implement
-        IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
-        handle parameters named like one of the child control's properties.
-      </remarks>
-    </Common>
-    <param name="resourceManager">
-      The resource manager to be used. Must not be <see langname="null"/>.
-    </param>  
-    <param name="elements">
-      The <see cref="IDictonary"/> to be dispatched. Must not be <see langname="null"/>.
-    </param>  
+    <remarks>
+      Each key must consist of the following three parts, seperated by colons, to be dispatched:
+      <list type="table">
+        <listheader>
+          <term>Key Part</term>
+          <description>function</description>
+        </listheader>
+        <item>
+          <term>prefix</term>
+          <description>
+            Indicates all resources to be dispatched automatically (prefix = "auto").
+          </description>
+        </item>
+        <item>
+          <term>ElementID</term>
+          <description>
+            The ID of the child control inside the passed control or "this" for the control 
+            itself.
+          </description>
+        </item>
+        <item>
+          <term>Parameter</term>
+          <description>
+            The parameter can denote a single property or contain prefixes itself.
+          </description>
+        </item>
+      </list>
+      If the parameter section of the key contains prefixes, the child control must implement
+      IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
+      handle parameters named like one of the child control's properties.
+    </remarks>
   </Dispatch>
   <DispatchMain>
     <remarks>
@@ -73,15 +65,11 @@
       instead of a child control.
     </remarks>
     <param name="control">
-      <para>
         The control to be dispatched.
-      </para><para>
-        If the control implements the interface <see cref="IResourceDispatchTargetWithChildren" />
-        all dispatching is deferred to the control.
-      </para><para>
-        Otherwise the control must contain child controls for dispatching to occur
-      </para>
     </param>
+    <param name="elements">
+      The <see cref="IDictionary"/> to be dispatched. Must not be <see langname="null"/>.
+    </param>  
     <param name="resourceManager">
       The resource manager from which the elements IDictonary has been filled.
       Used only for background information on the resources contained in elements.
@@ -96,9 +84,5 @@
       corresponding to property's name and value resprectively.
       Must not be <see langname="null"/>.
     </param>
-    <exception cref="InvalidOpertationException">
-      If <c>control</c> does not define a property specified in <c>values</c> 
-      and is not of type <c>HtmlControl</c>.
-    </exception>
-  </DispatchGeneric>
+   </DispatchGeneric>
 </ResourceDispatcher>

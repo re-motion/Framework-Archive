@@ -31,10 +31,8 @@ public class MultiLingualResourcesAttribute: Attribute
 
   // construction and disposing
 
-  /// <summary>
-  ///   Simple constructor.
-  /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/Constructor/param[@name="resourceName"]' />
+  /// <summary> Simple constructor. </summary>
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/Constructor/param[@name="resourceName"]' />
   public MultiLingualResourcesAttribute (string resourceName)
   {
     _resourceName = resourceName;
@@ -43,7 +41,7 @@ public class MultiLingualResourcesAttribute: Attribute
   // methods and properties
 
   /// <summary>
-  ///   The root name of the resource container as specified by the attributes construction
+  ///   The root name of the resource container as specified by the attributes construction.
   /// </summary>
   public string ResourceName 
   {
@@ -54,8 +52,8 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
   ///   in the class declaration of the type.
   /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
   public static ResourceManagerWrapper GetResourceManager (Type objectType, bool includeHierarchy)
   {
     Type definingType;
@@ -72,13 +70,21 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
   ///   in the class declaration of the type.
   /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/param[@name="objectType"]' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType"]' />
   public static ResourceManagerWrapper GetResourceManager (Type objectType)
   {
     return GetResourceManager (objectType, false);
   }
 
+  /// <summary>
+  ///   Loads a string resource for the specified type, identified by ID.
+  /// </summary>
+  /// <param name="objectTypeToGetResourceFor">
+  ///   The <see cref="Type"/> for which to get the resource.
+  /// </param>
+  /// <param name="name"> The ID of the resource. </param>
+  /// <returns> The found string resource or <see langword="null"/>. </returns>
   public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
   {
     IResourceManager rm = GetResourceManager (objectTypeToGetResourceFor);
@@ -91,6 +97,14 @@ public class MultiLingualResourcesAttribute: Attribute
     return text;
   }
 
+  /// <summary>
+  ///   Loads a string resource for the object's type, identified by ID.
+  /// </summary>
+  /// <param name="objectToGetResourceFor">
+  ///   The object for whose <see cref="Type"/> to get the resource.
+  /// </param>
+  /// <param name="name"> The ID of the resource. </param>
+  /// <returns> The found string resource or <see langword="null"/>. </returns>
   public static string GetResourceText (object objectToGetResourceFor, string name)
   {
     ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -99,6 +113,14 @@ public class MultiLingualResourcesAttribute: Attribute
     return GetResourceText (objectToGetResourceFor.GetType(), name);  
   }
 
+  /// <summary>
+  ///   Checks for the existence of a string resource for the specified type, identified by ID.
+  /// </summary>
+  /// <param name="objectTypeToGetResourceFor">
+  ///   The <see cref="Type"/> for which to check the resource.
+  /// </param>
+  /// <param name="name"> The ID of the resource. </param>
+  /// <returns> <see langword="true"/> if the resource can be found. </returns>
   public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
   {
     try
@@ -115,6 +137,14 @@ public class MultiLingualResourcesAttribute: Attribute
     }
   }
   
+  /// <summary>
+  ///   Checks for the existence of a string resource for the specified type, identified by ID.
+  /// </summary>
+  /// <param name="objectToGetResourceFor">
+  ///   The object for whose <see cref="Type"/> to check the resource.
+  /// </param>
+  /// <param name="name"> The ID of the resource. </param>
+  /// <returns> <see langword="true"/> if the resource can be found. </returns>
   public static bool ExistsResourceText (object objectToGetResourceFor, string name)
   {
     ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -123,6 +153,13 @@ public class MultiLingualResourcesAttribute: Attribute
     return ExistsResourceText (objectToGetResourceFor.GetType(), name);  
   }
 
+  /// <summary>
+  ///   Checks for the existence of a resource set for the specified type.
+  /// </summary>
+  /// <param name="objectTypeToGetResourceFor">
+  ///   The <see cref="Type"/> for which to check for the resource set.
+  /// </param>
+  /// <returns> <see langword="true"/> if the resource ser can be found. </returns>
   public static bool ExistsResource (Type objectTypeToGetResourceFor)
   {
     ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
@@ -144,6 +181,13 @@ public class MultiLingualResourcesAttribute: Attribute
     }
   }
   
+  /// <summary>
+  ///   Checks for the existence of a resource set for the specified type.
+  /// </summary>
+  /// <param name="objectToGetResourceFor">
+  ///   The object for whose <see cref="Type"/> to check for the resource set.
+  /// </param>
+  /// <returns> <see langword="true"/> if the resource ser can be found. </returns>
   public static bool ExistsResource (object objectToGetResourceFor)
   {
     ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -155,8 +199,8 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   Returns an <c>IResourceManager</c> array for the resource containers specified
   ///   in the class declaration of the type.
   /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/class/GetResourceManager/param[@name="objectType" or @name="resourceType" or @name="includeHierarchy" or @name="definingType" or @name="resourceNames"]' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="resourceNames"]' />
   private static ResourceManagerWrapper GetResourceManager (
       Type objectType,
       bool includeHierarchy,
@@ -235,10 +279,7 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   Returns an <c>ResourceManager</c> array for the resource containers
   ///   specified by resourceName.
   /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="assembly"]' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="resourceNames"]' />
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManagers/returns' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManagers/*' />
   private static ResourceManager[] GetResourceManagers (
     Assembly assembly,
     StringCollection resourceNames)
@@ -276,7 +317,7 @@ public class MultiLingualResourcesAttribute: Attribute
   /// Finds the class where the <c>MultiLingualResourcesAttribute</c> was defined and returns
   /// it's type and the the names of the resource containers.
   /// </summary>
-  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceNameAndType/*' />
+  /// <include file='doc\include\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceNameAndType/*' />
   private static void GetResourceNameAndType (
     Type concreteType,
     bool noUndefinedException,
@@ -310,6 +351,12 @@ public class MultiLingualResourcesAttribute: Attribute
         resourceNames.Add (resourceAttribute.ResourceName);
   }
 
+  /// <summary>
+  ///   Returns the <see cref="MultiLingualResourcesAttribute"/> attributes defined for the 
+  ///   <paramref name="type"/>.
+  /// </summary>
+  /// <param name="type">The <see cref="Type"/> to analyze.</param>
+  /// <returns>An array of <see cref="MultiLingualResourcesAttribute"/> attributes.</returns>
   private static MultiLingualResourcesAttribute[] GetResourceAttributes (Type type)
   {
     return (MultiLingualResourcesAttribute[]) 

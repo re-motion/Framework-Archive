@@ -12,7 +12,7 @@ public class ResourceManagerUtility
 {
   /// <summary>
   ///   Find the closest parent <see cref="Control"/> impementing
-  ///   <see cref="IObjectWithResources"/>
+  ///   <see cref="IObjectWithResources"/>.
   /// </summary>
   /// <param name="control">
   ///   The <see cref="Control"/> where to start searching for <see cref="IObjectWithResources"/>.
