@@ -86,13 +86,10 @@ Global
 		References\Rubicon.Core.xml = References\Rubicon.Core.xml
 		Rubicon.Data.DomainObjects.Solution.build = Rubicon.Data.DomainObjects.Solution.build
 		References\Rubicon.ObjectBinding.dll = References\Rubicon.ObjectBinding.dll
-		References\Rubicon.ObjectBinding.pdb = References\Rubicon.ObjectBinding.pdb
 		References\Rubicon.ObjectBinding.Web.dll = References\Rubicon.ObjectBinding.Web.dll
-		References\Rubicon.ObjectBinding.Web.pdb = References\Rubicon.ObjectBinding.Web.pdb
 		References\Rubicon.ObjectBinding.Web.xml = References\Rubicon.ObjectBinding.Web.xml
 		References\Rubicon.ObjectBinding.xml = References\Rubicon.ObjectBinding.xml
 		References\Rubicon.Web.dll = References\Rubicon.Web.dll
-		References\Rubicon.Web.pdb = References\Rubicon.Web.pdb
 		References\Rubicon.Web.xml = References\Rubicon.Web.xml
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

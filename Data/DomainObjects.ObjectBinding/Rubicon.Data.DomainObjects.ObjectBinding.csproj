@@ -99,14 +99,14 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\..\References\Rubicon.Core.dll"
-                />
-                <Reference
                     Name = "Rubicon.ObjectBinding"
                     AssemblyName = "Rubicon.ObjectBinding"
                     HintPath = "..\..\References\Rubicon.ObjectBinding.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Core"
+                    AssemblyName = "Rubicon.Core"
+                    HintPath = "..\..\References\Rubicon.Core.dll"
                 />
             </References>
         </Build>
@@ -158,77 +158,77 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectBooleanProperty.cs"
+                    RelPath = "PropertyTypes\BooleanProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectByteProperty.cs"
+                    RelPath = "PropertyTypes\ByteProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectCharProperty.cs"
+                    RelPath = "PropertyTypes\CharProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectDateProperty.cs"
+                    RelPath = "PropertyTypes\DateProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectDateTimeProperty.cs"
+                    RelPath = "PropertyTypes\DateTimeProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectDecimalProperty.cs"
+                    RelPath = "PropertyTypes\DecimalProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectDoubleProperty.cs"
+                    RelPath = "PropertyTypes\DoubleProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectEnumerationProperty.cs"
+                    RelPath = "PropertyTypes\EnumerationProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectGuidProperty.cs"
+                    RelPath = "PropertyTypes\GuidProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectInt16Property.cs"
+                    RelPath = "PropertyTypes\Int16Property.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectInt32Property.cs"
+                    RelPath = "PropertyTypes\Int32Property.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectNullableProperty.cs"
+                    RelPath = "PropertyTypes\NullableProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectReferenceProperty.cs"
+                    RelPath = "PropertyTypes\ReferenceProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectSingleProperty.cs"
+                    RelPath = "PropertyTypes\SingleProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyTypes\DomainObjectStringProperty.cs"
+                    RelPath = "PropertyTypes\StringProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
