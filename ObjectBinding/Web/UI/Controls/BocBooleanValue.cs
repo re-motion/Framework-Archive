@@ -145,7 +145,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnLoad (e);
 
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -240,7 +240,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -262,7 +262,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }

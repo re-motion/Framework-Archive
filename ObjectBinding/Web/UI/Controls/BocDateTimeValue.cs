@@ -186,7 +186,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnLoad (e);
 
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -369,7 +369,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -391,7 +391,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
@@ -916,7 +916,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary>
   ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
-  ///   <see cref="Property"/>.
+  ///   <see cref="IBusinessObjectBoundControl.Property"/>.
   /// </summary>
   private void RefreshPropertiesFromObjectModel()
   {
@@ -1377,7 +1377,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       RefreshPropertiesFromObjectModel();
 
       return _actualValueType; 
