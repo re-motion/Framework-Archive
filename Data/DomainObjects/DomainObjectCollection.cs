@@ -630,11 +630,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public virtual DomainObjectCollection Clone (bool makeCloneReadOnly)
   {
     DomainObjectCollection clone = Create (this.GetType ());
-    
-    foreach (DomainObject domainObject in this)
-      clone.Add (domainObject);
 
     clone._requiredItemType = this.RequiredItemType;
+    clone.Combine (this);
     clone.SetIsReadOnly (makeCloneReadOnly);
     
     return clone;

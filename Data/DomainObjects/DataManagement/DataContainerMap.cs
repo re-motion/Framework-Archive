@@ -109,14 +109,14 @@ public class DataContainerMap : IEnumerable
     return domainObjects;
   }
 
-  public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)
+  public DataContainerCollection MergeWithRegisteredDataContainers (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     return dataContainers.Merge (_dataContainers);
   }
 
-  public DataContainerCollection GetNotExisting (DataContainerCollection dataContainers)
+  public DataContainerCollection GetNotRegisteredDataContainers (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 

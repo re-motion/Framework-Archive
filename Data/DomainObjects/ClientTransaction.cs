@@ -398,12 +398,12 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (dataContainers);
+    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
     SetClientTransaction (newLoadedDataContainers);
     _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
     DomainObjectCollection domainObjects = DomainObjectCollection.Create (
-        collectionType, _dataManager.DataContainerMap.MergeWithExisting (dataContainers), requiredItemType);
+        collectionType, _dataManager.DataContainerMap.MergeWithRegisteredDataContainers (dataContainers), requiredItemType);
 
     if (relationEndPointID != null)
       _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
