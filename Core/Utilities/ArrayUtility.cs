@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Rubicon.Utilities
 {
@@ -16,6 +17,40 @@ public sealed class ArrayUtility
   public static bool IsNullOrEmpty (System.Collections.ICollection collection)
   {
     return (collection == null) || (collection.Count == 0);
+  }
+
+  public static Array Combine (Type elementType, params Array[] arrays)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("arrays", arrays);
+    if (arrays[0] == null)
+      throw new ArgumentNullException ("arrays[0]");
+
+    if (elementType == null)
+      elementType = arrays[0].GetType().GetElementType();
+
+    int newLength = 0;
+    for (int i = 0; i < arrays.Length; ++i)
+    {
+      if (arrays[i].Rank != 1)
+        throw new ArgumentException ("Combine does not support multi-dimensional arrays.", "array[" + i.ToString() + "]");
+      if (! elementType.IsAssignableFrom (arrays[i].GetType().GetElementType()))
+        elementType = typeof (object);
+      newLength += arrays[i].Length;
+    }
+
+    Array result = Array.CreateInstance (elementType, newLength);
+    int start = 0;
+    for (int i = 0; i < arrays.Length; ++i)
+    {
+      arrays[i].CopyTo (result, start);
+      start += arrays[i].Length;
+    }
+    return result;
+  }
+
+  public static Array Combine (params Array[] arrays)
+  {
+    return Combine (null, arrays);
   }
 
 	private ArrayUtility()

@@ -396,9 +396,9 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
   /// A new <c>DateTime</c> with the same date as this instance, and the time value set to 12 A.M. (00:00:00).
   /// </value>
   /// <exception cref="NaNullValueException"> The property contains <see cref="Null"/>. </exception>
-  public DateTime Date
+  public NaDateTime Date
   {
-    get { return Value.Date; }
+    get { return IsNull ? Null : Value.Date; }
   }
 
   /// <summary>
