@@ -110,6 +110,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "doc\include\MultiLingualResourcesAttribute.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "doc\include\ResourceManagerWrapper.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\IObjectWithResources.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

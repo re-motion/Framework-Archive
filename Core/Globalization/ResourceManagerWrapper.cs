@@ -40,7 +40,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   /// <summary>
   ///   Simple Constructor
   /// </summary>
-  /// <include file='doc\include\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManager"]' />
+  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManager"]' />
   public ResourceManagerWrapper (ResourceManager resourceManager)
     : this (new ResourceManager[] { resourceManager } )
   {
@@ -49,7 +49,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   /// <summary>
   ///   Constructor for wrapping multipe resource managers
   /// </summary>
-  /// <include file='doc\include\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
+  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
   public ResourceManagerWrapper (ResourceManager [] resourceManagers)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
@@ -124,7 +124,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   ///   Searches for all string resources inside the resource manager whose name is prefixed 
   ///   with a matching tag.
   /// </summary>
-  /// <include file='doc\include\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
+  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
   /// <param name="prefix">
   ///   The prefix all returned string resources must have.
   /// </param>
@@ -179,7 +179,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   /// <summary>
   ///   Gets the value of the specified String resource.
   /// </summary>
-  /// <include file='doc\include\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
+  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
   /// <param name="id">
   ///   The ID of the resource to get. Must not be <see langname="null"/>.
   /// </param>
