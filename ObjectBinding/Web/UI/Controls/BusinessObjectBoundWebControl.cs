@@ -5,6 +5,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
@@ -51,7 +52,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   [Category ("Data")]
-  // TODO: [Editor (typeof (PropertyPathEditor), typeof (UITypeEditor))]
+  [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   public string PropertyIdentifier
   {
     get { return _binding.PropertyIdentifier; }
@@ -254,6 +255,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   [Browsable(false)]
   public abstract bool IsDirty { get; set; }
+
+  [Browsable(false)]
+  public abstract Type[] SupportedPropertyInterfaces { get; }
 }
 
 public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl

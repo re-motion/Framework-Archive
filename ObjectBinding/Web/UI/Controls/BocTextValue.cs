@@ -48,6 +48,9 @@ public interface IGetTargetControl
 [ToolboxItemFilter("System.Web.UI")]
 public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetControl
 {
+  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
+      typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
+
   /// <summary>
   ///   This event is fired when the text is changed in the UI.
   /// </summary>
@@ -409,6 +412,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
     get { return _isDirty; }
     set { _isDirty = value; }
   }
+
+  public override Type[] SupportedPropertyInterfaces
+  {
+    get { return s_supportedPropertyInterfaces; }
+  }
+
 }
 
 /// <summary>
