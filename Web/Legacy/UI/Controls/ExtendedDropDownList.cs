@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 using Rubicon;
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
