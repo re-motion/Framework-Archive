@@ -34,7 +34,7 @@ public class DatabaseTest
   {
     using (TestDataLoader loader = new TestDataLoader (c_connectionString))
     { 
-      loader.ExecuteSqlFile (@"..\..\Database\" + c_testDomainFilename);
+      loader.ExecuteSqlFile (c_testDomainFilename);
     }
   }
 }
