@@ -48,7 +48,7 @@ public interface IBusinessObjectDataSource
 
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
-  private TypedArrayList _boundControls = null;
+  private TypedArrayList _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
   private bool _editMode = true;
 
   [Category ("Data")]
@@ -60,8 +60,6 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   public void Register (IBusinessObjectBoundControl control)
   {
-    if (_boundControls == null)
-      _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
     if (! _boundControls.Contains (control))
       _boundControls.Add (control);
   }
@@ -95,17 +93,22 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   }
 
   [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public abstract IBusinessObjectClass BusinessObjectClass { get; }
 
   [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual IBusinessObjectProvider BusinessObjectProvider 
   { 
     get { return (BusinessObjectClass == null) ? null : BusinessObjectClass.BusinessObjectProvider; }
   }
 
   [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public abstract IBusinessObject BusinessObject { get; set; }
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return (IBusinessObjectBoundControl[]) _boundControls.ToArray (); }
