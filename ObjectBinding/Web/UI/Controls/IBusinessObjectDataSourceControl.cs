@@ -69,7 +69,7 @@ public abstract class BusinessObjectDataSourceControl : Control, IBusinessObject
     get { return DataSource.BusinessObjectProvider; }
   }
 
-  protected abstract BusinessObjectDataSource DataSource { get; }
+  protected abstract IBusinessObjectDataSource GetDataSource()
 }
 
 }

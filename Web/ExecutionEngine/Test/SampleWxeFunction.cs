@@ -1,3 +1,40 @@
+// SampleWxeFunction ()
+// {
+//   string Var1;
+//   string Var2;
+//   
+//   Var1 = "SampleWxeFunction Step1";
+//   Var2 = "Var2 - Step1";
+// 
+//   WxePageStep ("WebForm1.aspx");
+// 
+//   SampleWxeSubFunction (ref Var2, "constant for Var2");
+// 
+//   WxePageStep ("WebForm1.aspx");
+// }
+// 
+// 
+// SampleWxeSubFunction (ref string Var1, string Var2)
+// {
+//   try
+//   {
+//     WxePageStep ("WebForm1.aspx");
+//  
+//     Var1 = "SampleWxeSubFunction Step3";
+// 
+//     WxePageStep ("WebForm1.aspx");
+// 
+//     Var1 = "exit SampleWxeSubFunction";
+//     Var2 = "this should never appear";
+//   }
+//   catch (ApplicationException)
+//   {
+//     Var1 = "Exception var1";
+// 
+//     WxePageStep ("WebForm1.aspx");
+//   }
+// }
+
 using System;
 using Rubicon.Web.ExecutionEngine;
 

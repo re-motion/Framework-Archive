@@ -8,12 +8,9 @@ using Rubicon.ObjectBinding.Web.Controls;
 namespace Rubicon.ObjectBinding.Reflection
 {
 
-public class ReflectionBusinessObjectDataSourceControl : BusinessObjectDataSourceControl
+public class ReflectionBusinessObjectDataSourceControl: BusinessObjectDataSourceControl
 {
   private ReflectionBusinessObjectDataSource _dataSource = new ReflectionBusinessObjectDataSource();
-
-	public ReflectionBusinessObjectDataSourceControl()
-	{}
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
@@ -24,16 +21,9 @@ public class ReflectionBusinessObjectDataSourceControl : BusinessObjectDataSourc
     set { _dataSource.TypeName = value; }
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Category ("Data")]
-  public Type Type
+  protected override IBusinessObjectDataSource GetDataSource()
   {
-    get { return _dataSource.Type; }
-  }
-
-  protected override BusinessObjectDataSource DataSource
-  {
-    get { return _dataSource; }
+    return _dataSource;
   }
 }
 
