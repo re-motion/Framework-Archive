@@ -48,6 +48,33 @@ public abstract class WxeStep
     if (ParentStep != null)
       ParentStep.ExecuteNextStep (context);
   }
+
+  public WxeFunction RootFunction
+  {
+    get
+    {
+      WxeStep s = this;
+      while (s.ParentStep != null)
+        s = s.ParentStep;
+      return s as WxeFunction;
+    }
+  }
+
+  public WxeFunction ParentFunction
+  {
+    get 
+    {
+      WxeStep s = this;
+      while (s.ParentStep != null)
+      {
+        WxeFunction f = s as WxeFunction;
+        if (f != null)
+          return f;
+        s = s.ParentStep;
+      }
+      return null;
+    }
+  }
 }
 
 public delegate void WxeMethod (WxeContext context);
