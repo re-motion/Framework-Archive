@@ -16,6 +16,7 @@
 <body>
 <form id=Form method=post runat="server">
 <h1>CompleteBocTest: UserControl Form</h1>
-<p><iuc:CompleteBocTestUserControl id="CompleteBocTestUserControl" runat="server"></iuc:CompleteBocTestUserControl></p></form>
+<p><iuc:CompleteBocTestUserControl id="CompleteBocTestUserControl" runat="server"></iuc:CompleteBocTestUserControl></p>
+<p><rwc:ValidationStateViewer id="ValidationStateViewer1" runat="server" noticetext="Es sind fehlerhafte Eingaben gefunden worden." visible="true"></rwc:ValidationStateViewer></p></form>
   </body>
 </html>

@@ -19,6 +19,7 @@ namespace OBWTest
   public class CompleteBocUserControlForm : SingleBocTestWxeBasePage
 
 {
+    protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	private void Page_Load(object sender, System.EventArgs e)
