@@ -35,21 +35,39 @@ public class WxeExceptionAttribute: Attribute
 /// </summary>
 public class WxeTryCatch: WxeStep
 {
-  private int _executingCatchBlock = -1; // index of currently executing catch block, or -1 if the try block is executing.
+  /// <summary>
+  /// index of currently executing catch block, or -1 if the try block is executing, -2 if finally block is executing
+  /// </summary>
+  private int _executingCatchBlock = -1; 
+
   private WxeStepList _trySteps;
-  private Exception _currentException = null;
 
   /// <summary> ArrayList&lt;WxeCatchBlock&gt; </summary>
   private ArrayList _catchBlocks;
 
-  public WxeTryCatch (Type tryStepListType, params Type[] catchBlockTypes)
+  private WxeStepList _finallySteps;
+
+  public WxeTryCatch (Type tryStepListType, Type finallyStepListType, params Type[] catchBlockTypes)
   {
     _trySteps = (WxeStepList) Activator.CreateInstance (tryStepListType);
     _trySteps.ParentStep = this;
 
     _catchBlocks = new ArrayList();
-    foreach (Type catchBlockType in catchBlockTypes)
-      Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType));
+    if (catchBlockTypes != null)
+    {
+      foreach (Type catchBlockType in catchBlockTypes)
+        Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType));
+    }
+
+    if (finallyStepListType != null)
+    {
+      _finallySteps = (WxeStepList) Activator.CreateInstance (finallyStepListType);
+      _finallySteps.ParentStep = this;
+    }
+    else
+    {
+      _finallySteps = null;
+    }
   }
 
   public WxeTryCatch()
@@ -60,11 +78,23 @@ public class WxeTryCatch: WxeStep
   private void InitializeSteps ()
   {
     Type type = this.GetType();
+
     Type tryBlockType = type.GetNestedType ("Try", BindingFlags.Public | BindingFlags.NonPublic);
     if (tryBlockType == null)
       throw new ApplicationException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
     _trySteps = (WxeStepList) Activator.CreateInstance (tryBlockType);
     _trySteps.ParentStep = this;
+
+    Type finallyBlockType = type.GetNestedType ("Finally", BindingFlags.Public | BindingFlags.NonPublic);
+    if (finallyBlockType != null)
+    {
+      _finallySteps = (WxeStepList) Activator.CreateInstance (finallyBlockType);
+      _finallySteps.ParentStep = this;
+    }
+    else
+    {
+      _finallySteps = null;
+    }
 
     MemberInfo[] catchBlockTypes = NumberedMemberFinder.FindMembers (
         type, 
@@ -79,7 +109,7 @@ public class WxeTryCatch: WxeStep
 
   public override void Execute (WxeContext context)
   {
-    if (IsExecutingTryBlock)
+    if (_executingCatchBlock == -1) // tryBlock
     {
       try
       {
@@ -104,22 +134,35 @@ public class WxeTryCatch: WxeStep
           if (catchBlock.ExceptionType.IsAssignableFrom (e.GetType()))
           {
             _executingCatchBlock = i;
+            catchBlock.Exception = e;
             break;
           }
         }
 
         if (_executingCatchBlock == -1)
           throw;
-        else
-        {
-          _currentException = e;
-          ExecutingStepList.Execute (context);
-        }
+
+        ExecutingStepList.Execute (context);
       }
+
+      if (_finallySteps != null)
+      {
+        _executingCatchBlock = -2;
+        ExecutingStepList.Execute (context);
+      }
+    }
+    else if (_executingCatchBlock == -2) // finallyBlock
+    {
+      _finallySteps.Execute (context);
     }
     else
     {
       ExecutingStepList.Execute (context);
+      if (_finallySteps != null)
+      {
+        _executingCatchBlock = -2;
+        _finallySteps.Execute (context);
+      }
     }
   }
 
@@ -128,19 +171,19 @@ public class WxeTryCatch: WxeStep
     get { return ExecutingStepList.ExecutingStep; }
   }
 
-  private bool IsExecutingTryBlock
-  {
-    get { return _executingCatchBlock == -1; }
-  }
-
   private WxeStepList ExecutingStepList
   {
     get
     {
-      if (IsExecutingTryBlock)
-        return _trySteps;
-      else
-        return (WxeCatchBlock)_catchBlocks[_executingCatchBlock];
+      switch (_executingCatchBlock)
+      {
+        case -1:
+          return _trySteps;
+        case -2:
+          return _finallySteps;
+        default:
+          return (WxeCatchBlock)_catchBlocks[_executingCatchBlock];
+      }
     }
   }
 
@@ -160,9 +203,18 @@ public class WxeTryCatch: WxeStep
     get { return (WxeCatchBlock[]) _catchBlocks.ToArray (typeof (WxeCatchBlock)); }
   }
 
-  public Exception CurrentException 
+  protected override void Dispose (bool disposing)
   {
-    get { return _currentException; }
+    _trySteps.Dispose ();
+
+    if (_catchBlocks != null)
+    {
+      foreach (WxeStepList catchBlock in _catchBlocks)
+        catchBlock.Dispose();
+    }
+
+    if (_finallySteps != null)
+      _finallySteps.Dispose();
   }
 }
 
@@ -170,8 +222,20 @@ public class WxeTryBlock: WxeStepList
 {
 }
 
+public class WxeFinallyBlock: WxeStepList
+{
+}
+
 public class WxeCatchBlock: WxeStepList
 {
+  private Exception _exception = null;
+
+  public Exception Exception 
+  {
+    get { return _exception; }
+    set { _exception = value; }
+  }
+
   public virtual Type ExceptionType 
   { 
     get 

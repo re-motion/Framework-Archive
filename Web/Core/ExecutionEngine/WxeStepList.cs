@@ -126,6 +126,15 @@ public class WxeStepList: WxeStep
       }
     }
   }
+
+  protected override void Dispose (bool disposing)
+  {
+    if (disposing)
+    {
+      foreach (WxeStep step in _steps)
+        step.Dispose ();
+    }
+  }
 }
 
 }
