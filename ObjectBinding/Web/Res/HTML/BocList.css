@@ -73,6 +73,7 @@ td.bocListDataCellEvenSelected
 td.bocListDataCellOdd a,
 td.bocListDataCellEven a
 {
+  color: Blue;
 	padding: 2px;
 }
 
@@ -90,7 +91,7 @@ td.bocListDataCellEven a:hover,
 td.bocListDataCellOddSelected a:hover,
 td.bocListDataCellEvenSelected a:hover
 {
-  color: Black;
+  color: Blue;
 	padding: 1px;
 	border-color: #2254b1;
 	border-width: 1px;
@@ -132,11 +133,13 @@ span.contentMenuItem
 
 span.contentMenuItem a
 {
+  color: Blue;
   padding: 2px;
 }
 
 span.contentMenuItem a:hover
 {
+  color: Blue;
 	padding: 1px;
 	border-width: 1px;
 	border-color: #2254b1;
