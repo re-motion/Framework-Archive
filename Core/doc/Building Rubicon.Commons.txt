@@ -5,7 +5,7 @@
   * xmldoc.xslt von SourceSafe rubicon\global\xslt holen
   
 2. Build-Prozess
-  1.	Überprüfen dass die lokale Kopie der Solution kompieliert.
+  1.	Überprüfen dass die lokale Kopie der Solution kompiliert.
   2.	Einchecken was noch nicht eingecheckt ist.
   3.	Get Latest Version auf die Solution durchführen.
   4.	Überprüfen dass die Solution immer noch fehlerfrei kompiliert.
