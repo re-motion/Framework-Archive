@@ -8,7 +8,8 @@
           unsafe="true" 
           doc="${project.doc}" 
           nowarn="1591" 
-          debug="${build.debug}">
+          debug="${build.debug}"
+          define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs" />
         <includes name="NullableValueTypes/**/*.cs" />

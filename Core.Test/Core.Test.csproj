@@ -121,6 +121,16 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "EnumDescriptionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WorkContextTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\ArithmeticsTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -139,6 +149,23 @@
                     RelPath = "NullableValueTypes\SerializationTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Resources\strings.en-US.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Resources\strings.resx"
+                    BuildAction = "EmbeddedResource"
+                    AutoGen = "True"
+                />
+                <File
+                    RelPath = "Resources\xy.en-US.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Resources\xy.resx"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Text\IdentifierGeneratorTest.cs"
