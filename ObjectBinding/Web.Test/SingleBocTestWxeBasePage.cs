@@ -54,7 +54,7 @@ public class WxeWebFormBase:
     LiteralControl stack = new LiteralControl();
 
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
-    sb.Append ("<div>");
+    sb.Append ("<br><div>");
     sb.Append ("<b>Stack:</b><br>");
     for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
       sb.AppendFormat ("{0}<br>", step.ToString());      

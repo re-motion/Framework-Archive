@@ -100,23 +100,23 @@ public class DatePickerPage : Page
 
   protected override void OnPreRender(EventArgs e)
   {
-    string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
-
-    PageUtility.RegisterClientScriptInclude (
-        this,
-        typeof (DatePickerPage).FullName, 
-        scriptUrl);
+    string key = typeof (DatePickerPage).FullName;
+    if (! Page.IsClientScriptBlockRegistered (key))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
+      PageUtility.RegisterClientScriptInclude (this, key, scriptUrl);
+    }
 
     base.OnPreRender (e);
   }
 
   private void Calendar_SelectionChanged(object sender, EventArgs e)
   {
-    PageUtility.RegisterStartupScriptBlock (
-        this, 
-        typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged",
-        "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "')");
+    string key = typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged";
+    string script = "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');";
+    if (! Page.IsStartupScriptRegistered (key))
+      PageUtility.RegisterStartupScriptBlock (this, key, script);
   }
 }
 

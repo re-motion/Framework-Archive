@@ -43,11 +43,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectReferenceProperty) };
 
-	// member fields
+  private static readonly object s_eventSelectionChanged = new object();
 
-  /// <summary> This event is fired when the selection is changed in the UI. </summary>
-  /// <remarks> The event is fired only if the selection change is caused by the user. </remarks>
-  public event EventHandler SelectionChanged;
+	// member fields
 
   /// <summary>
   ///   <see langword="true"/> if <see cref="BocReferenceValue"/> has been changed since last call to
@@ -179,8 +177,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnSelectionChanged (EventArgs e)
   {
-    if (SelectionChanged != null)
-      SelectionChanged (this, e);
+    EventHandler eventHandler = (EventHandler) Events[s_eventSelectionChanged];
+    if (eventHandler != null)
+      eventHandler (this, e);
   }
 
   /// <summary>
@@ -813,6 +812,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   public override bool UseLabel
   {
     get { return false; }
+  }
+
+  /// <summary> This event is fired when the selection is changed between postbacks. </summary>
+  [Category ("Action")]
+  [Description ("Fires when the selection changes.")]
+  public event EventHandler SelectionChanged
+  {
+    add { Events.AddHandler (s_eventSelectionChanged, value); }
+    remove { Events.RemoveHandler (s_eventSelectionChanged, value); }
   }
 
   /// <summary>

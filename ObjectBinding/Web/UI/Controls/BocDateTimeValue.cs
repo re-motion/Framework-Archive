@@ -54,10 +54,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
   private const string c_datePickerScriptUrl = "DatePicker.js";
-  private const string c_datePickerDocumentClickHander = 
-      "<script for=\"document\" event=\"onclick()\" language=\"JScript\" type=\"text/jscript\">"
+  private const string c_datePickerDocumentClickHanderInternetExplorer = 
+      "<script for=\"document\" event=\"onclick()\"  language=\"JScript\" type=\"text/jscript\">\r\n<!--\r\n"
       + "{ DatePicker_OnDocumentClick(); return true; }"
-      + "</script>";
+      + "\r\n//-->\r\n</script>";
   
   // types
 
@@ -66,11 +66,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
-	// member fields
+  private static readonly object s_eventDateTimeChanged = new object();
 
-  /// <summary> This event is fired when the date or time is changed in the UI. </summary>
-  /// <remarks> The event is fired only if the date change is caused by the user. </remarks>
-  public event EventHandler DateTimeChanged;
+	// member fields
 
   /// <summary>
   ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
@@ -130,6 +128,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   ///   Flag that determines whether to provide an automatic maximun length for the text boxes.
   /// </summary>
   private bool _provideMaxLength = true;
+
+  /// <summary> Flag that determines whether the client script is enabled. </summary>
+  private bool _enableClientScript = true;
+
+  /// <summary> Flag that determines whether the client script will be rendered. </summary>
+  private bool _hasClientScript = false;
 
   // construction and disposing
 
@@ -225,8 +229,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> Empty. </param>
   protected virtual void OnDateTimeChanged (EventArgs e)
   {
-    if (DateTimeChanged != null)
-      DateTimeChanged (this, e);
+    EventHandler eventHandler = (EventHandler) Events[s_eventDateTimeChanged];
+    if (eventHandler != null)
+      eventHandler (this, e);
   }
 
   /// <summary>
@@ -236,17 +241,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)
   {
-    string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
-    PageUtility.RegisterClientScriptInclude (
-        Page,
-        typeof (BocDateTimeValue).FullName, 
-        scriptUrl);
-
-    Page.RegisterClientScriptBlock (
-        typeof (BocDateTimeValue).FullName + "_DocumentClickHandler", 
-        c_datePickerDocumentClickHander);
-
     base.OnPreRender (e);
 
     //  First call
@@ -275,7 +269,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
     //  and remove AddAttributesToRender.
-    if (_datePickerImage.Visible)
+    if (_datePickerImage.Visible && _hasClientScript)
     {
       Unit width = _datePickerPopupWidth;
       if (width.IsEmpty)
@@ -297,7 +291,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
       //  and remove RenderContents.
-      if (control == _datePickerImage && control.Visible)
+      if (control == _datePickerImage && control.Visible && _hasClientScript)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.UI, c_datePickerPopupForm);
@@ -445,6 +439,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   protected override void InitializeChildControls()
   {
     bool isReadOnly = IsReadOnly;
+
+    DetermineClientScriptLevel();
+    if (_hasClientScript && ! isReadOnly)
+    {
+      string key = typeof (BocDateTimeValue).FullName;
+      if (! Page.IsClientScriptBlockRegistered (key))
+      {
+        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+            this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
+        PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
+      }
+
+      key = typeof (BocDateTimeValue).FullName + "_DocumentClickHandler";
+      if (! Page.IsClientScriptBlockRegistered (key))
+        Page.RegisterClientScriptBlock (key, c_datePickerDocumentClickHanderInternetExplorer);
+    }
 
     _dateTextBox.Visible = ! isReadOnly;
     _timeTextBox.Visible = ! isReadOnly;
@@ -662,15 +672,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           datePickerImageSpacer.Visible = false;
       }
 
-      bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
-                              ||   Context.Request.Browser.MajorVersion == 5 
-                                && Context.Request.Browser.MinorVersion >= 5;
-      bool isInternetExplorer55AndHigher = 
-          Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
-
       //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
       //  and remove RenderContents.
-      if (isInternetExplorer55AndHigher)
+      if (_hasClientScript)
       {
         string imageUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
@@ -688,7 +692,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
             + pickerActionButton + ", "
             + pickerActionContainer + ", "
             + pickerActionTarget + ", "
-            + pickerActionFrame + ")";
+            + pickerActionFrame + ");";
         _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
       }
       else
@@ -929,85 +933,38 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
   }
 
-  private string GetCssFromStyle(Style style)
+  private void DetermineClientScriptLevel() 
   {
-    StringBuilder sb = new StringBuilder(256);
-    System.Drawing.Color c;
+    _hasClientScript = false;
 
-    c = style.ForeColor;
-    if (!c.IsEmpty) 
+    if (! ControlHelper.IsDesignMode (this, Context))
     {
-      sb.Append("color:");
-      sb.Append(System.Drawing.ColorTranslator.ToHtml(c));
-      sb.Append(";");
-    }
-    c = style.BackColor;
-    if (!c.IsEmpty) 
-    {
-      sb.Append("background-color:");
-      sb.Append(System.Drawing.ColorTranslator.ToHtml(c));
-      sb.Append(";");
-    }
+      if (EnableClientScript) 
+      {
+        bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
+                                ||   Context.Request.Browser.MajorVersion == 5 
+                                  && Context.Request.Browser.MinorVersion >= 0.5;
+        bool isInternetExplorer55AndHigher = 
+            Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
 
-    FontInfo fi = style.Font;
-    string s;
+        _hasClientScript = isInternetExplorer55AndHigher;
 
-    s = fi.Name;
-    if (s.Length != 0) 
-    {
-      sb.Append("font-family:'");
-      sb.Append(s);
-      sb.Append("';");
+        // // The next set of checks involve looking at the capabilities of the
+        // // browser making the request.
+        // //
+        // // The DatePicker needs to verify whether the browser has EcmaScript (JavaScript)
+        // // version 1.2+, and whether the browser supports DHTML, and optionally,
+        // // DHTML behaviors.
+        //
+        // HttpBrowserCapabilities browserCaps = Page.Request.Browser;
+        // bool hasEcmaScript = (browserCaps.EcmaScriptVersion.CompareTo(new Version(1, 2)) >= 0);
+        // bool hasDOM = (browserCaps.MSDomVersion.Major >= 4);
+        // bool hasBehaviors = (browserCaps.MajorVersion > 5) ||
+        //                     ((browserCaps.MajorVersion == 5) && (browserCaps.MinorVersion >= .5));
+        //
+        // _hasClientScript = hasEcmaScript && hasDOM;
+      }
     }
-    if (fi.Bold)
-      sb.Append("font-weight:bold;");
-    if (fi.Italic)
-      sb.Append("font-style:italic;");
-
-    s = String.Empty;
-    if (fi.Underline)
-      s += "underline";
-    if (fi.Strikeout)
-      s += " line-through";
-    if (fi.Overline)
-      s += " overline";
-    if (s.Length != 0) 
-    {
-      sb.Append("text-decoration:");
-      sb.Append(s);
-      sb.Append(';');
-    }
-
-    FontUnit fu = fi.Size;
-    if (fu.IsEmpty == false) {
-        sb.Append("font-size:");
-        sb.Append(fu.ToString(CultureInfo.InvariantCulture));
-        sb.Append(';');
-    }
-
-    s = String.Empty;
-    Unit u = style.BorderWidth;
-    BorderStyle bs = style.BorderStyle;
-    if (u.IsEmpty == false) {
-        s = u.ToString(CultureInfo.InvariantCulture);
-        if (bs == BorderStyle.NotSet) {
-            s += " solid";
-        }
-    }
-    c = style.BorderColor;
-    if (!c.IsEmpty) {
-        s += " " + System.Drawing.ColorTranslator.ToHtml(c);
-    }
-    if (bs != BorderStyle.NotSet) {
-        s += " " + Enum.Format(typeof(BorderStyle), bs, "G");
-    }
-    if (s.Length != 0) {
-        sb.Append("border:");
-        sb.Append(s);
-        sb.Append(';');
-    }
-
-    return sb.ToString();
   }
 
   /// <summary>
@@ -1163,7 +1120,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   public override Control TargetControl
   {
-    get { return (_dateTextBox != null) ? _dateTextBox : (Control) this; }
+    get { return IsReadOnly ? (Control) this : _dateTextBox; }
   }
 
   /// <summary>
@@ -1359,6 +1316,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     set { _provideMaxLength = value; }
   }
 
+  /// <summary> Flag that determines whether the client script is enabled. </summary>
+  /// <value> <see langref="true"/> to enable the client script. </value>
+  [Category ("Behavior")]
+  [Description (" True to enable the client script for the pop-up calendar. ")]
+  [DefaultValue (true)]
+  public bool EnableClientScript
+  {
+    get { return _enableClientScript; }
+    set { _enableClientScript = value; }
+  }
+
   /// <summary> The <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
   [Description("Gets or sets a fixed value type.")]
   [Category ("Data")]
@@ -1447,6 +1415,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         return "\n";
 
     }
+  }
+
+  /// <summary> This event is fired when the date or time is changed between postbacks. </summary>
+  [Category ("Action")]
+  [Description ("Fires when the value of the control changes.")]
+  public event EventHandler DateTimeChanged
+  {
+    add { Events.AddHandler (s_eventDateTimeChanged, value); }
+    remove { Events.RemoveHandler (s_eventDateTimeChanged, value); }
   }
 
   /// <summary>

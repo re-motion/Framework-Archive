@@ -499,9 +499,9 @@ public class PageUtility
   public static void RegisterClientScriptInclude (Page page, string key, string scriptUrl)
   {
     string script = 
-        @"<script language=""Javascript"" type=""text/javascript"" src=""" +
+        "<script type=\"text/javascript\" src=\"" +
         scriptUrl +
-	      @"""></script>";
+	      "\"></script>";
 
     page.RegisterClientScriptBlock (key, script);
   }
@@ -509,9 +509,9 @@ public class PageUtility
   public static void RegisterClientScriptBlock (Page page, string key, string javascript)
   {
     string script = 
-        @"<script language=""javascript"" type=""text/javascript"">" +
+        "<script type=\"text/javascript\">\r\n<!--\r\n" +
         javascript +
-	      "</script>";
+	      "\r\n//-->\r\n</script>";
 
     page.RegisterClientScriptBlock (key, script);
   }
@@ -526,9 +526,9 @@ public class PageUtility
   public static void RegisterStartupScriptBlock (Page page, string key, string javascript)
   {
     string script = 
-        @"<script language=""javascript"" type=""text/javascript"">" +
+        "<script type=\"text/javascript\">\r\n<!--\r\n" +
         javascript +
-	      "</script>";
+	      "\r\n//-->\r\n</script>";
 
     page.RegisterStartupScript (key, script);
   }

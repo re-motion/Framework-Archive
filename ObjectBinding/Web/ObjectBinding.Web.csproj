@@ -334,6 +334,18 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\Image\CheckBoxFalse.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\CheckBoxNull.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\CheckBoxTrue.gif"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\DatePicker.gif"
                     BuildAction = "Content"
                 />
