@@ -132,7 +132,7 @@ public class RelationDefinitionLoader
       }
       else
       {
-        return LoaderUtility.GetTypeFromNode (typeNode);
+        return LoaderUtility.MapType (typeNode);
       }
     }
     else
@@ -143,7 +143,7 @@ public class RelationDefinitionLoader
             propertyNode.SelectSingleNode (FormatXPath ("../../{0}:endPoint/{0}:class/@id"), _namespaceManager).InnerText;
 
         string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class[@id = \"" + oppositeClassID + "\"]/{0}:type");
-        return LoaderUtility.GetTypeFromNode (propertyNode, FormatXPath (xPath), _namespaceManager);
+        return LoaderUtility.MapType (propertyNode, FormatXPath (xPath), _namespaceManager);
       }
       else
       {
