@@ -14,6 +14,55 @@ public sealed class ListUtility
   {
   }
 
+  /// <summary>
+  ///   Adds an objectto a list. The original list may be modified.
+  /// </summary>
+  public static IList AddRange (IBusinessObjectReferenceProperty property, IList list, object obj, bool mustCreateCopy)
+  {
+    if (   list.IsFixedSize
+        || (mustCreateCopy && ! (list is ICloneable)))
+    {
+      ArrayList arrayList = new ArrayList (list);
+      arrayList.Add (obj);
+      IList newList = CreateList (property, list, arrayList.Count);
+      CopyTo (arrayList, newList);
+      return newList;
+    }
+    else
+    {
+      if (mustCreateCopy)
+        list = (IList) ((ICloneable)list).Clone();
+
+      list.Add (obj);
+      return list;
+    }
+  }
+
+  /// <summary>
+  ///   Adds a range of objects to a list. The original list may be modified.
+  /// </summary>
+  public static IList AddRange (IBusinessObjectReferenceProperty property, IList list, IList objects, bool mustCreateCopy)
+  {
+    if (   list.IsFixedSize
+        || (mustCreateCopy && ! (list is ICloneable)))
+    {
+      ArrayList arrayList = new ArrayList (list);
+      arrayList.AddRange (objects);
+      IList newList = CreateList (property, list, arrayList.Count);
+      CopyTo (arrayList, newList);
+      return newList;
+    }
+    else
+    {
+      if (mustCreateCopy)
+        list = (IList) ((ICloneable)list).Clone();
+
+      foreach (object obj in objects)
+        list.Add (obj);
+      return list;
+    }
+  }
+
   public static void CopyTo (IList source, IList destination)
   {
     int len = Math.Min (source.Count, destination.Count);
