@@ -209,8 +209,8 @@ public class LoaderTest
 
   [Test]
   [ExpectedException (typeof (MappingException), 
-      "Virtual end point of relation 'OrderToOrderTicket' must not contain element 'collectionType'."
-      + " Element 'collectionType' is only valid for virtual end points with cardinality equal 'many'.")]
+      "RelationProperty 'OrderTicket' of relation 'OrderToOrderTicket' must not contain element 'collectionType'."
+      + " Element 'collectionType' is only valid for relation properties with cardinality equal to 'many'.")]
   public void MappingWithCollectionTypeAndOneToOneRelation ()
   {
     MappingLoader loader = new MappingLoader (
@@ -219,7 +219,6 @@ public class LoaderTest
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   }
-
 
   [Test]
   [ExpectedException (typeof (MappingException))]
@@ -231,5 +230,49 @@ public class LoaderTest
   
     loader.GetClassDefinitions ();
   }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Class 'Order' defines the column 'CustomerID' more than once.")]
+  public void MappingWithDuplicateColumnNameAndRelationProperty ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithDuplicateColumnNameAndRelationProperty.xml", 
+        @"mapping.xsd");
+  
+    loader.GetClassDefinitions ();
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' does not have exactly two end points.")]
+  public void MappingWithOnlyOneEndPoint ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithOnlyOneEndPoint.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Property 'Order' of relation 'OrderToOrderTicket' defines a column and a cardinality equal to 'many', which is not valid.")]
+  public void MappingWithColumnAndCardinalityMany ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithColumnAndCardinalityMany.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Both property names of relation 'OrderToOrderTicket' are 'OrderTicket', which is not valid.")]
+  public void MappingWithRelationAndIdenticalPropertyNames ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithRelationAndIdenticalPropertyNames.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
 }
 }

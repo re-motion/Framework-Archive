@@ -44,21 +44,19 @@ public class RelationDefinitionChecker
         "IDs of relation definitions do not match. Expected: {0}, actual: {1}", 
         expectedDefinition.ID, actualDefinition.ID);
 
-    CheckEndPointDefinitions (
-        expectedDefinition.EndPointDefinitions, 
-        actualDefinition.EndPointDefinitions, 
-        expectedDefinition);
+    CheckEndPointDefinitions (expectedDefinition, actualDefinition);
   }
 
   private void CheckEndPointDefinitions (
-      IRelationEndPointDefinition[] expectedEndPointDefinitions, 
-      IRelationEndPointDefinition[] actualEndPointDefinitions, 
-      RelationDefinition expectedRelationDefinition)
+      RelationDefinition expectedRelationDefinition, 
+      RelationDefinition actualRelationDefinition)
   {
-    for (int i = 0; i < expectedEndPointDefinitions.Length; i++)
+    foreach (IRelationEndPointDefinition expectedEndPointDefinition in expectedRelationDefinition.EndPointDefinitions)
     {
-      CheckEndPointDefinition (
-          expectedEndPointDefinitions[i], actualEndPointDefinitions[i], expectedRelationDefinition);
+      IRelationEndPointDefinition actualEndPointDefinition = actualRelationDefinition.GetEndPointDefinition (
+          expectedEndPointDefinition.ClassDefinition.ID, expectedEndPointDefinition.PropertyName); 
+      
+      CheckEndPointDefinition (expectedEndPointDefinition, actualEndPointDefinition, expectedRelationDefinition);
     }
   }
 
