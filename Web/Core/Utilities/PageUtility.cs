@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.Utilities
 {
@@ -595,6 +596,18 @@ public class PageUtility
       "</script>";
 
     page.RegisterStartupScript ("CloseWindowKey", script);
+  }
+
+  /// <summary>
+  /// Gets the form's postback data in a fashion that works for WxePages too. Otherwise simialar to <c>Page.Request.Form</c>.
+  /// </summary>
+  public static NameValueCollection GetRequestCollection (Page page)
+  {
+    IWxePage wxePage = page as IWxePage;
+    if (wxePage != null)
+      return wxePage.GetPostBackCollection ();
+    else
+      return page.Request.Form;
   }
 }
 
