@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//TODO documentation: Write summary for class
 public class PropertyValue
 {
   // types
@@ -91,7 +92,13 @@ public class PropertyValue
 
   // member fields
 
+  /// <summary>
+  /// Occurs before the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
+  /// </summary>
   public event ValueChangingEventHandler Changing;
+  /// <summary>
+  /// Occurs after the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
+  /// </summary>
   public event EventHandler Changed;
 
   private PropertyDefinition _definition;
@@ -101,10 +108,23 @@ public class PropertyValue
 
   // construction and disposing
 
+  /// <summary>
+  /// Initializes a new <b>PropertyValue</b> with a given <see cref="PropertyDefinition"/>.
+  /// </summary>
+  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
   public PropertyValue (PropertyDefinition definition) : this (definition, GetDefaultValue (definition))
   {
   }
 
+  /// <summary>
+  /// Initializes a new <b>PropertyValue</b> with a given <see cref="PropertyDefinition"/> and an initial <see cref="Value"/>.
+  /// </summary>
+  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
+  /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
   public PropertyValue (PropertyDefinition definition, object value)
   {
     ArgumentUtility.CheckNotNull ("definition", definition);
@@ -117,6 +137,10 @@ public class PropertyValue
 
   // methods and properties
 
+  /// <summary>
+  /// Gets the <see cref="PropertyDefinition"/> of the <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public PropertyDefinition Definition
   {
     get 
@@ -126,6 +150,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Gets the name of the <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public string Name
   {
     get 
@@ -135,6 +163,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Gets the <see cref="Type"/> of the <see cref="Value"/> of a <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public Type PropertyType
   {
     get 
@@ -144,6 +176,12 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Gets or sets the value of the <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
   public object Value
   {
     get
@@ -171,6 +209,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Gets the original <see cref="Value"/> of the <see cref="PropertyValue"/> at the point of instantiation, loading, commit or rollback.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public object OriginalValue
   {
     get 
@@ -180,6 +222,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Indicates whether the <see cref="PropertyValue"/> may contain null as a value.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public bool IsNullable
   {
     get 
@@ -189,6 +235,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Gets the maximum length of the <see cref="Value"/> of the <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public NaInt32 MaxLength 
   {
     get 
@@ -198,6 +248,10 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Indicates if the <see cref="Value"/> of the <see cref="PropertyValue"/> has changed since instantiation, loading, commit or rollback.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public bool HasChanged
   {
     get 
@@ -207,6 +261,13 @@ public class PropertyValue
     }
   }
 
+
+  /// <summary>
+  /// Determines whether the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>.
+  /// </summary>
+  /// <param name="obj">The <see cref="PropertyValue"/> to compare with the current <b>PropertyValue</b>. </param>
+  /// <returns><b>true</b> if the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>; otherwise, <b>false</b>.</returns>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
   public override bool Equals (object obj)
   {
     CheckDiscarded ();
@@ -226,23 +287,36 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Returns the hash code for this instance.
+  /// </summary>
+  /// <returns>A 32-bit signed integer hash code.</returns>
   public override int GetHashCode()
   {
     CheckDiscarded ();
     return _definition.PropertyName.GetHashCode () ^ _value.GetHashCode () ^ _originalValue.GetHashCode ();
   }
 
+//TODO: should be internal, document it if it stays public or protected
   public void Discard ()
   {
     _isDiscarded = true;
   }
 
+  /// <summary>
+  /// Raises the <see cref="Changing"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="ValueChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnChanging (ValueChangingEventArgs args)
   {
     if (Changing != null)
       Changing (this, args);
   }
 
+  /// <summary>
+  /// Raises the <see cref="Changed"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="EventArgs"/> object that contains the event data.</param>
   protected virtual void OnChanged (EventArgs args)
   {
     if (Changed != null)

@@ -42,8 +42,8 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that should be used to load the <b>DomainObject</b>.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded.</param>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>DomainObject</b>.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
@@ -55,8 +55,8 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that should be used to load the <b>DomainObject</b>.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded.</param>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <b>DomainObject</b>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
