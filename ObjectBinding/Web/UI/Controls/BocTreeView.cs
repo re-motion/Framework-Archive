@@ -231,17 +231,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
     
     IBusinessObjectWithIdentity businessObject = businessObjectNode.BusinessObject;
     BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos = GetPropertyNodes (businessObject);
-    if (propertyNodeInfos == null)
+    if (propertyNodeInfos != null && propertyNodeInfos.Length > 0)
     {
-      businessObjectNode.IsEvaluated = false;
-      return;
+      if (propertyNodeInfos.Length == 1)
+        CreateAppendBusinessObjectNodes (businessObjectNode.Children, businessObject, propertyNodeInfos[0].Property);
+      else
+        CreateAppendPropertyNodes (businessObjectNode.Children, businessObject, propertyNodeInfos);
     }
-
-    if (propertyNodeInfos.Length == 1)
-      CreateAppendBusinessObjectNodes (businessObjectNode.Children, businessObject, propertyNodeInfos[0].Property);
-    else
-      CreateAppendPropertyNodes (businessObjectNode.Children, businessObject, propertyNodeInfos);
-
     businessObjectNode.IsEvaluated = true;
   }
 
@@ -306,13 +302,23 @@ public class BocTreeView: BusinessObjectBoundWebControl
   protected virtual BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes (IBusinessObjectWithIdentity businessObject)
   {
     if (Property == null)
-      return null;
+    {
+      ArrayList referenceListPropertyInfos = new ArrayList();
+      foreach (IBusinessObjectProperty property in businessObject.BusinessObjectClass.GetPropertyDefinitions ())
+      {
+        IBusinessObjectReferenceProperty referenceProperty = property as IBusinessObjectReferenceProperty;
+        if (   referenceProperty != null
+            && referenceProperty.IsList 
+            && referenceProperty.ReferenceClass is IBusinessObjectClassWithIdentity
+            && referenceProperty.IsAccessible (businessObject.BusinessObjectClass, businessObject))
+        {
+          referenceListPropertyInfos.Add (new BusinessObjectPropertyTreeNodeInfo (referenceProperty));
+        }
+      }
+      return (BusinessObjectPropertyTreeNodeInfo[]) referenceListPropertyInfos.ToArray (typeof (BusinessObjectPropertyTreeNodeInfo));
+    }
     
-    string title = Property.DisplayName;
-    IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
-        businessObject, 
-        Property.ReferenceClass.BusinessObjectProvider);
-    return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (title, icon, Property) };
+    return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (Property) };
   }
 
   private void EnsureBusinessObjectTreeNode (BusinessObjectTreeNode node)
@@ -675,6 +681,13 @@ public class BusinessObjectPropertyTreeNodeInfo
   private string _text;
   private IconInfo _icon;
   private IBusinessObjectReferenceProperty _property;
+
+  public BusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
+  {
+    _text = property.DisplayName;
+    _icon = null;
+    _property = property;
+  }
 
   public BusinessObjectPropertyTreeNodeInfo (string text, IconInfo icon, IBusinessObjectReferenceProperty property)
   {
