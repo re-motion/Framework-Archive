@@ -14,6 +14,15 @@ public interface IBusinessObjectBoundControl: IComponent
   void LoadValue (bool interim);
 
   bool SupportsProperty (IBusinessObjectProperty property);
+
+  /// <summary>
+  ///   Determines whether the control has a valid configuration.
+  /// </summary>
+  /// <remarks>
+  ///   The configuration is considered invalid if data binding is configured for a property 
+  ///   that is not available for the bound class or object.
+  /// </remarks>
+  bool IsValid { get; }
 }
 
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
