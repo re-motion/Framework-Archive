@@ -1,6 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.Transaction;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -12,6 +13,8 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
 
   // member fields
 
+  private ClientTransactionMock _clientTransactionMock;
+
   // construction and disposing
 
   protected RelationEndPointBaseTest ()
@@ -20,11 +23,24 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
 
   // methods and properties
 
+  public override void SetUp()
+  {
+    base.SetUp ();
+    
+    _clientTransactionMock = new ClientTransactionMock ();
+    ClientTransaction.SetCurrent (_clientTransactionMock);
+  }
+
   protected CollectionEndPoint CreateCollectionEndPoint (
       RelationEndPointID endPointID, 
       DomainObjectCollection domainObjects)
   {
-    return new CollectionEndPoint (ClientTransaction.Current, endPointID, domainObjects);
+    CollectionEndPoint newCollectionEndPoint = new CollectionEndPoint (
+        _clientTransactionMock, endPointID, domainObjects);
+
+    newCollectionEndPoint.ChangeDelegate = _clientTransactionMock.DataManager.RelationEndPointMap;
+
+    return newCollectionEndPoint;
   }
 
   protected ObjectEndPoint CreateObjectEndPoint (
@@ -32,7 +48,7 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
       string propertyName,
       ObjectID oppositeObjectID)
   {
-    return new ObjectEndPoint (ClientTransaction.Current, domainObject, propertyName, oppositeObjectID);
+    return new ObjectEndPoint (_clientTransactionMock, domainObject, propertyName, oppositeObjectID);
   }
 
   protected ObjectEndPoint CreateObjectEndPoint (
@@ -40,15 +56,14 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
       string propertyName,
       ObjectID oppositeObjectID)
   {
-    return new ObjectEndPoint (ClientTransaction.Current, dataContainer, propertyName, oppositeObjectID);
+    return new ObjectEndPoint (_clientTransactionMock, dataContainer, propertyName, oppositeObjectID);
   }
 
   protected ObjectEndPoint CreateObjectEndPoint (
       RelationEndPointID endPointID,
       ObjectID oppositeObjectID)
   {
-    return new ObjectEndPoint (ClientTransaction.Current, endPointID, oppositeObjectID);
+    return new ObjectEndPoint (_clientTransactionMock, endPointID, oppositeObjectID);
   }
-
 }
 }

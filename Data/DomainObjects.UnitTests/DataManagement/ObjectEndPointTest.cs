@@ -30,6 +30,8 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
 
   public override void SetUp ()
   {
+    base.SetUp ();
+
     _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Order");
     _oppositeObjectID = DomainObjectIDs.Order1;
   
@@ -163,6 +165,32 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
     Assert.IsNotNull (_endPoint.ID);
     Assert.AreEqual ("Order", _endPoint.ID.PropertyName);
     Assert.AreEqual (DomainObjectIDs.OrderItem1, _endPoint.ID.ObjectID);
+  }
+
+  [Test]
+  public void Clone ()
+  { 
+    ICloneable original = (ICloneable) _endPoint;
+    ObjectEndPoint clone = (ObjectEndPoint) original.Clone ();
+
+    Assert.IsNotNull (clone);
+    Assert.IsFalse (object.ReferenceEquals (clone, _endPoint));
+    Assert.IsFalse (clone.IsNull);
+    Assert.AreSame (_endPoint.Definition, clone.Definition);
+    Assert.AreEqual (_endPoint.ID, clone.ID);
+    Assert.AreEqual (_endPoint.ObjectID, clone.ObjectID);
+    Assert.AreEqual (_endPoint.OppositeObjectID, clone.OppositeObjectID);
+    Assert.AreEqual (_endPoint.OriginalOppositeObjectID, clone.OriginalOppositeObjectID);
+    Assert.AreSame (_endPoint.ClientTransaction, clone.ClientTransaction);
+  }
+
+  [Test]
+  public void CloneChangedEndPoint ()
+  {
+    _endPoint.OppositeObjectID = new ObjectID ("StorageProvider", "ClassID", Guid.NewGuid ());
+
+    ObjectEndPoint clone = (ObjectEndPoint) _endPoint.Clone ();
+    Assert.AreEqual (_endPoint.OriginalOppositeObjectID, clone.OriginalOppositeObjectID);
   }
 }
 }
