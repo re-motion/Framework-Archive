@@ -14,7 +14,7 @@ public class StorageProviderConfigurationException : ConfigurationException
 
   // construction and disposing
 
-  public StorageProviderConfigurationException () {}
+  public StorageProviderConfigurationException () : this ("A storage provider exception occurred.") {}
 
   public StorageProviderConfigurationException (string message) : base (message) {}
   public StorageProviderConfigurationException (string message, Exception inner) : base (message, inner) {}
