@@ -86,12 +86,14 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
 
   public override void SaveValue (bool interim) // inherited from control interface
   {
-    _internalDataSource.SaveValue (interim);
+    if (! IsReadOnly)
+      _internalDataSource.SaveValue (interim);
   }
 
   public virtual void SaveValues (bool interim) // inherited data source interface
   {
-    _internalDataSource.SaveValue (interim);
+    if (! IsReadOnly)
+      _internalDataSource.SaveValue (interim);
   }
 
   [Browsable (false)]
@@ -153,7 +155,7 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public bool EditMode
   {
-    get { return IsReadOnly; }
+    get { return ! IsReadOnly; }
     set { ReadOnly = (NaBoolean) value; }
   }
 
