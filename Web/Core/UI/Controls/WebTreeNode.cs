@@ -78,11 +78,17 @@ public class WebTreeNode: IControlItem
   //    _children.SetExpansion (true);
   //  }
 
-  /// <summary> Evaluates and expands the current node. </summary>
-  public void EvaluateExpand()
+  /// <summary> Evaluates the current node. </summary>
+  public void Evaluate()
   {
     if (_treeView != null)
       _treeView.EvaluateTreeNodeInternal (this);
+  }
+
+  /// <summary> Evaluates and expands the current node. </summary>
+  public void EvaluateExpand()
+  {
+    Evaluate();
     IsExpanded = true;
   }
 
@@ -214,7 +220,9 @@ public class WebTreeNode: IControlItem
     _icon = new IconInfo (string.Empty, Unit.Empty, Unit.Empty);
   }
 
-  /// <summary> Gets the child nodes of this node. </summary>
+  /// <summary> 
+  ///   Gets the child nodes of for node. The node has to be evaluated before the actual child nodes can be accessed.
+  /// </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [MergableProperty(false)]
