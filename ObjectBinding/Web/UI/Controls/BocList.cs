@@ -681,7 +681,7 @@ public class BocList:
     }
  
     //  Render control opening tag
-    writer.AddAttribute (HtmlTextWriterAttribute.Id, ID);
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClass);

@@ -8,6 +8,8 @@ using System.Collections.Specialized;
 using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Reflection;
+using Rubicon.ObjectBinding;
 
 namespace OBWTest
 {
@@ -59,6 +61,12 @@ public class IndependentUserControl :
 
     ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+
+    if (! IsPostBack)
+    {
+      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      ReferenceField.RefreshBusinessObjectList (objects);
+    }
 
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid.ID];
 
@@ -116,8 +124,8 @@ public class IndependentUserControl :
 	/// </summary>
 	private void InitializeComponent()
 	{
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
-    this.SaveButton.Click += new EventHandler(SaveButton_Click);
 
   }
 	#endregion

@@ -166,7 +166,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       else
         _newInternalValue = null;
 
-      if (! Page.IsPostBack)
+      if (! Page.IsPostBack && ! StringUtility.IsNullOrEmpty (_select))
         RefreshBusinessObjectList();
 
       if (newInternalValue != null && _newInternalValue != _internalValue)
@@ -365,7 +365,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
   ///   <see cref="DropDownList"/>.
   /// </param>
-  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
+  public virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
     if (! IsReadOnly)
     {
@@ -950,22 +950,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   public string Select
   {
     get { return _select; }
-    set 
-    {
-      if (_select != value)
-      {
-        _select = value; 
-
-        try
-        {
-          //TODO: so geht das natürlich nicht, "Select" wird ja typischerweise schon in FrameworkInitialize gesetzt!
-          RefreshBusinessObjectList();
-        }
-        catch
-        {
-        }
-      }
-    }
+    set { _select = value; }
   }
 
   /// <summary>

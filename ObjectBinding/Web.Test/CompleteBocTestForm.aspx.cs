@@ -15,6 +15,8 @@ using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Reflection;
 
 namespace OBWTest
 {
@@ -69,6 +71,12 @@ namespace OBWTest
     ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
     
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    
+    if (! IsPostBack)
+    {
+      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      ReferenceField.RefreshBusinessObjectList (objects);
+    }
 	}
 
 	override protected void OnInit(EventArgs e)
