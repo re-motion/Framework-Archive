@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class NullRelationEndPoint : ObjectEndPoint
+public class NullObjectEndPoint : ObjectEndPoint
 {
   // types
 
@@ -15,7 +15,7 @@ public class NullRelationEndPoint : ObjectEndPoint
 
   // construction and disposing
 
-  public NullRelationEndPoint (IRelationEndPointDefinition definition)
+  public NullObjectEndPoint (IRelationEndPointDefinition definition)
   {
     base.Initialize (definition);
   }

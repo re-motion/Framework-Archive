@@ -17,7 +17,7 @@ public class CollectionEndPointTest : ClientTransactionBaseTest
 
   // member fields
 
-  private RelationEndPointDefinition _orderItemEndPointDefinition;
+  private VirtualRelationEndPointDefinition _orderEndPointDefinition;
   private DomainObjectCollection _orderItems;
   private CollectionEndPoint _orderItemEndPoint;
   
@@ -36,17 +36,17 @@ public class CollectionEndPointTest : ClientTransactionBaseTest
     Order order = Order.GetObject (DomainObjectIDs.Order1);
     ClassDefinition orderItemClass = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem");
     
-    _orderItemEndPointDefinition = 
-        (RelationEndPointDefinition) orderItemClass.GetRelationEndPointDefinition ("Order");
+    _orderEndPointDefinition = 
+        (VirtualRelationEndPointDefinition) orderItemClass.GetOppositeEndPointDefinition ("Order");
     
     _orderItems = order.OrderItems;
-    _orderItemEndPoint = new CollectionEndPoint (_orderItems, _orderItemEndPointDefinition);
+    _orderItemEndPoint = new CollectionEndPoint (_orderItems, _orderEndPointDefinition);
   }
 
   [Test]
   public void Initialize ()
   {
-    Assert.AreSame (_orderItemEndPointDefinition, _orderItemEndPoint.Definition);
+    Assert.AreSame (_orderEndPointDefinition, _orderItemEndPoint.Definition);
     Assert.AreSame (_orderItems, _orderItemEndPoint.DomainObjects);
   }
 }

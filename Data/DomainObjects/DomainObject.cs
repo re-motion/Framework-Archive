@@ -1,5 +1,6 @@
 using System;
 
+using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Relations;
 
@@ -164,6 +165,49 @@ public class DomainObject
   {
     EventArgs args = new EventArgs ();
     OnDeleted (args);
+  }
+
+  internal RelationEndPointList GetOppositeRelationEndPoints ()
+  {
+    RelationEndPointList oppositeEndPoints = new RelationEndPointList ();
+
+    foreach (ObjectEndPoint objectEndPoint in _dataContainer.ObjectEndPoints)
+    {
+      if (objectEndPoint.Definition.Cardinality == CardinalityType.One)
+      {
+        DomainObject oppositeDomainObject = ClientTransaction.Current.GetRelatedObject (objectEndPoint);
+        if (oppositeDomainObject != null)
+        {
+          ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
+            oppositeDomainObject, objectEndPoint.OppositeEndPointDefinition);
+
+          if (oppositeEndPoint.Definition.Cardinality == CardinalityType.Many)
+          {
+            DomainObjectCollection oppositeDomainObjects = 
+              ClientTransaction.Current.GetRelatedObjects (oppositeEndPoint);
+            
+            CollectionEndPoint oppositeCollectionEndPoint = new CollectionEndPoint (
+              oppositeDomainObjects, (VirtualRelationEndPointDefinition) oppositeEndPoint.Definition);
+
+            oppositeEndPoints.Add (oppositeCollectionEndPoint);
+          }
+
+          oppositeEndPoints.Add (oppositeEndPoint);    
+        }
+      }
+      else
+      {
+        foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (objectEndPoint))
+        {
+          ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
+            oppositeDomainObject, objectEndPoint.OppositeEndPointDefinition);
+
+          oppositeEndPoints.Add (oppositeEndPoint);
+        }
+      }
+    }
+
+    return oppositeEndPoints;
   }
 
   protected virtual void OnLoaded ()

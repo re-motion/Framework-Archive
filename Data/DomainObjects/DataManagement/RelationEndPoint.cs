@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class RelationEndPoint
+public abstract class RelationEndPoint
 {
   // types
 
@@ -24,6 +24,11 @@ public class RelationEndPoint
   protected RelationEndPoint ()
   {
   }
+
+  // abstract methods and properties
+
+  public abstract bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint, ObjectEndPoint newRelatedEndPoint);
+  public abstract void EndRelationChange ();
 
   // methods and properties
 

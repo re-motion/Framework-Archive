@@ -70,16 +70,16 @@ public class ObjectEndPoint : RelationEndPoint, INullable
 
   public virtual bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint)
   {
-    return BeginRelationChange (oldRelatedEndPoint, new NullRelationEndPoint (oldRelatedEndPoint.Definition));    
+    return BeginRelationChange (oldRelatedEndPoint, new NullObjectEndPoint (oldRelatedEndPoint.Definition));    
   }
 
-  public virtual bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint, ObjectEndPoint newRelatedEndPoint)
+  public override bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint, ObjectEndPoint newRelatedEndPoint)
   {
     return DomainObject.BeginRelationChange (
         PropertyName, oldRelatedEndPoint.DomainObject, newRelatedEndPoint.DomainObject);
   }
 
-  public virtual void EndRelationChange ()
+  public override void EndRelationChange ()
   {
     DomainObject.EndRelationChange (PropertyName);
   }

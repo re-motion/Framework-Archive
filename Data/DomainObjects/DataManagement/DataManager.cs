@@ -104,10 +104,10 @@ public class DataManager : ILinkChangeDelegate
   {
     objectEndPoint.SetOppositeEndPoint (newRelatedEndPoint);
     newRelatedEndPoint.SetOppositeEndPoint (objectEndPoint);
-    oldRelatedEndPoint.SetOppositeEndPoint (new NullRelationEndPoint (objectEndPoint.Definition));
+    oldRelatedEndPoint.SetOppositeEndPoint (new NullObjectEndPoint (objectEndPoint.Definition));
 
     oldRelatedEndPointOfNewRelatedEndPoint.SetOppositeEndPoint (
-        new NullRelationEndPoint (newRelatedEndPoint.Definition));
+        new NullObjectEndPoint (newRelatedEndPoint.Definition));
   }
 
   public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)
