@@ -106,5 +106,15 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     _eventReceiver.Compare (expectedStates);
 
   }
+
+// TODO: Reactivate code below
+//  [Test]
+//  public void Relations ()
+//  {
+//    _orderTicket.Delete ();
+//
+//    Assert.IsNull (_orderTicket.Order);
+//    Assert.IsNull (_order.OrderTicket);
+//  }
 }
 }
