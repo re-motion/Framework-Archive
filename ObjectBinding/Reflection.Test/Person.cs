@@ -123,7 +123,6 @@ public class Person: ReflectionBusinessObject
   }
 
   [XmlIgnore]
-  [EditorBrowsable (EditorBrowsableState.Never)]
   public Person[] Children
   {
     get 
