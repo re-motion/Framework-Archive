@@ -6,6 +6,12 @@
   * Neue Methode RegisterStartupScript
   
 - Methode GetResourceUrl der Klasse ResourceUrlResolver: Signatur geändert.
+
+- UI.Controls.DatePickerPage
+  * Neue Klasse
+  * bietet zusammen mit Res\UI\DatePickerForm.aspx und Res\Html\DatePicker.js einen Kalender
+    als IFrame an.
+  * Aufruf über die Funktion ShowDatePicker in DatePicker.js.
   
 1.1.21.0
 ========
@@ -25,8 +31,6 @@
   
 - ViewControl.cs:
   * Neue Methoden "GetWhitespaceImage" und "GetImagePath" bei Klasse "ViewControl"
-   
-
 
 1.1.18.0
 ========

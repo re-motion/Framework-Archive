@@ -401,10 +401,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     protected override void OnInsert(int index, object value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      
-      FormGridRow formGridRow = value as FormGridRow;
-      if (formGridRow == null) throw new ArgumentTypeException ("value", typeof (FormGridRow), value.GetType());
-      
+      ArgumentUtility.CheckType ("value", value, typeof (FormGridRow));
+      FormGridRow formGridRow = (FormGridRow) value;      
       formGridRow._formGrid = _ownerFormGrid;
       base.OnInsert (index, value);
     }
@@ -1232,7 +1230,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     //  Restore the view state to the form grids
 
-    Hashtable formGridViewStates = ViewState[c_viewStateIDFormGrids] as Hashtable;
+    Hashtable formGridViewStates = (Hashtable) ViewState[c_viewStateIDFormGrids];
 
     if (formGridViewStates != null)
     {
@@ -2068,19 +2066,17 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       if (control is ISmartControl)
       {
         SmartLabel smartLabel = new SmartLabel();
-        
         smartLabel.ForControl = control.ID;
-
         label = smartLabel;
       }
-      else if (     ! StringUtility.IsNullOrEmpty (control.ID)
-                &&  (     control is TextBox 
-                      ||  control is ListControl
-                      ||  control is Table
-                      ||  control is HtmlInputControl
-                      ||  control is HtmlSelect
-                      ||  control is HtmlTextArea
-                      ||  control is HtmlTable))
+      else if (   ! StringUtility.IsNullOrEmpty (control.ID)
+               && (   control is TextBox 
+                   || control is ListControl
+                   || control is Table
+                   || control is HtmlInputControl
+                   || control is HtmlSelect
+                   || control is HtmlTextArea
+                   || control is HtmlTable))
       {
         string newText = String.Empty;
 
@@ -2226,7 +2222,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         continue;
 
       ISmartControl smartControl = control as ISmartControl;
-
       if (smartControl == null)
         continue;
 
@@ -2245,7 +2240,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         continue;
 
       ISmartControl smartControl = control as ISmartControl;
-
       if (smartControl == null)
         continue;
 
@@ -2277,12 +2271,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         continue;
 
       ISmartControl smartControl = control as ISmartControl;
-
       if (smartControl == null)
         continue;
 
       string helpUrl = smartControl.HelpUrl;
-
       if (helpUrl != null && helpUrl != String.Empty)
       {
         helpUrl = ResourceUrlResolver.GetResourceUrl (this, Context, null, ResourceType.HelpPage, helpUrl);
@@ -2299,12 +2291,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         continue;
 
       ISmartControl smartControl = control as ISmartControl;
-
       if (smartControl == null)
         continue;
 
       string helpUrl = smartControl.HelpUrl;
-
       if (helpUrl != null && helpUrl != String.Empty)
       {
         dataRow.HelpProvider = GetHelpProvider (helpUrl);
