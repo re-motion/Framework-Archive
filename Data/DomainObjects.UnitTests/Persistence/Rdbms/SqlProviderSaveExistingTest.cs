@@ -276,7 +276,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   [Test]
   [ExpectedException (typeof (ConcurrencyViolationException), 
       "Concurrency violation encountered. Object"
-      + " 'TestDomain|Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
+      + " 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
       + " has already been changed by someone else.")]
   public void ConcurrentSave ()
   {
@@ -727,7 +727,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   private ObjectID GetClassWithAllDataTypesID ()
   {
     Guid idGuid = new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}");
-    return new ObjectID (c_testDomainProviderID, "ClassWithAllDataTypes", idGuid);
+    return new ObjectID ("ClassWithAllDataTypes", idGuid);
   }
 }
 }
