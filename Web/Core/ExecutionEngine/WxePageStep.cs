@@ -152,7 +152,7 @@ public class WxePageStep: WxeStep
 
     if (usesEventTarget)
     {
-      _postBackCollection.Remove ( ControlHelper.EventTarget);
+      _postBackCollection.Remove (ControlHelper.EventTarget);
       _postBackCollection.Remove (ControlHelper.EventArgument);
     }
     else
