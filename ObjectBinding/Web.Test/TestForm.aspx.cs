@@ -9,19 +9,28 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
+using System.Globalization;
+using System.Threading;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
+using Rubicon.Web;
+using Rubicon.Web.UI;
+using Rubicon.Utilities;
+using Rubicon.Globalization;
 
 namespace OBWTest
 {
 
-/// <summary>
-/// Summary description for WebFormMK.
-/// </summary>
-public class WebFormMK : WebFormBase
-
+[MultiLingualResources ("OBWTest.Globalization.WebFormMK")]
+public class WebFormMK :
+  Page,
+  IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
+  IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
+  /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
+  private static IResourceManager s_chachedResourceManager;
+
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
@@ -73,6 +82,9 @@ public class WebFormMK : WebFormBase
 		InitializeComponent();
 		base.OnInit(e);
 
+    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
+    Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+
     if (!IsPostBack)
       Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
 	}
@@ -109,6 +121,33 @@ public class WebFormMK : WebFormBase
       if (person.Partner != null)
         person.Partner.SaveObject();
     }
+  }
+
+  /// <summary>
+  ///   Interface implementation: IObjectWithResources
+  /// </summary>
+  /// <returns></returns>
+  public virtual IResourceManager GetResourceManager()
+  {
+    //  chache the resource manager
+    lock (typeof(IResourceManager))
+    {
+      if (s_chachedResourceManager == null)
+      {
+        s_chachedResourceManager = MultiLingualResourcesAttribute.GetResourceManager (
+          this.GetType(), true);
+      }
+    }  
+  
+    return s_chachedResourceManager;
+  }
+
+  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
+  {
+    if (ControlHelper.IsDesignMode (this, this.Context))
+      return resourceType.Name + "/" + relativeUrl;
+    else
+      return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 }
 

@@ -18,7 +18,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// </summary>
 //  TODO: BocItemCommand: Event
 //  TODO: BocItemCommand: Script
-//  TODO: BocItemCommand: WebExecutionEngine
+//  TODO: Place Commands into Expandable SubTypes
+//  TODO: WireUp Event
 [TypeConverter (typeof (BocItemCommandConverter))]
 public class BocItemCommand
 {
@@ -28,7 +29,6 @@ public class BocItemCommand
   private string _href;
   private string _target;
 
-  private string _functionAssemblyName;
   private string _functionTypeName;
   private string[] _functionParameters;
 
@@ -264,25 +264,6 @@ public class BocItemCommand
     set
     {
       _target = value; 
-    }
-  }
-
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Type: WxeFunction")]
-  [Description ("The assembly containing the WxeFunction used for this command.")]
-  [DefaultValue("")]
-  [NotifyParentProperty (true)]
-  public string FunctionAssemblyName
-  {
-    get
-    {
-      if (_type != BocItemCommandType.WxeFunction)
-        return null;
-      return StringUtility.NullToEmpty (_functionAssemblyName); 
-    }
-    set 
-    {
-      _functionAssemblyName = value; 
     }
   }
 

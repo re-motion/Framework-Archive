@@ -10,6 +10,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI.Globalization;
 
 namespace OBWTest
 {
@@ -34,6 +35,10 @@ public class WebFormBase:
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
+    
+    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
+    ResourceDispatcher.Dispatch (this);
+
     LiteralControl stack = new LiteralControl();
 
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
