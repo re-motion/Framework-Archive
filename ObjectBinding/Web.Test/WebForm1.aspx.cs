@@ -67,7 +67,7 @@ public class WebForm1 : System.Web.UI.Page
     this.DataBind();
     if (!IsPostBack)
     {
-      reflectionBusinessObjectDataSource1.LoadValues ();
+      reflectionBusinessObjectDataSource1.LoadValues (IsPostBack);
     }
 	}
 
@@ -106,7 +106,7 @@ public class WebForm1 : System.Web.UI.Page
   {
     if (Page.IsValid)
     {
-      reflectionBusinessObjectDataSource1.SaveValues();
+      reflectionBusinessObjectDataSource1.SaveValues (false);
       Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
