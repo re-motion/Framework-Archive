@@ -7,16 +7,15 @@ using System.Web.UI.HtmlControls;
 
 namespace Rubicon.Web.UI
 {
-
 /// <summary>
 ///   Provides a mechanism to register HTML header elements (e.g., stylesheet or script links).
 /// </summary>
 /// <example>
-///   protected override void RenderChildren(HtmlTextWriter writer)
-///   {
-///     HtmlHeadAppender.Current.EnsureAppended (HtmlHeader.Controls);
-///     base.RenderChildren (writer);
-///   }
+///   Insert the following line into the head element of the webform you want to add 
+///   the registered controls to.
+///   <code>
+///     &lt;rwc:htmlheadcontents runat="server" id="HtmlHeadContents"&lgt;&lt;/rwc:htmlheadcontents&gt;
+///   </code>
 /// </example>
 public class HtmlHeadAppender
 {
@@ -61,7 +60,7 @@ public class HtmlHeadAppender
   ///   <see cref="HtmlHeadAppender"/> to the <paramref name="headerCollection"/>.
   /// </summary>
   /// <remarks>
-  ///   Call this method during in an override of <c>RenderChildren</c>.
+  ///   Call this method during the rendering of the web form's <c>head element</c>.
   /// </remarks>
   /// <param name="headCollection">
   ///   <see cref="ControlCollection"/> to which the headers will be appended.

@@ -113,6 +113,11 @@
                     AssemblyName = "log4net"
                     HintPath = "..\..\prereq\Assemblies\log4net.dll"
                 />
+                <Reference
+                    Name = "envdte"
+                    AssemblyName = "EnvDTE"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\envdte.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -341,6 +346,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\DropDownMenu.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\EntryFormGrid.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -372,6 +382,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\FormGridRowInfoCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\HtmlHeadContents.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
