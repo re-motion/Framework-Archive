@@ -127,7 +127,7 @@ public class PropertyValueCollection : CollectionBase
   /// <param name="propertyValue">The object to locate in the <see cref="PropertyValueCollection"/>.</param>
   /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is a null reference.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
@@ -142,7 +142,7 @@ public class PropertyValueCollection : CollectionBase
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> to locate in the <see cref="PropertyValueCollection"/>.</param>
   /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -154,7 +154,7 @@ public class PropertyValueCollection : CollectionBase
   /// <summary>
   /// Gets the <see cref="PropertyValue"/> with a given <i>index</i> in the <see cref="PropertyValueCollection"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValue this [int index]  
   {
     get 
@@ -170,7 +170,7 @@ public class PropertyValueCollection : CollectionBase
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="System.ArgumentException">The given <i>propertyName</i> does not exist in the collection.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValue this [string propertyName]  
   {
     get 
@@ -193,7 +193,7 @@ public class PropertyValueCollection : CollectionBase
   /// <param name="value">The <see cref="PropertyValue"/> to add.</param>
   /// <exception cref="ArgumentNullException"><i>value</i> is a null reference.</exception>
   /// <exception cref="ArgumentException"><i>value</i> is already part of the collection.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public void Add (PropertyValue value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
@@ -221,7 +221,7 @@ public class PropertyValueCollection : CollectionBase
   ///   <i>index</i> is greater than the current length of the array.<br /> -or- <br />
   ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
   /// </exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override void CopyTo (Array array, int index)
   {
     CheckDiscarded ();
@@ -231,7 +231,7 @@ public class PropertyValueCollection : CollectionBase
   /// <summary>
   /// Gets the number of items contained in the <see cref="PropertyValueCollection"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override int Count
   {
     get
@@ -245,7 +245,7 @@ public class PropertyValueCollection : CollectionBase
   /// Returns an enumerator that can iterate through the <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="PropertyValueCollection"/>.</returns>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override IEnumerator GetEnumerator ()
   {
     CheckDiscarded ();
@@ -255,7 +255,7 @@ public class PropertyValueCollection : CollectionBase
   /// <summary>
   /// Gets a value indicating whether the <see cref="CollectionBase"/> is read-only.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override bool IsReadOnly
   {
     get
@@ -268,7 +268,7 @@ public class PropertyValueCollection : CollectionBase
   /// <summary>
   /// Gets a value indicating whether access to the <see cref="PropertyValueCollection"/> is synchronized (thread-safe).
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override bool IsSynchronized
   {
     get
@@ -281,7 +281,7 @@ public class PropertyValueCollection : CollectionBase
   /// <summary>
   /// Gets an object that can be used to synchronize access to the <see cref="PropertyValueCollection"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override object SyncRoot
   {
     get

@@ -143,7 +143,7 @@ public class PropertyValue
   /// <summary>
   /// Gets the <see cref="PropertyDefinition"/> of the <see cref="PropertyValue"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyDefinition Definition
   {
     get 
@@ -156,7 +156,7 @@ public class PropertyValue
   /// <summary>
   /// Gets the name of the <see cref="PropertyValue"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public string Name
   {
     get 
@@ -169,7 +169,7 @@ public class PropertyValue
   /// <summary>
   /// Gets the <see cref="Type"/> of the <see cref="Value"/> of a <see cref="PropertyValue"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public Type PropertyType
   {
     get 
@@ -182,7 +182,7 @@ public class PropertyValue
   /// <summary>
   /// Gets or sets the value of the <see cref="PropertyValue"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
   public object Value
@@ -212,7 +212,7 @@ public class PropertyValue
   /// <summary>
   /// Gets the original <see cref="Value"/> of the <see cref="PropertyValue"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object OriginalValue
   {
     get 
@@ -225,7 +225,7 @@ public class PropertyValue
   /// <summary>
   /// Indicates whether the <see cref="PropertyValue"/> may contain null as a value.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNullable
   {
     get 
@@ -238,7 +238,7 @@ public class PropertyValue
   /// <summary>
   /// Gets the maximum length of the <see cref="Value"/> of the <see cref="PropertyValue"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public NaInt32 MaxLength 
   {
     get 
@@ -251,7 +251,7 @@ public class PropertyValue
   /// <summary>
   /// Indicates if the <see cref="Value"/> of the <see cref="PropertyValue"/> has changed since instantiation, loading, commit or rollback.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool HasChanged
   {
     get 
@@ -267,7 +267,7 @@ public class PropertyValue
   /// </summary>
   /// <param name="obj">The <see cref="PropertyValue"/> to compare with the current <b>PropertyValue</b>. </param>
   /// <returns><b>true</b> if the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>; otherwise, <b>false</b>.</returns>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <see cref="DomainObject"/> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override bool Equals (object obj)
   {
     CheckDiscarded ();

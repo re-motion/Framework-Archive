@@ -187,7 +187,7 @@ public class DomainObject
   /// <summary>
   /// Gets the <see cref="ObjectID"/> of the <b>DomainObject</b>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public ObjectID ID
   {
     get 
@@ -200,7 +200,7 @@ public class DomainObject
   /// <summary>
   /// Gets the current state of the <b>DomainObject</b>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public StateType State
   {
     get
@@ -221,7 +221,7 @@ public class DomainObject
   /// <summary>
   /// Gets the <see cref="DataContainer"/> of the <b>DomainObject</b>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected internal DataContainer DataContainer
   {
     get 
@@ -234,7 +234,7 @@ public class DomainObject
   /// <summary>
   /// Deletes the <b>DomainObject</b>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected void Delete ()
   {
     CheckDiscarded ();
@@ -254,7 +254,7 @@ public class DomainObject
   /// <returns>The <b>DomainObject</b> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-one or many-to-one relation.</exception>
   protected virtual DomainObject GetRelatedObject (string propertyName)
   {
@@ -271,7 +271,7 @@ public class DomainObject
   /// <returns>The <b>DomainObject</b> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-one or many-to-one relation.</exception>
   protected virtual DomainObject GetOriginalRelatedObject (string propertyName)
@@ -289,7 +289,7 @@ public class DomainObject
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-many relation.</exception>
   protected virtual DomainObjectCollection GetRelatedObjects (string propertyName)
@@ -307,7 +307,7 @@ public class DomainObject
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-many relation.</exception>
   protected virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
@@ -324,7 +324,7 @@ public class DomainObject
   /// <param name="newRelatedObject">The new <b>DomainObject</b> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
