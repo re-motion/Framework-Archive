@@ -5,6 +5,7 @@ using System.Web.UI.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Runtime.Serialization;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -87,6 +88,31 @@ public sealed class IconInfo: ISerializable
     info.AddValue ("_url", _url);
     info.AddValue ("_width", _width.ToString());
     info.AddValue ("_height", _height.ToString());
+  }
+
+  public static bool ShouldSerialize (IconInfo icon)
+  {
+    if (icon == null)
+    {
+      return false;
+    }
+    else if (   StringUtility.IsNullOrEmpty (icon.Url)
+             && icon.Height.IsEmpty
+             && icon.Width.IsEmpty)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+  public void Reset()
+  {
+    _url = string.Empty;
+    _width = Unit.Empty;
+    _height = Unit.Empty;
   }
 }
 
