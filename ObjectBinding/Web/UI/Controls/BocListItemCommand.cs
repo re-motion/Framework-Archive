@@ -110,8 +110,15 @@ public class BocListItemCommand: BocCommand
 
   public BocListItemCommandClickEventHandler Click;
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> Initializes an instance. </summary>
   public BocListItemCommand()
+    : this (CommandType.None)
+  {
+  }
+
+  /// <summary> Initializes an instance. </summary>
+  public BocListItemCommand (CommandType defaultType)
+    : base (defaultType)
   {
   }
 

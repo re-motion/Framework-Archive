@@ -679,7 +679,9 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
-
+    EnsureOptionsMenuItemsGot (true);
+    EnsureListMenuItemsGot (true);
+    
     if (IsDesignMode)
     {
       //  Normally set in OnPreRender, which is omitted during design-time
@@ -909,6 +911,10 @@ public class BocList:
         (MenuItem[]) listMenuItems.ToArray (typeof (MenuItem)), 
         false);
 
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);
     for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
     {
       MenuItem currentItem = groupedListMenuItems[idxItems];
@@ -922,13 +928,19 @@ public class BocList:
 
       if (hasAlwaysLineBreaks || isFirstCategoryItem || (hasNoLineBreaks && isFirstItem))
       {
+        writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         writer.AddAttribute (HtmlTextWriterAttribute.Class, "contentMenuRow");
-        writer.RenderBeginTag (HtmlTextWriterTag.Div);
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
       }
       RenderListMenuItem (writer, currentItem, menuID, listMenuItems.IndexOf (currentItem));
       if (hasAlwaysLineBreaks || isLastCategoryItem || (hasNoLineBreaks && isLastItem))
+      {
         writer.RenderEndTag();
+        writer.RenderEndTag();
+      }
     }
+    writer.RenderEndTag();
 
     string key = typeof (BocList).FullName + "_ListMenuItems";
     if (! Page.IsStartupScriptRegistered (key))
@@ -995,13 +1007,14 @@ public class BocList:
     string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
     string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
     stringBuilder.AppendFormat (
-        "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7})",
+        "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 
         menuItem.Category, 
         menuItem.Text, 
         icon, 
         iconDisabled, 
         (int) menuItem.RequiredSelection,
+        menuItem.IsDisabled ? "true" : "false",
         href,
         target);
   }
@@ -1010,6 +1023,7 @@ public class BocList:
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Id, menuID + "_" + index.ToString());
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderBeginTag (HtmlTextWriterTag.A);
     if (! StringUtility.IsNullOrEmpty (menuItem.Icon))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
@@ -1020,6 +1034,7 @@ public class BocList:
       writer.Write (c_whiteSpace);
     }
     writer.Write (menuItem.Text);
+    writer.RenderEndTag();
     writer.RenderEndTag();
   }
 
@@ -1530,6 +1545,7 @@ public class BocList:
           writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
         }
         writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+        writer.AddStyleAttribute ("vertical-align", "middle");
         writer.RenderBeginTag (HtmlTextWriterTag.Img);
         writer.RenderEndTag();
         writer.Write (c_whiteSpace);
@@ -1887,11 +1903,16 @@ public class BocList:
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  private BocMenuItem[] EnsureOptionsMenuItemsGot(bool forceRefresh)
   {
-    if (_optionsMenuItemsRenderPhase == null)
+    if (_optionsMenuItemsRenderPhase == null || forceRefresh)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
     return _optionsMenuItemsRenderPhase;
+  }
+
+  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  {
+    return EnsureOptionsMenuItemsGot (false);
   }
 
   /// <summary>
@@ -1946,11 +1967,16 @@ public class BocList:
     return _listMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureListMenuItemsGot()
+  private BocMenuItem[] EnsureListMenuItemsGot (bool forceRefresh)
   {
-    if (_listMenuItemsRenderPhase == null)
+    if (_listMenuItemsRenderPhase == null || forceRefresh)
       _listMenuItemsRenderPhase = GetListMenuItems (_listMenuItems.ToArray());
     return _listMenuItemsRenderPhase;
+  }
+
+  private BocMenuItem[] EnsureListMenuItemsGot()
+  {
+    return EnsureListMenuItemsGot (false);
   }
 
   /// <summary>
