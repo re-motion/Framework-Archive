@@ -124,7 +124,7 @@ public class EntryTitle: Control
 	{
 		get { return _padding; }
 		set { _padding = value; }
-	}
+	} 
 	protected override void Render (HtmlTextWriter writer)
 	{
     if (Padding != String.Empty)
@@ -136,8 +136,11 @@ public class EntryTitle: Control
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
     if (this.Title != String.Empty)
     {
-		  writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"" + ColSpan + "\"> "
-			  	+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");
+		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
+          + "<table bgcolor=\"black\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"100%\">"
+			  	+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\">"
+          + "</td></tr></table>"
+          + "</td></tr>");
     }
 
 		writer.WriteLine ("<tr> <td><img height=\"3\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
