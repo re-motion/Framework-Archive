@@ -135,22 +135,6 @@
       The view state object for this form grid.
     </returns>
   </SaveFormGridViewState>
-  <InvokeLoadViewStateRecursive>
-    <param name="target">
-      The object to be restored.
-    </param>
-    <param name="viewState">
-      The view state object used for restoring.
-    </param>
-  </InvokeLoadViewStateRecursive>
-  <InvokeSaveViewStateRecursive>
-    <param name="target">
-      The object to be saved.
-    </param>
-    <returns>
-      The view state object for <paramref name="target"/>.
-    </returns>
-  </InvokeSaveViewStateRecursive>
   <CreateFormGridRows>
     <param name="table">
       The <see cref="FormGrid"/> for which the rows are to be created

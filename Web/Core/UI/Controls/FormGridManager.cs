@@ -1328,7 +1328,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     bool enableViewStateBackup = formGrid.Table.EnableViewState;
     formGrid.Table.EnableViewState = true;
 
-    FormGridManager.InvokeLoadViewStateRecursive (formGrid.Table, savedState);
+    ControlHelper.LoadViewStateRecursive (formGrid.Table, savedState);
 
     formGrid.Table.EnableViewState = enableViewStateBackup;
   }
@@ -1342,7 +1342,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     bool enableViewStateBackup = formGrid.Table.EnableViewState;
     formGrid.Table.EnableViewState = true;
 
-    object viewState = FormGridManager.InvokeSaveViewStateRecursive (formGrid.Table);
+    object viewState = ControlHelper.SaveViewStateRecursive (formGrid.Table);
 
     formGrid.Table.EnableViewState = enableViewStateBackup;
 
@@ -1381,50 +1381,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         cell.First = null;
       }
     }
-
-    return viewState;
-  }
-
-  /// <summary>
-  ///   Encapsulates the invokation of <see cref="Control"/>'s LoadViewStateRecursive method.
-  /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/InvokeLoadViewStateRecursive/*' />
-  private static void InvokeLoadViewStateRecursive (object target, object viewState)
-  {
-    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
-                                    | BindingFlags.Instance 
-                                    | BindingFlags.NonPublic
-                                    | BindingFlags.InvokeMethod;
-
-    //  HACK: FormGridManager: Reflection on internal void Control.LoadViewStateRecursive (object)
-    //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
-    typeof (Control).InvokeMember (
-      "LoadViewStateRecursive",
-      bindingFlags,
-      null,
-      target,
-      new object[] {viewState});
-  }
-
-  /// <summary>
-  ///   Encapsulates the invokation of <see cref="Control"/>'s SaveViewStateRecursive method.
-  /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/InvokeSaveViewStateRecursive/*' />
-  private static object InvokeSaveViewStateRecursive (object target)
-  {
-    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
-                                    | BindingFlags.Instance 
-                                    | BindingFlags.NonPublic
-                                    | BindingFlags.InvokeMethod;
-
-    //  HACK: FormGridManager: Reflection on internal object Control.SaveViewStateRecursive()
-    //  internal object System.Web.UI.Control.LoadViewStateRecursive()
-    object viewState = typeof (Control).InvokeMember (
-        "SaveViewStateRecursive",
-        bindingFlags,
-        null,
-        target,
-        new object[] {});
 
     return viewState;
   }
