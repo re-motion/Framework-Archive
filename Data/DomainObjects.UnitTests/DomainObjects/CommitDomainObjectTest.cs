@@ -120,5 +120,18 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
     customer = Customer.GetObject (DomainObjectIDs.Customer1);
     Assert.AreEqual ("Arthur Dent", customer.Name);
   }
+
+  [Test]
+  public void OriginalDomainObjectCollectionIsSameAfterCommit ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("OrderItems");
+    OrderItem orderItem = new OrderItem (order);
+
+    ClientTransactionMock.Commit ();
+
+    Assert.AreSame (originalOrderItems, order.GetOriginalRelatedObjects ("OrderItems"));
+    Assert.IsTrue (order.GetOriginalRelatedObjects ("OrderItems").IsReadOnly);
+  }
 }
 }
