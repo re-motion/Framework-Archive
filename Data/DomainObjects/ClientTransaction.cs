@@ -75,13 +75,6 @@ public class ClientTransaction : IDisposable
     _dataManager.Rollback ();
   }
 
-  internal protected bool HasRelationChanged (DomainObject domainObject)
-  {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-
-    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
-  }
-
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -91,6 +84,13 @@ public class ClientTransaction : IDisposable
     _dataManager.RegisterNewDataContainer (newDataContainer);
 
     return newDataContainer;
+  }
+
+  internal protected bool HasRelationChanged (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
   }
 
   internal protected DomainObject GetObject (ObjectID id, bool includeDeleted)

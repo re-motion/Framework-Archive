@@ -163,6 +163,18 @@ public class DataContainer
     get { return _timestamp; }
   }
 
+  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
+  {
+    if (PropertyChanging != null)
+      PropertyChanging (this, args);
+  }
+
+  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
+  {
+    if (PropertyChanged != null)
+      PropertyChanged (this, args);
+  }
+
   internal void Delete ()
   {
     // TODO: Check if datacontainer is new => Dispose object in that case.
@@ -206,18 +218,6 @@ public class DataContainer
     }
 
     return StateType.Unchanged;
-  }
-
-  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
-  {
-    if (PropertyChanging != null)
-      PropertyChanging (this, args);
-  }
-
-  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
-  {
-    if (PropertyChanged != null)
-      PropertyChanged (this, args);
   }
 
   private void PropertyValues_PropertyChanging (object sender, PropertyChangingEventArgs args)
