@@ -17,6 +17,13 @@ td.bocListTitleCell
   border-bottom-width: 2px;
   border-left-width: 0px;
   border-color: Black;
+  
+  white-space: nowrap;
+}
+
+td.bocListTitleCell span
+{
+	padding: 2px;
 }
 
 td.bocListTitleCell a
@@ -136,6 +143,12 @@ select.bocListAdditionalColumnsListDropDownList
 /*  Style applied to the BocList's list of additional columns. */
 span.bocListAdditionalColumnsListLabel
 {
+}
+
+/*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
+div.bocListEditDetailsValidationMessage
+{
+	color: Red;
 }
 
 td.contentMenuRow
