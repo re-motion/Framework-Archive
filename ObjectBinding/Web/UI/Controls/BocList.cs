@@ -746,26 +746,28 @@ public class BocList:
 
   private void RenderTableAndMenuInternetExplorer501Compatible (HtmlTextWriter writer)
   {
-    if (HasMenuBlock)
-    {
-      writer.AddStyleAttribute ("display", "inline");
-      writer.AddStyleAttribute ("float", "right");
-      writer.AddStyleAttribute ("vertical-align", "top");
-      string menuBlockWidth = c_defaultMenuBlockWidth;
-      if (! _menuBlockWidth.IsEmpty)
-        menuBlockWidth = _menuBlockWidth.ToString();
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);      
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      RenderMenuBlock (writer);
-      writer.RenderEndTag();
-    }
-    
-    writer.AddStyleAttribute ("display", "inline");
-    writer.AddStyleAttribute ("vertical-align", "top");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    RenderTableBlock (writer);
-    writer.RenderEndTag();
+    RenderTableAndMenuLegacyBrowser (writer);
+    return;
+    //if (HasMenuBlock)
+    //{
+    //  writer.AddStyleAttribute ("display", "inline");
+    //  writer.AddStyleAttribute ("float", "right");
+    //  writer.AddStyleAttribute ("vertical-align", "top");
+    //  string menuBlockWidth = c_defaultMenuBlockWidth;
+    //  if (! _menuBlockWidth.IsEmpty)
+    //    menuBlockWidth = _menuBlockWidth.ToString();
+    //  writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);      
+    //  writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    //  RenderMenuBlock (writer);
+    //  writer.RenderEndTag();
+    //}
+    //
+    //writer.AddStyleAttribute ("display", "inline");
+    //writer.AddStyleAttribute ("vertical-align", "top");
+    //writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    //writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    //RenderTableBlock (writer);
+    //writer.RenderEndTag();
   }
 
   private void RenderTableAndMenuCss21Compatible (HtmlTextWriter writer)
@@ -810,6 +812,7 @@ public class BocList:
   private void RenderTableAndMenuLegacyBrowser (HtmlTextWriter writer)
   {
     //  Render list block / menu block
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
 
     //  Two columns
@@ -1105,9 +1108,8 @@ public class BocList:
   /// </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
-    //  TODO: Browser Switch: Css2.1: 100%, IE 5.01: inherit
     if (! (writer is Html32TextWriter))
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "inherit");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
@@ -1135,30 +1137,17 @@ public class BocList:
 
     if (EnableSelection)
     {
+      //  1% would lead to automatic resizing if all widths don't add up to 100%
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(0).ToString());
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
       writer.RenderEndTag();
     }
 
-    bool isFirstColumnUndefinedWidth = true;
+    //bool isFirstColumnUndefinedWidth = true;
     foreach (BocColumnDefinition column in renderColumns)
     {
       if (! column.Width.IsEmpty)
-      {
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
-      }
-      else 
-      {
-        if (isFirstColumnUndefinedWidth)
-        {
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(1).ToString());
-          isFirstColumnUndefinedWidth = false;
-        }
-        else
-        {
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-        }
-      }
 
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
       writer.RenderEndTag();
@@ -1274,7 +1263,7 @@ public class BocList:
           }
         }
 
-        if (_showSortingOrder && sortingDirection != SortingDirection.None)
+        if (sortingDirection != SortingDirection.None)
         {
           //  WhiteSpace before icon
           writer.Write (c_whiteSpace);
@@ -1286,7 +1275,7 @@ public class BocList:
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
           writer.RenderEndTag();
 
-          if (sortingOrder.Count > 1)
+          if (_showSortingOrder && sortingOrder.Count > 1)
           {
             int orderIndex = sortingOrder.IndexOf (idxColumn);
             writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
