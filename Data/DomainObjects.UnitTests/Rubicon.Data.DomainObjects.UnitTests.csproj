@@ -136,11 +136,19 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithColumnAndCardinalityMany.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithDerivationAndInvalidEntityName.xml"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "mappingWithDuplicateColumnName.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "mappingWithDuplicateColumnNameAndRelationProperty.xml"
                     BuildAction = "Content"
                 />
                 <File
@@ -160,11 +168,19 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithOnlyOneEndPoint.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithPropertyDefinedInBaseAndDerivedClass.xml"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "mappingWithRelationAndIdenticalPropertyNames.xml"
                     BuildAction = "Content"
                 />
                 <File
