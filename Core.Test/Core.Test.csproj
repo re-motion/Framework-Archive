@@ -163,6 +163,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Text\CommandLine\CommandLineClassParserTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Text\CommandLine\CommandLineParserTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
