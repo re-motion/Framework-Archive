@@ -2081,7 +2081,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       //  Query the controls for the string to be used as the labeling Text
 
       Control label = null;
-      string newID = control.UniqueID + c_generatedLabelSuffix;
+      string newID = control.ID + c_generatedLabelSuffix;
       //  SmartLabel knows how the get the contents from ISmartControl
       if (control is ISmartControl)
       {
@@ -2091,6 +2091,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       }
         //  For these controls, the label's text will come from the resource dispatcher  
         //  auto:FormGridManagerUniqueID:TableUniqueID:ControlUniqueID_Label:Text
+        //  auto:ControlUniqueID_Label:Text should also work
       else if (  control is TextBox 
               || control is ListControl
               || control is Table
@@ -2101,7 +2102,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       {
         Label primitiveLabel = new Label();
         if (! (control is DropDownList || control is HtmlSelect))
-          primitiveLabel.AssociatedControlID = control.ClientID;
+          primitiveLabel.AssociatedControlID = control.ID;
         label = primitiveLabel;
       }
       else
