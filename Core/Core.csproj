@@ -244,6 +244,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ObjectBinding\BusinessObjectPropertyPath.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjectBinding\IBusinessObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
