@@ -70,6 +70,12 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("CharProperty", value); }
   }
 
+  public DateTime DateProperty
+  {
+    get { return DataContainer.GetDateTime ("DateProperty"); }
+    set { DataContainer.SetValue ("DateProperty", value); }
+  }
+
   public DateTime DateTimeProperty
   {
     get { return DataContainer.GetDateTime ("DateTimeProperty"); }
@@ -136,6 +142,12 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("NaBooleanProperty", value); }
   }
 
+  public NaDateTime NaDateProperty
+  {
+    get { return DataContainer.GetNaDateTime ("NaDateProperty"); }
+    set { DataContainer.SetValue ("NaDateProperty", value); }
+  }
+
   public NaDateTime NaDateTimeProperty
   {
     get { return DataContainer.GetNaDateTime ("NaDateTimeProperty"); }
@@ -164,6 +176,12 @@ public class ClassWithAllDataTypes : TestDomainBase
   {
     get { return DataContainer.GetNaBoolean ("NaBooleanWithNullValueProperty"); }
     set { DataContainer.SetValue ("NaBooleanWithNullValueProperty", value); }
+  }
+
+  public NaDateTime NaDateWithNullValueProperty
+  {
+    get { return DataContainer.GetNaDateTime ("NaDateWithNullValueProperty"); }
+    set { DataContainer.SetValue ("NaDateWithNullValueProperty", value); }
   }
 
   public NaDateTime NaDateTimeWithNullValueProperty
