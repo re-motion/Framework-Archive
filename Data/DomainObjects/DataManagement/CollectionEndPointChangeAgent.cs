@@ -94,9 +94,7 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-    
-    if (!Enum.IsDefined (typeof (OperationType), operation))
-      throw new ArgumentException (string.Format ("Invalid operation '{0}' provided.", operation), "operation");
+    ArgumentUtility.CheckValidEnumValue (operation, "operation");
 
     _oppositeDomainObjects = oppositeDomainObjects;
     _operation = operation;

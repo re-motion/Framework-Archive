@@ -656,6 +656,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Queries\QueryParameterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Ceo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
