@@ -17,13 +17,24 @@ public class DomainObject
     return GetObject (id, false);
   }
 
-  // TODO: Add overload with clientTransaction parameter
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
-    return ClientTransaction.Current.GetObject (id, includeDeleted);
+    return GetObject (id, ClientTransaction.Current, includeDeleted);
+  }
+
+  protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return GetObject (id, clientTransaction, false);
   }
  
+  protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+    return clientTransaction.GetObject (id, includeDeleted);
+  }
+
   internal static DomainObject Create (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
@@ -46,10 +57,15 @@ public class DomainObject
 
   // construction and disposing
 
-  // TODO: Add overload with clientTransaction parameter
-  protected DomainObject ()
+  protected DomainObject () : this (ClientTransaction.Current)
   {
-    _dataContainer = ClientTransaction.Current.CreateNewDataContainer (this.GetType ());
+  }
+
+  protected DomainObject (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+    _dataContainer = clientTransaction.CreateNewDataContainer (this.GetType ());
     _dataContainer.SetDomainObject (this);
     RegisterDataContainerEvents ();
   }
@@ -145,7 +161,6 @@ public class DomainObject
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
 
-  // TODO: Provide LoadArgs
   protected virtual void OnLoaded ()
   {
   }

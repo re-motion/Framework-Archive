@@ -21,6 +21,10 @@ public class Person : TestDomainBase
   {
   }
 
+  public Person (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Person (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -10,9 +10,19 @@ public class TestDomainBase : DomainObject
 
   // static members and constants
 
+  public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return (TestDomainBase) DomainObject.GetObject (id, clientTransaction);
+  }
+
   public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
   {
     return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
+  }
+
+  public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+  {
+    return (TestDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
   }
 
   // member fields
@@ -20,6 +30,10 @@ public class TestDomainBase : DomainObject
   // construction and disposing
 
   protected TestDomainBase ()
+  {
+  }
+
+  protected TestDomainBase (ClientTransaction clientTransaction) : base (clientTransaction)
   {
   }
 

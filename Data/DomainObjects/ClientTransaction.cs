@@ -7,9 +7,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-// TODO: Make internal GetObject (ObjectID id, bool includeDeleted) public
-//       Add public GetObject (ObjectID id) 
-//       Provide LoadArgs in DomainObject.EndObjectLoading
 public class ClientTransaction
 {
   // types
@@ -43,8 +40,7 @@ public class ClientTransaction
 
   // construction and disposing
 
-  // TODO: Make constructor public
-  protected ClientTransaction ()
+  public ClientTransaction ()
   {
     Initialize ();
   }
@@ -65,6 +61,17 @@ public class ClientTransaction
   public void Rollback ()
   {
     _dataManager.Rollback ();
+  }
+
+  public virtual DomainObject GetObject (ObjectID id)
+  {
+    return GetObject (id, false);
+  }
+
+  public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
   internal DataContainer CreateNewDataContainer (Type type)
@@ -88,12 +95,6 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
     return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
-  }
-
-  internal protected DomainObject GetObject (ObjectID id, bool includeDeleted)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-    return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
   internal protected DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)

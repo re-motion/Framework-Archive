@@ -21,6 +21,10 @@ public class Supplier : Partner
   {
   }
 
+  public Supplier (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Supplier (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -456,5 +456,27 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     
     string serialNumber = computer.SerialNumber;
   }
+
+  [Test]
+  public void GetObjectByNewIndependentTransaction ()
+  {
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    Order order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+
+    Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
+  }
+
+  [Test]
+  public void GetDeletedObjectByNewIndependentTransaction ()
+  {
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    Order order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+
+    order.Delete ();
+
+    order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1, true);
+    Assert.AreEqual (StateType.Deleted, order.State);
+    Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
+  }
 }
 }
