@@ -673,6 +673,7 @@ public interface IBocCustomColumnDefinitionCell
       BocCustomColumnDefinition columnDefiniton, 
       int columnIndex,
       int listIndex);
+      //  string OnClick function;
 
   void OnClick (
       BocList list, 
