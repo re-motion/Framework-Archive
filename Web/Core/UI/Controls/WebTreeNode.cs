@@ -185,11 +185,11 @@ public class WebTreeNode: IControlItem
     }
   }
 
-  /// <summary> Gets or sets the URL for the icon displayed in this tree node. </summary>
+  /// <summary> Gets or sets the icon displayed in this tree node. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
-  [Description ("The URL for the icon displayed in this tree node.")]
+  [Description ("The icon displayed in this tree node.")]
   [NotifyParentProperty (true)]
   public virtual IconInfo Icon
   {
@@ -226,7 +226,7 @@ public class WebTreeNode: IControlItem
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [MergableProperty(false)]
-  [Category ("Nodes")]
+  //  Default category
   [Description ("The child nodes contained in this tree node.")]
   [DefaultValue ((string) null)]
   public virtual WebTreeNodeCollection Children
