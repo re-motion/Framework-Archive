@@ -167,6 +167,7 @@ Global
 		buildall.cmd = buildall.cmd
 		build\buildversion.xml = build\buildversion.xml
 		Commons.build = Commons.build
+		localbuild.cmd = localbuild.cmd
 		build\properties.include.xml = build\properties.include.xml
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
