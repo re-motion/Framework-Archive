@@ -11,7 +11,7 @@ public interface IBusinessObjectClass
   IBusinessObjectProvider BusinessObjectProvider { get; }
 }
 
-public interface IBusinessObjectClassWithIdentity
+public interface IBusinessObjectClassWithIdentity: IBusinessObjectClass
 {
   IBusinessObjectWithIdentity GetObject (string uniqueIdentifier);
 }
