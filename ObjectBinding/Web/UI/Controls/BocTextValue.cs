@@ -42,7 +42,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
 
-  private static readonly object s_eventTextChanged = new object();
+  private static readonly object s_textChangedEvent = new object();
 
   private BocTextValueType _valueType = BocTextValueType.Undefined;
   private BocTextValueType _actualValueType = BocTextValueType.Undefined;
@@ -103,7 +103,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> Empty. </param>
   protected virtual void OnTextChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventTextChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_textChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -231,8 +231,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the selection changes.")]
   public event EventHandler TextChanged
   {
-    add { Events.AddHandler (s_eventTextChanged, value); }
-    remove { Events.RemoveHandler (s_eventTextChanged, value); }
+    add { Events.AddHandler (s_textChangedEvent, value); }
+    remove { Events.RemoveHandler (s_textChangedEvent, value); }
   }
 
   /// <summary>
