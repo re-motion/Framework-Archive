@@ -662,9 +662,14 @@
   </CssClassTable>
   <CssClassTitleCell>
     <remarks>
-      Class: <c>formGridHeaderCell</c>
+      Class: <c>formGridTitleCell</c>
     </remarks>
   </CssClassTitleCell>
+  <CssClassSubTitleCell>
+    <remarks>
+      Class: <c>formGridSubTitleCell</c>
+    </remarks>
+  </CssClassSubTitleCell>
   <CssClassLabelsCell>
     <remarks>
       Class: <c>formGridControlCell</c>
