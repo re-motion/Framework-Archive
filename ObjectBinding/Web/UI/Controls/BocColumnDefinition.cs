@@ -21,28 +21,16 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition: BusinessObjectControlItem
 {
-  private const string c_commandIDSuffix = "_Command";
-
   private string _columnID;
   private string _columnTitle;
   /// <summary> The width of the column. </summary>
   private Unit _width; 
-  /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
-  private SingleControlItemCollection _command;
 
   /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
   {
     _columnTitle = string.Empty;
     _width = Unit.Empty;
-    _command = new SingleControlItemCollection (new BocListItemCommand(), new Type[] {typeof (BocListItemCommand)});
-  }
-
-  protected override void OnOwnerControlChanged()
-  {
-    base.OnOwnerControlChanged();
-    if (Command != null)
-      Command.OwnerControl = OwnerControl;
   }
 
   public override string ToString()
@@ -110,6 +98,31 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
     set { _width = value; }
   }
 
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected virtual string DisplayedTypeName
+  {
+    get { return "ColumnDefinition"; }
+  }
+}
+
+public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
+{
+  /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
+  private SingleControlItemCollection _command;
+
+  /// <summary> Initializes a new instance of the <see cref="BocRenderedColumnDefinition"/> class. </summary>
+  public BocCommandEnabledColumnDefinition()
+  {
+    _command = new SingleControlItemCollection (new BocListItemCommand(), new Type[] {typeof (BocListItemCommand)});
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged();
+    if (Command != null)
+      Command.OwnerControl = OwnerControl;
+  }
+
   /// <summary> Gets or sets the <see cref="BocListItemCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocListItemCommand"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -168,16 +181,10 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
   {
     return ShouldSerializeCommand();
   }
-
-  /// <summary> Gets the human readable name of this type. </summary>
-  protected virtual string DisplayedTypeName
-  {
-    get { return "ColumnDefinition"; }
-  }
 }
 
 /// <summary> A column definition containing no data, only the <see cref="BocListItemCommand"/>. </summary>
-public class BocCommandColumnDefinition: BocColumnDefinition
+public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 {
   /// <summary> The text representing the command on the rendered page. </summary>
   private string _text;
@@ -257,7 +264,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 }
 
 /// <summary> A column definition for displaying data. </summary>
-public abstract class BocValueColumnDefinition: BocColumnDefinition
+public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinition
 {
   /// <summary> Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class. </summary>
   public BocValueColumnDefinition()
@@ -507,6 +514,150 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   {
     get { return "CompoundColumnDefinition"; }
   }
+}
+
+/// <summary> A column definition using <see cref="IBocListCustomCell"/> for rendering. </summary>
+public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
+{
+  /// <summary> The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> internally. </summary>
+  private PropertyPathBinding _propertyPathBinding;
+  private IBocCustomCell _customCell;
+  private string _customCellType;
+  private string _customCellArgument;
+
+  /// <summary> Initializes a new instance of the <see cref="BocSimpleColumnDefinition"/> class. </summary>
+  public BocCustomColumnDefinition()
+  {
+    _propertyPathBinding = new PropertyPathBinding();
+  }
+
+  /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
+  protected override void OnOwnerControlChanged()
+  {
+    _propertyPathBinding.OwnerControl = OwnerControl;
+    base.OnOwnerControlChanged();
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public IBocCustomCell CustomCell
+  {
+    get 
+    {
+      if (_customCell == null)
+      {
+        Type type = TypeUtility.GetType (_customCellType, true, false);
+        object[] argument = null;
+        if (! StringUtility.IsNullOrEmpty (_customCellArgument))
+          argument = new object[] {argument};
+        _customCell = (IBocCustomCell) Activator.CreateInstance (type, argument);
+      }
+      return _customCell; 
+    }
+    set { _customCell = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Format")]
+  [Description ("")]
+  //  No default value
+  [NotifyParentProperty (true)]
+  public string CustomCellType
+  {
+    get { return _customCellType; }
+    set { _customCellType = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Format")]
+  [Description ("")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string CustomCellArgument
+  {
+    get { return _customCellArgument; }
+    set { _customCellArgument = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> used by 
+  ///   to access the value of an <see cref="IBusinessObject"/>. 
+  ///   Must not be <see langword="null"/>.
+  /// </summary>
+  /// <value> A <see cref="BusinessObjectPropertyPath"/>. </value>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public BusinessObjectPropertyPath PropertyPath 
+  { 
+    get { return _propertyPathBinding.PropertyPath; }
+    set { _propertyPathBinding.PropertyPath = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the string representation of the <see cref="PropertyPath"/>. 
+  ///   Must not be <see langword="null"/> or emtpy.
+  /// </summary>
+  /// <value> A <see cref="string"/> representing the <see cref="PropertyPath"/>. </value>
+  [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Data")]
+  [Description ("The string representation of the Property Path. Must not be emtpy.")]
+  //  No default value
+  [NotifyParentProperty (true)]
+  public string PropertyPathIdentifier
+  { 
+    get { return _propertyPathBinding.PropertyPathIdentifier; }
+    set { _propertyPathBinding.PropertyPathIdentifier = value; }
+  }
+
+  /// <summary> Gets the displayed value of the column title. </summary>
+  /// <remarks> 
+  ///   If <see cref="BocColumnDefinition.ColumnTitle"/> is empty or <see langowrd="null"/>, 
+  ///   the <c>DisplayName</c> of the <see cref="IBusinessObjectProperty"/> is returned.
+  /// </remarks>
+  /// <value> A <see cref="string"/> representing this column's title row contents. </value>
+  public override string ColumnTitleDisplayValue
+  {
+    get 
+    {
+      bool isTitleEmpty = StringUtility.IsNullOrEmpty(ColumnTitle);
+
+      if (! isTitleEmpty)
+        return ColumnTitle;
+      else if (PropertyPath != null)
+        return PropertyPath.LastProperty.DisplayName;  
+      else
+        return string.Empty;
+    }
+  }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "CustomColumnDefinition"; }
+  }
+
+  IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
+  {
+    get { return _propertyPathBinding.BusinessObjectClass; }
+  } 
+}
+
+public interface IBocCustomCell
+{
+  void Render (
+      HtmlTextWriter writer, 
+      BocList list,
+      IBusinessObject businessObject, 
+      BocCustomColumnDefinition columnDefiniton, 
+      int columnIndex,
+      int listIndex);
+
+  void OnClick (
+      BocList list, 
+      IBusinessObject businessObject, 
+      BocCustomColumnDefinition columnDefiniton, 
+      string argument);
 }
 
 }
