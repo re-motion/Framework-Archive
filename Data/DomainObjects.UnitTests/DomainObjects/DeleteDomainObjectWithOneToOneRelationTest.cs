@@ -107,14 +107,13 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
 
   }
 
-// TODO: Reactivate code below
-//  [Test]
-//  public void Relations ()
-//  {
-//    _orderTicket.Delete ();
-//
-//    Assert.IsNull (_orderTicket.Order);
-//    Assert.IsNull (_order.OrderTicket);
-//  }
+  [Test]
+  public void Relations ()
+  {
+    _orderTicket.Delete ();
+
+    Assert.IsNull (_orderTicket.Order);
+    Assert.IsNull (_order.OrderTicket);
+  }
 }
 }
