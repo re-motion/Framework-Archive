@@ -68,5 +68,17 @@ public class ClassWithGuidKey : TestDomainBase
       SetRelatedObject ("ClassWithInvalidRelation", value); 
     }
   }
+
+  public ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance
+  {
+    get
+    {
+      return (ClassWithRelatedClassIDColumnAndNoInheritance) GetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance");
+    }
+    set 
+    { 
+      SetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance", value); 
+    }
+  }
 }
 }
