@@ -91,22 +91,6 @@ public class ObjectID : ISerializable
     return new ObjectID (parts[0], value);
   }
 
-  /// <summary>
-  /// Determines whether a type can be used as an ID value.
-  /// </summary>
-  /// <param name="valueType">The <see cref="Type"/> which should be used as an ID value.</param>
-  /// <returns>
-  ///   <b>true</b> if <i>valueType</i> can be used as an ID value; otherwise, <b>false</b>.
-  /// </returns>
-  public static bool IsValidType (Type valueType)
-  {
-    ArgumentUtility.CheckNotNull ("valueType", valueType);
-
-    return (valueType == typeof (Guid)
-        || valueType == typeof (int)
-        || valueType == typeof (string));
-  }
-
   private static object GetValue (string typeName, string value)
   {
     Type type = Type.GetType (typeName);
@@ -139,6 +123,7 @@ public class ObjectID : ISerializable
 
   // construction and disposing
 
+
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
@@ -157,7 +142,199 @@ public class ObjectID : ISerializable
   ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <i>classID</i> could not be found in the mapping configuration.
-  public ObjectID (string classID, object value)
+  public ObjectID (string classID, int value) : this (classID, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
+  /// </summary>
+  /// <param name="classID">The ID of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classID</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>classID</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classID</i> could not be found in the mapping configuration.
+  public ObjectID (string classID, string value) : this (classID, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
+  /// </summary>
+  /// <param name="classID">The ID of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classID</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>classID</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classID</i> could not be found in the mapping configuration.
+  public ObjectID (string classID, Guid value) : this (classID, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+  /// </summary>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classType</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classType</i> could not be found in the mapping configuration.
+  public ObjectID (Type classType, int value) : this (classType, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+  /// </summary>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classType</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classType</i> could not be found in the mapping configuration.
+  public ObjectID (Type classType, string value) : this (classType, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+  /// </summary>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classType</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classType</i> could not be found in the mapping configuration.
+  public ObjectID (Type classType, Guid value) : this (classType, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+  /// </summary>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classDefinition</i> could not be found in the mapping configuration.
+  public ObjectID (ClassDefinition classDefinition, int value) : this (classDefinition, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+  /// </summary>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classDefinition</i> could not be found in the mapping configuration.
+  public ObjectID (ClassDefinition classDefinition, string value) : this (classDefinition, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+  /// </summary>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classDefinition</i> could not be found in the mapping configuration.
+  public ObjectID (ClassDefinition classDefinition, Guid value) : this (classDefinition, (object) value)
+  {
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
+  /// </summary>
+  /// <param name="classID">The ID of the class of the object.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <exception cref="System.ArgumentNullException">
+  ///   <i>classID</i> is a null reference.<br /> -or- <br />
+  ///   <i>value</i> is a null reference.
+  /// </exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  ///   <i>classID</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty string.<br /> -or- <br />
+  ///   <i>value</i> is an empty Guid.
+  /// </exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
+  /// </exception>
+  /// <exception cref="Mapping.MappingException"/>The specified <i>classID</i> could not be found in the mapping configuration.
+  protected ObjectID (string classID, object value)
   {
     Initialize (classID, value);
   }
@@ -179,7 +356,7 @@ public class ObjectID : ISerializable
   ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <i>classType</i> could not be found in the mapping configuration.
-  public ObjectID (Type classType, object value)
+  protected ObjectID (Type classType, object value)
   {
     ArgumentUtility.CheckNotNull ("classType", classType);
 
@@ -204,12 +381,29 @@ public class ObjectID : ISerializable
   ///   <i>value</i> has an unsupported type or is a string and contains invalid characters.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <i>classDefinition</i> could not be found in the mapping configuration.
-  public ObjectID (ClassDefinition classDefinition, object value)
+  protected ObjectID (ClassDefinition classDefinition, object value)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    // TODO: check if classType and classID refer to same object
-    MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinition.ClassType);
+    ClassDefinition classDefinitionByClassType = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinition.ClassType);
+    ClassDefinition classDefinitionByClassID = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinition.ID);
+
+    if (!object.ReferenceEquals (classDefinitionByClassID, classDefinitionByClassType))
+    {
+      throw CreateArgumentException (
+          "classDefinition",
+          "The ClassID '{0}' and the ClassType '{1}' do not refer to the same ClassDefinition in the mapping configuration.",
+          classDefinition.ID, 
+          classDefinition.ClassType);
+    }
+
+    if (!object.ReferenceEquals (classDefinitionByClassID, classDefinition))
+    {
+      throw CreateArgumentException (
+          "classDefinition",
+          "The provided ClassDefinition '{0}' is not the same reference as the ClassDefinition found in the mapping configuration.",
+          classDefinition.ID);
+    }
 
     Initialize (classDefinition.ID, value);
   }
@@ -267,6 +461,14 @@ public class ObjectID : ISerializable
   }
 
   /// <summary>
+  /// Gets the <see cref="Mapping.ClassDefinition"/> associated with this <b>ObjectID</b>.
+  /// </summary>
+  public ClassDefinition ClassDefinition 
+  {
+    get { return _classDefinition; }
+  }
+
+  /// <summary>
   /// Returns the string representation of the current <see cref="ObjectID"/>.
   /// </summary>
   /// <returns>A <see cref="String"/> that represents the current <see cref="ObjectID"/>.</returns>
@@ -309,13 +511,6 @@ public class ObjectID : ISerializable
   {
     Type valueType = value.GetType ();
 
-    if (!IsValidType (valueType))
-    {
-      throw new ArgumentException (string.Format (
-          "Type '{0}' is not supported.", valueType.FullName), 
-          argumentName);
-    }
-
     if (valueType == typeof (string) && ((string) value).IndexOf (c_escapedDelimiterPlaceholder) >= 0)
     {
       throw new ArgumentException (string.Format (
@@ -342,6 +537,11 @@ public class ObjectID : ISerializable
       value = value.Replace (c_delimiter.ToString (), c_escapedDelimiter);
 
     return value;
+  }
+
+  private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), argumentName);
   }
 
   #region ISerializable Members
