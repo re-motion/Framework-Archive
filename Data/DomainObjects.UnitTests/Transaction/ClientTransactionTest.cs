@@ -356,29 +356,6 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void CommittedEvent ()
-  {
-    Order order = Order.GetObject (DomainObjectIDs.Order1);
-    OrderTicket oldOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
-    Order oldOrderOfNewOrderTicket = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
-
-    oldOrderTicket.Order = newOrderTicket.Order;
-    order.OrderTicket = newOrderTicket;
-
-    ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
-    ClientTransaction.Current.Commit ();    
-
-    Assert.IsNotNull (eventReceiver.CommittedDomainObjects);
-    Assert.IsTrue (eventReceiver.CommittedDomainObjects.IsReadOnly);
-    Assert.AreEqual (4, eventReceiver.CommittedDomainObjects.Count);
-    Assert.IsNotNull (eventReceiver.CommittedDomainObjects[order.ID]);
-    Assert.IsNotNull (eventReceiver.CommittedDomainObjects[oldOrderTicket.ID]);
-    Assert.IsNotNull (eventReceiver.CommittedDomainObjects[newOrderTicket.ID]);
-    Assert.IsNotNull (eventReceiver.CommittedDomainObjects[oldOrderOfNewOrderTicket.ID]);
-  }
-
-  [Test]
   public void CommitTwice ()
   {
     Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -457,5 +434,16 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsTrue (customer.GetOriginalRelatedObjects("Orders").IsReadOnly);
     Assert.IsTrue (customer.Orders.IsReadOnly);
   }
+
+// TODO: Reactivate test below
+//  [Test]
+//  public void CommitDeletedObject ()
+//  {
+//    Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+//    computer.Delete ();
+//    ClientTransaction.Current.Commit ();
+//    
+//    Assert.IsNull (Computer.GetObject (DomainObjectIDs.Computer1));
+//  }
 }
 }

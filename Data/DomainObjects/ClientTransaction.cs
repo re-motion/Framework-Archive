@@ -38,7 +38,6 @@ public class ClientTransaction
   // member fields
 
   public event LoadedEventHandler Loaded;
-  public event CommittedEventHandler Committed;
   
   private DataManager _dataManager;
 
@@ -62,7 +61,6 @@ public class ClientTransaction
 
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     _dataManager.Commit ();
-    OnCommitted (new CommittedEventArgs (new DomainObjectCollection (changedDomainObjects, true)));
   }
 
   public void Rollback ()
@@ -222,15 +220,6 @@ public class ClientTransaction
 
     if (Loaded != null)
       Loaded (this, args);
-  }
-
-  protected virtual void OnCommitted (CommittedEventArgs args)
-  {
-    foreach (DomainObject domainObject in args.CommittedDomainObjects)
-      domainObject.EndCommit ();
-
-    if (Committed != null)
-      Committed (this, args);
   }
 
   protected DataManager DataManager

@@ -72,8 +72,15 @@ public class DataContainerMap : IEnumerable
 
   public void Commit ()
   {
-    foreach (DataContainer dataContainer in _dataContainers)
+    for (int i = _dataContainers.Count - 1; i >= 0; i--)
+    {
+      DataContainer dataContainer = _dataContainers[i];
+      
+      if (dataContainer.State == StateType.Deleted)
+        _dataContainers.Remove (i);
+
       dataContainer.Commit ();
+    }
   }
 
   public void Rollback ()

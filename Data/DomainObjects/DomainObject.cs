@@ -42,8 +42,6 @@ public class DomainObject
   public event DeletingEventHandler Deleting;
   public event EventHandler Deleted;
 
-  public event EventHandler Committed;
-
   private DataContainer _dataContainer;
 
   // construction and disposing
@@ -188,12 +186,6 @@ public class DomainObject
       Deleted (this, args);
   }
 
-  protected virtual void OnCommitted (EventArgs args)
-  {
-    if (Committed != null)
-      Committed (this, args);
-  }
-
   internal bool BeginRelationChange (
     string propertyName,
     DomainObject oldRelatedObject,
@@ -209,11 +201,6 @@ public class DomainObject
   internal void EndObjectLoading ()
   {
     OnLoaded ();
-  }
-
-  internal void EndCommit ()
-  {
-    OnCommitted (new EventArgs ());
   }
 
   internal void EndRelationChange (string propertyName)

@@ -233,11 +233,7 @@ public class DataContainer
   internal void Delete ()
   {
     if (_state == DataContainerStateType.New)
-    {
-      _propertyValues.Discard ();
-      _clientTransaction = null;
-      _isDiscarded = true;
-    }
+      Discard ();
 
     _state = DataContainerStateType.Deleted;
   }
@@ -251,10 +247,17 @@ public class DataContainer
 
   internal void Commit ()
   {
-    foreach (PropertyValue propertyValue in _propertyValues)
-      propertyValue.Commit ();
+    if (_state == DataContainerStateType.Deleted)
+    {
+      Discard ();
+    }
+    else
+    {
+      foreach (PropertyValue propertyValue in _propertyValues)
+        propertyValue.Commit ();
 
-    _state = DataContainerStateType.Existing;
+      _state = DataContainerStateType.Existing;
+    }
   }
 
   internal void Rollback ()
@@ -297,6 +300,13 @@ public class DataContainer
   private void PropertyValues_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     OnPropertyChanged (args);
+  }
+
+  private void Discard ()
+  {
+    _propertyValues.Discard ();
+    _clientTransaction = null;
+    _isDiscarded = true;
   }
 
   private void CheckDiscarded ()
