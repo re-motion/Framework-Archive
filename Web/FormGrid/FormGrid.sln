@@ -10,7 +10,7 @@ Global
 		CanCheckoutShared = false
 		SolutionUniqueID = {8EDFEBB2-0421-47F7-9790-CE7B47484E86}
 		SccProjectUniqueName1 = http://localhost/FormGrid/Sample/Sample.csproj
-		SccProjectName1 = \u0022$/libraries/Commons/Web.UI/Sample\u0022,\u0020HEUAAAAA
+		SccProjectName1 = \u0022$/libraries/Commons/Web.UI/FormGrid/Sample\u0022,\u0020HEUAAAAA
 		SccLocalPath1 = Sample
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice1 = 2
