@@ -421,6 +421,34 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void CompareWithIgnoreFalse ()
+  {
+    DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
+    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+
+    DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
+    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+
+    Assert.IsFalse (DomainObjectCollection.Compare (collection1, collection2, false));
+  }
+
+  [Test]
+  public void CompareWithIgnoreTrue ()
+  {
+    DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
+    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+
+    DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
+    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+
+    Assert.IsTrue (DomainObjectCollection.Compare (collection1, collection2, true));
+  }
+
+  [Test]
   public void RemoveObjectNotInCollectionWithEvents ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
