@@ -44,7 +44,7 @@ public class PageUtility
   {
     page.RegisterStartupScript (
         scriptKey, 
-        "<script language='javascript'>"
+        "<script language='javascript' type='text/javascript'>"
           + "\n window.open ('" + reportUrl + "', "
           + " '_blank', 'resizable=yes, location=no, menubar=no, status=no, toolbar=no, scrollbars=yes');"
           + "</script>");
