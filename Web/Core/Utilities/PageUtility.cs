@@ -102,7 +102,7 @@ public class PageUtility
   /// </summary>
   public static string GetPageUrl (Page page)
   {
-    return GetPageUrl (page, "");
+    return GetPageUrl (page, string.Empty);
   }
 
   /// <summary>
