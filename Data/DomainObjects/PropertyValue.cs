@@ -129,6 +129,7 @@ public class PropertyValue
     set
     {
       CheckDiscarded ();
+      CheckForRelationProperty ();
 
       if (AreValuesDifferent (_value, value))
       {
@@ -322,6 +323,12 @@ public class PropertyValue
   {
     if (_isDiscarded)
       throw new ObjectDiscardedException ();
+  }
+
+  private void CheckForRelationProperty ()
+  {
+    if (_definition.PropertyType == typeof (ObjectID))
+      throw new InvalidOperationException (string.Format ("The relation property '{0}' cannot be set directly.", _definition.PropertyName));
   }
 }
 }
