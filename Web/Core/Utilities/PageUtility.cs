@@ -7,7 +7,7 @@ using System.Configuration;
 
 using System.Diagnostics;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 /// <summary>
 /// Utility class for pages.
