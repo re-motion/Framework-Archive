@@ -28,6 +28,7 @@ public class TestForm : Page
 {
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView1;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	private void Page_Load(object sender, System.EventArgs e)
