@@ -60,7 +60,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
 	public BocTextValue()
 	{
-    _textBox = new BocTextValueTextBox(this);
+    _textBox = new TextBox();
     _label = new Label ();
 	}
 
@@ -76,30 +76,22 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _label.EnableViewState = false;
     Controls.Add (_label);
 
-    if (! IsDesignMode)
-    {
-      string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
-      if (newValue != null)
-        _newText = newValue;
-    }
-
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
+    _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
 
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
 
-    if (_newText != null && _newText != _text)
-      _isDirty = true;
-  }
-
-  internal void HandleTextChange()
-  {
-    if (_newText != null && _newText != _text)
+    if (! IsDesignMode)
     {
-      Text = _newText;
-      OnTextChanged (EventArgs.Empty);
+      string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
+      if (newValue != null)
+        _newText = newValue;
+
+      if (_newText != null && _newText != _text)
+        _isDirty = true;
     }
   }
 
@@ -214,6 +206,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
+      _textBox.Text = _text;
       //  Provide a default width
       _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
@@ -223,6 +216,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
     }
+  }
+
+  private void TextBox_TextChanged (object sender, EventArgs e)
+  {
+    Text = _newText;
+    OnTextChanged (EventArgs.Empty);
   }
 
   /// <summary> This event is fired when the text is changed between postbacks. </summary>
@@ -469,39 +468,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   public Label Label
   {
     get { return _label; }
-  }
-}
-
-/// <summary>
-///   A special version of TextBox that allows the containing BocTextValue control to correctly 
-///   dispatch changed events in the correct phase of the control lifecycle.
-/// </summary>
-internal class BocTextValueTextBox: TextBox, IPostBackDataHandler
-{
-  private BocTextValue _parent;
-  public BocTextValueTextBox (BocTextValue parent)
-  {
-    _parent = parent;
-  }
-
-  // IPostBackDataHandler Members
-
-  public void RaisePostDataChangedEvent()
-  {
-    // let parent control decide what to
-    _parent.HandleTextChange();    
-  }
-
-  public bool LoadPostData (string postDataKey, NameValueCollection postCollection)
-  {
-    // always call RaisePostDataChangedEvent 
-    return true;
-  }
-
-  public override string Text
-  {
-    get { return _parent.Text; }
-    set { _parent.Text = value; }
   }
 }
 
