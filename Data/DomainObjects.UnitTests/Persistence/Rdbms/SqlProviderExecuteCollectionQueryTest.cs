@@ -51,7 +51,8 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
     query.Parameters.Add ("@date", new DateTime (2005, 1 ,1));
     query.Parameters.Add ("@dateTime", new DateTime (2005, 1, 1, 17, 0, 0));
     query.Parameters.Add ("@decimal", (decimal) 123456.789);
-    query.Parameters.Add ("@double", 987654.321D);
+    query.Parameters.Add ("@doubleLowerBound", 987654D);
+    query.Parameters.Add ("@doubleUpperBound", 987655D);
     query.Parameters.Add ("@enum", ClassWithAllDataTypes.EnumType.Value1);
     query.Parameters.Add ("@guid", new Guid ("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"));
     query.Parameters.Add ("@int16", (short) 32767);
@@ -66,7 +67,8 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
     query.Parameters.Add ("@naDate", new NaDateTime (new DateTime (2005, 2, 1)));
     query.Parameters.Add ("@naDateTime", new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)));
     query.Parameters.Add ("@naDecimal", new NaDecimal (new decimal (765.098)));
-    query.Parameters.Add ("@naDouble", new NaDouble (654321.789));
+    query.Parameters.Add ("@naDoubleLowerBound", new NaDouble (654321D));
+    query.Parameters.Add ("@naDoubleUpperBound", new NaDouble (654322D));
     query.Parameters.Add ("@naGuid", new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
     query.Parameters.Add ("@naInt16", new NaInt16 (12000));
     query.Parameters.Add ("@naInt32", new NaInt32 (-2147483647));
