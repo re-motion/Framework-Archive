@@ -140,12 +140,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
     string returnScript;
+    string pageToken = null;
     if (UsesEventTarget)
     {
       string eventtarget = _page.GetPostBackCollection()["__EVENTTARGET"];
       string eventargument = _page.GetPostBackCollection()["__EVENTARGUMENT"];
       returnScript = string.Format (
-            "if (window.opener && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
+            "if (window.opener && window.opener.__doPostBack && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
           + "  window.opener.__doPostBack(\"{1}\", \"{2}\"); \n"
           + "window.close();", 
           pageToken,
@@ -155,7 +156,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     else
     {
       returnScript = string.Format (
-          "window.opener.wxeDoSubmit(\"{0}\", \"{1}\"); window.close();", 
+            "if (window.opener && window.opener.wxeDoSubmit && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
+          + "  window.opener.wxeDoSubmit(\"{1}\", \"{2}\"); \n"
+          + "window.close();", 
+          pageToken,
           sender.ClientID, 
           windowState.WindowToken);
     }
