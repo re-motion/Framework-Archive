@@ -100,8 +100,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private bool _enableIcon = true;
 
   /// <summary> 
-  ///   The <see cref="string"/> with the search expression for populating the 
-  ///   <see cref="DropDownList"/>.
+  ///   The <see cref="string"/> with the search expression for populating the <see cref="DropDownList"/>.
   /// </summary>
   private string _select = String.Empty;
 
@@ -139,7 +138,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     _icon.ID = ID + "_Boc_Icon";
     _icon.EnableViewState = false;
-    _icon.Visible = EnableIcon;
     Controls.Add (_icon);
 
     _dropDownList.ID = ID + "_Boc_DropDownList";
@@ -276,8 +274,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     base.LoadViewState (values[0]);
     if (values[1] != null)    
       InternalValue = (string) values[1];  
-    _label.Text = (string) values[2];
-    _isDirty = (bool) values[3];
+    _isDirty = (bool) values[2];
   }
 
   /// <summary>
@@ -288,12 +285,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[4];
+    object[] values = new object[3];
 
     values[0] = base.SaveViewState();
     values[1] = InternalValue;
-    values[2] = _label.Text;
-    values[3] = _isDirty;
+    values[2] = _isDirty;
 
     return values;
   }
@@ -412,8 +408,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Populates the <see cref="DropDownList"/> with the items passes in 
-  ///   <paramref name="businessObjects"/> before calling <see cref="InternalLoadValue"/>.
+  ///   Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>.
   /// </summary>
   /// <remarks>
   ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
@@ -448,8 +443,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         }
       }
     }
-
-    InternalLoadValue();
   }
 
   /// <summary>
@@ -469,49 +462,120 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </remarks>
   protected override void PreRenderChildControls()
   {
-    bool isReadOnly = IsReadOnly;
+    PreRenderIcon();
 
-    _dropDownList.Visible = ! isReadOnly;
-    _label.Visible = isReadOnly;
-  
     if (HasOptionsMenu)
+      PreRenderOptionsMenu();
+
+    if (IsReadOnly)
+      PreRenderReadOnlyValue();
+    else
+      PreRenderEditModeValue();
+  }
+
+  private void PreRenderReadOnlyValue()
+  {
+    if (Value != null)
+      _label.Text = Value.DisplayName;
+    else
+      _label.Text = String.Empty;
+
+    _label.Width = Unit.Percentage (100);
+    _label.Height = Height;
+    _label.ApplyStyle (_commonStyle);
+    _label.ApplyStyle (_labelStyle);
+
+    if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
     {
-      _optionsMenu.MenuItems.Clear();
-      _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
-      if (StringUtility.IsNullOrEmpty (_optionsTitle))
-        _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
-      else
-        _optionsMenu.TitleText = _optionsTitle;
+      _label.Text = c_designModeEmptyLabelContents;
+      //  Too long, can't resize in designer to less than the content's width
+      //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+    }
+  }
+
+  private void PreRenderEditModeValue()
+  {
+    bool isNullItem = InternalValue == null;
+
+    //  Check if null item is to be selected
+    if (isNullItem)
+    {
+      //  No null item in the list
+      if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
+        _dropDownList.Items.Insert (0, CreateNullItem());
+      _dropDownList.SelectedValue = c_nullIdentifier;
+    }
+    else
+    {
+      if (_dropDownList.Items.FindByValue (InternalValue) != null)
+      {
+        _dropDownList.SelectedValue = InternalValue;
+      }
+        //  Item not yet in the list but is a valid item.
+      else if (Value != null)
+      {
+        IBusinessObjectWithIdentity businessObject = Value;
+
+        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+        _dropDownList.Items.Add (item);
+
+        _dropDownList.SelectedValue = InternalValue;
+      }
     }
 
-    if (isReadOnly)
+    _dropDownList.ApplyStyle (_commonStyle);
+    _dropDownList.Width = Unit.Percentage (100);
+    _dropDownList.Height = Height;
+    _dropDownListStyle.ApplyStyle (_dropDownList);
+  }
+
+  private void PreRenderIcon()
+  {
+    //  Get icon
+    if (_enableIcon && Property != null)
     {
-      _label.Style["vertical-align"] = "middle";
-      _icon.Style["vertical-align"] = "middle";
+      IBusinessObjectService service
+        = Property.ReferenceClass.BusinessObjectProvider.GetService(
+          typeof (IBusinessObjectWebUIService));
 
-      _label.Width = Unit.Percentage (100);
-      _label.Height = Height;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
+      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
 
-      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      IconInfo iconInfo = null;
+      if (webUIService != null)
       {
-        _label.Text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        if (Value != null)
+          iconInfo = webUIService.GetIcon (Value);
+        else
+          iconInfo = webUIService.GetNullValueIcon ();
+      }
+
+      if (iconInfo != null)
+      {
+        _icon.ImageUrl = iconInfo.Url;
+        _icon.Width = iconInfo.Width;
+        _icon.Height = iconInfo.Height;
+
+        _icon.Visible = _enableIcon;
+      }
+      else
+      {
+        _icon.Visible = false;
       }
     }
     else
     {
-      _dropDownList.Style["vertical-align"] = "bottom";
-      _icon.Style["vertical-align"] = "middle";
-
-      _dropDownList.ApplyStyle (_commonStyle);
-      _dropDownList.Width = Unit.Percentage (100);
-      _dropDownList.Height = Height;
-      _dropDownListStyle.ApplyStyle (_dropDownList);
-
+      _icon.Visible = false;
     }
+  }
+
+  private void PreRenderOptionsMenu()
+  {
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
+    if (StringUtility.IsNullOrEmpty (_optionsTitle))
+      _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+    else
+      _optionsMenu.TitleText = _optionsTitle;
   }
 
   protected override void RenderChildren(HtmlTextWriter writer)
@@ -572,105 +636,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
   }
 
-  /// <summary> Refreshes the sub-controls for the new value. </summary>
-  private void InternalLoadValue()
-  {
-    InternalLoadValue (false);
-  }
-
-  /// <overloads>Overloaded.</overloads>
-  /// <summary> Refreshes the sub-controls for the new value. </summary>
-  /// <param name="removeNullItem">
-  ///   <see langword="true"/> to remove the item specifying a null reference.
-  ///   Used for required values once they are set to an item different from the null item.
-  /// </param>
-  private void InternalLoadValue (bool removeNullItem)
-  {
-    //  Set the display value
-    if (IsReadOnly)
-    {
-      if (Value != null)
-        _label.Text = Value.DisplayName;
-      else
-        _label.Text = String.Empty;
-    }
-    else // Not Read-Only
-    {
-      bool isNullItem = InternalValue == null;
-
-      //  Prevent unnecessary removal
-      if (removeNullItem && ! isNullItem)
-      {
-        ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
-        _dropDownList.Items.Remove (itemToRemove);
-      }
-
-      //  Check if null item is to be selected
-      if (isNullItem)
-      {
-        //  No null item in the list
-        if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
-        {
-          _dropDownList.Items.Insert (0, CreateNullItem());
-        }
-
-        _dropDownList.SelectedValue = c_nullIdentifier;
-      }
-      else
-      {
-        if (_dropDownList.Items.FindByValue (InternalValue) != null)
-        {
-          _dropDownList.SelectedValue = InternalValue;
-        }
-          //  Item not yet in the list but is a valid item.
-        else if (Value != null)
-        {
-          IBusinessObjectWithIdentity businessObject = Value;
-
-          ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
-          _dropDownList.Items.Add (item);
-
-          _dropDownList.SelectedValue = InternalValue;
-        }
-      }
-    }
-
-    //  Get icon
-    if (Property != null)
-    {
-      IBusinessObjectService service
-        = Property.ReferenceClass.BusinessObjectProvider.GetService(
-          typeof (IBusinessObjectWebUIService));
-
-      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
-
-      IconInfo iconInfo = null;
-      if (webUIService != null)
-      {
-        if (Value != null)
-          iconInfo = webUIService.GetIcon (Value);
-        else
-          iconInfo = webUIService.GetNullValueIcon ();
-      }
-
-      if (iconInfo != null)
-      {
-        _icon.ImageUrl = iconInfo.Url;
-        _icon.Width = iconInfo.Width;
-        _icon.Height = iconInfo.Height;
-
-        _icon.Visible = EnableIcon;
-      }
-      else
-      {
-        _icon.Visible = false;
-      }
-    }
-    else
-    {
-      _icon.Visible = false;
-    }
-  }
 
   /// <summary>
   ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
@@ -692,7 +657,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
-    InternalLoadValue();
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -892,7 +856,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
                             && isOldInternalValueNull
                             && _internalValue != null;
       
-      InternalLoadValue (removeNullItem);
+      if (removeNullItem)
+      {
+        ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
+        _dropDownList.Items.Remove (itemToRemove);
+      }
     }
   }
 
@@ -1016,13 +984,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   public bool EnableIcon
   {
     get { return _enableIcon; }
-    set
-    {
-      if (_icon != null)
-        _icon.Visible = _enableIcon;
-    
-      _enableIcon = value; 
-    }
+    set { _enableIcon = value; }
   }
 
   /// <summary> The search expression used to populate the selection list in edit mode. </summary>

@@ -1,3 +1,9 @@
+1.1.46.0
+========
+- BocReferenceValue
+  * Read-Only Mode: Der Text wurde nicht angezeigt wenn IsReadOnly abwechselnd true und false gesetzt wurde,
+    während gleichzeitig Value zwischen einem gültigen Wert und null gewechselt hat.
+  
 1.1.44.0
 ========
 
