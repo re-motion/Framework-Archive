@@ -12,7 +12,7 @@ public class DataManager
 
   // member fields
 
-  private DataContainerCollection _dataContainerMap;
+  private DataContainerMap _dataContainerMap;
   private RelationEndPointMap _relationEndPointMap;
 
   // construction and disposing
@@ -21,7 +21,7 @@ public class DataManager
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    _dataContainerMap = new DataContainerCollection ();
+    _dataContainerMap = new DataContainerMap (clientTransaction);
     _relationEndPointMap = new RelationEndPointMap (clientTransaction);
   }
 
@@ -96,67 +96,43 @@ public class DataManager
     }
   }
 
-  public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
-
-    return dataContainers.Combine (_dataContainerMap);
-  }
-
-  public DataContainerCollection GetNotExisting (DataContainerCollection dataContainers)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
-
-    return dataContainers.GetDifference (_dataContainerMap);
-  }
-
-  public void Register (DataContainerCollection dataContainers)
+  public void RegisterExistingDataContainers (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     foreach (DataContainer dataContainer in dataContainers)
-      Register (dataContainer); 
+      RegisterExistingDataContainer (dataContainer); 
+  }
+
+  public void RegisterExistingDataContainer (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    _dataContainerMap.Register (dataContainer);
+    _relationEndPointMap.RegisterExistingDataContainer (dataContainer);
   }
 
   public void RegisterNewDataContainer (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    Register (dataContainer);
+    _dataContainerMap.Register (dataContainer);
     _relationEndPointMap.RegisterNewDataContainer (dataContainer);
-  }
-
-  public void Register (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    _dataContainerMap.Add (dataContainer);
-    _relationEndPointMap.Register (dataContainer);
   }
 
   public void Commit ()
   {
     _relationEndPointMap.Commit ();
-
-    foreach (DomainObject domainObject in GetChangedDomainObjects ())
-      domainObject.DataContainer.Commit ();
+    _dataContainerMap.Commit ();
   }
 
   public void Rollback ()
   {
-    _relationEndPointMap.Rollback (GetNewDomainObjects ());
-
-    foreach (DomainObject domainObject in GetChangedDomainObjects ())
-    {
-      domainObject.DataContainer.Rollback ();
-
-      if (domainObject.State == StateType.New)
-        _dataContainerMap.Remove (domainObject.ID);
-    }
+    _relationEndPointMap.Rollback (_dataContainerMap.GetNewDomainObjects ());
+    _dataContainerMap.Rollback ();
   }
 
-
-  public DataContainerCollection DataContainerMap
+  public DataContainerMap DataContainerMap
   {
     get { return _dataContainerMap; }
   }
@@ -178,18 +154,6 @@ public class DataManager
   {
     domainObject.EndDelete ();
     allAffectedRelationEndPoints.EndDelete (domainObject);
-  }
-
-  private DomainObjectCollection GetNewDomainObjects ()
-  {
-    DomainObjectCollection newDomainObjects = new DomainObjectCollection ();
-    foreach (DataContainer dataContainer in _dataContainerMap)
-    {
-      if (dataContainer.State == StateType.New)
-        newDomainObjects.Add (dataContainer.DomainObject);
-    }
-
-    return newDomainObjects;
   }
 }
 }
