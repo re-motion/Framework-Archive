@@ -1,0 +1,2 @@
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="UserControl1.ascx.cs" Inherits="Rubicon.PageTransition.UserControl1" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<DIV style="WIDTH: 464px; POSITION: relative; HEIGHT: 128px" ms_positioning="GridLayout"><INPUT style="Z-INDEX: 101; LEFT: 24px; POSITION: absolute; TOP: 72px" type="button" value="Button"><INPUT style="Z-INDEX: 102; LEFT: 32px; POSITION: absolute; TOP: 24px" type="text"><INPUT style="Z-INDEX: 103; LEFT: 104px; POSITION: absolute; TOP: 72px" type="button" value="Button"></DIV>
