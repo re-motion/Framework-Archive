@@ -337,15 +337,15 @@ public class BocItemCommand
 
       throw new NotImplementedException ("WxeFunctionParameterDeclaration parsing logic not completed.");
 
-      WxeParameterDeclaration[] parameterDeclarations = null;
-      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
-          parameterDeclarations,
-          WxeFunctionCommand.Parameters,
-          null);
-
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
-      
-      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
+//      WxeParameterDeclaration[] parameterDeclarations = null;
+//      object [] parameters = WxeParameterDeclaration.ParseActualParameters (
+//          parameterDeclarations,
+//          WxeFunctionCommand.Parameters,
+//          null);
+//
+//      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, parameters);
+//      
+//      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
     }
   }
 
