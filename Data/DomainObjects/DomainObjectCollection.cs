@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-public class DomainObjectCollection : CollectionBase, ICloneable
+public class DomainObjectCollection : CollectionBase, ICloneable, IList
 {
   // types
 
@@ -145,8 +145,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     set { _changeDelegate = value; }
   }
 
-  #region Standard implementation for collections
-
   /// <summary>
   /// Determines whether and element is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
@@ -188,13 +186,14 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     get { return (DomainObject) GetObject (id); }
   }
 
+  //TODO Documentation: Return type changed
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection.
   /// </summary>
   /// <param name="value">The <see cref="DomainObject"/> to add.</param>
   /// <exception cref="System.ArgumentNullException"><i>value</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException"><i>value</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
-  public void Add (DomainObject value)
+  public int Add (DomainObject value)
   {
     ArgumentUtility.CheckNotNull ("value", value);
     CheckItemType (_requiredItemType, value.GetType ());
@@ -211,6 +210,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable
         EndAdd (value);
       }
     }
+
+    return Count - 1;
   }
 
 //TODO documentation: ArgumentOutOfRangeException?
@@ -219,7 +220,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable
   /// Removes a <see cref="DomainObject"/> from the collection.
   /// </summary>
   /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
-  public void Remove (int index)
+  public void RemoveAt (int index)
   {
     Remove (this[index]);
   }
@@ -268,6 +269,88 @@ public class DomainObjectCollection : CollectionBase, ICloneable
   {
     for (int i = Count - 1; i >= 0; i--)
       Remove (this[i].ID);
+  }
+
+  // TODO Documentation:
+  public int IndexOf (DomainObject domainObject)
+  {
+    ObjectID id = null;
+
+    if (domainObject != null)
+      id = domainObject.ID;
+
+    return IndexOf (id);
+  }
+
+  // TODO Documentation:
+  public int IndexOf (ObjectID id)
+  {
+    return base.IndexOfKey (id);
+  }
+
+  // TODO Documentation:
+  public void Insert (int index, DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    base.Insert (index, domainObject.ID, domainObject);
+  }
+
+  // TODO Documentation:
+  public bool IsFixedSize
+  {
+    get { return false; }
+  }
+
+  #region Explicitly implemeted IList Members
+
+  // TODO Documentation: Check all explicitly implemented IList members if documentation is inherited.
+  object IList.this[int index]
+  {
+    get { return this[index]; }
+    set 
+    {
+      // TODO: Implement this
+      throw new NotImplementedException ();
+      //this[index] = value; 
+    }
+  }
+
+  void IList.Insert (int index, object value)
+  {
+    Insert (index, (DomainObject) value);
+  }
+
+  void IList.Remove (object value)
+  {
+    if (value is DomainObject)
+    {
+      Remove ((DomainObject) value);
+      return;
+    }
+
+    Remove ((ObjectID) value);
+  }
+
+  bool IList.Contains (object value)
+  {
+    if (value is DomainObject)
+      return Contains ((DomainObject) value);
+
+    return Contains ((ObjectID) value);
+  }
+
+  int IList.IndexOf (object value)
+  {
+    if (value is DomainObject)
+      return IndexOf ((DomainObject) value);
+
+    return IndexOf ((ObjectID) value);
+  }
+
+  int IList.Add (object value)
+  {
+    return Add ((DomainObject) value);
   }
 
   #endregion
@@ -438,5 +521,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     if (Removed != null)
       Removed (this, args);
   }
+
 }
 }

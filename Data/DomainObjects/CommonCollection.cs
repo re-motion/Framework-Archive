@@ -171,11 +171,37 @@ public class CollectionBase : ICollection
   /// <summary>
   /// Removes all objects from the collection.
   /// </summary>
+  //TODO Documentation: NotSupportedException
   protected void ClearCollection ()
   {
+    if (_isReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
+
     _collectionData.Clear ();
     _collectionKeys.Clear ();
     _version++;
+  }
+
+  // TODO Documentation:
+  protected int IndexOfKey (object key)
+  {
+    return _collectionKeys.IndexOf (key);
+  }
+
+  // TODO Documentation: Including exception
+  protected void Insert (int index, object key, object value)
+  {
+    if (_isReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
+
+    if (index < 0 || index > Count)
+    {
+      throw new ArgumentOutOfRangeException (
+          "index", 
+          index, 
+          "Insertion index was out of range.  Must be non-negative and less than or equal to size.");
+    }
+
+    _collectionData.Add (key, value);
+    _collectionKeys.Insert (index, key);
   }
 
   /// <summary>
@@ -197,7 +223,7 @@ public class CollectionBase : ICollection
   /// <summary>
   /// Returns an enumerator that can iterate through the <see cref="CollectionBase"/>.
   /// </summary>
-  /// <returns></returns>
+  /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="CollectionBase"/>.</returns>
   public virtual IEnumerator GetEnumerator ()
   {
     return new CollectionEnumerator (this);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using NUnit.Framework;
 
@@ -16,6 +17,11 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
 
   // member fields
 
+  private DomainObjectCollection _collection;
+  private Customer _customer1;
+  private Customer _customer2;
+  private Customer _customer3NotInCollection;
+
   // construction and disposing
 
   public DomainObjectCollectionTest ()
@@ -23,6 +29,17 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   // methods and properties
+
+  public override void SetUp()
+  {
+    base.SetUp ();
+
+    _customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+    _customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+    _customer3NotInCollection = Customer.GetObject (DomainObjectIDs.Customer3);
+
+    _collection = CreateCustomerCollection ();
+  }
 
   [Test]
   public void ExactType ()
@@ -166,18 +183,10 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [Test]
   public void Remove ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+    _collection.Remove (_customer2.ID);
 
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-
-    collection.Add (customer1);
-    collection.Add (customer2);
-
-    collection.Remove (customer2.ID);
-
-    Assert.AreEqual (1, collection.Count, "Item count");
-    Assert.AreSame (customer1, collection[customer1.ID], "Customer 1");
+    Assert.AreEqual (1, _collection.Count, "Item count");
+    Assert.AreSame (_customer1, _collection[_customer1.ID], "Customer 1");
   }
 
   [Test]
@@ -190,7 +199,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreEqual (1, collection.Count);
     Assert.AreSame (customer, collection[0]);
 
-    collection.Remove (0);
+    collection.RemoveAt (0);
     
     Assert.AreEqual (0, collection.Count);
   }
@@ -209,17 +218,9 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [Test]
   public void Clear ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+    _collection.Clear ();
 
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-
-    collection.Add (customer1);
-    collection.Add (customer2);
-
-    collection.Clear ();
-
-    Assert.AreEqual (0, collection.Count, "Item count");
+    Assert.AreEqual (0, _collection.Count, "Item count");
   }
 
   [Test]
@@ -230,14 +231,13 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
         collection, false);
 
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    collection.Add (customer1);
+    collection.Add (_customer1);
 
     Assert.AreEqual (1, collection.Count);
     Assert.AreEqual (true, eventReceiver.HasAddingEventBeenCalled);
     Assert.AreEqual (true, eventReceiver.HasAddedEventBeenCalled);
-    Assert.AreSame (customer1, eventReceiver.AddingDomainObject);
-    Assert.AreSame (customer1, eventReceiver.AddedDomainObject);
+    Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
+    Assert.AreSame (_customer1, eventReceiver.AddedDomainObject);
   }
 
   [Test]
@@ -248,103 +248,76 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
         collection, true);
 
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    collection.Add (customer1);
+    collection.Add (_customer1);
 
     Assert.AreEqual (0, collection.Count);
     Assert.AreEqual (true, eventReceiver.HasAddingEventBeenCalled);
     Assert.AreEqual (false, eventReceiver.HasAddedEventBeenCalled);
-    Assert.AreSame (customer1, eventReceiver.AddingDomainObject);
+    Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
     Assert.IsNull (eventReceiver.AddedDomainObject);
   }
 
   [Test]
   public void RemoveEvents ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    collection.Add (customer1);
-    collection.Add (Customer.GetObject (DomainObjectIDs.Customer2));
-
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
-        collection, false);
+        _collection, false);
 
-    collection.Remove (customer1.ID);
+    _collection.Remove (_customer1.ID);
 
-    Assert.AreEqual (1, collection.Count);
+    Assert.AreEqual (1, _collection.Count);
     Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
     Assert.AreEqual (true, eventReceiver.HasRemovedEventBeenCalled);
     Assert.AreEqual (1, eventReceiver.RemovingDomainObjects.Count);
     Assert.AreEqual (1, eventReceiver.RemovedDomainObjects.Count);
-    Assert.AreSame (customer1, eventReceiver.RemovingDomainObjects[0]);
-    Assert.AreSame (customer1, eventReceiver.RemovedDomainObjects[0]);
+    Assert.AreSame (_customer1, eventReceiver.RemovingDomainObjects[0]);
+    Assert.AreSame (_customer1, eventReceiver.RemovedDomainObjects[0]);
   }
 
   [Test]
   public void CancelRemoveEvents ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    collection.Add (customer1);
-    collection.Add (Customer.GetObject (DomainObjectIDs.Customer2));
-
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
-        collection, true);
+        _collection, true);
 
-    collection.Remove (customer1.ID);
+    _collection.Remove (_customer1.ID);
 
-    Assert.AreEqual (2, collection.Count);
+    Assert.AreEqual (2, _collection.Count);
     Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
     Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
     Assert.AreEqual (1, eventReceiver.RemovingDomainObjects.Count);
     Assert.AreEqual (0, eventReceiver.RemovedDomainObjects.Count);
-    Assert.AreSame (customer1, eventReceiver.RemovingDomainObjects[0]);
+    Assert.AreSame (_customer1, eventReceiver.RemovingDomainObjects[0]);
   }
 
   [Test]
   public void ClearEvents ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-    collection.Add (customer1);
-    collection.Add (customer2);
-
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
-        collection, false);
+        _collection, false);
 
-    collection.Clear ();
+    _collection.Clear ();
 
-    Assert.AreEqual (0, collection.Count);
+    Assert.AreEqual (0, _collection.Count);
     Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
     Assert.AreEqual (true, eventReceiver.HasRemovedEventBeenCalled);
     Assert.AreEqual (2, eventReceiver.RemovingDomainObjects.Count);
     Assert.AreEqual (2, eventReceiver.RemovedDomainObjects.Count);
-    Assert.AreSame (customer1, eventReceiver.RemovingDomainObjects[customer1.ID]);
-    Assert.AreSame (customer2, eventReceiver.RemovingDomainObjects[customer2.ID]);
-    Assert.AreSame (customer1, eventReceiver.RemovedDomainObjects[customer1.ID]);
-    Assert.AreSame (customer2, eventReceiver.RemovedDomainObjects[customer2.ID]);
+    Assert.AreSame (_customer1, eventReceiver.RemovingDomainObjects[_customer1.ID]);
+    Assert.AreSame (_customer2, eventReceiver.RemovingDomainObjects[_customer2.ID]);
+    Assert.AreSame (_customer1, eventReceiver.RemovedDomainObjects[_customer1.ID]);
+    Assert.AreSame (_customer2, eventReceiver.RemovedDomainObjects[_customer2.ID]);
   }
 
   [Test]
   public void CancelClearEvents ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-    collection.Add (customer1);
-    collection.Add (customer2);
-
     DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
-        collection, true);
+        _collection, true);
 
-    collection.Clear ();
+    _collection.Clear ();
 
-    Assert.AreEqual (2, collection.Count);
+    Assert.AreEqual (2, _collection.Count);
     Assert.AreEqual (true, eventReceiver.HasRemovingEventBeenCalled);
     Assert.AreEqual (false, eventReceiver.HasRemovedEventBeenCalled);
     Assert.AreEqual (2, eventReceiver.RemovingDomainObjects.Count);
@@ -355,7 +328,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   public void CompareTrue ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
     Assert.IsTrue (DomainObjectCollection.Compare (collection, collection));
   }
 
@@ -399,13 +371,8 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [Test]
   public void CompareTrueWithSameOrder ()
   {
-    DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
-    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
-    collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
-
-    DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
-    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
-    collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+    DomainObjectCollection collection1 = CreateCustomerCollection ();
+    DomainObjectCollection collection2 = CreateCustomerCollection ();
 
     Assert.IsTrue (DomainObjectCollection.Compare (collection1, collection2));
   }
@@ -567,43 +534,28 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [Test]
   public void Clone ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-    
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-    collection.Add (customer1);
-    collection.Add (customer2);
-
-    ICloneable cloneableCollection = (ICloneable) collection;
+    ICloneable cloneableCollection = (ICloneable) _collection;
     DomainObjectCollection clonedCollection = (DomainObjectCollection) cloneableCollection.Clone ();
 
     Assert.IsNotNull (clonedCollection);
-    Assert.AreEqual (collection.Count, clonedCollection.Count);
-    Assert.AreEqual (collection.IsReadOnly, clonedCollection.IsReadOnly);
-    Assert.AreEqual (collection.RequiredItemType, clonedCollection.RequiredItemType);
-    Assert.AreSame (collection[0], clonedCollection[0]);
-    Assert.AreSame (collection[1], clonedCollection[1]);
+    Assert.AreEqual (_collection.Count, clonedCollection.Count);
+    Assert.AreEqual (_collection.IsReadOnly, clonedCollection.IsReadOnly);
+    Assert.AreEqual (_collection.RequiredItemType, clonedCollection.RequiredItemType);
+    Assert.AreSame (_collection[0], clonedCollection[0]);
+    Assert.AreSame (_collection[1], clonedCollection[1]);
   }
 
   [Test]
   public void CloneReadOnlyCollection ()
   {
-    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-
-    Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-    Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
-
-    collection.Add (customer1);
-    collection.Add (customer2);
-
-    DomainObjectCollection readOnlyCollection = new DomainObjectCollection (collection, true);
+    DomainObjectCollection readOnlyCollection = new DomainObjectCollection (_collection, true);
 
     DomainObjectCollection clone = (DomainObjectCollection) readOnlyCollection.Clone ();
 
     Assert.IsNotNull (clone, "Clone does not exist");
     Assert.AreEqual (2, clone.Count, "Item count of clone");
-    Assert.AreSame (customer1, clone[customer1.ID], "Customer1");
-    Assert.AreSame (customer2, clone[customer2.ID], "Customer2");
+    Assert.AreSame (_customer1, clone[_customer1.ID], "Customer1");
+    Assert.AreSame (_customer2, clone[_customer2.ID], "Customer2");
     Assert.AreEqual (true, clone.IsReadOnly, "IsReadOnly");
   }
 
@@ -615,6 +567,129 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     
     Assert.AreEqual (typeof (OrderCollection), clone.GetType ());
     Assert.AreEqual (orderCollection.RequiredItemType, clone.RequiredItemType);
+  }
+
+  [Test]
+  public void IsFixedSize ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection ();
+    Assert.IsFalse (collection.IsFixedSize);
+  }
+
+  [Test]
+  public void IndexOf ()
+  {
+    Assert.AreEqual (0, _collection.IndexOf (_customer1));
+    Assert.AreEqual (1, _collection.IndexOf (_customer2.ID));
+  }
+
+  [Test]
+  public void IndexOfNullObject ()
+  {
+    Assert.AreEqual (-1, _collection.IndexOf ((DomainObject) null));
+    Assert.AreEqual (-1, _collection.IndexOf ((ObjectID) null));
+  }
+ 
+  [Test]
+  public void Insert ()
+  {
+    _collection.Insert (1, _customer3NotInCollection);
+
+    Assert.AreEqual (3, _collection.Count);
+    Assert.AreEqual (0, _collection.IndexOf (_customer1));
+    Assert.AreEqual (1, _collection.IndexOf (_customer3NotInCollection.ID));
+    Assert.AreEqual (2, _collection.IndexOf (_customer2));
+
+    DomainObject[] exptectedOrderedDomainObject = new DomainObject[] {_customer1, _customer3NotInCollection, _customer2};
+    CheckForEachOrder (exptectedOrderedDomainObject, _collection);
+  }
+
+  [Test]
+  public void InsertWithNegativeIndex ()
+  {
+    try
+    {
+      _collection.Insert (-1, _customer3NotInCollection);
+      Assert.Fail ("Insert with wrong index did not raise an exception.");
+    }
+    catch (ArgumentOutOfRangeException)
+    {
+    }
+
+    Assert.IsFalse (_collection.Contains (_customer3NotInCollection.ID));
+  }
+
+  [Test]
+  public void InsertWithIndexGreaterThanCollectionSize ()
+  {
+    try
+    {
+      _collection.Insert (_collection.Count + 1, _customer3NotInCollection);
+      Assert.Fail ("Insert with wrong index did not raise an exception.");
+    }
+    catch (ArgumentOutOfRangeException)
+    {
+    }
+
+    Assert.IsFalse (_collection.Contains (_customer3NotInCollection.ID));
+  }
+
+  [Test]
+  public void InsertAfterLastElement ()
+  {
+    _collection.Insert (_collection.Count, _customer3NotInCollection);
+  }
+
+  private void CheckForEachOrder (DomainObject[] exptectedDomainObjects, DomainObjectCollection collection)
+  {
+    Assert.AreEqual (exptectedDomainObjects.Length, collection.Count);
+
+    int i = 0;
+    foreach (DomainObject domainObject in collection)
+    {
+      Assert.AreSame (exptectedDomainObjects[i], domainObject);
+      i++;
+    }
+  }
+
+  [Test]
+  public void AccessIListInterfaceWithDomainObject ()
+  {
+    IList list = (IList) _collection;
+ 
+    Assert.IsTrue (list.Contains (_customer1));
+    Assert.AreEqual (0, list.IndexOf (_customer1));
+    Assert.AreSame (_customer1, list[0]);
+
+    list.Remove (_customer1);
+    Assert.IsFalse (list.Contains (_customer1));
+
+    Assert.AreEqual (list.Count, list.Add (_customer1));
+    Assert.AreEqual (list.Count - 1, list.IndexOf (_customer1));
+
+    list.Insert (0, _customer3NotInCollection);
+    Assert.AreEqual (0, list.IndexOf (_customer3NotInCollection));
+  }
+
+  [Test]
+  public void AccessIListInterfaceWithObjectID ()
+  {
+    IList list = (IList) _collection;
+ 
+    Assert.IsTrue (list.Contains (_customer1.ID));
+    Assert.AreEqual (0, list.IndexOf (_customer1.ID));
+
+    list.Remove (_customer1.ID);
+    Assert.IsFalse (list.Contains (_customer1));
+  }
+
+  private DomainObjectCollection CreateCustomerCollection ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+    collection.Add (_customer1);
+    collection.Add (_customer2);
+
+    return collection;
   }
 }
 }
