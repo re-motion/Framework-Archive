@@ -16,6 +16,7 @@ public class DomainObject
     return GetObject (id, false);
   }
 
+  // TODO: Add overload with clientTransaction parameter
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -46,6 +47,7 @@ public class DomainObject
 
   // construction and disposing
 
+  // TODO: Add overload with clientTransaction parameter
   protected DomainObject ()
   {
     _dataContainer = ClientTransaction.Current.CreateNewDataContainer (this.GetType ());
@@ -144,6 +146,7 @@ public class DomainObject
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
 
+  // TODO: Provide LoadArgs
   protected virtual void OnLoaded ()
   {
   }

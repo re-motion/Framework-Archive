@@ -6,6 +6,9 @@ using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects
 {
+// TODO: Make internal GetObject (ObjectID id, bool includeDeleted) public
+//       Add public GetObject (ObjectID id) 
+//       Provide LoadArgs in DomainObject.EndObjectLoading
 public class ClientTransaction
 {
   // types

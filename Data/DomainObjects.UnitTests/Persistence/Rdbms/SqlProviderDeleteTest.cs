@@ -87,10 +87,12 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
     ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
     ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
 
+    // TODO: Remove line below and work directly with transactions:
     ClientTransaction.SetCurrent (clientTransaction1);
     OrderTicket changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
     changedOrderTicket.FileName = @"C:\NewFile.jpg";
   
+    // TODO: Remove line below and work directly with transactions:
     ClientTransaction.SetCurrent (clientTransaction2);
     OrderTicket deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
     deletedOrderTicket.Delete ();
@@ -106,10 +108,12 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
     ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
     ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
 
+    // TODO: Remove line below and work directly with transactions:
     ClientTransaction.SetCurrent (clientTransaction1);
     ClassWithAllDataTypes changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
     changedObject.StringProperty = "New text";
   
+    // TODO: Remove line below and work directly with transactions:
     ClientTransaction.SetCurrent (clientTransaction2);
     ClassWithAllDataTypes deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
     deletedObject.Delete ();
