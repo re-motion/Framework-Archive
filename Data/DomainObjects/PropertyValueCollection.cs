@@ -73,15 +73,11 @@ public class PropertyValueCollection : CollectionBase
         (PropertyValue) sender, e.OldValue, e.NewValue);
 
     OnPropertyChanging (eventArgs);
-
-    if (eventArgs.Cancel)
-      e.Cancel = true;
   }
 
   private void PropertyValue_Changed (object sender, EventArgs e)
   {
-    PropertyChangedEventArgs eventArgs = new PropertyChangedEventArgs ((PropertyValue) sender);
-    OnPropertyChanged (eventArgs);
+    OnPropertyChanged (new PropertyChangedEventArgs ((PropertyValue) sender));
   }
 
   private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
