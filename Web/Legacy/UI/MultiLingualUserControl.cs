@@ -25,6 +25,12 @@ public class MultiLingualUserControl : UserControl
 
     base.OnInit (e);
   }
+
+  protected string GetResourceText (string name)
+  {
+    return ResourceManagerPool.GetResourceText (this, name);
+  }
+
 }
 
 }
