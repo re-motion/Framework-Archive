@@ -51,6 +51,7 @@
     <property name="build.createdoc" value="true" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
+    <property name="build.csc.define" value="DEBUG;TRACE" />
     <call target="initialize" force="true" />
   </target>
   
