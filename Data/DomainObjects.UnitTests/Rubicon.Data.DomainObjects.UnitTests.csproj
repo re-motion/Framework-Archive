@@ -650,6 +650,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\DBValueConverterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\DeleteCommandBuilderTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
