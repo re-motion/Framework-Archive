@@ -220,6 +220,17 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       Page.RegisterRequiresPostBack (this);
   }
 
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    Unit width = Width;
+    Width = Unit.Empty;
+    Unit height = Height;
+    Height = Unit.Empty;
+    base.AddAttributesToRender (writer);
+    Width = width;
+    Height = height;
+  }
+
   protected override void Render (HtmlTextWriter writer)
   {
     EnsureChildControlsPreRendered ();

@@ -323,6 +323,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    Unit width = Width;
+    Width = Unit.Empty;
+    Unit height = Height;
+    Height = Unit.Empty;
+    base.AddAttributesToRender (writer);
+    Width = width;
+    Height = height;
+  }
+
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
