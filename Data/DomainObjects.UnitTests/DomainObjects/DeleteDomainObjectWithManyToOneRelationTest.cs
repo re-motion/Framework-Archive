@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -135,6 +136,36 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
     };
 
     _eventReceiver.Compare (expectedStates);
+  }
+
+  [Test]
+  public void GetOriginalRelatedObjects ()
+  {
+    _orderItem.Delete ();
+
+    DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjects ("OrderItems");
+
+    Assert.IsNotNull (originalOrderItems);
+    Assert.AreEqual (2, originalOrderItems.Count);
+    Assert.AreSame (_orderItem, originalOrderItems[_orderItem.ID]);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDeletedException))]
+  public void SetRelatedObjectOfDeletedObject ()
+  {
+    _orderItem.Delete ();
+
+    _orderItem.Order = _order;
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDeletedException))]
+  public void ReassignDeletedObject ()
+  {
+    _orderItem.Delete ();
+    
+    _order.OrderItems.Add (_orderItem);
   }
 
   private SequenceEventReceiver CreateEventReceiver ()

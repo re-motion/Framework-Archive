@@ -128,7 +128,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public void SetRelatedObject (RelationEndPointID endPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-
+    CheckDeleted (newRelatedObject);
+ 
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
     CheckDeleted (endPoint);
 
@@ -291,7 +292,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   private void CheckDeleted (DomainObject domainObject)
   {
-    if (domainObject.State == StateType.Deleted)
+    if (domainObject != null && domainObject.State == StateType.Deleted)
       throw new ObjectDeletedException (domainObject.ID);
   }
 
@@ -380,6 +381,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   void ICollectionEndPointChangeDelegate.PerformAdd  (CollectionEndPoint endPoint, DomainObject domainObject)
   {
     CheckDeleted (endPoint);
+    CheckDeleted (domainObject);
 
     ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);

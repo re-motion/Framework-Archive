@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -160,6 +161,58 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     };
 
     _eventReceiver.Compare (expectedStates);
+  }
+
+  [Test]
+  public void GetOriginalRelatedObjectFromDeletedObject ()
+  {
+    _orderTicket.Delete ();
+
+    Order originalOrder = (Order) _orderTicket.GetOriginalRelatedObject ("Order");
+    
+    Assert.IsNotNull (originalOrder);
+    Assert.AreEqual (DomainObjectIDs.Order1, originalOrder.ID);
+  }
+
+  [Test]
+  public void GetOriginalRelatedObjectFromOppositeObject ()
+  {
+    Order oldRelatedOrder = _orderTicket.Order;
+    _orderTicket.Delete ();
+
+    OrderTicket deletedOrderTicket = (OrderTicket) oldRelatedOrder.GetOriginalRelatedObject ("OrderTicket");
+
+    Assert.IsNotNull (deletedOrderTicket);
+    Assert.AreEqual (_orderTicket.ID, deletedOrderTicket.ID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDeletedException))]
+  public void SetRelatedObjectOfDeletedObject ()
+  {
+    _orderTicket.Delete ();
+
+    _orderTicket.Order = _order;
+  }
+
+  [Test]
+  public void GetOriginalRelatedObjectForBothDeleted ()
+  {
+    OrderTicket orderTicket = _order.OrderTicket;
+    _order.Delete ();
+    orderTicket.Delete ();
+
+    Assert.IsNotNull (_order.GetOriginalRelatedObject ("OrderTicket"));
+    Assert.IsNotNull (orderTicket.GetOriginalRelatedObject ("Order"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ObjectDeletedException))]
+  public void ReassignDeletedObject ()
+  {
+    _orderTicket.Delete ();
+
+    _order.OrderTicket = _orderTicket;
   }
 
   private SequenceEventReceiver CreateEventReceiver ()
