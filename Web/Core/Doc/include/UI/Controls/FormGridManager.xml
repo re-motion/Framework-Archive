@@ -411,6 +411,11 @@
       The <see cref="FormGridRow"/> containing the input controls to get CSS classes assigned.
     </param>
   </AssignCssClassesToInputControls>
+  <AssignCssClassesToValidators>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> containing the validators to get CSS classes assigned.
+    </param>
+  </AssignCssClassesToValidators>
   <InsertSpecialColumns>
     <remarks>
       Override this method to change the postioning of the special cells.
@@ -717,6 +722,11 @@
       Class: <c>formGridValidationMessage</c>
     </remarks>
   </CssClassValidationMessage>
+  <CssClassValidator>
+    <remarks>
+      Class: <c>formGridValidator</c>
+    </remarks>
+  </CssClassValidator>
   
   <FormGrid>
     <CreateRows>
