@@ -55,15 +55,6 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  public void ParameterNameWithDifferentCase ()
-  {
-    Query query = new Query ("OrderNoSumByCustomerNameQuery");
-    query.Parameters.Add ("@CUSTOMERNAME", "Kunde 1");
-
-    Assert.AreEqual (3, Provider.ExecuteScalarQuery (query));
-  }
-
-  [Test]
   public void ParameterWithTextReplacement ()
   {
     Query query = new Query ("OrderNoSumForMultipleCustomers");

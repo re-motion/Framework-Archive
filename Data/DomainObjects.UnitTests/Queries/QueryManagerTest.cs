@@ -26,7 +26,7 @@ public class QueryManagerTest : ClientTransactionBaseTest
 
   // methods and properties
 
-  public override void SetUp()
+  public override void SetUp ()
   {
     base.SetUp ();
 
