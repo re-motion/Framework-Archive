@@ -84,9 +84,21 @@ public class PersistenceManager : IDisposable
     StorageProvider provider = _storageProviderManager.GetMandatory (id.StorageProviderID);
     DataContainer dataContainer = provider.LoadDataContainer (id);
 
-    if (dataContainer == null)
+    if (dataContainer != null)
+    {
+      if (id.ClassID != dataContainer.ID.ClassID)
+      {
+        throw CreatePersistenceException (
+            "The ClassID of the provided ObjectID '{0}' and the ClassID of the loaded DataContainer '{1}' differ.",
+            id, 
+            dataContainer.ID);
+      }
+    }
+    else
+    {
       throw new ObjectNotFoundException (id);
-
+    }
+  
     return dataContainer;
   }
 
@@ -115,19 +127,22 @@ public class PersistenceManager : IDisposable
     StorageProvider oppositeProvider = _storageProviderManager.GetMandatory (
         oppositeEndPointDefinition.ClassDefinition.StorageProviderID);
 
-    DataContainerCollection dataContainers = oppositeProvider.LoadDataContainersByRelatedID (
+    DataContainerCollection oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID (
         oppositeEndPointDefinition.ClassDefinition,
         oppositeEndPointDefinition.PropertyName,
         relationEndPointID.ObjectID);
 
-    if (relationEndPointID.Definition.IsMandatory && dataContainers.Count == 0)
+    if (relationEndPointID.Definition.IsMandatory && oppositeDataContainers.Count == 0)
     {
       throw CreatePersistenceException (
           "Collection for mandatory relation '{0}' (property: '{1}') contains no elements.", 
           relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName);
     }
 
-    return dataContainers;
+    foreach (DataContainer oppositeDataContainer in oppositeDataContainers)
+      CheckClassIDForVirtualEndPoint (relationEndPointID, oppositeDataContainer);
+
+    return oppositeDataContainers;
   }
 
   public DataContainer LoadRelatedDataContainer (DataContainer dataContainer, RelationEndPointID relationEndPointID)
@@ -159,10 +174,15 @@ public class PersistenceManager : IDisposable
         relationEndPointID.OppositeEndPointDefinition.PropertyName, 
         relationEndPointID.ObjectID);
 
-    if (oppositeDataContainers.Count == 0)
-      return GetNullDataContainerWithRelationCheck (relationEndPointID);
-    else
+    if (oppositeDataContainers.Count > 0)
+    {
+      CheckClassIDForVirtualEndPoint (relationEndPointID, oppositeDataContainers[0]);
       return oppositeDataContainers[0];
+    }
+    else
+    {
+      return GetNullDataContainerWithRelationCheck (relationEndPointID);
+    }
   }
 
   private DataContainer GetOppositeDataContainerForEndPoint (
@@ -175,7 +195,11 @@ public class PersistenceManager : IDisposable
 
     StorageProvider oppositeProvider = _storageProviderManager.GetMandatory (id.StorageProviderID);
     DataContainer oppositeDataContainer = oppositeProvider.LoadDataContainer (id);
-    if (oppositeDataContainer == null)
+    if (oppositeDataContainer != null)
+    {
+      CheckClassIDForEndPoint (dataContainer, relationEndPointID, oppositeDataContainer);
+    }
+    else
     {
       throw CreatePersistenceException (
           "Property '{0}' of class '{1}' refers to non-existing object with ID '{2}'.",
@@ -185,6 +209,43 @@ public class PersistenceManager : IDisposable
     }
 
     return oppositeDataContainer;
+  }
+
+  private void CheckClassIDForVirtualEndPoint (
+      RelationEndPointID relationEndPointID, 
+      DataContainer oppositeDataContainer)
+  {
+    string oppositeClassID = oppositeDataContainer.GetObjectID (
+        relationEndPointID.OppositeEndPointDefinition.PropertyName).ClassID;
+
+    if (relationEndPointID.ObjectID.ClassID != oppositeClassID)
+    {
+      throw CreatePersistenceException (
+          "The property '{0}' of the loaded DataContainer '{1}'"
+          + " refers to ClassID '{2}', but the actual ClassID is '{3}'.",
+          relationEndPointID.OppositeEndPointDefinition.PropertyName,
+          oppositeDataContainer.ID,
+          oppositeClassID,
+          relationEndPointID.ObjectID.ClassID);
+    }
+  }
+
+  private void CheckClassIDForEndPoint (
+      DataContainer dataContainer,
+      RelationEndPointID relationEndPointID, 
+      DataContainer oppositeDataContainer)
+  {
+    ObjectID id = dataContainer.GetObjectID (relationEndPointID.PropertyName);
+    if (id.ClassID != oppositeDataContainer.ID.ClassID)
+    {
+      throw CreatePersistenceException (
+          "The property '{0}' of the provided DataContainer '{1}'"
+          + " refers to ClassID '{2}', but the ClassID of the loaded DataContainer is '{3}'.",
+          relationEndPointID.PropertyName, 
+          dataContainer.ID,
+          id.ClassID, 
+          oppositeDataContainer.ID.ClassID);
+    }
   }
 
   private DataContainer GetNullDataContainerWithRelationCheck (RelationEndPointID relationEndPointID)

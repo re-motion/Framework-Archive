@@ -40,10 +40,10 @@ public class QueryConfigurationTest
 
   [Test]
   [ExpectedException (typeof (QueryConfigurationException),
-      "Value query 'OrderSumQuery' must not specify a collectionType.")]    
-  public void ValueQueryWithCollectionType ()
+      "Scalar query 'OrderSumQuery' must not specify a collectionType.")]    
+  public void ScalarQueryWithCollectionType ()
   {
-    QueryConfigurationLoader loader = new QueryConfigurationLoader (@"valueQueryWithCollectionType.xml", @"queries.xsd");
+    QueryConfigurationLoader loader = new QueryConfigurationLoader (@"scalarQueryWithCollectionType.xml", @"queries.xsd");
     loader.GetQueryDefinitions ();
   }
 

@@ -343,5 +343,57 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
  
     _persistenceManager.LoadDataContainer (id);
   }
+
+  [Test]
+  [ExpectedException (typeof (PersistenceException),
+      "The ClassID of the provided ObjectID 'TestDomain|Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid'"
+      + " and the ClassID of the loaded DataContainer 'TestDomain|Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ.")]
+  public void LoadDataContainerWithInvalidClassID ()
+  {
+    ObjectID id = new ObjectID (DomainObjectIDs.Partner1.StorageProviderID, "Distributor", DomainObjectIDs.Partner1.Value);
+    _persistenceManager.LoadDataContainer (id);
+  }
+
+  [Test]
+  [ExpectedException (typeof (PersistenceException),
+      "The property 'Customer' of the provided DataContainer 'TestDomain|Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
+      + " refers to ClassID 'Company', but the ClassID of the loaded DataContainer is 'Customer'.")]
+  public void LoadRelatedDataContainerWithInvalidClassIDOverEndPoint ()
+  {
+    DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
+    orderContainer["Customer"] = new ObjectID (DomainObjectIDs.Customer1.StorageProviderID, "Company", DomainObjectIDs.Customer1.Value);
+    RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Customer");
+
+    _persistenceManager.LoadRelatedDataContainer (orderContainer, endPointID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (PersistenceException),
+      "The property 'Company' of the loaded DataContainer 'TestDomain|Ceo|c3db20d6-138e-4ced-8576-e81bb4b7961f|System.Guid'"
+      + " refers to ClassID 'Customer', but the actual ClassID is 'Company'.")]
+  public void LoadRelatedDataContainerWithInvalidClassIDOverVirtualEndPoint ()
+  {
+    ObjectID companyID = 
+        new ObjectID (c_testDomainProviderID, "Company", new Guid ("{C3DB20D6-138E-4ced-8576-E81BB4B7961F}"));
+
+    DataContainer companyContainer = _persistenceManager.LoadDataContainer (companyID);
+    RelationEndPointID endPointID = new RelationEndPointID (companyContainer.ID, "Ceo");
+
+    _persistenceManager.LoadRelatedDataContainer (companyContainer, endPointID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (PersistenceException),
+      "The property 'Customer' of the loaded DataContainer 'TestDomain|Order|da658f26-8107-44ce-9dd0-1804503eccaf|System.Guid'"
+      + " refers to ClassID 'Company', but the actual ClassID is 'Customer'.")]
+  public void LoadRelatedDataContainersWithInvalidClassID ()
+  {
+    ObjectID customerID = 
+        new ObjectID (c_testDomainProviderID, "Customer", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}"));
+
+    RelationEndPointID endPointID = new RelationEndPointID (customerID, "Orders");
+
+    _persistenceManager.LoadRelatedDataContainers (endPointID);
+  }
 }
 }

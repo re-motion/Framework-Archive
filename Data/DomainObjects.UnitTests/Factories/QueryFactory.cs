@@ -48,7 +48,7 @@ public sealed class QueryFactory
         "OrderSumQuery", 
         "TestDomain", 
         "select sum(quantity) from Order where CustomerID = @customerID;", 
-        QueryType.Value);
+        QueryType.Scalar);
   }
 }
 }
