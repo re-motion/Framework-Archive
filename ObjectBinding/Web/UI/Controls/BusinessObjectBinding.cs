@@ -76,15 +76,23 @@ public class BusinessObjectBinding
       {
         bool isDesignMode = ControlHelper.IsDesignMode (_control);
 
-        if (_control.NamingContainer == null)
+        Control namingContainer = _control.NamingContainer;
+        if (namingContainer == null)
         {
           if (isDesignMode)
-            return;
+          {
+            //  HACK: Designmode Naming container
+            //  Not completely sure that Components[0] will always be the naming container.
+            if (_control.Site.Container.Components.Count > 0)
+              namingContainer = (_control.Site.Container.Components[0]) as Control;
+            else
+              return;
+          }
           else
             throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
         }
 
-        Control control = ControlHelper.FindControl (_control.NamingContainer, _dataSourceControl);
+        Control control = ControlHelper.FindControl (namingContainer, _dataSourceControl);
         if (control == null)
         {
           if (isDesignMode)
