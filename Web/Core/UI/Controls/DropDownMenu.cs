@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.ComponentModel;
 using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
@@ -20,7 +21,7 @@ namespace Rubicon.Web.UI.Controls
 /// <remarks>
 ///   Work in Progress
 /// </remarks>
-public class DropDownMenu: WebControl
+public class DropDownMenu: WebControl, IControl
 {
   private const string c_dropDownIcon = "DropDownArrow.gif";
 
@@ -28,22 +29,18 @@ public class DropDownMenu: WebControl
   private string _titleText;
   private string _titleIcon;
 
-	public DropDownMenu (string groupID)
+  private MenuItemCollection _menuItems;
+
+	public DropDownMenu (string groupID, IControl ownerControl, Type[] supportedMenuItemTypes)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("groupID", groupID);
     _groupID = groupID;
+    _menuItems = new MenuItemCollection (ownerControl, supportedMenuItemTypes);
 	}
 
-  public string TitleText
-  {
-    get { return _titleText; }
-    set { _titleText = value; }
-  }
-
-  public string TitleIcon
-  {
-    get { return _titleIcon; }
-    set { _titleIcon = value; }
+  public DropDownMenu (string groupID, IControl ownerControl)
+      : this (groupID, ownerControl, new Type[] {typeof (MenuItem)})
+	{
   }
 
   protected override void OnPreRender (EventArgs e)
@@ -64,16 +61,16 @@ public class DropDownMenu: WebControl
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
     }
 
-    DropDownMenuItem[] items = new DropDownMenuItem[] {
-        new DropDownMenuItem ("open", "object", "Öffnen", "open.gif", null),
-        new DropDownMenuItem ("cut", "edit", "Ausschneiden", "cut.gif", null),
-        new DropDownMenuItem ("paste", "edit", "Einfügen", "paste.gif", null),
-        new DropDownMenuItem ("duplicate", "edit", "Duplizieren", "duplicate.gif", null),
-        new DropDownMenuItem ("delete", "edit", "Löschen", "delete.gif", null),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif", null),
-        new DropDownMenuItem ("item", "item", "Item", "item.gif", null)};
+    MenuItem[] items = new MenuItem[] {
+        new MenuItem ("open", "object", "Öffnen", "open.gif", null),
+        new MenuItem ("cut", "edit", "Ausschneiden", "cut.gif", null),
+        new MenuItem ("paste", "edit", "Einfügen", "paste.gif", null),
+        new MenuItem ("duplicate", "edit", "Duplizieren", "duplicate.gif", null),
+        new MenuItem ("delete", "edit", "Löschen", "delete.gif", null),
+        new MenuItem ("item", "item", "Item", "item.gif", null),
+        new MenuItem ("item", "item", "Item", "item.gif", null),
+        new MenuItem ("item", "item", "Item", "item.gif", null),
+        new MenuItem ("item", "item", "Item", "item.gif", null)};
     key = typeof (DropDownMenu).FullName + _groupID;
     if (! Page.IsStartupScriptRegistered (key))
     {
@@ -83,7 +80,7 @@ public class DropDownMenu: WebControl
           "new DropDownMenu_MenuInfo ('{0}', new Array (\r\n",
           _groupID);
       bool isFirstItem = true;
-      foreach (DropDownMenuItem item in items)
+      foreach (MenuItem item in items)
       {
         if (isFirstItem)
           isFirstItem = false;
@@ -185,6 +182,28 @@ public class DropDownMenu: WebControl
     writer.RenderEndTag(); // End Menu-Div
 
     writer.RenderEndTag(); // End Control-Tag
+  }
+
+  public string TitleText
+  {
+    get { return _titleText; }
+    set { _titleText = value; }
+  }
+
+  public string TitleIcon
+  {
+    get { return _titleIcon; }
+    set { _titleIcon = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Behavior")]
+  [Description ("The menu items displayed by this drop down menu.")]
+  [DefaultValue ((string) null)]
+  public MenuItemCollection MenuItems
+  {
+    get { return _menuItems; }
   }
 
   protected virtual string CssClassHead

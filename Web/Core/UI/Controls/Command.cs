@@ -197,6 +197,8 @@ public class Command
 
   //private ScriptCommandInfo _scriptCommand = null;
 
+  private IControl _ownerControl = null;
+
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   /// <param name="postBackLink">
@@ -435,6 +437,25 @@ public class Command
     set 
     {
       _wxeFunctionCommand = value; 
+    }
+  }
+
+  /// <summary>
+  ///   Gets or sets the <see cref="IControl"/> to which this object belongs. 
+  /// </summary>
+  protected internal IControl OwnerControl
+  {
+    get { return OwnerControlImplementation;  }
+    set { OwnerControlImplementation = value; }
+  }
+
+  protected virtual IControl OwnerControlImplementation
+  {
+    get { return _ownerControl;  }
+    set
+    { 
+      if (_ownerControl != value)
+        _ownerControl = value;
     }
   }
 }
