@@ -77,7 +77,11 @@ public class TestMappingConfiguration
     classDefinitions.Add (CreateOrderDefinition ());
     classDefinitions.Add (CreateOrderTicketDefinition ());
     classDefinitions.Add (CreateOrderItemDefinition ());
-    classDefinitions.Add (CreateOfficialDefinition ());
+
+    ClassDefinition officialDefintion = CreateOfficialDefinition ();
+    classDefinitions.Add (officialDefintion);
+    classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefintion));
+
     classDefinitions.Add (CreateCeoDefinition ());
     classDefinitions.Add (CreatePersonDefinition ());
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivation ());
@@ -176,6 +180,12 @@ public class TestMappingConfiguration
     official.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     return official;
+  }
+
+  private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
+  {
+    return new ClassDefinition (
+        "SpecialOfficial", "Official", typeof (SpecialOfficial), DatabaseTest.c_unitTestStorageProviderStubID, officialDefinition);
   }
 
   private ClassDefinition CreateOrderTicketDefinition ()

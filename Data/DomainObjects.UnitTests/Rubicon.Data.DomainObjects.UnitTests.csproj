@@ -875,6 +875,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestDomain\SpecialOfficial.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Supplier.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

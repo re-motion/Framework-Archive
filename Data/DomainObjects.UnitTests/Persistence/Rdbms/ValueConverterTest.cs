@@ -24,7 +24,7 @@ public class ValueConverterTest
   // methods and properties
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), "DBValueConverter does not support ObjectID values of type 'System.Int32'.\r\nParameter name: value")]
+  [ExpectedException (typeof (ArgumentException), "ValueConverter does not support ObjectID values of type 'System.Int32'.\r\nParameter name: value")]
   public void GetObjectIDWithValueOfInvalidType ()
   {
     ValueConverter converter = new ValueConverter ();
