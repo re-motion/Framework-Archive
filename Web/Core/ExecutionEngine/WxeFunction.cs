@@ -27,7 +27,7 @@ public abstract class WxeFunction: WxeStepList
   {
     _variables = new NameObjectCollection();
     _returnUrl = null;
-    _actualParameters = actualParameters;
+    _actualParameters = WxeParameterDeclaration.ParseVariableReferences (actualParameters);
   }
 
   public override void Execute (WxeContext context)
@@ -109,9 +109,8 @@ public abstract class WxeFunction: WxeStepList
       if (i > 0)
         sb.Append (", ");
       object value = _actualParameters[i];
-      string parameterName = WxeParameterDeclaration.GetParameterName (value);
-      if (parameterName != null)
-        sb.Append (parameterName);
+      if (value is WxeVariableReference)
+        sb.Append ("@" + ((WxeVariableReference)value).Name);
       else if (value is string)
         sb.AppendFormat ("\"{0}\"", value);
       else

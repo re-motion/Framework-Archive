@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Text;
+using System.Globalization;
 using Rubicon.Collections;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -132,9 +135,9 @@ public class WxeParameterDeclaration
     {
       if (i < actualParameters.Length && actualParameters[i] != null)
       {
-        string parameterName = GetParameterName (actualParameters[i]);
-        if (parameterName != null)
-          parameterDeclarations[i].CopyToCallee (parameterName, callerVariables, calleeVariables);
+        WxeVariableReference varRef = actualParameters[i] as WxeVariableReference;
+        if (varRef != null)
+          parameterDeclarations[i].CopyToCallee (varRef.Name, callerVariables, calleeVariables);
         else
           parameterDeclarations[i].CopyToCallee (actualParameters[i], calleeVariables);
       }
@@ -146,38 +149,53 @@ public class WxeParameterDeclaration
   }
 
   public static void CopyToCallee (
-      WxeParameterDeclaration[] parameterDeclarations, NameValueCollection parameters, NameObjectCollection calleeVariables)
+      WxeParameterDeclaration[] parameterDeclarations, NameValueCollection parameters, NameObjectCollection calleeVariables, IFormatProvider format)
   {
     for (int i = 0; i < parameterDeclarations.Length; ++i)
     {
       WxeParameterDeclaration paramDeclaration = parameterDeclarations[i];
       string strval = parameters[paramDeclaration.Name];
       if (strval != null)
-      {
-        try
-        {
-          // calleeVariables[paramDeclaration.Name] = ((IConvertible)strval).ToType (paramDeclaration.Type, System.Threading.Thread.CurrentThread.CurrentCulture);
-          MethodInfo parseMethod = paramDeclaration.Type.GetMethod (
-              "Parse", 
-              BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
-              null, 
-              new Type[] {typeof (string)}, 
-              null);
-
-          if (parseMethod == null || ! paramDeclaration.Type.IsAssignableFrom (parseMethod.ReturnType))
-            throw new ApplicationException ("Cannot convert parameter '" + paramDeclaration.Name + "' to type " + paramDeclaration.Type.Name + ". Type does not have method 'public static " + paramDeclaration.Type + " Parse (string s)'.");
-
-          calleeVariables[paramDeclaration.Name] = parseMethod.Invoke (null, new object[] { strval } );
-        }
-        catch (InvalidCastException e)
-        {
-          throw new ApplicationException ("Cannot convert parameter '" + paramDeclaration.Name + "' to type " + paramDeclaration.Type.Name + ". Method 'Parse' failed.", e);
-        }
-      }
+        calleeVariables[paramDeclaration.Name] = Parse (paramDeclaration.Type, strval, paramDeclaration.Name, format);
       else if (paramDeclaration.Required)
-      {
         throw new ApplicationException ("Parameter '" + paramDeclaration.Name + "' is missing.");
+    }
+  }
+
+  private static object Parse (Type type, string value, string parameterName, IFormatProvider format)
+  {
+    try
+    {
+      MethodInfo parseMethod = null;
+      MethodInfo parseFormatMethod  = type.GetMethod (
+          "Parse", 
+          BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
+          null, 
+          new Type[] {typeof (string), typeof (IFormatProvider)}, 
+          null);
+
+      if (parseFormatMethod != null && type.IsAssignableFrom (parseFormatMethod.ReturnType))
+      {
+        return parseFormatMethod.Invoke (null, new object[] { value, format } );
       }
+      else
+      {
+        parseMethod  = type.GetMethod (
+            "Parse", 
+            BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
+            null, 
+            new Type[] {typeof (string)}, 
+            null);
+
+        if (parseMethod == null || ! type.IsAssignableFrom (parseMethod.ReturnType))
+          throw new ApplicationException ("Cannot convert parameter '" + parameterName + "' to type " + type.Name + ". Type does not have method 'public static " + type.Name + " Parse (string s)'.");
+
+        return parseMethod.Invoke (null, new object[] { value } );
+      }
+    }
+    catch (TargetInvocationException e)
+    {
+      throw new ApplicationException ("Cannot convert parameter '" + parameterName + "' to type " + type.Name + ". Method 'Parse' failed.", e);
     }
   }
 
@@ -197,25 +215,213 @@ public class WxeParameterDeclaration
     {
       if (i < actualParameters.Length)
       {
-        string parameterName = GetParameterName (actualParameters[i]);
-        if (parameterName != null)
-          parameterDeclarations[i].CopyToCaller (parameterName, calleeVariables, callerVariables);
+        WxeVariableReference varRef = actualParameters[i] as WxeVariableReference;
+        if (varRef != null)
+          parameterDeclarations[i].CopyToCaller (varRef.Name, calleeVariables, callerVariables);
       }
     }
   }
 
-  /// <summary>
-  ///   If actualParameterValue is a string like "@param", "param" is returned. 
-  ///   Otherwise, null is returned.
-  /// </summary>
-  internal static string GetParameterName (object actualParameterValue)
+  public static object[] ParseVariableReferences (object[] actualParameters)
   {
-    string valueString = actualParameterValue as string;
-    if (valueString != null && valueString.Length > 0 && valueString[0] == '@')
-      return valueString.Substring (1);
-    else 
-      return null;
+    object[] replacedParameters = new object[actualParameters.Length];
+
+    for (int i = 0; i < actualParameters.Length; ++i)
+    {
+      string strval = actualParameters[i] as string;
+      if (strval != null && strval.Length > 0 && strval[0] == '@')
+        replacedParameters[i] = new WxeVariableReference (strval.Substring (1));
+      else
+        replacedParameters[i] = actualParameters[i];
+    }
+
+    return replacedParameters;
   }
+
+  /// <summary>
+  ///   Parses a string of comma separated actual parameters.
+  /// </summary>
+  /// <remarks>
+  ///   <list type="table">
+  ///     <listheader>
+  ///       <term> Type </term>
+  ///       <description> Syntax </description>
+  ///     </listheader>
+  ///     <item>
+  ///       <term> <see cref="String"/> </term>
+  ///       <description> A quoted string. Escape quotes and line breaks using the backslash character.</description>
+  ///     </item>
+  ///     <item>
+  ///       <term> Any type that has a <see langword="static"/><c>Parse</c> method. </term>
+  ///       <description> A quoted or unquoted string that can be passed to the type's <c>Parse</c> method. </description>
+  ///     </item>
+  ///     <item>
+  ///       <term> Variable Reference </term>
+  ///       <description> An unquoted variable name prefixed with the at (@) character. </description>
+  ///     </item>
+  ///   </list>
+  /// </remarks>
+  /// <example>
+  ///   "the first \"string\" argument, containing quotes and a comma", true, "12/30/04 12:00", @variableName
+  /// </example>
+  public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, IFormatProvider format)
+  {
+    StringBuilder current = new StringBuilder();
+    ArrayList argsArray = new ArrayList();
+
+    bool isQuoted = false;
+    ArrayList isQuotedArray = new ArrayList();
+
+    int len = actualParameters.Length;
+    int state = 0; // 0 ... between arguments, 1 ... within argument, 2 ... within quotes
+    for (int i = 0; i < len; ++i)
+    {
+      char c = actualParameters[i];
+      if (state == 0)
+      {
+        switch (c)
+        {
+          case '\"':
+            state = 2;
+            isQuoted = true;
+            break;
+          case ' ':
+            break;
+          case ',':
+            break;
+          default:
+            state = 1;
+            current.Append (c);
+            break;
+        }
+      }
+      else if (state == 1)
+      {
+        switch (c)
+        {
+          case '\"':
+            throw new ApplicationException ("Error at " + i + " while parsing " + actualParameters);
+          case ',':
+            state = 0;
+            if (current.Length > 0)
+            {
+              argsArray.Add (current.ToString());
+              current.Length = 0;
+              isQuotedArray.Add (isQuoted);
+              isQuoted = false;
+            }
+            break;
+          default:
+            current.Append (c);
+            break;
+        }
+      }
+      else if (state == 2)
+      {
+        switch (c)
+        {
+          case '\"':
+            if ((i + 1) < len && actualParameters[i+1] != ',')
+              throw new ApplicationException ("Errpr at " + i + " while parsing " + actualParameters);
+            state = 1;
+            break;
+          case '\\':
+            if ((i + 1) < len)
+            {
+              switch (actualParameters[i+1])
+              {
+                case '\\':
+                  current.Append ('\\');
+                  ++i;
+                  break;
+                case '\"':
+                  current.Append ('\"');
+                  ++i;
+                  break;
+                case '\'':
+                  current.Append ('\'');
+                  ++i;
+                  break;
+                case '\r':
+                  current.Append ('\r');
+                  ++i;
+                  break;
+                case '\n':
+                  current.Append ('\n');
+                  ++i;
+                  break;
+                default:
+                  current.Append ('\\');
+                  break;
+              }
+            }
+            else
+            {
+              state = 1;
+            }
+            break;
+
+          default:
+            current.Append (c);
+            break;
+        }
+      }
+    }
+    if (current.Length > 0)
+    {
+      argsArray.Add (current.ToString());
+      isQuotedArray.Add (isQuoted);
+    }
+
+    if (argsArray.Count > parameterDeclarations.Length)
+      throw new ApplicationException ("Number of actual parameters exceeds number of formal paramteres.");
+
+    ArrayList arguments = new ArrayList();
+    for (int i = 0; i < argsArray.Count; ++i)
+    {
+      string arg = (string) argsArray[i];
+      WxeParameterDeclaration paramDecl = parameterDeclarations[i];
+
+      if (! (bool) isQuotedArray[i] && arg[0] == '@')
+        arguments.Add (new WxeVariableReference (arg.Substring(1)));
+      else if (paramDecl.Type == typeof (string))
+        arguments.Add (arg);
+      else 
+        arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
+    }
+
+    return arguments.ToArray ();
+  }
+}
+
+public class WxeVariableReference
+{
+  private string _name;
+
+  public WxeVariableReference (string variableName)
+  {
+    _name = variableName;
+  }
+
+  public string Name
+  {
+    get { return _name; }
+  }
+
+  public override bool Equals (object obj)
+  {
+    WxeVariableReference other = obj as WxeVariableReference;
+    if (other == null)
+      return false;
+    
+    return this._name == other._name;
+  }
+
+  public override int GetHashCode()
+  {
+    return _name.GetHashCode();
+  }
+
 }
 
 }

@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.SessionState;
 using System.Reflection;
 using System.Web.UI.HtmlControls;
+using System.Globalization;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -32,7 +33,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       Type type = Type.GetType (typeName, true);
       _currentFunction = (WxeFunction) Activator.CreateInstance (type);
 
-      WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables);
+      WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables, CultureInfo.InvariantCulture);
 
       context.Session["CurrentFunction"] = _currentFunction;
     }

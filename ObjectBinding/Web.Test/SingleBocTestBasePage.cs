@@ -18,9 +18,9 @@ namespace OBWTest
 
 [MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WebFormBase:
-  WxePage, 
-  IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
-  IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
+    WxePage, 
+    IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
+    IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
   /// <summary> Hashtable&lt;type,IResourceManager&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
@@ -51,22 +51,16 @@ public class WebFormBase:
     Controls.Add (stack);
   }
 
-  /// <summary>
-  ///   Interface implementation: IObjectWithResources
-  /// </summary>
-  /// <returns></returns>
   public virtual IResourceManager GetResourceManager()
   {
-    //  chache the resource manager
+    // cache the resource manager
     Type type = this.GetType();
     if (s_chachedResourceManagers[type] == null)
     {
       lock (typeof (WebFormBase))
       {
         if (s_chachedResourceManagers[type] == null)
-        {
-          s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (this.GetType(), true);
-        }
+          s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);
       }  
     }
   
