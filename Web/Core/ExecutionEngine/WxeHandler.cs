@@ -68,7 +68,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       windowState = new WxeWindowState (_currentFunction, 20); // TODO: make lifetime configurable
       windowStates.Add (windowState);
 
-      WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables, CultureInfo.InvariantCulture);
+      _currentFunction.InitializeParameters (context.Request.Params);
     }
 
     WxeContext wxeContext = new WxeContext (context); 

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using NUnit.Framework;
-
+using Rubicon.Development.UnitTesting;
 namespace Rubicon.Web.Test.ExecutionEngine
 {
 
@@ -21,7 +21,7 @@ public class WxeParameterDeclarationTest
   {
     // "this \"special\", value", "true", "2004-03-25 12:00", var1
     string args = @"""this \""special\"", value"", ""true"", ""2004-03-25 12:00"", var1";
-    object[] result = WxeParameterDeclaration.ParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
+    object[] result = CallParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
     Assert.AreEqual (4, result.Length);
     Assert.AreEqual ("this \"special\", value", result[0]);
     Assert.AreEqual (true, result[1]);
@@ -33,14 +33,21 @@ public class WxeParameterDeclarationTest
   [ExpectedException (typeof (ApplicationException))]
   public void TestParseEx1 ()
   {
-    WxeParameterDeclaration.ParseActualParameters (s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture);
+    CallParseActualParameters (s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture);
   }
 
   [Test]
   [ExpectedException (typeof (ApplicationException))]
   public void TestParseEx2 ()
   {
-    WxeParameterDeclaration.ParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture);
+    CallParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture);
+  }
+
+  private object[] CallParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string parameterString, IFormatProvider formatProvider)
+  {
+    return (object[]) PrivateInvoke.InvokeNonPublicStaticMethod (
+        typeof (WxeFunction), "ParseActualParameters", 
+        parameterDeclarations, parameterString, formatProvider);
   }
 }
 

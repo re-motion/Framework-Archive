@@ -330,13 +330,8 @@ public class Command: IControlItem
       }
 
       Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
-
-      object [] actualParameters = WxeParameterDeclaration.ParseActualParameters (
-          functionType,
-          WxeFunctionCommand.Parameters,
-          null);
-
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, actualParameters);
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
+      function.InitializeParameters (WxeFunctionCommand.Parameters);
       
       wxePage.CurrentStep.ExecuteFunction (wxePage, function);
     }
