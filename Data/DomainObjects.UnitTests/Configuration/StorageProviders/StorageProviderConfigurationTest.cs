@@ -28,11 +28,9 @@ public class StorageProviderConfigurationTest
   [Test]
   public void Loading ()
   {
-    StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"..\..\storageProviders.xml", @"..\..\..\storageProviders.xsd");
+    StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProvidersForLoaderTest.xml", @"storageProviders.xsd");
 
     StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
-
     StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
 
     StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
@@ -42,14 +40,19 @@ public class StorageProviderConfigurationTest
   [Test]
   public void InitializeWithFileNames ()
   {
-    StorageProviderConfiguration.SetCurrent (
-        new StorageProviderConfiguration (@"..\..\storageProviders.xml", @"..\..\..\storageProviders.xsd"));
+    try
+    {
+      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"storageProvidersForLoaderTest.xml", @"storageProviders.xsd"));
+      string configurationFile = Path.GetFullPath (@"storageProvidersForLoaderTest.xml");
+      string schemaFile = Path.GetFullPath (@"storageProviders.xsd");
 
-    string configurationFile = Path.GetFullPath (@"..\..\storageProviders.xml");
-    string schemaFile = Path.GetFullPath (@"..\..\..\storageProviders.xsd");
-
-    Assert.AreEqual (configurationFile, StorageProviderConfiguration.Current.ConfigurationFile);
-    Assert.AreEqual (schemaFile, StorageProviderConfiguration.Current.SchemaFile);
+      Assert.AreEqual (configurationFile, StorageProviderConfiguration.Current.ConfigurationFile);
+      Assert.AreEqual (schemaFile, StorageProviderConfiguration.Current.SchemaFile);
+    }
+    finally
+    {
+      StorageProviderConfiguration.SetCurrent (null);
+    }
   }
 }
 }

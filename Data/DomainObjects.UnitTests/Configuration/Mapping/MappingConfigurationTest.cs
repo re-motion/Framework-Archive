@@ -26,13 +26,20 @@ public class MappingConfigurationTest
   [Test]
   public void InitializeWithFileNames ()
   {
-    MappingConfiguration.SetCurrent (new MappingConfiguration (@"..\..\mapping.xml", @"..\..\..\mapping.xsd"));
+    try
+    {
+      MappingConfiguration.SetCurrent (new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd"));
 
-    string configurationFile = Path.GetFullPath (@"..\..\mapping.xml");
-    string schemaFile = Path.GetFullPath (@"..\..\..\mapping.xsd");
+      string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
+      string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
-    Assert.AreEqual (configurationFile, MappingConfiguration.Current.ConfigurationFile);
-    Assert.AreEqual (schemaFile, MappingConfiguration.Current.SchemaFile);
+      Assert.AreEqual (configurationFile, MappingConfiguration.Current.ConfigurationFile);
+      Assert.AreEqual (schemaFile, MappingConfiguration.Current.SchemaFile);
+    }
+    finally
+    {
+      MappingConfiguration.SetCurrent (null);
+    }
   }
 }
 }

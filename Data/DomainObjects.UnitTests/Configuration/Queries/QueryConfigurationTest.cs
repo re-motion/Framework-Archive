@@ -50,14 +50,21 @@ public class QueryConfigurationTest
   [Test]
   public void InitializeWithFileNames ()
   {
-    QueryConfiguration.SetCurrent (
-        new QueryConfiguration (@"..\..\queries.xml", @"..\..\..\queries.xsd"));
+    try
+    {
+      QueryConfiguration.SetCurrent (
+          new QueryConfiguration (@"queriesForLoaderTest.xml", @"queries.xsd"));
 
-    string configurationFile = Path.GetFullPath (@"..\..\queries.xml");
-    string schemaFile = Path.GetFullPath (@"..\..\..\queries.xsd");
+      string configurationFile = Path.GetFullPath (@"queriesForLoaderTest.xml");
+      string schemaFile = Path.GetFullPath (@"queries.xsd");
 
-    Assert.AreEqual (configurationFile, QueryConfiguration.Current.ConfigurationFile);
-    Assert.AreEqual (schemaFile, QueryConfiguration.Current.SchemaFile);
+      Assert.AreEqual (configurationFile, QueryConfiguration.Current.ConfigurationFile);
+      Assert.AreEqual (schemaFile, QueryConfiguration.Current.SchemaFile);
+    }
+    finally
+    {
+      QueryConfiguration.SetCurrent (null);
+    }
   }
   
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
