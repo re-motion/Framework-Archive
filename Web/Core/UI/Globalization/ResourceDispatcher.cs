@@ -102,7 +102,7 @@ public sealed class ResourceDispatcher
 
       if (targetControl == null)
       {
-        s_log.Warn ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource container " + resourceManager.BaseNameList + ".");
+        s_log.Warn ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from resource container " + resourceManager.Name + ".");
       }
       else
       {

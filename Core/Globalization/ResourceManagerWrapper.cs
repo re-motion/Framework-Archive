@@ -24,64 +24,54 @@ namespace Rubicon.Globalization
 ///     make sure to sort the resource managers in the order of inheritance before wrapping them.
 ///   </para>
 /// </remarks>
-public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
+public class ResourceManagerWrapper: IResourceManager
 {
-  //  static fields
+  //  static members
 
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
+  public static ResourceManagerSet CreateWrapperSet (ResourceManager[] resourceManagers)
+  {
+    ResourceManagerWrapper[] wrappers = new ResourceManagerWrapper[resourceManagers.Length];
+    for (int i = 0; i < wrappers.Length; ++i)
+      wrappers[i] = new ResourceManagerWrapper (resourceManagers[i]);
+
+    return new ResourceManagerSet (wrappers);
+  }
+
   // member fields
 
-  /// <summary> BaseNames of the wrapped resource managers as a comma seperated list. </summary>
-  private string _baseNameList = "";
+  private ResourceManager _resourceManager;
 
   // construction and disposing
 
   /// <summary>
-  ///   Constructor for wrapping multipe resource managers
+  ///   Constructor for wrapping multiple resource managers
   /// </summary>
   /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
-  public ResourceManagerWrapper (params ResourceManager[] resourceManagers)
+  public ResourceManagerWrapper (ResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
-
-    //  Do null reference checking
-    //  and build comma seperated list of   
-    string[] resourceManagerNames = new string[resourceManagers.Length];
-    for (int index = 0; index < resourceManagers.Length; index++)
-    {
-      //Debug.Assert (resourceManagers[index] != null, "resourceManagers[index] != null");
-      if (resourceManagers[index] == null)
-        throw new ArgumentNullException ("resourceManagers[" + index + "]");
-
-      resourceManagerNames[index] = resourceManagers[index].BaseName;
-    }
-
-    _baseNameList = StringUtility.ConcatWithSeperator (resourceManagerNames, ", ");
-
-    InnerList.AddRange (resourceManagers);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    _resourceManager = resourceManager;
   }
 
   // methods and properties
 
   /// <summary>
-  ///   The wrapped <c>ResourceManager</c> instances. Is Read Only.
+  ///   Gets the wrapped <c>ResourceManager</c> instance. 
   /// </summary>
-  /// <remarks>
-  ///   Always contains at least one ResourceManager and no null references.
-  /// </remarks>
-  public ResourceManager this[int index]
+  public ResourceManager ResourceManager 
   {
-    get { return (ResourceManager)InnerList[index]; }
+    get { return _resourceManager; }
   }
 
   /// <summary>
   ///   Gets the root names of the resource files that the <c>IResourceManager</c>
   ///   searches for resources. Multiple roots are seperated by a comma.
   /// </summary>
-  public string BaseNameList
+  string IResourceManager.Name
   {
-    get { return _baseNameList; }
+    get { return _resourceManager.BaseName; }
   }
 
   /// <summary>
@@ -92,23 +82,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   /// </returns>
   public NameValueCollection GetAllStrings()
   {
-    return GetAllStrings ("");
-  }
-
-  /// <summary>
-  ///   Gets the value of the specified String resource. The resource is identified by
-  ///   concatenating the type's FullName and the enumvalue's string representation.
-  /// </summary>
-  /// <param name="type">The type to which the resource belongs</param>
-  /// <param name="enumValue">The last part of the reosurce identifier.</param>
-  /// <returns>
-  ///   The value of the resource. If a match is not possible, a null reference is returned
-  /// </returns>
-  public string GetString (Type type, Enum enumValue)
-  {
-    string identifier = type.FullName + "." + enumValue.ToString();
-
-    return GetString (identifier);
+    return GetAllStrings (string.Empty);
   }
 
   /// <summary>
@@ -132,27 +106,16 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
     //  Loop through all entries in the resource managers
     //  Copy the resources into a collection
 
-    CultureInfo[] cultureHierarchy = GetCultureHierarchy (ResourceManagerWrapper.GetUICulture());
+    CultureInfo[] cultureHierarchy = GetCultureHierarchy (CultureInfo.CurrentUICulture);
 
     // Loop from most neutral to current UICulture
     foreach (CultureInfo culture in cultureHierarchy)
     {
-      for (int index = 0; index < Count; index++)
+      ResourceSet resourceSet = null;
+
+      resourceSet = _resourceManager.GetResourceSet (culture, true, false);
+      if (resourceSet != null)
       {
-        ResourceSet resourceSet = null;
-
-        try
-        {
-          resourceSet = this[index].GetResourceSet (culture, true, false);
-        }
-        catch (MissingManifestResourceException ex)
-        {
-          s_log.Warn ("Missing resource set.", ex);
-        }
-
-        if (resourceSet == null)
-          continue;
-
         foreach (DictionaryEntry entry in resourceSet)
         {
           string key = (string)entry.Key;
@@ -160,11 +123,24 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
           if (key.StartsWith (prefix))
             result[key] = (string)entry.Value;
         }
-
       }
     }
 
     return result;
+  }
+
+  /// <summary>
+  ///   Gets the value of the specified String resource. The resource is identified by
+  ///   concatenating the type's FullName and the enumvalue's string representation.
+  /// </summary>
+  /// <param name="type">The type to which the resource belongs</param>
+  /// <param name="enumValue">The last part of the reosurce identifier.</param>
+  /// <returns>
+  ///   The value of the resource. If a match is not possible, a null reference is returned
+  /// </returns>
+  public string GetString (Type type, Enum enumValue)
+  {
+    return GetString (type.FullName + "." + enumValue.ToString());
   }
 
   /// <summary>
@@ -181,40 +157,7 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    string result = null;
-
-    //  Loop through the resource managers and look for a resource with a matching ID
-    //  Return the found resource
-
-    for (int index = 0; index < Count; index++)
-    {
-      try
-      {
-        //  Implicit fallback to more neutral cultures if no match found
-        result = this[index].GetString (id, GetUICulture());
-      }
-      catch (MissingManifestResourceException ex)
-      {
-        s_log.Warn ("Missing resource with ID '" + id + "'.", ex);
-      }
-
-    }
-
-    if (result == null)
-    {
-      s_log.Warn ("Resource '" + id + "' not found in the following resource container: " + BaseNameList);
-    }
-
-    return result;
-  }
-
-  /// <summary>
-  ///   Returns the threads current UI culture.
-  /// </summary>
-  /// <returns>The UI culture of the thread.</returns>
-  private static CultureInfo GetUICulture ()
-  {
-    return Thread.CurrentThread.CurrentUICulture;
+    return _resourceManager.GetString (id);
   }
 
   /// <summary>
@@ -224,9 +167,9 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
   ///   The starting point for walking the culture tree upwards. Must not be <see langame="null"/>.
   /// </param>
   /// <returns>
-  ///   The cultures, starting with the most specialized, ending with the invariant culture.
+  ///   The cultures, starting with the invariant culture, ending with the most specialized culture.
   /// </returns>
-  private static CultureInfo[] GetCultureHierarchy (CultureInfo mostSpecialized)
+  public static CultureInfo[] GetCultureHierarchy (CultureInfo mostSpecialized)
   {
     ArrayList hierarchyTopDown = new ArrayList();
     
@@ -239,8 +182,6 @@ public class ResourceManagerWrapper: ReadOnlyCollectionBase, IResourceManager
 
     if (mostSpecialized != CultureInfo.InvariantCulture)
       hierarchyTopDown.Add (currentLevel);
-
-    CultureInfo[] hierarchyBottomUp = new CultureInfo[hierarchyTopDown.Count];
 
     hierarchyTopDown.Reverse();
 
