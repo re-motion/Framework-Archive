@@ -97,6 +97,17 @@ public class WxeStepList: WxeStep
     }
   }
 
+  public WxeStep LastExecutedStep
+  {
+    get
+    {
+      if (_lastExecutedStep < _steps.Count && _lastExecutedStep >= 0)
+        return (WxeStep) _steps[_lastExecutedStep];
+      else
+        return null;
+    }
+  }
+
   public bool ExecutionStarted
   {
     get { return _lastExecutedStep >= 0; }
