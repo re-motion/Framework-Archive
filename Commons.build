@@ -342,6 +342,9 @@
       <fileset basedir="${project.dir}/Database/">
         <includes name="*.sql" />
       </fileset>
+      <fileset basedir="${project.dir}/">
+        <includes name="*.xml" />
+      </fileset>
     </copy>
     <call target="buildtest" />
     <nunit2>
