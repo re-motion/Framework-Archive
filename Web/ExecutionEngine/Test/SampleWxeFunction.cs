@@ -64,23 +64,23 @@ public class SampleWxeFunction: WxeFunction, ISampleFunctionVariables
 
   // steps
 
-  private void Step1 ()
+  void Step1 ()
   {
     Var1 = "SampleWxeFunction Step1";
     Var2 = "Var2 - Step1";
   }
 
-  private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+  WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
 
-  private WxeStep Step3 = new SampleWxeSubFunction ("@Var2", "constant for Var2");
+  WxeStep Step3 = new SampleWxeSubFunction ("@Var2", "constant for Var2");
 
-  private void Step4 (WxeContext context)
+  void Step4 (WxeContext context)
   {
     // Var1 = Var2;
     // Var1 = "SampleWxeFunction Step4";
   }
 
-  private WxeStep Step5 = new WxePageStep ("WebForm1.aspx");
+  WxeStep Step5 = new WxePageStep ("WebForm1.aspx");
 }
 
 public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
@@ -108,50 +108,45 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 
   // steps
 
-  private WxeStep Step1 = new WxeTryCatch (typeof (Try), typeof (CatchApplicationExecption));
-
-  private class Try: WxeStepList
+  class Step1: WxeTryCatch
   {
-    private SampleWxeSubFunction Function 
+    class Try: WxeTryBlock
     {
-      get { return (SampleWxeSubFunction) ParentFunction; }
+      SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
+
+      void Step1 (WxeContext context)
+      {
+        // Var1 = "SampleWxeSubFunction Step1";
+      }
+
+      WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+
+      void Step3 (WxeContext context)
+      {
+        Function.Var1 = "SampleWxeSubFunction Step3";
+      }
+
+      WxeStep Step4  = new WxePageStep ("WebForm1.aspx");
+
+      void Step5 (WxeContext context)
+      {
+        Function.Var1 = "exit SampleWxeSubFunction";
+        Function.Var2 = "this should never appear";
+      }    
     }
 
-    private void Step1 (WxeContext context)
+    [WxeException (typeof (ApplicationException))]
+    class Catch1: WxeCatchBlock
     {
-      // Var1 = "SampleWxeSubFunction Step1";
+      SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
+
+      void Step1 (WxeContext context)
+      {
+        Function.Var1 = "Exception var1";
+      }
+
+      WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
     }
-
-    private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
-
-    private void Step3 (WxeContext context)
-    {
-      Function.Var1 = "SampleWxeSubFunction Step3";
-    }
-
-    private WxeStep Step4  = new WxePageStep ("WebForm1.aspx");
-
-    private void Step5 (WxeContext context)
-    {
-      Function.Var1 = "exit SampleWxeSubFunction";
-      Function.Var2 = "this should never appear";
-    }    
-  }
-
-  [WxeException (typeof (ApplicationException))]
-  private class CatchApplicationExecption: WxeCatchBlock
-  {
-    private SampleWxeSubFunction Function 
-    {
-      get { return (SampleWxeSubFunction) ParentFunction; }
-    }
-
-    void Step1 (WxeContext context)
-    {
-      Function.Var1 = "Exception var1";
-    }
-
-    WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
   }
 }
 
