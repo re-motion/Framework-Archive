@@ -30,7 +30,7 @@ public interface IResourceDispatchTarget
   ///   </para>
   /// </remarks>
   /// <param name="values">
-  ///   An <c>IDictonary</c> consisting of name/value pairs of strings.
+  ///   An <c>IDictonary</c>: &lt;string key, string value&gt;.
   /// </param>
   void Dispatch (IDictionary values);
 }
