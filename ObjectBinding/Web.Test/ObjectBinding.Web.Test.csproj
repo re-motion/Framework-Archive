@@ -168,6 +168,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Startpage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Startpage.aspx.cs"
+                    DependentUpon = "Startpage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Startpage.aspx.resx"
+                    DependentUpon = "Startpage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestDateTimeValuePage.aspx"
                     BuildAction = "Content"
                 />
@@ -330,6 +345,10 @@
                     RelPath = "WebUserControl1.ascx.resx"
                     DependentUpon = "WebUserControl1.ascx.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WxeHandler.ashx"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "Globalization\TestListPage.resx"

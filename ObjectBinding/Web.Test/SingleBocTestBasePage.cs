@@ -9,12 +9,13 @@ using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Globalization;
+using Rubicon.Web.ExecutionEngine;
 
 namespace OBWTest
 {
 
 public class WebFormBase:
-  Page, 
+  WxePage, 
   IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
   IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
