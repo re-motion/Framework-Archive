@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.Web.UI">  
+
+  <target name="build" description="perform a build">
+  
+    <copy file="${prereq.assemblies}\Microsoft.Web.UI.WebControls.dll" todir="${project.builddir}" overwrite="true" />
+
+    <csc  target="library" 
+          output="${project.builddir}/${project.output}.${project.extension}" 
+          doc="${project.doc}" 
+          nowarn="1591,1573" 
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <sources failonempty="true">
+        <includes name="*.cs" />
+        <includes name="Controls/**/*.cs" />
+        <includes name="Design/**/*.cs" />
+        <includes name="Globalization/**/*.cs" />
+        <includes name="Utilities/**/*.cs" />
+        <excludes name="AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <includes name="${project.builddir}/Rubicon.Core.dll" />
+        <includes name="${project.builddir}/Rubicon.Globalization.dll" />
+        <includes name="${project.builddir}/log4net.dll" />
+        <includes name="${project.builddir}/Microsoft.Web.UI.WebControls.dll" />
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="System.Drawing.dll"/>
+        <includes asis="true" name="System.Web.dll"/>
+        <includes asis="true" name="System.Windows.Forms.dll"/>
+        <includes asis="true" name="System.Xml.dll"/>
+      </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web.UI">
+        <includes name="Globalization/*.resx" />
+      </resources>
+    </csc>
+        
+  </target>
+
+</project>
