@@ -211,6 +211,10 @@
                     RelPath = "Globalization\EntryFormGrid.resx"
                     BuildAction = "EmbeddedResource"
                 />
+                <File
+                    RelPath = "Globalization\TabControl.resx"
+                    BuildAction = "EmbeddedResource"
+                />
             </Include>
         </Files>
     </CSHARP>
