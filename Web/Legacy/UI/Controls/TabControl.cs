@@ -201,15 +201,27 @@ public class TabControl: Control, IPostBackEventHandler
       {
         // TODO: raise events
         case "TabSelected":
+        {
           _activeTab = Int32.Parse (argument);
-          break;
+          Page.Session["navTab"]= _activeTab;
+          Tab selectedTab = _items[_activeTab];
+          string href = selectedTab.Href;
+          if (selectedTab.PageToken)
+            href= AddPageToken(href);
+          
+            Page.RegisterStartupScript ("OpenPage", 
+            "<script language='JavaScript'>location.replace ('" + href + "' );</script>");
 
+          break;
+        }
         case "MenuSelected":
           break;
       }
     }
 	}
 
+  /*
+    
 	protected override object SaveViewState ()
 	{
 		return new Pair (base.SaveViewState(), _activeTab);
@@ -217,11 +229,14 @@ public class TabControl: Control, IPostBackEventHandler
 
 	protected override void LoadViewState (object savedState)
 	{
-		Pair state = (Pair) savedState;
+		
+    Pair state = (Pair) savedState;
 		base.LoadViewState (state.First);
 		_activeTab = (int) state.Second;
+    
 	}
 
+  */
   private string GetHref (string eventName, int itemIndex, Tab tab)
   {
 		string resultHref = null;
@@ -229,7 +244,8 @@ public class TabControl: Control, IPostBackEventHandler
 		string script = Page.GetPostBackClientEvent (this, eventArgument);
 
     string href = tab.Href;
-		if (href != string.Empty)
+		/*
+    if (href != string.Empty)
 		{
       if (tab.PageToken)
         href = AddPageToken (href);
@@ -239,6 +255,7 @@ public class TabControl: Control, IPostBackEventHandler
 			else
 				resultHref = "href=\"" + href + "\"";
 		}
+    */
 		if (resultHref == null)
 			resultHref = "href=\"javascript:" + script + "\"";
 
@@ -279,7 +296,12 @@ public class TabControl: Control, IPostBackEventHandler
 
 	protected override void Render (HtmlTextWriter output)
 	{
-		if (this.Site != null && this.Site.DesignMode)
+		object o= Page.Session["navTab"];
+    if (o != null)
+      _activeTab = (int) o;
+    else
+      _activeTab = 0;
+    if (this.Site != null && this.Site.DesignMode)
 		{
 			output.WriteLine ("[TabControl - edit in HTML view]");
 			return;
@@ -317,14 +339,6 @@ public class TabControl: Control, IPostBackEventHandler
 
       string href = GetHref ("TabSelected", i, tab);
 
-			/*
-				href = "href=\"javascript:window.open('" + tab.Href + "'); " + Page.GetPostBackClientEvent (this, i.ToString()) + "\"";
-				//href = "href=\"" + tab.Href + "\"" + targetAttribute;
-			else
-				href = "href=\"javascript:" + Page.GetPostBackClientEvent (this, i.ToString()) + "\"";
-				//href = String.Format ("href=\"javascript:__doPostBack('{0}','{1}')\"", this.ID, i);
-			*/
-
 			// write seperator cell
 			if (i > 0)
 				output.WriteLine ("<td width=\"3\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"3\"></td>", backColor, _emptyImage);
@@ -343,9 +357,19 @@ public class TabControl: Control, IPostBackEventHandler
 			output.WriteLine ("</td>");
 		}
 		output.WriteLine ("</tr>");
-		if (_seperatorLine)
+
+    RenderSeperatorLine (output, lineColor, activeClassAttrib);
+    
+    RenderMenuBar (output);
+		
+    output.WriteLine ("</table>");
+	}
+
+  public void RenderSeperatorLine (HtmlTextWriter output, string lineColor, string activeClassAttrib)
+  {
+		if (SeperatorLine)
 		{
-  		output.WriteLine ("<tr>");
+      output.WriteLine ("<tr>");
 			if (_activeTab != 0)
 			{
 				output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
@@ -365,11 +389,9 @@ public class TabControl: Control, IPostBackEventHandler
 					lineColor, _emptyImage);
   		output.WriteLine ("</tr>");
 		}
-
-    RenderMenuBar (output);
-		output.WriteLine ("</table>");
-	}
-
+  }
+  
+  
   public void RenderMenuBar (HtmlTextWriter output)
   {
     if (HasMenuBar)
@@ -392,7 +414,7 @@ public class TabControl: Control, IPostBackEventHandler
             output.WriteLine (" | ");
 
           // string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
-          string menuHref = GetHref ("aa", i, menu);
+          string menuHref = GetHref ("MenuSelected", i, menu);
           output.WriteLine ("<a class=\"tabSubLink\" {0}>{1}</a> ", menuHref, menu.Label);
           isFirstMenu = false;
         }
@@ -409,7 +431,7 @@ public class TabControl: Control, IPostBackEventHandler
 }
 
 
-  public class TabCollection: IList
+public class TabCollection: IList
 {
 	private ArrayList _tabs = new ArrayList ();
 
