@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 using System.Collections;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.Utilities
 {
@@ -146,6 +147,8 @@ public class ControlHelper
 
   public static Control FindControl (Control namingContainer, string controlID)
   {
+    ArgumentUtility.CheckNotNull ("namingContainer", namingContainer);
+
     try
     {
       //  WORKAROUND: In Designmode the very first call to FindControl results in a duplicate entry.
