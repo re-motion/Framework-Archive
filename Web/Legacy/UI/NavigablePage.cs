@@ -155,7 +155,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
 
   public void ClearGlobalSessionValue (string key)
   { 
-    PageUtility.ClearSessionValue (this, key);
+    Page.Session[key] = null;
   }
   
   protected object GetSessionValue (string token, string key, bool required)
