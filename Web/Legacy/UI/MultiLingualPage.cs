@@ -3,7 +3,7 @@ using System.Web.UI;
 
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
