@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///     The inherited aspx form's form instance must named <c>Form</c>.
 ///   </para>
 /// </remarks>
-public class DatePickerForm : Page
+public class DatePickerPage : Page
 {
   private const string c_datePickerScriptUrl = "DatePicker.js";
   
