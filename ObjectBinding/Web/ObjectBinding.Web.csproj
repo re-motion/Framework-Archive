@@ -526,6 +526,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\Image\RequiredField.gif"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\SortAscending.gif"
                     BuildAction = "Content"
                 />
