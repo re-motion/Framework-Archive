@@ -159,7 +159,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  public override DataContainerCollection ExecuteCollectionQuery (Query query)
+  public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
@@ -181,7 +181,7 @@ public abstract class RdbmsProvider : StorageProvider
     }    
   }
 
-  public override object ExecuteScalarQuery (Query query)
+  public override object ExecuteScalarQuery (IQuery query)
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("query", query);
@@ -490,7 +490,7 @@ public abstract class RdbmsProvider : StorageProvider
     _connection = null;
   }
 
-  private void CheckQuery (Query query, string argumentName)
+  private void CheckQuery (IQuery query, string argumentName)
   {
     if (query.StorageProviderID != ID)
     {

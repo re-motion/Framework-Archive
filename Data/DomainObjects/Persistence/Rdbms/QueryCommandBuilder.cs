@@ -14,11 +14,11 @@ public class QueryCommandBuilder : CommandBuilder
 
   // member fields
 
-  private Query _query;
+  private IQuery _query;
 
   // construction and disposing
 
-  public QueryCommandBuilder (RdbmsProvider provider, Query query) : base (provider)
+  public QueryCommandBuilder (RdbmsProvider provider, IQuery query) : base (provider)
   {
     ArgumentUtility.CheckNotNull ("query", query);
 
