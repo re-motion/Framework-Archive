@@ -252,11 +252,11 @@ public class BocList:
   private BocColumnDefinitionCollection _fixedColumns;
 
   /// <summary> 
-  ///   Contains a <see cref="ColumnDefinition"/> for each property of the bound 
+  ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
   ///   <see cref="IBusinessObject"/>. 
   /// </summary>
   private BocColumnDefinition[] _allPropertyColumns = new BocColumnDefinition[0];
-  /// <summary> Contains the <see cref="ColumnDefinition"/> objects during the rendering phase. </summary>
+  /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _renderColumns;
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
@@ -265,7 +265,7 @@ public class BocList:
   ///   Determines whether to show the drop down list for selecting additional column definitions. 
   /// </summary>
   private bool _showAdditionalColumnsList = true;
-  /// <summary> The current <see cref="BocComlumnDefinitionSet"/>. May be set at run time. </summary>
+  /// <summary> The current <see cref="BocColumnDefinitionSet"/>. May be set at run time. </summary>
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
   /// <summary> 
   ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
@@ -305,7 +305,7 @@ public class BocList:
   private NaInt32 _pageSize = NaInt32.Null; 
   /// <summary>
   ///   Show page info ("page 1 of n") and links always (true),
-  //    or only if there is more than 1 page (false)
+  ///   or only if there is more than 1 page (false)
   /// </summary>
   private bool _alwaysShowPageInfo = false; 
   /// <summary> The text providing the current page information to the user. </summary>
@@ -410,7 +410,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' must begin with on of the following prefixes: '" + c_eventCommandPrefix + "' or '" + c_sortCommandPrefix + "'.");
   }
 
-  /// <summary> Handles post back events raised by an <see cref="ItemCommand"/> of type event. </summary>
+  /// <summary> Handles post back events raised by an <see cref="BocItemCommand"/> of type event. </summary>
   /// <param name="eventArgument">
   ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
   /// </param>
@@ -2017,7 +2017,7 @@ public class BocList:
 
   /// <summary>
   ///   Gets or sets a flag that determines whether to to display a sorting button 
-  ///   in front of each <see cref="BocValueColumn"/>'s header.
+  ///   in front of each <see cref="BocValueColumnDefinition"/>'s header.
   /// </summary>
   /// <value> <see langword="true"/> to enable the sorting buttons. </value>
   [Category ("Behavior")]
