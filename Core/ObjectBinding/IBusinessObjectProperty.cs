@@ -87,6 +87,8 @@ public interface IBusinessObjectProperty
   /// </remarks>
   /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
   bool IsReadOnly (IBusinessObject obj);
+
+  IBusinessObjectProvider BusinessObjectProvider { get; }
 }
 
 public interface IBusinessObjectStringProperty: IBusinessObjectProperty
