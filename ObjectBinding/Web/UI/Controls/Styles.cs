@@ -17,18 +17,18 @@ public enum ListControlType
 public class ListControlStyle: Style
 {
   private ListControlType _controlType = ListControlType.DropDownList;
-  private bool _autoPostback = false;
-  private int _listBoxRows = 4;
-  private int _radioButtonListCellPadding = -1;
-  private int _radioButtonListCellSpacing = -1;
-  private int _radioButtonListRepeatColumns = 0;
+  private NaBoolean _autoPostback = NaBoolean.Null;
+  private NaInt32 _listBoxRows = NaInt32.Null;
+  private NaInt32 _radioButtonListCellPadding = NaInt32.Null;
+  private NaInt32 _radioButtonListCellSpacing = NaInt32.Null;
+  private NaInt32 _radioButtonListRepeatColumns = NaInt32.Null;
   private RepeatDirection _radioButtonListRepeatDirection = RepeatDirection.Vertical;
   private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
   private TextAlign _radioButtonListTextAlign = TextAlign.Right;
 
   [Description("The type of control that is used in edit mode.")]
   [Category("Behavior")]
-  [DefaultValue (0)]
+  [DefaultValue (ListControlType.DropDownList)]
   [NotifyParentProperty (true)]
   public ListControlType ControlType
   {
@@ -38,9 +38,9 @@ public class ListControlStyle: Style
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
-  [DefaultValue (false)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public bool AutoPostback
+  public NaBoolean AutoPostback
   {
     get { return _autoPostback; }
     set { _autoPostback = value; }
@@ -48,9 +48,9 @@ public class ListControlStyle: Style
 
   [Description("The number of visible rows to display.")]
   [Category("Appearance")]
-  [DefaultValue (4)]
+  [DefaultValue (typeof(NaInt32), "Null")]
   [NotifyParentProperty (true)]
-  public int ListBoxRows
+  public NaInt32 ListBoxRows
   {
     get { return _listBoxRows; }
     set { _listBoxRows = value; }
@@ -58,9 +58,9 @@ public class ListControlStyle: Style
 
   [Description("The padding between each item.")]
   [Category("Layout")]
-  [DefaultValue (-1)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public int RadioButtonListCellPadding
+  public NaInt32 RadioButtonListCellPadding
   {
     get { return _radioButtonListCellPadding; }
     set { _radioButtonListCellPadding = value; }
@@ -68,9 +68,9 @@ public class ListControlStyle: Style
 
   [Description("The spacing between each item.")]
   [Category("Layout")]
-  [DefaultValue (-1)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public int RadioButtonListCellSpacing
+  public NaInt32 RadioButtonListCellSpacing
   {
     get { return _radioButtonListCellSpacing; }
     set { _radioButtonListCellSpacing = value; }
@@ -78,9 +78,9 @@ public class ListControlStyle: Style
 
   [Description("The number of columns to use to lay out the items.")]
   [Category("Layout")]
-  [DefaultValue (0)]
+  [DefaultValue (typeof(NaInt32), "Null")]
   [NotifyParentProperty (true)]
-  public int RadioButtonListRepeatColumns
+  public NaInt32 RadioButtonListRepeatColumns
   {
     get { return _radioButtonListRepeatColumns; }
     set { _radioButtonListRepeatColumns = value; }
@@ -88,7 +88,7 @@ public class ListControlStyle: Style
 
   [Description("The direction in which items are laid out.")]
   [Category("Layout")]
-  [DefaultValue (1)]
+  [DefaultValue (RepeatDirection.Vertical)]
   [NotifyParentProperty (true)]
   public RepeatDirection RadioButtonListRepeatDirection
   {
@@ -98,7 +98,7 @@ public class ListControlStyle: Style
 
   [Description("Whether items are repeated in a table or in-flow.")]
   [Category("Layout")]
-  [DefaultValue (0)]
+  [DefaultValue (RepeatLayout.Table)]
   [NotifyParentProperty (true)]
   public RepeatLayout RadionButtonListRepeatLayout
   {
@@ -108,7 +108,7 @@ public class ListControlStyle: Style
 
   [Description("The alignment of the text label with respect to each item.")]
   [Category("Appearance")]
-  [DefaultValue (2)]
+  [DefaultValue (TextAlign.Right)]
   [NotifyParentProperty (true)]
   public TextAlign RadioButtonListTextAlign
   {
@@ -140,7 +140,8 @@ public class ListControlStyle: Style
 
   public void ApplyCommonStyle (ListControl listControl)
   {
-    listControl.AutoPostBack = _autoPostback;
+    if (! _autoPostback.IsNull)
+      listControl.AutoPostBack = _autoPostback.Value;
   }
 
   public void ApplyStyle (ListControl listControl)
@@ -158,7 +159,9 @@ public class ListControlStyle: Style
   public void ApplyStyle (ListBox listBox)
   {
     ApplyCommonStyle (listBox);
-    listBox.Rows = _listBoxRows;
+
+    if (! _listBoxRows.IsNull)
+      listBox.Rows = _listBoxRows.Value;
   }
 
   public void ApplyStyle (DropDownList dropDownList)
@@ -169,9 +172,16 @@ public class ListControlStyle: Style
   public void ApplyStyle (RadioButtonList radioButtonList)
   {
     ApplyCommonStyle (radioButtonList);
-    radioButtonList.CellPadding = _radioButtonListCellPadding;
-    radioButtonList.CellSpacing = _radioButtonListCellSpacing;
-    radioButtonList.RepeatColumns = _radioButtonListRepeatColumns;
+    
+    if (! _radioButtonListCellPadding.IsNull)
+      radioButtonList.CellPadding = _radioButtonListCellPadding.Value;
+    
+    if (! _radioButtonListCellSpacing.IsNull)
+      radioButtonList.CellSpacing = _radioButtonListCellSpacing.Value;
+    
+    if (! _radioButtonListRepeatColumns.IsNull)
+      radioButtonList.RepeatColumns = _radioButtonListRepeatColumns.Value;
+    
     radioButtonList.RepeatDirection = _radioButtonListRepeatDirection;
     radioButtonList.TextAlign = _radioButtonListTextAlign;
     radioButtonList.RepeatLayout = _radionButtonListRepeatLayout;
@@ -183,20 +193,26 @@ public class ListControlStyle: Style
 /// </summary>
 public class SingleRowTextBoxStyle: Style
 {
-  private int _columns = 0;
-  private int _maxLength = 0;
-  private bool _readOnly = false;
-  private bool _autoPostback = false;
+  private NaInt32 _columns = NaInt32.Null;
+  private NaInt32 _maxLength = NaInt32.Null;
+  private NaBoolean _readOnly = NaBoolean.Null;
+  private NaBoolean _autoPostback = NaBoolean.Null;
 
   public virtual void ApplyStyle (TextBox textBox)
   {
     textBox.ApplyStyle (this);
-    if (_maxLength != 0)
-      textBox.MaxLength = _maxLength;
-    if (_columns != 0)
-      textBox.Columns = _columns;
-    textBox.AutoPostBack = _autoPostback;
-    textBox.ReadOnly = _readOnly;
+    
+    if (! _maxLength.IsNull)
+      textBox.MaxLength = _maxLength.Value;
+    
+    if (! _columns.IsNull)
+      textBox.Columns = _columns.Value;
+    
+    if (! _autoPostback.IsNull)
+      textBox.AutoPostBack = _autoPostback.Value;
+    
+    if (! _readOnly.IsNull)
+      textBox.ReadOnly = _readOnly.Value;
   }
 
   public override void CopyFrom (Style s)
@@ -213,9 +229,9 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("The width of the textbox in characters.")]
   [Category("Appearance")]
-  [DefaultValue (0)]
+  [DefaultValue (typeof(NaInt32), "Null")]
   [NotifyParentProperty (true)]
-  public int Columns
+  public NaInt32 Columns
   {
     get { return _columns; }
     set { _columns = value; }
@@ -223,9 +239,9 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("The maximum number of characters that can be entered.")]
   [Category("Behavior")]
-  [DefaultValue (0)]
+  [DefaultValue (typeof(NaInt32), "Null")]
   [NotifyParentProperty (true)]
-  public int MaxLength
+  public NaInt32 MaxLength
   {
     get { return _maxLength; }
     set { _maxLength = value; }
@@ -233,9 +249,9 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("Whether the text in the control can be changed or not.")]
   [Category("Behavior")]
-  [DefaultValue (false)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public bool ReadOnly
+  public NaBoolean ReadOnly
   {
     get { return _readOnly; }
     set { _readOnly = value; }
@@ -243,9 +259,9 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
-  [DefaultValue (false)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public bool AutoPostBack
+  public NaBoolean AutoPostBack
   {
     get { return _autoPostback; }
     set { _autoPostback = value; }
@@ -257,17 +273,19 @@ public class SingleRowTextBoxStyle: Style
 /// </summary>
 public class TextBoxStyle: SingleRowTextBoxStyle
 {
-  private int _rows = 0;
+  private NaInt32 _rows = NaInt32.Null;
   private TextBoxMode _textMode = TextBoxMode.SingleLine;
-  private bool _wrap = true;
+  private NaBoolean _wrap = NaBoolean.Null;
 
   public override void ApplyStyle (TextBox textBox)
   {
     base.ApplyStyle (textBox);
-    if (_rows != 0)
-      textBox.Rows = _rows;
-    if (_wrap != true)
-      textBox.Wrap = _wrap;
+    
+    if (! _rows.IsNull)
+      textBox.Rows = _rows.Value;
+
+    if (! _wrap.IsNull)
+      textBox.Wrap = _wrap.Value;
 
     textBox.TextMode = _textMode;
   }
@@ -285,9 +303,9 @@ public class TextBoxStyle: SingleRowTextBoxStyle
   }
   [Description("The number of lines to display for a multiline textbox.")]
   [Category("Behavior")]
-  [DefaultValue (0)]
+  [DefaultValue (typeof(NaInt32), "Null")]
   [NotifyParentProperty (true)]
-  public int Rows
+  public NaInt32 Rows
   {
     get { return _rows; }
     set { _rows = value; }
@@ -295,7 +313,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
 
   [Description("The behavior mode of the textbox.")]
   [Category("Behavior")]
-  [DefaultValue (typeof (TextBoxMode), "SingleLine")]
+  [DefaultValue (TextBoxMode.SingleLine)]
   [NotifyParentProperty (true)]
   public TextBoxMode TextMode
   {
@@ -305,9 +323,9 @@ public class TextBoxStyle: SingleRowTextBoxStyle
 
   [Description("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
   [Category("Behavior")]
-  [DefaultValue (true)]
+  [DefaultValue (typeof(NaBoolean), "Null")]
   [NotifyParentProperty (true)]
-  public bool Wrap
+  public NaBoolean Wrap
   {
     get { return _wrap; }
     set { _wrap = value; }
