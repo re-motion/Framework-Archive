@@ -24,22 +24,19 @@ public class WxeContext
     // _current = value; 
   }
 
-
   private HttpContext _httpContext;
   private bool _isPostBack;
+  private bool _isReturningPostBack;
   private NameValueCollection _postBackCollection;
 
   public WxeContext (HttpContext context)
-    : this (context, false)
-  {
-  }
-
-  public WxeContext (HttpContext context, bool isPostBack)
   {
     ArgumentUtility.CheckNotNull ("context", context);
 
     _httpContext = context;
-    _isPostBack = isPostBack;
+    _isPostBack = false;
+    _isReturningPostBack = false;
+    _postBackCollection = null;
   }
 
   public HttpContext HttpContext
@@ -51,6 +48,15 @@ public class WxeContext
   {
     get { return _isPostBack; }
     set { _isPostBack = value; }
+  }
+
+  /// <summary>
+  /// During the execution of a page, specifies whether the current postback cycle was caused by returning from a WXE function.
+  /// </summary>
+  public bool IsReturningPostBack 
+  {
+    get { return _isReturningPostBack; }
+    set { _isReturningPostBack = value; }
   }
 
   public NameValueCollection PostBackCollection

@@ -28,6 +28,11 @@ public class NameObjectCollection: NameObjectCollectionBase
   {
     BaseClear();
   }
+
+  public void Remove (string name)
+  {
+    BaseRemove (name);
+  }
 }
 
 }

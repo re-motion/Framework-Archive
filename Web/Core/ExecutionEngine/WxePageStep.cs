@@ -28,10 +28,12 @@ public class WxePageStep: WxeStep
       context.IsPostBack = true;
       context.PostBackCollection = _postBackCollection;
       _postBackCollection = null;
+      context.IsReturningPostBack = true;
     }
     else
     {
       context.PostBackCollection = null;
+      context.IsReturningPostBack = false;
     }
 
     context.HttpContext.Server.Transfer (_page, context.IsPostBack);
@@ -60,13 +62,22 @@ public class WxePageStep: WxeStep
     }
   }
 
-  public void ExecuteFunction (object sender, IWxePage page, WxeFunction function)
+  public void ExecuteFunction (Control sender, IWxePage page, WxeFunction function)
+  {
+    ExecuteFunction (sender.UniqueID, page, function);
+  }
+
+  public void ExecuteFunction (IWxePage page, WxeFunction function)
+  {
+    ExecuteFunction ((string) null, page, function);
+  }
+  
+  public void ExecuteFunction (string postbackEventUniqueID, IWxePage page, WxeFunction function)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
-    if (sender is Control)
-      _postBackCollection.Remove (((Control)sender).UniqueID);
+    if (postbackEventUniqueID != null)
+      _postBackCollection.Remove (postbackEventUniqueID);
 
-    //_postBackCollection.Remove ("Sub");
     if (_function != null)
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
 

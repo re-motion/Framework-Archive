@@ -32,6 +32,8 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Label Label5;
     protected System.Web.UI.WebControls.Label Var2Label;
     protected System.Web.UI.WebControls.Button Throw;
+    protected System.Web.UI.WebControls.Label Label1;
+    protected System.Web.UI.WebControls.Label RetValLabel;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -94,7 +96,17 @@ namespace Rubicon.PageTransition
 
     private void Sub_Click (object sender, System.EventArgs e)
     {
-      CurrentStep.ExecuteFunction (sender, this, new SubFunction("call var1", "call var2"));
+      // CurrentStep.ExecuteFunction ((Control)sender, this, new SubFunction("call var1", "call var2"));
+      if (! WxeContext.Current.IsReturningPostBack)
+      {
+        Variables["xx"] = "call var 1!";
+        CurrentStep.ExecuteFunction (this, new SubFunction("@xx", "call var2"));
+      }
+      else
+      {
+        RetValLabel.Text = (string) Variables["xx"];
+        Variables.Remove ("xx");
+      }
     }
 
     private void Throw_Click (object sender, System.EventArgs e)
@@ -109,14 +121,14 @@ namespace Rubicon.PageTransition
       {
       }
 
-      [WxeParameter (1)]
+      [WxeParameter (1, true, WxeParameterDirection.InOut)]
       public string Var1
       {
         get { return (string) Variables["Var1"]; }
         set { Variables["Var1"] = value; }
       }
 
-      [WxeParameter (2)]
+      [WxeParameter (2, WxeParameterDirection.InOut)]
       public string Var2
       {
         get { return (string) Variables["Var2"]; }
@@ -125,14 +137,14 @@ namespace Rubicon.PageTransition
 
       private void Step1 (WxeContext context)
       {
-        Variables["Var1"] = "SubFunction Step1";
+        Var1 = "SubFunction Step1";
       }
 
       private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
 
       private void Step3 (WxeContext context)
       {
-        Variables["Var1"] = "SubFunction Step3";
+        Var1 = "SubFunction Step3";
       }
     }
 	}

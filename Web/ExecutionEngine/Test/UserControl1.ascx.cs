@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.ExecutionEngine;
@@ -52,7 +53,7 @@ public class UserControl1 : WxeUserControl
 
   private void Sub_Click (object sender, System.EventArgs e)
   {
-    CurrentStep.ExecuteFunction (sender, Page, new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"));  
+    CurrentStep.ExecuteFunction ((Control) sender, Page, new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"));  
   }
 
   private void Next_Click (object sender, System.EventArgs e)
