@@ -92,7 +92,7 @@ public class ExtendedTextBox: System.Web.UI.WebControls.TextBox, IPostBackDataHa
     }
     else
     {
-      // If ViewState is disabled => ASP-TextBox keeps it's Text and 
+      // If ViewState is disabled => ASP-TextBox keeps its Text and 
       // raises TextChanged event only if Text <> "" => 
       // Implement same behaviour
       Text = newText;
