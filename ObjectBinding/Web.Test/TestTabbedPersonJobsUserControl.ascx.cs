@@ -17,8 +17,6 @@ public class TestTabbedPersonJobsUserControl :
   protected Rubicon.ObjectBinding.Web.Controls.BocList ListField;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
   protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
 
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
