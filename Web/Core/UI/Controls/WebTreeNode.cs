@@ -21,6 +21,8 @@ public class WebTreeNode: IControlItem
   private WebTreeNode _parentNode;
   private bool _isExpanded = false;
   private bool _isEvaluated = false;
+  private bool _isSelected = false;
+  int _selectDesired = 0;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string nodeID, string text, IconInfo icon)
@@ -93,8 +95,26 @@ public class WebTreeNode: IControlItem
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
   {
     _treeView = treeView; 
+    if (_selectDesired == 1)
+    {
+      _selectDesired = 0;
+      IsSelected = true;
+    }
+    else if (_selectDesired == -1)
+    {
+      _selectDesired = 0;
+      IsSelected = false;
+    }
     _parentNode = parentNode; 
     _children.SetParent (_treeView, this);
+  }
+
+  /// <summary> Sets the node's selection state. </summary>
+  protected internal void SetSelected(bool value)
+  {
+    _isSelected = value;
+    if (_treeView == null)
+      _selectDesired = value ? 1 : -1;
   }
 
   public override string ToString()
@@ -239,6 +259,25 @@ public class WebTreeNode: IControlItem
   {
     get { return _isEvaluated; }
     set { _isEvaluated = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether this node is the selected node of the tree view. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public bool IsSelected
+  {
+    get { return _isSelected; }
+    set 
+    {
+      SetSelected(value);
+      if (_treeView != null)
+      {
+        if (value)
+          _treeView.SetSelectedNode (this);
+        else if (this == _treeView.SelectedNode)
+          _treeView.SetSelectedNode (null);
+      }
+    }
   }
 
   /// <summary> Gets the human readable name of this type. </summary>
