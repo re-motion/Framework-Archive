@@ -13,27 +13,28 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public sealed class BocColumnDefinitionCollection : CollectionBase
 {
   /// <summary> 
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this
+  ///   <see cref="BocColumnDefinitionCollection"/> belongs.
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> 
   ///   The types derived from <see cref="BocColumnDefinition"/> which may be added 
-  ///   to the collection. 
+  ///   to the <see cref="BocColumnDefinitionCollection"/>. 
   /// </summary>
   private Type[] _supportedTypes;
 
   /// <summary> 
   ///   Initializes a new instance of the <see cref="BocColumnDefinitionCollection"/> class
-  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs to and the
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs and the
   ///   list of <see cref="BocColumnDefinition"/> derived types supported by the collection.
   ///  </summary>
   /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs.
   /// </param>
   /// <param name="supportedTypes"> 
   ///   The types derived from <see cref="BocColumnDefinition"/> which may be added 
-  ///   to the collection. 
+  ///   to the <see cref="BocColumnDefinitionCollection"/>. 
   /// </param>
   internal BocColumnDefinitionCollection (
       IBusinessObjectBoundWebControl ownerControl, 
@@ -52,14 +53,15 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
 
   /// <summary> 
   ///   Initializes a new instance of the <see cref="BocColumnDefinitionCollection"/> class
-  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs to.
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs.
   ///  </summary>
   ///  <remarks>
   ///   An instance initialized by this contructor supports all types derived from 
   ///   <see cref="BocColumnDefinition"/>.
   ///  </remarks>
   /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinitionCollection"/> belongs.
   /// </param>
   internal BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
     : this (ownerControl, new Type[] {typeof (BocColumnDefinition)})
@@ -136,7 +138,7 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
 
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
-  ///   collection belongs to.
+  ///   <see cref="BocColumnDefinitionCollection"/> belongs.
   /// </summary>
   internal IBusinessObjectBoundWebControl OwnerControl
   {

@@ -33,7 +33,8 @@ public abstract class BocColumnDefinition
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   private BocItemCommand _command;
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this column definition belongs to. 
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinition"/> belongs. 
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
@@ -195,7 +196,7 @@ public abstract class BocColumnDefinition
 
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> 
-  ///   to which this column definition belongs to. 
+  ///   to which this <see cref="BocColumnDefinition"/> belongs. 
   /// </summary>
   protected internal IBusinessObjectBoundWebControl OwnerControl
   {
