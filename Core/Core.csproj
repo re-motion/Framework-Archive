@@ -80,7 +80,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
             </References>
@@ -111,6 +111,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "StringUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WorkContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -118,11 +123,6 @@
                 <File
                     RelPath = "doc\include\include.xml"
                     BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Globalization\ResourceDispatcher.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "NullableValueTypes\Exceptions.cs"
