@@ -11,7 +11,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   // static members and constants
 
-
   public static DomainObjectCollection Create (Type collectionType)
   {
     return Create (collectionType, new DataContainerCollection ());
@@ -179,9 +178,19 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   #region ICloneable Members
 
-  public virtual object Clone ()
+  public object Clone ()
   {
-    return new DomainObjectCollection (this, this.IsReadOnly);
+    return Clone (this.IsReadOnly);
+  }
+
+  /// <summary>
+  /// Returns a cloned version of this collection. Must be overridden in derived classes.
+  /// </summary>
+  /// <param name="isReadOnly">Specifies whether the cloned collection should be read-only.</param>
+  /// <returns>The cloned collection.</returns>
+  public virtual DomainObjectCollection Clone (bool isReadOnly)
+  {
+    return new DomainObjectCollection (this, isReadOnly);
   }
 
   #endregion
