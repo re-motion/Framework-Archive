@@ -27,7 +27,7 @@ public sealed class ResourceUrlResolver
   ///     is used. (e.g., WebApplication/res/Rubicon.Web/Image/Help.gif).
   ///   </para><para>
   ///     During design time, the root section <c>/&lt;AppDir&gt;/res</c> is mapped to the environment variable
-  ///     <c>%RUBICONRESOURCES</c>, or if the variable doe not exist, <c>C:\Rubicon.Resources</c>.
+  ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <param name="control"> The current <see cref="Control"/>. Currently, this parameter is ignored. </param>
