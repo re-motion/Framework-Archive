@@ -21,7 +21,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = 'copy "$(ProjectDir)..\*.xsd" "$(TargetDir)*.xsd"&#xd;&#xa;copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"'
+                PostBuildEvent = 'copy "$(ProjectDir)..\*.xsd" "$(TargetDir)*.xsd"&#xd;&#xa;copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"&#xd;&#xa;copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"'
                 RootNamespace = "Rubicon.Data.DomainObjects.UnitTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -213,6 +213,10 @@
                 />
                 <File
                     RelPath = "storageProviders.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "storageProvidersForLoaderTest.xml"
                     BuildAction = "Content"
                 />
                 <File
