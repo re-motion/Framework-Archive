@@ -96,16 +96,9 @@ public class MultiLingualResourcesAttribute: Attribute
 
     ResourceManagerSet resourceManagerSet = null;
 
-    StringBuilder keyStringBuilder = new StringBuilder (1000);
-    keyStringBuilder.AppendFormat (
-        "{0} with hierarchy: {1}", 
-        definingType.AssemblyQualifiedName,
-        includeHierarchy.ToString());
-
-    string key = keyStringBuilder.ToString();
+    string key = definingType.AssemblyQualifiedName + "/" + includeHierarchy.ToString();
    
     //  Look in cache and continue with the cached resource manager wrapper, if one is found
-
     resourceManagerSet = s_resourceManagerWrappersCache[key] as ResourceManagerSet;
     
     if (resourceManagerSet != null)

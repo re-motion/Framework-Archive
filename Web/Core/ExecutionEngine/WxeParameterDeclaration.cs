@@ -238,6 +238,12 @@ public class WxeParameterDeclaration
     return replacedParameters;
   }
 
+
+  public static object[] ParseActualParameters (Type wxeFunctionType, string actualParameters, IFormatProvider format)
+  {
+    return ParseActualParameters (WxeFunction.GetParamaterDeclarations (wxeFunctionType), actualParameters, format);
+  }
+
   /// <summary>
   ///   Parses a string of comma separated actual parameters.
   /// </summary>

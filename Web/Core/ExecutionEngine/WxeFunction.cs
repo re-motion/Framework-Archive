@@ -15,6 +15,49 @@ namespace Rubicon.Web.ExecutionEngine
 /// </summary>
 public abstract class WxeFunction: WxeStepList
 {
+  public static WxeParameterDeclaration[] GetParamaterDeclarations (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    if (! typeof (WxeFunction).IsAssignableFrom (type)) throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
+
+    return GetParamaterDeclarationsUnchecked (type);
+  }
+
+  private static WxeParameterDeclaration[] GetParamaterDeclarationsUnchecked (Type type)
+  {
+    WxeParameterDeclaration[] declarations = (WxeParameterDeclaration[]) s_parameterDeclarations[type];
+    if (declarations == null)
+    {
+      lock (type)
+      {
+        declarations = (WxeParameterDeclaration[]) s_parameterDeclarations[type];
+        if (declarations == null)
+        {
+          PropertyInfo[] properties = type.GetProperties (BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+          ArrayList parameters = new ArrayList(); // ArrayList<WxeParameterDeclaration>
+          ArrayList numbers = new ArrayList(); // ArrayList<int>
+          foreach (PropertyInfo property in properties)
+          {
+            WxeParameterAttribute parameterAttribute = WxeParameterAttribute.GetAttribute (property);
+            if (parameterAttribute != null)
+            {
+              parameters.Add (new WxeParameterDeclaration (
+                  property.Name, parameterAttribute.Required, parameterAttribute.Direction, property.PropertyType));
+              numbers.Add (parameterAttribute.Number);
+            }
+          }
+
+          declarations = (WxeParameterDeclaration[]) parameters.ToArray (typeof (WxeParameterDeclaration));
+          int[] numberArray = (int[]) numbers.ToArray (typeof (int));
+          Array.Sort (numberArray, declarations);
+
+          s_parameterDeclarations.Add (type, declarations);
+        }
+      }
+    }
+    return declarations;
+  }
+
   /// <summary> Hashtable&lt;Type, WxeParameterDeclaration[]&gt; </summary>
   private static Hashtable s_parameterDeclarations = new Hashtable();
 
@@ -62,41 +105,7 @@ public abstract class WxeFunction: WxeStepList
 
   public virtual WxeParameterDeclaration[] ParameterDeclarations
   {
-    get 
-    {
-      Type type = this.GetType();
-      WxeParameterDeclaration[] declarations = (WxeParameterDeclaration[]) s_parameterDeclarations[type];
-      if (declarations == null)
-      {
-        lock (type)
-        {
-          declarations = (WxeParameterDeclaration[]) s_parameterDeclarations[type];
-          if (declarations == null)
-          {
-            PropertyInfo[] properties = type.GetProperties (BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            ArrayList parameters = new ArrayList(); // ArrayList<WxeParameterDeclaration>
-            ArrayList numbers = new ArrayList(); // ArrayList<int>
-            foreach (PropertyInfo property in properties)
-            {
-              WxeParameterAttribute parameterAttribute = WxeParameterAttribute.GetAttribute (property);
-              if (parameterAttribute != null)
-              {
-                parameters.Add (new WxeParameterDeclaration (
-                    property.Name, parameterAttribute.Required, parameterAttribute.Direction, property.PropertyType));
-                numbers.Add (parameterAttribute.Number);
-              }
-            }
-
-            declarations = (WxeParameterDeclaration[]) parameters.ToArray (typeof (WxeParameterDeclaration));
-            int[] numberArray = (int[]) numbers.ToArray (typeof (int));
-            Array.Sort (numberArray, declarations);
-
-            s_parameterDeclarations.Add (type, declarations);
-          }
-        }
-      }
-      return declarations;
-    }
+    get { return GetParamaterDeclarations (this.GetType()); }
   }
 
   public override string ToString()
