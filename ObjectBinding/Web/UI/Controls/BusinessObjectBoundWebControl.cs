@@ -104,14 +104,17 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
+    IBusinessObjectService service = businessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
+    IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+
     IconInfo iconInfo = null;
-
-    IBusinessObjectWebUIService webUIService = 
-        (IBusinessObjectWebUIService) businessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
-
     if (webUIService != null)
-      iconInfo = webUIService.GetIcon (businessObject);
-
+    {
+      if (businessObject != null)
+        iconInfo = webUIService.GetIcon (businessObject);
+      else
+        iconInfo = webUIService.GetNullValueIcon ();
+    }
     return iconInfo;
   }
 
