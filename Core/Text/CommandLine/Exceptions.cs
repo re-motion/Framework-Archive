@@ -24,6 +24,13 @@ internal abstract class FormatArgument
   }
 }
 
+/// <summary>
+/// Base class for all exceptions that indicate errors in the command line.
+/// </summary>
+/// <remarks>
+/// Throw <see cref="CommandLineArgumentApplicationException"/> to indicate application-defined command line
+/// errors (e.g., use of arguments that exclude each other).
+/// </remarks>
 [Serializable]
 public abstract class CommandLineArgumentException: Exception
 {
@@ -43,6 +50,9 @@ public abstract class CommandLineArgumentException: Exception
   }
 }
 
+/// <summary>
+/// This exception is thrown if the value of a parameter cannot be interpreted.
+/// </summary>
 [Serializable]
 public class InvalidCommandLineArgumentValueException: CommandLineArgumentException
 { 
@@ -62,6 +72,14 @@ public class InvalidCommandLineArgumentValueException: CommandLineArgumentExcept
   }
 }
 
+/// <summary>
+/// This exception is thrown if the command line contains a named argument that is not defined.
+/// </summary>
+/// <remarks>
+/// The exception is thrown either because there is no argument definition with the specified name,
+/// or (if <see cref="CommandLineParser.IncrementalNameValidation"/> is <c>true</c>), because there 
+/// is more than one argument that starts with the specified string.
+/// </remarks>
 [Serializable]
 public class InvalidCommandLineArgumentNameException: CommandLineArgumentException
 {
@@ -79,6 +97,9 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
   }
 }
 
+/// <summary>
+/// This exception is thrown if the command line contains too many unnamed arguments.
+/// </summary>
 [Serializable]
 public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentException
 {
@@ -95,6 +116,9 @@ public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentEx
   }
 }
 
+/// <summary>
+/// This exception is thrown if a non-optional command line argument is not contained in the command line.
+/// </summary>
 [Serializable]
 public class MissingRequiredCommandLineParameterException: CommandLineArgumentException
 {
@@ -111,6 +135,13 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
   }
 }
 
+/// <summary>
+/// This exception class indicates application-defined error conditions.
+/// </summary>
+/// <remarks>
+/// Use this class to indicate application-defined command line errors (e.g., 
+/// use of arguments that exclude each other).
+/// </remarks>
 [Serializable]
 public class CommandLineArgumentApplicationException: CommandLineArgumentException
 {

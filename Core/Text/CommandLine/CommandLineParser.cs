@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Text;
+using System.Collections;
 
 using Rubicon.Text;
 
@@ -54,6 +55,172 @@ public class CommandLineParser
     set { _isCaseSensitive = value; }
   }
 
+  /// <summary>
+  /// Splits a command line string into an array of command line arguments, separated by spaces.
+  /// </summary>
+  /// <param name="commandLine">The command line (as available from <see cref="System.Environment.CommandLine"/>.)</param>
+  /// <param name="includeFirstArgument">If <c>true</c>, the first argument (which is usually the file name of the
+  /// program) is included, otherwise only the arguments after the first one are returned.</param>
+  /// <returns>An array of command line arguments.</returns>
+  /// <remarks>
+  /// The following rules apply:
+  /// <list type="bullet">
+  ///   <item>Use spaces to separate arguments.</item>
+  ///   <item>Embed arguments within double quotation marks to treat them as a single argument even if they contain spaces..</item>
+  ///   <item>Within double quotation marks, use two double quotation marks if you need one double quotation mark in the argument.</item>
+  /// </list>
+  /// This resembles the logic that is applied to the arguments of the C# Main method. However, the parameters passed to
+  /// the Main method are parsed a little bit differently in special situations, according to an unknown and undocumented 
+  /// algorithm.
+  /// </remarks>
+  /// <example>
+  /// <list type="table">
+  ///   <listheader>
+  ///     <term>Command Line</term>
+  ///     <description>Parsing Result</description>
+  ///   </listheader>
+  ///   <item>
+  ///     <term>
+  ///       Hello world!
+  ///     </term>
+  ///     <description>
+  ///       <para>
+  ///         Hello
+  ///       </para><para>
+  ///         world!
+  ///       </para>
+  ///     </description>
+  ///   </item>
+  ///   <item>
+  ///     <term>
+  ///       Hello "new world!"
+  ///     </term>
+  ///     <description>
+  ///       <para>
+  ///         Hello
+  ///       </para><para>
+  ///         new world!
+  ///       </para>
+  ///     </description>
+  ///   </item>
+  ///   <item>
+  ///     <term>
+  ///       Hello """new"" world!"
+  ///     </term>
+  ///     <description>
+  ///       <para>
+  ///         Hello
+  ///       </para><para>
+  ///         "new" world!
+  ///       </para>
+  ///     </description>
+  ///   </item>
+  /// </list>
+  /// </example>
+  public static string[] SplitCommandLine (string commandLine, bool includeFirstArgument)
+  {
+    StringBuilder current = new StringBuilder();
+    ArrayList argsArray = new ArrayList();
+    int len = commandLine.Length;
+    int state = 0; // 0 ... between arguments, 1 ... within argument, 2 ... within quotes
+    for (int i = 0; i < len; ++i)
+    {
+      char c = commandLine[i];
+      if (state == 0)
+      {
+        switch (c)
+        {
+          case '\"':
+            state = 2;
+            break;
+          case ' ':
+            break;
+          default:
+            state = 1;
+            current.Append (c);
+            break;
+        }
+      }
+      else if (state == 1)
+      {
+        switch (c)
+        {
+          case '\"':
+            state = 2;
+            break;
+          case ' ':
+            state = 0;
+            if (current.Length > 0)
+            {
+              argsArray.Add (current.ToString());
+              current.Length = 0;
+            }
+            break;
+          default:
+            current.Append (c);
+            break;
+        }
+      }
+      else if (state == 2)
+      {
+        switch (c)
+        {
+          case '\"':
+            if (((i + 1) < len) && (commandLine[i+1] == '\"'))
+            {
+              current.Append ('\"');
+              ++i;
+            }
+            else
+            {
+              state = 1;
+            }
+            break;
+
+          default:
+            current.Append (c);
+            break;
+        }
+      }
+    }
+    if (current.Length > 0)
+      argsArray.Add (current.ToString());
+
+    int copyStart = 0; 
+    int copyCount = argsArray.Count;
+    if (! includeFirstArgument)
+    {
+      copyStart = 1;
+      -- copyCount;
+    }
+    string[] args = new string[copyCount];
+    argsArray.CopyTo (copyStart, args, 0, copyCount);
+    return args;
+  }
+
+  /// <summary>
+  /// This method reads a command line and initializes the arguments contained in <see cref="Arguments"/>.
+  /// </summary>
+  /// <param name="args">The string that contains the command line arguments. See <see cref="SplitCommandLine"/> for information on how
+  /// command lines are parsed.</param>
+  /// <exception cref="InvalidCommandLineArgumentValueException">The value of a parameter cannot be interpreted.</exception>
+  /// <exception cref="InvalidCommandLineArgumentNameException">The command line contains a named argument that is not defined.</exception>
+  /// <exception cref="InvalidNumberOfCommandLineArgumentsException">The command line contains too many unnamed arguments.</exception>
+  /// <exception cref="MissingRequiredCommandLineParameterException">A non-optional command line argument is not contained in the command line.</exception>
+  public void Parse (string commandLine)
+  {
+    Parse (SplitCommandLine (commandLine, false));
+  }
+
+  /// <summary>
+  /// This method reads the strings of a command line (as passed to the C# Main method) and
+  /// initializes the arguments contained in <see cref="Arguments"/>.
+  /// </summary>
+  /// <param name="args">An array of command line arguments. This is typically the <c>args</c> parameter passed to the C# Main method.</param>
+  /// <exception cref="InvalidCommandLineArgumentValueException">The value of a parameter cannot be interpreted.</exception>
+  /// <exception cref="InvalidCommandLineArgumentNameException">The command line contains a named argument that is not defined.</exception>
+  /// <exception cref="InvalidNumberOfCommandLineArgumentsException">The command line contains too many unnamed arguments.</exception>
+  /// <exception cref="MissingRequiredCommandLineParameterException">A non-optional command line argument is not contained in the command line.</exception>
   public void Parse (string[] args)
   {
     int nextPositionalArgument = 0;
@@ -167,6 +334,12 @@ public class CommandLineParser
 
   }
 
+  /// <summary>
+  /// Returns a string containing the syntax description of the arguments contained in <see cref="Arguments"/>.
+  /// </summary>
+  /// <param name="commandName">The file name of the program.</param>
+  /// <param name="maxWidth">The maximum line length (for screen output, use 79 for 80 character output to avoid blank lines).</param>
+  /// <returns>A syntax overview containing a short command line overview and a table of parameters and desciptions.</returns>
   public string GetAsciiSynopsis (string commandName, int maxWidth)
   {
     StringBuilder sb = new StringBuilder (2048); 
@@ -203,6 +376,12 @@ public class CommandLineParser
         maxLength = Math.Max (maxLength, argument.Placeholder.Length);
     }
 
+    // insert word breaks
+    string synopsis = sb.ToString();
+    sb.Length = 0;
+    AsciiTextFormat.AppendWrappedText (sb, maxWidth, synopsis);
+
+    // create parameter name/description table
     sb.Append ("\n");
     foreach (CommandLineArgument argument in Arguments)
     {

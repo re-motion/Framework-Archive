@@ -11,6 +11,32 @@ public sealed class AsciiTextFormat
 {
   // static members
 
+  /// <summary>
+  /// Formats the specified text with word breaks within the specified line width.
+  /// </summary>
+  /// <param name="sb">The StringBuilder object the text is written to.</param>
+  /// <param name="lineWidth">The line width of the output.</param>
+  /// <param name="text">The text that is to be formatted.</param>
+  public static void AppendWrappedText (StringBuilder sb, int lineWidth, string text)
+  {
+    string line;
+    while (text != null)
+    {
+      SplitTextOnSeperator (text, out line, out text, lineWidth, new char[] {' '});
+      sb.Append (line);
+      if (text != null)
+        sb.Append ('\n');
+    }
+  }
+
+  /// <summary>
+  /// Formats the specified text with word breaks within the specified line width. All lines but the first are indented.
+  /// </summary>
+  /// <param name="sb">The StringBuilder object the text is written to.</param>
+  /// <param name="indent">The number of characters already contained in the current line, which is also the number of spaces
+  /// that preceed each following line.</param>
+  /// <param name="lineWidth">The line width of the output.</param>
+  /// <param name="text">The text that is to be formatted.</param>
   public static void AppendIndentedText (StringBuilder sb, int indent, int lineWidth, string text)
   {
     string line;

@@ -66,6 +66,20 @@ public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
     return new CodeSnippetTypeMember (sb.ToString());
   }
 
+  public override bool SupportsDocumentationComments
+  {
+    get { return true; }
+  }
+
+  public override void AddOptionCreateXmlDocumentation(CompilerParameters parameters, string xmlFilename)
+  {
+    string option = "/doc:" + xmlFilename + " /nowarn:1591";
+    if (parameters.CompilerOptions == null || parameters.CompilerOptions.Length == 0)
+      parameters.CompilerOptions = option;
+    else
+      parameters.CompilerOptions += " " + option;
+  }
+
   public override string GetValidName (string name)
   {
     if (name == "params")
