@@ -435,6 +435,20 @@ public class TabControl: Control, IPostBackEventHandler
 		output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>",
         backColor);
 
+    //Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
+    if (!Items[_activeTab].Visible)
+    {
+		  for (int i=0; i<Items.Count; ++i)
+		  {
+			  Tab tab = Items[i];    
+
+        if (tab.Visible)
+        {
+          _activeTab = i;
+          break;
+        }
+      }
+    }
 
 		for (int i=0; i<Items.Count; ++i)
 		{
