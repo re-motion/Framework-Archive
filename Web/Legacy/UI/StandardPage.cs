@@ -48,10 +48,25 @@ public class StandardPage : NavigablePage
 
   protected virtual void CloseBrowserWindow ()
   {
+    CloseBrowserWindow (false);
+  }
+
+  protected virtual void CloseBrowserWindow (bool refreshParent)
+  {
     _saveViewStateToSession = false;
     CleanupSession ();
-    RegisterStartupScript ("CloseWindowKey", 
-        "<script language=\"javascript\" type=\"text/javascript\">\nwindow.close ();\n</script>");
+
+    string refreshParentScript = "";
+
+    if (refreshParent)
+      refreshParentScript = "window.opener.Refresh();\n";
+
+    string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
+                    refreshParentScript +
+                    "window.close ();\n" +
+                    "</script>";
+
+    RegisterStartupScript ("CloseWindowKey", script);
   }
 
   public string GetErrorImage (string errorMessage)
