@@ -11,16 +11,6 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-public enum BocTextValueType
-{
-  Undefined,
-  String,
-  Integer,
-  Date,
-  DateTime,
-  Double
-}
-
 /// <summary>
 ///   This control can be used to display or edit values that can be edited in a text box.
 /// </summary>
@@ -40,6 +30,12 @@ public enum BocTextValueType
 [ToolboxItemFilter("System.Web.UI")]
 public class BocTextValue: BusinessObjectBoundModifiableWebControl
 {
+  //  constants
+  /// <summary> 
+  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
+  /// </summary>
+  private const string c_designModeEmptyLabelContents = "#";
+
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
 
@@ -81,6 +77,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
+
+    //  Prevent a collapsed control
+    if (IsDesignMode && Width == Unit.Empty)
+      Width = Unit.Pixel (150);
 
     _textBox.ID = this.ID + "_TextBox";
     _textBox.EnableViewState = false;
@@ -207,8 +207,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
-        //  nothing
-        //  _label.Text = c_nullDisplayName;
+        _label.Text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
         //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
 
@@ -463,7 +463,16 @@ internal class BocTextValueTextBox: TextBox, IPostBackDataHandler
     get { return _parent.Text; }
     set { _parent.Text = value; }
   }
+}
 
+public enum BocTextValueType
+{
+  Undefined,
+  String,
+  Integer,
+  Date,
+  DateTime,
+  Double
 }
 
 }
