@@ -195,19 +195,5 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   }
 
   #endregion
-
-  #region ICloneable Members
-
-  public override object Clone ()
-  {
-    CollectionEndPoint newCollectionEndPoint = new CollectionEndPoint (
-        this.ClientTransaction, this.ID, this.OppositeDomainObjects);
-
-    newCollectionEndPoint._originalOppositeDomainObjects = this._originalOppositeDomainObjects;
-
-    return newCollectionEndPoint;
-  }
-
-  #endregion
 }
 }

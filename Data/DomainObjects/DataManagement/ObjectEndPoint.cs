@@ -145,17 +145,5 @@ public class ObjectEndPoint : RelationEndPoint, INullable
     get { return _oppositeObjectID; }
     set { _oppositeObjectID = value; }
   }
-
-  #region ICloneable Members
-
-  public override object Clone ()
-  {
-    ObjectEndPoint newObjectEndPoint = new ObjectEndPoint (this.ClientTransaction, this.ID, this.OppositeObjectID);
-    newObjectEndPoint._originalOppositeObjectID = this._originalOppositeObjectID;
-
-    return newObjectEndPoint;
-  }
-
-  #endregion
 }
 }

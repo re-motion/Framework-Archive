@@ -80,14 +80,5 @@ public class NullObjectEndPoint : ObjectEndPoint
   {
     get { return true; }
   }
-
-  #region ICloneable Members
-
-  public override object Clone ()
-  {
-    return new NullObjectEndPoint (this.Definition);
-  }
-
-  #endregion
 }
 }

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class RelationEndPointCollection : CollectionBase, ICloneable
+public class RelationEndPointCollection : CollectionBase
 {
   // types
 
@@ -152,20 +152,6 @@ public class RelationEndPointCollection : CollectionBase, ICloneable
   public void Clear ()
   {
     base.ClearCollection ();
-  }
-
-  #endregion
-
-  #region ICloneable Members
-
-  public virtual object Clone ()
-  {
-    RelationEndPointCollection newCollection = new RelationEndPointCollection ();
-
-    foreach (RelationEndPoint endPoint in this)
-      newCollection.Add ((RelationEndPoint) endPoint.Clone ());
-
-    return newCollection;
   }
 
   #endregion

@@ -149,20 +149,5 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
     _endPoints.Clear ();
     Assert.AreEqual (0, _endPoints.Count);
   }
-
-  [Test]
-  public void Clone ()
-  {
-    _endPoints.Add (_orderTicketEndPoint);
-
-    ICloneable original = (ICloneable) _endPoints;
-    RelationEndPointCollection clone = (RelationEndPointCollection) original.Clone ();
-    
-    Assert.IsNotNull (clone);
-    Assert.IsFalse (object.ReferenceEquals (clone, _endPoints));
-    Assert.AreEqual (_endPoints.Count, clone.Count);
-    Assert.IsFalse (object.ReferenceEquals (_endPoints[0], clone[0]));
-    Assert.AreEqual (_endPoints[0].ID, clone[0].ID);
-}
 }
 }
