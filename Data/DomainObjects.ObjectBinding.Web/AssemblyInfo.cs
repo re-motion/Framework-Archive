@@ -6,14 +6,15 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTitle("Web Library of Rubicon Persistence Adapter")]
+[assembly: AssemblyDescription("Web Framework for working with the Business Object Controls and the Rubicon Persistence Adapter")]
+[assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: release")]
+[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
+[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyCopyright("(c) 2005 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
+[assembly: CLSCompliant(true)]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -54,5 +55,5 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
