@@ -557,6 +557,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Queries\IQuery.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\QueryParameter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\QueryParameterCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\QueryParameterType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Queries\QueryType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
