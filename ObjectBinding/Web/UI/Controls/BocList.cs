@@ -29,6 +29,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
+[ParseChildren (true)]
 public class BocList:
     BusinessObjectBoundModifiableWebControl, 
     IResourceDispatchTarget, 
@@ -211,17 +212,8 @@ public class BocList:
   /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The width applied to the <c>menu block</c>. </summary>
-  private Unit _menuBlockWidth = Unit.Empty;
-  /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
-  private Unit _menuBlockOffset = Unit.Empty;
-
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
-
-  private DropDownMenu _optionsMenu;
-
-  private BocMenuItemCollection _optionsMenuItems;
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -230,8 +222,6 @@ public class BocList:
 
   /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
   private Unit _additionalColumnsListWidth = Unit.Empty;
-
-  private string _optionsTitle = "Options";
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton = new ImageButton();
@@ -258,10 +248,23 @@ public class BocList:
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _columnDefinitionsRenderPhase = null;
 
+  private DropDownMenu _optionsMenu;
+  private string _optionsTitle = "Options";
+  /// <summary> The width applied to the <c>menu block</c>. </summary>
+  private Unit _menuBlockWidth = Unit.Empty;
+  /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
+  private Unit _menuBlockOffset = Unit.Empty;
+  private BocMenuItemCollection _optionsMenuItems;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
   private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _optionsMenuItemsRenderPhase;
+
+  private BocMenuItemCollection _listMenuItems;
+  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
+  private BocMenuItem[] _listMenuItemsPostBackEventHandlingPhase;
+  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
+  private BocMenuItem[] _listMenuItemsRenderPhase;
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
@@ -340,6 +343,8 @@ public class BocList:
 	{
     //  Reference 'this' is not used for anything but storing the reference to the BocList
     _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
+    //  Reference 'this' is not used for anything but storing the reference to the BocList
+    _listMenuItems = new BocMenuItemCollection (this);
     //  Reference 'this' is not used for anything but storing the reference to the BocList
     _optionsMenuItems = new BocMenuItemCollection (this);
     //  Reference 'this' is not used for anything but storing the reference to the BocList
@@ -465,7 +470,7 @@ public class BocList:
     if (eventArgumentParts.Length == 3)
       businessObjectID = eventArgumentParts[2].Trim();
 
-    BocColumnDefinition[] columns = EnsureGetColumnsPostBackEventHandlingPhase();
+    BocColumnDefinition[] columns = EnsureGetColumnsForPreviousLifeCycle();
 
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
@@ -482,9 +487,9 @@ public class BocList:
         string columnID = string.Empty;
         if (column != null)
         {
-          if (StringUtility.IsNullOrEmpty (column.ID))
+          if (StringUtility.IsNullOrEmpty (column.ColumnID))
             throw new InvalidOperationException ("The column No. " + columnIndex + " does not have an ID but raised an event.");
-          columnID = column.ID;
+          columnID = column.ColumnID;
         }
 
         OnCommandClick (columnID, listIndex, businessObjectID);
@@ -520,7 +525,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
     }
 
-    BocColumnDefinition[] columns = EnsureGetColumnsPostBackEventHandlingPhase();
+    BocColumnDefinition[] columns = EnsureGetColumnsForPreviousLifeCycle();
 
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
@@ -671,7 +676,7 @@ public class BocList:
     }
 
     if (_showOptionsMenu)
-      _optionsMenu.MenuItems.AddRange (EnsureGetOptionsMenuItemsRenderPhase ());
+      _optionsMenu.MenuItems.AddRange (EnsureGetOptionsMenuItemsForCurrentLifeCycle());
      
     base.OnPreRender (e);
   }
@@ -687,7 +692,7 @@ public class BocList:
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
 
     if (IsDesignMode)
     {
@@ -1128,7 +1133,7 @@ public class BocList:
   /// </param>
   private void RenderColGroup (HtmlTextWriter writer)
   {
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
@@ -1186,7 +1191,7 @@ public class BocList:
   private void RenderColumnTitlesRow (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -1324,7 +1329,7 @@ public class BocList:
       bool isOddRow)
   {
     bool isReadOnly = IsReadOnly;
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
 
     string objectID = null;
     IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
@@ -1718,6 +1723,20 @@ public class BocList:
     _move = MoveOption.Next;
   }
 
+  private BocColumnDefinition[] EnsureGetColumnsForPreviousLifeCycle()
+  {
+    if (_columnDefinitionsPostBackEventHandlingPhase == null)
+      _columnDefinitionsPostBackEventHandlingPhase = GetColumns (true);
+    return _columnDefinitionsPostBackEventHandlingPhase;
+  }
+
+  private BocColumnDefinition[] EnsureGetColumnsForCurrentLifeCycle()
+  {
+    if (_columnDefinitionsRenderPhase == null)
+      _columnDefinitionsRenderPhase = GetColumns (false);
+    return _columnDefinitionsRenderPhase;
+  }
+
   /// <summary>
   ///   Compiles the <see cref="BocColumnDefinition"/> objects from the <see cref="FixedColumns"/>,
   ///   the <see cref="_allPropertyColumns"/> and the <see cref="SelectedColumnDefinitionSet"/>
@@ -1749,36 +1768,28 @@ public class BocList:
       return GetColumnsForCurrentLifeCycle (columnDefinitions);
   }
 
-  private BocColumnDefinition[] EnsureGetColumnsPostBackEventHandlingPhase()
-  {
-    if (_columnDefinitionsPostBackEventHandlingPhase == null)
-      _columnDefinitionsPostBackEventHandlingPhase = GetColumns (true);
-    return _columnDefinitionsPostBackEventHandlingPhase;
-  }
-
-  private BocColumnDefinition[] EnsureGetColumnsRenderPhase()
-  {
-    if (_columnDefinitionsRenderPhase == null)
-      _columnDefinitionsRenderPhase = GetColumns (false);
-    return _columnDefinitionsRenderPhase;
-  }
-
   /// <summary>
   ///   Override this method to modify the column definitions displayed in the <see cref="BocList"/> during the
   ///   previous page life cycle.
   /// </summary>
   /// <remarks>
-  ///   The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///   to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
-  ///   or a data changed event.
+  ///   <para>
+  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
+  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
+  ///     or a data changed event.
+  ///   </para><para>
+  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
+  ///     method's body to return the passed <c>columnDefinitions</c>.
+  ///   </para>
   /// </remarks>
   /// <param name="columnDefinitions"> 
   ///   The <see cref="BocColumnDefinition"/> array containing the columns defined by the <see cref="BocList"/>. 
   /// </param>
   /// <returns> The <see cref="BocColumnDefinition"/> array. </returns>
-  protected virtual BocColumnDefinition[] GetColumnsForPreviousLifeCycle (BocColumnDefinition[] columnDefinitions)
+  private BocColumnDefinition[] GetColumnsForPreviousLifeCycle (BocColumnDefinition[] columnDefinitions)
   {
-    return columnDefinitions;
+    //  return columnDefinitions;
+    return EnsureGetColumnsForCurrentLifeCycle();
   }
 
   /// <summary>
@@ -1794,7 +1805,7 @@ public class BocList:
     return columnDefinitions;
   }
 
-  private BocMenuItem[] EnsureGetOptionsMenuItemsPostBackEventHandlingPhase()
+  private BocMenuItem[] EnsureGetOptionsMenuItemsForPreviousLifeCycle()
   {
     if (_optionsMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -1804,7 +1815,7 @@ public class BocList:
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureGetOptionsMenuItemsRenderPhase()
+  private BocMenuItem[] EnsureGetOptionsMenuItemsForCurrentLifeCycle()
   {
     if (_optionsMenuItemsRenderPhase == null)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItemsForCurrentLifeCycle (_optionsMenuItems.ToArray());
@@ -1816,17 +1827,23 @@ public class BocList:
   ///   during the previous page life cycle.
   /// </summary>
   /// <remarks>
-  ///   The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///   to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
-  ///   or a data changed event.
+  ///   <para>
+  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
+  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
+  ///     or a data changed event.
+  ///   </para><para>
+  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
+  ///     method's body to return the passed <c>menuItems</c>.
+  ///   </para>
   /// </remarks>
   /// <param name="menuItems"> 
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
-    return menuItems;
+    //  return menuItems;
+    return EnsureGetOptionsMenuItemsForCurrentLifeCycle();
   }
 
   /// <summary>
@@ -1838,6 +1855,60 @@ public class BocList:
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
   protected virtual BocMenuItem[] GetOptionsMenuItemsForCurrentLifeCycle (BocMenuItem[] menuItems)
+  {
+    return menuItems;
+  }
+
+  private BocMenuItem[] EnsureGetListMenuItemsForPreviousLifeCycle()
+  {
+    if (_listMenuItemsPostBackEventHandlingPhase == null)
+    {
+      _listMenuItemsPostBackEventHandlingPhase = 
+          GetListMenuItemsForPreviousLifeCycle (_listMenuItems.ToArray());
+    }
+    return _listMenuItemsPostBackEventHandlingPhase;
+  }
+
+  private BocMenuItem[] EnsureGetListMenuItemsForCurrentLifeCycle()
+  {
+    if (_listMenuItemsRenderPhase == null)
+      _listMenuItemsRenderPhase = GetListMenuItemsForCurrentLifeCycle (_listMenuItems.ToArray());
+    return _listMenuItemsRenderPhase;
+  }
+
+  /// <summary>
+  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s menu area
+  ///   during the previous page life cycle.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
+  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
+  ///     or a data changed event.
+  ///   </para><para>
+  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
+  ///     method's body to return the passed <c>menuItems</c>.
+  ///   </para>
+  /// </remarks>
+  /// <param name="menuItems"> 
+  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
+  /// </param>
+  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  private BocMenuItem[] GetListMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  {
+    //  return menuItems;
+    return EnsureGetListMenuItemsForCurrentLifeCycle();
+  }
+
+  /// <summary>
+  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s menu area
+  ///   in the current page life cycle.
+  /// </summary>
+  /// <param name="menuItems"> 
+  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
+  /// </param>
+  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  protected virtual BocMenuItem[] GetListMenuItemsForCurrentLifeCycle (BocMenuItem[] menuItems)
   {
     return menuItems;
   }
@@ -1902,7 +1973,7 @@ public class BocList:
     IBusinessObject businessObjectA = objectA as IBusinessObject;
     IBusinessObject businessObjectB = objectB as IBusinessObject;
 
-    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsForCurrentLifeCycle();
     foreach (SortingOrderEntry currentEntry in _sortingOrder)
     {
       if (currentEntry.Direction != SortingDirection.None)
@@ -2060,12 +2131,12 @@ public class BocList:
     //  Dispatch fixed column definition properties
     foreach (DictionaryEntry fixedColumnEntry in fixedColumns)
     {
-      string id = (string) fixedColumnEntry.Key;
+      string columnID = (string) fixedColumnEntry.Key;
       
       bool isValidID = false;
       foreach (BocColumnDefinition columnDefinition in _fixedColumns)
       {
-        if (columnDefinition.ID == id)
+        if (columnDefinition.ColumnID == columnID)
         {
           DispatchToProperties (columnDefinition, (IDictionary) fixedColumnEntry.Value);
           isValidID = true;
@@ -2076,7 +2147,7 @@ public class BocList:
       if (! isValidID)
       {
         //  Invalid collection element
-        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a fixed column definition with an ID of '" + id + "'.");
+        s_log.Warn ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a fixed column definition with an ID of '" + columnID + "'.");
       }
     }
   }
@@ -2530,11 +2601,11 @@ public class BocList:
       Events.RemoveHandler (EventCommandClick, value);
     }
   }
-  /// <summary> Gets the user independent column defintions. </summary>
-  /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
+
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [Category ("Behavior")]
+  [Category ("Menu")]
   [Description ("The menu items displayed by options menu.")]
   [DefaultValue ((string) null)]
   public BocMenuItemCollection OptionsMenuItems
@@ -2542,8 +2613,19 @@ public class BocList:
     get { return _optionsMenuItems; }
   }
 
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Menu")]
+  [Description ("The menu items displayed in the list's menu area.")]
+  [DefaultValue ((string) null)]
+  public BocMenuItemCollection ListMenuItems
+  {
+    get { return _listMenuItems; }
+  }
+
   /// <summary> Gets or sets the width reserved for the menu block. </summary>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("The width reserved for the menu section.")]
   [DefaultValue (typeof (Unit), "")]
   public Unit MenuBlockWidth
@@ -2556,7 +2638,7 @@ public class BocList:
   /// <remarks> 
   ///   The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute.
   /// </remarks>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("The offset between the list of values and the menu section.")]
   [DefaultValue (typeof (Unit), "")]
   public Unit MenuBlockOffset
@@ -2569,7 +2651,7 @@ public class BocList:
   ///   Gets or sets a value that indicates whether the control displays a drop down list 
   ///   containing the available column definition sets.
   /// </summary>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
   [DefaultValue (true)]
   public bool ShowAdditionalColumnsList
@@ -2581,7 +2663,7 @@ public class BocList:
   /// <summary> 
   ///   Gets or sets the text that is rendered as a title for the drop list of additional columns.
   /// </summary>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("The text that is rendered as a title for the list of additional columns.")]
   [DefaultValue ("Additional Columns")]
   public string AdditionalColumnsTitle
@@ -2594,7 +2676,7 @@ public class BocList:
   ///   Gets or sets the width that you want to apply to the drop down list used to display the 
   ///   user selectable columns.
   /// </summary>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("The width that you want to apply to the drop down list used to display the user selectable columns.")]
   [DefaultValue (typeof (Unit), "")]
   public Unit AdditionalColumnsListWidth
@@ -2606,7 +2688,7 @@ public class BocList:
   /// <summary> 
   ///   Gets or sets the text that is rendered as a label for the <c>Options</c> menu.
   /// </summary>
-  [Category ("Appearance")]
+  [Category ("Menu")]
   [Description ("The text that is rendered as a label for the Options menu.")]
   [DefaultValue ("Options")]
   public string OptionsTitle

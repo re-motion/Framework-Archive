@@ -79,7 +79,7 @@ public class DropDownMenu: WebControl, IControl
 
         script.AppendFormat (
             "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}')",
-            menuItem.ID, menuItem.Category, menuItem.Text, menuItem.Icon);
+            ID + " _" + menuItem.ItemID, menuItem.Category, menuItem.Text, menuItem.Icon);
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
@@ -230,6 +230,6 @@ public class DropDownMenu: WebControl, IControl
 
   protected virtual string CssClassItemIconPane
   { get { return "dropDownMenuItemIconPane"; } }
-}
+  }
 
 }

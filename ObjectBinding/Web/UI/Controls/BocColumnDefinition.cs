@@ -24,7 +24,7 @@ public abstract class BocColumnDefinition
   private const string c_commandIDSuffix = "_Command";
 
   /// <summary> The programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
-  private string _id;
+  private string _columnID;
   /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
   /// <summary> The width of the column. </summary>
@@ -81,7 +81,7 @@ public abstract class BocColumnDefinition
   /// </returns>
   public override string ToString()
   {
-    string displayName = ID;
+    string displayName = ColumnID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = ColumnTitle;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -100,10 +100,10 @@ public abstract class BocColumnDefinition
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
-  public string ID
+  public string ColumnID
   {
-    get { return _id; }
-    set { _id = value; }
+    get { return _columnID; }
+    set { _columnID = value; }
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
@@ -268,7 +268,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <returns> Returns <see cref="Label"/>, followed by the the class name of the instance.  </returns>
   public override string ToString()
   {
-    string displayName = ID;
+    string displayName = ColumnID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = ColumnTitle;
     if (StringUtility.IsNullOrEmpty (displayName))

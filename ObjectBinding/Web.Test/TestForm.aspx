@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -18,18 +18,25 @@
   <tr>
     <td></td>
     <td><obc:BocList id="BocList" runat="server">
-<optionsmenuitems>
-<obc:BocMenuItem ID="Open" Icon="Open.gif" Category="Object" Text="&#214;ffnen"></obc:BocMenuItem>
-<obc:BocMenuItem ID="Copy" Icon="Copy.gif" Category="Edit" Text="Kopieren"></obc:BocMenuItem>
-<obc:BocMenuItem ID="Cut" Icon="Cut.gif" Category="Edit" Text="Ausschneiden"></obc:BocMenuItem>
-<obc:BocMenuItem ID="Paste" Icon="Paste.gif" Category="Edit" Text="Einf&#252;gen"></obc:BocMenuItem>
-<obc:BocMenuItem ID="Duplicate" Icon="Duplicate.gif" Category="Edit" Text="Duplizieren"></obc:BocMenuItem>
-<obc:BocMenuItem ID="Delete" Icon="Delete.gif" Category="Edit" Text="L&#246;schen"></obc:BocMenuItem>
-</OptionsMenuItems>
-
 <fixedcolumns>
-<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd"></obc:BocCommandColumnDefinition>
-</FixedColumns></obc:BocList></td></tr>
+<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
+</FixedColumns>
+
+<optionsmenuitems>
+<obc:BocMenuItem Icon="Open.gif" Category="Object" Text="&#214;ffnen" ItemID="Open"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Copy.gif" Category="Edit" Text="Kopieren" ItemID="Copy"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Cut.gif" Category="Edit" Text="Ausschneiden" ItemID="Cut"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Paste.gif" Category="Edit" Text="Einf&#252;gen" ItemID="Paste"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Duplicate.gif" Category="Edit" Text="Duplizieren" ItemID="Duplicate"></obc:BocMenuItem>
+<obc:BocMenuItem Icon="Delete.gif" Category="Edit" Text="L&#246;schen" ItemID="Delete"></obc:BocMenuItem>
+</OptionsMenuItems>
+</obc:BocList></td></tr>
+  <tr>
+    <td></td>
+    <td><obc:boclist id="Boclist2" runat="server">
+<fixedcolumns>
+<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
+</FixedColumns></obc:boclist></td></tr>
 </table>
 <rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager></form>
 	

@@ -10,7 +10,7 @@ namespace Rubicon.Web.UI.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class MenuItem
 {
-  string _id;
+  string _itemID;
   string _category;
   string _text;
   string _icon;
@@ -21,9 +21,9 @@ public class MenuItem
   /// </summary>
   private IControl _ownerControl;
 
-  public MenuItem (string id, string category, string text, string icon, Command command)
+  public MenuItem (string itemID, string category, string text, string icon, Command command)
   {
-    _id = StringUtility.NullToEmpty (id);
+    _itemID = StringUtility.NullToEmpty (itemID);
     _category = StringUtility.NullToEmpty (category);
     _text = StringUtility.NullToEmpty (text);
     _icon = StringUtility.NullToEmpty (icon);
@@ -48,7 +48,7 @@ public class MenuItem
   /// </returns>
   public override string ToString()
   {
-    string displayName = ID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = Text;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -64,10 +64,10 @@ public class MenuItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
-  public virtual string ID
+  public virtual string ItemID
   {
-    get { return _id; }
-    set { _id = value; }
+    get { return _itemID; }
+    set { _itemID = value; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
