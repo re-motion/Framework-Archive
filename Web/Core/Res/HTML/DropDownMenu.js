@@ -238,7 +238,7 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
 	if (itemInfo.Href != null && isEnabled)
   	item.onclick = function () { window.location = itemInfo.Href; };
 
-	var iconPane = popUpDocument.createElement ('div');
+	var iconPane = popUpDocument.createElement ('span');
 	iconPane.className = _dropDownMenu_itemIconPaneClassName;
 	if (itemInfo.Icon != null)
 	{
@@ -247,12 +247,12 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
   	  icon.src = itemInfo.Icon;
   	else
   	  icon.src = itemInfo.IconDisabled;
-	  icon.align = 'middle';
+	  icon.style.verticalAlign = 'middle';
 	  iconPane.appendChild (icon);
 	}
 	item.appendChild (iconPane);
 
-	var textPane = popUpDocument.createElement ('div');
+	var textPane = popUpDocument.createElement ('span');
 	textPane.className = _dropDownMenu_itemTextPaneClassName;	
   if (itemInfo.Href != null && isEnabled)
 	{
@@ -276,7 +276,7 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
 
 function DropDownMenu_CreateSeparatorItem (popUpDocument, item, showExpandSeparators)
 {
-	var textPane = popUpDocument.createElement ('div');
+	var textPane = popUpDocument.createElement ('span');
 	textPane.className = _dropDownMenu_itemSeparatorClassName;
 	textPane.innerHTML = '&nbsp;';
 	if (showExpandSeparators)

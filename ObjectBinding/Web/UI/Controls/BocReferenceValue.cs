@@ -94,10 +94,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to the <see cref="_icon"/>. </summary>
   private Style _iconStyle = new Style();
 
-  /// <summary> State field for special behaviour during load view state. </summary>
-  /// <remarks> Used by <see cref="InternalLoadValue"/>. </remarks>
-  private bool _isLoadViewState;
-
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
 
@@ -232,8 +228,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </param>
   protected override void LoadViewState (object savedState)
   {
-    _isLoadViewState = true;
-
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
@@ -241,8 +235,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       InternalValue = (string) values[1];  
     _label.Text = (string) values[2];
     _isDirty = (bool) values[3];
-
-    _isLoadViewState = false;
   }
 
   /// <summary>

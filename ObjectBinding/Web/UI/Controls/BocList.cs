@@ -72,8 +72,9 @@ public class BocList:
   /// <summary> The key identifying a fixed column resource entry. </summary>
   private const string c_resourceKeyFixedColumns = "FixedColumns";
 
-  private const string c_defaultMenuBlockWidth = "200px";
-  private const string c_defaultMenuBlockOffset = "0px";
+  private const string c_defaultMenuBlockItemOffset = "5pt";
+  private const string c_defaultMenuBlockWidth = "200pt";
+  private const string c_defaultMenuBlockOffset = "5pt";
 
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
@@ -176,6 +177,8 @@ public class BocList:
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _columnDefinitionsRenderPhase = null;
 
+  private Unit _menuBlockItemOffset = Unit.Empty;
+
   private DropDownMenu _optionsMenu;
   private string _optionsTitle = "Options";
   /// <summary> The width applied to the <c>menu block</c>. </summary>
@@ -193,6 +196,7 @@ public class BocList:
   private BocMenuItem[] _listMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _listMenuItemsRenderPhase;
+  private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
@@ -425,12 +429,12 @@ public class BocList:
     {
       case CommandType.Event:
       {
-        OnListItemCommandClick (column, listIndex, (IBusinessObject) this.Value[listIndex]);
+        OnListItemCommandClick (column, listIndex, (IBusinessObject) Value[listIndex]);
         break;
       }
       case CommandType.WxeFunction:
       {
-        command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, (IBusinessObject) this.Value[listIndex], businessObjectID);
+        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, (IBusinessObject) Value[listIndex], businessObjectID);
         break;
       }
       default:
@@ -812,7 +816,7 @@ public class BocList:
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);
     string menuBlockOffset = c_defaultMenuBlockOffset;
     if (! _menuBlockOffset.IsEmpty)
-      menuBlockOffset = _menuBlockWidth.ToString();
+      menuBlockOffset = _menuBlockOffset.ToString();
     writer.AddStyleAttribute ("padding-left", menuBlockOffset);
     writer.RenderBeginTag (HtmlTextWriterTag.Col);
     writer.RenderEndTag();
@@ -865,9 +869,14 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderMenuBlock (HtmlTextWriter writer)
   {
+    string menuBlockItemOffset = c_defaultMenuBlockItemOffset;
+    if (! _menuBlockItemOffset.IsEmpty)
+      menuBlockItemOffset = _menuBlockItemOffset.ToString();
+
     if (HasAdditionalColumnsList)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.Write (_additionalColumnsTitle + c_whiteSpace);
       if (IsDesignMode)
@@ -879,21 +888,41 @@ public class BocList:
     if (HasOptionsMenu)
     {
       _optionsMenu.TitleText = _optionsTitle;
+      _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       _optionsMenu.RenderControl (writer);
     }
 
     if (HasListMenu)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       MenuItem[] listMenuItems = _listMenuItems.GroupMenuItems (false);
       for (int idxItems = 0; idxItems < listMenuItems.Length; idxItems++)
-        RenderListMenuItem (writer, (BocMenuItem)listMenuItems[idxItems], idxItems);
+      {
+        MenuItem currentItem = listMenuItems[idxItems];
+
+        bool isFirstItem = idxItems == 0;
+        bool isLastItem = idxItems == listMenuItems.Length - 1;
+        bool isNewCategory = ! isFirstItem && listMenuItems[idxItems - 1].Category != currentItem.Category;
+
+        if (   _listMenuLineBreaks == ListMenuLineBreaks.All
+            || _listMenuLineBreaks == ListMenuLineBreaks.BetweenGroups && (isNewCategory || isFirstItem))
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.Div);
+        }
+        RenderListMenuItem (writer, currentItem, idxItems);
+        if (   _listMenuLineBreaks == ListMenuLineBreaks.All
+            || _listMenuLineBreaks == ListMenuLineBreaks.BetweenGroups && (isNewCategory || isLastItem))
+        {
+          writer.RenderEndTag();
+        }
+      }
       writer.RenderEndTag();
     }
   }
 
-  private void RenderListMenuItem (HtmlTextWriter writer, BocMenuItem menuItem, int index)
+  private void RenderListMenuItem (HtmlTextWriter writer, MenuItem menuItem, int index)
   {
     //  Render the command
     bool isCommandEnabled = false;
@@ -910,19 +939,20 @@ public class BocList:
       }
     }
 
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassListMenuItem);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
     if (isCommandEnabled)
     {    
       string argument = c_eventMenuItemPrefix + index;
       string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-      string onClick = "BocList_OnCommandClick();";
-      menuItem.Command.RenderBegin (writer, postBackLink, onClick);
+      menuItem.Command.RenderBegin (writer, postBackLink, null);
     }
 
     if (! StringUtility.IsNullOrEmpty (menuItem.Icon))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
       writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+      writer.AddStyleAttribute ("vertical-align", "middle");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
       writer.Write (c_whiteSpace);
@@ -2617,6 +2647,17 @@ public class BocList:
     remove { Events.RemoveHandler (EventMenuItemClick, value); }
   }
 
+  /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
+  /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
+  [Category ("Menu")]
+  [Description ("The offset between the items in the menu section.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit MenuBlockItemOffset
+  {
+    get { return _menuBlockItemOffset; }
+    set { _menuBlockItemOffset = value; }
+  }
+
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
@@ -2650,9 +2691,7 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the offset between the <c>list block</c> and the <c>menu block</c>. </summary>
-  /// <remarks> 
-  ///   The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute.
-  /// </remarks>
+  /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute. </remarks>
   [Category ("Menu")]
   [Description ("The offset between the list of values and the menu section.")]
   [DefaultValue (typeof (Unit), "")]
@@ -2675,9 +2714,7 @@ public class BocList:
     set { _showAdditionalColumnsList = value; }
   }
 
-  /// <summary> 
-  ///   Gets or sets the text that is rendered as a title for the drop list of additional columns.
-  /// </summary>
+  /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
   [Category ("Menu")]
   [Description ("The text that is rendered as a title for the list of additional columns.")]
   [DefaultValue ("View")]
@@ -2687,16 +2724,24 @@ public class BocList:
     set { _additionalColumnsTitle = value; }
   }
 
-  /// <summary> 
-  ///   Gets or sets the text that is rendered as a label for the <c>Options</c> menu.
-  /// </summary>
+  /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
   [Category ("Menu")]
-  [Description ("The text that is rendered as a label for the Options menu.")]
+  [Description ("The text that is rendered as a label for the options menu.")]
   [DefaultValue ("Options")]
   public string OptionsTitle
   {
     get { return _optionsTitle; }
     set { _optionsTitle = value; }
+  }
+
+  /// <summary> Gets or sets the rendering option for the <c>list menu</c>. </summary>
+  [Category ("Menu")]
+  [Description ("Defines how the items will be rendered.")]
+  [DefaultValue (ListMenuLineBreaks.All)]
+  public ListMenuLineBreaks ListMenuLineBreaks
+  {
+    get { return _listMenuLineBreaks; }
+    set { _listMenuLineBreaks = value; }
   }
 
   #region protected virtual string CssClass...
@@ -2744,6 +2789,10 @@ public class BocList:
   /// <remarks> Class: <c>bocListAdditionalColumnsList</c> </remarks>
   protected virtual string CssClassAdditionalColumnsList
   { get { return "bocListAdditionalColumnsList"; } }
+
+  protected virtual string CssClassListMenuItem
+  { get { return "bocListListMenuItem"; } }
+
   #endregion
 
   /// <summary>
@@ -2765,11 +2814,11 @@ public enum SortingDirection
   Descending
 }
 
-public enum ListMenuDirection
+public enum ListMenuLineBreaks
 {
-  NoInLine,
-  ItemsInLine,
-  GroupsInLine
+  All,
+  None,
+  BetweenGroups
 }
 
 }

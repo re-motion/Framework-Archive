@@ -272,6 +272,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   protected override void Render (HtmlTextWriter writer)
   {
+    foreach (string key in Style.Keys)
+      writer.AddStyleAttribute (key, Style[key]);
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
     if (! Height.IsEmpty)

@@ -10,6 +10,7 @@ body, input, textarea
 
 a
 {
+  text-decoration: none;
   color: Blue;
 }
 

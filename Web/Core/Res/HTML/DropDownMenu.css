@@ -88,9 +88,8 @@ div.dropDownMenuItemFocus a
 }
 
 /*  */
-div.dropDownMenuItemTextPane
+span.dropDownMenuItemTextPane
 {
-  display: inline;
   padding-left: 8px;
   padding-right: 4px;
   font-size: 66.67%;
@@ -101,9 +100,8 @@ div.dropDownMenuItemTextPane
 
 
 /*  */
-div.dropDownMenuItemIconPane
+span.dropDownMenuItemIconPane
 {
-  display: inline;
   width: 20px;
 	padding-right: 2px;
   border-style: none;
@@ -111,9 +109,8 @@ div.dropDownMenuItemIconPane
 	text-align: center;
 }
 
-div.dropDownMenuTextPaneSeparator
+span.dropDownMenuTextPaneSeparator
 {
-  display: inline;
 	margin-left: 32px;
 	margin-right: 0px;
   font-size: 1px;
