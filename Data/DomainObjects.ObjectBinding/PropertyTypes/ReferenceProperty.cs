@@ -13,17 +13,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class ReferenceProperty : NullableProperty, IBusinessObjectReferenceProperty
 {
-  private IRelationEndPointDefinition _relationEndPointDefinition;
-
   public ReferenceProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
-      IRelationEndPointDefinition relationEndPointDefinition,
+      bool isRequired,
       Type itemType, 
       bool isList)
-      : base (propertyInfo, propertyDefinition, itemType, isList, true)
+      : base (propertyInfo, isRequired, itemType, isList, true)
   {
-    _relationEndPointDefinition = relationEndPointDefinition;
   }
 
   public IBusinessObjectClass ReferenceClass
@@ -46,19 +42,5 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
       return false;
     }
   }
-
-  public override bool IsRequired
-  {
-    get
-    {
-      bool isRequired = base.IsRequired;
-
-      if (_relationEndPointDefinition != null)
-        isRequired = _relationEndPointDefinition.IsMandatory;
-
-      return isRequired;
-    }
-  }
-
 }
 }
