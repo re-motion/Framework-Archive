@@ -69,6 +69,11 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
     return GetAllStrings (string.Empty);
   }
 
+  /// <summary>
+  ///   Searches for all string resources inside the resource manager whose name is prefixed 
+  ///   with a matching tag.
+  ///   <seealso cref="IResourceManager.GetAllStrings"/>
+  /// </summary>
   public NameValueCollection GetAllStrings (string prefix)
   {
     NameValueCollection result = new NameValueCollection();
@@ -85,20 +90,28 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
     return result;
   }
 
+  /// <summary>
+  ///   Gets the value of the specified string resource. 
+  ///   <seealso cref="IResourceManager.GetString"/>
+  /// </summary>
   public string GetString (string id)
   {
     for (int i = this.Count - 1; i >= 0; --i)
     {
       string s = this[i].GetString (id);
-      if (s != null)
+      if (s != id)
         return s;
     }
-    return null;
+    return id;
   }
 
-  public string GetString (Type type, Enum enumValue)
+  /// <summary>
+  ///   Gets the value of the specified string resource. 
+  ///   <seealso cref="IResourceManager.GetString"/>
+  /// </summary>
+  public string GetString (Enum enumValue)
   {
-    return GetString (type.FullName + "." + enumValue.ToString());
+    return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
   }
 
   public string Name

@@ -88,14 +88,9 @@ public class ResourceManagerWrapper: IResourceManager
   /// <summary>
   ///   Searches for all string resources inside the resource manager whose name is prefixed 
   ///   with a matching tag.
+  ///   <seealso cref="IResourceManager.GetAllStrings"/>
   /// </summary>
   /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
-  /// <param name="prefix">
-  ///   The prefix all returned string resources must have.
-  /// </param>
-  /// <returns>
-  ///   A collection of string pairs, the key being the resource's ID, the vale being the string.
-  /// </returns>
   public NameValueCollection GetAllStrings (string prefix)
   {
     if (prefix == null || prefix == String.Empty)
@@ -130,29 +125,18 @@ public class ResourceManagerWrapper: IResourceManager
   }
 
   /// <summary>
-  ///   Gets the value of the specified String resource. The resource is identified by
-  ///   concatenating the type's FullName and the enumvalue's string representation.
+  ///   Gets the value of the specified string resource. 
+  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
-  /// <param name="type">The type to which the resource belongs</param>
-  /// <param name="enumValue">The last part of the reosurce identifier.</param>
-  /// <returns>
-  ///   The value of the resource. If a match is not possible, a null reference is returned
-  /// </returns>
-  public string GetString (Type type, Enum enumValue)
+  public string GetString (Enum enumValue)
   {
-    return GetString (type.FullName + "." + enumValue.ToString());
+    return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
   }
 
   /// <summary>
-  ///   Gets the value of the specified String resource.
+  ///   Gets the value of the specified string resource. 
+  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
-  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
-  /// <param name="id">
-  ///   The ID of the resource to get. Must not be <see langname="null"/>.
-  /// </param>
-  /// <returns>
-  ///   The value of the resource. If a match is not possible, <see langname="null"/> is returned.
-  /// </returns>
   public string GetString (string id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
