@@ -18,7 +18,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public class BocColumnDefinitionSet
 {
   /// <summary> The programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
-  private string _id;
+  private string _setID;
   /// <summary> The displayed name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   private object _title;
   /// <summary> 
@@ -32,58 +32,10 @@ public class BocColumnDefinitionSet
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
-  /// <summary> 
-  ///   Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class 
-  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs, a title,
-  ///   and an array of <see cref="BocColumnDefinition"/> objects. 
-  /// </summary>
-  /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> this <see cref="BocColumnDefinitionSet"/> 
-  ///   belongs.
-  /// </param>
-  /// <param name="title">
-  ///   The <see cref="string"/> symbolizing this <see cref="BocColumnDefinitionSet"/> 
-  ///   on the rendered page.
-  /// </param>
-  /// <param name="columnDefinitions">
-  ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
-  ///   <see cref="BocColumnDefinitionSet"/>.
-  /// </param>
-  public BocColumnDefinitionSet (
-      IBusinessObjectBoundWebControl ownerControl, 
-      object title, 
-      BocColumnDefinition[] columnDefinitions)
-  {
-    _title = title;
-    _columnDefinitionCollection = new BocColumnDefinitionCollection (
-      ownerControl, 
-      new Type[] {typeof (BocSimpleColumnDefinition)});
-    
-    if (columnDefinitions != null)
-      _columnDefinitionCollection.AddRange (columnDefinitions);
-  }
-
-  /// <summary> 
-  ///   Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class with a title
-  ///   and an array of <see cref="BocColumnDefinition"/> objects. 
-  /// </summary>
-  /// <param name="title">
-  ///   The <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> 
-  ///   on the rendered page.
-  /// </param>
-  /// <param name="columnDefinitions">
-  ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
-  ///   <see cref="BocColumnDefinitionSet"/>.
-  /// </param>
-  public BocColumnDefinitionSet (object title, BocColumnDefinition[] columnDefinitions)
-    : this (null, title, columnDefinitions)
-  {
-  }
-
   /// <summary> Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class. </summary>
   public BocColumnDefinitionSet()
-    : this (null, string.Empty, null)
   {
+    _columnDefinitionCollection = new BocColumnDefinitionCollection (null);
   }
 
   /// <summary>
@@ -92,7 +44,7 @@ public class BocColumnDefinitionSet
   /// <returns> Returns the class name of the instance, followed by the <see cref="Title"/>. </returns>
   public override string ToString()
   {
-    string displayName = ID;
+    string displayName = SetID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = Title;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -110,10 +62,10 @@ public class BocColumnDefinitionSet
   [Category ("Misc")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
-  public string ID
+  public string SetID
   {
-    get { return _id; }
-    set { _id = value; }
+    get { return _setID; }
+    set { _setID = value; }
   }
 
   /// <summary> Gets or sets the displayed name of the <see cref="BocColumnDefinitionSet"/>. </summary>
