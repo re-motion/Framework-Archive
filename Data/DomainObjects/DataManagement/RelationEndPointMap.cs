@@ -20,6 +20,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public RelationEndPointMap (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
     _clientTransaction = clientTransaction;
     _relationEndPoints = new RelationEndPointCollection ();
   }
@@ -217,11 +218,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return RelationEndPoint.CreateNullRelationEndPoint (definition); 
   }
 
-  public RelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
+  private RelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
   {
-    // TODO: This method probably should be private.
-    ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-
     if (_relationEndPoints.Contains (endPointID))
       return _relationEndPoints[endPointID];
 
