@@ -62,19 +62,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     //  Not used, title always set to message
     //  ValidationErrorInfoTitle,
   }
+  
   /// <summary>
   ///   Wrapper class for a single HtmlTable plus the additional information
   ///   added through the <see cref="FormGridManager"/>.
   /// </summary>
   protected class FormGrid
   {
-    /// <summary> Delegate for creating an array of FormGridRow objects from an Html Table. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/CreateRows/*' />
-    public delegate FormGridRow[] CreateRows (
-      FormGrid formGrid, 
-      int labelsColumn, 
-      int controlsColumn);
-
     /// <summary> The <c>HtmlTable</c> used as a base for form grid. </summary>
     private HtmlTable _table;
 
@@ -90,24 +84,23 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     /// <summary> Simple contructor. </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
     public FormGrid (
-      HtmlTable table, 
-      CreateRows createRows,
-      int defaultLabelsColumn, 
-      int defaultControlsColumn)
+        HtmlTable table, 
+        FormGridRow[] rows,
+        int defaultLabelsColumn, 
+        int defaultControlsColumn)
     {
       ArgumentUtility.CheckNotNull ("table", table);
-      ArgumentUtility.CheckNotNull ("createRows", createRows);
+      ArgumentUtility.CheckNotNull ("rows", rows);
 
       _table = table;
       _defaultLabelsColumn = defaultLabelsColumn;
       _defaultControlsColumn = defaultControlsColumn;
-      _rows = new FormGridRowCollection (
-        this,
-        createRows (this, defaultLabelsColumn, defaultControlsColumn));
+      _rows = new FormGridRowCollection (this, rows);
     }
 
     /// <summary> Uses the wrapped HtmlTable's ID's GetHashCode method. </summary>
     /// <returns> The hash code </returns>
+    [Obsolete]
     public override int GetHashCode()
     {
       return _table.ID.GetHashCode ();
@@ -116,6 +109,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     /// <summary> Compares by reference. </summary>
     /// <param name="obj"> The object to compare with. </param>
     /// <returns> <see langname="true"/> if a match. </returns>
+    [Obsolete]
     public override bool Equals(object obj)
     {
       return object.ReferenceEquals (this, obj);
@@ -240,9 +234,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/InsertNewFormGridRow/*' />
     public void InsertNewFormGridRow (
-      FormGridRow newFormGridRow,
-      string relatedRowID,
-      FormGridRowPrototype.RowPosition positionInFormGrid)
+        FormGridRow newFormGridRow,
+        string relatedRowID,
+        FormGridRowPrototype.RowPosition positionInFormGrid)
     {
       ArgumentUtility.CheckNotNull ("newFormGridRow", newFormGridRow);
 
@@ -258,7 +252,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
           _table.Rows.Add (newHtmlTableRow);
         
         //  append form grid row
-        ((IList)Rows).Add (newFormGridRow);
+        Rows.Add (newFormGridRow);
       }
         //  Insert after the related form grid row
       else if (positionInFormGrid == FormGridRowPrototype.RowPosition.AfterRowWithID)
@@ -292,10 +286,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
         //  Insert row into Form Grid
 
-        int idxFormGridRow = ((IList)Rows).IndexOf (relatedRow);
+        int idxFormGridRow = Rows.IndexOf (relatedRow);
         //  After the index of the related row
         idxFormGridRow++;
-        ((IList)Rows).Insert (idxFormGridRow, newFormGridRow);
+        Rows.Insert (idxFormGridRow, newFormGridRow);
       }
         //  Insert before the related form grid row
       else if (positionInFormGrid == FormGridRowPrototype.RowPosition.BeforeRowWithID)
@@ -323,9 +317,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
         //  Insert row into Form Grid
         
-        int idxFormGridRow = ((IList)Rows).IndexOf (relatedRow);
+        int idxFormGridRow = Rows.IndexOf (relatedRow);
         //  Before the related row
-        ((IList)Rows).Insert (idxFormGridRow, newFormGridRow);
+        Rows.Insert (idxFormGridRow, newFormGridRow);
       }
 
       newFormGridRow.BuildIDCollection ();
@@ -343,23 +337,26 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       get { return _rows; }
     }
 
-    /// <summary> Can be used to store the initial value for the labels column. </summary>
+    /// <summary> Gets or sets the index of the column used for labels. </summary>
     public int DefaultLabelsColumn
     {
       get { return _defaultLabelsColumn; }
       set { _defaultLabelsColumn = value; }
     }
 
-    /// <summary> Can be used to store the initial value for the controls column. </summary>
+    /// <summary> Gets or sets the index of the column used for controls. </summary>
+    /// <remarks>
+    ///   Note that controls using a seperate row may exist in the column <see cref="DefaultLabelsColumn"/>.
+    /// </remarks>
     public int DefaultControlsColumn
     {
       get { return _defaultControlsColumn; }
       set { _defaultControlsColumn = value; }
     }
-}
+  }
 
   /// <summary> A collection of <see cref="FormGridRow"/> objects. </summary>
-  protected sealed class FormGridRowCollection : CollectionBase
+  protected sealed class FormGridRowCollection: CollectionBase, IList
   {
     /// <summary> The <see cref="FormGrid"/> to which this collection belongs to. </summary>
     private FormGrid _ownerFormGrid;
@@ -407,6 +404,20 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       base.OnInsert (index, value);
     }
 
+    public int IndexOf (object value)
+    {
+      return ((IList)this).IndexOf (value);
+    }
+
+    public void Insert (int index, object value)
+    {
+      ((IList)this).Insert (index, value);
+    }
+
+    public void Add (object value)
+    {
+      ((IList)this).Add (value);
+    }
   }
 
   /// <summary>
@@ -870,7 +881,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
   private const string c_formGridSuffix = "FormGrid";
 
-  private const string c_generatedLabelSuffix = "_FormGridManagerGeneratedLabel";
+  private const string c_generatedLabelSuffix = "_Label";
   #region private const string c_viewStateID...
 
   /// <summary> View State ID for the form grid view states. </summary>
@@ -907,9 +918,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   // member fields
 
   /// <summary>
-  ///   Collection of <see cref="FormGrid" /> objects to be managed by this <c>FormGridManager</c>.
+  ///   Hashtable&lt;string uniqueID, <see cref="FormGrid"/>&gt;
   /// </summary>
-  private Hashtable _formGrids;
+  private Hashtable _formGrids = new Hashtable();
 
   /// <summary> Index of the column normally containing the labels. </summary>
   private int _labelsColumn;
@@ -957,21 +968,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// </summary>
   private IResourceManager _cachedResourceManager;
 
-  /// <summary>
-  /// 
-  /// </summary>
   private bool isResourceManagerUndefined;
 
   /// <summary> <see langword="true"/> if PostBack and ViewState was loaded. </summary>
   private bool hasViewState = false;
+
+  private bool _formGridListPopulated = false;
 
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
   public FormGridManager()
   {
-    _formGrids = new Hashtable();
-
     _labelsColumn = 0;
     _controlsColumn = 1;
 
@@ -989,7 +997,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Validate/*' />
   public bool Validate()
   {
-    PopulateFormGridList (this.Parent);
+    EnsureFormGridListPopulated();
 
     bool isValid = true;
 
@@ -1021,10 +1029,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
   public virtual void Dispatch (IDictionary values)
   {
-    PopulateFormGridList (Parent);
-
-    if (_formGrids == null)
-      return;
+    EnsureFormGridListPopulated();
 
     Hashtable formGridControls = new Hashtable();
 
@@ -1037,11 +1042,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
       int posColon = key.IndexOf (':');
 
-      //  Split after formGridID
-      string formGridID = key.Substring (0, key.IndexOf (":"));
+      //  Split after table id
+      string tableID = key.Substring (0, key.IndexOf (":"));
       string elementIDProperty = key.Substring (posColon + 1);
 
-      FormGrid formGrid = (FormGrid)_formGrids[formGridID.GetHashCode()];
+      FormGrid formGrid = (FormGrid)_formGridsByTableID[tableID];
 
       if (formGrid != null)
       {
@@ -1095,8 +1100,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     foreach (DictionaryEntry formGridEntry in formGridControls)
     {
-      string formGridID = (string)formGridEntry.Key;
-      FormGrid formGrid = (FormGrid)_formGrids[formGridID.GetHashCode()];
+      string tableID = (string)formGridEntry.Key;
+      FormGrid formGrid = (FormGrid)_formGridsByTableID[tableID];
       
       Hashtable controls = (Hashtable)formGridEntry.Value;
 
@@ -1130,24 +1135,24 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
               if (smartControl != null && smartControl.UseLabel)
               {
                 string accessKey;
-                label.Text = AccessKeyUtility.FormatLabelText (label.Text, false, out accessKey);
+                label.Text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
                 label.AccessKey = accessKey;
               }
               else if (associatedControl is TextBox)
               {
                 string accessKey;
-                label.Text = AccessKeyUtility.FormatLabelText (label.Text, false, out accessKey);
+                label.Text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
                 label.AccessKey = accessKey;
               }
               else
               {
-                label.Text = AccessKeyUtility.RemoveAccessKey (label.Text);
+                label.Text = SmartLabel.FormatLabelText (label.Text);
                 label.AccessKey = "";
               }
             }
             else
             {
-              label.Text = AccessKeyUtility.RemoveAccessKey (label.Text);
+              label.Text = SmartLabel.FormatLabelText (label.Text);
             }
           }
         }
@@ -1236,7 +1241,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       foreach (FormGrid formGrid in _formGrids.Values)
       {
-        object viewState = formGridViewStates[formGrid.Table.ID];
+        object viewState = formGridViewStates[formGrid.Table.UniqueID];
 
         LoadFormGridViewState (formGrid, viewState);
       }
@@ -1246,13 +1251,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <summary> This member overrides <see cref="Control.SaveViewState"/>. </summary>
   protected override object SaveViewState()
   {
+    // Hashtable<string, object>
     Hashtable formGridViewStates = new Hashtable (_formGrids.Count);
 
     foreach (FormGrid formGrid in _formGrids.Values)
     {
       object formGridViewState = SaveFormGridViewState (formGrid);
-
-      formGridViewStates.Add (formGrid.Table.ID, formGridViewState);
+      formGridViewStates.Add (formGrid.Table.UniqueID, formGridViewState);
     }
     
     ViewState[c_viewStateIDFormGrids] = formGridViewStates;
@@ -1391,15 +1396,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateFormGridRows/*' />
   protected virtual FormGridRow[] CreateFormGridRows (
-    FormGrid formGrid,
+    HtmlTable table,
     int labelsColumn,
     int controlsColumn)
   {
-    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+    ArgumentUtility.CheckNotNull ("table", table);
 
-    ArrayList formGridRows = new ArrayList(formGrid.Table.Rows.Count);
+    ArrayList formGridRows = new ArrayList(table.Rows.Count);
 
-    HtmlTableRowCollection rows = formGrid.Table.Rows;
+    HtmlTableRowCollection rows = table.Rows;
 
     //  Form Grid Title
 
@@ -1442,7 +1447,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       if (hasOneDataRow)
       {
         HtmlTableRow[] tableRows = new HtmlTableRow[1];
-        tableRows[0] = formGrid.Table.Rows[i];
+        tableRows[0] = table.Rows[i];
 
         FormGridRow formGridRow = new FormGridRow (
           tableRows, 
@@ -1576,7 +1581,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     if (_hasCompletedTransformationStepPreLoadViewState)
       return;
 
-    PopulateFormGridList (Parent);
+    EnsureFormGridListPopulated();
 
     foreach (FormGrid formGrid in _formGrids.Values)
     {
@@ -1638,14 +1643,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
   protected virtual void LoadNewFormGridRows (FormGrid formGrid)
   {
-
     IFormGridRowProvider rowProvider = GetFormGridRowProvider (this);
 
     if (rowProvider == null)
       return;
 
     FormGridRowPrototypeCollection formGridRowPrototypes =
-      rowProvider.GetListOfFormGridRowPrototypes (formGrid.Table.ID);
+        rowProvider.GetListOfFormGridRowPrototypes (formGrid.Table.ID);
 
     foreach (FormGridRowPrototype prototype in formGridRowPrototypes)
     {
@@ -2057,6 +2061,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
+      if (! control.Visible)
+        continue;
+
       //  Query the controls for the string to be used as the labeling Text
 
       Control label = null;
@@ -2080,33 +2087,34 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       {
         string newText = String.Empty;
 
-        //  Get Text
-        IResourceManager resourceManager = GetResourceManager();
-
-        if (resourceManager != null)
-        {
-          StringBuilder identifier = new StringBuilder (100);
-          Type namingContainerType = dataRow.FormGrid.Table.NamingContainer.GetType();
-          identifier.Append (namingContainerType.FullName);
-          identifier.Append (".");
-          identifier.Append (dataRow.FormGrid.Table.ID);
-          identifier.Append (".");
-          identifier.Append (newID);
-          newText = resourceManager.GetString (identifier.ToString());
-        }
+        // TODO: weg mit dem zeug
+                                                IResourceManager resourceManager = GetResourceManager();
+                                                if (resourceManager != null)
+                                                {
+                                                  // bisher: ASP.MyPage_aspx.TableID.ConrolID_FormGridManagerGeneratedLabel
+                                                  // neu: auto:TableID.ControlID_Label.Text
+                                                  StringBuilder identifier = new StringBuilder (100);
+                                                  Type namingContainerType = dataRow.FormGrid.Table.NamingContainer.GetType();
+                                                  identifier.Append (namingContainerType.FullName);
+                                                  identifier.Append (".");
+                                                  identifier.Append (dataRow.FormGrid.Table.ID);
+                                                  identifier.Append (".");
+                                                  identifier.Append (newID);
+                                                  newText = resourceManager.GetString (identifier.ToString());
+                                                }
 
         Label primitiveLabel = new Label();
 
         string accessKey = String.Empty;
 
-        //  Insert the text provided by the control
         if (! StringUtility.IsNullOrEmpty (newText))
         {
-          primitiveLabel.Text = AccessKeyUtility.FormatLabelText (newText, false, out accessKey);
+          // Insert the text provided by the control
+          primitiveLabel.Text = SmartLabel.FormatLabelText (newText, true, out accessKey);
         }
-          //  Otherwise, create default warning text.
         else if (control.ID != null)
         {
+          // create default warning text
           primitiveLabel.Text = control.ID.ToUpper();
           s_log.Warn ("No resource available for control '" + control.ID + "' in naming container '" + control.NamingContainer.GetType().FullName + "'.");
         }
@@ -2119,9 +2127,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
         label = primitiveLabel;
       }
-        //  The control found in this iteration does not get handled by this method.
       else
       {
+        //  The control found in this iteration does not get handled by this method.
         continue;
       }
 
@@ -2146,9 +2154,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       label.EnableViewState = true;
 
       dataRow.LabelsCell.Controls.Add(label);
-
-      //  Set Visible after control is added so ViewState knows about it
-      label.Visible = control.Visible;
     }
   }
 
@@ -2679,38 +2684,47 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     return dataRow.LabelsRowIndex != dataRow.ControlsRowIndex;
   }
 
+  private void EnsureFormGridListPopulated()
+  {
+    if (! _formGridListPopulated)
+    {
+      PopulateFormGridList (this.Parent);
+      _formGridListPopulated = true;
+    }
+  }
+
   /// <summary> Registers all suffixed tables for this <c>FormGridManager</c>. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/PopulateFormGridList/*' />
   private void PopulateFormGridList (Control control)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
-
-    //  Has already pupulated
-    if (_formGrids.Keys.Count > 0)
-      return;
-
     //  Add all table having the suffix
     foreach (Control childControl in control.Controls)
     {
       HtmlTable htmlTable = childControl as HtmlTable;
+      if (htmlTable != null && htmlTable.ID.EndsWith (_formGridSuffix))
+        Add (htmlTable);
 
-      if (htmlTable != null)
-      {
-        if (htmlTable.ID.EndsWith (_formGridSuffix))
-        {
-          FormGrid formGrid = new FormGrid (
-            htmlTable, 
-            new FormGrid.CreateRows(CreateFormGridRows),
-            _labelsColumn,
-            _controlsColumn);
-          
-          _formGrids[formGrid.GetHashCode()] = formGrid;
-        }
-      }
+      PopulateFormGridList (childControl);
+    }
+  }
 
-      //  For perfomance, only recursivly call PopulateFormGridList if control-collection is filled
-      if (childControl.Controls.Count > 0)
-        PopulateFormGridList (childControl);
+  public void Add (HtmlTable table)
+  {
+    if (! _formGrids.Contains (table.UniqueID))
+    {
+      FormGridRow[] rows = CreateFormGridRows (table, _labelsColumn, _controlsColumn);
+      _formGrids[table.UniqueID] = new FormGrid (table, rows, _labelsColumn, _controlsColumn);
+    }
+  }
+
+  public HtmlTable[] Tables
+  {
+    get 
+    {
+      ArrayList tables = new ArrayList();
+      foreach (FormGrid grid in _formGrids.Values)
+        tables.Add (grid.Table);
+      return (HtmlTable[]) tables.ToArray (typeof (HtmlTable));
     }
   }
 
