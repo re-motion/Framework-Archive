@@ -56,12 +56,15 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   frame.style.top = frame.offsetTop + container.offsetHeight;
   frame.style.display = 'none';
 
-  window.frames[frame.id].DatePicker_InitializeCalendarFrame(target, frame);
+  if (window.frames[frame.id].DatePicker_InitializeCalendarFrame != null)
+  {
+    window.frames[frame.id].DatePicker_InitializeCalendarFrame(target, frame);
   
-  _datePicker_currentDatePicker = frame;
+    _datePicker_currentDatePicker = frame;
+    _datePicker_isEventAfterDatePickerButtonClick = true;
+    target.document.onclick = DatePicker_OnDocumentClick;
+  }
   frame.style.display = '';
-  _datePicker_isEventAfterDatePickerButtonClick = true;
-  target.document.onclick = DatePicker_OnDocumentClick;
 }
 
 //  Closes the currently visible date picker frame.
