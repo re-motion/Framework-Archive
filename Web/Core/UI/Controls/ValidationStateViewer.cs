@@ -54,7 +54,7 @@ public class ValidationStateViewer : WebControl
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
-  ///   <see cref="ValidationErrorStyle.Notice"/>
+  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
   private string _noticeText;
 
@@ -242,7 +242,7 @@ public class ValidationStateViewer : WebControl
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
-  ///   <see cref="ValidationErrorStyle.Notice"/>
+  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
   /// <value>A string.</value>
   [CategoryAttribute("Appearance")]
