@@ -49,8 +49,8 @@ public class ViewControl: Control
     {
       if (LabelColumnWidth.Type != ValueColumnWidth.Type)
       {
-        throw new InvalidOperationException (
-            "Cannot specify LabelColumnWidth and ValueColumnWidth in different units.");
+        //throw new InvalidOperationException (
+        //    "Cannot specify LabelColumnWidth and ValueColumnWidth in different units.");
       }
       double widthValue = LabelColumnWidth.Value + ValueColumnWidth.Value;
       if (LabelColumnWidth.Type == UnitType.Em)
