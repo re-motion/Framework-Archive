@@ -269,7 +269,10 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
 
 	var textPane = popUpDocument.createElement ('span');
 	textPane.className = _dropDownMenu_itemTextPaneClassName;	
-  textPane.innerHTML = itemInfo.Text;
+	if (itemInfo.Text != null)
+    textPane.innerHTML = itemInfo.Text;
+  else
+    textPane.innerHTML = '&nbsp;';
 	item.appendChild (textPane);
 
   if (isEnabled)

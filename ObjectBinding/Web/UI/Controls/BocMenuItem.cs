@@ -17,15 +17,18 @@ public class BocMenuItem: MenuItem
       string text, 
       string icon, 
       string iconDisabled, 
+      MenuItemStyle style,
       RequiredSelection requiredSelection,
       bool isDisabled,
       BocMenuItemCommand command)
-    : base (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, command)
+    : base (id, category, text, icon, iconDisabled, style, requiredSelection, isDisabled, command)
   {
   }
 
   public BocMenuItem ()
-    : this (null, null, null, null, null, RequiredSelection.Any, false, new BocMenuItemCommand())
+    : this (
+        null, null, null, null, null, 
+        MenuItemStyle.IconAndText, RequiredSelection.Any, false, new BocMenuItemCommand())
   {
   }
 
