@@ -50,27 +50,6 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderConfigurationException))]
-  public void LoadDataContainerWithNonExistingProviderID ()
-  {
-    ObjectID id = new ObjectID ("NonExistingProviderID", "ClassWithAllDataTypes",
-        new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    _persistenceManager.LoadDataContainer (id);
-  }
-
-  [Test]
-  [ExpectedException (typeof (StorageProviderException), 
-      "Mapping does not contain a class definition with ID 'ThisClassIDDoesNotExist'.")]
-  public void LoadDataContainerWithNotConfiguredClassID ()
-  {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ThisClassIDDoesNotExist",
-        new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    _persistenceManager.LoadDataContainer (id);
-  }
-
-  [Test]
   public void LoadRelatedDataContainer ()
   {
     DataContainer orderTicketContainer = TestDataContainerFactory.CreateOrderTicket1DataContainer ();
@@ -97,8 +76,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   public void LoadRelatedDataContainerByOptionalNullID ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
+    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -111,9 +89,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   public void LoadRelatedDataContainerByOptionalNullIDVirtual ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithGuidKey",
-        new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -126,12 +102,11 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (PersistenceException), 
       "Cannot load related DataContainer of object"
-      + " 'TestDomain|ClassWithValidRelations|3e5aed0e-c6f9-4dca-a901-4da50f5a97ab|System.Guid'"
+      + " 'ClassWithValidRelations|3e5aed0e-c6f9-4dca-a901-4da50f5a97ab|System.Guid'"
       + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullID ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithValidRelations", new Guid ("{3E5AED0E-C6F9-4dca-A901-4DA50F5A97AB}"));
+    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{3E5AED0E-C6F9-4dca-A901-4DA50F5A97AB}"));
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -142,7 +117,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (PersistenceException), 
       "Cannot load related DataContainer of object"
-      + " 'TestDomain|Distributor|1514d668-a0a5-40e9-ac22-f24900e0eb39|System.Guid'"
+      + " 'Distributor|1514d668-a0a5-40e9-ac22-f24900e0eb39|System.Guid'"
       + " over mandatory relation 'PartnerToPerson'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullIDWithInheritance ()
   {
@@ -156,13 +131,11 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (PersistenceException), 
       "Cannot load related DataContainer of object"
-      + " 'TestDomain|ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
+      + " 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
       + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullIDVirtual ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithGuidKey",
-        new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -173,7 +146,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (PersistenceException), 
       "Cannot load related DataContainer of object"
-      + " 'TestDomain|Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid'"
+      + " 'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid'"
       + " over mandatory relation 'CompanyToCeo'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullIDVirtualWithInheritance ()
   {
@@ -186,16 +159,14 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   public void LoadRelatedDataContainerOverValidMandatoryRelation ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}"));
 
     DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
     DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
         classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "ClassWithValidRelationsNonOptional"));
 
-    ObjectID expectedID = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
-        new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
+    ObjectID expectedID = new ObjectID ("ClassWithValidRelations", new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
 
     Assert.IsNotNull (relatedContainer);
     Assert.AreEqual (expectedID, relatedContainer.ID);
@@ -204,12 +175,11 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (PersistenceException),
       "Cannot load related DataContainer of object"
-      + " 'TestDomain|ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
+      + " 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
       + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")]
   public void LoadRelatedDataContainerOverInvalidNonOptionalRelation ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
     DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
@@ -223,9 +193,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
       + " to non-existing object with ID 'a53f679d-0e91-4504-aee8-59250de249b3'.")]
   public void LoadRelatedDataContainerByInvalidID ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithInvalidRelation",
-        new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
+    ObjectID id = new ObjectID ("ClassWithInvalidRelation", new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -335,33 +303,33 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ObjectNotFoundException), 
-      "Object 'TestDomain|Order|c3f486ae-ba6a-4bac-a084-0ccbf445523e|System.Guid' could not be found.")]
+      "Object 'Order|c3f486ae-ba6a-4bac-a084-0ccbf445523e|System.Guid' could not be found.")]
   public void LoadDataContainerWithNonExistingValue ()
   {
     Guid nonExistingID = new Guid ("{C3F486AE-BA6A-4bac-A084-0CCBF445523E}");
-    ObjectID id = new ObjectID (c_testDomainProviderID, "Order", nonExistingID);
+    ObjectID id = new ObjectID ("Order", nonExistingID);
  
     _persistenceManager.LoadDataContainer (id);
   }
 
   [Test]
   [ExpectedException (typeof (PersistenceException),
-      "The ClassID of the provided ObjectID 'TestDomain|Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid'"
-      + " and the ClassID of the loaded DataContainer 'TestDomain|Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ.")]
+      "The ClassID of the provided ObjectID 'Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid'"
+      + " and the ClassID of the loaded DataContainer 'Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ.")]
   public void LoadDataContainerWithInvalidClassID ()
   {
-    ObjectID id = new ObjectID (DomainObjectIDs.Partner1.StorageProviderID, "Distributor", DomainObjectIDs.Partner1.Value);
+    ObjectID id = new ObjectID ("Distributor", DomainObjectIDs.Partner1.Value);
     _persistenceManager.LoadDataContainer (id);
   }
 
   [Test]
   [ExpectedException (typeof (PersistenceException),
-      "The property 'Customer' of the provided DataContainer 'TestDomain|Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
+      "The property 'Customer' of the provided DataContainer 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
       + " refers to ClassID 'Company', but the ClassID of the loaded DataContainer is 'Customer'.")]
   public void LoadRelatedDataContainerWithInvalidClassIDOverEndPoint ()
   {
     DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-    orderContainer["Customer"] = new ObjectID (DomainObjectIDs.Customer1.StorageProviderID, "Company", DomainObjectIDs.Customer1.Value);
+    orderContainer["Customer"] = new ObjectID ("Company", DomainObjectIDs.Customer1.Value);
     RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Customer");
 
     _persistenceManager.LoadRelatedDataContainer (orderContainer, endPointID);
@@ -369,12 +337,11 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (PersistenceException),
-      "The property 'Company' of the loaded DataContainer 'TestDomain|Ceo|c3db20d6-138e-4ced-8576-e81bb4b7961f|System.Guid'"
+      "The property 'Company' of the loaded DataContainer 'Ceo|c3db20d6-138e-4ced-8576-e81bb4b7961f|System.Guid'"
       + " refers to ClassID 'Customer', but the actual ClassID is 'Company'.")]
   public void LoadRelatedDataContainerWithInvalidClassIDOverVirtualEndPoint ()
   {
-    ObjectID companyID = 
-        new ObjectID (c_testDomainProviderID, "Company", new Guid ("{C3DB20D6-138E-4ced-8576-E81BB4B7961F}"));
+    ObjectID companyID = new ObjectID ("Company", new Guid ("{C3DB20D6-138E-4ced-8576-E81BB4B7961F}"));
 
     DataContainer companyContainer = _persistenceManager.LoadDataContainer (companyID);
     RelationEndPointID endPointID = new RelationEndPointID (companyContainer.ID, "Ceo");
@@ -384,12 +351,11 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (PersistenceException),
-      "The property 'Customer' of the loaded DataContainer 'TestDomain|Order|da658f26-8107-44ce-9dd0-1804503eccaf|System.Guid'"
+      "The property 'Customer' of the loaded DataContainer 'Order|da658f26-8107-44ce-9dd0-1804503eccaf|System.Guid'"
       + " refers to ClassID 'Company', but the actual ClassID is 'Customer'.")]
   public void LoadRelatedDataContainersWithInvalidClassID ()
   {
-    ObjectID customerID = 
-        new ObjectID (c_testDomainProviderID, "Customer", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}"));
+    ObjectID customerID = new ObjectID ("Customer", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}"));
 
     RelationEndPointID endPointID = new RelationEndPointID (customerID, "Orders");
 
