@@ -11,10 +11,10 @@ public class PrefixNamespace
   // static members and constants
 
   public static readonly PrefixNamespace MappingNamespace = new PrefixNamespace (
-      "m", "http://www.rubicon-it.com/Data/DomainObjects/Mapping");
+      "m", "http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0");
 
   public static readonly PrefixNamespace StorageProviderConfigurationNamespace = new PrefixNamespace (
-      "sp", "http://www.rubicon-it.com/Data/DomainObjects/Persistence");
+      "sp", "http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0");
 
   // member fields
 
