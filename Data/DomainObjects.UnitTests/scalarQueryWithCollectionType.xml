@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\queries.xsd">
+	
+	<query id="OrderSumQuery" type="value">
+	    <storageProviderID>TestDomain</storageProviderID>        
+	    <statement>select sum(quantity) from Order where CustomerID = @customerID;</statement>
+	    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+	</query>
+	
+</queries>
