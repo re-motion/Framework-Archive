@@ -32,14 +32,9 @@ public delegate void RelationChangingEventHandler (object sender, RelationChangi
 public delegate void RelationChangedEventHandler (object sender, RelationChangedEventArgs args);
 
 /// <summary>
-/// Represents the method that will handle the <see cref="ClientTransaction.Loaded"/> event of a <see cref="ClientTransaction"/>.
+/// Represents the method that will handle <see cref="ClientTransaction"/> events.
 /// </summary>
-public delegate void LoadedEventHandler (object sender, LoadedEventArgs args);
-
-/// <summary>
-/// Represents the method that will handle the <see cref="ClientTransaction.Committed"/> and <see cref="ClientTransaction.Committing"/> events of a <see cref="ClientTransaction"/>.
-/// </summary>
-public delegate void CommitEventHandler (object sender, CommitEventArgs args);
+public delegate void ClientTransactionEventHandler (object sender, ClientTransactionEventArgs args);
 
 /// <summary>
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
@@ -217,46 +212,18 @@ public class RelationChangedEventArgs : EventArgs
 }
 
 /// <summary>
-/// Provides data for the <see cref="ClientTransaction.Loaded"/> event of a <see cref="ClientTransaction"/>.
+/// Provides data for <see cref="ClientTransaction"/> events.
 /// </summary>
-public class LoadedEventArgs : EventArgs
-{
-  private DomainObject _loadedDomainObject;
-
-  /// <summary>
-  /// Initializes a new instance of the <b>LoadedEventArgs</b> class.
-  /// </summary>
-  /// <param name="loadedDomainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been loaded.</param>
-  /// <exception cref="System.ArgumentNullException"><i>loadedDomainObject</i> is a null reference.</exception>
-  public LoadedEventArgs (DomainObject loadedDomainObject)
-  {
-    ArgumentUtility.CheckNotNull ("loadedDomainObject", loadedDomainObject);
-    _loadedDomainObject = loadedDomainObject;
-  }
-
-  /// <summary>
-  /// Gets the <see cref="DomainObject"/> that has been loaded.
-  /// </summary>
-  public DomainObject LoadedDomainObject
-  {
-    get { return _loadedDomainObject; }
-  }
-}
-
-
-/// <summary>
-/// Provides data for the <see cref="ClientTransaction.Committing"/> and <see cref="ClientTransaction.Committed"/> events of a <see cref="ClientTransaction"/>.
-/// </summary>
-public class CommitEventArgs : EventArgs
+public class ClientTransactionEventArgs : EventArgs
 {
   private DomainObjectCollection _domainObjects;
 
   /// <summary>
-  /// Initializes a new instance of the <b>CommitEventArgs</b> class.
+  /// Initializes a new instance of the <b>ClientTransactionEventArgs</b> class.
   /// </summary>
-  /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.</param>
+  /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction"/> operation.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
-  public CommitEventArgs (DomainObjectCollection domainObjects)
+  public ClientTransactionEventArgs (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
     _domainObjects = domainObjects;

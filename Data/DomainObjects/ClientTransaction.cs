@@ -49,17 +49,17 @@ public class ClientTransaction
   /// <summary>
   /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
-  public event LoadedEventHandler Loaded;
+  public event ClientTransactionEventHandler Loaded;
 
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Commit"/> operation.
   /// </summary>
-  public event CommitEventHandler Committing;
+  public event ClientTransactionEventHandler Committing;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Commit"/> operation.
   /// </summary>
-  public event CommitEventHandler Committed;
+  public event ClientTransactionEventHandler Committed;
 
   private DataManager _dataManager;
   private QueryManager _queryManager;
@@ -265,7 +265,8 @@ public class ClientTransaction
 
       _dataManager.RegisterExistingDataContainer (dataContainer);
 
-      OnLoaded (new LoadedEventArgs (dataContainer.DomainObject));
+      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
+      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
       return dataContainer.DomainObject;
     }
@@ -303,7 +304,10 @@ public class ClientTransaction
       {
         SetClientTransaction (relatedDataContainer);
         _dataManager.RegisterExistingDataContainer (relatedDataContainer);
-        OnLoaded (new LoadedEventArgs (relatedDataContainer.DomainObject));
+
+        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {relatedDataContainer.DomainObject}, true);
+        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
         return relatedDataContainer.DomainObject;
       }
       else
@@ -401,8 +405,8 @@ public class ClientTransaction
     if (relationEndPointID != null)
       _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
-    foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
-      OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
+    DomainObjectCollection newLoadedDomainObjects = new DomainObjectCollection (newLoadedDataContainers, true);
+    OnLoaded (new ClientTransactionEventArgs (newLoadedDomainObjects));
 
     return domainObjects;
   }
@@ -433,10 +437,11 @@ public class ClientTransaction
   /// <summary>
   /// Raises the <see cref="Loaded"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="LoadedEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnLoaded (LoadedEventArgs args)
+  /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    args.LoadedDomainObject.EndObjectLoading ();
+    foreach (DomainObject loadedDomainObject in args.DomainObjects)
+      loadedDomainObject.EndObjectLoading ();
 
     if (Loaded != null)
       Loaded (this, args);
@@ -445,8 +450,8 @@ public class ClientTransaction
   /// <summary>
   /// Raises the <see cref="Committing"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="CommitEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnCommitting (CommitEventArgs args)
+  /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
     if (Committing != null)
       Committing (this, args);
@@ -455,8 +460,8 @@ public class ClientTransaction
   /// <summary>
   /// Raises the <see cref="Committed"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="CommitEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnCommitted (CommitEventArgs args)
+  /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
     if (Committed != null)
       Committed (this, args);
@@ -483,7 +488,7 @@ public class ClientTransaction
     foreach (DomainObject changedDomainObject in changedDomainObjects)
       changedDomainObject.BeginCommit ();
 
-    OnCommitting (new CommitEventArgs (changedDomainObjects));
+    OnCommitting (new ClientTransactionEventArgs (changedDomainObjects));
   }
 
   private void EndCommit (DomainObjectCollection changedDomainObjects)
@@ -491,7 +496,7 @@ public class ClientTransaction
     foreach (DomainObject changedDomainObject in changedDomainObjects)
       changedDomainObject.EndCommit ();
     
-    OnCommitted (new CommitEventArgs (changedDomainObjects));
+    OnCommitted (new ClientTransactionEventArgs (changedDomainObjects));
   }
 }
 }

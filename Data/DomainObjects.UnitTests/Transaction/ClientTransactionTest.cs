@@ -51,7 +51,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
 
     DomainObject domainObject1 = ClientTransactionMock.GetObject (id);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
-    Assert.AreSame (domainObject1, _eventReceiver.LoadedDomainObjects[0]);
+
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (1, domainObjects.Count);
+    Assert.AreSame (domainObject1, domainObjects[0]);
     _eventReceiver.Clear ();
 
     DomainObject domainObject2 = ClientTransactionMock.GetObject (id);
@@ -71,12 +74,18 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     
     DomainObject domainObject1 = ClientTransactionMock.GetObject (id1);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
-    Assert.AreSame (domainObject1, _eventReceiver.LoadedDomainObjects[0]);
+
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (1, domainObjects.Count);   
+    Assert.AreSame (domainObject1, domainObjects[0]);
     _eventReceiver.Clear ();
 
     DomainObject domainObject2 = ClientTransactionMock.GetObject (id2);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
-    Assert.AreSame (domainObject2, _eventReceiver.LoadedDomainObjects[0]);
+
+    domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (1, domainObjects.Count);
+    Assert.AreSame (domainObject2, domainObjects[0]);
     
     Assert.IsFalse (object.ReferenceEquals (domainObject1, domainObject2));
   }
@@ -108,7 +117,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsNotNull (order);
     Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
-    Assert.AreSame (order, _eventReceiver.LoadedDomainObjects[0]);
+
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (1, domainObjects.Count);
+    Assert.AreSame (order, domainObjects[0]);
   }
 
   [Test]
@@ -123,7 +135,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsNotNull (orderTicket);
     Assert.AreEqual (DomainObjectIDs.OrderTicket1, orderTicket.ID);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
-    Assert.AreSame (orderTicket, _eventReceiver.LoadedDomainObjects[0]);
+
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (1, domainObjects.Count);
+    Assert.AreSame (orderTicket, domainObjects[0]);
   }
 
   [Test]
@@ -228,7 +243,9 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsNotNull (orders);
     Assert.AreEqual (typeof (OrderCollection), orders.GetType (), "Type of collection");
     Assert.AreEqual (2, orders.Count);
-    Assert.AreEqual (2, _eventReceiver.LoadedDomainObjects.Count);
+
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (2, domainObjects.Count);
   }
 
   [Test]
@@ -244,7 +261,10 @@ public class ClientTransactionTest : ClientTransactionBaseTest
         new RelationEndPointID (customer.ID, "Orders"));
     
     Assert.IsTrue (object.ReferenceEquals (orders1, orders2));
-    Assert.AreEqual (2, _eventReceiver.LoadedDomainObjects.Count);
+
+    Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
+    DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
+    Assert.AreEqual (2, domainObjects.Count);
   }
 
   [Test]

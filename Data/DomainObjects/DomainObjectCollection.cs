@@ -162,12 +162,42 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     ArgumentUtility.CheckNotNull ("collection", collection);
 
     foreach (DomainObject domainObject in collection)
-    {
       Add (domainObject);
-    }
 
     this.SetIsReadOnly (isCollectionReadOnly);
     _requiredItemType = collection.RequiredItemType;    
+  }
+
+  /// <summary>
+  /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given array of <see cref="DomainObject"/>s.
+  /// </summary>
+  /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy.</param>
+  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  public DomainObjectCollection (DomainObject[] domainObjects, bool isCollectionReadOnly)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+    foreach (DomainObject domainObject in domainObjects)
+      Add (domainObject);
+
+    this.SetIsReadOnly (isCollectionReadOnly);
+  }
+
+  /// <summary>
+  /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a <see cref="DataManagement.DataContainerCollection"/>s.
+  /// </summary>
+  /// <param name="dataContainers">The <see cref="DataManagement.DataContainerCollection"/> to copy.</param>
+  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
+  /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is a null reference.</exception>
+  public DomainObjectCollection (DataContainerCollection dataContainers, bool isCollectionReadOnly)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+
+    foreach (DataContainer dataContainer in dataContainers)
+      Add (dataContainer.DomainObject);
+
+    this.SetIsReadOnly (isCollectionReadOnly);
   }
 
   // methods and properties

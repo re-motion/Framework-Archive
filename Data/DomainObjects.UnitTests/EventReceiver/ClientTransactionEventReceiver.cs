@@ -25,9 +25,9 @@ public class ClientTransactionEventReceiver
     _committedDomainObjects = new ArrayList ();
     _clientTransaction = clientTransaction;
 
-    _clientTransaction.Loaded += new LoadedEventHandler (ClientTransaction_Loaded);
-    _clientTransaction.Committing += new CommitEventHandler (ClientTransaction_Committing);
-    _clientTransaction.Committed += new CommitEventHandler (ClientTransaction_Committed);
+    _clientTransaction.Loaded += new ClientTransactionEventHandler (ClientTransaction_Loaded);
+    _clientTransaction.Committing += new ClientTransactionEventHandler (ClientTransaction_Committing);
+    _clientTransaction.Committed += new ClientTransactionEventHandler (ClientTransaction_Committed);
   }
 
   // methods and properties
@@ -41,22 +41,22 @@ public class ClientTransactionEventReceiver
 
   public void Unregister ()
   {
-    _clientTransaction.Loaded -= new LoadedEventHandler (ClientTransaction_Loaded);
-    _clientTransaction.Committing -= new CommitEventHandler (ClientTransaction_Committing);
-    _clientTransaction.Committed -= new CommitEventHandler (ClientTransaction_Committed);
+    _clientTransaction.Loaded -= new ClientTransactionEventHandler (ClientTransaction_Loaded);
+    _clientTransaction.Committing -= new ClientTransactionEventHandler (ClientTransaction_Committing);
+    _clientTransaction.Committed -= new ClientTransactionEventHandler (ClientTransaction_Committed);
   }
 
-  private void ClientTransaction_Loaded (object sender, LoadedEventArgs args)
+  private void ClientTransaction_Loaded (object sender, ClientTransactionEventArgs args)
   {
-    _loadedDomainObjects.Add (args.LoadedDomainObject); 
+    _loadedDomainObjects.Add (args.DomainObjects); 
   }
 
-  private void ClientTransaction_Committing (object sender, CommitEventArgs args)
+  private void ClientTransaction_Committing (object sender, ClientTransactionEventArgs args)
   {
     _committingDomainObjects.Add (args.DomainObjects);
   }
 
-  private void ClientTransaction_Committed (object sender, CommitEventArgs args)
+  private void ClientTransaction_Committed (object sender, ClientTransactionEventArgs args)
   {
     _committedDomainObjects.Add (args.DomainObjects);
   }
