@@ -30,6 +30,22 @@ public class EqualityTests
     Assertion.Assert (! NaInt32.Null.Equals (null)); // NaInt32.Null != null
   }
 
+  [Test]
+  public void NaInt32CompareTo()
+  {
+    Assertion.Assert ( new NaInt32 (3).CompareTo (new NaInt32 (4)) < 0);
+    Assertion.Assert ( NaInt32.Null.CompareTo (new NaInt32 (4)) < 0);
+
+    Assertion.Assert ( new NaInt32 (3).CompareTo (new NaInt32 (3)) == 0);
+    Assertion.Assert ( NaInt32.Null.CompareTo (NaInt32.Null) == 0);
+
+    Assertion.Assert ( new NaInt32 (4).CompareTo (new NaInt32 (3)) > 0);
+    Assertion.Assert ( new NaInt32(4).CompareTo (NaInt32.Null) > 0);
+
+    Assertion.Assert ( new NaInt32 (3).CompareTo (null) > 0);
+    Assertion.Assert ( NaInt32.Null.CompareTo (null) == 0);
+  }
+
   public void CheckEquals (NaInt32 x)
   {
     CheckEquals (x, x, true);

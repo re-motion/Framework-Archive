@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
+using System.Globalization;
 
 namespace Rubicon.Data.NullableValueTypes
 {
@@ -8,15 +9,112 @@ namespace Rubicon.Data.NullableValueTypes
 /// <summary>
 /// Represents a 32-bit signed integer that can be <c>Null</c>.
 /// </summary>
+/// <remarks>
+///   <para>
+///     <c>NaInt32</c> is basically a structure that can contain any 32-bit integer value or <c>Null</c>. Use <see cref="IsNull"/> to find 
+///     out whether a specific structure contains <c>Null</c>, or <c>NaInt32.Null</c> to assign <c>Null</c> to a <c>NaInt32</c> variable.
+///   </para>
+///   <para>
+///     You can use the <see cref="Value"/> property to access the integer value, or the explicit <c>Int32</c> conversion operator. Either
+///     method results in a <see cref="NaNullValueException"/> if the structure is <c>Null</c>.
+///   </para>
+///   <para>
+///     NaInt32 can be used as a replacement for <c>System.Data.SqlTypes.SqlInt32</c> if you prefer the null-value semantics of <c>NaInt32</c>
+///     or need serializability. Implicit conversion operators for <c>SqlInt32 </c>allow <c>NaInt32</c> to be used seamlessly with ADO.NET.
+///   </para>
+///   <para>
+///     The following null-value semantics are used for <c>NaInt32</c> structures:
+///   </para>
+///   <list type="table">
+///     <listheader>
+///       <term>Category</term>
+///       <description>Semantics</description>
+///     </listheader>
+///     <item>
+///       <term>Equality</term>
+///       <description>
+///         The standard equality methods and operators of <c>NaInt32</c> consider two <see cref="Null"/> values equal.
+///         <para>
+///           Applies to <see cref="Equals"/>, <see cref="NotEquals"/>, <see cref="operator =="/>, <see cref="operator !="/>.
+///         </para>
+///       </description>
+///     </item>
+///     <item>
+///       <term>SQL-style Equality</term>
+///       <description>
+///         The SQL-style equality methods of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
+///         is <see cref="Null"/>. 
+///         <para>
+///           Applies to <see cref="EqualsSql"/>, <see cref="NotEqualsSql"/>.
+///         </para>
+///       </description>
+///     </item>
+///     <item>
+///       <term>Relative Comparison</term>
+///       <description>
+///         The standard compare methods and operators of <c>NaInt32</c> return <c>NaBoolean.Null</c> if either of the compared values
+///         is <see cref="Null"/>. 
+///         <para>
+///           Applies to <see cref="LessThan"/>, <see cref="LessThanOrEqual"/>, <see cref="GreaterThan"/>, <see cref="GreaterThanOrEqual"/>,
+///           <see cref="operator &lt;"/>, <see cref="operator &lt;="/>, <see cref="operator &gt;"/>, <see cref="operator &gt;="/>.
+///         </para>
+///       </description>
+///     </item>
+///     <item>
+///       <term>Relative Comparision using <c>CompareTo</c></term>
+///       <description>
+///         The CompareTo methods of <c>NaInt32</c> consider <see cref="Null"/> and null references to be less than any other value.
+///         <para>
+///           Applies to <see cref="CompareTo"/>.
+///         </para>
+///       </description>
+///     </item>
+///     <item>
+///       <term>Arithmetics</term>
+///       <description>
+///         The arithmetic methods and operators of <c>NaInt32</c> return <see cref="Null"/> if eihter of their arguments are <c>Null</c>.
+///         All arithmetic methods are checked, i.e. OverflowException and DivideByZeroException may be thrown.
+///         <para>
+///           Applies to <see cref="Add"/>, <see cref="Subtract"/>, <see cref="Multiply"/>, <see cref="Divide"/>, <see cref="Mod"/>, 
+///           <see cref="operator +"/>, <see cref="operator -"/>, <see cref="operator *"/>, <see cref="operator /"/>, <see cref="operator %"/>.
+///         </para>
+///       </description>
+///     </item>
+///     <item>
+///       <term>Type Conversion</term>
+///       <description>
+///         If a <c>NaInt32</c> null-value is converted to an <c>Int32</c>, a <see cref="NaNullValueException"/> is thrown. Conversions 
+///         from <c>Int32</c> to <c>NaInt32</c>, and conversions to and from <c>SqlInt32</c> never throw exceptions.
+///       </description>
+///     </item>
+///     <item>
+///       <term>Formatting and Parsing</term>
+///       <description>
+///         <para>
+///           If the instance is not <c>Null</c>, <c>ToString</c> returns the same string that <c>Int32.ToString</c> would return. If it is
+///           <c>Null</c>, <c>ToString</c> returns the value <see cref="NullString"/> ("null"). Prefix the format string with the tilde 
+///           symbol ("~") to return a
+///           zero-length string for <c>Null</c>.
+///         </para>
+///         <para>
+///           <c>Parse</c> returns <c>Null</c> if the string is a null reference, a zero-length string or <see cref="NullString"/> ("null"). 
+///           Otherwise, it returns the same value that <c>Int32.Parse</c> would return.///           
+///         </para>
+///       </description>
+///     </item>
+///   </list>
+/// </remarks>
 [Serializable]
-public struct NaInt32: INullable, IComparable, ISerializable
+public struct NaInt32: INullable, IComparable, ISerializable, IFormattable
 {
-  // member fields
+  #region member fields
 
   private Int32 _value;
   private bool _isNull;
 
-  // construction and disposal
+  #endregion
+
+  #region construction and disposal
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NaInt32"/> structure using the supplied integer value.
@@ -34,7 +132,9 @@ public struct NaInt32: INullable, IComparable, ISerializable
     _isNull = isNull;
   }
 
-  // serialization
+  #endregion
+
+  #region serialization
 
   /// <summary>
   /// Serialization constructor. 
@@ -60,35 +160,135 @@ public struct NaInt32: INullable, IComparable, ISerializable
     info.AddValue ("Value", _value);
   }
 
-  // type conversion
+  #endregion
+
+  #region type conversion
 
   /// <summary>
   /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
   /// </summary>
   /// <returns>
   /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
-  /// instance is null, a zero-length string is returned.
+  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
-    if (_isNull)
-      return String.Empty;
-    return _value.ToString();
+    return ToString (null, null);
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its Int32 equivalent.
+  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// </summary>
+  /// <param name="format">A format specification.</param>
+  /// <returns>
+  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
+  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// ("~"), a zero-length string is returned instead.
+  /// </returns>
+  public string ToString (string format)
+  {
+    return ToString (format, null);
+  }
+
+  /// <summary>
+  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// </summary>
+  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <returns>
+  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
+  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// </returns>
+  public string ToString (IFormatProvider provider)
+  {
+    return ToString (null, provider);
+  }
+
+  /// <summary>
+  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// </summary>
+  /// <param name="format">A format specification.</param>
+  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <returns>
+  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
+  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// ("~"), a zero-length string is returned instead.
+  /// </returns>
+  public string ToString (string format, IFormatProvider provider)
+  {
+    if (format != null && format.Length > 0 && format[0] == '~')
+    {
+      if (_isNull)
+        return string.Empty;
+      format = format.Substring (1);
+    }
+    else
+    {
+      if (_isNull)
+        return NullString;
+    }
+    return _value.ToString (format, provider);
+  }
+
+  /// <summary>
+  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// </summary>
+  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <returns>
+  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// </returns>
+  public static NaInt32 Parse (string s, NumberStyles styles, IFormatProvider provider)
+  {
+    if (s == null || s.Length == 0 || s == NullString)
+      return NaInt32.Null;
+    else return new NaInt32 (Int32.Parse(s, styles, provider));
+  }
+
+  /// <summary>
+  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// </summary>
+  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <returns>
+  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// </returns>
+  public static NaInt32 Parse (string s, IFormatProvider provider)
+  {
+    return Parse (s, NumberStyles.Integer, provider);
+  }
+
+  /// <summary>
+  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// </summary>
+  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <returns>
+  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// </returns>
+  public static NaInt32 Parse (string s, NumberStyles styles)
+  {
+    return Parse (s, styles, null);
+  }
+
+  /// <summary>
+  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
   /// </summary>
   /// <param name="s">The <c>String</c> to be parsed.</param>
   /// <returns>
-  /// A Int32 equivalent to the value contained in the specified string. If the string is a null reference or
-  /// a zero-length string, NaInt32.Null is returned.
+  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
   /// </returns>
   public static NaInt32 Parse (string s)
   {
-    if (s == null || s.Length == 0)
-      return NaInt32.Null;
-    else return new NaInt32 (Int32.Parse(s));
+    return Parse (s, NumberStyles.Integer, null);
   }
 
   /// <summary>
@@ -119,12 +319,28 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// <summary>
   /// Converts the supplied <c>SqlInt32</c> structure to a <see cref="NaInt32"/> structure.
   /// </summary>
+  public static NaInt32 FromSqlInt32 (SqlInt32 value)
+  {
+    return (NaInt32) value;
+  }
+
+  /// <summary>
+  /// Converts the supplied <c>SqlInt32</c> structure to a <see cref="NaInt32"/> structure.
+  /// </summary>
   public static implicit operator NaInt32 (SqlInt32 value)
   {
     if (value.IsNull)
       return NaInt32.Null;
     else
       return new NaInt32 (value.Value);
+  }
+
+  /// <summary>
+  /// Converts the supplied <see cref="NaInt32"/> structure to a <c>SqlInt32</c>structure.
+  /// </summary>
+  public static SqlInt32 ToSqlInt32 (NaInt32 value)
+  {
+    return (SqlInt32) value;
   }
 
   /// <summary>
@@ -138,7 +354,9 @@ public struct NaInt32: INullable, IComparable, ISerializable
       return new SqlInt32 (value.Value);
   }
 
-  // value
+  #endregion
+
+  #region value
 
   /// <summary>
   /// Gets the value of this <see cref="NaInt32"/> structure. This property is read-only.
@@ -159,7 +377,9 @@ public struct NaInt32: INullable, IComparable, ISerializable
     }
   }
 
-  // nullable
+  #endregion
+
+  #region nullable
 
   /// <summary>
   /// Represents a null value that can be assigned to the <see cref="Value"/> property of 
@@ -181,7 +401,20 @@ public struct NaInt32: INullable, IComparable, ISerializable
     get { return _isNull; }
   }
 
-  // public fields
+  #endregion
+
+  #region public fields
+
+  /// <summary>
+  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// </summary>
+  /// <value>
+  /// The value of <c>NullString</c> is "null".
+  /// </value>
+  /// <remarks>
+  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// </remarks>
+  public static readonly string NullString = "null";
 
   /// <summary>
   /// Represents a zero value that can be assigned to the <see cref="Value"/> property of 
@@ -202,7 +435,9 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// </summary>
   public static readonly NaInt32 MinValue = new NaInt32 (int.MinValue);
 
-  // equality
+  #endregion
+
+  #region equality
 
   /// <summary>
   /// Compares the supplied object parameter to the <see cref="Value"/> property of the <see cref="NaInt32"/> object.
@@ -210,10 +445,13 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
   /// <c>true</c> if object is an instance of <see cref="NaInt32"/> and the two are equal; otherwise <c>false</c>.
-  /// If both values are <c>Null</c>, Equals returns <c>true</c>. (No SQL null equality logic is applied.)
   /// If object is a null reference, <c>false</c> is returned.
-  /// Note that <c>false</c> is returned if object is an Int32 (types are not equal).
   /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// Note that <c>false</c> is returned if object is an Int32 (types are not equal).
+  /// </remarks>
   public override bool Equals (object obj)
   {
     if (! (obj is NaInt32))
@@ -228,8 +466,11 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// <param name="value">The <see cref="NaInt32"/> instance to be compared. </param>
   /// <returns>
   /// <c>true</c> if the two are equal; otherwise <c>false</c>.
-  /// If both values are <c>Null</c>, Equals returns <c>true</c>. (Use <see cref="EqualsSql"/> if you require SQL-style equality.)
   /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// </remarks>
   public bool Equals (NaInt32 value)
   {
     return Equals (this, value);
@@ -240,8 +481,11 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// </summary>
   /// <returns>
   /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
-  /// If both values are <c>Null</c>, Equals returns <c>true</c>. (Use <see cref="EqualsSql"/> if you require SQL-style equality.)
   /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// </remarks>
   public static bool Equals (NaInt32 x, NaInt32 y)
   {
     return x == y;
@@ -252,8 +496,11 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// </summary>
   /// <returns>
   /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
-  /// If both values are <c>Null</c>, this operator returns <c>true</c>. (Use <see cref="EqualsSql"/> if you require SQL-style equality.)
   /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// </remarks>
   public static bool operator == (NaInt32 x, NaInt32 y)
   {
     if (x._isNull && y._isNull)
@@ -268,24 +515,55 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// </summary>
   /// <returns>
   /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
-  /// If both values are <c>Null</c>, this operator returns <c>false</c>.
   /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// </remarks>
   public static bool operator != (NaInt32 x, NaInt32 y)
   {
     return ! (x == y);
   }
 
   /// <summary>
+  /// Performs a logical comparison of the two NaInt32 parameters to determine if they are not equal.
+  /// </summary>
+  /// <returns>
+  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// </returns>
+  /// <remarks>
+  /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
+  /// equality logic.
+  /// </remarks>
+  public static bool NotEquals (NaInt32 x, NaInt32 y)
+  {
+    return x != y;
+  }
+
+  /// <summary>
   /// Performs a SQL-style comparison of the two NaInt32 parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal or <c>Null</c> if either of them is null.
+  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
   /// </returns>
   public static NaBoolean EqualsSql (NaInt32 x, NaInt32 y)
   {
     if (x._isNull || y._isNull)
       return NaBoolean.Null;
     else return new NaBoolean (x._value == y._value);
+  }
+
+  /// <summary>
+  /// Performs a SQL-style comparison of the two NaInt32 parameters to determine if they are not equal.
+  /// </summary>
+  /// <returns>
+  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// </returns>
+  public static NaBoolean NotEqualsSql (NaInt32 x, NaInt32 y)
+  {
+    if (x._isNull || y._isNull)
+      return NaBoolean.Null;
+    else return new NaBoolean (x._value != y._value);
   }
 
   /// <summary>
@@ -315,7 +593,7 @@ public struct NaInt32: INullable, IComparable, ISerializable
   ///     </item>
   ///     <item>
   ///       <term>Zero</term>
-  ///       <description>This instance is equal to the object (or both are Null).</description>
+  ///       <description>This instance is equal to the object (or both are Null or a null reference).</description>
   ///     </item>
   ///     <item>
   ///       <term>Greater than zero</term>
@@ -325,6 +603,9 @@ public struct NaInt32: INullable, IComparable, ISerializable
   /// </returns>
   public int CompareTo (object obj)
   {
+    if (obj == null)
+      return _isNull ? 0 : 1;
+
     if (! (obj is NaInt32))
       throw new ArgumentException ("obj");
 
@@ -376,31 +657,283 @@ public struct NaInt32: INullable, IComparable, ISerializable
     return 0;
   }
 
-  // arithmetics
+  #endregion
 
+  #region arithmetics
+
+  /// <summary>
+  /// Computes the sum of the two specified <see cref="NaInt32"/> structures.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaInt32</c> 
+  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 Add (NaInt32 x, NaInt32 y)
   {
     return x + y;
   }
 
+  /// <summary>
+  /// Computes the sum of the two specified <see cref="NaInt32"/> structures.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaInt32</c> 
+  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator + (NaInt32 x, NaInt32 y)
   {
-	  if (x.IsNull || y.IsNull)
+	  if (x._isNull || y._isNull)
 		  return NaInt32.Null;
 
-	  Int32 result = x._value + y._value;
-
-	  if (NaInt32.SameSignInt(x._value, y._value) && !(NaInt32.SameSignInt(x._value, result)))
-		  throw new OverflowException (NaResources.ArithmeticOverflowMsg);
-
-	  return new NaInt32 (result);
+    checked
+    {
+      return new NaInt32 (x._value + y._value);
+    }
   }
 
-  private static bool SameSignInt (Int32 x, Int32 y)
+  /// <summary>
+  /// Subtracts the second <see cref="NaInt32"/> parameter from the first.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
+  public static NaInt32 Subtract (NaInt32 x, NaInt32 y)
   {
-    return ((x ^ y) & 0x80000000) == 0;
+    return x - y;
+  }
+
+  /// <summary>
+  /// Subtracts the second <see cref="NaInt32"/> parameter from the first.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
+  public static NaInt32 operator - (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaInt32.Null;
+
+    checked
+    {
+      return new NaInt32 (x._value - y._value);
+    }
+  }
+
+  /// <summary>
+  /// Divides the first <see cref="NaInt32"/> parameter by the second.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
+  public static NaInt32 Divide (NaInt32 x, NaInt32 y)
+  {
+    return x / y;
+  }
+
+  /// <summary>
+  /// Divides the first <see cref="NaInt32"/> parameter by the second.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
+  public static NaInt32 operator / (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaInt32.Null;
+
+    checked
+    {
+      return new NaInt32 (x._value / y._value);
+    }
+  }
+
+  /// <summary>
+  /// Computes the product of the two <see cref="NaInt32"/> parameters.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
+  public static NaInt32 Multiply (NaInt32 x, NaInt32 y)
+  {
+    return x * y;
+  }
+
+  /// <summary>
+  /// Computes the product of the two <see cref="NaInt32"/> parameters.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
+  public static NaInt32 operator * (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaInt32.Null;
+
+    checked
+    {
+      return new NaInt32 (x._value * y._value);
+    }
+  }
+
+  /// <summary>
+  /// Computes the remainder after dividing the first <see cref="NaInt32"/> parameter by the second.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
+  public static NaInt32 Mod (NaInt32 x, NaInt32 y)
+  {
+    return x % y;
+  }
+
+  /// <summary>
+  /// Computes the remainder after dividing the first <see cref="NaInt32"/> parameter by the second.
+  /// </summary>
+  /// <returns>
+  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// </returns>
+  /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
+  public static NaInt32 operator % (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaInt32.Null;
+
+    checked
+    {
+      return new NaInt32 (x._value % y._value);
+    }
+  }
+
+  #endregion
+
+  #region relative compare operators
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean LessThan (NaInt32 x, NaInt32 y)
+  {
+    return x < y;
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean operator < (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaBoolean.Null;
+
+    return new NaBoolean (x._value < y._value);
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than or equal to the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean LessThanOrEqual (NaInt32 x, NaInt32 y)
+  {
+    return x <= y;
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than or equal to the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean operator <= (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaBoolean.Null;
+
+    return new NaBoolean (x._value <= y._value);
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean GreaterThan (NaInt32 x, NaInt32 y)
+  {
+    return x > y;
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean operator > (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaBoolean.Null;
+
+    return new NaBoolean (x._value > y._value);
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than or equal to the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean GreaterThanOrEqual (NaInt32 x, NaInt32 y)
+  {
+    return x >= y;
+  }
+
+  /// <summary>
+  /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than or equal to the second.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
+  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// </returns>
+  public static NaBoolean operator >= (NaInt32 x, NaInt32 y)
+  {
+    if (x.IsNull || y._isNull)
+      return NaBoolean.Null;
+
+    return new NaBoolean (x._value >= y._value);
   }
   
+  #endregion
 }
 
 
