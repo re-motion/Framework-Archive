@@ -102,8 +102,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       _isDirty = true;
   }
 
-  // TODO: invoke!
-  // internal void HandleSelectionChange()
   private void ListControl_SelectedIndexChanged (object sender, EventArgs e)
   {
     if (_newValue != null && _newValue != _value)
