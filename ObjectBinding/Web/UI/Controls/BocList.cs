@@ -19,6 +19,7 @@ using Rubicon.Web;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -44,6 +45,7 @@ public class BocList:
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
   private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
   private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
+  private const string c_dropDownMenuIDSuffix = "_Boc_DropDownMenu";
 
   /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
   private const string c_eventCommandPrefix = "Event=";
@@ -222,6 +224,8 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
+  //private DropDownMenu _dropDownMenu = new DropDownMenu();
+
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
   /// </summary>
@@ -233,13 +237,13 @@ public class BocList:
   private string _optionsTitle = "Options";
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
-  private ImageButton _moveFirstButton = null;
+  private ImageButton _moveFirstButton = new ImageButton();
   /// <summary> The <see cref="ImageButton"/> used to navigate to the last page. </summary>
-  private ImageButton _moveLastButton = null;
+  private ImageButton _moveLastButton =  new ImageButton();
   /// <summary> The <see cref="ImageButton"/> used to navigate to the previous page. </summary>
-  private ImageButton _movePreviousButton = null;
+  private ImageButton _movePreviousButton = new ImageButton();
   /// <summary> The <see cref="ImageButton"/> used to navigate to the next page. </summary>
-  private ImageButton _moveNextButton = null;
+  private ImageButton _moveNextButton = new ImageButton();
 
   /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
   private IList _value = null;
@@ -341,10 +345,7 @@ public class BocList:
   {
     base.OnInit (e);
 
-    _moveFirstButton = new ImageButton();
-    _moveLastButton = new ImageButton();
-    _movePreviousButton = new ImageButton();
-    _moveNextButton = new ImageButton();
+    //_dropDownMenu.ID = this.ID + c_dropDownMenuIDSuffix;
 
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
@@ -750,107 +751,66 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    RenderDropDownMenu (writer, Unit.Percentage(100), 100);
+    //_dropDownMenu.RenderControl (writer);
 
     #region Temporay filling material
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 1");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 2");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 3");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 4");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 5");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 6");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 7");
-    writer.RenderEndTag();
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", "10");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("Other stuff 8");
-    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 1");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 2");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 3");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 4");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 5");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 6");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 7");
+//    writer.RenderEndTag();
+//    writer.AddStyleAttribute ("position", "relative");
+//    writer.AddStyleAttribute ("z-index", "10");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//    writer.Write ("Other stuff 8");
+//    writer.RenderEndTag();
     #endregion
-  }
-
-  private void RenderDropDownMenu (HtmlTextWriter writer, Unit width, int zIndex)
-  {
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute ("z-index", zIndex.ToString());
-    if (width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-    else
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, width.ToString());
-    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Options-Div
-
-    //  Options Drop Down Titel
-    writer.AddStyleAttribute ("position", "relative");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "lightcyan");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write (_optionsTitle);
-    writer.RenderEndTag();
-    
-    //  Options Drop Down Icon 
-    writer.AddStyleAttribute ("position", "absolute");
-    writer.AddStyleAttribute ("right", "0px");
-    writer.AddStyleAttribute ("top", "0px");
-    writer.AddStyleAttribute ("height", "100%");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "cyan");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.Write ("V");
-    writer.RenderEndTag();
-
-    //  Options Drop Down Menu
-    writer.AddStyleAttribute ("position", "absolute");
-    writer.AddStyleAttribute ("right", "0px");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "lime");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    writer.WriteLine ("<div>Item 1</div>"); // width: 100% spans menu across the whole options-div
-    writer.WriteLine ("<div>Item 2</div>");
-    writer.WriteLine ("<div>Item 3</div>");
-    writer.WriteLine ("<div>Item 4</div>");
-    writer.RenderEndTag();
-
-    writer.RenderEndTag(); // End Options-Div
   }
 
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
