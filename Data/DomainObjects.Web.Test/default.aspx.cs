@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
 		{
       if (!IsPostBack)
       {
-        Session["CurrentObjectID"] = new ObjectID ("RpaTest", "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+        Session["CurrentObjectID"] = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
       }
       else
       {
