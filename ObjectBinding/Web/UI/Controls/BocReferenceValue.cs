@@ -193,10 +193,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
     bool isDataChanged = false;
-    if (_internalValue == null && newValue != c_nullIdentifier)
-      isDataChanged = true;
-    else if (_internalValue != null && newValue != _internalValue)
-      isDataChanged = true;
+    if (newValue != null)
+    {
+      if (_internalValue == null && newValue != c_nullIdentifier)
+        isDataChanged = true;
+      else if (_internalValue != null && newValue != _internalValue)
+        isDataChanged = true;
+    }
 
     if (isDataChanged)
     {

@@ -115,7 +115,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
-    bool isDataChanged = StringUtility.NullToEmpty (_text) != newValue;
+    bool isDataChanged = newValue != null && StringUtility.NullToEmpty (_text) != newValue;
     if (isDataChanged)
     {
       _text = newValue;

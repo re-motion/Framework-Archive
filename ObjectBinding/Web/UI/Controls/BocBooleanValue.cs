@@ -163,11 +163,14 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    NaBoolean newValue = NaBoolean.Parse (PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID));
-    bool isDataChanged = _value != newValue;
+    string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
+    NaBoolean newNaValue = NaBoolean.Null;
+    if (newValue != null)
+      newNaValue = NaBoolean.Parse (newValue);
+    bool isDataChanged = newValue != null && _value != newNaValue;
     if (isDataChanged)
     {
-      _value = newValue;
+      _value = newNaValue;
       _isDirty = true;
     }
     return isDataChanged;
