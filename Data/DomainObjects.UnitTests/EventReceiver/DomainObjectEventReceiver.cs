@@ -28,8 +28,6 @@ public class DomainObjectEventReceiver
   private DomainObject _oldRelatedObject;
   private DomainObject _newRelatedObject;
 
-  private bool _hasCommittedEventBeenCalled;
-
   // construction and disposing
 
   public DomainObjectEventReceiver (DomainObject domainObject) : this (domainObject, false)
@@ -44,7 +42,6 @@ public class DomainObjectEventReceiver
     domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
     domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
     domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
-    domainObject.Committed += new EventHandler (DomainObject_Committed);
   }
 
   // methods and properties
@@ -115,11 +112,6 @@ public class DomainObjectEventReceiver
     get { return _newRelatedObject; }
   }
 
-  public bool HasCommittedEventBeenCalled
-  {
-    get { return _hasCommittedEventBeenCalled; }
-  }
-
   private void DomainObject_PropertyChanging(object sender, PropertyChangingEventArgs args)
   {
     _hasChangingEventBeenCalled = true;
@@ -148,11 +140,6 @@ public class DomainObjectEventReceiver
   {
     _hasRelationChangedEventBeenCalled = true;
     _changedRelationPropertyName = args.PropertyName;
-  }
-
-  private void DomainObject_Committed (object sender, EventArgs args)
-  {
-    _hasCommittedEventBeenCalled = true;
   }
 }
 }
