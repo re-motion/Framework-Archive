@@ -80,5 +80,50 @@ public class RelationEndPointMapTest : ClientTransactionBaseTest
 
     Assert.IsTrue (object.ReferenceEquals (originalOrderTicket, orderTicket));
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "GetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+  public void GetRelatedObjectWithEndPointIDOfWrongCardinality ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    _map.GetRelatedObject (new RelationEndPointID (order.ID, "OrderItems"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException),
+      "GetOriginalRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+  public void GetOriginalRelatedObjectWithEndPointIDOfWrongCardinality ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    _map.GetOriginalRelatedObject (new RelationEndPointID (order.ID, "OrderItems"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException),
+      "SetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+  public void SetRelatedObjectWithEndPointIDOfWrongCardinality ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    _map.SetRelatedObject (new RelationEndPointID (order.ID, "OrderItems"), new OrderItem ());
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "GetRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
+  public void GetRelatedObjectsWithEndPointIDOfWrongCardinality ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    _map.GetRelatedObjects (new RelationEndPointID (order.ID, "OrderTicket"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException),
+      "GetOriginalRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
+  public void GetOriginalRelatedObjectsWithEndPointIDOfWrongCardinality ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    _map.GetOriginalRelatedObjects (new RelationEndPointID (order.ID, "OrderTicket"));
+  }
 }
 }
