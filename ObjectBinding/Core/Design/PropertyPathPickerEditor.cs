@@ -27,12 +27,13 @@ public class PropertyPathPickerEditor: UITypeEditor
         if (binding == null)
           throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IPropertyPathBinding.");
 
-        //PropertyPickerControl pathPickerControl = new PropertyPickerControl (control);
+        PropertyPathPickerControl propertyPathPickerControl = 
+          new PropertyPathPickerControl (binding);
 
-        //pathPickerControl.Value = (string) value;
-        //pathPickerControl.EditorService = _editorService;
-        //_editorService.DropDownControl (pathPickerControl);
-        //value = pathPickerControl.Value;
+        propertyPathPickerControl.Value = (string) value;
+        propertyPathPickerControl.EditorService = _editorService;
+        _editorService.DropDownControl (propertyPathPickerControl);
+        value = propertyPathPickerControl.Value;
       }
     }
     return value;

@@ -414,6 +414,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   { 
     get
     { 
+      DataSource = OwnerControl.DataSource;
       return _propertyPathBinding.PropertyPathIdentifier; 
     }
     set
