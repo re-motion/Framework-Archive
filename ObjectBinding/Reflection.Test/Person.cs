@@ -45,6 +45,7 @@ public class Person: ReflectionBusinessObject
   private Gender _gender;
   private MarriageStatus _marriageStatus;
   private DateTime _dateOfDeath;
+  private bool _deceased = false;
 
   private Guid _partnerID; 
 
@@ -156,6 +157,13 @@ public class Person: ReflectionBusinessObject
   {
     get { return _dateOfDeath; }
     set { _dateOfDeath = value; }
+  }
+
+  [XmlElement]
+  public bool Deceased
+  {
+    get { return _deceased; }
+    set { _deceased = value; }
   }
 
   public override string DisplayName

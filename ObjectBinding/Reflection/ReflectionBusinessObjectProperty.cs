@@ -38,6 +38,8 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
       return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
     else if (itemType == typeof (int))
       return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
+    else if (itemType == typeof (bool))
+      return new ReflectionBusinessObjectBooleanProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType == typeof (DateTime))
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType.IsEnum)
@@ -180,6 +182,35 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNull
   {
     if (! IsList && IsNullableType)
       return NaInt32.FromBoxedInt32 (publicValue);
+    else
+      return publicValue;
+  }
+}
+
+public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectBooleanProperty
+{
+  public ReflectionBusinessObjectBooleanProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    : base (propertyInfo, itemType, isList, isNullable)
+  {
+  }
+
+  public bool AllowNegative
+  {
+    get { return false; }
+  }
+
+  protected internal override object FromInternalType (object internalValue)
+  {
+    if (! IsList && IsNullableType)
+      return NaBoolean.ToBoxedBoolean ((NaBoolean)internalValue);
+    else
+      return internalValue;
+  }
+
+  protected internal override object ToInternalType (object publicValue)
+  {
+    if (! IsList && IsNullableType)
+      return NaBoolean.FromBoxedBoolean (publicValue);
     else
       return publicValue;
   }
