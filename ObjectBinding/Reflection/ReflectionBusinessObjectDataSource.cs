@@ -3,6 +3,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.ObjectBinding.Reflection
 {
+
 public class ReflectionBusinessObjectDataSource: BusinessObjectDataSource
 {
   private string _typeName;
