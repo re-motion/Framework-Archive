@@ -24,8 +24,8 @@ public class QueryDefinitionChecker
   public void Check (QueryDefinitionCollection expectedQueries, QueryDefinitionCollection actualQueries)
   {
     Assert.AreEqual (expectedQueries.Count, actualQueries.Count, 
-        "Number of queries does not match. Expected: {0}, actual: {1}", 
-        expectedQueries.Count, actualQueries.Count);
+        string.Format ("Number of queries does not match. Expected: {0}, actual: {1}", 
+        expectedQueries.Count, actualQueries.Count));
 
     foreach (QueryDefinition expectedQuery in expectedQueries)
     {
@@ -37,28 +37,28 @@ public class QueryDefinitionChecker
   private void CheckQuery (QueryDefinition expectedQuery, QueryDefinition actualQuery)
   {
     Assert.AreEqual (expectedQuery.StorageProviderID, actualQuery.StorageProviderID, 
-        "ProviderID of query definitions does not match. Expected: {0}, actual: {1}", 
+        string.Format ("ProviderID of query definitions does not match. Expected: {0}, actual: {1}", 
         expectedQuery.QueryID,  
         expectedQuery.StorageProviderID, 
-        actualQuery.StorageProviderID);
+        actualQuery.StorageProviderID));
 
     Assert.AreEqual (expectedQuery.Statement, actualQuery.Statement, 
-        "Statement of query definitions does not match. Expected: {0}, actual: {1}", 
+        string.Format ("Statement of query definitions does not match. Expected: {0}, actual: {1}", 
         expectedQuery.QueryID,  
         expectedQuery.Statement, 
-        actualQuery.Statement);
+        actualQuery.Statement));
     
     Assert.AreEqual (expectedQuery.QueryType, actualQuery.QueryType, 
-        "QueryType of query definitions does not match. Expected: {0}, actual: {1}", 
+        string.Format ("QueryType of query definitions does not match. Expected: {0}, actual: {1}", 
         expectedQuery.QueryID,  
         expectedQuery.QueryType, 
-        actualQuery.QueryType);
+        actualQuery.QueryType));
     
     Assert.AreEqual (expectedQuery.CollectionType, actualQuery.CollectionType, 
-        "CollectionType of query definitions does not match. Expected: {0}, actual: {1}", 
+        string.Format ("CollectionType of query definitions does not match. Expected: {0}, actual: {1}", 
         expectedQuery.QueryID,  
         expectedQuery.CollectionType, 
-        actualQuery.CollectionType);    
+        actualQuery.CollectionType));
   }
 }
 }
