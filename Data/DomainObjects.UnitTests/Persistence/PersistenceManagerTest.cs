@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
 [TestFixture]
-public class PersistenceManagerTest : DatabaseTest
+public class PersistenceManagerTest : ClientTransactionBaseTest
 {
   // types
 
@@ -35,8 +35,7 @@ public class PersistenceManagerTest : DatabaseTest
     _persistenceManager = new PersistenceManager ();
   }
 
-  [TearDown]
-  public void TearDown ()
+  public override void TearDown ()
   {
     _persistenceManager.Dispose ();
   }
