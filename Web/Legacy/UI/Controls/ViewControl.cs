@@ -14,11 +14,25 @@ namespace Rubicon.Findit.Client.Controls
 public class ViewControl: Control
 {
   private string _title = string.Empty;
+  private Unit _labelColumnWidth;
+  private Unit _valueColumnWidth;
 
   public string Title
   {
     get { return _title; }
     set { _title = value; }
+  }
+
+  public Unit LabelColumnWidth 
+  {
+    get { return _labelColumnWidth; }
+    set { _labelColumnWidth = value; }
+  }
+	
+  public Unit ValueColumnWidth 
+  {
+    get { return _valueColumnWidth; }
+    set { _valueColumnWidth = value; }
   }
 
 	/// <summary> 
@@ -82,7 +96,7 @@ public class ViewField: Control
 {
   
   private string _title = string.Empty;
-  private string _text = string.Empty;
+  private string _value = string.Empty;
 
   public string Title
   {
@@ -90,24 +104,44 @@ public class ViewField: Control
     set { _title = value; }
   }
 
-  public string Text
+  public string Value
   {
-    get { return _text; }
-    set { _text = value; }
+    get { return _value; }
+    set { _value = value; }
   }
 
   protected override void Render (HtmlTextWriter writer)
 	{
     
-    writer.WriteLine ("<tr><td class=\"labelView\" valign=\"center\" align=\"right\">");
+    string labelColumnWidth = string.Empty;
+    string valueColumnWidth = string.Empty;
+    
+    ViewControl viewControl = this.Parent as ViewControl;
+    if (viewControl != null)
+    { 
+      labelColumnWidth = viewControl.LabelColumnWidth.ToString();
+      valueColumnWidth = viewControl.ValueColumnWidth.ToString();
+    }
+
+    writer.Write ("<tr><td class=\"labelView\" valign=\"center\" align=\"right\" ");
+
+    if (labelColumnWidth.Length != 0)
+      writer.Write ("width=\"" + labelColumnWidth + "\"");
+
+    writer.WriteLine (">");
       
     writer.Write (Title);
     
     writer.Write ("<img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"");
   
-    writer.WriteLine ("</td><td class=\"text\" valign=\"top\" align=\"left\">");
+    writer.Write ("</td><td class=\"text\" valign=\"top\" align=\"left\" ");
 
-    writer.WriteLine (Text);
+    if (valueColumnWidth.Length != 0)
+      writer.Write ("width=\"" + valueColumnWidth + "\"");
+
+    writer.WriteLine (">");
+
+    writer.WriteLine (Value);
 
     writer.WriteLine ("</td></tr>"); 
     
