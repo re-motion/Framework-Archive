@@ -103,3 +103,24 @@ div.bocListNavigator
 input.bocListAdditionalColumnsList
 {
 }
+
+span.bocListListMenuItem
+{
+  margin-right: 10pt;
+	cursor: default;
+}
+
+span.bocListListMenuItemDisabled
+{
+  margin-right: 10pt;
+  color: gray;
+	cursor: default;
+}
+
+span.bocListListMenuItem a,
+span.bocListListMenuItemDisabled a
+{
+  color: black;
+  text-decoration: none;
+  cursor: default;
+}
