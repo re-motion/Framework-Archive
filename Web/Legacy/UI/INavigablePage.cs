@@ -1,7 +1,8 @@
 using System;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
+
 public interface INavigablePage
 {
   bool AllowImmediateClose { get; }
@@ -11,4 +12,5 @@ public interface INavigablePage
   void NavigateTo (string url, bool returnToThisPage);
   string Token{ get; }
 }
+
 }

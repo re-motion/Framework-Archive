@@ -1,10 +1,9 @@
 using System;
 using System.Web.UI;
-
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
 
 public class MultiLingualUserControl : UserControl

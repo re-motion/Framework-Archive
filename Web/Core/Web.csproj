@@ -202,8 +202,18 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeTemplateControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeTryCatch.cs"
                     SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeUserControl.cs"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -225,6 +235,51 @@
                 <File
                     RelPath = "Res\Image\ValidationError.gif"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\IControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\INavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\IPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\ISmartControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\MultiLingualPage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\MultiLingualUserControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\NavigablePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\StandardPage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\StandardUserControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\CommandHandler.cs"
@@ -302,48 +357,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\IControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\IFormGridRowProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\INavigablePage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IPage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ISmartControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\LengthValidator.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\MultiLingualPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\MultiLingualUserControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\NavigablePage.cs"
-                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -354,16 +374,6 @@
                 <File
                     RelPath = "UI\Controls\StandardButton.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\StandardPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\StandardUserControl.cs"
-                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File

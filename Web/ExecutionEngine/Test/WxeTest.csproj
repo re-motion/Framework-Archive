@@ -150,6 +150,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UserControl1.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UserControl1.ascx.cs"
+                    DependentUpon = "UserControl1.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UserControl1.ascx.resx"
+                    DependentUpon = "UserControl1.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />

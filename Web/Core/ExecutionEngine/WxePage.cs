@@ -7,46 +7,28 @@ using System.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
+using Rubicon.Web.UI;
 
 namespace Rubicon.Web.ExecutionEngine
 {
 
-public interface IWxePage: IPage
+public interface IWxePage: IPage, IWxeTemplateControl
 {
-  NameObjectCollection Variables { get; }
-  WxePageStep CurrentStep { get; }
-  WxeFunction CurrentFunction { get; }
   NameValueCollection GetPostBackCollection ();
 }
 
-/// <summary>
-///   Base class for pages that can be called by <see cref="WxePageStep"/>.
-/// </summary>
-/// <remarks>
-///   If you cannot derive your pages from this class (e.g., because you need to derive from another class), you may
-///   implement <see cref="IWxePage"/> yourself by using the <see langword="static"/> methods provided by <c>WxePage</c>.
-/// </remarks>
-public class WxePage: Page, IWxePage
+public class WxePageInfo: WxeTemplateControlInfo
 {
-  public static void OnLoad (IWxePage @this, HttpContext context, ref HtmlForm form, out WxePageStep currentStep, out WxeFunction currentFunction, EventArgs e)
+  public void OnLoad (IWxePage page, HttpContext context, ref HtmlForm form)
   {
-    WxeHandler wxeHandler = context.Handler as WxeHandler;
-    currentStep = (wxeHandler == null) ? null : wxeHandler.CurrentFunction.ExecutingStep as WxePageStep;
+    OnLoad (page, context);
 
-    WxeStep step = currentStep;
-    do {
-      currentFunction = step as WxeFunction;
-      if (currentFunction != null)
-        break;
-      step = step.ParentStep;
-    } while (step != null);
-      
     if (form == null)
-      throw new HttpException (@this.GetType().FullName + " does not initialize field 'Form'.");
+      throw new HttpException (page.GetType().FullName + " does not initialize field 'Form'.");
     form = WxeForm.Replace (form);
   }
 
-  public static NameValueCollection DeterminePostBackMode (HttpContext context)
+  public NameValueCollection DeterminePostBackMode (HttpContext context)
   {
     if (WxeContext.Current.PostBackCollection != null)
       return WxeContext.Current.PostBackCollection;
@@ -65,44 +47,52 @@ public class WxePage: Page, IWxePage
 
     return collection;
   }  
-  
-  protected HtmlForm Form;
-  private WxePageStep _currentStep;
-  private WxeFunction _currentFunction;
+}
 
-  protected override void OnInit (EventArgs e)
-  {
-  }
+/// <summary>
+///   Base class for pages that can be called by <see cref="WxePageStep"/>.
+/// </summary>
+/// <remarks>
+///   The <see cref="HtmlForm"/> must use the ID "Form". 
+///   If you cannot derive your pages from this class (e.g., because you need to derive from another class), you may
+///   implement <see cref="IWxePage"/> and override <see cref="Page.OnLoad"/> and <see cref="Page.DeterminePostBackMode"/>. 
+///   Use <see cref="WxePageInfo"/> to implementat all methods and properties.
+/// </remarks>
+public class WxePage: Page, IWxePage
+{
+  private WxePageInfo _wxeInfo = new WxePageInfo(); 
+
+  protected HtmlForm Form;
 
   protected override void OnLoad (EventArgs e)
   {
-    WxePage.OnLoad (this, Context, ref Form, out _currentStep, out _currentFunction, e);
+    _wxeInfo.OnLoad (this, Context, ref Form);
     base.OnLoad (e);
   }
 
   protected override NameValueCollection DeterminePostBackMode()
   {
-    return WxePage.DeterminePostBackMode (Context);
+    return _wxeInfo.DeterminePostBackMode (Context);
   }
 
   public NameValueCollection GetPostBackCollection ()
   {
-    return WxePage.DeterminePostBackMode (Context);
+    return _wxeInfo.DeterminePostBackMode (Context);
   }
 
   public WxePageStep CurrentStep
   {
-    get { return _currentStep; }
+    get { return _wxeInfo.CurrentStep; }
   }
   
   public WxeFunction CurrentFunction
   {
-    get { return _currentFunction; }
+    get { return _wxeInfo.CurrentFunction; }
   }
 
   public NameObjectCollection Variables 
   {
-    get { return (_currentStep == null) ? null : _currentStep.Variables; }
+    get { return _wxeInfo.Variables; }
   }
 }
 

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding.Design;

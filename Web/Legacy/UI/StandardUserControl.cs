@@ -1,7 +1,8 @@
 using System;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
+
 public class StandardUserControl : MultiLingualUserControl
 {
 	public StandardUserControl ()

@@ -5,7 +5,7 @@ using System.Web.Caching;
 using System.Web.SessionState;
 using System.Security.Principal;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
 
 /// <summary>

@@ -4,8 +4,9 @@ using System.Web.UI;
 
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
+
 /// <summary>
 /// Provides a common implementation for web pages.
 /// </summary>

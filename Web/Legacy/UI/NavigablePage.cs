@@ -4,11 +4,11 @@ using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Collections;
-
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
+
 /// <summary>
 /// Provides common features for page navigation and session state handling.
 /// </summary>

@@ -73,8 +73,8 @@ namespace Rubicon.PageTransition
 		{    
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
-      this.Sub.Click += new System.EventHandler(this.Sub_Click);
       this.Throw.Click += new System.EventHandler(this.Throw_Click);
+      this.Sub.Click += new System.EventHandler(this.Sub_Click);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
