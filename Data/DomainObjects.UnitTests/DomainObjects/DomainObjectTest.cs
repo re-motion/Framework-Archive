@@ -279,6 +279,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     order3.OrderNumber = 7;
 
     Order newOrder = new Order ();
+    ObjectID newOrderID = newOrder.ID;
     newOrder.DeliveryDate = DateTime.Now;
     newOrder.Official = official1;
     customer1.Orders.Add (newOrder);
@@ -287,15 +288,22 @@ public class DomainObjectTest : ClientTransactionBaseTest
     orderTicket1.FileName = @"C:\NewFile.tif";
 
     OrderItem newOrderItem1 = new OrderItem ();
+    ObjectID newOrderItem1ID = newOrderItem1.ID;
+
     newOrderItem1.Position = 1;
     newOrder.OrderItems.Add (newOrderItem1);
 
     OrderItem newOrderItem2 = new OrderItem ();
+    ObjectID newOrderItem2ID = newOrderItem2.ID;
     newOrderItem2.Position = 2;
     order3.OrderItems.Add (newOrderItem2);
 
     Customer newCustomer = new Customer ();
-    newCustomer.Ceo = new Ceo ();
+    ObjectID newCustomerID = newCustomer.ID;
+
+    Ceo newCeo = new Ceo ();
+    ObjectID newCeoID = newCeo.ID;
+    newCustomer.Ceo = newCeo;
     order2.Customer = newCustomer;
 
     orderTicket3.FileName = @"C:\NewFile.gif";
@@ -304,15 +312,60 @@ public class DomainObjectTest : ClientTransactionBaseTest
     deletedNewOrder.Delete ();
 
     ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
-    // expectation: no exception
+    CheckIfObjectIsDeleted (DomainObjectIDs.Order1);
+    CheckIfObjectIsDeleted (DomainObjectIDs.OrderItem1);
+    CheckIfObjectIsDeleted (DomainObjectIDs.OrderItem2);
+  
+    order3 = Order.GetObject (DomainObjectIDs.Order3);
+    Assert.AreEqual (7, order3.OrderNumber);
+
+    newOrder = Order.GetObject (newOrderID);
+    Assert.IsNotNull (newOrder);
+
+    official1 = Official.GetObject (DomainObjectIDs.Official1);
+    Assert.IsNotNull (official1.Orders[newOrderID]);
+    Assert.AreSame (official1, newOrder.Official);
+    Assert.IsNull (official1.Orders[DomainObjectIDs.Order1]);
+    
+    orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    Assert.AreEqual (@"C:\NewFile.tif", orderTicket1.FileName);
+    Assert.AreSame (newOrder, orderTicket1.Order);
+    Assert.AreSame (orderTicket1, newOrder.OrderTicket);
+
+    newOrderItem1 = OrderItem.GetObject (newOrderItem1ID);
+    Assert.IsNotNull (newOrderItem1);
+    Assert.AreEqual (1, newOrderItem1.Position);
+    Assert.AreSame (newOrder, newOrderItem1.Order);
+    Assert.IsNotNull (newOrder.OrderItems[newOrderItem1ID]);
+
+    newOrderItem2 = OrderItem.GetObject (newOrderItem2ID);
+    Assert.IsNotNull (newOrderItem2);
+    Assert.AreEqual (2, newOrderItem2.Position);
+    Assert.AreSame (order3, newOrderItem2.Order);
+    Assert.IsNotNull (order3.OrderItems[newOrderItem2ID]);
+    
+    newCustomer = Customer.GetObject (newCustomerID);
+    newCeo = Ceo.GetObject (newCeoID);
+
+    Assert.AreSame (newCustomer, newCeo.Company);
+    Assert.AreSame (newCeo, newCustomer.Ceo);
+    Assert.IsTrue (newCustomer.Orders.Contains (DomainObjectIDs.Order2));
+    Assert.AreSame (newCustomer, ((Order) newCustomer.Orders[DomainObjectIDs.Order2]).Customer);
+
+    orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
+    Assert.AreEqual (@"C:\NewFile.gif", orderTicket3.FileName);
   }
 
   [Test]
   public void TestAllOperationsWithHierarchy ()
   {
     Employee newSupervisor1 = new Employee ();
+    ObjectID newSupervisor1ID = newSupervisor1.ID;
+
     Employee newSubordinate1 = new Employee ();
+    ObjectID newSubordinate1ID = newSubordinate1.ID;
     newSubordinate1.Supervisor = newSupervisor1;
 
     Employee supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
@@ -328,7 +381,9 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Employee subordinate7 = Employee.GetObject (DomainObjectIDs.Employee7);
 
     Employee newSubordinate2 = new Employee ();
+    ObjectID newSubordinate2ID = newSubordinate2.ID;
     Employee newSubordinate3 = new Employee ();
+    ObjectID newSubordinate3ID = newSubordinate3.ID;
 
     newSupervisor1.Supervisor = supervisor2;
     newSubordinate2.Supervisor = supervisor1;
@@ -338,8 +393,40 @@ public class DomainObjectTest : ClientTransactionBaseTest
     subordinate4.Delete ();
 
     ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
-    // expectation: no exception
+    newSupervisor1 = Employee.GetObject (newSupervisor1ID);
+    newSubordinate1 = Employee.GetObject (newSubordinate1ID);
+
+    Assert.AreSame (newSupervisor1, newSubordinate1.Supervisor);
+    Assert.IsTrue (newSupervisor1.Subordinates.Contains (newSubordinate1ID));
+
+    supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
+
+    Assert.IsNull (supervisor2.Supervisor);
+    Assert.AreEqual ("New name of supervisor", supervisor2.Name);
+
+    subordinate3 = Employee.GetObject (DomainObjectIDs.Employee3);
+
+    Assert.AreSame (supervisor2, subordinate3.Supervisor);
+    Assert.IsTrue (supervisor2.Subordinates.Contains (DomainObjectIDs.Employee3));
+    Assert.AreEqual ("New name of subordinate", subordinate3.Name);
+
+    Assert.AreSame (supervisor2, newSupervisor1.Supervisor);
+    Assert.IsTrue (supervisor2.Subordinates.Contains (newSupervisor1ID));
+
+    newSubordinate2 = Employee.GetObject (newSubordinate2ID);
+
+    Assert.IsNull (newSubordinate2.Supervisor);
+
+    supervisor6 = Employee.GetObject (DomainObjectIDs.Employee6);
+    newSubordinate3 = Employee.GetObject (newSubordinate3ID);
+    
+    Assert.AreSame (supervisor6, newSubordinate3.Supervisor);
+    Assert.IsTrue (supervisor6.Subordinates.Contains (newSubordinate3ID));
+
+    CheckIfObjectIsDeleted (DomainObjectIDs.Employee1);
+    CheckIfObjectIsDeleted (DomainObjectIDs.Employee4);
   }
 
   [Test]

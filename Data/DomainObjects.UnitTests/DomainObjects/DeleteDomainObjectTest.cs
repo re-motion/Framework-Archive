@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -113,21 +112,9 @@ public class DeleteDomainObjectTest : ClientTransactionBaseTest
     ClientTransactionMock.Commit ();
     ReInitializeTransaction ();
 
-    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee1);
-    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee4);
-    GetDeletedObjectWithAssertion (DomainObjectIDs.Employee5);
-  }
-
-  private void GetDeletedObjectWithAssertion (ObjectID id)
-  {
-    try
-    {
-      DomainObject domainObject = TestDomainBase.GetObject (id, true); 
-      Assert.IsNull (domainObject, string.Format ("Object '{0}' was not deleted.", id));
-    }
-    catch (ObjectNotFoundException)
-    {
-    }
+    CheckIfObjectIsDeleted (DomainObjectIDs.Employee1);
+    CheckIfObjectIsDeleted (DomainObjectIDs.Employee4);
+    CheckIfObjectIsDeleted (DomainObjectIDs.Employee5);
   }
 }
 }

@@ -1,7 +1,9 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
@@ -54,6 +56,18 @@ public class ClientTransactionBaseTest : DatabaseTest
     _clientTransactionMock = new ClientTransactionMock ();
     ClientTransaction.SetCurrent (_clientTransactionMock);
     _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
+  }
+
+  protected void CheckIfObjectIsDeleted (ObjectID id)
+  {
+    try
+    {
+      DomainObject domainObject = TestDomainBase.GetObject (id, true); 
+      Assert.IsNull (domainObject, string.Format ("Object '{0}' was not deleted.", id));
+    }
+    catch (ObjectNotFoundException)
+    {
+    }
   }
 }
 }

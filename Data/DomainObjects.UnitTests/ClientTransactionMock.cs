@@ -42,9 +42,9 @@ public class ClientTransactionMock : ClientTransaction
     return base.LoadRelatedObject (relationEndPointID);
   }
 
-  public DomainObject GetObject (ObjectID id)
+  public override DomainObject GetObject (ObjectID id)
   {
-    return GetObject (id, false);
+    return base.GetObject (id);
   }
 
   public new DomainObject GetObject (ObjectID id, bool includeDeleted)
