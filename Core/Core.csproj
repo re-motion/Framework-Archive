@@ -88,6 +88,16 @@
                     AssemblyName = "log4net"
                     HintPath = "..\prereq\Assemblies\log4net.dll"
                 />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -155,7 +165,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\ResourceManagerCache.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Globalization\ResourceManagerPool.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Globalization\ResourceManagerSet.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -47,7 +47,7 @@ public interface IResourceManager
   /// </returns>
   string GetString (Type type, Enum enumValue);
 
-  string BaseNameList { get; }
+  string Name { get; }
 }
 
 }
