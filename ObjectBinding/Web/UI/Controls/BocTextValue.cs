@@ -116,6 +116,15 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
+    RefreshPropertiesFromObjectModel();
+  }
+
+  /// <summary>
+  ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
+  ///   <see cref="Property"/>.
+  /// </summary>
+  private void RefreshPropertiesFromObjectModel()
+  {
     if (Property != null)
     {
       if (_valueType == BocTextValueType.Undefined)
@@ -416,6 +425,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     get 
     {
       Binding.EvaluateBinding();
+      RefreshPropertiesFromObjectModel();
       return _actualValueType;
     }
   }
