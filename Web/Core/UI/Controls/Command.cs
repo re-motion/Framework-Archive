@@ -179,13 +179,6 @@ public class Command: IControlItem
     }
   }
 
-  /// <summary> Wraps the properties required for rendering a script command. </summary>
-  public class ScriptCommandInfo
-  {
-    //  Add enum value Script to BocCommandType
-    //  Add property ScriptCommand to BocCommand
-  }
-
   /// <summary>
   ///   The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>.
   /// </summary>
