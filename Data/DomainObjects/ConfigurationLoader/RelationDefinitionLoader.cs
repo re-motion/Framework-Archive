@@ -131,9 +131,10 @@ public class RelationDefinitionLoader
     if (isVirtualEndPoint)
     {
       Type propertyType = GetTypeFromVirtualRelationPropertyNode (relationDefinitionID, propertyName, relationPropertyNode, cardinality);
+      string sortExpression = GetSortExpression (relationPropertyNode);
 
       return new VirtualRelationEndPointDefinition (
-          classDefinition, propertyName, isMandatory, cardinality, propertyType);
+          classDefinition, propertyName, isMandatory, cardinality, propertyType, sortExpression);
     }
     else
     {
@@ -145,6 +146,17 @@ public class RelationDefinitionLoader
 
       return new RelationEndPointDefinition (classDefinition, propertyName, isMandatory);
     }
+  }
+
+  private string GetSortExpression (XmlNode relationPropertyNode)
+  {
+    XmlNode sortExpressionNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:sortExpression"), _namespaceManager);
+
+    string sortExpression = null;
+    if (sortExpressionNode != null)
+      sortExpression = sortExpressionNode.InnerText;
+
+    return sortExpression;
   }
 
   private string GetPropertyName (XmlNode propertyNodeOrRelationPropertyNode)
