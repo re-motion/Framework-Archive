@@ -460,16 +460,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\MenuItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\MenuItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\SingleControlItemCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -511,6 +501,16 @@
                 />
                 <File
                     RelPath = "UI\Controls\WebControls.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebMenuItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebMenuItemCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
