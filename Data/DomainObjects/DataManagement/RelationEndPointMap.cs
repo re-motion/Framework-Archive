@@ -272,7 +272,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       }
 
       allRelationEndPoints.Add (endPoint);
-      allRelationEndPoints.Merge (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
+      allRelationEndPoints.Combine (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
     }
 
     return allRelationEndPoints;
