@@ -15,11 +15,9 @@ public class PropertyDefinition
 
   private string _propertyName;
   private string _columnName;
-  private Type _propertyType;
-  private string _mappingType;
-  private bool _isNullable;
+  private TypeInfo _typeInfo;
   private NaInt32 _maxLength;
-
+  
   // construction and disposing
 
   public PropertyDefinition (
@@ -59,8 +57,8 @@ public class PropertyDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
-    TypeInfo typeInfo = new TypeInfo (mappingType, isNullable);
-    
+    TypeInfo typeInfo = GetTypeInfo (mappingType, isNullable);
+
     if (typeInfo.Type == typeof (string) && maxLength == NaInt32.Null)
     {
       throw CreateMappingException (
@@ -75,10 +73,32 @@ public class PropertyDefinition
 
     _propertyName = propertyName;
     _columnName = columnName;
-    _propertyType = typeInfo.Type;
-    _mappingType = mappingType;
-    _isNullable = isNullable;
+    _typeInfo = typeInfo;
     _maxLength = maxLength;
+  }
+
+  private TypeInfo GetTypeInfo (string mappingType, bool isNullable)
+  {
+    TypeInfo typeInfo = TypeInfo.GetInstance (mappingType, isNullable);
+
+    if (typeInfo != null)
+      return typeInfo;
+
+    Type type = Type.GetType (mappingType, false);
+    if (type != null && type.IsEnum)
+    {
+      TypeInfo enumTypeInfo = new TypeInfo (type, mappingType, isNullable, TypeInfo.GetDefaultEnumValue (type));
+      TypeInfo.AddInstance (enumTypeInfo);
+      return enumTypeInfo;
+    }
+    
+    string message;
+    if (isNullable)
+      message = string.Format ("Cannot map nullable type '{0}'.", mappingType);
+    else
+      message = string.Format ("Cannot map not-nullable type '{0}'.", mappingType);
+
+    throw CreateMappingException (message);
   }
 
   // methods and properties
@@ -93,6 +113,11 @@ public class PropertyDefinition
     return new MappingException (string.Format (message, args));
   }
 
+  private MappingException CreateMappingException (Exception innerException, string message, params object[] args)
+  {
+    return new MappingException (string.Format (message, args), innerException);
+  }
+
   public string PropertyName
   {
     get { return _propertyName; }
@@ -105,22 +130,27 @@ public class PropertyDefinition
 
   public Type PropertyType
   {
-    get { return _propertyType; }
+    get { return _typeInfo.Type; }
   }
 
   public string MappingType 
   {
-    get { return _mappingType; }
+    get { return _typeInfo.MappingType; }
   }
 
   public bool IsNullable
   {
-    get { return _isNullable; }
+    get { return _typeInfo.IsNullable; }
   }
 
   public NaInt32 MaxLength
   {
     get { return _maxLength; }
+  }
+
+  public object DefaultValue 
+  {
+    get { return _typeInfo.DefaultValue; }
   }
 }
 }

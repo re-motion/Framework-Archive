@@ -6,6 +6,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+
+// TODO: Document how new types can be added. DBValueConverter methods must be changed too
+
 // TODO Documentation:
 public class TypeInfo
 {
@@ -13,158 +16,154 @@ public class TypeInfo
 
   // static members and constants
 
-  private static readonly Hashtable s_mappingToType;
-  private static readonly Hashtable s_typeToMapping;
-  private static readonly Hashtable s_typeToNullableType;
-  private static readonly Hashtable s_isNullableType;
+  private static readonly Hashtable s_types;
+  private static readonly Hashtable s_mappingTypes;
 
-//  public static Type MapType (string mappingType)
-//  {
-//    ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
-//
-//    if (Array.IndexOf (s_typeMapping.AllKeys, mappingType) >= 0)
-//    {
-//      return Type.GetType (s_typeMapping[mappingType], true);
-//    }
-//    else
-//    {
-//      try
-//      {
-//        return Type.GetType (mappingType, true);
-//      }
-//      catch (TypeLoadException e)
-//      {
-//        throw new MappingException (string.Format ("Cannot map unknown type '{0}'.", mappingType), e);
-//      }
-//    }
-//  }
-
-  // member fields
-
-  private bool _isNullable;
-  private string _mappingType;
-  private Type _type;
-
-  // construction and disposing
-  static TypeInfo ()
+  public static void AddInstance (TypeInfo typeInfo)
   {
-    s_mappingToType = new Hashtable ();
-    s_typeToMapping = new Hashtable ();
-    s_typeToNullableType = new Hashtable ();
-    s_isNullableType = new Hashtable ();
+    ArgumentUtility.CheckNotNull ("typeInfo", typeInfo);
 
-    s_mappingToType.Add ("boolean", typeof (bool));
-    s_mappingToType.Add ("byte", typeof (byte));
-    s_mappingToType.Add ("date", typeof (DateTime));
-    s_mappingToType.Add ("dateTime", typeof (DateTime));
-    s_mappingToType.Add ("decimal", typeof (decimal));
-    s_mappingToType.Add ("double", typeof (double));
-    s_mappingToType.Add ("guid", typeof (Guid));
-    s_mappingToType.Add ("int16", typeof (short));
-    s_mappingToType.Add ("int32", typeof (int));
-    s_mappingToType.Add ("int64", typeof (long));
-    s_mappingToType.Add ("single", typeof (float));
-    s_mappingToType.Add ("string", typeof (string));
-    s_mappingToType.Add ("char", typeof (char));
-    s_mappingToType.Add ("objectID", typeof (ObjectID));
-
-    s_typeToMapping.Add (typeof (bool), "boolean");
-    s_typeToMapping.Add (typeof (byte), "byte");
-    s_typeToMapping.Add (typeof (DateTime), "dateTime");
-    s_typeToMapping.Add (typeof (decimal), "decimal");
-    s_typeToMapping.Add (typeof (double), "double");
-    s_typeToMapping.Add (typeof (Guid), "guid");
-    s_typeToMapping.Add (typeof (short), "int16");
-    s_typeToMapping.Add (typeof (int), "int32");
-    s_typeToMapping.Add (typeof (long), "int64");
-    s_typeToMapping.Add (typeof (float), "single");
-    s_typeToMapping.Add (typeof (string), "string");
-    s_typeToMapping.Add (typeof (char), "char");
-    s_typeToMapping.Add (typeof (ObjectID), "objectID");  
-    s_typeToMapping.Add (typeof (NaBoolean), "boolean");
-    s_typeToMapping.Add (typeof (NaDateTime), "dateTime");
-    s_typeToMapping.Add (typeof (NaDouble), "double");
-    s_typeToMapping.Add (typeof (NaInt32), "int32");
-
-    s_isNullableType.Add (typeof (bool), false);
-    s_isNullableType.Add (typeof (byte), false);
-    s_isNullableType.Add (typeof (DateTime), false);
-    s_isNullableType.Add (typeof (decimal), false);
-    s_isNullableType.Add (typeof (double), false);
-    s_isNullableType.Add (typeof (Guid), false);
-    s_isNullableType.Add (typeof (short), false);
-    s_isNullableType.Add (typeof (int), false);
-    s_isNullableType.Add (typeof (long), false);
-    s_isNullableType.Add (typeof (float), false);
-    s_isNullableType.Add (typeof (string), true);
-    s_isNullableType.Add (typeof (char), false);
-    s_isNullableType.Add (typeof (ObjectID), true);  
-    s_isNullableType.Add (typeof (NaBoolean), true);
-    s_isNullableType.Add (typeof (NaDateTime), true);
-    s_isNullableType.Add (typeof (NaDouble), true);
-    s_isNullableType.Add (typeof (NaInt32), true);
-
-    s_typeToNullableType.Add (typeof (bool), typeof (NaBoolean));
-    s_typeToNullableType.Add (typeof (DateTime), typeof (NaDateTime));
-    s_typeToNullableType.Add (typeof (double), typeof (NaDouble));
-    s_typeToNullableType.Add (typeof (int), typeof (NaInt32));
-    s_typeToNullableType.Add (typeof (string), typeof (string));
-    s_typeToNullableType.Add (typeof (ObjectID), typeof (ObjectID));
+    lock (typeof (TypeInfo))
+    {
+      s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
+      s_types.Add (typeInfo.Type, typeInfo);
+    }
   }
 
-  public TypeInfo (string mappingType) : this (mappingType, false)
-  {
-  }
-
-  public TypeInfo (string mappingType, bool isNullable)
+  public static TypeInfo GetInstance (string mappingType, bool isNullable)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
-    _type = MapType (mappingType, isNullable);
-    _mappingType = mappingType;
-    _isNullable = isNullable;
+    return (TypeInfo) s_mappingTypes[GetMappingTypeKey (mappingType, isNullable)];
   }
 
-  public TypeInfo (Type type)
+  public static TypeInfo GetInstance (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    
-    _mappingType = MapType (type);
-    _type = type;   
-    _isNullable = (bool) s_isNullableType[type];
+
+    return (TypeInfo) s_types[type];
   }
 
-  private Type MapType (string mappingType, bool isNullable)
+  public static TypeInfo GetMandatory (Type type)
   {
-    if (!s_mappingToType.Contains (mappingType))
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeInfo typeInfo = GetInstance (type);
+    
+    if (typeInfo == null)
+      throw new MandatoryTypeNotFoundException (type);
+
+    return typeInfo;
+  }
+
+  public static TypeInfo GetMandatory (string mappingType, bool isNullable)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
+
+    TypeInfo typeInfo = GetInstance (mappingType, isNullable);
+
+    if (typeInfo == null)
     {
-      try
-      {
-        return Type.GetType (mappingType, true);
-      }
-      catch (TypeLoadException e)
-      {
-        throw CreateArgumentException (e, "Cannot map unknown type '{0}'.", mappingType);
-      }
+      string message;
+      if (isNullable)
+        message = string.Format ("The nullable mapping type '{0}' could not be found.", mappingType);
+      else
+        message = string.Format ("The not-nullable mapping type '{0}' could not be found.", mappingType);
+
+      throw new MandatoryMappingTypeNotFoundException (message, mappingType, isNullable);
     }
 
-    Type type = (Type) s_mappingToType[mappingType];
-
-    if (!isNullable)
-      return type;
-
-    if (!s_typeToNullableType.Contains (type))
-      throw CreateArgumentException ("mappingType", "MappingType '{0}' cannot be nullable.", mappingType);
-
-    return (Type) s_typeToNullableType[type];  
+    return typeInfo;
   }
 
-  private string MapType (Type type)
+  public static object GetDefaultEnumValue (Type type)
   {
-    if (!s_typeToMapping.Contains (type))
-      throw CreateArgumentException ("type", "Cannot map unknown type '{0}'.", type);
+    ArgumentUtility.CheckNotNull ("type", type);
 
-    return (string) s_typeToMapping[type];
+    Array enumValues = Enum.GetValues (type);
+
+    if (enumValues.Length > 0)
+      return enumValues.GetValue (0);
+  
+    throw new InvalidEnumDefinitionException (type);
+  }
+
+  private static int GetMappingTypeKey (TypeInfo typeInfo)
+  {
+    return GetMappingTypeKey (typeInfo.MappingType, typeInfo.IsNullable); 
+  }
+
+  private static int GetMappingTypeKey (string mappingType, bool isNullable)
+  {
+    return mappingType.GetHashCode () ^ isNullable.GetHashCode (); 
+  }
+
+  // member fields
+
+  private Type _type;
+  private string _mappingType;
+  private bool _isNullable;
+  private object _defaultValue;
+
+  // construction and disposing
+
+  static TypeInfo ()
+  {
+    s_types = new Hashtable ();
+    s_mappingTypes = new Hashtable ();
+
+    foreach (TypeInfo typeInfo in GetAllKnownTypeInfos ())
+    {
+      if (!s_types.Contains (typeInfo.Type))
+        s_types.Add (typeInfo.Type, typeInfo);
+
+      s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
+    }
+  }
+
+  private static TypeInfo[] GetAllKnownTypeInfos ()
+  {
+    TypeInfo[] allTypeInfos = new TypeInfo[21];
+
+    // Note: Nullable types must be added first to ensure hashtable s_types contains the nullable version
+    allTypeInfos[0] = new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null);
+    allTypeInfos[1] = new TypeInfo (typeof (NaDateTime), "dateTime", true, NaDateTime.Null);
+    allTypeInfos[2] = new TypeInfo (typeof (NaDateTime), "date", true, NaDateTime.Null);
+    allTypeInfos[3] = new TypeInfo (typeof (NaDouble), "double", true, NaDouble.Null);
+    allTypeInfos[4] = new TypeInfo (typeof (NaInt32), "int32", true, NaInt32.Null);
+    allTypeInfos[5] = new TypeInfo (typeof (string), "string", true, null);
+    allTypeInfos[6] = new TypeInfo (typeof (ObjectID), "objectID", true, null);
+
+    allTypeInfos[7] = new TypeInfo (typeof (bool), "boolean", false, false);
+    allTypeInfos[8] = new TypeInfo (typeof (byte), "byte", false, (byte) 0);
+
+    // Note: mappingType "dateTime" must be before mappingType "date" to ensure hashtable s_types contains the "dateTime" version
+    allTypeInfos[9] = new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue);
+    allTypeInfos[10] = new TypeInfo (typeof (DateTime), "date", false, DateTime.MinValue);
+
+    allTypeInfos[11] = new TypeInfo (typeof (decimal), "decimal", false, (decimal) 0);
+    allTypeInfos[12] = new TypeInfo (typeof (double), "double", false, (double) 0);
+    allTypeInfos[13] = new TypeInfo (typeof (Guid), "guid", false, Guid.Empty);
+    allTypeInfos[14] = new TypeInfo (typeof (short), "int16", false, (short) 0);
+    allTypeInfos[15] = new TypeInfo (typeof (int), "int32", false, (int) 0);
+    allTypeInfos[16] = new TypeInfo (typeof (long), "int64", false, (long) 0);
+    allTypeInfos[17] = new TypeInfo (typeof (float), "single", false, (float) 0);
+    allTypeInfos[18] = new TypeInfo (typeof (char), "char", false, ' ');
+    allTypeInfos[19] = new TypeInfo (typeof (string), "string", false, string.Empty);
+    allTypeInfos[20] = new TypeInfo (typeof (ObjectID), "objectID", false, null);
+
+    return allTypeInfos;
+  }
+
+  public TypeInfo (Type type, string mappingType, bool isNullable, object defaultValue)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
+
+    _type = type;       
+    _mappingType = mappingType;
+    _isNullable = isNullable;
+    _defaultValue = defaultValue;
   }
 
   // methods and properties
@@ -182,6 +181,11 @@ public class TypeInfo
   public bool IsNullable
   {
     get { return _isNullable; }
+  }
+
+  public object DefaultValue
+  {
+    get { return _defaultValue; }
   }
 
   protected ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
