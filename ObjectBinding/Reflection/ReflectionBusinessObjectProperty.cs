@@ -122,6 +122,11 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
   {
     return publicValue;
   }
+  
+  public IBusinessObjectProvider BusinessObjectProvider
+  {
+    get { return ReflectionBusinessObjectProvider.Instance; }
+  }
 }
 
 public class ReflectionBusinessObjectStringProperty: ReflectionBusinessObjectProperty, IBusinessObjectStringProperty
