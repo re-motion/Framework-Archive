@@ -31,7 +31,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
 
     Assert.AreEqual (StateType.Changed, customer.State);
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
     
     Assert.AreEqual (StateType.Unchanged, customer.State);
     Assert.AreEqual ("Kunde 1", customer.Name);
@@ -48,7 +48,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     order.OrderTicket = newOrderTicket;
     oldOrderOfNewOrderTicket.OrderTicket = oldOrderTicket;
     
-    ClientTransaction.Current.Rollback ();    
+    ClientTransactionMock.Rollback ();    
 
     Assert.AreSame (oldOrderTicket, order.OrderTicket);
     Assert.AreSame (order, oldOrderTicket.Order);
@@ -66,7 +66,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
 
     order.Customer = customer2;
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Assert.IsNotNull (customer1.Orders[order.ID]);
     Assert.IsNull (customer2.Orders[order.ID]);
@@ -82,7 +82,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
     computer.Delete ();
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Computer computerAfterRollback = Computer.GetObject (DomainObjectIDs.Computer4);
     Assert.AreSame (computer, computerAfterRollback);
@@ -99,7 +99,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual ("1111111111111", computer.DataContainer.PropertyValues["SerialNumber"].Value);
 
     computer.Delete ();
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].OriginalValue);
     Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].Value);
@@ -123,7 +123,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.IsNull (order.Customer);
     Assert.IsNull (order.Official);
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Assert.AreSame (oldOrderTicket, order.OrderTicket);
     Assert.AreEqual (oldOrderItems.Count, order.OrderItems.Count);
@@ -139,7 +139,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
   {
     Order newOrder = new Order ();
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     ObjectID id = newOrder.ID;
   }
@@ -159,7 +159,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     customer.Orders.Add (newOrder);
     orderItem1.Order = newOrder;
 
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Assert.AreEqual (StateType.Unchanged, order1.State);
     Assert.AreSame (orderTicket1, order1.OrderTicket);

@@ -329,7 +329,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
 
     order.OrderTicket = newOrderTicket;
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
   }
 
   [Test]
@@ -338,7 +338,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
     employee.Computer = null;
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     // expectation: no exception
   }
@@ -352,7 +352,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector2);
     industrialSector.Companies.Clear ();
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
   }
 
   [Test]
@@ -365,13 +365,13 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     oldOrderTicket.Order = newOrderTicket.Order;
     order.OrderTicket = newOrderTicket;
     
-    ClientTransaction.Current.Commit ();    
+    ClientTransactionMock.Commit ();    
 
     object orderTimestamp = order.DataContainer.Timestamp;
     object oldOrderTicketTimestamp = oldOrderTicket.DataContainer.Timestamp;
     object newOrderTicketTimestamp = newOrderTicket.DataContainer.Timestamp;
 
-    ClientTransaction.Current.Commit ();    
+    ClientTransactionMock.Commit ();    
 
     Assert.AreEqual (orderTimestamp, order.DataContainer.Timestamp);
     Assert.AreEqual (oldOrderTicketTimestamp, oldOrderTicket.DataContainer.Timestamp);
@@ -389,7 +389,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     oldOrderTicket.Order = newOrderTicket.Order;
     order.OrderTicket = newOrderTicket;
     
-    ClientTransaction.Current.Commit ();    
+    ClientTransactionMock.Commit ();    
 
     object orderTimestamp = order.DataContainer.Timestamp;
     object oldOrderTicketTimestamp = oldOrderTicket.DataContainer.Timestamp;
@@ -399,7 +399,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     order.OrderTicket = oldOrderTicket;
     oldOrderOfNewOrderTicket.OrderTicket = newOrderTicket;
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     Assert.AreEqual (orderTimestamp, order.DataContainer.Timestamp);
     Assert.IsFalse (oldOrderTicketTimestamp.Equals (oldOrderTicket.DataContainer.Timestamp));
@@ -413,7 +413,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
     customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Orders");
     Assert.AreEqual (typeof (OrderCollection), originalOrders.GetType ());
@@ -429,7 +429,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
 
     customer.Orders.SetIsReadOnly (true);    
-    ClientTransaction.Current.Rollback ();
+    ClientTransactionMock.Rollback ();
 
     Assert.IsTrue (customer.GetOriginalRelatedObjects("Orders").IsReadOnly);
     Assert.IsTrue (customer.Orders.IsReadOnly);
@@ -441,7 +441,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
     computer.Delete ();
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
     
     Computer.GetObject (DomainObjectIDs.Computer1);
   }
@@ -452,7 +452,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   {
     Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
     computer.Delete ();
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
     
     string serialNumber = computer.SerialNumber;
   }

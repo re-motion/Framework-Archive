@@ -36,7 +36,7 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (StateType.Changed, customer2.State);
     Assert.AreEqual (StateType.Changed, order.State);
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     Assert.AreEqual (StateType.Unchanged, customer1.State);
     Assert.AreEqual (StateType.Unchanged, customer2.State);
@@ -57,7 +57,7 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
     oldOrderTicket.Order = newOrderTicket.Order;
     order.OrderTicket = newOrderTicket;
     
-    ClientTransaction.Current.Commit ();    
+    ClientTransactionMock.Commit ();    
 
     Assert.AreEqual (orderTimestamp, order.DataContainer.Timestamp);
     Assert.IsFalse (oldOrderTicketTimestamp.Equals (oldOrderTicket.DataContainer.Timestamp));
@@ -73,8 +73,8 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
  
     subordinate.Supervisor = supervisor2;
 
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
     supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
@@ -94,8 +94,8 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
     distributor.Ceo = companyCeo;
     company.Ceo = distributorCeo;
 
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     companyCeo = Ceo.GetObject (DomainObjectIDs.Ceo1);
     distributorCeo = Ceo.GetObject (DomainObjectIDs.Ceo10);
@@ -114,8 +114,8 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     customer.Name = "Arthur Dent";
 
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     customer = Customer.GetObject (DomainObjectIDs.Customer1);
     Assert.AreEqual ("Arthur Dent", customer.Name);

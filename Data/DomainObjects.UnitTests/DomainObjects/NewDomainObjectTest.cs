@@ -226,8 +226,8 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     Assert.IsNull (orderTicket.DataContainer.Timestamp);
     Assert.IsNull (orderItem.DataContainer.Timestamp);
 
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     ceo = Ceo.GetObject (ceoID);
     customer = Customer.GetObject (customerID);
@@ -285,8 +285,8 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     subordinate.Name = "Zarniwoop";
     supervisor.Subordinates.Add (subordinate);
 
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     supervisor = Employee.GetObject (supervisorID);
     subordinate = Employee.GetObject (subordinateID);
@@ -306,7 +306,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
   public void CheckMandatoryRelation ()
   {
     OrderItem orderItem = new OrderItem ();
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
   }
 
   [Test]
@@ -319,8 +319,8 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     newEmployee.Computer = computer;
     newEmployee.Name = "Arthur Dent";
     
-    ClientTransaction.Current.Commit ();
-    ClientTransaction.SetCurrent (null);
+    ClientTransactionMock.Commit ();
+    ReInitializeTransaction ();
 
     computer = Computer.GetObject (DomainObjectIDs.Computer4);
     newEmployee = Employee.GetObject (newEmployeeID);
@@ -335,7 +335,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
   {
     Computer computer = new Computer ();
     
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     Assert.AreEqual (StateType.Unchanged, computer.State);
   }
@@ -348,7 +348,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
 
     Assert.IsTrue (employee.DataContainer.PropertyValues["Name"].HasChanged);
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     Assert.IsFalse (employee.DataContainer.PropertyValues["Name"].HasChanged);
   }
@@ -367,7 +367,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     Assert.IsNull (employee.GetOriginalRelatedObject ("Computer"));
     Assert.IsNull (computer.GetOriginalRelatedObject ("Employee"));
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     Assert.AreSame (computer, employee.GetOriginalRelatedObject ("Computer"));
     Assert.AreSame (employee, computer.GetOriginalRelatedObject ("Employee"));
@@ -386,7 +386,7 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (0, supervisor.GetOriginalRelatedObjects ("Subordinates").Count);
     Assert.IsNull (subordinate.GetOriginalRelatedObject ("Supervisor"));
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjects ("Subordinates");
     Assert.AreEqual (1, originalSubordinates.Count);

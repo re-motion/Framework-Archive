@@ -303,7 +303,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Order deletedNewOrder = new Order ();
     deletedNewOrder.Delete ();
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     // expectation: no exception
   }
@@ -337,7 +337,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     supervisor1.Delete ();
     subordinate4.Delete ();
 
-    ClientTransaction.Current.Commit ();
+    ClientTransactionMock.Commit ();
 
     // expectation: no exception
   }
