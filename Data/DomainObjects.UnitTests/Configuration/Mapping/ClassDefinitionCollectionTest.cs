@@ -80,19 +80,6 @@ public class ClassDefinitionCollectionTest
   }
 
   [Test]
-  public void GetDirectlyDerivedClassDefinitions ()
-  {
-    ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
-    ClassDefinitionCollection allClasses = TestMappingConfiguration.Current.ClassDefinitions;
-    ClassDefinitionCollection derivedClasses = allClasses.GetDirectlyDerivedClassDefinitions (companyClass);
-
-    Assert.IsNotNull (derivedClasses);
-    Assert.AreEqual (2, derivedClasses.Count);
-    Assert.IsNotNull (derivedClasses[typeof (Customer)]);
-    Assert.IsNotNull (derivedClasses[typeof (Partner)]);
-  }
-
-  [Test]
   [ExpectedException (typeof (MappingException), 
       "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
   public void GetMandatoryForInvalidClass ()
