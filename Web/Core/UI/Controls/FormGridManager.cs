@@ -940,6 +940,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <summary> State variable for the two part transformation process. </summary>
   private bool _hasCompletedTransformationStepPreLoadViewState;
 
+  /// <summary> State variable for automatic validators creation. </summary>
+  private bool _hasValidatorsCreated;
+
   /// <summary>
   ///   Caches the <see cref="IFormGridRowProvider"/> for this <see cref="FormGridManager"/>.
   /// </summary>
@@ -1479,8 +1482,16 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       if (formGridRow.Type != FormGridRowType.DataRow)
         continue;
 
+      if (! _hasValidatorsCreated)
+      {
+        CreateValidators (formGridRow);
+        OverrideValidators (formGridRow);
+      }
+
       ValidateDataRow (formGridRow);
     }
+
+    _hasValidatorsCreated = true;
   }
 
   /// <summary>
@@ -1596,6 +1607,15 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       {
         if (formGridRow.Type == FormGridRowType.DataRow)
         {
+          CreateRequiredMarker (formGridRow);
+          CreateHelpProvider(formGridRow);
+
+          if (! _hasValidatorsCreated)
+          {
+            CreateValidators (formGridRow);
+            OverrideValidators (formGridRow);
+          }
+
           LoadMarkersIntoCell (formGridRow);
           LoadValidationMessagesIntoCell (formGridRow);
         }
@@ -1764,7 +1784,16 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       if (formGridRow.Type != FormGridRowType.DataRow)
         continue;
   
-      ComposeDataRowContents (formGridRow);
+      formGridRow.SetLabelsCell (0, formGridRow.LabelsColumn);
+
+      if (formGridRow.HtmlTableRows.Count == 1)
+        formGridRow.SetControlsCell (0, formGridRow.ControlsColumn);
+      else
+        formGridRow.SetControlsCell (1, formGridRow.LabelsColumn);
+
+      CreateLabels (formGridRow);
+
+      HandleReadOnlyControls (formGridRow);
     }
   }
 
@@ -1838,33 +1867,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       titleRow.Hide();
 
     AddShowEmptyCellsHack (titleRow);
-  }
-
-  /// <summary> Assembles all the contents of the data row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ComposeDataRowContents/*' />
-  protected virtual void ComposeDataRowContents (FormGridRow dataRow)
-  {
-    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
-    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-
-    dataRow.SetLabelsCell (0, dataRow.LabelsColumn);
-
-    if (dataRow.HtmlTableRows.Count == 1)
-      dataRow.SetControlsCell (0, dataRow.ControlsColumn);
-    else
-      dataRow.SetControlsCell (1, dataRow.LabelsColumn);
-
-    CreateLabels (dataRow);
-
-    CreateValidators (dataRow);
-
-    OverrideValidators (dataRow);
-
-    CreateRequiredMarker (dataRow);
-
-    CreateHelpProvider(dataRow);
-
-    HandleReadOnlyControls (dataRow);
   }
 
   /// <summary> Custom formats a data row. </summary>
@@ -2154,7 +2156,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       if (control is ISmartControl)
         smartControls.Add (control);
-      else if (control is BaseValidator)
+      else if (control is BaseValidator || control is IBaseValidator)
         validators.Add (control);
     }
     
@@ -2164,10 +2166,20 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         continue;
 
       //  Create Validators only if none are assigned for the SmartControl
-      foreach (BaseValidator validator in validators)
+      foreach (IValidator validator in validators)
       {
-        if (validator.ControlToValidate == smartControl.ID)
+        BaseValidator baseValidator = validator as BaseValidator;
+        IBaseValidator iBaseValidator = validator as IBaseValidator;
+        if (    baseValidator != null
+            &&  baseValidator.ControlToValidate == smartControl.ID)
+        {
           return;
+        }
+        else if (     iBaseValidator != null
+                  &&  iBaseValidator.ControlToValidate == smartControl.ID)
+        {
+          return;
+        }
       }
 
       BaseValidator[] newValidators = smartControl.CreateValidators();

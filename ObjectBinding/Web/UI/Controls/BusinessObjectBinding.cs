@@ -87,7 +87,7 @@ public class BusinessObjectBinding
     {
       _property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
 
-      this.OnBindingChanged ();
+      this.OnBindingChanged();
       _bindingChanged = false;
     }
   }
@@ -95,7 +95,7 @@ public class BusinessObjectBinding
   protected void OnBindingChanged()
   {
     if (BindingChanged != null)
-      BindingChanged (this, new EventArgs());
+      BindingChanged (this, EventArgs.Empty);
 
   }
 
