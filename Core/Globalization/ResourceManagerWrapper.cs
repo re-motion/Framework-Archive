@@ -18,7 +18,7 @@ namespace Rubicon.Globalization
 /// <remarks>
 ///   <para>
 ///     Limited to accessing string resources.
-///     Limited on resources for the current UI culture and it's less specific cultures.
+///     Limited on resources for the current UI culture and its less specific cultures.
 ///   </para><para>
 ///     If multiple Resource Managers are added which belonging to derived types, 
 ///     make sure to sort the resource managers in the order of inheritance before wrapping them.
