@@ -155,6 +155,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="boolean" />
       <xs:enumeration value="byte" />
+      <xs:enumeration value="date" />
       <xs:enumeration value="dateTime" />
       <xs:enumeration value="decimal" />
       <xs:enumeration value="double" />

@@ -107,8 +107,8 @@ public class ClassDefinitionLoader
   private PropertyDefinition GetPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
   {
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
-    string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;;
-    Type propertyType = LoaderUtility.GetTypeFromNode (propertyNode, FormatXPath ("{0}:type"), _namespaceManager);
+    string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
+    string mappingType = propertyNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText;
 
     bool isNullable = false;
     XmlNode isNullableNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:nullable"), _namespaceManager);
@@ -120,7 +120,7 @@ public class ClassDefinitionLoader
     if (maxLengthNode != null)
       maxLength = NaInt32.Parse (maxLengthNode.InnerText);
 
-    return new PropertyDefinition (propertyName, columnName, propertyType, isNullable, maxLength);
+    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)

@@ -193,6 +193,10 @@
 					<type>char</type>
 					<column>Char</column>
 				</property>
+				<property name="DateProperty">
+					<type>date</type>
+					<column>Date</column>
+				</property>
 				<property name="DateTimeProperty">
 					<type>dateTime</type>
 					<column>DateTime</column>
@@ -239,6 +243,11 @@
 					<column>NaBoolean</column>
 					<nullable>true</nullable>
 				</property>
+				<property name="NaDateProperty">
+					<type>date</type>
+					<column>NaDate</column>
+					<nullable>true</nullable>
+				</property>
 				<property name="NaDateTimeProperty">
 					<type>dateTime</type>
 					<column>NaDateTime</column>
@@ -263,6 +272,11 @@
 				<property name="NaBooleanWithNullValueProperty">
 					<type>boolean</type>
 					<column>NaBooleanWithNullValue</column>
+					<nullable>true</nullable>
+				</property>
+				<property name="NaDateWithNullValueProperty">
+					<type>date</type>
+					<column>NaDateWithNullValue</column>
 					<nullable>true</nullable>
 				</property>
 				<property name="NaDateTimeWithNullValueProperty">

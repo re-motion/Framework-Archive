@@ -16,6 +16,7 @@ public class PropertyDefinition
   private string _propertyName;
   private string _columnName;
   private Type _propertyType;
+  private string _mappingType;
   private bool _isNullable;
   private NaInt32 _maxLength;
 
@@ -24,39 +25,41 @@ public class PropertyDefinition
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      Type propertyType)
-      : this (propertyName, columnName, propertyType, false)
+      string mappingType)
+      : this (propertyName, columnName, mappingType, false)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      Type propertyType, 
+      string mappingType, 
       bool isNullable)
-      : this (propertyName, columnName, propertyType, isNullable, NaInt32.Null)
+      : this (propertyName, columnName, mappingType, isNullable, NaInt32.Null)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      Type propertyType, 
+      string mappingType, 
       NaInt32 maxLength)
-      : this (propertyName, columnName, propertyType, false, maxLength)
+      : this (propertyName, columnName, mappingType, false, maxLength)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      Type propertyType, 
+      string mappingType, 
       bool isNullable,
       NaInt32 maxLength)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
-    ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+    ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
+
+    Type propertyType = MappingUtility.MapType (mappingType);
     
     if (propertyType == typeof (string) && maxLength == NaInt32.Null)
     {
@@ -73,6 +76,7 @@ public class PropertyDefinition
     _propertyName = propertyName;
     _columnName = columnName;
     _propertyType = GetPropertyType (propertyType, isNullable);
+    _mappingType = mappingType;
     _isNullable = isNullable;
     _maxLength = maxLength;
   }
@@ -127,6 +131,11 @@ public class PropertyDefinition
   public Type PropertyType
   {
     get { return _propertyType; }
+  }
+
+  public string MappingType 
+  {
+    get { return _mappingType; }
   }
 
   public bool IsNullable
