@@ -282,7 +282,7 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
   /// 
   /// </summary>
   /// <param name="value">
-  ///   An enum value that belongs to the enum identified by <see cref="PropertyType"/>.
+  ///   An enum value that belongs to the enum identified by <see cref="ReflectionBusinessObjectProperty.PropertyType"/>.
   /// </param>
   /// <returns></returns>
   public IEnumerationValueInfo GetValueInfoByValue (object value)
