@@ -616,21 +616,20 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
       IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
 
-      IconPrototype iconPrototype = null;
+      IconInfo iconIcon = null;
       if (webUIService != null)
       {
         if (Value != null)
-          iconPrototype = webUIService.GetIcon (Value);
+          iconIcon = webUIService.GetIcon (Value);
         else
-          iconPrototype = webUIService.GetIcon (
-            (IBusinessObjectClassWithIdentity) Property.ReferenceClass);
+          iconIcon = webUIService.GetNullValueIcon ();
       }
 
-      if (iconPrototype != null)
+      if (iconIcon != null)
       {
-        _icon.ImageUrl = iconPrototype.Url;
-        _icon.Width = iconPrototype.Width;
-        _icon.Height = iconPrototype.Height;
+        _icon.ImageUrl = iconIcon.Url;
+        _icon.Width = iconIcon.Width;
+        _icon.Height = iconIcon.Height;
 
         _icon.Visible = EnableIcon;
       }

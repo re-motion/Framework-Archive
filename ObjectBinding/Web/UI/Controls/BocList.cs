@@ -724,23 +724,18 @@ public class BocList:
 
           IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
 
-          IconPrototype iconPrototype = null;
+          IconInfo iconIcon = null;
           if (webUIService != null)
+            iconIcon = webUIService.GetIcon (businessObject);
+ 
+          if (iconIcon != null)
           {
-            if (businessObjectWithIdentity != null)
-              iconPrototype = webUIService.GetIcon (businessObjectWithIdentity);
-            else
-              iconPrototype = webUIService.GetIcon (businessObjectWithIdentity);
-          }
+            writer.AddAttribute (HtmlTextWriterAttribute.Src, iconIcon.Url);
 
-          if (iconPrototype != null)
-          {
-            writer.AddAttribute (HtmlTextWriterAttribute.Src, iconPrototype.Url);
-
-            if (! iconPrototype.Width.IsEmpty && ! iconPrototype.Height.IsEmpty)
+            if (! iconIcon.Width.IsEmpty && ! iconIcon.Height.IsEmpty)
             {
-              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconPrototype.Width.ToString());
-              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconPrototype.Height.ToString());
+              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Width.ToString());
+              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Height.ToString());
             }
             
             writer.RenderBeginTag (HtmlTextWriterTag.Img);
