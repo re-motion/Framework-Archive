@@ -484,12 +484,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
-    OnClearing ();
-
     for (int i = Count - 1; i >= 0; i--)
       Remove (this[i].ID);
-
-    OnCleared ();
   }
 
   /// <summary>
@@ -782,9 +778,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
-    OnClearing ();
+    OnDeleting ();
     BaseClear ();
-    OnCleared ();
+    OnDeleted ();
   }
 
   /// <summary>
@@ -828,47 +824,29 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   }
 
   /// <summary>
-  /// Method is invoked immediately before the collection is cleared.
+  /// The method is invoked immediately before the <see cref="DomainObject"/> holding this collection is deleted if the <b>DomainObjectCollection</b> represents a one-to-many relation.
   /// </summary>
   /// <remarks>
-  /// <b>OnClearing</b> is called in one of the following circumstances:
-  /// <list type="bullet">
-  ///   <item>
-  ///     <description><see cref="Clear"/> is invoked and the collection will be cleared.</description>
-  ///   </item>
-  ///   <item>
-  ///     <description>The <b>DomainObjectCollection</b> represents a one-to-many relation and the <see cref="DomainObject"/> holding this collection is deleted.
-  ///     During the delete process all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
-  ///     Immediately before all <see cref="DomainObject"/>s will be removed the <b>OnClearing</b> method is invoked 
-  ///     to allow derived collections to adjust their internal state or to unsubscribe from events raised by <see cref="DomainObject"/>s that are part of the <b>DomainObjectCollection</b>.
-  ///     </description>
-  ///   </item>
-  /// </list>
+  /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
+  /// Immediately before all <see cref="DomainObject"/>s will be removed the <b>OnDeleting</b> method is invoked 
+  /// to allow derived collections to adjust their internal state or to unsubscribe from events raised by <see cref="DomainObject"/>s that 
+  /// are part of the <b>DomainObjectCollection</b>.<br/><br/>
   /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
-  protected virtual void OnClearing ()
+  protected virtual void OnDeleting ()
   {
   }
 
   /// <summary>
-  /// Method is invoked after the collection has been successfully cleared.
+  /// The method is invoked after the <see cref="DomainObject"/> holding this collection is deleted if the <b>DomainObjectCollection</b> represents a one-to-many relation.
   /// </summary>
   /// <remarks>
-  /// <b>OnCleared</b> is called in one of the following circumstances:
-  /// <list type="bullet">
-  ///   <item>
-  ///     <description><see cref="Clear"/> is invoked and the collection has been successfully cleared.</description>
-  ///   </item>
-  ///   <item>
-  ///     <description>The <b>DomainObjectCollection</b> represents a one-to-many relation and the <see cref="DomainObject"/> holding this collection is deleted.
-  ///     During the delete process all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
-  ///     After all <see cref="DomainObject"/>s have been removed the <b>OnCleared</b> method is invoked to allow derived collections to adjust their internal state.
-  ///     </description>
-  ///   </item>
-  /// </list>
+  /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
+  /// After all <see cref="DomainObject"/>s have been removed the <b>OnDeleted</b> method is invoked 
+  /// to allow derived collections to adjust their internal state.<br/><br/>
   /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
-  protected virtual void OnCleared ()
+  protected virtual void OnDeleted ()
   {
   }
 
