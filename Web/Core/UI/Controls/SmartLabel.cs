@@ -60,6 +60,8 @@ public class SmartLabel: WebControl
 
     // TODO: add <a href="ToName(target.ClientID)"> ...
     // ToName: '.' -> '_'
+
+    //  Accesskey support
   }
 }
 
