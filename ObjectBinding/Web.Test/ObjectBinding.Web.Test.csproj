@@ -164,6 +164,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestDateTimeValue.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestDateTimeValue.aspx.cs"
+                    DependentUpon = "TestDateTimeValue.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDateTimeValue.aspx.resx"
+                    DependentUpon = "TestDateTimeValue.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestEnumValue.aspx"
                     BuildAction = "Content"
                 />
