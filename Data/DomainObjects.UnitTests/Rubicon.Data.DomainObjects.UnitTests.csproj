@@ -661,17 +661,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\SqlProviderExecuteScalarQueryTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\SqlProviderLoadDataContainersByRelatedID.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Persistence\SqlProviderLoadDataContainerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\SqlProviderQueryTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
