@@ -16,7 +16,7 @@ namespace Rubicon.ObjectBinding
 ///   <see cref="IBusinessObjectDataSource.BusinessObject"/> and <see cref="IBusinessObjectBoundControl.Value"/>
 ///   are always identical.
 /// </remarks>
-public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusinessObjectDataSource, IBusinessObjectBoundModifiableControl
+public class BusinessObjectReferenceDataSource: BusinessObjectDataSource, IBusinessObjectDataSource, IBusinessObjectBoundModifiableControl
 {
   private IBusinessObject _businessObject;
   private bool _businessObjectChanged = false;
