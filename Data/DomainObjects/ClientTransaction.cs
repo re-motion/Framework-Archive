@@ -19,6 +19,8 @@ namespace Rubicon.Data.DomainObjects
 ///     <description>
 ///       The transaction is initialized automatically through <see cref="Current"/> and is associated with the current <see cref="System.Threading.Thread"/>.
 ///     </description>
+///   </item>
+///   <item>   
 ///     <description>
 ///       Multiple transactions can be instantiated with the constructor and used side-by-side. 
 ///       Every <see cref="DomainObject"/> must then be associated with the particular transaction.
@@ -36,8 +38,9 @@ public class ClientTransaction
   private static ClientTransaction s_clientTransaction;
 
   /// <summary>
-  /// Gets the default <b>ClientTransaction</b> of the current thread.
+  /// Gets the default <b>ClientTransaction</b> of the current thread. 
   /// </summary>
+  /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is created.</remarks>
   public static ClientTransaction Current
   {
     get 
@@ -86,7 +89,6 @@ public class ClientTransaction
   public ClientTransaction ()
   {
     _dataManager = new DataManager (this);
-    _queryManager = new QueryManager (this);
   }
 
   // methods and properties
@@ -508,9 +510,15 @@ public class ClientTransaction
   /// <summary>
   /// Gets the <see cref="QueryManager"/> of the <b>ClientTransaction</b>.
   /// </summary>
-  public QueryManager QueryManager 
+  public virtual QueryManager QueryManager 
   {
-    get { return _queryManager; }
+    get 
+    {
+      if (_queryManager == null)
+        _queryManager = new QueryManager (this);
+
+      return _queryManager; 
+    }
   }
 
   private void BeginCommit ()
