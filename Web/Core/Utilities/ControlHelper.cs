@@ -18,13 +18,13 @@ public class ControlHelper
 
   // static members
 
-  public static string EventTarget
+  public static string PostEventSourceID 
   { get { return "__EVENTTARGET";} }
   
-  public static string EventArgument
+  public static string PostEventArgumentID  
   { get { return "__EVENTARGUMENT"; } }
   
-  public static string ViewState
+  public static string ViewStateID
   { get { return "__VIEWSTATE"; } }
 
   public static Control[] GetControlsRecursive (Control parentControl, Type type)
