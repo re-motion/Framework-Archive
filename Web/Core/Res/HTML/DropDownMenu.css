@@ -1,18 +1,49 @@
 /*  */
-div.dropDownMenuTitle
+div.dropDownMenuHead
 {
-	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; CURSOR: hand; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fafafa
+  border-color: #2254b1;
+  border-style: solid;
+  border-width: 1px;
+  background-color: #fafafa;
+}
+
+div.dropDownMenuHeadFocus
+{
+  border-color: #2254b1;
+  border-style: solid;
+  border-width: 1px;
+  background-color: #fafafa;
+}
+
+span.dropDownMenuHeadTitle,
+span.dropDownMenuHeadTitleFocus
+{
+  vertical-align: middle;
 }
 
 /*  */
-div.dropDownMenuButton
+span.dropDownMenuHeadButton,
+span.dropDownMenuHeadButtonFocus
 {
+  vertical-align: middle;
+  cursor: hand;
+  background-color: #d7e7fd;
 }
 
 /*  */
 div.dropDownMenuPopUpTextPane
 {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 66.67%; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; FONT-FAMILY: Verdana, sans-serif; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+  padding-right: 0px;
+  padding-left: 0px;
+  font-size: 66.67%;
+  padding-bottom: 0px;
+  margin: 0px;
+  border-top-style: none;
+  padding-top: 0px;
+  font-family: Verdana, sans-serif;
+  border-right-style: none;
+  border-left-style: none;
+  border-bottom-style: none;
 }
 
 
