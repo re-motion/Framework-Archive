@@ -53,7 +53,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectBooleanProperty) };
 
-  private static readonly object s_eventCheckedChanged = new object();
+  private static readonly object s_checkedChangedEvent = new object();
 
 	// member fields
   /// <summary>
@@ -168,7 +168,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnCheckedChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventCheckedChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_checkedChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -547,8 +547,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the checked state of the control changes.")]
   public event EventHandler CheckedChanged
   {
-    add { Events.AddHandler (s_eventCheckedChanged, value); }
-    remove { Events.RemoveHandler (s_eventCheckedChanged, value); }
+    add { Events.AddHandler (s_checkedChangedEvent, value); }
+    remove { Events.RemoveHandler (s_checkedChangedEvent, value); }
   }
 
   /// <summary>

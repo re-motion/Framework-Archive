@@ -39,7 +39,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectEnumerationProperty) };
 
-  private static readonly object s_eventSelectionChanged = new object();
+  private static readonly object s_selectionChangedEvent = new object();
 
 	// member fields
 
@@ -164,7 +164,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnSelectionChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventSelectionChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -671,8 +671,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the selection changes.")]
   public event EventHandler SelectionChanged
   {
-    add { Events.AddHandler (s_eventSelectionChanged, value); }
-    remove { Events.RemoveHandler (s_eventSelectionChanged, value); }
+    add { Events.AddHandler (s_selectionChangedEvent, value); }
+    remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
   }
 
   /// <summary>

@@ -59,7 +59,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
-  private static readonly object s_eventDateTimeChanged = new object();
+  private static readonly object s_dateTimeChangedEvent = new object();
 
 	// member fields
 
@@ -223,7 +223,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> Empty. </param>
   protected virtual void OnDateTimeChanged (EventArgs e)
   {
-    EventHandler eventHandler = (EventHandler) Events[s_eventDateTimeChanged];
+    EventHandler eventHandler = (EventHandler) Events[s_dateTimeChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
   }
@@ -1438,8 +1438,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [Description ("Fires when the value of the control changes.")]
   public event EventHandler DateTimeChanged
   {
-    add { Events.AddHandler (s_eventDateTimeChanged, value); }
-    remove { Events.RemoveHandler (s_eventDateTimeChanged, value); }
+    add { Events.AddHandler (s_dateTimeChangedEvent, value); }
+    remove { Events.RemoveHandler (s_dateTimeChangedEvent, value); }
   }
 
   /// <summary>
