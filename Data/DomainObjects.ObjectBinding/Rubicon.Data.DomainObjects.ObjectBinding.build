@@ -4,8 +4,8 @@
   <target name="build" description="perform a build">
     <csc  target="library"
           output="${project.builddir}/${project.output}.${project.extension}"
-          doc="${project.doc}" 
-          nowarn="1591" 
+          doc="${project.doc}"
+          nowarn="1591"
           debug="${build.debug}"
           define="${build.csc.define}">
       <sources failonempty="true">
