@@ -105,7 +105,7 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
     get { return false;  }
   }
 
-  public bool IsAccessible (IBusinessObject obj)
+  public bool IsAccessible (IBusinessObjectClass objClass, IBusinessObject obj)
   {
     return true;
   }
