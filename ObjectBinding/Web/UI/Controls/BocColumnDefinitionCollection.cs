@@ -23,7 +23,11 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   /// </summary>
   private Type[] _supportedTypes;
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="BocColumnDefinitionCollection"/> class
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs to and the
+  ///   list of <see cref="BocColumnDefinition"/> derived types supported by the collection.
+  ///  </summary>
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
@@ -36,12 +40,24 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
       Type[] supportedTypes)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("supportedTypes", supportedTypes);
+    foreach (Type type in supportedTypes)
+    {
+      if (! typeof (BocColumnDefinition).IsAssignableFrom (type))
+        throw new ArgumentException ("Type '" + type.FullName + "' in 'supportedTypes' is not derived from BocColumnDefiniton.");
+    }
 
     _ownerControl = ownerControl;
     _supportedTypes = supportedTypes;
   }
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="BocColumnDefinitionCollection"/> class
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs to.
+  ///  </summary>
+  ///  <remarks>
+  ///   An instance initialized by this contructor supports all types derived from 
+  ///   <see cref="BocColumnDefinition"/>.
+  ///  </remarks>
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
@@ -110,7 +126,7 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
     return (BocColumnDefinition[]) arrayList.ToArray (typeof (BocColumnDefinition));
   }
 
-  /// <summary> Gets the element at the specified index. </summary>
+  /// <summary> Gets or sets the element at the specified index. </summary>
   /// <value> The element at the specified index. </value>
   public BocColumnDefinition this[int index]
   {
@@ -119,7 +135,8 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   collection belongs to.
   /// </summary>
   internal IBusinessObjectBoundWebControl OwnerControl
   {
