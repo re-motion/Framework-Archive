@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
-public class ItemTypeAttribute: Attribute
+public class ItemTypeAttribute : Attribute
 {
   private Type _itemType;
 
