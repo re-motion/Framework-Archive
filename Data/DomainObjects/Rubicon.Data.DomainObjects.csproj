@@ -431,32 +431,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Persistence\CommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Persistence\ConcurrencyViolationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\DataContainerFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\DBValueConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\DeleteCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\InsertCommandBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -472,26 +447,6 @@
                 />
                 <File
                     RelPath = "Persistence\PersistenceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\QueryCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\RdbmsProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\SelectCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\SqlProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -516,21 +471,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Persistence\UpdateCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\WhereClauseBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\RdbmsProviderDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Persistence\Configuration\StorageProviderConfiguration.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -547,6 +487,66 @@
                 />
                 <File
                     RelPath = "Persistence\Configuration\StorageProviderDefinitionCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\CommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\DataContainerFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\DeleteCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\InsertCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\QueryCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\RdbmsProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\RdbmsProviderDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\SelectCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\SqlProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\UpdateCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\ValueConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\WhereClauseBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
