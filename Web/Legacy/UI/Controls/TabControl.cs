@@ -712,12 +712,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
       }      
       else
       {
-        // TODO: for multible use pleace implement in base class (ResourceDispatcher)
-
-        PropertyInfo propInfo = this.GetType().GetProperty( key );
-
-        if( propInfo != null )
-          propInfo.SetValue( this, entry.Value.ToString(), new object[0] );
+        ResourceDispatcher.SetProperty (this, key, text);
       }
     }
   }

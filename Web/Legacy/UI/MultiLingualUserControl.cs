@@ -19,16 +19,8 @@ public class MultiLingualUserControl : UserControl
 
   protected override void OnInit(EventArgs e)
   {
-    // TODO: delete TRY
-    try
-    {
+    if (ResourceDispatcher.ExistsResource (this))
       ResourceDispatcher.Dispatch (this);
-    }
-    catch (Exception exception)
-    {
-      
-      System.Diagnostics.Trace.WriteLine(exception.Message);
-    }
 
     base.OnInit (e);
   }

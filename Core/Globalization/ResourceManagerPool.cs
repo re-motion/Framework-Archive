@@ -22,6 +22,59 @@ public sealed class ResourceDispatcher
 
   private static Hashtable s_resourceManagerCache = new Hashtable ();
 
+  public static bool ExistsResource (Type objectTypeToGetResourceFor)
+  {
+    try
+    {
+      GetResourceSet (objectTypeToGetResourceFor, GetResourceName (objectTypeToGetResourceFor));
+      return true;
+    }
+    catch
+    {
+      return false;
+    }
+  }
+  
+  public static bool ExistsResource (object objectToGetResourceFor)
+  {
+    try
+    {
+      Type type = GetType (objectToGetResourceFor);
+      GetResourceSet (type, GetResourceName (type));
+      return true;
+    }
+    catch
+    {
+      return false;
+    }  
+  }
+
+  public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
+  {
+    try
+    {
+      string text = GetResourceText (objectTypeToGetResourceFor, name);
+      return (text != null);
+    }
+    catch
+    {
+      return false;
+    }
+  }
+  
+  public static bool ExistsResourceText (object objectToGetResourceFor, string name)
+  {
+    try
+    {
+      string text = GetResourceText (objectToGetResourceFor, name);
+      return (text != null);
+    }
+    catch
+    {
+      return false;
+    }  
+  }
+  
   public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
   {
     return GetResourceText (null, objectTypeToGetResourceFor, GetResourceName (objectTypeToGetResourceFor), name);
@@ -195,23 +248,6 @@ public sealed class ResourceDispatcher
 
       return rm;
     }
-
-    /*
-    if (HttpContext.Current.Application[resourceName] != null)
-    {
-      return (ResourceManager) HttpContext.Current.Application[resourceName];
-    }
-    else
-    {
-      ResourceManager rm = new ResourceManager (resourceName, controlType.Assembly);
-      if (rm == null)
-        throw new ApplicationException ("No resource with name " + resourceName + " found.");
-
-      HttpContext.Current.Application[resourceName] = rm;
-
-      return rm;
-    }
-    */
   }
 
   // member fields

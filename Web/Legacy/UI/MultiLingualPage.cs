@@ -13,7 +13,7 @@ public class MultiLingualPage : Page
 
   // member fields
 
-  private string _pageTitle;
+  private string _pageTitle = "###";
 
   // construction and disposing
 
@@ -27,18 +27,14 @@ public class MultiLingualPage : Page
 
   protected override void OnInit(EventArgs e)
   {
-    // TODO: delete TRY
-    try
+    if (ResourceDispatcher.ExistsResource (this))
     {
       ResourceDispatcher.Dispatch (this);
-      this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
-    }
-
-    catch (Exception exception)
-    {
       
-      System.Diagnostics.Trace.WriteLine(exception.Message);
+      if (ResourceDispatcher.ExistsResourceText (this, "auto:PageTitle"))
+        this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
     }
+          
     base.OnInit (e);
   }
 
