@@ -933,6 +933,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Enable/Disable the help providers. </summary>
   private bool _showHelpProviders;
+  private bool _skipNamingContainers = false;
 
   /// <summary> 
   ///   State variable for the two part transformation process. 
@@ -2695,7 +2696,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       if (htmlTable != null && htmlTable.ID != null && htmlTable.ID.EndsWith (_formGridSuffix))
         Add (htmlTable);
 
-      PopulateFormGridList (childControl);
+      bool isChildNamingContainer = childControl is INamingContainer;
+      if (! _skipNamingContainers || isChildNamingContainer)
+        PopulateFormGridList (childControl);
     }
   }
 
@@ -2822,6 +2825,21 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   {
     get { return _showHelpProviders; }
     set { _showHelpProviders = value; }
+  }
+
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether the <see cref="FormGridManager"/> skips
+  ///   <see cref="INamingContainer"/> controls when searching for cotnrols.
+  /// </summary>
+  /// <value> <see langword="false"/> to include the naming containers in the search path. </value>
+  [Category ("Behavior")]
+  [Description ("false to branch into naming containers when searching for controls.")]  
+  [DefaultValue (false)]
+  public bool SkipNamingContainers
+  {
+    get { return _skipNamingContainers; }
+    set { _skipNamingContainers = value; }
   }
 
   /// <summary> Returns <see langname="true"/> if the markers column is needed. </summary>

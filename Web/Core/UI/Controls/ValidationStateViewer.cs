@@ -25,7 +25,7 @@ public class ValidationStateViewer : WebControl, IControl
   // types
 
   // constants
-  private const string c_noticeTextResourceID = "auto:ValidationStateViewer:NoticeText";
+  private const string c_noticeText = "Incorrect input found.";
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
@@ -47,21 +47,16 @@ public class ValidationStateViewer : WebControl, IControl
   ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
   private string _noticeText;
-
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
-  private ValidationErrorStyle _validationErrorStyle;
-
-  /// <summary> The <c>LiteralControl</c> containing the text displayed as a validation notice. </summary>
-  private LiteralControl _validationErrorNotice;
+  private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
+  private bool _showLabels = true;
+  private bool _skipNamingContainers = false;
 
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
   public ValidationStateViewer()
   {
-    _validationErrorStyle = ValidationErrorStyle.Notice;
-    _validationErrorNotice = new LiteralControl();
-    _noticeText = String.Empty;
   }
 
   /// <summary>
@@ -83,32 +78,69 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   private void ParentPage_PreRender (object sender, EventArgs e)
   {
-    _formGridManagers = new ArrayList();
-    PopulateFormGridManagerList (this.Parent);
+    EnsureFormGridManagerListPopulated ();
+  }
+
+  private void EnsureFormGridManagerListPopulated ()
+  {
+    if (_formGridManagers == null)
+    {
+      _formGridManagers = new ArrayList();
+      PopulateFormGridManagerList (NamingContainer);
+    }
   }
 
   /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>
-  /// <param name="control"> Parent element of the FormGridManager objects. </param>
-  private void PopulateFormGridManagerList (Control control)
+  /// <param name="parent"> Parent element of the FormGridManager objects. </param>
+  private void PopulateFormGridManagerList (Control parent)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
-
-//    //  Has already pupulated
-//    if (_formGridManagers != null)
-//      return;
-//
+    ArgumentUtility.CheckNotNull ("parent", parent);
 
     //  Add all FormGridManager instances
-    foreach (Control childControl in control.Controls)
+    foreach (Control childControl in parent.Controls)
     {
       FormGridManager formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
         _formGridManagers.Add(formGridManager);
 
-      //  For perfomance, only recursivly call PopulateFormGridList if control-collection is filled
-      if (childControl.Controls.Count > 0)
+      bool isChildNamingContainer = childControl is INamingContainer;
+      if (! _skipNamingContainers || isChildNamingContainer)
         PopulateFormGridManagerList (childControl);
+    }
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    if (ControlHelper.IsDesignMode (this, this.Context))
+    {
+      writer.WriteLine ("No validation at design time");
+    }
+    else
+    {
+      switch (_validationErrorStyle)
+      {
+        case ValidationErrorStyle.DetailedMessages:
+        {
+          RenderValidationMessages (writer);
+          break;
+        }
+        case ValidationErrorStyle.Notice:
+        {
+          RenderValidationNotice (writer);
+          break;
+        }
+        case ValidationErrorStyle.HideErrors:
+        {
+          //  Do nothing
+          break;
+        }
+        default:
+        {
+          //  Do nothing
+          break;
+        }
+      }
     }
   }
 
@@ -129,18 +161,13 @@ public class ValidationStateViewer : WebControl, IControl
     //  Enclose the validation error notice inside a div
     if (hasValidationErrors)
     {
-      StringBuilder startTagStringBuilder = new StringBuilder(50);
-      startTagStringBuilder.AppendFormat ("<div class=\"{0}\">", CssClassValidationNotice);
-
-      LiteralControl startTag = new LiteralControl();
-      startTag.Text = startTagStringBuilder.ToString();
-      Controls.Add (startTag);
-
-      Controls.Add (_validationErrorNotice);
-
-      LiteralControl endTag = new LiteralControl();
-      endTag.Text = "</div>";
-      Controls.Add (endTag);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      if (StringUtility.IsNullOrEmpty (_noticeText))
+        writer.WriteLine (c_noticeText);
+      else
+        writer.WriteLine (_noticeText);
+      writer.RenderEndTag();
     }
   }
 
@@ -190,64 +217,57 @@ public class ValidationStateViewer : WebControl, IControl
     writer.RenderEndTag();
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
-  {
-    if (ControlHelper.IsDesignMode (this, this.Context))
-    {
-      writer.WriteLine ("No validation at design time");
-    }
-    else
-    {
-      switch (_validationErrorStyle)
-      {
-        case ValidationErrorStyle.DetailedMessages:
-        {
-          RenderValidationMessages (writer);
-          break;
-        }
-        case ValidationErrorStyle.Notice:
-        {
-          RenderValidationNotice (writer);
-          break;
-        }
-        case ValidationErrorStyle.HideErrors:
-        {
-          //  Do nothing
-          break;
-        }
-        default:
-        {
-          //  Do nothing
-          break;
-        }
-      }
-    }
-  }
-
-
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
   ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
   /// <value> A string. </value>
   [CategoryAttribute("Appearance")]
-  [DefaultValue("")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
+  [DefaultValue("")]
   public string NoticeText
   {
     get { return _noticeText; }
     set { _noticeText = value; }
   }
 
-  /// <summary> Defines how the validation errors are displayed on the page. </summary>
+  /// <summary> Gets or sets a value that defines how the validation errors are displayed on the page. </summary>
   /// <value> A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration. </value>
   [CategoryAttribute("Behavior")]
-  [DefaultValue(ValidationErrorStyle.Notice)]
   [Description("Defines how the validation messages are displayed.")]
+  [DefaultValue(ValidationErrorStyle.Notice)]
   public ValidationErrorStyle ValidationErrorStyle
   {
     get { return _validationErrorStyle; }
     set { _validationErrorStyle = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to render the label associated with the erroneous control 
+  ///   in front of the error message.
+  /// </summary>
+  /// <value> <see langword="true"/> to render the label. </value>
+  [Category ("Apearance")]
+  [Description ("true to render the label associated with the erroneous control in front of the error message.")]  
+  [DefaultValue (true)]
+  public bool ShowLabels
+  {
+    get { return _showLabels; }
+    set { _showLabels = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether the <see cref="ValidationStateViewer"/> skips
+  ///   <see cref="INamingContainer"/> controls when searching for <see cref="FormGridManager"/> controls.
+  /// </summary>
+  /// <value> <see langword="false"/> to include the naming containers in the search path. </value>
+  [Category ("Behavior")]
+  [Description ("false to branch into naming containers when searching for FormGridManagers.")]  
+  [DefaultValue (false)]
+  public bool SkipNamingContainers
+  {
+    get { return _skipNamingContainers; }
+    set { _skipNamingContainers = value; }
   }
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
