@@ -34,7 +34,7 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
     }
 
     if (selectedValue != -1)
-      this.SelectedIntValue = selectedValue;
+      this.SelectedInt32Value = selectedValue;
   }
 
   public void Add (string text, object value)
@@ -73,7 +73,7 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
     }
   }
 
-  public virtual int SelectedIntValue
+  public virtual int SelectedInt32Value
   {
     get { return int.Parse (base.SelectedValue); }
     set { SetSelectedValue (value); }

@@ -5,19 +5,23 @@
   * ExtendedDropDownList unterstützt nun ebenfalls Guids als eindeutigen Identifier =>
     Folgende Änderungen:
       SelectedValue: Datentyp ist statt "int" jetzt "string" (wie Basisklasse DropDownList)
-      SelectedIntValue: Für Listen mit Datentyp "int" als eindeutigen Identifier
+      SelectedInt32Value: Für Listen mit Datentyp "int" als eindeutigen Identifier
       SelectedGuidValue: Für Listen mit Datentyp "Guid" als eindeutigen Identifier
       Add (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
       GetListItemByValue (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
   * In DataDropDownList wurde folgendes geändert:
       Property EmptyValue entfernt
-      SelectedValue, SelectedIntValue, SelectedGuidValue wie ExtendedDropDownList nur 
+      SelectedValue, SelectedInt32Value, SelectedGuidValue wie ExtendedDropDownList nur 
       zusätzliches Handling für Leerzeile. Bei Leerzeilen werden folgende Werte retourniert:
         SelectedValue: string.Empty
-        SelectedIntValue: -1
+        SelectedInt32Value: -1
         SelectedGuidValue: Guid.Empty 
       Interne Implementierungen geändert.
-      
+  * Durch diese Änderungen müssen alle Referenzen auf "DataDropDownList.SelectedValue" 
+    berichtigt werden. Weiters müssen alle CompareValidators auf RequiredFieldValidators 
+    umgestellt werden, da SelectedValue bei leerem Eintrag nicht mehr "-1", sondern string.Empty
+    zurückliefert!
+    
         
 3.0.5.1
 =======

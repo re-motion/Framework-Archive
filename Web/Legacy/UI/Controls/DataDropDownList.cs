@@ -55,7 +55,7 @@ public class DataDropDownList: ExtendedDropDownList
   /// <summary>
   /// Returns the value of the selected item, or -1 if no item or the empty item is selected.
   /// </summary>
-  public override int SelectedIntValue
+  public override int SelectedInt32Value
   {
     get 
     { 
