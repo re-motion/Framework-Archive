@@ -195,6 +195,10 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
+                <File
+                    RelPath = "Doc\include\BocReferenceValue.xml"
+                    BuildAction = "Content"
+                />
             </Include>
         </Files>
     </CSHARP>

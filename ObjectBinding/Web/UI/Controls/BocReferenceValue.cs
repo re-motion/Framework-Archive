@@ -228,9 +228,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       }
 
       //  Check if null item is to be selected
-      bool hasProperty = ! _isLoadViewState && Property == null;
+      bool hasProperty = _isLoadViewState || Property != null;
 
       if (InternalValue == null || ! hasProperty)
+//      if (    InternalValue == null
+//          ||  (! _isLoadViewState && Property == null))
       {
         //  No
         if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
