@@ -94,7 +94,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   public WebTreeView (Control ownerControl)
   {
     _nodes = new WebTreeNodeCollection (ownerControl);
-    _nodes.SetParent (this, null);
+    Nodes.SetParent (this, null);
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -179,13 +179,13 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
   //  public void CollapseAll()
   //  {
-  //    _nodes.SetExpansion (false);
+  //    Nodes.SetExpansion (false);
   //  }
   //    
   //  /// <summary> Expands all nodes of this tree view.</summary>
   //  public void ExpandAll()
   //  {
-  //    _nodes.SetExpansion (true);
+  //    Nodes.SetExpansion (true);
   //  }
 
   private void EnsureTreeNodesCreated()
@@ -197,7 +197,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       _initializeRootTreeNodes();
 
     if (_nodesViewState != null)
-      LoadNodesViewStateRecursive (_nodesViewState, _nodes);
+      LoadNodesViewStateRecursive (_nodesViewState, Nodes);
 
     _hasTreeNodesCreated = true;
   }
@@ -242,7 +242,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
     values[0] = base.SaveViewState();
     if (_enableTreeNodeViewState)
-      values[1] = SaveNodesViewStateRecursive (_nodes);
+      values[1] = SaveNodesViewStateRecursive (Nodes);
 
     return values;
   }
@@ -295,7 +295,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
   protected override void OnPreRender(EventArgs e)
   {
-    string key = typeof (DropDownMenu).FullName + "_Style";
+    string key = typeof (WebTreeView).FullName + "_Style";
     string styleSheetUrl = null;
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
@@ -326,8 +326,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   protected override void RenderContents (HtmlTextWriter writer)
   {
     ResolveNodeIcons();
-    RenderNodes (writer, _nodes, true);
-    if (ControlHelper.IsDesignMode (this, Context) && _nodes.Count == 0)
+    RenderNodes (writer, Nodes, true);
+    if (ControlHelper.IsDesignMode (this, Context) && Nodes.Count == 0)
       RenderDesignModeContents (writer);
   }
 
