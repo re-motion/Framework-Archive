@@ -41,7 +41,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   const int c_defaultDateTextBoxWidthInPoints = 70;
   const int c_defaultTimeTextBoxWidthInPoints = 40;
-  const int c_defaultDatePickerLengthInPoints = 80;
+  const int c_defaultDatePickerLengthInPoints = 150;
 
   private const string c_requiredErrorMessage = "Please enter a value.";
   private const string c_incompleteErrorMessage = "Please enter a date.";
@@ -115,9 +115,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
   private Style _datePickerImageStyle = new Style();
 
-  /// <summary> The width of the popup window used to display the date picker. </summary>
+  /// <summary> The width of the IFrame used to display the date picker. </summary>
   private Unit _datePickerPopupWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
-  /// <summary> The height of the popup window used to display the date picker. </summary>
+  /// <summary> The height of the IFrame used to display the date picker. </summary>
   private Unit _datePickerPopupHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
 
   /// <summary> Flag that determines  whether to show the seconds.</summary>
@@ -270,14 +270,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     base.AddAttributesToRender (writer);
   
+    //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+      //  and remove AddAttributesToRender.
     Unit width = _datePickerPopupWidth;
     if (width.IsEmpty)
-      width = Unit.Pixel (200);
+      width = Unit.Point (c_defaultDatePickerLengthInPoints);
     writer.AddAttribute("dp_width", width.ToString());
 
     Unit height = _datePickerPopupHeight;
     if (height.IsEmpty)
-      height = Unit.Pixel (200);
+      height = Unit.Point (c_defaultDatePickerLengthInPoints);
     writer.AddAttribute("dp_height", height.ToString());
   }
 
@@ -287,6 +289,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     {
       control.RenderControl (writer);
 
+      //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+      //  and remove RenderContents.
       if (control == _datePickerImage)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
@@ -478,11 +482,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
     else // Edit Mode
     {
-      const double dateTextBoxWidthRelative = (double) c_defaultDateTextBoxWidthInPoints 
-        / (c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints);
-      
-      const double timeTextBoxWidthRelative = (double) c_defaultTimeTextBoxWidthInPoints 
-        / (c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints);
+      const double c_defaultTotalWidthInPoints = 
+          c_defaultDateTextBoxWidthInPoints + c_defaultTimeTextBoxWidthInPoints;
+      const double dateTextBoxWidthRelative = 
+          c_defaultDateTextBoxWidthInPoints / c_defaultTotalWidthInPoints;
+      const double timeTextBoxWidthRelative = 
+          c_defaultTimeTextBoxWidthInPoints / c_defaultTotalWidthInPoints;
 
       if (ProvideMaxLength)
       {
@@ -1290,34 +1295,30 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get { return _datePickerImageStyle; }
   }
 
-  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
-  public TextBox DateTextBox
+  /// <summary> The width of the IFrame used to display the date picker. </summary>
+  [Category ("Appearance")]
+  [Description("The width of the IFrame used to display the date picker.")]
+  [DefaultValue (typeof (Unit), "150pt")]
+  public Unit DatePickerPopupWidth
   {
-    get { return _dateTextBox; }
+    get { return _datePickerPopupWidth; }
+    set { _datePickerPopupWidth = value; }
   }
 
-  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the time component. </summary>
-  public TextBox TimeTextBox
+  /// <summary> The height of the IFrame used to display the date picker. </summary>
+  [Category ("Appearance")]
+  [Description("The height of the IFrame used to display the date picker.")]
+  [DefaultValue (typeof (Unit), "150pt")]
+  public Unit DatePickerPopupHeight
   {
-    get { return _timeTextBox; }
-  }
-
-  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
-  public Label Label
-  {
-    get { return _label; }
-  }
-
-  /// <summary> Gets the <see cref="Image"/> used in edit mode for opening the date picker. </summary>
-  public Image DatePickerImage
-  {
-    get { return _datePickerImage; }
+    get { return _datePickerPopupHeight; }
+    set { _datePickerPopupHeight = value; }
   }
 
   /// <summary> Flag that determines whether to display the seconds. </summary>
   /// <value> <see langword="true"/> to enable the seconds. </value>
   [Category ("Appearance")]
-  [Description ("Ture to display the seconds. ")]
+  [Description ("True to display the seconds. ")]
   [DefaultValue (false)]
   public bool ShowSeconds
   {
@@ -1370,6 +1371,34 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       Binding.EvaluateBinding();
       return _actualValueType; 
     }
+  }
+
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the date component. </summary>
+  [Browsable (false)]
+  public TextBox DateTextBox
+  {
+    get { return _dateTextBox; }
+  }
+
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode for the time component. </summary>
+  [Browsable (false)]
+  public TextBox TimeTextBox
+  {
+    get { return _timeTextBox; }
+  }
+
+  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
+  [Browsable (false)]
+  public Label Label
+  {
+    get { return _label; }
+  }
+
+  /// <summary> Gets the <see cref="Image"/> used in edit mode for opening the date picker. </summary>
+  [Browsable (false)]
+  public Image DatePickerImage
+  {
+    get { return _datePickerImage; }
   }
 
   /// <summary> The URL of the image used by the <see cref="DatePickerImage"/>. </summary>
