@@ -90,7 +90,7 @@
                 />
                 <Reference
                     Name = "system.xml"
-                    AssemblyName = "system.xml"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.xml.dll"
                 />
             </References>
@@ -127,6 +127,11 @@
                 />
                 <File
                     RelPath = "ReflectionBusinessObjectProperty.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ReflectionBusinessObjectProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

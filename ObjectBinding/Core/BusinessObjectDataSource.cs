@@ -18,6 +18,8 @@ public interface IBusinessObjectDataSource
 
   IBusinessObject BusinessObject { get; set; }
   IBusinessObjectClass BusinessObjectClass { get; }
+
+  IBusinessObjectProvider BusinessObjectProvider { get; }
 }
 
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
@@ -76,6 +78,11 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   public abstract IBusinessObject BusinessObject { get; set; }
   public abstract IBusinessObjectClass BusinessObjectClass { get; }
+
+  public virtual IBusinessObjectProvider BusinessObjectProvider 
+  { 
+    get { return (BusinessObjectClass == null) ? null : BusinessObjectClass.BusinessObjectProvider; }
+  }
 }
 
 }
