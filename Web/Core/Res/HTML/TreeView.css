@@ -13,13 +13,13 @@ div.treeViewNodeChildren
 {
   background-image: url(../Image/TreeViewI.gif);
   background-repeat: repeat-y;  
-  padding-left: 16px;
+  padding-left: 19px;
 }
 
 /* Applied to the node's children area if the nodes should not be connected by lines. */
 div.treeViewNodeChildrenNoLines
 {
-  padding-left: 16px;
+  padding-left: 19px;
 }
 
 /* Applied to the node's head. */
@@ -27,13 +27,37 @@ span.treeViewNodeHead
 {
 }
 
+/* Applied to the node's head if it is the selected node. */
+span.treeViewNodeHeadSelected
+{
+	background-color: Navy;
+  color: White;
+}
+
 span.treeViewNodeHead a
 {
   padding: 2px;
 }
 
+span.treeViewNodeHeadSelected a
+{
+  color: White;
+  padding: 2px;
+}
+
 span.treeViewNodeHead a:hover
 {
+  color: Blue;
+	padding: 1px;
+	border-width: 1px;
+	border-color: #2254b1;
+	border-style: solid;
+	background-color: #fee197;	
+}
+
+span.treeViewNodeHeadSelected a:hover
+{
+  color: Blue;
 	padding: 1px;
 	border-width: 1px;
 	border-color: #2254b1;
