@@ -243,6 +243,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "PersonsForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PersonsForm.aspx.cs"
+                    DependentUpon = "PersonsForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PersonsForm.aspx.resx"
+                    DependentUpon = "PersonsForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "SingleBocTestBasePage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
@@ -466,6 +481,11 @@
                 />
                 <File
                     RelPath = "ViewPersonDetailsWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ViewPersonsWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

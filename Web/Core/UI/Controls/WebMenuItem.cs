@@ -216,7 +216,7 @@ public enum RequiredSelection
 {
   Any = 0,
   ExactlyOne = 1,
-  OneOrMore = 2
+  AtLeastOne = 2
 }
 
 /// <summary>
