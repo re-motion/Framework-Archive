@@ -6,17 +6,35 @@
 <html>
   <head>
     <title>Test Form</title>
-    <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
-    <meta content=C# name=CODE_LANGUAGE>
-    <meta content=JavaScript name=vs_defaultClientScript>
-    <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
+<meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
+<meta content=C# name=CODE_LANGUAGE>
+<meta content=JavaScript name=vs_defaultClientScript>
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
   </head>
-  <body>
-    <form id=Form method=post runat="server">
-      <table id=FormGrid width="80%" runat="server">
-        <tr>
-          <td></td>
-          <td><obc:boclist id=BocList runat="server" propertyidentifier="Children" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+<body>
+<form id=Form method=post runat="server">
+<table id=FormGrid width="80%" runat="server">
+  <tr>
+    <td></td>
+    <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children">
+<optionsmenuitems>
+<obc:BocMenuItem ItemID="" Icon="" Text="Wxe" Category="">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-Parameters="Test'Test" WxeFunctionCommand-TypeName="MyType"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="" Icon="" Text="Event" Category="">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="" Icon="" Text="Href" Category="">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+</OptionsMenuItems>
+
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Label="Event">
 <persistedcommand>
@@ -43,23 +61,27 @@
 <listmenuitems>
 <obc:BocMenuItem ItemID="" Icon="" Text="Event" Category="">
 <persistedcommand>
-<obc:BocCommand Type="Event"></obc:BocCommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Item" Category="">
+<obc:BocMenuItem ItemID="" Icon="" Text="Wxe" Category="">
 <persistedcommand>
-<obc:BocCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocCommand>
+<obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Other Item" Category="">
+<obc:BocMenuItem ItemID="" Icon="" Text="Href" Category="">
 <persistedcommand>
-<obc:BocCommand Type="Href"></obc:BocCommand>
+<obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
 </ListMenuItems>
-            </obc:boclist></td></tr></table>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id=ReflectionBusinessObjectDataSourceControl runat="server" TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
-      <p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p></form>
+</obc:boclist></td></tr></table>
+<p><rwc:formgridmanager id=FormGridManager runat="server" 
+visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
+id=ReflectionBusinessObjectDataSourceControl runat="server" 
+TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
+<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
+<p><asp:Label id="EventLabel" runat="server">###</asp:Label></p></form>
 
   </body>
 </html>

@@ -31,6 +31,7 @@ public class TestForm : Page
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.ObjectBinding.Web.Controls.BocList BocList;
   protected System.Web.UI.WebControls.Button Button1;
+  protected System.Web.UI.WebControls.Label EventLabel;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -59,10 +60,17 @@ public class TestForm : Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.BocList.MenuItemClick += new MenuItemClickEventHandler(BocList_MenuItemClick);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
+
+  private void BocList_MenuItemClick(object sender, MenuItemClickEventArgs e)
+  {
+    EventLabel.Text = e.Item.Text;
+
+  }
 }
 
 }
