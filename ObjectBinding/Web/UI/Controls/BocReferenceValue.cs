@@ -285,7 +285,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     {
       Binding.EvaluateBinding();
 
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
   }
@@ -367,8 +367,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     if (! IsReadOnly)
     {
-      if (    Property != null 
-          &&  businessObjects != null)
+      if (   Property != null 
+          && businessObjects != null)
       {
         _dropDownList.Items.Clear();
       
@@ -565,8 +565,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
     else // Not Read-Only
     {
-      bool isNullItem =     InternalValue == null
-                        ||  ! hasPropertyAfterInitializion;
+      bool isNullItem =    InternalValue == null
+                        || ! hasPropertyAfterInitializion;
 
       //  Prevent unnecessary removal
       if (removeNullItem && ! isNullItem)
@@ -715,9 +715,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         _value = null;
       }
       //  Only reload if value is outdated
-      else if (     Property != null
-                &&  (     _value == null
-                      ||  _value.UniqueIdentifier != InternalValue))
+      else if (   Property != null
+               && (   _value == null
+                   || _value.UniqueIdentifier != InternalValue))
       {
         _value = 
           ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (InternalValue);
@@ -766,9 +766,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       else
         _internalValue = value;
 
-      bool removeNullItem =     IsRequired 
-                            &&  isOldInternalValueNull
-                            &&  _internalValue != null;
+      bool removeNullItem =    IsRequired 
+                            && isOldInternalValueNull
+                            && _internalValue != null;
       
       InternalLoadValue (removeNullItem);
     }

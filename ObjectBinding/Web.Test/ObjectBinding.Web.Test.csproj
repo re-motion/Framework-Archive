@@ -376,6 +376,14 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Globalization\RMTest.de-at.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\RMTest.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\TestListPage.resx"
                     BuildAction = "EmbeddedResource"
                 />

@@ -189,10 +189,7 @@ public class BocItemCommand
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("A list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
-    [DefaultValue((string) null)]
-    [NotifyParentProperty (true)]
+    [Browsable (false)]
     public string[] Parameters
     {
       get
@@ -208,8 +205,10 @@ public class BocItemCommand
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("A comma seperated list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
     [DefaultValue ("")]
-    [Browsable (false)]
+    [NotifyParentProperty (true)]
     public string ParameterList
     {
       get

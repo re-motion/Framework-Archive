@@ -333,7 +333,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     if (! interim)
     {
       Binding.EvaluateBinding();
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
 
@@ -383,7 +383,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
     if (isReadOnly)
     {
-      if (IsDesignMode &&  StringUtility.IsNullOrEmpty (_label.Text))
+      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
         _label.Text = c_designModeEmptyLabelContents;
         //  Too long, can't resize in designer to less than the content's width
@@ -441,8 +441,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       
       LiteralControl dateTimeSpacer = null;
 
-      if (    ActualValueType == BocDateTimeValueType.DateTime
-          ||  IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
+      if (   ActualValueType == BocDateTimeValueType.DateTime
+          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
         int timeTextBoxIndex = Controls.IndexOf (_timeTextBox);
 
@@ -459,9 +459,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       LiteralControl imageButtonSpacer = null;
 
-      if (    ActualValueType == BocDateTimeValueType.DateTime
-          ||  ActualValueType == BocDateTimeValueType.Date
-          ||  IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
+      if (   ActualValueType == BocDateTimeValueType.DateTime
+          || ActualValueType == BocDateTimeValueType.Date
+          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
         int imageButtonIndex = Controls.IndexOf (_imageButton);
 
@@ -520,8 +520,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         {
           dateTextBoxWidthValue = innerControlWidthValue;            
         }
-        else if (     IsDesignMode
-                  &&  ActualValueType == BocDateTimeValueType.Undefined)
+        else if (    IsDesignMode
+                  && ActualValueType == BocDateTimeValueType.Undefined)
         {
           dateTextBoxWidthValue = (int)(innerControlWidthValue * dateTextBoxWidthRelative);            
           timeTextBoxWidthValue = (int)(innerControlWidthValue * timeTextBoxWidthRelative);
@@ -783,8 +783,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       InternalDateValue = _newInternalDateValue;
       
       //  Reset the time in if the control is displayed in date mode and the date was changed
-      if (    ActualValueType == BocDateTimeValueType.Date
-          &&  ! _savedDateTimeValue.IsNull)
+      if (   ActualValueType == BocDateTimeValueType.Date
+          && ! _savedDateTimeValue.IsNull)
       {
          _savedDateTimeValue = _savedDateTimeValue.Date;
       }
@@ -795,8 +795,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       InternalTimeValue = _newInternalTimeValue;
       
       //  Reset the seconds if the control does not display seconds and the time was changed
-      if (    ! ShowSeconds
-          &&  ! _savedDateTimeValue.IsNull)
+      if (   ! ShowSeconds
+          && ! _savedDateTimeValue.IsNull)
       {
           TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
          _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
@@ -878,16 +878,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  Parse Time
 
-      if (ActualValueType == BocDateTimeValueType.DateTime
-          &&  InternalTimeValue != null)
+      if (   ActualValueType == BocDateTimeValueType.DateTime
+          && InternalTimeValue != null)
       {        
         try
         {
           dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
 
           //  Restore the seconds if the control does not display them.
-          if (    ! ShowSeconds
-              &&  ! _savedDateTimeValue.IsNull)
+          if (   ! ShowSeconds
+              && ! _savedDateTimeValue.IsNull)
           {
             dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Second);
           }
@@ -897,8 +897,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
         }
       }
-      else if (     ActualValueType == BocDateTimeValueType.Date
-                &&  ! _savedDateTimeValue.IsNull)
+      else if (    ActualValueType == BocDateTimeValueType.Date
+                && ! _savedDateTimeValue.IsNull)
       {
         //  Restore the time if the control is displayed in date mode.
         dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Time);
@@ -919,8 +919,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       DateTime dateTimeValue = (DateTime) value;
       _savedDateTimeValue = new NaDateTime (dateTimeValue);
 
-      if (    ActualValueType == BocDateTimeValueType.DateTime
-          ||  ActualValueType == BocDateTimeValueType.Date)
+      if (   ActualValueType == BocDateTimeValueType.DateTime
+          || ActualValueType == BocDateTimeValueType.Date)
       {
         try
         {

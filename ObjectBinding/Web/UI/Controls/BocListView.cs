@@ -38,9 +38,9 @@ public class BocColumnDefinitionSet
   ///   <see cref="BocColumnDefinitionSet"/>.
   /// </param>
   public BocColumnDefinitionSet (
-    IBusinessObjectBoundWebControl ownerControl, 
-    object title, 
-    BocColumnDefinition[] columnDefinitions)
+      IBusinessObjectBoundWebControl ownerControl, 
+      object title, 
+      BocColumnDefinition[] columnDefinitions)
   {
     _title = title;
     _columnDefinitionCollection = new BocColumnDefinitionCollection (

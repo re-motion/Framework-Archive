@@ -34,7 +34,7 @@ public class BocDateTimeValueValidator: BaseValidator
     BocDateTimeValue dateTimeValueControl = control as BocDateTimeValue;
 
     if (dateTimeValueControl == null)
-      return true;
+      throw new InvalidOperationException ("BocDateTimeValueValidator may only be applied to controls of type BocDateTimeValue");
 
     if (! EvaluateIsRequiredValid (dateTimeValueControl))
     {
@@ -82,9 +82,9 @@ public class BocDateTimeValueValidator: BaseValidator
     if (! control.IsRequired)
       return true;
 
-    bool isDateRequired =     control.ActualValueType == BocDateTimeValueType.DateTime
-                          ||  control.ActualValueType == BocDateTimeValueType.Date;
-    bool isTimeRequired =     control.ActualValueType == BocDateTimeValueType.DateTime;
+    bool isDateRequired =    control.ActualValueType == BocDateTimeValueType.DateTime
+                          || control.ActualValueType == BocDateTimeValueType.Date;
+    bool isTimeRequired = control.ActualValueType == BocDateTimeValueType.DateTime;
 
     //  Neither field required because the value of the control of an unknown/undefined type
     if (! isDateRequired && ! isTimeRequired)
@@ -104,8 +104,8 @@ public class BocDateTimeValueValidator: BaseValidator
   /// <returns> <see langword="true"/> if sufficient input is provided. </returns>
   private bool EvaluateIsCompleteValid (BocDateTimeValue control)
   {
-    bool isDateRequired =     control.ActualValueType == BocDateTimeValueType.DateTime
-                          ||  control.ActualValueType == BocDateTimeValueType.Date;
+    bool isDateRequired =    control.ActualValueType == BocDateTimeValueType.DateTime
+                          || control.ActualValueType == BocDateTimeValueType.Date;
     
     if (! isDateRequired)
       return true;
@@ -128,8 +128,8 @@ public class BocDateTimeValueValidator: BaseValidator
   /// </remarks>
   private bool EvaluateIsValidDate (BocDateTimeValue control)
   {
-    bool isDateRequired =     control.ActualValueType == BocDateTimeValueType.DateTime
-                          ||  control.ActualValueType == BocDateTimeValueType.Date;
+    bool isDateRequired =    control.ActualValueType == BocDateTimeValueType.DateTime
+                          || control.ActualValueType == BocDateTimeValueType.Date;
     
     if (! isDateRequired)
       return true;

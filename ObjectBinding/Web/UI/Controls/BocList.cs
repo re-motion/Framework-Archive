@@ -316,9 +316,9 @@ public class BocList:
   ///   applied on.
   /// </param>
   protected virtual void OnCommandClick (
-    string columnID, 
-    int listIndex, 
-    string businessObjectID)
+      string columnID, 
+      int listIndex, 
+      string businessObjectID)
   {
     BocItemCommandClickEventHandler commandClickHandler = 
       (BocItemCommandClickEventHandler) Events[EventCommandClick];
@@ -590,7 +590,9 @@ public class BocList:
     writer.RenderEndTag();
   }
 
-  private void RenderColumnTitlesRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
+  private void RenderColumnTitlesRow (
+      HtmlTextWriter writer, 
+      BocColumnDefinition[] columnDefinitions)
   {
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -637,10 +639,10 @@ public class BocList:
   }
 
   private void RenderDataRow (
-    HtmlTextWriter writer, 
-    BocColumnDefinition[] columnDefinitions, 
-    int rowIndex,
-    bool isOddRow)
+      HtmlTextWriter writer, 
+      BocColumnDefinition[] columnDefinitions, 
+      int rowIndex,
+      bool isOddRow)
   {
     IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
     if (businessObject == null)
@@ -660,9 +662,9 @@ public class BocList:
 
     if (FirstColumnCommand != null)
     {
-      if (    FirstColumnCommand.Show == BocItemCommandShow.Always
-          ||  isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.ReadOnly
-          ||  ! isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.EditMode)
+      if (   FirstColumnCommand.Show == BocItemCommandShow.Always
+          || isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.ReadOnly
+          || ! isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.EditMode)
       {
         isFirstValueColumnCommandEnabled = true;
       }
@@ -750,9 +752,9 @@ public class BocList:
       {
         bool isCommandEnabled = false;
 
-        if (    commandColumn.Command.Show == BocItemCommandShow.Always
-            ||  isReadOnly && commandColumn.Command.Show == BocItemCommandShow.ReadOnly
-            ||  ! isReadOnly && commandColumn.Command.Show == BocItemCommandShow.EditMode)
+        if (   commandColumn.Command.Show == BocItemCommandShow.Always
+            || isReadOnly && commandColumn.Command.Show == BocItemCommandShow.ReadOnly
+            || ! isReadOnly && commandColumn.Command.Show == BocItemCommandShow.EditMode)
         {
           isCommandEnabled = true;
         }
@@ -897,7 +899,7 @@ public class BocList:
     if (! interim)
     {
       Binding.EvaluateBinding();
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
 
@@ -954,8 +956,8 @@ public class BocList:
       {
         _selectedColumnDefinitionSetIndex = -1;
       }
-      else if (     _selectedColumnDefinitionSetIndex < 0
-                &&  _availableColumnDefinitionSets.Count > 0)
+      else if (    _selectedColumnDefinitionSetIndex < 0
+                && _availableColumnDefinitionSets.Count > 0)
       {
         _selectedColumnDefinitionSetIndex = 0;
       }
@@ -1200,9 +1202,9 @@ public class BocList:
     if (_firstColumnCommand.Type != BocItemCommandType.Href)
       return true;
 
-    if (    _firstColumnCommand.HrefCommand == null
-        ||      StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Href)
-            &&  StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Target))
+    if (   _firstColumnCommand.HrefCommand == null
+        ||    StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Href)
+           && StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Target))
     {
       return false;
     }
@@ -1284,8 +1286,8 @@ public class BocList:
     {
       _selectedColumnDefinitionSetIndex = value; 
       
-      if (_selectedColumnDefinitionSetIndex < -1
-          ||  _selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
+      if (   _selectedColumnDefinitionSetIndex < -1
+          || _selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
       {
         throw new ArgumentOutOfRangeException ("value", value, "SelectedColumnDefinitionSetIndex was outside the bounds of AvailableColumnDefinitionSets");
       }
@@ -1450,9 +1452,9 @@ public class BocItemCommandClickEventArgs: EventArgs
   ///   applied on.
   /// </param>
   public BocItemCommandClickEventArgs (
-    string columnID, 
-    int listIndex, 
-    string businessObjectID)
+      string columnID, 
+      int listIndex, 
+      string businessObjectID)
   {
     _columnID = columnID;
     _listIndex = listIndex;

@@ -28,8 +28,8 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   ///   The <see cref="BocColumnDefinition"/> types supported by this collection. 
   /// </param>
   internal BocColumnDefinitionCollection (
-    IBusinessObjectBoundWebControl ownerControl, 
-    Type[] supportedTypes)
+      IBusinessObjectBoundWebControl ownerControl, 
+      Type[] supportedTypes)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("supportedTypes", supportedTypes);
 

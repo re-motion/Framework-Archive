@@ -171,7 +171,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     if (! interim)
     {
       Binding.EvaluateBinding();
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
   }

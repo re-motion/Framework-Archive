@@ -270,7 +270,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     if (! interim)
     {
       Binding.EvaluateBinding();
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
   }
@@ -394,8 +394,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
     if (! IsReadOnly)
     {
-      bool isNullItem =     InternalValue == null
-                        ||  ! hasPropertyAfterInitializion;
+      bool isNullItem =    InternalValue == null
+                        || ! hasPropertyAfterInitializion;
 
       //  Prevent unnecessary removal
       if (removeItemWithIdentifier != null && ! isNullItem)
@@ -584,8 +584,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       _internalValue = value;
       
         //  Still chached in _enumerationValueInfo
-      if (    _enumerationValueInfo != null 
-          &&  _enumerationValueInfo.Identifier == _internalValue)
+      if (   _enumerationValueInfo != null 
+          && _enumerationValueInfo.Identifier == _internalValue)
       {
         _value = _enumerationValueInfo.Value;
       }
