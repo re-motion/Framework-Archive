@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
-public class QueryDefinitionCollection : CollectionBase
+public class QueryDefinitionCollection : BaseCollection
 {
   // types
 
