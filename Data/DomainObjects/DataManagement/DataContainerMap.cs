@@ -36,12 +36,19 @@ public class DataContainerMap : IEnumerable
     get { return _dataContainers.Count; }
   }
 
-  public DomainObject GetObject (ObjectID id)
+  public DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
     if (_dataContainers.Contains (id))
-      return this[id].DomainObject;
+    {
+      DataContainer dataContainer = this[id];
+
+      if (!includeDeleted && dataContainer.State == StateType.Deleted)
+        throw new ObjectDeletedException (id);
+
+      return dataContainer.DomainObject;
+    }
 
     return _clientTransaction.LoadObject (id);
   }

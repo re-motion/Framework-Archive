@@ -93,10 +93,10 @@ public class ClientTransaction : IDisposable
     return newDataContainer;
   }
 
-  internal protected DomainObject GetObject (ObjectID id)
+  internal protected DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    return _dataManager.DataContainerMap.GetObject (id);
+    return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
   internal protected DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
@@ -151,7 +151,7 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID);
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
     DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
         domainObject.DataContainer, relationEndPointID);
