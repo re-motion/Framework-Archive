@@ -51,7 +51,7 @@ public class WxeForm: HtmlForm
   {
     if (Context != null && WxeContext.Current != null)
     {
-      string action = Context.Request.Path + "?WxeWindowToken=" + WxeContext.Current.WindowToken;
+      string action = Context.Request.Path + "?WxeFunctionToken=" + WxeContext.Current.FunctionToken;
       writer.WriteAttribute ("action", action);
       Attributes.Remove ("action");
     }
