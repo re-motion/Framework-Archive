@@ -73,7 +73,7 @@ public class BusinessObjectPropertyPath
     return objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
   }
 
-  internal BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
+  protected internal BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
     for (int i = 0; i < properties.Length - 1; ++i)

@@ -1646,7 +1646,7 @@ public class BocList:
       IBusinessObjectProperty property = properties[i];
       BocSimpleColumnDefinition column = new BocSimpleColumnDefinition ();
       column.ColumnTitle = property.DisplayName;
-      column.PropertyPath = new BusinessObjectPropertyPath (new IBusinessObjectProperty[] {property});
+      column.PropertyPath = property.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[] {property});
       column.OwnerControl = this;
       _allPropertyColumns[i] = column;
     }
