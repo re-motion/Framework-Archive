@@ -76,6 +76,11 @@ public class WxePageStep: WxeStep
     InternalExecuteFunction (page, function);
   }
 
+  public void ExecuteFunction (IWxePage page, WxeFunction function, Control control)
+  {
+    throw new NotImplementedException("ExecuteFunction (IWxePage page, WxeFunction function, Control control)");
+  }
+
   /// <summary>
   ///   Executes the specified WXE function, then returns to this page without causing the current event again.
   /// </summary>

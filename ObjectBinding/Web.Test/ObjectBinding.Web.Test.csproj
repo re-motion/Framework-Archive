@@ -159,6 +159,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "MainWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "OBWTest.dll.log4net"
                     BuildAction = "None"
                 />
