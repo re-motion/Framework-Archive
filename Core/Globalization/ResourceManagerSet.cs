@@ -102,7 +102,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
     for (int i = this.Count - 1; i >= 0; --i)
     {
       string s = this[i].GetString (id);
-      if (s != id)
+      if (s != null && s != id)
         return s;
     }
 
