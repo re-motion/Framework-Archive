@@ -6,6 +6,7 @@ using System.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Text;
 using Rubicon.Collections;
+using log4net;
 
 namespace Rubicon.Globalization
 {
@@ -15,6 +16,8 @@ namespace Rubicon.Globalization
 /// </summary>
 public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
 {
+	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
+
   private string _name;
 
   /// <summary>
@@ -102,6 +105,8 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
       if (s != id)
         return s;
     }
+
+    s_log.Warn ("Could not find resource with ID '" + id + "' in any of the following reosurce containers " + _name + ".");
     return id;
   }
 
