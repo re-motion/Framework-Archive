@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding.Web.Design;
+using log4net;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -23,10 +24,17 @@ public abstract class BocTreeNode: WebTreeNode
   {
     get { return base.Children; }
   }
+
+  protected BocTreeView BocTreeView
+  {
+    get { return (BocTreeView) OwnerControl; }
+  }
 }
 
 public class BusinessObjectTreeNode: BocTreeNode
 {
+	private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectTreeNode));
+
   IBusinessObjectWithIdentity _businessObject;
   IBusinessObjectReferenceProperty _property;
   string _propertyIdentifier;
@@ -39,15 +47,10 @@ public class BusinessObjectTreeNode: BocTreeNode
       IBusinessObjectWithIdentity businessObject)
     : base (nodeID, text, icon)
   {
-    _property = property;
+    Property = property;
     if (_property != null)
       _propertyIdentifier = property.Identifier;
-    _businessObject = businessObject;
-
-    //if (_businessObject == null && ! Text.EndsWith ("(null)"))
-    //  Text += "(null)";
-    //else if (_businessObject != null && Text.EndsWith ("(null)"))
-    //  Text = Text.Remove (Text.Length - 6, 6);
+    BusinessObject = businessObject;
   }
 
   public BusinessObjectTreeNode (
@@ -64,15 +67,22 @@ public class BusinessObjectTreeNode: BocTreeNode
   /// </summary>
   public IBusinessObjectWithIdentity BusinessObject
   {
-    get { return _businessObject; }
+    get 
+    {
+      EnsureBusinessObject();
+      return _businessObject; 
+    }
     set 
     {
       _businessObject = value; 
 
-      //if (_businessObject == null && ! Text.EndsWith ("(null)"))
-      //  Text += "(null)";
-      //else if (_businessObject != null && Text.EndsWith ("(null)"))
-      //  Text = Text.Remove (Text.Length - 6, 6);
+      if (s_log.IsDebugEnabled)
+      {
+        if (_businessObject == null && ! Text.EndsWith (" (null)"))
+          Text += " (null)";
+        else if (_businessObject != null && Text.EndsWith (" (null)"))
+          Text = Text.Remove (Text.Length - 6, 6);
+      }
     }
   }
 
@@ -82,7 +92,11 @@ public class BusinessObjectTreeNode: BocTreeNode
   /// </summary>
   public IBusinessObjectReferenceProperty Property
   {
-    get { return _property; }
+    get 
+    {
+      EnsureProperty();
+      return _property; 
+    }
     set 
     { 
       _property = value; 
@@ -108,10 +122,79 @@ public class BusinessObjectTreeNode: BocTreeNode
   {
     get { return "ObjectNode"; }
   }
+
+  private void EnsureBusinessObject()
+  {
+    if (_businessObject != null)
+      return;
+
+    //  Is root node?
+    if (ParentNode == null)
+    {
+      if (BocTreeView.Value == null)
+        throw new InvalidOperationException ("Cannot evaluate the tree node hierarchy because the value collection is null.");
+
+      foreach (IBusinessObjectWithIdentity businessObject in BocTreeView.Value)
+      {
+        if (NodeID == businessObject.UniqueIdentifier)
+        {
+          BusinessObject = businessObject;
+          break;
+        }
+      }
+
+      if (_businessObject == null)
+      {
+        //  Required business object has not been part of the values collection in this post back, get it from the class
+        if (BocTreeView.DataSource == null)
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSoure is null.");
+        if (BocTreeView.DataSource.BusinessObjectClass == null)
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSource.BusinessObjectClass is null.");
+        if (! (BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
+        
+        BusinessObject = 
+            ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject (NodeID);
+        if (_businessObject == null) // This test could be omitted if graceful recovery is wanted.
+          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + NodeID + "' via the DataSource.");
+      }
+    }
+    else
+    {
+      IBusinessObjectReferenceProperty property = Property;
+      string businessObjectID = NodeID;
+      BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
+    }
+  }
+
+  private void EnsureProperty()
+  {
+    if (_property != null)
+      return;
+
+    BusinessObjectTreeNode businessObjectParentNode = ParentNode as BusinessObjectTreeNode;
+    BusinessObjectPropertyTreeNode propertyParentNode = ParentNode as BusinessObjectPropertyTreeNode;
+    
+    if (businessObjectParentNode != null)
+    {
+      IBusinessObjectProperty property = 
+          businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+      Property = (IBusinessObjectReferenceProperty) property;
+
+      if (_property == null) // This test could be omitted if graceful recovery is wanted.
+        throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + _propertyIdentifier + "'.");
+    }
+    else if (propertyParentNode != null)
+    {
+      Property = propertyParentNode.Property;
+      return;
+    }
+  }
 }
 
 public class BusinessObjectPropertyTreeNode: BocTreeNode
 {
+	private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectPropertyTreeNode));
   IBusinessObjectReferenceProperty _property;
 
   public BusinessObjectPropertyTreeNode (
@@ -121,12 +204,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
       IBusinessObjectReferenceProperty property)
     : base (nodeID, text, icon)
   {
-    _property = property;
-
-    //if (_property == null && ! Text.EndsWith (" (null)"))
-    //  Text += " (null)";
-    //else if (_property != null && Text.EndsWith (" (null)"))
-    //  Text = Text.Remove (Text.Length - 6, 6);
+    Property = property;
   }
 
   public BusinessObjectPropertyTreeNode (
@@ -142,15 +220,22 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   /// </summary>
   public IBusinessObjectReferenceProperty Property
   {
-    get { return _property; }
+    get 
+    {
+      EnsureProperty();
+      return _property; 
+    }
     set 
     {
       _property = value; 
 
-      //if (_property == null && ! Text.EndsWith (" (null)"))
-      //  Text += " (null)";
-      //else if (_property != null && Text.EndsWith (" (null)"))
-      //  Text = Text.Remove (Text.Length - 6, 6);
+      if (s_log.IsDebugEnabled)
+      {
+        if (_property == null && ! Text.EndsWith (" (null)"))
+          Text += " (null)";
+        else if (_property != null && Text.EndsWith (" (null)"))
+          Text = Text.Remove (Text.Length - 6, 6);
+      }
     }
   }
 
@@ -158,6 +243,19 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   protected override string DisplayedTypeName
   {
     get { return "PropertyNode"; }
+  }
+
+  private void EnsureProperty()
+  {
+    if (_property != null)
+      return;
+
+    BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) ParentNode;
+    if (parentNode == null)
+      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
+
+    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (NodeID);
+    Property = (IBusinessObjectReferenceProperty) property;
   }
 }
 
