@@ -18,9 +18,9 @@ public sealed class ResourceDispatcher
 
   private static Hashtable s_resourceManagerCache = new Hashtable ();
 
-  public static string GetResourceText (Type objectType, string name)
+  public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
   {
-    return GetResourceText (null, objectType, GetResourceName (objectType), name);
+    return GetResourceText (null, objectTypeToGetResourceFor, GetResourceName (objectTypeToGetResourceFor), name);
   }
 
   public static string GetResourceText (object objectToGetResourceFor, string name)
@@ -139,7 +139,7 @@ public sealed class ResourceDispatcher
       typeof (MultiLingualResourcesAttribute), false);
 
     if (resourceAttributes.Length == 0)
-      throw new ApplicationException ("Cannot dispatch resources for controls that do not have the ControlResourcesAttribute attribute.");
+      throw new ApplicationException ("Cannot dispatch resources for object types that do not have the MultiLingualResources attribute.");
      
     return resourceAttributes[0].ResourceName;
   }
