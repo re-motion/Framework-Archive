@@ -10,9 +10,10 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary>
 /// Performs a single operation in a web application as part of a <see cref="WxeFunction"/>.
 /// </summary>
-public abstract class WxeStep
+public abstract class WxeStep: IDisposable
 {
   private WxeStep _parentStep = null;
+  private bool _disposed = false;
 
   public WxeStep ParentStep
   {
@@ -74,6 +75,26 @@ public abstract class WxeStep
       }
       return null;
     }
+  }
+  
+  public void Dispose()
+  {
+    if (! _disposed)
+    {
+      Dispose (true);
+      GC.SuppressFinalize (this);
+      _disposed = true;
+    }
+  }
+
+  protected virtual void Dispose (bool disposing)
+  {
+  }
+
+  ~WxeStep ()
+  {
+    if (! _disposed)
+      Dispose (false);
   }
 }
 
