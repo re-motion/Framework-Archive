@@ -106,7 +106,7 @@
                 <Reference
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
-                    HintPath = "..\Build\Rubicon.Core.dll"
+                    HintPath = "..\References\Rubicon.Core.dll"
                 />
                 <Reference
                     Name = "Rubicon.Globalization"

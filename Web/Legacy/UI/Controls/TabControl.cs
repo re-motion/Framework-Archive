@@ -347,8 +347,16 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   public string GetCurrentUrl (string defaultPage)
   {
     SetSelectedItems (defaultPage);
-    TabMenu menu = (TabMenu) Tabs[_activeTab].Controls[_activeMenu];
-    return GetCompleteUrl (menu, _activeTab, _activeMenu);
+
+    if (Tabs[_activeTab].Controls.Count > 0)
+    {
+      TabMenu menu = (TabMenu) Tabs[_activeTab].Controls[_activeMenu];
+      return GetCompleteUrl (menu, _activeTab, _activeMenu);
+    }
+    else
+    {
+      return GetCompleteUrl (Tabs[_activeTab], _activeTab, _activeMenu);
+    }
   }
 
   private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
@@ -716,18 +724,21 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
   private void CheckActiveMenu()
   {
-    TabMenu activeMenu = Tabs[ActiveTab].Controls[ActiveMenu] as TabMenu;
-
-    if (!activeMenu.Visible)
+    if (Tabs[ActiveTab].Controls.Count > 0)
     {
-      for (int i=0; i<Tabs[ActiveTab].Controls.Count; i++)
-      {
-        TabMenu menu = Tabs[ActiveTab].Controls[i] as TabMenu;
+      TabMenu activeMenu = Tabs[ActiveTab].Controls[ActiveMenu] as TabMenu;
 
-        if (menu.Visible)
+      if (!activeMenu.Visible)
+      {
+        for (int i=0; i<Tabs[ActiveTab].Controls.Count; i++)
         {
-          ActiveMenu = i;
-          break;
+          TabMenu menu = Tabs[ActiveTab].Controls[i] as TabMenu;
+
+          if (menu.Visible)
+          {
+            ActiveMenu = i;
+            break;
+          }
         }
       }
     }
