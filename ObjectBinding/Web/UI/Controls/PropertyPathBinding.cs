@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <see cref="BusinessObjectPropertyPath"/> from it's string representation and an
 ///   <see cref="IBusinessObjectDataSource"/>
 /// </summary>
-public class PropertyPathBinding: IPropertyPathBinding
+public class PropertyPathBinding: IReferencePropertySource
 {
   /// <summary> <see langword="true"/> once the <see cref="PropertyPath"/> has been set. </summary>
   private bool _isPopertyPathEvaluated;
@@ -126,7 +126,10 @@ public class PropertyPathBinding: IPropertyPathBinding
         if (DataSource == null)
           throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
 
-        _propertyPath = BusinessObjectPropertyPath.Parse (DataSource, _propertyPathIdentifier);
+        if (ReferenceProperty != null)
+          _propertyPath = BusinessObjectPropertyPath.Parse (ReferenceProperty.ReferenceClass, _propertyPathIdentifier);
+        else
+          _propertyPath = null;
         _isPopertyPathEvaluated = true;
       }
 
@@ -172,10 +175,21 @@ public class PropertyPathBinding: IPropertyPathBinding
   ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> containing the 
   ///   <see cref="DataSource"/>. 
   /// </summary>
-  public IBusinessObjectBoundControl OwnerControl
+  protected internal IBusinessObjectBoundControl OwnerControl
   {
     get { return _ownerControl;  }
     set { _ownerControl = value; }
   }
+
+  public IBusinessObjectReferenceProperty ReferenceProperty
+  {
+    get 
+    {
+      if (OwnerControl != null)
+        return OwnerControl.Property as IBusinessObjectReferenceProperty;
+      return null; 
+    }
+  } 
 }
+
 }

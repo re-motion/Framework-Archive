@@ -16,38 +16,35 @@ public class BusinessObjectPropertyPath
   private IBusinessObjectProperty[] _properties; 
  
   public static BusinessObjectPropertyPath Parse (
-      IBusinessObjectDataSource dataSource, 
+      IBusinessObjectClass objectClass, 
       string propertyPathIdentifier)
   {
-    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNull ("objectClass", objectClass);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
     
-    char separator = dataSource.BusinessObjectProvider.GetPropertyPathSeparator();
+    char separator = objectClass.BusinessObjectProvider.GetPropertyPathSeparator();
 
     string[] propertyIdentifiers = propertyPathIdentifier.Split (separator);
     IBusinessObjectProperty[] properties = new IBusinessObjectProperty [propertyIdentifiers.Length];
 
     int lastProperty = propertyIdentifiers.Length - 1;
 
-    IBusinessObjectClass businessObjectClass = dataSource.BusinessObjectClass as IBusinessObjectClass;
-
     for (int i = 0; i < lastProperty; i++)
     {
-      properties[i] = businessObjectClass.GetPropertyDefinition (propertyIdentifiers[i]);      
+      properties[i] = objectClass.GetPropertyDefinition (propertyIdentifiers[i]);      
       if (properties[i] == null)
-        throw new ArgumentException ("BusinessObjectClass '" + dataSource.BusinessObjectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[i] + "'.", propertyPathIdentifier);
+        throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[i] + "'.", propertyPathIdentifier);
 
       IBusinessObjectReferenceProperty referenceProperty = properties[i] as IBusinessObjectReferenceProperty;
       if (referenceProperty == null)
         throw new ArgumentException ("Each property in a property path except the last one must be a reference property.", "properties");
 
-      businessObjectClass = referenceProperty.ReferenceClass;
+      objectClass = referenceProperty.ReferenceClass;
     }
 
-    properties[lastProperty] = 
-      businessObjectClass.GetPropertyDefinition (propertyIdentifiers[lastProperty]); 
+    properties[lastProperty] = objectClass.GetPropertyDefinition (propertyIdentifiers[lastProperty]);
     if (properties[lastProperty] == null)
-      throw new ArgumentException ("BusinessObjectClass '" + dataSource.BusinessObjectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[lastProperty] + "'.", propertyPathIdentifier);
+      throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[lastProperty] + "'.", propertyPathIdentifier);
 
     return new BusinessObjectPropertyPath (properties);
   }

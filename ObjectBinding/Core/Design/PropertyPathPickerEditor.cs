@@ -13,6 +13,13 @@ public class PropertyPathPickerEditor: UITypeEditor
 {
   private IWindowsFormsEditorService _editorService = null;
 
+  /// <summary>
+  ///   Called by visual studio when the PropertyPathIdentifier of a PropertyPathBinding or a SimpleColumnDefinition is edited.
+  /// </summary>
+  /// <param name="context"> Contains the PropertyPathBinding or the SimpleColumDefinition in property Instance. </param>
+  /// <param name="provider"> </param>
+  /// <param name="value"> The PropertyPathIdentifier (string). </param>
+  /// <returns></returns>
   public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value) 
   {
     if (context != null
@@ -23,15 +30,17 @@ public class PropertyPathPickerEditor: UITypeEditor
 
       if (_editorService != null)
       {
-        IPropertyPathBinding binding = context.Instance as IPropertyPathBinding;
+        IReferencePropertySource binding = context.Instance as IReferencePropertySource;
         if (binding == null)
-          throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IPropertyPathBinding.");
+          throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IReferencePropertySource.");
 
         PropertyPathPickerControl propertyPathPickerControl = new PropertyPathPickerControl (binding);
-
         propertyPathPickerControl.Value = (string) value;
         propertyPathPickerControl.EditorService = _editorService;
+
+        // show editor
         _editorService.DropDownControl (propertyPathPickerControl);
+
         value = propertyPathPickerControl.Value;
       }
     }

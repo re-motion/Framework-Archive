@@ -1,57 +1,19 @@
 using System;
+using System.ComponentModel;
 
 namespace Rubicon.ObjectBinding
 {
 
 /// <summary>
-///   An <see cref="IPropertyPathBinding"/> encapsulates the creation of a 
-///   <see cref="BusinessObjectPropertyPath"/> from its string representation and an
-///   <see cref="IBusinessObjectDataSource"/>
+///   This interface is used for the <see cref="ITypeDescriptorContext.Instance"/> argument of the VS.NET designer editor. 
 /// </summary>
-public interface IPropertyPathBinding
+/// <remarks>
+///   The PropertyPathPicker control uses this interface to query the business object class of the reference property.
+///   Implemented by Rubicon.ObjectBinding.Web.Controls.BocSimpleColumnDefinition and Rubicon.ObjectBinding.Web.Controls.PropertyPathBinding.
+/// </remarks>
+public interface IReferencePropertySource
 {
-//  /// <summary> 
-//  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
-//  ///   <see cref="PropertyPathIdentifier"/>. 
-//  /// </summary>
-//  [Obsolete]
-//  IBusinessObjectDataSource DataSource { get; }
-//
-//  // TODO: weg damit?
-////  /// <summary>
-////  ///   Gets the object class of the parent object.
-////  /// </summary>
-////  IBusinessObjectClass BusinessObjectClass { get; }
-//
-//  /// <summary> 
-//  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> mananged by this 
-//  ///   <see cref="IPropertyPathBinding"/>.
-//  /// </summary>
-//  /// <value>
-//  ///   A <see cref="BusinessObjectPropertyPath"/> or <see langword="null"/> if the 
-//  ///   <see cref="PropertyPathIdentifier"/> has not been evaluated.
-//  ///   Must not be assigned <see langword="null"/>.
-//  /// </value>
-//  [Obsolete]
-//  BusinessObjectPropertyPath PropertyPath { get; set; }
-//
-//  /// <summary> 
-//  ///   Gets or sets the <see cref="string"/> representing the 
-//  ///   <see cref="BusinessObjectPropertyPath"/> mananged by this <see cref="IPropertyPathBinding"/>.
-//  /// </summary>
-//  /// <value> 
-//  ///   A <see cref="string"/> formatted as a valid property path. 
-//  ///   Must not be assigned <see langword="null"/> or emtpy.
-//  /// </value>
-//  [Obsolete]
-//  string PropertyPathIdentifier { get; set; }
-//
-//
-//  // TODO: anschaun ob ok
-//  [Obsolete]
-//  IBusinessObjectBoundControl OwnerControl { get; }
-
-  IBusinessObjectClass ReferenceClass { get; }
+  IBusinessObjectReferenceProperty ReferenceProperty { get; }
 }
 
 }

@@ -348,7 +348,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 ///   Note that using the methods of <see cref="BusinessObjectPropertyPath"/>, 
 ///   the original value of this property can be retreived or changed.
 /// </remarks>
-public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathBinding
+public class BocSimpleColumnDefinition: BocValueColumnDefinition, IReferencePropertySource
 {
   /// <summary>
   ///   A format string describing how the value accessed through the 
@@ -586,22 +586,14 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
     get { return "SimpleColumnDefinition"; }
   }
 
-
-  
-  // TODO: nochmal checken ob das alles sinn macht!
-//  public IBusinessObjectClass BusinessObjectClass
-//  {
-//    get 
-//    {
-//      if (OwnerControl != null && OwnerControl.Property != null && (OwnerControl.Property is IBusinessObjectReferenceProperty))
-//        return ((IBusinessObjectReferenceProperty)OwnerControl.Property).ReferenceClass;
-//      else
-//        return null;
-//    }
-//  }
-  IBusinessObjectBoundControl IPropertyPathBinding.OwnerControl
+  IBusinessObjectReferenceProperty IReferencePropertySource.ReferenceProperty
   {
-    get { return OwnerControl; }
+    get 
+    {
+      if (OwnerControl != null)
+        return OwnerControl.Property as IBusinessObjectReferenceProperty;
+      return null; 
+    }
   } 
 }
 

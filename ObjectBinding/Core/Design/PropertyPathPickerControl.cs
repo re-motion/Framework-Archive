@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding.Design
 {
 public class PropertyPathPickerControl : System.Windows.Forms.UserControl
 {
-  private IPropertyPathBinding _binding;
+  private IReferencePropertySource _propertySource;
   private string _value;
   private IWindowsFormsEditorService _editorService;
 	
@@ -25,16 +25,13 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
   private System.Windows.Forms.CheckBox ClassFilterCheck;
   private System.Windows.Forms.TreeView PathTree;
 
-  public PropertyPathPickerControl (IPropertyPathBinding binding)
+  public PropertyPathPickerControl (IReferencePropertySource propertySource)
   {
-    if (binding.DataSource == null)
-      throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for controls without DataSource.");
-
 	  // This call is required by the Windows.Forms Form Designer.
 	  InitializeComponent();
 
     _editorService = (IWindowsFormsEditorService) GetService (typeof (IWindowsFormsEditorService));
-    _binding = binding;
+    _propertySource = propertySource;
 
     FillTree();
   }
@@ -47,11 +44,10 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
 
     PathTree.Nodes.Clear();
     string filter = FilterField.Text.ToLower().Trim();
-    if (_binding.OwnerControl == null || _binding.OwnerControl.Property == null || (! (_binding.OwnerControl.Property is IBusinessObjectReferenceProperty)))
+
+    if (_propertySource.ReferenceProperty == null)
       return;
-    IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty) _binding.OwnerControl.Property;
-    IBusinessObjectProperty[] properties = parentProperty.ReferenceClass.GetPropertyDefinitions();
-    //IBusinessObjectProperty[] properties = _binding.DataSource.BusinessObjectClass.GetPropertyDefinitions();
+    IBusinessObjectProperty[] properties = _propertySource.ReferenceProperty.ReferenceClass.GetPropertyDefinitions();
 
     foreach (IBusinessObjectProperty property in properties)
     {
@@ -303,8 +299,10 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
 
       if (_value.Length > 0)
       {
-        BusinessObjectPropertyPath propertyPath = 
-          BusinessObjectPropertyPath.Parse (_binding.DataSource, value);
+        if (_propertySource.ReferenceProperty == null)
+          throw new InvalidOperationException ("Cannot set value because edited object has no reference property set.");
+
+        BusinessObjectPropertyPath propertyPath = BusinessObjectPropertyPath.Parse (_propertySource.ReferenceProperty.ReferenceClass, value);
         TreeNodeCollection nodes = PathTree.Nodes;
         
         foreach (IBusinessObjectProperty property in propertyPath.Properties)
