@@ -55,7 +55,8 @@ public class TestDataContainerFactory
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["BooleanProperty"], false));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["ByteProperty"], (byte) 85));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["CharProperty"], 'a'));
-    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DateTimeProperty"], new DateTime (2005, 1, 1)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DateProperty"], new DateTime (2005, 1, 1)));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DateTimeProperty"], new DateTime (2005, 1, 1, 17, 0, 0)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DecimalProperty"], (decimal) 123456.789));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DoubleProperty"], 987654.321));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["EnumProperty"], ClassWithAllDataTypes.EnumType.Value1));
@@ -66,11 +67,13 @@ public class TestDataContainerFactory
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["SingleProperty"], (float) 6789.321));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringProperty"], "abcdeföäü"));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanProperty"], new NaBoolean (true)));
-    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateTimeProperty"], new NaDateTime (new DateTime (2005, 2, 1))));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateProperty"], new NaDateTime (new DateTime (2005, 2, 1))));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateTimeProperty"], new NaDateTime (new DateTime (2005, 2, 1, 5, 0 , 0))));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDoubleProperty"], new NaDouble (654321.789)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt32Property"], new NaInt32 (-2147483647)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringWithNullValueProperty"], null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanWithNullValueProperty"], NaBoolean.Null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateWithNullValueProperty"], NaDateTime.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDateTimeWithNullValueProperty"], NaDateTime.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaDoubleWithNullValueProperty"], NaDouble.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt32WithNullValueProperty"], NaInt32.Null));
