@@ -27,7 +27,8 @@ public class BocItemCommand
 
     /// <summary> Simple constructor. </summary>
     public HrefCommandInfo()
-    {}
+    {
+    }
 
     /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
     /// <remarks> Foramt: Href, Target </remarks>
@@ -101,7 +102,8 @@ public class BocItemCommand
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandInfo()
-    {}
+    {
+    }
 
     /// <summary>
     ///   Returns a string representation of this <see cref="WxeFunctionCommandInfo"/>.
