@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -52,6 +53,19 @@ public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
 
     Assert.AreEqual (1, collection.Count);
     Assert.AreEqual (DomainObjectIDs.Distributor2, collection[0].ID);
+  }
+
+  [Test]
+  public void LoadWithOrderBy ()
+  {    
+    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order");
+
+    DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (
+        orderDefinition, "Customer", DomainObjectIDs.Customer1);
+
+    Assert.AreEqual (2, orderContainers.Count);
+    Assert.AreEqual (DomainObjectIDs.Order1, orderContainers[0].ID);
+    Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, orderContainers[1].ID);
   }
 }
 }
