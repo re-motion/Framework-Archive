@@ -39,7 +39,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
     for (int i = Count - 1; i>= 0; i--)
       this[i].Dispose ();      
 
-    ClearCollection ();
+    BaseClear ();
     GC.SuppressFinalize (this);
   }
 
@@ -59,12 +59,12 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   public bool Contains (string storageProviderID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-    return base.ContainsKey (storageProviderID);
+    return BaseContainsKey (storageProviderID);
   }
 
   public StorageProvider this [int index]  
   {
-    get { return (StorageProvider) GetObject (index); }
+    get { return (StorageProvider) BaseGetObject (index); }
   }
 
   public StorageProvider this [string storageProviderID]  
@@ -72,14 +72,15 @@ public class StorageProviderCollection : CommonCollection, IDisposable
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      return (StorageProvider) GetObject (storageProviderID); 
+      return (StorageProvider) BaseGetObject (storageProviderID); 
     }
   }
 
-  public void Add (StorageProvider value)
+  public int Add (StorageProvider value)
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    base.Add (value.ID, value);
+    
+    return BaseAdd (value.ID, value);
   }
 
   #endregion

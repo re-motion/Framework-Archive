@@ -59,23 +59,24 @@ public class QueryParameterCollection : CommonCollection
 
   public bool Contains (string name)
   {
-    return base.ContainsKey (name);
+    return BaseContainsKey (name);
   }
 
   public QueryParameter this [int index]  
   {
-    get { return (QueryParameter) GetObject (index); }
+    get { return (QueryParameter) BaseGetObject (index); }
   }
 
   public QueryParameter this [string name]  
   {
-    get { return (QueryParameter) GetObject (name); }
+    get { return (QueryParameter) BaseGetObject (name); }
   }
 
-  public void Add (QueryParameter value)  
+  public int Add (QueryParameter value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    base.Add (value.Name, value);
+    
+    return BaseAdd (value.Name, value);
   }
 
   #endregion

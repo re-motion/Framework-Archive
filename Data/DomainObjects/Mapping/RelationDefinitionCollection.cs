@@ -58,12 +58,12 @@ public class RelationDefinitionCollection : CommonCollection
   public bool Contains (string relationDefinitionID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("relationDefinitionID", relationDefinitionID);
-    return base.ContainsKey (relationDefinitionID);
+    return BaseContainsKey (relationDefinitionID);
   }
 
   public RelationDefinition this [int index]  
   {
-    get { return (RelationDefinition) GetObject (index); }
+    get { return (RelationDefinition) BaseGetObject (index); }
   }
 
   public RelationDefinition this [string relationDefinitionID]  
@@ -71,14 +71,15 @@ public class RelationDefinitionCollection : CommonCollection
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("relationDefinitionID", relationDefinitionID);
-      return (RelationDefinition) GetObject (relationDefinitionID); 
+      return (RelationDefinition) BaseGetObject (relationDefinitionID); 
     }
   }
 
-  public void Add (RelationDefinition value)
+  public int Add (RelationDefinition value)
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    base.Add (value.ID, value);
+    
+    return BaseAdd (value.ID, value);
   }
 
   #endregion

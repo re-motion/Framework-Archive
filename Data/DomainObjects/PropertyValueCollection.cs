@@ -148,7 +148,7 @@ public class PropertyValueCollection : CommonCollection
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckDiscarded ();
 
-    return base.ContainsKey (propertyName);
+    return BaseContainsKey (propertyName);
   }
 
   /// <summary>
@@ -160,7 +160,7 @@ public class PropertyValueCollection : CommonCollection
     get 
     { 
       CheckDiscarded ();
-      return (PropertyValue) GetObject (index); 
+      return (PropertyValue) BaseGetObject (index); 
     }
   }
 
@@ -178,12 +178,12 @@ public class PropertyValueCollection : CommonCollection
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       CheckDiscarded ();
 
-      if (!ContainsKey (propertyName))
+      if (!Contains (propertyName))
       {
         throw CreateArgumentException ("Property '{0}' does not exist.", "propertyName", propertyName);
       }
   
-      return (PropertyValue) GetObject (propertyName); 
+      return (PropertyValue) BaseGetObject (propertyName); 
     }
   }
 
@@ -191,10 +191,11 @@ public class PropertyValueCollection : CommonCollection
   /// Adds a <see cref="PropertyValue"/> to the collection.
   /// </summary>
   /// <param name="value">The <see cref="PropertyValue"/> to add.</param>
+  /// <returns>The position into which the <see cref="PropertyValue"/> was inserted.</returns>
   /// <exception cref="ArgumentNullException"><i>value</i> is a null reference.</exception>
   /// <exception cref="ArgumentException"><i>value</i> is already part of the collection.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  public void Add (PropertyValue value)  
+  public int Add (PropertyValue value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
     CheckDiscarded ();
@@ -204,7 +205,7 @@ public class PropertyValueCollection : CommonCollection
 
     value.Changing += new ValueChangingEventHandler (PropertyValue_Changing);
     value.Changed += new EventHandler (PropertyValue_Changed);
-    base.Add (value.Name, value);
+    return BaseAdd (value.Name, value);
   }
 
   #endregion

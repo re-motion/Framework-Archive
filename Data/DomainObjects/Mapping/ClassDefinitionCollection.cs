@@ -83,17 +83,17 @@ public class ClassDefinitionCollection : CommonCollection
 
   public bool Contains (Type classType)
   {
-    return base.ContainsKey (classType);
+    return BaseContainsKey (classType);
   }
 
   public ClassDefinition this [int index]  
   {
-    get { return (ClassDefinition) GetObject (index); }
+    get { return (ClassDefinition) BaseGetObject (index); }
   }
 
   public ClassDefinition this [Type classType]  
   {
-    get { return (ClassDefinition) GetObject (classType); }
+    get { return (ClassDefinition) BaseGetObject (classType); }
   }
 
   public ClassDefinition GetByClassID (string classID)
@@ -109,10 +109,11 @@ public class ClassDefinitionCollection : CommonCollection
     return null;
   }
 
-  public void Add (ClassDefinition value)  
+  public int Add (ClassDefinition value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    base.Add (value.ClassType, value);
+    
+    return BaseAdd (value.ClassType, value);
   }
 
   #endregion

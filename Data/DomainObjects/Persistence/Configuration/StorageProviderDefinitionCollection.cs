@@ -69,12 +69,12 @@ public class StorageProviderDefinitionCollection : CommonCollection
   public bool Contains (string storageProviderID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-    return base.ContainsKey (storageProviderID);
+    return BaseContainsKey (storageProviderID);
   }
 
   public StorageProviderDefinition this [int index]  
   {
-    get { return (StorageProviderDefinition) GetObject (index); }
+    get { return (StorageProviderDefinition) BaseGetObject (index); }
   }
 
   public StorageProviderDefinition this [string storageProviderID]  
@@ -82,11 +82,11 @@ public class StorageProviderDefinitionCollection : CommonCollection
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      return (StorageProviderDefinition) GetObject (storageProviderID); 
+      return (StorageProviderDefinition) BaseGetObject (storageProviderID); 
     }
   }
 
-  public void Add (StorageProviderDefinition value)  
+  public int Add (StorageProviderDefinition value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
@@ -96,7 +96,7 @@ public class StorageProviderDefinitionCollection : CommonCollection
           "StorageProviderDefinition '{0}' already exists in collection.", "value", value.StorageProviderID);
     }
 
-    base.Add (value.StorageProviderID, value);
+    return BaseAdd (value.StorageProviderID, value);
   }
 
   #endregion

@@ -36,7 +36,7 @@ public class CommonCollection : ICollection
 
     public object Current
     {
-      get { return _collection.GetObject (_index); }
+      get { return _collection.BaseGetObject (_index); }
     }
 
     public bool MoveNext ()
@@ -76,7 +76,7 @@ public class CommonCollection : ICollection
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new <b>ColletionBase</b>.
+  /// Initializes a new <b>CommonCollection</b>.
   /// </summary>
   protected CommonCollection ()
   {
@@ -87,6 +87,80 @@ public class CommonCollection : ICollection
   // methods and properties
 
   /// <summary>
+  /// Gets a value indicating whether the collection is read-only.
+  /// </summary>
+  public virtual bool IsReadOnly
+  {
+    get { return _isReadOnly; }
+  }
+
+  #region IEnumerable Members
+
+  /// <summary>
+  /// Returns an enumerator that can iterate through the <see cref="CommonCollection"/>.
+  /// </summary>
+  /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="CommonCollection"/>.</returns>
+  public virtual IEnumerator GetEnumerator ()
+  {
+    return new CollectionEnumerator (this);
+  }
+
+  #endregion
+
+  #region ICollection Members
+
+  /// <summary>
+  /// Gets a value indicating whether access to the <see cref="CommonCollection"/> is synchronized (thread-safe).
+  /// </summary>
+  public virtual bool IsSynchronized
+  {
+    get { return false; }
+  }
+
+  /// <summary>
+  /// Gets the number of items contained in the collection.
+  /// </summary>
+  public virtual int Count
+  {
+    get { return _collectionData.Count; }
+  }
+
+  /// <summary>
+  /// Copies the items of the <see cref="CommonCollection"/> to an Array, starting at a particular Array index.
+  /// </summary>
+  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing.</param>
+  /// <param name="index">The zero-based index in array at which copying begins.</param>
+  /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <i>array</i> is not a one-dimensional array.<br /> -or- <br />
+  ///   <i>index</i> is greater than the current length of the array.<br /> -or- <br />
+  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
+  /// </exception>
+  public virtual void CopyTo (Array array, int index)
+  {
+    ArgumentUtility.CheckNotNull ("array", array);
+    if (index < 0) throw new ArgumentOutOfRangeException ("index", index, "Index must be greater than or equal to zero.");
+    if (array.Rank != 1) throw new ArgumentException ("CopyTo can only operate on one-dimensional arrays.", "array");
+    if (index >= array.Length) throw new ArgumentException ("Index cannot be equal to or greater than the length of the array.", "index");
+    if ((array.Length - index) < Count) throw new ArgumentException ("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
+
+    for (int i = 0; i < Count; i++)
+      array.SetValue (this.BaseGetObject (i), index + i);
+  }
+
+  /// <summary>
+  /// Gets an object that can be used to synchronize access to the <see cref="CommonCollection"/>.
+  /// </summary>
+  public virtual object SyncRoot
+  {
+    get { return this; }
+  }
+
+  #endregion
+
+
+  /// <summary>
   /// Returns the object with a given index from the collection 
   /// </summary>
   /// <param name="index">The index of the object to return.</param>
@@ -95,7 +169,7 @@ public class CommonCollection : ICollection
   ///   <i>index</i> is less than zero.<br /> -or- <br />
   ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
   /// </exception>
-  protected object GetObject (int index)
+  protected object BaseGetObject (int index)
   {
     return _collectionData[_collectionKeys[index]];
   }
@@ -106,19 +180,11 @@ public class CommonCollection : ICollection
   /// <param name="key">The key of the object to return.</param>
   /// <returns>The object with the given key, if the object is found; otherwise, null.</returns>
   /// <exception cref="ArgumentNullException"><i>key</i> is a null reference.</exception>
-  protected object GetObject (object key)
+  protected object BaseGetObject (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
 
     return _collectionData[key];
-  }
-
-  /// <summary>
-  /// Gets a value indicating whether the <see cref="CommonCollection"/> is read-only.
-  /// </summary>
-  public virtual bool IsReadOnly
-  {
-    get { return _isReadOnly; }
   }
 
   /// <summary>
@@ -127,7 +193,7 @@ public class CommonCollection : ICollection
   /// <param name="key">The key to locate in the <see cref="CommonCollection"/>.</param>
   /// <returns><b>true</b> if the <see cref="CommonCollection"/> contains the key; otherwise <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
-  protected bool ContainsKey (object key)
+  protected bool BaseContainsKey (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
 
@@ -139,12 +205,13 @@ public class CommonCollection : ICollection
   /// </summary>
   /// <param name="key">A key of the item to add. The key must not be a null reference.</param>
   /// <param name="value">The value of the item to add. The value must not be a null reference.</param>
+  /// <returns>The position into which the new item was inserted.</returns>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentNullException">
   ///   <i>key</i> is a null reference.<br /> -or- <br />
   ///   <i>value</i> is a null reference.
   /// </exception>
-  protected void Add (object key, object value)
+  protected int BaseAdd (object key, object value)
   {
     ArgumentUtility.CheckNotNull ("key", key);
     ArgumentUtility.CheckNotNull ("value", value);
@@ -153,6 +220,8 @@ public class CommonCollection : ICollection
     _collectionData.Add (key, value);
     _collectionKeys.Add (key);
     _version++;
+
+    return _collectionKeys.Count - 1;
   }
 
   /// <summary>
@@ -161,7 +230,7 @@ public class CommonCollection : ICollection
   /// <param name="key">The key of the item to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  protected void Remove (object key)
+  protected void BaseRemove (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
     if (_isReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
@@ -175,7 +244,7 @@ public class CommonCollection : ICollection
   /// Removes all objects from the collection.
   /// </summary>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  protected void ClearCollection ()
+  protected void BaseClear ()
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
@@ -189,7 +258,7 @@ public class CommonCollection : ICollection
   /// </summary>
   /// <param name="key">The <i>key</i> to locate in the collection.</param>
   /// <returns>The zero-based index of the item with the given <i>key</i>, if found; otherwise, -1.</returns>
-  protected int IndexOfKey (object key)
+  protected int BaseIndexOfKey (object key)
   {
     return _collectionKeys.IndexOf (key);
   }
@@ -207,7 +276,7 @@ public class CommonCollection : ICollection
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">An item with the same <i>key</i> already exists in the collection.</exception>
-  protected void Insert (int index, object key, object value)
+  protected void BaseInsert (int index, object key, object value)
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckIndexForInsert ("index", index);
@@ -270,70 +339,5 @@ public class CommonCollection : ICollection
   {
     return new ArgumentException (string.Format (message, args));
   }
-
-  #region IEnumerable Members
-
-  /// <summary>
-  /// Returns an enumerator that can iterate through the <see cref="CommonCollection"/>.
-  /// </summary>
-  /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="CommonCollection"/>.</returns>
-  public virtual IEnumerator GetEnumerator ()
-  {
-    return new CollectionEnumerator (this);
-  }
-
-  #endregion
-
-  #region ICollection Members
-
-  /// <summary>
-  /// Gets a value indicating whether access to the <see cref="CommonCollection"/> is synchronized (thread-safe).
-  /// </summary>
-  public virtual bool IsSynchronized
-  {
-    get { return false; }
-  }
-
-  /// <summary>
-  /// Gets the number of items contained in the <see cref="CommonCollection"/>.
-  /// </summary>
-  public virtual int Count
-  {
-    get { return _collectionData.Count; }
-  }
-
-  /// <summary>
-  /// Copies the items of the <see cref="CommonCollection"/> to an Array, starting at a particular Array index.
-  /// </summary>
-  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing.</param>
-  /// <param name="index">The zero-based index in array at which copying begins.</param>
-  /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
-  /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <i>array</i> is not a one-dimensional array.<br /> -or- <br />
-  ///   <i>index</i> is greater than the current length of the array.<br /> -or- <br />
-  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
-  /// </exception>
-  public virtual void CopyTo (Array array, int index)
-  {
-    ArgumentUtility.CheckNotNull ("array", array);
-    if (index < 0) throw new ArgumentOutOfRangeException ("index", index, "Index must be greater than or equal to zero.");
-    if (array.Rank != 1) throw new ArgumentException ("CopyTo can only operate on one-dimensional arrays.", "array");
-    if (index >= array.Length) throw new ArgumentException ("Index cannot be equal to or greater than the length of the array.", "index");
-    if ((array.Length - index) < Count) throw new ArgumentException ("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
-
-    for (int i = 0; i < Count; i++)
-      array.SetValue (this.GetObject (i), index + i);
-  }
-
-  /// <summary>
-  /// Gets an object that can be used to synchronize access to the <see cref="CommonCollection"/>.
-  /// </summary>
-  public virtual object SyncRoot
-  {
-    get { return this; }
-  }
-
-  #endregion
 }
 }

@@ -62,7 +62,7 @@ public class PropertyValue
       case "System.Char":
         return ' ';
 
-      // TODO: Move this code to MappingUtility. Review when adding new Na* types.
+      // TODO: Move this code to TypeConversion. Review when adding new Na* types.
       case "Rubicon.NullableValueTypes.NaBoolean":
         return NaBoolean.Null;
 

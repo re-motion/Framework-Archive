@@ -307,7 +307,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    return base.ContainsKey (id);
+    return BaseContainsKey (id);
   }
 
   /// <summary>
@@ -326,7 +326,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   {
     get 
     { 
-      return (DomainObject) GetObject (index); 
+      return (DomainObject) BaseGetObject (index); 
     }
     set 
     {
@@ -379,7 +379,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <remarks>The indexer returns null if the given ID was not found.</remarks>
   public DomainObject this[ObjectID id]  
   {
-    get { return (DomainObject) GetObject (id); }
+    get { return (DomainObject) BaseGetObject (id); }
   }
 
   /// <summary>
@@ -510,7 +510,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <returns>The zero-based index of the <i>id</i>, if found; otherwise, -1.</returns>
   public int IndexOf (ObjectID id)
   {
-    return base.IndexOfKey (id);
+    return BaseIndexOfKey (id);
   }
 
   /// <summary>
@@ -704,16 +704,17 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Adds a <see cref="DomainObject"/> to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection.</param>
+  /// <returns>The position into which the new <see cref="DomainObject"/> was inserted.</returns>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
-  internal protected void PerformAdd (DomainObject domainObject)
+  internal protected int PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     if (IsReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
     CheckItemType (domainObject, "domainObject");
 
-    base.Add (domainObject.ID, domainObject);
+    return BaseAdd (domainObject.ID, domainObject);
   }
 
   /// <summary>
@@ -737,7 +738,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     if (IsReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckItemType (domainObject, "domainObject");
 
-    base.Insert (index, domainObject.ID, domainObject);
+    BaseInsert (index, domainObject.ID, domainObject);
   }
 
   internal void EndAdd (DomainObject domainObject)
@@ -761,7 +762,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     if (IsReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
-    base.Remove (domainObject.ID);
+    BaseRemove (domainObject.ID);
   }
 
   internal void EndRemove (DomainObject domainObject)
@@ -773,11 +774,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Clears the <see cref="DomainObjectCollection"/> without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
   /// </summary>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  internal protected new void ClearCollection ()
+  internal void ClearCollection ()
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
-    base.ClearCollection ();
+    BaseClear ();
   }
 
   private void CheckItemType (DomainObject domainObject, string argumentName)

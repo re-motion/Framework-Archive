@@ -69,12 +69,12 @@ public class QueryDefinitionCollection : CommonCollection
   public bool Contains (string queryID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-    return base.ContainsKey (queryID);
+    return BaseContainsKey (queryID);
   }
 
   public QueryDefinition this [int index]  
   {
-    get { return (QueryDefinition) GetObject (index); }
+    get { return (QueryDefinition) BaseGetObject (index); }
   }
 
   public QueryDefinition this [string queryID]  
@@ -82,11 +82,11 @@ public class QueryDefinitionCollection : CommonCollection
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-      return (QueryDefinition) GetObject (queryID); 
+      return (QueryDefinition) BaseGetObject (queryID); 
     }
   }
 
-  public void Add (QueryDefinition value)  
+  public int Add (QueryDefinition value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
@@ -96,7 +96,7 @@ public class QueryDefinitionCollection : CommonCollection
           "QueryDefinition '{0}' already exists in collection.", "value", value.QueryID);
     }
 
-    base.Add (value.QueryID, value);
+    return BaseAdd (value.QueryID, value);
   }
 
   #endregion

@@ -92,23 +92,24 @@ public class DataContainerCollection : CommonCollection
 
   public bool Contains (ObjectID id)
   {
-    return this.ContainsKey (id);
+    return BaseContainsKey (id);
   }
 
   public DataContainer this[int index]
   {
-    get {return (DataContainer) GetObject (index); }
+    get {return (DataContainer) BaseGetObject (index); }
   }
 
   public DataContainer this[ObjectID id]  
   {
-    get { return (DataContainer) GetObject (id); }
+    get { return (DataContainer) BaseGetObject (id); }
   }
 
-  public void Add (DataContainer value)
+  public int Add (DataContainer value)
   {
     ArgumentUtility.CheckNotNull ("value", value);
-    base.Add (value.ID, value);
+    
+    return BaseAdd (value.ID, value);
   }
 
   public void Remove (int index)
@@ -125,12 +126,12 @@ public class DataContainerCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    base.Remove (dataContainer.ID);
+    BaseRemove (dataContainer.ID);
   }
 
   public void Clear ()
   {
-    base.ClearCollection ();
+    BaseClear ();
   }
 
   #endregion

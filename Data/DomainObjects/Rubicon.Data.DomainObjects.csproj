@@ -103,12 +103,12 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "BaseCollection.cs"
+                    RelPath = "ClientTransaction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ClientTransaction.cs"
+                    RelPath = "CommonCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

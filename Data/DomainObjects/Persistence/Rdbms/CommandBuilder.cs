@@ -126,7 +126,7 @@ public abstract class CommandBuilder
       return id.ToString ();
   }
 
-  // TODO: Move this method to MappingUtility. Review when adding new Na* types.
+  // TODO: Move this method to TypeConversion. Review when adding new Na* types.
   protected object ConvertToDBType (object value)
   {
     if (value == null)

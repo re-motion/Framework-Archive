@@ -115,23 +115,24 @@ public class RelationEndPointCollection : CommonCollection
 
   public bool Contains (RelationEndPointID id)
   {
-    return this.ContainsKey (id);
+    return BaseContainsKey (id);
   }
 
   public RelationEndPoint this[int index]
   {
-    get {return (RelationEndPoint) GetObject (index); }
+    get {return (RelationEndPoint) BaseGetObject (index); }
   }
 
   public RelationEndPoint this[RelationEndPointID id]
   {
-    get { return (RelationEndPoint) GetObject (id); }
+    get { return (RelationEndPoint) BaseGetObject (id); }
   }
 
-  public void Add (RelationEndPoint endPoint)
+  public int Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-    base.Add (endPoint.ID, endPoint);
+    
+    return BaseAdd (endPoint.ID, endPoint);
   }
 
   public void Remove (int index)
@@ -148,12 +149,12 @@ public class RelationEndPointCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
-    base.Remove (endPoint.ID);
+    BaseRemove (endPoint.ID);
   }
 
   public void Clear ()
   {
-    base.ClearCollection ();
+    BaseClear ();
   }
 
   #endregion

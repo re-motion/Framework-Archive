@@ -85,7 +85,7 @@ public class PropertyDefinition
 
   private Type GetPropertyType (Type type, bool isNullable)
   {
-    // TODO: Move this method to MappingUtility. Review when adding new Na* types.
+    // TODO: Move this method to TypeConversion. Review when adding new Na* types.
     if (isNullable)
     {
       if (type == typeof (bool))

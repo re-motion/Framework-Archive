@@ -75,12 +75,12 @@ public class PropertyDefinitionCollection : CommonCollection
   public bool Contains (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    return base.ContainsKey (propertyName);
+    return BaseContainsKey (propertyName);
   }
 
   public PropertyDefinition this [int index]  
   {
-    get { return (PropertyDefinition) GetObject (index); }
+    get { return (PropertyDefinition) BaseGetObject (index); }
   }
 
   public PropertyDefinition this [string propertyName]  
@@ -88,17 +88,19 @@ public class PropertyDefinitionCollection : CommonCollection
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return (PropertyDefinition) GetObject (propertyName); 
+      return (PropertyDefinition) BaseGetObject (propertyName); 
     }
   }
 
-  public void Add (PropertyDefinition value)  
+  public int Add (PropertyDefinition value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
     OnAdding (new PropertyDefinitionAddingEventArgs (value));
-    base.Add (value.PropertyName, value);
+    int position = BaseAdd (value.PropertyName, value);
     OnAdded (new PropertyDefinitionAddedEventArgs (value));
+
+    return position;
   }
 
   #endregion
