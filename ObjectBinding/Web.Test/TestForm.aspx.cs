@@ -20,12 +20,14 @@ using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
+
 namespace OBWTest
 {
 
 public class TestForm : Page
 {
-  protected Rubicon.ObjectBinding.Web.Controls.BocList BocList1;
+  protected System.Web.UI.WebControls.Button PostBackButton;
+  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -53,6 +55,7 @@ public class TestForm : Page
 
   }
 	#endregion
+
 }
 
 }
