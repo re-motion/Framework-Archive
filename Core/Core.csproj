@@ -106,8 +106,8 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "doc\Building Rubicon.Commons.doc"
-                    BuildAction = "None"
+                    RelPath = "doc\Building Rubicon.Commons.txt"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "doc\include\include.xml"
