@@ -325,6 +325,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\IValidatableControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\MultiLingualPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
