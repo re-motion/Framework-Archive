@@ -3,7 +3,7 @@ using System;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
+namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
 public class StorageProviderConfiguration
 {

@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Configuration
+namespace Rubicon.Data.DomainObjects
 {
 public class ConfigurationException : DomainObjectException
 {

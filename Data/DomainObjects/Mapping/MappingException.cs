@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Data.DomainObjects.Mapping
 {
 [Serializable]
-public class MappingException : DomainObjectException
+public class MappingException : ConfigurationException
 {
   // types
 
