@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class CollectionEndPointChangeWorker
+public class CollectionEndPointChangeAgent
 {
   // types
 
@@ -18,7 +18,7 @@ public class CollectionEndPointChangeWorker
 
   // static members and constants
 
-  public static CollectionEndPointChangeWorker CreateForAdd (
+  public static CollectionEndPointChangeAgent CreateForAdd (
       DomainObjectCollection oppositeDomainObjects,
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint)
@@ -27,11 +27,11 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (
+    return new CollectionEndPointChangeAgent (
         oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Add, oppositeDomainObjects.Count);
   }
 
-  public static CollectionEndPointChangeWorker CreateForRemove (
+  public static CollectionEndPointChangeAgent CreateForRemove (
       DomainObjectCollection oppositeDomainObjects,
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint)
@@ -40,12 +40,12 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (
+    return new CollectionEndPointChangeAgent (
         oppositeDomainObjects, oldEndPoint, newEndPoint, 
         OperationType.Remove, oppositeDomainObjects.IndexOf (oldEndPoint.ObjectID));
   }
 
-  public static CollectionEndPointChangeWorker CreateForInsert (
+  public static CollectionEndPointChangeAgent CreateForInsert (
       DomainObjectCollection oppositeDomainObjects,
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint, 
@@ -55,11 +55,11 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (
+    return new CollectionEndPointChangeAgent (
         oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Insert, insertIndex);
   }
 
-  public static CollectionEndPointChangeWorker CreateForReplace (
+  public static CollectionEndPointChangeAgent CreateForReplace (
       DomainObjectCollection oppositeDomainObjects,
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint, 
@@ -69,7 +69,7 @@ public class CollectionEndPointChangeWorker
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    return new CollectionEndPointChangeWorker (
+    return new CollectionEndPointChangeAgent (
         oppositeDomainObjects, oldEndPoint, newEndPoint, OperationType.Replace, replaceIndex);
   }
 
@@ -84,7 +84,7 @@ public class CollectionEndPointChangeWorker
 
   // construction and disposing
 
-  protected CollectionEndPointChangeWorker (
+  protected CollectionEndPointChangeAgent (
       DomainObjectCollection oppositeDomainObjects,
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint,
