@@ -221,6 +221,26 @@
                     DependentUpon = "WebFormMK.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
+                <File
+                    RelPath = "HTML\style.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\RequiredField.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\ValidationError.gif"
+                    BuildAction = "Content"
+                />
             </Include>
         </Files>
     </CSHARP>
