@@ -12,7 +12,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
 [TestFixture]
-public class ProviderCreateNewDataContainerTest : SqlProviderBaseTest
+public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
 {
   // types
 
@@ -22,7 +22,7 @@ public class ProviderCreateNewDataContainerTest : SqlProviderBaseTest
 
   // construction and disposing
 
-  public ProviderCreateNewDataContainerTest ()
+  public SqlProviderCreateNewDataContainerTest ()
   {
   }
 
