@@ -36,7 +36,7 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsNullableType)
       return NaDecimal.ToBoxedDecimal ((NaDecimal)internalValue);
 
-    return decimal.Parse (internalValue.ToString ());  
+    return base.FromInternalType (decimal.Parse (internalValue.ToString ()));  
   }
 
   protected internal override object ToInternalType (object publicValue)
