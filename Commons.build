@@ -4,9 +4,9 @@
   <include buildfile="build/properties.include.xml"/>
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
-  <property name="nunit.bindir" value="c:\program files\nunit v2.1\bin" />
   <property name="global.dir" value="\development\global" />
   <property name="solution.basedir" value="${nant.project.basedir}" />
+  <property name="prereq.assemblies" value="${nant.project.basedir}/prereq/assemblies" />
 
   <property name="build.keyfile" value="\development\global\rubicon.snk" />
   <property name="dummy" value="true" />
@@ -68,48 +68,121 @@
     <call target="setdocumentation" />
 
     <property name="project.name" value="Core" />
+    <property name="project.dir" value="Core" />
     <call target="vsassemblyinfo" />
-    <property name="project.name" value="CoreTest" />
+    
+    <property name="project.name" value="Core.Test" />
+    <property name="project.dir" value="Core.Test" />
     <call target="vsassemblyinfo" />
-    <property name="project.name" value="DevelopmentCore" />
+    
+    <property name="project.name" value="Development" />
+    <property name="project.dir" value="Development/Core" />
     <call target="vsassemblyinfo" />
-    <property name="project.name" value="DevelopmentCoreTest" />
+    
+    <property name="project.name" value="Development.Core.Test" />
+    <property name="project.dir" value="Development/Core.Test" />
     <call target="vsassemblyinfo" />
-    <property name="project.name" value="CodeDom" />
+    
+    <property name="project.name" value="Development.CodeDom" />
+    <property name="project.dir" value="Development/CodeDom" />
+    <call target="vsassemblyinfo" />
+    
+    <property name="project.name" value="Globalization" />
+    <property name="project.dir" value="Globalization" />
+    <call target="vsassemblyinfo" />
+    
+    <property name="project.name" value="Web.UI" />
+    <property name="project.dir" value="Web.UI/Core" />
+    <call target="vsassemblyinfo" />
+    
+    <property name="project.name" value="ObjectBinding" />
+    <property name="project.dir" value="ObjectBinding/Core" />
+    <call target="vsassemblyinfo" />
+    
+    <property name="project.name" value="ObjectBinding.Web" />
+    <property name="project.dir" value="ObjectBinding/Web" />
+    <call target="vsassemblyinfo" />
+    
+    <property name="project.name" value="ObjectBinding.Reflection" />
+    <property name="project.dir" value="ObjectBinding/Reflection" />
     <call target="vsassemblyinfo" />
   </target>
   
   <!--======================= PROJECTS =======================-->
 
-  <target name="all" depends="Core,DevelopmentCore,CodeDom" />
+  <target name="all" depends="Core,DevelopmentCore,CodeDom,Globalization,Web.UI,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection" />
 
   <target name="Core" depends="initialize">
     <property name="project.name" value="Core" />
+    <property name="project.dir" value="Core" />
     <property name="project.output" value="Rubicon.Core" />
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
   
   <target name="DevelopmentCore" depends="initialize">
-    <property name="project.name" value="DevelopmentCore" />
+    <property name="project.name" value="Development.Core" />
+    <property name="project.dir" value="Development/Core" />
     <property name="project.output" value="Rubicon.Development" />
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
   
   <target name="CodeDom" depends="Core,initialize">
-    <property name="project.name" value="CodeDom" />
+    <property name="project.name" value="Development.CodeDom" />
+    <property name="project.dir" value="Development/CodeDom" />
     <property name="project.output" value="Rubicon.Development.CodeDom" />
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
+    
+  <target name="Globalization" depends="Core,initialize">
+    <property name="project.name" value="Globalization" />
+    <property name="project.dir" value="Globalization" />
+    <property name="project.output" value="Rubicon.Globalization" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+    
+  <target name="Web.UI" depends="Core,Globalization,initialize">
+    <property name="project.name" value="Web.UI" />
+    <property name="project.dir" value="Web.UI/Core" />
+    <property name="project.output" value="Rubicon.Web.UI" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="ObjectBinding" depends="Core,initialize">
+    <property name="project.name" value="ObjectBinding" />
+    <property name="project.dir" value="ObjectBinding/Core" />
+    <property name="project.output" value="Rubicon.ObjectBinding" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
   
+  <target name="ObjectBinding.Web" depends="Core,ObjectBinding,initialize">
+    <property name="project.name" value="ObjectBinding.Web" />
+    <property name="project.dir" value="ObjectBinding/Web" />
+    <property name="project.output" value="Rubicon.ObjectBinding.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+  
+  <target name="ObjectBinding.Reflection" depends="Core,ObjectBinding,initialize">
+    <property name="project.name" value="ObjectBinding.Reflection" />
+    <property name="project.dir" value="ObjectBinding/Reflection" />
+    <property name="project.output" value="Rubicon.ObjectBinding.Reflection" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
   <!--======================= UNIT TESTS =======================-->
   
   <target name="alltests" depends="CoreTest, DevelopmentCoreTest" />
 
   <target name="CoreTest" depends="Core,DevelopmentCore">
-    <property name="project.name" value="CoreTest" />
+    <property name="project.name" value="Core.Test" />
+    <property name="project.dir" value="Core.Test" />
     <property name="project.output" value="Rubicon.Core.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
@@ -119,7 +192,8 @@
   </target>
   
   <target name="DevelopmentCoreTest" depends="Core,DevelopmentCore">
-    <property name="project.name" value="DevelopmentCoreTest" />
+    <property name="project.name" value="Development.Core.Test" />
+    <property name="project.name" value="Development/Core.Test" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
@@ -138,13 +212,15 @@
       <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
     </if>
 
-    <property name="project.basedir" value="${nant.project.basedir}/${project.name}" />
+    <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
     
     <mkdir dir="${project.builddir}"/>
     <mkdir dir="${project.tempdir}"/>
     <call target="prepareassemblyinfo" />
     
-    <nant buildfile="${project.name}/${project.name}.build" target="build" />
+    <copy todir="${project.builddir}" file="${prereq.assemblies}/log4net.dll" overwrite="true"/>
+
+    <nant buildfile="${project.dir}/${project.name}.build" target="build" />
     
     <if unless="${build.createdoc}" propertyexists="dummy">
       <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
@@ -155,11 +231,11 @@
     <echo message="building unit tests ${project.output}.${project.extension} ${build.version}"/>
     <property name="project.doc" value="" />
 
-    <property name="project.basedir" value="${nant.project.basedir}/${project.name}" />
+    <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
     
     <mkdir dir="${tests.builddir}"/>
     
-    <copy todir="${tests.builddir}" file="${nunit.bindir}/nunit.framework.dll" overwrite="true"/>
+    <copy todir="${tests.builddir}" file="${prereq.assemblies}/nunit.framework.dll" overwrite="true"/>
     <copy todir="${tests.builddir}">
       <fileset basedir="${project.builddir}">
         <includes name="*.dll" />
@@ -169,7 +245,7 @@
     
     <call target="prepareassemblyinfo" />
     
-    <nant buildfile="${project.name}/${project.name}.build" target="build" />
+    <nant buildfile="${project.dir}/${project.name}.build" target="build" />
   </target>
 
   <target name="prepareassemblyinfo">
@@ -191,7 +267,7 @@
   </target>
     
   <target name="vsassemblyinfo" description="prepare assembly info for VS.NET">
-    <property name="project.basedir" value="${nant.project.basedir}/${project.name}" />
+    <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
     <copy file="${project.basedir}/AssemblyInfoTemplate.cs"  tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
     <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
     <replace>
