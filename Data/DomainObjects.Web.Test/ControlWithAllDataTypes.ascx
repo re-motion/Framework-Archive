@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <TABLE id="FormGrid" cellSpacing="0" cellPadding="0" border="0" runat="server">
   <tr>
     <td></td>
@@ -67,6 +67,14 @@
   <TR>
     <TD></TD>
     <TD><obc:bocenumvalue id="BocEnumValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="EnumProperty">
+        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+      </obc:bocenumvalue></TD>
+  </TR>
+  <TR>
+    <TD></TD>
+    <TD>
+      <obc:bocenumvalue id="Bocenumvalue5" runat="server" PropertyIdentifier="EnumProperty" DataSourceControl="CurrentObject"
+        ReadOnly="True">
         <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
