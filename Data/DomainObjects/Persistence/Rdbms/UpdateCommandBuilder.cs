@@ -24,6 +24,10 @@ public class UpdateCommandBuilder : CommandBuilder
   public UpdateCommandBuilder (RdbmsProvider provider, DataContainer dataContainer) : base (provider)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    if (dataContainer.State == StateType.Unchanged)
+      throw CreateArgumentException ("dataContainer", "State of provided dataContainer must not be 'Unchanged'.");
+
     _dataContainer = dataContainer;
   }
 
@@ -31,9 +35,6 @@ public class UpdateCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    if (_dataContainer.State == StateType.Unchanged)
-      return null;
-
     IDbCommand command = CreateCommand ();
     _updateBuilder = new StringBuilder ();
 

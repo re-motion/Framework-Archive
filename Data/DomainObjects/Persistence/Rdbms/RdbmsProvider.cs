@@ -219,10 +219,13 @@ public abstract class RdbmsProvider : StorageProvider
 
     foreach (DataContainer dataContainer in dataContainers)
     {
-      CommandBuilder commandBuilder = new UpdateCommandBuilder (this, dataContainer);
-      using (IDbCommand command = commandBuilder.Create ())
+      if (dataContainer.State != StateType.Unchanged)
       {
-        Save (command, dataContainer);
+        CommandBuilder commandBuilder = new UpdateCommandBuilder (this, dataContainer);
+        using (IDbCommand command = commandBuilder.Create ())
+        {
+          Save (command, dataContainer);
+        }
       }
     }
   }

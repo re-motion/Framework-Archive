@@ -448,6 +448,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\DeleteCommandBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\InsertCommandBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
