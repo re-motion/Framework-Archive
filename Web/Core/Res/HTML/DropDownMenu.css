@@ -26,14 +26,14 @@ div.dropDownMenuHeadFocus
 div.dropDownMenuPopUp
 {
   position: absolute;
-  top: -1;
+  top: 0px;
   left: 0px;
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
   background-image: url(../Image/DropDownMenuItemIconPane.gif);
-  background-repeat: repeat-y;
-  
+  background-repeat: repeat-y;  
+  background-color: White;
 }
 
 div.dropDownMenuItem
