@@ -185,7 +185,7 @@ public class EntryFormGrid: Control
     //return PageUtility.GetPhysicalPageUrl (sourcePage, RelativeImagePath + imgFileName);
   }
 
-  internal string InfoImagePath 
+  public string InfoImagePath 
   {
     get { return EntryFormGrid.GetImagePath (InfoImage); }
   }
@@ -312,7 +312,7 @@ public class EntryField: Control
     set { _title = value; }
   }
 
-  internal EntryFormGrid ParentGrid
+  protected EntryFormGrid ParentGrid
   {
     get { return (EntryFormGrid) this.Parent; }
   }
@@ -534,7 +534,7 @@ public class EntryField: Control
 		writer.WriteLine ("<tr> <td colspan=\"6\">{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
 	}
 
-  private void CheckExternalValidState (ref string errorMessages, ref bool invalid)
+  protected void CheckExternalValidState (ref string errorMessages, ref bool invalid)
   {
     if (_externalValidState == false)
     {
@@ -543,7 +543,7 @@ public class EntryField: Control
     }
   }
 
-  private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
+  protected void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)
   {
     // search for Validator child controls and keep if at least one is invalid
 
