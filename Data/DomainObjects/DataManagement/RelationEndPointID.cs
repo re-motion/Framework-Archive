@@ -41,12 +41,14 @@ public class RelationEndPointID
 
   public override bool Equals (object obj)
   {
-    RelationEndPointID endPointID = obj as RelationEndPointID;
-    if (endPointID == null)
-      return false;
+    if (obj == null) return false;
+    if (this.GetType () != obj.GetType ()) return false;
 
-    return this._objectID.Equals (endPointID.ObjectID)
-        && this.PropertyName.Equals (endPointID.PropertyName);
+    RelationEndPointID other = (RelationEndPointID) obj;
+    if (!object.Equals (this._objectID, other._objectID)) return false;
+    if (!object.Equals (this._definition, other._definition)) return false;
+
+    return true;
   }
 
   public override string ToString ()
