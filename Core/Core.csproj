@@ -88,16 +88,6 @@
         <Files>
             <Include>
                 <File
-                    RelPath = "ArgumentUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ArrayUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -109,21 +99,6 @@
                 <File
                     RelPath = "Core.build"
                     BuildAction = "Content"
-                />
-                <File
-                    RelPath = "EnumDescription.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StringUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WorkContext.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "doc\include\include.xml"
@@ -185,6 +160,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Text\CommandLine\CommandLineAttributes.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Text\CommandLine\CommandLineClassParser.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Text\CommandLine\CommandLineEnumArgument.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -206,6 +191,41 @@
                 />
                 <File
                     RelPath = "Text\CommandLine\Exceptions.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ArgumentUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ArrayUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\EnumDescription.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\EnumUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ReflectionUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\StringUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\WorkContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

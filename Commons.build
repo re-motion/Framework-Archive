@@ -4,11 +4,12 @@
   <include buildfile="build/properties.include.xml"/>
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
-  <property name="nunit.bindir" value="c:\program files\nunit v2.0\bin" />
+  <property name="nunit.bindir" value="c:\program files\nunit v2.1\bin" />
   <property name="global.dir" value="\development\global" />
   <property name="solution.basedir" value="${nant.project.basedir}" />
 
   <property name="build.keyfile" value="\development\global\rubicon.snk" />
+  <property name="dummy" value="true" />
       
   <target name="initialize">
     <!-- make sure that one of the set...-targets was called -->
@@ -36,7 +37,7 @@
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
     <property name="build.csc.define" value="DEBUG;TRACE" />
-    <call target="initialize" force="true" />
+    <call target="initialize" />
   </target>
   
   <target name="setrelease">
@@ -44,7 +45,7 @@
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="TRACE" />
-    <call target="initialize" force="true" />
+    <call target="initialize" />
   </target>
   
   <target name="setdocumentation">
@@ -52,7 +53,7 @@
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="DEBUG;TRACE" />
-    <call target="initialize" force="true" />
+    <call target="initialize" />
   </target>
   
   <!--======================= VERSION =======================-->
@@ -64,18 +65,18 @@
   
   <!--======================= VS.NET =======================-->
   <target name="preparevs">
-    <call target="setdocumentation" force="true" />
+    <call target="setdocumentation" />
 
     <property name="project.name" value="Core" />
-    <call target="vsassemblyinfo" force="true" />
+    <call target="vsassemblyinfo" />
     <property name="project.name" value="CoreTest" />
-    <call target="vsassemblyinfo" force="true" />
+    <call target="vsassemblyinfo" />
     <property name="project.name" value="DevelopmentCore" />
-    <call target="vsassemblyinfo" force="true" />
+    <call target="vsassemblyinfo" />
     <property name="project.name" value="DevelopmentCoreTest" />
-    <call target="vsassemblyinfo" force="true" />
+    <call target="vsassemblyinfo" />
     <property name="project.name" value="CodeDom" />
-    <call target="vsassemblyinfo" force="true" />
+    <call target="vsassemblyinfo" />
   </target>
   
   <!--======================= PROJECTS =======================-->
@@ -86,21 +87,21 @@
     <property name="project.name" value="Core" />
     <property name="project.output" value="Rubicon.Core" />
     <property name="project.extension" value="dll" />
-    <call target="build" force="true" />
+    <call target="build" />
   </target>
   
   <target name="DevelopmentCore" depends="initialize">
     <property name="project.name" value="DevelopmentCore" />
     <property name="project.output" value="Rubicon.Development" />
     <property name="project.extension" value="dll" />
-    <call target="build" force="true" />
+    <call target="build" />
   </target>
   
   <target name="CodeDom" depends="Core,initialize">
     <property name="project.name" value="CodeDom" />
     <property name="project.output" value="Rubicon.Development.CodeDom" />
     <property name="project.extension" value="dll" />
-    <call target="build" force="true" />
+    <call target="build" />
   </target>
   
   <!--======================= UNIT TESTS =======================-->
@@ -111,7 +112,7 @@
     <property name="project.name" value="CoreTest" />
     <property name="project.output" value="Rubicon.Core.UnitTests" />
     <property name="project.extension" value="dll" />
-    <call target="buildtest" force="true" />
+    <call target="buildtest" />
     <nunit2>
       <test assemblyname="${tests.builddir}/Rubicon.Core.UnitTests.dll" />
     </nunit2>
@@ -121,7 +122,7 @@
     <property name="project.name" value="DevelopmentCoreTest" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
     <property name="project.extension" value="dll" />
-    <call target="buildtest" force="true" />
+    <call target="buildtest" />
     <nunit2>
       <test assemblyname="${tests.builddir}/Rubicon.Development.UnitTests.dll" />
     </nunit2>
@@ -131,9 +132,9 @@
   
   <target name="build">
     <echo message="building ${project.output}.${project.extension} ${build.version}"/>
-    <if if="${build.createdoc}">
+    <if if="${build.createdoc}" propertyexists="dummy">
       <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
-    </if> <if unless="${build.createdoc}">
+    </if> <if unless="${build.createdoc}" propertyexists="dummy">
       <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
     </if>
 
@@ -141,11 +142,11 @@
     
     <mkdir dir="${project.builddir}"/>
     <mkdir dir="${project.tempdir}"/>
-    <call target="prepareassemblyinfo" force="true" />
+    <call target="prepareassemblyinfo" />
     
     <nant buildfile="${project.name}/${project.name}.build" target="build" />
     
-    <if unless="${build.createdoc}">
+    <if unless="${build.createdoc}" propertyexists="dummy">
       <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
     </if>
   </target>
@@ -166,7 +167,7 @@
       </fileset>
     </copy>
     
-    <call target="prepareassemblyinfo" force="true" />
+    <call target="prepareassemblyinfo" />
     
     <nant buildfile="${project.name}/${project.name}.build" target="build" />
   </target>
@@ -345,9 +346,12 @@
     </zip>
   </target>
   
-  <target name="getcurrent" depends="setdebug">
-    <delete dir="${solution.basedir}/build/Current" />
-    <copy todir="${solution.basedir}/build/Current">
+  <target name="getcurrent">
+    <property name="local.currentdir" value="${solution.basedir}/build/Current/${nant.settings.currentframework}/bin/${project.config}" />
+    <if targetexists="${local.currentdir}">
+      <delete dir="${local.currentdir}"/>
+    </if>
+    <copy todir="${local.currentdir}">
       <fileset basedir="${project.builddir}">
         <includes name="*" />
       </fileset>
