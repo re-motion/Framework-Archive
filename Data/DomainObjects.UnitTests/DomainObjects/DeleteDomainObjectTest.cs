@@ -83,5 +83,17 @@ public class DeleteDomainObjectTest : ClientTransactionBaseTest
 
     propertyValue.Value = 10;
   }
+
+  [Test]
+  public void AccessDeletedObject ()
+  {
+    _order.Delete ();
+
+    Assert.AreEqual (DomainObjectIDs.Order2, _order.ID);
+    Assert.AreEqual (3, _order.OrderNumber);
+    Assert.AreEqual (new DateTime (2005, 3, 1), _order.DeliveryDate);
+    Assert.IsNotNull (_order.DataContainer.Timestamp);
+    Assert.IsNotNull (_order.DataContainer.PropertyValues["OrderNumber"]);
+  }
 }
 }
