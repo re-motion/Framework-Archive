@@ -8,7 +8,7 @@ using Rubicon.Development.UnitTesting;
 
 using Rubicon.Text.CommandLine;
 
-namespace Rubicon.UnitTests.Text.CommandLine
+namespace Rubicon.Core.UnitTests.Text.CommandLine
 {
 
 public enum IncrementalTestOptions { no, nor, normal, anything };
