@@ -111,10 +111,10 @@ public class RelationDefinitionLoader
     IRelationEndPointDefinition endPoint1 = relationDefinition.EndPointDefinitions[0];
     IRelationEndPointDefinition endPoint2 = relationDefinition.EndPointDefinitions[1];
 
-    endPoint1.ClassDefinition.RelationDefinitions.Add (relationDefinition);
+    endPoint1.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
 
     if (endPoint1.ClassDefinition != endPoint2.ClassDefinition)
-      endPoint2.ClassDefinition.RelationDefinitions.Add (relationDefinition);
+      endPoint2.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
   }
 
   private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode)

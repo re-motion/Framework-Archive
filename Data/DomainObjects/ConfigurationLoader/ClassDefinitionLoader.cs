@@ -117,13 +117,13 @@ public class ClassDefinitionLoader
     foreach (XmlNode propertyNode in classNode.SelectNodes (FormatXPath ("{0}:properties/{0}:property"), _namespaceManager))
     {
       PropertyDefinition propertyDefinition = GetPropertyDefinition (classDefinition, propertyNode);
-      classDefinition.PropertyDefinitions.Add (propertyDefinition);
+      classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }
 
     foreach (XmlNode relationPropertyNode in classNode.SelectNodes (FormatXPath ("{0}:properties/{0}:relationProperty[{0}:column]"), _namespaceManager))
     {
       PropertyDefinition propertyDefinition = GetRelationPropertyDefinition (classDefinition, relationPropertyNode);
-      classDefinition.PropertyDefinitions.Add (propertyDefinition);
+      classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }
   }
 
