@@ -45,15 +45,16 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   }
 
   /// <summary> A list of form grid manager wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Type, Enum). </remarks>
-  [ResourceIdentifier ("Rubicon.Web.UI.Globalization.FormGridManager")]
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifier ()]
+  [MultiLingualResources ("Rubicon.Web.UI.Globalization.FormGridManager")]
   protected enum ResourceIdentifier
   {
-    /// <summary>The alternate text for the required icon. Defaults to '*'.</summary>
+    /// <summary>The alternate text for the required icon.</summary>
     RequiredFieldAlternateText,
-    /// <summary>The alternate text for the help icon. Defaults to '?'.</summary>
+    /// <summary>The alternate text for the help icon.</summary>
     HelpAlternateText,
-    /// <summary>The alternate text for the validation error icon. Defaults to '!'.</summary>
+    /// <summary>The alternate text for the validation error icon.</summary>
     ValidationErrorInfoAlternateText,
     /// <summary>The tool tip text for the required icon.</summary>
     RequiredFieldTitle,
@@ -936,32 +937,22 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   private bool _showHelpProviders;
   private bool _skipNamingContainers = false;
 
-  /// <summary> 
-  ///   State variable for the two part transformation process. 
-  ///   Hashtable&lt;string uniqueID, bool&gt;
-  /// </summary>
+  /// <summary> State variable for the two part transformation process. Hashtable&lt;string uniqueID, bool&gt; </summary>
   private Hashtable _hasCompletedTransformationStepPreLoadViewState = new Hashtable();
 
   /// <summary> State variable for automatic validators creation. </summary>
   private bool _hasValidatorsCreated;
 
-  /// <summary>
-  ///   Caches the <see cref="IFormGridRowProvider"/> for this <see cref="FormGridManager"/>.
-  /// </summary>
+  /// <summary> Caches the <see cref="IFormGridRowProvider"/> for this <see cref="FormGridManager"/>. </summary>
   private IFormGridRowProvider _cachedFormGridRowProvider;
 
   /// <summary>
-  ///   <see langword="true"/> if the control hierarchy doesn't implement 
-  ///   <see cref="IFormGridRowProvider"/>.
+  ///   <see langword="true"/> if the control hierarchy doesn't implement <see cref="IFormGridRowProvider"/>.
   /// </summary>
   private bool isFormGridRowProviderUndefined;
 
-  /// <summary>
-  ///   Caches the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>.
-  /// </summary>
-  private IResourceManager _cachedResourceManager;
-
-  private bool isResourceManagerUndefined;
+  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="FormGridManager"/>. </summary>
+  private ResourceManagerSet _cachedResourceManager;
 
   /// <summary> <see langword="true"/> if PostBack and ViewState was loaded. </summary>
   private bool _hasViewState = false;
@@ -1528,7 +1519,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       if (! _hasValidatorsCreated)
       {
         CreateValidators (formGridRow);
-        OverrideValidators (formGridRow);
+        ApplyValidatorSettings (formGridRow);
       }
 
       ValidateDataRow (formGridRow);
@@ -1643,7 +1634,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         if (! _hasValidatorsCreated)
         {
           CreateValidators (formGridRow);
-          OverrideValidators (formGridRow);
+          ApplyValidatorSettings (formGridRow);
+          _hasValidatorsCreated = true;
         }
 
         LoadMarkersIntoCell (formGridRow);
@@ -1781,26 +1773,20 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     return GetFormGridRowProvider (control.Parent);
   }
 
-  /// <summary>
-  ///   Find the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>.
-  /// </summary>
-  /// <returns></returns>
+  /// <summary> Find the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>. </summary>
   protected IResourceManager GetResourceManager()
   {
-    //  Control hierarchy doesn't implent this interface
-    if (isResourceManagerUndefined)
-      return null;
-
     //  Provider has already been identified.
     if (_cachedResourceManager != null)
         return _cachedResourceManager;
 
-    //  Try to get the resource manager
+    //  Get the resource managers
 
-    _cachedResourceManager = ResourceManagerUtility.GetResourceManager (this);
-
-    if (_cachedResourceManager == null)
-      isResourceManagerUndefined = true;
+    IResourceManager localResourceManager = 
+        MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), true);
+    IResourceManager namingContainerResourceManager = 
+        ResourceManagerUtility.GetResourceManager (NamingContainer);
+    _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
 
     return _cachedResourceManager;
   }
@@ -2036,10 +2022,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary>
   ///   Applies the <c>FormGridManager</c>'s validator settings to all objects of 
-  ///   <see cref="BaseValidator"/> inside the <paramref name="cell"/>.
+  ///   type <see cref="BaseValidator"/> inside the <paramref name="dataRow"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/OverrideValidators/*' />
-  protected virtual void OverrideValidators (FormGridRow dataRow)
+  /// <param name="dataRow"> The <see cref="FormGridRow"/> containing the validators to be overridden. </param>
+  protected virtual void ApplyValidatorSettings (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -2559,22 +2545,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     Image requiredIcon = new Image();
     requiredIcon.ImageUrl = GetImageUrl (FormGridImage.RequiredField);
     
-    requiredIcon.AlternateText = "*";
- 
-    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+    IResourceManager resourceManager = GetResourceManager();
 
-    if (resourceManager != null)
-    {
-      string alternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
-
-      if (alternateText != null)
-        requiredIcon.AlternateText = alternateText;
-
-      string toolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
-
-      if (toolTip != null)
-        requiredIcon.ToolTip = toolTip;
-    }
+    requiredIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
+    requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
 
     return requiredIcon;
   }
@@ -2585,23 +2559,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   {
     Image helpIcon = new Image();
     helpIcon.ImageUrl = GetImageUrl (FormGridImage.Help);
-
-    helpIcon.AlternateText = "?";
  
-    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+    IResourceManager resourceManager = GetResourceManager();
 
-    if (resourceManager != null)
-    {
-      string alternateText = resourceManager.GetString (ResourceIdentifier.HelpAlternateText);
-
-      if (alternateText != null)
-        helpIcon.AlternateText = alternateText;
-
-      string toolTip = resourceManager.GetString (ResourceIdentifier.HelpTitle);
-
-      if (toolTip != null)
-        helpIcon.ToolTip = toolTip;
-    }
+    helpIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.HelpAlternateText);
+    helpIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.HelpTitle);
 
     HtmlAnchor helpAnchor = new HtmlAnchor();
     helpAnchor.HRef = helpUrl;
@@ -2618,18 +2580,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);
 
-    validationErrorIcon.AlternateText = "!";
     validationErrorIcon.ToolTip = toolTip;
  
-    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this);
+    IResourceManager resourceManager = GetResourceManager();
 
-    if (resourceManager != null)
-    {
-      string alternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
-
-      if (alternateText != null)
-        validationErrorIcon.AlternateText = alternateText;
-    }
+    validationErrorIcon.AlternateText = 
+        resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
 
     return validationErrorIcon;
   }
