@@ -95,9 +95,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="_icon"/>. </summary>
-  private Style _iconStyle = new Style();
-
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
 
@@ -500,8 +497,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _dropDownListStyle.ApplyStyle (_dropDownList);
 
     }
-
-    _icon.ApplyStyle (_iconStyle);
   }
 
   protected override void RenderChildren(HtmlTextWriter writer)
@@ -776,12 +771,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     remove { Events.RemoveHandler (EventMenuItemClick, value); }
   }
 
-  /// <summary>
-  ///   The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to.
-  /// </summary>
-  /// <remarks>
-  ///   Explicit setting of <see cref="Property"/> is not offically supported.
-  /// </remarks>
+  /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
+  /// <remarks> Explicit setting of <see cref="Property"/> is not offically supported. </remarks>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -796,9 +787,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
+  /// <summary> Gets or sets the current value. </summary>
   /// <value> 
   ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
   ///   or <see langword="null"/> if no item / the null item is selected.
@@ -840,12 +829,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     set { Value = (IBusinessObjectWithIdentity) value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
+  /// <summary> Gets or sets the current value. </summary>
   /// <value> 
   ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> for the current 
-  ///   <see cref="IBusinessObjectWithIdentity"/> object
+  ///   <see cref="IBusinessObjectWithIdentity"/> object 
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
   protected string InternalValue
@@ -872,8 +859,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using it's ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using it's ClientID.
   /// </summary>
   public override Control TargetControl 
   {
@@ -920,9 +906,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     remove { Events.RemoveHandler (s_eventSelectionChanged, value); }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
-  /// </summary>
+  /// <summary> The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode). </summary>
   /// <remarks>
   ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual 
   ///   style settings for the respective modes. Note that if you set one of the <c>Font</c> 
@@ -939,28 +923,20 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     get { return _commonStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> The style that you want to apply to the TextBox (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category ("Style")]
   [Description ("The style that you want to apply to the TextBox (edit mode) only.")]
   [NotifyParentProperty( true)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style DropDownListStyle
+  public DropDownListStyle DropDownListStyle
   {
     get { return _dropDownListStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the Label (read-only mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> The style that you want to apply to the Label (read-only mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category ("Style")]
   [Description ("The style that you want to apply to the Label (read-only mode) only.")]
   [NotifyParentProperty (true)]
@@ -969,22 +945,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   public Style LabelStyle
   {
     get { return _labelStyle; }
-  }
-
-  /// <summary>
-  ///   The style that you want to apply to the Icon.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the Icon.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style IconStyle
-  {
-    get { return _iconStyle; }
   }
 
   /// <summary> Gets the <see cref="DropDownList"/> used in edit mode. </summary>
