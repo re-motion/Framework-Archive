@@ -140,6 +140,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithDerivationAndDuplicateColumnName.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithDerivationAndInvalidEntityName.xml"
                     BuildAction = "Content"
                 />
