@@ -1,8 +1,4 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "http://localhost/FormGrid/Sample/Sample.csproj", "{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "..\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -17,26 +13,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "..\..\Glob
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 4
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {8EDFEBB2-0421-47F7-9790-CE7B47484E86}
-		SccProjectUniqueName1 = http://localhost/FormGrid/Sample/Sample.csproj
-		SccProjectName1 = \u0022$/libraries/Commons/Web.UI/FormGrid/Sample\u0022,\u0020HEUAAAAA
-		SccLocalPath1 = Sample
+		SccProjectUniqueName1 = ..\\Core\\Web.UI.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath1 = ..\\Core
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice1 = 2
-		SccProjectUniqueName2 = ..\\Core\\Web.UI.csproj
-		SccProjectName2 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
-		SccLocalPath2 = ..\\Core
+		SccProjectUniqueName2 = ..\\..\\Core\\Core.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath2 = ..\\..\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName3 = ..\\..\\Core\\Core.csproj
-		SccProjectName3 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
-		SccLocalPath3 = ..\\..\\Core
-		CanCheckoutShared = false
-		SccProjectUniqueName4 = ..\\..\\Globalization\\Globalization.csproj
-		SccProjectName4 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
-		SccLocalPath4 = ..\\..\\Globalization
+		SccProjectUniqueName3 = ..\\..\\Globalization\\Globalization.csproj
+		SccProjectName3 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath3 = ..\\..\\Globalization
 		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -44,10 +35,6 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Debug.ActiveCfg = Debug|.NET
-		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Debug.Build.0 = Debug|.NET
-		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.ActiveCfg = Release|.NET
-		{5F1C8C70-4DEE-4376-95AF-0DAF0E792D7A}.Release.Build.0 = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
