@@ -642,7 +642,7 @@ internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
 
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
-    RaisePostDataChangedEvent();
+    this.RaisePostDataChangedEvent();
   }
  
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)

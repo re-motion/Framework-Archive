@@ -19,16 +19,10 @@
           <td colSpan=2>Persondetails</td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True">
-              <textboxstyle cssclass="MyCssClass" autopostback="True">
-              </textboxstyle>
-            </obc:boctextvalue></td></tr>
+          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True"></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True">
-              <textboxstyle cssclass="MyCssClass" autopostback="True">
-              </textboxstyle>
-            </obc:boctextvalue></td></tr>
+          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True"></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
           <td><obc:bocenumvalue id="GenderField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Gender">

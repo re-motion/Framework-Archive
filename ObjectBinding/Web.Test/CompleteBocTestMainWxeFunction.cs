@@ -9,6 +9,7 @@ public class CompleteBocTestMainWxeFunction: WxeFunction
   public CompleteBocTestMainWxeFunction ()
   {
     ReturnUrl = "StartForm.aspx";
+    Variables["id"] = new Guid(0,0,0,0,0,0,0,0,0,0,1).ToString();
   }
 
   // steps
