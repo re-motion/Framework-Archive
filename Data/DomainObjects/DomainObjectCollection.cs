@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//TODO documentation: Check entire class
 public class DomainObjectCollection : CollectionBase, ICloneable, IList
 {
   // types
@@ -190,24 +191,23 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection.
   /// </summary>
-  /// <param name="value">The <see cref="DomainObject"/> to add.</param>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to add.</param>
   /// <exception cref="System.ArgumentNullException"><i>value</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException"><i>value</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
-  public int Add (DomainObject value)
+  public int Add (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
-    CheckItemType (_requiredItemType, value.GetType ());
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
     if (_changeDelegate != null)
     {
-      _changeDelegate.PerformAdd (this, value);
+      _changeDelegate.PerformAdd (this, domainObject);
     }
     else
     {
-      if (BeginAdd (value))
+      if (BeginAdd (domainObject))
       {
-        PerformAdd (value);
-        EndAdd (value);
+        PerformAdd (domainObject);
+        EndAdd (domainObject);
       }
     }
 
@@ -293,7 +293,18 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    base.Insert (index, domainObject.ID, domainObject);
+    if (_changeDelegate != null)
+    {
+      //_changeDelegate.PerformInsert (this, index, domainObject);
+    }
+    else
+    {
+      if (BeginAdd (domainObject))
+      {
+        PerformInsert (index, domainObject);
+        EndAdd (domainObject);
+      }
+    }
   }
 
   // TODO Documentation:
@@ -316,40 +327,53 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
   }
 
+  // TODO Documentation: Behavior for invalid object type.
   void IList.Insert (int index, object value)
   {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+
     Insert (index, (DomainObject) value);
   }
 
+  // TODO Documentation: Behavior for invalid object type.
   void IList.Remove (object value)
   {
     if (value is DomainObject)
-    {
       Remove ((DomainObject) value);
-      return;
-    }
 
-    Remove ((ObjectID) value);
+    if (value is ObjectID)
+      Remove ((ObjectID) value);
   }
 
+  // TODO Documentation: Behavior for invalid object type.
   bool IList.Contains (object value)
   {
     if (value is DomainObject)
       return Contains ((DomainObject) value);
 
-    return Contains ((ObjectID) value);
+    if (value is ObjectID)
+      return Contains ((ObjectID) value);
+
+    return false;
   }
 
+  // TODO Documentation: Behavior for invalid object type.
   int IList.IndexOf (object value)
   {
     if (value is DomainObject)
       return IndexOf ((DomainObject) value);
 
-    return IndexOf ((ObjectID) value);
+    if (value is ObjectID)
+      return IndexOf ((ObjectID) value);
+
+    return -1;
   }
 
+  // TODO Documentation: Behavior for invalid object type.
   int IList.Add (object value)
   {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+
     return Add ((DomainObject) value);
   }
 
@@ -407,8 +431,17 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
 //TODO: Added by ES, check with ML
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    CheckItemType (_requiredItemType, domainObject.GetType ());
 
     base.Add (domainObject.ID, domainObject);
+  }
+
+  internal protected void PerformInsert (int index, DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    CheckItemType (_requiredItemType, domainObject.GetType ());
+
+    base.Insert (index, domainObject.ID, domainObject);
   }
 
   internal void EndAdd (DomainObject domainObject)

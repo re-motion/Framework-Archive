@@ -236,40 +236,39 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     // expectation: no exception
   }
 
-// TODO: Implement this test
-//  [Test]
-//  public void InsertEvents ()
-//  {
-//    _subordinateEventReceiver.Cancel = false;
-//    _subordinateCollectionEventReceiver.Cancel = false;
-//    _supervisorEventReceiver.Cancel = false;
-//
-//    _supervisor.Subordinates.Insert (0, _subordinate);
-//
-//    Assert.AreEqual (0, _supervisor.Subordinates.IndexOf (_subordinate));
-//    Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangingEventBeenCalled);
-//    Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-//    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
-//    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangedRelationPropertyName);
-//    Assert.IsNull (_subordinateEventReceiver.OldRelatedObject);
-//    Assert.AreSame (_supervisor, _subordinateEventReceiver.NewRelatedObject);
-//
-//    Assert.IsTrue (_subordinateCollectionEventReceiver.HasAddingEventBeenCalled);
-//    Assert.IsTrue (_subordinateCollectionEventReceiver.HasAddedEventBeenCalled);
-//    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.AddingDomainObject);
-//    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.AddedDomainObject);
-//
-//    Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
-//    Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-//    Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
-//    Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangedRelationPropertyName);
-//    Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
-//    Assert.AreSame (_subordinate, _supervisorEventReceiver.NewRelatedObject);
-//
-//    Assert.AreEqual (StateType.Changed, _subordinate.State);
-//    Assert.AreEqual (StateType.Changed, _supervisor.State);
-//    Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
-//    Assert.AreSame (_supervisor, _subordinate.Supervisor);
-//  }
+  [Test]
+  public void InsertEvents ()
+  {
+    _subordinateEventReceiver.Cancel = false;
+    _subordinateCollectionEventReceiver.Cancel = false;
+    _supervisorEventReceiver.Cancel = false;
+
+    _supervisor.Subordinates.Insert (0, _subordinate);
+
+    Assert.AreEqual (0, _supervisor.Subordinates.IndexOf (_subordinate));
+    Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangingEventBeenCalled);
+    Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangedEventBeenCalled);
+    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangedRelationPropertyName);
+    Assert.IsNull (_subordinateEventReceiver.OldRelatedObject);
+    Assert.AreSame (_supervisor, _subordinateEventReceiver.NewRelatedObject);
+
+    Assert.IsTrue (_subordinateCollectionEventReceiver.HasAddingEventBeenCalled);
+    Assert.IsTrue (_subordinateCollectionEventReceiver.HasAddedEventBeenCalled);
+    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.AddingDomainObject);
+    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.AddedDomainObject);
+
+    Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
+    Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangedEventBeenCalled);
+    Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
+    Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangedRelationPropertyName);
+    Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
+    Assert.AreSame (_subordinate, _supervisorEventReceiver.NewRelatedObject);
+
+    Assert.AreEqual (StateType.Changed, _subordinate.State);
+    Assert.AreEqual (StateType.Changed, _supervisor.State);
+    Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
+    Assert.AreSame (_supervisor, _subordinate.Supervisor);
+  }
 }
 }

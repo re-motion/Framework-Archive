@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -640,18 +641,6 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     _collection.Insert (_collection.Count, _customer3NotInCollection);
   }
 
-  private void CheckForEachOrder (DomainObject[] exptectedDomainObjects, DomainObjectCollection collection)
-  {
-    Assert.AreEqual (exptectedDomainObjects.Length, collection.Count);
-
-    int i = 0;
-    foreach (DomainObject domainObject in collection)
-    {
-      Assert.AreSame (exptectedDomainObjects[i], domainObject);
-      i++;
-    }
-  }
-
   [Test]
   public void AccessIListInterfaceWithDomainObject ()
   {
@@ -683,6 +672,64 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.IsFalse (list.Contains (_customer1));
   }
 
+  [Test]
+  public void RemoveObjectOfInvalidType ()
+  {
+    int count = _collection.Count;
+    
+    IList list = (IList) _collection;
+    list.Remove (new object ());
+    
+    Assert.AreEqual (count, _collection.Count);
+  }
+
+  [Test]
+  public void ContainsForObjectOfInvalidType ()
+  {
+    IList list = (IList) _collection;
+    Assert.IsFalse (list.Contains (new object ()));
+  }
+
+  [Test]
+  public void IndexOfForObjectOfInvalidType ()
+  {
+    IList list = (IList) _collection;
+    Assert.AreEqual (-1, list.IndexOf (new object ()));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentTypeException))]
+  public void InsertObjectOfInvalidType ()
+  {
+    IList list = (IList) _collection;
+    list.Insert (0, new object ());
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentTypeException))]
+  public void AddObjectOfInvalidType ()
+  {
+    IList list = (IList) _collection;
+    list.Add (new object ());
+  }
+
+  [Test]
+  public void InsertEvents ()
+  {
+    DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
+    
+    DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (
+      collection, false);
+
+    collection.Insert (0, _customer1);
+
+    Assert.AreEqual (1, collection.Count);
+    Assert.AreEqual (true, eventReceiver.HasAddingEventBeenCalled);
+    Assert.AreEqual (true, eventReceiver.HasAddedEventBeenCalled);
+    Assert.AreSame (_customer1, eventReceiver.AddingDomainObject);
+    Assert.AreSame (_customer1, eventReceiver.AddedDomainObject);
+  }
+  
   private DomainObjectCollection CreateCustomerCollection ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
@@ -690,6 +737,18 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     collection.Add (_customer2);
 
     return collection;
+  }
+
+  private void CheckForEachOrder (DomainObject[] exptectedDomainObjects, DomainObjectCollection collection)
+  {
+    Assert.AreEqual (exptectedDomainObjects.Length, collection.Count);
+
+    int i = 0;
+    foreach (DomainObject domainObject in collection)
+    {
+      Assert.AreSame (exptectedDomainObjects[i], domainObject);
+      i++;
+    }
   }
 }
 }

@@ -191,17 +191,22 @@ public class CollectionBase : ICollection
   protected void Insert (int index, object key, object value)
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
-
-    if (index < 0 || index > Count)
-    {
-      throw new ArgumentOutOfRangeException (
-          "index", 
-          index, 
-          "Insertion index was out of range.  Must be non-negative and less than or equal to size.");
-    }
+    CheckIndex ("index", index);
 
     _collectionData.Add (key, value);
     _collectionKeys.Insert (index, key);
+  }
+
+  // TODO documentation:
+  protected void CheckIndex (string argumentName, int index)
+  {
+    if (index < 0 || index > Count)
+    {
+      throw new ArgumentOutOfRangeException (
+          argumentName, 
+          index, 
+          "Index is out of range.  Must be non-negative and less than or equal to size.");
+    }
   }
 
   /// <summary>
