@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+<?xml version="1.0" encoding="utf-8" ?> 
 <BocReferenceValue>
   <Class>
     <remarks>
@@ -33,7 +33,7 @@
             Modifiable / <see cref="Value"/> is not <see langword="null"/>
           </term>
           <description>
-            Text is automatically provided by the <see cref="_dropDownList"/>.
+            Text is automatically provided by the <see cref="DropDownList"/>.
             Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
             if <see cref="EnableIcon"/> is <see langword="true"/>.
           </description>
@@ -44,7 +44,7 @@
           </term>
           <description>
             <para>
-              Text is automatically provided by the <see cref="_dropDownList"/>.
+              Text is automatically provided by the <see cref="DropDownList"/>.
               Updates the icon using <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
               if <see cref="EnableIcon"/> is <see langword="true"/>.
             </para><para>
@@ -59,10 +59,10 @@
           </term>
           <description>
             <para>
-              The new item is added to the list and displayed in the <see cref="_dropDownList"/>. 
+              The new item is added to the list and displayed in the <see cref="DropDownList"/>. 
             </para><para>
               If <see cref="Value"/> is null but the control is required, the undefined item is
-              added to the <see cref="_dropDownList"/> unitl the selection is again changed to a
+              added to the <see cref="DropDownList"/> unitl the selection is again changed to a
               valid item.
             </para>
           </description>

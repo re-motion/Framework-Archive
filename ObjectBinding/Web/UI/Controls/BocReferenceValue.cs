@@ -72,7 +72,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
   private Style _commonStyle = new Style();
 
-    /// <summary> The <see cref="Style"/> applied to the <see cref="_dropDownList"/>. </summary>
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
   private Style _dropDownListStyle = new Style();
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="_label"/>. </summary>
@@ -90,7 +90,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> 
   ///   The <see cref="string"/> with the search expression for populating the 
-  ///   <see cref="_dropDownList"/>.
+  ///   <see cref="DropDownList"/>.
   /// </summary>
   private string _select = String.Empty;
 
@@ -152,33 +152,18 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     {
       string newInternalValue = this.Page.Request.Form[_dropDownList.UniqueID];
       if (newInternalValue == c_nullIdentifier)
-        _newInternalValue = null;
+        _newInternalValue = c_nullIdentifier;
       else if (newInternalValue != null)
         _newInternalValue = newInternalValue;
       else
-        _newInternalValue = null;
+        _newInternalValue = c_nullIdentifier;
 
       if (! Page.IsPostBack)
-        RefreshBusinessObjectsList();
+        RefreshBusinessObjectList();
     }
 
     if (_newInternalValue != null && _newInternalValue != _internalValue)
       _isDirty = true;
-  }
-
-  /// <summary>
-  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
-  ///   through the <see cref="_dropDownList"/>.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
-  {
-    if (_newInternalValue != null && _newInternalValue != _internalValue)
-    {
-      InternalValue = _newInternalValue;
-      OnSelectionChanged (EventArgs.Empty);
-    }
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -189,119 +174,66 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       SelectionChanged (this, e);
   }
 
-  /// <summary> Handles refreshing the bound control. </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void Binding_BindingChanged (object sender, EventArgs e)
+  /// <summary>
+  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
+  ///   properly initialized.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  protected override void OnPreRender (EventArgs e)
   {
-    InternalLoadValue();
+    base.OnPreRender (e);
+
+    //  First call
+    EnsureChildControlsInitialized();
   }
 
-  /// <summary> Refreshes the sub-controls for the new value. </summary>
-  private void InternalLoadValue()
-  {
-    InternalLoadValue (false);
-  }
-
-  /// <overloads>Overloaded.</overloads>
-  /// <summary> Refreshes the sub-controls for the new value. </summary>
-  /// <param name="removeUndefined">
-  ///   <see langword="true"/> to remove the item specifying a null reference.
-  ///   Used for required values once they are set to an item different from the null item.
+  /// <summary>
+  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
+  ///   properly initialized.
+  /// </summary>
+  /// <param name="writer"> 
+  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
   /// </param>
-  private void InternalLoadValue (bool removeUndefined)
+  protected override void Render (HtmlTextWriter writer)
   {
-    //  Set the display value
-    if (IsReadOnly)
-    {
-      if (ReferenceValue != null)
-        _label.Text = ReferenceValue.DisplayName;
-      else
-        _label.Text = String.Empty;
-    }
-    else // Not Read-Only
-    {
-      if (removeUndefined)
-      {
-        ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
-        if (itemToRemove != null)
-          _dropDownList.Items.Remove (itemToRemove);
-      }
+    //  Second call has practically no overhead
+    //  Required to get optimum designer support.
+    EnsureChildControlsInitialized();
 
-      bool hasPropertyAfterInitializion = _isLoadViewState || Property != null;
+    base.Render (writer);
+  }
 
-      //  Check if null item is to be selected
-      if (InternalValue == null || ! hasPropertyAfterInitializion)
-      {
-        //  No null item in the list
-        if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
-        {
-          _dropDownList.Items.Insert (0, CreateNullItem());
-        }
+  /// <summary>
+  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
+  /// </summary>
+  /// <param name="savedState">
+  ///   An <see cref="Object"/> that represents the control state to be restored.
+  /// </param>
+  protected override void LoadViewState (object savedState)
+  {
+    _isLoadViewState = true;
 
-        _dropDownList.SelectedValue = c_nullIdentifier;
-      }
-      else
-      {
-        if (_dropDownList.Items.FindByValue (InternalValue) != null)
-        {
-          _dropDownList.SelectedValue = InternalValue;
-        }
-          //  Item not yet in the list but is a valid item.
-        else if (ReferenceValue != null)
-        {
-          IBusinessObjectWithIdentity businessObject = ReferenceValue;
+    object[] values = (object[]) savedState;
+    base.LoadViewState (values[0]);
+    InternalValue = (string) values[1];    
+    _isDirty = (bool) values[2];
 
-          _dropDownList.Items.Add (
-            new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier));
+    _isLoadViewState = false;
+  }
 
-          _dropDownList.SelectedValue = InternalValue;
-        }
-      }
-    }
-
-    //  Get icon
-    if (Property != null)
-    {
-      IBusinessObjectService service
-        = Property.ReferenceClass.BusinessObjectProvider.GetService(
-          typeof (IBusinessObjectWebUIService));
-
-      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
-
-      IconPrototype iconPrototype = null;
-      if (webUIService != null)
-      {
-        if (ReferenceValue != null)
-          iconPrototype = webUIService.GetIcon (ReferenceValue);
-        else
-          iconPrototype = webUIService.GetIcon (
-            (IBusinessObjectClassWithIdentity) Property.ReferenceClass);
-      }
-
-      if (iconPrototype != null)
-      {
-        _icon.ImageUrl = iconPrototype.Url;
-        _icon.Width = iconPrototype.Width;
-        _icon.Height = iconPrototype.Height;
-
-        _icon.Visible = EnableIcon;
-      }
-      else
-      {
-        _icon.Visible = false;
-
-        //  For debugging
-        //  _icon.ImageUrl = "/images/Help.gif";  // HACK: Should be String.Empty;
-        //  _icon.Width = Unit.Pixel(24);         // HACK: Should be Unit.Empty;
-        //  _icon.Height = Unit.Pixel(24);        // HACK: Should be Unit.Empty;
-        //  _icon.Visible = true;                 // HACK: Should be false
-      }
-    }
-    else
-    {
-      _icon.Visible = false;
-    }
+  /// <summary>
+  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
+  /// </summary>
+  /// <returns>
+  ///   Returns the server control's current view state.
+  /// </returns>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[4];
+    values[0] = base.SaveViewState();
+    values[1] = InternalValue;
+    values[2] = _isDirty;
+    return values;
   }
 
   /// <summary>
@@ -350,40 +282,31 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Populates the <see cref="DropDownList"/> with the items passes in 
-  ///   <paramref name="businessObjects"/>.
+  ///   Generates the validators depending on the control's configuration.
   /// </summary>
   /// <remarks>
-  ///   This method controls the actual refilling of the <see cref="_dropDownList"/>.
+  ///   Generates a validator that checks that the selected item is not the null item if the 
+  ///   control is in edit-mode and input is required.
   /// </remarks>
-  /// <param name="businessObjects">
-  ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
-  ///   <see cref="_dropDownList"/>. Must not be <see langword="null"/>.
-  /// </param>
-  protected virtual void RefreshDropDownList(IBusinessObjectWithIdentity[] businessObjects)
+  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  public override BaseValidator[] CreateValidators()
   {
-    ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+    if (! IsRequired)
+      return new BaseValidator[]{};
 
-    if (    Property != null 
-        &&  businessObjects != null)
-    {
-      _dropDownList.Items.Clear();
+    BaseValidator[] validators = new BaseValidator[1];
+
+    CompareValidator notNullItemValidator = new CompareValidator();
     
-      //  Add Undefined item
-      if (InternalValue == null || !IsRequired)
-      {
-        _dropDownList.Items.Add (CreateNullItem());
-      }
+    notNullItemValidator.ControlToValidate = TargetControl.ID;
+    notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    //  TODO: Get Message from ResourceProvider
+    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
-      //  Populate _dropDownList
-      foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
-      {
-        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
-        _dropDownList.Items.Add (item);
-      }
-    }
+    validators[0] = notNullItemValidator;
 
-    InternalLoadValue();
+    return validators;
   }
 
   /// <summary>
@@ -391,78 +314,72 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   edit mode.
   /// </summary>
   /// <remarks>
-  ///   <para>
-  ///     The control has to be in edit mode 
-  ///     (<see cref="BusinessObjectBoundModifiableWebControl.ReadOnly"/> set to 
-  ///     <see langword="false"/>) to refresh the list.
-  ///   </para><para>
-  ///     Use this method when manually setting the listed items, i.e. from the parent control.
-  ///   </para>
+  ///   Use this method when manually setting the listed items, i.e. from the parent control.
   /// </remarks>
   /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
-  public void SetBusinessObjectsList (IBusinessObjectWithIdentity[] businessObjects)
+  public void SetBusinessObjectReferenceList (IBusinessObjectWithIdentity[] businessObjects)
   {
-    if (IsReadOnly)
-      return;
-
     ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
-    RefreshDropDownList (businessObjects);
+    RefreshBusinessObjectList (businessObjects);
   }
 
   /// <summary>
   ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
   ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The control has to be in edit mode
-  ///     (<see cref="BusinessObjectBoundModifiableWebControl.ReadOnly"/> set to 
-  ///     <see langword="false"/>) to refresh the list.
-  ///   </para>
-  /// </remarks>
-  public void RefreshBusinessObjectsList()
+  public void RefreshBusinessObjectList()
   {
     if (Property == null)
-      return;
-
-    if (IsReadOnly)
       return;
 
     //  Get all matching business objects
     IBusinessObjectWithIdentity[] businessObjects
       = Property.SearchAvailableObjects (DataSource.BusinessObject , _select);
 
-    RefreshDropDownList (businessObjects);
+    RefreshBusinessObjectList (businessObjects);
   }
 
   /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
+  ///   Populates the <see cref="DropDownList"/> with the items passes in 
+  ///   <paramref name="businessObjects"/> before calling <see cref="InternalLoadValue"/>.
   /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnPreRender (EventArgs e)
-  {
-    base.OnPreRender (e);
-
-    //  First call
-    EnsureChildControlsInitialized();
-  }
-
-  /// <summary>
-  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
+  /// <remarks>
+  ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
+  /// </remarks>
+  /// <param name="businessObjects">
+  ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
+  ///   <see cref="DropDownList"/>.
   /// </param>
-  protected override void Render (HtmlTextWriter writer)
+  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
-    //  Second call has practically no overhead
-    //  Required to get optimum designer support.
-    EnsureChildControlsInitialized();
+    if (! IsReadOnly)
+    {
+      if (    Property != null 
+          &&  businessObjects != null)
+      {
+        _dropDownList.Items.Clear();
+      
+        //  Add Undefined item
+        if (! IsRequired)
+          _dropDownList.Items.Add (CreateNullItem());
 
-    base.Render (writer);
+        if (businessObjects != null)
+        {
+          //  Populate _dropDownList
+          foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
+          {
+            ListItem item = new ListItem (
+              businessObject.DisplayName,
+              businessObject.UniqueIdentifier);
+
+            _dropDownList.Items.Add (item);
+          }
+        }
+      }
+    }
+
+    InternalLoadValue();
   }
 
   /// <summary>
@@ -484,6 +401,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     _dropDownList.Visible = ! IsReadOnly;
     _label.Visible = IsReadOnly;
+
+    Unit iconWidth = (_icon.Visible) ? _icon.Width : Unit.Empty;
 
     Unit innerControlWidth = Unit.Empty;
 
@@ -570,37 +489,137 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _icon.ApplyStyle (_iconStyle);
   }
 
-  /// <summary>
-  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
-  protected override void LoadViewState(object savedState)
+  /// <summary> Refreshes the sub-controls for the new value. </summary>
+  private void InternalLoadValue()
   {
-    _isLoadViewState = true;
+    InternalLoadValue (false);
+  }
 
-    object[] values = (object[]) savedState;
-    base.LoadViewState (values[0]);
-    InternalValue = (string) values[1];    
-    _isDirty = (bool) values[2];
+  /// <overloads>Overloaded.</overloads>
+  /// <summary> Refreshes the sub-controls for the new value. </summary>
+  /// <param name="removeUndefined">
+  ///   <see langword="true"/> to remove the item specifying a null reference.
+  ///   Used for required values once they are set to an item different from the null item.
+  /// </param>
+  private void InternalLoadValue (bool removeUndefined)
+  {
+    bool hasPropertyAfterInitializion = ! _isLoadViewState && Property != null;
 
-    _isLoadViewState = false;
+    //  Set the display value
+    if (IsReadOnly)
+    {
+      if (ReferenceValue != null && hasPropertyAfterInitializion)
+        _label.Text = ReferenceValue.DisplayName;
+      else
+        _label.Text = String.Empty;
+    }
+    else // Not Read-Only
+    {
+      bool isNullItem =     InternalValue == c_nullIdentifier
+                        ||  ! hasPropertyAfterInitializion;
+
+      //  Prevent unnecessary removal
+      if (removeUndefined && ! isNullItem)
+      {
+        ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
+        _dropDownList.Items.Remove (itemToRemove);
+      }
+
+      //  Check if null item is to be selected
+      if (isNullItem)
+      {
+        //  No null item in the list
+        if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
+        {
+          _dropDownList.Items.Insert (0, CreateNullItem());
+        }
+
+        _dropDownList.SelectedValue = c_nullIdentifier;
+      }
+      else
+      {
+        if (_dropDownList.Items.FindByValue (InternalValue) != null)
+        {
+          _dropDownList.SelectedValue = InternalValue;
+        }
+          //  Item not yet in the list but is a valid item.
+        else if (ReferenceValue != null)
+        {
+          IBusinessObjectWithIdentity businessObject = ReferenceValue;
+
+          _dropDownList.Items.Add (
+            new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier));
+
+          _dropDownList.SelectedValue = InternalValue;
+        }
+      }
+    }
+
+    //  Get icon
+    if (Property != null)
+    {
+      IBusinessObjectService service
+        = Property.ReferenceClass.BusinessObjectProvider.GetService(
+          typeof (IBusinessObjectWebUIService));
+
+      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+
+      IconPrototype iconPrototype = null;
+      if (webUIService != null)
+      {
+        if (ReferenceValue != null)
+          iconPrototype = webUIService.GetIcon (ReferenceValue);
+        else
+          iconPrototype = webUIService.GetIcon (
+            (IBusinessObjectClassWithIdentity) Property.ReferenceClass);
+      }
+
+      if (iconPrototype != null)
+      {
+        _icon.ImageUrl = iconPrototype.Url;
+        _icon.Width = iconPrototype.Width;
+        _icon.Height = iconPrototype.Height;
+
+        _icon.Visible = EnableIcon;
+      }
+      else
+      {
+        _icon.Visible = false;
+
+        //  For debugging
+        //  _icon.ImageUrl = "/images/Help.gif";
+        //  _icon.Width = Unit.Pixel(24);       
+        //  _icon.Height = Unit.Pixel(24);      
+        //  _icon.Visible = true;               
+      }
+    }
+    else
+    {
+      _icon.Visible = false;
+    }
   }
 
   /// <summary>
-  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
+  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
+  ///   through the <see cref="DropDownList"/>.
   /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
-  protected override object SaveViewState()
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
   {
-    object[] values = new object[4];
-    values[0] = base.SaveViewState();
-    values[1] = InternalValue;
-    values[2] = _isDirty;
-    return values;
+    if (_newInternalValue != null && _newInternalValue != _internalValue)
+    {
+      InternalValue = _newInternalValue;
+      OnSelectionChanged (EventArgs.Empty);
+    }
+  }
+
+  /// <summary> Handles refreshing the bound control. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void Binding_BindingChanged (object sender, EventArgs e)
+  {
+    InternalLoadValue();
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -609,34 +628,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     ListItem emptyItem = new ListItem (string.Empty, c_nullIdentifier);
     return emptyItem;
-  }
-
-  /// <summary>
-  ///   Generates the validators depending on the control's configuration.
-  /// </summary>
-  /// <remarks>
-  ///   Generates a validator that checks that the selected item is not the null item if the 
-  ///   control is in edit-mode and input is required.
-  /// </remarks>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
-  public override BaseValidator[] CreateValidators()
-  {
-    if (! IsRequired)
-      return new BaseValidator[]{};
-
-    BaseValidator[] validators = new BaseValidator[1];
-
-    CompareValidator notNullItemValidator = new CompareValidator();
-    
-    notNullItemValidator.ControlToValidate = TargetControl.ID;
-    notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    //  TODO: Get Message from ResourceProvider
-    notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
-
-    validators[0] = notNullItemValidator;
-
-    return validators;
   }
 
   /// <summary>
@@ -658,6 +649,136 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
       base.Property = (IBusinessObjectReferenceProperty) value; 
     }
+  }
+
+  /// <summary>
+  ///   Gets or sets the current value.
+  /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
+  [Browsable (false)]
+  public virtual IBusinessObjectWithIdentity ReferenceValue
+  {
+    get 
+    {
+      if (InternalValue == c_nullIdentifier)
+      {
+        _referenceValue = null;
+      }
+      //  Only reload if value is outdated
+      else if (     Property != null
+                &&  (     _referenceValue == null
+                      ||  _referenceValue.UniqueIdentifier != InternalValue))
+      {
+        _referenceValue = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (
+          InternalValue);
+      }
+
+      return _referenceValue;
+    }
+    set 
+    { 
+      IBusinessObjectWithIdentity businessObjectWithIdentity = value;
+      _referenceValue = businessObjectWithIdentity; 
+      
+      if (businessObjectWithIdentity != null)
+        InternalValue = businessObjectWithIdentity.UniqueIdentifier;
+      else
+        InternalValue = c_nullIdentifier;
+    }
+  }
+  
+  /// <summary>
+  ///   Gets or sets the current value. Must be of type <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
+  public override object Value
+  {
+    get { return ReferenceValue;  }
+    set
+    {
+      if (value != null)
+        ReferenceValue = (IBusinessObjectWithIdentity) value;
+      else
+        ReferenceValue = null;
+    }
+  }
+
+  /// <summary>
+  ///   Gets or sets the current value.
+  /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> for the current 
+  ///   <see cref="IBusinessObjectWithIdentity"/> object
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
+  protected string InternalValue
+  {
+    get { return _internalValue; }
+    set 
+    {
+      if (_internalValue == value)
+        return;
+
+      bool isOldInternalValueNull =     _internalValue == c_nullIdentifier
+                                    ||  _internalValue == null;
+
+      if (StringUtility.IsNullOrEmpty (value))
+        _internalValue = c_nullIdentifier;
+      else
+        _internalValue = value;
+
+      bool removeUndefined =    IsRequired 
+                            &&  isOldInternalValueNull
+                            &&  _internalValue != c_nullIdentifier;
+      
+      InternalLoadValue (removeUndefined);
+    }
+  }
+
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
+  ///   using it's ClientID.
+  /// </summary>
+  public override Control TargetControl 
+  {
+    get { return (! IsReadOnly) ? _dropDownList : (Control) this; }
+  }
+
+  /// <summary>
+  ///   Specifies whether the text within the control has been changed since the last load/save
+  ///   operation.
+  /// </summary>
+  /// <remarks>
+  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> 
+  ///   during loading and saving values. Text changes by the user cause <c>IsDirty</c> to be 
+  ///   reset to <c>false</c> during the loading phase of the request (i.e., before the page's 
+  ///   <c>Load</c> event is raised).
+  /// </remarks>
+  public override bool IsDirty
+  {
+    get { return _isDirty; }
+    set { _isDirty = value; }
+  }
+
+  /// <summary>
+  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
+  ///   implementations that can be bound to this control.
+  /// </summary>
+  protected override Type[] SupportedPropertyInterfaces
+  {
+    get { return s_supportedPropertyInterfaces; }
+  }
+
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
+  public override bool UseLabel
+  {
+    get { return false; }
   }
 
   /// <summary>
@@ -727,134 +848,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     get { return _iconStyle; }
   }
 
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
-  /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
-  [Description ("Gets or sets the current value.")]
-  [Browsable (false)]
-  public virtual IBusinessObjectWithIdentity ReferenceValue
-  {
-    get 
-    {
-      //  Only reload if value is outdated
-      if (    Property != null
-          &&  (   _referenceValue == null
-               || _referenceValue.UniqueIdentifier != InternalValue))
-      {
-        _referenceValue = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (
-          InternalValue);
-      }
-
-      return _referenceValue;
-    }
-    set 
-    { 
-      IBusinessObjectWithIdentity businessObjectWithIdentity = value;
-      _referenceValue = businessObjectWithIdentity; 
-      
-      if (businessObjectWithIdentity != null)
-        InternalValue = businessObjectWithIdentity.UniqueIdentifier;
-      else
-        InternalValue = null;
-    }
-  }
-  
-  /// <summary>
-  ///   Gets or sets the current value. Must be of type <see cref="IBusinessObjectWithIdentity"/>.
-  /// </summary>
-  /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
-  [Description ("Gets or sets the current value.")]
-  [Browsable (false)]
-  public override object Value
-  {
-    get { return ReferenceValue;  }
-    set
-    {
-      if (value != null)
-        ReferenceValue = (IBusinessObjectWithIdentity) value;
-      else
-        ReferenceValue = null;
-    }
-  }
-
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
-  /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> for the current 
-  ///   <see cref="IBusinessObjectWithIdentity"/> object
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
-  [Description ("Gets or sets the current value.")]
-  [Browsable (false)]
-  protected string InternalValue
-  {
-    get { return _internalValue; }
-    set 
-    {
-      if (_internalValue == value)
-        return;
-
-      bool removeUndefined =    IsRequired 
-                            &&  (     _internalValue == c_nullIdentifier
-                                  ||  _internalValue == null);
-
-      if (StringUtility.IsNullOrEmpty (value))
-        _internalValue = null;
-      else
-        _internalValue = value;
-      
-      InternalLoadValue (removeUndefined);
-    }
-  }
-
-  /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using it's ClientID.
-  /// </summary>
-  public override Control TargetControl 
-  {
-    get { return (! IsReadOnly) ? _dropDownList : (Control) this; }
-  }
-
-  /// <summary>
-  ///   Specifies whether the text within the control has been changed since the last load/save 
-  ///   operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> 
-  ///   during loading and saving values. Text changes by the user cause <c>IsDirty</c> to be 
-  ///   reset to <c>false</c> during the loading phase of the request (i.e., before the page's 
-  ///   <c>Load</c> event is raised).
-  /// </remarks>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
-  /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
-  /// </summary>
-  protected override Type[] SupportedPropertyInterfaces
-  {
-    get { return s_supportedPropertyInterfaces; }
-  }
-
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
-  public override bool UseLabel
-  {
-    get { return false; }
-  }
-
   /// <summary> Gets the <see cref="DropDownList"/> used in edit mode. </summary>
   [Browsable (false)]
   public DropDownList DropDownList
@@ -908,7 +901,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (_select != value)
       {
         _select = value; 
-        RefreshBusinessObjectsList();
+        RefreshBusinessObjectList();
       }
     }
   }
