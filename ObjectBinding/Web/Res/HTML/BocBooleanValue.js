@@ -81,20 +81,20 @@ function BocBooleanValue_SelectNextCheckboxValue (icon, label, hiddenField, isRe
     icon.src = _bocBooleanValue_falseIconUrl;
     icon.alt = _bocBooleanValue_falseDescription;
     if (label != null)
-      label.innerText = _bocBooleanValue_falseDescription;
+      label.innerHTML = _bocBooleanValue_falseDescription;
   }
   else if (newValue == nullValue)
   {
     icon.src = _bocBooleanValue_nullIconUrl;
     icon.alt = _bocBooleanValue_nullDescription;
     if (label != null)
-      label.innerText = _bocBooleanValue_nullDescription;
+      label.innerHTML = _bocBooleanValue_nullDescription;
   }
   else if (newValue == trueValue)
   {
     icon.src = _bocBooleanValue_trueIconUrl;
     icon.alt = _bocBooleanValue_trueDescription;
     if (label != null)
-      label.innerText = _bocBooleanValue_trueDescription;
+      label.innerHTML = _bocBooleanValue_trueDescription;
   }
 }
