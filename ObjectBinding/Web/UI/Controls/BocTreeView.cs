@@ -644,6 +644,11 @@ public class BocTreeNodeClickEventArgs: WebTreeNodeClickEventArgs
   {
   }
 
+  public new BocTreeNode Node
+  {
+    get { return (BocTreeNode) base.Node; }
+  }
+
   public BusinessObjectTreeNode BusinessObjectTreeNode
   {
     get { return Node as BusinessObjectTreeNode; }
