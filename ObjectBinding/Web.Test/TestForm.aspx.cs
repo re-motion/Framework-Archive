@@ -22,7 +22,7 @@ using Rubicon.Globalization;
 namespace OBWTest
 {
 
-public class WebFormMK : WebFormBase
+public class WebFormMK : UnitTestBasePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Button SaveButton;
