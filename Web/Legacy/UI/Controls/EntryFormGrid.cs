@@ -37,7 +37,6 @@ public class EntryFieldBreak: Control
 public class EntryFormGrid: Control
 {
   private Unit _labelColumnWidth;
-  [Obsolete] private Unit _valueColumnWidth;
   private Unit _width;
   private FontUnit _fieldFontSize;
 
@@ -47,13 +46,6 @@ public class EntryFormGrid: Control
     set { _labelColumnWidth = value; }
   }
 	
-  //[Obsolete]
-  public Unit ValueColumnWidth 
-  {
-    get { return _valueColumnWidth; }
-    set { _valueColumnWidth = value; }
-  }
-
   public Unit Width 
   {
     get { return _width; }
@@ -148,10 +140,7 @@ public class EntryFormGrid: Control
       writer.WriteLine ("  <col style=\"width: 32\">");
 
       // value column
-      if (_width.IsEmpty &&  !_valueColumnWidth.IsEmpty)
-        writer.WriteLine ("  <col style=\"width: {0}\">", _valueColumnWidth);
-      else
-        writer.WriteLine ("  <col style=\"width: 100%\">");
+      writer.WriteLine ("  <col style=\"width: 100%\">");
 
       writer.WriteLine ("</colgroup>");
     }
@@ -422,8 +411,6 @@ public class EntryField: Control
     {
       if (! parentGrid.LabelColumnWidth.IsEmpty)
         labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString(CultureInfo.InvariantCulture));
-      if (! parentGrid.ValueColumnWidth.IsEmpty)
-        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString(CultureInfo.InvariantCulture));
     }
 
     string tagStyle = string.Empty;

@@ -132,9 +132,9 @@ public class DataDropDownList: DropDownList
     AddEmptyItem();
   }
 
-  public bool IsEmpty()
+  public bool IsEmpty
   {
-    return this.SelectedValue == this.EmptyValue;
+    get { return this.SelectedValue == this.EmptyValue; }
   }
 
   public void SetEmpty()

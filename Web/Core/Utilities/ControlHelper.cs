@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Collections;
 
 namespace Rubicon.Findit.Client.Controls
@@ -45,6 +46,30 @@ public class ControlHelper
     }
   }
   
+  public static bool ValidateOrder (BaseValidator smallerValidator, BaseValidator largerValidator, Type type)
+  {
+    TextBox smallerField = smallerValidator.NamingContainer.FindControl (smallerValidator.ControlToValidate) as TextBox;
+    if (smallerField == null) throw new ArgumentException ("ControlToValidate must be TextBox", "smallerValidator");
+    TextBox largerField = largerValidator.NamingContainer.FindControl (largerValidator.ControlToValidate) as TextBox;
+    if (largerField == null) throw new ArgumentException ("ControlToValidate must be TextBox", "largerValidator");
+
+    if (smallerField.Text.Trim() == string.Empty || largerField.Text.Trim() == string.Empty)
+      return true;
+
+    smallerValidator.Validate();
+    largerValidator.Validate();
+    if (! (smallerValidator.IsValid && largerValidator.IsValid) )
+      return true;
+
+    IComparable smallerValue = (IComparable) Convert.ChangeType (smallerField.Text, type);
+    IComparable largerValue = (IComparable) Convert.ChangeType (largerField.Text, type);
+        
+    if (smallerValue.CompareTo (largerValue) > 0)
+      return false;
+    else
+      return true;
+  }
+
   // member fields
 
   // construction and disposing
