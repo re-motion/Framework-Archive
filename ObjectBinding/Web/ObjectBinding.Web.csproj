@@ -147,7 +147,6 @@
                 />
                 <File
                     RelPath = "Controls\BocColumnDefinition.cs"
-                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -172,7 +171,6 @@
                 />
                 <File
                     RelPath = "Controls\BocItemCommand.cs"
-                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
