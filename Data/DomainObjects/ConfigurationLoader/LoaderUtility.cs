@@ -15,14 +15,6 @@ public sealed class LoaderUtility
 
   // static members and constants
 
-  public static string GetExecutingAssemblyPath ()
-  {
-    AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName ();
-
-    Uri codeBaseUri = new Uri (assemblyName.CodeBase);
-    return Path.GetDirectoryName (codeBaseUri.LocalPath);
-  }
-
   public static Type MapType (XmlNode node)
   {
     ArgumentUtility.CheckNotNull ("node", node);
@@ -93,7 +85,7 @@ public sealed class LoaderUtility
     if (File.Exists (fileName))
       return fileName;
 
-    return Path.Combine (GetExecutingAssemblyPath (), defaultFileName);
+    return Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), defaultFileName);
   }
 
   // member fields

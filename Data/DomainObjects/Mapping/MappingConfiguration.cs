@@ -1,6 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Loader;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Configuration.Mapping
 {
@@ -40,13 +41,24 @@ public class MappingConfiguration
 
   private ClassDefinitionCollection _classDefinitions;
   private RelationDefinitionCollection _relationDefinitions;
+  private string _configurationFile;
+  private string _schemaFile;
 
   // construction and disposing
 
-  public MappingConfiguration (MappingLoader mappingDataLoader)
+  public MappingConfiguration (string configurationFile, string schemaFile) 
+      : this (new MappingLoader (configurationFile, schemaFile))
   {
-    _classDefinitions = mappingDataLoader.GetClassDefinitions ();
-    _relationDefinitions = mappingDataLoader.GetRelationDefinitions (_classDefinitions);
+  }
+
+  public MappingConfiguration (MappingLoader loader)
+  {
+    ArgumentUtility.CheckNotNull ("loader", loader);
+
+    _classDefinitions = loader.GetClassDefinitions ();
+    _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
+    _configurationFile = loader.ConfigurationFile;
+    _schemaFile = loader.SchemaFile;
   }
 
   // methods and properties
@@ -59,6 +71,16 @@ public class MappingConfiguration
   public RelationDefinitionCollection RelationDefinitions
   {
     get { return _relationDefinitions; }
+  }
+
+  public string ConfigurationFile
+  {
+    get { return _configurationFile; }
+  }
+
+  public string SchemaFile
+  {
+    get { return _schemaFile; }
   }
 }
 }
