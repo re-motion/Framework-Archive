@@ -18,138 +18,19 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 public class DomainObjectProperty: IBusinessObjectProperty
 {
-  public static DomainObjectProperty Create (
-      PropertyInfo propertyInfo, 
-      ClassDefinition classDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-    bool isList = false;
-    Type itemType = null;
-
-    if (propertyInfo.PropertyType == typeof (DomainObjectCollection)
-        || propertyInfo.PropertyType.IsSubclassOf (typeof (DomainObjectCollection)))
-    {
-      isList = true;
-      itemType = typeof (BindableDomainObject);
-
-      object[] itemTypeAttributes = 
-          propertyInfo.GetCustomAttributes (typeof(ItemTypeAttribute), true);
-
-      if (itemTypeAttributes.Length > 0)
-      {
-        itemType = ((ItemTypeAttribute) itemTypeAttributes[0]).ItemType;
-
-        if (itemType != typeof (BindableDomainObject)
-            && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
-        {
-          throw new InvalidOperationException ("The ItemType defined for a property of type "
-              + "DomainObjectCollection or subclass of must be a DomainObject or a subclass of.");
-        }
-      }
-      else if (classDefinition != null)
-      {
-        IRelationEndPointDefinition relationEndPointDefinition = 
-            classDefinition.GetRelationEndPointDefinition (propertyInfo.Name);
-
-        if (relationEndPointDefinition != null)
-        {
-          IRelationEndPointDefinition oppositeRelationEndPointDefinition =
-              classDefinition.GetOppositeEndPointDefinition (propertyInfo.Name);
-
-          itemType = oppositeRelationEndPointDefinition.ClassDefinition.ClassType;
-        }
-      }
-    }
-    else
-    {
-      isList = propertyInfo.PropertyType.IsArray;
-      itemType = isList ? propertyInfo.PropertyType.GetElementType() : propertyInfo.PropertyType;
-    }
-
-    bool isNullableType = false;
-    if (NaTypeUtility.IsNaNullableType (itemType))
-    {
-      isNullableType = true;
-      itemType = NaTypeUtility.GetBasicType (itemType);
-    }
-
-    PropertyDefinition propertyDefinition = null;
-
-    if (classDefinition != null)
-      propertyDefinition = classDefinition.GetPropertyDefinition (propertyInfo.Name);
-
-    if (itemType == typeof (string))
-    {
-      return new StringProperty (propertyInfo, propertyDefinition, itemType, isList);
-    }
-    else if (itemType == typeof (Guid))
-    {
-      return new GuidProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (byte))
-    {
-      return new ByteProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (int))
-    {
-      return new Int32Property (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (Int16))
-    {
-      return new Int16Property (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (Single))
-    {
-      return new SingleProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (double))
-    {
-      return new DoubleProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (decimal))
-    {
-      return new DecimalProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (bool))
-    {
-      return new BooleanProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType == typeof (DateTime))
-    {
-      if (propertyDefinition != null && propertyDefinition.MappingType == "date")
-        return new DateProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-      else
-        return new DateTimeProperty (propertyInfo, propertyDefinition, itemType, isList, isNullableType);
-    }
-    else if (itemType.IsEnum)
-    {
-      return new EnumerationProperty (propertyInfo, propertyDefinition, itemType, isList);
-    }
-    else if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (itemType))
-    {
-      return new ReferenceProperty (propertyInfo, propertyDefinition, 
-        classDefinition.GetRelationEndPointDefinition (propertyInfo.Name), itemType, isList);
-    }
-    else
-    {
-      return new DomainObjectProperty (propertyInfo, propertyDefinition, itemType, isList);
-    }
-  }
-
   PropertyInfo _propertyInfo;
-  PropertyDefinition _propertyDefinition;
+  bool _isRequired;
   Type _itemType;
   bool _isList;
 
-  protected DomainObjectProperty (
+  internal DomainObjectProperty (
       PropertyInfo propertyInfo, 
-      PropertyDefinition propertyDefinition, 
+      bool isRequired,
       Type itemType, 
       bool isList)
   {
     _propertyInfo = propertyInfo;
-    _propertyDefinition = propertyDefinition;
+    _isRequired = isRequired;
     _itemType = itemType;
     _isList = isList;
   }
@@ -161,7 +42,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
   public IList CreateList (int count)
   {
-    if (! IsList)
+    if (!IsList)
       throw new InvalidOperationException ("Cannot create lists for non-list properties.");
     return Array.CreateInstance (_itemType, count);
   }
@@ -202,7 +83,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
   public virtual bool IsRequired
   {
-    get { return (_propertyDefinition != null) ? !_propertyDefinition.IsNullable : true;  }
+    get { return _isRequired;  }
   }
   
   public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
@@ -223,11 +104,6 @@ public class DomainObjectProperty: IBusinessObjectProperty
   public PropertyInfo PropertyInfo
   {
     get { return _propertyInfo; }
-  }
-
-  public PropertyDefinition PropertyDefinition
-  {
-    get { return _propertyDefinition; }
   }
 
   internal protected virtual object FromInternalType (object internalValue)
