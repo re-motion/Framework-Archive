@@ -146,15 +146,46 @@ public class BocItemCommand
 
     /// <summary> 
     ///   Gets or sets the comma separated list of parameters passed to the WxeFunction when the rendered 
-    ///   command is clicked. 
+    ///   command is clicked.
     /// </summary>
+    /// <remarks>
+    ///   The following reference parameters can be added to the list of parameters.
+    ///   <list type="table">
+    ///     <listheader>
+    ///       <term> Name </term>
+    ///       <description> Contents </description>
+    ///     </listheader>
+    ///     <item>
+    ///       <term> @index </term>
+    ///       <description> 
+    ///         The index of the <see cref="IBusinessObject"/> in the <see cref="IBusinessObjectProperty"/>.
+    ///       </description>
+    ///     </item>
+    ///     <item>
+    ///       <term> @id </term>
+    ///       <description> The ID, if the object is of type <see cref="IBusinessObjectWithIdentity"/>. </description>
+    ///     </item>
+    ///     <item>
+    ///       <term> @object </term>
+    ///       <description> The <see cref="IBusinessObject"/> it self. </description>
+    ///     </item>
+    ///     <item>
+    ///       <term> @parent </term>
+    ///       <description> The containing <see cref="IBusinessObject"/>. </description>
+    ///     </item>
+    ///     <item>
+    ///       <term> @parentproperty </term>
+    ///       <description> The <see cref="IBusinessObjectReferenceProperty"/> used to acess the object. </description>
+    ///     </item>
+    ///   </list>
+    /// </remarks>
     /// <value> 
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("A comma separated list of parameters for the command.")]
+    [Description ("A comma separated list of parameters for the command. The following reference parameter are available: @index, @id, @object, @parent, @parentproperty.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
     public string Parameters
