@@ -36,14 +36,14 @@ public class ViewControl: Control
     set { _valueColumnWidth = value; }
   }
 
-	/// <summary> 
-	/// Render this control to the output parameter specified.
-	/// </summary>
-	/// <param name="output"> The HTML writer to write out to </param>
-	protected override void Render(HtmlTextWriter writer)
-	{
-		
-    writer.Write ("<table cellpadding=\"2\" cellspacing=\"3\"");
+  protected virtual void RenderMainControl (HtmlTextWriter writer, Control control)
+  {
+    control.RenderControl (writer);
+  }
+
+  protected void RenderViewControl(HtmlTextWriter writer, int cellPadding, int cellSpacing)
+  {
+    writer.Write (string.Format ("<table cellpadding=\"{0}\" cellspacing=\"{1}\"", cellPadding, cellSpacing) );
     
     if (LabelColumnWidth.Value != 0 && ValueColumnWidth.Value != 0)
     {
@@ -62,24 +62,31 @@ public class ViewControl: Control
     writer.WriteLine (">");
     
     for (int i = 0; i < this.Controls.Count; ++i)
-		{
-			Control control = this.Controls[i];
+    {
+      Control control = this.Controls[i];
       
       if (control.GetType() == typeof(EntryTitle))
       {
-          writer.WriteLine("<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
-          control.RenderControl (writer);
-          writer.WriteLine ("</table></td></tr>");
+        writer.WriteLine("<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
+        control.RenderControl (writer);
+        writer.WriteLine ("</table></td></tr>");
       }
       else
       {
-        control.RenderControl (writer);
+        RenderMainControl (writer, control);
       }
-		}
-    
-    
+    }
 
     writer.WriteLine ("</table>");
+  }
+
+	/// <summary> 
+	/// Render this control to the output parameter specified.
+	/// </summary>
+	/// <param name="output"> The HTML writer to write out to </param>
+	protected override void Render(HtmlTextWriter writer)
+	{
+    RenderViewControl (writer, 2, 3);
 	}
 }
   
