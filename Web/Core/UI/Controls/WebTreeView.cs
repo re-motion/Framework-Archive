@@ -14,7 +14,7 @@ namespace Rubicon.Web.UI.Controls
 /// <summary> A tree view. </summary>
 [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
 [DefaultEvent ("Click")]
-public class WebTreeView : WebControl, IControl, IPostBackEventHandler
+public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 {
   // constants
   #region private const string c_nodeIcon...
@@ -104,6 +104,15 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   }
 
   //  methods and properties
+
+//  public void RaisePostDataChangedEvent()
+//  {
+//  }
+//
+//  public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+//  {
+//    return false;
+//  }
 
   /// <summary> Implementation of the <see cref="IPostBackEventHandler"/> interface. </summary>
   /// <param name="eventArgument"> &lt;command prefix&gt;&lt;node path&gt;</param>
