@@ -115,7 +115,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   public BocCommandColumnDefinition()
     : base (null, Unit.Empty)
   {
-    _command = BocItemCommand.CreateHrefItemCommand (".aspx?{0}");
+    _command = new BocItemCommand();
   }
 
   public override string ToString()

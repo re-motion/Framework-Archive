@@ -14,7 +14,7 @@ public class BocItemCommand
 {
   private string _href;
   private string _target;
-  private BocItemCommandType _type;
+  private BocItemCommandType _type = BocItemCommandType.Href;
 
   public BocItemCommand()
   {}
@@ -43,11 +43,22 @@ public class BocItemCommand
 
   public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
   {
-    string href = string.Format (_href, index, id);
-    writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
-    if (_target != null) 
-      writer.AddAttribute (HtmlTextWriterAttribute.Target, _target);
-    writer.RenderBeginTag (HtmlTextWriterTag.A);    
+    switch (_type)
+    {
+      case BocItemCommandType.Href:
+      {
+        string href = string.Format (Href, index, id);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+        if (Target != null) 
+          writer.AddAttribute (HtmlTextWriterAttribute.Target, Target);
+        writer.RenderBeginTag (HtmlTextWriterTag.A);    
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
   }
 
   public virtual void RenderEnd (HtmlTextWriter writer)
@@ -82,13 +93,13 @@ public class BocItemCommand
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
-  [DefaultValue(".aspx?{1}")]
+  [DefaultValue("")]
   public string Href 
   {
     get
     {
       if (_type == BocItemCommandType.Href)
-        return _href; 
+        return StringUtility.NullToEmpty (_href); 
       else
         return null;
     }
@@ -106,7 +117,7 @@ public class BocItemCommand
     get
     { 
       if (_type == BocItemCommandType.Href)
-        return _target; 
+        return StringUtility.NullToEmpty (_target); 
       else
         return null;
     }
@@ -128,6 +139,7 @@ public class BocItemCommand
 
 public enum BocItemCommandType
 {
+  Undefined,
   Href
 }
 }

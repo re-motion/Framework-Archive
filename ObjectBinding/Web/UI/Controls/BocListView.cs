@@ -51,7 +51,7 @@ public class BocColumnDefinitionSet
   }
 
   public BocColumnDefinitionSet (object title, BocColumnDefinition[] columnDefinitions)
-    : this (null, title, null)
+    : this (null, title, columnDefinitions)
   {}
 
   public BocColumnDefinitionSet (object title)
