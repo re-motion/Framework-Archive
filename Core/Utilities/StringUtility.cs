@@ -38,7 +38,7 @@ public sealed class StringUtility
 
   public static string EmptyToNull (string str)
   {
-    if (str.Length == 0)
+    if (str != null && str.Length == 0)
       return null;
     return str;
   }
