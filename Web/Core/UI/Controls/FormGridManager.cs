@@ -11,8 +11,7 @@ using System.Reflection;
 
 using log4net;
 
-using Rubicon.Web.UI.Utilities;
-using Rubicon;
+using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Globalization;
