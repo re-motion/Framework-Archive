@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
+using System.Web.UI;
 using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
@@ -25,6 +26,13 @@ public class TestTabbedPersonJobsUserControl :
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 
       new AutoInitHashtable (typeof (StringCollection));
+  private Control _incomeField;
+
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+    _incomeField.Visible = false;
+  }
 
   public override IBusinessObjectDataSourceControl DataSource
   {
@@ -45,18 +53,26 @@ public class TestTabbedPersonJobsUserControl :
 
 	override protected void OnInit(EventArgs e)
 	{
-//    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[FormGrid];
-//    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
-//    BocList childrenList = new BocList();
-//    childrenList.ID = "ChildrenList";
-//    childrenList.DataSource = DataSource;
-//    childrenList.PropertyIdentifier = "Children";
-//    newRows.Add (new FormGridRowInfo (childrenList, FormGridRowInfo.RowType.ControlInRowWithLabel, null, FormGridRowInfo.RowPosition.AfterRowWithID));
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
 		InitializeComponent();
 		base.OnInit(e);
+
+    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
+
+    BocTextValue incomeField = new BocTextValue();
+    incomeField.ID = "IncomeField";
+    incomeField.DataSourceControl = ReflectionBusinessObjectDataSourceControl.ID;
+    incomeField.PropertyIdentifier = "Income";
+    _incomeField = incomeField;
+
+    //  A new row
+    newRows.Add (new FormGridRowInfo(
+        incomeField, 
+        FormGridRowInfo.RowType.ControlInRowWithLabel, 
+        MultilineTextField.ID, 
+        FormGridRowInfo.RowPosition.AfterRowWithID));
   }
 	
 	/// <summary>
