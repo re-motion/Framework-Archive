@@ -244,10 +244,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\DropDownMenu.htc"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Res\HTML\DropDownMenu.js"
                     BuildAction = "Content"
                 />
