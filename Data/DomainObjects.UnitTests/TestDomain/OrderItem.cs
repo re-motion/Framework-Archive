@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -27,6 +28,13 @@ public class OrderItem : TestDomainBase
 
   protected OrderItem (DataContainer dataContainer) : base (dataContainer)
   {
+  }
+
+  public OrderItem (Order order)
+  {
+    ArgumentUtility.CheckNotNull ("order", order);
+
+    this.Order = order;
   }
 
   // methods and properties
