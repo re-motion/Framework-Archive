@@ -217,7 +217,7 @@ public class BocList:
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
   /// </summary>
-  private string _additionalColumnsTitle = "Additional Columns";
+  private string _additionalColumnsTitle = "View";
 
   /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
   private Unit _additionalColumnsListWidth = Unit.Empty;
@@ -746,16 +746,19 @@ public class BocList:
 
   private void RenderTableAndMenuInternetExplorer501Compatible (HtmlTextWriter writer)
   {
-    writer.AddStyleAttribute ("display", "inline");
-    writer.AddStyleAttribute ("float", "right");
-    writer.AddStyleAttribute ("vertical-align", "top");
-    string menuBlockWidth = c_defaultMenuBlockWidth;
-    if (! _menuBlockWidth.IsEmpty)
-      menuBlockWidth = _menuBlockWidth.ToString();
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);      
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-    RenderMenuBlock (writer);
-    writer.RenderEndTag();
+    if (HasMenuBlock)
+    {
+      writer.AddStyleAttribute ("display", "inline");
+      writer.AddStyleAttribute ("float", "right");
+      writer.AddStyleAttribute ("vertical-align", "top");
+      string menuBlockWidth = c_defaultMenuBlockWidth;
+      if (! _menuBlockWidth.IsEmpty)
+        menuBlockWidth = _menuBlockWidth.ToString();
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);      
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      RenderMenuBlock (writer);
+      writer.RenderEndTag();
+    }
     
     writer.AddStyleAttribute ("display", "inline");
     writer.AddStyleAttribute ("vertical-align", "top");
@@ -780,19 +783,22 @@ public class BocList:
     RenderTableBlock (writer);
     writer.RenderEndTag();  //  End table-cell
 
-    writer.AddStyleAttribute ("display", "table-cell");
-    writer.AddStyleAttribute ("vertical-align", "top");
-    string menuBlockWidth = c_defaultMenuBlockWidth;
-    if (! _menuBlockWidth.IsEmpty)
-      menuBlockWidth = _menuBlockWidth.ToString();
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);       
-    string menuBlockOffset = c_defaultMenuBlockOffset;
-    if (! _menuBlockOffset.IsEmpty)
-      menuBlockOffset = _menuBlockWidth.ToString();
-    writer.AddStyleAttribute ("padding-left", menuBlockOffset);
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-cell
-    RenderMenuBlock (writer);
-    writer.RenderEndTag();  //  End table-cell
+    if (HasMenuBlock)
+    {
+      writer.AddStyleAttribute ("display", "table-cell");
+      writer.AddStyleAttribute ("vertical-align", "top");
+      string menuBlockWidth = c_defaultMenuBlockWidth;
+      if (! _menuBlockWidth.IsEmpty)
+        menuBlockWidth = _menuBlockWidth.ToString();
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);       
+      string menuBlockOffset = c_defaultMenuBlockOffset;
+      if (! _menuBlockOffset.IsEmpty)
+        menuBlockOffset = _menuBlockWidth.ToString();
+      writer.AddStyleAttribute ("padding-left", menuBlockOffset);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-cell
+      RenderMenuBlock (writer);
+      writer.RenderEndTag();  //  End table-cell
+    }
 
     writer.RenderEndTag();  //  End table-row
     writer.RenderEndTag();  //  End table
@@ -835,15 +841,37 @@ public class BocList:
     RenderTableBlock (writer);
     writer.RenderEndTag();
 
-    //  Menu Block
-    writer.AddStyleAttribute ("vertical-align", "top");
-    writer.RenderBeginTag (HtmlTextWriterTag.Td);
-    RenderMenuBlock (writer);
-    writer.RenderEndTag();
-
+    if (HasMenuBlock)
+    {
+      //  Menu Block
+      writer.AddStyleAttribute ("vertical-align", "top");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      RenderMenuBlock (writer);
+      writer.RenderEndTag();
+    }
     writer.RenderEndTag();  //  TR
 
     writer.RenderEndTag();  //  Table
+  }
+
+  private bool HasMenuBlock
+  {
+    get { return HasAdditionalColumnsList || HasOptionsMenu || HasListMenu; }
+  }
+
+  private bool HasAdditionalColumnsList
+  {
+    get { return _showAdditionalColumnsList && _additionalColumnsList.Items.Count > 0; }
+  }
+
+  private bool HasOptionsMenu
+  {
+    get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
+  }
+
+  private bool HasListMenu
+  {
+    get { return EnsureListMenuItemsGot().Length > 0; }
   }
 
   /// <summary> Renders the menu block of the control. </summary>
@@ -856,68 +884,33 @@ public class BocList:
   /// </param>
   private void RenderMenuBlock (HtmlTextWriter writer)
   {
-    if (_showAdditionalColumnsList)
+    if (HasAdditionalColumnsList)
     {
-//      writer.AddStyleAttribute ("position", "relative");
-//      writer.AddStyleAttribute ("z-index", "0");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.Write (_additionalColumnsTitle + c_whiteSpace);
-      if (IsDesignMode && _additionalColumnsListWidth.IsEmpty)
+      if (IsDesignMode)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
-//      _additionalColumnsList.Style["z-index"] = "0";
       _additionalColumnsList.RenderControl (writer);
       writer.RenderEndTag();
     }
 
-    if (_showOptionsMenu)
+    if (HasOptionsMenu)
     {
       _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.RenderControl (writer);
     }
 
-    #region Temporay filling material
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 1");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 2");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 3");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 4");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 5");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 6");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 7");
-//    writer.RenderEndTag();
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
-//    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "80%");
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.Write ("Other stuff 8");
-//    writer.RenderEndTag();
-    #endregion
+    if (HasListMenu)
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      foreach (BocMenuItem menuItem in _listMenuItems)
+      {
+        writer.Write ("{0} <br>", menuItem.Text);
+      }
+      writer.RenderEndTag();
+    }
   }
 
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
@@ -2697,7 +2690,7 @@ public class BocList:
   /// </summary>
   [Category ("Menu")]
   [Description ("The text that is rendered as a title for the list of additional columns.")]
-  [DefaultValue ("Additional Columns")]
+  [DefaultValue ("View")]
   public string AdditionalColumnsTitle
   {
     get { return _additionalColumnsTitle; }
