@@ -14,6 +14,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
+/// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
 //  TODO: Date-Picker
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]

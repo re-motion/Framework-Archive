@@ -206,6 +206,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocDateTimeValueValidator.xml"
                     BuildAction = "Content"
                 />
