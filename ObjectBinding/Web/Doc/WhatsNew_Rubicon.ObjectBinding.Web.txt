@@ -5,7 +5,10 @@
   * Sortieren: Bisher: Sortierung nach IBusinessObject.GetPropertyValue.ToString() falls 
     IBusinessObject.GetPropertyValue() nicht ICompareable unterstützt, jetzt ist die letzte Instanz
     IBusinessObject.GetPropertyString().
-  
+
+- BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue, BocList
+  * Lokaliserung der Resourcen für Deutsch.
+    
 1.2.9.0
 =======
 
