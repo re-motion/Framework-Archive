@@ -176,7 +176,7 @@ insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDC
 -- this Order has no OrderItems and the Official does not exist
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Order', 6, '2006/03/01', 
-    '{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Company', 'UnitTestStorageProviderStub|Official|2|System.Int32')
+    '{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Company', 'UnitTestStorageProviderStub|Official|-1|System.Int32')
 
 
 -- OrderItem
