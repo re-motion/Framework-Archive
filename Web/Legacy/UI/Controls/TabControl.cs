@@ -160,6 +160,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   private bool _serverSideNavigation = true;
   private string _backLinkUrl = string.Empty;
 
+  public event EventHandler BeforeNavigation;
+
   // construction and disposal
 
   // methods and properties
@@ -278,6 +280,12 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 		get { return _tabs; }
 	}
 
+  protected virtual void OnBeforeNavigation (EventArgs e)
+  {
+    if (BeforeNavigation != null)
+      BeforeNavigation (this, e);
+  }
+
 	void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
 	{
     SetSelectedItems (string.Empty);
@@ -317,7 +325,11 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     string url = GetCompleteUrl (selectedTab, tab, 0);
     if (AllowNavigation (url))
     {
+      OnBeforeNavigation (new EventArgs ());
+
       _activeTab = tab;      
+
+      url = AddCleanupTokenForINavigablePage (url);
       PageUtility.Redirect (Page.Response, url);
     }
   }
@@ -332,7 +344,11 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     string url = GetCompleteUrl (selectedMenu, _activeTab, menu);
     if (AllowNavigation (url))
     {
+      OnBeforeNavigation (new EventArgs ());
+
       _activeMenu = menu;
+
+      url = AddCleanupTokenForINavigablePage (url);
       PageUtility.Redirect (Page.Response, url);
     }
   }
@@ -360,24 +376,6 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     return url;
   }
 
-
-  /*
-    
-	protected override object SaveViewState ()
-	{
-		return new Pair (base.SaveViewState(), _activeTab);
-	}
-
-	protected override void LoadViewState (object savedState)
-	{
-		
-    Pair state = (Pair) savedState;
-		base.LoadViewState (state.First);
-		_activeTab = (int) state.Second;
-    
-	}
-
-  */
   private string GetHref (int tabIndex, Tab tab)
   {
     return GetHref ("TabSelected", tabIndex, tabIndex, 0, tab);
@@ -385,6 +383,15 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   private string GetHref (int tabIndex, int menuIndex, TabMenu tabMenu)
   {
     return GetHref ("MenuSelected", menuIndex, tabIndex, menuIndex, tabMenu);
+  }
+
+  private string AddCleanupTokenForINavigablePage (string url)
+  {
+    INavigablePage navigablePage = this.Page as INavigablePage;
+    if (navigablePage != null)
+      return PageUtility.AddCleanupToken (navigablePage, url);
+    else 
+      return url;
   }
 
   private string GetHref (string eventName, int itemIndex, int tabIndex, int menuIndex, ITabItem tabItem)
@@ -411,7 +418,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
         {
           if (tabItem.SupportsPageToken)
           {
-            url = PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.Token);
+            url = AddCleanupTokenForINavigablePage (url);
           }
           else
           {
