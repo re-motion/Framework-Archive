@@ -38,9 +38,29 @@ public class WebForm :
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 
       new AutoInitHashtable (typeof (StringCollection));
+  
+  protected HtmlGenericControl HtmlHead;
+  protected System.Web.UI.WebControls.Label PersonDataLabel;
+  protected System.Web.UI.WebControls.Label NameLabel;
+  protected System.Web.UI.WebControls.TextBox NameField;
+  protected System.Web.UI.WebControls.DropDownList GenderList;
+  protected System.Web.UI.WebControls.TextBox ZipField;
+  protected System.Web.UI.WebControls.TextBox PlaceField;
+  protected System.Web.UI.WebControls.TextBox AddressField;
+  protected System.Web.UI.HtmlControls.HtmlTable MainFormGrid;
+  protected System.Web.UI.WebControls.CompareValidator NameFieldCompareValidator;
+  protected System.Web.UI.WebControls.CompareValidator GenderListCompareValidator;
+  protected System.Web.UI.WebControls.Table CompaniesTable;
+  protected System.Web.UI.WebControls.RequiredFieldValidator CompaniesTableRequiredFieldValidator;
+  protected System.Web.UI.WebControls.Label EducationLavel;
+  protected System.Web.UI.WebControls.TextBox EducationField;
+  protected System.Web.UI.WebControls.TextBox FirstNameField;
+  protected System.Web.UI.WebControls.TextBox LastNameField;
+  protected System.Web.UI.WebControls.Label CombinedName_Label;
   protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected Rubicon.Web.UI.Controls.FormGridLabel AddressLabel;
+  protected System.Web.UI.WebControls.Button SubmitButton;
 
 	override protected void OnInit(EventArgs e)
 	{
@@ -89,27 +109,20 @@ public class WebForm :
 
 	}
 	
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
+    base.RenderChildren (writer);
+  }
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
+    ResourceDispatcher.Dispatch (this);
+  }
 
 	#region Web Form Designer generated code
-
-  protected System.Web.UI.WebControls.Label PersonDataLabel;
-  protected System.Web.UI.WebControls.Label NameLabel;
-  protected System.Web.UI.WebControls.TextBox NameField;
-  protected System.Web.UI.WebControls.DropDownList GenderList;
-  protected System.Web.UI.WebControls.TextBox ZipField;
-  protected System.Web.UI.WebControls.TextBox PlaceField;
-  protected System.Web.UI.WebControls.TextBox AddressField;
-  protected System.Web.UI.HtmlControls.HtmlTable MainFormGrid;
-  protected System.Web.UI.WebControls.CompareValidator NameFieldCompareValidator;
-  protected System.Web.UI.WebControls.CompareValidator GenderListCompareValidator;
-  protected System.Web.UI.WebControls.Table CompaniesTable;
-  protected System.Web.UI.WebControls.RequiredFieldValidator CompaniesTableRequiredFieldValidator;
-  protected System.Web.UI.WebControls.Button submitButton;
-  protected System.Web.UI.WebControls.Label EducationLavel;
-  protected System.Web.UI.WebControls.TextBox EducationField;
-  protected System.Web.UI.WebControls.TextBox FirstNameField;
-  protected System.Web.UI.WebControls.TextBox LastNameField;
-  protected System.Web.UI.WebControls.Label CombinedName_Label;
 
   /// <summary>
 	/// Required method for Designer support - do not modify
@@ -117,9 +130,7 @@ public class WebForm :
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
-    this.PreRender += new System.EventHandler(this.WebForm_PreRender);
-
+    this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
   }
 	#endregion
 
@@ -174,13 +185,7 @@ public class WebForm :
     return Server.MapPath (resourceType.Name + "/" + relativeUrl);
   }
 
-  private void WebForm_PreRender(object sender, System.EventArgs e)
-  {
-    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this);
-  }
-
-  private void submitButton_Click(object sender, System.EventArgs e)
+  private void SubmitButton_Click(object sender, System.EventArgs e)
   {
     //  Validate the form grid manager
     GlobalFormGridManager.Validate();

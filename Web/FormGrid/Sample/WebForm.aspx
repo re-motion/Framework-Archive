@@ -1,13 +1,14 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page language="c#" Codebehind="WebForm.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Sample.WebForm" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head>
+  <head 
+id="HtmlHead">
     <title>WebForm1</title>
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><LINK href="Html/style.css" type=text/css rel=stylesheet >
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
   </head>
 <body>
 <form id=Form1 method=post runat="server"><rwc:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" DESIGNTIMEDRAGDROP="62"></rwc:ValidationStateViewer>
@@ -53,6 +54,6 @@ runat="server">
 <asp:TableCell></asp:TableCell>
 <asp:TableCell></asp:TableCell>
 </asp:TableRow>
-</asp:table><asp:requiredfieldvalidator id=CompaniesTableRequiredFieldValidator runat="server" ErrorMessage="Bitte geben Sie eine Firma an." controltovalidate="Company1NameField"></asp:requiredfieldvalidator></td></tr></table><asp:button id=submitButton runat="server" Text="Abschicken"></asp:button><rwc:FormGridManager id="GlobalFormGridManager" runat="server" visible="true"></rwc:FormGridManager></form>
+</asp:table><asp:requiredfieldvalidator id=CompaniesTableRequiredFieldValidator runat="server" ErrorMessage="Bitte geben Sie eine Firma an." controltovalidate="Company1NameField"></asp:requiredfieldvalidator></td></tr></table><asp:button id=SubmitButton runat="server" Text="Abschicken"></asp:button><rwc:FormGridManager id="GlobalFormGridManager" runat="server" visible="true"></rwc:FormGridManager></form>
   </body>
 </html>
