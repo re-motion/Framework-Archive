@@ -66,6 +66,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return _binding.Property; }
     set { _binding.Property = value; }
   }
+
+  [Browsable (false)]
+  protected bool IsDesignMode
+  {
+    get { return this.Site != null && this.Site.DesignMode;  }
+  }
   #endregion
 
 //  /// <summary>
