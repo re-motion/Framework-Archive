@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Data.DomainObjects.Persistence
 {
 [Serializable]
-public class ConcurrencyViolationException : PersistenceException
+public class ConcurrencyViolationException : StorageProviderException
 {
   // types
 
