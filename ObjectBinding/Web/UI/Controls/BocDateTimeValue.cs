@@ -89,7 +89,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private string _newInternalTimeValue = null;
 
   /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
-  private NaDateTime _originalDateTimeValue = NaDateTime.Null;
+  private NaDateTime _savedDateTimeValue = NaDateTime.Null;
 
   /// <summary> The externally set <see cref="BocDateTimeValueType"/>. </summary>
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
@@ -269,7 +269,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _actualValueType = (BocDateTimeValueType) values[4];
     _showSeconds = (bool) values[5];
     _provideMaxLength = (bool) values[6];
-    _originalDateTimeValue = (NaDateTime) values[7];
+    _savedDateTimeValue = (NaDateTime) values[7];
     _isDirty = (bool) values[8];
   }
 
@@ -290,7 +290,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     values[4] = _actualValueType;
     values[5] = _showSeconds;
     values[6] = _provideMaxLength;
-    values[7] = _originalDateTimeValue;
+    values[7] = _savedDateTimeValue;
     values[8] = _isDirty;
 
     return values;
@@ -781,17 +781,26 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     {
       InternalDateValue = _newInternalDateValue;
       
-      //  Reset the time in if the Control is displazed in date mode
-      //  and the date was changed
+      //  Reset the time in if the control is displayed in date mode and the date was changed
       if (    ActualValueType == BocDateTimeValueType.Date
-          &&  ! _originalDateTimeValue.IsNull)
+          &&  ! _savedDateTimeValue.IsNull)
       {
-         _originalDateTimeValue = _originalDateTimeValue.Date;
+         _savedDateTimeValue = _savedDateTimeValue.Date;
       }
     }
 
     if (isTimeChanged)
+    {
       InternalTimeValue = _newInternalTimeValue;
+      
+      //  Reset the seconds if the control does not display seconds and the time was changed
+      if (    ! ShowSeconds
+          &&  ! _savedDateTimeValue.IsNull)
+      {
+          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
+         _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
+      }
+    }
 
     if (isDateChanged || isTimeChanged)
       OnDateTimeChanged (EventArgs.Empty);
@@ -876,8 +885,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         {
           dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
 
-          if (! _originalDateTimeValue.IsNull && ! ShowSeconds)
-            dateTimeValue = dateTimeValue.AddSeconds (_originalDateTimeValue.Second);
+          //  Restore the seconds if the control does not display them.
+          if (    ! ShowSeconds
+              &&  ! _savedDateTimeValue.IsNull)
+          {
+            dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Second);
+          }
         }
         catch (FormatException ex)
         {
@@ -885,9 +898,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         }
       }
       else if (     ActualValueType == BocDateTimeValueType.Date
-                &&  ! _originalDateTimeValue.IsNull)
+                &&  ! _savedDateTimeValue.IsNull)
       {
-        dateTimeValue = dateTimeValue.Add (_originalDateTimeValue.Time);
+        //  Restore the time if the control is displayed in date mode.
+        dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Time);
       }
 
       return dateTimeValue;
@@ -898,12 +912,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {
         InternalDateValue = null;
         InternalTimeValue = null;
-        _originalDateTimeValue = NaDateTime.Null;
+        _savedDateTimeValue = NaDateTime.Null;
         return;
       }
 
       DateTime dateTimeValue = (DateTime) value;
-      _originalDateTimeValue = new NaDateTime (dateTimeValue);
+      _savedDateTimeValue = new NaDateTime (dateTimeValue);
 
       if (    ActualValueType == BocDateTimeValueType.DateTime
           ||  ActualValueType == BocDateTimeValueType.Date)

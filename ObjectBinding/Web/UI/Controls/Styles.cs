@@ -188,6 +188,27 @@ public class ListControlStyle: Style
   }
 }
 
+public class DropDownListStyle: Style
+{
+  private NaBoolean _autoPostback = NaBoolean.Null;
+
+  [Description("Automatically postback to the server after the text is modified.")]
+  [Category("Behavior")]
+  [DefaultValue (typeof(NaBoolean), "Null")]
+  [NotifyParentProperty (true)]
+  public NaBoolean AutoPostback
+  {
+    get { return _autoPostback; }
+    set { _autoPostback = value; }
+  }
+
+  public void ApplyStyle (DropDownList dropDownList)
+  {
+    if (! _autoPostback.IsNull)
+      dropDownList.AutoPostBack = _autoPostback.Value;
+  }
+}
+
 /// <summary>
 /// Styles for single row TextBox controls.
 /// </summary>
