@@ -96,13 +96,6 @@
     <ifnot propertyexists="SS.dir" >
       <property name="SS.dir" value="." /> 
     </ifnot>
-    <exec program="cmd" append="true" commandline="/C SET"
-                                     workingdir="${SS.dir}" >
-      <environment>
-        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
-      </environment>  
-    </exec>
-
     <exec program="SS.EXE" append="true" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
@@ -131,7 +124,7 @@
     <call target="SSCommandline" />
   </target>
 
-  <!--======================= GetAll=======================-->
+  <!--======================= GetAll =======================-->
   <target name="getall" >
     <foreach item="String" in="Core Core.Test Development ObjectBinding prereq Web" delim=" " property="local.project" >
       <do>
@@ -152,6 +145,29 @@
     <property name="SS.command" value="Get $/libraries/Commons/build/buildversion.xml" />
     <call target="SSCommandline" />
 
+  </target>
+
+  <!--======================= BuildNoDoc =======================-->
+  <target name="buildnodoc" >
+    <call target="clean" />
+    <call target="resources" />
+    <call target="setdebug" />
+    <call target="all" />
+    <call target="alltests" />
+    <call target="setrelease" />
+    <call target="all" />
+    <call target="alltests" />
+  </target>
+
+  <!--======================= startnewversion =======================-->
+  <target name="startnewversion " >
+    <property name="SS.dir" value="${dir.development}\libraries\Commons\build" />
+    <property name="SS.command" value="Checkout $/libraries/Commons/build/buildversion.xml" />
+    <call target="SSCommandline" />
+    <call target="incversion" />
+    <property name="SS.command" value="Checkin $/libraries/Commons/build/buildversion.xml" />
+    <call target="SSCommandline" />
+    <call target="label" />
   </target>
 
   <!--======================= VS.NET =======================-->
