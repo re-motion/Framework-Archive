@@ -39,7 +39,7 @@ public sealed class FormGridRowPrototypeCollection : CollectionBase
   /// <summary> Allows only the insertion of form grid row prototypes. </summary>
   /// <param name="index"> The zero-based index at which to insert value. </param>
   /// <param name="value"> The new value of the element at index. </param>
-  protected override void OnInsert(int index, object value)
+  protected override void OnInsert (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (FormGridRowPrototype));
     base.OnInsert (index, value);

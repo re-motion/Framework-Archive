@@ -62,10 +62,10 @@ public class FormGridRowPrototype
   ///   <see cref="FormGridManager.FormGridRow"/>.
   /// </param>
   public FormGridRowPrototype (
-    Control control, 
-    RowType newRowType,
-    string relatedRowID,
-    RowPosition positionInFormGrid)
+      Control control, 
+      RowType newRowType,
+      string relatedRowID,
+      RowPosition positionInFormGrid)
   {
     _control = control;
     _newRowType = newRowType;
