@@ -254,23 +254,13 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
 
 	var textPane = popUpDocument.createElement ('span');
 	textPane.className = _dropDownMenu_itemTextPaneClassName;	
-  if (itemInfo.Href != null && isEnabled)
-	{
-	  var anchor = popUpDocument.createElement ('a');
-	  anchor.innerHTML = itemInfo.Text;
-	  anchor.href = '#';
-	  textPane.appendChild (anchor);
-	}
-	else
-	{
-  	textPane.innerHTML = itemInfo.Text;
-  }
+  textPane.innerHTML = itemInfo.Text;
 	item.appendChild (textPane);
 
   if (isEnabled)
   {
-	  item.onmouseover = function () { SelectItem (item); };
-	  item.onmouseleave = function () { UnselectItem (item); };
+	  item.onmouseover = function () { DropDownMenu_SelectItem (this); };
+	  item.onmouseleave = function () { DropDownMenu_UnselectItem (this); };
 	}
 }
 
@@ -286,7 +276,7 @@ function DropDownMenu_CreateSeparatorItem (popUpDocument, item, showExpandSepara
 	item.appendChild (textPane);
 }
 
-function SelectItem (menuItem)
+function DropDownMenu_SelectItem (menuItem)
 {
 	if (menuItem == null)
 	  return;
@@ -294,7 +284,7 @@ function SelectItem (menuItem)
 	_dropDownMenu_currentItem = menuItem;
 }
 
-function UnselectItem (menuItem)
+function DropDownMenu_UnselectItem (menuItem)
 {
 	if (menuItem == null)
 	  return;
@@ -533,7 +523,7 @@ function UnselectCurrentOption()
 		var oItem = _arrSelected[_nLevel];
 		if (FIsIType(oItem, "option"))
 			{
-			UnselectItem(oItem);
+			DropDownMenu_UnselectItem(oItem);
 			_arrSelected[_nLevel] = null;
 			}
 		}
@@ -579,9 +569,9 @@ function ToggleMenuItem(nLevel, oItem)
 {
 	var oOld = _arrSelected[nLevel];
 	if (!oItem || (oOld && oItem.id == oOld.id)) return;
-	if (oOld) UnselectItem(oOld);
+	if (oOld) DropDownMenu_UnselectItem(oOld);
 	UpdateLevel(nLevel);
-	SelectItem(oItem);
+	DropDownMenu_SelectItem(oItem);
 	_arrSelected[nLevel] = oItem;
 	oItem.tabIndex = 0;
 	oItem.setActive();

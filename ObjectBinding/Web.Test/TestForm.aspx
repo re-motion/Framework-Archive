@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -15,8 +15,8 @@
 <form id=Form method=post runat="server">
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td></td>
-    <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children" enableselection="True">
+    <td></TD>
+    <td><obc:boclist id=BocList runat="server" listmenulinebreaks="BetweenGroups" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children" enableselection="True">
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Text="Event">
 <persistedcommand>
@@ -99,19 +99,34 @@
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="PostBacks">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="PostBacks" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
+<obc:BocMenuItem Text="long text">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+<obc:BocMenuItem Text="long text">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+<obc:BocMenuItem Text="long text">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
 </ListMenuItems>
-</obc:boclist></td></tr></table>
+</obc:boclist></TD></TR></TABLE>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
-<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
-<p><asp:label id=EventLabel runat="server">###</asp:label></p></form>
+TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
+<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></P>
+<p><asp:label id=EventLabel runat="server">###</asp:label></P></FORM>
 
   </body>
 </html>

@@ -39,27 +39,27 @@ public class MenuItemCollection: ControlItemCollection
     set { List[index] = value; }
   }
 
-  public virtual MenuItem[] GroupMenuItems (bool generateSeparators)
+  public static MenuItem[] GroupMenuItems (MenuItem[] menuItems, bool generateSeparators)
   {
     //  <string category, ArrayList menuItems>
     NameObjectCollection groupedMenuItems = new NameObjectCollection();
     ArrayList categories = new ArrayList();
-
-    foreach (MenuItem menuItem in InnerList)
+    
+    foreach (MenuItem menuItem in menuItems)
     {
       string category = StringUtility.NullToEmpty (menuItem.Category);
-      ArrayList menuItems;
+      ArrayList menuItemsForCategory;
       if (groupedMenuItems.Contains (category))
       {
-        menuItems = (ArrayList) groupedMenuItems[category];
+        menuItemsForCategory = (ArrayList) groupedMenuItems[category];
       }
       else
       {
-        menuItems = new ArrayList();
-        groupedMenuItems.Add (category, menuItems);
+        menuItemsForCategory = new ArrayList();
+        groupedMenuItems.Add (category, menuItemsForCategory);
         categories.Add (category);
       }
-      menuItems.Add (menuItem);
+      menuItemsForCategory.Add (menuItem);
     }
       
     ArrayList arrayList = new ArrayList();
@@ -76,6 +76,11 @@ public class MenuItemCollection: ControlItemCollection
       arrayList.AddRange ((ArrayList) groupedMenuItems[category]);
     }
     return (MenuItem[]) arrayList.ToArray (typeof (MenuItem));
+  }
+
+  public MenuItem[] GroupMenuItems (bool generateSeparators)
+  {
+    return MenuItemCollection.GroupMenuItems (ToArray(), generateSeparators);
   }
 }
 

@@ -1,3 +1,10 @@
+1.1.36.0
+========
+
+- Rubicon.Web.UI.Controls.DropDownMenu
+  * Neue Klasse
+  * Bietet ein Menu ähnlich einer DropDownBox an.
+  
 1.1.32.0
 ========
 

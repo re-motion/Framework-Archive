@@ -24,6 +24,7 @@ namespace Rubicon.Web.UI.Controls
 /// </remarks>
 public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 {
+  //  HACK: EscapeJavaScript will be moved to extra class 
   public static string EscapeJavaScript (string input)
   {
     StringBuilder output = new StringBuilder(input.Length + 5);
@@ -208,7 +209,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
           isFirstItem = false;
         else
           script.AppendFormat (",\r\n");
-        AppendMenuItem (script, menuItem, MenuItems.IndexOf (menuItem));
+        AppendMenuItem (script, menuItem, _menuItems.IndexOf (menuItem));
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
@@ -245,6 +246,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
           //string s2 = DropDownMenu.EscapeJavaScript (s1);
           href = Page.GetPostBackClientHyperlink (this, argument);
           //href = href.Replace ("'", @"\'");
+          //  HACK: EscapeJavaScript will be moved to extra class 
           href = DropDownMenu.EscapeJavaScript (href);
           href = "'" + href + "'";
         }

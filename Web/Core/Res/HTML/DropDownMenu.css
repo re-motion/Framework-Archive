@@ -1,20 +1,10 @@
 /*  */
-div.dropDownMenuHead
-{
-  border-color: #2254b1;
-  border-style: solid;
-  border-width: 1px;
-/*	padding: 1px;
-  border-style: none;*/
-  background-color: #fafafa;
-}
-
+div.dropDownMenuHead,
 div.dropDownMenuHeadFocus
 {
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
-  background-color: #fafafa;
 }
 
 .dropDownMenuHeadTitle,
@@ -41,7 +31,6 @@ div.dropDownMenuPopUp
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
-  background-color: #fafafa;
   background-image: url(../Image/DropDownMenuItemIconPane.gif);
   background-repeat: repeat-y;
   
@@ -79,21 +68,12 @@ div.dropDownMenuItemDisabled
 	cursor: default;
 }
 
-div.dropDownMenuItem a,
-div.dropDownMenuItemFocus a
-{
-  color: black;
-  text-decoration: none;
-  cursor: default;
-}
-
 /*  */
 span.dropDownMenuItemTextPane
 {
   padding-left: 8px;
   padding-right: 4px;
   font-size: 66.67%;
-  font-family: Verdana, sans-serif;
   border-style: none;
 	vertical-align: middle;
 }

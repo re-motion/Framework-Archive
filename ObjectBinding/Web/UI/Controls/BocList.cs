@@ -73,7 +73,7 @@ public class BocList:
   private const string c_resourceKeyFixedColumns = "FixedColumns";
 
   private const string c_defaultMenuBlockItemOffset = "5pt";
-  private const string c_defaultMenuBlockWidth = "200pt";
+  private const string c_defaultMenuBlockWidth = "70pt";
   private const string c_defaultMenuBlockOffset = "5pt";
 
   /// <summary> 
@@ -83,7 +83,7 @@ public class BocList:
   private const string c_designModeDummyColumnTitle = "Column Title {0}";
   private const int c_designModeDummyColumnCount = 3;
 
-  private const int c_designModeAdditionalColumnsListWidthInPoints = 70;
+  private const int c_designModeAdditionalColumnsListWidthInPoints = 40;
 
   // types
   
@@ -669,11 +669,6 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
 
-    if (_showOptionsMenu)
-    {
-      _optionsMenu.MenuItems.Clear();
-      _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
-    }
     base.OnPreRender (e);
   }
 
@@ -885,6 +880,8 @@ public class BocList:
       writer.RenderEndTag();
     }
 
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
     if (HasOptionsMenu)
     {
       _optionsMenu.TitleText = _optionsTitle;
@@ -896,58 +893,122 @@ public class BocList:
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
+      writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_Boc_ListMenu");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      MenuItem[] listMenuItems = _listMenuItems.GroupMenuItems (false);
-      for (int idxItems = 0; idxItems < listMenuItems.Length; idxItems++)
-      {
-        MenuItem currentItem = listMenuItems[idxItems];
-
-        bool isFirstItem = idxItems == 0;
-        bool isLastItem = idxItems == listMenuItems.Length - 1;
-        bool isNewCategory = ! isFirstItem && listMenuItems[idxItems - 1].Category != currentItem.Category;
-
-        if (   _listMenuLineBreaks == ListMenuLineBreaks.All
-            || _listMenuLineBreaks == ListMenuLineBreaks.BetweenGroups && (isNewCategory || isFirstItem))
-        {
-          writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        }
-        RenderListMenuItem (writer, currentItem, idxItems);
-        if (   _listMenuLineBreaks == ListMenuLineBreaks.All
-            || _listMenuLineBreaks == ListMenuLineBreaks.BetweenGroups && (isNewCategory || isLastItem))
-        {
-          writer.RenderEndTag();
-        }
-      }
+      RenderListMenu (writer, ClientID + "_Boc_ListMenu");
       writer.RenderEndTag();
     }
   }
 
-  private void RenderListMenuItem (HtmlTextWriter writer, MenuItem menuItem, int index)
+  //  TODO: Move ListMenu the extra control "ContentMenu"
+  private void RenderListMenu (HtmlTextWriter writer, string menuID)
   {
-    //  Render the command
-    bool isCommandEnabled = false;
+    ArrayList listMenuItems = new ArrayList (EnsureListMenuItemsGot());
+    MenuItem[] groupedListMenuItems = MenuItemCollection.GroupMenuItems (
+        (MenuItem[]) listMenuItems.ToArray (typeof (MenuItem)), 
+        false);
+
+    for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
+    {
+      MenuItem currentItem = groupedListMenuItems[idxItems];
+
+      bool isFirstItem = idxItems == 0;
+      bool isLastItem = idxItems == groupedListMenuItems.Length - 1;
+      bool isFirstCategoryItem = isFirstItem || groupedListMenuItems[idxItems - 1].Category != currentItem.Category;
+      bool isLastCategoryItem = isLastItem || groupedListMenuItems[idxItems + 1].Category != currentItem.Category;
+      bool hasAlwaysLineBreaks = _listMenuLineBreaks == ListMenuLineBreaks.All;
+      bool hasNoLineBreaks = _listMenuLineBreaks == ListMenuLineBreaks.None;
+
+      if (hasAlwaysLineBreaks || isFirstCategoryItem || (hasNoLineBreaks && isFirstItem))
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, "contentMenuRow");
+        writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      }
+      RenderListMenuItem (writer, currentItem, menuID, listMenuItems.IndexOf (currentItem));
+      if (hasAlwaysLineBreaks || isLastCategoryItem || (hasNoLineBreaks && isLastItem))
+        writer.RenderEndTag();
+    }
+
+    string key = typeof (BocList).FullName + "_ListMenuItems";
+    if (! Page.IsStartupScriptRegistered (key))
+    {
+      StringBuilder script = new StringBuilder();
+      script.Append ("ContentMenu_AddMenuInfo (\r\n\t");
+      script.AppendFormat ("new ContentMenu_MenuInfo ('{0}', new Array (\r\n", menuID);
+      bool isFirstItem = true;
+
+      for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
+      {
+        MenuItem currentItem = groupedListMenuItems[idxItems];
+        if (isFirstItem)
+          isFirstItem = false;
+        else
+          script.AppendFormat (",\r\n");
+        AppendListMenuItem (script, currentItem, menuID, listMenuItems.IndexOf (currentItem));
+      }
+      script.Append (" )"); // Close Array
+      script.Append (" )"); // Close new MenuInfo
+      script.Append (" );\r\n"); // Close AddMenuInfo
+
+      script.AppendFormat (
+          "BocList_UpdateListMenu ( document.getElementById ('{0}'), document.getElementById ('{1}'));",
+          ClientID, menuID);
+      PageUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
+    }
+  }
+
+  private void AppendListMenuItem (StringBuilder stringBuilder, MenuItem menuItem, string menuID, int menuItemIndex)
+  {
     bool isReadOnly = IsReadOnly;
+    string href = "null";
+    string target = "null";
     if (menuItem.Command != null)
     {
       bool isActive =    menuItem.Command.Show == CommandShow.Always
                       || isReadOnly && menuItem.Command.Show == CommandShow.ReadOnly
                       || ! isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
-      if (   isActive
-          && menuItem.Command.Type != CommandType.None)
-      {
-        isCommandEnabled = true;
+
+      bool isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
+      if (isCommandEnabled)
+      {    
+        bool isPostBackCommand =    menuItem.Command.Type == CommandType.Event 
+                                || menuItem.Command.Type == CommandType.WxeFunction;
+        if (isPostBackCommand)
+        {
+          string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
+          if (menuItem.Command.Type == CommandType.WxeFunction)
+            argument += "," + menuItem.Command.WxeFunctionCommand.Parameters;
+          href = Page.GetPostBackClientHyperlink (this, argument);
+          //  HACK: EscapeJavaScript will be moved to extra class 
+          href = DropDownMenu.EscapeJavaScript (href);
+          href = "'" + href + "'";
+        }
+        else if (menuItem.Command.Type == CommandType.Href)
+        {
+          href = "'" + menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID) + "'";
+          target = "'" + menuItem.Command.HrefCommand.Target + "'";
+        }
       }
     }
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassListMenuItem);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    if (isCommandEnabled)
-    {    
-      string argument = c_eventMenuItemPrefix + index;
-      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-      menuItem.Command.RenderBegin (writer, postBackLink, null);
-    }
+    string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
+    string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
+    stringBuilder.AppendFormat (
+        "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7})",
+        menuID + "_" + menuItemIndex.ToString(), 
+        menuItem.Category, 
+        menuItem.Text, 
+        icon, 
+        iconDisabled, 
+        (int) menuItem.RequiredSelection,
+        href,
+        target);
+  }
 
+  private void RenderListMenuItem (HtmlTextWriter writer, MenuItem menuItem, string menuID, int index)
+  {
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, menuID + "_" + index.ToString());
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
     if (! StringUtility.IsNullOrEmpty (menuItem.Icon))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
@@ -957,11 +1018,7 @@ public class BocList:
       writer.RenderEndTag();
       writer.Write (c_whiteSpace);
     }
-
     writer.Write (menuItem.Text);
-
-    if (isCommandEnabled)
-      menuItem.Command.RenderEnd (writer);
     writer.RenderEndTag();
   }
 
@@ -2440,6 +2497,11 @@ public class BocList:
     }
   }
 
+  public void ClearSelectedRows()
+  {
+    _checkBoxCheckedState.Clear();
+  }
+
   /// <summary> Gets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
   /// <returns> An array of <see cref="IBusinessObject"/> objects. </returns>
   public IBusinessObject[] GetSelectedBusinessObjects()
@@ -2461,9 +2523,6 @@ public class BocList:
   /// <returns> An array of <see cref="int"/> values. </returns>
   public int[] GetSelectedRows()
   {
-    string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
-    string titleCheckBoxID = ID + c_titleRowCheckBoxIDSuffix;
-    int commonCheckBoxIDLength = commonCheckBoxID.Length;
     ArrayList selectedRows = new ArrayList();
     foreach (DictionaryEntry entry in _checkBoxCheckedState)
     {
@@ -2476,6 +2535,37 @@ public class BocList:
         selectedRows.Add (rowIndex);
     }
     return (int[]) selectedRows.ToArray (typeof (int));
+  }
+
+  /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
+  /// <param name="selectedObjects"> An <see cref="IList"/> of <see cref="IBusinessObject"/> objects. </param>>
+  public void SetSelectedBusinessObjects (IList selectedObjects)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("selectedObjects", selectedObjects);
+    ArgumentUtility.CheckItemsNotNullAndType ("selectedObjects", selectedObjects, typeof (IBusinessObject));
+    
+    if (Value == null)
+      return;
+    IList value = (IList) Value;
+
+    ArrayList selectedRows = new ArrayList (selectedObjects.Count);
+    foreach (IBusinessObject selectedObject in selectedObjects)
+    {
+      int index = value.IndexOf (selectedObject);
+      if (index != -1)
+        selectedRows.Add (index);
+    }
+    SetSelectedRows ((int[]) selectedRows.ToArray (typeof (int)));
+  }
+
+  /// <summary> Sets indeces for the rows selected in the <see cref="BocList"/>. </summary>
+  /// <param name="selectedRows"> An array of <see cref="int"/> values. </param>>
+  public void SetSelectedRows (int[] selectedRows)
+  {
+    ClearSelectedRows();
+
+    foreach (int rowIndex in selectedRows)
+      _checkBoxCheckedState[rowIndex] = true;
   }
 
   /// <summary>
@@ -2789,10 +2879,7 @@ public class BocList:
   /// <remarks> Class: <c>bocListAdditionalColumnsList</c> </remarks>
   protected virtual string CssClassAdditionalColumnsList
   { get { return "bocListAdditionalColumnsList"; } }
-
-  protected virtual string CssClassListMenuItem
-  { get { return "bocListListMenuItem"; } }
-
+  
   #endregion
 
   /// <summary>

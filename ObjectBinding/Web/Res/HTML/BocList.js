@@ -1,11 +1,5 @@
 //  BocListe.js contains client side scripts used by BocList.
 
-//  The array indices identifying the row, the checkBox and the isOdd-flag
-//  when collecting these values in an array. Simulates .net Framework's System.Triplet class.
-var _bocList_rowKey = 0;
-var _bocList_checkBoxKey = 1;
-var _bocList_isOddKey = 2;
-
 //  The css classes used for odd and even rows in their selected and unselected state.
 var _bocList_TdOddClassName = '';
 var _bocList_TdEvenClassName = '';
@@ -27,6 +21,22 @@ var _bocList_isCheckBoxClick = false;
 //  A flag that indicates that the OnClick event for an anchor tag (command) has been raised
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
+
+var _bocList_ListMenuInfos = new Array();
+
+var _contentMenu_itemClassName = 'contentMenuItem';
+var _contentMenu_itemFocusClassName = 'contentMenuItemFocus';
+var _contentMenu_itemDisabledClassName = 'contentMenuItemDisabled';
+var _contentMenu_requiredSelectionAny = 0;
+var _contentMenu_requiredSelectionExactlyOne = 1;
+var _contentMenu_requiredSelectionOneOrMore = 2;
+
+function BocList_RowBlock (row, checkBox, isOdd)
+{
+  this.Row = row;
+  this.CheckBox = checkBox;
+  this.IsOdd = isOdd;
+}
 
 //  Initializes the class names of the css classes used to format the table cells.
 //  Call this method once in a startup script.
@@ -61,11 +71,8 @@ function BocList_InitializeList (bocList, checkBoxPrefix, count)
     var row =  checkBox.parentElement.parentElement;
     if (checkBox.checked)      
     {
-      var rowBlock = new Array();
-      rowBlock[_bocList_rowKey] = row;
-      rowBlock[_bocList_checkBoxKey] = checkBox;
-      rowBlock[_bocList_isOddKey] = isOdd;
-      selectedRows[row.id] = rowBlock;
+      var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
+      selectedRows[checkBox.id] = rowBlock;
       selectedRowsLength++;
     }
   }
@@ -89,6 +96,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
     return;
   }  
   
+  var currentRowBlock = new BocList_RowBlock (currentRow, checkBox, isOdd);
   var selectedRows = _bocList_selectedRows[bocList.id];
   var selectedRowsLength = _bocList_selectedRowsLength[bocList.id];
   var className; //  The css-class
@@ -99,12 +107,12 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
     if (selectedRows[checkBox.id] == null)
     {
       //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
+      BocList_SelectRow (bocList, currentRowBlock);
     }
     else
     {
       //  Remove currentRow to list and unselect it
-      BocList_UnselectRow (bocList, currentRow, checkBox, isOdd);
+      BocList_UnselectRow (bocList, currentRowBlock);
     }
   }
   else // ! isCtrlKeyPress
@@ -114,7 +122,7 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
       //  Unselect all rows and clear the list
       BocList_UnselectAllRows (bocList);
       //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
+      BocList_SelectRow (bocList, currentRowBlock);
     }
     else if (selectedRowsLength == 1)
     {
@@ -123,46 +131,41 @@ function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
       if (selectedRows[checkBox.id] == null)
       {
         //  Add current row to list and select it
-        BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
+        BocList_SelectRow (bocList, currentRowBlock);
       }
     }
     else
     {
       //  Add currentRow to list and select it
-      BocList_SelectRow (bocList, currentRow, checkBox, isOdd);
+      BocList_SelectRow (bocList, currentRowBlock);
     }
   }
   checkBox.focus();
   _bocList_isCheckBoxClick = false;
+
+  BocList_UpdateListMenu (bocList, document.getElementById (bocList.id + '_Boc_ListMenu'));
 }
 
 //  Selects a row.
 //  Adds the row to the _bocList_selectedRows array and increments _bocList_selectedRowsLength.
 //  bocList: The BocList to which the row belongs.
-//  currentRow: The row to be selected.
-//  checkBox: The selection checkBox in this row.
-//  isOdd: True if it is an odd data row, otherwise false.
-function BocList_SelectRow (bocList, currentRow, checkBox, isOdd)
+//  rowBlock: The row to be selected.
+function BocList_SelectRow (bocList, rowBlock)
 {
-  //  Add currentRow to list
-  var currentRowBlock = new Array();
-  currentRowBlock[_bocList_rowKey] = currentRow;
-  currentRowBlock[_bocList_checkBoxKey] = checkBox;
-  currentRowBlock[_bocList_isOddKey] = isOdd;
-  
-  _bocList_selectedRows[bocList.id][checkBox.id] = currentRowBlock;
+  //  Add currentRow to list  
+  _bocList_selectedRows[bocList.id][rowBlock.CheckBox.id] = rowBlock;
   _bocList_selectedRowsLength[bocList.id]++;
     
   // Select currentRow
   var className;
-  if (isOdd)
+  if (rowBlock.IsOdd)
     className = _bocList_TdOddClassNameSelected;
   else
     className = _bocList_TdEvenClassNameSelected;
-  for (var i = 0; i < currentRow.children.length; i++)
-    currentRow.children[i].className = className;
+  for (var i = 0; i < rowBlock.Row.children.length; i++)
+    rowBlock.Row.children[i].className = className;
 
-  checkBox.checked = true;
+  rowBlock.CheckBox.checked = true;
 }
 
 //  Unselects all rows in a BocList.
@@ -176,11 +179,7 @@ function BocList_UnselectAllRows (bocList)
     var rowBlock = selectedRows[rowID];
     if (rowBlock != null)
     {
-      BocList_UnselectRow (
-          bocList,
-          rowBlock[_bocList_rowKey],
-          rowBlock[_bocList_checkBoxKey],
-          rowBlock[_bocList_isOddKey]);
+      BocList_UnselectRow (bocList, rowBlock);
     }
   }
   
@@ -192,25 +191,23 @@ function BocList_UnselectAllRows (bocList)
 //  Unselects a row.
 //  Removes the row frin the _bocList_selectedRows array and decrements _bocList_selectedRowsLength.
 //  bocList: The BocList to which the row belongs.
-//  currentRow: The row to be unselected.
-//  checkBox: The selection checkBox in this row.
-//  isOdd: True if it is an odd data row, otherwise false.
-function BocList_UnselectRow (bocList, currentRow, checkBox, isOdd)
+//  rowBlock: The row to be unselected.
+function BocList_UnselectRow (bocList, rowBlock)
 {
   //  Remove currentRow from list
-  _bocList_selectedRows[bocList.id][checkBox.id] = null;
+  _bocList_selectedRows[bocList.id][rowBlock.CheckBox.id] = null;
   _bocList_selectedRowsLength[bocList.id]--;
   
   // Select currentRow
   var className;
-  if (isOdd)
+  if (rowBlock.IsOdd)
     className = _bocList_TdOddClassName;
   else
     className = _bocList_TdEvenClassName;
-  for (var i = 0; i < currentRow.children.length; i++)
-    currentRow.children[i].className = className;
+  for (var i = 0; i < rowBlock.Row.children.length; i++)
+    rowBlock.Row.children[i].className = className;
   
-  checkBox.checked = false;
+  rowBlock.CheckBox.checked = false;
 }
 
 //  Event handler for the selection checkBox in the title row.
@@ -231,14 +228,17 @@ function BocList_OnSelectAllCheckBoxClick (bocList, selectAllCheckBox, checkBoxP
     if (checkBox == null)
       continue;
     var row =  checkBox.parentElement.parentElement;
+    var rowBlock = new BocList_RowBlock (row, checkBox, isOdd);
     if (selectAllCheckBox.checked)      
-      BocList_SelectRow (bocList, row, checkBox, isOdd)
+      BocList_SelectRow (bocList, rowBlock)
     else
-      BocList_UnselectRow (bocList, row, checkBox, isOdd)
+      BocList_UnselectRow (bocList, rowBlock)
   }
   
   if (! selectAllCheckBox.checked)      
     _bocList_selectedRowsLength[bocList.id] = 0;
+    
+  BocList_UpdateListMenu (bocList, document.getElementById (bocList.id + '_Boc_ListMenu'));
 }
 
 //  Event handler for the selection checkBox in a data row.
@@ -262,4 +262,90 @@ function BocList_GetSelectionCount (bocListID)
   if (selectionCount == null)
     return 0;
   return selectionCount;
+}
+
+function ContentMenu_MenuInfo (id, itemInfos)
+{
+  this.ID = id;
+  this.ItemInfos = itemInfos;
+}
+
+function ContentMenu_AddMenuInfo (menuInfo)
+{
+  _bocList_ListMenuInfos[menuInfo.ID] = menuInfo;
+}
+
+function ContentMenu_MenuItemInfo (id, category, text, icon, iconDisabled, requiredSelection, href, target)
+{
+  this.ID = id;
+  this.Category = category;
+  this.Text = text;
+  this.Icon = icon;
+  this.IconDisabled = iconDisabled;
+  this.RequiredSelection = requiredSelection;
+  this.Href = href;
+  this.Target = target;
+}
+
+function BocList_UpdateListMenu (bocList, listMenu)
+{
+  var itemInfos = _bocList_ListMenuInfos[listMenu.id].ItemInfos;
+  var selectionCount = BocList_GetSelectionCount (bocList.id);
+  
+  for (var i = 0; i < itemInfos.length; i++)
+  {
+    var itemInfo = itemInfos[i];
+    var isEnabled = true;
+    if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionExactlyOne
+        && selectionCount != 1)
+    {
+      isEnabled = false;
+    }
+    if (   itemInfo.RequiredSelection == _contentMenu_requiredSelectionOneOrMore
+        && selectionCount < 1)
+    {
+      isEnabled = false;
+    }
+    
+    var item = document.getElementById (itemInfo.ID);
+    var icon = item.children[0];
+    if (isEnabled)
+    {
+      if (icon != null)
+        icon.src = itemInfo.Icon;
+  	  item.className = _contentMenu_itemClassName;
+  	  item.setAttribute ('href', itemInfo.Href);
+      item.onclick = function () { ContentMenu_GoTo (this); };
+	    item.onmouseover = function () { ContentMenu_SelectItem (this); };
+	    item.onmouseleave = function () { ContentMenu_UnselectItem (this); };
+    }
+    else
+    {
+      if (icon != null)
+        icon.src = itemInfo.IconDisabled;
+      item.className = _contentMenu_itemDisabledClassName;
+      item.onclick = null;
+	    item.onmouseover = null;
+	    item.onmouseleave = null;
+    }
+  }
+}
+  
+function ContentMenu_GoTo (menuItem)
+{
+  window.location = menuItem.href;
+}
+
+function ContentMenu_SelectItem (menuItem)
+{
+	if (menuItem == null)
+	  return;
+	menuItem.className = _contentMenu_itemFocusClassName;
+}
+
+function ContentMenu_UnselectItem (menuItem)
+{
+	if (menuItem == null)
+	  return;
+	menuItem.className = _contentMenu_itemClassName;
 }

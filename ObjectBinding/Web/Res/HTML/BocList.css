@@ -22,7 +22,7 @@ td.bocListTitleCell
 /*  Style applied to the cells in the BocList's odd data rows. */
 td.bocListDataCellOdd
 {
-	background-color: #FFFFFF;
+	background-color: White;
 
   padding: 2px 2px 2px 5px;
   border-style: solid;
@@ -38,7 +38,7 @@ td.bocListDataCellOdd
 /*  Style applied to the cells in the BocList's even data rows. */
 td.bocListDataCellEven
 {
-	background-color: #E0E0E0;
+	background-color: #e1ecfc;
 
   padding: 2px 2px 2px 5px;
   border-style: solid;
@@ -69,11 +69,19 @@ td.bocListDataCellEvenSelected
   cursor: default;
 }
 
+/*  Style applied to the anchor tags in BocList's unselected odd and even data rows.  */
+td.bocListDataCellOdd a,
+td.bocListDataCellEven a
+{
+	padding: 2px;
+}
+
 /*  Style applied to the anchor tags in BocList's selected odd and even data rows.  */
 td.bocListDataCellOddSelected a,
 td.bocListDataCellEvenSelected a
 {
   color: White;
+	padding: 2px;
 }
 
 /*  Style applied to the anchor tags during hovering in BocList's selected odd and even data rows.  */
@@ -83,7 +91,11 @@ td.bocListDataCellOddSelected a:hover,
 td.bocListDataCellEvenSelected a:hover
 {
   color: Black;
-  background-color: Yellow;
+	padding: 1px;
+	border-color: #2254b1;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fee197;	
 }
 
 /* Style applied to the text providing the sorting order's index. */
@@ -104,23 +116,38 @@ input.bocListAdditionalColumnsList
 {
 }
 
-span.bocListListMenuItem
+div.contentMenuRow
 {
-  margin-right: 10pt;
-	cursor: default;
+  font-size: 66.67%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+	white-space: nowrap;
+	width: 102%;
 }
 
-span.bocListListMenuItemDisabled
+span.contentMenuItem
 {
   margin-right: 10pt;
+  padding: 2px;
+	cursor: hand;
+}
+
+span.contentMenuItemFocus
+{
+  margin-right: 10pt;
+	padding: 1px;
+	border-color: #2254b1;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fee197;	
+	cursor: hand;
+}
+
+span.contentMenuItemDisabled
+{
+  margin-right: 10pt;
+  padding: 2px;
   color: gray;
 	cursor: default;
-}
-
-span.bocListListMenuItem a,
-span.bocListListMenuItemDisabled a
-{
-  color: black;
-  text-decoration: none;
-  cursor: default;
 }
