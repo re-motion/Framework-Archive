@@ -73,6 +73,7 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Assert.AreEqual (StateType.Changed, _subordinate.State);
     Assert.AreEqual (StateType.Changed, _supervisor.State);
     Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
+    Assert.AreEqual (_supervisor.Subordinates.Count - 1, _supervisor.Subordinates.IndexOf (_subordinate));
     Assert.AreSame (_supervisor, _subordinate.Supervisor);
   }
 
