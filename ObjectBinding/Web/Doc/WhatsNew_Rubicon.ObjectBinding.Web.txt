@@ -1,3 +1,11 @@
+1.2.14.0
+========
+
+- BocReferenceValue
+  * SetBusinessObjectReferenceList zu SetBusinessObjectList umbenannt.
+  * RefreshBusinessObjectList(...) protected gestellt. Nur noch SetBusinessObjectList(...) verwenden um die 
+    Liste zu befüllen.
+  
 1.2.12.0
 ========
 
