@@ -1,6 +1,6 @@
 <%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebForm1" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -23,11 +23,11 @@
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel2" style="Z-INDEX: 104; LEFT: 16px; POSITION: absolute; TOP: 48px"
         runat="server" ForControl="LastNameField"></rwc:SmartLabel><obc:boctextvalue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 224px; POSITION: absolute; TOP: 80px" runat="server" PropertyIdentifier="DateOfBirth" DataSource="<%# CurrentObjectDataSource %>" ValueType="Date">
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 16px; POSITION: absolute; TOP: 80px"
-        runat="server" ForControl="DateOfBirthField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator1" style="Z-INDEX: 108; LEFT: 424px; POSITION: absolute; TOP: 80px"
+        runat="server" ForControl="DateOfBirthField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator1" style="Z-INDEX: 108; LEFT: 480px; POSITION: absolute; TOP: 80px"
         runat="server" ControlToValidate="DateOfBirthField" EnableClientScript="False"></obc:boctextvaluevalidator><obc:boctextvalue id=HeightField style="Z-INDEX: 109; LEFT: 224px; POSITION: absolute; TOP: 112px" runat="server" PropertyIdentifier="Height" DataSource="<%# CurrentObjectDataSource %>">
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel4" style="Z-INDEX: 110; LEFT: 16px; POSITION: absolute; TOP: 112px"
-        runat="server" ForControl="HeightField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator2" style="Z-INDEX: 111; LEFT: 424px; POSITION: absolute; TOP: 112px"
-        runat="server" ControlToValidate="HeightField" EnableClientScript="False"></obc:boctextvaluevalidator><asp:label id="Label1" style="Z-INDEX: 112; LEFT: 384px; POSITION: absolute; TOP: 112px" runat="server">cm</asp:label><asp:button id="SaveButton" style="Z-INDEX: 102; LEFT: 16px; POSITION: absolute; TOP: 336px"
+        runat="server" ForControl="HeightField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator2" style="Z-INDEX: 111; LEFT: 480px; POSITION: absolute; TOP: 112px"
+        runat="server" ControlToValidate="HeightField" EnableClientScript="False"></obc:boctextvaluevalidator><asp:label id="Label1" style="Z-INDEX: 112; LEFT: 440px; POSITION: absolute; TOP: 112px" runat="server">cm</asp:label><asp:button id="SaveButton" style="Z-INDEX: 102; LEFT: 16px; POSITION: absolute; TOP: 336px"
         runat="server" Text="Save" Width="80px"></asp:button>
       <obc:BocEnumValue id=GenderField style="Z-INDEX: 113; LEFT: 224px; POSITION: absolute; TOP: 160px" runat="server" PropertyIdentifier="Gender" DataSource="<%# CurrentObjectDataSource %>" Width="152px" Height="24px">
         <listcontrolstyle radiobuttonlisttextalign="Right" font-bold="True" bordercolor="Red" forecolor="Green"
@@ -40,7 +40,7 @@
           radiobuttonlistrepeatdirection="Vertical"></listcontrolstyle>
       </obc:BocEnumValue>
       <rwc:SmartLabel id="SmartLabel1" style="Z-INDEX: 116; LEFT: 24px; POSITION: absolute; TOP: 272px"
-        runat="server" ForControl="MarriageStatusField"></rwc:SmartLabel>
+        runat="server" ForControl="MarriageStatusField" Width="120px" Height="8px"></rwc:SmartLabel>
       <obc:BocTextValue id="PartnerFirstNameField" style="Z-INDEX: 117; LEFT: 904px; POSITION: absolute; TOP: 304px"
         runat="server" PropertyIdentifier="FirstName" DataSource="<%# PartnerDataSource %>">
       </obc:BocTextValue>
