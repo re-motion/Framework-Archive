@@ -34,17 +34,15 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Button Throw;
     protected System.Web.UI.WebControls.Label Label1;
     protected System.Web.UI.WebControls.Label RetValLabel;
-    protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
           new WxeParameterDeclaration ("invocations", false, WxeParameterDirection.Out, typeof (int))
         };
 
-    private new ISampleFunctionVariables CurrentFunction
+    private ISampleFunctionVariables Function
     {
-      get { return (ISampleFunctionVariables) base.CurrentFunction; }
+      get { return (ISampleFunctionVariables) CurrentFunction; }
     }
 
 		private void Page_Load (object sender, System.EventArgs e)
@@ -60,8 +58,8 @@ namespace Rubicon.PageTransition
         sb.AppendFormat ("{0}<br>", step.ToString());      
       StackLabel.Text = sb.ToString();
 
-			Var1Label.Text = CurrentFunction.Var1;
-      Var2Label.Text = CurrentFunction.Var2;
+			Var1Label.Text = Function.Var1;
+      Var2Label.Text = Function.Var2;
       IsPostBackCheck.Checked = IsPostBack;
 		}
 
