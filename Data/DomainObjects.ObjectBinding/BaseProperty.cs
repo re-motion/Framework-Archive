@@ -63,7 +63,7 @@ public class BaseProperty : IBusinessObjectProperty
       if (MultiLingualResourcesAttribute.ExistsResource (_propertyInfo.DeclaringType))
         displayName = MultiLingualResourcesAttribute.GetResourceText (_propertyInfo.DeclaringType, "property:" + _propertyInfo.Name);
 
-      if (displayName == string.Empty)
+      if (displayName == string.Empty || displayName == null)
         displayName = _propertyInfo.Name;
 
       return displayName; 

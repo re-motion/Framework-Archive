@@ -78,9 +78,46 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
     get { return new DomainObjectClass (this.GetType()); }
   }
 
+  public object this [IBusinessObjectProperty property]
+  {
+    get { return GetProperty (property); }
+    set { SetProperty (property, value); }
+  }
+
+  public object this [string property]
+  {
+    get { return GetProperty (property); }
+    set { SetProperty (property, value); }
+  }
+
+  public string GetPropertyString (string property)
+  {
+    return GetPropertyString (GetBusinessObjectProperty (property));
+  }
+
+  public string GetPropertyString (IBusinessObjectProperty property)
+  {
+    return GetPropertyString (property, null);
+  }
+
+  public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
+  {
+    return _objectReflector.GetPropertyString (property, format);
+  }
+  
+  public object GetProperty (string property)
+  {
+    return GetProperty (GetBusinessObjectProperty (property));
+  }
+
   public object GetProperty (IBusinessObjectProperty property)
   {
     return _objectReflector.GetProperty (property);
+  }
+
+  public void SetProperty (string property, object value)
+  {
+    SetProperty (GetBusinessObjectProperty (property), value);
   }
 
   public void SetProperty (IBusinessObjectProperty property, object value)
@@ -99,43 +136,5 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   {
     get { return ID.ToString (); }
   }
-
-  public object this [IBusinessObjectProperty property]
-  {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
-  }
-
-  public string GetPropertyString (IBusinessObjectProperty property)
-  {
-    return GetPropertyString (property, null);
-  }
-
-  public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
-  {
-    return _objectReflector.GetPropertyString (property, format);
-  }
-  
-  public object GetProperty (string property)
-  {
-    return GetProperty (GetBusinessObjectProperty (property));
-  }
-
-  public void SetProperty (string property, object value)
-  {
-    SetProperty (GetBusinessObjectProperty (property), value);
-  }
-
-  public object this [string property]
-  {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
-  }
-
-  public string GetPropertyString (string property)
-  {
-    return GetPropertyString (GetBusinessObjectProperty (property));
-  }
 }
-
 }
