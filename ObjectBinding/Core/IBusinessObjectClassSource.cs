@@ -8,12 +8,12 @@ namespace Rubicon.ObjectBinding
 ///   This interface is used for the <see cref="ITypeDescriptorContext.Instance"/> argument of the VS.NET designer editor. 
 /// </summary>
 /// <remarks>
-///   The PropertyPathPicker control uses this interface to query the business object class of the reference property.
+///   The PropertyPathPicker control uses this interface to query the business object class of the reference property or data source, respectively.
 ///   Implemented by Rubicon.ObjectBinding.Web.Controls.BocSimpleColumnDefinition and Rubicon.ObjectBinding.Web.Controls.PropertyPathBinding.
 /// </remarks>
-public interface IReferencePropertySource
+public interface IBusinessObjectClassSource
 {
-  IBusinessObjectReferenceProperty ReferenceProperty { get; }
+  IBusinessObjectClass BusinessObjectClass { get; }
 }
 
 }

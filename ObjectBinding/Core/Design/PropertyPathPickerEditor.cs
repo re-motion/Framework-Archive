@@ -30,9 +30,9 @@ public class PropertyPathPickerEditor: UITypeEditor
 
       if (_editorService != null)
       {
-        IReferencePropertySource propertySource = context.Instance as IReferencePropertySource;
+        IBusinessObjectClassSource propertySource = context.Instance as IBusinessObjectClassSource;
         if (propertySource == null)
-          throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IReferencePropertySource.");
+          throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IBusinessObjectClassSource.");
 
         PropertyPathPickerControl propertyPathPickerControl = new PropertyPathPickerControl (propertySource);
         propertyPathPickerControl.Value = (string) value;
