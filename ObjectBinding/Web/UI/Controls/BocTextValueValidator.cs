@@ -30,6 +30,7 @@ public class BocTextValueControlToStringConverter: ControlToStringConverter
 /// <remarks>
 ///   This class does not provide client-side validation.
 /// </remarks>
+[ToolboxItemFilter("System.Web.UI")]
 public class DateTimeValidator: BaseValidator
 {
   protected override bool EvaluateIsValid()
