@@ -12,27 +12,27 @@ namespace Rubicon.Web.UI.Controls
 public sealed class FormGridRowInfoCollection : CollectionBase
 {
   /// <summary> 
-  ///   Constructor allowing the initalization of the collection with an array of
-  ///   <see cref="FormGridRowInfo"/> objects.
+  ///   Initalizates a new <see cref="FormGridRowInfoCollection"/> class
+  ///   with an array of <see cref="FormGridRowInfo"/> objects.
   /// </summary>
-  /// <param name="prototypes">
-  ///  The array of <see cref="FormGridRowInfo"/> object to be managed by this collection.
-  ///  May not contain <see langword="null"/>.
+  /// <param name="values">
+  ///   The array of <see cref="FormGridRowInfo"/> object to be managed by this collection.
+  ///   May not contain <see langword="null"/>.
   /// </param>
-  public FormGridRowInfoCollection (FormGridRowInfo[] prototypes)
+  public FormGridRowInfoCollection (FormGridRowInfo[] values)
   {
-    ArgumentUtility.CheckNotNull ("prototypes", prototypes);
+    ArgumentUtility.CheckNotNull ("values", values);
 
-    for (int index = 0; index < prototypes.Length; index++)
+    for (int index = 0; index < values.Length; index++)
     {
-      if (prototypes[index] == null)
-        throw new ArgumentNullException ("prototypes[" + index + "]");
+      if (values[index] == null)
+        throw new ArgumentNullException ("values[" + index + "]");
     }
 
-    InnerList.AddRange (prototypes);
+    InnerList.AddRange (values);
   }
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> Initalizates a new <see cref="FormGridRowInfoCollection"/> class. </summary>
   public FormGridRowInfoCollection()
   {}
 
@@ -46,12 +46,12 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   }
 
   /// <summary> Adds the form grid row prototype to the end of the list. </summary>
-  /// <param name="prototype">. The new form grid row prototype. </param>
-  public void Add (FormGridRowInfo prototype)
+  /// <param name="value"> The new form grid row prototype. </param>
+  public void Add (FormGridRowInfo value)
   {
-    ArgumentUtility.CheckNotNull ("prototype", prototype);
-
-    InnerList.Add (prototype);
+    OnInsert (InnerList.Count, value);
+    int index = InnerList.Add (value);
+    OnInsertComplete (index, value);
   }
 }
 

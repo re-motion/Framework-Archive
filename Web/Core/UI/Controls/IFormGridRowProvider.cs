@@ -15,16 +15,16 @@ public interface IFormGridRowProvider: IControl
   /// <summary>
   ///   Returns a list of IDs identifying the rows to be hidden in a form grid.
   /// </summary>
-  /// <param name="table">The ID of the <see cref="HtmlTable"/> whose rows will be hidden.</param>
-  /// <returns>A <see cref="StringCollection"/> containing the IDs.</returns>
+  /// <param name="table"> The ID of the <see cref="HtmlTable"/> whose rows will be hidden. </param>
+  /// <returns> A <see cref="StringCollection"/> containing the IDs. </returns>
   StringCollection GetListOfHiddenRows (string table);
 
   /// <summary>
-  ///   Returns a list of <see cref="FormGridRowInfo"/> objects used to contrstuct and then 
+  ///   Returns a list of <see cref="FormGridRowInfo"/> objects used to constrtuct and then 
   ///   insert new rows into a form grid.
   /// </summary>
-  /// <param name="table">The <see cref="HtmlTable"/> into which the new rows will be inserted.</param>
-  /// <returns>A <see cref="FormGridRowInfoCollection"/> containing the prototypes.</returns>
+  /// <param name="table"> The <see cref="HtmlTable"/> into which the new rows will be inserted. </param>
+  /// <returns> A <see cref="FormGridRowInfoCollection"/> containing the prototypes. </returns>
   FormGridRowInfoCollection GetListOfFormGridRowInfos (string table);
 }
 

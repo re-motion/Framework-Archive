@@ -5,7 +5,9 @@ using System.Web.UI;
 
 namespace Rubicon.Web.UI.Controls
 {
-/// <summary> The prototype for the automatic creation of a new <see cref="FormGridManager.FormGridRow"/>. </summary>
+/// <summary>
+///   The information for the automatic creation of a new <see cref="FormGridManager.FormGridRow"/>. 
+/// </summary>
 public class FormGridRowInfo
 {
   /// <summary> The possible positions for inserting the new row relative to a given ID. </summary>
@@ -48,7 +50,10 @@ public class FormGridRowInfo
   /// </summary>
   private string _releatedRowID;
 
-  /// <summary> Simple Constructor </summary>
+  /// <summary> 
+  ///   Initiliazes a new instance of the <see cref="FormGridRowInfo"/> class with all 
+  ///   required information.
+  /// </summary>
   /// <param name="control"> The control to the inserted into the row. </param>
   /// <param name="newRowType">
   ///   The <see cref="RowType"/> for the new <see cref="FormGridManager.FormGridRow"/>.
@@ -73,14 +78,14 @@ public class FormGridRowInfo
     _releatedRowID = relatedRowID;
   }
 
-  /// <summary>  The control to the inserted into the row.  </summary>
+  /// <summary> Gets the control to the inserted into the row.  </summary>
   public Control Control
   {
     get { return _control; }
   }
 
   /// <summary>
-  ///   The <see cref="RowType"/> for the new <see cref="FormGridManager.FormGridRow"/>.
+  ///   Gets the <see cref="RowType"/> for the new <see cref="FormGridManager.FormGridRow"/>.
   /// </summary>
   public RowType NewRowType
   {
@@ -88,7 +93,7 @@ public class FormGridRowInfo
   }
 
   /// <summary> 
-  ///   The row used as a point of reference when inserting the new 
+  ///   Gets the row used as a point of reference when inserting the new 
   ///   <see cref="FormGridManager.FormGridRow"/>.
   /// </summary>
   public string ReleatedRowID
@@ -97,7 +102,8 @@ public class FormGridRowInfo
   }
  
   /// <summary> 
-  ///   The <see cref="RowPosition"/> for inserting the new <see cref="FormGridManager.FormGridRow"/>.
+  ///   Gets the <see cref="RowPosition"/> for inserting the new 
+  ///   <see cref="FormGridManager.FormGridRow"/>.
   /// </summary>
   public RowPosition PositionInFormGrid
   {
