@@ -61,11 +61,9 @@ public sealed class ArgumentUtility
     }
   }
   
-  [Obsolete ("Causes StackOverflow")]
   public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, System.Array array)
   {
-    //  Recursion without exit condition. Code not complete?
-    //CheckNotNullOrEmptyOrItemsNull (argumentName, array);
+    CheckNotNullOrItemsNull (argumentName, array);
     if (array.Length == 0)
       throw new ArgumentEmptyException (argumentName);
   }
@@ -73,8 +71,7 @@ public sealed class ArgumentUtility
   [Obsolete ("Causes StackOverflow")]
   public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, ICollection collection)
   {
-    //  Recursion without exit condition. Code not complete?
-    //CheckNotNullOrEmptyOrItemsNull (argumentName, collection);
+    CheckNotNullOrItemsNull (argumentName, collection);
     if (collection.Count == 0)
       throw new ArgumentEmptyException (argumentName);
   }
