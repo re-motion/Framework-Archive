@@ -68,6 +68,11 @@
 					<column>NaBoolean</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaByteProperty">
+          <type>byte</type>
+          <column>NaByte</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaDateProperty">
 					<type>date</type>
 					<column>NaDate</column>
@@ -78,16 +83,41 @@
 					<column>NaDateTime</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaDecimalProperty">
+          <type>decimal</type>
+          <column>NaDecimal</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaDoubleProperty">
 					<type>double</type>
 					<column>NaDouble</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaGuidProperty">
+          <type>guid</type>
+          <column>NaGuid</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaInt16Property">
+          <type>int16</type>
+          <column>NaInt16</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaInt32Property">
 					<type>int32</type>
 					<column>NaInt32</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaInt64Property">
+          <type>int64</type>
+          <column>NaInt64</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaSingleProperty">
+          <type>single</type>
+          <column>NaSingle</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="StringWithNullValueProperty">
 					<type>string</type>
 					<column>StringWithNullValue</column>
@@ -99,6 +129,11 @@
 					<column>NaBooleanWithNullValue</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaByteWithNullValueProperty">
+          <type>byte</type>
+          <column>NaByteWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaDateWithNullValueProperty">
 					<type>date</type>
 					<column>NaDateWithNullValue</column>
@@ -109,16 +144,41 @@
 					<column>NaDateTimeWithNullValue</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaDecimalWithNullValueProperty">
+          <type>decimal</type>
+          <column>NaDecimalWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaDoubleWithNullValueProperty">
 					<type>double</type>
 					<column>NaDoubleWithNullValue</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaGuidWithNullValueProperty">
+          <type>guid</type>
+          <column>NaGuidWithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaInt16WithNullValueProperty">
+          <type>int16</type>
+          <column>NaInt16WithNullValue</column>
+          <nullable>true</nullable>
+        </property>
 				<property name="NaInt32WithNullValueProperty">
 					<type>int32</type>
 					<column>NaInt32WithNullValue</column>
 					<nullable>true</nullable>
 				</property>
+        <property name="NaInt64WithNullValueProperty">
+          <type>int64</type>
+          <column>NaInt64WithNullValue</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="NaSingleWithNullValueProperty">
+          <type>single</type>
+          <column>NaSingleWithNullValue</column>
+          <nullable>true</nullable>
+        </property>        
 				<relationProperty name="ClassForRelationTestMandatory" relationID="ClassWithAllDataTypesToClassForRelationTestMandatory" cardinality="one" isMandatory="true">
 					<column>TableForRelationTestMandatory</column>
 				</relationProperty>
