@@ -1,3 +1,13 @@
+3.0.3.0
+=======
+
+- Neues Control Form: Ist von ASP.NET Htmlform abgeleitet und bietet folgende Zusatzfeatures:
+  * Action Attribut von server-seitiger Form setzen. Damit sind Posts auf andere Seiten möglich.
+  * Es können mehrere server-seitige Forms auf einer ASP.NET Page platziert werden.
+    Startup-Scripts, registrierte Script-Blöcke, registrierte Javascript-Arrays, 
+    Viewstate, Postback-Function, etc. werden richtig gehandelt.
+
+
 3.0.2.0
 =======
 
