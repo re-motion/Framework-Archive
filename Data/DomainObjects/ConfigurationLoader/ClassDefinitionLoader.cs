@@ -82,7 +82,7 @@ public class ClassDefinitionLoader
   private ClassDefinition GetClassDefinition (XmlNode classNode)
   {
     string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
-    string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity"), _namespaceManager).InnerText;
+    string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
     Type classType = LoaderUtility.GetTypeFromNode (classNode, FormatXPath ("{0}:type"), _namespaceManager);
 
     string storageProviderID = classNode.SelectSingleNode (FormatXPath (
