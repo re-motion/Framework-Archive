@@ -24,6 +24,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   private const string c_nullDisplayName = "Undefined";
   private const string c_nullItemValidationMessage = "Please select an item.";
 
+  /// <summary> 
+  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
+  /// </summary>
+  private const string c_designModeEmptyLabelContents = "#";
+
   // types
 
   // static members
@@ -102,6 +107,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
+
+    //  Prevent a collapsed control
+    if (IsDesignMode && Width == Unit.Empty)
+      Width = Unit.Pixel (150);
 
     _listControl = _listControlStyle.Create (false);
     _label = new Label();
@@ -344,8 +353,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
-        //  nothing
-        //  _label.Text = c_nullDisplayName;
+        _label.Text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
         //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
       else if (! IsDesignMode && EnumerationValueInfo != null)

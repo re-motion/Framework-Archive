@@ -25,6 +25,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private const string c_nullDisplayName = "Undefined";
   private const string c_nullItemValidationMessage = "Please select an item.";
 
+  /// <summary> 
+  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
+  /// </summary>
+  private const string c_designModeEmptyLabelContents = "#";
+
   // types
 
   // static members
@@ -109,7 +114,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     base.OnInit (e);
 
     //  Prevent a collapsed control
-    if (Width == Unit.Empty)
+    if (IsDesignMode && Width == Unit.Empty)
       Width = Unit.Pixel (150);
 
     _icon = new Image();
@@ -450,29 +455,32 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       {
         case UnitType.Percentage:
         {
-          int innerControlWidthValue = (int) (Width.Value - 20);
+          int designModeIconWidth = 20;
+          int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
           innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
           innerControlWidth = Unit.Percentage (innerControlWidthValue);
-          _icon.Width = Unit.Percentage (20);
+          _icon.Width = Unit.Percentage (designModeIconWidth);
           break;
         }
         case UnitType.Pixel:
         {
-          int innerControlWidthValue = (int) (Width.Value - 24);
+          int designModeIconWidth = 24;
+          int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
           innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
           innerControlWidth = Unit.Pixel (innerControlWidthValue);
-          _icon.Width = Unit.Pixel (24);
+          _icon.Width = Unit.Pixel (designModeIconWidth);
           break;
         }
         case UnitType.Point:
         {
-          int innerControlWidthValue = (int) (Width.Value - 15);
+          int designModeIconWidth = 15;
+          int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
           innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
 
           innerControlWidth = Unit.Point (innerControlWidthValue);
-          _icon.Width = Unit.Point (15);
+          _icon.Width = Unit.Point (designModeIconWidth);
           break;
         }
         default:
@@ -494,8 +502,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
-        //  nothing
-        //  _label.Text = c_nullDisplayName;
+        _label.Text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
         //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
     }
@@ -504,14 +512,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _dropDownList.Style["vertical-align"] = "bottom";
       _icon.Style["vertical-align"] = "middle";
 
+      _dropDownList.ApplyStyle (_commonStyle);
       _dropDownList.Width = innerControlWidth;
       _dropDownList.Height = Height;
-      _dropDownList.ApplyStyle (_commonStyle);
       _dropDownList.ApplyStyle (_dropDownListStyle);
 
     }
 
-    _icon.ApplyStyle (_commonStyle);
+      //  Common style not useful with icon
+      //  _icon.ApplyStyle (_commonStyle);
     _icon.ApplyStyle (_iconStyle);
   }
 
