@@ -377,7 +377,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\WhatsNew.txt"
+                    RelPath = "Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt"
                     BuildAction = "Content"
                 />
                 <File

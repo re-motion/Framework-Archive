@@ -154,7 +154,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "Doc\WhatsNew.txt"
+                    RelPath = "Doc\WhatsNew_Rubicon.Web.txt"
                     BuildAction = "Content"
                 />
                 <File
