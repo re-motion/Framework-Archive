@@ -20,50 +20,9 @@ namespace OBWTest
 public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
 
 {
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue DateOfBirthField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue HeightField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
-  protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel5;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel6;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel3;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel4;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator2;
-  protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Person person;
-    string path = Server.MapPath ("person.xml");
-    if (System.IO.File.Exists (path))
-    {
-      person = Person.LoadFromXml (path);
-    }
-    else
-    {
-      person = new Person();
-      person.FirstName = "Hugo";
-      person.LastName = "Meier";
-      person.DateOfBirth = new DateTime (1959, 4, 15);
-      person.Height = 179;
-      person.Income = 2000;
-    }
-
-	  reflectionBusinessObjectDataSource1.BusinessObject = person;
-
-    this.DataBind();
-    if (!IsPostBack)
-    {
-      reflectionBusinessObjectDataSource1.LoadValues ();
-    }
 	}
 
 	#region Web Form Designer generated code
@@ -82,30 +41,12 @@ public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
-    // 
-    // reflectionBusinessObjectDataSource1
-    // 
-    this.reflectionBusinessObjectDataSource1.BusinessObject = null;
-    this.reflectionBusinessObjectDataSource1.EditMode = true;
-    this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
-    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
-    this.GenderField.Init += new System.EventHandler(this.GenderField_Init);
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
 
   private void SaveButton_Click(object sender, System.EventArgs e)
   {
-    bool isValid = FormGridManager.Validate();
-    if (isValid)
-    {
-      reflectionBusinessObjectDataSource1.SaveValues();
-      Person person = (Person) reflectionBusinessObjectDataSource1.BusinessObject;
-      person.SaveToXml (Server.MapPath ("person.xml"));
-    }
   }
 
   private void RadioButtonList1_SelectedIndexChanged(object sender, System.EventArgs e)
