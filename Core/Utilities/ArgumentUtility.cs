@@ -68,7 +68,6 @@ public sealed class ArgumentUtility
       throw new ArgumentEmptyException (argumentName);
   }
 
-  [Obsolete ("Causes StackOverflow")]
   public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, ICollection collection)
   {
     CheckNotNullOrItemsNull (argumentName, collection);
