@@ -523,7 +523,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     else
       _label.Text = String.Empty;
 
-    _label.Height = Height;
+    _label.Enabled = Enabled;
     _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
 
@@ -568,6 +568,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       }
     }
 
+    _dropDownList.Enabled = Enabled;
     _dropDownList.ApplyStyle (_commonStyle);
     _dropDownList.Width = Unit.Percentage (100);
     _dropDownList.Height = Height;
@@ -590,6 +591,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
         _icon.Width = iconInfo.Width;
         _icon.Height = iconInfo.Height;
 
+        _icon.Enabled = Enabled;
         _icon.Visible = _enableIcon;
       }
       else
@@ -608,6 +610,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   private void PreRenderOptionsMenu()
   {
+    _optionsMenu.Enabled = Enabled;
     _optionsMenu.MenuItems.Clear();
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
     if (StringUtility.IsNullOrEmpty (_optionsTitle))
@@ -642,7 +645,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
           && Command.Type != CommandType.None
           && isCommandLinkPossible)
       {
-          isCommandEnabled = true;
+          isCommandEnabled = Enabled;
       }
     }
 
