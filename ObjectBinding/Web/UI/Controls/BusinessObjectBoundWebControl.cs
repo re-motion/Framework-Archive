@@ -246,7 +246,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   Override this method to initialize child controls.
+  ///   Override this method to Prerenders child controls.
   /// </summary>
   /// <remarks>
   ///   Child controls that do not need to be created before handling post data can be created
