@@ -141,7 +141,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     base.OnLoad (e);
 
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -249,7 +249,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -271,7 +271,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
