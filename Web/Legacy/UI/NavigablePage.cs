@@ -112,20 +112,21 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
 
   // methods and properties
 
-  protected object GetSessionValue (string key)
+  internal protected object GetSessionValue (string key)
   {
     return GetSessionValue (key, true);
   }
   
-  protected object GetSessionValue (string key, bool isRequired)
+  internal protected object GetSessionValue (string key, bool isRequired)
   {
     return GetSessionValue (this.Token, key, isRequired);
   }
 
-  protected void SetSessionValue (string key, object sessionValue)
+  internal protected void SetSessionValue (string key, object sessionValue)
   {
     SetSessionValue (this.Token, key, sessionValue);
   }
+
 
   protected void ClearSessionValue (string key)
   { 
