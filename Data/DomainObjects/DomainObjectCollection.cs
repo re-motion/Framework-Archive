@@ -203,6 +203,28 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   // methods and properties
 
   /// <summary>
+  /// Returns all items of a given <see cref="DomainObjectCollection"/> that are not part of the <b>DomainObjectCollection</b>.
+  /// </summary>
+  /// <remarks>The method does not return any items that are in the collection, but not in <i>domainObjects</i>.</remarks>
+  /// <param name="domainObjects">The collection to evaluate.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/> with all items of <i>domainObjects</i> that are not part of the collection.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  public DomainObjectCollection GetItemsNotInCollection (DomainObjectCollection domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+    DomainObjectCollection itemsNotInCollection = new DomainObjectCollection ();
+
+    foreach (DomainObject domainObject in domainObjects)
+    {
+      if (!Contains (domainObject))
+        itemsNotInCollection.Add (domainObject);
+    }
+
+    return itemsNotInCollection;
+  }
+
+  /// <summary>
   /// Gets the required <see cref="Type"/> for all members of the collection.
   /// </summary>
   public Type RequiredItemType
@@ -442,7 +464,6 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return base.IndexOfKey (id);
   }
 
-
   /// <summary>
   /// Inserts a <see cref="DomainObject"/> into the collection at the specified index.
   /// </summary>
@@ -490,6 +511,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     get { return false; }
   }
+
 
   #region Explicitly implemeted IList Members
 
