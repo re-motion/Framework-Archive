@@ -767,7 +767,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreSame (_customer3NotInCollection, _collection[0]);
     Assert.AreEqual (2, _collection.Count);
 
-    eventReceiver.Compare (expectedStates);
+    eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -785,7 +785,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreSame (_customer1, _collection[0]);
     Assert.AreEqual (2, _collection.Count);
 
-    eventReceiver.Compare (expectedStates);
+    eventReceiver.Check (expectedStates);
   }
 
   [Test]
@@ -804,7 +804,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreSame (_customer1, _collection[0]);
     Assert.AreEqual (2, _collection.Count);
 
-    eventReceiver.Compare (expectedStates);
+    eventReceiver.Check (expectedStates);
   }
  
   private DomainObjectCollection CreateCustomerCollection ()

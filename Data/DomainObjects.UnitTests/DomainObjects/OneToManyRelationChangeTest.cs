@@ -64,7 +64,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new RelationChangeState (_newCustomer, "Orders", null, null, "10. Changed event of new customer")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Changed, _order.State);
     Assert.AreEqual (StateType.Changed, _oldCustomer.State);
@@ -93,7 +93,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Unchanged, _order.State);
     Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
@@ -123,7 +123,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Unchanged, _order.State);
     Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
@@ -154,7 +154,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Unchanged, _order.State);
     Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
@@ -186,7 +186,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Unchanged, _order.State);
     Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
@@ -219,7 +219,7 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
       new RelationChangeState (_newCustomer, "Orders", null, _order, "5. Changing event of new customer")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
 
     Assert.AreEqual (StateType.Unchanged, _order.State);
     Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
