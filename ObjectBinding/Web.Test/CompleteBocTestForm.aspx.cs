@@ -76,7 +76,7 @@ namespace OBWTest
     if (! IsPostBack)
     {
       IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
-      ReferenceField.RefreshBusinessObjectList (objects);
+      ReferenceField.SetBusinessObjectList (objects);
     }
 	}
 
