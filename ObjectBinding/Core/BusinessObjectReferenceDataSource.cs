@@ -7,6 +7,12 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding
 {
 
+public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
+{
+  IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
+  IBusinessObjectDataSource ReferencedDataSource { get; }
+}
+
 public abstract class BusinessObjectReferenceDataSourceBase: BusinessObjectDataSource, IBusinessObjectDataSource
 {
   [CLSCompliant (false)]

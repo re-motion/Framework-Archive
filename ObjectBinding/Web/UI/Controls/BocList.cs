@@ -1368,112 +1368,127 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    bool isFirstValueColumnRendered = false;
-
+    bool firstValueColumnRendered = false;
     for (int idxColumn = 0; idxColumn < renderColumns.Length; idxColumn++)
     {
+      bool showIcon = false;
       BocColumnDefinition column = renderColumns[idxColumn];
-
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
-
-      BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
-      BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
-      BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
-      BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
-
-      bool isFirstValueColumn = valueColumn != null && !isFirstValueColumnRendered;
-
-      //  Render the command
-      bool isCommandEnabled = false;
-      if (column.Command != null)
+      if ( (!firstValueColumnRendered) && column is BocValueColumnDefinition)
       {
-        bool isActive =    column.Command.Show == CommandShow.Always
-                        || isReadOnly && column.Command.Show == CommandShow.ReadOnly
-                        || ! isReadOnly && column.Command.Show == CommandShow.EditMode;
-        if (   isActive
-            && column.Command.Type != CommandType.None)
-        {
-          isCommandEnabled = true;
-        }
+        firstValueColumnRendered = true;
+        showIcon = EnableIcon;
       }
-
-      if (isCommandEnabled)
-      {    
-        string argument = c_eventCommandPrefix + idxColumn + "," + originalRowIndex;
-        if (businessObjectWithIdentity != null)
-          argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
-        string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        string onClick = "BocList_OnCommandClick();";
-        column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
-      }
-
-      //  Render the icon
-      if (EnableIcon && isFirstValueColumn)
-      {
-        IBusinessObjectService service
-          = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
-            typeof (IBusinessObjectWebUIService));
-
-        IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
-
-        IconInfo icon = null;
-        if (webUIService != null)
-          icon = webUIService.GetIcon (businessObject);
-
-        if (icon != null)
-        {
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
-          if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
-          {
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
-          }
-          writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
-          writer.Write (c_whiteSpace);
-        }
-      }
-
-      //  Render the label
-      if (commandColumn != null)
-      {
-        if (commandColumn.IconPath != null)
-        {
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
-        }
-
-        if (commandColumn.Label != null)
-          writer.Write (commandColumn.Label);
-      }
-      else if (compoundColumn != null)
-      {
-        string contents = compoundColumn.GetStringValue (businessObject);
-        contents = HttpUtility.HtmlEncode (contents);
-        if (contents == string.Empty)
-          contents = c_whiteSpace;
-        writer.Write (contents);
-      }
-      else if (simpleColumn != null)
-      {
-        string contents = simpleColumn.GetStringValue (businessObject);
-        contents = HttpUtility.HtmlEncode (contents);
-        if (contents == string.Empty)
-          contents = c_whiteSpace;
-        writer.Write (contents);
-      }
-
-      if (isCommandEnabled)
-        column.Command.RenderEnd (writer);
-
-      if (isFirstValueColumn)
-        isFirstValueColumnRendered = true;
-      writer.RenderEndTag();
+      RenderDataColumn (writer, idxColumn, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
     }
     
+    writer.RenderEndTag();
+  }
+
+  private void RenderDataColumn (
+      HtmlTextWriter writer, 
+      int idxColumn, BocColumnDefinition column, 
+      int originalRowIndex, IBusinessObject businessObject,
+      bool showIcon, string cssClassTableCell)
+  {
+    string objectID = null;
+    IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
+    if (businessObjectWithIdentity != null)
+      objectID = businessObjectWithIdentity.UniqueIdentifier;
+    bool isReadOnly = IsReadOnly;
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+    BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
+    BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
+    BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
+    BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
+
+    //  Render the command
+    bool isCommandEnabled = false;
+    if (column.Command != null)
+    {
+      bool isActive =    column.Command.Show == CommandShow.Always
+                      || isReadOnly && column.Command.Show == CommandShow.ReadOnly
+                      || ! isReadOnly && column.Command.Show == CommandShow.EditMode;
+      if (   isActive
+          && column.Command.Type != CommandType.None)
+      {
+        isCommandEnabled = true;
+      }
+    }
+
+    if (isCommandEnabled)
+    {    
+      string argument = c_eventCommandPrefix + idxColumn + "," + originalRowIndex;
+      if (businessObjectWithIdentity != null)
+        argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
+      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string onClick = "BocList_OnCommandClick();";
+      column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
+    }
+
+    //  Render the icon
+    if (showIcon)
+    {
+      IBusinessObjectService service
+        = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
+          typeof (IBusinessObjectWebUIService));
+
+      IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+
+      IconInfo icon = null;
+      if (webUIService != null)
+        icon = webUIService.GetIcon (businessObject);
+
+      if (icon != null)
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
+        if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+        {
+          writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
+          writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
+        }
+        writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+        writer.RenderBeginTag (HtmlTextWriterTag.Img);
+        writer.RenderEndTag();
+        writer.Write (c_whiteSpace);
+      }
+    }
+
+    //  Render the label
+    if (commandColumn != null)
+    {
+      if (commandColumn.IconPath != null)
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
+        writer.RenderBeginTag (HtmlTextWriterTag.Img);
+        writer.RenderEndTag();
+      }
+
+      if (commandColumn.Label != null)
+        writer.Write (commandColumn.Label);
+    }
+    else if (compoundColumn != null)
+    {
+      string contents = compoundColumn.GetStringValue (businessObject);
+      contents = HttpUtility.HtmlEncode (contents);
+      if (contents == string.Empty)
+        contents = c_whiteSpace;
+      writer.Write (contents);
+    }
+    else if (simpleColumn != null)
+    {
+      string contents = simpleColumn.GetStringValue (businessObject);
+      contents = HttpUtility.HtmlEncode (contents);
+      if (contents == string.Empty)
+        contents = c_whiteSpace;
+      writer.Write (contents);
+    }
+
+    if (isCommandEnabled)
+      column.Command.RenderEnd (writer);
+
     writer.RenderEndTag();
   }
 
@@ -2052,8 +2067,8 @@ public class BocList:
       IBusinessObject businessObjectA, 
       IBusinessObject businessObjectB)
   {
-    object valueA = propertyPath.GetValue (businessObjectA);
-    object valueB = propertyPath.GetValue (businessObjectB);
+    object valueA = propertyPath.GetValue (businessObjectA, false, true);
+    object valueB = propertyPath.GetValue (businessObjectB, false, true);
 
     if (valueA == null && valueB == null)
       return 0;
@@ -2061,6 +2076,23 @@ public class BocList:
       return -1;
     if (valueB == null)
       return 1;
+
+    IList listA = valueA as IList;
+    IList listB = valueB as IList;
+    if (listA != null || listB != null)
+    {
+      if (listA == null || listB == null)
+        return 0;
+      if (listA.Count == 0 && listB.Count == 0)
+        return 0;
+      if (listA.Count == 0)
+        return -1;
+      if (listB.Count == 0)
+        return 1;
+      valueA = listA[0];
+      valueB = listB[0];
+    }
+
     if (valueA is IComparable && valueB is IComparable)
       return Comparer.Default.Compare (valueA, valueB);
     return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());

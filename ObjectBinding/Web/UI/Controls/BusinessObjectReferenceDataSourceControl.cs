@@ -22,7 +22,7 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
   }
 }
 
-public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl
+public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
 {
   private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
   {
@@ -106,6 +106,14 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
     get { return (IBusinessObjectReferenceProperty) Property; }
     set { Property = value; }
   }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IBusinessObjectDataSource ReferencedDataSource 
+  { 
+    get { return _internalDataSource.ReferencedDataSource; }
+  }
+
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

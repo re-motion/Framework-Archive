@@ -331,17 +331,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     string formatString = _formatString;
     if (StringUtility.IsNullOrEmpty (formatString))
     {
-      IBusinessObjectProperty lastProperty = PropertyPath.LastProperty;
-      bool isDate = lastProperty is IBusinessObjectDateProperty;
-      bool isDateTime = lastProperty is IBusinessObjectDateTimeProperty;
-
-      if (isDate)
+      if (PropertyPath.LastProperty is IBusinessObjectDateProperty)
         formatString = "d";
-      else if (isDateTime)
+      else if (PropertyPath.LastProperty is IBusinessObjectDateTimeProperty)
         formatString = "g";
     }
 
-    return string.Format ("{0:" + formatString + "}", PropertyPath.GetValue (obj));
+    return PropertyPath.GetString (obj, formatString);
   }
 
   /// <summary>
@@ -482,11 +478,11 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
   public override string GetStringValue (IBusinessObject obj)
   {
-    object[] values = new object[_propertyPathBindings.Count];
+    BusinessObjectPropertyPath.Formatter[] formatters = new BusinessObjectPropertyPath.Formatter[_propertyPathBindings.Count];
     for (int i = 0; i < _propertyPathBindings.Count; ++i)
-      values[i] = _propertyPathBindings[i].PropertyPath.GetValue (obj);
+      formatters[i] = new BusinessObjectPropertyPath.Formatter (obj, _propertyPathBindings[i].PropertyPath);
 
-    return string.Format (_formatString, values);
+    return string.Format (_formatString, formatters);
   }
 
   /// <summary>
