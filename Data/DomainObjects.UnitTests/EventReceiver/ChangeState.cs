@@ -41,24 +41,28 @@ public class ChangeState
     get { return _message; }
   }
 
-  public virtual bool Compare (object obj)
+  public virtual void Check (ChangeState expectedState)
   {
-    ChangeState changeState = obj as ChangeState;
-    if (changeState == null)
-      return false;
+    ArgumentUtility.CheckNotNull ("expectedState", expectedState);
 
-    return object.ReferenceEquals (_sender, changeState.Sender);
+    if (this.GetType () != expectedState.GetType ())
+    {
+      throw CreateApplicationException (
+          "Type of actual state '{0}' does not match type of expected state '{1}'.", 
+          this.GetType (), 
+          expectedState.GetType ());
+    }
+
+    if (!object.ReferenceEquals (_sender, expectedState.Sender))
+    {
+      throw CreateApplicationException (
+          "Actual sender '{0}' does not match expected sender '{1}'.", _sender, expectedState.Sender);
+    }
   }
 
-  protected bool Compare (object object1, object object2)
+  protected ApplicationException CreateApplicationException (string message, params object[] args)
   {
-    if (object1 == null && object2 == null)
-      return true;
-
-    if (object1 != null)
-      return object1.Equals (object2);
-    else
-      return object2.Equals (object1);
+    return new ApplicationException (string.Format (message, args));
   }
 }
 }

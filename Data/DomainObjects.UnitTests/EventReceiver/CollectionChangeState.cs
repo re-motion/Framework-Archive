@@ -36,16 +36,19 @@ public class CollectionChangeState : ChangeState
     get { return _domainObject; }
   }
 
-  public override bool Compare (object obj)
+  public override void Check (ChangeState expectedState)
   {
-    if (!base.Compare (obj))
-      return false;
+    base.Check (expectedState);
 
-    CollectionChangeState collectionChangeState = obj as CollectionChangeState;
-    if (collectionChangeState == null)
-      return false;
+    CollectionChangeState collectionChangeState = (CollectionChangeState) expectedState;
 
-    return Object.ReferenceEquals (_domainObject, collectionChangeState.DomainObject);
+    if (!object.ReferenceEquals (_domainObject, collectionChangeState.DomainObject))
+    {
+      throw CreateApplicationException (
+          "Affected actual DomainObject '{0}' and expected DomainObject '{1}' do not match.", 
+          _domainObject.ID, 
+          collectionChangeState.DomainObject.ID);
+    }
   }
 }
 }
