@@ -33,7 +33,7 @@ public class DataContainerMapTest : ClientTransactionBaseTest
     base.SetUp ();
 
     _map = new DataContainerMap (ClientTransactionMock);
-    _newOrder = TestDataContainerFactory.CreateNewOrderDataContainer ();
+    _newOrder = CreateNewOrderDataContainer ();
     _existingOrder = TestDataContainerFactory.CreateOrder1DataContainer ();
   }
 
@@ -106,6 +106,17 @@ public class DataContainerMapTest : ClientTransactionBaseTest
     _map.Rollback ();
 
     ObjectID id = _newOrder.ID;
+  }
+
+  private DataContainer CreateNewOrderDataContainer ()
+  {
+    Order order = new Order ();
+    order.OrderNumber = 10;
+    order.DeliveryDate = new DateTime (2006, 1, 1);
+    order.Official = Official.GetObject (DomainObjectIDs.Official1);
+    order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    
+    return order.DataContainer;
   }
 }
 }
