@@ -122,11 +122,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BusinessObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BusinessObjectDataSource.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
