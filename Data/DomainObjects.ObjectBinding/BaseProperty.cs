@@ -11,18 +11,14 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public class DomainObjectProperty: IBusinessObjectProperty
+public class BaseProperty : IBusinessObjectProperty
 {
   PropertyInfo _propertyInfo;
   bool _isRequired;
   Type _itemType;
   bool _isList;
 
-  internal DomainObjectProperty (
-      PropertyInfo propertyInfo, 
-      bool isRequired,
-      Type itemType, 
-      bool isList)
+  internal BaseProperty (PropertyInfo propertyInfo, bool isRequired, Type itemType, bool isList)
   {
     _propertyInfo = propertyInfo;
     _isRequired = isRequired;
@@ -39,6 +35,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
   {
     if (!IsList)
       throw new InvalidOperationException ("Cannot create lists for non-list properties.");
+
     return Array.CreateInstance (_itemType, count);
   }
 
@@ -64,10 +61,7 @@ public class DomainObjectProperty: IBusinessObjectProperty
       string displayName = string.Empty;
 
       if (MultiLingualResourcesAttribute.ExistsResource (_propertyInfo.DeclaringType))
-      {
-        displayName = MultiLingualResourcesAttribute.GetResourceText (
-            _propertyInfo.DeclaringType, "property:" + _propertyInfo.Name);
-      }
+        displayName = MultiLingualResourcesAttribute.GetResourceText (_propertyInfo.DeclaringType, "property:" + _propertyInfo.Name);
 
       if (displayName == string.Empty)
         displayName = _propertyInfo.Name;

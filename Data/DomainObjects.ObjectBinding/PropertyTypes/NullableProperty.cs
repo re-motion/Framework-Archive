@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class NullableProperty : DomainObjectProperty
+public class NullableProperty : BaseProperty
 {
   bool _isNullableType;
 

@@ -71,8 +71,8 @@ public class BusinessObjectReflector
 
   public object GetProperty (IBusinessObjectProperty property)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (DomainObjectProperty));
-    DomainObjectProperty reflectionProperty = (DomainObjectProperty) property;
+    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));
+    BaseProperty reflectionProperty = (BaseProperty) property;
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = propertyInfo.GetValue (_bindableObject, new object[0]);
@@ -81,8 +81,8 @@ public class BusinessObjectReflector
 
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (DomainObjectProperty));
-    DomainObjectProperty reflectionProperty = (DomainObjectProperty) property;
+    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));
+    BaseProperty reflectionProperty = (BaseProperty) property;
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = reflectionProperty.ToInternalType (value);

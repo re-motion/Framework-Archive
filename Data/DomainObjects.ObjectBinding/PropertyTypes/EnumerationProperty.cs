@@ -9,7 +9,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerationProperty
+public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationProperty
 {
   private const string c_disabledPrefix = "Disabled_";
 

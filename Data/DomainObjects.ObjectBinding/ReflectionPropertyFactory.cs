@@ -9,13 +9,13 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public class PropertyFactory
+public class ReflectionPropertyFactory
 {
-	public PropertyFactory()
+	public ReflectionPropertyFactory()
 	{
 	}
 
-  public DomainObjectProperty CreateProperty (PropertyInfo propertyInfo)
+  public BaseProperty CreateProperty (PropertyInfo propertyInfo)
   {
     ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
@@ -28,7 +28,7 @@ public class PropertyFactory
     return CreateProperty (propertyInfo, itemType, isNullableType);
   }
 
-  protected virtual DomainObjectProperty CreateProperty (PropertyInfo propertyInfo, Type itemType, bool isNullableType)
+  protected virtual BaseProperty CreateProperty (PropertyInfo propertyInfo, Type itemType, bool isNullableType)
   {
     bool isRequired = IsPropertyRequired (propertyInfo);
     bool isList = IsList (propertyInfo);
@@ -86,7 +86,7 @@ public class PropertyFactory
     }
     else
     {
-      return new DomainObjectProperty (propertyInfo, isRequired, itemType, isList);
+      return new BaseProperty (propertyInfo, isRequired, itemType, isList);
     }
   }
 

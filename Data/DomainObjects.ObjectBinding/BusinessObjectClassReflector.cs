@@ -11,9 +11,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 public class BusinessObjectClassReflector
 {
   private Type _businessObjectClassType;
-  private DomainObjectPropertyFactory _propertyFactory;
+  private ReflectionPropertyFactory _propertyFactory;
 
-	public BusinessObjectClassReflector (Type businessObjectClassType, DomainObjectPropertyFactory propertyFactory)
+	public BusinessObjectClassReflector (Type businessObjectClassType, ReflectionPropertyFactory propertyFactory)
 	{
     ArgumentUtility.CheckNotNull ("businessObjectClassType", businessObjectClassType);
     ArgumentUtility.CheckNotNull ("propertyFactory", propertyFactory);

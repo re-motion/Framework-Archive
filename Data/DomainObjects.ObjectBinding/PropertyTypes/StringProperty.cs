@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class StringProperty : DomainObjectProperty, IBusinessObjectStringProperty
+public class StringProperty : BaseProperty, IBusinessObjectStringProperty
 {
   private NaInt32 _maxLength;
 

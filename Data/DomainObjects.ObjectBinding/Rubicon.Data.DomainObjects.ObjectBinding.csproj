@@ -123,6 +123,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "BaseProperty.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "BindableDomainObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -148,11 +153,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DomainObjectProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjectPropertyFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -173,7 +173,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PropertyFactory.cs"
+                    RelPath = "ReflectionPropertyFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
