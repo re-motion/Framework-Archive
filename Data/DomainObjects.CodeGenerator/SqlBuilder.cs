@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
+using System.IO;
 
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
 //TODO: make usage of nvarchar/varchar for string properties configurable (app.config)
-public class SqlBuilder : IBuilder
+public class SqlBuilder : ConfigurationBasedBuilder
 {
   // types
 
@@ -17,40 +16,17 @@ public class SqlBuilder : IBuilder
 
   // member fields
 
-  private bool _disposed = false;
-
   private string _outputFile;
-  private string _mappingFile = MappingLoader.DefaultConfigurationFile;
-  private string _mappingSchemaFile = MappingLoader.DefaultSchemaFile;
-  private string _storageProviderFile = StorageProviderConfigurationLoader.DefaultConfigurationFile;
-  private string _storageProviderSchemaFile = StorageProviderConfigurationLoader.DefaultSchemaFile;
 
   private IBuilder[] _builders;
 
   // construction and disposing
 
-  public SqlBuilder (string outputFile) : this (outputFile, null, null, null, null)
-  {
-  }
-
-	public SqlBuilder (string outputFile, string mappingFile, string mappingSchemaFile, string storageProvidersFile, string storageProvidersSchemaFile)
+	public SqlBuilder (string outputFile, string xmlFilePath, string xmlSchemaFilePath) : base (xmlFilePath, xmlSchemaFilePath)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("outputFile", outputFile);
     
     _outputFile = outputFile;
-
-    if (mappingFile != null)
-      _mappingFile = mappingFile;
-    if (mappingSchemaFile != null)
-      _mappingSchemaFile = mappingSchemaFile;
-    if (storageProvidersFile != null)
-      _storageProviderFile = storageProvidersFile;
-    if (storageProvidersSchemaFile != null)
-      _storageProviderSchemaFile = storageProvidersSchemaFile;
-
-    MappingConfiguration.SetCurrent (new MappingConfiguration (_mappingFile, _mappingSchemaFile));
-
-    StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (_storageProviderFile, _storageProviderSchemaFile));
 
     ArrayList builders = new ArrayList ();
 
@@ -72,20 +48,9 @@ public class SqlBuilder : IBuilder
     _builders = (IBuilder[]) builders.ToArray (typeof (IBuilder));
 	}
 
-  ~SqlBuilder ()
+  protected override void Dispose (bool disposing)
   {
-    Dispose (false);
-  }
-
-  public void Dispose()
-  {
-    Dispose (true);
-    GC.SuppressFinalize (this);
-  }
-  
-  protected virtual void Dispose (bool disposing)
-  {
-    if (!_disposed)
+    if (!Disposed)
     {
       if (disposing)
       {
@@ -93,21 +58,17 @@ public class SqlBuilder : IBuilder
           builder.Dispose ();
         _builders = null;
       }
-      _disposed = true;
+      Disposed = true;
     }
   }
 
   // methods and properties
 
-  #region IBuilder Members
-
-  public void Build()
+  public override void Build ()
   {
     foreach (IBuilder builder in _builders)
       builder.Build ();
   }
-
-  #endregion
 
   private string[] GetDistinctStorageProviderIDs ()
   {

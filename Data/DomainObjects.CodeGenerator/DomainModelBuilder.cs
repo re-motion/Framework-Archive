@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class DomainModelBuilder : IBuilder
+public class DomainModelBuilder : ConfigurationBasedBuilder
 {
   // types
 
@@ -17,12 +17,7 @@ public class DomainModelBuilder : IBuilder
 
   // member fields
 
-  private bool _disposed = false;
   private string _outputFolder;
-  private string _mappingFile;
-  private string _mappingSchemaFile;
-  private string _storageProvidersFile;
-  private string _storageProvidersSchemaFile;
   private IBuilder[] _domainObjectBuilders;
   private IBuilder[] _domainObjectCollectionBuilders;
 
@@ -30,44 +25,23 @@ public class DomainModelBuilder : IBuilder
 
 	public DomainModelBuilder (
       string outputFolder,
-      string mappingFile, 
-      string mappingSchemaFile, 
-      string storageProvidersFile, 
-      string storageProvidersSchemaFile)
-      : this (outputFolder, mappingFile, mappingSchemaFile, storageProvidersFile, storageProvidersSchemaFile, null, null)
-	{
-  }
-
-	public DomainModelBuilder (
-      string outputFolder,
-      string mappingFile, 
-      string mappingSchemaFile, 
-      string storageProvidersFile, 
-      string storageProvidersSchemaFile, 
+      string xmlFilePath,
+      string xmlSchemaFilePath,
       string domainObjectBaseClass, 
       string domainObjectCollectionBaseClass)
+    : base (xmlFilePath, xmlSchemaFilePath)
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
-    ArgumentUtility.CheckNotNullOrEmpty ("mappingFile", mappingFile);
-    ArgumentUtility.CheckNotNullOrEmpty ("mappingSchemaFile", mappingSchemaFile);
-    ArgumentUtility.CheckNotNullOrEmpty ("storageProvidersFile", storageProvidersFile);
-    ArgumentUtility.CheckNotNullOrEmpty ("storageProvidersSchemaFile", storageProvidersSchemaFile);
 
     if (outputFolder != string.Empty)
       _outputFolder = outputFolder;
     else
       _outputFolder = "";
 
-    _mappingFile = mappingFile;
-    _mappingSchemaFile = mappingSchemaFile;
-    _storageProvidersFile = storageProvidersFile;
-    _storageProvidersSchemaFile = storageProvidersSchemaFile;
-
     ArrayList domainObjectBuilders = new ArrayList ();
     ArrayList domainObjectCollectionBuilders = new ArrayList ();
 
-    MappingConfiguration mappingConfiguration = MappingConfiguration.Current;
-    foreach (ClassDefinition classDefinition in mappingConfiguration.ClassDefinitions)
+    foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
     {
       domainObjectBuilders.Add (new DomainObjectBuilder (
           Path.Combine (_outputFolder, classDefinition.ClassType.Name + s_fileExtention), 
@@ -94,19 +68,9 @@ public class DomainModelBuilder : IBuilder
     _domainObjectCollectionBuilders = (IBuilder[]) domainObjectCollectionBuilders.ToArray (typeof (IBuilder));
   }
 
-  ~DomainModelBuilder ()      
+  protected override void Dispose (bool disposing)
   {
-    Dispose (false);
-  }
-
-  public void Dispose()
-  {
-    Dispose (true);
-  }
-
-  protected virtual void Dispose (bool disposing)
-  {
-    if(!_disposed)
+    if(!Disposed)
     {
       if(disposing)
       {
@@ -119,22 +83,17 @@ public class DomainModelBuilder : IBuilder
         _domainObjectCollectionBuilders = null;
       }
     }
-    _disposed = true;         
+    Disposed = true;
   }
 
   // methods and properties
 
-  #region IBuilder Members
-
-  public void Build()
+  public override void Build ()
   {
     foreach (IBuilder builder in _domainObjectBuilders)
       builder.Build ();
     foreach (IBuilder builder in _domainObjectCollectionBuilders)
       builder.Build ();
   }
-
-  #endregion
-
 }
 }

@@ -23,11 +23,11 @@ public class StubsBuilder : CodeBuilder
 
   // construction and disposing
 
-  public StubsBuilder (string stubsfile, string mappingFile) : base (stubsfile)
+  public StubsBuilder (string stubsfile, string mappingPath) : base (stubsfile)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("stubsfile", stubsfile);
+    ArgumentUtility.CheckNotNull ("mappingPath", mappingPath);
 
-    _mappingDocument = CreateXmlDocuemt (mappingFile);
+    _mappingDocument = CreateXmlDocuemt (Path.Combine (mappingPath, MappingLoader.DefaultConfigurationFile));
 
     PrefixNamespace[] prefixNamespaces = new PrefixNamespace[1] { PrefixNamespace.MappingNamespace } ;
 

@@ -118,6 +118,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ConfigurationBasedBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ConstraintDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
