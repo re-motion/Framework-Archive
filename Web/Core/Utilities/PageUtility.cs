@@ -166,15 +166,23 @@ public class PageUtility
 
   public static string GetPhysicalHttpPageUrl (Page page, string relativeUrl)
   {
-    return RemoveHttps (GetPhysicalPageUrl (page, relativeUrl));
+    return RemoveHttps (page, GetPhysicalPageUrl (page, relativeUrl));
   }
 
-  public static string RemoveHttps (string url)
+  public static string RemoveHttps (Page page, string url)
   {
     if (url.ToLower().StartsWith ("https://"))
+    {
       return "http://" + url.Substring ("https://".Length);
-    else
+    }
+    else if (url.ToLower().StartsWith ("http://"))
+    { 
       return url;
+    }
+    else
+    {
+      return "http://" + page.Request.Url.Host + url;
+    }
   }
 
 /*  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
