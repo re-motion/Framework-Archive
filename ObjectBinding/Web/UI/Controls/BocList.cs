@@ -1478,13 +1478,20 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-    if (IsSelectionEnabled && _selection == RowSelection.Multiple)
+    if (IsSelectionEnabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
-      bool isChecked = (_checkBoxCheckedState[c_titleRowIndex] != null);
-      RenderCheckBox (writer, checkBoxName, c_titleRowIndex.ToString(), isChecked, true);
+      if (_selection == RowSelection.Multiple)
+      {
+        string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
+        bool isChecked = (_checkBoxCheckedState[c_titleRowIndex] != null);
+        RenderCheckBox (writer, checkBoxName, c_titleRowIndex.ToString(), isChecked, true);
+      }
+      else
+      {
+        writer.Write (c_whiteSpace);
+      }
       writer.RenderEndTag();
     }
 
@@ -1529,7 +1536,7 @@ public class BocList:
       else
       {
         string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
-        if (contents == string.Empty)
+        if (StringUtility.IsNullOrEmpty (contents))
           contents = c_whiteSpace;
         writer.Write (contents);
       }
@@ -1695,7 +1702,9 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
     bool isReadOnly = IsReadOnly;
-    bool hasEditModeControl =    _rowEditModeControls != null 
+    bool hasEditModeControl =   ! EditableRowIndex.IsNull 
+                              && EditableRowIndex.Value == originalRowIndex
+                              && _rowEditModeControls != null 
                               && _rowEditModeControls.Length > 0 
                               && _rowEditModeControls[columnIndex] != null;
 
@@ -1761,7 +1770,7 @@ public class BocList:
         }
       }
 
-      //  Render the labe
+      //  Render the label
       if (commandColumn != null)
       {
         if (commandColumn.IconPath != null)
@@ -1778,7 +1787,7 @@ public class BocList:
       {
         string contents = compoundColumn.GetStringValue (businessObject);
         contents = HttpUtility.HtmlEncode (contents);
-        if (contents == string.Empty)
+        if (StringUtility.IsNullOrEmpty (contents))
           contents = c_whiteSpace;
         writer.Write (contents);
       }
@@ -1792,7 +1801,7 @@ public class BocList:
         {
           string contents = simpleColumn.GetStringValue (businessObject);
           contents = HttpUtility.HtmlEncode (contents);
-          if (contents == string.Empty)
+          if (StringUtility.IsNullOrEmpty (contents))
             contents = c_whiteSpace;
           writer.Write (contents);
         }
@@ -2774,7 +2783,7 @@ public class BocList:
     {
     }
 
-    // TODO: Remove controls
+    RemoveEditModeControls();
     _editableRowIndex = NaInt32.Null;
   }
 
@@ -2848,6 +2857,11 @@ public class BocList:
     return control;
   }
 
+  private void RemoveEditModeControls()
+  {
+    foreach (Control control in _rowEditModeControls)
+      Controls.Remove (control);
+  }
   protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
   {
     if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
