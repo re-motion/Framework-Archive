@@ -16,8 +16,10 @@ using log4net;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
+using Rubicon.Web;
+using Rubicon.Collections;
 
 namespace FormGrid.Test
 {
@@ -38,7 +40,10 @@ public class WebForm1 :
   protected System.Web.UI.WebControls.Label ToBeHiddenLabel;
   protected System.Web.UI.WebControls.TextBox ToBeHiddenTextBox;
 
-  private FormGridRowProvider _formGridRowProvider;
+  private AutoInitHashtable _listOfFormGridRowInfos =
+      new AutoInitHashtable (typeof (FormGridRowInfoCollection));
+  private AutoInitHashtable _listOfHiddenRows = 
+      new AutoInitHashtable (typeof (StringCollection));
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
@@ -57,26 +62,24 @@ public class WebForm1 :
 
   override protected void OnInit(EventArgs e)
 	{
-    _formGridRowProvider = new FormGridRowProvider();
 
-    StringCollection hiddenRows = _formGridRowProvider.GetListOfHiddenRows (
-      TableDesignTimeFormGrid.ID);
+    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[TableDesignTimeFormGrid.ID];
 
     hiddenRows.Add (ToBeHiddenTextBox.ID);
   
-    FormGridRowPrototypeCollection newRows = _formGridRowProvider.GetListOfFormGridRowPrototypes (
-      TableDesignTimeFormGrid.ID);
+    FormGridRowInfoCollection newRows = 
+        (FormGridRowInfoCollection)_listOfFormGridRowInfos[TableDesignTimeFormGrid.ID];
 
     TextBox textBox = new TextBox();
     textBox.ID = "MyNewTextBox";
     textBox.Text = "Eine neue Zeile";
 
     //  A new row
-    newRows.Add (new FormGridRowPrototype(
+    newRows.Add (new FormGridRowInfo(
       textBox, 
-      FormGridRowPrototype.RowType.ControlInRowWithLabel, 
+      FormGridRowInfo.RowType.ControlInRowWithLabel, 
       AddressField.ID, 
-      FormGridRowPrototype.RowPosition.AfterRowWithID));
+      FormGridRowInfo.RowPosition.AfterRowWithID));
 
     textBox = new TextBox();
     textBox.ID = "MyOtherNewTextBox";
@@ -85,11 +88,11 @@ public class WebForm1 :
     textBox.Height = Unit.Parse ("3em");
 
     //  A second new row
-    newRows.Add (new FormGridRowPrototype(
+    newRows.Add (new FormGridRowInfo(
       textBox, 
-      FormGridRowPrototype.RowType.ControlInRowAfterLabel, 
+      FormGridRowInfo.RowType.ControlInRowAfterLabel, 
       SomeBigMultiFieldThing.ID, 
-      FormGridRowPrototype.RowPosition.BeforeRowWithID));
+      FormGridRowInfo.RowPosition.BeforeRowWithID));
 
 		InitializeComponent();
 		base.OnInit(e);
@@ -157,17 +160,17 @@ public class WebForm1 :
 
   public virtual StringCollection GetListOfHiddenRows (string table)
   {
-    return _formGridRowProvider.GetListOfHiddenRows (table);
+    return (StringCollection) _listOfHiddenRows[table];
   }
 
-  public virtual FormGridRowPrototypeCollection GetListOfFormGridRowPrototypes (string table)
+  public virtual FormGridRowInfoCollection GetListOfFormGridRowInfos (string table)
   {
-    return _formGridRowProvider.GetListOfFormGridRowPrototypes (table);
+    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
   public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
   {
-    return Server.MapPath (resourceType.Name + "/" + relativeUrl);
+    return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
   }
 
   private void Button1_Click(object sender, System.EventArgs e)

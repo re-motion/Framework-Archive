@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Test.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -10,7 +10,7 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><LINK href="Html/global.css" type=text/css rel=stylesheet >
   </head>
 <body>
-<form id=Form1 method=post runat="server"><rubicon:FormGridManager id="GlobalFormGridManager" runat="server" visible="true" validatorvisibility="ValidationMessageAfterControlsColumn"></rubicon:FormGridManager><rubicon:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" validationerrorstyle="DetailedMessages"></rubicon:ValidationStateViewer>
+<form id=Form1 method=post runat="server"><rwc:FormGridManager id="GlobalFormGridManager" runat="server" visible="true" validatorvisibility="ValidationMessageAfterControlsColumn"></rwc:FormGridManager><rwc:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" validationerrorstyle="DetailedMessages"></rwc:ValidationStateViewer>
 <TABLE id=TableDesignTimeFormGrid cellSpacing=0 cellPadding=0 runat="server">
   <TR>
     <TD colSpan=5><asp:label id=PersonDataLabel runat="server">###</asp:label></TD></TR>
@@ -65,7 +65,7 @@
     <td style="BACKGROUND-COLOR: yellow">&nbsp;</td></TR>
   <TR>
     <td style="BACKGROUND-COLOR: gray">&nbsp;</td>
-    <TD><rubicon:FormGridLabel id="FormGridLabel" runat="server" HelpUrl="help.html" Required="True">Name</rubicon:FormGridLabel></TD>
+    <TD><rwc:FormGridLabel id="FormGridLabel" runat="server" HelpUrl="help.html" Required="True">Name</rwc:FormGridLabel></TD>
     <td style="BACKGROUND-COLOR: gray">&nbsp;</td>
     <TD>Vorname<asp:textbox id=TextBox1 runat="server" Width="64px"></asp:textbox> 
       Nachname<asp:textbox id=TextBox2 runat="server" Width="134px"></asp:textbox></TD>
