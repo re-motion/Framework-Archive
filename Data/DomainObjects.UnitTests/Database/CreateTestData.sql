@@ -274,9 +274,9 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
 
 
 -- ClassWithoutRelatedClassIDColumn
-insert into [TableWithoutRelatedClassIDColumn] (ID, ClassID, PartnerID) 
+insert into [TableWithoutRelatedClassIDColumn] (ID, ClassID, DistributorID) 
     values ('{CD3BE83E-FBB7-4251-AAE4-B216485C5638}', 'ClassWithoutRelatedClassIDColumn', 
-    '{5587A9C0-BE53-477d-8C0A-4803C7FAE1A9}')
+    '{E4087155-D60A-4d31-95B3-9A401A3E4E78}')
 
 -- ClassWithoutRelatedClassIDColumnAndDerivation
 insert into [TableWithoutRelatedClassIDColumnAndDerivation] (ID, ClassID, CompanyID) 
