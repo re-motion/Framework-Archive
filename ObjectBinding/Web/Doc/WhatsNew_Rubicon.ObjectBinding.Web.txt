@@ -4,6 +4,8 @@
 - BocTreeView
   * Neue Klasse
   * Bietet einen Read-Only Object-Bound Tree View.
+  * Nodes werden gecached um Abfragen auf das Objectmodell so gering wie möglich zu halten.
+    (Kann deaktiviert werden: EnableTreeNodeCaching.)
   
 1.1.46.0
 ========

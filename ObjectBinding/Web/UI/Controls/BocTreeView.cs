@@ -111,7 +111,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   /// <summary>
   ///   Sets the tree view to be rebuilded with the current business objects. 
-  ///   Must be called before or during the <c>PostBackEvent</c> to effect the tree view.
+  ///   Must be called before or during the <c>PostBackEvent</c> to affect the tree view.
   /// </summary>
   public void InvalidateTreeNodes()
   {
