@@ -46,10 +46,12 @@ public class BocList:
 
   private const int c_titleRowIndex = -1;
 
-  /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
+  /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
   private const string c_eventListItemCommandPrefix = "ListCommand=";
+  /// <summary> Prefix applied to the post back argument of the event type menu commands. </summary>
   private const string c_eventMenuItemPrefix = "MenuItem=";
-  const string c_customCellEventPrefix = "CustomCell=";
+  /// <summary> Prefix applied to the post back argument of the custom columns. </summary>
+  private const string c_customCellEventPrefix = "CustomCell=";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -606,7 +608,7 @@ public class BocList:
   }
 
   /// <summary> Handles post back events raised by a custom cell event. </summary>
-  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;,&lt;argument&gt; </param>
+  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;[,&lt;customArgument&gt;] </param>
   private void HandleCustomCellEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
@@ -624,7 +626,7 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>,<argument>'.");
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.");
     }
 
     //  Second part: list index
@@ -638,14 +640,16 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>,<argument>'.");
+      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>[,<customArgument>]'.");
     }
 
-    //  Thrid part: argument
-    string customCellArgument;
-    eventArgumentParts[2] = eventArgumentParts[2].Trim();
-    customCellArgument = eventArgumentParts[2];
-
+    //  Thrid part, optional: customCellArgument
+    string customCellArgument = null;
+    if (eventArgumentParts.Length == 3)
+    {
+      eventArgumentParts[2] = eventArgumentParts[2].Trim();
+      customCellArgument = eventArgumentParts[2];
+    }
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
 
     if (columnIndex >= columns.Length)
@@ -673,11 +677,16 @@ public class BocList:
     }
   }
 
-  private void OptionsMenu_EventCommandClick(object sender, WebMenuItemClickEventArgs e)
+  /// <summary> 
+  ///   Event handler for the <see cref="DropDownMenu.EventCommandClick"/> of the <see cref="_optionsMenu"/>.
+  /// </summary>
+  private void OptionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
+  /// <summary> Fires the <see cref="MenuItemClick"/> event. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
   protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
     WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
@@ -690,11 +699,16 @@ public class BocList:
     }
   }
 
-  private void OptionsMenu_WxeFunctionCommandClick(object sender, WebMenuItemClickEventArgs e)
+  /// <summary> 
+  ///   Event handler for the <see cref="DropDownMenu.WxeFunctionCommandClick"/> of the <see cref="_optionsMenu"/>.
+  /// </summary>
+  private void OptionsMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
   }
 
+  /// <summary> Handles the click to a WXE function command. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
   protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
@@ -1802,16 +1816,47 @@ public class BocList:
     writer.RenderEndTag();
   }
 
-  public string GetPostBackClientEvent (int columnIndex, int listIndex, string argument)
+  /// <summary>
+  ///   Obtains a reference to a client-side script function that causes, when invoked, a server postback to the form.
+  /// </summary>
+  /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
+  /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
+  /// <param name="customCellArgument"> 
+  ///   The argument to be passed to the <see cref="IBocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
+  ///   Can be <see langword="null"/>.
+  /// </param>
+  /// <returns></returns>
+  public string GetCustomCellPostBackClientEvent (int columnIndex, int listIndex, string customCellArgument)
   {
-    string postBackArgument = c_customCellEventPrefix + columnIndex + "," + listIndex + "," + argument;
+    string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
     return Page.GetPostBackClientEvent (this, postBackArgument);
   }
 
-  public string GetPostBackClientHyperlink (int columnIndex, int listIndex, string argument)
+  /// <summary>
+  ///   Obtains a hyperlink reference that causes, when invoked, a server postback to the form.
+  /// </summary>
+  /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
+  /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
+  /// <param name="customCellArgument"> 
+  ///   The argument to be passed to the <see cref="IBocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
+  ///   Can be <see langword="null"/>.
+  /// </param>
+  /// <returns></returns>
+  public string GetCustomCellPostBackClientHyperlink (int columnIndex, int listIndex, string customCellArgument)
   {
-    string postBackArgument = c_customCellEventPrefix + columnIndex + "," + listIndex + "," + argument;
+    string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
     return Page.GetPostBackClientHyperlink (this, postBackArgument);
+  }
+
+  /// <summary>
+  ///   Formats the arguments into a post back argument to be used by the client side post back event.
+  /// </summary>
+  private string FormatCustomCellPostBackArgument (int columnIndex, int listIndex, string customCellArgument)
+  {
+    if (customCellArgument == null)
+      return c_customCellEventPrefix + columnIndex + "," + listIndex;
+    else
+      return c_customCellEventPrefix + columnIndex + "," + listIndex + "," + customCellArgument;
   }
 
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
