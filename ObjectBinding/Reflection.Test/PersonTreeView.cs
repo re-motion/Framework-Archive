@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Web.UI.WebControls;
 using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.ObjectBinding;
@@ -37,6 +38,22 @@ public class PersonTreeView: BocTreeView
     }
 
     return nodeInfos;                                
+  }
+
+  protected override IBusinessObjectWithIdentity[] GetBusinessObjects(IBusinessObjectWithIdentity parent, IBusinessObjectReferenceProperty property)
+  {
+    if (parent.UniqueIdentifier == new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1).ToString())
+    {
+      IList children = (IList) parent.GetProperty (property);
+      ArrayList childrenList = new ArrayList();
+      for (int i = 0; i < children.Count; i++)
+      {
+        if (i != 1)
+          childrenList.Add (children[i]);
+      }
+      return  (IBusinessObjectWithIdentity[]) childrenList.ToArray (typeof (IBusinessObjectWithIdentity));
+    }
+    return base.GetBusinessObjects (parent, property);
   }
 
 }
