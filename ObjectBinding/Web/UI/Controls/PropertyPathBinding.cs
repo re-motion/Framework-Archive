@@ -37,9 +37,9 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   /// </summary>
   private string _propertyPathIdentifier;
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundControl"/> containing the <see cref="DataSource"/>. 
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> containing the <see cref="DataSource"/>. 
   /// </summary>
-  private IBusinessObjectBoundControl _ownerControl;
+  private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> 
   ///   Initializes a new instance of the <see cref="PropertyPathBinding"/> class with the
@@ -121,6 +121,15 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   {
     get 
     {
+      if (OwnerControl == null)
+        throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundControl.");
+
+      bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
+      bool isDataSourceNull = DataSource == null;
+
+      if (isDesignMode && isDataSourceNull)
+          return null;
+
       if (! _isPopertyPathEvaluated)
       {
         if (StringUtility.IsNullOrEmpty (_propertyPathIdentifier))
@@ -129,7 +138,7 @@ public class PropertyPathBinding: IBusinessObjectClassSource
         }
         else
         {
-          if (DataSource == null)
+          if (isDataSourceNull)
             throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
 
           if (ReferenceProperty != null)
@@ -173,7 +182,6 @@ public class PropertyPathBinding: IBusinessObjectClassSource
     }
     set 
     { 
-      ArgumentUtility.CheckNotNullOrEmpty ("PropertyPathIdentifier", value);
       _propertyPathIdentifier = value;
       _propertyPath = null;
       _isPopertyPathEvaluated = false;
@@ -181,10 +189,10 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> containing the 
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> containing the 
   ///   <see cref="DataSource"/>. 
   /// </summary>
-  protected internal IBusinessObjectBoundControl OwnerControl
+  protected internal IBusinessObjectBoundWebControl OwnerControl
   {
     get { return _ownerControl;  }
     set { _ownerControl = value; }
