@@ -34,8 +34,14 @@ public class PageUtility
 
   public static void RegisterOpenReportScript (Page page, string reportUrl)
   {
+    RegisterOpenReportScript (page, reportUrl, "OpenReport");                                                                     
+  }
+
+
+  public static void RegisterOpenReportScript (Page page, string reportUrl, string scriptKey)
+  {
     page.RegisterStartupScript (
-        "OpenReport", 
+        scriptKey, 
         "<script language='javascript'>"
           + "\n window.open ('" + reportUrl + "', "
           + " '_blank', 'resizable=yes, location=no, menubar=no, status=no, toolbar=no, scrollbars=yes');"
