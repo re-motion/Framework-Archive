@@ -172,7 +172,8 @@ public abstract class WxeFunction: WxeStepList
   ///     </item>
   ///     <item>
   ///       <term> Any type that has a <see langword="static"/> <c>Parse</c> method. </term>
-  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. </description>
+  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. For boolean constants 
+  ///         (&quot;true&quot;, &quot;false&quot;) and numeric constants, quotes are optional.  </description>
   ///     </item>
   ///     <item>
   ///       <term> Variable Reference </term>
@@ -311,11 +312,17 @@ public abstract class WxeFunction: WxeStepList
       string arg = (string) argsArray[i];
       WxeParameterDeclaration paramDecl = parameterDeclarations[i];
 
-      if (! (bool) isQuotedArray[i])
+      if (string.CompareOrdinal (arg, "true") == 0)         // true
+        arguments.Add (true);
+      else if (string.CompareOrdinal (arg, "false") == 0)   // false
+        arguments.Add (false);
+      else if (arg.Length > 0 && char.IsDigit (arg, 0))     // starts with digit -> parse constant
+        arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
+      else if (! (bool) isQuotedArray[i])                   // unquoted -> variable name
         arguments.Add (new WxeVariableReference (arg));
-      else if (paramDecl.Type == typeof (string))
+      else if (paramDecl.Type == typeof (string))           // string constant
         arguments.Add (arg);
-      else 
+      else                                                  // parse constant
         arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
     }
 
