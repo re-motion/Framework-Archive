@@ -1,4 +1,4 @@
-3.1.0.0 (noch kein Build)
+3.1.0.0
 =======
 
 - Rubicon.Data.TableModules unterstützt ab Version 3.1.0.0 auch Guids als ID-Spalten.
