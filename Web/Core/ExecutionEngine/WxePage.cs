@@ -45,6 +45,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void Initialize (HttpContext context, ref HtmlForm form)
   {
     base.OnInit (_page, context);
+
     if (! ControlHelper.IsDesignMode (_page, context))
     {
       if (form == null)
@@ -198,7 +199,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 /// <remarks>
 ///   The <see cref="HtmlForm"/> must use the ID "Form". 
 ///   If you cannot derive your pages from this class (e.g., because you need to derive from another class), you may
-///   implement <see cref="IWxePage"/> and override <see cref="OnInit"/> and <see cref="Page.DeterminePostBackMode"/>. 
+///   implement <see cref="IWxePage"/> and override <see cref="DeterminePostBackMode"/> and <see cref="Dispose"/>. 
 ///   Use <see cref="WxePageInfo"/> to implementat all methods and properties.
 /// </remarks>
 public class WxePage: Page, IWxePage
@@ -219,9 +220,11 @@ public class WxePage: Page, IWxePage
     OnBeforeInit();
     return result;
   }
+
   protected virtual void OnBeforeInit ()
   {
   }
+
   public NameValueCollection GetPostBackCollection ()
   {
     return _wxeInfo.DeterminePostBackMode (Context);
