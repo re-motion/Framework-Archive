@@ -1,4 +1,9 @@
+USE master
 
+IF EXISTS (SELECT * FROM sys.sysdatabases WHERE name = 'TestDomain')
+  DROP DATABASE TestDomain
+GO  
+  
 CREATE DATABASE TestDomain
 ON PRIMARY (
 	Name = 'TestDomain_Data',
@@ -13,4 +18,5 @@ LOG ON (
 GO
 
 ALTER DATABASE TestDomain SET RECOVERY SIMPLE
+BACKUP LOG TestDomain WITH TRUNCATE_ONLY
 GO
