@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
-//TODO: REMOVE THE REFERENCE TO DomainObjects.UnitTests.
+//TODO: REMOVE THE PROJECT REFERENCE TO DomainObjects.UnitTests.
 class MainClass
 {
   // types
