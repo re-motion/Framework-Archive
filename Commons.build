@@ -160,7 +160,7 @@
   </target>
 
   <!--======================= startnewversion =======================-->
-  <target name="startnewversion " >
+  <target name="startnewversion" >
     <property name="SS.dir" value="${dir.development}\libraries\Commons\build" />
     <property name="SS.command" value="Checkout $/libraries/Commons/build/buildversion.xml" />
     <call target="SSCommandline" />
