@@ -41,6 +41,14 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     return Create (collectionType, dataContainers, null);
   }
 
+  /// <summary>
+  /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and adds the <see cref="DomainObject"/>s of the given <see cref="DataContainerCollection"/>.
+  /// </summary>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
+  /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
+  /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (
       Type collectionType, 
       DataContainerCollection dataContainers, 
