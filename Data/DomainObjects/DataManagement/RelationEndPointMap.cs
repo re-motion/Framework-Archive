@@ -57,7 +57,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
-  public void Delete (DomainObject domainObject)
+  public void PerformDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -69,57 +69,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           _relationEndPoints.GetOppositeRelationEndPoints (endPoint);
 
       foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
-      {
-        if (oppositeEndPoint.Definition.Cardinality == CardinalityType.One)
-        {
-          ((ObjectEndPoint) oppositeEndPoint).SetOppositeEndPoint (
-              RelationEndPoint.CreateNullRelationEndPoint (oppositeEndPoint.OppositeEndPointDefinition));
-        }
-        else
-        {
-          ((CollectionEndPoint) oppositeEndPoint).OppositeDomainObjects.PerformRemove (domainObject);
-        }
-      }
+        oppositeEndPoint.PerformRelationChange ();
 
-      if (endPointID.Definition.Cardinality == CardinalityType.One)
-      {
-        ((ObjectEndPoint) endPoint).SetOppositeEndPoint (
-            RelationEndPoint.CreateNullRelationEndPoint (endPoint.OppositeEndPointDefinition));
-      }
-      else
-      {
-        ((CollectionEndPoint) endPoint).OppositeDomainObjects.PerformClear ();
-      }
+      endPoint.PerformDelete ();
     }
-
-    /*
-      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      {
-        RelationEndPoint relationEndPoint = GetRelationEndPoint (endPointID);
-        if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
-        {
-          // TODO: opposite object can be null!
-          DomainObject oppositeDomainObject = GetRelatedObject (relationEndPoint);
-          RelationEndPoint oppositeEndPoint = GetRelationEndPoint (oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition);
-
-          _dataManager.WriteAssociatedPropertiesForRelationChange (
-              relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));
-
-          _dataManager.ChangeLinks (
-            relationEndPoint, 
-              new NullRelationEndPoint (oppositeEndPoint.Definition), 
-              oppositeEndPoint, 
-              new NullRelationEndPoint (relationEndPoint.Definition));    
-        }
-        else
-        {
-          // TODO: visit every domain object of opposite collection        
-        }
-      }
-      */
   }
 
   public DomainObject GetRelatedObject (RelationEndPointID endPointID)
@@ -344,12 +297,20 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           GetRelatedObject (newRelatedEndPoint.ID), endPoint.Definition);
     }
 
-    if (BeginRelationChange (endPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint))
+    if (endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint)
+        && oldRelatedEndPoint.BeginRelationChange (endPoint, RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition))
+        && newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint)
+        && oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition)))
     {
-      ChangeLinks (endPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+      endPoint.PerformRelationChange ();
+      oldRelatedEndPoint.PerformRelationChange ();
+      newRelatedEndPoint.PerformRelationChange ();
+      oldRelatedEndPointOfNewRelatedEndPoint.PerformRelationChange ();
 
-      EndRelationChange (
-          endPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+      endPoint.EndRelationChange ();
+      oldRelatedEndPoint.EndRelationChange ();
+      newRelatedEndPoint.EndRelationChange ();
+      oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
     }
   }
 
@@ -368,30 +329,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       DomainObjectCollection collection = GetRelatedObjects (oldRelatedEndPoint.ID);
       collection.Remove (endPoint.GetDomainObject ());
     }
-  }
-
-  private bool BeginRelationChange (
-      RelationEndPoint endPoint,
-      RelationEndPoint newRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    return endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint)
-        && oldRelatedEndPoint.BeginRelationChange (endPoint, RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition))
-        && newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint)
-        && oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition));
-  }
-
-  private void EndRelationChange (
-      RelationEndPoint endPoint,
-      RelationEndPoint newRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    endPoint.EndRelationChange ();
-    oldRelatedEndPoint.EndRelationChange ();
-    newRelatedEndPoint.EndRelationChange ();
-    oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
   }
 
   private RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
@@ -417,32 +354,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     return _relationEndPoints[endPointID];
   }
 
-  private void ChangeLinks (
-      ObjectEndPoint endPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    ChangeLinkBidirectional (endPoint, newRelatedEndPoint);
-
-    ChangeLinkBidirectional (
-        oldRelatedEndPoint, 
-        RelationEndPoint.CreateNullRelationEndPoint (oldRelatedEndPoint.OppositeEndPointDefinition));
-
-    ChangeLinkBidirectional (
-        oldRelatedEndPointOfNewRelatedEndPoint, 
-        RelationEndPoint.CreateNullRelationEndPoint (oldRelatedEndPointOfNewRelatedEndPoint.OppositeEndPointDefinition));
-  }
-
-  private void ChangeLinkBidirectional (ObjectEndPoint endPoint, RelationEndPoint newRelatedEndPoint)
-  {
-    endPoint.SetOppositeEndPoint (newRelatedEndPoint);
-
-    ObjectEndPoint newObjectEndPoint = newRelatedEndPoint as ObjectEndPoint;
-    if (newObjectEndPoint != null)
-      newObjectEndPoint.SetOppositeEndPoint (endPoint);
-  }
-
   private void Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
@@ -462,19 +373,16 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) GetRelationEndPoint (
         _clientTransaction.GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
 
-    DomainObjectCollection oldCollection = null;
     if (!oldRelatedEndPoint.IsNull)
-      oldCollection = _clientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
+      _clientTransaction.GetRelatedObjects (oldRelatedEndPoint.ID);
     
     if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
         && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
         && endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint))
     {
-      ChangeLinkBidirectional (addingEndPoint, endPoint);
-      endPoint.OppositeDomainObjects.PerformAdd (domainObject);
-
-      if (oldCollection != null)
-        oldCollection.PerformRemove (domainObject);
+      addingEndPoint.PerformRelationChange ();
+      oldRelatedEndPoint.PerformRelationChange ();
+      endPoint.PerformRelationChange ();
 
       addingEndPoint.EndRelationChange ();
       oldRelatedEndPoint.EndRelationChange ();
@@ -489,11 +397,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     if (removingEndPoint.BeginRelationChange (endPoint)
         && endPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
     {
-      ChangeLinkBidirectional (
-          removingEndPoint, 
-          RelationEndPoint.CreateNullRelationEndPoint (removingEndPoint.OppositeEndPointDefinition));
-      
-      endPoint.OppositeDomainObjects.PerformRemove (domainObject);
+      removingEndPoint.PerformRelationChange ();
+      endPoint.PerformRelationChange ();
 
       removingEndPoint.EndRelationChange ();
       endPoint.EndRelationChange ();
