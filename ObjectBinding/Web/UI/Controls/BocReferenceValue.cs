@@ -655,6 +655,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
+    // Nothing to do.
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
