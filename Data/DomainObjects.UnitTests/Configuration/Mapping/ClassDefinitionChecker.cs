@@ -34,8 +34,8 @@ public class ClassDefinitionChecker
       bool checkRelations)
   {
     Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
-        "Number of class definitions does not match. Expected: {0}, actual: {1}", 
-        expectedDefinitions.Count, actualDefinitions.Count);
+        string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}", 
+        expectedDefinitions.Count, actualDefinitions.Count));
 
     foreach (ClassDefinition expectedDefinition in expectedDefinitions)
     {
@@ -55,20 +55,20 @@ public class ClassDefinitionChecker
       ClassDefinition actualDefinition)
   {
     Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID, 
-        "IDs of class definitions do not match. Expected: {0}, actual: {1}", 
-        expectedDefinition.ID, actualDefinition.ID);
+        string.Format ("IDs of class definitions do not match. Expected: {0}, actual: {1}", 
+        expectedDefinition.ID, actualDefinition.ID));
 
     Assert.AreEqual (expectedDefinition.ClassType, actualDefinition.ClassType, 
-        "ClassType of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
-        expectedDefinition.ID, expectedDefinition.ClassType, actualDefinition.ClassType);
+        string.Format ("ClassType of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.ID, expectedDefinition.ClassType, actualDefinition.ClassType));
 
     Assert.AreEqual (expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID, 
-        "StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
-        expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID);
+        string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID));
 
     Assert.AreEqual (expectedDefinition.EntityName, actualDefinition.EntityName, 
-        "EntityName of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
-        expectedDefinition.ID, expectedDefinition.EntityName, actualDefinition.EntityName);
+        string.Format ("EntityName of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.ID, expectedDefinition.EntityName, actualDefinition.EntityName));
 
     if (expectedDefinition.BaseClass == null)
     {
@@ -79,8 +79,8 @@ public class ClassDefinitionChecker
       Assert.IsNotNull (actualDefinition.BaseClass, "actualDefinition.BaseClass");
 
       Assert.AreEqual (expectedDefinition.BaseClass.ID, actualDefinition.BaseClass.ID, 
-          "BaseClass of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
-          expectedDefinition.ID, expectedDefinition.BaseClass.ID, actualDefinition.BaseClass.ID);
+          string.Format ("BaseClass of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+          expectedDefinition.ID, expectedDefinition.BaseClass.ID, actualDefinition.BaseClass.ID));
     }
 
     CheckPropertyDefinitions (
@@ -95,8 +95,8 @@ public class ClassDefinitionChecker
       ClassDefinition expectedClassDefinition)
   {
     Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
-        "Number of property definitions in class definition '{0}' does not match. Expected: {1}, actual: {2}", 
-        expectedClassDefinition.ID, expectedDefinitions.Count, actualDefinitions.Count);
+        string.Format ("Number of property definitions in class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedClassDefinition.ID, expectedDefinitions.Count, actualDefinitions.Count));
 
     foreach (PropertyDefinition expectedDefinition in expectedDefinitions)
     {
@@ -111,29 +111,29 @@ public class ClassDefinitionChecker
       ClassDefinition classDefinition)
   {
     Assert.AreEqual (expectedDefinition.PropertyName, actualDefinition.PropertyName, 
-        "PropertyNames of property definitions (class definition: '{0}') do not match. Expected: {1}, actual: {2}", 
+        string.Format ("PropertyNames of property definitions (class definition: '{0}') do not match. Expected: {1}, actual: {2}", 
         classDefinition, 
-        expectedDefinition.PropertyName, actualDefinition.PropertyName);
+        expectedDefinition.PropertyName, actualDefinition.PropertyName));
 
     Assert.AreEqual (expectedDefinition.ColumnName, actualDefinition.ColumnName, 
-        "ColumnName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
+        string.Format ("ColumnName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
-        expectedDefinition.ColumnName, actualDefinition.ColumnName);
+        expectedDefinition.ColumnName, actualDefinition.ColumnName));
 
     Assert.AreEqual (expectedDefinition.MaxLength, actualDefinition.MaxLength, 
-        "MaxLength of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
+        string.Format ("MaxLength of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
-        expectedDefinition.MaxLength, actualDefinition.MaxLength);
+        expectedDefinition.MaxLength, actualDefinition.MaxLength));
 
     Assert.AreEqual (expectedDefinition.PropertyType, actualDefinition.PropertyType, 
-        "PropertyType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
+        string.Format ("PropertyType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
-        expectedDefinition.PropertyType, actualDefinition.PropertyType);
+        expectedDefinition.PropertyType, actualDefinition.PropertyType));
 
     Assert.AreEqual (expectedDefinition.MappingType, actualDefinition.MappingType, 
-        "MappingType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
+        string.Format ("MappingType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
-        expectedDefinition.MappingType, actualDefinition.MappingType);
+        expectedDefinition.MappingType, actualDefinition.MappingType));
   }      
 }
 }
