@@ -612,6 +612,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\WebTabStrip.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\WebTreeNode.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
