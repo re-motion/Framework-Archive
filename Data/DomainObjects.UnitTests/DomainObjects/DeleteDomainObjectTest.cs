@@ -137,5 +137,16 @@ public class DeleteDomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (1, originalOrders.Count);
     Assert.AreSame (_order, originalOrders[0]);
   }
+
+  [Test]
+  public void GetOriginalRelatedObjectForBothDeleted ()
+  {
+    OrderTicket orderTicket = _order.OrderTicket;
+    _order.Delete ();
+    orderTicket.Delete ();
+
+    Assert.IsNotNull (_order.GetOriginalRelatedObject ("OrderTicket"));
+    Assert.IsNotNull (orderTicket.GetOriginalRelatedObject ("Order"));
+  }
 }
 }

@@ -212,5 +212,14 @@ public class DataContainerTest
     Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[2].PropertyName) >= 0);
     Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[3].PropertyName) >= 0);
   }
+
+  [Test]
+  public void SetValue ()
+  {
+    _existingDataContainer.PropertyValues.Add (_nameProperty);
+    _existingDataContainer.SetValue ("Name", "Zaphod Beeblebrox");
+
+    Assert.AreEqual ("Zaphod Beeblebrox", _existingDataContainer.GetString ("Name"));
+  }
 }
 }
