@@ -1,0 +1,13 @@
+1.2.11.0
+========
+
+- ClientTransaction.Rollback: Wurde nach einem Rollback zu einer 1:n Beziehung ein neues Objekt hinzugefügt/entfernt, 
+  wurde der Link auf der n-Seite nicht aktualisiert => Behoben.
+
+- Basisklasse für alle Konfigurationsklassen (Mapping, StorageProviders, Queries) eingeführt. Neue Eigenschaft ApplicationName eingeführt.
+
+
+<= 1.2.10.0
+===========
+
+- Beta-Versionen: Sind noch nicht für den Einsatz in einer Produktionsumgebung gedacht.
