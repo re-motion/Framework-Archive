@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {15D953AA-128D-410E-90E9-33617BB62CB3}
@@ -45,6 +45,12 @@ Global
 		SccProjectName5 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
 		SccLocalPath5 = DomainObjects.ObjectBinding.Web.Test
 		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection5 = http://localhost/RpaTest
+		SccProjectUniqueName6 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj
+		SccProjectName6 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
+		SccLocalPath6 = DomainObjects.ObjectBinding.Web.Test
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice6 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
