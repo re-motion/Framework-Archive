@@ -23,6 +23,10 @@ public class ClassWithoutTimestampProperty : TestDomainBase
   {
   }
 
+  public ClassWithoutTimestampProperty (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithoutTimestampProperty (DataContainer dataContainer) : base (dataContainer)
   {
   }

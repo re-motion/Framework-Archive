@@ -23,6 +23,10 @@ public class ClassWithKeyOfInvalidType : TestDomainBase
   {
   }
 
+  public ClassWithKeyOfInvalidType (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithKeyOfInvalidType (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -23,6 +23,10 @@ public class ClassWithInvalidRelation : TestDomainBase
   {
   }
 
+  public ClassWithInvalidRelation (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithInvalidRelation (DataContainer dataContainer) : base (dataContainer)
   {
   }

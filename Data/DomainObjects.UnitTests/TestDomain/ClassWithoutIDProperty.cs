@@ -23,6 +23,10 @@ public class ClassWithoutIDProperty : TestDomainBase
   {
   }
 
+  public ClassWithoutIDProperty (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithoutIDProperty (DataContainer dataContainer) : base (dataContainer)
   {
   }

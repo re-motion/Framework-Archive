@@ -21,6 +21,10 @@ public class ClassWithoutRelatedClassIDColumnAndDerivation : DomainObject
   {
   }
 
+  public ClassWithoutRelatedClassIDColumnAndDerivation (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithoutRelatedClassIDColumnAndDerivation (DataContainer dataContainer) : base (dataContainer)
   {
   }

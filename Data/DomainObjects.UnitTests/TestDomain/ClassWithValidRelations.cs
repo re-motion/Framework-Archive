@@ -23,6 +23,10 @@ public class ClassWithValidRelations : TestDomainBase
   {
   }
 
+  public ClassWithValidRelations (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithValidRelations (DataContainer dataContainer) : base (dataContainer)
   {
   }

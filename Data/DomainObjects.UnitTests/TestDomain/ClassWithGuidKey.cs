@@ -23,6 +23,10 @@ public class ClassWithGuidKey : TestDomainBase
   {
   }
 
+  public ClassWithGuidKey (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected ClassWithGuidKey (DataContainer dataContainer) : base (dataContainer)
   {
   }
