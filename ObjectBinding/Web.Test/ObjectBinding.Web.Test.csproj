@@ -159,6 +159,36 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "IndependentUserControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndependentUserControl.ascx.cs"
+                    DependentUpon = "IndependentUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndependentUserControl.ascx.resx"
+                    DependentUpon = "IndependentUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndependentUserControlTestForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndependentUserControlTestForm.aspx.cs"
+                    DependentUpon = "IndependentUserControlTestForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndependentUserControlTestForm.aspx.resx"
+                    DependentUpon = "IndependentUserControlTestForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Job.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -250,6 +280,21 @@
                 <File
                     RelPath = "TestEnumValuePage.aspx.resx"
                     DependentUpon = "TestEnumValuePage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestForm.aspx.cs"
+                    DependentUpon = "TestForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestForm.aspx.resx"
+                    DependentUpon = "TestForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
