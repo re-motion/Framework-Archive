@@ -35,7 +35,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   protected virtual IResourceManager GetResourceManager()
   {
-    return null;//GetResourceManager (typeof (ResourceIdentifier));
+    return GetResourceManager (typeof (ResourceIdentifier));
   }
 
   //  constants

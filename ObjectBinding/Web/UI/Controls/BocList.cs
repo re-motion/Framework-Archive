@@ -47,7 +47,7 @@ public class BocList:
 
   protected virtual IResourceManager GetResourceManager()
   {
-    return null;//GetResourceManager (typeof (ResourceIdentifier));
+    return GetResourceManager (typeof (ResourceIdentifier));
   }
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";

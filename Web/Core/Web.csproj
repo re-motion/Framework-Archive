@@ -581,6 +581,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UI\Globalization\ValidationStateViewer.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Utilities\ControlHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
