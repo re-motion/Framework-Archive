@@ -123,6 +123,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Classes\ActionCellCreateEventArgs.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\CommandHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -183,6 +188,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\PagingNavigationControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\PagingPage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\StandardPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
@@ -225,6 +240,22 @@
                 />
                 <File
                     RelPath = "Globalization\EntryFormGrid.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\PagingNavigationControl.en.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\PagingNavigationControl.fr.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\PagingNavigationControl.it.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\PagingNavigationControl.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
