@@ -701,4 +701,45 @@ public interface IBocCustomColumnDefinitionCell
       string argument);
 }
 
+public delegate void BocCustomColumnClickEventHandler (object sender, BocCustomColumnClickEventArgs e);
+
+public class BocCustomColumnClickEventArgs: EventArgs
+{
+  private IBusinessObject _businessObject;
+  private BocCustomColumnDefinition _column;
+  private string _argument;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocCustomColumnClickEventArgs (
+      BocCustomColumnDefinition column, 
+      IBusinessObject businessObject,
+      string argument)
+  {
+    _businessObject = businessObject;
+    _column = column;
+    _argument = argument;
+  }
+
+  /// <summary>
+  ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
+  /// </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+
+  /// <summary>
+  ///   The <see cref="BocCustomColumnDefinition"/> to which the command belongs.
+  /// </summary>
+  public BocCustomColumnDefinition Column
+  {
+    get { return _column; }
+  }
+
+  public string Argument
+  {
+    get { return _argument; }
+  }
+}
+
 }
