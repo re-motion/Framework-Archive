@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class RelationEndPointCollectionTest : ClientTransactionBaseTest
+public class RelationEndPointCollectionTest : RelationEndPointBaseTest
 {
   // types
 
@@ -32,8 +32,8 @@ public class RelationEndPointCollectionTest : ClientTransactionBaseTest
     base.SetUp ();
 
     OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    _orderTicketEndPoint = new ObjectEndPoint (orderTicket, "Order", DomainObjectIDs.Order1);
-    _endPoints = new RelationEndPointCollection ();
+    _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Order", DomainObjectIDs.Order1);
+    _endPoints = new RelationEndPointCollection (ClientTransaction.Current);
   }
 
   [Test]
@@ -90,7 +90,8 @@ public class RelationEndPointCollectionTest : ClientTransactionBaseTest
   {
     _endPoints.Add (_orderTicketEndPoint);
 
-    RelationEndPointCollection copiedCollection = new RelationEndPointCollection (_endPoints, false);
+    RelationEndPointCollection copiedCollection = new RelationEndPointCollection (
+        ClientTransaction.Current, _endPoints, false);
 
     Assert.AreEqual (1, copiedCollection.Count);
     Assert.AreSame (_orderTicketEndPoint, copiedCollection[0]);
