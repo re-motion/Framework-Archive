@@ -18,14 +18,14 @@ public class QueryConfigurationLoader : BaseLoader
 
   public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile";
 
-  private const string c_defaultConfigurationFile = "queries.xml";
-  private const string c_defaultSchemaFile = "queries.xsd";
+  public const string DefaultConfigurationFile = "queries.xml";
+  public const string DefaultSchemaFile = "queries.xsd";
 
   public static QueryConfigurationLoader Create ()
   {
     return new QueryConfigurationLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, c_defaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
+        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
   }
 
   // member fields
