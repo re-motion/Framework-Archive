@@ -47,6 +47,17 @@ public interface ISmartControl: IControl
   bool UseLabel { get; }
 
   /// <summary>
+  ///   If UseInputControlCSS is true, the control requires special formatting.
+  /// </summary>
+  /// <remarks>
+  ///   This flag should be true for controls rendering &lt;input&gt; or &lt;textarea&gt; elements.
+  ///   The reason for this is in excentric application of CSS-classes to these elements via
+  ///   the defintion of global styles (input {...} and textarea {...}). The most predictable result
+  ///   is acchivied by directly assigning the class instead of using the global definitions.
+  /// </remarks>
+  //bool UseInputControlCSS { get; }
+
+  /// <summary>
   ///   Gets the label name of the control that should be presented to the user.
   /// </summary>
   string DisplayName { get; }
