@@ -312,7 +312,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
         _isDirty = false;
       }
     }

@@ -250,7 +250,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
         _isDirty = false;
       }
     }
