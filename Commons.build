@@ -245,7 +245,7 @@
 
   <target name="Data.DomainObjects" depends="Core,initialize">
     <property name="project.name" value="Data.DomainObjects" />
-    <property name="project.dir" value="Data.DomainObjects" />
+    <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -253,7 +253,7 @@
 
   <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects,initialize">
     <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
-    <property name="project.dir" value="Data.DomainObjects.ObjectBinding" />
+    <property name="project.dir" value="Data/DomainObjects/ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -261,7 +261,7 @@
 
   <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding,initialize">
     <property name="project.name" value="Data.DomainObjects.ObjectBinding.Web" />
-    <property name="project.dir" value="Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.dir" value="Data/DomainObjects/ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -327,7 +327,7 @@
 
   <target name="Data.DomainObjects.UnitTests" depends="Data.DomainObjects">
     <property name="project.name" value="Data.DomainObjects.UnitTests" />
-    <property name="project.dir" value="Data.DomainObjects.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects/UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
