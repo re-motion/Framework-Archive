@@ -46,8 +46,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void DataContainerMapLookUp ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, 
-        "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     DomainObject domainObject1 = ClientTransactionMock.GetObject (id);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
@@ -66,11 +65,8 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void LoadingOfMultipleSimpleObjects ()
   {
-    ObjectID id1 = new ObjectID (c_testDomainProviderID, 
-        "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    ObjectID id2 = new ObjectID (c_testDomainProviderID, 
-        "ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
+    ObjectID id1 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id2 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
     
     DomainObject domainObject1 = ClientTransactionMock.GetObject (id1);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
@@ -144,8 +140,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetOptionalRelatedObject ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
-        new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
+    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
     DomainObject classWithValidRelation = ClientTransactionMock.GetObject (id);
     _eventReceiver.Clear ();
@@ -159,8 +154,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetOptionalRelatedObjectOverVirtualEndPoint ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
     DomainObject classWithGuidKey = ClientTransactionMock.GetObject (id);
     _eventReceiver.Clear ();
@@ -174,8 +168,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetOptionalRelatedObjectTwice ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
-        new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
+    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
     ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
 
@@ -199,8 +192,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void GetOptionalRelatedObjectOverVirtualEndPointTwice ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
     ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
 
@@ -342,7 +334,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (MandatoryRelationNotSetException),
       "Mandatory relation property 'Order' of domain object"
-      + " 'TestDomain|OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null.")]
+      + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null.")]
   public void CommitWithMandatoryOneToOneRelationNotSet ()
   {
     Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -367,7 +359,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   [ExpectedException (typeof (MandatoryRelationNotSetException),
      "Mandatory relation property 'Companies' of domain object"
-     + " 'TestDomain|IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
+     + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
   public void CommitWithMandatoryOneToManyRelationNotSet ()
   {
     IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector2);
