@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class CodeBuilder : IBuilder
+public abstract class CodeBuilder : BaseBuilder
 {
   // types
 
@@ -107,66 +107,39 @@ public abstract class CodeBuilder : IBuilder
 
   // member fields
 
-  private string _filename = null;
-  private TextWriter _classWriter;
   private bool _fileHeaderWritten = false;
   private string _lastNamespaceWritten = string.Empty;
 
   // construction and disposing
 
-  protected CodeBuilder (string filename)
+  protected CodeBuilder (string filename) : base (filename)
 	{
-    ArgumentUtility.CheckNotNull ("filename", filename);
-
-    _filename = filename;
   }
   
   // methods and properties
 
-  protected string FileName
-  {
-    get { return _filename; }
-    set { _filename = value;}
-  }
-
-  protected void OpenFile ()
-  {
-    if (_filename != null)
-      _classWriter = new StreamWriter (_filename);
-  }
-
-  protected void CloseFile ()
+  protected override void CloseFile ()
   {
     if (_lastNamespaceWritten != string.Empty)
       EndNamespace ();
 
-    _classWriter.Close ();
-  }
-
-  protected void Write (string text)
-  {
-    _classWriter.Write (text);
-  }
-
-  protected void WriteNewLine ()
-  {
-    _classWriter.Write (Environment.NewLine);
+    base.CloseFile ();
   }
 
   protected void WriteComment (string comment)
   {
     string commentLine = s_comment;
 
-    commentLine = BuilderUtility.ReplaceTag (commentLine, s_commentTag, comment);
+    commentLine = ReplaceTag (commentLine, s_commentTag, comment);
 
-    _classWriter.Write (commentLine);
+    Write (commentLine);
   }
 
   protected void BeginFile ()
   {
     if (!_fileHeaderWritten)
     {
-      _classWriter.Write (s_fileHeader);
+      Write (s_fileHeader);
       _fileHeaderWritten = true;
     }
   }
@@ -179,29 +152,29 @@ public abstract class CodeBuilder : IBuilder
       if (_lastNamespaceWritten != string.Empty)
         EndNamespace ();
 
-      _classWriter.Write (BuilderUtility.ReplaceTag (s_namespaceHeader, s_namespaceTag, namespaceName));
+      Write (ReplaceTag (s_namespaceHeader, s_namespaceTag, namespaceName));
       _lastNamespaceWritten = namespaceName;
     }
   }
 
   protected void EndNamespace ()
   {
-    _classWriter.Write (s_namespaceFooter);
+    Write (s_namespaceFooter);
     _lastNamespaceWritten = string.Empty;
   }
 
   protected void BeginClass (string className, string baseClassName)
   {
     string classHeader = s_classHeader;
-    classHeader = BuilderUtility.ReplaceTag (classHeader, s_classnameTag, className);
-    classHeader = BuilderUtility.ReplaceTag (classHeader, s_baseClassnameTag, baseClassName);
+    classHeader = ReplaceTag (classHeader, s_classnameTag, className);
+    classHeader = ReplaceTag (classHeader, s_baseClassnameTag, baseClassName);
 
-    _classWriter.Write (classHeader);
+    Write (classHeader);
   }
 
   protected void EndClass ()
   {
-    _classWriter.Write (s_classFooter);
+    Write (s_classFooter);
   }
 
   protected void BeginMethod (string accessibility, string returnType, string methodName, string parameterlist)
@@ -212,17 +185,17 @@ public abstract class CodeBuilder : IBuilder
     ArgumentUtility.CheckNotNull ("parameterlist", parameterlist);
 
     string constructor = s_methodHeader;
-    constructor = BuilderUtility.ReplaceTag (constructor, s_accessibilityTag, accessibility);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_returntypeTag, returnType);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_methodnameTag, methodName);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_parameterlistTag, parameterlist);
+    constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
+    constructor = ReplaceTag (constructor, s_returntypeTag, returnType);
+    constructor = ReplaceTag (constructor, s_methodnameTag, methodName);
+    constructor = ReplaceTag (constructor, s_parameterlistTag, parameterlist);
 
-    _classWriter.Write (constructor);
+    Write (constructor);
   }
 
   protected void EndMethod ()
   {
-    _classWriter.Write (s_methodFooter);
+    Write (s_methodFooter);
   }
 
   protected void BeginIndexer (string accessibility, string returntypename, string parameter)
@@ -232,16 +205,16 @@ public abstract class CodeBuilder : IBuilder
     ArgumentUtility.CheckNotNull ("parameter", parameter);
 
     string constructor = s_indexerHeader;
-    constructor = BuilderUtility.ReplaceTag (constructor, s_accessibilityTag, accessibility);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_returntypeTag, returntypename);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_parameterlistTag, parameter);
+    constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
+    constructor = ReplaceTag (constructor, s_returntypeTag, returntypename);
+    constructor = ReplaceTag (constructor, s_parameterlistTag, parameter);
 
-    _classWriter.Write (constructor);
+    Write (constructor);
   }
 
   protected void EndIndexer ()
   {
-    _classWriter.Write (s_indexerFooter);
+    Write (s_indexerFooter);
   }
 
   protected void BeginConstructor (string className)
@@ -265,35 +238,35 @@ public abstract class CodeBuilder : IBuilder
     ArgumentUtility.CheckNotNull ("parameterlist", parameterlist);
 
     string constructor = s_constructorHeader;
-    constructor = BuilderUtility.ReplaceTag (constructor, s_accessibilityTag, accessibility);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_classnameTag, className);
-    constructor = BuilderUtility.ReplaceTag (constructor, s_parameterlistTag, parameterlist);
+    constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
+    constructor = ReplaceTag (constructor, s_classnameTag, className);
+    constructor = ReplaceTag (constructor, s_parameterlistTag, parameterlist);
     if (baseParameterlist != null)
     {
-      string baseConstructorCall = BuilderUtility.ReplaceTag (s_baseConstructorCall, s_parameterlistTag, baseParameterlist);
-      constructor = BuilderUtility.ReplaceTag (constructor, s_baseConstructorTag, baseConstructorCall);
+      string baseConstructorCall = ReplaceTag (s_baseConstructorCall, s_parameterlistTag, baseParameterlist);
+      constructor = ReplaceTag (constructor, s_baseConstructorTag, baseConstructorCall);
     }
     else
     {
-      constructor = BuilderUtility.ReplaceTag (constructor, s_baseConstructorTag, "");
+      constructor = ReplaceTag (constructor, s_baseConstructorTag, "");
     }
 
-    _classWriter.Write (constructor);
+    Write (constructor);
   }
 
   protected void EndConstructor ()
   {
-    _classWriter.Write (s_constructorFooter);
+    Write (s_constructorFooter);
   }
 
   protected void WriteEnum (string enumName)
   {
-    _classWriter.Write (BuilderUtility.ReplaceTag (s_enum, s_enumTag, enumName));
+    Write (ReplaceTag (s_enum, s_enumTag, enumName));
   }
 
   protected void WriteNestedEnum (string enumName)
   {
-    _classWriter.Write (BuilderUtility.ReplaceTag (s_nestedEnum, s_enumTag, enumName));
+    Write (ReplaceTag (s_nestedEnum, s_enumTag, enumName));
   }
 
   protected void BeginProperty (string propertyName, string propertyType)
@@ -304,16 +277,16 @@ public abstract class CodeBuilder : IBuilder
   protected void BeginProperty (string accessibility, string propertyName, string propertyType)
   {
     string property = s_propertyHeader;
-    property = BuilderUtility.ReplaceTag (property, s_accessibilityTag, accessibility);
-    property = BuilderUtility.ReplaceTag (property, s_propertynameTag, propertyName);
-    property = BuilderUtility.ReplaceTag (property, s_propertytypeTag, propertyType);
+    property = ReplaceTag (property, s_accessibilityTag, accessibility);
+    property = ReplaceTag (property, s_propertynameTag, propertyName);
+    property = ReplaceTag (property, s_propertytypeTag, propertyType);
 
-    _classWriter.Write (property);
+    Write (property);
   }
 
   protected void EndProperty ()
   {
-    _classWriter.Write (s_propertyFooter);
+    Write (s_propertyFooter);
   }
 
   protected PropertyDefinition[] GetEnumPropertyDefinitionsWithNestedType (Type outerType)
@@ -329,11 +302,5 @@ public abstract class CodeBuilder : IBuilder
     }
     return (PropertyDefinition[]) nestedTypes.ToArray (typeof(PropertyDefinition));
   }
-
-  #region IBuilder Members
-
-  public abstract void Build ();
-
-  #endregion
 }
 }

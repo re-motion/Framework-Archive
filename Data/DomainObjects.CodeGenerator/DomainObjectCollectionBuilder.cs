@@ -72,7 +72,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder
 
     // types
     WriteComment ("types");
-    WriteNewLine ();
+    WriteLine ();
 
     //Write nested types (enums)
     foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (_type))
@@ -80,21 +80,21 @@ public class DomainObjectCollectionBuilder : CodeBuilder
 
     // static members and constants
     WriteComment ("static members and constants");
-    WriteNewLine ();
+    WriteLine ();
 
     // member fields
     WriteComment ("member fields");
-    WriteNewLine ();
+    WriteLine ();
 
     // construction and disposing
     WriteComment ("construction and disposing");
-    WriteNewLine ();
+    WriteLine ();
 
     WriteConstructor (_classname, _requiredItemTypeName);
 
     // methods and properties
     WriteComment ("methods and properties");
-    WriteNewLine ();
+    WriteLine ();
 
     WriteIndexer (_classname, _requiredItemTypeName, "int index", "index");
     WriteIndexer (_classname, _requiredItemTypeName, "ObjectID id", "id", true);
@@ -129,8 +129,8 @@ public class DomainObjectCollectionBuilder : CodeBuilder
   protected void WriteIndexerGetStatement (string requiredTypename, string baseParameter)
   {
     string output = s_indexerGetStatement;
-    output = BuilderUtility.ReplaceTag (output, s_returntypeTag, requiredTypename);
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, baseParameter);
+    output = ReplaceTag (output, s_returntypeTag, requiredTypename);
+    output = ReplaceTag (output, s_parameterlistTag, baseParameter);
 
     Write (output);
   }
@@ -138,7 +138,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder
   protected void WriteIndexerSetStatement (string baseParameter)
   {
     string output = s_indexerSetStatement;
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, baseParameter);
+    output = ReplaceTag (output, s_parameterlistTag, baseParameter);
 
     Write (output);
   }

@@ -81,7 +81,7 @@ public class DomainObjectBuilder : CodeBuilder
 
     // types
     WriteComment ("types");
-    WriteNewLine ();
+    WriteLine ();
 
     //Write nested types (enums)
     foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
@@ -89,7 +89,7 @@ public class DomainObjectBuilder : CodeBuilder
 
     // static members and constants
     WriteComment ("static members and constants");
-    WriteNewLine ();
+    WriteLine ();
 
     WriteGetObject (type.Name);
     WriteGetObjectWithDeleted (type.Name);
@@ -98,11 +98,11 @@ public class DomainObjectBuilder : CodeBuilder
 
     // member fields
     WriteComment ("member fields");
-    WriteNewLine ();
+    WriteLine ();
 
     // construction and disposing
     WriteComment ("construction and disposing");
-    WriteNewLine ();
+    WriteLine ();
 
     WriteConstructorDefault (type.Name);
     WriteConstructorWithTransaction (type.Name);
@@ -110,7 +110,7 @@ public class DomainObjectBuilder : CodeBuilder
 
     // methods and properties
     WriteComment ("methods and properties");
-    WriteNewLine ();
+    WriteLine ();
 
     foreach (PropertyDefinition propertyDefinition in _classDefinition.MyPropertyDefinitions)
     {
@@ -141,8 +141,8 @@ public class DomainObjectBuilder : CodeBuilder
     BeginGetObject (className, s_getObjectParameters);
 
     string output = s_getObjectContent;
-    output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersForContent);
+    output = ReplaceTag (output, s_classnameTag, className);
+    output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersForContent);
     Write (output);
 
     EndGetObject ();
@@ -153,8 +153,8 @@ public class DomainObjectBuilder : CodeBuilder
     BeginGetObject (className, s_getObjectParametersWithDeleted);
 
     string output = s_getObjectContent;
-    output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithDeletedForContent);
+    output = ReplaceTag (output, s_classnameTag, className);
+    output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithDeletedForContent);
     Write (output);
 
     EndGetObject ();
@@ -165,8 +165,8 @@ public class DomainObjectBuilder : CodeBuilder
     BeginGetObject (className, s_getObjectParametersWithTransaction);
 
     string output = s_getObjectContent;
-    output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionForContent);
+    output = ReplaceTag (output, s_classnameTag, className);
+    output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionForContent);
     Write (output);
 
     EndGetObject ();
@@ -177,8 +177,8 @@ public class DomainObjectBuilder : CodeBuilder
     BeginGetObject (className, s_getObjectParametersWithTransactionAndDeleted);
 
     string output = s_getObjectContent;
-    output = BuilderUtility.ReplaceTag (output, s_classnameTag, className);
-    output = BuilderUtility.ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionAndDeletedForContent);
+    output = ReplaceTag (output, s_classnameTag, className);
+    output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionAndDeletedForContent);
     Write (output);
 
     EndGetObject ();
@@ -219,12 +219,12 @@ public class DomainObjectBuilder : CodeBuilder
     BeginProperty (propertyName, propertyType);
 
     string getStatement = s_valuePropertyGetStatement;
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
+    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
+    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
     Write (getStatement);
 
     string setStatement = s_valuePropertySetStatement;
-    setStatement = BuilderUtility.ReplaceTag (setStatement, s_propertynameTag, propertyName);
+    setStatement = ReplaceTag (setStatement, s_propertynameTag, propertyName);
     Write (setStatement);
 
     EndProperty ();
@@ -235,12 +235,12 @@ public class DomainObjectBuilder : CodeBuilder
     BeginProperty (propertyName, propertyType);
 
     string getStatement = s_relationPropertyCardinalityOneGetStatement;
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
+    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
+    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
     Write (getStatement);
 
     string setStatement = s_relationPropertyCardinalityOneSetStatement;
-    setStatement = BuilderUtility.ReplaceTag (setStatement, s_propertynameTag, propertyName);
+    setStatement = ReplaceTag (setStatement, s_propertynameTag, propertyName);
     Write (setStatement);
 
     EndProperty ();
@@ -251,8 +251,8 @@ public class DomainObjectBuilder : CodeBuilder
     BeginProperty (propertyName, propertyType);
 
     string getStatement = s_relationPropertyCardinalityManyGetStatement;
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = BuilderUtility.ReplaceTag (getStatement, s_propertynameTag, propertyName);
+    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
+    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
     Write (getStatement);
 
     EndProperty ();

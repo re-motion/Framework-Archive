@@ -77,8 +77,12 @@ public class StubsBuilder : CodeBuilder
     foreach (XmlNode collectionTypeNode in collectionTypeNodes)
     {
       string typeString = collectionTypeNode.InnerText.Trim ();
-      if (IsTypeString (typeString) && typeString != DomainObjectCollectionBuilder.DefaultBaseClass && !collectionTypes.Contains (typeString))
+      if (IsTypeString (typeString) 
+          && GetTypeName(typeString) != DomainObjectCollectionBuilder.DefaultBaseClass 
+          && !collectionTypes.Contains (typeString))
+      {
         collectionTypes.Add (typeString);
+      }
     }
 
     return (string[]) collectionTypes.ToArray (typeof (string));
@@ -110,7 +114,7 @@ public class StubsBuilder : CodeBuilder
     return (typeMatch.Groups["typename"].Value != string.Empty);
   }
   
-  public string GetNamespacename (string typeString)
+  public string GetNamespaceName (string typeString)
   {
     Match typeMatch = _typeRegex.Match (typeString);
 
@@ -124,14 +128,14 @@ public class StubsBuilder : CodeBuilder
     return typeMatch.Groups["typename"].Value;
   }
 
-  private string GetMembername (string typeString)
+  private string GetMemberName (string typeString)
   {
     Match typeMatch = _typeRegex.Match (typeString);
 
     return typeMatch.Groups["membername"].Value;
   }
 
-  private string GetAssemblyname (string typeString)
+  private string GetAssemblyName (string typeString)
   {
     Match typeMatch = _typeRegex.Match (typeString);
 
@@ -142,21 +146,19 @@ public class StubsBuilder : CodeBuilder
   {
     ArrayList nestedTypeNames = new ArrayList ();
 
-    string parentNamespaceName = GetNamespacename (parentTypeString);
+    string parentNamespaceName = GetNamespaceName (parentTypeString);
     string parentClassName = GetTypeName (parentTypeString);
 
     foreach (string typeString in typeStrings)
     {
-      if (parentNamespaceName == GetNamespacename (typeString)
+      if (parentNamespaceName == GetNamespaceName (typeString)
           && parentClassName == GetTypeName (typeString))
       {
-        nestedTypeNames.Add (GetMembername (typeString));
+        nestedTypeNames.Add (GetMemberName (typeString));
       }
     }
     return (string[]) nestedTypeNames.ToArray (typeof (string));
   }
-
-  #region IBuilder Members
 
   public override void Build()
   {
@@ -168,7 +170,7 @@ public class StubsBuilder : CodeBuilder
 
     foreach (string classTypeName in classTypeNames)
     {
-      BeginNamespace (GetNamespacename (classTypeName));
+      BeginNamespace (GetNamespaceName (classTypeName));
 
       WriteComment (classTypeName);
       BeginClass (GetTypeName (classTypeName), "DomainObject");
@@ -181,9 +183,9 @@ public class StubsBuilder : CodeBuilder
 
     foreach (string enumTypeName in enumTypeNames)
     {
-      if (GetMembername (enumTypeName) == "")
+      if (GetMemberName (enumTypeName) == "")
       {
-        BeginNamespace (GetNamespacename (enumTypeName));
+        BeginNamespace (GetNamespaceName (enumTypeName));
 
         WriteComment (enumTypeName);
         WriteEnum (GetTypeName (enumTypeName));
@@ -192,7 +194,7 @@ public class StubsBuilder : CodeBuilder
 
     foreach (string collectionTypeName in collectionTypeNames)
     {
-      BeginNamespace (GetNamespacename (collectionTypeName));
+      BeginNamespace (GetNamespaceName (collectionTypeName));
 
       WriteComment (collectionTypeName);
       BeginClass (GetTypeName (collectionTypeName), "DomainObjectCollection");
@@ -204,7 +206,5 @@ public class StubsBuilder : CodeBuilder
     }
     CloseFile ();
   }
-
-  #endregion
 }
 }

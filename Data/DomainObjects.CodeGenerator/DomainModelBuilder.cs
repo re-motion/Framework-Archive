@@ -17,6 +17,7 @@ public class DomainModelBuilder : IBuilder
 
   // member fields
 
+  private bool _disposed = false;
   private string _outputFolder = "";
   private string _mappingFile;
   private string _mappingSchemaFile;
@@ -91,6 +92,34 @@ public class DomainModelBuilder : IBuilder
     _domainObjectCollectionBuilders = (IBuilder[]) domainObjectCollectionBuilders.ToArray (typeof (IBuilder));
   }
 
+  ~DomainModelBuilder ()      
+  {
+    Dispose (false);
+  }
+
+  public void Dispose()
+  {
+    Dispose (true);
+  }
+
+  protected virtual void Dispose (bool disposing)
+  {
+    if(!_disposed)
+    {
+      if(disposing)
+      {
+        foreach (IBuilder builder in _domainObjectBuilders)
+          builder.Dispose ();
+        _domainObjectBuilders = null;
+
+        foreach (IBuilder builder in _domainObjectCollectionBuilders)
+          builder.Dispose ();
+        _domainObjectCollectionBuilders = null;
+      }
+    }
+    _disposed = true;         
+  }
+
   // methods and properties
 
   #region IBuilder Members
@@ -104,5 +133,6 @@ public class DomainModelBuilder : IBuilder
   }
 
   #endregion
+
 }
 }
