@@ -10,7 +10,7 @@ namespace Rubicon.Collections
 /// A strongly typed version of <see cref="Hashtable"/>.
 /// </summary>
 [Serializable]
-public class TypedHashtable:  Hashtable
+public class TypedHashtable:  Hashtable, ISerializable
 {
   private Type _keyType;
   private Type _valueType;
@@ -72,6 +72,15 @@ public class TypedHashtable:  Hashtable
     : base (d, loadFactor, hcp, comparer)
   {
     Initialize (keyType, valueType);
+  }
+
+  public TypedHashtable (TypedHashtable hashtable)
+  {
+    hcp = hashtable.hcp;
+    comparer = hashtable.comparer;
+    Initialize (hashtable._keyType, hashtable._valueType);
+    foreach (DictionaryEntry dict in hashtable)
+      this.Add (dict.Key, dict.Value);
   }
 
   protected TypedHashtable (SerializationInfo info, StreamingContext context)
@@ -137,6 +146,12 @@ public class TypedHashtable:  Hashtable
       return arrayList.ToArray (_valueType);
     }
   }
+
+  public override object Clone()
+  {
+    return new TypedHashtable (this);
+  }
+
 }
 
 }

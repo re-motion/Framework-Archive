@@ -10,7 +10,7 @@ namespace Rubicon.Collections
 /// A strongly typed version of <see cref="ArrayList"/>.
 /// </summary>
 [Serializable]
-public class TypedArrayList: ArrayList
+public class TypedArrayList: ArrayList, ISerializable
 {
   private Type _elementType;
 
@@ -29,6 +29,22 @@ public class TypedArrayList: ArrayList
     : base (collection)
   {
     Initialize (elementType);
+  }
+
+  public TypedArrayList (TypedArrayList list)
+  {
+    _elementType = list._elementType;
+    AddRange (list);
+  }
+
+  protected TypedArrayList (SerializationInfo info, StreamingContext context)
+  {
+    _elementType = (Type) info.GetValue ("_elementType", typeof (Type));
+  }
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("_elementType", _elementType);
   }
 
   private void Initialize (Type elementType)
@@ -70,6 +86,11 @@ public class TypedArrayList: ArrayList
       ArgumentUtility.CheckNotNullAndType ("value", value, _elementType);
       base[index] = value;
     }
+  }
+
+  public override object Clone()
+  {
+    return new TypedArrayList (this);
   }
 
   /// <summary>
