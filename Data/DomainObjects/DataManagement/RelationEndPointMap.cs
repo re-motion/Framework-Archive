@@ -136,7 +136,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           oldRelatedEndPoint);
   }
 
-
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
@@ -190,6 +189,24 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
+  public void RegisterNewDataContainer (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
+    {
+      if (endPointID.Definition.Cardinality == CardinalityType.One) 
+      {
+        RegisterObjectEndPoint (endPointID, null);
+      }
+      else
+      {
+        DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
+        RegisterCollectionEndPoint (endPointID, domainObjects);
+      }
+    }
+  }
+
   public RelationEndPointCollection GetAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -207,7 +224,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     return allRelationEndPoints;
   }
 
-
   public void CheckMandatoryRelations (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -219,24 +235,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
         RelationEndPoint endPoint = _relationEndPoints[endPointID];
         if (endPoint != null)
           endPoint.CheckMandatory ();
-      }
-    }
-  }
-
-  public void RegisterNewDataContainer (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    foreach (RelationEndPointID endPointID in dataContainer.RelationEndPointIDs)
-    {
-      if (endPointID.Definition.Cardinality == CardinalityType.One) 
-      {
-        RegisterObjectEndPoint (endPointID, null);
-      }
-      else
-      {
-        DomainObjectCollection domainObjects = DomainObjectCollection.Create (endPointID.Definition.PropertyType);
-        RegisterCollectionEndPoint (endPointID, domainObjects);
       }
     }
   }
