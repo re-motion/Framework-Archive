@@ -44,12 +44,18 @@
     </data>
     <data name="auto:ChildrenList:FixedColumns:Edit:ColumnTitle">
     </data>
-    <data name="auto:ChildrenList:FixedColumns:Edit:Label">
+    <data name="auto:ChildrenList:FixedColumns:Edit:Text">
         <value>Bearbeiten</value>
     </data>
     <data name="auto:ChildrenList:FixedColumns:LastName:ColumnTitle">
     </data>
     <data name="auto:ChildrenList:FixedColumns:Name:ColumnTitle">
         <value>Name</value>
+    </data>
+    <data name="auto:ChildrenList:OptionsMenuItems:Copy:Text">
+        <value>Kopieren</value>
+    </data>
+    <data name="auto:ChildrenList:ListMenuItems:Paste:Text">
+        <value>Einfügen</value>
     </data>
 </root>
