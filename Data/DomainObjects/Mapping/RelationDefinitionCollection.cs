@@ -21,7 +21,7 @@ public class RelationDefinitionCollection : CollectionBase
   }
 
   // standard constructor for collections
-  public RelationDefinitionCollection (RelationDefinitionCollection collection, bool isCollectionReadOnly)  
+  public RelationDefinitionCollection (RelationDefinitionCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -30,7 +30,7 @@ public class RelationDefinitionCollection : CollectionBase
       Add (relationDefinition);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties

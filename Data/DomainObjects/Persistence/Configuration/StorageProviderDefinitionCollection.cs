@@ -23,7 +23,7 @@ public class StorageProviderDefinitionCollection : CollectionBase
   // standard constructor for collections
   public StorageProviderDefinitionCollection (
       StorageProviderDefinitionCollection collection,
-      bool isCollectionReadOnly)
+      bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -32,7 +32,7 @@ public class StorageProviderDefinitionCollection : CollectionBase
       Add (storageProviderDefinition);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
