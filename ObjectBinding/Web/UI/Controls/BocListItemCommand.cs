@@ -109,6 +109,8 @@ public class BocListItemCommand: BocCommand
   private ListItemWxeFunctionCommandInfo _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
 
   public new BocListItemCommandClickEventHandler Click;
+  private IBocListItemCommandState _commandState;
+  private string _commandStateType;
 
   /// <summary> Initializes an instance. </summary>
   public BocListItemCommand()
@@ -213,6 +215,40 @@ public class BocListItemCommand: BocCommand
     get { return _wxeFunctionCommand; }
     set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo) value; }
   }
+  /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public IBocListItemCommandState CommandState
+  {
+    get 
+    {
+      if (_commandState == null && ! StringUtility.IsNullOrEmpty (_commandStateType))
+      {
+        Type type = TypeUtility.GetType (_commandStateType, true, false);
+        _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null);
+      }
+      return _commandState; 
+    }
+    set { _commandState = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the type of the <see cref="IBocListItemCommandState"/> to be used for evaluating whether to 
+  ///   render the command. 
+  /// </summary>
+  /// <remarks>
+  ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
+  /// </remarks>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("The IBocListItemCommandState to be used for evaluating whether to render the command.")]
+  [DefaultValue ("")]
+  [NotifyParentProperty (true)]
+  public string CommandStateType
+  {
+    get { return _commandStateType; }
+    set { _commandStateType = value; }
+  }
 }
 
 /// <summary>
@@ -253,6 +289,17 @@ public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
   {
     get { return _listIndex; }
   }
+}
+
+public interface IBocListItemCommandState
+{
+  /// <param name="list"> The <see cref="BocList"/> containing the column. </param>
+  /// <param name="businessObject"> The <see cref="IBusinessObject"/> to be rendered. </param>
+  /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
+  /// <returns> 
+  ///   <see langword="true"/> if the <paramref name="columnDefiniton"/>'s command should be enabled for the 
+  ///   <paramref name="businessObject"/>. </returns>
+  bool IsEnabled (BocList list, IBusinessObject businessObject, BocCommandEnabledColumnDefinition columnDefiniton);
 }
 
 }
