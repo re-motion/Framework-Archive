@@ -97,5 +97,18 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
 
     Assert.AreEqual (2, Provider.ExecuteScalarQuery (query));
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void ExecuteScalarQueryWithDifferentStorageProviderID ()
+  {
+    QueryDefinition definition = new QueryDefinition (
+        "QueryWithDifferentStorageProviderID", 
+        "DifferentStorageProviderID",
+        "select 42", 
+        QueryType.Scalar);
+
+    Provider.ExecuteScalarQuery (new Query (definition));
+  }
 }
 }

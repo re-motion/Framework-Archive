@@ -88,5 +88,18 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   {
     Provider.ExecuteCollectionQuery (new Query ("OrderNoSumByCustomerNameQuery"));
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void ExecuteCollectionQueryWithDifferentStorageProviderID ()
+  {
+    QueryDefinition definition = new QueryDefinition (
+        "QueryWithDifferentStorageProviderID", 
+        "DifferentStorageProviderID",
+        "select 42", 
+        QueryType.Collection);
+
+    Provider.ExecuteCollectionQuery (new Query (definition));
+  }
 }
 }
