@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Web.UI.Design;
+using System.Reflection;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
@@ -71,14 +73,48 @@ public class BocListDesigner:
 
   public System.Windows.Forms.DialogResult ShowDialog(Form dialog)
   {
-    // TODO: BocListDesigner: Move Splitter
-    //  private dialog.propertygrid.gridview.MoveSplitterTo(int)
     // TODO: BocListDesigner: Add description panel
     //  doccomment might be property description, is disabled
 
     dialog.Size = new Size (800, 500);
     dialog.StartPosition = FormStartPosition.CenterParent;
+    SetPropertyGridSplitter (dialog, 4);
     return dialog.ShowDialog();
+  }
+
+  private void SetPropertyGridSplitter (Form editor, double labelRatio)
+  {
+    const string collectionEditorCollectionFormTypeName = "System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm";
+
+    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+    Type collectionEditorCollectionFormType = editor.GetType();
+    if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
+    {
+      throw new ArgumentException (
+          string.Format ("Argument {0} has type {2} when type {1} was expected.",
+          "editor",
+          collectionEditorCollectionFormTypeName,
+          collectionEditorCollectionFormType), "editor");
+    }
+
+    //  private PropertyGrid CollectionEditorCollection.propertyBrowser
+    FieldInfo propertyBrowserFieldInfo = collectionEditorCollectionFormType.GetField (
+        "propertyBrowser",
+        bindingFlags);
+    PropertyGrid propertyBrowser = (PropertyGrid) propertyBrowserFieldInfo.GetValue(editor);
+    
+    //  private PropertyGridView PropertyGrid.gridView
+    MethodInfo getPropertyGridViewMethodInfo = typeof (PropertyGrid).GetMethod (
+        "GetPropertyGridView",
+        bindingFlags);
+    object propertyGridView = getPropertyGridViewMethodInfo.Invoke (propertyBrowser, null);
+
+    //  public double PropertyGridView.labelRatio
+    Type propertyGridViewType = propertyGridView.GetType();
+    FieldInfo labelRatioFieldInfo = propertyGridViewType.GetField ("labelRatio");
+    labelRatioFieldInfo.SetValue(propertyGridView, labelRatio);
+
   }
 }
 
