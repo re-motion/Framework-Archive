@@ -507,7 +507,12 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IReferenceProp
         return _propertyPathBinding.PropertyPath;
       }
       else
-        return null;
+      {
+        if (OwnerControl.DataSource != null)
+          return _propertyPathBinding.PropertyPath;
+        else
+          return null;
+      }
     }
     set
     {

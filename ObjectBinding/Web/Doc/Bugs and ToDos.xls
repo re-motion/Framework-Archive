@@ -1,12 +1,8 @@
-BocItemCommand: 
-  Script Command. Implement ScriptCommandInfo and other logic required for Script Command
-
-BocColumnDefinition: 
-  Move long comment blocks to xml-file
-  
-BocColumnDefinitionSet: 
-  Move long comment blocks to xml-file
-
+BusinessObjectBinding:
+  EnsureDataSource contains two DesignMode Hacks:
+      _control.Site.Container.Components[0] is used as the NamingContainer, if _control.NamingContainer is null.
+      The DataSourceControl will be evaluated during each EnsureDataSource until a control is found.
+      
 BocBooleanValue:
   Accessibility for Buttons (Alt-Tags)
   
@@ -29,3 +25,13 @@ BocReferenceValue:
   Menu like SharePoint for creating new items and stuff.
   Page changes?
   Link to DetailsPage?
+
+BocItemCommand: 
+  Script Command. Implement ScriptCommandInfo and other logic required for Script Command
+
+BocColumnDefinition: 
+  Move long comment blocks to xml-file
+  
+BocColumnDefinitionSet: 
+  Move long comment blocks to xml-file
+
