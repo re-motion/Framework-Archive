@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-		xmlns:sp="http://www.rubicon-it.com/Data/DomainObjects/Persistence"
+		xmlns:sp="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0"
 		xmlns:t="http://www.rubicon-it.com/Data/DomainObjects/Types"
 		elementFormDefault="qualified" 
 		attributeFormDefault="unqualified"
-		targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Persistence">
+		targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0">
 		
 	<xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" schemaLocation="types.xsd" />
 		

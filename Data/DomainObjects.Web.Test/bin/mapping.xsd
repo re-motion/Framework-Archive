@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:m="http://www.rubicon-it.com/Data/DomainObjects/Mapping" xmlns:t="http://www.rubicon-it.com/Data/DomainObjects/Types" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Mapping" xml:lang="en">
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:m="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:t="http://www.rubicon-it.com/Data/DomainObjects/Types" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xml:lang="en">
 
   <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" schemaLocation="types.xsd" />
 
@@ -14,6 +21,11 @@
                 <xs:key name="propertyKey">
                   <xs:selector xpath="m:properties/m:property" />
                   <xs:field xpath="@name" />
+                </xs:key>
+
+                <xs:key name="columnKey">
+                  <xs:selector xpath="m:properties/m:property" />
+                  <xs:field xpath="m:column" />
                 </xs:key>
 
               </xs:element>
