@@ -123,14 +123,14 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
     this.PropertiesList.Size = new System.Drawing.Size(288, 199);
     this.PropertiesList.TabIndex = 5;
     // 
-    // PropertyPathPicker
+    // PropertyPickerControl
     // 
-    this.BackColor = System.Drawing.Color.FromArgb(((System.Byte)(224)), ((System.Byte)(224)), ((System.Byte)(224)));
+    this.BackColor = System.Drawing.SystemColors.Control;
     this.Controls.Add(this.PropertiesList);
     this.Controls.Add(this.SelectButton);
     this.Controls.Add(this.FilterField);
     this.Controls.Add(this.FilterLabel);
-    this.Name = "PropertyPathPicker";
+    this.Name = "PropertyPickerControl";
     this.Size = new System.Drawing.Size(304, 272);
     this.Load += new System.EventHandler(this.PropertyPathPicker_Load);
     this.ResumeLayout(false);

@@ -32,6 +32,8 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType.IsEnum)
       return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, isList);
+    else if (propertyInfo.PropertyType.IsAssignableFrom (typeof (IBusinessObjectWithIdentity)))
+      return new ReflectionBusinessObjectRefernceProperty (propertyInfo, itemType, isList);
     else
       return new ReflectionBusinessObjectProperty (propertyInfo, itemType, isList);
   }
@@ -232,6 +234,38 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
   {
     object value = Enum.Parse (PropertyType, identifier, false);
     return new EnumerationValueInfo (value, identifier, identifier, true);
+  }
+}
+
+public class ReflectionBusinessObjectRefernceProperty: ReflectionBusinessObjectProperty, IBusinessObjectReferenceProperty
+{
+  public ReflectionBusinessObjectRefernceProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
+    : base (propertyInfo, itemType, isList)
+  {
+  }
+
+  public IBusinessObjectClass ReferenceClass
+  {
+    get
+    {
+      // TODO:  Add ReflectionBusinessObjectRefernceProperty.ReferenceClass getter implementation
+      return null;
+    }
+  }
+
+  public IBusinessObjectWithIdentity[] SearchAvailableObjects(IBusinessObject obj, string searchStatement)
+  {
+    // TODO:  Add ReflectionBusinessObjectRefernceProperty.SearchAvailableObjects implementation
+    return null;
+  }
+
+  public bool SupportsSearchAvailableObjects
+  {
+    get
+    {
+      // TODO:  Add ReflectionBusinessObjectRefernceProperty.SupportsSearchAvailableObjects getter implementation
+      return false;
+    }
   }
 }
 
