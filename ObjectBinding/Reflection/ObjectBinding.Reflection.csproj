@@ -107,6 +107,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "ObjectBinding.Reflection.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "ReflectionBusinessObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
