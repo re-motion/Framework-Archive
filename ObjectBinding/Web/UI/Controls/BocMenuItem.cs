@@ -27,21 +27,10 @@ public class BocMenuItem: MenuItem
     get { return "BocMenuItem"; }
   }
 
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [Category ("Action")]
-  [Description ("The command rendered for this menu item.")]
-  [NotifyParentProperty (true)]
-  public new BocCommand Command
+  public override Command Command
   {
-    get { return (BocCommand) base.CommandImplementation; }
-    set { base.CommandImplementation = value; }
-  }
-
-  protected override Command CommandImplementation
-  {
-    get { return Command; }
-    set { Command = (BocCommand) value; }
+    get { return base.Command; }
+    set { base.Command = (BocCommand) value; }
   }
 
   /// <summary>
@@ -50,12 +39,12 @@ public class BocMenuItem: MenuItem
   protected internal new IBusinessObjectBoundWebControl OwnerControl
   {
     get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation;  }
-    set { base.OwnerControlImplementation = value; }
+    set { base.OwnerControlImplementation = (Control) value; }
   }
 
-  protected override IControl OwnerControlImplementation
+  protected override Control OwnerControlImplementation
   {
-    get { return OwnerControl; }
+    get { return (Control) OwnerControl; }
     set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
 }
