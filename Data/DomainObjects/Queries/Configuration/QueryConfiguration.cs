@@ -50,6 +50,7 @@ public class QueryConfiguration
 
   // member fields
 
+  private string _applicationName;
   private QueryDefinitionCollection _queryDefinitions;
   private string _configurationFile;
   private string _schemaFile;
@@ -92,6 +93,7 @@ public class QueryConfiguration
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 
+    _applicationName = loader.GetApplicationName ();
     _queryDefinitions = loader.GetQueryDefinitions ();
     _configurationFile = loader.ConfigurationFile;
     _schemaFile = loader.SchemaFile;
@@ -111,6 +113,14 @@ public class QueryConfiguration
       ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
       return _queryDefinitions[queryID]; 
     }
+  }
+
+  /// <summary>
+  /// Gets the application name that is specified in the XML configuration file. 
+  /// </summary>
+  public string ApplicationName 
+  {
+    get { return _applicationName; }
   }
 
   /// <summary>
