@@ -8,7 +8,7 @@ namespace Rubicon.Web.ExecutionEngine
 {
 
 /// <summary>
-/// Performs a single operation in a web application as part of a <see cref="WebFunction"/>.
+/// Performs a single operation in a web application as part of a <see cref="WxeFunction"/>.
 /// </summary>
 public abstract class WxeStep
 {

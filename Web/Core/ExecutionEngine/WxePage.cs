@@ -20,7 +20,7 @@ public interface IWxePage: IPage
 }
 
 /// <summary>
-///   Base class for pages that can be called by <see cref="TransitoinHandler"/>.
+///   Base class for pages that can be called by <see cref="WxePageStep"/>.
 /// </summary>
 /// <remarks>
 ///   If you cannot derive your pages from this class (e.g., because you need to derive from another class), you may
