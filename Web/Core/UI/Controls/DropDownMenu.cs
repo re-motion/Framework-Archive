@@ -212,7 +212,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       PageUtility.RegisterStartupScriptBlock (Page, key, script);
     }
 
-    key = typeof (DropDownMenu).FullName + ID;
+    key = UniqueID;
     if (! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
