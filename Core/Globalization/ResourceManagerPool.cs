@@ -29,7 +29,13 @@ public sealed class ResourceDispatcher
   {
     ResourceManager rm = GetOrCreateResourceManager (page, pageType, resourceName);
 
-    return rm.GetString (name, MultiLingualUtility.GetUICulture ());
+
+    string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
+
+    if (text == null)
+      text = "###";
+
+    return text;
   }
 
   public static void Dispatch (Page page)

@@ -29,7 +29,10 @@ public class MultiLingualPage : Page
   {
     // TODO: Delete line below:
     if (this.Request.Url.AbsolutePath.IndexOf ("AdminEditContacts.aspx") >= 0 )
+    {
       ResourceDispatcher.Dispatch (this);
+      this.PageTitle = ResourceDispatcher.GetResourceText (this, "auto:PageTitle");
+    }
 
     base.OnInit (e);
   }
