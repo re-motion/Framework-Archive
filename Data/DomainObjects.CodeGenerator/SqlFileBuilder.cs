@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class SqlFileBuilder : IBuilder
+public class SqlFileBuilder : BaseBuilder
 {
   // types
 
@@ -55,6 +55,7 @@ public class SqlFileBuilder : IBuilder
 
   private MappingConfiguration _mappingConfig;
   private StorageProviderConfiguration _storageProviderConfig;
+  //TODO: eliminate this member and everything that's related to it
   private string _outputFile;
 
   // construction and disposing
@@ -63,7 +64,13 @@ public class SqlFileBuilder : IBuilder
 	{
   }
 
-  public SqlFileBuilder (string outputFile, string mappingFile, string mappingSchemaFile, string storageProviderFile, string storageProviderSchemaFile)
+  public SqlFileBuilder (
+      string outputFile, 
+      string mappingFile, 
+      string mappingSchemaFile, 
+      string storageProviderFile, 
+      string storageProviderSchemaFile)
+          : base (outputFile)
 	{
     if (mappingFile != null)
     {
@@ -88,7 +95,7 @@ public class SqlFileBuilder : IBuilder
 
   // methods and properties
 
-  public void Build ()
+  public override void Build ()
   {
     string[] storageProviderIDs = GetDistinctStorageProviderIDs ();
 
@@ -174,7 +181,7 @@ public class SqlFileBuilder : IBuilder
           property.ColumnName, dataType, property.IsNullable, classDefinition.ID));
 
       if (property.PropertyType == typeof (ObjectID) 
-          && IsOppositeClassInHierarchy (classDefinition, property.PropertyName)
+          && GetOppositeClass (classDefinition, property.PropertyName).IsPartOfInheritanceHierarchy
           && GetOppositeClass (classDefinition, property.PropertyName).StorageProviderID == classDefinition.StorageProviderID)
       {
         columns.Add (new ColumnDefinition (property.ColumnName + "ClassID", SqlBuilder.ClassIdDatabaseType, false, classDefinition.ID));
@@ -185,13 +192,6 @@ public class SqlFileBuilder : IBuilder
   private ClassDefinition GetOppositeClass (ClassDefinition classDefinition, string propertyName)
   {
     return classDefinition.GetOppositeEndPointDefinition (propertyName).ClassDefinition;;
-  }
-
-  private bool IsOppositeClassInHierarchy (ClassDefinition classDefinition, string propertyName)
-  {
-    ClassDefinition oppositeClass = GetOppositeClass (classDefinition, propertyName);
-
-    return oppositeClass.IsPartOfInheritanceHierarchy;
   }
 
   private ArrayList GetBaseClassDefinitions (string storageProviderID)
@@ -207,7 +207,6 @@ public class SqlFileBuilder : IBuilder
     }
     return baseClasses;
   }
-
 
   private ClassDefinitionCollection GetDerivedClassDefinitions (ClassDefinition baseClass)
   {
