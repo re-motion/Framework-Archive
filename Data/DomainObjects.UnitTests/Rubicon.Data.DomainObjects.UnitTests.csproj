@@ -109,6 +109,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ClientTransactionBaseTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -157,6 +162,10 @@
                 <File
                     RelPath = "mappingWithXmlException.xml"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Rubicon.Data.DomainObjects.UnitTests.build"
+                    BuildAction = "None"
                 />
                 <File
                     RelPath = "storageProviders.xml"
