@@ -37,7 +37,7 @@ public class EntryFormGrid: Control
   /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators are not validated when
   /// this parameter is true.</param>
   /// <returns> Returns false if any EntryField is not valid. </returns>
-  public bool Validate (bool ignoreRequiredFieldValidators)
+  public bool Validate (bool ignoreRequiredFieldValidators, bool showErrors)
   {
     bool isValid = true;
     foreach (Control control in Controls)
@@ -45,14 +45,19 @@ public class EntryFormGrid: Control
       EntryField field = control as EntryField;
       if (field != null)
       {
-        if (! field.Validate (ignoreRequiredFieldValidators))
+        if (! field.Validate (ignoreRequiredFieldValidators, showErrors))
           isValid = false;
       }
     }
     return isValid;
   }
   
-  
+  public bool Validate (bool ignoreRequiredFieldValidators)
+  {
+    return Validate (ignoreRequiredFieldValidators, true);
+  }
+
+
   protected override void Render (HtmlTextWriter writer)
 	{
 		if (this.Site != null && this.Site.DesignMode)
@@ -156,6 +161,8 @@ public class EntryField: Control
 	private bool _isRequired = false;
   private string _title = string.Empty;
 
+  private bool   _showErrors = true;
+
 	public string Label 
 	{
 		get { return _label; }
@@ -191,7 +198,7 @@ public class EntryField: Control
   /// <param name="ignoreRequiredFieldValidators"> RequiredFieldValidators and other validators whose IDs
   /// end with "...RequiredValidator" are not validated when this parameter is true.</param>
   /// <returns> Returns false if any Validator is not valid. </returns>
-  public bool Validate (bool ignoreRequiredFieldValidators)
+  public bool Validate (bool ignoreRequiredFieldValidators, bool showErrors)
   {
     bool isValid = true;
     foreach (Control control in Controls)
@@ -207,7 +214,14 @@ public class EntryField: Control
           isValid = false;
       }
     }
+
+    _showErrors = showErrors;
     return isValid;
+  }
+
+  public bool Validate (bool ignoreRequiredFieldValidators)
+  {
+    return Validate (ignoreRequiredFieldValidators, true);
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -220,7 +234,7 @@ public class EntryField: Control
     // search for Validator child controls and keep if at least one is invalid
     foreach ( Control childControl in this.Controls )
     {
-      if ( childControl is BaseValidator )
+      if ( childControl is BaseValidator && _showErrors)
       {
         BaseValidator validator = (BaseValidator) childControl;
         if ( !validator.IsValid )
