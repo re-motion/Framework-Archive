@@ -71,7 +71,12 @@
   <xs:complexType name="classType">
     <xs:sequence>
       <xs:element name="type" type="t:dotNetType" />
-      <xs:element name="entity" type="t:requiredStringType" />
+      <xs:element name="entity">
+      	<xs:complexType>
+      		<xs:attribute name="name" type="t:requiredStringType" use="required" />
+      	</xs:complexType>
+      </xs:element>
+      
       <xs:element name="storageProviderID" type="t:requiredStringType" />
       <xs:element name="properties">
         <xs:complexType>
