@@ -48,7 +48,8 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   public void Unregister (IBusinessObjectBoundControl control)
   {
-    _boundControls.Remove (control);
+    if (_boundControls != null)
+      _boundControls.Remove (control);
   }
 
   public void LoadValues ()

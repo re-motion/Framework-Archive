@@ -32,9 +32,6 @@ public class WebForm1 : System.Web.UI.Page
   protected System.Web.UI.WebControls.Label Label1;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
   protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
-  protected System.Web.UI.WebControls.TextBox TextBox1;
-  protected System.Web.UI.WebControls.ListBox ListBox1;
-  protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load(object sender, System.EventArgs e)

@@ -27,17 +27,11 @@
         runat="server" ForControl="HeightField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator2" style="Z-INDEX: 111; LEFT: 424px; POSITION: absolute; TOP: 112px"
         runat="server" ControlToValidate="HeightField" EnableClientScript="False"></obc:boctextvaluevalidator><asp:label id="Label1" style="Z-INDEX: 112; LEFT: 384px; POSITION: absolute; TOP: 112px" runat="server">cm</asp:label><asp:button id="SaveButton" style="Z-INDEX: 103; LEFT: 24px; POSITION: absolute; TOP: 272px"
         runat="server" Text="Save" Width="80px"></asp:button>
-      <obc:BocEnumValue id=GenderField style="Z-INDEX: 113; LEFT: 224px; POSITION: absolute; TOP: 184px" runat="server" PropertyIdentifier="MarriageStatus" DataSource="<%# reflectionBusinessObjectDataSource1 %>" Width="144px" Height="24px">
+      <obc:BocEnumValue id=GenderField style="Z-INDEX: 113; LEFT: 224px; POSITION: absolute; TOP: 184px" runat="server" PropertyIdentifier="MarriageStatus" DataSource="<%# reflectionBusinessObjectDataSource1 %>" Width="152px" Height="24px">
         <ListControlStyle RadioButtonListTextAlign="Right" Font-Bold="True" BorderColor="Red" ForeColor="Red"
           RadionButtonListRepeatLayout="Table" BackColor="#FFFF80" ControlType="DropDownList" RadioButtonListRepeatDirection="Horizontal"></ListControlStyle>
       </obc:BocEnumValue>
       <rwc:SmartLabel id="BocPropertyLabel5" style="Z-INDEX: 114; LEFT: 16px; POSITION: absolute; TOP: 184px"
-        runat="server" ForControl="GenderField"></rwc:SmartLabel>
-      <asp:TextBox id="TextBox1" style="Z-INDEX: 115; LEFT: 664px; POSITION: absolute; TOP: 352px"
-        runat="server"></asp:TextBox>
-      <asp:ListBox id="ListBox1" style="Z-INDEX: 116; LEFT: 144px; POSITION: absolute; TOP: 448px"
-        runat="server"></asp:ListBox>
-      <asp:RadioButtonList id="RadioButtonList1" style="Z-INDEX: 117; LEFT: 360px; POSITION: absolute; TOP: 432px"
-        runat="server"></asp:RadioButtonList></form>
+        runat="server" ForControl="GenderField"></rwc:SmartLabel></form>
   </body>
 </HTML>

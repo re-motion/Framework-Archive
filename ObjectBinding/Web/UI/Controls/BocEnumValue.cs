@@ -25,7 +25,6 @@ public class LoadRequiredDesigner: ControlDesigner
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-[Designer (typeof (LoadRequiredDesigner))]
 public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBackDataHandler
 {
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 

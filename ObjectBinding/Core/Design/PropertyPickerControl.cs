@@ -6,10 +6,10 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.Design
 {
 
-public class PropertyPathPickerControl: System.Windows.Forms.UserControl
+public class PropertyPickerControl: System.Windows.Forms.UserControl
 {
   private System.Windows.Forms.Label FilterLabel;
   private System.Windows.Forms.TextBox FilterField;
@@ -25,7 +25,7 @@ public class PropertyPathPickerControl: System.Windows.Forms.UserControl
 	/// </summary>
 	private System.ComponentModel.Container components = null;
 
-	public PropertyPathPickerControl (IBusinessObjectBoundControl control)
+	public PropertyPickerControl (IBusinessObjectBoundControl control)
 	{
     if (control.DataSource == null)
       throw new InvalidOperationException ("Cannot use PropertyPathEditor for controls without DataSource.");

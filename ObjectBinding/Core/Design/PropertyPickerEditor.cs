@@ -7,10 +7,10 @@ using System.Windows.Forms.Design;
 using System.ComponentModel;
 
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.Design
 {
 
-public class PropertyPathPickerEditor: UITypeEditor
+public class PropertyPickerEditor: UITypeEditor
 {
   private IWindowsFormsEditorService _editorService = null;
 
@@ -28,7 +28,7 @@ public class PropertyPathPickerEditor: UITypeEditor
         if (control == null)
           throw new InvalidOperationException ("Cannot use PropertyPathEditor for objects other than IBusinessObjectBoundControl.");
 
-        PropertyPathPickerControl pathPickerControl = new PropertyPathPickerControl (control);
+        PropertyPickerControl pathPickerControl = new PropertyPickerControl (control);
 
         pathPickerControl.Value = (string) value;
         pathPickerControl.EditorService = _editorService;

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web.UI.Design;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Rubicon.ObjectBinding.Web.Design
 {
 
 /// <summary>
@@ -73,6 +73,12 @@ public class BusinessObjectBoundControlDesigner: ControlDesigner
       }
     }
   }
+
+  public override bool DesignTimeHtmlRequiresLoadComplete
+  {
+    get { return true; }
+  }
+
 }
 
 }

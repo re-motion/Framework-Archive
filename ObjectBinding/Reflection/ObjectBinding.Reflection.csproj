@@ -79,11 +79,6 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
                 />
                 <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
                     Name = "Core"
                     Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -92,6 +87,11 @@
                     Name = "ObjectBinding"
                     Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "system.xml"
+                    AssemblyName = "system.xml"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.xml.dll"
                 />
             </References>
         </Build>

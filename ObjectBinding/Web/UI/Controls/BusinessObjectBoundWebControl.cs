@@ -8,9 +8,10 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
+using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
-using Rubicon.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -56,7 +57,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   [Category ("Data")]
-  [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
+  [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
   public string PropertyIdentifier
   {
     get { return _binding.PropertyIdentifier; }
