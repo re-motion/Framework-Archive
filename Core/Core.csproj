@@ -83,6 +83,11 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\prereq\Assemblies\log4net.dll"
+                />
             </References>
         </Build>
         <Files>
