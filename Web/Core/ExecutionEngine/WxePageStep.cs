@@ -21,7 +21,15 @@ public class WxeExecuteNextStepException: Exception
 public class WxeUserCancelException: Exception
 {
   public WxeUserCancelException()
-    : base ("User cancelled this step.")
+    : this ("User cancelled this step.")
+  {
+  }
+  public WxeUserCancelException(string message)
+    : base (message)
+  {
+  }
+  public WxeUserCancelException(string message, Exception innerException)
+    : base (message, exception)
   {
   }
 }
