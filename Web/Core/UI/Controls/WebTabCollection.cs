@@ -110,7 +110,15 @@ public class WebTabCollection: ControlItemCollection
         && _tabStrip.SelectedTab == null 
         && InnerList.Count > 0)
     {
-      _tabStrip.SetSelectedTab ((WebTab) InnerList[0]);
+      WebTab currentTab = null;
+      for (int i = 0; i < InnerList.Count; i++)
+      {
+        currentTab = (WebTab) InnerList[i];
+        if (! currentTab.IsSeparator)
+          break;
+      }
+      if (! currentTab.IsSeparator)
+        _tabStrip.SetSelectedTab (currentTab);
     }
   }
 }

@@ -238,16 +238,16 @@ public class WebTab: IControlItem
 
   public virtual void RenderContents (HtmlTextWriter writer, string postBackLink)
   {
+
     if (IsSeparator)
     {
-        writer.Write ("&nbsp;");
+      writer.Write ("&nbsp;");
     }
     else
     {
       bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
       bool hasText = ! StringUtility.IsNullOrEmpty (_text);
-      bool hasPostBackLink = ! StringUtility.IsNullOrEmpty (postBackLink);
-      if (hasPostBackLink)
+      if (! StringUtility.IsNullOrEmpty (postBackLink))
         writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       if (hasIcon)
@@ -262,7 +262,8 @@ public class WebTab: IControlItem
         writer.Write ("&nbsp;");
       if (hasText)
         writer.Write (_text);
-      writer.RenderEndTag();
+
+      writer.RenderEndTag(); // End achnor
     }
   }
 
