@@ -185,8 +185,6 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
 
   protected override void CreateChildControls()
   {
-    //this.Controls.Clear ();
-
     CreateAndAppendMainTable ();
 
     base.CreateChildControls ();
@@ -210,10 +208,7 @@ public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
 
   private void DisplayAmount ()
   {
-    //if (Amount > 0)
-    //  _amountTextBox.Text = Amount.ToString ("n");
-    //else
-      _amountTextBox.Text = _amountText;
+    _amountTextBox.Text = _amountText;
   }
 
   protected override void Render(HtmlTextWriter writer)
