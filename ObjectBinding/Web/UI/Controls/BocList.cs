@@ -107,9 +107,6 @@ public class BocList:
   
   // may be set at run time. these columnDefinitions do usually not contain commands.
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
-  
-  // the command to be used for the first ValueColumnDefinition column
-  private BocItemCommand _firstColumnCommand;
  
   //  If true, generates columns for all properties
   private bool _showAllProperties;
@@ -207,12 +204,6 @@ public class BocList:
           _checkBoxCheckedState[key] = true; 
       }
     }
-
-    if (IsDesignMode && _firstColumnCommand == null)
-    {
-      //  Initialize the command to simplify the designer's work
-      _firstColumnCommand = new BocItemCommand();
-    }
   }
 
   protected override void OnLoad(EventArgs e)
@@ -261,23 +252,13 @@ public class BocList:
     if (columnIndex >= _fixedColumns.Count)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of fixed columns.'");
 
-    BocCommandColumnDefinition column = null;
+    BocColumnDefinition column = null;
     BocItemCommand command = null;
 
-    if (columnIndex == -1)
-    {
-      command = _firstColumnCommand;
-      if (command == null)
-        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command for the first value column.");
-    }
-    else
-    {
-      column = _fixedColumns[columnIndex] as BocCommandColumnDefinition;
-      if (column.Command == null)
-        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
-      
-      command = column.Command;
-    }
+    column = _fixedColumns[columnIndex];
+    if (column.Command == null)
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
+    command = column.Command;
 
     switch (command.Type)
     {
@@ -650,6 +631,8 @@ public class BocList:
     if (businessObject == null)
       return;
 
+    bool isReadOnly = IsReadOnly;
+
     IBusinessObjectWithIdentity businessObjectWithIdentity = 
       businessObject as IBusinessObjectWithIdentity;
     string objectID = null;
@@ -657,20 +640,6 @@ public class BocList:
       objectID = businessObjectWithIdentity.UniqueIdentifier;
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-
-    bool isReadOnly = IsReadOnly;
-    bool isFirstValueColumnRendered = false;
-    bool isFirstValueColumnCommandEnabled = false;
-
-    if (FirstColumnCommand != null)
-    {
-      if (   FirstColumnCommand.Show == BocItemCommandShow.Always
-          || isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.ReadOnly
-          || ! isReadOnly && FirstColumnCommand.Show == BocItemCommandShow.EditMode)
-      {
-        isFirstValueColumnCommandEnabled = true;
-      }
-    }
 
     if (ShowSelection)
     {
@@ -702,70 +671,60 @@ public class BocList:
       BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
-      if (! isFirstValueColumnRendered && valueColumn != null)
+      bool isCommandEnabled = false;
+      if (column.Command != null)
       {
-        //  Render FirstColumnCommand BeginTag
-        if (isFirstValueColumnCommandEnabled)
-        {    
-          string argument = string.Format ("{0},{1}", -1, rowIndex);
-          if (businessObjectWithIdentity != null)
-            argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
-          string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-          
-          FirstColumnCommand.RenderBegin (writer, rowIndex, objectID, postBackLink);
-        }
-
-        //  Render Icon
-        if (EnableIcon)
+        bool isActive =    column.Command.Show == BocItemCommandShow.Always
+                        || isReadOnly && column.Command.Show == BocItemCommandShow.ReadOnly
+                        || ! isReadOnly && column.Command.Show == BocItemCommandShow.EditMode;
+        if (   isActive
+            && column.Command.Type != BocItemCommandType.None)
         {
-          IBusinessObjectService service
-            = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
-              typeof (IBusinessObjectWebUIService));
+          isCommandEnabled = true;
+        }
+      }
 
-          IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+      if (isCommandEnabled)
+      {    
+        string argument = string.Format ("{0},{1}", idxColumns, rowIndex);
+        if (businessObjectWithIdentity != null)
+          argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
+        string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+        
+        column.Command.RenderBegin (writer, rowIndex, objectID, postBackLink);
+      }
 
-          IconInfo iconIcon = null;
-          if (webUIService != null)
-            iconIcon = webUIService.GetIcon (businessObject);
- 
-          if (iconIcon != null)
+      //  Render Icon
+      if (EnableIcon)
+      {
+        IBusinessObjectService service
+          = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
+            typeof (IBusinessObjectWebUIService));
+
+        IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
+
+        IconInfo iconIcon = null;
+        if (webUIService != null)
+          iconIcon = webUIService.GetIcon (businessObject);
+
+        if (iconIcon != null)
+        {
+          writer.AddAttribute (HtmlTextWriterAttribute.Src, iconIcon.Url);
+
+          if (! iconIcon.Width.IsEmpty && ! iconIcon.Height.IsEmpty)
           {
-            writer.AddAttribute (HtmlTextWriterAttribute.Src, iconIcon.Url);
-
-            if (! iconIcon.Width.IsEmpty && ! iconIcon.Height.IsEmpty)
-            {
-              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Width.ToString());
-              writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Height.ToString());
-            }
-            
-            writer.RenderBeginTag (HtmlTextWriterTag.Img);
-            writer.RenderEndTag();
-            writer.Write (c_whiteSpace);
+            writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Width.ToString());
+            writer.AddAttribute (HtmlTextWriterAttribute.Width, iconIcon.Height.ToString());
           }
+          
+          writer.RenderBeginTag (HtmlTextWriterTag.Img);
+          writer.RenderEndTag();
+          writer.Write (c_whiteSpace);
         }
       }
 
       if (commandColumn != null)
       {
-        bool isCommandEnabled = false;
-
-        if (   commandColumn.Command.Show == BocItemCommandShow.Always
-            || isReadOnly && commandColumn.Command.Show == BocItemCommandShow.ReadOnly
-            || ! isReadOnly && commandColumn.Command.Show == BocItemCommandShow.EditMode)
-        {
-          isCommandEnabled = true;
-        }
-
-        if (isCommandEnabled)
-        {
-          string argument = string.Format ("{0},{1}", idxColumns, rowIndex);
-          if (businessObjectWithIdentity != null)
-            argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
-          string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-         
-          commandColumn.Command.RenderBegin (writer, rowIndex, objectID, postBackLink);
-        } 
-       
         if (commandColumn.IconPath != null)
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Href, commandColumn.IconPath);
@@ -774,12 +733,7 @@ public class BocList:
         }
 
         if (commandColumn.Label != null)
-        {
           writer.Write (commandColumn.Label);
-        }
-          
-        if (isCommandEnabled)
-          commandColumn.Command.RenderEnd (writer);
       }
       else if (compoundColumn != null)
       {
@@ -798,16 +752,8 @@ public class BocList:
         writer.Write (contents);
       }
 
-      if (! isFirstValueColumnRendered && valueColumn != null)
-      {
-        //  Render FirstColumnCommand EndTag
-        if (isFirstValueColumnCommandEnabled)
-        {
-          FirstColumnCommand.RenderEnd (writer);
-        }
-       
-        isFirstValueColumnRendered = true;
-      }
+      if (isCommandEnabled)
+        column.Command.RenderEnd (writer);
 
       writer.RenderEndTag ();
     }
@@ -1173,42 +1119,6 @@ public class BocList:
   {
     return isList;
   }
-
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [Category ("Column Definition")]
-  [Description ("The ItemCommand added to the first value column.")]
-  [DefaultValue ((string) null)]
-  [NotifyParentProperty (true)]
-  public BocItemCommand FirstColumnCommand
-  {
-    get
-    {
-      return _firstColumnCommand; 
-    }
-    set 
-    {
-      _firstColumnCommand = value; 
-    }
-  }
-
-  private bool ShouldSerializeFirstColumnCommand()
-  {
-    if (_firstColumnCommand == null)
-      return false;
-
-    if (_firstColumnCommand.Type != BocItemCommandType.Href)
-      return true;
-
-    if (   _firstColumnCommand.HrefCommand == null
-        ||    StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Href)
-           && StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Target))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
 
   /// <summary> The user independent column defintions. </summary>
   /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
