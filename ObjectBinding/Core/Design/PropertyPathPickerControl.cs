@@ -305,28 +305,41 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
         if (_propertySource.ReferenceProperty == null)
           throw new InvalidOperationException ("Cannot set value because edited object has no reference property set.");
 
-        BusinessObjectPropertyPath propertyPath = BusinessObjectPropertyPath.Parse (_propertySource.ReferenceProperty.ReferenceClass, value);
-        TreeNodeCollection nodes = PathTree.Nodes;
-        
-        foreach (IBusinessObjectProperty property in propertyPath.Properties)
+        BusinessObjectPropertyPath propertyPath = null;
+        try
         {
-          if (nodes == null)
-            break;
-          TreeNode node = null;
-          foreach (TreeNode childNode in nodes)
+          propertyPath = BusinessObjectPropertyPath.Parse (_propertySource.ReferenceProperty.ReferenceClass, value);
+        }
+        catch (ArgumentException)
+        {
+          //  PropertyPath invalid. 
+          //  Do nothing since the editor's task is to create a valid propertypath in the first place.
+        }
+
+        if (propertyPath != null)
+        {
+          TreeNodeCollection nodes = PathTree.Nodes;
+          
+          foreach (IBusinessObjectProperty property in propertyPath.Properties)
           {
-            IBusinessObjectProperty nodeProperty = (IBusinessObjectProperty) childNode.Tag;
-            if (nodeProperty.Identifier == property.Identifier)
-            {
-              node = childNode;
+            if (nodes == null)
               break;
+            TreeNode node = null;
+            foreach (TreeNode childNode in nodes)
+            {
+              IBusinessObjectProperty nodeProperty = (IBusinessObjectProperty) childNode.Tag;
+              if (nodeProperty.Identifier == property.Identifier)
+              {
+                node = childNode;
+                break;
+              }
             }
+            if (node == null)
+              break;
+            PopulateBranch (node);
+            PathTree.SelectedNode = node;
+            nodes = node.Nodes;
           }
-          if (node == null)
-            break;
-          PopulateBranch (node);
-          PathTree.SelectedNode = node;
-          nodes = node.Nodes;
         }
       }
 

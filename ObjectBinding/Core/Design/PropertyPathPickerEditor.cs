@@ -30,11 +30,11 @@ public class PropertyPathPickerEditor: UITypeEditor
 
       if (_editorService != null)
       {
-        IReferencePropertySource binding = context.Instance as IReferencePropertySource;
-        if (binding == null)
+        IReferencePropertySource propertySource = context.Instance as IReferencePropertySource;
+        if (propertySource == null)
           throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IReferencePropertySource.");
 
-        PropertyPathPickerControl propertyPathPickerControl = new PropertyPathPickerControl (binding);
+        PropertyPathPickerControl propertyPathPickerControl = new PropertyPathPickerControl (propertySource);
         propertyPathPickerControl.Value = (string) value;
         propertyPathPickerControl.EditorService = _editorService;
 
