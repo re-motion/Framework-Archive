@@ -24,11 +24,15 @@ public class SqlProvider : RdbmsProvider
 
   public override string GetParameterName (string name)
   {
+    CheckDisposed ();
+    
     return "@" + name;
   }
 
   protected override IDbConnection CreateConnection ()
   {
+    CheckDisposed ();
+    
     return new SqlConnection ();
   }
 }
