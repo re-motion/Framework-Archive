@@ -170,7 +170,7 @@ public class EntryFormGrid: Control
 			Control control = this.Controls[i];
 
 			// write vertical empty space before titles
-			if (i != 0 && control is EntryTitle)
+			if (i != 0 && (control is EntryTitle) && control.Visible)
 				writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage (1, 10));
 
 			control.RenderControl (writer);
