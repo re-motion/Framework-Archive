@@ -4,7 +4,8 @@ using System.Web.UI.WebControls;
 namespace Rubicon.Web.UI.Controls
 {
 	/// <summary>
-	/// StandardButton to be used in web applications.
+	/// StandardButton to be used in web applications. 
+	/// Note: The StandardButton does not support client-side validation.
 	/// </summary>
 	public class StandardButton : Button
 	{
@@ -15,12 +16,24 @@ namespace Rubicon.Web.UI.Controls
     protected override void OnPreRender (EventArgs e)
     {
       // Disable button client-side to give visual feedback and avoid that user clicks multiple times.
-      string onClickJavascript = 
-        "this.disabled=true; " + Page.GetPostBackClientEvent (this, string.Empty);
-
-      Attributes.Add ("onClick", onClickJavascript);
+      Attributes["onClick"] = AppendTrailingSemicolonOnDemand (Attributes["onClick"]);
+      Attributes["onClick"] += "this.disabled=true; " + Page.GetPostBackClientEvent (this, string.Empty);
+      Attributes["onClick"] = AppendTrailingSemicolonOnDemand (Attributes["onClick"]);
 
       base.OnPreRender (e);
+    }
+
+    private string AppendTrailingSemicolonOnDemand (string value)
+    {
+      if (value != null && value != string.Empty)
+      {
+        value = value.Trim ();
+
+        if (!value.EndsWith (";"))
+          value += ";";
+      }
+
+      return value;
     }
 
     protected StandardPage StandardPage

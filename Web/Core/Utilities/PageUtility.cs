@@ -52,6 +52,20 @@ public class PageUtility
           + "</script>");
   }
 
+  public static void CloseBrowserWindow (Page page, bool refreshParent)
+  {
+    string refreshParentScript = string.Empty;
+
+    if (refreshParent)
+      refreshParentScript = "window.opener.Refresh();\n";
+
+    string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
+      refreshParentScript +
+      "window.close ();\n" +
+      "</script>";
+
+    page.RegisterStartupScript ("CloseWindowKey", script);
+  }
 
   public static object GetSessionValue (Page page, string key, bool required)
   {

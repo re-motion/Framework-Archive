@@ -56,17 +56,7 @@ public class StandardPage : NavigablePage
     _saveViewStateToSession = false;
     CleanupSession ();
 
-    string refreshParentScript = "";
-
-    if (refreshParent)
-      refreshParentScript = "window.opener.Refresh();\n";
-
-    string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
-                    refreshParentScript +
-                    "window.close ();\n" +
-                    "</script>";
-
-    RegisterStartupScript ("CloseWindowKey", script);
+    PageUtility.CloseBrowserWindow (this, refreshParent);
   }
 
   public string GetErrorImage (string errorMessage)

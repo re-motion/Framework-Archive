@@ -13,8 +13,10 @@
     -> im Entryfield mit RequiredFieldValidator prüfen
 - Klasse "EntryField" Methode "Render": Wenn LabelColumnWidth = 0, dann werden links neben den 
     requiredfield- und invalidstate-images keine Whitespaceimages angezeigt
-
-
+- Kernfunktionalität von Standardpage.CloseBrowserWindow (...) in neue Methode PageUtility.CloseBrowserWindow (...) 
+  verlagert.
+  
+   
 3.1.6.1
 =======
 
