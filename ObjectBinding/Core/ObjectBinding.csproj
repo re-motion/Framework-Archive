@@ -142,6 +142,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ObjectBinding.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "TypeConverters.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
