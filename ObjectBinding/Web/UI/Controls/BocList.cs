@@ -819,14 +819,14 @@ public class BocList:
   {
     if (_showAdditionalColumnsList)
     {
-      writer.AddStyleAttribute ("position", "relative");
-      writer.AddStyleAttribute ("z-index", "0");
+//      writer.AddStyleAttribute ("position", "relative");
+//      writer.AddStyleAttribute ("z-index", "0");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.Write (_additionalColumnsTitle + c_whiteSpace);
       if (IsDesignMode && _additionalColumnsListWidth.IsEmpty)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
-      _additionalColumnsList.Style["z-index"] = "0";
+//      _additionalColumnsList.Style["z-index"] = "0";
       _additionalColumnsList.RenderControl (writer);
       writer.RenderEndTag();
     }
