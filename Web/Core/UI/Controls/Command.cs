@@ -12,10 +12,10 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.UI.Controls
 {
 
-//  TODO: ItemCommand: Move long comment blocks to xml-file
-/// <summary> An <see cref="ItemCommand"/> defines an action the user can invoke on an item. </summary>
+//  TODO: Command: Move long comment blocks to xml-file
+/// <summary> An <see cref="Command"/> defines an action the user can invoke on an item. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public abstract class ItemCommand
+public abstract class Command
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -173,18 +173,18 @@ public abstract class ItemCommand
   /// <summary> Wraps the properties required for rendering a script command. </summary>
   public class ScriptCommandInfo
   {
-    //  Add enum value Script to BocItemCommandType
-    //  Add property ScriptCommand to BocItemCommand
+    //  Add enum value Script to BocCommandType
+    //  Add property ScriptCommand to BocCommand
   }
 
   /// <summary>
-  ///   The <see cref="ItemCommandType"/> represented by this instance of <see cref="ItemCommand"/>.
+  ///   The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>.
   /// </summary>
-  private ItemCommandType _type = ItemCommandType.None;
+  private CommandType _type = CommandType.None;
   /// <summary>
   ///   Determines when the item command is shown to the user in regard of the parent control's read-only setting.
   /// </summary>
-  private ItemCommandShow _show = ItemCommandShow.Always;
+  private CommandShow _show = CommandShow.Always;
   /// <summary>
   ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
@@ -200,13 +200,13 @@ public abstract class ItemCommand
       HtmlTextWriter writer, 
       string postBackLink,
       string onClick,
-      IItemCommandParameters parameters);
+      ICommandParameters parameters);
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   /// <param name="postBackLink">
   ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
-  ///   <see cref="ItemCommandType.Event"/> or <see cref="ItemCommandType.WxeFunction"/>.
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
   ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
   /// </param>
@@ -224,7 +224,7 @@ public abstract class ItemCommand
   {
     switch (_type)
     {
-      case ItemCommandType.Href:
+      case CommandType.Href:
       {
         string[] encodedParameters = new string[parameters.Length];
         for (int i = 0; i < parameters.Length; i++)
@@ -235,13 +235,13 @@ public abstract class ItemCommand
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
         break;
       }
-      case ItemCommandType.Event:
+      case CommandType.Event:
       {
         ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
         break;
       }
-      case ItemCommandType.WxeFunction:
+      case CommandType.WxeFunction:
       {
         ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
@@ -265,7 +265,7 @@ public abstract class ItemCommand
   }
 
   /// <summary>
-  ///   Returns a string representation of this <see cref="ItemCommand"/>.
+  ///   Returns a string representation of this <see cref="Command"/>.
   /// </summary>
   /// <remarks>
   ///   <list type="table">
@@ -292,13 +292,13 @@ public abstract class ItemCommand
 
     switch (Type)
     {
-      case ItemCommandType.Href:
+      case CommandType.Href:
       {
         if (HrefCommand != null)
           stringBuilder.AppendFormat (": {0}", HrefCommand.ToString());
         break;
       }
-      case ItemCommandType.WxeFunction:
+      case CommandType.WxeFunction:
       {
         if (WxeFunctionCommand != null)
           stringBuilder.AppendFormat (": {0}", WxeFunctionCommand.ToString());
@@ -318,23 +318,23 @@ public abstract class ItemCommand
   ///   <see cref="WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
-  /// <param name="parameters"> The <see cref="IItemCommandParameters"/> passed to the <see cref="WxeFunction"/>. </param>
-  public abstract void ExecuteWxeFunction (IWxePage wxePage, IItemCommandParameters parameters);
+  /// <param name="parameters"> The <see cref="ICommandParameters"/> passed to the <see cref="WxeFunction"/>. </param>
+  public abstract void ExecuteWxeFunction (IWxePage wxePage, ICommandParameters parameters);
 
   /// <summary>
-  ///   The <see cref="ItemCommandType"/> represented by this instance of 
-  ///   <see cref="ItemCommand"/>.
+  ///   The <see cref="CommandType"/> represented by this instance of 
+  ///   <see cref="Command"/>.
   /// </summary>
   /// <value> 
-  ///   One of the <see cref="ItemCommandType"/> enumeration values. 
-  ///   The default is <see cref="ItemCommandType.None"/>.
+  ///   One of the <see cref="CommandType"/> enumeration values. 
+  ///   The default is <see cref="CommandType.None"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The type of command generated.")]
-  [DefaultValue (ItemCommandType.None)]
+  [DefaultValue (CommandType.None)]
   [NotifyParentProperty (true)]
-  public ItemCommandType Type
+  public CommandType Type
   {
     get
     {
@@ -351,15 +351,15 @@ public abstract class ItemCommand
   ///   read-only setting.
   /// </summary>
   /// <value> 
-  ///   One of the <see cref="ItemCommandShow"/> enumeration values. 
-  ///   The default is <see cref="ItemCommandShow.Always"/>.
+  ///   One of the <see cref="CommandShow"/> enumeration values. 
+  ///   The default is <see cref="CommandShow.Always"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
-  [DefaultValue (ItemCommandShow.Always)]
+  [DefaultValue (CommandShow.Always)]
   [NotifyParentProperty (true)]
-  public ItemCommandShow Show
+  public CommandShow Show
   {
     get { return _show; }
     set { _show = value; }
@@ -369,7 +369,7 @@ public abstract class ItemCommand
   ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
   /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to <see cref="ItemCommandType.Href"/>.
+  ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>.
   /// </remarks>
   /// <value> A <see cref="HrefCommandInfo"/> object. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
@@ -396,7 +396,7 @@ public abstract class ItemCommand
   /// </summary>
   /// <remarks> 
   ///   Only interpreted if <see cref="Type"/> is set to 
-  ///   <see cref="ItemCommandType.WxeFunction"/>.
+  ///   <see cref="CommandType.WxeFunction"/>.
   /// </remarks>
   /// <value> A <see cref="WxeFunctionCommandInfo"/> object. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
@@ -418,12 +418,12 @@ public abstract class ItemCommand
   }
 }
 
-public interface IItemCommandParameters
+public interface ICommandParameters
 {
 }
 
-/// <summary> The possible command types of a <see cref="ItemCommand"/>. </summary>
-public enum ItemCommandType
+/// <summary> The possible command types of a <see cref="Command"/>. </summary>
+public enum CommandType
 {
   /// <summary> No command will be generated. </summary>
   None,
@@ -436,7 +436,7 @@ public enum ItemCommandType
 }
 
 /// <summary> Defines when the command will be active on the page. </summary>
-public enum ItemCommandShow
+public enum CommandShow
 {
   /// <summary> The command is always active. </summary>
   Always,

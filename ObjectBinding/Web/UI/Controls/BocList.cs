@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
 using System.Reflection;
-using System.Data;
 using System.Text;
 using log4net;
 using Rubicon.NullableValueTypes;
@@ -411,7 +410,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' must begin with on of the following prefixes: '" + c_eventCommandPrefix + "' or '" + c_sortCommandPrefix + "'.");
   }
 
-  /// <summary> Handles post back events raised by an <see cref="ItemCommand"/> of type event. </summary>
+  /// <summary> Handles post back events raised by an <see cref="Command"/> of type event. </summary>
   /// <param name="eventArgument">
   ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
   /// </param>
@@ -462,11 +461,11 @@ public class BocList:
     BocColumnDefinition column = columns[columnIndex];
     if (column.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
-    BocColumnItemCommand command = column.Command;
+    BocColumnCommand command = column.Command;
 
     switch (command.Type)
     {
-      case ItemCommandType.Event:
+      case CommandType.Event:
       {
         string columnID = string.Empty;
         if (column != null)
@@ -479,7 +478,7 @@ public class BocList:
         OnCommandClick (columnID, listIndex, businessObjectID);
         break;
       }
-      case ItemCommandType.WxeFunction:
+      case CommandType.WxeFunction:
       {
         command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, (IBusinessObject) this.Value[listIndex], businessObjectID);
         break;
@@ -561,10 +560,10 @@ public class BocList:
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnCommandClick/*' />
   protected virtual void OnCommandClick (string columnID, int listIndex, string businessObjectID)
   {
-    BocItemCommandClickEventHandler commandClickHandler = (BocItemCommandClickEventHandler) Events[EventCommandClick];
+    BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[EventCommandClick];
     if (commandClickHandler != null)
     {
-      BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (columnID, listIndex, businessObjectID);
+      BocCommandClickEventArgs e = new BocCommandClickEventArgs (columnID, listIndex, businessObjectID);
       commandClickHandler (this, e);
     }
   }
@@ -1381,11 +1380,11 @@ public class BocList:
       bool isCommandEnabled = false;
       if (column.Command != null)
       {
-        bool isActive =    column.Command.Show == ItemCommandShow.Always
-                        || isReadOnly && column.Command.Show == ItemCommandShow.ReadOnly
-                        || ! isReadOnly && column.Command.Show == ItemCommandShow.EditMode;
+        bool isActive =    column.Command.Show == CommandShow.Always
+                        || isReadOnly && column.Command.Show == CommandShow.ReadOnly
+                        || ! isReadOnly && column.Command.Show == CommandShow.EditMode;
         if (   isActive
-            && column.Command.Type != ItemCommandType.None)
+            && column.Command.Type != CommandType.None)
         {
           isCommandEnabled = true;
         }
@@ -1755,7 +1754,7 @@ public class BocList:
   /// </summary>
   /// <remarks>
   ///   The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///   to correctly handle the events raised on the BocList, such as an <see cref="ItemCommand"/> event 
+  ///   to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
   ///   or a data changed event.
   /// </remarks>
   /// <param name="columnDefinitions"> 
@@ -2452,12 +2451,12 @@ public class BocList:
   }
 
   /// <summary> 
-  ///   Occurs when a command of type <see cref="ItemCommandType.Event"/> 
-  ///   or <see cref="ItemCommandType.WxeFunction"/> is clicked. 
+  ///   Occurs when a command of type <see cref="CommandType.Event"/> 
+  ///   or <see cref="CommandType.WxeFunction"/> is clicked. 
   /// </summary>
   [Category ("Action")]
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
-  public event BocItemCommandClickEventHandler CommandClick
+  public event BocCommandClickEventHandler CommandClick
   {
     add 
     {
@@ -2600,15 +2599,15 @@ public class BocList:
 
 /// <summary>
 ///   Represents the method that handles the <see cref="BocList.CommandClick"/> event
-///   raised when clicking on an <see cref="ItemCommand"/> 
-///   of type <see cref="ItemCommandType.Event"/>.
+///   raised when clicking on an <see cref="Command"/> 
+///   of type <see cref="CommandType.Event"/>.
 /// </summary>
-public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
+public delegate void BocCommandClickEventHandler (object sender, BocCommandClickEventArgs e);
 
 /// <summary>
 ///   Provides data for the <see cref="BocList.CommandClick"/> event.
 /// </summary>
-public class BocItemCommandClickEventArgs: EventArgs
+public class BocCommandClickEventArgs: EventArgs
 {
   /// <summary>
   ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the clicked command 
@@ -2640,7 +2639,7 @@ public class BocItemCommandClickEventArgs: EventArgs
   ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
   ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
   /// </param>
-  public BocItemCommandClickEventArgs (
+  public BocCommandClickEventArgs (
       string columnID, 
       int listIndex, 
       string businessObjectID)
