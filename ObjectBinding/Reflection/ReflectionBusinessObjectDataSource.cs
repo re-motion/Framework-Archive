@@ -1,5 +1,6 @@
 using System;
 using Rubicon.ObjectBinding;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Reflection
 {
@@ -21,7 +22,7 @@ public class ReflectionBusinessObjectDataSource: BusinessObjectDataSource
     {
       if (_typeName == null || _typeName.Length == 0)
         return null;
-      return System.Type.GetType (_typeName); 
+      return TypeUtility.GetType (_typeName, false, false); 
     }
   }
 
