@@ -399,7 +399,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     IBusinessObjectWithIdentity[] businessObjects = null;
 
     //  Get all matching business objects
-    if (DataSource != null && DataSource.BusinessObject != null && ! StringUtility.IsNullOrEmpty (_select))
+    if (DataSource != null && DataSource.BusinessObject != null)
       businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, _select);
 
     RefreshBusinessObjectList (businessObjects);
