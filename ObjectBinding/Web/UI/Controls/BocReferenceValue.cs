@@ -63,15 +63,19 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="DropDownList"/> used in edit mode. </summary>
   private DropDownList _dropDownList;
-
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
-
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon ;
-
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator;
+
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/> and the <see cref="Label"/>. </summary>
+  private Style _commonStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
+  private DropDownListStyle _dropDownListStyle;
+  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
+  private Style _labelStyle;
 
   /// <summary> The object returned by <see cref="BocReferenceValue"/>. </summary>
   /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
@@ -84,17 +88,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <c>SelectedValue</c> of <see cref="DropDownList"/>. </summary>
   private string _newInternalValue = null;
-
-  /// <summary> 
-  ///   The <see cref="Style"/> applied to the <see cref="DropDownList"/> and the <see cref="Label"/>.
-  /// </summary>
-  private Style _commonStyle = new Style();
-
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
-  private DropDownListStyle _dropDownListStyle = new DropDownListStyle();
-
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
-  private Style _labelStyle = new Style();
 
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
@@ -123,33 +116,35 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 	public BocReferenceValue()
 	{
     _optionsMenuItems = new BocMenuItemCollection (this);
+    _commonStyle = new Style();
+    _dropDownListStyle = new DropDownListStyle();
+    _labelStyle = new Style();
+    _icon = new Image();
+    _dropDownList = new DropDownList();
+    _label = new Label();
+    _optionsMenu = new DropDownMenu (this);
+    _notNullItemValidator = new CompareValidator();
   }
 
 	// methods and properties
 
   protected override void CreateChildControls()
   {
-    _icon = new Image();
     _icon.ID = ID + "_Boc_Icon";
     _icon.EnableViewState = false;
     _icon.Visible = EnableIcon;
     Controls.Add (_icon);
 
-    _dropDownList = new DropDownList();
     _dropDownList.ID = ID + "_Boc_DropDownList";
     _dropDownList.EnableViewState = true;
     Controls.Add (_dropDownList);
 
-    _label = new Label();
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
     
-    _optionsMenu = new DropDownMenu (this);
     _optionsMenu.ID = ID + "_Boc_OptionsMenu";
     Controls.Add (_optionsMenu);
-
-    _notNullItemValidator = new CompareValidator();
   }
 
   /// <summary>
@@ -354,14 +349,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       return new BaseValidator[]{};
 
     BaseValidator[] validators = new BaseValidator[1];
-
-    _notNullItemValidator = new CompareValidator();
     
     _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
+      _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = _notNullItemValidator;
 
