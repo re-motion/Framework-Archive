@@ -969,6 +969,16 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     Assert.AreEqual (orders.RequiredItemType, clonedOrders.RequiredItemType);
   }
 
+  [Test]
+  public void RemoveWithObjectIDNotInCollection ()
+  {
+    int oldCount = _collection.Count;
+
+    _collection.Remove (DomainObjectIDs.Customer4);
+
+    Assert.AreEqual (oldCount, _collection.Count);
+  }
+
   private DomainObjectCollection CreateCustomerCollection ()
   {
     DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));

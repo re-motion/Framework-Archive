@@ -9,9 +9,23 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All exceptions checked, except TODOs
-
-//TODO documentation: Write summary for class
+/// <summary>
+/// Represents an in-memory transaction.
+/// </summary>
+/// <remarks>
+/// There are two ways a <see cref="ClientTransaction"/> can be used:<br />
+/// <list type="bullet">
+///   <item>
+///     <description>
+///       The transaction is initialized automatically through <see cref="Current"/> and is associated with the current <see cref="System.Threading.Thread"/>.
+///     </description>
+///     <description>
+///       Multiple transactions can be instantiated with the constructor and used side-by-side. 
+///       Every <see cref="DomainObject"/> must then be associated with the particular transaction.
+///     </description>
+///   </item>
+/// </list>
+/// </remarks>
 public class ClientTransaction
 {
   // types
@@ -114,7 +128,11 @@ public class ClientTransaction
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
-//todo documentation: all exceptions from other overload
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occured while accessing the datasource.
+  /// </exception>
   public virtual DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
@@ -128,7 +146,11 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
-  // Todo documentation: all exceptions from ClientTransaction.LoadObject
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occured while accessing the datasource.
+  /// </exception>
   public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -223,8 +245,8 @@ public class ClientTransaction
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/><br />
-  ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.<br />
+  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/><br /> -or- <br />
+  ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.<br /> -or- <br />
   ///   <i>newRelatedObject</i> has been deleted.
   /// </exception>
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
@@ -254,7 +276,8 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> object that was loaded.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br />
+  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occured while accessing the datasource.
   /// </exception>
   internal protected virtual DomainObject LoadObject (ObjectID id)
@@ -287,11 +310,15 @@ public class ClientTransaction
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
   /// <exception cref="Persistence.PersistenceException">
-  ///   The related object could not be loaded, but is mandatory.<br />
-  ///   The relation refers to non-existing object.<br />
-  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>
+  ///   The related object could not be loaded, but is mandatory.<br /> -or- <br />
+  ///   The relation refers to non-existing object.<br /> -or- <br />
+  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.
   /// </exception>
-  // Todo documentation: all exceptions from ClientTransaction.LoadObject
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   An error occured while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occured while accessing the datasource.
+  /// </exception>
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -328,7 +355,7 @@ public class ClientTransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="Persistence.PersistenceException">
-  ///   <i>relationEndPointID</i> does not refer to 1-to-n relation.<br />
+  ///   <i>relationEndPointID</i> does not refer to one-to-many relation.<br /> -or- <br />
   ///   The StorageProvider for the related objects could not be initialized.
   /// </exception>
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
