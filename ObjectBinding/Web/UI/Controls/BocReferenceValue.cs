@@ -185,7 +185,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       else
         _newInternalValue = null;
 
-      if (! Page.IsPostBack && ! StringUtility.IsNullOrEmpty (_select))
+      if (! Page.IsPostBack)
         RefreshBusinessObjectList();
 
       if (newInternalValue != null && _newInternalValue != _internalValue)

@@ -102,7 +102,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </summary>
   public static IconInfo GetIcon (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
   {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
     IconInfo iconInfo = null;
