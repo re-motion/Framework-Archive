@@ -236,30 +236,34 @@ public class WebTab: IControlItem
     }
   }
 
-  public void RenderContents (HtmlTextWriter writer, string postBackLink)
+  public virtual void RenderContents (HtmlTextWriter writer, string postBackLink)
   {
-    bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
-    bool hasText = ! StringUtility.IsNullOrEmpty (_text);
-    bool hasPostBackLink = ! StringUtility.IsNullOrEmpty (postBackLink);
-    if (hasPostBackLink)
+    if (IsSeparator)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+        writer.Write ("&nbsp;");
+    }
+    else
+    {
+      bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
+      bool hasText = ! StringUtility.IsNullOrEmpty (_text);
+      bool hasPostBackLink = ! StringUtility.IsNullOrEmpty (postBackLink);
+      if (hasPostBackLink)
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
-    }
-    if (hasIcon)
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
-      writer.AddStyleAttribute ("vertical-align", "middle");
-      writer.AddStyleAttribute ("border", "0");
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      if (hasIcon)
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
+        writer.AddStyleAttribute ("vertical-align", "middle");
+        writer.AddStyleAttribute ("border", "0");
+        writer.RenderBeginTag (HtmlTextWriterTag.Img);
+        writer.RenderEndTag();
+      }
+      if (hasIcon && hasText)
+        writer.Write ("&nbsp;");
+      if (hasText)
+        writer.Write (_text);
       writer.RenderEndTag();
     }
-    if (hasIcon && hasText)
-      writer.Write ("&nbsp;");
-    if (hasText)
-      writer.Write (_text);
-    if (hasPostBackLink)
-      writer.RenderEndTag();
   }
 
   public virtual void OnClick()
