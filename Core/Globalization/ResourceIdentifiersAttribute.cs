@@ -11,7 +11,7 @@ public class ResourceIdentifiersAttribute: Attribute
   {
     ArgumentUtility.CheckNotNull ("enumValue", enumValue);
     Type type = enumValue.GetType();
-    if (type.DeclaringType != null) // if the enum is a nested type, suppress enum name
+    if (type.DeclaringType != null && IsEnumTypeNameSuppressed (type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;
     return type.FullName + "." + enumValue.ToString();
 
@@ -22,9 +22,42 @@ public class ResourceIdentifiersAttribute: Attribute
 //      return type.FullName + "." + enumValue.ToString();
   }
 
+  public static ResourceIdentifiersAttribute GetAttribute (Type type)
+  {
+    object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifiersAttribute), false);
+    if (attributes == null || attributes.Length == 0)
+      return null;
+    else
+      return (ResourceIdentifiersAttribute) attributes[0];
+  }
+
+  private static bool IsEnumTypeNameSuppressed (Type type)
+  {
+    ResourceIdentifiersAttribute attrib = GetAttribute (type);
+    if (attrib == null)
+      return false;
+    else
+      return attrib.SuppressTypeName;
+  }
+
+  bool _suppressTypeName;
+
+  /// <summary> Initializes a new instance. </summary>
+  /// <param name="suppressTypeName"> If true, the name of the enum type is not included in the resource identifier. Default is true. </param>
+  public ResourceIdentifiersAttribute (bool suppressTypeName)
+  {
+    _suppressTypeName = suppressTypeName;
+  }
+
   /// <summary> Initializes a new instance. </summary>
   public ResourceIdentifiersAttribute ()
+    : this (true)
   {
+  }
+
+  public bool SuppressTypeName
+  {
+    get { return _suppressTypeName; }
   }
 }
 
