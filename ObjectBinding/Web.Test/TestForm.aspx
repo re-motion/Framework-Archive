@@ -13,12 +13,13 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<rwc:webtreeview id="WebTreeView1" runat="server"></rwc:webtreeview>
+<rwc:webtreeview id="WebTreeView" runat="server"></rwc:webtreeview>
 <table id=FormGrid runat="server">
   <tr>
     <td></td>
     <td></td></tr></table>
-<p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p></form>
+<p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
+<p><asp:Label id="TreeViewLabel" runat="server" EnableViewState="False">#</asp:Label></p></form>
 
   </body>
 </html>
