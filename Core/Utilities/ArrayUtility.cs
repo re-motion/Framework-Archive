@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.Utilities
@@ -51,6 +52,29 @@ public sealed class ArrayUtility
   public static Array Combine (params Array[] arrays)
   {
     return Combine (null, arrays);
+  }
+
+  public static Array Convert (Array array, Type elementType)
+  {
+    int rank = array.Rank;
+    int[] lengths = new int[rank];
+    int[] lowerBounds = new int[rank];
+    for (int dimension = 0; dimension < rank; ++dimension)
+    {
+      lengths[dimension] = array.GetLength(dimension);
+      lowerBounds[dimension] = array.GetLowerBound (dimension);
+    }
+    
+    Array result = Array.CreateInstance (elementType, lengths, lowerBounds);
+    array.CopyTo (result, 0);
+    return result;
+  }
+
+  public static Array Convert (IList list, Type elementType)
+  {
+    Array result = Array.CreateInstance (elementType, list.Count);
+    list.CopyTo (result, 0);
+    return result;
   }
 
 	private ArrayUtility()
