@@ -261,6 +261,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "WebFormBase.cs"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WebFormMK.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
