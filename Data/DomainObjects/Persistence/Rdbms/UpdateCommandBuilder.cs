@@ -31,7 +31,7 @@ public class UpdateCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    if (_dataContainer.State == StateType.Original)
+    if (_dataContainer.State == StateType.Unchanged)
       return null;
 
     IDbCommand command = CreateCommand ();
