@@ -64,5 +64,57 @@ public class RelationEndPointMap : RelationEndPointCollection
       }
     }
   }
+
+  public RelationEndPointCollection CloneOppositeRelationEndPoints (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+
+    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+    {
+      if (endPointID.Definition.Cardinality == CardinalityType.One)
+      {
+        DomainObject oppositeDomainObject = ClientTransaction.Current.GetRelatedObject (endPointID);
+        if (oppositeDomainObject != null)
+        {
+          if (endPointID.OppositeEndPointDefinition.Cardinality == CardinalityType.One)
+          {
+            ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
+                oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
+
+            oppositeEndPoints.Add (oppositeEndPoint);    
+          }
+          else
+          {
+            RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+                oppositeDomainObject.ID, endPointID.OppositeEndPointDefinition); 
+
+            DomainObjectCollection domainObjects = ClientTransaction.Current.GetRelatedObjects (oppositeEndPointID);
+            
+            CollectionEndPoint oppositeCollectionEndPoint = new CollectionEndPoint (
+                oppositeDomainObject, 
+                (VirtualRelationEndPointDefinition) oppositeEndPointID.Definition, 
+                domainObjects);
+
+            oppositeEndPoints.Add (oppositeCollectionEndPoint);
+          }
+        }
+      }
+      else
+      {
+        foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (endPointID))
+        {
+          ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
+              oppositeDomainObject, endPointID.OppositeEndPointDefinition, domainObject.ID);
+
+          oppositeEndPoints.Add (oppositeEndPoint);
+        }
+      }
+    }
+
+    return oppositeEndPoints;
+  }
+
 }
 }

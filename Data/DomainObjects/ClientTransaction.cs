@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects
 {
-public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
+public class ClientTransaction : IDisposable
 {
   // types
 
@@ -257,7 +257,6 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
   private void Initialize ()
   {
     _dataManager = new DataManager ();
-    _dataManager.CollectionEndPointChangeDelegate = this;
     _persistenceManager = new PersistenceManager ();
   }
 
@@ -316,7 +315,7 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
       return RelationEndPoint.CreateNullRelationEndPoint (definition); 
   }
 
-  private RelationEndPoint GetRelationEndPoint (RelationEndPointID endPointID)
+  internal RelationEndPoint GetRelationEndPoint (RelationEndPointID endPointID)
   {
     // TODO: Move code to RelationMap
     if (_dataManager.Contains (endPointID))
@@ -380,54 +379,5 @@ public class ClientTransaction : ICollectionEndPointChangeDelegate, IDisposable
   {
     get { return _dataManager; }
   }
-
-  #region ICollectionEndPointChangeDelegate Members
-
-  void ICollectionEndPointChangeDelegate.PerformAdd  (CollectionEndPoint endPoint, DomainObject domainObject)
-  {
-    ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
-        domainObject, endPoint.OppositeEndPointDefinition);
-
-    RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) GetRelationEndPoint (
-        GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
-
-    DomainObjectCollection oldCollection = null;
-    if (!oldRelatedEndPoint.IsNull)
-      oldCollection = GetRelatedObjects (oldRelatedEndPoint.ID);
-    
-    if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
-        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
-        && endPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint))
-    {
-      addingEndPoint.SetOppositeEndPoint (endPoint);
-      _dataManager.ChangeLink (addingEndPoint.ID, endPoint.DomainObject);
-      endPoint.OppositeDomainObjects.PerformAdd (domainObject);
-
-      if (oldCollection != null)
-        oldCollection.PerformRemove (domainObject);
-
-      addingEndPoint.EndRelationChange ();
-      oldRelatedEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
-    }
-  }
-
-  void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
-  {
-    ObjectEndPoint removingEndPoint = (ObjectEndPoint) GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
-
-    if (removingEndPoint.BeginRelationChange (endPoint)
-        && endPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
-    {
-      removingEndPoint.SetOppositeEndPoint (RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition));
-      _dataManager.ChangeLink (removingEndPoint.ID, null);
-      endPoint.OppositeDomainObjects.PerformRemove (domainObject);
-
-      removingEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
-    }
-  }
-
-  #endregion
 }
 }

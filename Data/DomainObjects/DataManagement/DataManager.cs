@@ -26,6 +26,60 @@ public class DataManager : ICollectionEndPointChangeDelegate
 
   // methods and properties
 
+  public void Delete (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    RelationEndPointCollection oppositeEndPoints = _relationEndPointMap.CloneOppositeRelationEndPoints (domainObject);
+    if (BeginDelete (domainObject, oppositeEndPoints))
+    {
+      /*
+      foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+      {
+        RelationEndPoint relationEndPoint = GetRelationEndPoint (endPointID);
+        if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
+        {
+          // TODO: opposite object can be null!
+          DomainObject oppositeDomainObject = GetRelatedObject (relationEndPoint);
+          RelationEndPoint oppositeEndPoint = GetRelationEndPoint (oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition);
+
+          _dataManager.WriteAssociatedPropertiesForRelationChange (
+              relationEndPoint, 
+              new NullRelationEndPoint (oppositeEndPoint.Definition), 
+              oppositeEndPoint, 
+              new NullRelationEndPoint (relationEndPoint.Definition));
+
+          _dataManager.ChangeLinks (
+            relationEndPoint, 
+              new NullRelationEndPoint (oppositeEndPoint.Definition), 
+              oppositeEndPoint, 
+              new NullRelationEndPoint (relationEndPoint.Definition));    
+        }
+        else
+        {
+          // TODO: visit every domain object of opposite collection        
+        }
+      }
+      */
+
+      EndDelete (domainObject, oppositeEndPoints);
+    }
+  }
+
+  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  {
+    if (!domainObject.BeginDelete ())
+      return false;
+
+    return oppositeEndPoints.BeginDelete (domainObject);
+  }
+
+  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  {
+    domainObject.EndDelete ();
+    oppositeEndPoints.EndDelete ();
+  }
+
   public bool Contains (RelationEndPointID id)
   {
     return _relationEndPointMap.Contains (id);

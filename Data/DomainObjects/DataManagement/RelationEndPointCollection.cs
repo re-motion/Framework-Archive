@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 
+using Rubicon.Data.DomainObjects.Configuration.Mapping;
+
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class RelationEndPointCollection : CollectionBase
@@ -31,7 +33,29 @@ public class RelationEndPointCollection : CollectionBase
   }
 
   // methods and properties
-  
+
+  public bool BeginDelete (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    foreach (RelationEndPoint endPoint in this)
+    {
+      IRelationEndPointDefinition endPointDefinition = endPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = ClientTransaction.Current.GetRelationEndPoint (domainObject, endPointDefinition);
+      RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
+
+      if (!endPoint.BeginRelationChange (oldEndPoint, newEndPoint))
+        return false;
+    }
+    return true;
+  }
+
+  public void EndDelete ()
+  {
+    foreach (RelationEndPoint endPoint in this)
+      endPoint.EndRelationChange ();    
+  }
+
   #region Standard implementation for collections
 
   public bool Contains (RelationEndPoint endPoint)

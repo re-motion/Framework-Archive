@@ -27,8 +27,6 @@ public class RelationEndPointID
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    // TODO: Check if objectID.ClassID and propertyName match!
-
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (objectID.ClassID);
     _definition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
     _objectID = objectID;
