@@ -506,5 +506,12 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.AreEqual (50, changedOrder1.OrderNumber);
     Assert.AreEqual (60, changedOrder2.OrderNumber);
   }
+
+  [Test]
+  public void QueryManager ()
+  {
+    Assert.IsNotNull (ClientTransactionMock.QueryManager);
+    Assert.AreSame (ClientTransactionMock, ClientTransactionMock.QueryManager.ClientTransaction);
+  }
 }
 }
