@@ -55,7 +55,7 @@ public class ResourceManagerWrapper: IResourceManager, IList
   /// <include file='doc\include\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
   public ResourceManagerWrapper (ResourceManager [] resourceManagers)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("resourceManagers", resourceManagers);
+    ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
     _resourceManagers = resourceManagers;
 
@@ -305,7 +305,6 @@ public class ResourceManagerWrapper: IResourceManager, IList
   public int Add (object value)
   {
     throw new NotSupportedException ("The list of ResourceMangers is read only");
-    return 0;
   }
 
   public bool IsFixedSize

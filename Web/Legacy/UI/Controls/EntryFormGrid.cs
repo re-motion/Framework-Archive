@@ -531,7 +531,9 @@ public class EntryField: Control
       {
         writer.WriteLine (UIUtility.GetIconImage (
             Page,
-            ResourceManagerPool.GetResourceText (this, "RequiredFieldText"), 
+            // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+            //   ResourceManagerPool.GetResourceText (this, "RequiredFieldText"), 
+            MultiLingualResourcesAttribute.GetResourceText (this, "RequiredFieldText"), 
             this.EntryFormGrid.GetImagePath ("field-required.gif")));
       }
       else
@@ -551,7 +553,9 @@ public class EntryField: Control
 						+ "width=\"15\" height=\"20\" border=\"0\"/></a>",
 					infoUrl,
           EntryFormGrid.InfoImagePath,
-          ResourceManagerPool.GetResourceText (this, "HelpInfoText"));
+          // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+          //  MultiLingualResourcesAttribute.GetResourceText (this, "HelpInfoText"));
+          MultiLingualResourcesAttribute.GetResourceText (this, "HelpInfoText"));
     }
 		else
 		{

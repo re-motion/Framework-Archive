@@ -30,12 +30,17 @@ public class MultiLingualPage : Page
 
   protected override void OnInit(EventArgs e)
   {
-    if (ResourceManagerPool.ExistsResource (this))
+    // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+    //  if (ResourceManagerPool.ExistsResource (this))
+    if (MultiLingualResourcesAttribute.ExistsResource (this))
     {
       ResourceDispatcher.Dispatch (this);
       
-      if (ResourceManagerPool.ExistsResourceText (this, "auto:PageTitle"))
-        this.PageTitle = ResourceManagerPool.GetResourceText (this, "auto:PageTitle");
+      // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+      //  if (ResourceManagerPool.ExistsResourceText (this, "auto:PageTitle"))
+      //    this.PageTitle = ResourceManagerPool.GetResourceText (this, "auto:PageTitle");
+      if (MultiLingualResourcesAttribute.ExistsResourceText (this, "auto:PageTitle"))
+        this.PageTitle = MultiLingualResourcesAttribute.GetResourceText (this, "auto:PageTitle");
     }
           
     base.OnInit (e);
@@ -43,7 +48,9 @@ public class MultiLingualPage : Page
   
   protected string GetResourceText (string name)
   {
-    return ResourceManagerPool.GetResourceText (this, name);
+    // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+    //  return ResourceManagerPool.GetResourceText (this, name);
+    return MultiLingualResourcesAttribute.GetResourceText (this, name);
   }
 }
 }

@@ -7,6 +7,7 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Utilities
 {
+
 internal sealed class UIUtility
 {
 	private UIUtility()
@@ -22,7 +23,9 @@ internal sealed class UIUtility
   {
     return GetIconImage (
         page,
-        ResourceManagerPool.GetResourceText (typeof (UIUtility), "RequiredFieldText"), 
+        // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+        //  ResourceManagerPool.GetResourceText (typeof (UIUtility), "RequiredFieldText"), 
+        MultiLingualResourcesAttribute.GetResourceText (typeof (UIUtility), "RequiredFieldText"), 
         "~/images/field-required.gif");
   }
 

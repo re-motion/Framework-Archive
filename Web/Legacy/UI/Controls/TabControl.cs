@@ -740,7 +740,9 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
             _activeBackLinkImage);
         output.WriteLine ("</td><td nowrap>");
         output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">{1}</a>&nbsp;&nbsp;",
-            BackLinkUrl, ResourceManagerPool.GetResourceText (this, "BackLink"));
+            // TODO: Check if change works: Changed to use MultiLingualResourcesAttribute instead of ResourceManagerPool
+            //  BackLinkUrl, ResourceManagerPool.GetResourceText (this, "BackLink"));
+            BackLinkUrl, MultiLingualResourcesAttribute.GetResourceText (this, "BackLink"));
         output.WriteLine ("</td><td width=\"100%\">");
         output.WriteLine ("</td></tr></table>");
       }

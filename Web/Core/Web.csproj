@@ -113,6 +113,11 @@
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
                 />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\prereq\Assemblies\log4net.dll"
+                />
             </References>
         </Build>
         <Files>

@@ -4,8 +4,8 @@ Version 3.1.0.0
 - Moved von Rubicon nach Commons
 
 - Klasse ResourceManagerPool ist nun obsolete.
-  * Funktionalität ist nun teilweise nach MultiLingualResourcesAttribute ausgegliedert.
-  * Zugriff auf Resourcen soll einheitlich sein, egal woher sie kommen (IResourceManager)
+  * Funktionalität ist nach MultiLingualResourcesAttribute verlagert worden.
+  * Verwendung: MultiLingualResourceAttribute statt ResourceManagerPool
   * Abwärtskompatibilität ist gewährt (vorbehaltlich Bugs)
   
 - Klasse MultiLingualResourcesAttribute

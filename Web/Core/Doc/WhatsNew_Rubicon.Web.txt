@@ -12,9 +12,7 @@
     Methode um die AccessKey-Syntax aus einem String zu entfernen.
     
 - Controls:
-  * Muss erst wieder durch übernehmen der Controls in Rubicon.Web.UI.Controls befüllt werden.
-  
-  
+  * Muss erst wieder durch übernehmen der Controls in Rubicon.Web.UI.Controls befüllt werden.  
   
 - Globalization.ResourceDispatcher:
   * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
