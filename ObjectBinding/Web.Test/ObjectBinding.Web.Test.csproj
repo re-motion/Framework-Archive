@@ -209,7 +209,7 @@
                 <File
                     RelPath = "TestBooleanValuePage.aspx.cs"
                     DependentUpon = "TestBooleanValuePage.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -431,6 +431,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "HTML\BocList.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
@@ -492,6 +496,14 @@
                 />
                 <File
                     RelPath = "Image\RequiredField.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\SortAscending.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\SortDescending.gif"
                     BuildAction = "Content"
                 />
                 <File

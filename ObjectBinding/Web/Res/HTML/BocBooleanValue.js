@@ -17,7 +17,7 @@ var _bocBooleanValue_nullIconUrl;
 
 //  Initializes the strings used to represent the true, false and null values.
 //  Call this method once in a startup script.
-function BocBooleanValue_InitializeValues (
+function BocBooleanValue_InitializeGlobals (
   trueValue, 
   falseValue, 
   nullValue, 
@@ -42,22 +42,16 @@ function BocBooleanValue_InitializeValues (
 }
 
 // Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
-// iconID: The ID of the icon representing the tri-state checkbox.
-// labelID: The ID of the label containing the description for the value. null for no description.
-// hiddenID: The ID of the hidden input field used to store the value between postbacks.
+// icon: The icon representing the tri-state checkbox.
+// label: The label containing the description for the value. null for no description.
+// hiddenField: The hidden input field used to store the value between postbacks.
 // isRequired: true to enqable the null value, false to limit the choices to true and false.
-function BocBooleanValue_SelectNextCheckboxValue (iconID, labelID, hiddenID, isRequired)
+function BocBooleanValue_SelectNextCheckboxValue (icon, label, hiddenField, isRequired)
 {
   var trueValue = _bocBooleanValue_trueValue;
   var falseValue = _bocBooleanValue_falseValue;
   var nullValue = _bocBooleanValue_nullValue;
-  
-  var hiddenField = document.all[hiddenID];
-  var icon = document.all[iconID];
-  var label = null;
-  if (labelID != null)
-    label = document.all[labelID];
-  
+    
   var oldValue = hiddenField.value;
   var newValue;
   
