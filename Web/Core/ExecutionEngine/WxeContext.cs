@@ -28,6 +28,8 @@ public class WxeContext
   private bool _isPostBack;
   private bool _isReturningPostBack;
   private NameValueCollection _postBackCollection;
+  private string _pageToken = null;
+  private WxeFunction _returningFunction = null;
 
   public WxeContext (HttpContext context)
   {
@@ -63,6 +65,18 @@ public class WxeContext
   {
     get { return _postBackCollection; }
     set { _postBackCollection = value; }
+  }
+
+  public string PageToken
+  {
+    get { return _pageToken; }
+    set { _pageToken = value; }
+  }
+
+  public WxeFunction ReturningFunction 
+  {
+    get { return _returningFunction; }
+    set { _returningFunction = value; }
   }
 }
 
