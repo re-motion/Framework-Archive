@@ -18,6 +18,7 @@ public interface ITabItem
 {
   string Href { get; set; }
   bool RequiresPageToken { get; set; }
+  ITabItem GetNavigableItem();
 }
 
 public class TabControlBuilder: ControlBuilder
@@ -67,6 +68,20 @@ public class Tab: Control, ITabItem
     get { return _requiresPageToken; }
     set { _requiresPageToken = value; }
   }
+  ITabItem ITabItem.GetNavigableItem ()
+  {
+    if (Href != string.Empty)
+      return this;
+
+    if (this.Controls.Count < 1)
+      return null;
+
+    TabMenu firstMenu = this.Controls[0] as TabMenu;
+    if (firstMenu != null)
+      return firstMenu;
+    else 
+      return this;
+  }
 }
 
 /// <summary>
@@ -94,6 +109,10 @@ public class TabMenu: Control, ITabItem
   {
     get { return _requiresPageToken; }
     set { _requiresPageToken = value; }    
+  }
+  ITabItem ITabItem.GetNavigableItem()
+  {
+    return this;
   }
 }
 
@@ -235,42 +254,18 @@ public class TabControl: Control, IPostBackEventHandler
     _activeTab = tab;
     Tab selectedTab = _items[_activeTab];
 
-    string href = GetCompleteUrl (selectedTab, tab);
+    string href = GetCompleteUrl (selectedTab, tab, 0);
     Page.Response.Redirect (href);
   }
 
-  private string GetCompleteUrl (TabMenu tabMenu, int newSelectedTabIndex, int newSelectedMenuIndex)
+  private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
   {
-    return InternalGetCompleteUrl (tabMenu, newSelectedTabIndex, newSelectedMenuIndex);
-  }
-  private string GetCompleteUrl (Tab tab, int newSelectedTabIndex)
-  {
-    string href = tab.Href;
-    if (href == string.Empty)
-    {
-      if (tab.Controls.Count > 0)
-      {
-        TabMenu firstMenu = tab.Controls[0] as TabMenu;
-        if (firstMenu != null)
-        {
-          href = InternalGetCompleteUrl (firstMenu, newSelectedTabIndex, 0);
-        }
-      }
-    }
-    else
-    {
-      href = InternalGetCompleteUrl (tab, newSelectedTabIndex, 0);
-    }
-    return href;
-  }
-
-  private string InternalGetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
-  {
+    ITabItem navigableItem = tabItem.GetNavigableItem();
     /*if (tabItem.Href == string.Empty)
       return string.Empty;*/
 
-    string url = PageUtility.GetPageUrl (this.Page, tabItem.Href);
-    if (tabItem.RequiresPageToken)
+    string url = PageUtility.GetPageUrl (this.Page, navigableItem.Href);
+    if (navigableItem.RequiresPageToken)
       url = AddParameter (url, "pageToken", PageUtility.GetUniqueToken());
 
     url = AddParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
@@ -317,7 +312,7 @@ public class TabControl: Control, IPostBackEventHandler
     string eventArgument = eventName + ":" + itemIndex.ToString();
 		string script = Page.GetPostBackClientEvent (this, eventArgument);
 
-    string href = InternalGetCompleteUrl (tabItem, tabIndex, menuIndex);
+    string href = GetCompleteUrl (tabItem, tabIndex, menuIndex);
 
     if (href != string.Empty)
     {
