@@ -5,6 +5,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
+  // TODO: Use Nullable types and implement ApplyStyle with consideration unassigned (null) values
 
 public enum ListControlType
 {
