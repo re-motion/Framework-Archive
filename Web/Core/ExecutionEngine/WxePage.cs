@@ -5,6 +5,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.ComponentModel;
+using System.Reflection;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
@@ -25,6 +27,9 @@ public interface IWxePage: IPage, IWxeTemplateControl
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
   bool IsReturningPostBack { get; }
   WxeFunction ReturningFunction { get; }
+
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  HtmlForm HtmlForm { get; set; }
 }
 
 public class WxePageInfo: WxeTemplateControlInfo, IDisposable
@@ -42,16 +47,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page = page;
   }
 
-  public void Initialize (HttpContext context, ref HtmlForm form)
+  public void Initialize (HttpContext context)
   {
     base.OnInit (_page, context);
 
     if (! ControlHelper.IsDesignMode (_page, context))
     {
-      if (form == null)
-        throw new HttpException (_page.GetType().FullName + " does not initialize field 'Form'.");
-      _form = WxeForm.Replace (form);
-      form = _form;
+      //  if (_page.HtmlForm == null)
+      //    throw new HttpException (_page.GetType().FullName + " does not initialize field 'Form'.");
+      _form = WxeForm.Replace (_page.HtmlForm);
+      _page.HtmlForm = _form;
     }
 
     HtmlInputHidden wxePageTokenField = new HtmlInputHidden();
@@ -191,6 +196,50 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       throw new WxeExecuteNextStepException();
     }
   }
+
+  public WxeForm Form
+  {
+    get { return _form; }
+  }
+
+  private FieldInfo _htmlFormField = null;
+  private bool _htmlFormFieldInitialized = false;
+
+  private void EnsureHtmlFormFieldInitialized()
+  {
+    if (! _htmlFormFieldInitialized)
+    {
+      MemberInfo[] fields = _page.GetType().FindMembers (
+            MemberTypes.Field, 
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+            new MemberFilter (FindHtmlFormControlFilter), null);
+      if (fields.Length < 1)
+        throw new ApplicationException ("Page class " + _page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
+      else if (fields.Length > 1)
+        throw new ApplicationException ("Page class " + _page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
+      _htmlFormField = (FieldInfo) fields[0];
+      _htmlFormFieldInitialized = true;
+    }
+  }
+
+  private bool FindHtmlFormControlFilter (MemberInfo member, object filterCriteria)
+  {
+    return (member is FieldInfo && ((FieldInfo)member).FieldType == typeof (HtmlForm));
+  }
+
+  public HtmlForm HtmlFormDefaultImplementation
+  {
+    get
+    {
+      EnsureHtmlFormFieldInitialized();
+      return (HtmlForm) _htmlFormField.GetValue (_page);
+    }
+    set 
+    {
+      EnsureHtmlFormFieldInitialized();
+      _htmlFormField.SetValue (_page, value);
+    }
+  }
 }
 
 /// <summary>
@@ -205,18 +254,22 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 public class WxePage: Page, IWxePage
 {
   private WxePageInfo _wxeInfo;
+  private ValidatableControlInitializer _validatableControlInitializer;
+  private PostLoadInvoker _postLoadInvoker;
 
-  protected HtmlForm Form;
+  // protected HtmlForm Form; - won't work in VS 2005
 
   public WxePage ()
   {
     _wxeInfo = new WxePageInfo (this);
+    _validatableControlInitializer = new ValidatableControlInitializer (this);
+    _postLoadInvoker = new PostLoadInvoker (this);
   }
 
   protected override NameValueCollection DeterminePostBackMode()
   {
     NameValueCollection result = _wxeInfo.DeterminePostBackMode (Context);
-    _wxeInfo.Initialize (Context, ref Form);
+    _wxeInfo.Initialize (Context);
     OnBeforeInit();
     return result;
   }
@@ -295,13 +348,46 @@ public class WxePage: Page, IWxePage
 
   protected WxeForm WxeForm
   {
-    get { return (WxeForm) Form; }
+    get { return (WxeForm) _wxeInfo.Form; }
   }
 
   public override void Dispose()
   {
     base.Dispose ();
     _wxeInfo.Dispose();
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public virtual HtmlForm HtmlForm
+  {
+    get { return _wxeInfo.HtmlFormDefaultImplementation; }
+    set { _wxeInfo.HtmlFormDefaultImplementation = value; }
+  }
+
+  /// <summary>
+  ///   Makes sure that PostLoad is called on all controls that support <see cref="ISupportsPostLoadControl"/>
+  /// </summary>
+  public void EnsurePostLoadInvoked ()
+  {
+    _postLoadInvoker.EnsurePostLoadInvoked();
+  }
+
+  /// <summary>
+  ///   Makes sure that all validators are registered with their <see cref="IValidatableControl"/> controls.
+  /// </summary>
+  public void EnsureValidatableControlsInitialized ()
+  {
+    _validatableControlInitializer.EnsureValidatableControlsInitialized ();
+  }
+
+  /// <summary>
+  ///   Call this method before validating when using <see cref="Rubicon.Web.UI.Controls.FormGridManager"/> 
+  ///   and <see cref="Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate"/>.
+  /// </summary>
+  public void PrepareValidation()
+  {
+    EnsurePostLoadInvoked();
+    EnsureValidatableControlsInitialized();
   }
 }
 
