@@ -36,17 +36,5 @@ public class Partner : Company
     get { return (Person) GetRelatedObject ("ContactPerson"); }
     set { SetRelatedObject ("ContactPerson", value); }
   }
-
-  private ClassWithoutRelatedClassIDColumn ClassWithoutRelatedClassIDColumn
-  {
-    get 
-    { 
-      return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("ClassWithoutRelatedClassIDColumn"); 
-    }
-    set 
-    { 
-      SetRelatedObject ("ClassWithoutRelatedClassIDColumn", value); 
-    }
-  }
 }
 }

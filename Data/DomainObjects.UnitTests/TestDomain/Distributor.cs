@@ -36,5 +36,17 @@ public class Distributor : Partner
     get { return (int) DataContainer["NumberOfShops"]; }
     set { DataContainer["NumberOfShops"] = value; }
   }
+
+  private ClassWithoutRelatedClassIDColumn ClassWithoutRelatedClassIDColumn
+  {
+    get 
+    { 
+      return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("ClassWithoutRelatedClassIDColumn"); 
+    }
+    set 
+    { 
+      SetRelatedObject ("ClassWithoutRelatedClassIDColumn", value); 
+    }
+  }
 }
 }
