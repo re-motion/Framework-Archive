@@ -30,6 +30,8 @@ public class TestTabbedForm : TestWxeBasePage
   protected Rubicon.Web.UI.Controls.MultiPage PagesMultiPage;
   protected Rubicon.Web.UI.Controls.TabStrip PagesTabStrip;
   protected System.Web.UI.WebControls.Button PostBackButton;
+  protected System.Web.UI.WebControls.Button ValidateButton;
+  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function
@@ -119,6 +121,7 @@ public class TestTabbedForm : TestWxeBasePage
 	{    
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+    this.ValidateButton.Click += new System.EventHandler(this.ValidateButton_Click);
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -154,6 +157,17 @@ public class TestTabbedForm : TestWxeBasePage
       control.DataSource.SaveValues (false);
 
     ExecuteNextStep();
+  }
+
+  private void ValidateButton_Click(object sender, System.EventArgs e)
+  {
+    foreach (UserControl control in _dataEditControls)
+    {
+      Rubicon.Web.UI.Controls.FormGridManager formGridManager = 
+          control.FindControl("FormGridManager") as Rubicon.Web.UI.Controls.FormGridManager;
+      if (formGridManager != null)
+        formGridManager.Validate();
+    }
   }
 }
 
