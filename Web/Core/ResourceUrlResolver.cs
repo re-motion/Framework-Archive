@@ -39,31 +39,6 @@ public sealed class ResourceUrlResolver
 
     return imageUrl;
   }
-
-  /// <summary> Not Supported. </summary>
-  /// <param name="control"> </param>
-  /// <param name="relativeUrl">  </param>
-  /// <returns> </returns>
-  [Obsolete]
-  public static string GetHelpUrl (Control control, string relativeUrl)
-  {
-    throw new NotSupportedException ();
-//
-//    if (control == null)
-//      return null;
-//
-//    IResourceUrlResolver helpUrlResolver = control as IResourceUrlResolver;
-//    
-//    if (helpUrlResolver == null)
-//      return ResourceUrlResolver.GetHelpUrl (control.Parent, relativeUrl);
-//    
-//    string helpUrl = helpUrlResolver.GetHelpUrl (relativeUrl);
-//
-//    if (helpUrl == null)
-//      return UrlResolverUtility.GetHelpUrl (control.Parent, relativeUrl);
-//
-//    return helpUrl;
-  }
 }
 
 }

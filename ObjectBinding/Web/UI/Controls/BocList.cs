@@ -5,13 +5,13 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Drawing.Design;
 using System.ComponentModel.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Web;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -23,13 +23,17 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private const string c_dataRowCheckBoxIDSuffix = "_CheckBox_";
   private const string c_headerRowCheckBoxIDSuffix = "_CheckBox_SelectAll";
 
-  private const string c_goToDisplayCurrentPage = "Seite {0} von {1}";
-  private const string c_goToFirstLabel = "|<<";
-  private const string c_goToLastLabel = ">>|";
-  private const string c_goToPreviousLabel = "<";
-  private const string c_goToNextLabel = ">";
-  private const string c_goToCommand = "GoTo";
-  private const string c_goToCommandFormatString = c_goToCommand + "={0}";
+  private const string c_moveDisplayCurrentPage = "Seite {0} von {1}";
+  private const string c_moveFirstIcon = "MoveFirst.gif";
+  private const string c_moveLastIcon = "MoveLast.gif";
+  private const string c_movePreviousIcon = "MovePrevious.gif";
+  private const string c_moveNextIcon = "MoveNext.gif";
+  private const string c_moveFirstInactiveIcon = "MoveFirstInactive.gif";
+  private const string c_moveLastInactiveIcon = "MoveLastInactive.gif";
+  private const string c_movePreviousInactiveIcon = "MovePreviousInactive.gif";
+  private const string c_moveNextInactiveIcon = "MoveNextInactive.gif";
+  private const string c_moveCommand = "Move";
+  private const string c_moveCommandFormatString = c_moveCommand + "={0}";
 
   private const string c_whiteSpace = "&nbsp;";
 
@@ -42,7 +46,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   // types
   
-  private enum GoToOption
+  private enum MoveOption
   {
     Undefined,
     First,
@@ -63,10 +67,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = null;
 
-  private LinkButton goToFirstButton = null;
-  private LinkButton goToLastButton = null;
-  private LinkButton goToPreviousButton = null;
-  private LinkButton goToNextButton = null;
+  private ImageButton moveFirstButton = null;
+  private ImageButton moveLastButton = null;
+  private ImageButton movePreviousButton = null;
+  private ImageButton moveNextButton = null;
 
   private IList _value = null;
 
@@ -109,7 +113,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   private Hashtable _checkBoxCheckedState = new Hashtable();
 
-  private GoToOption _goTo = GoToOption.Undefined;
+  private MoveOption _move = MoveOption.Undefined;
 
   // construction and disposing
 
@@ -131,10 +135,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     base.OnInit (e);
 
     _additionalColumnsList = new DropDownList();
-    goToFirstButton = new LinkButton();
-    goToLastButton = new LinkButton();
-    goToPreviousButton = new LinkButton();
-    goToNextButton = new LinkButton();
+    moveFirstButton = new ImageButton();
+    moveLastButton = new ImageButton();
+    movePreviousButton = new ImageButton();
+    moveNextButton = new ImageButton();
 
     _additionalColumnsList.ID = this.ID + "_ColumnConfigurationList";
     _additionalColumnsList.EnableViewState = true;
@@ -143,21 +147,17 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
     _additionalColumnsListStyle.AutoPostback = true;
 
-    goToFirstButton.Text = c_goToFirstLabel;
-    goToFirstButton.Click += new EventHandler (GoToFirstButton_Click);
-    Controls.Add (goToFirstButton);
+    moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
+    Controls.Add (moveFirstButton);
 
-    goToLastButton.Text = c_goToLastLabel;
-    goToLastButton.Click += new EventHandler (GoToLastButton_Click);
-    Controls.Add (goToLastButton);
+    moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
+    Controls.Add (moveLastButton);
 
-    goToPreviousButton.Text = c_goToPreviousLabel;
-    goToPreviousButton.Click += new EventHandler (GoToPreviousButton_Click);
-    Controls.Add (goToPreviousButton);
+    movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
+    Controls.Add (movePreviousButton);
 
-    goToNextButton.Text = c_goToNextLabel;
-    goToNextButton.Click += new EventHandler (GoToNextButton_Click);
-    Controls.Add (goToNextButton);
+    moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
+    Controls.Add (moveNextButton);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
@@ -196,27 +196,27 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       _currentPage = _currentRow / _pageSize.Value;
       _pageCount = (int) Math.Round ((double)Value.Count / _pageSize.Value + 0.5, 0);
 
-      switch (_goTo)
+      switch (_move)
       {
-        case GoToOption.First:
+        case MoveOption.First:
         {
           _currentPage = 0;
           _currentRow = 0;
           break;
         }
-        case GoToOption.Last:
+        case MoveOption.Last:
         {
           _currentPage = _pageCount - 1;
           _currentRow = _currentPage * _pageSize.Value;
           break;
         }
-        case GoToOption.Previous:
+        case MoveOption.Previous:
         {
           _currentPage--;
           _currentRow = _currentPage * _pageSize.Value;
           break;
         }
-        case GoToOption.Next:
+        case MoveOption.Next:
         {
           _currentPage++;
           _currentRow = _currentPage * _pageSize.Value;
@@ -287,27 +287,83 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     bool isFirstPage = _currentPage == 0;
     bool isLastPage = _currentPage + 1 >= _pageCount;
 
-    writer.Write (c_goToDisplayCurrentPage, _currentPage + 1, _pageCount);
+    writer.Write (c_moveDisplayCurrentPage, _currentPage + 1, _pageCount);
+    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+    
+    string imageUrl = null;
+
+    if (isFirstPage)
+      imageUrl = c_moveFirstInactiveIcon;
+    else
+      imageUrl = c_moveFirstIcon;      
+    imageUrl = ResourceUrlResolver.GetResourceUrl (
+      this, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isFirstPage)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+    }
+    else
+    {
+      moveFirstButton.RenderControl (writer);
+    }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     if (isFirstPage)
-      Controls.Remove (goToFirstButton);
-    goToFirstButton.RenderControl (writer);
-    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
-
+      imageUrl = c_movePreviousInactiveIcon;
+    else
+      imageUrl = c_movePreviousIcon;      
+    imageUrl = ResourceUrlResolver.GetResourceUrl (
+      this, typeof (BocList), ResourceType.Image, imageUrl);
     if (isFirstPage)
-      Controls.Remove (goToPreviousButton);
-    goToPreviousButton.RenderControl (writer);
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+    }
+    else
+    {
+      movePreviousButton.RenderControl (writer);
+    }
+
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     if (isLastPage)
-      Controls.Remove (goToNextButton);
-    goToNextButton.RenderControl (writer);
+      imageUrl = c_moveNextInactiveIcon;
+    else
+      imageUrl = c_moveNextIcon;      
+    imageUrl = ResourceUrlResolver.GetResourceUrl (
+      this, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isLastPage)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+    }
+    else
+    {
+      moveNextButton.RenderControl (writer);
+    }
+
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     if (isLastPage)
-      Controls.Remove (goToLastButton);
-    goToLastButton.RenderControl (writer);
+      imageUrl = c_moveLastInactiveIcon;
+    else
+      imageUrl = c_moveLastIcon;     
+    imageUrl = ResourceUrlResolver.GetResourceUrl (
+      this, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isLastPage)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+    }
+    else
+    {
+      moveLastButton.RenderControl (writer);
+    }
   }
 
   private void RenderTableOpeningTag (HtmlTextWriter writer)
@@ -468,11 +524,13 @@ public class BocList: BusinessObjectBoundModifiableWebControl
           if (iconPrototype != null)
           {
             writer.AddAttribute (HtmlTextWriterAttribute.Src, iconPrototype.Url);
+
             if (! iconPrototype.Width.IsEmpty && ! iconPrototype.Height.IsEmpty)
             {
               writer.AddAttribute (HtmlTextWriterAttribute.Width, iconPrototype.Width.ToString());
               writer.AddAttribute (HtmlTextWriterAttribute.Width, iconPrototype.Height.ToString());
             }
+            
             writer.RenderBeginTag (HtmlTextWriterTag.Img);
             writer.RenderEndTag();
             writer.Write (c_whiteSpace);
@@ -668,24 +726,24 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     SelectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
   }
 
-  private void GoToFirstButton_Click(object sender, EventArgs e)
+  private void MoveFirstButton_Click(object sender, ImageClickEventArgs e)
   {
-    _goTo = GoToOption.First;
+    _move = MoveOption.First;
   }
 
-  private void GoToLastButton_Click(object sender, EventArgs e)
+  private void MoveLastButton_Click(object sender, ImageClickEventArgs e)
   {
-    _goTo = GoToOption.Last;
+    _move = MoveOption.Last;
   }
   
-  private void GoToPreviousButton_Click(object sender, EventArgs e)
+  private void MovePreviousButton_Click(object sender, ImageClickEventArgs e)
   {
-    _goTo = GoToOption.Previous;
+    _move = MoveOption.Previous;
   }
   
-  private void GoToNextButton_Click(object sender, EventArgs e)
+  private void MoveNextButton_Click(object sender, ImageClickEventArgs e)
   {
-    _goTo = GoToOption.Next;
+    _move = MoveOption.Next;
   }
 
   /// <summary>

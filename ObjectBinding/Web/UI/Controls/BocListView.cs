@@ -67,6 +67,7 @@ public class BocColumnDefinitionSet
 
   /// <summary> The displayed name of the set. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string Title
   {
@@ -79,6 +80,7 @@ public class BocColumnDefinitionSet
   [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
   [ListBindable (false)]
   [MergableProperty (false)]
+  [Category ("Data")]
   [DefaultValue((string) null)]
   public BocColumnDefinitionCollection ColumnDefinitionCollection
   {

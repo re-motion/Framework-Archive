@@ -126,6 +126,7 @@ public class BocItemCommand
   ///   <see cref="BocItemCommand"/>.
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
   [Description ("The type of the command.")]
   //  No default value
   public BocItemCommandType Type
@@ -137,6 +138,7 @@ public class BocItemCommand
   /// <summary> The hyperlink reference; used for <see cref="BocItemCommandType.Href"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
+  [Category ("Type: Href")]
   [DefaultValue("")]
   public string Href 
   {
@@ -156,6 +158,7 @@ public class BocItemCommand
   /// <summary> The hyperlink target; used for <see cref="BocItemCommandType.Href"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The target frame of the command. Leave it blank for no target.")]
+  [Category ("Type: Href")]
   [DefaultValue("")]
   public string Target 
   { 
@@ -178,6 +181,7 @@ public class BocItemCommand
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
+  [Category ("Behavior")]
   [DefaultValue (BocItemCommandShow.Always)]
   public BocItemCommandShow Show
   {

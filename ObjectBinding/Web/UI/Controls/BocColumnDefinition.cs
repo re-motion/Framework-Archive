@@ -73,6 +73,7 @@ public abstract class BocColumnDefinition
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The assigned value of the column header, can be empty.")]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public virtual string ColumnHeader
   {
@@ -82,6 +83,7 @@ public abstract class BocColumnDefinition
 
   /// <summary> THe width of the column. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Layout")]
   [DefaultValue(typeof (Unit), "")]
   public Unit Width 
   { 
@@ -159,6 +161,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Action")]
   public BocItemCommand Command
   {
     get { return _command; }
@@ -167,6 +170,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 
   /// <summary> The text symbolizing the command in the rendered page. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string Label
   {
@@ -176,6 +180,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
 
   /// <summary> The image symbolizing the command in the rendered page. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string IconPath 
   {
@@ -284,7 +289,8 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 
   /// <summary> The string representation of the <see cref="PropertyPath"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [DefaultValue("")]
+  [Category ("Data")]
+  //  No default value
   public string PropertyPathIdentifier
   { 
     get
@@ -405,6 +411,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Format")]
   [DefaultValue("")]
   public string FormatString
   {
@@ -418,7 +425,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// </summary>
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
   [ListBindable (false)]
-  [DefaultValue ((string) null)]
+  [Category ("Data")]
   public PropertyPathBindingCollection PropertyPathBindings
   {
     get 
@@ -431,6 +438,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   The text displayed in the column header. Must not be empty or <see langword="null"/>.
   /// </summary>
   [Description ("The assigned value of the column header, must not be empty or null.")]
+  [DefaultValue ("")]
   public override string ColumnHeader
   {
     get { return base.ColumnHeader; }
