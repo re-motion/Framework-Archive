@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
+using Rubicon.Data.DomainObjects.DataManagement;
+
 namespace Rubicon.Data.DomainObjects
 {
 public class PropertyValueCollection : CollectionBase
@@ -14,6 +16,8 @@ public class PropertyValueCollection : CollectionBase
 
   public event PropertyChangingEventHandler PropertyChanging;
   public event PropertyChangedEventHandler PropertyChanged;
+
+  private bool _isDiscarded = false;
 
   // construction and disposing
 
@@ -48,6 +52,14 @@ public class PropertyValueCollection : CollectionBase
       PropertyChanged (this, args);
   }
 
+  internal void Discard ()
+  {
+    foreach (PropertyValue propertyValue in this)
+      propertyValue.Discard ();
+
+    _isDiscarded = true;
+  }
+
   private void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
   {
     PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs (
@@ -70,11 +82,18 @@ public class PropertyValueCollection : CollectionBase
     return new ArgumentException (string.Format (message, args), parameterName);
   }
 
+  private void CheckDiscarded ()
+  {
+    if (_isDiscarded)
+      throw new ObjectDiscardedException ();
+  }
+
   #region Standard implementation for "add-only" collections
 
   public bool Contains (PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+    CheckDiscarded ();
 
     return Contains (propertyValue.Name);
   }
@@ -82,12 +101,18 @@ public class PropertyValueCollection : CollectionBase
   public bool Contains (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
     return base.ContainsKey (propertyName);
   }
 
   public PropertyValue this [int index]  
   {
-    get { return (PropertyValue) GetObject (index); }
+    get 
+    { 
+      CheckDiscarded ();
+      return (PropertyValue) GetObject (index); 
+    }
   }
 
   public PropertyValue this [string propertyName]  
@@ -95,6 +120,8 @@ public class PropertyValueCollection : CollectionBase
     get 
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      CheckDiscarded ();
+
       if (!ContainsKey (propertyName))
       {
         throw CreateArgumentException ("Property '{0}' does not exist.", "propertyName", propertyName);
@@ -107,6 +134,7 @@ public class PropertyValueCollection : CollectionBase
   public void Add (PropertyValue value)  
   {
     ArgumentUtility.CheckNotNull ("value", value);
+    CheckDiscarded ();
 
     if (Contains (value.Name))
       throw CreateArgumentException ("Property '{0}' already exists in collection.", "value", value.Name);
@@ -117,5 +145,53 @@ public class PropertyValueCollection : CollectionBase
   }
 
   #endregion
+
+  public override void CopyTo (Array array, int index)
+  {
+    CheckDiscarded ();
+    base.CopyTo (array, index);
+  }
+
+  public override int Count
+  {
+    get
+    {
+      CheckDiscarded ();
+      return base.Count;
+    }
+  }
+
+  public override IEnumerator GetEnumerator ()
+  {
+    CheckDiscarded ();
+    return base.GetEnumerator ();
+  }
+
+  public override bool IsReadOnly
+  {
+    get
+    {
+      CheckDiscarded ();
+      return base.IsReadOnly;
+    }
+  }
+
+  public override bool IsSynchronized
+  {
+    get
+    {
+      CheckDiscarded ();
+      return base.IsSynchronized;
+    }
+  }
+
+  public override object SyncRoot
+  {
+    get
+    {
+      CheckDiscarded ();
+      return base.SyncRoot;
+    }
+  }
 }
 }
