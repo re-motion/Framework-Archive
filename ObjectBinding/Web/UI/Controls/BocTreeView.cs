@@ -17,10 +17,17 @@ using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Globalization;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using Rubicon.Web;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <exception cref="InvalidOperationException">
+///   Thrown if <see cref="EnableTreeNodeCaching"/> is <see langword="true"/> and a tree node's 
+///   <see cref="IBusinessObjectWithIdentity"/> or <see cref="IBusinessObjectReferenceProperty"/> could not restored
+///   from the underlying object model.
+/// </exception>
+[DefaultEvent ("Click")]
 public class BocTreeView: BusinessObjectBoundWebControl
 {
   // constants
@@ -35,19 +42,17 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   // member fields
   private WebTreeView _treeView;
-  private ImageButton _refreshButton;
   
   /// <summary> The <see cref="IBusinessObject"/> displayed by the <see cref="BocTreeView"/>. </summary>
   private IList _value = null;
   private bool _enableTreeNodeCaching = true;
   private Pair[] _nodesViewState;
-  private bool _isRefreshButtonClicked = false;
+  private bool _isRebuildRequired = false;
 
   // construction and destruction
   public BocTreeView()
   {
     _treeView = new WebTreeView (this);
-    _refreshButton = new ImageButton();
   }
 
   // methods and properties
@@ -60,11 +65,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
     _treeView.SetInitializeRootTreeNodesDelegate (new InitializeRootWebTreeNodes (InitializeRootWebTreeNodes));
     _treeView.EnableTreeNodeViewState = ! _enableTreeNodeCaching;
     Controls.Add (_treeView);
-
-    _refreshButton.ID = ID + "_Boc_RefreshButton";
-    _refreshButton.ImageUrl = "...";
-    _refreshButton.Click += new ImageClickEventHandler(RefreshButton_Click);
-    Controls.Add (_refreshButton);
   }
 
   /// <summary> Handles the tree view's <see cref="WebTreeView.Click"/> event. </summary>
@@ -76,17 +76,36 @@ public class BocTreeView: BusinessObjectBoundWebControl
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   protected virtual void OnClick (WebTreeNode node, string[] path)
   {
-    WebTreeNodeClickEventHandler handler = (WebTreeNodeClickEventHandler) Events[s_clickEvent];
+    BocTreeNodeClickEventHandler handler = (BocTreeNodeClickEventHandler) Events[s_clickEvent];
     if (handler != null)
     {
-      WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs (node, path);
+      ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+      BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
+      BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
+    
+      BocTreeNodeClickEventArgs e = null;
+      if (businessObjectNode != null)
+      {
+        EnsureBusinessObjectTreeNode (businessObjectNode);
+        e = new BocTreeNodeClickEventArgs (businessObjectNode, path);
+      }
+      else if (propertyNode != null)
+      {
+        EnsurePropertyTreeNode (propertyNode);
+        e = new BocTreeNodeClickEventArgs (propertyNode, path);
+      }
+      
       handler (this, e);
     }
   }
 
-  private void RefreshButton_Click(object sender, ImageClickEventArgs e)
+  /// <summary>
+  ///   Sets the tree view to be rebuilded with the current business objects. 
+  ///   Must be called before or during the <c>PostBackEvent</c> to effect the tree view.
+  /// </summary>
+  public void InvalidateTreeNodes()
   {
-    _isRefreshButtonClicked = true;
+    _isRebuildRequired = true;
   }
 
   /// <summary>
@@ -115,8 +134,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     _treeView.Width = Width;
     _treeView.Height = Height;
-
-    _refreshButton.Visible = _enableTreeNodeCaching;
   }
 
   private void InitializeRootWebTreeNodes()
@@ -127,7 +144,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
     else
     {
-      if (_isRefreshButtonClicked)
+      if (_isRebuildRequired)
         RebuildTreeNodes();
       else
         LoadNodesViewStateRecursive (_nodesViewState, _treeView.Nodes);
@@ -220,7 +237,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   private void CreateAppendPropertyNodeChildren (BusinessObjectPropertyTreeNode propertyNode)
   {
     if (propertyNode.ParentNode == null)
-      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
+      throw new ArgumentException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
 
     BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
     
@@ -626,7 +643,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   /// <summary> Occurs when a node is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a node is clicked.")]
-  public event WebTreeNodeClickEventHandler Click
+  public event BocTreeNodeClickEventHandler Click
   {
     add { Events.AddHandler (s_clickEvent, value); }
     remove { Events.RemoveHandler (s_clickEvent, value); }
@@ -664,6 +681,25 @@ public class BusinessObjectPropertyTreeNodeInfo
     set { _property = value; }
   }
 
+}
+
+/// <summary> Represents the method that handles the <c>Click</c> event raised when clicking on a tree node. </summary>
+public delegate void BocTreeNodeClickEventHandler (object sender, BocTreeNodeClickEventArgs e);
+
+/// <summary> Provides data for the <c>Click</c> event. </summary>
+public class BocTreeNodeClickEventArgs: WebTreeNodeClickEventArgs
+{
+  /// <summary> Initializes a new instance. </summary>
+  public BocTreeNodeClickEventArgs (BusinessObjectTreeNode node, string[] path)
+    : base (node, path)
+  {
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocTreeNodeClickEventArgs (BusinessObjectPropertyTreeNode node, string[] path)
+    : base (node, path)
+  {
+  }
 }
 
 }

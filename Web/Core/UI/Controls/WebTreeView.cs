@@ -13,6 +13,7 @@ namespace Rubicon.Web.UI.Controls
 
 /// <summary> A tree view. </summary>
 [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
+[DefaultEvent ("Click")]
 public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 {
   // constants

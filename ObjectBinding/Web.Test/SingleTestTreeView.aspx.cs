@@ -111,12 +111,18 @@ public class SingleTestTreeView : SingleBocTestBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.PersonTreeView.Click += new Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventHandler(this.PersonTreeView_Click);
     this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 
   private void TreeView_Click(object sender, Rubicon.Web.UI.Controls.WebTreeNodeClickEventArgs e)
+  {
+    TreeViewLabel.Text = "Node = " + e.Node.Text;
+  }
+
+  private void PersonTreeView_Click(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventArgs e)
   {
     TreeViewLabel.Text = "Node = " + e.Node.Text;
   }
