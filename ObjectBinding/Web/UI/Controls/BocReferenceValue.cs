@@ -78,7 +78,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private Style _commonStyle = new Style();
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
-  private Style _dropDownListStyle = new Style();
+  private DropDownListStyle _dropDownListStyle = new DropDownListStyle();
 
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
@@ -527,7 +527,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (innerControlWidth != Unit.Empty)
         _dropDownList.Width = innerControlWidth;
       _dropDownList.Height = Height;
-      _dropDownList.ApplyStyle (_dropDownListStyle);
+      _dropDownListStyle.ApplyStyle (_dropDownList);
 
     }
 
