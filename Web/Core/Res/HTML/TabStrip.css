@@ -7,45 +7,52 @@ div.tabStrip
 div.tabStripTabsPane
 {
 	border-bottom: solid 1px #2254b1;	
-	padding: 5pt 2pt 0pt 2pt;
+}
+
+div.tabStripTabsPane table
+{
+  margin: 5pt 0px -1px 0px;
 }
 
 /* Applied to a tab. */
-span.tabStripTab
+td.tabStripTab
 {
-}
-
-/* Applied to a tab if it is selected. */
-span.tabStripTabSelected
-{
-}
-
-/* Applied to a tab if it is a separator. */
-span.tabStripSeparator
-{
-  width: 10pt;
-	cursor: default;
-}
-
-span.tabStripTab a
-{
-	border-left: solid 1px #2254b1;
 	border-top: solid 1px #2254b1;
-	border-right: solid 1px #2254b1;	
-  padding: 1px 5px 0px 5px;
+  border-bottom: solid 1px #2254b1;	
+  padding: 1pt 5pt 1pt 5pt;
 	background-color: #e1ecfc;
 	cursor: hand;
 }
 
-span.tabStripTab a:hover
+/* Applied to a tab if it is selected. */
+td.tabStripTabSelected
 {
-	background-color: #fee197;	
+	border-top: solid 1px #2254b1;
+  border-bottom: solid 1px white;	
+  padding: 1pt 5pt 1pt 5pt;
+	cursor: default;
 }
 
-span.tabStripTabSelected a
+td.tabStripTabLeftBorder,
+td.tabStripTabLeftBorderSelected
 {
-	background-color: Highlight;
-  color: HighlightText;
-  padding: 2px 6px 1px 6px;
+  width: 1px;
+  background-color: #2254b1;
+	cursor: hand;
+}
+
+td.tabStripTabRightBorder,
+td.tabStripTabRightBorderSelected
+{
+  width: 1px;
+  background-color: #2254b1;
+	cursor: hand;
+}
+
+/* Applied to a tab if it is a separator. */
+td.tabStripSeparator
+{
+  width: 10pt;
+  border-bottom: solid 1px #2254b1;	
 	cursor: default;
 }
