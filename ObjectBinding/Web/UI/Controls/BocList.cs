@@ -279,6 +279,7 @@ public class BocList:
   {
     _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
     _optionsMenu.ID = this.ID + c_optionsMenuIDSuffix;
+    _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
 
     _moveFirstButton = new ImageButton();
@@ -2762,6 +2763,13 @@ public enum SortingDirection
   Ascending,
   /// <summary> Sort descending. </summary>
   Descending
+}
+
+public enum ListMenuDirection
+{
+  NoInLine,
+  ItemsInLine,
+  GroupsInLine
 }
 
 }

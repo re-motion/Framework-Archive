@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -15,54 +15,54 @@
 <form id=Form method=post runat="server">
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td></td>
-    <td><obc:boclist id=BocList runat="server" propertyidentifier="Children" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td></TD>
+    <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children" enableselection="True">
 <optionsmenuitems>
-<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-Parameters="Test'Test" WxeFunctionCommand-TypeName="MyType"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="" Text="Event" Category="">
+<obc:BocMenuItem Text="Event">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:bocmenuitem ItemID="Open" Text="&#214;ffnen" Category="Object">
+<obc:BocMenuItem ItemID="Open" Text="&#214;ffnen" Category="Object" RequiredSelection="ExactlyOne">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
-<obc:bocmenuitem ItemID="Copy" Icon="Images/CopyItem.gif" Text="Kopieren" Category="Edit">
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="Copy" Icon="Images/CopyItem.gif" Text="Kopieren" Category="Edit" IconDisabled="Images/CopyItemDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
-<obc:bocmenuitem ItemID="Cut" Text="Ausschneiden" Category="Edit">
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="Cut" Text="Ausschneiden" Category="Edit" RequiredSelection="OneOrMore">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
-<obc:bocmenuitem ItemID="Paste" Text="Einf&#252;gen" Category="Edit">
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="Paste" Text="Einf&#252;gen" Category="Edit">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
-<obc:bocmenuitem ItemID="Duplicate" Text="Duplizieren" Category="Edit">
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="Duplicate" Text="Duplizieren" Category="Edit" RequiredSelection="ExactlyOne">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
-<obc:bocmenuitem ItemID="Delete" Icon="Images/DeleteItem.gif" Text="L&#246;schen" Category="Edit">
+</obc:BocMenuItem>
+<obc:BocMenuItem ItemID="Delete" Icon="Images/DeleteItem.gif" Text="L&#246;schen" Category="Edit" RequiredSelection="OneOrMore">
 <persistedcommand>
-<obc:bocmenuitemcommand></obc:bocmenuitemcommand>
+<obc:BocMenuItemCommand Type="Href" HrefCommand-Href="javascript:DoSomething();"></obc:BocMenuItemCommand>
 </PersistedCommand>
-</obc:bocmenuitem>
+</obc:BocMenuItem>
 </OptionsMenuItems>
 
 <fixedcolumns>
@@ -89,29 +89,29 @@
 </FixedColumns>
 
 <listmenuitems>
-<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event" Category="">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
 </ListMenuItems>
-</obc:boclist></td></tr></table>
+</obc:boclist></TD></TR></TABLE>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
-<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
-<p><asp:label id=EventLabel runat="server">###</asp:label></p></form>
+TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
+<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></P>
+<p><asp:label id=EventLabel runat="server">###</asp:label></P></FORM>
 
   </body>
 </html>

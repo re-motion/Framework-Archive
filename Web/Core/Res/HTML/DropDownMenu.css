@@ -35,6 +35,9 @@ div.dropDownMenuHeadFocus
 /*  */
 div.dropDownMenuPopUp
 {
+  position: absolute;
+  top: -1;
+  left: 0px;
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
@@ -64,6 +67,16 @@ div.dropDownMenuItemFocus
 	border-style: solid;
 	background-color: #fee197;	
   cursor: default;
+}
+
+div.dropDownMenuItemDisabled
+{
+	margin: 1px;
+	padding: 2px;
+	vertical-align: middle;	
+	white-space: nowrap;
+  color: gray;
+	cursor: default;
 }
 
 div.dropDownMenuItem a,
@@ -103,7 +116,6 @@ div.dropDownMenuTextPaneSeparator
   display: inline;
 	margin-left: 32px;
 	margin-right: 0px;
-	width: 100%;
   font-size: 1px;
   line-height: 1px;
   height: 1px;

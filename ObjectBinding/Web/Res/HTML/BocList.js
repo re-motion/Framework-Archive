@@ -254,3 +254,12 @@ function BocList_OnCommandClick()
 {
   _bocList_isCommandClick = true;
 }
+
+//  Returns the number of rows selected for the specified BocList
+function BocList_GetSelectionCount (bocListID)
+{
+  var selectionCount = _bocList_selectedRowsLength[bocListID];
+  if (selectionCount == null)
+    return 0;
+  return selectionCount;
+}
