@@ -28,8 +28,16 @@ public class WxeForm: HtmlForm
     Control parent = htmlForm.Parent;
     if (parent != null)
     {
-      parent.Controls.Remove (htmlForm);
-      parent.Controls.Add (newForm);
+      int htmlFormIndex = parent.Controls.IndexOf (htmlForm);
+      if (htmlFormIndex >= 0)
+      {
+        parent.Controls.RemoveAt (htmlFormIndex);
+        parent.Controls.AddAt (htmlFormIndex, newForm);
+      }
+      else
+      {
+        parent.Controls.Add (newForm);
+      }
     }
 
     newForm.ID = htmlForm.ID;
