@@ -99,15 +99,15 @@ public class RelationDefinitionTest
   [Test]
   [ExpectedException (typeof (MappingException), 
       "Relation 'OrderToOrderItem' has no association with class 'Customer' and property 'Orders'.")]
-  public void GetMandatoryOppositeRelationEndPointDefinitionWithNotAssociatedRelationDefintionID ()
+  public void GetMandatoryOppositeRelationEndPointDefinitionWithNotAssociatedRelationDefinitionID ()
   {
     RelationDefinition orderToOrderItem = TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]; 
     
-    IRelationEndPointDefinition wrongEndPointDefintion = 
+    IRelationEndPointDefinition wrongEndPointDefinition = 
         orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (
             _customerClass.GetMandatoryRelationEndPointDefinition ("Orders"));
 
-    orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefintion);
+    orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefinition);
   }
 }
 }
