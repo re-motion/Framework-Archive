@@ -8,6 +8,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//Documentation: All exceptions checked, except TODOs
+
 //TODO documentation: Write summary for class
 public class ClientTransaction
 {
@@ -65,6 +67,7 @@ public class ClientTransaction
   /// <summary>
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
+  //todo documentation: exceptions
   public virtual void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
@@ -79,24 +82,24 @@ public class ClientTransaction
   /// <summary>
   /// Performs a rollback of all changes withing the <b>ClientTransaction</b>.
   /// </summary>
+  //todo documentation: exceptions
   public virtual void Rollback ()
   {
     _dataManager.Rollback ();
   }
 
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+//todo documentation: all exceptions from other overload
   public virtual DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
   }
 
-//TODO documentation: What happens if no object is found
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -104,6 +107,8 @@ public class ClientTransaction
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
+  // Todo documentation: all exceptions from ClientTransaction.LoadObject
   public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -139,56 +144,52 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related object of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.ObjectEndPoint"/>.</param>
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   internal protected virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related object of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.ObjectEndPoint"/>.</param>
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the related objects of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Gets the original related objects of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -201,6 +202,11 @@ public class ClientTransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> referring the <see cref="DataManagement.RelationEndPoint"/> that should relate to <i>newRelatedObject</i>.</param>
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException">
+  ///   <para><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></para>
+  ///   <para><i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.</para>
+  ///   <para><i>newRelatedObject</i> has been deleted.</para>
+  /// </exception>
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -227,6 +233,7 @@ public class ClientTransaction
   /// <param name="id">An <see cref="ObjectID"/> object indicating which <see cref="DomainObject"/> to load.</param>
   /// <returns>The <see cref="DomainObject"/> object that was loaded.</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  //todo documentation: exception of methods called
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -244,7 +251,6 @@ public class ClientTransaction
     }
   }
 
-//TODO documentation: check if the statement about the invalidCastOperation is right
   /// <summary>
   /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
@@ -255,6 +261,13 @@ public class ClientTransaction
   /// <returns>The related <see cref="DomainObject"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
+  /// <exception cref="Persistence.PersistenceException">
+  ///   <para>The related object could not be loaded, but is mandatory.</para>
+  ///   <para>The relation refers to non-existing object.</para>
+  ///   <para><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></para>
+  /// </exception>
+  // Todo documentation: all exceptions from ClientTransaction.LoadObject
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -288,6 +301,7 @@ public class ClientTransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.CollectionEndPoint"/></exception>
+  //todo documentation: exceptions of called methods
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
