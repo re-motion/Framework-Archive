@@ -281,14 +281,21 @@ public class ClassDefinition
     if (baseClass == this)
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
-
-    foreach (PropertyDefinition propertyDefinition in baseClass.GetAllPropertyDefinitions ())
+    PropertyDefinitionCollection basePropertyDefinitions = baseClass.GetAllPropertyDefinitions ();
+    foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
     {
-      if (_propertyDefinitions.Contains (propertyDefinition.PropertyName))
+      if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
       {
         throw CreateMappingException ("Class '{0}' cannot be set as base class for class"
             + " '{1}', because the property '{2}' is defined in both classes.",
             baseClass.ID, this.ID, propertyDefinition.PropertyName);
+      }
+
+      if (basePropertyDefinitions.ContainsColumnName (propertyDefinition.ColumnName))
+      {
+        throw CreateMappingException (
+            "Property '{0}' of class '{1}' inherits a property which already defines the column '{2}'.",
+            propertyDefinition.PropertyName, this.ID, propertyDefinition.ColumnName);
       }
     }
 
