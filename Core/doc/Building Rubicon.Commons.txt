@@ -2,6 +2,8 @@
   * Installation NAnt Version 0.8.4: \\at-vie-dc-02\Install\NAnt
   * Rubicon.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
 	  NAnt-bin Verzeichnis (C:\Program Files\NAnt\bin) kopieren.
+  * NAnt.exe.config im NAnt-bin Verzeichnis: defualt .net Framework auf 1.1 setzen
+    Zeile 21: <platform name="win32" default="net-1.1">
   * xmldoc.xslt von SourceSafe rubicon\global\xslt holen
   
 2. Build-Prozess
