@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
+
+using Rubicon.Findit.Globalization.Classes;
 
 namespace Rubicon.Findit.Client.Controls
 {
@@ -11,7 +14,7 @@ namespace Rubicon.Findit.Client.Controls
 /// <remarks>
 /// Can be used for accessing database IDs of list entries.
 /// </remarks>
-public class DataDropDownList: DropDownList
+public class DataDropDownList: DropDownList, IResourceDispatchTarget
 {
   // types
 
@@ -31,6 +34,37 @@ public class DataDropDownList: DropDownList
   }
 
   // methods and properties
+
+  public void Dispatch (IDictionary values)
+  {
+    foreach (DictionaryEntry entry in values)
+    {
+      string key = entry.Key.ToString ();
+      int posColon = key.IndexOf (":");
+      if (posColon >=0)
+      {
+        string value = key.Substring (0, posColon);
+        string text = entry.Value.ToString ();        
+
+        ListItem item = GetListItemByValue (value);
+        if (item != null)
+          item.Text = text;
+      }
+    }
+  }
+
+  public ListItem GetListItemByValue (string value)
+  {
+    foreach (ListItem item in this.Items)
+    {
+      if (item.Value == value)
+      {
+        return item;
+      }
+    }
+
+    return null;
+  }
 
   /// <summary>
   /// Specifies whether the user must select a valid item in this list.
@@ -167,6 +201,6 @@ public class DataDropDownList: DropDownList
   {
     this.Items.Insert (0, new ListItem (string.Empty, "-1"));
   }
-}
+  }
 
 }
