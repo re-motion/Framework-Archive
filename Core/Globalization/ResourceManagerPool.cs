@@ -7,11 +7,13 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
+
 using Rubicon.Utilities;
 
 namespace Rubicon.Globalization
 {
 
+[Obsolete ("Use MultiLingualResourceAttribute instead.")]
 public sealed class ResourceManagerPool
 {
   // static members
@@ -33,13 +35,20 @@ public sealed class ResourceManagerPool
     } 
 
     definingType = type;
-    resourceName = resourceAttributes[0].ResourceName;
+        
+    resourceName = "";
+
+    foreach (MultiLingualResourcesAttribute resourceAttribute in resourceAttributes)
+    {
+      resourceName = resourceAttribute.ResourceName;
+      break;
+    }
   }
 
   private static MultiLingualResourcesAttribute[] GetResourceAttributes (Type type)
   {
     return (MultiLingualResourcesAttribute[]) 
-        type.GetCustomAttributes (typeof (MultiLingualResourcesAttribute), false);
+      type.GetCustomAttributes (typeof (MultiLingualResourcesAttribute), false);
   }
 
   public static bool ExistsResource (Type objectTypeToGetResourceFor)
@@ -171,41 +180,6 @@ public sealed class ResourceManagerPool
   // construction and disposal
 
   private ResourceManagerPool()
-  {
-  }
-}
-
-[AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class MultiLingualResourcesAttribute: Attribute
-{
-  private string _resourceName;
-
-  public MultiLingualResourcesAttribute (string resourceName)
-  {
-    _resourceName = resourceName;
-  }
-
-  public string ResourceName 
-  {
-    get { return _resourceName; }
-  }
-}
-
-[Serializable]
-public class ResourceException: Exception
-{
-  public ResourceException (string message)
-    : base (message)
-  {
-  }
-
-  public ResourceException (string message, Exception innerException)
-    : base (message, innerException)
-  {
-  }
-
-  public ResourceException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
   {
   }
 }
