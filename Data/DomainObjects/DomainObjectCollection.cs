@@ -147,10 +147,20 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Occurs before an object is removed to the collection.
   /// </summary>
+  /// <remarks>
+  /// This event is not raised if the <see cref="DomainObject"/> holding the <see cref="DomainObjectCollection"/> is being deleted. 
+  /// Either subscribe to the <see cref="DomainObject.Deleting"/> event or override the <see cref="OnDeleting"/> method to implement 
+  /// business logic handling this situation.
+  /// </remarks>
   public event DomainObjectCollectionChangingEventHandler Removing;
   /// <summary>
   /// Occurs after an object is removed to the collection.
   /// </summary>
+  /// <remarks>
+  /// This event is not raised if the <see cref="DomainObject"/> holding the <see cref="DomainObjectCollection"/> has been deleted. 
+  /// Either subscribe to the <see cref="DomainObject.Deleted"/> event or override the <see cref="OnDeleted"/> method to implement 
+  /// business logic handling this situation.
+  /// </remarks>
   public event DomainObjectCollectionChangedEventHandler Removed;
 
   private Type _requiredItemType;
@@ -700,7 +710,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     OnAdding (new DomainObjectCollectionChangingEventArgs (domainObject));
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Performs a rollback of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <param name="originalDomainObjects">A <see cref="DomainObjectCollection"/> containing the original items of the collection.</param>
   internal protected virtual void Rollback (DomainObjectCollection originalDomainObjects)
   {
     ArgumentUtility.CheckNotNull ("originalDomainObjects", originalDomainObjects);
@@ -708,7 +721,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     ReplaceItems (originalDomainObjects);
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Performs a commit of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection.</param>
   internal protected virtual void Commit (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
@@ -716,7 +732,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     ReplaceItems (domainObjects);
   }
 
-  // TODO documentation:
+  /// <summary>
+  /// Replaces the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection.</param>
   protected virtual void ReplaceItems (DomainObjectCollection domainObjects)
   {
     bool isReadOnly = IsReadOnly;
