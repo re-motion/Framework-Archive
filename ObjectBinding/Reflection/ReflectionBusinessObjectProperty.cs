@@ -34,18 +34,18 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
         return new ReflectionBusinessObjectDateProperty (propertyInfo, itemType, isList, isNullableType);
     }
 
-    if (propertyInfo.PropertyType == typeof (string) || propertyInfo.PropertyType == typeof (string[]))
+    if (itemType == typeof (string))
       return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
-    else if (itemType == typeof (int) || propertyInfo.PropertyType == typeof (int[]))
+    else if (itemType == typeof (int))
       return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
-    else if (itemType == typeof (bool) || propertyInfo.PropertyType == typeof (bool[]))
+    else if (itemType == typeof (bool))
       return new ReflectionBusinessObjectBooleanProperty (propertyInfo, itemType, isList, isNullableType);
-    else if (propertyInfo.PropertyType == typeof (DateTime) || propertyInfo.PropertyType == typeof (DateTime[]))
+    else if (itemType == typeof (DateTime))
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
-    else if (propertyInfo.PropertyType.IsEnum)
+    else if (itemType.IsEnum)
       return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, isList);
-    else if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (propertyInfo.PropertyType))
-      return new ReflectionBusinessObjectRefernceProperty (propertyInfo, itemType, isList);
+    else if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (itemType))
+      return new ReflectionBusinessObjectReferenceProperty (propertyInfo, itemType, isList);
     else
       return new ReflectionBusinessObjectProperty (propertyInfo, itemType, isList);
   }
@@ -187,17 +187,17 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNull
   }
 }
 
-public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectBooleanProperty
+public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
 {
   public ReflectionBusinessObjectBooleanProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
     : base (propertyInfo, itemType, isList, isNullable)
   {
   }
 
-  public bool AllowNegative
-  {
-    get { return false; }
-  }
+//  public bool AllowNegative
+//  {
+//    get { return false; }
+//  }
 
   protected internal override object FromInternalType (object internalValue)
   {
@@ -213,6 +213,26 @@ public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNu
       return NaBoolean.FromBoxedBoolean (publicValue);
     else
       return publicValue;
+  }
+
+  public IEnumerationValueInfo[] GetEnabledValues()
+  {
+    return BooleanToEnumPropertyConverter.GetValues ();
+  }
+
+  public IEnumerationValueInfo[] GetAllValues()
+  {
+    return BooleanToEnumPropertyConverter.GetValues ();
+  }
+
+  public IEnumerationValueInfo GetValueInfoByValue (object value)
+  {
+    return BooleanToEnumPropertyConverter.GetValueInfoByValue (value);
+  }
+
+  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+  {
+    return BooleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
   }
 }
 
@@ -353,9 +373,9 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
 
 }
 
-public class ReflectionBusinessObjectRefernceProperty: ReflectionBusinessObjectProperty, IBusinessObjectReferenceProperty
+public class ReflectionBusinessObjectReferenceProperty: ReflectionBusinessObjectProperty, IBusinessObjectReferenceProperty
 {
-  public ReflectionBusinessObjectRefernceProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
+  public ReflectionBusinessObjectReferenceProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
     : base (propertyInfo, itemType, isList)
   {
   }

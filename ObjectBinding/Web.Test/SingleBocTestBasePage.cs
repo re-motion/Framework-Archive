@@ -20,8 +20,8 @@ namespace OBWTest
 public class WebFormBase:
     Page, 
     IControl,
-    IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
-    IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
+    IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
+    // IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
@@ -49,7 +49,7 @@ public class WebFormBase:
     base.OnPreRender (e);
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this);
+    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
   }
 
   public virtual IResourceManager GetResourceManager()
@@ -68,13 +68,13 @@ public class WebFormBase:
     return (IResourceManager) s_chachedResourceManagers[type];
   }
 
-  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
-  {
-    if (ControlHelper.IsDesignMode (this, this.Context))
-      return resourceType.Name + "/" + relativeUrl;
-    else
-      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
-  }
+//  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
+//  {
+//    if (ControlHelper.IsDesignMode (this, this.Context))
+//      return resourceType.Name + "/" + relativeUrl;
+//    else
+//      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
+//  }
 }
 
 }

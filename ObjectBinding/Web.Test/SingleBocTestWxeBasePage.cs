@@ -19,8 +19,8 @@ namespace OBWTest
 [MultiLingualResources ("OBWTest.Globalization.WebFormBase")]
 public class WxeWebFormBase:
     WxePage, 
-    IObjectWithResources, //  Provides the WebForm's ResourceManager via GetResourceManager() 
-    IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
+    IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
+    // IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
@@ -59,7 +59,7 @@ public class WxeWebFormBase:
     base.OnPreRender (e);
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this);
+    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
 
     LiteralControl stack = new LiteralControl();
 
@@ -90,13 +90,13 @@ public class WxeWebFormBase:
     return (IResourceManager) s_chachedResourceManagers[type];
   }
 
-  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
-  {
-    if (ControlHelper.IsDesignMode (this, this.Context))
-      return resourceType.Name + "/" + relativeUrl;
-    else
-      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
-  }
+//  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
+//  {
+//    if (ControlHelper.IsDesignMode (this, this.Context))
+//      return resourceType.Name + "/" + relativeUrl;
+//    else
+//      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
+//  }
 
   private void NextButton_Click(object sender, System.EventArgs e)
   {

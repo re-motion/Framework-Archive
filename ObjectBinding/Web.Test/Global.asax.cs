@@ -9,7 +9,7 @@ using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web;
 namespace OBWTest 
 {
-public class Global : System.Web.HttpApplication, IResourceUrlResolver
+public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 {
 	/// <summary>
 	/// Required designer variable.
@@ -23,10 +23,10 @@ public class Global : System.Web.HttpApplication, IResourceUrlResolver
 		InitializeComponent();
 	}	
 	
-  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
-  {
-    return this.Request.ApplicationPath + "/" + resourceType.Name + "/" + relativeUrl;
-  }
+//  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
+//  {
+//    return this.Request.ApplicationPath + "/" + resourceType.Name + "/" + relativeUrl;
+//  }
 
 	protected void Application_Start(Object sender, EventArgs e)
 	{
