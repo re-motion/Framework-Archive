@@ -1,0 +1,22 @@
+/*  */
+div.treeViewParentNode
+{
+  background-image: url(../Image/TreeViewWhite.gif);
+  background-repeat: repeat-y;  
+}
+
+/*  */
+div.treeViewNodeGroup
+{
+  background-image: url(../Image/TreeViewI.gif);
+  background-repeat: repeat-y;  
+  padding-left: 16px;
+}
+
+/*  */
+div.treeViewLastNodeGroup
+{
+  background-image: url(../Image/TreeViewWhite.gif);
+  background-repeat: repeat-y;  
+  padding-left: 16px;
+}
