@@ -285,7 +285,7 @@
         The <see cref="FormGrid"/> whose contents need to be composeds
       </param>
   </ComposeFormGridContents>
-  <FormatFormGrid>
+  <ConfigureFormGrid>
     <remarks>
       <para>
         <see cref="FormatDataRow"/> is called for each <see cref="FormGridRow"/> 
@@ -300,7 +300,28 @@
     <param name="formGrid">
       The <see cref="FormGrid"/> to be formatted.
     </param>
-  </FormatFormGrid>
+  </ConfigureFormGrid>
+  <ConfigureTitleRow>
+    <param name="titleRow">
+      The <see cref="FormGridRow"/> used as title row
+    </param>
+  </ConfigureTitleRow>
+  <ConfigureDataRow>
+    <remarks>
+      <list type="number">
+        <item>
+          Call to <see cref="CreateMarkersCell"/>
+        </item>
+        <item>
+          Call to <see cref="SetOrCreateValidationMessagesCell"/> and evaluation
+           whether or not a dummy cell is required.
+        </item>
+      </list>
+    </remarks>
+    <param name="dataRow">
+      The <see cref="FormGridRow"/> used as data row.
+    </param>
+  </ConfigureDataRow>
   <FormatTitleRow>
     <remarks>
       <para>
@@ -316,13 +337,6 @@
   <FormatDataRow>
     <remarks>
       <list type="number">
-        <item>
-          Call to <see cref="CreateMarkersCell"/>
-        </item>
-        <item>
-          Call to <see cref="SetOrCreateValidationMessagesCell"/> and evaluation
-           whether or not a dummy cell is required.
-        </item>
         <item>
           Call to <see cref="AssignCssClassesToCells"/>.
         </item>

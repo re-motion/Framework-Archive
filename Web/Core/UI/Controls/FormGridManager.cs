@@ -69,7 +69,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     TransformationNotStarted = 0,
     PreLoadViewStateTransformationCompleted = 1,
     PostLoadTransformationCompleted = 2,
-    PostValidationTransformationCompleted = 3
+    PostValidationTransformationCompleted = 3,
+    RenderTransformationCompleted = 4
   }
 
   /// <summary>
@@ -1230,6 +1231,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     string formGridID = ((HtmlTable) sender).UniqueID;
     FormGrid formGrid = (FormGrid) _formGrids[formGridID];
     EnsureTransformationStep (formGrid, TransformationStep.PostValidationTransformationCompleted);
+    ((HtmlTable) sender).SetRenderMethodDelegate (new RenderMethod (Table_Render));
+  }
+
+  private void Table_Render (HtmlTextWriter writer, Control table)
+  {
+    string formGridID = ((HtmlTable) table).UniqueID;
+    FormGrid formGrid = (FormGrid) _formGrids[formGridID];
+    EnsureTransformationStep (formGrid, TransformationStep.RenderTransformationCompleted);
+
+    table.SetRenderMethodDelegate (null);
+    table.RenderControl (writer);
+    table.SetRenderMethodDelegate (new RenderMethod (Table_Render));
   }
 
   /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
@@ -1327,9 +1340,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     bool enableViewStateBackup = formGrid.Table.EnableViewState;
     formGrid.Table.EnableViewState = true;
-
     ControlHelper.LoadViewStateRecursive (formGrid.Table, savedState);
-
     formGrid.Table.EnableViewState = enableViewStateBackup;
   }
 
@@ -1341,46 +1352,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     bool enableViewStateBackup = formGrid.Table.EnableViewState;
     formGrid.Table.EnableViewState = true;
-
     object viewState = ControlHelper.SaveViewStateRecursive (formGrid.Table);
-
     formGrid.Table.EnableViewState = enableViewStateBackup;
-
-    // recursive table view state: Triplet
-    // 1: table view state                        - will be saved/loaded
-    // 2: row indices: ArrayList<int> 
-    // 3: row view states: ArrayList<Triplet>:
-    //    1: row view state                       - should not be saved/loaded
-    //    2: cell indices: ArrayList<int>
-    //    3: cell view states: ArrayList<Triplet>:
-    //       1: cell view state                   - should not be saved/loaded
-    //       2: control indices
-    //       3: control view states
-    
-    Triplet table = (Triplet)viewState;
-
-    //  Completely empty table could result in a null reference as a list
-    if (table.Third == null)
-        return viewState;
-
-    ArrayList rows = (ArrayList)table.Third;
-    foreach (Triplet row in rows)
-    {
-      //  Remove the row's view state
-      row.First = null;
-
-      //  Cells without any view state relevant data
-      //  result in a null reference as a list.
-      if (row.Third == null)
-        continue;
-
-      ArrayList cells = (ArrayList)row.Third;
-      foreach (Triplet cell in cells)
-      {
-        //  Remove the cell's view state
-        cell.First = null;
-      }
-    }
 
     return viewState;
   }
@@ -1642,6 +1615,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       completedStep = TransformIntoFormGridPostValidation (formGrid);
     }
+    if (   completedStep < TransformationStep.RenderTransformationCompleted
+        && completedStep < stepToBeCompleted)
+    {
+      completedStep = TransformIntoFormGridRender (formGrid);
+    }
   }
 
   private TransformationStep TransformIntoFormGridPreLoadViewState (FormGrid formGrid)
@@ -1652,7 +1630,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     LoadNewFormGridRows (formGrid);
     ApplyExternalHiddenSettings (formGrid);
     ComposeFormGridContents (formGrid);
-    FormatFormGrid (formGrid);
+    ConfigureFormGrid (formGrid);
     TransformationStep completedStep = TransformationStep.PreLoadViewStateTransformationCompleted;
     _completedTransformationStep[formGrid] = completedStep;
     return completedStep;
@@ -1701,11 +1679,57 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
             LoadValidationMessagesIntoCell (formGridRow);
           }
         }
-        AddShowEmptyCellsHack (formGridRow);
       }
     }
 
     TransformationStep completedStep = TransformationStep.PostValidationTransformationCompleted;
+    _completedTransformationStep[formGrid] = completedStep;
+    return completedStep;
+  }
+
+  private TransformationStep TransformIntoFormGridRender (FormGrid formGrid)
+  {
+    bool isTopDataRow = true;
+
+    foreach (FormGridRow formGridRow in formGrid.Rows)
+    {
+      switch (formGridRow.Type)
+      {
+        case FormGridRowType.TitleRow:
+        {
+          FormatTitleRow (formGridRow);
+          break;
+        }
+        case FormGridRowType.SubTitleRow:
+        {
+          FormatSubTitleRow (formGridRow);
+          break;
+        }
+        case FormGridRowType.DataRow:
+        {
+          FormatDataRow (formGridRow, isTopDataRow);
+          isTopDataRow = false;
+          break;
+        }
+        case FormGridRowType.UnknownRow:
+        {
+          FormatUnknownRow (formGridRow);
+          break;
+        }
+        default:
+        {
+          break;
+        }
+      }
+    }
+
+    //  Assign CSS-class to the table if none exists
+    if (formGrid.Table.Attributes["class"] == null)
+    {
+      formGrid.Table.Attributes["class"] = CssClassTable;
+    }
+
+    TransformationStep completedStep = TransformationStep.RenderTransformationCompleted;
     _completedTransformationStep[formGrid] = completedStep;
     return completedStep;
   }
@@ -1877,39 +1901,35 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary>
-  ///   Uses the information stored in <paramref name="formGrid"/> to format the 
+  ///   Uses the information stored in <paramref name="formGrid"/> to configure the 
   ///   <see cref="HtmlTable"/> as a form grid.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatFormGrid/*' />
-  private void FormatFormGrid (FormGrid formGrid)
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
+  private void ConfigureFormGrid (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
-
-    bool isTopDataRow = true;
-
     foreach (FormGridRow formGridRow in formGrid.Rows)
     {
       switch (formGridRow.Type)
       {
         case FormGridRowType.TitleRow:
         {
-          FormatTitleRow (formGridRow);
+          ConfigureTitleRow (formGridRow);
           break;
         }
         case FormGridRowType.SubTitleRow:
         {
-          FormatSubTitleRow (formGridRow);
+          ConfigureSubTitleRow (formGridRow);
           break;
         }
         case FormGridRowType.DataRow:
         {
-          FormatDataRow (formGridRow, isTopDataRow);
-          isTopDataRow = false;
+          ConfigureDataRow (formGridRow);
           break;
         }
         case FormGridRowType.UnknownRow:
         {
-          FormatUnknownRow (formGridRow);
+          ConfigureUnknownRow (formGridRow);
           break;
         }
         default:
@@ -1921,17 +1941,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     if (HasMarkersColumn)
       formGrid.DefaultControlsColumn++;
-
-    //  Assign CSS-class to the table if none exists
-    if (formGrid.Table.Attributes["class"] == null)
-    {
-      formGrid.Table.Attributes["class"] = CssClassTable;
-    }
   }
 
-  /// <summary> Custom formats the title row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
-  protected virtual void FormatTitleRow (FormGridRow titleRow)
+  /// <summary> Configures the title row. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
+  private void ConfigureTitleRow (FormGridRow titleRow)
   {
     ArgumentUtility.CheckNotNull ("titleRow", titleRow);
     CheckFormGridRowType ("titleRow", titleRow, FormGridRowType.TitleRow);
@@ -1941,10 +1955,59 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
    
     //  Adapt ColSpan for added markers column
     if (HasMarkersColumn)
-    {
-      titleRow.LabelsCell.ColSpan++;
       titleRow.ControlsColumn++;
-    }
+  }
+
+  /// <summary> Configures a sub title row. </summary>
+  private void ConfigureSubTitleRow (FormGridRow subTitleRow)
+  {
+    ArgumentUtility.CheckNotNull ("subTitleRow", subTitleRow);
+    CheckFormGridRowType ("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
+
+    //  Sub title cell: first row, first cell
+    subTitleRow.SetLabelsCell (0, 0);
+   
+    //  Adapt ColSpan for added markers column
+    if (HasMarkersColumn)
+      subTitleRow.ControlsColumn++;
+  }
+
+  /// <summary> Configures the unknown rows. </summary>
+  private void ConfigureUnknownRow (FormGridRow row)
+  {
+    ArgumentUtility.CheckNotNull ("row", row);
+    CheckFormGridRowType ("row", row, FormGridRowType.UnknownRow);
+   
+    //  Adapt ColSpan for added markers column
+    if (HasMarkersColumn)
+      row.ControlsColumn++;
+  }
+
+  /// <summary> Configures a data row. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
+  private void ConfigureDataRow (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+
+    if (dataRow.LabelsRowIndex != dataRow.ControlsRowIndex)
+      dataRow.SetControlsCellDummy (dataRow.LabelsRowIndex, dataRow.ControlsColumn);
+
+    CreateMarkersCell (dataRow);
+
+    SetOrCreateValidationMessagesCell (dataRow);
+  }
+
+  /// <summary> Formats the title row. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
+  protected virtual void FormatTitleRow (FormGridRow titleRow)
+  {
+    ArgumentUtility.CheckNotNull ("titleRow", titleRow);
+    CheckFormGridRowType ("titleRow", titleRow, FormGridRowType.TitleRow);
+
+    //  Adapt ColSpan for added markers column
+    if (HasMarkersColumn)
+      titleRow.LabelsCell.ColSpan++;
 
     //  Adapt ColSpan for added validation error message column
     if (HasValidationMessageColumn)
@@ -1958,21 +2021,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     AddShowEmptyCellsHack (titleRow);
   }
 
-  /// <summary> Custom formats a sub title row. </summary>
+  /// <summary> Formats a sub title row. </summary>
   protected virtual void FormatSubTitleRow (FormGridRow subTitleRow)
   {
     ArgumentUtility.CheckNotNull ("subTitleRow", subTitleRow);
     CheckFormGridRowType ("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
-
-    //  Title cell: first row, first cell
-    subTitleRow.SetLabelsCell (0, 0);
    
     //  Adapt ColSpan for added markers column
     if (HasMarkersColumn)
-    {
       subTitleRow.LabelsCell.ColSpan++;
-      subTitleRow.ControlsColumn++;
-    }
 
     //  Adapt ColSpan for added validation error message column
     if (HasValidationMessageColumn)
@@ -1986,7 +2043,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     AddShowEmptyCellsHack (subTitleRow);
   }
 
-  /// <summary> Custom formats the unknown rows. </summary>
+  /// <summary> Formats the unknown rows. </summary>
   protected virtual void FormatUnknownRow (FormGridRow row)
   {
     ArgumentUtility.CheckNotNull ("row", row);
@@ -2000,10 +2057,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
    
     //  Adapt ColSpan for added markers column
     if (HasMarkersColumn)
-    {
       cell.ColSpan++;
-      row.ControlsColumn++;
-    }
 
     //  Adapt ColSpan for added validation error message column
     if (HasValidationMessageColumn)
@@ -2015,24 +2069,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     AddShowEmptyCellsHack (row);
   }
 
-  /// <summary> Custom formats a data row. </summary>
+  /// <summary> Formats a data row. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
   protected virtual void FormatDataRow (FormGridRow dataRow, bool isTopDataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
 
-    if (dataRow.LabelsRowIndex != dataRow.ControlsRowIndex)
-      dataRow.SetControlsCellDummy (dataRow.LabelsRowIndex, dataRow.ControlsColumn);
-
-    CreateMarkersCell (dataRow);
-
-    SetOrCreateValidationMessagesCell (dataRow);
-
     AssignCssClassesToCells (dataRow, isTopDataRow);
 
     AssignCssClassesToInputControls (dataRow);
 
+    AddShowEmptyCellsHack (dataRow);
 
     //  Not implemented, since FrameWork 1.1 takes care of names
     //  Future version might loose this
