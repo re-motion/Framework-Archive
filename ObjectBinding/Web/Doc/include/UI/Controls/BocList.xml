@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<BocList>
+  <Class>
+    <remarks>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term>
+            CurrentPageDescriptor
+          </term>
+          <description>
+            &lt;BocList Resource ID&gt;:PageInfo
+          </description>
+        </item>
+        <item>
+          <term>
+            BocColumnDefinition: FixedColumns[x].ColumnTitle
+          </term>
+          <description>
+            &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle
+          </description>
+        </item>
+        <item>
+          <term>
+            BocCommandColumnDefinition: FixedColumns[x].Label
+          </term>
+          <description>
+            &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Label
+          </description>
+        </item>
+    </remarks>
+  </Class>
+</BocList>
