@@ -65,12 +65,46 @@ public class PageUtility
   }
 
   /// <summary>
+  /// Returns the correct page's URL even if cookieless mode is activated.
+  /// </summary>
+  public static string GetPageUrl (Page page)
+  {
+    string pageUrl;
+
+    // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
+    // removes cookie information from the URL => manually add cookie information to URL
+    if (page.Session.IsCookieless)
+    { 
+      string tempUrl = page.Request.Url.AbsoluteUri;
+      string appPath = page.Request.ApplicationPath;
+      int appPathPosition = tempUrl.IndexOf (appPath);
+      int appPathPositionEnd = appPathPosition + appPath.Length;
+
+      pageUrl = 
+            tempUrl.Substring (0, appPathPositionEnd) 
+          + "/(" + page.Session.SessionID + ")" 
+          + tempUrl.Substring (appPathPositionEnd);
+    }
+    else
+    {
+      pageUrl = page.Request.RawUrl;
+    }
+
+    return pageUrl;
+  }
+
+  /// <summary>
   /// redirects to the page identified by the given URL 
   /// </summary>
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
   public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
   {
+    
+    // Add referrer information for all pages
+    string referrerUrl = GetPageUrl (sourcePage);
+    parameters.Add ("Referrer", referrerUrl); 
+
     string token = GetUniqueToken ();
     if (parameters != null)
       sourcePage.Session[token] = parameters;
