@@ -290,6 +290,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\ReadMe.txt"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
                     BuildAction = "Content"
                 />
@@ -310,7 +315,23 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\Calendar.htc"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\CalendarFrame.htm"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\DatePicker.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\Calendar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\DatePicker.gif"
                     BuildAction = "Content"
                 />
                 <File
