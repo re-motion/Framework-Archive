@@ -85,10 +85,7 @@ public class QueryConfigurationLoader : BaseLoader
         FormatXPath ("{0}:collectionType"), NamespaceManager);
 
     if (queryType == QueryType.Scalar && collectionType != null)
-      throw CreateQueryConfigurationException ("Scalar query '{0}' must not specify a collectionType.", queryID);
-
-    if (queryType == QueryType.Collection && collectionType == null)
-      collectionType = typeof (DomainObjectCollection);
+      throw CreateQueryConfigurationException ("A scalar query '{0}' must not specify a collectionType.", queryID);
 
     return new QueryDefinition (queryID, storageProviderID, statement, queryType, collectionType);
   }

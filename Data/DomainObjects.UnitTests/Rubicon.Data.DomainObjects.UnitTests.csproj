@@ -309,6 +309,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Queries\QueryDefinitionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\StorageProviders\StorageProviderConfigurationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

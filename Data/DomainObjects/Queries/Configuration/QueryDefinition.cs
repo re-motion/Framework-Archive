@@ -37,8 +37,19 @@ public class QueryDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
     ArgumentUtility.CheckValidEnumValue (queryType, "queryType");
 
-    // TODO: If querytype = collection and collectionType = null, use DomainObjectCollection
-    // If qureytype = value and collectionType != null raise exception
+    if (queryType == QueryType.Scalar && collectionType != null)
+      throw new ArgumentException ("A scalar query must not specify a collectionType.", "collectionType");
+
+    if (queryType == QueryType.Collection && collectionType == null)
+      collectionType = typeof (DomainObjectCollection);
+
+    if (collectionType != null 
+        && !collectionType.Equals (typeof (DomainObjectCollection)) 
+        && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
+    {
+      throw new ArgumentException (
+          "CollectionType must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.");
+    }
 
     _queryID = queryID;
     _storageProviderID = storageProviderID;
