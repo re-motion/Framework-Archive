@@ -228,6 +228,7 @@ public class DataContainerFactory
       case "System.Char":
         return GetCharValue (propertyDefinition, _dataReader.GetString (columnOrdinal));
 
+      // TODO: Move this code to MappingUtility. Review when adding new Na* types.
       case "Rubicon.NullableValueTypes.NaBoolean":
         return new NaBoolean (_dataReader.GetBoolean (columnOrdinal));
 
@@ -288,6 +289,7 @@ public class DataContainerFactory
 
   protected virtual object GetNullValue (PropertyDefinition propertyDefinition)
   {
+    // TODO: Move this code to MappingUtility. Review when adding new Na* types.
     switch (propertyDefinition.PropertyType.FullName)
     {
       case "Rubicon.NullableValueTypes.NaBoolean":
