@@ -422,7 +422,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      if (Width != Unit.Empty && Width.Type == _icon.Width.Type)
+      if (! Width.IsEmpty && Width.Type == _icon.Width.Type)
       {
         int innerControlWidthValue = (int) (Width.Value - _icon.Width.Value);
         innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
@@ -458,7 +458,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
     else // is design mode
     {
-      if (Width != Unit.Empty)
+      if (! Width.IsEmpty)
       {
         //  Handle icon width approximation
         switch (Width.Type)
@@ -524,7 +524,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _icon.Style["vertical-align"] = "middle";
 
       _dropDownList.ApplyStyle (_commonStyle);
-      if (innerControlWidth != Unit.Empty)
+      if (! innerControlWidth.IsEmpty)
         _dropDownList.Width = innerControlWidth;
       _dropDownList.Height = Height;
       _dropDownListStyle.ApplyStyle (_dropDownList);
