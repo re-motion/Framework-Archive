@@ -16,7 +16,7 @@ public interface INavigablePage
   bool NavigationRequest (string url);
   bool AutoDeleteSessionVariables { get; }
   void NavigateTo (string url, bool returnToThisPage);
-  string GetToken();
+  string Token{ get; }
 }
 
 public interface ITabItem
@@ -397,7 +397,7 @@ public class TabControl: Control, IPostBackEventHandler
         {
           if (tabItem.SupportsPageToken)
           {
-            url = PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.GetToken());
+            url = PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.Token);
           }
           else
           {

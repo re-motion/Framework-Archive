@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web;
+using System.Configuration;
 
 using System.Diagnostics;
 
@@ -30,6 +32,7 @@ public class PageUtility
 	{
 	}
 
+ 
   public static object GetSessionValue (Page page, string key, bool required)
   {
     object o = page.Session[GetUniqueKey (page, key)];
@@ -55,10 +58,29 @@ public class PageUtility
     page.Session[GetUniqueKey (page, key)] = null;
   }
 
+
   public static object GetSessionValue (Page page, string token, string key, bool required)
   {
-    object o = page.Session[GetUniqueKey (token, key)];
-    
+ 
+    PageInformation info = page.Session[token] as PageInformation;
+  
+    if (info == null)
+    {
+      if (required)
+      {
+        if (page.Session.IsNewSession)
+          throw new SessionTimeoutException ();
+        else
+          throw new SessionVariableNotFoundException (key);
+      }
+      else
+      {
+        return null;
+      }
+    }
+
+    object o = info.PageValues[key];
+ 
     if (required && o == null)
     {
       if (page.Session.IsNewSession)
@@ -72,12 +94,34 @@ public class PageUtility
 
   public static void SetSessionValue (Page page, string token, string key, object sessionValue)
   {
-    page.Session[GetUniqueKey (token, key)] = sessionValue;
+    // page.Session[GetUniqueKey (token, key)] = sessionValue;
+    PageInformation info = page.Session[token] as PageInformation;
+    if (info == null)
+    {
+      info = new PageInformation ();
+      page.Session[token] = info;
+    }
+    info.PageValues[key] = sessionValue;
   }
 
   public static void ClearSessionValue (Page page, string token, string key)
   {
-    page.Session[GetUniqueKey (token, key)] = null;
+    // page.Session[GetUniqueKey (token, key)] = null;
+
+    PageInformation info = page.Session[token] as PageInformation;
+
+    if (info != null)
+    {
+      info.PageValues.Remove (key);
+    }
+  }
+
+  public static void ClearSession (Page page, string token)
+  {
+    if (token != null && token != string.Empty)
+    {
+      page.Session.Remove (token);
+    }
   }
 
   /// <summary>
@@ -185,41 +229,6 @@ public class PageUtility
     }
   }
 
-/*  private static string InternalGetPhysicalPageUrl (Page page, string relativeUrl)
-  { 
-    if (page.Session.IsCookieless)
-      return page.Request.ApplicationPath + "/(" + page.Session.SessionID + ")/" + relativeUrl;
-    else
-      return page.Request.ApplicationPath + "/" + relativeUrl;
-
-  
-    string returnUrl;
-
-    //Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
-    Uri pageUrl = new Uri (page.Request.ApplicationPath + relativeUrl);
-
-    // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
-    // removes cookie information from the URL => manually add cookie information to URL
-    if (page.Session.IsCookieless)
-    { 
-      string tempUrl = pageUrl.PathAndQuery;
-      string appPath = page.Request.ApplicationPath;
-      int appPathPositionEnd = appPath.Length;
-
-      returnUrl = 
-            tempUrl.Substring (0, appPathPositionEnd) 
-          + "/(" + page.Session.SessionID + ")" 
-          + tempUrl.Substring (appPathPositionEnd);
-    }
-    else
-    {
-      returnUrl = pageUrl.PathAndQuery;
-    }
-    
-    return returnUrl;
-  }
-    */
-
   public static string AddCleanupToken (Page page, string url)
   {
     return AddUrlParameter (url, "cleanupToken", GetToken(page));
@@ -310,8 +319,9 @@ public class PageUtility
 
     string token = GetUniqueToken ();
     if (parameters != null)
-      sourcePage.Session[token] = parameters;
-    
+      // sourcePage.Session[token] = parameters;
+      SetSessionValue (sourcePage, token, "callParameters", parameters);
+
     string urlDelimiter;
     if (destinationUrl.IndexOf ("?") > 0)
       urlDelimiter = "&";
@@ -351,8 +361,18 @@ public class PageUtility
     string token = (string) page.Request.Params["pageToken"];
 
     IDictionary parameters = null;
+    
+    if (token != null)
+    {
+      PageInformation info = page.Session[token] as PageInformation;
+      
+      if (info != null)
+        parameters = info.PageValues["callParameters"] as IDictionary;
+    }  
+    /*   
     if (token != null)
       parameters = (IDictionary) page.Session[token];
+    */
 
     if (requireParameters && parameters == null)
     {
@@ -364,6 +384,30 @@ public class PageUtility
 
     return parameters;
   }
+
+  public static void DeleteOutdatedSessions (Page page)
+  {
+    int timeOut = page.Session.Timeout;
+
+    object objTimeout = ConfigurationSettings.AppSettings["CleanupSessionTimeout"];
+    
+    if( objTimeout != null )
+      timeOut = int.Parse( (string)objTimeout );
+
+    DateTime  minTime = DateTime.Now.AddMinutes (timeOut * -1);
+
+    for(int i = page.Session.Keys.Count - 1; i >= 0; i--)
+    {
+      string key = page.Session.Keys[i] as string;
+
+      PageInformation info = page.Session[key] as PageInformation;
+      if (info == null)
+        continue;
+
+      if (info.LastAccessed < minTime)
+        page.Session.Remove (key);
+    }
+  }  
 }
 
 [Serializable]
@@ -416,6 +460,38 @@ public class NoPageTokenException : ApplicationException
   }
 }
 
+
+[Serializable]
+internal class PageInformation
+{
+
+  private DateTime _lastAccessed;
+  private IDictionary _pageValues;
+
+  public PageInformation ()
+  {
+    _lastAccessed = DateTime.Now;
+    _pageValues = new HybridDictionary ();
+
+  }
+
+  public IDictionary PageValues
+  {
+    get
+    {
+      _lastAccessed = DateTime.Now;
+      return _pageValues;
+    }
+  }
+
+  public DateTime LastAccessed
+  {
+    get {return _lastAccessed;}
+  }
+
+}
+
+
 [Serializable]
 public class SessionVariableNotFoundException : ApplicationException
 {
@@ -450,4 +526,6 @@ public class SessionTimeoutException : ApplicationException
 }
 
 }
+
+
 
