@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
 [TestFixture]
-public class SqlProviderQueryTest: SqlProviderBaseTest
+public class SqlProviderExecuteScalarQueryTest: SqlProviderBaseTest
 {
   // types
 
@@ -19,7 +19,7 @@ public class SqlProviderQueryTest: SqlProviderBaseTest
 
   // construction and disposing
 
-  public SqlProviderQueryTest ()
+  public SqlProviderExecuteScalarQueryTest ()
   {
   }
 
