@@ -63,7 +63,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
 
     classWithAllDataTypes["BooleanProperty"] = true;
     classWithAllDataTypes["ByteProperty"] = (byte) 42;
-    classWithAllDataTypes["CharProperty"] = 'z';
     classWithAllDataTypes["DateProperty"] = new DateTime (1974, 10, 25);
     classWithAllDataTypes["DateTimeProperty"] = new DateTime (1974, 10, 26, 18, 9, 18);
     classWithAllDataTypes["DecimalProperty"] = (decimal) 564.956;
@@ -92,7 +91,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
 
       Assert.AreEqual (true, classWithAllDataTypes["BooleanProperty"]);
       Assert.AreEqual (42, classWithAllDataTypes["ByteProperty"]);
-      Assert.AreEqual ('z', classWithAllDataTypes["CharProperty"]);
       Assert.AreEqual (new DateTime (1974, 10, 25), classWithAllDataTypes["DateProperty"]);
       Assert.AreEqual (new DateTime (1974, 10, 26, 18, 9, 18), classWithAllDataTypes["DateTimeProperty"]);
       Assert.AreEqual (564.956, classWithAllDataTypes["DecimalProperty"]);
