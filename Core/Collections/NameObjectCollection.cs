@@ -11,33 +11,122 @@ namespace Rubicon.Collections
 /// Case-sensitive name/object dictionary.
 /// </summary>
 [Serializable]
-public class NameObjectCollection: NameObjectCollectionBase
+public class NameObjectCollection: ICollection, IDictionary, ISerializable
 {
+  private Hashtable _hashtable;
+
   public NameObjectCollection()
-    : base (null, null)
   {
+    _hashtable = new Hashtable();
   }
 
-  public NameObjectCollection (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+  protected NameObjectCollection (SerializationInfo info, StreamingContext context)
   {
+    _hashtable = (Hashtable) info.GetValue ("_hashtable", typeof (Hashtable));
+  }
+
+  void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("_hashtable", _hashtable);
   }
 
   public object this[string name]
   {
-    get { return BaseGet (name); }
-    set { BaseSet (name, value); }
+    get { return _hashtable[name]; }
+    set { _hashtable[name] = value; }
   }
 
   public void Clear()
   {
-    BaseClear();
+    _hashtable.Clear();
+  }
+
+  public bool IsSynchronized
+  {
+    get { return false; }
+  }
+
+  public int Count
+  {
+    get { return _hashtable.Count; }
+  }
+
+  public void CopyTo (Array array, int index)
+  {
+    _hashtable.CopyTo (array, index);
+  }
+
+  public object SyncRoot
+  {
+    get { return this; }
+  }
+
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return ((IEnumerable)_hashtable).GetEnumerator();
+  }
+  
+  public bool IsReadOnly
+  {
+    get { return false; }
+  }
+
+  IDictionaryEnumerator IDictionary.GetEnumerator()
+  {
+    return ((IDictionary)_hashtable).GetEnumerator ();
+  }
+
+  object IDictionary.this[object key]
+  {
+    get { return this[(string)key]; }
+    set { this[(string)key] = value; }
   }
 
   public void Remove (string name)
   {
-    BaseRemove (name);
+    _hashtable.Remove (name);
   }
+
+  void IDictionary.Remove (object key)
+  {
+    Remove ((string)key);
+  }
+
+  public bool Contains (object key)
+  {
+    return _hashtable.Contains (key);
+  }
+
+  bool IDictionary.Contains (object key)
+  {
+    return _hashtable.Contains (key);
+  }
+
+  public ICollection Values
+  {
+    get { return _hashtable.Values; }
+  }
+
+  public void Add (string key, object value)
+  {
+    _hashtable.Add (key, value);
+  }
+
+  void IDictionary.Add (object key, object value)
+  {
+    Add ((string) key, value);
+  }
+
+  public ICollection Keys
+  {
+    get { return _hashtable.Keys; }
+  }
+
+  public bool IsFixedSize
+  {
+    get { return false; }
+  }
+
 }
 
 }
