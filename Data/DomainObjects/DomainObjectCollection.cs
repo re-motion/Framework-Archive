@@ -292,10 +292,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public void Insert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    CheckIndex ("index", index);
 
     if (_changeDelegate != null)
     {
-      //_changeDelegate.PerformInsert (this, index, domainObject);
+      _changeDelegate.PerformInsert (this, domainObject, index);
     }
     else
     {
