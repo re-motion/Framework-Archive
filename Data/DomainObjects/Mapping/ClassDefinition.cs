@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
+// Note: All methods of this class are inheritance-aware. Property accessors are not.
 public class ClassDefinition
 {
   // types
@@ -67,8 +68,6 @@ public class ClassDefinition
 
   // methods and properties
  
-  // TODO documentation: All methods of this class are inheritance-aware. Property accessors are not.
-
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);

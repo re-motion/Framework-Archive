@@ -6,8 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All done
-
 /// <summary>
 /// Represents the method that will handle the <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>

@@ -5,8 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//Documentation: All done
-
 /// <summary>
 /// The exception that is thrown when a PropertyValue is set to a value of wrong type.
 /// </summary>
