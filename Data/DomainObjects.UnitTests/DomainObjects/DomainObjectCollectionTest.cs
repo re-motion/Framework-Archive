@@ -47,11 +47,8 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   [Test]
   public void ExactType ()
   {
-    ObjectID id1 = new ObjectID (c_testDomainProviderID, "ClassWithAllDataTypes", 
-        new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    ObjectID id2 = new ObjectID (c_testDomainProviderID, "ClassWithAllDataTypes", 
-        new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
+    ObjectID id1 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id2 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
 
     ClassWithAllDataTypes c1 = ClassWithAllDataTypes.GetObject (id1);
     ClassWithAllDataTypes c2 = ClassWithAllDataTypes.GetObject (id2);
