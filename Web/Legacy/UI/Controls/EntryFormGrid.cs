@@ -9,6 +9,16 @@ using System.Drawing;
 namespace Rubicon.Findit.Client.Controls
 {
 
+public class EntryFieldBreak: Control
+{
+  protected override void Render (HtmlTextWriter writer)
+  {
+    writer.Write ("</td></tr><tr><td colspan=\"4\"></td><td>");
+  }
+}
+  
+  
+
 [ParseChildren (false, "Controls")]
 [ControlBuilder (typeof (EntryFormGridControlBuilder))]
 public class EntryFormGrid: Control
