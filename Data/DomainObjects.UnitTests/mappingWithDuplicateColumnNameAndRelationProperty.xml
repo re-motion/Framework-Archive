@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+  <classes>
+		<class id="Order">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Order" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="OrderNumber">
+					<type>int32</type>
+					<!-- Column CustomerID is defined twice, thus this file does not conform to mapping. -->
+					<column>CustomerID</column>
+				</property>
+				<relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
+					<column>CustomerID</column>
+				</relationProperty>
+			</properties>
+		</class>
+  </classes>
+</mapping>  
