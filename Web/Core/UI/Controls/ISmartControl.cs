@@ -9,7 +9,7 @@ namespace Rubicon.Web.UI.Controls
 
 public interface ISmartControl: IComponent
 {
-  NaBoolean IsRequired { get; }
+  bool IsRequired { get; }
   string HelpUrl { get; }
 
   /// <summary>
