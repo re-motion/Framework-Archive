@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Test.WebForm1" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web.UI" %>
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Test.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -20,6 +20,12 @@
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td>
     <TD><asp:textbox id=NameField runat="server">&amp;Name</asp:textbox><asp:comparevalidator id=CompareValidator1 runat="server" ErrorMessage='Please enter "Hello World" for a name.' ControlToValidate="NameField" valuetocompare="Hello World" tooltip='Name is not "Hello World"'></asp:comparevalidator></TD>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td></TR>
+  <tr>
+    <td style="BACKGROUND-COLOR: green"></td>
+    <td><asp:Label id="ToBeHiddenLabel" runat="server">Label</asp:Label></td>
+    <td style="BACKGROUND-COLOR: green"></td>
+    <td><asp:TextBox id="ToBeHiddenTextBox" runat="server"></asp:TextBox></td>
+    <td style="BACKGROUND-COLOR: green"></td></tr>
   <TR>
     <td style="BACKGROUND-COLOR: green">&nbsp;</td>
     <td></td>

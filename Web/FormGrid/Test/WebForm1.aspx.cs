@@ -35,6 +35,8 @@ public class WebForm1 :
 
 	private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
   protected Rubicon.Web.UI.Controls.FormGridLabel FormGridLabel;
+  protected System.Web.UI.WebControls.Label ToBeHiddenLabel;
+  protected System.Web.UI.WebControls.TextBox ToBeHiddenTextBox;
 
   private FormGridRowProvider _formGridRowProvider;
 
@@ -60,25 +62,29 @@ public class WebForm1 :
     StringCollection hiddenRows = _formGridRowProvider.GetListOfHiddenRows (
       TableDesignTimeFormGrid.ID);
 
-    hiddenRows.Add (NameField.ID);
+    hiddenRows.Add (ToBeHiddenTextBox.ID);
   
     FormGridRowPrototypeCollection newRows = _formGridRowProvider.GetListOfFormGridRowPrototypes (
       TableDesignTimeFormGrid.ID);
 
     TextBox textBox = new TextBox();
     textBox.ID = "MyNewTextBox";
-    textBox.Text = "foo";
+    textBox.Text = "Eine neue Zeile";
 
+    //  A new row
     newRows.Add (new FormGridRowPrototype(
       textBox, 
       FormGridRowPrototype.RowType.ControlInRowWithLabel, 
-      TextBox1.ID, 
+      AddressField.ID, 
       FormGridRowPrototype.RowPosition.AfterRowWithID));
 
     textBox = new TextBox();
     textBox.ID = "MyOtherNewTextBox";
-    textBox.Text = "bar";
+    textBox.Text = "Noch eine neue Zeile, diesmal zweizeilig.";
+    textBox.Width = Unit.Parse ("100%");
+    textBox.Height = Unit.Parse ("3em");
 
+    //  A second new row
     newRows.Add (new FormGridRowPrototype(
       textBox, 
       FormGridRowPrototype.RowType.ControlInRowAfterLabel, 
