@@ -7,7 +7,7 @@
   <classes>
 		<class id="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -19,7 +19,7 @@
 		</class>
 		<class id="Customer" baseClass="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Customer</entity>
+			<entity name="Customer" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="CustomerSince">

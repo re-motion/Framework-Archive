@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <mapping 
     application="UnitTests" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
@@ -7,7 +7,7 @@
 	<classes>
 		<class id="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -23,7 +23,7 @@
 		</class>
 		<class id="Partner" baseClass="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="ContactPerson">
@@ -34,7 +34,7 @@
 		</class>
 		<class id="Supplier" baseClass="Partner">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">

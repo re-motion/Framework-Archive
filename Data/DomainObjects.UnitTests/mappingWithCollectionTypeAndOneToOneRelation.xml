@@ -7,7 +7,7 @@
 	<classes>
 		<class id="Order">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Order</entity>
+			<entity name="Order" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="OrderNumber">
@@ -30,7 +30,7 @@
 		</class>
 		<class id="OrderTicket">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>OrderTicket</entity>
+			<entity name="OrderTicket" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="FileName">

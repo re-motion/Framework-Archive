@@ -10,7 +10,7 @@
 			<type>
 			  Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests
 			</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -26,7 +26,7 @@
 		</class>
 		<class id="Customer" baseClass="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="CustomerSince">
@@ -42,7 +42,7 @@
 		</class>
 		<class id="Supplier" baseClass="Partner">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="SupplierQuality">
@@ -53,7 +53,7 @@
 		</class>
 		<class id="Distributor" baseClass="Partner">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="NumberOfShops">
@@ -67,7 +67,7 @@
 		     assumed when mapping.xml is read. -->
 		<class id="Partner" baseClass="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Company</entity>
+			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="ContactPerson">
@@ -78,7 +78,7 @@
 		</class>
 		<class id="Ceo">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Ceo</entity>
+			<entity name="Ceo" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -94,7 +94,7 @@
 		</class>		
 		<class id="Person">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Person</entity>
+			<entity name="Person" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -106,7 +106,7 @@
 		</class>				
 		<class id="Order">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Order</entity>
+			<entity name="Order" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="OrderNumber">
@@ -129,7 +129,7 @@
 		</class>
 		<class id="OrderItem">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>OrderItem</entity>
+			<entity name="OrderItem" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="Position">
@@ -149,7 +149,7 @@
 		</class>
 		<class id="OrderTicket">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>OrderTicket</entity>
+			<entity name="OrderTicket" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="FileName">
@@ -165,7 +165,7 @@
 		</class>
 		<class id="Official">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>Official</entity>
+			<entity name="Official" />
 			<storageProviderID>UnitTestStorageProviderStub</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -178,7 +178,7 @@
 		
 		<class id="ClassWithAllDataTypes">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithAllDataTypes</entity>
+			<entity name="TableWithAllDataTypes" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="BooleanProperty">
@@ -299,38 +299,38 @@
 		
 		<class id="ClassWithGuidKey">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithGuidKey</entity>
+			<entity name="TableWithGuidKey" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />
 		</class>
 		<class id="ClassWithKeyOfInvalidType">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithKeyOfInvalidType, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithKeyOfInvalidType</entity>
+			<entity name="TableWithKeyOfInvalidType" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />
 		</class>
 		<class id="ClassWithoutIDProperty">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithoutIDColumn</entity>
+			<entity name="TableWithoutIDColumn" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />
 		</class>		
 		<class id="ClassWithoutClassIDProperty">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithoutClassIDColumn</entity>
+			<entity name="TableWithoutClassIDColumn" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />
 		</class>
 		<class id="ClassWithoutTimestampProperty">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampProperty, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithoutTimestampColumn</entity>
+			<entity name="TableWithoutTimestampColumn" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />
 		</class>
 			
 		<class id="ClassWithValidRelations">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithValidRelations</entity>
+			<entity name="TableWithValidRelations" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="ClassWithGuidKeyOptional">
@@ -347,7 +347,7 @@
 		<!-- Contains foreign key of type guid with non-optional relation, which does not refer to an existing row. -->
 		<class id="ClassWithInvalidRelation">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithInvalidRelation</entity>
+			<entity name="TableWithInvalidRelation" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 				<property name="ClassWithGuidKey">
@@ -359,7 +359,7 @@
 		
 		<class id="ClassWithoutRelatedClassIDColumn">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithoutRelatedClassIDColumn</entity>
+			<entity name="TableWithoutRelatedClassIDColumn" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 			  <property name="Partner">
@@ -371,7 +371,7 @@
 
 		<class id="ClassWithoutRelatedClassIDColumnAndDerivation">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>TableWithoutRelatedClassIDColumnAndDerivation</entity>
+			<entity name="TableWithoutRelatedClassIDColumnAndDerivation" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 			  <property name="Company">
@@ -383,7 +383,7 @@
 		
 		<class id="IndustrialSector">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector, Rubicon.Data.DomainObjects.UnitTests</type>
-			<entity>IndustrialSector</entity>
+			<entity name="IndustrialSector" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 			  <property name="Name">
@@ -396,7 +396,7 @@
 		
 		<class id="Employee">
 		  <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.UnitTests</type>
-		  <entity>Employee</entity>
+		  <entity name="Employee" />
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
 		    <property name="Name">
@@ -413,7 +413,7 @@
 
 		<class id="Computer">
 		  <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.UnitTests</type>
-		  <entity>Computer</entity>
+		  <entity name="Computer" />
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
 		    <property name="SerialNumber">
