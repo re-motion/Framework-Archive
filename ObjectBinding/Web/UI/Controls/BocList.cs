@@ -391,6 +391,11 @@ public class BocList:
           bool isTitleRowCheckBox = (key == titleRowCheckBoxFilter);
           if (isDataRowCheckBox || isTitleRowCheckBox)
           {
+            if (   _selection == RowSelection.Single 
+                && (_checkBoxCheckedState.Count > 1  || isTitleRowCheckBox))
+            {
+              continue;
+            }
             int rowIndex = int.Parse (formVariables[i]);
             _checkBoxCheckedState[rowIndex] = true; 
           }
@@ -1299,7 +1304,8 @@ public class BocList:
           + "BocList_InitializeList ("
           + "document.getElementById ('" + ClientID + "'), '"
           + ClientID + c_dataRowCheckBoxIDSuffix + "', "
-          + count.ToString() + ");"
+          + count.ToString() + ","
+          + (int) _selection + ");"
           + "\r\n//-->\r\n</script>";
       writer.Write (script);
     }
@@ -1472,7 +1478,7 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-    if (IsSelectionEnabled)
+    if (IsSelectionEnabled && _selection == RowSelection.Multiple)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -3141,6 +3147,7 @@ public class BocList:
 
   /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
   /// <param name="selectedObjects"> An <see cref="IList"/> of <see cref="IBusinessObject"/> objects. </param>>
+  /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
   public void SetSelectedBusinessObjects (IList selectedObjects)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("selectedObjects", selectedObjects);
@@ -3167,10 +3174,17 @@ public class BocList:
   }
 
   /// <summary> Sets indeces for the rows selected in the <see cref="BocList"/>. </summary>
-  /// <param name="selectedRows"> An array of <see cref="int"/> values. </param>>
+  /// <param name="selectedRows"> An array of <see cref="int"/> values. </param>
+  /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
   public void SetSelectedRows (int[] selectedRows)
   {
     ClearSelectedRows();
+
+    if (_selection == RowSelection.Disabled && selectedRows.Length > 0)
+      throw new InvalidOperationException ("Cannot select rows if the BocList is set to RowSelection.Disabled.");
+
+    if (_selection == RowSelection.Single && selectedRows.Length > 1)
+      throw new InvalidOperationException ("Cannot select more than one row if the BocList is set to RowSelection.Single.");
 
     foreach (int rowIndex in selectedRows)
       _checkBoxCheckedState[rowIndex] = true;
@@ -3540,9 +3554,9 @@ public enum SortingDirection
 
 public enum RowSelection
 { 
-  Disabled,
-  //  Single,
-  Multiple  
+  Disabled = 0,
+  Single = 1,
+  Multiple = 2 
 }
 
 public enum ListMenuLineBreaks
