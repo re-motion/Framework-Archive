@@ -29,7 +29,6 @@ public abstract class CommandBuilder
   // abstract methods and properties
 
   public abstract IDbCommand Create ();
-  protected abstract void AppendColumn (string columnName, string parameterName);
 
   // methods and properties
 
@@ -183,6 +182,16 @@ public abstract class CommandBuilder
   public RdbmsProvider Provider
   {
     get { return _provider; }
+  }
+
+  protected virtual void AppendColumn (string columnName, string parameterName)
+  {
+    throw new InvalidOperationException ("AppendColumn must be overridden in derived class.");
+  }
+
+  protected ArgumentException CreateArgumentException (string parameterName, string message, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), parameterName);
   }
 }
 }
