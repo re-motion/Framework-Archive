@@ -44,7 +44,7 @@ public class ValidationError
   /// <overload>Overloaded</overload>
   /// <param name="validatedControl">The control with an invalid state.</param>
   /// <param name="validationMessage">The message to be displayed to the user.</param>
-  /// <param name="validator">The validator used to validate the <pararef cref="validatedControl"/>.</param>
+  /// <param name="validator">The validator used to validate the <paramref name="validatedControl"/>.</param>
 	public ValidationError (
     Control validatedControl,
     string validationMessage,

@@ -38,7 +38,7 @@ public interface ISmartControl: IControl
   Control TargetControl { get; }
 
   /// <summary>
-  ///   If UseLabel is true, it is valid to generate HTML &lt;label&gt; tags referencing <see cref="TargetControlClientID"/>.
+  ///   If UseLabel is true, it is valid to generate HTML &lt;label&gt; tags referencing <see cref="TargetControl"/>.
   /// </summary>
   /// <remarks>
   ///   This flag is usually true, except for controls that render combo boxes or other HTML tags that do not function properly
@@ -46,16 +46,16 @@ public interface ISmartControl: IControl
   /// </remarks>
   bool UseLabel { get; }
 
-  /// <summary>
-  ///   If UseInputControlCSS is true, the control requires special formatting.
-  /// </summary>
-  /// <remarks>
-  ///   This flag should be true for controls rendering &lt;input&gt; or &lt;textarea&gt; elements.
-  ///   The reason for this is in excentric application of CSS-classes to these elements via
-  ///   the defintion of global styles (input {...} and textarea {...}). The most predictable result
-  ///   is acchivied by directly assigning the class instead of using the global definitions.
-  /// </remarks>
-  //bool UseInputControlCSS { get; }
+//  /// <summary>
+//  ///   If UseInputControlCSS is true, the control requires special formatting.
+//  /// </summary>
+//  /// <remarks>
+//  ///   This flag should be true for controls rendering &lt;input&gt; or &lt;textarea&gt; elements.
+//  ///   The reason for this is in excentric application of CSS-classes to these elements via
+//  ///   the defintion of global styles (input {...} and textarea {...}). The most predictable result
+//  ///   is acchivied by directly assigning the class instead of using the global definitions.
+//  /// </remarks>
+//  bool UseInputControlCSS { get; }
 
   /// <summary>
   ///   Gets the label name of the control that should be presented to the user.

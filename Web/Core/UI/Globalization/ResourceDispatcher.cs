@@ -30,9 +30,13 @@ public sealed class ResourceDispatcher
   ///   Dispatches resources
   ///   provided by <see cref="IObjectWithResources.GetResourceManager()"/>
   /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/Common/*' />
-  /// <param name="control">The control to be dispatched. Must not be <see langname="null"/>.</param>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/param[@name="resourceManager"]' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
+  /// <param name="control">
+  ///   The control to be dispatched. Must not be <see langname="null"/>.
+  /// </param>
+  /// <param name="resourceManager">
+  ///   The resource manager to be used. Must not be <see langname="null"/>.
+  /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
     const string autoPrefix = "auto:";
@@ -49,7 +53,7 @@ public sealed class ResourceDispatcher
   ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
   ///   to a control that implements interface <see cref="IObjectWithResources"/>.
   /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/Common/*' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
   /// <param name="control">
   ///   The control to be dispatched
   ///   Must implement the interface <see cref="IObjectWithResources"/>.
@@ -72,10 +76,7 @@ public sealed class ResourceDispatcher
   /// <summary>
   ///   Dispatches an IDictonary of elementID/IDictonary pairs to the specified control.
   /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/remarks' />
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/param[@name="control"]' />
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/param[@name="elements"]' />
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/param[@name="resourceManager"]' />
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (
     Control control,
     IDictionary elements,
@@ -125,8 +126,6 @@ public sealed class ResourceDispatcher
   ///   Dispatch a dictonary to a control's properties.
   /// </summary>
   /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/param[@name="control"]' />
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/param[@name="values"]' />
   public static void DispatchGeneric (Control control, IDictionary values)
   {
     ArgumentUtility.CheckNotNull ("control", control);
@@ -176,7 +175,7 @@ public sealed class ResourceDispatcher
   ///   The filter prefix, can be empty. Must not be <see langname="null"/>.
   /// </param>
   /// <returns>
-  ///   Hashtable<string elementID, IDictionary<string property, string value> elementValues>
+  ///   Hashtable&lt;string elementID, IDictionary&lt;string property, string value&gt; elementValues&gt;
   /// </returns>
   public static IDictionary GetResources (IResourceManager resourceManager, string prefix)
   {
@@ -256,7 +255,12 @@ public sealed class ResourceDispatcher
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
   }
 
-  [Obsolete("Use Dispatch (Control controll instead")]
+  /// <summary>
+  /// obsolete
+  /// </summary>
+  /// <param name="control"></param>
+  /// <param name="controlType"></param>
+  [Obsolete("Use Dispatch (Control control instead")]
   public static void Dispatch (Control control, Type controlType)
   {
     ArgumentUtility.CheckNotNull ("control", control);
@@ -265,6 +269,11 @@ public sealed class ResourceDispatcher
     ResourceDispatcher.Dispatch(control);
   }
 
+  /// <summary>
+  /// obsolete
+  /// </summary>
+  /// <param name="control"></param>
+  /// <param name="resourceManager"></param>
   [Obsolete ("Use Dispatch (Control control, IResourceManager resourceManager) instead")]
   public static void Dispatch (Control control, ResourceManager resourceManager)
   {
