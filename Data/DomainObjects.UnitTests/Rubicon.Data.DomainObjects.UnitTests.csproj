@@ -119,6 +119,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ClientTransactionMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DatabaseTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -302,6 +307,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\DataContainerMapTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\DataContainerTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -357,6 +367,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\RelationEndPointMapTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjects\AddToOneToManyRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -388,6 +403,11 @@
                 />
                 <File
                     RelPath = "DomainObjects\DeleteDomainObjectWithOneToOneRelationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DomainObjects\DeleteNewDomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -693,11 +713,6 @@
                 />
                 <File
                     RelPath = "Transaction\ClientTransactionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Transaction\ClientTransactionMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

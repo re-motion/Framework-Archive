@@ -60,6 +60,14 @@ public class DataContainerMap : IEnumerable
     _dataContainers.Add (dataContainer);
   }
 
+  public void PerformDelete (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    if (dataContainer.State == StateType.New)
+      _dataContainers.Remove (dataContainer);    
+  }
+
   public void Commit ()
   {
     foreach (DataContainer dataContainer in _dataContainers)

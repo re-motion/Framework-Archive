@@ -122,8 +122,9 @@ public class DataManager
 
   private void PerformDelete (DomainObject domainObject)
   {
-    _dataContainerMap[domainObject.ID].Delete ();
     _relationEndPointMap.PerformDelete (domainObject);
+    _dataContainerMap.PerformDelete (domainObject.DataContainer);
+    domainObject.DataContainer.Delete ();
   }
 
   private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)

@@ -72,6 +72,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
         oppositeEndPoint.PerformRelationChange ();
 
       endPoint.PerformDelete ();
+
+      if (domainObject.State == StateType.New)
+        _relationEndPoints.Remove (endPointID);
     }
   }
 
