@@ -152,7 +152,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnLoad (e);
 
-    Binding.EvaluateBinding();
+    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -261,7 +261,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
       
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
@@ -285,7 +285,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     if (! interim)
     {
-      Binding.EvaluateBinding();
+      //Binding.EvaluateBinding();
 
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
