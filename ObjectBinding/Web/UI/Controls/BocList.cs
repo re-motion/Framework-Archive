@@ -2060,8 +2060,24 @@ public class BocList:
       IBusinessObject businessObjectA, 
       IBusinessObject businessObjectB)
   {
-    object valueA = propertyPath.GetValue (businessObjectA, false, true);
-    object valueB = propertyPath.GetValue (businessObjectB, false, true);
+    object valueA = null;
+    object valueB = null;
+
+    try
+    {
+      valueA = propertyPath.GetValue (businessObjectA, false, true);
+    }
+    catch 
+    { 
+    }
+
+    try
+    {
+      valueB = propertyPath.GetValue (businessObjectB, false, true);
+    }
+    catch 
+    {
+    }
 
     if (valueA == null && valueB == null)
       return 0;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Xml.Serialization;
 
 namespace Rubicon.ObjectBinding
@@ -8,23 +9,46 @@ public abstract class BusinessObject: IBusinessObject
 {
   public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
   {
-    object value = obj.GetProperty (property);
+    object value;
+    int count;
+
+    if (property.IsList)
+    {
+      IList list = (IList) obj.GetProperty (property);
+      count = list.Count;
+      if (count > 0)
+        value = list[0];
+      else 
+        value = null;
+    }
+    else
+    {
+      value = obj.GetProperty (property);
+      count = 1;
+    }
 
     if (value == null)
       return string.Empty;
 
+    string strValue = null;
     IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
     if (businessObject != null)
-      return businessObject.DisplayName;
-
-    if (format != null)
+    {
+      strValue = businessObject.DisplayName;
+    }
+    else if (format != null)
     {
       IFormattable formattable = value as IFormattable;
       if (formattable != null)
-        return formattable.ToString (format, null);
+        strValue = formattable.ToString (format, null);
     }
 
-    return value.ToString();
+    if (strValue == null)
+       strValue = value.ToString();
+
+    if (count > 1)
+      strValue += " ... [" + count.ToString() + "]";
+    return strValue;
   }
 
   public virtual IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
