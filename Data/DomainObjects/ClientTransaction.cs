@@ -65,7 +65,7 @@ public class ClientTransaction
   /// <summary>
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
-  public void Commit ()
+  public virtual void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
     using (PersistenceManager persistenceManager = new PersistenceManager ())
@@ -79,7 +79,7 @@ public class ClientTransaction
   /// <summary>
   /// Performs a rollback of all changes withing the <b>ClientTransaction</b>.
   /// </summary>
-  public void Rollback ()
+  public virtual void Rollback ()
   {
     _dataManager.Rollback ();
   }
@@ -132,7 +132,7 @@ public class ClientTransaction
   /// <param name="domainObject">The <see cref="DomainObject"/> to evaluate.</param>
   /// <returns><b>true</b> if any relations have changed; otherwise, <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
-  internal protected bool HasRelationChanged (DomainObject domainObject)
+  internal protected virtual bool HasRelationChanged (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -147,7 +147,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  internal protected DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
+  internal protected virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
@@ -161,7 +161,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  internal protected DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
+  internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
@@ -175,7 +175,7 @@ public class ClientTransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
-  internal protected DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
+  internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
@@ -189,7 +189,7 @@ public class ClientTransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
-  internal protected DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
+  internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
@@ -201,7 +201,7 @@ public class ClientTransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> referring the <see cref="DataManagement.RelationEndPoint"/> that should relate to <i>newRelatedObject</i>.</param>
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
-  internal protected void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
+  internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
@@ -212,7 +212,7 @@ public class ClientTransaction
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to delete.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
-  internal protected void Delete (DomainObject domainObject)
+  internal protected virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     _dataManager.Delete (domainObject);

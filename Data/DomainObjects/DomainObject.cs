@@ -207,7 +207,7 @@ public class DomainObject
   /// Deletes the <b>DomainObject</b>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  protected virtual void Delete ()
+  protected void Delete ()
   {
     CheckDiscarded ();
     ClientTransaction.Delete (this);
@@ -293,7 +293,7 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">Methods were called after a newly instantiated (uncommitted) <b>DomainObject</b> was deleted.</exception>
-  protected virtual void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
+  protected void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckDiscarded ();
@@ -432,13 +432,7 @@ public class DomainObject
 
   private ClientTransaction ClientTransaction
   {
-    get
-    {
-      if (_dataContainer.ClientTransaction == null)
-        throw new DomainObjectException ("Internal error: ClientTransaction of DataContainer not set.");
-
-      return _dataContainer.ClientTransaction;
-    }
+    get { return _dataContainer.ClientTransaction; }
   }
 }
 }

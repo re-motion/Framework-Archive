@@ -170,9 +170,12 @@ public class DataContainer
     get 
     {
       CheckDiscarded ();
+
+      if (_clientTransaction == null)
+        throw new DomainObjectException ("Internal error: ClientTransaction of DataContainer is not set.");
+
       return _clientTransaction;
     }
-
   }
   
   /// <summary>
