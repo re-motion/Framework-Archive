@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class BocMenuItem: MenuItem
+public class BocMenuItem: WebMenuItem
 {
   public BocMenuItem (
       string id, 
@@ -20,7 +20,7 @@ public class BocMenuItem: MenuItem
       RequiredSelection requiredSelection,
       bool isDisabled,
       BocMenuItemCommand command)
-    : this (id, category, text, icon, disabledIcon, MenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
+    : this (id, category, text, icon, disabledIcon, WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
   {
   }
 
@@ -30,7 +30,7 @@ public class BocMenuItem: MenuItem
       string text, 
       string icon, 
       string disabledIcon, 
-      MenuItemStyle style,
+      WebMenuItemStyle style,
       RequiredSelection requiredSelection,
       bool isDisabled,
       BocMenuItemCommand command)
@@ -41,7 +41,7 @@ public class BocMenuItem: MenuItem
   public BocMenuItem ()
     : this (
         null, null, null, null, null, 
-        MenuItemStyle.IconAndText, RequiredSelection.Any, false, new BocMenuItemCommand())
+        WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, new BocMenuItemCommand())
   {
   }
 
