@@ -196,6 +196,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "PerformanceCountersTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "queries.xml"
                     BuildAction = "Content"
                 />
