@@ -1,3 +1,34 @@
+3.2.0.0
+=======
+
+- Moved von Rubicon nach Commons.
+
+- Utilities.AccessKeyUtility:
+  * Hinzugefügt
+  * AccesskeyUtility.FormatLabelText (...)
+    Methode zum Parsen von Strings mit AccessKey-Syntax (&), highlighten des Keys und Rückgabe des 
+    Chars der als Key verwendet wird.
+  * AccesskeyUtility.RemoveAccessKey (...)
+    Methode um die AccessKey-Syntax aus einem String zu entfernen.
+    
+- Controls:
+  * Muss erst wieder durch übernehmen der Controls in Rubicon.Web.UI.Controls befüllt werden.
+  
+  
+  
+- Globalization.ResourceDispatcher:
+  * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
+    zu unterstützen.
+  * Methoden, die noch direkt den FCL ResourceManager unterstützen, sind als obsolete
+    gekennzeichnet.
+  * Ergänzt um verschiedene public Methoden,
+    um Teilfunktionialität nach außen zur Verfügung zu stellen.
+  * Fehlerhafte Resourcenangaben werden mit Hilfe von log4net geloggt.
+  * Abwärtskompatibilität ist gewährt (vorbehaltlich Bugs)
+  
+- log4net
+  * Die Binary für log4net 1.2beta wurde in the References aufgenommen.
+
 3.1.8.0
 =======
 

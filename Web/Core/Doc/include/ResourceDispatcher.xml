@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <ResourceDispatcher>
+  <Class>
+    <example>
+      Example configuration for logging the ResourceDispatcher's errors.
+      <code>
+<![CDATA[
+<?xml version="1.0" encoding="utf-8" ?>
+<log4net debug="false">
+	<appender name="FailedResourcesLogFileAppender" type="log4net.Appender.FileAppender" >
+		<param name="File" value="Failed-Resources-log.txt" />
+		<param name="AppendToFile" value="true" />
+		<layout type="log4net.Layout.PatternLayout">
+		  <!--  value="date - message newline-->
+			<param name="ConversionPattern" value="%d - %m%n" />
+		</layout>
+  </appender>
+	<logger name="Rubicon.Web.UI.Globalization.ResourceDispatcher">
+		<level value="ERROR" />
+		<appender-ref ref="FailedResourcesLogFileAppender" />
+	</logger>
+</log4net>
+]]>
+      </code>
+    </example>
+  </Class>
   <Dispatch>
     <Common>
       <remarks>
@@ -12,17 +36,20 @@
           <item>
             <term>prefix</term>
             <description>
-              Indicates all resources to be dispatched automatically (prefix = "auto")
+              Indicates all resources to be dispatched automatically (prefix = "auto").
             </description>
           </item>
           <item>
             <term>ElementID</term>
-            <description>The ID of the child control inside the passed control</description>
+            <description>
+              The ID of the child control inside the passed control or "this" for the control 
+              itself.
+            </description>
           </item>
           <item>
             <term>Parameter</term>
             <description>
-              The parameter can denote a single property or contain prefixes it self.
+              The parameter can denote a single property or contain prefixes itself.
             </description>
           </item>
         </list>
@@ -30,27 +57,48 @@
         IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
         handle parameters named like one of the child control's properties.
       </remarks>
-      <exception cref="InvalidOperationException">
-          A resource with an ElementID was found, that is unknown in the control's Control collection.
-      </exception>
-      <exception cref="InvalidOperationException">
-          For a control that does not implement <c>IResourceDispatchTarget</c>,
-          Parameter denotes an unknown property.
-      </exception>
     </Common>
-    <param name="control">
-      The control to be dispatched.
-      The control must contain child controls for dispatching to occur.
-    </param>
-    <param name="resourceManager"></param>  
+    <param name="resourceManager">
+      The resource manager to be used. Must not be <see langname="null"/>.
+    </param>  
+    <param name="elements">
+      The <see cref="IDictonary"/> to be dispatched. Must not be <see langname="null"/>.
+    </param>  
   </Dispatch>
+  <DispatchMain>
+    <remarks>
+      The keys identify the elements in the control.
+      The embedded IDictonaries contain property/value pairs to be dispatched to the elements.
+      Key with a property part of this are used to refernce the <c>control</c> itself,
+      instead of a child control.
+    </remarks>
+    <param name="control">
+      <para>
+        The control to be dispatched.
+      </para><para>
+        If the control implements the interface <see cref="IResourceDispatchTargetWithChildren" />
+        all dispatching is deferred to the control.
+      </para><para>
+        Otherwise the control must contain child controls for dispatching to occur
+      </para>
+    </param>
+    <param name="resourceManager">
+      The resource manager from which the elements IDictonary has been filled.
+      Used only for background information on the resources contained in elements.
+    </param>  
+  </DispatchMain>
   <DispatchGeneric>
     <param name="control">
-      The control to be dispatched.
+      The control to be dispatched. Must not be <see langname="null"/>.
     </param>
     <param name="values">
       A dictonary consisting of name/value pairs
       corresponding to property's name and value resprectively.
+      Must not be <see langname="null"/>.
     </param>
+    <exception cref="InvalidOpertationException">
+      If <c>control</c> does not define a property specified in <c>values</c> 
+      and is not of type <c>HtmlControl</c>.
+    </exception>
   </DispatchGeneric>
 </ResourceDispatcher>
