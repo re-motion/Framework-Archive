@@ -8,7 +8,9 @@ using System.Drawing;
 using System.Reflection;
 
 using Rubicon;
-using Rubicon.Findit.Globalization.Classes;
+using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -129,7 +131,7 @@ public class TabMenu: Control, ITabItem
   }
 }
 
-[MultiLingualResources ("Rubicon.Web.UI.Controls.Globalization.TabControl")] 
+[MultiLingualResources ("Rubicon.Web.UI.Globalization.TabControl")] 
 [ParseChildren (true, "Tabs")]
 public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 {

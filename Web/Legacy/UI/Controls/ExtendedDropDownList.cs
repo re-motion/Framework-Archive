@@ -3,7 +3,8 @@ using System.Collections;
 using System.Web.UI.WebControls;
 
 using Rubicon;
-using Rubicon.Findit.Globalization.Classes;
+using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {

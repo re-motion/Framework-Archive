@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.Findit.Client.Controls"
+                RootNamespace = "Rubicon.Web.UI"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -104,14 +104,14 @@
                     HintPath = "..\..\..\..\Program Files\Microsoft Internet Explorer WebControls\Microsoft.Web.UI.WebControls.dll"
                 />
                 <Reference
-                    Name = "Globalization"
-                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
                     HintPath = "..\ExternalReferences\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Globalization"
+                    Project = "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
@@ -123,91 +123,70 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "CommandHandler.cs"
+                    RelPath = "Controls\CommandHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ControlHelper.cs"
+                    RelPath = "Controls\DataDropDownList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataDropDownList.cs"
+                    RelPath = "Controls\DateRangeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DateRangeValidator.cs"
+                    RelPath = "Controls\DefaultTextControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DefaultTextControl.cs"
+                    RelPath = "Controls\EntryFormGrid.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EntryFormGrid.cs"
+                    RelPath = "Controls\ExtendedDropDownList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExtendedDropDownList.cs"
+                    RelPath = "Controls\LengthValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "HtmlUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "LengthValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MultiLingualPage.cs"
+                    RelPath = "Controls\MultiLingualPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MultiLingualUserControl.cs"
+                    RelPath = "Controls\MultiLingualUserControl.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PageUtility.cs"
+                    RelPath = "Controls\TabControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ResourceDispatcher.cs"
+                    RelPath = "Controls\TableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TabControl.cs"
+                    RelPath = "Controls\ViewControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TableControl.cs"
+                    RelPath = "Controls\WebControls.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <File
-                    RelPath = "ViewControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebControls.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <Folder RelPath = "Controls\" />
                 <File
                     RelPath = "Globalization\EntryFormGrid.en.resx"
                     BuildAction = "EmbeddedResource"
@@ -225,6 +204,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\ResourceDispatcher.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Globalization\TabControl.en.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -240,7 +224,21 @@
                     RelPath = "Globalization\TabControl.resx"
                     BuildAction = "EmbeddedResource"
                 />
-                <Folder RelPath = "Utilities\" />
+                <File
+                    RelPath = "Utilities\ControlHelper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\HtmlUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\PageUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
             </Include>
         </Files>
     </CSHARP>

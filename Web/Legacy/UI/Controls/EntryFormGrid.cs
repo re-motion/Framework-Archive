@@ -7,7 +7,8 @@ using System.Web.UI.WebControls;
 using System.Drawing;
 using System.Globalization;
 
-using Rubicon.Findit.Globalization.Classes;
+using Rubicon.Globalization;
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -271,7 +272,7 @@ public class EntryTitle: Control
 }
 
 [ParseChildren (false)]
-[MultiLingualResources ("Rubicon.Web.UI.Controls.Globalization.EntryFormGrid")] 
+[MultiLingualResources ("Rubicon.Web.UI.Globalization.EntryFormGrid")] 
 public class EntryField: Control
 {
 	private string _label = String.Empty;

@@ -1,7 +1,9 @@
 using System;
 using System.Web.UI;
 
-using Rubicon.Findit.Globalization.Classes;
+using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {

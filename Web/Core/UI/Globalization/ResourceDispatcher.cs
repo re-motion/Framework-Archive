@@ -10,9 +10,9 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-using Rubicon.Findit.Globalization.Classes;
+using Rubicon.Globalization;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI.Globalization
 {
 
 public sealed class ResourceDispatcher

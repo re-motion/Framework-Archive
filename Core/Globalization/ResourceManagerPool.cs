@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace Rubicon.Findit.Globalization.Classes
+namespace Rubicon.Globalization
 {
 
 public sealed class ResourceManagerPool
