@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Text;
 
@@ -24,7 +25,7 @@ public class ValidationError
   /// <summary> The control with an invalid state. </summary>
   private Control _validatedControl;
 
-  private ControlCollection _label;
+  private ControlCollection _labels;
 
   /// <summary> The message to be displayed to the user. </summary>
   private string _validationMessage;
@@ -42,7 +43,7 @@ public class ValidationError
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
   /// <param name="validator"> The validator used to validate the <paramref name="validatedControl"/>. </param>
-	public ValidationError (Control validatedControl, IValidator validator, ControlCollection label)
+	public ValidationError (Control validatedControl, IValidator validator, ControlCollection labels)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validator", validator);
@@ -50,7 +51,7 @@ public class ValidationError
     _validatedControl = validatedControl;
     _validationMessage = null;
     _validator = validator;
-    _label = label;
+    _labels = labels;
 	}
 
   public ValidationError (Control validatedControl, IValidator validator)
@@ -65,7 +66,7 @@ public class ValidationError
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
   /// <param name="validationMessage"> The message to be displayed to the user. </param>
-  public ValidationError (Control validatedControl, string validationMessage, ControlCollection label)
+  public ValidationError (Control validatedControl, string validationMessage, ControlCollection labels)
 	{
     ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
@@ -73,7 +74,7 @@ public class ValidationError
     _validatedControl = validatedControl;
     _validationMessage = validationMessage;
     _validator = null;
-    _label = label;
+    _labels = labels;
   }
 
   public ValidationError (Control validatedControl, string validationMessage)
@@ -90,9 +91,9 @@ public class ValidationError
     get { return _validatedControl; }
   }
 
-  public ControlCollection Label
+  public ControlCollection Labels
   {
-    get { return _label; }
+    get { return _labels; }
   }
 
   /// <summary> The message to be displayed to the user. </summary>
@@ -125,15 +126,16 @@ public class ValidationError
   /// </remarks>
   /// <param name="cssClass"> The name of the CSS-class used to format the label. </param>
   /// <returns> A <see cref="Label"/>. </returns>
-  public Label ToLabel (string cssClass)
+  public HtmlGenericControl ToLabel (string cssClass)
   {
-    Label label = new Label();
-
-    label.Text = this.ValidationMessage;
-    label.AssociatedControlID = this.ValidatedControl.UniqueID;
+    HtmlGenericControl label = new HtmlGenericControl ("label");
+    
+    label.ID = ValidatedControl.ClientID + "_ValidationError_Label";
+    label.InnerText = ValidationMessage;
+    label.Attributes["for"] = ValidatedControl.ClientID;
 
     if (cssClass != null && cssClass != String.Empty)
-      label.CssClass = cssClass;
+      label.Attributes ["class"] = cssClass;
 
     return label;
   }
@@ -148,8 +150,8 @@ public class ValidationError
   {
     HyperLink hyperLink = new HyperLink();
 
-    hyperLink.Text = this.ValidationMessage;
-    hyperLink.NavigateUrl = "#" + this.ValidatedControl.ID;
+    hyperLink.Text = ValidationMessage;
+    hyperLink.NavigateUrl = "#" + ValidatedControl.ClientID;
 
     if (cssClass != null && cssClass != String.Empty)
       hyperLink.CssClass = cssClass;
