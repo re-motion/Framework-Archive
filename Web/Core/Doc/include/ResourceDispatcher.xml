@@ -33,15 +33,15 @@
           <description>function</description>
         </listheader>
         <item>
-          <term>prefix</term>
+          <term>"auto:"</term>
           <description>
-            Indicates all resources to be dispatched automatically (prefix = "auto").
+            Indicates all resources to be dispatched automatically.
           </description>
         </item>
         <item>
           <term>ElementID</term>
           <description>
-            The ID of the child control inside the passed control or "this" for the control 
+            The ID of the child control inside the passed control, or "this" for the control 
             itself.
           </description>
         </item>

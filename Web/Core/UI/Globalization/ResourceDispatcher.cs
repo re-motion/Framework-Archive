@@ -31,37 +31,11 @@ public sealed class ResourceDispatcher
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
 
   /// <summary>
-  ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
-  ///   to a control that implements interface <see cref="IObjectWithResources"/>.
+  ///   Dispatches resources.
   /// </summary>
   /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
   /// <param name="control">
-  ///   The control to be dispatched
-  ///   Must implement the interface <see cref="IObjectWithResources"/>.
-  ///   Must not be <see langname="null"/>.
-  /// </param>
-  /// <exception cref="ResourceException">
-  ///   Thrown if control does not support interface IObjectWithResources
-  /// </exception>
-  [Obsolete ("Use Dispatch (Control, IResourceManager) instead.")]
-  public static void Dispatch (Control control)
-  {
-    ArgumentUtility.CheckNotNull ("control", control);
-
-    IObjectWithResources objectWithResources = control as IObjectWithResources;
-    if (objectWithResources == null)
-      throw new ResourceException ("Control does not support interface IObjectWithResources");
-
-    ResourceDispatcher.Dispatch (control, objectWithResources.GetResourceManager());
-  }
-
-  /// <summary>
-  ///   Dispatches resources
-  ///   provided by <see cref="IObjectWithResources.GetResourceManager()"/>
-  /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
-  /// <param name="control">
-  ///   The control to be dispatched. Must not be <see langname="null"/>.
+  ///   The control for which resources are to be dispatched. Must not be <see langname="null"/>.
   /// </param>
   /// <param name="resourceManager">
   ///   The resource manager to be used. Must not be <see langname="null"/>.
@@ -76,6 +50,28 @@ public sealed class ResourceDispatcher
     IDictionary elements = ResourceDispatcher.GetResources (resourceManager, autoPrefix);
 
     ResourceDispatcher.Dispatch (control, elements, resourceManager.Name);
+  }
+
+  /// <summary>
+  ///   Dispatches resources provided by <see cref="IObjectWithResources.GetResourceManager()"/>
+  /// </summary>
+  /// <param name="control">
+  ///   The control for which resources are to be dispatched. Must not be <see langname="null"/>.
+  ///   The control and/or one or more of its parents must implement <see cref="IObjectWithResources"/>.
+  /// </param>
+  /// <param name="throwExceptionIfNoResources"> If true and neither the control nor its parents
+  ///   define a resource manager, an InvalidOperationException is thrown. </param>
+  public static void Dispatch (Control control, bool throwExceptionIfNoResources)
+  {
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (control);
+    if (resourceManager == null)
+    {
+      if (throwExceptionIfNoResources)
+        throw new InvalidOperationException ("Control " + control.UniqueID + " has no resource managers.");
+      else
+        return;
+    }
+    Dispatch (control, resourceManager);
   }
 
   /// <summary>
@@ -241,19 +237,6 @@ public sealed class ResourceDispatcher
     property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
   }
 
-  /// <summary>
-  /// obsolete
-  /// </summary>
-  /// <param name="control"></param>
-  /// <param name="controlType"></param>
-  [Obsolete("Use Dispatch (Control) instead.")]
-  public static void Dispatch (Control control, Type controlType)
-  {
-    ArgumentUtility.CheckNotNull ("control", control);
-    ArgumentUtility.CheckNotNull ("controlType", controlType);
-
-    ResourceDispatcher.Dispatch(control);
-  }
 
   /// <summary>
   /// obsolete
