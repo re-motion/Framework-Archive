@@ -1848,9 +1848,7 @@ public class BocList:
     return Page.GetPostBackClientHyperlink (this, postBackArgument);
   }
 
-  /// <summary>
-  ///   Formats the arguments into a post back argument to be used by the client side post back event.
-  /// </summary>
+  /// <summary> Formats the arguments into a post back argument to be used by the client side post back event. </summary>
   private string FormatCustomCellPostBackArgument (int columnIndex, int listIndex, string customCellArgument)
   {
     if (customCellArgument == null)
