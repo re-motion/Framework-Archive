@@ -193,7 +193,7 @@
   
   <target name="DevelopmentCoreTest" depends="Core,DevelopmentCore">
     <property name="project.name" value="Development.Core.Test" />
-    <property name="project.name" value="Development/Core.Test" />
+    <property name="project.dir" value="Development/Core.Test" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
@@ -297,8 +297,13 @@
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
         <includes name="Rubicon.Core.dll" />
-        <includes name="Rubicon.Development.CodeDom.dll" />
         <includes name="Rubicon.Development.dll" />
+        <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Web.UI.dll" />
+        <includes name="Rubicon.Globalization.dll" />
+        <includes name="Rubicon.ObjectBinding.dll" />
+        <includes name="Rubicon.ObjectBinding.Web.dll" />
+        <includes name="Rubicon.ObjectBinding.Reflection.dll" />
       </assemblies>
       <documenters>
         <documenter name="MSDN">
@@ -339,8 +344,13 @@
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
         <includes name="Rubicon.Core.dll" />
-        <includes name="Rubicon.Development.CodeDom.dll" />
         <includes name="Rubicon.Development.dll" />
+        <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Web.UI.dll" />
+        <includes name="Rubicon.Globalization.dll" />
+        <includes name="Rubicon.ObjectBinding.dll" />
+        <includes name="Rubicon.ObjectBinding.Web.dll" />
+        <includes name="Rubicon.ObjectBinding.Reflection.dll" />
       </assemblies>
       <documenters>
         <documenter name="MSDN">
@@ -409,10 +419,11 @@
     <zip zipfile="${local.zipfile}">
       <fileset>
         <includes name="Core/**/*" />
-        <includes name="CoreTest/**/*" />
-        <includes name="DevelopmentCore/**/*" />
-        <includes name="DevelopmentCoreTest/**/*" />
-        <includes name="CodeDom/**/*" />
+        <includes name="Core.Test/**/*" />
+        <includes name="Development/**/*" />
+        <includes name="ObjectBinding/**/*" />
+        <includes name="Globalization/**/*" />
+        <includes name="Web.UI/**/*" />
         <includes name="build/*.xml" />
         <excludes name="**/*.zip" />
         <excludes name="**/*.dll" />

@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("@productname@")]
 [assembly: AssemblyCopyright("@copyright@")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("de")]		
+[assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 //
 // Version information for an assembly consists of the following four values:
