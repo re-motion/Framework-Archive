@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI.Design;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
