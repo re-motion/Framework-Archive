@@ -552,19 +552,6 @@
       </OverloadTableRows>
     </Parameters>
   </CheckAndGetDataCells>
-  <CheckCellRange>
-    <Parameters>
-      <param name="argumentName">
-        The display name of the <paramref name="cellIndex" />.
-      </param>
-      <param name="row">
-        The <see cref="FormGridRow"/> to be tested against.
-      </param>
-      <param name="cellIndex">
-        The index to test for.
-      </param>
-    </Parameters>
-  </CheckCellRange>
   <PopulateFormGridList>
     <remarks>
       Select all HtmlTables used as globally managed Form Grids into the Form Grid list.
@@ -789,6 +776,9 @@
   <ReadOnlyFormGridRowCollection>
     <Constructor>
       <Parameters>
+        <param name="ownerFormGrid">
+          The <see cref="FormGrid"/> to which this collection belongs to.
+        </param>
         <param name="formGridRows">
           The array of <see cref="FormGridRow"/> object to be managed by this collection.
           May not contain null references.
@@ -804,14 +794,18 @@
   <FormGridRow>
     <Constructor>
       <Parameters>
-        <param name="formGrid">
-          The <see cref="FormGrid"/> of which this <c>FormGridRow</c> will be a part of.
-        </param>
         <param name="htmlTableRows">
-          The array of <see cref="HtmlTableRow"/> objects logically forming this <c>FormGridRow</c>
+          The array of <see cref="HtmlTableRow"/> objects logically forming this <c>FormGridRow</c>.
+          Must not be empty or contain <see langword="null"/>
         </param>
         <param name="type">
           The <see cref="FormGridRowType"/> represented by this object.
+        </param>
+        <param name="labelsColumn">
+          The index of the labels column.
+        </param>
+        <param name="controlsColumn">
+          The index of the controls column.
         </param>
       </Parameters>
     </Constructor>
@@ -832,7 +826,7 @@
     </Equals>
     <ValidationErrors>
       <remarks>
-        The array can not be null.
+        The array cannot be null.
       </remarks>
     </ValidationErrors>
   </FormGridRow>

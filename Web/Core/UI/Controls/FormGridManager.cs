@@ -56,17 +56,21 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     ValidationError
   }
 
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary> A list of form grid manager wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Type, Enum). </remarks>
   protected enum ResourceIdentifiers
   {
-    RequiredFieldAlteranteText,
-    ValidationErrorInfoAlteranteText,
-    HelpAlteranteText,
+    /// <summary>The alternate text for the required icon. Defaults to '*'.</summary>
+    RequiredFieldAlternateText,
+    /// <summary>The alternate text for the validation error icon. Defaults to '!'.</summary>
+    ValidationErrorInfoAlternateText,
+    /// <summary>The alternate text for the help icon. Defaults to '?'.</summary>
+    HelpAlternateText,
+    /// <summary>The tool tip text for the required icon.</summary>
     RequiredFieldTitle,
     //  Not used, title always set to message
     //  ValidationErrorInfoTitle,
+    /// <summary>The tool tip text for the help icon.</summary>
     HelpTitle
   }
   /// <summary>
@@ -250,13 +254,17 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Searches for a <see cref="FormGridRow"/> containing the specified <paramref name="ID"/>.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The control ID to find.</param>
+    /// <returns>
+    ///   The <see cref="FormGridRow"/> containing the <see cref="Control"/>
+    ///   or <see langword="null"/> if row not found.
+    /// </returns>
     public FormGridRow GetRowForID (string id)
     {
-      StringUtility.IsNullOrEmpty (id);
+      if (id == null || id == string.Empty)
+        return null;
 
       foreach (FormGridRow row in _rows)
       {
@@ -268,20 +276,35 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Inserts a <see cref="FormGridRow"/> at the position specified by 
+    ///   <paramref name="positionInFormGrid"/> and <paramref name="relatedRowID"/>.
     /// </summary>
-    /// <param name="formGridRow"></param>
+    /// <remarks>
+    ///   If position cannot be identified, the row placed at the end of the 
+    ///   <see cref="FormGridRowCollection"/>.
+    /// </remarks>
+    /// <param name="newFormGridRow">
+    ///   The <see cref="FormGridRow"/> to insert.
+    /// </param>
+    /// <param name="relatedRowID">
+    ///   The ID of the row used to find the insert position.
+    ///   </param>
+    /// <param name="positionInFormGrid">
+    ///   Specifies where to insert the row in relation to <paramref name="relatedRowID"/>
+    /// </param>
     public void InsertNewFormGridRow (
       FormGridRow newFormGridRow,
-      FormGridRowPrototype.RowPosition positionInFormGrid,
-      string relatedRowID)
+      string relatedRowID,
+      FormGridRowPrototype.RowPosition positionInFormGrid)
     {
+      ArgumentUtility.CheckNotNull ("newFormGridRow", newFormGridRow);
+
       FormGridRow relatedRow = GetRowForID (relatedRowID);
 
       //  Not found, append to form grid instead of inserting at position of related form grid row
       if (relatedRow == null)
       {
-        s_log.Error ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' on page '" + _table.Page.ToString() + "'.");
+        s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' on page '" + _table.Page.ToString() + "'.");
 
         //  append html table rows
         foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
@@ -293,26 +316,23 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         //  Insert after the related form grid row
       else if (positionInFormGrid == FormGridRowPrototype.RowPosition.AfterRowWithID)
       {
+        //  Find insertion postion for the html table rows
+
         int idxHtmlTableRow = 0;
-        bool isRowFound = false;
+
+        HtmlTableRow lastReleatedTableRow = 
+          relatedRow.HtmlTableRows[relatedRow.HtmlTableRows.Count - 1];
 
         //  Find position in html table
         for (; idxHtmlTableRow < _table.Rows.Count; idxHtmlTableRow++)
         {
-          //  Compare current row with each html table row in the form grid row
-          foreach (HtmlTableRow relatedHtmlTableRow in relatedRow.HtmlTableRows)
-          {
-            //  Row is found
-            if (_table.Rows[idxHtmlTableRow] == relatedHtmlTableRow)
-              isRowFound = true;
-            
-            //  Set the index after the last html table row in this form grid row
-            if (isRowFound)
-              idxHtmlTableRow++;
-          }
+          if (_table.Rows[idxHtmlTableRow] == lastReleatedTableRow)
+          {    
+            //  We want to isnert after the current position
+            idxHtmlTableRow++;
 
-          if (isRowFound)
             break;
+          }
         }
 
         //  Insert the new html table rows
@@ -322,7 +342,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
           idxHtmlTableRow++;
         }
 
+
         //  Insert row into Form Grid
+
         int idxFormGridRow = ((IList)Rows).IndexOf (relatedRow);
         //  After the index of the related row
         idxFormGridRow++;
@@ -331,24 +353,16 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         //  Insert before the related form grid row
       else if (positionInFormGrid == FormGridRowPrototype.RowPosition.BeforeRowWithID)
       {
+        //  Find insertion postion for the html table rows
+
         int idxHtmlTableRow = 0;
-        bool isRowFound = false;
+
+        HtmlTableRow firstReleatedTableRow = relatedRow.HtmlTableRows[0];
 
         //  Find position in html table
         for (; idxHtmlTableRow < _table.Rows.Count; idxHtmlTableRow++)
         {
-          //  Compare current row with each html table row in the form grid row
-          foreach (HtmlTableRow relatedHtmlTableRow in relatedRow.HtmlTableRows)
-          {
-            //  Row is found, new rows will be inserted at current index
-            if (_table.Rows[idxHtmlTableRow] == relatedHtmlTableRow)
-            {
-              isRowFound = true;
-              break;
-            }
-          }
-
-          if (isRowFound)
+          if (_table.Rows[idxHtmlTableRow] == firstReleatedTableRow)
             break;
         }
 
@@ -359,7 +373,9 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
           idxHtmlTableRow++;
         }
 
+
         //  Insert row into Form Grid
+        
         int idxFormGridRow = ((IList)Rows).IndexOf (relatedRow);
         //  Before the related row
         ((IList)Rows).Insert (idxFormGridRow, newFormGridRow);
@@ -385,7 +401,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Can be used to store the initial value for the labels column in a 
+    ///   <see cref="FormGridRow"/>
     /// </summary>
     public int DefaultLabelsColumn
     {
@@ -394,7 +411,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Can be used to store the initial value for the controls column in a 
+    ///   <see cref="FormGridRow"/>
     /// </summary>
     public int DefaultControlsColumn
     {
@@ -404,10 +422,11 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 }
 
   /// <summary>
-  ///   A read only collection of <see cref="FormGridRow"/> objects.
+  ///   A collection of <see cref="FormGridRow"/> objects.
   /// </summary>
   protected sealed class FormGridRowCollection : CollectionBase
   {
+    /// <summary> The <see cref="FormGrid"/> to which this collection belongs to. </summary>
     private FormGrid _ownerFormGrid;
 
     /// <summary>
@@ -433,7 +452,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    ///   A read only indexer for the <see cref="FormGridRow"/> onbjects.
+    ///   A read only indexer for the <see cref="FormGridRow"/> objects.
     /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ReadOnlyFormGridRowCollection/Indexer/remarks' />
     /// <value>The indexed <see cref="FormGridRow"/></value>
@@ -448,16 +467,22 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    ///   Allows only the insertion of form grid rows
+    ///   Allows only the insertion of objects of type of <see cref="FormGridRow"/>.
     /// </summary>
     /// <param name="index">The zero-based index at which to insert value</param>
     /// <param name="value">The new value of the element at index</param>
+    /// <exception cref="ArgumentTypeException">
+    ///   Thrown if value is not of type <see cref="FormGridRow"/>
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    ///   Thrown if atempt to pass a <paramref name="value"/> of <see langword="null"/>.
+    /// </exception>
     protected override void OnInsert(int index, object value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
       
       FormGridRow formGridRow = value as FormGridRow;
-      if (formGridRow == null) throw new ArgumentException ("The specified argument is not of type '" + typeof (FormGridRow).ToString() + "'.");
+      if (formGridRow == null) throw new ArgumentTypeException ("value", typeof (FormGridRow), value.GetType());
       
       formGridRow._formGrid = _ownerFormGrid;
       base.OnInsert (index, value);
@@ -471,23 +496,19 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// </summary>
   protected class FormGridRow
   {
-    /// <summary>
-    ///   The <see cref="FormGrid"/> inctance of which this <c>FormGridRow</c> is a part of.
-    /// </summary>
+    /// <summary>The <see cref="FormGrid"/> inctance of which this <c>FormGridRow</c> is a part of.</summary>
     internal FormGrid _formGrid;
 
-    /// <summary>
-    ///   The <see cref="HtmlTableRow"/> collection for this <c>FormGridRow</c>.
-    /// </summary>
+    /// <summary> The <see cref="HtmlTableRow"/> collection for this <c>FormGridRow</c>. </summary>
     private ReadOnlyHtmlTableRowCollection _htmlTableRows;
 
-    /// <summary> The type of this <c>FormGridRow</c> </summary>
+    /// <summary> The type of this <c>FormGridRow</c>. </summary>
     private FormGridRowType _type;
 
-    /// <summary></summary>
+    /// <summary> <see langword="true"/> if the row sould be rendered. </summary>
     private bool _visible;
 
-    /// <summary> The <c>ValidationError</c> objects for this <c>FormGridRow</c> </summary>
+    /// <summary> The <c>ValidationError</c> objects for this <c>FormGridRow</c>. </summary>
     private ValidationError[] _validationErrors;
 
     /// <summary> The validation marker for this <c>FormGridRow</c>. </summary>
@@ -499,49 +520,55 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     /// <summary> The help provider for this <c>FormGridRow</c>. </summary>
     private Control _helpProvider;
 
-    /// <summary></summary>
+    /// <summary> The index of the row containing the labels cell. </summary>
     private int _labelsRowIndex;
 
-    /// <summary></summary>
+    /// <summary> The index of the row containing the controls cell. </summary>
     private int _controlsRowIndex;
  
-    /// <summary></summary>
+    /// <summary> The index of the column normally containing the labels cell. </summary>
     private int _labelsColumn;
 
-    /// <summary></summary>
+    /// <summary> The index of the column normally containing the controls cell. </summary>
     private int _controlsColumn;
 
-    /// <summary></summary>
-    private HtmlTableRow _labelsRow;
-
-    /// <summary></summary>
-    private HtmlTableRow _controlsRow;
-
-    /// <summary></summary>
+    /// <summary> The cell containing the labels. </summary>
     private HtmlTableCell _labelsCell;
 
-    /// <summary></summary>
+    /// <summary> The cell containing the controls. </summary>
     private HtmlTableCell _controlsCell;
 
-    /// <summary></summary>
+    /// <summary>
+    ///   The cell used as a place holder if the controls cell is not at the standard position.
+    /// </summary>
     private HtmlTableCell _controlsCellDummy;
 
-    /// <summary></summary>
+    /// <summary> The cell containing the markers. </summary>
     private HtmlTableCell _markersCell;
 
-    /// <summary></summary>
+    /// <summary> The cell containing the validation messages. </summary>
     private HtmlTableCell _validationMessagesCell;
 
-    /// <summary></summary>
+    /// <summary>
+    ///   The cell used as a place holder if the validation message cell is not at the standard
+    ///   position.
+    /// </summary>
     private HtmlTableCell _validationMessagesCellDummy;
 
-    /// <summary></summary>
+    /// <summary> The Web.UI.Controls in this <see cref="FormGridRow"/>, using the ID as key. </summary>
     private Hashtable _controls;
 
     /// <summary>
     ///   Simple contructor
     /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/Constructor/Parameters/*' />
+    /// <exception cref="ArgumentEmptyException">
+    ///   Thrown if the list of <see cref="HtmlTableRows"/> is empty.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    ///   Thrown if the list of <see cref="HtmlTableRows"/> is <see langword="null"/> 
+    ///   or contains <see langword="null"/>.
+    /// </exception>
     public FormGridRow (
       HtmlTableRow[] htmlTableRows,
       FormGridRowType type, 
@@ -563,44 +590,57 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         if (htmlTableRows[index] == null)
           throw new ArgumentNullException ("htmlTableRows[" + index + "]");
       }
-
-      _labelsRowIndex = 0;
-      if (htmlTableRows[_labelsRowIndex].Cells.Count > _labelsColumn)
-        _labelsCell = htmlTableRows[_labelsRowIndex].Cells[_labelsColumn];
-
-      if (htmlTableRows.Length == 1)
-      {
-        _controlsRowIndex = 0;
-        if (htmlTableRows[_controlsRowIndex].Cells.Count > _controlsColumn)
-          _controlsCell = htmlTableRows[_controlsRowIndex].Cells[_controlsColumn];
-      }
-      else
-      {
-        _controlsRowIndex = 1;
-        if (htmlTableRows[_controlsRowIndex].Cells.Count > _labelsColumn)
-          _controlsCell = htmlTableRows[_controlsRowIndex].Cells[_labelsColumn];
-      }
     }
 
-
+    /// <summary> Set the labels cell for this <see cref="FormGridRow"/>. </summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the labels cell.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the labels cell in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetLabelsCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
       _labelsRowIndex = rowIndex;
-      _labelsRow = _htmlTableRows[rowIndex];
       _labelsCell = _htmlTableRows[rowIndex].Cells[cellIndex];
       return _labelsCell;
     }
 
+    /// <summary> Set the controls cell for this <see cref="FormGridRow"/>. </summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the controls cell.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the controls cell in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetControlsCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
       _controlsRowIndex = rowIndex;
-      _controlsRow = _htmlTableRows[rowIndex];
       _controlsCell = _htmlTableRows[rowIndex].Cells[cellIndex];
       return _controlsCell;
     }
 
+    /// <summary> Set the controls cell dummy for this <see cref="FormGridRow"/>. </summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the controls cell dummy cell.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the controls cell dummy cell in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetControlsCellDummy (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -608,6 +648,17 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return _controlsCellDummy;
     }
 
+    /// <summary> Set the markers cell for this <see cref="FormGridRow"/>. </summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the markers cell.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the markers cell in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetMarkersCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -615,6 +666,17 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return _markersCell;
     }
 
+    /// <summary> Set the validation messages cell for this <see cref="FormGridRow"/>. </summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the validation messages cell.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the validation messages cell in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetValidationMessagesCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -622,6 +684,17 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return _validationMessagesCell;
     }
 
+    /// <summary>Set the labels validation messages cell dummy for this <see cref="FormGridRow"/>.</summary>
+    /// <param name="rowIndex">
+    ///  The index of the <see cref="HtmlTableRow"/> containing the validation messages cell dummy.
+    /// </param>
+    /// <param name="cellIndex"> 
+    ///   The index of the validation messages cell dummy in the sepcified <see cref="HtmlTableRow"/>.
+    /// </param>
+    /// <returns> The cell that has just been set. </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///   Thrown if one or both indices denote invalid positions.
+    /// </exception>
     public virtual HtmlTableCell SetValidationMessagesCellDummy (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -630,9 +703,14 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    ///   Checks if the <paramref name="cellIndex" /> is inside the bounds for <paramref name="row" />.
+    ///   Checks if the indices are inside the bounds.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CheckCellRange/Parameters/*' />
+    /// <param name="rowIndex">
+    ///   The index of row in the <see cref="ReadOnlyHtmlTableRowsCollection"/>.
+    /// </param>
+    /// <param name="cellIndex">
+    ///   The index of the cell in row denoted by <paramref name="rowIndex"/>.
+    /// </param>
     private void CheckCellRange (int rowIndex, int cellIndex)
     {
       if (rowIndex >= _htmlTableRows.Count) throw new ArgumentOutOfRangeException ("rowIndex", "Specified argument was out of the range of valid values.");
@@ -643,9 +721,10 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Fills a <see cref="Hashtable"/> with the controls contained in this 
+    ///   <see cref="FormGridRow"/>, using their ID as a key.
     /// </summary>
-    /// <returns></returns>
+    /// <remarks> Considers only controls where <see cref="ID"/> is set.</remarks>
     public virtual void BuildIDCollection()
     {
       //  Assume an average of 2 controls per cell
@@ -664,31 +743,36 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <summary> Returns the control with the specified ID or <see langword="null"/>. </summary>
+    /// <remarks> Requires a call to <see cref="BuildIDCollection"/> before called the first time. </remarks>
+    /// <param name="id">The ID to look up.</param>
+    /// <returns>The control or <see langword="null"/> if the ID cannot be found.</returns>
     public virtual Control GetControlForID (string id)
     {
       StringUtility.IsNullOrEmpty (id);
       return (Control)_controls[id];
     }
 
-    /// <summary>
-    /// 
+    /// <summary> 
+    ///   Returns <see langword="true"/> if the control with the specified ID is contained 
+    ///   in the <see cref="FormGridRow"/>.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <remarks> Requires a call to <see cref="BuildIDCollection"/> before called the first time. </remarks>
+    /// <param name="id">The ID to look up.</param>
+    /// <returns><see langword="true"/> if the ID is be found.</returns>
     public virtual bool ContainsControlWithID (string id)
     {
       return GetControlForID (id) != null;
     }
 
     /// <summary>
-    /// 
+    ///   Test's whether this <see cref="FormGridRow"/> contains visible controls or if 
+    ///   it's own <see cref="Visible"/> property is set to false.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    ///   <see langword="true"/> if the <see cref="FormGridRow"/> is set to visible and
+    ///   contains at least one visible control.
+    /// </returns>
     public virtual bool CheckVisibility()
     {
       if (!_visible)
@@ -709,20 +793,32 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return false;
     }
 
+    /// <summary>
+    ///   Sets the <see cref="FormGridRow"/> and it's contained <see cref="HtmlTableRows"/> 
+    ///   invisible.
+    /// </summary>
     public virtual void Hide()
     {
-      foreach (HtmlTableRow row in _htmlTableRows)
-        row.Visible = false;
-    }
+      _visible = false;
 
-    public virtual void Show()
-    {
       foreach (HtmlTableRow row in _htmlTableRows)
         row.Visible = false;
     }
 
     /// <summary>
-    ///   The <see cref="FormGrid"/> inctance of which this <c>FormGridRow</c> is a part of.
+    ///   Sets the <see cref="FormGridRow"/> and it's contained <see cref="HtmlTableRows"/> 
+    ///   visible.
+    /// </summary>
+   public virtual void Show()
+    {
+      _visible = true;
+
+      foreach (HtmlTableRow row in _htmlTableRows)
+        row.Visible = true;
+    }
+
+    /// <summary>
+    ///   The <see cref="FormGrid"/> instance of which this <c>FormGridRow</c> is a part of.
     /// </summary>
     public FormGrid FormGrid
     {
@@ -746,7 +842,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     /// <summary>
-    /// 
+    ///   Gets or sets a value indicating whether the contained <see cref="HtmlTableRows"/>
+    ///   should be rendered on as Ui on the page.
     /// </summary>
     public bool Visible
     {
@@ -774,7 +871,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     /// <summary>
     ///   The validation marker for this <c>FormGridRow</c>.
     /// </summary>
-    /// <value>A single object of <see cref="Control"/> or <see langname="null"/></value>
+    /// <value>A single object of type <see cref="Control"/> or <see langname="null"/>.</value>
     public Control ValidationMarker
     {
       get { return _validationMarker; }
@@ -784,7 +881,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     /// <summary>
     ///   The required marker for this <c>FormGridRow</c>.
     /// </summary>
-    /// <value>A single object of <see cref="Control"/> or <see langname="null"/></value>
+    /// <value>A single object of type <see cref="Control"/> or <see langname="null"/></value>
     public Control RequiredMarker
     {
       get { return _requiredMarker; }
@@ -794,88 +891,97 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     /// <summary>
     ///   The help provider for this <c>FormGridRow</c>.
     /// </summary>
-    /// <value>A  single object of <see cref="Control"/> or <see langname="null"/></value>
+    /// <value>A  single object of type <see cref="Control"/> or <see langname="null"/></value>
     public Control HelpProvider
     {
       get { return _helpProvider; }
       set { _helpProvider = value; }
    }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The index of the row containing the labels cell. </summary>
+    /// <remarks> Is set during <see cref="SetLabelsCell"/>. </remarks>
     public int LabelsRowIndex
     {
       get { return _labelsRowIndex; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The index of the row containing the controls cell. </summary>
+    /// <remarks> Is set during <see cref="SetControlsCell"/>. </remarks>
     public int ControlsRowIndex
     {
       get { return _controlsRowIndex; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The index of the column normally containing the labels cell. </summary>
     public int LabelsColumn
     {
       get { return _labelsColumn; }
       set { _labelsColumn = value; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The index of the column normally containing the controls cell. </summary>
     public int ControlsColumn
     {
       get { return _controlsColumn; }
       set { _controlsColumn = value; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The <see cref="HtmlTableRow"/> containing the labels cell. </summary>
+    /// <remarks> Is set during <see cref="SetLabelsCell"/>. </remarks>
     public HtmlTableRow LabelsRow
     {
-      get { return _labelsRow; }
+      get { return _htmlTableRows[_labelsRowIndex]; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> The <see cref="HtmlTableRow"/> containing the controls cell. </summary>
+    /// <remarks> Is set during <see cref="SetControlsCell"/>. </remarks>
     public HtmlTableRow ControlsRow
     {
-      get { return _controlsRow; }
+      get { return _htmlTableRows[_controlsRowIndex]; }
     }
 
+    /// <summary> The cell containing the labels. </summary>
+    /// <remarks> Is set during <see cref="SetLabelsCell"/>. </remarks>
     public HtmlTableCell LabelsCell
     {
       get { return _labelsCell; }
     }
 
+    /// <summary> The cell containing the controls. </summary>
+    /// <remarks> Is set during <see cref="SetControlsCell"/>. </remarks>
     public HtmlTableCell ControlsCell
     {
       get { return _controlsCell; }
     }
 
+    /// <summary>
+    ///   The cell used as a place holder if the controls cell is not at the standard position.
+    /// </summary>
+    /// <remarks> Is set during <see cref="SetControlsCellDummy"/>. </remarks>
     public HtmlTableCell ControlsCellDummy
     {
       get { return _controlsCellDummy; }
     }
 
+    /// <summary> The cell containing the markers. </summary>
+    /// <remarks> Is set during <see cref="SetMarkersCell"/>. </remarks>
     public HtmlTableCell MarkersCell
     {
       get { return _markersCell; }
     }
 
+    /// <summary> The cell containing the validation messages. </summary>
+    /// <remarks> Is set during <see cref="SetValidationMessagesCell"/>. </remarks>
     public HtmlTableCell ValidationMessagesCell
     {
       get { return _validationMessagesCell; }
     }
 
+    /// <summary>
+    ///   The cell used as a place holder if the validation message cell is not at the standard
+    ///   position.
+    /// </summary>
+    /// <remarks> Is set during <see cref="SetValidationMessagesCellDummy"/>. </remarks>
     public HtmlTableCell ValidationMessagesCellDummy
     {
       get { return _validationMessagesCellDummy; }
@@ -883,7 +989,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   }
 
   /// <summary>
-  ///   A read only collection of <see cref="HtmlGridRow"/> objects.
+  ///   A read only collection of <see cref="HtmlTableRow"/> objects.
   /// </summary>
   protected sealed class ReadOnlyHtmlTableRowCollection : ReadOnlyCollectionBase
   {
@@ -948,21 +1054,28 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
   #region private const string c_viewStateID...
 
-  /// <summary></summary>
+  /// <summary> View State ID for the form grid view states. </summary>
   private const string c_viewStateIDFormGrids = "FormGrids";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _labelsColumn. </summary>
   private const string c_viewStateIDLabelsColumn = "_labelsColumn";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _controlsColumn. </summary>
   private const string c_viewStateIDControlsColumn = "_controlsColumn";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _showValidationMarkers. </summary>
   private const string c_viewStateIDShowValidationMarkers = "_showValidationMarkers";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _showRequiredMarkers. </summary>
   private const string c_viewStateIDShowRequiredMarkers = "_showRequiredMarkers";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _showHelpProviders. </summary>
   private const string c_viewStateIDHelpProviders = "_showHelpProviders";
-  /// <summary></summary>
+  
+  /// <summary> View State ID for _validatorVisibility. </summary>
   private const string c_viewStateIDValidatorVisibility = "_validatorVisibility";
-  /// <summary></summary>
+
+  /// <summary> View State ID for _formGridSuffix. </summary>
   private const string c_viewStateIDFormGridSuffix = "_formGridSuffix";
 
   #endregion
@@ -1007,7 +1120,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   /// <summary> Enable/Disable the help providers </summary>
   private bool _showHelpProviders;
 
-  /// <summary></summary>
+  /// <summary> State variable for the two part transformation process. </summary>
   private bool _hasCompletedTransformationStep1;
 
   // construction and disposing
@@ -1137,13 +1250,13 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          s_log.Error ("FormGridManager '" + ID + "' on page '" + Page.ToString() + "' received an a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
+          s_log.Warn ("FormGridManager '" + ID + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'formGridID:controlID:property'.");
         }
       }
       else
       {
         //  Invalid form grid
-        s_log.Error ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' on page '" + Page.ToString() + "'.");
+        s_log.Warn ("FormGrid '" + formGridID + "' is not managed by FormGridManager '" + ID + "' on page '" + Page.ToString() + "'.");
       }
     }
 
@@ -1203,20 +1316,11 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
         else
         {
           //  Invalid control
-          s_log.Error ("FormGrid '" + formGridID + "' is on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
+          s_log.Warn ("FormGrid '" + formGridID + "' is on page '" + Page.ToString() + "' does not contain a control with ID '" + controlID + "'.");
         }
       }
     }
   }
-  //  /// <summary>
-//  ///   Registers <see cref="ParentPage_PreRender"/> with the parent page's <c>PreRender</c>
-//  ///   event, before calling the base class's <c>OnInit</c>
-//  /// </summary>
-//  /// <param name="e">The EventArgs</param>
-  protected override void OnInit(EventArgs e)
-	{	
-    base.OnInit(e);
-	}
 
   /// <summary>
   /// 
@@ -1272,21 +1376,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
   }
 
-  protected static void InvokeLoadViewStateRecursive (object target, object viewState)
-  {
-    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
-                                    | BindingFlags.Instance 
-                                    | BindingFlags.NonPublic
-                                    | BindingFlags.InvokeMethod;
-
-    typeof (Control).InvokeMember (
-      "LoadViewStateRecursive",
-      bindingFlags,
-      null,
-      target,
-      new object[] {viewState});
-  }
-
   /// <summary>
   /// 
   /// </summary>
@@ -1305,74 +1394,26 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     FormGridManager.InvokeLoadViewStateRecursive (formGrid.Table, savedState);
 
     formGrid.Table.EnableViewState = enableViewStateBackup;
+  }
 
-//
-//    //  Delegate loading the view state for individual controls to the cells that contain them
-//    //  thus, reducing the reflection calls and increasing performance
-//
-//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
-//
-//    Triplet[] rows = (Triplet[])savedState;
-//
-//    for (int idxRows = 0; idxRows < rows.Length; idxRows++)
-//    {
-//      Triplet row = (Triplet)rows[idxRows];
-//
-//      if (row.Second == null)
-//        continue;
-//
-//      ArrayList indices = (ArrayList)row.Second;
-//      ArrayList viewStates = (ArrayList)row.Third;
-//
-//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-//
-//      for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
-//      {
-//        int cellIndex = (int)indices[idxIndices];
-//        object viewState = viewStates[idxIndices];
-//
-//        bool enableViewStateBackup = cellCollection[idxIndices].EnableViewState;
-//        cellCollection[idxIndices].EnableViewState = true;
-//
-//        FormGridManager.InvokeLoadViewStateRecursive (cellCollection[idxIndices], viewState);
-//
-//        cellCollection[idxIndices].EnableViewState = enableViewStateBackup;
-//      }
-//    }
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="target"></param>
+  /// <param name="viewState"></param>
+  protected static void InvokeLoadViewStateRecursive (object target, object viewState)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
 
-//    //  Load View State for individual controls
-//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
-//    
-//    Triplet[][] rows = (Triplet[][])savedState;
-//    for (int idxRows = 0; idxRows < rows.Length; idxRows++)
-//    {
-//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-//
-//      Triplet[] cells = rows[idxRows];
-//
-//      for (int idxCells = 0; idxCells < cells.Length; idxCells++)
-//      {
-//        ControlCollection controlCollection = cellCollection[idxCells].Controls;
-//
-//        Triplet cell = cells[idxCells];
-//
-//        ArrayList indices = (ArrayList)cell.Second;
-//        ArrayList viewStates = (ArrayList)cell.Third;
-//
-//        for (int idxIndices = 0; idxIndices < indices.Count; idxIndices++)
-//        {
-//          int controlIndex = (int)indices[idxIndices];
-//          object viewState = viewStates[idxIndices];
-//            
-//          typeof (Control).InvokeMember (
-//            "LoadViewStateRecursive",
-//            bindingFlags,
-//            null,
-//            controlCollection[controlIndex],
-//            new object[] {viewState});
-//        }
-//      }
-//    }
+    typeof (Control).InvokeMember (
+      "LoadViewStateRecursive",
+      bindingFlags,
+      null,
+      target,
+      new object[] {viewState});
   }
 
   /// <summary>
@@ -1414,23 +1455,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     return base.SaveViewState ();
   }
 
-  private static object InvokeSaveViewStateRecursive (object target)
-  {
-    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
-                                    | BindingFlags.Instance 
-                                    | BindingFlags.NonPublic
-                                    | BindingFlags.InvokeMethod;
-
-    object viewState = typeof (Control).InvokeMember (
-        "SaveViewStateRecursive",
-        bindingFlags,
-        null,
-        target,
-        new object[] {});
-
-    return viewState;
-  }
-
   /// <summary>
   /// 
   /// </summary>
@@ -1439,9 +1463,6 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
   protected virtual object SaveFormGridViewState (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
-
-    //  Delegate saving the view state for individual controls to the cells that contain them
-    //  thus, reducing the reflection calls and increasing performance
 
     bool enableViewStateBackup = formGrid.Table.EnableViewState;
     formGrid.Table.EnableViewState = true;
@@ -1475,90 +1496,28 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     }
 
     return viewState;
+  }
 
-//    HtmlTableRowCollection rowCollection = formGrid.Table.Rows;
-//
-//    Triplet[] rows = new Triplet[rowCollection.Count];
-//
-//    for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
-//    {
-//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-//
-//      ArrayList indices = new ArrayList (cellCollection.Count);
-//      ArrayList viewStates = new ArrayList (cellCollection.Count);
-//
-//      for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
-//      {
-//        if (cellCollection[idxCells].Controls.Count == 0)
-//          continue;
-//
-//        bool enableViewStateBackup = cellCollection[idxCells].EnableViewState;
-//        cellCollection[idxCells].EnableViewState = true;
-//        
-//        object viewState = FormGridManager.InvokeSaveViewStateRecursive (cellCollection[idxCells]);
-//
-//        cellCollection[idxCells].EnableViewState = enableViewStateBackup;
-//
-//        if (viewState != null)
-//        {
-//          Triplet cell = (Triplet) viewState;
-//
-//          //  Only cells with a control's viewstate not null
-//          if (cell.Second != null)
-//          {
-//            cell.First = null; 
-//
-//            indices.Add (idxCells);
-//            viewStates.Add (viewState);
-//          }
-//        }
-//      }
-//
-//      Triplet row = new Triplet(null, indices, viewStates);
-//      rows[idxRows] = row;
-//    }
-//  
-//    return rows;
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="target"></param>
+  /// <returns></returns>
+  protected static object InvokeSaveViewStateRecursive (object target)
+  {
+    const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
+                                    | BindingFlags.Instance 
+                                    | BindingFlags.NonPublic
+                                    | BindingFlags.InvokeMethod;
 
-//    //  Save View State for individual controls
-//    Triplet[][] rows = new Triplet[rowCollection.Count][];
-//
-//    for (int idxRows = 0; idxRows < rowCollection.Count; idxRows++)
-//    {
-//      HtmlTableCellCollection cellCollection = rowCollection[idxRows].Cells;
-//
-//      Triplet[] cells = new Triplet[cellCollection.Count];
-//
-//      for (int idxCells = 0; idxCells < cellCollection.Count; idxCells++)
-//      {
-//        ControlCollection controlCollection = cellCollection[idxCells].Controls;
-//
-//        ArrayList indices = new ArrayList (controlCollection.Count);
-//        ArrayList viewStates = new ArrayList (controlCollection.Count);
-//
-//        for (int idxControls = 0; idxControls < controlCollection.Count; idxControls++)
-//        {
-//          object viewState = typeof (Control).InvokeMember (
-//            "SaveViewStateRecursive",
-//            bindingFlags,
-//            null,
-//            controlCollection[idxControls],
-//            new object[] {});
-//
-//          if (viewState != null)
-//          {
-//            indices.Add (idxControls);
-//            viewStates.Add (viewState);
-//          }
-//        }
-//
-//        cells[idxCells] = new Triplet(null, indices, viewStates);
-//      }
-//
-//      rows[idxRows] = cells;
-//    }
-//
-//    return rows;
+    object viewState = typeof (Control).InvokeMember (
+        "SaveViewStateRecursive",
+        bindingFlags,
+        null,
+        target,
+        new object[] {});
+
+    return viewState;
   }
 
   /// <summary> 
@@ -1867,8 +1826,8 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
       formGrid.InsertNewFormGridRow (
         newFormGridRow, 
-        prototype.PositionInFormGrid, 
-        prototype.ReleatedRowID);
+        prototype.ReleatedRowID, 
+        prototype.PositionInFormGrid);
     }
   }
 
@@ -2249,7 +2208,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       else if (control.ID != null)
       {
         label.Text = control.ID.ToUpper();
-        s_log.Error ("No resource available for control '" + control.ID + "' in page '" + control.Page.ToString() + "'.");
+        s_log.Warn ("No resource available for control '" + control.ID + "' in page '" + control.Page.ToString() + "'.");
       }
 
       //  Should be default, but better safe than sorry
@@ -2389,6 +2348,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
 
       if (helpUrl != null && helpUrl != String.Empty)
       {
+        helpUrl = UrlResolver.GetHelpUrl (this, helpUrl);
         dataRow.HelpProvider = GetHelpProvider (helpUrl);
 
         //  We have a help provider, first come, only one served
@@ -2686,6 +2646,10 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
       return relativeUrl;  
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <returns></returns>
   protected virtual Control GetRequiredMarker()
   {
     Image requiredIcon = new Image();
@@ -2700,7 +2664,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       string alternateText = resourceManager.GetString (
         typeof (FormGridManager), 
-        ResourceIdentifiers.RequiredFieldAlteranteText);
+        ResourceIdentifiers.RequiredFieldAlternateText);
 
       if (alternateText != null)
         requiredIcon.AlternateText = alternateText;
@@ -2716,6 +2680,11 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     return requiredIcon;
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="helpUrl"></param>
+  /// <returns></returns>
   protected virtual Control GetHelpProvider (string helpUrl)
   {
     Image helpIcon = new Image();
@@ -2730,7 +2699,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       string alternateText = resourceManager.GetString (
         typeof (FormGridManager), 
-        ResourceIdentifiers.HelpAlteranteText);
+        ResourceIdentifiers.HelpAlternateText);
 
       if (alternateText != null)
         helpIcon.AlternateText = alternateText;
@@ -2751,6 +2720,11 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     return helpAnchor;
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="toolTip"></param>
+  /// <returns></returns>
   protected virtual Control GetValidationMarker (string toolTip)
   {
     Image validationErrorIcon = new Image();
@@ -2766,7 +2740,7 @@ public class FormGridManager : WebControl, IResourceDispatchTarget
     {
       string alternateText = resourceManager.GetString (
         typeof (FormGridManager), 
-        ResourceIdentifiers.ValidationErrorInfoAlteranteText);
+        ResourceIdentifiers.ValidationErrorInfoAlternateText);
 
       if (alternateText != null)
         validationErrorIcon.AlternateText = alternateText;

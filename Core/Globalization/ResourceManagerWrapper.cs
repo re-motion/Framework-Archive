@@ -168,7 +168,7 @@ public class ResourceManagerWrapper: IResourceManager, IList
         }
         catch (MissingManifestResourceException ex)
         {
-          s_log.Error ("Missing resource.", ex);
+          s_log.Warn ("Missing resource set.", ex);
         }
 
         if (resourceSet == null)
@@ -216,9 +216,14 @@ public class ResourceManagerWrapper: IResourceManager, IList
       }
       catch (MissingManifestResourceException ex)
       {
-        s_log.Error ("Missing resource.", ex);
+        s_log.Warn ("Missing resource with ID '" + id + "'.", ex);
       }
 
+    }
+
+    if (result == null)
+    {
+      s_log.Warn ("Resource '" + id + "' not found in the following resource container: " + BaseNameList);
     }
 
     return result;
