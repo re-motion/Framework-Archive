@@ -5,6 +5,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Uniquely identifies a domain object.
 /// </summary>
+[Serializable]
 public class ObjectID
 {
   // types

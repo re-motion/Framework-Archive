@@ -110,26 +110,6 @@ public class DataContainer
     this[propertyName] = value;
   }
 
-  // TODO: Make this property internal proteced
-  public RelationEndPointID[] RelationEndPointIDs
-  {
-    get
-    {
-      CheckDiscarded ();
-
-      if (_relationEndPointIDs != null)
-        return _relationEndPointIDs;
-
-      IRelationEndPointDefinition[] endPointDefinitions = _classDefinition.GetAllRelationEndPointDefinitions ();
-      _relationEndPointIDs = new RelationEndPointID[endPointDefinitions.Length];
-
-      for (int i = 0; i < endPointDefinitions.Length; i++)
-        _relationEndPointIDs[i] = new RelationEndPointID (_id, endPointDefinitions[i].PropertyName);
-
-      return _relationEndPointIDs;
-    }
-  }
-
   public DomainObject DomainObject
   {
     get 
@@ -201,6 +181,17 @@ public class DataContainer
     {
       CheckDiscarded ();
       return _timestamp; 
+    }
+  }
+
+  internal RelationEndPointID[] RelationEndPointIDs
+  {
+    get
+    {
+      if (_relationEndPointIDs == null)
+        _relationEndPointIDs = RelationEndPointID.GetAllRelationEndPointIDs (this);
+
+      return _relationEndPointIDs;
     }
   }
 

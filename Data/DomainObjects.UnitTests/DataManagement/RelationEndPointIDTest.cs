@@ -115,5 +115,26 @@ public class RelationEndPointIDTest
     string expected = _objectID.ToString () + "/" + _propertyName;
     Assert.AreEqual (expected, _endPointID.ToString ());
   }
+
+  [Test]
+  public void GetAllRelationEndPointIDs ()
+  {
+    string[] expectedPropertyNames = new string[] {"Customer", "OrderTicket", "OrderItems", "Official"};
+
+    DataContainer existingDataContainer = DataContainer.CreateForExisting (
+        new ObjectID (DatabaseTest.c_testDomainProviderID, "Order", 5), null);
+    
+    RelationEndPointID[] endPointIDs = RelationEndPointID.GetAllRelationEndPointIDs (existingDataContainer);
+
+    Assert.AreEqual (4, endPointIDs.Length);
+    Assert.AreSame (existingDataContainer.ID, endPointIDs[0].ObjectID);
+    Assert.AreSame (existingDataContainer.ID, endPointIDs[1].ObjectID);
+    Assert.AreSame (existingDataContainer.ID, endPointIDs[2].ObjectID);
+    Assert.AreSame (existingDataContainer.ID, endPointIDs[3].ObjectID);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[0].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[1].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[2].PropertyName) >= 0);
+    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, endPointIDs[3].PropertyName) >= 0);
+  }
 }
 }

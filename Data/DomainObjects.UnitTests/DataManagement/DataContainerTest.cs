@@ -198,22 +198,6 @@ public class DataContainerTest
   }
 
   [Test]
-  public void GetRelationEndPoints ()
-  {
-    string[] expectedPropertyNames = new string[] {"Customer", "OrderTicket", "OrderItems", "Official"};
-
-    Assert.AreEqual (4, _existingDataContainer.RelationEndPointIDs.Length);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[0].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[1].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[2].ObjectID);
-    Assert.AreSame (_existingDataContainer.ID, _existingDataContainer.RelationEndPointIDs[3].ObjectID);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[0].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[1].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[2].PropertyName) >= 0);
-    Assert.IsTrue (Array.IndexOf (expectedPropertyNames, _existingDataContainer.RelationEndPointIDs[3].PropertyName) >= 0);
-  }
-
-  [Test]
   public void SetValue ()
   {
     _existingDataContainer.PropertyValues.Add (_nameProperty);

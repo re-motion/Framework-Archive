@@ -135,14 +135,6 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ObjectDiscardedException))]
-  public void DataContainerRelationEndPointIDs ()
-  {
-    _newOrder.Delete ();
-    RelationEndPointID[] endPointIDs = _newOrderContainer.RelationEndPointIDs;    
-  }
-
-  [Test]
-  [ExpectedException (typeof (ObjectDiscardedException))]
   public void DataContainerGetIndexer ()
   {
     _newOrder.Delete ();

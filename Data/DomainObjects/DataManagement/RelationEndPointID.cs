@@ -10,6 +10,21 @@ public class RelationEndPointID
 
   // static members and constants
 
+  public static RelationEndPointID[] GetAllRelationEndPointIDs (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    IRelationEndPointDefinition[] endPointDefinitions = 
+        dataContainer.ClassDefinition.GetAllRelationEndPointDefinitions ();
+
+    RelationEndPointID[] relationEndPointIDs = new RelationEndPointID[endPointDefinitions.Length];
+
+    for (int i = 0; i < endPointDefinitions.Length; i++)
+      relationEndPointIDs[i] = new RelationEndPointID (dataContainer.ID, endPointDefinitions[i].PropertyName);
+
+    return relationEndPointIDs;
+  }
+
   // member fields
 
   private IRelationEndPointDefinition _definition;
