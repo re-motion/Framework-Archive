@@ -52,7 +52,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
       new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
       new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer"),
@@ -173,7 +173,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer")
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer")
     };      
 
     eventReceiver.Check (expectedChangeStates);
@@ -205,7 +205,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders")
     };      
 
@@ -238,7 +238,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
       new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders")
     };      
@@ -272,7 +272,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
       new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
       new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer")
@@ -307,7 +307,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
       new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
       new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer"),
@@ -343,7 +343,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from old customer to null"),
-      new RelationChangeState (_newOrder, "Customer", null, _customer, "2. Changing event of new order from null to new customer"),
+      new RelationChangeState (_newOrder, "Customer", _oldCustomerOfNewOrder, _customer, "2. Changing event of new order from null to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of old order from customer.Orders"),
       new CollectionChangeState (_customer.Orders, _newOrder, "4. Adding event of new order to customer.Orders"),
       new RelationChangeState (_customer, "Orders", _oldOrder, _newOrder, "5. Changing event of customer"),
@@ -420,8 +420,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     ChangeState[] expectedStates = new ChangeState[]
     {
       new RelationChangeState (_oldOrder, "Customer", _customer, null, "1. Changing event of old order from new customer to null"),
- //TODO: newOrder moves from oldCustomerOfNewOrder to _customer -> therefore the old value should not be null
-      new RelationChangeState (newOrder, "Customer", null, _customer, "2. Changing event of new order from old to new customer"),
+      new RelationChangeState (newOrder, "Customer", oldCustomerOfNewOrder, _customer, "2. Changing event of new order from old to new customer"),
       new CollectionChangeState (_customer.Orders, _oldOrder, "3. Removing event of new customer's order collection"),
       new CollectionChangeState (_customer.Orders, newOrder, "4. Adding event of new customer's order collection"),
       new RelationChangeState (_customer, "Orders", _oldOrder, newOrder, "5. Changing event of new customer from old order to new order"),
