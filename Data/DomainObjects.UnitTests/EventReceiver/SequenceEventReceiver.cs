@@ -18,6 +18,12 @@ public class SequenceEventReceiver
   private int _cancelEventNumber = 0;
 
   // construction and disposing
+
+  public SequenceEventReceiver (DomainObject domainObject) 
+      : this (new DomainObject[] {domainObject}, new DomainObjectCollection[0])
+  {
+  }
+
   public SequenceEventReceiver (DomainObject[] domainObjects, DomainObjectCollection[] collections) 
       : this (domainObjects, collections, 0)
   {

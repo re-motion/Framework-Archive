@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
@@ -258,6 +259,18 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
     Assert.AreEqual (StateType.Deleted, orderTicket.State);
     Assert.AreEqual (StateType.Deleted, orderTicket.DataContainer.State);
+  }
+
+  [Test]
+  public void DeleteTwice ()
+  {
+    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    orderTicket.Delete ();
+
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (orderTicket);
+    orderTicket.Delete ();
+
+    Assert.AreEqual (0, eventReceiver.Count);
   }
 }
 }

@@ -104,6 +104,9 @@ public class DataManager
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
+    if (domainObject.State == StateType.Deleted)
+      return;
+
     RelationEndPointCollection allAffectedRelationEndPoints = 
       _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
 
