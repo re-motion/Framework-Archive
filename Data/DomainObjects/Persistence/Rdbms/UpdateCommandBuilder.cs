@@ -2,9 +2,10 @@ using System;
 using System.Data;
 using System.Text;
 
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
@@ -26,7 +27,7 @@ public class UpdateCommandBuilder : CommandBuilder
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (dataContainer.State == StateType.Unchanged)
-      throw CreateArgumentException ("dataContainer", "State of provided dataContainer must not be 'Unchanged'.");
+      throw CreateArgumentException ("dataContainer", "State of provided DataContainer must not be 'Unchanged'.");
 
     _dataContainer = dataContainer;
   }
