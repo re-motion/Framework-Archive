@@ -214,36 +214,36 @@ public class BocTreeView: BusinessObjectBoundWebControl
     BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
   
     if (businessObjectNode != null)
-      CreateAppendBusinessObjectNodeChildren (businessObjectNode);
+      CreateAndAppendBusinessObjectNodeChildren (businessObjectNode);
     else if (propertyNode != null)
-      CreateAppendPropertyNodeChildren (propertyNode);
+      CreateAndAppendPropertyNodeChildren (propertyNode);
   }
 
-  private void CreateAppendBusinessObjectNodeChildren (BusinessObjectTreeNode businessObjectNode)
+  private void CreateAndAppendBusinessObjectNodeChildren (BusinessObjectTreeNode businessObjectNode)
   {
     IBusinessObjectWithIdentity businessObject = businessObjectNode.BusinessObject;
     BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos = GetPropertyNodes (businessObject);
     if (propertyNodeInfos != null && propertyNodeInfos.Length > 0)
     {
       if (propertyNodeInfos.Length == 1)
-        CreateAppendBusinessObjectNodes (businessObjectNode.Children, businessObject, propertyNodeInfos[0].Property);
+        CreateAndAppendBusinessObjectNodes (businessObjectNode.Children, businessObject, propertyNodeInfos[0].Property);
       else
-        CreateAppendPropertyNodes (businessObjectNode.Children, businessObject, propertyNodeInfos);
+        CreateAndAppendPropertyNodes (businessObjectNode.Children, businessObject, propertyNodeInfos);
     }
     businessObjectNode.IsEvaluated = true;
   }
 
-  private void CreateAppendPropertyNodeChildren (BusinessObjectPropertyTreeNode propertyNode)
+  private void CreateAndAppendPropertyNodeChildren (BusinessObjectPropertyTreeNode propertyNode)
   {
     if (propertyNode.ParentNode == null)
       throw new ArgumentException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
 
     BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
-    CreateAppendBusinessObjectNodes (propertyNode.Children, parentNode.BusinessObject, propertyNode.Property);
+    CreateAndAppendBusinessObjectNodes (propertyNode.Children, parentNode.BusinessObject, propertyNode.Property);
     propertyNode.IsEvaluated = true;
   }
 
-  private void CreateAppendBusinessObjectNodes (
+  private void CreateAndAppendBusinessObjectNodes (
       WebTreeNodeCollection businessObjectNodes, 
       IBusinessObjectWithIdentity parentBusinessObject,
       IBusinessObjectReferenceProperty property)
@@ -256,7 +256,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
   
-  private void CreateAppendPropertyNodes (
+  private void CreateAndAppendPropertyNodes (
       WebTreeNodeCollection propertyNodes, 
       IBusinessObjectWithIdentity parentBusinessObject,
       BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos)
