@@ -10,26 +10,34 @@ namespace Rubicon.Web.UI.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class MenuItem: IControlItem
 {
+  public static MenuItem GetSeparator()
+  {
+    return new MenuItem (null, null, "-", null, null, null);
+  }
+
   string _itemID;
   string _category;
   string _text;
   string _icon;
+  string _iconDisabled;
+
   /// <summary> The command rendered for this menu item. </summary>
   private SingleControlItemCollection _command;
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl;
 
-  public MenuItem (string itemID, string category, string text, string icon, Command command)
+  public MenuItem (string itemID, string category, string text, string icon, string iconDisabled, Command command)
   {
-    _itemID = StringUtility.NullToEmpty (itemID);
-    _category = StringUtility.NullToEmpty (category);
-    _text = StringUtility.NullToEmpty (text);
-    _icon = StringUtility.NullToEmpty (icon);
+    _itemID = itemID;
+    _category = category;
+    _text = text;
+    _icon = icon;
+    _iconDisabled = iconDisabled;
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
   public MenuItem ()
-      : this (null, null, null, null, new Command())
+    : this (null, null, null, null, null, new Command())
   {
   }
 
@@ -58,6 +66,7 @@ public class MenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
   public virtual string ItemID
   {
     get { return _itemID; }
@@ -65,6 +74,7 @@ public class MenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
   public virtual string Category
   {
     get { return _category; }
@@ -72,6 +82,7 @@ public class MenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
   public virtual string Text
   {
     get { return _text; }
@@ -79,10 +90,19 @@ public class MenuItem: IControlItem
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
   public virtual string Icon
   {
     get { return _icon; }
     set { _icon = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
+  public virtual string IconDisabled
+  {
+    get { return _iconDisabled; }
+    set { _iconDisabled = value; }
   }
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>

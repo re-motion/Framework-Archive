@@ -84,12 +84,13 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
  
   private static readonly object EventClick = new object();
 
-  private const string c_dropDownIcon = "DropDownArrow.gif";
+  private const string c_dropDownIcon = "DropDownMenuArrow.gif";
 
   private string _groupID;
   private string _titleText;
   private string _titleIcon;
   private bool _isReadOnly;
+  private bool _enableGrouping = true;
 
   private MenuItemCollection _menuItems;
 
@@ -101,7 +102,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 	}
 
   public DropDownMenu (string groupID, Control ownerControl)
-      : this (groupID, ownerControl, new Type[] {typeof (MenuItem)})
+    : this (groupID, ownerControl, new Type[] {typeof (MenuItem)})
 	{
   }
 
@@ -192,15 +193,21 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       script.Append ("DropDownMenu_AddMenuInfo (\r\n\t");
       script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", _groupID);
       bool isFirstItem = true;
-      for (int i = 0; i < MenuItems.Count; i++)
+
+      MenuItem[] menuItems;
+      if (_enableGrouping)
+        menuItems = _menuItems.GroupMenuItems (true);
+      else
+        menuItems = _menuItems.ToArray();
+      
+      for (int i = 0; i < menuItems.Length; i++)
       {
-        MenuItem menuItem = MenuItems[i];
+        MenuItem menuItem = menuItems[i];
         if (isFirstItem)
           isFirstItem = false;
         else
           script.AppendFormat (",\r\n");
-
-        AppendMenuItem (script, menuItem, i);
+        AppendMenuItem (script, menuItem, MenuItems.IndexOf (menuItem));
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
@@ -249,9 +256,10 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     }
 
     string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
+    string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5})",
-        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, icon, href, target);
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6})",
+        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, icon, iconDisabled, href, target);
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -369,10 +377,18 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     get { return _menuItems; }
   }
 
+  [DefaultValue (false)]
   public bool IsReadOnly
   {
     get { return _isReadOnly; }
     set { _isReadOnly = value; }
+  }
+
+  [DefaultValue (true)]
+  public bool EnableGrouping
+  {
+    get { return _enableGrouping; }
+    set { _enableGrouping = value; }
   }
 
   /// <summary> 
@@ -383,14 +399,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
   public event MenuItemClickEventHandler Click
   {
-    add 
-    {
-      Events.AddHandler (EventClick, value);
-    }
-    remove 
-    { 
-      Events.RemoveHandler (EventClick, value);
-    }
+    add { Events.AddHandler (EventClick, value); }
+    remove { Events.RemoveHandler (EventClick, value); }
   }
 
   protected virtual string CssClassHead

@@ -129,6 +129,27 @@ public class ControlItemCollection: CollectionBase
     return (IControlItem[]) arrayList.ToArray (typeof (IControlItem));
   }
 
+  public virtual void Sort()
+  {
+    Sort (Comparer.Default);
+  }
+
+
+  public virtual void Sort (IComparer comparer)
+  {
+    Sort (0, Count, comparer);
+  }
+
+  public virtual void Sort(int index, int count, IComparer comparer)
+  {
+    InnerList.Sort (index, count, comparer);
+  }
+
+  public int IndexOf (MenuItem menuItem)
+  {
+    return InnerList.IndexOf (menuItem);
+  }
+
   /// <remarks> 
   ///   Do not redefine the indexer as a public member in any derived class if you intend to use it in a peristed
   ///   property. Otherwise ASP.net will not know which property to use, this one or the new one.

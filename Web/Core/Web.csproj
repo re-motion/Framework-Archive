@@ -256,7 +256,11 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Image\DropDownArrow.gif"
+                    RelPath = "Res\Image\DropDownMenuArrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\DropDownMenuItemIconPane.gif"
                     BuildAction = "Content"
                 />
                 <File
