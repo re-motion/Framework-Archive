@@ -143,7 +143,7 @@ public class CollectionBase : ICollection
 
   #region IEnumerable Members
 
-  public IEnumerator GetEnumerator()
+  public IEnumerator GetEnumerator ()
   {
     return new CollectionEnumerator (this);
   }
