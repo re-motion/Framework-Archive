@@ -9,6 +9,60 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents a collection of <see cref="DomainObject"/>s.
 /// </summary>
+/// <remarks>
+/// A derived collection with additional state should override at least the following methods:
+/// <list type="table">
+///   <listheader>
+///     <term>Method</term>
+///     <description>Description</description>
+///   </listheader>
+///   <item>
+///     <term><see cref="OnAdding"/>, <see cref="OnAdded"/></term>
+///     <description>
+///       These methods can be used to adjust internal state whenever a new item is added to the collection. 
+///       The actual adjustment should be performed in the <see cref="OnAdded"/> method, 
+///       because the operation could be cancelled after the <see cref="OnAdding"/> method has been called.
+///     </description>
+///   </item>
+///   <item>
+///     <term><see cref="OnRemoving"/>, <see cref="OnRemoved"/></term>
+///     <description>
+///       These methods can be used to adjust internal state whenever an item is removed from the collection. 
+///       The actual adjustment should be performed in the <see cref="OnRemoved"/> method, 
+///       because the operation could be cancelled after the <see cref="OnRemoving"/> method has been called. 
+///       Note: If the collection is cleared through the <see cref="Clear"/> method <see cref="OnRemoving"/> 
+///       and <see cref="OnRemoved"/> are called for every item.
+///     </description>
+///   </item>
+///   <item>
+///     <term><see cref="OnDeleting"/>, <see cref="OnDeleted"/></term>
+///     <description>
+///       These methods can be used to clear all internal state or to unsubscribe from events whenever the <see cref="DomainObject"/> 
+///       holding this collection is deleted. The actual adjustment can be performed either in the 
+///       <see cref="OnDeleting"/> or in the <see cref="OnDeleted"/> method, 
+///       because the operation cannot be cancelled after the <see cref="OnDeleting"/> method has been called.
+///     </description>
+///   </item>
+///   <item>
+///     <term><see cref="Commit"/></term>
+///     <description>
+///       This method is only called on <see cref="DomainObjectCollection"/>s representing the original values 
+///       of a one-to-many relation during the commit operation of the associated <see cref="ClientTransaction"/>. 
+///       A derived collection should replace its internal state with the state of the provided collection passed 
+///       as an argument to this method.
+///     </description>
+///   </item>
+///   <item>
+///     <term><see cref="Rollback"/></term>
+///     <description>
+///       This method is only called on <see cref="DomainObjectCollection"/>s representing the current values 
+///       of a one-to-many relation during the rollback operation of the associated <see cref="ClientTransaction"/>. 
+///       A derived collection should replace its internal state with the state of the provided collection passed 
+///       as an argument to this method.
+///     </description>
+///   </item>
+/// </list>
+/// </remarks>
 public class DomainObjectCollection : CommonCollection, ICloneable, IList
 {
   // types
@@ -714,6 +768,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Performs a rollback of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="originalDomainObjects">A <see cref="DomainObjectCollection"/> containing the original items of the collection.</param>
+  /// <remarks>
+  ///   This method is only called on <see cref="DomainObjectCollection"/>s representing the current values 
+  ///   of a one-to-many relation during the rollback operation of the associated <see cref="ClientTransaction"/>. 
+  ///   A derived collection should replace its internal state with the state of <i>originalDomainObjects</i>.
+  /// </remarks>
   internal protected virtual void Rollback (DomainObjectCollection originalDomainObjects)
   {
     ArgumentUtility.CheckNotNull ("originalDomainObjects", originalDomainObjects);
@@ -725,6 +784,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Performs a commit of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection.</param>
+  /// <remarks>
+  ///   This method is only called on <see cref="DomainObjectCollection"/>s representing the original values 
+  ///   of a one-to-many relation during the commit operation of the associated <see cref="ClientTransaction"/>. 
+  ///   A derived collection should replace its internal state with the state of <i>domainObjects</i>.
+  /// </remarks>
   internal protected virtual void Commit (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
@@ -736,6 +800,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Replaces the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection.</param>
+  /// <remarks>
+  ///   This method actually performs the replace operation for <see cref="Commit"/> and <see cref="Rollback"/>.
+  ///   Note: The replacement raises no events.
+  /// </remarks>
   protected virtual void ReplaceItems (DomainObjectCollection domainObjects)
   {
     bool isReadOnly = IsReadOnly;
@@ -846,6 +914,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Raises the <see cref="Added"/> event.
   /// </summary>
   /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
+  /// <remarks>This method can be used to adjust internal state whenever a new item is added to the collection.</remarks>
   protected virtual void OnAdded (DomainObjectCollectionChangedEventArgs args)
   {
     if (Added != null)
@@ -856,6 +925,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Raises the <see cref="Removing"/> event.
   /// </summary>
   /// <param name="args">A <see cref="DomainObjectCollectionChangingEventArgs"/> object that contains the event data.</param>
+  ///   If the collection is cleared through the <see cref="Clear"/> method <see cref="OnRemoving"/> 
+  ///   is called for every item.
   protected virtual void OnRemoving (DomainObjectCollectionChangingEventArgs args)
   {
     if (Removing != null)
@@ -866,6 +937,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Raises the <see cref="Removed"/> event.
   /// </summary>
   /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
+  /// <remarks>
+  ///   This method can be used to adjust internal state whenever an item is removed from the collection.
+  ///   If the collection is cleared through the <see cref="Clear"/> method <see cref="OnRemoved"/> 
+  ///   is called for every item.
+  /// </remarks>
   protected virtual void OnRemoved (DomainObjectCollectionChangedEventArgs args)
   {
     if (Removed != null)
