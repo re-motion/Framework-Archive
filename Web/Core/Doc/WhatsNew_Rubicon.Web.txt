@@ -21,7 +21,12 @@
     berichtigt werden. Weiters müssen alle CompareValidators auf RequiredFieldValidators 
     umgestellt werden, da SelectedValue bei leerem Eintrag nicht mehr "-1", sondern string.Empty
     zurückliefert!
-    
+- Neue Methoden in "StandardPage":
+  * GetIconImage (...): Liefert ein Icon Image (zB Info- oder Fehler-Image) zurück    
+  * GetErrorImage (...): Error-Image
+  * GetRequiredFieldImage (...): "*" für Pflichtfeld
+  => Verwendet intern neue Klasse "UIUtility" => Wird in EntryFormGrid verwendet.
+        
         
 3.0.5.1
 =======
