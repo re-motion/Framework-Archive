@@ -14,7 +14,7 @@ public class PersistenceException : DomainObjectException
 
   // construction and disposing
 
-  public PersistenceException () {}
+  public PersistenceException () : this ("A persistence exception occurred.") {}
   public PersistenceException (string message) : base (message) {}
   public PersistenceException (string message, Exception inner) : base (message, inner) {}
   protected PersistenceException (SerializationInfo info, StreamingContext context) : base (info, context) {}
