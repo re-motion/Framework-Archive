@@ -14,7 +14,10 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
   public ReflectionBusinessObjectClass (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    _type = type;
+    if (type.IsArray)
+      _type = type.GetElementType ();
+    else
+      _type = type;
   }
 
   public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
