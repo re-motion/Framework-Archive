@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Configuration;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
