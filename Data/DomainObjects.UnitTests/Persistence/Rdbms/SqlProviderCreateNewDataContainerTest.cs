@@ -93,5 +93,14 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual (NaSingle.Null, newContainer["NaSingleWithNullValueProperty"]);
     Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: classDefinition")]
+  public void ClassDefinitionOfOtherStorageProvider ()
+  {
+    ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Official)];
+    Provider.CreateNewDataContainer (classDefinition);
+  }
 }
 }
