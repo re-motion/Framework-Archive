@@ -39,20 +39,20 @@ public class TableControl : Control
     _table.Rows.Clear ();
   }
 
-  public void AddRow (string cssClass, params string[] headers)
+  public TableRow AddRow (string cssClass, params string[] headers)
   {
-     AddRowWithStyle (cssClass, null, headers);
+     return AddRowWithStyle (cssClass, null, headers);
   }
 
-  public void AddRowWithStyle (string cssClass, string cssStyle, params string[] headers)
+  public TableRow AddRowWithStyle (string cssClass, string cssStyle, params string[] headers)
   {
     if (Orientation == OrientationType.Horizontal)
-      AddHorizontalRow (cssClass, cssStyle, headers);
+      return AddHorizontalRow (cssClass, cssStyle, headers);
     else
-      AddVerticalRow (cssClass, cssStyle, headers);
+      return AddVerticalRow (cssClass, cssStyle, headers);
   }
   
-  private void AddHorizontalRow (string cssClass, string cssStyle, params string[] values)
+  private TableRow AddHorizontalRow (string cssClass, string cssStyle, params string[] values)
   {
     TableRow newRow = new TableRow ();
 
@@ -69,9 +69,11 @@ public class TableControl : Control
     }
     
     _table.Rows.Add (newRow);
+
+    return newRow;
   }
   
-  private void AddVerticalRow (string cssClass, string cssStyle, params string[] values)
+  private TableRow AddVerticalRow (string cssClass, string cssStyle, params string[] values)
   {
     bool createRows = (_table.Rows.Count == 0);
 
@@ -100,6 +102,8 @@ public class TableControl : Control
 
       tableRow.Cells.Add (newCell);
     }
+
+    return null;
   }
 
   protected override void Render (HtmlTextWriter writer)
