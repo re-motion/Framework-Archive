@@ -703,7 +703,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
   [Browsable (false)]
-  public virtual IBusinessObjectWithIdentity ReferenceValue
+  public new IBusinessObjectWithIdentity Value
   {
     get 
     {
@@ -733,24 +733,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         InternalValue = null;
     }
   }
-  
-  /// <summary>
-  ///   Gets or sets the current value. Must be of type <see cref="IBusinessObjectWithIdentity"/>.
-  /// </summary>
-  /// <value> 
-  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
-  public override object Value
+
+  protected override object ValueImplementation
   {
-    get { return ReferenceValue;  }
-    set
-    {
-      if (value != null)
-        ReferenceValue = (IBusinessObjectWithIdentity) value;
-      else
-        ReferenceValue = null;
-    }
+    get { return Value; }
+    set { Value = (IBusinessObjectWithIdentity) value; }
   }
 
   /// <summary>
