@@ -32,7 +32,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
     ArgumentUtility.CheckNotNull ("propertyType", propertyType);
 
     if (!Enum.IsDefined (typeof (CardinalityType), cardinality))
-      throw new ArgumentException (string.Format ("Invalid cardinality '{0}' provided.", cardinality));
+      throw new ArgumentException (string.Format ("Invalid cardinality '{0}' provided.", cardinality), "cardinality");
 
     if (propertyType != typeof (DomainObjectCollection)
         && !propertyType.IsSubclassOf (typeof (DomainObjectCollection))
