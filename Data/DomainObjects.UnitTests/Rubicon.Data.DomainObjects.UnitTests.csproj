@@ -544,6 +544,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "IntegrationTests\DomainObjectEventRelationsTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IntegrationTests\DomainObjectRelationCheckEventReceiver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IntegrationTests\DomainObjectTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
