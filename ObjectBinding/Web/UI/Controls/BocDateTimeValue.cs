@@ -1167,7 +1167,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Specifies whether the text within the control has been changed since the last load/save operation.
+  ///   Specifies whether the date/time value within the control has been changed 
+  ///   since the last load/save operation.
   /// </summary>
   /// <remarks>
   ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
