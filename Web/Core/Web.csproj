@@ -113,11 +113,6 @@
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
                 />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\References\log4net.dll"
-                />
             </References>
         </Build>
         <Files>
@@ -189,6 +184,11 @@
                 />
                 <File
                     RelPath = "Controls\INavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ISmartControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
