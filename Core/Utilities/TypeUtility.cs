@@ -27,8 +27,8 @@ public sealed class TypeUtility
     if (posDoubleColon < 0)
       return abbreviatedTypeName;
 
-    string type = abbreviatedTypeName.Substring (0, posDoubleColon);
-    string assembly = abbreviatedTypeName.Substring (posDoubleColon + 2);
+    string assembly = abbreviatedTypeName.Substring (0, posDoubleColon);
+    string type = abbreviatedTypeName.Substring (posDoubleColon + 2);
 
     return assembly + "." + type + ", " + assembly;
   }
