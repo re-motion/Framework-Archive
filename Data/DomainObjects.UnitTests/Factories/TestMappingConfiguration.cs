@@ -102,9 +102,9 @@ public class TestMappingConfiguration
     ClassDefinition company = new ClassDefinition (
         "Company", "Company", typeof (Company), DatabaseTest.c_testDomainProviderID);
 
-    company.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
+    company.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     company.PropertyDefinitions.Add (new PropertyDefinition (
-        "IndustrialSector", "IndustrialSectorID", typeof (ObjectID)));
+        "IndustrialSector", "IndustrialSectorID", "objectID"));
     
     return company;
   }
@@ -114,10 +114,13 @@ public class TestMappingConfiguration
     ClassDefinition customer = new ClassDefinition (
         "Customer", "Company", typeof (Customer), DatabaseTest.c_testDomainProviderID, baseClass);
     
-    customer.PropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", typeof (DateTime), true));
+    customer.PropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
 
     customer.PropertyDefinitions.Add (
-        new PropertyDefinition ("CustomerType", "CustomerType", typeof (Customer.CustomerType)));
+        new PropertyDefinition (
+            "CustomerType", 
+            "CustomerType", 
+            "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests"));
 
     return customer;
   }
@@ -127,7 +130,7 @@ public class TestMappingConfiguration
     ClassDefinition partner = new ClassDefinition (
         "Partner", "Company", typeof (Partner), DatabaseTest.c_testDomainProviderID, baseClass);
 
-    partner.PropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", typeof (ObjectID)));
+    partner.PropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", "objectID"));
     
     return partner;
   }
@@ -137,7 +140,7 @@ public class TestMappingConfiguration
     ClassDefinition supplier = new ClassDefinition (
         "Supplier", "Company", typeof (Supplier), DatabaseTest.c_testDomainProviderID, baseClass);
 
-    supplier.PropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", typeof (int)));
+    supplier.PropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
     
     return supplier;
   }
@@ -147,7 +150,7 @@ public class TestMappingConfiguration
     ClassDefinition distributor = new ClassDefinition (
         "Distributor", "Company", typeof (Distributor), DatabaseTest.c_testDomainProviderID, baseClass);
 
-    distributor.PropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", typeof (int)));
+    distributor.PropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
     
     return distributor;
   }
@@ -157,10 +160,10 @@ public class TestMappingConfiguration
     ClassDefinition order = new ClassDefinition (
         "Order", "Order", typeof (Order), DatabaseTest.c_testDomainProviderID);
     
-    order.PropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", typeof (int)));
-    order.PropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", typeof (DateTime)));
-    order.PropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", typeof (ObjectID)));
-    order.PropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", typeof (ObjectID)));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", "objectID"));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", "objectID"));
 
     return order;
   }
@@ -170,7 +173,7 @@ public class TestMappingConfiguration
     ClassDefinition official = new ClassDefinition (
         "Official", "Official", typeof (Official), DatabaseTest.c_unitTestStorageProviderStubID);
     
-    official.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
+    official.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     return official;
   }
@@ -180,8 +183,8 @@ public class TestMappingConfiguration
     ClassDefinition orderTicket = new ClassDefinition (
         "OrderTicket", "OrderTicket", typeof (OrderTicket), DatabaseTest.c_testDomainProviderID);
     
-    orderTicket.PropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", typeof (string), 255));
-    orderTicket.PropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", typeof (ObjectID)));
+    orderTicket.PropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
+    orderTicket.PropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
 
     return orderTicket;
   }
@@ -191,9 +194,9 @@ public class TestMappingConfiguration
     ClassDefinition orderItem = new ClassDefinition (
         "OrderItem", "OrderItem", typeof (OrderItem), DatabaseTest.c_testDomainProviderID);
     
-    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", typeof (ObjectID)));
-    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", typeof (int)));
-    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", typeof (string), 100));
+    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
+    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
+    orderItem.PropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", "string", 100));
 
     return orderItem;
   }
@@ -203,8 +206,8 @@ public class TestMappingConfiguration
     ClassDefinition order = new ClassDefinition (
         "Ceo", "Ceo", typeof (Ceo), DatabaseTest.c_testDomainProviderID);
     
-    order.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
-    order.PropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", typeof (ObjectID)));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", "objectID"));
 
     return order;
   }
@@ -214,7 +217,7 @@ public class TestMappingConfiguration
     ClassDefinition order = new ClassDefinition (
         "Person", "Person", typeof (Person), DatabaseTest.c_testDomainProviderID);
     
-    order.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
+    order.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     return order;
   }
@@ -225,60 +228,71 @@ public class TestMappingConfiguration
         "ClassWithAllDataTypes", "TableWithAllDataTypes", typeof (ClassWithAllDataTypes), DatabaseTest.c_testDomainProviderID);
     
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "BooleanProperty", "Boolean", typeof (bool)));
+        "BooleanProperty", "Boolean", "boolean"));
 
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", typeof (byte)));
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("CharProperty", "Char", typeof (char)));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("CharProperty", "Char", "char"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DateTimeProperty", "DateTime", typeof (DateTime)));
+        "DateProperty", "Date", "date"));
+
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
+        "DateTimeProperty", "DateTime", "dateTime"));
     
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DecimalProperty", "Decimal", typeof (decimal)));
+        "DecimalProperty", "Decimal", "decimal"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "DoubleProperty", "Double", typeof (double)));
+        "DoubleProperty", "Double", "double"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "EnumProperty", "Enum", typeof (ClassWithAllDataTypes.EnumType)));
+        "EnumProperty", 
+        "Enum", 
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests"));
 
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("GuidProperty", "Guid", typeof (Guid)));
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int16Property", "Int16", typeof (short)));
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int32Property", "Int32", typeof (int)));
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", typeof (long)));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "SingleProperty", "Single", typeof (float)));
-
-    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "StringProperty", "String", typeof (string), 100));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("GuidProperty", "Guid", "guid"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int16Property", "Int16", "int16"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int32Property", "Int32", "int32"));
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", "int64"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaBooleanProperty", "NaBoolean", typeof (bool), true));
+        "SingleProperty", "Single", "single"));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateTimeProperty", "NaDateTime", typeof (DateTime), true));
+        "StringProperty", "String", "string", 100));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDoubleProperty", "NaDouble", typeof (double), true));
+        "NaBooleanProperty", "NaBoolean", "boolean", true));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaInt32Property", "NaInt32", typeof (int), true));
+        "NaDateProperty", "NaDate", "date", true));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "StringWithNullValueProperty", "StringWithNullValue", typeof (string), true, 100));
+        "NaDateTimeProperty", "NaDateTime", "dateTime", true));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", typeof (bool), true));
+        "NaDoubleProperty", "NaDouble", "double", true));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", typeof (DateTime), true));
+        "NaInt32Property", "NaInt32", "int32", true));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", typeof (double), true));
+        "StringWithNullValueProperty", "StringWithNullValue", "string", true, 100));
 
     classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
-        "NaInt32WithNullValueProperty", "NaInt32WithNullValue", typeof (int), true));
+        "NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
+
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
+        "NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
+
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
+        "NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
+
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
+        "NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
+
+    classWithAllDataTypes.PropertyDefinitions.Add (new PropertyDefinition (
+        "NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
 
     return classWithAllDataTypes;
   }
@@ -329,10 +343,10 @@ public class TestMappingConfiguration
         typeof (ClassWithValidRelations), DatabaseTest.c_testDomainProviderID);
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", typeof (ObjectID)));
+        "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", "objectID"));
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", typeof (ObjectID)));
+        "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", "objectID"));
 
     return classDefinition;
   }
@@ -343,7 +357,7 @@ public class TestMappingConfiguration
         typeof (ClassWithInvalidRelation), DatabaseTest.c_testDomainProviderID);
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKey", "TableWithGuidKeyID", typeof (ObjectID)));
+        "ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
 
     return classDefinition;
   }
@@ -357,7 +371,7 @@ public class TestMappingConfiguration
         DatabaseTest.c_testDomainProviderID);
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "Partner", "PartnerID", typeof (ObjectID)));
+        "Partner", "PartnerID", "objectID"));
 
     return classDefinition;
   }
@@ -371,7 +385,7 @@ public class TestMappingConfiguration
         DatabaseTest.c_testDomainProviderID);
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "Company", "CompanyID", typeof (ObjectID)));
+        "Company", "CompanyID", "objectID"));
 
     return classDefinition;
   }
@@ -381,7 +395,7 @@ public class TestMappingConfiguration
     ClassDefinition industrialSector = new ClassDefinition (
       "IndustrialSector", "IndustrialSector", typeof (IndustrialSector), DatabaseTest.c_testDomainProviderID);
     
-    industrialSector.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
+    industrialSector.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     return industrialSector;
   }
@@ -391,8 +405,8 @@ public class TestMappingConfiguration
     ClassDefinition employee = new ClassDefinition (
         "Employee", "Employee", typeof (Employee), DatabaseTest.c_testDomainProviderID);
     
-    employee.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", typeof (string), 100));
-    employee.PropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", typeof (ObjectID)));
+    employee.PropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+    employee.PropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", "objectID"));
 
     return employee;
   }
@@ -402,8 +416,8 @@ public class TestMappingConfiguration
     ClassDefinition computer = new ClassDefinition (
         "Computer", "Computer", typeof (Computer), DatabaseTest.c_testDomainProviderID);
     
-    computer.PropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", typeof (string), 20));
-    computer.PropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", typeof (ObjectID)));
+    computer.PropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
+    computer.PropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", "objectID"));
 
     return computer;
   }
