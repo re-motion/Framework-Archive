@@ -22,7 +22,7 @@ public interface INavigablePage
 public interface ITabItem
 {
   string Href { get; set; }
-  bool RequiresPageToken { get; set; }
+  bool SupportsPageToken { get; set; }
   ITabItem GetNavigableItem();
 }
 
@@ -56,7 +56,7 @@ public class Tab: Control, ITabItem
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
-  private bool _requiresPageToken = false;
+  private bool _supportsPageToken = false;
 
 	public string Label
 	{
@@ -68,10 +68,10 @@ public class Tab: Control, ITabItem
 		get { return _href; }
 		set { _href = value; }
 	}
-  public bool RequiresPageToken
+  public bool SupportsPageToken
   {
-    get { return _requiresPageToken; }
-    set { _requiresPageToken = value; }
+    get { return _supportsPageToken; }
+    set { _supportsPageToken = value; }
   }
   ITabItem ITabItem.GetNavigableItem ()
   {
@@ -96,7 +96,7 @@ public class TabMenu: Control, ITabItem
 {
 	private string _label = string.Empty;
 	private string _href = string.Empty;
-  private bool _requiresPageToken = false;
+  private bool _supportsPageToken = false;
 
 
 	public string Label
@@ -110,10 +110,10 @@ public class TabMenu: Control, ITabItem
 		set { _href = value; }
 	}
 
-  public bool RequiresPageToken
+  public bool SupportsPageToken
   {
-    get { return _requiresPageToken; }
-    set { _requiresPageToken = value; }    
+    get { return _supportsPageToken; }
+    set { _supportsPageToken = value; }    
   }
   ITabItem ITabItem.GetNavigableItem()
   {
@@ -320,7 +320,7 @@ public class TabControl: Control, IPostBackEventHandler
       return string.Empty;*/
 
     string url = PageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
-    if (navigableItem.RequiresPageToken)
+    if (navigableItem.SupportsPageToken)
       url = PageUtility.AddPageToken (url);
 
     url = PageUtility.AddUrlParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
@@ -378,7 +378,7 @@ public class TabControl: Control, IPostBackEventHandler
         clientSideLink = true;
         if (isNavigablePage && navigablePage.CleanupOnImmediateClose)
         {
-          if (tabItem.RequiresPageToken)
+          if (tabItem.SupportsPageToken)
           {
             url = PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.GetToken());
           }
