@@ -127,9 +127,6 @@ Global
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
-		References\log4net.dll = References\log4net.dll
-		References\nunit.framework.dll = References\nunit.framework.dll
-		References\nunit.framework.xml = References\nunit.framework.xml
 		Rubicon.Data.DomainObjects.Solution.build = Rubicon.Data.DomainObjects.Solution.build
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
