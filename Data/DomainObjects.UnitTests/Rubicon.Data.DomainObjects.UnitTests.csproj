@@ -153,6 +153,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithOneToOneRelationWithoutPropertyType.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithPropertyDefinedInBaseAndDerivedClass.xml"
                     BuildAction = "Content"
                 />
