@@ -21,6 +21,36 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
     }
   }
 
+  public bool ContainsTabID (string tabID)
+  {
+    foreach (Microsoft.Web.UI.WebControls.TabItem tab in this.Items)
+    {
+      if (tab.ID == tabID)
+        return true;
+    }
+
+    return false;
+  }
+
+  public bool ShowTab (string tabID)
+  {
+    int tabCount = 0;
+
+    for (int i = 0; i < this.Items.Count; ++i)
+    { 
+      if ( this.Items[i].GetType() == typeof( Microsoft.Web.UI.WebControls.Tab ) )
+        tabCount++;
+
+      if (this.Items[i].ID == tabID)
+      {
+        this.SelectedIndex = tabCount - 1; //  '-1' because first tab has index 0
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public void Dispatch (IDictionary values)
   {
     foreach (DictionaryEntry entry in values)
