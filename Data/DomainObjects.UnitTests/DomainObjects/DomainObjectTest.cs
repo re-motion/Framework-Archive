@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
@@ -207,13 +207,20 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     
     DomainObjectEventReceiver eventReceiver = new DomainObjectEventReceiver (customer, true);
-    customer.Name = "New name";
 
-    Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled);
-    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled);
-    Assert.AreEqual ("Kunde 1", customer.Name);
-    Assert.AreEqual ("Kunde 1", eventReceiver.OldValue);
-    Assert.AreEqual ("New name", eventReceiver.NewValue);
+    try
+    {
+      customer.Name = "New name";
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled);
+      Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled);
+      Assert.AreEqual ("Kunde 1", customer.Name);
+      Assert.AreEqual ("Kunde 1", eventReceiver.OldValue);
+      Assert.AreEqual ("New name", eventReceiver.NewValue);
+    }
   }
 
   [Test]
