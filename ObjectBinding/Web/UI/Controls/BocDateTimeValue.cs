@@ -25,19 +25,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 {
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocDateTimeValue")]
-  protected enum ResourceIdentifier
-  {
-  }
-
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
-
   //  constants
 
   /// <summary> 
@@ -57,16 +44,23 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private const int c_defaultTimeTextBoxWidthInPoints = 40;
   private const int c_defaultDatePickerLengthInPoints = 150;
 
-  private const string c_requiredErrorMessage = "Please enter a value.";
-  private const string c_incompleteErrorMessage = "Please enter a date.";
-  private const string c_invalidDateAndTimeErrorMessage = "Unknown date and time format.";
-  private const string c_invalidDateErrorMessage = "Unknown date format.";
-  private const string c_invalidTimeErrorMessage = "Unknown time format.";
-
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
   private const string c_datePickerScriptUrl = "DatePicker.js";
 
   // types
+
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocDateTimeValue")]
+  protected enum ResourceIdentifier
+  {
+    RequiredErrorMessage,
+    IncompleteErrorMessage,
+    InvalidDateAndTimeErrorMessage,
+    InvalidDateErrorMessage,
+    InvalidTimeErrorMessage,
+  }
 
   // static members
 	
@@ -420,6 +414,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
   /// <summary>
   ///   Generates a <see cref="BocDateTimeValueValidator"/>.
   /// </summary>
@@ -431,17 +431,20 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
     _dateTimeValueValidator.ControlToValidate = ID;
 
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.RequiredErrorMessage))
-      _dateTimeValueValidator.RequiredErrorMessage = c_requiredErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.IncompleteErrorMessage))
-      _dateTimeValueValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidDateAndTimeErrorMessage))
-      _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidDateErrorMessage))
-      _dateTimeValueValidator.InvalidDateErrorMessage = c_invalidDateErrorMessage;
-    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.InvalidTimeErrorMessage))
-      _dateTimeValueValidator.InvalidTimeErrorMessage = c_invalidTimeErrorMessage;
-
+    if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.ErrorMessage))
+    {
+      IResourceManager resourceManager = GetResourceManager();
+      _dateTimeValueValidator.RequiredErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.RequiredErrorMessage);
+      _dateTimeValueValidator.IncompleteErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.IncompleteErrorMessage);
+      _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
+      _dateTimeValueValidator.InvalidDateErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
+      _dateTimeValueValidator.InvalidTimeErrorMessage = 
+          resourceManager.GetString (ResourceIdentifier.InvalidTimeErrorMessage);
+    }
     validators[0] = _dateTimeValueValidator;
 
     //  No validation that only enabled enum values get selected and saved.
@@ -1487,83 +1490,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Validation message if the control is not filled out.
+  ///   Validation message if the control is not filled correctly.
   /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the control is not filled out.")]
+  [Description("Validation message if the control is not filled correctly.")]
   [Category ("Validator")]
   [DefaultValue("")]
-  public string RequiredErrorMessage
+  public string ErrorMessage
   {
-    get { return _dateTimeValueValidator.RequiredErrorMessage; }
-    set { _dateTimeValueValidator.RequiredErrorMessage = value; }
-  }
-
-  /// <summary>
-  ///   Validation message if the control's contents is incomplete.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the control's contents is incomplete.")]
-  [Category ("Validator")]
-  [DefaultValue("")]
-  public string IncompleteErrorMessage
-  {
-    get { return _dateTimeValueValidator.IncompleteErrorMessage; }
-    set { _dateTimeValueValidator.IncompleteErrorMessage = value; }
-  }
-
-  /// <summary>
-  ///   Validation message if the date value is invalid.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the date value is invalid.")]
-  [Category ("Validator")]
-  [DefaultValue("")]
-  public string InvalidDateErrorMessage
-  {
-    get { return _dateTimeValueValidator.InvalidDateErrorMessage; }
-    set { _dateTimeValueValidator.InvalidDateErrorMessage = value; }
-  }
-
-  /// <summary>
-  ///   Validation message if the time value is invalid.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the time value is invalid.")]
-  [Category ("Validator")]
-  [DefaultValue("")]
-  public string InvalidTimeErrorMessage
-  {
-    get { return _dateTimeValueValidator.InvalidTimeErrorMessage; }
-    set { _dateTimeValueValidator.InvalidTimeErrorMessage = value; }
-  }
-
-  /// <summary>
-  ///   Validation message if the date and time values are invalid.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the date and time values are invalid.")]
-  [Category ("Validator")]
-  [DefaultValue("")]
-  public string InvalidDateAndTimeErrorMessage
-  {
-    get { return _dateTimeValueValidator.InvalidDateAndTimeErrorMessage; }
-    set { _dateTimeValueValidator.InvalidDateAndTimeErrorMessage = value; }
+    get { return _dateTimeValueValidator.ErrorMessage; }
+    set { _dateTimeValueValidator.ErrorMessage = value; }
   }
 }
 

@@ -29,21 +29,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 {
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
-  protected enum ResourceIdentifier
-  {
-  }
-
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
 	// constants
-
-  private const string c_requiredValidationMessage = "Please enter a value.";
 
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
@@ -53,6 +39,14 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   private const int c_defaultTextBoxWidthInPoints = 150;
 
   // types
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
+  protected enum ResourceIdentifier
+  {
+    RequiredValidationMessage
+  }
 
   // static members
 	
@@ -257,6 +251,12 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
   /// <summary>
   ///   Generates the validators depending on the control's configuration.
   /// </summary>
@@ -275,7 +275,10 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     _requiredValidator.ID = ID + "_ValidatorRequired";
     _requiredValidator.ControlToValidate = TargetControl.ID;
     if (StringUtility.IsNullOrEmpty (_requiredValidator.ErrorMessage))
-      _requiredValidator.ErrorMessage = c_requiredValidationMessage;
+    {
+      _requiredValidator.ErrorMessage = 
+          GetResourceManager().GetString (ResourceIdentifier.RequiredValidationMessage);
+    }
 
     validators[0] = _requiredValidator;
 
@@ -534,17 +537,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     get { return _label; }
   }
 
-  /// <summary>
-  ///   Gets or sets the validation message if no input is provided but the control requries input.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
+  /// <summary> Gets or sets the validation message if no input is provided but the control requries input. </summary>
   [Description("Validation message if no input is provided but the control requires input.")]
   [Category ("Validator")]
   [DefaultValue("")]
-  public string RequiredErrorMessage
+  public string ErrorMessage
   {
     get { return _requiredValidator.ErrorMessage; }
     set { _requiredValidator.ErrorMessage = value; }

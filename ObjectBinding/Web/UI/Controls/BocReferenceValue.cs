@@ -27,23 +27,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 {
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocReferenceValue")]
-  protected enum ResourceIdentifier
-  {
-  }
-
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
   // constants
 	
   private const string c_nullIdentifier = "--null--";
-  private const string c_nullDisplayName = "Undefined";
-  private const string c_nullItemValidationMessage = "Please select an item.";
 
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
@@ -57,6 +43,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private const string c_bocReferenceValueScriptUrl = "BocReferenceValue.js";
 
   // types
+
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocReferenceValue")]
+  protected enum ResourceIdentifier
+  {
+    OptionsTitle,
+    NullDisplayName,
+    NullItemValidationMessage
+  }
 
   // static members
 
@@ -112,7 +109,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private string _select = String.Empty;
 
   private DropDownMenu _optionsMenu;
-  private string _optionsTitle = "Options";
+  private string _optionsTitle;
   /// <summary> Determines whether the options menu is shown. </summary>
   private bool _showOptionsMenu = true;
   /// <summary> The width applied to the <c>menu block</c>. </summary>
@@ -348,6 +345,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
   /// <summary>
   ///   Generates the validators depending on the control's configuration.
   /// </summary>
@@ -368,7 +371,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
-      _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
+    {
+      _notNullItemValidator.ErrorMessage = 
+          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+    }
 
     validators[0] = _notNullItemValidator;
 
@@ -475,7 +481,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     {
       _optionsMenu.MenuItems.Clear();
       _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
-      _optionsMenu.TitleText = _optionsTitle;
+      if (StringUtility.IsNullOrEmpty (_optionsTitle))
+        _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      else
+        _optionsMenu.TitleText = _optionsTitle;
     }
 
     if (isReadOnly)
@@ -1042,7 +1051,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
   [Category ("Menu")]
   [Description ("The text that is rendered as a label for the options menu.")]
-  [DefaultValue ("Options")]
+  [DefaultValue ("")]
   public string OptionsTitle
   {
     get { return _optionsTitle; }
@@ -1072,17 +1081,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     set { _optionsMenuWidth = value; }
   }
 
-  /// <summary>
-  ///   Validation message if the null item is selected but a valid selection is required.
-  /// </summary>
-  /// <remarks> 
-  ///   Use this property to automatically assign a validation message by 
-  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
-  /// </remarks>
-  [Description("Validation message if the null item is selected but a valid selection is required.")]
+  /// <summary> Gets or sets the validation error message. </summary>
+  [Description("Validation error message if the selection is invalid.")]
   [Category ("Validator")]
   [DefaultValue("")]
-  public string NullItemErrorMessage
+  public string ErrorMessage
   {
     get { return _notNullItemValidator.ErrorMessage; }
     set { _notNullItemValidator.ErrorMessage = value; }

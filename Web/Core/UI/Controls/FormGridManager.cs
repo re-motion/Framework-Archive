@@ -1582,7 +1582,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
       IValidator validator = control as IValidator;
-      if (validator.IsValid)
+      if (validator == null || validator.IsValid)
         continue;
 
       //  Get control to validate

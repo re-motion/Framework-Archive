@@ -111,7 +111,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
   /// </summary>
   public string GetString (Enum enumValue)
   {
-    return GetString (ResourceIdentifierAttribute.GetResourceIdentifier (enumValue));
+    return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
   }
 
   public string Name

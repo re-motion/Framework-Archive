@@ -32,20 +32,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocTextValue: BusinessObjectBoundModifiableWebControl
 {
-
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocTextValue")]
-  protected enum ResourceIdentifier
-  {
-  }
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
-
   //  constants
+
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
@@ -53,10 +41,24 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
   private const int c_defaultTextBoxWidthInPoints = 150;
 
+  //  statics
+
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
 
   private static readonly object s_textChangedEvent = new object();
+
+  // types
+
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocTextValue")]
+  protected enum ResourceIdentifier
+  {
+  }
+
+  // fields
 
   private BocTextValueType _valueType = BocTextValueType.Undefined;
   private BocTextValueType _actualValueType = BocTextValueType.Undefined;
@@ -185,6 +187,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }
+  }
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
   }
 
   protected override void OnPreRender (EventArgs e)

@@ -130,7 +130,7 @@ public class ResourceManagerWrapper: IResourceManager
   /// </summary>
   public string GetString (Enum enumValue)
   {
-    return GetString (ResourceIdentifierAttribute.GetResourceIdentifier (enumValue));
+    return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
   }
 
   /// <summary>

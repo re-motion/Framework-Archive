@@ -37,18 +37,6 @@ public class BocList:
     IPostBackEventHandler, 
     IComparer
 {
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
-  protected enum ResourceIdentifier
-  {
-  }
-
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
@@ -104,6 +92,17 @@ public class BocList:
 
   // types
   
+  /// <summary> A list of control wide resources. </summary>
+  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
+  protected enum ResourceIdentifier
+  {
+    PageInfo,
+    OptionsTitle,
+    AdditionalColumnsTitle
+  }
+
   /// <summary> The possible directions for paging through the list. </summary>
   private enum MoveOption
   {
@@ -199,7 +198,7 @@ public class BocList:
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
   /// </summary>
-  private string _additionalColumnsTitle = "View";
+  private string _additionalColumnsTitle;
 
   /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
   private Unit _additionalColumnsListWidth = Unit.Empty;
@@ -231,7 +230,7 @@ public class BocList:
   private Unit _menuBlockItemOffset = Unit.Empty;
 
   private DropDownMenu _optionsMenu;
-  private string _optionsTitle = "Options";
+  private string _optionsTitle;
   /// <summary> The width applied to the <c>menu block</c>. </summary>
   private Unit _menuBlockWidth = Unit.Empty;
   /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
@@ -297,7 +296,7 @@ public class BocList:
   /// </summary>
   private bool _alwaysShowPageInfo = false; 
   /// <summary> The text providing the current page information to the user. </summary>
-  private string _pageInfo = "Page {0} of {1}";
+  private string _pageInfo;
   /// <summary> 
   ///   The navigation bar command that caused the post back. 
   ///   <see cref="MoveOption.Undefined"/> unless the navigation bar caused a post back.
@@ -941,7 +940,11 @@ public class BocList:
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      writer.Write (_additionalColumnsTitle + c_whiteSpace);
+      if (StringUtility.IsNullOrEmpty (_additionalColumnsTitle))
+        writer.Write (GetResourceManager().GetString (ResourceIdentifier.AdditionalColumnsTitle));
+      else
+        writer.Write (_additionalColumnsTitle);
+      writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
       _additionalColumnsList.RenderControl (writer);
@@ -952,7 +955,10 @@ public class BocList:
     {
       _optionsMenu.MenuItems.Clear();
       _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
-      _optionsMenu.TitleText = _optionsTitle;
+      if (StringUtility.IsNullOrEmpty (_optionsTitle))
+        _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      else
+        _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       _optionsMenu.RenderControl (writer);
     }
@@ -1199,6 +1205,9 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
     //  Page info
+    if (StringUtility.IsNullOrEmpty (_pageInfo))
+      _pageInfo = GetResourceManager().GetString (ResourceIdentifier.PageInfo);
+
     writer.Write (_pageInfo, _currentPage + 1, _pageCount);
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
@@ -1773,6 +1782,12 @@ public class BocList:
     //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       DataSource.BusinessObject.SetProperty (Property, Value);
+  }
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
   }
 
   /// <summary> Handles refreshing the bound control. </summary>
@@ -2969,7 +2984,7 @@ public class BocList:
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
   [Category ("Menu")]
   [Description ("The text that is rendered as a title for the list of additional columns.")]
-  [DefaultValue ("View")]
+  [DefaultValue ("")]
   public string AdditionalColumnsTitle
   {
     get { return _additionalColumnsTitle; }
@@ -2979,7 +2994,7 @@ public class BocList:
   /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
   [Category ("Menu")]
   [Description ("The text that is rendered as a label for the options menu.")]
-  [DefaultValue ("Options")]
+  [DefaultValue ("")]
   public string OptionsTitle
   {
     get { return _optionsTitle; }
