@@ -486,6 +486,35 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
+  /// <summary>
+  ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
+  ///   <see cref="FormatException"/> or <see cref="OverflowException"/>) to read the contents of <see cref="Value"/>.
+  /// </summary>
+  /// <remarks> Valid values include <see langword="null"/>. </remarks>
+  [Browsable(false)]
+  public bool IsValidValue
+  {
+    get
+    {
+      try
+      {
+        //  Force the evaluation of Value
+        if (Value != null)
+          return true;
+      }
+      catch (FormatException)
+      {
+        return false;
+      }
+      catch (OverflowException)
+      {
+        return false;
+      }
+
+      return true;
+    }
+  }
+
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -573,7 +602,22 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return s_supportedPropertyInterfaces; }
+    get { return BocTextValue.GetSupportedPropertyInterfaces(); }
+  }
+
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return BocTextValue.IsPropertyMultiplicitySupported (isList);
+  }
+
+  public static Type[] GetSupportedPropertyInterfaces()
+  { 
+    return s_supportedPropertyInterfaces;
+  }
+
+  public static bool IsPropertyMultiplicitySupported (bool isList)
+  {
+    return ! isList;
   }
 
   [Browsable (false)]

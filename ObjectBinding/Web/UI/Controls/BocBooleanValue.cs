@@ -554,9 +554,25 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
   ///   implementations that can be bound to this control.
   /// </summary>
+
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return s_supportedPropertyInterfaces; }
+    get { return BocBooleanValue.GetSupportedPropertyInterfaces(); }
+  }
+
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return BocBooleanValue.IsPropertyMultiplicitySupported (isList);
+  }
+
+  public static Type[] GetSupportedPropertyInterfaces()
+  { 
+    return s_supportedPropertyInterfaces;
+  }
+
+  public static bool IsPropertyMultiplicitySupported (bool isList)
+  {
+    return ! isList;
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>

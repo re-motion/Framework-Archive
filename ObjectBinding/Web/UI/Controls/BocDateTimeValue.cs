@@ -1124,7 +1124,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
   ///   <see cref="FormatException"/>) to read the contents of <see cref="Value"/>.
   /// </summary>
-  /// <remarks> Valus values include valid combinations of date/time values and <see langword="null"/>. </remarks>
+  /// <remarks> Valid values include valid combinations of date/time values and <see langword="null"/>. </remarks>
   [Browsable(false)]
   public bool IsValidValue
   {
@@ -1208,7 +1208,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return s_supportedPropertyInterfaces; }
+    get { return BocDateTimeValue.GetSupportedPropertyInterfaces(); }
+  }
+
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return BocDateTimeValue.IsPropertyMultiplicitySupported (isList);
+  }
+
+  public static Type[] GetSupportedPropertyInterfaces()
+  { 
+    return s_supportedPropertyInterfaces;
+  }
+
+  public static bool IsPropertyMultiplicitySupported (bool isList)
+  {
+    return ! isList;
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>

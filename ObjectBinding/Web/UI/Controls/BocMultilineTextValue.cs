@@ -441,7 +441,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return s_supportedPropertyInterfaces; }
+    get { return BocMultilineTextValue.GetSupportedPropertyInterfaces(); }
   }
 
   /// <summary>
@@ -452,6 +452,16 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   ///   supported.
   /// </returns>
   protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return BocMultilineTextValue.IsPropertyMultiplicitySupported (isList);
+  }
+
+  public static Type[] GetSupportedPropertyInterfaces()
+  { 
+    return s_supportedPropertyInterfaces;
+  }
+
+  public static bool IsPropertyMultiplicitySupported (bool isList)
   {
     return isList;
   }

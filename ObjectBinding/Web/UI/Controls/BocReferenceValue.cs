@@ -994,7 +994,22 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return s_supportedPropertyInterfaces; }
+    get { return BocReferenceValue.GetSupportedPropertyInterfaces(); }
+  }
+
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return BocReferenceValue.IsPropertyMultiplicitySupported (isList);
+  }
+
+  public static Type[] GetSupportedPropertyInterfaces()
+  { 
+    return s_supportedPropertyInterfaces;
+  }
+
+  public static bool IsPropertyMultiplicitySupported (bool isList)
+  {
+    return ! isList;
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
