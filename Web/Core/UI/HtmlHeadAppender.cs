@@ -3,6 +3,7 @@ using System.Collections;
 using System.Web;
 using System.Web.UI;
 using System.Runtime.Remoting.Messaging;
+using System.Web.UI.HtmlControls;
 
 namespace Rubicon.Web.UI
 {
@@ -12,28 +13,29 @@ namespace Rubicon.Web.UI
 /// </summary>
 /// <example>
 ///   &lt;head&gt;
-///     &lt;% Rubicon.Web.UI.HeaderFactory.Current.WriteHeaders (Context); %&gt;
+///     &lt;% Rubicon.Web.UI.HtmlHeaderFactory.Current.WriteHeaders (Context); %&gt;
 ///   &lt;/head&gt;
 /// </example>
-public class HeaderFactory
+public class HtmlHeaderFactory
 {
   /// <summary> Hashtable&lt;string key, string header&gt; </summary>
   private Hashtable _registeredHeaders = new Hashtable();
+  private bool _hasAppendHeadersExecuted = false;
 
-  public static HeaderFactory Current
+  public static HtmlHeaderFactory Current
   {
     get 
     { 
-      const string contextKey = "Rubicon.Web.HeaderFactory.Curremt";
-      HeaderFactory current = (HeaderFactory) CallContext.GetData (contextKey);
+      const string contextKey = "Rubicon.Web.HtmlHeaderFactory.Curremt";
+      HtmlHeaderFactory current = (HtmlHeaderFactory) CallContext.GetData (contextKey);
       if (current == null)
       {
-        lock (typeof (HeaderFactory))
+        lock (typeof (HtmlHeaderFactory))
         {
-          current = (HeaderFactory) CallContext.GetData (contextKey);
+          current = (HtmlHeaderFactory) CallContext.GetData (contextKey);
           if (current == null)
           {
-            current = new HeaderFactory();
+            current = new HtmlHeaderFactory();
             CallContext.SetData (contextKey, current);
           }
         }
@@ -42,21 +44,61 @@ public class HeaderFactory
     }
   }
 
-  public void WriteHeaders (HttpContext context)
+  /// <summary>
+  ///   Appends the <c>HTML headers</c> registered with the <see cref="Current"/>
+  ///   <see cref="HtmlHeaderFactory"/> to the <paramref name="headerCollection"/>.
+  /// </summary>
+  /// <remarks>
+  ///   Call this method during the <c>PreRender</c> phase.
+  /// </remarks>
+  /// <param name="headerCollection">
+  ///   <see cref="ControlCollection"/> to which the headers will be appended.
+  /// </param>
+  public void AppendHeaders (ControlCollection headerCollection)
   {
-    foreach (string header in _registeredHeaders.Values)
-    {
-      context.Response.Write (header);
-    }
+    foreach (HtmlGenericControl header in _registeredHeaders.Values)
+      headerCollection.Add (header);
+
+    _hasAppendHeadersExecuted = true;
   }
 
-  public void RegisterHeaderStylesheetLink (string key, string url)
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <remarks>
+  ///   All calls to <see cref="RegisterHeaderStylesheetLink"/> must be completed before
+  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>PreRender</c> phase.)
+  /// </remarks>
+  /// <param name="key"></param>
+  /// <param name="href"></param>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if method is called after <see cref="AppendHeaders"/> has executed.
+  /// </exception>
+  public void RegisterHeaderStylesheetLink (string key, string href)
   {
-    RegisterHeader (key, "<link type=\"css/stylesheet\" ...");
+    HtmlGenericControl header = new HtmlGenericControl ("link");
+    header.Attributes.Add ("type", "text/css");
+    header.Attributes.Add ("rel", "stylesheet");
+    header.Attributes.Add ("href", href);
+    RegisterHeader (key, header);
   }
 
-  public void RegisterHeader (string key, string header)
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <remarks>
+  ///   All calls to <see cref="RegisterHeader"/> must be completed before
+  ///   <see cref="AppendHeaders"/> is called. (Typically during <c>PreRender</c> phase.)
+  /// </remarks>
+  /// <param name="key"></param>
+  /// <param name="header"></param>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if method is called after <see cref="AppendHeaders"/> has executed.
+  /// </exception>
+  public void RegisterHeader (string key, HtmlGenericControl header)
   {
+    if (_hasAppendHeadersExecuted)
+      throw new HttpException ("RegisterHeader must not be called after AppendHeaders has executed.");
     if (! _registeredHeaders.Contains (key))
       _registeredHeaders.Add (key, header);
   }

@@ -213,10 +213,13 @@ public class BocItemCommand
   ///   applied.
   /// </param>
   /// <param name="postBackLink">
-  ///   The string rendered in the "href" tag of the anchor element when the command type is
+  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
   ///   <see cref="BocItemCommandType.Event"/> or <see cref="BocItemCommandType.WxeFunction"/>.
-  ///   This string is usually the call to the "__doPostBack" script function used by ASP.net
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 

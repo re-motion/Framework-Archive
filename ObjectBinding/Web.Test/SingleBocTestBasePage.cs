@@ -23,7 +23,7 @@ public class WebFormBase:
     Page, 
     IControl,
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
-    // IResourceUrlResolver //  Provides the URLs for this WebForm (i.e. to the FormGridManager)
+    // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
@@ -48,14 +48,18 @@ public class WebFormBase:
     {}
 
     string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-    HtmlHeaderFactory.Current.RegisterHeaderStylesheetLink ("FormGrid_Style", url);
+    HtmlHeaderFactory.Current.RegisterStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
   }
 
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    HtmlHeaderFactory.Current.EnsureAppendHeaders (HtmlHeader.Controls);
+    base.RenderChildren (writer);
+  }
 
   protected override void OnPreRender(EventArgs e)
   {
-    HtmlHeaderFactory.Current.AppendHeaders (HtmlHeader.Controls);
     base.OnPreRender (e);
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
