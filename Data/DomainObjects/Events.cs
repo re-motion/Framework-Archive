@@ -8,7 +8,6 @@ namespace Rubicon.Data.DomainObjects
 {
 //Documentation: All done
 
-
 /// <summary>
 /// Represents the method that will handle the <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>
@@ -36,6 +35,11 @@ public delegate void RelationChangedEventHandler (object sender, RelationChanged
 /// Represents the method that will handle the <see cref="DomainObject.Deleting"/> event of the <see cref="DomainObject"/>.
 /// </summary>
 public delegate void DeletingEventHandler (object sender, EventArgs args);
+
+/// <summary>
+/// Represents the method that will handle the <see cref="ClientTransaction.Loaded"/> event of a <see cref="ClientTransaction"/>.
+/// </summary>
+public delegate void LoadedEventHandler (object sender, LoadedEventArgs args);
 
 /// <summary>
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
@@ -209,6 +213,33 @@ public class RelationChangedEventArgs : EventArgs
   public string PropertyName
   {
     get { return _propertyName; }
+  }
+}
+
+/// <summary>
+/// Provides data for the <see cref="ClientTransaction.Loaded"/> event of a <see cref="ClientTransaction"/>.
+/// </summary>
+public class LoadedEventArgs : EventArgs
+{
+  private DomainObject _loadedDomainObject;
+
+  /// <summary>
+  /// Initializes a new instance of the <b>LoadedEventArgs</b> class.
+  /// </summary>
+  /// <param name="loadedDomainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been loaded.</param>
+  /// <exception cref="System.ArgumentNullException"><i>loadedDomainObject</i> is a null reference.</exception>
+  public LoadedEventArgs (DomainObject loadedDomainObject)
+  {
+    ArgumentUtility.CheckNotNull ("loadedDomainObject", loadedDomainObject);
+    _loadedDomainObject = loadedDomainObject;
+  }
+
+  /// <summary>
+  /// Gets the <see cref="DomainObject"/> that has been loaded.
+  /// </summary>
+  public DomainObject LoadedDomainObject
+  {
+    get { return _loadedDomainObject; }
   }
 }
 }
