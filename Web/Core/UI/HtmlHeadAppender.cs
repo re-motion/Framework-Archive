@@ -16,6 +16,10 @@ namespace Rubicon.Web.UI
 ///   <code>
 ///     &lt;rwc:htmlheadcontents runat="server" id="HtmlHeadContents"&lgt;&lt;/rwc:htmlheadcontents&gt;
 ///   </code>
+///   Register a new <c>HTML head element</c> using the following syntax.
+///   <code>
+///     HtmlHeadAppender.Current.Register...(key, ...);
+///   </code>
 /// </example>
 public class HtmlHeadAppender
 {
@@ -131,6 +135,14 @@ public class HtmlHeadAppender
       _registeredHeadElements.Add (key, headElement);
   }
 
+  /// <summary>
+  ///   Test's whether an element with this <paramref name="key"/> has already been registered.
+  /// </summary>
+  /// <param name="key"> The string to test. </param>
+  /// <returns>
+  ///   <see langword="true"/> if an element with this <paramref name="key"/> has already been 
+  ///   registered.
+  /// </returns>
   public bool IsRegistered (string key)
   {
     return _registeredHeadElements.Contains (key);
