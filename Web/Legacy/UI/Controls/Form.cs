@@ -360,7 +360,7 @@ public class Form : HtmlForm
               if (theform == null)
                 theform = GetForm (control);
               
-              theform.__EVENTTARGET.value = controlID;
+              theform.__EVENTTARGET.value = eventTarget.split(""$"").join("":"");
               theform.__EVENTARGUMENT.value = eventArgument;
               theform.submit();
             }
