@@ -18,7 +18,7 @@
 </TextBoxStyle></obw:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
-    <td><obw:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obw:BocDateTimeValue></td></tr>
+    <td><obw:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"  incompleteerrormessage="Unvollständige Daten" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" invaliddateerrormessage="Ungültiges Datum" invalidtimeerrormessage="Ungültige Zeit" requirederrormessage="Eingabe erforderlich"></obw:BocDateTimeValue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><obw:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
@@ -28,7 +28,7 @@
     <td></td>
     <td><obw:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
 <optionsmenuitems>
-<obc:BocMenuItem Text="Copy" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Copy" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
