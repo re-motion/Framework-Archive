@@ -179,7 +179,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   #region ICloneable Members
 
-  public virtual object Clone()
+  public virtual object Clone ()
   {
     return new DomainObjectCollection (this, this.IsReadOnly);
   }
