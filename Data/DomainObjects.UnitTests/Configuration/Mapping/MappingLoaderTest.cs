@@ -285,5 +285,12 @@ public class LoaderTest
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
+
+  [Test]
+  public void GetApplicationName ()
+  {
+    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd");
+    Assert.AreEqual ("UnitTests", loader.GetApplicationName ());
+  }
 }
 }
