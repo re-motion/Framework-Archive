@@ -65,7 +65,7 @@
 	        [Date] = @date and
 	        [DateTime] = @dateTime and
 	        [Decimal] = @decimal and
-	        [Double] = @double and
+	        [Double] > @doubleLowerBound and [Double] < @doubleUpperBound and
 	        [Enum] = @enum and
 	        [Guid] = @guid and
 	        [Int16] = @int16 and
@@ -78,7 +78,7 @@
 	        [NaDate] = @naDate and
 	        [NaDateTime] = @naDateTime and
 	        [NaDecimal] = @naDecimal and
-	        [NaDouble] = @naDouble and
+	        [NaDouble] > @naDoubleLowerBound and [NaDouble] < @naDoubleUpperBound and
 	        [NaGuid] = @naGuid and
 	        [NaInt16] = @naInt16 and
 	        [NaInt32] = @naInt32 and
