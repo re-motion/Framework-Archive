@@ -48,7 +48,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The <see cref="DropDownList"/> used in modifiable mode. </summary>
+  /// <summary> The <see cref="DropDownList"/> used in edit mode. </summary>
   private DropDownList _dropDownList = null;
 
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
@@ -211,6 +211,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </param>
   private void InternalLoadValue (bool removeUndefined)
   {
+    //  Set the display value
     if (IsReadOnly)
     {
       if (ReferenceValue != null)
@@ -235,7 +236,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
         //  No null item in the list
         if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
         {
-          _dropDownList.Items.Insert (0, CreateEmptyItem());
+          _dropDownList.Items.Insert (0, CreateNullItem());
         }
 
         _dropDownList.SelectedValue = c_nullIdentifier;
@@ -259,6 +260,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       }
     }
 
+    //  Get icon
     if (Property != null)
     {
       IBusinessObjectService service
@@ -276,27 +278,36 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
           iconPrototype = webUIService.GetIcon (
             (IBusinessObjectClassWithIdentity) Property.ReferenceClass);
       }
+
       if (iconPrototype != null)
       {
         _icon.ImageUrl = iconPrototype.Url;
         _icon.Width = iconPrototype.Width;
         _icon.Height = iconPrototype.Height;
+
+        _icon.Visible = EnableIcon;
       }
       else
       {
         _icon.ImageUrl = "/images/Help.gif";  // HACK: Should be String.Empty;
         _icon.Width = Unit.Pixel(24);         // HACK: Should be Unit.Empty;
         _icon.Height = Unit.Pixel(24);        // HACK: Should be Unit.Empty;
+        _icon.Visible = true;                 // HACK: Should be false
       }
     }
-
-    //  Only show exisiting icons
-    if (_icon.ImageUrl != String.Empty)
-      _icon.Visible = EnableIcon;
     else
+    {
       _icon.Visible = false;
+    }
   }
 
+  /// <summary>
+  ///   Loads the <see cref="Value"/> from the <see cref="DataSource"/> or uses the cached
+  ///   information if <paramref name="interim"/> is <see langword="false"/>.
+  /// </summary>
+  /// <param name="interim">
+  ///   <see langword="true"/> to load the <see cref="Value"/> from the <see cref="DataSource"/>.
+  /// </param>
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -313,6 +324,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Writes the <see cref="Value"/> into the <see cref="DataSource"/>
+  ///   if <paramref name="interim"/> is <see langword="true"/>.
+  /// </summary>
+  /// <param name="interim">
+  ///   <see langword="false"/> to write the <see cref="Value"/> into the <see cref="DataSource"/>.
+  /// </param>
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -324,8 +342,21 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Populates the <see cref="DropDownList"/> with the items passes in 
+  ///   <paramref name="businessObjects"/>.
+  /// </summary>
+  /// <remarks>
+  ///   This method controls the actual refilling of the <see cref="_dropDownList"/>.
+  /// </remarks>
+  /// <param name="businessObjects">
+  ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
+  ///   <see cref="_dropDownList"/>. Must not be <see langword="null"/>.
+  /// </param>
   protected virtual void RefreshDropDownList(IBusinessObjectWithIdentity[] businessObjects)
   {
+    ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
     if (    Property != null 
         &&  businessObjects != null)
     {
@@ -334,7 +365,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       //  Add Undefined item
       if (InternalValue == null || !IsRequired)
       {
-        _dropDownList.Items.Add (CreateEmptyItem());
+        _dropDownList.Items.Add (CreateNullItem());
       }
 
       //  Populate _dropDownList
@@ -349,8 +380,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  ///   Sets the list of possible items in the list of reference values.
+  ///   Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in 
+  ///   edit mode.
   /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     The control has to be in edit mode (<see cref="ReadOnly"/> set to 
+  ///     <see langword="false"/>) to refresh the list.
+  ///   </para><para>
+  ///     Use this method when manually setting the listed items, i.e. from the parent control.
+  ///   </para>
+  /// </remarks>
   /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
   public void SetBusinessObjectsList (IBusinessObjectWithIdentity[] businessObjects)
   {
@@ -363,8 +403,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary>
-  /// 
+  ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
+  ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     The control has to be in edit mode (<see cref="ReadOnly"/> set to 
+  ///     <see langword="false"/>) to refresh the list.
+  ///   </para>
+  /// </remarks>
   public void RefreshBusinessObjectsList()
   {
     if (Property == null)
@@ -380,38 +427,55 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     RefreshDropDownList (businessObjects);
   }
 
+  /// <summary>
+  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
+  ///   properly initialized.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
-    EnsureChildControlsInitialized ();
+
+    //  First call
+    EnsureChildControlsInitialized();
   }
 
+  /// <summary>
+  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
+  ///   properly initialized.
+  /// </summary>
+  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void Render (HtmlTextWriter writer)
   {
-    EnsureChildControlsInitialized ();
+    //  Second call has practically no overhead
+    //  Required to get optimum designer support.
+    EnsureChildControlsInitialized();
+
     base.Render (writer);
   }
 
-  public new IBusinessObjectReferenceProperty Property
-  {
-    get 
-    { 
-      return (IBusinessObjectReferenceProperty) base.Property; 
-    }
-    set
-    {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
-
-      base.Property = (IBusinessObjectReferenceProperty) value; 
-    }
-  }
-
+  /// <summary>
+  ///   Initializes the child controls.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     The <see cref="Width"/> and <see cref="Image.Width"/> property of <see cref="Icon"/> must
+  ///     be of the same <see cref="UnitType"/>. If they are not, the width of the 
+  ///     icon is added to the specified total  width of the control. It is recommended to always 
+  ///     specify the <see cref="Width"/> in pixels.
+  ///   </para>
+  ///   <para>
+  ///     During design-time, the width of the icon versus the width of the list or label
+  ///     is only approximated.
+  ///   </para>
+  /// </remarks>
   protected override void InitializeChildControls()
   {
     _dropDownList.Visible = ! IsReadOnly;
     _label.Visible = IsReadOnly;
 
     Unit innerControlWidth = Unit.Empty;
+
     if (! IsDesignMode)
     {
       if (this.Width.Type == _icon.Width.Type)
@@ -429,6 +493,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
+      //  Handle icon width approximation
       switch (Width.Type)
       {
         case UnitType.Percentage:
@@ -494,6 +559,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _icon.ApplyStyle (_iconStyle);
   }
 
+  /// <summary>
+  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
+  /// </summary>
+  /// <param name="savedState">
+  ///   An <see cref="Object"/> that represents the control state to be restored.
+  /// </param>
   protected override void LoadViewState(object savedState)
   {
     _isLoadViewState = true;
@@ -506,6 +577,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _isLoadViewState = false;
   }
 
+  /// <summary>
+  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
+  /// </summary>
+  /// <returns>
+  ///   Returns the server control's current view state.
+  /// </returns>
   protected override object SaveViewState()
   {
     object[] values = new object[4];
@@ -515,45 +592,22 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     return values;
   }
 
-  private object SaveListItemCollectionViewState (ListItemCollection listItems)
-  {
-    if (listItems == null || listItems.Count == 0)
-      return null;
-
-    ArrayList items = new ArrayList();
-
-    foreach (ListItem listItem in listItems)
-    {
-      items.Add (new Pair (listItem.Text, listItem.Value));
-    }
-    
-    return items;
-  }
-
-  private ListItem[] LoadListItemCollectionViewState(object state)
-  {
-    if (state == null)
-      return new ListItem[]{};
-
-    ArrayList items = (ArrayList)state;
-
-    ListItem[] listItems = new ListItem[items.Count];
-    for (int i = 0; i < items.Count; i++)
-    {
-      Pair item = (Pair)items[i];
-
-      listItems[i] = new ListItem ((string)item.First, (string)item.Second);
-    }
-
-    return listItems;
-  }
-
-  private ListItem CreateEmptyItem()
+  /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
+  /// <returns> A <see cref="ListItem"/>. </returns>
+  private ListItem CreateNullItem()
   {
     ListItem emptyItem = new ListItem (string.Empty, c_nullIdentifier);
     return emptyItem;
   }
 
+  /// <summary>
+  ///   Generates the validators depending on the control's configuration.
+  /// </summary>
+  /// <remarks>
+  ///   Generates a validator that checks that the selected item is not the null item if the 
+  ///   control is in edit-mode and input is required.
+  /// </remarks>
+  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
     if (! IsRequired)
@@ -572,6 +626,27 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     validators[0] = notNullItemValidator;
 
     return validators;
+  }
+
+  /// <summary>
+  ///   The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to.
+  /// </summary>
+  /// <remarks>
+  ///   Explicit setting of <see cref="Property"/> is not offically supported.
+  /// </remarks>
+  /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
+  public new IBusinessObjectReferenceProperty Property
+  {
+    get
+    { 
+      return (IBusinessObjectReferenceProperty) base.Property; 
+    }
+    set
+    {
+      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
+
+      base.Property = (IBusinessObjectReferenceProperty) value; 
+    }
   }
 
   /// <summary>
@@ -644,6 +719,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Gets or sets the current value.
   /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
   [Description ("Gets or sets the current value.")]
   [Browsable (false)]
   public virtual IBusinessObjectWithIdentity ReferenceValue
@@ -674,8 +753,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   }
   
   /// <summary>
-  ///   Gets or sets the current value.
+  ///   Gets or sets the current value. Must be of type <see cref="IBusinessObjectWithIdentity"/>.
   /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
   [Description ("Gets or sets the current value.")]
   [Browsable (false)]
   public override object Value
@@ -693,6 +776,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Gets or sets the current value.
   /// </summary>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentfier"/> for the current 
+  ///   <see cref="IBusinessObjectWithIdentity"/> object
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
   [Description ("Gets or sets the current value.")]
   [Browsable (false)]
   protected string InternalValue
@@ -716,18 +804,24 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
+  ///   using it's ClientID.
+  /// </summary>
   public override Control TargetControl 
   {
     get { return (! IsReadOnly) ? _dropDownList : (Control) this; }
   }
 
   /// <summary>
-  ///   Specifies whether the text within the control has been changed since the last load/save operation.
+  ///   Specifies whether the text within the control has been changed since the last load/save 
+  ///   operation.
   /// </summary>
   /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Text changes by the user cause <c>IsDirty</c> to be reset to <c>false</c> during the
-  ///   loading phase of the request (i.e., before the page's <c>Load</c> event is raised).
+  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> 
+  ///   during loading and saving values. Text changes by the user cause <c>IsDirty</c> to be 
+  ///   reset to <c>false</c> during the loading phase of the request (i.e., before the page's 
+  ///   <c>Load</c> event is raised).
   /// </remarks>
   public override bool IsDirty
   {
@@ -735,28 +829,46 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     set { _isDirty = value; }
   }
 
+  /// <summary>
+  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
+  ///   implementations that can be bound to this control.
+  /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
+  /// <summary> Overrides <see cref="ISmartControl.UseLabel"/>. </summary>
   public override bool UseLabel
   {
     get { return false; }
   }
 
+  /// <summary> Gets the <see cref="DropDownList"/> used in edit mode. </summary>
   [Browsable (false)]
-  public DropDownList DropDown
+  public DropDownList DropDownList
   {
     get { return _dropDownList; }
   }
 
+  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
   [Browsable (false)]
   public Label Label
   {
     get { return _label; }
   }
 
+  /// <summary> Gets the <see cref="Image"/> used as an icon. </summary>
+  [Browsable (false)]
+  public Image Icon
+  {
+    get { return _icon; }
+  }
+
+  /// <summary>
+  ///   Set <see langword="true"/> to display an icon for the currently selected 
+  ///   <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
   [Category ("Appearance")]
   [Description ("Set true to enable the icon in front of the list")]
   [DefaultValue (true)]
@@ -772,6 +884,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  /// <summary> The search expression used to populate the selection list in edit mode. </summary>
+  /// <value> A <see cref="String"/> with a valid search expression. </value>
   [Category ("Data")]
   [Description ("Set the search expression for populating the selection list.")]
   [DefaultValue ("")]

@@ -182,7 +182,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </remarks>
   protected void EnsureChildControlsInitialized ()
   {
-    if (! _childControlsInitialized || (this.Site != null && this.Site.DesignMode))
+    if (! _childControlsInitialized || IsDesignMode)
     {
       InitializeChildControls();
       _childControlsInitialized = true;
