@@ -32,6 +32,8 @@ public class DoubleProperty : NullableProperty, IBusinessObjectDoubleProperty
   {
     if (!IsList && IsNullableType)
       return NaDouble.ToBoxedDouble ((NaDouble)internalValue);
+    else if (!IsList && !IsNullableType)
+      return base.FromInternalType (internalValue);
     else
       return internalValue;
   }
