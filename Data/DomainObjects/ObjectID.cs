@@ -27,17 +27,18 @@ public class ObjectID
 
   public static bool Equals (ObjectID id1, ObjectID id2)
   {
-    if ((object) id1 == (object) id2)
+    if (object.ReferenceEquals (id1, id2))
       return true;
 
-    if ((object) id1 != null && (object) id2 != null)
-    {
-      return id1._storageProviderID.Equals (id2._storageProviderID)
-          && id1._classID.Equals (id2._classID)
-          && id1._value.Equals (id2._value);
-    }
+    if ((object) id1 == null)
+      return false;
 
-    return false;
+    if ((object) id2 == null)
+      return false;
+
+    return id1._storageProviderID.Equals (id2._storageProviderID)
+        && id1._classID.Equals (id2._classID)
+        && id1._value.Equals (id2._value);
   }
 
   /// <summary>
