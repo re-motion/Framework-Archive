@@ -283,6 +283,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\CollectionEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\CreateSingleObjectRelationLinkCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -329,6 +334,16 @@
                 />
                 <File
                     RelPath = "DataManagement\PropertyValueTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\RelationEndPointListTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\RelationEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -529,21 +544,6 @@
                 />
                 <File
                     RelPath = "Persistence\StorageProviderManagerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\CollectionEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\RelationEndPointListTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Relations\RelationEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Relations;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Relations
+namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
 public class RelationEndPointListTest : ClientTransactionBaseTest

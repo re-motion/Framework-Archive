@@ -1,7 +1,6 @@
 using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Relations;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {

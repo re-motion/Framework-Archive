@@ -1,7 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.Relations;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects

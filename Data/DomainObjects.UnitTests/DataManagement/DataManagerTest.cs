@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Relations;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Transaction;
