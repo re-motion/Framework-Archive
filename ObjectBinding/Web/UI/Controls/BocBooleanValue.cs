@@ -22,11 +22,17 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   This control can be used to display or edit a tri-state value (true, false, and undefined).
 /// </summary>
 /// <remarks>
-///   The control is displayed using an <see cref="ImageButton"/> (edit mode only) 
-///   or an <see cref="Image"/> (read-only mode only) to simulate a check box. It also offers 
-///   a <see cref="Label"/> containing the string representation of the current value, rendered 
-///   next to the image. Use the <see cref="ImageButton"/>, <see cref="Image"/>, and 
-///   <see cref="Label"/> properties to access these controls directly.
+///   <para>
+///     The control's <see cref="Value"/> can be assigned <c>Boolean</c> or <see cref="NaBoolean"/> values
+///     and <see langword="null"/>. 
+///     The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
+///   </para><para>
+///     The control is displayed using an <see cref="ImageButton"/> (edit mode only) 
+///     or an <see cref="Image"/> (read-only mode only) to simulate a check box. It also offers 
+///     a <see cref="Label"/> containing the string representation of the current value, rendered 
+///     next to the image. Use the <see cref="ImageButton"/>, <see cref="Image"/>, and 
+///     <see cref="Label"/> properties to access these controls directly.
+///   </para>
 /// </remarks>
 // TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("ValidationValue")]
@@ -484,7 +490,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   [Browsable(false)]
   public new object Value
   {
-    get 
+    get
     {
       if (_value.IsNull)
         return null;
