@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding
@@ -16,10 +17,42 @@ public class BusinessObjectPropertyPath
  
   public static BusinessObjectPropertyPath Parse (
     IBusinessObjectDataSource dataSource, 
-    string identifier)
+    string propertyPathIdentifier)
   {
-    throw new NotImplementedException ("BusinessObjectPropertyPath.Parse");
-    //  TODO: BusinessObjectPropertyPath.Parse
+    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+
+    string[] propertyIdentifiers = propertyPathIdentifier.Split ('.');
+    IBusinessObjectProperty[] properties = 
+      //  TODO: BusinessObjectPropertyPath.Parse
+      //  new IBusinessObjectProperty [propertyIdentifiers.Length];
+      new IBusinessObjectProperty [1];
+
+    if (properties.Length > 0)
+    {
+      properties[0] = dataSource.BusinessObjectClass.GetPropertyDefinition (propertyIdentifiers[0]); 
+      if (properties[0] == null)
+        throw new ArgumentException ("BusinessObjectClass '" + dataSource.BusinessObjectClass.GetType().FullName + "' does not contain a property named '" + propertyIdentifiers[0] + "'.", propertyPathIdentifier);
+    }
+//    IBusinessObjectClass businessObjectClass = 
+//      dataSource.BusinessObjectClass as IBusinessObjectClass;
+//    IBusinessObject bo;
+//    bo.BusinessObjectClass;
+//    for (int i; i < propertyIdentifiers.Length - 1; i++)
+//    {
+//      properties[i] = businessObjectClass.GetPropertyDefinition (propertyIdentifiers[i]); 
+//      businessObjectClass.
+//      properties[i].
+//    }
+//
+//    IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
+//    if (! Control.SupportsProperty (property))
+//      throw new ArgumentException ("Property 'Property' does not support the property '" + _propertyIdentifier + "'.");
+//    _property = property;
+//
+//  throw new NotImplementedException ("BusinessObjectPropertyPath.Parse");
+
+    return new BusinessObjectPropertyPath (properties);
   }
 
   public BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
@@ -30,6 +63,10 @@ public class BusinessObjectPropertyPath
       if (! (properties[i] is IBusinessObjectReferenceProperty))
         throw new ArgumentException ("Each property in a property path except the last one must be a reference property.", "properties");
     }
+
+    if (properties[properties.Length - 1] == null)
+      throw new ArgumentNullException ("properties[properties.Length - 1]", "A property path must not contain null references.");
+
     _properties = properties;
   }
 
@@ -83,6 +120,27 @@ public class BusinessObjectPropertyPath
       return value.ToString();
     }        
   }
+
+  public string Identifier
+  {
+    get
+    {
+      StringBuilder sb = new StringBuilder (100);
+		  for (int i = 0; i < _properties.Length; i++)
+		  {
+			  if (i > 0)
+	  			sb.Append (".");
+        sb.Append (_properties[i].Identifier);
+      }
+      return sb.ToString();
+    }
+  }
+
+  public override string ToString()
+  {
+    return Identifier;
+  }
+
 }
 
 }
