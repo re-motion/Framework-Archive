@@ -486,6 +486,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
     for (int i = Count - 1; i >= 0; i--)
       Remove (this[i].ID);
+
+    OnCleared ();
   }
 
   /// <summary>
@@ -774,28 +776,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Clears the <see cref="DomainObjectCollection"/> without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
   /// </summary>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  internal void ClearCollection ()
+  internal void PerformClear ()
   {
     if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
 
     BaseClear ();
-  }
-
-  private void CheckItemType (DomainObject domainObject, string argumentName)
-  {
-    CheckItemType (_requiredItemType, domainObject.GetType (), argumentName);
-  }
-
-  private void CheckItemType (Type requiredType, Type itemType, string argumentName)
-  {
-    if (requiredType != null && !requiredType.Equals (itemType) && !itemType.IsSubclassOf (requiredType))
-    {
-      throw CreateArgumentException (
-        argumentName,
-        "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.", 
-        itemType, 
-        requiredType);
-    }
+    OnCleared ();
   }
 
   /// <summary>
@@ -836,6 +822,44 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   {
     if (Removed != null)
       Removed (this, args);
+  }
+
+  /// <summary>
+  /// Method is invoked after the collection has been successfully cleared.
+  /// </summary>
+  /// <remarks>
+  /// <b>OnCleared</b> is called in one of the following circumstances:
+  /// <list type="bullet">
+  ///   <item>
+  ///     <description><see cref="Clear"/> is invoked and the collection has been successfully cleared.</description>
+  ///   </item>
+  ///   <item>
+  ///     <description>The <b>DomainObjectCollection</b> represents a one-to-many relation and the <see cref="DomainObject"/> holding this collection is deleted.
+  ///     During the delete process all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
+  ///     After all <see cref="DomainObject"/>s have been removed the <b>OnCleared</b> method is invoked to allow derived collections to adjust their internal state.
+  ///     </description>
+  ///   </item>
+  /// </list>
+  /// </remarks>
+  protected virtual void OnCleared ()
+  {
+  }
+
+  private void CheckItemType (DomainObject domainObject, string argumentName)
+  {
+    CheckItemType (_requiredItemType, domainObject.GetType (), argumentName);
+  }
+
+  private void CheckItemType (Type requiredType, Type itemType, string argumentName)
+  {
+    if (requiredType != null && !requiredType.Equals (itemType) && !itemType.IsSubclassOf (requiredType))
+    {
+      throw CreateArgumentException (
+        argumentName,
+        "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.", 
+        itemType, 
+        requiredType);
+    }
   }
 
   private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)

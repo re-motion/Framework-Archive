@@ -57,7 +57,7 @@ public class QueryConfiguration
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <i>configurationFile</i>.
+  /// Initializes a new instance of the <b>QueryConfiguration</b> class from an XML configuration file and an XML schema file.
   /// </summary>
   /// <param name="configurationFile">Configuration information is read from this file.</param>
   /// <param name="schemaFile">The <i>schemaFile</i> is used to verify the correctness of the specified <i>configurationFile</i>.</param>
@@ -100,7 +100,7 @@ public class QueryConfiguration
   // methods and properties
 
   /// <summary>
-  /// Gets the <see cref="QueryDefinition"/> for the specified <i>queryID</i>.
+  /// Gets the <see cref="QueryDefinition"/> through its unique ID.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>queryID</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>queryID</i> is an empty string.</exception>
