@@ -213,8 +213,12 @@
 
   <!--======================= PROJECTS =======================-->
 
-  <target name="all" depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection" />
+  <target name="all" 
+      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web" />
 
+  <target name="forCooNet" 
+      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web" />
+  
   <target name="Core" depends="initialize">
     <property name="project.name" value="Core" />
     <property name="project.dir" value="Core" />
@@ -603,5 +607,5 @@
       </fileset>
     </copy>
   </target>
-  
+
 </project>
