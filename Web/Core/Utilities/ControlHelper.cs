@@ -70,6 +70,21 @@ public class ControlHelper
       return true;
   }
 
+  /// <summary>
+  ///   This method returns the nearest containing Template Control (i.e., Page or User Control).
+  /// </summary>
+  public static TemplateControl GetParentTemplateControl (Control control)
+  {
+    for (Control parent = control;
+         parent != null;
+         parent = parent.Parent)
+    {
+      if (parent is TemplateControl)
+        return (TemplateControl) parent;
+    }
+    return null;
+  }
+
   // member fields
 
   // construction and disposing
