@@ -9,12 +9,13 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 
+using Rubicon.Collections;
 using Rubicon.Globalization;
+using Rubicon.Web;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
-using Rubicon.Web;
-using Rubicon.Collections;
 
 namespace FormGrid.Sample
 {
@@ -107,19 +108,21 @@ public class WebForm :
       CompaniesTable.ID, 
       FormGridRowInfo.RowPosition.BeforeRowWithID));
 
+    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
 	}
-	
-  protected override void RenderChildren(HtmlTextWriter writer)
-  {
-    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
-    base.RenderChildren (writer);
-  }
 
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this);
+    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
+  }
+	
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
+    base.RenderChildren (writer);
   }
 
 	#region Web Form Designer generated code
@@ -158,7 +161,7 @@ public class WebForm :
   /// </summary>
   /// <param name="table"></param>
   /// <returns></returns>
-  public virtual StringCollection GetListOfHiddenRows (string table)
+  public virtual StringCollection GetHiddenRows (string table)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
     return (StringCollection) _listOfHiddenRows[table];
@@ -169,7 +172,7 @@ public class WebForm :
   /// </summary>
   /// <param name="table"></param>
   /// <returns></returns>
-  public virtual FormGridRowInfoCollection GetListOfFormGridRowInfos (string table)
+  public virtual FormGridRowInfoCollection GetAdditionalRows (string table)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];

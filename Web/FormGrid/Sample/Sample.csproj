@@ -100,7 +100,7 @@
                 />
                 <Reference
                     Name = "rubicon.web"
-                    AssemblyName = "rubicon.web"
+                    AssemblyName = "Rubicon.Web"
                     HintPath = "..\..\core\bin\debug\rubicon.web.dll"
                 />
                 <Reference
@@ -159,26 +159,6 @@
                 <File
                     RelPath = "Globalization\WebForm.resx"
                     BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Html\style.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Image\Help.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Image\RequiredField.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Image\Spacer.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Image\ValidationError.gif"
-                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "References\log4net.dll"
