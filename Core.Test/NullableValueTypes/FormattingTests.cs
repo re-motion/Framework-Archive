@@ -3,7 +3,7 @@ using System.Globalization;
 using NUnit.Framework;
 using Rubicon.Data.NullableValueTypes;
 
-namespace NullableValueTypesTest
+namespace Rubicon.Data.NullableValueTypes.UnitTests
 {
 
 

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.NullableValueTypes;
 
-namespace Rubicon.Test.Data.NullableValueTypesTest
+namespace Rubicon.Data.NullableValueTypes.UnitTests
 {
 
 [TestFixture]
