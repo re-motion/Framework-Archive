@@ -1,5 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+<?xml version="1.0" encoding="utf-8" ?> 
 <MultiLingualResourcesAttribute>
+  <Constructor>
+    <param name="resourceName">
+      The root name of the resource conantainer to be used by this type
+    </param>
+  </Constructor>
   <GetResourceManager>
     <Common>
       <remarks>
@@ -9,21 +14,25 @@
     <param name="objectType">
       The type for which the resource manager is wanted.
     </param>
-    <param name="resourceType">
-      The <see="MultiLingualResourcesAttribute.ResourceTypeEnum" /> value selecting which type of
-      resources should be selected.
-    </param>
     <param name="includeHierarchy">
       Include the resource managers for the base types.
     </param>
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>
-    <param name="resourceName">
-      The root name of the resource container.
+    <param name="assembly">
+      The assembly containing the resources.
+    </param>
+    <param name="resourceNames">
+      The root names of the resource containers matching the value of <c>resourceType</c>.
     </param>
     <returns>
-      The <c>IResourceManager</c> for the type's resource container.
+      The <c>ResourceManagerWrapper</c> containing the type's resource containers.
     </returns>
   </GetResourceManager>
+  <GetResourceManagers>
+    <returns>
+      A <c>ResourceManager</c> Array containing the type's resource containers.
+    </returns>
+  </GetResourceManagers>
 </MultiLingualResourcesAttribute>
