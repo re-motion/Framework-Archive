@@ -2,7 +2,7 @@ using System;
 using Rubicon.Utilities;
 using NUnit.Framework;
 
-namespace Rubicon.Core.UnitTests
+namespace Rubicon.Core.UnitTests.Utilities
 {
 
 [TestFixture]

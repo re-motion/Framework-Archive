@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
-namespace Rubicon.Core.UnitTests
+namespace Rubicon.Core.UnitTests.Utilities
 {
 	public enum TestEnum
 	{
