@@ -38,7 +38,7 @@ public class ListControlStyle: Style
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaBoolean AutoPostback
   {
@@ -48,7 +48,7 @@ public class ListControlStyle: Style
 
   [Description("The number of visible rows to display.")]
   [Category("Appearance")]
-  [DefaultValue (typeof(NaInt32), "Null")]
+  [DefaultValue (typeof(NaInt32), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 ListBoxRows
   {
@@ -58,7 +58,7 @@ public class ListControlStyle: Style
 
   [Description("The padding between each item.")]
   [Category("Layout")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 RadioButtonListCellPadding
   {
@@ -68,7 +68,7 @@ public class ListControlStyle: Style
 
   [Description("The spacing between each item.")]
   [Category("Layout")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 RadioButtonListCellSpacing
   {
@@ -78,7 +78,7 @@ public class ListControlStyle: Style
 
   [Description("The number of columns to use to lay out the items.")]
   [Category("Layout")]
-  [DefaultValue (typeof(NaInt32), "Null")]
+  [DefaultValue (typeof(NaInt32), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 RadioButtonListRepeatColumns
   {
@@ -194,7 +194,7 @@ public class DropDownListStyle: Style
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaBoolean AutoPostback
   {
@@ -250,7 +250,7 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("The width of the textbox in characters.")]
   [Category("Appearance")]
-  [DefaultValue (typeof(NaInt32), "Null")]
+  [DefaultValue (typeof(NaInt32), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 Columns
   {
@@ -260,7 +260,7 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("The maximum number of characters that can be entered.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaInt32), "Null")]
+  [DefaultValue (typeof(NaInt32), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 MaxLength
   {
@@ -270,7 +270,7 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("Whether the text in the control can be changed or not.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaBoolean ReadOnly
   {
@@ -280,7 +280,7 @@ public class SingleRowTextBoxStyle: Style
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaBoolean AutoPostBack
   {
@@ -324,7 +324,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
   }
   [Description("The number of lines to display for a multiline textbox.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaInt32), "Null")]
+  [DefaultValue (typeof(NaInt32), "null")]
   [NotifyParentProperty (true)]
   public NaInt32 Rows
   {
@@ -344,7 +344,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
 
   [Description("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "Null")]
+  [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
   public NaBoolean Wrap
   {
