@@ -61,7 +61,7 @@ public class QueryManager
   ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="Query"/> could not be instantiated.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
-  ///   An error occured while executing the query.
+  ///   An error occurred while executing the query.
   /// </exception>
   public object GetScalar (Query query)
   {
@@ -91,7 +91,7 @@ public class QueryManager
   ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="Query"/> could not be instantiated.
   /// </exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
-  ///   An error occured while executing the query.
+  ///   An error occurred while executing the query.
   /// </exception>
   public DomainObjectCollection GetCollection (Query query)
   {
