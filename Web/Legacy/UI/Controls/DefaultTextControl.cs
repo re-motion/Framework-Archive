@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Collections.Specialized;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 /// <summary>
 /// TextBox control with the ability to specify a default text to be displayed at the client.
