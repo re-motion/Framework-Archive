@@ -129,48 +129,6 @@ public class DomainObject
     ClientTransaction.Current.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
 
-  internal bool BeginRelationChange (
-      string propertyName,
-      DomainObject oldRelatedObject,
-      DomainObject newRelatedObject)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-    RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
-    OnRelationChanging (args);
-    return !args.Cancel;
-  }
-
-  internal void EndObjectLoading ()
-  {
-    OnLoaded ();
-  }
-
-  internal void EndCommit ()
-  {
-    OnCommitted (new EventArgs ());
-  }
-
-  internal void EndRelationChange (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-    OnRelationChanged (new RelationChangedEventArgs (propertyName));
-  }
-
-  internal bool BeginDelete ()
-  {
-    DeletingEventArgs args = new DeletingEventArgs ();
-    OnDeleting (args);
-    return !args.Cancel;
-  }
-
-  internal void EndDelete ()
-  {
-    EventArgs args = new EventArgs ();
-    OnDeleted (args);
-  }
-
   protected virtual void OnLoaded ()
   {
   }
@@ -215,6 +173,48 @@ public class DomainObject
   {
     if (Committed != null)
       Committed (this, args);
+  }
+
+  internal bool BeginRelationChange (
+    string propertyName,
+    DomainObject oldRelatedObject,
+    DomainObject newRelatedObject)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
+    OnRelationChanging (args);
+    return !args.Cancel;
+  }
+
+  internal void EndObjectLoading ()
+  {
+    OnLoaded ();
+  }
+
+  internal void EndCommit ()
+  {
+    OnCommitted (new EventArgs ());
+  }
+
+  internal void EndRelationChange (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    OnRelationChanged (new RelationChangedEventArgs (propertyName));
+  }
+
+  internal bool BeginDelete ()
+  {
+    DeletingEventArgs args = new DeletingEventArgs ();
+    OnDeleting (args);
+    return !args.Cancel;
+  }
+
+  internal void EndDelete ()
+  {
+    EventArgs args = new EventArgs ();
+    OnDeleted (args);
   }
 
   private void DataContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
