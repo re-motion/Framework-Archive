@@ -61,6 +61,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   private Style _commonStyle = new Style ();
   private TextBoxStyle _textBoxStyle = new TextBoxStyle ();
   private Style _labelStyle = new Style ();
+  private string _format = null;
 
 	public BocTextValue()
 	{
@@ -332,22 +333,23 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
         _text = string.Empty;
         return;
       }
-      try
+
+      IFormattable formattable = value as IFormattable;
+      if (formattable != null)
       {
-        if (_actualValueType == BocTextValueType.Integer)
-          _text = ((int) value).ToString();
-        else if (_actualValueType == BocTextValueType.Double)
-          _text = ((double) value).ToString();
-        else if (_actualValueType == BocTextValueType.Date)
-          _text = ((DateTime) value).ToString ("d");
-        else if (_actualValueType == BocTextValueType.DateTime)
-          _text = ((DateTime) value).ToString ("G");
-        else
-          _text = (string) value;
+        string format = Format;
+        if (format == null)
+        {
+          if (_actualValueType == BocTextValueType.Date)
+            format = "d";
+          else if (_actualValueType == BocTextValueType.DateTime)
+            format = "g";
+        }
+        _text = formattable.ToString (format, null);
       }
-      catch (InvalidCastException e)
+      else
       {
-        throw new ArgumentException ("Expected type " + _actualValueType.ToString() + ", but was " + value.GetType().FullName, "value", e);
+        _text = value.ToString();
       }
     }
   }
@@ -369,7 +371,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
 
   [Description("Gets or sets a fixed value type.")]
   [Category("Data")]
-  [DefaultValue(typeof(BocTextValueType), "Undefined")]
+  [DefaultValue (BocTextValueType.Undefined)]
   public BocTextValueType ValueType
   {
     get { return _valueType; }
@@ -383,6 +385,22 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
           _text = string.Empty;
       }
     }
+  }
+
+  /// <summary>
+  ///   Gets or sets the format string used to create the string value. 
+  /// </summary>
+  /// <remarks>
+  ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
+  ///   values and "g" for date/time values (use "G" to display seconds too).
+  /// </remarks>
+  [Description ("Gets or sets the format string used to create the string value.")]
+  [Category ("Style")]
+  [DefaultValue (null)]
+  public string Format
+  {
+    get { return StringUtility.EmptyToNull (_format); }
+    set { _format = value; }
   }
 
   /// <summary>
