@@ -172,7 +172,7 @@ public class CurrencyTextBox: Control, INamingContainer
 
     string amount = this.Page.Request.Form[_amountTextBox.UniqueID];
 
-    if (amount == null || amount == string.Empty)
+    if (!this.Page.IsPostBack && (amount == null || amount == string.Empty))
       amount = _amountText;
     
     _amountTextBox.Text = amount;
