@@ -135,7 +135,7 @@ public sealed class DomainObjectIDs
 
   // IndustrialSector: IndustrialSector2
   // Ceo: Ceo5
-  // Orders: -
+  // Orders: Order3
   public static readonly ObjectID Customer3 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "Customer", new Guid ("{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}"));
   
