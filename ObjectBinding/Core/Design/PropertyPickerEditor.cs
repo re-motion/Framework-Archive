@@ -26,7 +26,7 @@ public class PropertyPickerEditor: UITypeEditor
       {
         IBusinessObjectBoundControl control = context.Instance as IBusinessObjectBoundControl;
         if (control == null)
-          throw new InvalidOperationException ("Cannot use PropertyPathEditor for objects other than IBusinessObjectBoundControl.");
+          throw new InvalidOperationException ("Cannot use PropertyPickerEditor for objects other than IBusinessObjectBoundControl.");
 
         PropertyPickerControl pathPickerControl = new PropertyPickerControl (control);
 
