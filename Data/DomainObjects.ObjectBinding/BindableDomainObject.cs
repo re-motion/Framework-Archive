@@ -41,71 +41,25 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
     return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction, includeDeleted);
   }
 
-  public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
-  {
-    object value;
-    int count;
-
-    if (property.IsList)
-    {
-      IList list = (IList) obj.GetProperty (property);
-      count = list.Count;
-      if (count > 0)
-        value = list[0];
-      else 
-        value = null;
-    }
-    else if (property.GetType () == typeof(EnumerationProperty))
-    {
-      object internalValue = obj.GetProperty (property);
-
-      value = ((EnumerationProperty)property).GetValueInfoByValue (internalValue).DisplayName;
-      count = 1;
-    }
-    else
-    {
-      value = obj.GetProperty (property);
-      count = 1;
-    }
-
-    if (value == null)
-      return string.Empty;
-
-    string strValue = null;
-    IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
-    if (businessObject != null)
-    {
-      strValue = businessObject.DisplayName;
-    }
-    else if (format != null)
-    {
-      IFormattable formattable = value as IFormattable;
-      if (formattable != null)
-        strValue = formattable.ToString (format, null);
-    }
-
-    if (strValue == null)
-      strValue = value.ToString();
-
-    if (count > 1)
-      strValue += " ... [" + count.ToString() + "]";
-    return strValue;
-  }
-
   // member fields
+
+  private BusinessObjectReflector _objectReflector;
 
   // construction and disposing
 
   protected BindableDomainObject ()
   {
+    _objectReflector = new BusinessObjectReflector (this);
   }
 
   protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
+    _objectReflector = new BusinessObjectReflector (this);
   }
 
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
+    _objectReflector = new BusinessObjectReflector (this);
   }
 
   // methods and properties
@@ -129,22 +83,12 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   public object GetProperty (IBusinessObjectProperty property)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (DomainObjectProperty));
-    DomainObjectProperty reflectionProperty = (DomainObjectProperty) property;
-    PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
-
-    object internalValue = propertyInfo.GetValue (this, new object[0]);
-    return reflectionProperty.FromInternalType (internalValue);
+    return _objectReflector.GetProperty (property);
   }
 
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (DomainObjectProperty));
-    DomainObjectProperty reflectionProperty = (DomainObjectProperty) property;
-    PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
-
-    object internalValue = reflectionProperty.ToInternalType (value);
-    propertyInfo.SetValue (this, internalValue, new object[0]);
+    _objectReflector.SetProperty (property, value);
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
@@ -172,7 +116,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
   {
-    return GetPropertyString (this, property, format);
+    return _objectReflector.GetPropertyString (property, format);
   }
   
   public object GetProperty (string property)
