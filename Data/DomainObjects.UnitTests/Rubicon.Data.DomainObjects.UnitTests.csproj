@@ -343,17 +343,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\RelationEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjects\AddToOneToManyRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "DomainObjects\CommitDomainObjectTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DomainObjects\DeleteDomainObjectWithManyToOneRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
