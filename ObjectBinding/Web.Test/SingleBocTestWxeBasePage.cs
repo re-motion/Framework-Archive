@@ -18,8 +18,8 @@ using System.Web;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.UnitTestBasePage")]
-public class UnitTestWxeBasePage:
+[MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
+public class SingleBocTestWxeBasePage:
     WxePage, 
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
@@ -81,7 +81,7 @@ public class UnitTestWxeBasePage:
     Type type = this.GetType();
     if (s_chachedResourceManagers[type] == null)
     {
-      lock (typeof (UnitTestWxeBasePage))
+      lock (typeof (SingleBocTestWxeBasePage))
       {
         if (s_chachedResourceManagers[type] == null)
           s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);

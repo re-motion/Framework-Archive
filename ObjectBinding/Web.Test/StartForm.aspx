@@ -12,11 +12,11 @@
 
     <form id="Form" method="post" runat="server">
       <p>Wxe-Enabled Unit Tests<br>
-        <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.UnitTestMainWxeFunction,OBWTest">
-          WxeHandler.ashx?WxeFunctionType=OBWTest.UnitTestMainWxeFunction,OBWTest</a></p>
+        <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest">
+          WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</a></p>
       <p>Wxe-Enabled Integration Test (Single Page, no User Control)<br>
-        <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.IntegrationTestMainWxeFunction,OBWTest">
-          WxeHandler.ashx?WxeFunctionType=OBWTest.IntegrationTestMainWxeFunction,OBWTest</a></p>
+        <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest">
+          WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</a></p>
     </form>
 
   </body>

@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="IntegrationTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.IntegrationTestForm" %>
+<%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocForm" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
@@ -15,7 +15,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<h1>IntegrationTest: Form, No UserControl</h1>
+<h1>CompleteBocTest: Form, No UserControl</h1>
 <p>
 <table id="FormGrid" runat="server">
   <tr>

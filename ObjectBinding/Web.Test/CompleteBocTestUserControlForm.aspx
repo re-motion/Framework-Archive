@@ -1,5 +1,5 @@
-<%@ Register TagPrefix="iuc" TagName="IntegrationTestUserControl" Src="IntegrationTestUserControl.ascx" %>
-<%@ Page language="c#" Codebehind="IntegrationTestUserControlForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.IntegrationTestUserControlForm" %>
+<%@ Register TagPrefix="iuc" TagName="CompleteBocTestUserControl" Src="CompleteBocTestUserControl.ascx" %>
+<%@ Page language="c#" Codebehind="CompleteBocTestUserControlForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocUserControlForm" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
@@ -15,7 +15,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<h1>IntegrationTest: UserControl Form</h1>
-<p><iuc:IntegrationTestUserControl id="IntegrationTestUserControl" runat="server"></iuc:IntegrationTestUserControl></p></form>
+<h1>CompleteBocTest: UserControl Form</h1>
+<p><iuc:CompleteBocTestUserControl id="CompleteBocTestUserControl" runat="server"></iuc:CompleteBocTestUserControl></p></form>
   </body>
 </html>

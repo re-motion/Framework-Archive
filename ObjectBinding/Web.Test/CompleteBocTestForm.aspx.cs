@@ -21,8 +21,8 @@ using Rubicon.ObjectBinding.Reflection;
 namespace OBWTest
 {
 
-  public class IntegrationTestForm : 
-      UnitTestWxeBasePage,
+  public class CompleteBocForm : 
+      SingleBocTestWxeBasePage,
       IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
 

@@ -13,7 +13,7 @@ using Rubicon.ObjectBinding;
 
 namespace OBWTest
 {
-public class IntegrationTestUserControl : 
+public class CompleteBocUserControl : 
     System.Web.UI.UserControl,
     IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
