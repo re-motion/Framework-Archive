@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
 [TestFixture]
 public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest

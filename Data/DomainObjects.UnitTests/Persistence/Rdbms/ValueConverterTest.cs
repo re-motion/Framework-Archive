@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
 [TestFixture]
-public class DBValueConverterTest
+public class ValueConverterTest
 {
   // types
 
@@ -17,7 +17,7 @@ public class DBValueConverterTest
 
   // construction and disposing
 
-  public DBValueConverterTest ()
+  public ValueConverterTest ()
   {
   }
 
@@ -27,7 +27,7 @@ public class DBValueConverterTest
   [ExpectedException (typeof (ArgumentException), "DBValueConverter does not support ObjectID values of type 'System.Int32'.\r\nParameter name: value")]
   public void GetObjectIDWithValueOfInvalidType ()
   {
-    DBValueConverter converter = new DBValueConverter ();
+    ValueConverter converter = new ValueConverter ();
     converter.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Order"], 1);
   }
 }

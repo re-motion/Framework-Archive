@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
 [TestFixture]
 public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest

@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
 [TestFixture]
 public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest

@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
 public class SqlProviderBaseTest : ClientTransactionBaseTest
 {
