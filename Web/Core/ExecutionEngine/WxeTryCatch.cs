@@ -117,16 +117,8 @@ public class WxeTryCatch: WxeStep
       }
       catch (Exception e)
       {
-        if (e is System.Threading.ThreadAbortException || e is WxeExecuteNextStepException)
+        if (e is System.Threading.ThreadAbortException)
           throw;
-
-        // if the exception was wrapped by the framework, get the original exception
-        if (e is System.Web.HttpException)
-        {
-          e = e.InnerException;
-          if (e is System.Web.HttpUnhandledException)
-            e = e.InnerException;
-        }
 
         for (int i = 0; i < _catchBlocks.Count; ++i)
         {
