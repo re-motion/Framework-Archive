@@ -64,9 +64,9 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
 
     ClientTransaction.Current.Commit ();
 
-    Assert.AreEqual (StateType.Original, customer1.State);
-    Assert.AreEqual (StateType.Original, customer2.State);
-    Assert.AreEqual (StateType.Original, order.State);
+    Assert.AreEqual (StateType.Unchanged, customer1.State);
+    Assert.AreEqual (StateType.Unchanged, customer2.State);
+    Assert.AreEqual (StateType.Unchanged, order.State);
   }
 
   [Test]
