@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using System.Web;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -59,6 +60,23 @@ public class FormGridLabel: Label, ISmartControl
   {
     get { return base.Text; }
   }
+
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    string associatedControlID = AssociatedControlID;
+    if (associatedControlID.Length != 0)
+    {
+      Control control = this.FindControl (associatedControlID);
+      if (control == null)
+        throw new HttpException(string.Format("Unable to find the control with id '{0}' that is associated with the Label '{1}'.", associatedControlID, ID));
+      writer.AddAttribute("for", control.ClientID);
+    }
+    AssociatedControlID = string.Empty;
+    base.AddAttributesToRender(writer);
+    AssociatedControlID = associatedControlID;
+  }
+ 
+
 }
 
 }
