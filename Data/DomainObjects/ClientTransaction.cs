@@ -203,9 +203,9 @@ public class ClientTransaction
   /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
   /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <para><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></para>
-  ///   <para><i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.</para>
-  ///   <para><i>newRelatedObject</i> has been deleted.</para>
+  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>
+  ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.
+  ///   <i>newRelatedObject</i> has been deleted.
   /// </exception>
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
@@ -263,9 +263,9 @@ public class ClientTransaction
   /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   /// <exception cref="DataManagement.ObjectDeletedException"><i>includeDeleted</i> is false and the DomainObject with <i>id</i> has been deleted.</exception>
   /// <exception cref="Persistence.PersistenceException">
-  ///   <para>The related object could not be loaded, but is mandatory.</para>
-  ///   <para>The relation refers to non-existing object.</para>
-  ///   <para><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></para>
+  ///   The related object could not be loaded, but is mandatory.
+  ///   The relation refers to non-existing object.
+  ///   <i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>
   /// </exception>
   // Todo documentation: all exceptions from ClientTransaction.LoadObject
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)

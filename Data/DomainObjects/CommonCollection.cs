@@ -307,9 +307,9 @@ public class CollectionBase : ICollection
   /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
-  /// <para><i>array</i> is not a one-dimensional array.</para>
-  /// <para><i>index</i> is greater than the current length of the array.</para>
-  /// <para>The number of elements is greater than the available space from <i>index</i> to the end of <i>array</i>.</para>
+  ///   <i>array</i> is not a one-dimensional array.
+  ///   <i>index</i> is greater than the current length of the array.
+  ///   The number of elements is greater than the available space from <i>index</i> to the end of <i>array</i>.
   /// </exception>
   public virtual void CopyTo (Array array, int index)
   {
