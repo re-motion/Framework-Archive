@@ -303,16 +303,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\MulitpleObjectsRelationLinkCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\MulitpleObjectsRelationLinkTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DataManagement\ObjectEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
