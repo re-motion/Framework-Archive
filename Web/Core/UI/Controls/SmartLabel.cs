@@ -3,9 +3,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
-using Rubicon.Web.UI.Design;
 using System.Text;
+using Rubicon.Web.UI.Design;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -149,7 +150,7 @@ public class SmartLabel: WebControl
   {
     base.AddAttributesToRender (writer);
 
-    Control target = NamingContainer.FindControl (ForControl);
+    Control target = ControlHelper.FindControl (NamingContainer, ForControl);
     ISmartControl smartControl = target as ISmartControl;
     bool useLabel;
     if (smartControl != null)
