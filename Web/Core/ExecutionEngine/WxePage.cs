@@ -125,7 +125,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         else
           collection = context.Request.QueryString;
 
-        if ((collection[ControlHelper.ViewState] == null) && (collection[ControlHelper.EventTarget] == null))
+        if ((collection[ControlHelper.ViewStateID] == null) && (collection[ControlHelper.PostEventSourceID] == null))
           _postbackCollection = null;
         else
           _postbackCollection = collection;
@@ -160,8 +160,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else if (UsesEventTarget)
     {
-      string eventtarget = _page.GetPostBackCollection()[ControlHelper.EventTarget];
-      string eventargument = _page.GetPostBackCollection()[ControlHelper.EventArgument];
+      string eventtarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
+      string eventargument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
       returnScript = string.Format (
             "if (window.opener && window.opener.__doPostBack && window.opener.document.getElementById(\"wxePageToken\") && window.opener.document.getElementById(\"wxePageToken\").value == \"{0}\") \n"
           + "  window.opener.__doPostBack(\"{1}\", \"{2}\"); \n"
@@ -185,7 +185,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public bool UsesEventTarget
   {
-    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.EventTarget]); }
+    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.PostEventSourceID]); }
   }
 
   public void Dispose ()
