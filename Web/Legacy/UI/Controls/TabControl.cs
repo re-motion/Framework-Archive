@@ -202,17 +202,7 @@ public class TabControl: Control, IPostBackEventHandler
         // TODO: raise events
         case "TabSelected":
         {
-          _activeTab = Int32.Parse (argument);
-          Page.Session["navTab"]= _activeTab;
-          Tab selectedTab = _items[_activeTab];
-          string href = selectedTab.Href;
-          href = PageUtility.GetPageUrl (this.Page, href);
-          if (selectedTab.PageToken)
-            href= AddPageToken(href);
-          
-            Page.RegisterStartupScript ("OpenPage", 
-            "<script language='JavaScript'>location.replace ('" + href + "' );</script>");
-
+          MoveToTab (Int32.Parse (argument));
           break;
         }
         case "MenuSelected":
@@ -220,6 +210,22 @@ public class TabControl: Control, IPostBackEventHandler
       }
     }
 	}
+
+  protected void MoveToTab (int activeTab)
+  {
+    _activeTab = activeTab;
+    Page.Session["navTab"]= _activeTab;
+    Tab selectedTab = _items[_activeTab];
+    string href = selectedTab.Href;
+    href = PageUtility.GetPageUrl (this.Page, href);
+    if (selectedTab.PageToken)
+      href= AddPageToken(href);
+      /*
+      Page.RegisterStartupScript ("OpenPage", 
+      "<script language='JavaScript'>location.replace ('" + href + "' );</script>");
+      */
+      Page.Response.Redirect (href);
+  }
 
   /*
     
