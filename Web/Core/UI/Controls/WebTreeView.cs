@@ -70,7 +70,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
   /// <summary> The nodes in this tree view. </summary>
   private WebTreeNodeCollection _nodes;
-  private Triplet[] _nodeViewStates;
+  private Triplet[] _nodesViewState;
 
   private bool _enableTopLevelExpander = true;
   private bool _enableScrollBars = false;
@@ -86,8 +86,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   ///   is expanded.
   /// </summary>
   private EvaluateWebTreeNode _evaluateTreeNode;
-
-  private CreateRootWebTreeNodes _createRootTreeNodes;
+  private InitializeRootWebTreeNodes _initializeRootTreeNodes;
 
   //  construction and destruction
 
@@ -162,9 +161,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     _evaluateTreeNode = evaluateTreeNode;
   }
 
-  public void SetCreateRootTreeNodesDelegate (CreateRootWebTreeNodes createRootTreeNodes)
+  public void SetInitializeRootTreeNodesDelegate (InitializeRootWebTreeNodes initializeRootTreeNodes)
   {
-    _createRootTreeNodes = createRootTreeNodes;
+    _initializeRootTreeNodes = initializeRootTreeNodes;
   }
 
   //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
@@ -184,11 +183,11 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     if (_hasTreeNodesCreated)
       return;
 
-    if (_createRootTreeNodes != null) 
-      _createRootTreeNodes();
+    if (_initializeRootTreeNodes != null) 
+      _initializeRootTreeNodes();
 
-    if (_nodeViewStates != null)
-      LoadNodeViewStateRecursive (_nodeViewStates, _nodes);
+    if (_nodesViewState != null)
+      LoadNodesViewStateRecursive (_nodesViewState, _nodes);
 
     _hasTreeNodesCreated = true;
   }
@@ -220,9 +219,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     
     base.LoadViewState (values[0]);
     if (_enableTreeNodeViewState)
-      _nodeViewStates = (Triplet[]) values[1];
+      _nodesViewState = (Triplet[]) values[1];
     else
-      _nodeViewStates = null;
+      _nodesViewState = null;
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
@@ -233,15 +232,15 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
     values[0] = base.SaveViewState();
     if (_enableTreeNodeViewState)
-      values[1] = SaveNodeViewStateRecursive (_nodes);
+      values[1] = SaveNodesViewStateRecursive (_nodes);
 
     return values;
   }
 
-  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodeViewStates"/>. </summary>
-  private void LoadNodeViewStateRecursive (Triplet[] nodeViewStates, WebTreeNodeCollection nodes)
+  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodesViewState"/>. </summary>
+  private void LoadNodesViewStateRecursive (Triplet[] nodesViewState, WebTreeNodeCollection nodes)
   {
-    foreach (Triplet nodeViewState in nodeViewStates)
+    foreach (Triplet nodeViewState in nodesViewState)
     {
       string nodeID = (string) nodeViewState.First;
       WebTreeNode node = nodes.Find (nodeID);
@@ -254,18 +253,16 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
           bool isEvaluated = (bool) values[1];
           if (isEvaluated)
             EvaluateTreeNodeInternal (node);
-          else
-            node.IsEvaluated = false;
         }
-        LoadNodeViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
+        LoadNodesViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
       }
     }
   }
 
   /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
-  private Triplet[] SaveNodeViewStateRecursive (WebTreeNodeCollection nodes)
+  private Triplet[] SaveNodesViewStateRecursive (WebTreeNodeCollection nodes)
   {
-    Triplet[] nodeViewStates = new Triplet[nodes.Count];
+    Triplet[] nodesViewState = new Triplet[nodes.Count];
     for (int i = 0; i < nodes.Count; i++)
     {
       WebTreeNode node = nodes[i];    
@@ -275,10 +272,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       values[0] = node.IsExpanded;
       values[1] = node.IsEvaluated;
       nodeViewState.Second = values;
-      nodeViewState.Third = SaveNodeViewStateRecursive (node.Children);
-      nodeViewStates[i] = nodeViewState;
+      nodeViewState.Third = SaveNodesViewStateRecursive (node.Children);
+      nodesViewState[i] = nodeViewState;
     }
-    return nodeViewStates;
+    return nodesViewState;
   }
 
   /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
@@ -750,7 +747,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 /// </summary>
 public delegate void EvaluateWebTreeNode (WebTreeNode expandingNode);
 
-public delegate void CreateRootWebTreeNodes();
+public delegate void InitializeRootWebTreeNodes();
 
 /// <summary> Represents the method that handles the <c>Click</c> event raised when clicking on a tree node. </summary>
 public delegate void WebTreeNodeClickEventHandler (object sender, WebTreeNodeClickEventArgs e);
