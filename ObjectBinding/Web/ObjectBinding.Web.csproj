@@ -250,10 +250,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BocTreeNodeCollection.cs"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\BocTreeView.cs"
                     BuildAction = "Compile"
                 />
@@ -335,10 +331,6 @@
                 <File
                     RelPath = "Design\BocMenuItemCollectionEditor.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\BocTreeNodeCollectionEditor.cs"
                     BuildAction = "Compile"
                 />
                 <File

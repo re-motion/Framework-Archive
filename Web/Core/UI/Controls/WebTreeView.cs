@@ -362,9 +362,10 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
     writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
-    if (! StringUtility.IsNullOrEmpty (node.Icon))
+    if (   node.Icon != null 
+        && ! StringUtility.IsNullOrEmpty (node.Icon.Url))
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, node.Icon);
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, node.Icon.Url);
       writer.AddStyleAttribute ("vertical-align", "middle");
       writer.AddStyleAttribute ("border", "0");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -409,7 +410,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 
   /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
   /// <remarks> ...&lt;node.Parent.Parent.NodeID&gt;|&lt;node.Parent.NodeID&gt;|&lt;NodeID&gt; </remarks>
-  public string FormatNodePath (WebTreeNode node)
+  private string FormatNodePath (WebTreeNode node)
   {    
     string parentPath = string.Empty;
     if (node.ParentNode != null)
@@ -427,7 +428,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <param name="path"> The path to be parsed. </param>
   /// <param name="pathSegments"> Returns the IDs that comprised the path. </param>
   /// <returns> The <see cref="WebTreeNode"/> to which <paramref name="path"/> pointed. </returns>
-  public WebTreeNode ParseNodePath (string path, out string[] pathSegments)
+  private WebTreeNode ParseNodePath (string path, out string[] pathSegments)
   {
     pathSegments = path.Split (c_pathSeparator);
     WebTreeNode currentNode = null;
@@ -561,16 +562,17 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// <summary> Gets the tree nodes displayed by this tree view. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [Category ("Behavior")]
+  [MergableProperty(false)]
+  [Category ("Nodes")]
   [Description ("The tree nodes displayed by this tree view.")]
   [DefaultValue ((string) null)]
-  public WebTreeNodeCollection Nodes
+  public virtual WebTreeNodeCollection Nodes
   {
     get { return _nodes; }
   }
 
   /// <summary> 
-  ///   Gets or sets a flag taht determines whether to show the top level expander and automatically expand the 
+  ///   Gets or sets a flag that determines whether to show the top level expander and automatically expand the 
   ///   child nodes if the expander is hidden.
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -582,7 +584,6 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     get { return _enableTopLevelExpander; }
     set { _enableTopLevelExpander = value; }
   }
-
 
   /// <summary> Occurs when a node is clicked. </summary>
   [Category ("Action")]

@@ -15,7 +15,7 @@ public class WebTreeNode: IControlItem
   private Control _ownerControl = null;
   private string _nodeID = "";
   private string _text = "";
-  private string _icon = "";
+  private IconInfo _icon;
   private WebTreeNodeCollection _children;
   private WebTreeView _treeView;
   private WebTreeNode _parentNode;
@@ -23,7 +23,7 @@ public class WebTreeNode: IControlItem
   private bool _isEvaluated = false;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTreeNode (string nodeID, string text, string icon)
+  public WebTreeNode (string nodeID, string text, IconInfo icon)
   {
     NodeID = nodeID;
     _text = text;
@@ -33,14 +33,20 @@ public class WebTreeNode: IControlItem
   }
 
   /// <summary> Initalizes a new instance. </summary>
+  public WebTreeNode (string nodeID, string text, string iconUrl)
+    : this (nodeID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
+  {
+  }
+
+  /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string nodeID, string text)
-    : this (nodeID, text, null)
+    : this (nodeID, text, string.Empty)
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode()
-    : this (null, null, null)
+    : this (null, null, new IconInfo (string.Empty, Unit.Empty, Unit.Empty))
   {
   }
 
@@ -91,32 +97,50 @@ public class WebTreeNode: IControlItem
     _children.SetParent (_treeView, this);
   }
 
+  public override string ToString()
+  {
+    string displayName = NodeID;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = Text;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      return DisplayedTypeName;
+    else
+      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+  }
+
   /// <summary> Gets or sets the ID of this node. </summary>
   /// <remarks> Must be unique within the collection of tree nodes. Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The ID of this node.")]
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
-  //  No default value
   public virtual string NodeID
   {
     get { return _nodeID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      WebTreeNodeCollection nodes = null;
-      if (ParentNode != null)
-        nodes = ParentNode.Children;
-      else if (TreeView != null)
-        nodes = TreeView.Nodes;
-      if (nodes != null)
+      //  Could not be added to collection in designer with this check enabled.
+      //ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      if (! StringUtility.IsNullOrEmpty (value))
       {
-        if (nodes.Find (value) != null)
-          throw new ArgumentException ("The collection already contains a node with NodeID '" + value + "'.", "value");
+        WebTreeNodeCollection nodes = null;
+        if (ParentNode != null)
+          nodes = ParentNode.Children;
+        else if (TreeView != null)
+          nodes = TreeView.Nodes;
+        if (nodes != null)
+        {
+          if (nodes.Find (value) != null)
+            throw new ArgumentException ("The collection already contains a node with NodeID '" + value + "'.", "value");
+        }
       }
-
       _nodeID = value; 
     }
+  }
+
+  private bool ShouldSerializeNodeID()
+  {
+    return true;
   }
 
   /// <summary> Gets or sets the text displayed in this node. </summary>
@@ -137,23 +161,47 @@ public class WebTreeNode: IControlItem
 
   /// <summary> Gets or sets the URL for the icon displayed in this tree node. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
   [Description ("The URL for the icon displayed in this tree node.")]
   [NotifyParentProperty (true)]
-  [DefaultValue ("")]
-  public virtual string Icon
+  public virtual IconInfo Icon
   {
     get { return _icon; }
     set { _icon = value; }
   }
 
+  private bool ShouldSerializeIcon()
+  {
+    if (_icon == null)
+    {
+      return false;
+    }
+    else if (   StringUtility.IsNullOrEmpty (_icon.Url)
+             && _icon.Height.IsEmpty
+             && _icon.Width.IsEmpty)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+  private void ResetIcon()
+  {
+    _icon = new IconInfo (string.Empty, Unit.Empty, Unit.Empty);
+  }
+
   /// <summary> Gets the child nodes of this node. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [Category ("Behavior")]
+  [MergableProperty(false)]
+  [Category ("Nodes")]
   [Description ("The child nodes contained in this tree node.")]
   [DefaultValue ((string) null)]
-  public WebTreeNodeCollection Children
+  public virtual WebTreeNodeCollection Children
   {
     get { return _children; }
   }
@@ -191,6 +239,12 @@ public class WebTreeNode: IControlItem
   {
     get { return _isEvaluated; }
     set { _isEvaluated = value; }
+  }
+
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected virtual string DisplayedTypeName
+  {
+    get { return "Node"; }
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>

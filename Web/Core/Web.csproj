@@ -262,6 +262,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\Style.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\TreeView.css"
                     BuildAction = "Content"
                 />
@@ -524,6 +528,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\IBaseValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\IconInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

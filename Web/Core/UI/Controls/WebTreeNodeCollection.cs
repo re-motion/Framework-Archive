@@ -6,6 +6,7 @@ using System.Web.UI;
 using Rubicon.Web.UI.Design;
 using Rubicon.Utilities;
 using Rubicon.Collections;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -40,8 +41,7 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) value;
-    if (Find (node.NodeID) != null)
-      throw new ArgumentException ("The collection already contains a node with NodeID '" + node.NodeID + "'.", "value");
+    CheckNode ("value", node);
     base.OnInsert (index, value);
   }
 
@@ -50,13 +50,11 @@ public class WebTreeNodeCollection: ControlItemCollection
     base.OnInsertComplete (index, value);
     ((WebTreeNode) value).SetParent (_treeView, _parentNode);
   }
-
   protected override void OnSet(int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) newValue;
-    if (Find (node.NodeID) != null)
-      throw new ArgumentException ("The collection already contains a node with NodeID '" + node.NodeID + "'.", "newValue");
+    CheckNode ("newValue", node);
     base.OnSet (index, oldValue, newValue);
   }
 
@@ -64,6 +62,17 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     base.OnSetComplete (index, oldValue, newValue);
     ((WebTreeNode) newValue).SetParent (_treeView, _parentNode);
+  }
+
+  private void CheckNode (string arguemntName, WebTreeNode node)
+  {
+    if (_treeView != null && ! ControlHelper.IsDesignMode ((IControl) _treeView))
+    {
+      if (StringUtility.IsNullOrEmpty (node.NodeID))
+        throw new ArgumentException ("The node does not contain a 'NodeID' and can therfor not be inserted into the collection.", arguemntName);
+    }
+    if (Find (node.NodeID) != null)
+      throw new ArgumentException ("The collection already contains a node with NodeID '" + node.NodeID + "'.", arguemntName);
   }
 
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
