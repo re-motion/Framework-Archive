@@ -14,6 +14,7 @@ public interface IBusinessObjectProvider
 {
   IBusinessObjectService GetService (Type serviceType);
   char GetPropertyPathSeparator ();
+  BusinessObjectPropertyPath CreatePropertyPath (IBusinessObjectProperty[] properties);
 }
 
 public abstract class BusinessObjectProvider: IBusinessObjectProvider
@@ -33,6 +34,11 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   public virtual char GetPropertyPathSeparator ()
   {
     return '.';
+  }
+
+  public virtual BusinessObjectPropertyPath CreatePropertyPath (IBusinessObjectProperty[] properties)
+  {
+    return new BusinessObjectPropertyPath (properties);
   }
 }
 
