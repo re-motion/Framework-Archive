@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
@@ -34,8 +35,7 @@ public class ClientTransaction
 
   // static members and constants
 
-  [ThreadStatic]
-  private static ClientTransaction s_clientTransaction;
+  private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransaction.Current";
 
   /// <summary>
   /// Gets the default <b>ClientTransaction</b> of the current thread. 
@@ -45,10 +45,14 @@ public class ClientTransaction
   {
     get 
     {
-      if (s_clientTransaction == null)
-        s_clientTransaction = new ClientTransaction ();
+      ClientTransaction current = (ClientTransaction) CallContext.GetData (c_callContextKey);
+      if (current == null)
+      {
+        current = new ClientTransaction ();
+        SetCurrent (current);
+      }
       
-      return s_clientTransaction;
+      return current;
     }
   }
 
@@ -58,7 +62,7 @@ public class ClientTransaction
   /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
   public static void SetCurrent (ClientTransaction clientTransaction)
   {
-    s_clientTransaction = clientTransaction;
+    CallContext.SetData (c_callContextKey, clientTransaction);
   }
 
   // member fields
