@@ -162,29 +162,6 @@ public sealed class ResourceManagerPool
     return resourceManager;
   }
 
-  /*
-  private static ResourceManager GetOrCreateResourceManager (Type objectType, string resourceName)
-  {
-    if (s_resourceManagerCache.ContainsKey (resourceName))
-    {
-      return (ResourceManager) s_resourceManagerCache[resourceName];
-    }
-    else
-    {
-      ResourceManager rm = new ResourceManager (resourceName, objectType.Assembly);
-      if (rm == null)
-        throw new ResourceException ("No resource with name " + resourceName + " found.");
-
-      lock (typeof (ResourceDispatcher))
-      {
-        s_resourceManagerCache[resourceName] = rm;
-      }
-
-      return rm;
-    }
-  }
-  */
-
   private static CultureInfo GetUICulture ()
   {
     return Thread.CurrentThread.CurrentUICulture;
