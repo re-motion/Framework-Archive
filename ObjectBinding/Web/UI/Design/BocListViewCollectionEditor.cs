@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using Rubicon.ObjectBinding.Web.Controls;
 
@@ -15,6 +16,16 @@ public class BocColumnDefinitionSetCollectionEditor: CollectionEditor
   {
     return new Type[] {
       typeof (BocColumnDefinitionSet)};
+  }
+
+  public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value)
+  {
+    IServiceProvider collectionEditorServiceProvider = null;
+    if (provider.GetType() != typeof (CollectionEditorServiceProvider))
+      collectionEditorServiceProvider = new CollectionEditorServiceProvider (provider, 600, 400, 2);
+    else
+      collectionEditorServiceProvider = provider;
+    return base.EditValue (context, collectionEditorServiceProvider, value);
   }
 }
 

@@ -120,7 +120,7 @@
                 />
                 <Reference
                     Name = "system.windows.forms"
-                    AssemblyName = "system.windows.forms"
+                    AssemblyName = "System.Windows.Forms"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
                 />
             </References>
@@ -271,12 +271,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Design\CollectionEditorServiceProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Design\ComponentBindingExpressionUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Design\PropertyPathBindingCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\TypeDescriptorContext.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

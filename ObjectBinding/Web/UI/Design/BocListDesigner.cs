@@ -1,20 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Drawing;
 using System.Drawing.Design;
-using System.Windows.Forms;
 using System.Web.UI.Design;
-using System.Reflection;
 using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class BocListDesigner: 
-    ControlDesigner, 
-    IServiceProvider,
-    System.Windows.Forms.Design.IWindowsFormsEditorService
+public class BocListDesigner: ControlDesigner, IServiceProvider
 {
   private DesignerVerbCollection _verbs = null;
 
@@ -38,7 +32,7 @@ public class BocListDesigner:
         propertyDescriptor.PropertyType, 
         typeof(UITypeEditor));
     
-    BocListTypeDescriptorContext context = new BocListTypeDescriptorContext (this, propertyDescriptor);
+    TypeDescriptorContext context = new TypeDescriptorContext (this, propertyDescriptor);
     object value = propertyDescriptor.GetValue (Component);
     editor.EditValue (context, this, value);
   }
@@ -50,142 +44,12 @@ public class BocListDesigner:
 
   protected override object GetService (Type serviceType)
   {
-    if (serviceType == typeof (System.Windows.Forms.Design.IWindowsFormsEditorService))
-      return this;
-    else
-      return base.GetService (serviceType);
+    return base.GetService (serviceType);
   }
 
   object IServiceProvider.GetService (Type serviceType)
   {
     return GetService (serviceType);
-  }
-
-  public void DropDownControl(Control control)
-  {
-    throw new NotSupportedException();
-  }
-
-  public void CloseDropDown()
-  {
-    throw new NotSupportedException();
-  }
-
-  public System.Windows.Forms.DialogResult ShowDialog(Form dialog)
-  {
-    dialog.Size = new Size (800, 500);
-    dialog.StartPosition = FormStartPosition.CenterParent;
-
-    PropertyGrid propertyGrid = GetPropertyGrid (dialog);
-    SetPropertyGridSplitter (propertyGrid, 4);
-    propertyGrid.HelpVisible = true;
-    propertyGrid.BackColor = System.Drawing.SystemColors.Control;
-    
-    return dialog.ShowDialog();
-  }
-
-  private PropertyGrid GetPropertyGrid (Form editor)
-  {
-    const string collectionEditorCollectionFormTypeName = "System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm";
-
-    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-
-    Type collectionEditorCollectionFormType = editor.GetType();
-    if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
-    {
-      throw new ArgumentException (
-          string.Format ("Argument {0} has type {2} when type {1} was expected.",
-          "editor",
-          collectionEditorCollectionFormTypeName,
-          collectionEditorCollectionFormType), "editor");
-    }
-
-    //  private PropertyGrid CollectionEditorCollection.propertyBrowser
-    FieldInfo propertyBrowserFieldInfo = collectionEditorCollectionFormType.GetField (
-        "propertyBrowser",
-        bindingFlags);
-    PropertyGrid propertyBrowser = (PropertyGrid) propertyBrowserFieldInfo.GetValue(editor);
-
-    return propertyBrowser;
-  }
-
-  private void SetPropertyGridSplitter (PropertyGrid propertyGrid, double labelRatio)
-  {
-    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-
-    //  private PropertyGridView PropertyGrid.gridView
-    MethodInfo getPropertyGridViewMethodInfo = typeof (PropertyGrid).GetMethod (
-        "GetPropertyGridView",
-        bindingFlags);
-    object propertyGridView = getPropertyGridViewMethodInfo.Invoke (propertyGrid, null);
-
-    //  public double PropertyGridView.labelRatio
-    Type propertyGridViewType = propertyGridView.GetType();
-    FieldInfo labelRatioFieldInfo = propertyGridViewType.GetField ("labelRatio");
-    labelRatioFieldInfo.SetValue(propertyGridView, labelRatio);
-  }
-}
-
-public class BocListTypeDescriptorContext : ITypeDescriptorContext
-{
-  private BocListDesigner _designer;
-  private PropertyDescriptor _propertyDescriptor;
-
-  public BocListTypeDescriptorContext (
-      BocListDesigner designer, 
-      PropertyDescriptor propertyDescriptor)
-  {
-    _designer = designer;
-    _propertyDescriptor = propertyDescriptor;
-  }
-
-  private IComponentChangeService ComponentChangeService
-  {
-    get { return (IComponentChangeService) this.GetService (typeof (IComponentChangeService)); }
-  }
-
-  public object GetService (Type serviceType)
-  {
-    return ((IServiceProvider)_designer).GetService(serviceType);
-  }
-
-  public IContainer Container
-  {
-    get { return _designer.Component.Site.Container; }
-  }
-
-  public object Instance
-  {
-    get { return _designer.Component; }
-  }
-
-  public PropertyDescriptor PropertyDescriptor
-  {
-    get { return _propertyDescriptor; }
-  }
-
-  public void OnComponentChanged()
-  {
-    if (ComponentChangeService != null)
-      ComponentChangeService.OnComponentChanged (Instance, PropertyDescriptor, null, null);
-  }
-
-  public bool OnComponentChanging()
-  {
-    if (ComponentChangeService != null)
-    {
-      try
-      {
-        ComponentChangeService.OnComponentChanging (Instance, PropertyDescriptor);
-      }
-      catch (CheckoutException e)
-      {
-        if (e == CheckoutException.Canceled)
-          return false;
-        throw e;
-      }
-    }
-    return true;
   }
 }
 
