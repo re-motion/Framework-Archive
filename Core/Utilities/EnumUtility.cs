@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon
+namespace Rubicon.Utilities
 {
 
 /// <summary>

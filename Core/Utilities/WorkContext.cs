@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Configuration;
 using System.Globalization;
 
-namespace Rubicon 
+namespace Rubicon.Utilities
 {
 
 /// <summary>

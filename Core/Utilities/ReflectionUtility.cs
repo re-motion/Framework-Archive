@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Rubicon
+namespace Rubicon.Utilities
 {
 
 public sealed class ReflectionUtility

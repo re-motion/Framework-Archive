@@ -3,7 +3,7 @@ using System.Text;
 using System.Globalization;
 using System.Collections;
 
-namespace Rubicon
+namespace Rubicon.Utilities
 {
 
 /// <summary>
