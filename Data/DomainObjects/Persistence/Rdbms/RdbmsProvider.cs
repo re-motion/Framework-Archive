@@ -159,6 +159,26 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
+  public override DataContainerCollection ExecuteCollectionQuery (Query query)
+  {
+    CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("query", query);
+    if (query.QueryType == QueryType.Scalar)
+      throw new ArgumentException ("A scalar query cannot be used with ExecuteCollectionQuery.", "query");
+
+    Connect ();
+
+    QueryCommandBuilder commandBuilder = new QueryCommandBuilder (this, query);
+    using (IDbCommand command = commandBuilder.Create ())
+    {
+      using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
+      {
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        return dataContainerFactory.CreateCollection ();
+      }
+    }    
+  }
+
   public override object ExecuteScalarQuery (Query query)
   {
     CheckDisposed ();
@@ -205,9 +225,9 @@ public abstract class RdbmsProvider : StorageProvider
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, classDefinition, property, relatedID);
     using (IDbCommand command = commandBuilder.Create ())
     {
-      using (IDataReader reader = ExecuteReader (classDefinition, command, CommandBehavior.SingleResult))
+      using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (classDefinition, reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
         return dataContainerFactory.CreateCollection ();
       }
     }
@@ -230,9 +250,9 @@ public abstract class RdbmsProvider : StorageProvider
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, classDefinition, "ID", id.Value);
     using (IDbCommand command = commandBuilder.Create ())
     {
-      using (IDataReader reader = ExecuteReader (classDefinition, command, CommandBehavior.SingleRow))
+      using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (classDefinition, reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
         return dataContainerFactory.CreateDataContainer ();
       }
     }
@@ -306,10 +326,9 @@ public abstract class RdbmsProvider : StorageProvider
     return new ObjectID (this.ID, classDefinition.ID, Guid.NewGuid ());
   }
 
-  protected virtual IDataReader ExecuteReader (ClassDefinition classDefinition, IDbCommand command, CommandBehavior behavior)
+  protected virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
   {
     CheckDisposed ();
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("command", command);
     ArgumentUtility.CheckValidEnumValue (behavior, "behavior");
 
@@ -319,8 +338,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
     catch (Exception e)
     {
-      throw CreateStorageProviderException (
-          e, "Error while executing SQL command for class '{0}'.", classDefinition.ID);
+      throw CreateStorageProviderException (e, "Error while executing SQL command.");
     }
   }
   
