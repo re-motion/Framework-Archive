@@ -141,6 +141,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Doc\Bugs and ToDos.xls"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "Doc\FormGridManager.doc"
                     BuildAction = "None"
                 />
