@@ -83,7 +83,6 @@ Global
 		References\nunit.framework.dll = References\nunit.framework.dll
 		References\nunit.framework.xml = References\nunit.framework.xml
 		References\Rubicon.Core.dll = References\Rubicon.Core.dll
-		References\Rubicon.Core.pdb = References\Rubicon.Core.pdb
 		References\Rubicon.Core.xml = References\Rubicon.Core.xml
 		Rubicon.Data.DomainObjects.Solution.build = Rubicon.Data.DomainObjects.Solution.build
 		References\Rubicon.ObjectBinding.dll = References\Rubicon.ObjectBinding.dll
