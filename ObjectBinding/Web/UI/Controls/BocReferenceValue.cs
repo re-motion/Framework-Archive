@@ -383,8 +383,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     if (! IsReadOnly)
     {
-      if (   Property != null 
-          && businessObjects != null)
+      if (businessObjects != null)
       {
         _dropDownList.Items.Clear();
       
@@ -572,20 +571,17 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </param>
   private void InternalLoadValue (bool removeNullItem)
   {
-    bool hasPropertyAfterInitializion = ! _isLoadViewState && Property != null;
-
     //  Set the display value
     if (IsReadOnly)
     {
-      if (Value != null && hasPropertyAfterInitializion)
+      if (Value != null)
         _label.Text = Value.DisplayName;
       else
         _label.Text = String.Empty;
     }
     else // Not Read-Only
     {
-      bool isNullItem =    InternalValue == null
-                        || ! hasPropertyAfterInitializion;
+      bool isNullItem = InternalValue == null;
 
       //  Prevent unnecessary removal
       if (removeNullItem && ! isNullItem)
@@ -742,8 +738,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
                && (   _value == null
                    || _value.UniqueIdentifier != InternalValue))
       {
-        _value = 
-          ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (InternalValue);
+        _value = ((IBusinessObjectClassWithIdentity) Property.ReferenceClass).GetObject (InternalValue);
       }
 
       return _value;

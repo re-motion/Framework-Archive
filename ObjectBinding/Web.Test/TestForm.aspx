@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -15,8 +15,31 @@
 <form id=Form method=post runat="server">
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td></TD>
+    <td></td>
     <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children" enableselection="True">
+<fixedcolumns>
+<obc:BocCommandColumnDefinition Text="Event">
+<persistedcommand>
+<obc:BocListItemCommand Type="Event"></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocCommandColumnDefinition>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+<persistedcommand>
+<obc:BocListItemCommand></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocSimpleColumnDefinition>
+<obc:BocCompoundColumnDefinition FormatString="{0} {1}" ColumnTitle="Name">
+<propertypathbindings>
+<obc:PropertyPathBinding PropertyPathIdentifier="FirstName"></obc:PropertyPathBinding>
+<obc:PropertyPathBinding PropertyPathIdentifier="LastName"></obc:PropertyPathBinding>
+</PropertyPathBindings>
+
+<persistedcommand>
+<obc:BocListItemCommand></obc:BocListItemCommand>
+</PersistedCommand>
+</obc:BocCompoundColumnDefinition>
+</FixedColumns>
+
 <optionsmenuitems>
 <obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
 <persistedcommand>
@@ -65,53 +88,30 @@
 </obc:BocMenuItem>
 </OptionsMenuItems>
 
-<fixedcolumns>
-<obc:BocCommandColumnDefinition Text="Event">
-<persistedcommand>
-<obc:BocListItemCommand Type="Event"></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocCommandColumnDefinition>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-<persistedcommand>
-<obc:BocListItemCommand></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-<obc:BocCompoundColumnDefinition FormatString="{0} {1}" ColumnTitle="Name">
-<propertypathbindings>
-<obc:PropertyPathBinding PropertyPathIdentifier="FirstName"></obc:PropertyPathBinding>
-<obc:PropertyPathBinding PropertyPathIdentifier="LastName"></obc:PropertyPathBinding>
-</PropertyPathBindings>
-
-<persistedcommand>
-<obc:BocListItemCommand></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocCompoundColumnDefinition>
-</FixedColumns>
-
 <listmenuitems>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Event" Category="PostBacks">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe">
-<persistedcommand>
-<obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
-</PersistedCommand>
-</obc:BocMenuItem>
-<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href">
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Href" Category="Links">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
+<obc:BocMenuItem Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="PostBacks">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
 </ListMenuItems>
-</obc:boclist></TD></TR></TABLE>
+</obc:boclist></td></tr></table>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
-<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></P>
-<p><asp:label id=EventLabel runat="server">###</asp:label></P></FORM>
+TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
+<p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
+<p><asp:label id=EventLabel runat="server">###</asp:label></p></form>
 
   </body>
 </html>
