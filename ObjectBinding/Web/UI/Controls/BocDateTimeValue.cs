@@ -11,6 +11,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -294,7 +295,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       if (control == _datePickerImage && control.Visible && _hasClientScript)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, this.GetType(), ResourceType.UI, c_datePickerPopupForm);
+            this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
         writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
         writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
         writer.AddAttribute("marginheight", "0", false);
@@ -447,7 +448,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       if (! Page.IsClientScriptBlockRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
+            this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
         PageUtility.RegisterClientScriptInclude (Page, key, scriptUrl);
       }
 
