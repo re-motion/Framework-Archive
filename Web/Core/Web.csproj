@@ -355,6 +355,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\ControlItemCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\CurrencyTextBox.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -1078,13 +1078,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         else
         {
           //  Not supported format
-          s_log.Warn ("FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
+          s_log.Warn ("FormGridManager '" + UniqueID + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
         }
       }
       else
       {
         //  Invalid form grid
-        s_log.Warn ("FormGrid '" + tableID + "' is not managed by FormGridManager '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "'.");
+        s_log.Warn ("FormGrid '" + tableID + "' is not managed by FormGridManager '" + UniqueID + "' on page '" + Page.ToString() + "'.");
       }
     }
 

@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class MenuItem
+public class MenuItem: IControlItem
 {
   string _itemID;
   string _category;
@@ -19,7 +19,7 @@ public class MenuItem
   /// <summary>
   ///   The <see cref="IControl"/> to which this object belongs. 
   /// </summary>
-  private IControl _ownerControl;
+  private Control _ownerControl;
 
   public MenuItem (string itemID, string category, string text, string icon, Command command)
   {
@@ -93,38 +93,32 @@ public class MenuItem
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
   /// <value> A <see cref="Command"/>. </value>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Action")]
   [Description ("The command rendered for this menu item.")]
   [NotifyParentProperty (true)]
-  public Command Command
-  {
-    get { return CommandImplementation; }
-    set { CommandImplementation = value; }
-  }
-
-  protected virtual Command CommandImplementation
+  public virtual Command Command
   {
     get { return _command; }
     set 
     { 
       _command = value; 
       if (_ownerControl != null)
-        _command.OwnerControl = _ownerControl;
+        _command.OwnerControl = OwnerControl;
     }
   }
 
   /// <summary>
   ///   Gets or sets the <see cref="IControl"/> to which this object belongs. 
   /// </summary>
-  protected internal IControl OwnerControl
+  public Control OwnerControl
   {
     get { return OwnerControlImplementation;  }
     set { OwnerControlImplementation = value; }
   }
 
-  protected virtual IControl OwnerControlImplementation
+  protected virtual Control OwnerControlImplementation
   {
     get { return _ownerControl;  }
     set

@@ -23,22 +23,82 @@ namespace Rubicon.Web.UI.Controls
 /// </remarks>
 public class DropDownMenu: WebControl, IControl
 {
+  public static string EscapeJavaScript (string input)
+  {
+    StringBuilder output = new StringBuilder(input.Length + 5);
+    for (int idxChars = 0; idxChars < input.Length; idxChars++)
+    {
+      char c = input[idxChars];
+      switch (c)
+      {
+        case '\t':
+        {
+          output.Append (@"\t");
+          break;
+        }
+        case '\n':
+        {
+          output.Append (@"\n");
+          break;
+        }
+        case '\r':
+        {
+          output.Append (@"\r");
+          break;
+        }
+        case '"':
+        {
+          output.Append ("\\\"");
+          break;
+        }
+        case '\'':
+        {
+          output.Append (@"\'");
+          break;
+        }
+        case '\\':
+        {
+          output.Append (@"\\");
+          break;
+        }
+        case '\v':
+        {
+          output.Append (c);
+          break;
+        }
+        case '\f':
+        {
+          output.Append (c);
+          break;
+        }
+        default:
+        {
+          output.Append(c);
+          break;
+        }
+      }
+    }
+    return output.ToString();
+  }
+ 
+
   private const string c_dropDownIcon = "DropDownArrow.gif";
 
   private string _groupID;
   private string _titleText;
   private string _titleIcon;
+  private bool _isReadOnly;
 
   private MenuItemCollection _menuItems;
 
-	public DropDownMenu (string groupID, IControl ownerControl, Type[] supportedMenuItemTypes)
+	public DropDownMenu (string groupID, Control ownerControl, Type[] supportedMenuItemTypes)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("groupID", groupID);
     _groupID = groupID;
     _menuItems = new MenuItemCollection (ownerControl, supportedMenuItemTypes);
 	}
 
-  public DropDownMenu (string groupID, IControl ownerControl)
+  public DropDownMenu (string groupID, Control ownerControl)
       : this (groupID, ownerControl, new Type[] {typeof (MenuItem)})
 	{
   }
@@ -78,9 +138,7 @@ public class DropDownMenu: WebControl, IControl
         else
           script.AppendFormat (",\r\n");
 
-        script.AppendFormat (
-            "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}')",
-            i.ToString(), menuItem.Category, menuItem.Text, menuItem.Icon);
+        AppendMenuItem (script, menuItem, i);
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
@@ -89,6 +147,42 @@ public class DropDownMenu: WebControl, IControl
     }
 
     base.OnPreRender (e);
+  }
+
+  private void AppendMenuItem (StringBuilder stringBuilder, MenuItem menuItem, int menuItemIndex)
+  {
+    string href = "null";
+    string target = "null";
+
+    if (menuItem.Command != null)
+    {
+      bool isActive =    menuItem.Command.Show == CommandShow.Always
+                      || _isReadOnly && menuItem.Command.Show == CommandShow.ReadOnly
+                      || ! _isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
+
+      bool isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
+      if (isCommandEnabled)
+      {    
+        bool isPostBackCommand =    menuItem.Command.Type == CommandType.Event 
+                                || menuItem.Command.Type == CommandType.WxeFunction;
+        if (isPostBackCommand)
+        {
+          string argument = menuItemIndex + "," + menuItem;
+          href = "'" + Page.GetPostBackClientHyperlink (this, argument) + "'";
+          string s1 = Page.GetPostBackClientHyperlink (this, argument);
+          string s2 = DropDownMenu.EscapeJavaScript (s1);
+        }
+        else if (menuItem.Command.Type == CommandType.Href)
+        {
+          href = "'" + menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID) + "'";
+          target = "'" + menuItem.Command.HrefCommand.Target + "'";
+        }
+      }
+    }
+
+    stringBuilder.AppendFormat (
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}', {4}, {5});",
+        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, menuItem.Icon, href, target);
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -109,6 +203,15 @@ public class DropDownMenu: WebControl, IControl
     writer.AddAttribute ("id", ID + "_MenuDiv");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Menu-Div
 
+    RenderHead (writer);
+
+    writer.RenderEndTag(); // End Menu-Div
+
+    writer.RenderEndTag(); // End Control-Tag
+  }
+
+  private void RenderHead (HtmlTextWriter writer)
+  {
     //  Head-Div is used to group the title and the button, providing a single point of reference
     //  for the popup-div.
     writer.AddStyleAttribute ("position", "relative");
@@ -118,15 +221,21 @@ public class DropDownMenu: WebControl, IControl
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHead);
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Drop Down Head-Div
 
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin Drop Down Button Div
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
     
-    //  Options Drop Down Button 
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-    writer.AddStyleAttribute ("min-height", "1em");
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
+    writer.Write (_titleText);
+    writer.RenderEndTag();
+
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1em");
-    writer.AddStyleAttribute ("float", "right");
     writer.AddStyleAttribute ("text-align", "center");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadButton);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin Drop Down Button-San
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
     string url = ResourceUrlResolver.GetResourceUrl (
         this, Context, typeof (DropDownMenu), ResourceType.Image, c_dropDownIcon);
     writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
@@ -135,44 +244,38 @@ public class DropDownMenu: WebControl, IControl
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, "return false;");
     writer.RenderBeginTag (HtmlTextWriterTag.Input);
     writer.RenderEndTag();
-    writer.RenderEndTag();  // End Drop Down Button-Span
-
-    //  TODO: IE 5.01 has trouble with height
-    //  Options Drop Down Titel
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.Write (_titleText);
     writer.RenderEndTag();
+
+    writer.RenderEndTag(); // End Drop Down Button Table
+
+    writer.RenderEndTag();
+
+    ////  Options Drop Down Button 
+    //writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+    //writer.AddStyleAttribute ("min-height", "1em");
+    //writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1em");
+    //writer.AddStyleAttribute ("float", "right");
+    //writer.AddStyleAttribute ("text-align", "center");
+    //writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadButton);
+    //writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin Drop Down Button-San
+    //string url = ResourceUrlResolver.GetResourceUrl (
+    //    this, Context, typeof (DropDownMenu), ResourceType.Image, c_dropDownIcon);
+    //writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
+    //writer.AddAttribute(HtmlTextWriterAttribute.Type, "image");
+    //writer.AddStyleAttribute ("vertical-align", "middle");
+    //writer.AddAttribute (HtmlTextWriterAttribute.Onclick, "return false;");
+    //writer.RenderBeginTag (HtmlTextWriterTag.Input);
+    //writer.RenderEndTag();
+    //writer.RenderEndTag();  // End Drop Down Button-Span
+    //
+    ////  TODO: IE 5.01 has trouble with height
+    ////  Options Drop Down Titel
+    //writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
+    //writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    //writer.Write (_titleText);
+    //writer.RenderEndTag();
+
     writer.RenderEndTag();  // End Drop Down Head-Div
-
-//    //  Options Drop Down PopUp
-//    writer.AddStyleAttribute ("position", "absolute");
-//    writer.AddStyleAttribute ("right", "0px");
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassPopUp);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassItem);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.WriteLine ("Item 1"); // width: 100% spans menu across the whole options-div
-//    writer.RenderEndTag();
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassItem);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.WriteLine ("Item 2");
-//    writer.RenderEndTag();
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassItemHover);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.WriteLine ("Item 3");
-//    writer.RenderEndTag();
-//    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassItem);
-//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
-//    writer.WriteLine ("Item 4");
-//    writer.RenderEndTag();
-//
-//    writer.RenderEndTag();
-
-    writer.RenderEndTag(); // End Menu-Div
-
-    writer.RenderEndTag(); // End Control-Tag
   }
 
   public string TitleText
@@ -195,6 +298,12 @@ public class DropDownMenu: WebControl, IControl
   public MenuItemCollection MenuItems
   {
     get { return _menuItems; }
+  }
+
+  public bool IsReadOnly
+  {
+    get { return _isReadOnly; }
+    set { _isReadOnly = value; }
   }
 
   protected virtual string CssClassHead
