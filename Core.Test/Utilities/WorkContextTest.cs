@@ -1,5 +1,5 @@
 using System;
-using Rubicon;
+using Rubicon.Utilities;
 using NUnit.Framework;
 
 namespace Rubicon.Core.UnitTests
