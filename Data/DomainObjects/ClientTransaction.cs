@@ -302,7 +302,8 @@ public class ClientTransaction
 
       DomainObjectCollection domainObjects = DomainObjectCollection.Create (
           relationEndPointID.Definition.PropertyType,
-          _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
+          _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers),
+          relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType);
 
       _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
