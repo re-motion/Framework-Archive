@@ -5,7 +5,7 @@ namespace Rubicon.Globalization
 {
 
 [AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
-public class ResourceIdentifierAttribute: Attribute
+public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
@@ -23,7 +23,7 @@ public class ResourceIdentifierAttribute: Attribute
   }
 
   /// <summary> Initializes a new instance. </summary>
-  public ResourceIdentifierAttribute ()
+  public ResourceIdentifiersAttribute ()
   {
   }
 }

@@ -46,7 +46,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> A list of form grid manager wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier]
+  [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.Web.UI.Globalization.FormGridManager")]
   protected enum ResourceIdentifier
   {
@@ -984,13 +984,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     EnsureFormGridListPopulated();
 
     bool isValid = true;
-
     foreach (FormGrid formGrid in _formGrids.Values)
-    {
-      ValidateFormGrid (formGrid);
-
-      isValid &= GetValidationErrors().Length == 0;
-    }
+      isValid &= ValidateFormGrid (formGrid);
 
     return isValid;
   }
@@ -1507,10 +1502,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Validates all <see cref="BaseValidator"/> objects in the <see cref="FormGrid"/>. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
-  protected virtual void ValidateFormGrid (FormGrid formGrid)
+  protected virtual bool ValidateFormGrid (FormGrid formGrid)
   {
     if (formGrid == null) throw new ArgumentNullException ("formGrid");
 
+    bool isValid = true;
     foreach (FormGridRow formGridRow in formGrid.Rows)
     {
       if (formGridRow.Type != FormGridRowType.DataRow)
@@ -1522,10 +1518,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
         ApplyValidatorSettings (formGridRow);
       }
 
-      ValidateDataRow (formGridRow);
+      isValid &= ValidateDataRow (formGridRow);
     }
 
     _hasValidatorsCreated = true;
+    return isValid;
   }
 
   /// <summary>
@@ -1533,11 +1530,45 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   and creates the appropriate validation marker and <see cref="ValidationError"/> objects.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
-  protected virtual void ValidateDataRow (FormGridRow dataRow)
+  protected virtual bool ValidateDataRow (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-    ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+    if (dataRow.ControlsCell == null)
+      return true;
+
+    dataRow.ValidationMarker = null;
+    ArrayList validationErrorList = new ArrayList();
+
+    if (!dataRow.Visible)
+      return true;
+
+    //  Check for validators and then their validation state
+    //  Create a ValidationError object for each error
+    //  Create the validationIcon
+
+    bool isValid = true;
+    foreach (Control control in dataRow.ControlsCell.Controls)
+    {
+      IValidator validator = control as IValidator;
+
+      //  Only for validators
+      if (validator == null)
+        continue;
+
+      //  Validate
+      validator.Validate();
+      isValid &= validator.IsValid;
+    }
+    return isValid;
+  }
+
+  void FormatValidators (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    if (dataRow.ControlsCell == null)
+      return;
 
     dataRow.ValidationMarker = null;
     ArrayList validationErrorList = new ArrayList();
@@ -1552,13 +1583,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     foreach (Control control in dataRow.ControlsCell.Controls)
     {
       IValidator validator = control as IValidator;
-
-      //  Only for validators
-      if (validator == null)
-        continue;
-
-      //  Validate
-      validator.Validate();
       if (validator.IsValid)
         continue;
 
@@ -1637,6 +1661,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
           ApplyValidatorSettings (formGridRow);
           _hasValidatorsCreated = true;
         }
+
+        FormatValidators (formGridRow);
 
         LoadMarkersIntoCell (formGridRow);
         if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn

@@ -307,23 +307,16 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   public override BaseValidator[] CreateValidators()
   {
     if (! IsRequired)
-      return new BaseValidator[]{};
-
-    BaseValidator[] validators = new BaseValidator[1];
+      return new BaseValidator[0];
 
     _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = ID;
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     if (StringUtility.IsNullOrEmpty (_notNullItemValidator.ErrorMessage))
-    {
-      _notNullItemValidator.ErrorMessage = 
-          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-    }
+      _notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
 
-    validators[0] = _notNullItemValidator;
-
-    return validators;
+    return new BaseValidator[] { _notNullItemValidator };
   }
   
   /// <summary> Prerenders the child controls. </summary>
