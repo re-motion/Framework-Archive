@@ -348,11 +348,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\RelationEndPointMapTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjects\AddToOneToManyRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
