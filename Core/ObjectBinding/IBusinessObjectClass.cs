@@ -23,6 +23,8 @@ public interface IBusinessObjectClass
   ///   ]]></code>
   /// </example>
   bool RequiresWriteBack { get; }
+
+  string Identifier { get; }
 }
 
 public interface IBusinessObjectClassWithIdentity: IBusinessObjectClass
