@@ -884,10 +884,10 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     /// <summary> The row containing the form grid's title. </summary>
     TitleRow,
-
+    /// <summary> The row containing the form grid's title. </summary>
+    SubTitleRow,
     /// <summary> A row containing labels, controls and validators. </summary>
     DataRow,
-
     /// <summary> A row that can not be identified as one of the other types. </summary>
     UnknownRow
   }
@@ -1471,7 +1471,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     for (int i = formGridRows.Count; i < rows.Count; i++)
     {
-      bool isDataRow = rows[i].Cells.Count > _controlsColumn;
+      bool isSubTitleRow = rows[i].Cells.Count == 1;
+      bool isDataRow =    ! isSubTitleRow 
+                       && rows[i].Cells.Count > _controlsColumn;
 
       //  If ControlsColumn cell contains controls: single row constellation
       bool hasOneDataRow =   isDataRow
@@ -1485,19 +1487,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
                             && i + 1 < rows.Count
                             && rows[i + 1].Cells.Count > _labelsColumn;
 
-      if (! isDataRow)
+      if (isSubTitleRow)
       {
-        //  One HtmlTableRow is one FormGrid DataRow
         HtmlTableRow[] tableRows = new HtmlTableRow[1];
-        tableRows[0] = table.Rows[i];
+        tableRows[0] = rows[i];
 
         FormGridRow formGridRow = new FormGridRow (
           tableRows, 
-          FormGridRowType.UnknownRow,
+          FormGridRowType.SubTitleRow,          
           labelsColumn,
           controlsColumn,
           false);
-        
+       
         formGridRows.Add (formGridRow);
       }
       else if (hasOneDataRow)
@@ -1939,6 +1940,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           FormatTitleRow (formGridRow);
           break;
         }
+        case FormGridRowType.SubTitleRow:
+        {
+          FormatSubTitleRow (formGridRow);
+          break;
+        }
         case FormGridRowType.DataRow:
         {
           FormatDataRow (formGridRow, isTopDataRow);
@@ -1994,6 +2000,34 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       titleRow.Hide();
 
     AddShowEmptyCellsHack (titleRow);
+  }
+
+  /// <summary> Custom formats a sub title row. </summary>
+  protected virtual void FormatSubTitleRow (FormGridRow subTitleRow)
+  {
+    ArgumentUtility.CheckNotNull ("subTitleRow", subTitleRow);
+    CheckFormGridRowType ("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
+
+    //  Title cell: first row, first cell
+    subTitleRow.SetLabelsCell (0, 0);
+   
+    //  Adapt ColSpan for added markers column
+    if (HasMarkersColumn)
+    {
+      subTitleRow.LabelsCell.ColSpan++;
+      subTitleRow.ControlsColumn++;
+    }
+
+    //  Adapt ColSpan for added validation error message column
+    if (HasValidationMessageColumn)
+      subTitleRow.LabelsCell.ColSpan++;
+
+    AssignCssClassToCell (subTitleRow.LabelsCell, CssClassSubTitleCell);
+
+    if (!subTitleRow.CheckVisibility())
+      subTitleRow.Hide();
+
+    AddShowEmptyCellsHack (subTitleRow);
   }
 
   /// <summary> Custom formats the unknown rows. </summary>
@@ -2976,6 +3010,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTitleCell/*' />
   protected virtual string CssClassTitleCell
   { get { return "formGridTitleCell"; } }
+
+  /// <summary> CSS-Class applied to the cell containing a sub title. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassSubTitleCell/*' />
+  protected virtual string CssClassSubTitleCell
+  { get { return "formGridSubTitleCell"; } }
 
   /// <summary> CSS-Class applied to the cells containing the labels. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassLabelsCell/*' />
