@@ -348,6 +348,11 @@
         <includes name="*.xml" />
       </fileset>
     </copy>
+    <copy todir="${tests.builddir}" >
+      <fileset basedir="${project.dir}/../">
+        <includes name="*.xsd" />
+      </fileset>
+    </copy>
     <call target="buildtest" />
     <nunit2>
       <test assemblyname="${tests.builddir}/Rubicon.Data.DomainObjects.UnitTests.dll" />
