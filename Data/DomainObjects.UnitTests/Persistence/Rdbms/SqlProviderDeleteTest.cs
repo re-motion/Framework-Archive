@@ -80,6 +80,44 @@ public class SqlProviderDeleteTest : ClientTransactionBaseTest
     _provider.Save (containers);
   }
 
+  [Test]
+  [ExpectedException (typeof (ConcurrencyViolationException))]
+  public void ConcurrentDeleteWithForeignKey ()
+  {
+    ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
+    ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
+
+    ClientTransaction.SetCurrent (clientTransaction1);
+    OrderTicket changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    changedOrderTicket.FileName = @"C:\NewFile.jpg";
+  
+    ClientTransaction.SetCurrent (clientTransaction2);
+    OrderTicket deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    deletedOrderTicket.Delete ();
+
+    _provider.Save (CreateDataContainerCollection (changedOrderTicket.DataContainer));
+    _provider.Save (CreateDataContainerCollection (deletedOrderTicket.DataContainer));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ConcurrencyViolationException))]
+  public void ConcurrentDeleteWithoutForeignKey ()
+  {
+    ClientTransactionMock clientTransaction1 = new ClientTransactionMock ();
+    ClientTransactionMock clientTransaction2 = new ClientTransactionMock ();
+
+    ClientTransaction.SetCurrent (clientTransaction1);
+    ClassWithAllDataTypes changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+    changedObject.StringProperty = "New text";
+  
+    ClientTransaction.SetCurrent (clientTransaction2);
+    ClassWithAllDataTypes deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+    deletedObject.Delete ();
+
+    _provider.Save (CreateDataContainerCollection (changedObject.DataContainer));
+    _provider.Save (CreateDataContainerCollection (deletedObject.DataContainer));
+  }
+
   private DataContainerCollection CreateDataContainerCollection (params DataContainer[] dataContainers)
   {
     DataContainerCollection collection = new DataContainerCollection ();

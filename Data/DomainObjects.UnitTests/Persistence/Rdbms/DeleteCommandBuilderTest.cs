@@ -49,10 +49,9 @@ public class DeleteCommandBuilderTest : ClientTransactionBaseTest
   [Test]
   public void CreateWithoutForeignKeyColumn ()
   {
-    ObjectID id = new ObjectID (
-        c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ClassWithAllDataTypes classWithAllDataTypes = 
+        ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
-    ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
     classWithAllDataTypes.Delete ();
     DataContainer deletedContainer = classWithAllDataTypes.DataContainer;
     CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, deletedContainer);

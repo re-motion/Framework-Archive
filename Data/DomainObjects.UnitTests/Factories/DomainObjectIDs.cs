@@ -318,6 +318,13 @@ public sealed class DomainObjectIDs
   
   #endregion
 
+  #region ClassWithAllDataTypes
+  
+  public static readonly ObjectID ClassWithAllDataTypes1 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+  #endregion
+  
   // member fields
 
   // construction and disposing
