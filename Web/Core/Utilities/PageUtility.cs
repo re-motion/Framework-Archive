@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 
+using System.Diagnostics;
 
 namespace Rubicon.Findit.Client.Controls
 {
@@ -69,19 +70,18 @@ public class PageUtility
   /// even if cookieless mode is activated.
   /// </summary>  
   public static string GetPageUrl (Page page, string relativeUrl)
-  {
-    Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
-    
+  { 
     string returnUrl;
 
+    Uri pageUrl = new Uri (page.Request.Url, relativeUrl);
+    
     // WORKAROUND: With cookieless navigation activated the ASP.NET engine 
     // removes cookie information from the URL => manually add cookie information to URL
     if (page.Session.IsCookieless)
     { 
-      string tempUrl = pageUrl.AbsoluteUri;
+      string tempUrl = pageUrl.PathAndQuery;
       string appPath = page.Request.ApplicationPath;
-      int appPathPosition = tempUrl.IndexOf (appPath);
-      int appPathPositionEnd = appPathPosition + appPath.Length;
+      int appPathPositionEnd = appPath.Length;
 
       returnUrl = 
             tempUrl.Substring (0, appPathPositionEnd) 
@@ -90,11 +90,10 @@ public class PageUtility
     }
     else
     {
-      returnUrl = page.Request.RawUrl;
+      returnUrl = pageUrl.PathAndQuery;
     }
-
+    
     return returnUrl;
-  
   }
 
 
@@ -112,8 +111,7 @@ public class PageUtility
   /// <param name="destinationUrl">URL redirecting to</param>
   /// <param name="parameters">parameters for the page redirected to</param>
   public static void CallPage (Page sourcePage, string destinationUrl, IDictionary parameters)
-  {
-    
+  {    
     // Add referrer information for all pages
     string referrerUrl = GetPageUrl (sourcePage);
     parameters.Add ("Referrer", referrerUrl); 
