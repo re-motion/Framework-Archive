@@ -68,6 +68,11 @@ public class DataSourcePage: Page, IBusinessObjectDataSource, IGetComponentBindi
   {
     DataSource.SaveValues (interim);
   }
+
+  public IBusinessObjectBoundControl[] BoundControls
+  {
+    get { return DataSource.BoundControls; }
+  }
 }
 
 }
