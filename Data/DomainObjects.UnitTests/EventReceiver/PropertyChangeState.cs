@@ -3,7 +3,7 @@ using System;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventSequence
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
 public class PropertyChangeState : ChangeState
 {

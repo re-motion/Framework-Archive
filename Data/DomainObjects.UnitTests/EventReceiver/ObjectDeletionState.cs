@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventSequence
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
 public class ObjectDeletionState : ChangeState
 {
