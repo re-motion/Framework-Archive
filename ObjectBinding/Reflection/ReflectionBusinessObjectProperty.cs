@@ -222,7 +222,7 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
     return valueInfos;
   }
 
-  public IEnumerationValueInfo GetValueInfo (object value)
+  public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
     if (value == null)
       return null;
@@ -230,7 +230,7 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
       return new EnumerationValueInfo (value, value.ToString(), value.ToString(), true);
   }
 
-  public IEnumerationValueInfo GetValueInfo (string identifier)
+  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
   {
     object value = Enum.Parse (PropertyType, identifier, false);
     return new EnumerationValueInfo (value, identifier, identifier, true);
