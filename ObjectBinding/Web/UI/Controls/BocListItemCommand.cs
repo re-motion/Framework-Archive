@@ -215,6 +215,7 @@ public class BocListItemCommand: BocCommand
     get { return _wxeFunctionCommand; }
     set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo) value; }
   }
+
   /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -274,31 +275,40 @@ public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
     _listIndex = listIndex;
   }
 
-  /// <summary>
-  ///   The <see cref="BocColumnDefinition"/> to which the command belongs.
-  /// </summary>
+  /// <summary> The <see cref="BocCommandEnabledColumnDefinition"/> to which the command belongs. </summary>
   public BocCommandEnabledColumnDefinition Column
   {
     get { return _column; }
   }
 
-  /// <summary>
-  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is applied on.
-  /// </summary>
+  /// <summary> An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is applied on. </summary>
   public int ListIndex
   {
     get { return _listIndex; }
   }
 }
 
+/// <summary> 
+///   This interface allows for the customized disabling of the <see cref="BocCommandEnabledColumnDefintion"/>'s 
+///   <see cref="BocListItemCommand"/>.
+/// </summary>
 public interface IBocListItemCommandState
 {
+  /// <summary> 
+  ///   Evaluates whether the <paramref name="columnDefiniton"/>'s command should be enabled for the 
+  ///   <paramref name="businessObject"/>.
+  /// </summary>
+  /// <remarks>
+  ///   Only executed if all other conditions (<see cref="Command.Type"/>, <see cref="Command.Show"/>, ...) 
+  ///   for enabling the command are met. 
+  /// </remarks>
   /// <param name="list"> The <see cref="BocList"/> containing the column. </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> to be rendered. </param>
   /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
   /// <returns> 
   ///   <see langword="true"/> if the <paramref name="columnDefiniton"/>'s command should be enabled for the 
-  ///   <paramref name="businessObject"/>. </returns>
+  ///   <paramref name="businessObject"/>. 
+  /// </returns>
   bool IsEnabled (BocList list, IBusinessObject businessObject, BocCommandEnabledColumnDefinition columnDefiniton);
 }
 

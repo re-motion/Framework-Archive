@@ -3358,6 +3358,15 @@ public class BocList:
     set { _enableClientScript = value; }
   }
 
+  /// <summary> Is raised when a column type <see cref="BocCustomColumnDefinition"/> is clicked on. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when a custom column is clicked on.")]
+  public event BocCustomColumnClickEventHandler CustomColumnClick
+  {
+    add { Events.AddHandler (s_customColummClickEvent, value); }
+    remove { Events.RemoveHandler (s_customColummClickEvent, value); }
+  }
+
   /// <summary> Is raised when a column with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
   [Description ("Occurs when a column with a command of type Event is clicked inside an column.")]

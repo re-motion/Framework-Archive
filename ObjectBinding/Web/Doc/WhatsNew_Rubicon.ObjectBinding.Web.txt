@@ -1,3 +1,10 @@
+1.2.11.0
+========
+
+- BocList
+  * Die Commands für Spalten sind nun zusätzlich über die Property CommandState deaktivierbar.
+  * Neuer EventHandler: CustomColumnClick
+  
 1.2.10.0
 ========
 
