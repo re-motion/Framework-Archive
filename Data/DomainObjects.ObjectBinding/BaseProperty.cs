@@ -232,6 +232,17 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
   internal protected virtual object FromInternalType (object internalValue)
   {
+    if (!IsList)
+    {
+      FieldInfo fieldInfo = _itemType.GetField ("MinValue");
+
+      if (fieldInfo != null)
+      {
+        if (fieldInfo.GetValue (_itemType).ToString () == internalValue.ToString ())
+          return null;
+      }
+    }
+
     return internalValue;
   }
 
