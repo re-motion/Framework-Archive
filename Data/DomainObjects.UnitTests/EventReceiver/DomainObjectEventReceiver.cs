@@ -3,9 +3,9 @@ using System.Collections;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-public class DomainObjectEventReceiver
+public class DomainObjectEventReceiver : EventReceiverBase
 {
   // types
 
@@ -133,7 +133,9 @@ public class DomainObjectEventReceiver
     _changingPropertyValue = args.PropertyValue;
     _oldValue = args.OldValue;
     _newValue = args.NewValue;
-    args.Cancel = _cancel;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
   private void DomainObject_PropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -148,7 +150,9 @@ public class DomainObjectEventReceiver
     _changingRelationPropertyName = args.PropertyName;
     _oldRelatedObject = args.OldRelatedObject;
     _newRelatedObject = args.NewRelatedObject;
-    args.Cancel = _cancel;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
   protected virtual void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
@@ -157,7 +161,7 @@ public class DomainObjectEventReceiver
     _changedRelationPropertyName = args.PropertyName;
   }
 
-  protected virtual void domainObject_Deleting(object sender, DeletingEventArgs args)
+  protected virtual void domainObject_Deleting(object sender, EventArgs args)
   {
     _hasDeletingEventBeenCalled = true;
   }

@@ -3,9 +3,9 @@ using System.Collections;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-public class DomainObjectCollectionEventReceiver
+public class DomainObjectCollectionEventReceiver : EventReceiverBase
 {
   // types
 
@@ -97,7 +97,9 @@ public class DomainObjectCollectionEventReceiver
   {
     _hasAddingEventBeenCalled = true;
     _addingDomainObject = args.DomainObject;
-    args.Cancel = _cancel;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
   private void DomainObjectCollection_Added (object sender, DomainObjectCollectionChangedEventArgs args)
@@ -110,7 +112,9 @@ public class DomainObjectCollectionEventReceiver
   {
     _hasRemovingEventBeenCalled = true;
     _removingDomainObjects.Add (args.DomainObject);
-    args.Cancel = _cancel;
+
+    if (_cancel)
+      CancelOperation ();
   }
 
   private void DomainObjectCollection_Removed (object sender, DomainObjectCollectionChangedEventArgs args)
