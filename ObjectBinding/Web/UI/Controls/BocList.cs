@@ -285,7 +285,6 @@ public class BocList:
         break;
       }
     }
-
   }
 
   protected override void OnPreRender(EventArgs e)

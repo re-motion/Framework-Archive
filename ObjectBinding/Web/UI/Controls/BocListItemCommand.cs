@@ -226,7 +226,7 @@ public class BocItemCommand: Control, IPostBackEventHandler
   [Category ("Misc")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
-  public string ID
+  public override string ID
   {
     get { return _id; }
     set { _id = value; }

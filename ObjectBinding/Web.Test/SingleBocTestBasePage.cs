@@ -30,10 +30,6 @@ public class WebFormBase:
 
     base.OnInit (e);
   }
-  protected override void LoadViewState(object savedState)
-  {
-    base.LoadViewState (savedState);
-  }
 
   /// <summary>
   ///   Interface implementation: IObjectWithResources
