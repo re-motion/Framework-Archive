@@ -156,6 +156,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Design\PropertyPathPickerControl.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\PropertyPathPickerControl.resx"
+                    DependentUpon = "PropertyPathPickerControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Design\PropertyPathPickerEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
