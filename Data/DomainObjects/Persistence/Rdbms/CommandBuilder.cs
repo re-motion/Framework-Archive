@@ -88,7 +88,7 @@ public abstract class CommandBuilder
     }
     else
     {
-      relatedClassDefinition = classDefinition.GetRelatedClassDefinition (propertyValue.Name);
+      relatedClassDefinition = classDefinition.GetOppositeClassDefinition (propertyValue.Name);
       relatedIDValue = null;
     }
 

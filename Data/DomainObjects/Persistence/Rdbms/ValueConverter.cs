@@ -90,10 +90,10 @@ public class ValueConverter
 
     if (propertyDefinition.PropertyType == typeof (ObjectID))
     {
-      ClassDefinition relatedClassDefinition = GetRelatedClassDefinitionFromClassIDColumn (propertyDefinition, dataReader);
+      ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (propertyDefinition, dataReader);
       if (relatedClassDefinition == null)
       {
-        relatedClassDefinition = GetRelatedClassDefinition (classDefinition, propertyDefinition);
+        relatedClassDefinition = GetOppositeClassDefinition (classDefinition, propertyDefinition);
 
         if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
         {
@@ -102,7 +102,7 @@ public class ValueConverter
             throw CreateRdbmsProviderException (
                 "Incorrect database format encountered."
                 + " Class must have column '{0}' defined, because it points to derived class '{1}'.",
-                GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
+                GetClassIDColumnName (propertyDefinition.ColumnName), 
                 relatedClassDefinition.ID);    
           }
 
@@ -114,7 +114,7 @@ public class ValueConverter
             throw CreateRdbmsProviderException (
                 "Incorrect database format encountered."
                 + " Class must have column '{0}' defined, because at least one class inherits from '{1}'.",
-                GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
+                GetClassIDColumnName (propertyDefinition.ColumnName), 
                 relatedClassDefinition.ID);    
           }
         }
@@ -164,9 +164,9 @@ public class ValueConverter
     return new ArgumentException (string.Format (message, args), argumentName);
   }
 
-  private ClassDefinition GetRelatedClassDefinitionFromClassIDColumn (PropertyDefinition propertyDefinition, IDataReader dataReader)
+  private ClassDefinition GetOppositeClassDefinitionFromClassIDColumn (PropertyDefinition propertyDefinition, IDataReader dataReader)
   {
-    string relatedClassIDColumnName = GetRelatedClassIDColumnName (propertyDefinition.ColumnName);
+    string relatedClassIDColumnName = GetClassIDColumnName (propertyDefinition.ColumnName);
     try
     {
       string classID = dataReader.GetString (dataReader.GetOrdinal (relatedClassIDColumnName));
@@ -179,11 +179,11 @@ public class ValueConverter
     return null;
   }
 
-  private ClassDefinition GetRelatedClassDefinition (
+  private ClassDefinition GetOppositeClassDefinition (
       ClassDefinition classDefinition,
       PropertyDefinition propertyDefinition)
   {
-    ClassDefinition relatedClassDefinition = classDefinition.GetRelatedClassDefinition (
+    ClassDefinition relatedClassDefinition = classDefinition.GetOppositeClassDefinition (
         propertyDefinition.PropertyName);
 
     if (relatedClassDefinition == null)
@@ -205,7 +205,7 @@ public class ValueConverter
         propertyDefinition.PropertyType.FullName, dataValue, propertyDefinition.PropertyName);
   }
 
-  private string GetRelatedClassIDColumnName (string columnName)
+  private string GetClassIDColumnName (string columnName)
   {
     return columnName + "ClassID";
   }
