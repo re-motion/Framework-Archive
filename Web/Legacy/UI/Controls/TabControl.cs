@@ -84,6 +84,7 @@ public class TabControl: Control, IPostBackEventHandler
 	private bool _seperatorLine = false;
 	private bool _vertical = false;
   private bool _hasMenuBar = false;
+  private string _statusMessage = string.Empty;
 
 	public string FirstImage
 	{ 
@@ -154,6 +155,11 @@ public class TabControl: Control, IPostBackEventHandler
   {
     get { return _hasMenuBar; }
     set { _hasMenuBar = value; }
+  }
+  public string StatusMessage
+  {
+    get { return _statusMessage; }
+    set { _statusMessage = value; }
   }
 
 	public TabCollection Items
@@ -305,10 +311,13 @@ public class TabControl: Control, IPostBackEventHandler
 
     if (_hasMenuBar)
     { 
-      output.WriteLine ("<tr class=\"tabSubLink\">");
+      output.WriteLine ("<tr>");
       int colspan = _items.Count * 4;
-			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">&nbsp;", colspan);
+			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">", colspan);
 
+      output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
+      output.WriteLine ("<tr class=\"tabSubLink\"><td nowrap>&nbsp;");
+  
       Tab activeTab = Items[_activeTab];
       bool isFirstMenu = true;
       for (int i = 0; i < activeTab.Controls.Count; ++i)
@@ -325,6 +334,11 @@ public class TabControl: Control, IPostBackEventHandler
           isFirstMenu = false;
         }
       }
+      if (_statusMessage != string.Empty)
+      {
+        output.WriteLine ("</td><td width=\"100%\" align=\"right\">{0}", _statusMessage);
+      }
+      output.WriteLine ("</td></tr></table>");
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
     }
