@@ -36,8 +36,8 @@ public class WebForm1 : System.Web.UI.Page
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue PartnerFirstNameField;
   protected System.Web.UI.WebControls.Label Label2;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource CurrentObjectDataSource;
-  protected Rubicon.ObjectBinding.PropertyBusinessObjectDataSource PartnerDataSource;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObjectDataSource;
+  protected Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -89,22 +89,7 @@ public class WebForm1 : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.CurrentObjectDataSource = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
-    this.PartnerDataSource = new Rubicon.ObjectBinding.PropertyBusinessObjectDataSource();
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    // 
-    // CurrentObjectDataSource
-    // 
-    this.CurrentObjectDataSource.BusinessObject = null;
-    this.CurrentObjectDataSource.EditMode = true;
-    this.CurrentObjectDataSource.TypeName = "OBWTest.Person, OBWTest";
-    // 
-    // PartnerDataSource
-    // 
-    this.PartnerDataSource.BusinessObject = null;
-    this.PartnerDataSource.DataSource = this.CurrentObjectDataSource;
-    this.PartnerDataSource.EditMode = true;
-    this.PartnerDataSource.PropertyIdentifier = "Partner";
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
