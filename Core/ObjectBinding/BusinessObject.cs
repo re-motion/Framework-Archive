@@ -20,6 +20,30 @@ public abstract class BusinessObject: IBusinessObject
     set { SetProperty (property, value); }
   }
 
+  public string GetPropertyString (IBusinessObjectProperty property)
+  {
+    return GetPropertyString (property, null);
+  }
+
+  public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
+  {
+    object value = GetProperty (property);
+
+    IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
+    if (businessObject != null)
+      return businessObject.DisplayName;
+
+    if (format != null)
+    {
+      IFormattable formattable = value as IFormattable;
+      if (formattable != null)
+        return formattable.ToString (format, null);
+    }
+
+    return property.ToString();
+  }
+
+  
   public object GetProperty (string property)
   {
     return GetProperty (GetBusinessObjectProperty (property));
@@ -34,6 +58,11 @@ public abstract class BusinessObject: IBusinessObject
   {
     get { return GetProperty (property); }
     set { SetProperty (property, value); }
+  }
+
+  public string GetPropertyString (string property)
+  {
+    return GetPropertyString (GetBusinessObjectProperty (property));
   }
 
   [XmlIgnore]
