@@ -26,12 +26,12 @@ public class DataSourcePage: Page, IBusinessObjectDataSource, IGetComponentBindi
       return null;
   }
 
-  void IObjectBindingDataSource.LoadValues (bool interim)
+  void IBusinessObjectDataSource.LoadValues (bool interim)
   {
     DataSource.LoadValues (interim);
   }
 
-  void IObjectBindingDataSource.Register (IBusinessObjectBoundControl control)
+  void IBusinessObjectDataSource.Register (IBusinessObjectBoundControl control)
   {
     DataSource.Register (control);
   }
@@ -42,27 +42,27 @@ public class DataSourcePage: Page, IBusinessObjectDataSource, IGetComponentBindi
     set { DataSource.BusinessObject = value; }
   }
 
-  IBusinessObjectProvider IObjectBindingDataSource.BusinessObjectProvider
+  IBusinessObjectProvider IBusinessObjectDataSource.BusinessObjectProvider
   {
     get { return DataSource.BusinessObjectProvider; }
   }
 
-  bool IObjectBindingDataSource.IsWritable
+  bool IBusinessObjectDataSource.IsWritable
   {
     get { return DataSource.IsWritable; }
   }
 
-  void IObjectBindingDataSource.Unregister (IBusinessObjectBoundControl control)
+  void IBusinessObjectDataSource.Unregister (IBusinessObjectBoundControl control)
   {
     DataSource.Unregister (control);
   }
 
-  IBusinessObjectClass IObjectBindingDataSource.BusinessObjectClass
+  IBusinessObjectClass IBusinessObjectDataSource.BusinessObjectClass
   {
     get { return DataSource.BusinessObjectClass; }
   }
 
-  void IObjectBindingDataSource.SaveValues (bool interim)
+  void IBusinessObjectDataSource.SaveValues (bool interim)
   {
     DataSource.SaveValues (interim);
   }
