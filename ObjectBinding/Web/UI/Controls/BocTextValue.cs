@@ -55,7 +55,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
   ///   This event is fired when the text is changed in the UI.
   /// </summary>
   /// <remarks>
-  ///   The event is not fired only if the text change is caused by the user.
+  ///   The event is fired only if the text change is caused by the user.
   /// </remarks>
   public event EventHandler TextChanged;
 
@@ -82,7 +82,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
 
 	public BocTextValue()
 	{
-    _textBox = new FscValueTextBox(this);
+    _textBox = new BocTextValueTextBox(this);
     _label = new Label ();
 	}
 
@@ -424,10 +424,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IGetTargetCo
 ///   A special version of TextBox that allows the containing BocTextValue control to correctly 
 ///   dispatch changed events in the correct phase of the control lifecycle.
 /// </summary>
-internal class FscValueTextBox: TextBox, IPostBackDataHandler
+internal class BocTextValueTextBox: TextBox, IPostBackDataHandler
 {
   private BocTextValue _parent;
-  public FscValueTextBox (BocTextValue parent)
+  public BocTextValueTextBox (BocTextValue parent)
   {
     _parent = parent;
   }
