@@ -262,6 +262,9 @@ public class BocList:
   /// </summary>
   private int _selectedColumnDefinitionSetIndex = -1;
  
+  /// <summary> Determines wheter an empty list will still render it's headers. </summary>
+  private bool _showEmptyList = true;
+
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
   
@@ -1124,53 +1127,71 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableBlock (HtmlTextWriter writer)
   {
-    //  The table non-data sections
-    RenderTableOpeningTag (writer);
-    RenderColGroup (writer);
-    RenderColumnTitlesRow (writer);
-
-    //  The tables data-section
-    int firstRow = 0;
-    int totalRowCount = (Value != null) ? Value.Count : 0;
-    int rowCountWithOffset = totalRowCount;
-
-    if (!_pageSize.IsNull && Value != null)
-    {      
-      firstRow = _currentPage * _pageSize.Value;
-      rowCountWithOffset = firstRow + _pageSize.Value;
-      //  Check row count on last page
-      rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
-    }
-
-    if (Value != null)
+    bool isEmpty = Value == null || Value.Count == 0;
+    
+    if (isEmpty && ! _showEmptyList)
     {
-      bool isOddRow = true;
-
-      ArrayList rows = new ArrayList (Value.Count);
-      for (int idxRows = 0; idxRows < Value.Count; idxRows++)
-        rows.Add (new Pair (idxRows, Value[idxRows]));
-
-      if (EnableSorting)
-        rows.Sort (this);
-
-      for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
-          idxAbsoluteRows < rowCountWithOffset; 
-          idxAbsoluteRows++, idxRelativeRows++)
-      {
-        Pair rowPair = (Pair)rows[idxAbsoluteRows];
-        if (rowPair.Second == null)
-          throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
-        int originalRowIndex = (int) rowPair.First;
-        IBusinessObject businessObject = rowPair.Second as IBusinessObject;
-        if (businessObject == null)
-          throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-        RenderDataRow (writer, businessObject, idxRelativeRows, originalRowIndex, isOddRow);
-        isOddRow = !isOddRow;
-      }
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+      writer.RenderBeginTag (HtmlTextWriterTag.Table);
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.Write ("&nbsp;");
+      writer.RenderEndTag();
+      writer.RenderEndTag();
+      writer.RenderEndTag();
     }
+    else
+    {
+      //  The table non-data sections
+      RenderTableOpeningTag (writer);
+      RenderColGroup (writer);
+      RenderColumnTitlesRow (writer);
 
-    //  Close the table
-    RenderTableClosingTag (writer);
+      //  The tables data-section
+      int firstRow = 0;
+      int totalRowCount = (Value != null) ? Value.Count : 0;
+      int rowCountWithOffset = totalRowCount;
+
+      if (!_pageSize.IsNull && Value != null)
+      {      
+        firstRow = _currentPage * _pageSize.Value;
+        rowCountWithOffset = firstRow + _pageSize.Value;
+        //  Check row count on last page
+        rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
+      }
+
+      if (! isEmpty)
+      {
+        bool isOddRow = true;
+
+        ArrayList rows = new ArrayList (Value.Count);
+        for (int idxRows = 0; idxRows < Value.Count; idxRows++)
+          rows.Add (new Pair (idxRows, Value[idxRows]));
+
+        if (EnableSorting)
+          rows.Sort (this);
+
+        for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
+            idxAbsoluteRows < rowCountWithOffset; 
+            idxAbsoluteRows++, idxRelativeRows++)
+        {
+          Pair rowPair = (Pair)rows[idxAbsoluteRows];
+          if (rowPair.Second == null)
+            throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
+          int originalRowIndex = (int) rowPair.First;
+          IBusinessObject businessObject = rowPair.Second as IBusinessObject;
+          if (businessObject == null)
+            throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
+          RenderDataRow (writer, businessObject, idxRelativeRows, originalRowIndex, isOddRow);
+          isOddRow = !isOddRow;
+        }
+      }
+      //  Close the table
+      RenderTableClosingTag (writer);
+    }
 
     if (_hasClientScript && _enableSelection)
     {
@@ -1299,8 +1320,7 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
-    if (! (writer is Html32TextWriter))
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
@@ -2743,6 +2763,17 @@ public class BocList:
 
     foreach (int rowIndex in selectedRows)
       _checkBoxCheckedState[rowIndex] = true;
+  }
+
+  /// <summary> Gets or sets a flag that determines wheter an empty list will still render it's headers. </summary>
+  /// <value> <see langword="false"/> to hide the headers if the list is empty. </value>
+  [Category ("Behavior")]
+  [Description ("Determines whether the list headers will be rendered if no data is provided.")]
+  [DefaultValue (true)]
+  public bool ShowEmptyList
+  {
+    get { return _showEmptyList; }
+    set { _showEmptyList = value; }
   }
 
   /// <summary>

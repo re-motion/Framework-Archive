@@ -1280,7 +1280,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Restore the view state to the form grids. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
-  protected virtual void LoadFormGridViewState (FormGrid formGrid, object savedState)
+  private void LoadFormGridViewState (FormGrid formGrid, object savedState)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
 
@@ -1297,7 +1297,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Saves the view state of the form grids. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
-  protected virtual object SaveFormGridViewState (FormGrid formGrid)
+  private object SaveFormGridViewState (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
 
@@ -1351,7 +1351,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   Encapsulates the invokation of <see cref="Control"/>'s LoadViewStateRecursive method.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/InvokeLoadViewStateRecursive/*' />
-  protected static void InvokeLoadViewStateRecursive (object target, object viewState)
+  private static void InvokeLoadViewStateRecursive (object target, object viewState)
   {
     const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
                                     | BindingFlags.Instance 
@@ -1372,7 +1372,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   Encapsulates the invokation of <see cref="Control"/>'s SaveViewStateRecursive method.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/InvokeSaveViewStateRecursive/*' />
-  protected static object InvokeSaveViewStateRecursive (object target)
+  private static object InvokeSaveViewStateRecursive (object target)
   {
     const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
                                     | BindingFlags.Instance 
@@ -1397,14 +1397,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     //  nothing, required get a usefull designer output without much coding.
   }
 
-  /// <summary>
-  ///   Analyzes the table layout and creates the appropriate <see cref="FormGridRow"/> isntances.
-  /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateFormGridRows/*' />
-  protected virtual FormGridRow[] CreateFormGridRows (
-    HtmlTable table,
-    int labelsColumn,
-    int controlsColumn)
+  /// <summary> Analyzes the table layout and creates the appropriate <see cref="FormGridRow"/> isntances. </summary>
+  private FormGridRow[] CreateFormGridRows (HtmlTable table, int labelsColumn, int controlsColumn)
   {
     ArgumentUtility.CheckNotNull ("table", table);
 
@@ -1501,7 +1495,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Validates all <see cref="BaseValidator"/> objects in the <see cref="FormGrid"/>. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
-  protected virtual bool ValidateFormGrid (FormGrid formGrid)
+  private bool ValidateFormGrid (FormGrid formGrid)
   {
     if (formGrid == null) throw new ArgumentNullException ("formGrid");
 
@@ -1524,12 +1518,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     return isValid;
   }
 
-  /// <summary>
-  ///   Validates the <see cref="BaseValidator"/> objects
-  ///   and creates the appropriate validation marker and <see cref="ValidationError"/> objects.
-  /// </summary>
+  /// <summary> Validates the <see cref="BaseValidator"/> objects. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
-  protected virtual bool ValidateDataRow (FormGridRow dataRow)
+  protected bool ValidateDataRow (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -1562,7 +1553,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     return isValid;
   }
 
-  void FormatValidators (FormGridRow dataRow)
+  /// <summary>
+  ///   Creates the appropriate validation marker and <see cref="ValidationError"/> objects.
+  /// </summary>
+  /// <param name="dataRow"></param>
+  private void FormatValidators (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -1611,13 +1606,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
-  protected virtual void EnsureTransformIntoFormGridPreLoadViewState()
+  protected void EnsureTransformIntoFormGridPreLoadViewState()
   {
     foreach (FormGrid formGrid in _formGrids.Values)
       EnsureTransformIntoFormGridPreLoadViewState (formGrid);
   }
   
-  protected virtual void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
+  private void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
 
@@ -1638,13 +1633,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPostValidation/*' />
-  protected virtual void TransformIntoFormGridPostValidation()
+  protected void TransformIntoFormGridPostValidation()
   {
     foreach (FormGrid formGrid in _formGrids.Values)
       TransformIntoFormGridPostValidation (formGrid);
   }
 
-  protected virtual void TransformIntoFormGridPostValidation (FormGrid formGrid)
+  private void TransformIntoFormGridPostValidation (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
     foreach (FormGridRow formGridRow in formGrid.Rows)
@@ -1683,7 +1678,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   the provided new rows into the form grid.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
-  protected virtual void LoadNewFormGridRows (FormGrid formGrid)
+  private void LoadNewFormGridRows (FormGrid formGrid)
   {
     IFormGridRowProvider rowProvider = GetFormGridRowProvider (this);
 
@@ -1744,7 +1739,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   the rows identified as invisible rows.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ApplyExternalHiddenSettings/*' />
-  protected virtual void ApplyExternalHiddenSettings (FormGrid formGrid)
+  private void ApplyExternalHiddenSettings (FormGrid formGrid)
   {
     IFormGridRowProvider rowProvider = GetFormGridRowProvider (this);
 
@@ -1769,7 +1764,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   <see cref="IFormGridRowProvider"/>.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetFormGridRowProvider/*' />
-  protected IFormGridRowProvider GetFormGridRowProvider (Control control)
+  private IFormGridRowProvider GetFormGridRowProvider (Control control)
   {
     //  Control hierarchy doesn't implent this interface
     if (isFormGridRowProviderUndefined)
@@ -1821,7 +1816,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   into a form grid.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
-  protected virtual void ComposeFormGridContents (FormGrid formGrid)
+  private void ComposeFormGridContents (FormGrid formGrid)
   {
     if (formGrid == null) throw new ArgumentNullException ("formGrid");
 
@@ -1848,7 +1843,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   <see cref="HtmlTable"/> as a form grid.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatFormGrid/*' />
-  protected virtual void FormatFormGrid (FormGrid formGrid)
+  private void FormatFormGrid (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
 
@@ -1965,7 +1960,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Creates the cell to be used for the markers. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
-  protected virtual void CreateMarkersCell (FormGridRow dataRow)
+  protected void CreateMarkersCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -2354,7 +2349,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   Sets the cell to be used for the validation messages, creating a new cell if necessary.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
-  protected virtual void SetOrCreateValidationMessagesCell (FormGridRow dataRow)
+  protected void SetOrCreateValidationMessagesCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -2551,7 +2546,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Returns the image URL for the images defined in the <c>FormGridManager</c>. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
-  protected virtual string GetImageUrl (FormGridImage image)
+  protected string GetImageUrl (FormGridImage image)
   {
     string relativeUrl = image.ToString() + ImageExtension;
 
@@ -2600,7 +2595,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Builds a new marker for validation errors. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetValidationMarker/*' />
-  protected virtual Image GetValidationMarker (string toolTip)
+  protected Image GetValidationMarker (string toolTip)
   {
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = GetImageUrl (FormGridImage.ValidationError);
@@ -2617,7 +2612,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
   /// <summary> Returns a spacer to be used instead of a marker. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetBlankMarker/*' />
-  protected virtual Control GetBlankMarker()
+  protected Control GetBlankMarker()
   {
     Image spacer = new Image();
     spacer.ImageUrl = GetImageUrl (FormGridImage.Spacer);
@@ -2643,12 +2638,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   ///   Tests the labels matches the controls row.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/HasSeperateControlsRow/*' />
-  protected virtual bool HasSeperateControlsRow (FormGridRow dataRow)
+  protected bool HasSeperateControlsRow (FormGridRow dataRow)
   {
     return dataRow.LabelsRowIndex != dataRow.ControlsRowIndex;
   }
 
-  private void EnsureFormGridListPopulated()
+  protected void EnsureFormGridListPopulated()
   {
     if (! _formGridListPopulated)
     {
@@ -2818,11 +2813,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       return ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn;
     }
   }
-
-  /// <summary> Directory for the images, starting at with application root. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ImageDirectory/*' />
-  protected virtual string ImageDirectory
-  { get { return "images/"; } }
 
   /// <summary> Extension of the images. </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ImageExtension/*' />

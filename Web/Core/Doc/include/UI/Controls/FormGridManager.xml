@@ -152,13 +152,6 @@
     </returns>
   </InvokeSaveViewStateRecursive>
   <CreateFormGridRows>
-    <remarks>
-      <para>
-        Callback method to be passed to the <see cref="FormGrid"/> constructor.
-      </para><para>
-        Override this method to change how the <see cref="HtmlTable"/> will be interpreted.
-      </para>
-    </remarks>
     <param name="table">
       The <see cref="FormGrid"/> for which the rows are to be created
     </param>
@@ -168,12 +161,8 @@
   </CreateFormGridRows>
   <ValidateFormGrid>
     <remarks>
-      <para>
-        <see cref="ValidateDataRow"/> is called for each <see cref="FormGridRow"/> 
-        of type <see cref="FormGridRowType.DataRow"/>.
-      </para><para>
-        Override this method to change the way the form grid rows are stepped through.
-      </para>
+      <see cref="ValidateDataRow"/> is called for each <see cref="FormGridRow"/> of type 
+      <see cref="FormGridRowType.DataRow"/>.
     </remarks>
     <param name="formGrid">
       The <see cref="FormGrid"/> to be validated

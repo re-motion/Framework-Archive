@@ -37,9 +37,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   private const string c_designModeEmptyLabelContents = "#";
   private const string c_defaultControlWidth = "150pt";
 
-  private const string c_whiteSpace = "&nbsp;";
-  private const string c_designModeWhiteSpace = " ";
-
   private const string c_bocReferenceValueScriptUrl = "BocReferenceValue.js";
 
   // types

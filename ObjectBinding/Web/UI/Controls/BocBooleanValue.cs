@@ -36,11 +36,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 {
 	// constants
 
-  private const string c_trueDescription = "yes";
-  private const string c_falseDescription = "no";
-  private const string c_nullDescription = "undefined";
-  private const string c_nullItemValidationMessage = "Please set the checkbox to yes or no.";
-
   private const string c_bocBooleanValueScriptUrl = "BocBooleanValue.js";
 
   private const string c_trueIcon = "CheckBoxTrue.gif";
@@ -90,8 +85,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator;
 
-  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
-  private Style _commonStyle;
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
 
@@ -118,7 +111,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
 	public BocBooleanValue()
 	{
-    _commonStyle = new Style();
     _labelStyle = new Style();
     _hiddenField = new BocInputHidden();
     _imageButton = new ImageButton();
@@ -415,21 +407,21 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     if (isReadOnly)
     {
       _image.ImageUrl = imageUrl;
+      _image.AlternateText = description;
+      _image.Style["vertical-align"] = "middle";
     }
     else
     {
       _hiddenField.Value = _value.ToString();
       _imageButton.ImageUrl = imageUrl;
+      _imageButton.AlternateText = description;
+      _imageButton.Style["vertical-align"] = "middle";
     }
 
     if (_showDescription)
       _label.Text = description;
 
-    _imageButton.AlternateText = description;
-    _imageButton.Style["vertical-align"] = "text-bottom";
-
     _label.Height = Height;
-    _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
   }
 
