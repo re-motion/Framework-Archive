@@ -2033,6 +2033,8 @@ public class BocList:
   ///   Explicit setting of <see cref="Property"/> is not offically supported.
   /// </remarks>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectReferenceProperty Property
   {
     get { return (IBusinessObjectReferenceProperty) base.Property; }
