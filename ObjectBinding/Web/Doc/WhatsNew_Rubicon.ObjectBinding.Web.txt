@@ -8,6 +8,9 @@
 - BocReferenceValue
   * OptionsMenu integriert
   * OptionsMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
+
+- Boc allgemein
+  * Bugfix: Als Properties im Designer eingebene Validation Error Messages führten zu Fehlermeldungen.
   
 1.1.36.0
 ========
