@@ -248,6 +248,9 @@ public class DomainObjectProperty: IBusinessObjectProperty
 
   internal protected virtual object ToInternalType (object publicValue)
   {
+    if (_itemType.IsValueType && publicValue == null)
+      throw new InvalidNullAssignmentException (_itemType);
+
     return publicValue;
   }
   
