@@ -70,10 +70,7 @@ public class WebForm1 : System.Web.UI.Page
 		CurrentObjectDataSource.BusinessObject = person;
 
     this.DataBind();
-    if (!IsPostBack)
-    {
-      CurrentObjectDataSource.LoadValues (IsPostBack);
-    }
+    CurrentObjectDataSource.LoadValues (IsPostBack);
 	}
 
 	#region Web Form Designer generated code

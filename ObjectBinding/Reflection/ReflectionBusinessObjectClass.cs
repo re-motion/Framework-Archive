@@ -47,6 +47,11 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
 
     return ReflectionBusinessObjectStorage.GetObject (_type, id);
   }
+
+  public bool RequiresWriteBack
+  { 
+    get { return false; }
+  }
 }
 
 }

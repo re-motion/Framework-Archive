@@ -209,9 +209,12 @@ public class PropertyBusinessObjectDataSource: BusinessObjectDataSource, IBusine
     // save values from "child" controls
     SaveValues (interim);
 
-    // save value into "parent" data source
-    if (_dataSource != null && _dataSource.BusinessObject != null && ReferenceProperty != null)
+    // if required, save value into "parent" data source
+    if (_dataSource != null && _dataSource.BusinessObject != null && ReferenceProperty != null 
+        && ReferenceProperty.ReferenceClass != null && ReferenceProperty.ReferenceClass.RequiresWriteBack)
+    {
       _dataSource.BusinessObject[ReferenceProperty] = _businessObject;
+    }
   }
 
   public bool SupportsProperty (IBusinessObjectProperty property)

@@ -275,6 +275,12 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
 
     return new EnumerationValueInfo (value, value.ToString(), value.ToString(), isEnabled);
   }
+
+  public override bool IsRequired
+  {
+    get { return true; }
+  }
+
 }
 
 public class ReflectionBusinessObjectRefernceProperty: ReflectionBusinessObjectProperty, IBusinessObjectReferenceProperty
