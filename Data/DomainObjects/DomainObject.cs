@@ -122,14 +122,14 @@ public class DomainObject
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new <b>DomainObject</b>
+  /// Initializes a new <b>DomainObject</b>.
   /// </summary>
   protected DomainObject () : this (ClientTransaction.Current)
   {
   }
 
   /// <summary>
-  /// Initializes a new <b>DomainObject</b>
+  /// Initializes a new <b>DomainObject</b>.
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>DomainObject</b> should be part of.</param>
   /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is a null reference.</exception>
