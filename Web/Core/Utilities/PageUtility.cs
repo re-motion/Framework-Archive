@@ -32,6 +32,15 @@ public class PageUtility
 	{
 	}
 
+  public static void RegisterOpenReportScript (Page page, string reportUrl)
+  {
+    page.RegisterStartupScript (
+        "OpenReport", 
+        "<script language='javascript'>"
+          + "\n window.open ('" + reportUrl + "', "
+          + " '_blank', 'resizable=yes, location=no, menubar=no, status=no, toolbar=no, scrollbars=yes');"
+          + "</script>");
+  }
  
   public static object GetSessionValue (Page page, string key, bool required)
   {
