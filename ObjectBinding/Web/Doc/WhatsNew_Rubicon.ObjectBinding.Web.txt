@@ -1,8 +1,14 @@
+1.1.39.0
+========
+
+- BocList
+  * OptionsMenu und ListMenu unterstützen WxeCommands
+
 1.1.36.0
 ========
 
 - Boclist
-  * OptionsMenu und ListMenu: Layout (IE 5.5, 6.0) komplett, WxeCommand noch ohne Funtktion.
+  * OptionsMenu und ListMenu: Layout (IE 5.5, 6.0) komplett, WxeCommand noch ohne Funktion.
   * Farbschema überarbeitet (1. Iteration).
   * Neue Methoden: ClearSelection(), SetSelectedRows(...), SetSelectedBusinessObjects(...).
   
