@@ -6,7 +6,7 @@
   <target name="resources" depends="setresources,all" />
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
-    
+
   <include buildfile="build/properties.include.xml"/>
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
@@ -17,7 +17,7 @@
 
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <property name="dummy" value="true" />
-  
+
   <target name="local" depends="initNoConfig" description="make local build into directory build/current">
     <property name="build.local" value="true" />
   </target>
@@ -25,13 +25,13 @@
   <target name="initNoConfig">
     <buildversion versionfile="build/buildversion.xml" increment="false" />
     <echo message="new version is ${build.version.noconfig}"/>
-    <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />  
+    <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />
     <if propertyexists="build.local">
-      <property name="build.basedir" value="${solution.basedir}/build/Current" />  
+      <property name="build.basedir" value="${solution.basedir}/build/Current" />
     </if>
     <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
   </target>
-  
+
   <target name="initialize" depends="initNoConfig">
     <!-- make sure that one of the set...-targets was called -->
     <property name="local.setnotcalled" value="true"/>
@@ -41,15 +41,15 @@
     <if propertytrue="local.setnotcalled">
       <fail message="Specify a set&lt;configuration&gt; target first. (setdebug, setrelease or setdocumentation)" />
     </if>
-    
+
     <property name="project.builddir" value="${build.basedir}/${nant.settings.currentframework}/bin/${project.config}" />
     <property name="project.tempdir" value="${build.basedir}/temp/${nant.settings.currentframework}/${project.config}" />
     <property name="tests.builddir" value="${build.basedir}/temp/${nant.settings.currentframework}/tests/${project.config}" />
   </target>
- 
+
   <!--======================= CONFIGURATION  =======================-->
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
-  
+
   <target name="setdebug">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
@@ -58,7 +58,7 @@
     <property name="build.csc.define" value="DEBUG;TRACE" />
     <call target="initialize" />
   </target>
-  
+
   <target name="setrelease">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
@@ -67,13 +67,13 @@
     <property name="build.csc.define" value="TRACE" />
     <call target="initialize" />
   </target>
-  
+
   <target name="setresources">
     <property name="project.config" value="documentation" />
     <property name="build.copyresources" value="true" />
     <call target="initialize" />
   </target>
-  
+
   <target name="setdocumentation">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="true" />
@@ -82,9 +82,9 @@
     <property name="build.csc.define" value="DEBUG;TRACE" />
     <call target="initialize" />
   </target>
-  
+
   <!--======================= VERSION =======================-->
-  
+
   <target name="incversion">
     <buildversion versionfile="build/buildversion.xml" increment="true" />
     <echo message="new version is ${build.version.noconfig}"/>
@@ -94,13 +94,13 @@
   <!--======================= SS Command =======================-->
   <target name="SSCommandline">
     <ifnot propertyexists="SS.dir" >
-      <property name="SS.dir" value="." /> 
+      <property name="SS.dir" value="." />
     </ifnot>
     <exec program="SS.EXE" append="true" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
         <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
-      </environment>  
+      </environment>
     </exec>
   </target>
 
@@ -126,7 +126,7 @@
 
   <!--======================= GetAll =======================-->
   <target name="getall" >
-    <foreach item="String" in="Core Core.Test Development ObjectBinding prereq Web" delim=" " property="local.project" >
+    <foreach item="String" in="Core Core.Test Data Development ObjectBinding prereq Web" delim=" " property="local.project" >
       <do>
         <mkdir dir="${dir.development}\libraries\Commons\${local.project}" />
         <exec program="cmd" append="true" commandline="/C del *.* /S /Q /F" workingdir="${dir.development}\libraries\Commons\${local.project}" />
@@ -177,40 +177,40 @@
     <property name="project.name" value="Core" />
     <property name="project.dir" value="Core" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="Core.Test" />
     <property name="project.dir" value="Core.Test" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="Development" />
     <property name="project.dir" value="Development/Core" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="Development.Core.Test" />
     <property name="project.dir" value="Development/Core.Test" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="Development.CodeDom" />
     <property name="project.dir" value="Development/CodeDom" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <call target="vsassemblyinfo" />
-    
+
     <property name="project.name" value="ObjectBinding.Reflection" />
     <property name="project.dir" value="ObjectBinding/Reflection" />
     <call target="vsassemblyinfo" />
   </target>
-  
+
   <!--======================= PROJECTS =======================-->
 
   <target name="all" depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection" />
@@ -222,7 +222,7 @@
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
-  
+
   <target name="DevelopmentCore" depends="initialize">
     <property name="project.name" value="Development.Core" />
     <property name="project.dir" value="Development/Core" />
@@ -230,7 +230,7 @@
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
-  
+
   <target name="CodeDom" depends="Core,initialize">
     <property name="project.name" value="Development.CodeDom" />
     <property name="project.dir" value="Development/CodeDom" />
@@ -238,7 +238,31 @@
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
-        
+
+  <target name="Data.DomainObjects" depends="Core,initialize">
+    <property name="project.name" value="Data.DomainObjects" />
+    <property name="project.dir" value="Data.DomainObjects" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects,initialize">
+    <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
+    <property name="project.dir" value="Data.DomainObjects.ObjectBinding" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding,initialize">
+    <property name="project.name" value="Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.dir" value="Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
   <target name="Web" depends="Core,initialize">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
@@ -254,7 +278,7 @@
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
-  
+
   <target name="ObjectBinding.Web" depends="Core,ObjectBinding,initialize">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
@@ -262,7 +286,7 @@
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
-  
+
   <target name="ObjectBinding.Reflection" depends="Core,ObjectBinding,initialize">
     <property name="project.name" value="ObjectBinding.Reflection" />
     <property name="project.dir" value="ObjectBinding/Reflection" />
@@ -272,7 +296,7 @@
   </target>
 
   <!--======================= UNIT TESTS =======================-->
-  
+
   <target name="alltests" depends="CoreTest, DevelopmentCoreTest" />
 
   <target name="CoreTest" depends="Core,DevelopmentCore">
@@ -285,7 +309,7 @@
       <test assemblyname="${tests.builddir}/Rubicon.Core.UnitTests.dll" />
     </nunit2>
   </target>
-  
+
   <target name="DevelopmentCoreTest" depends="Core,DevelopmentCore">
     <property name="project.name" value="Development.Core.Test" />
     <property name="project.dir" value="Development/Core.Test" />
@@ -296,9 +320,20 @@
       <test assemblyname="${tests.builddir}/Rubicon.Development.UnitTests.dll" />
     </nunit2>
   </target>
-  
+
+  <target name="Data.DomainObjects.UnitTests" depends="Data.DomainObjects">
+    <property name="project.name" value="Data.DomainObjects.UnitTests" />
+    <property name="project.dir" value="Data.DomainObjects.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+    <nunit2>
+      <test assemblyname="${tests.builddir}/Rubicon.Data.DomainObjects.UnitTests.dll" />
+    </nunit2>
+  </target>
+
   <!--======================= BUILD =======================-->
-  
+
   <target name="build">
     <if if="${build.copyresources}" propertyexists="dummy">
       <copy todir="${build.basedir}/res/${project.output}" >
@@ -306,39 +341,43 @@
           <includes name="**/*" />
         </fileset>
       </copy>
-    <!-- else --> </if> <if unless="${build.copyresources}" propertyexists="dummy"> 
+      <!-- else -->
+    </if>
+    <if unless="${build.copyresources}" propertyexists="dummy">
       <echo message="building ${project.output}.${project.extension} ${build.version}"/>
-      
+
       <if if="${build.createdoc}" propertyexists="dummy">
         <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
-      <!-- else --> </if> <if unless="${build.createdoc}" propertyexists="dummy">
+        <!-- else -->
+      </if>
+      <if unless="${build.createdoc}" propertyexists="dummy">
         <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
       </if>
 
       <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
-      
+
       <mkdir dir="${project.builddir}"/>
       <mkdir dir="${project.tempdir}"/>
       <call target="prepareassemblyinfo" />
-      
+
       <copy todir="${project.builddir}" file="${prereq.assemblies}/log4net.dll" overwrite="true"/>
 
       <nant buildfile="${project.dir}/${project.name}.build" target="build" />
-      
+
       <if unless="${build.createdoc}" propertyexists="dummy">
-        <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
+        <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
       </if>
     </if>
   </target>
-    
+
   <target name="buildtest">
     <echo message="building unit tests ${project.output}.${project.extension} ${build.version}"/>
     <property name="project.doc" value="" />
 
     <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
-    
+
     <mkdir dir="${tests.builddir}"/>
-    
+
     <copy todir="${tests.builddir}" file="${prereq.assemblies}/nunit.framework.dll" overwrite="true"/>
     <copy todir="${tests.builddir}">
       <fileset basedir="${project.builddir}">
@@ -346,9 +385,9 @@
         <includes name="*.pdb" />
       </fileset>
     </copy>
-    
+
     <call target="prepareassemblyinfo" />
-    
+
     <nant buildfile="${project.dir}/${project.name}.build" target="build" />
   </target>
 
@@ -357,7 +396,7 @@
     <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
     <replace>
       <filterset>
-        <filter token="keyfile" value="${build.keyfile}" />  
+        <filter token="keyfile" value="${build.keyfile}" />
         <filter token="versionnumber" value="${build.version}" />
         <filter token="buildinfo" value=".NET Framework: ${nant.settings.currentframework}, build type: ${project.config}" />
         <filter token="company" value="${text.companyname}" />
@@ -370,14 +409,14 @@
     </replace>
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
   </target>
-    
+
   <target name="vsassemblyinfo" description="prepare assembly info for VS.NET">
     <property name="project.basedir" value="${nant.project.basedir}/${project.dir}" />
     <copy file="${project.basedir}/AssemblyInfoTemplate.cs"  tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
     <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
     <replace>
       <filterset>
-        <filter token="keyfile" value="${build.keyfile}" />  
+        <filter token="keyfile" value="${build.keyfile}" />
         <filter token="versionnumber" value="${build.version.major}.${build.version.minor}.${build.version.build}.*" />
         <filter token="buildinfo" value="VS.NET build" />
         <filter token="company" value="${text.companyname}" />
@@ -390,12 +429,12 @@
     </replace>
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
   </target>
-    
+
   <!--======================= DOCUMENTATION =======================-->
 
   <target name="doc-public" depends="setdocumentation,all">
     <property name="doc.suffix" value="" />
-    
+
     <property name="doc.filebase" value="${text.productshortname}${doc.suffix}" />
     <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
     <mkdir dir="${doc.tempdir}"/>
@@ -491,11 +530,11 @@
     <delete>
       <fileset failonempty="false">
         <includes name="${build.basedir}/temp/**/*"/>
-        <includes name="${build.basedir}/temp"/> 
+        <includes name="${build.basedir}/temp"/>
       </fileset>
     </delete>
   </target>
-  
+
   <target name="clean" depends="setdocumentation">
     <delete>
       <fileset failonempty="false">
@@ -504,14 +543,14 @@
       </fileset>
     </delete>
   </target>
-  
+
   <target name="zipfilename" depends="setdocumentation">
     <property name="zipfile.name" value="${build.basedir}/RubiconCommons_${build.version.noconfig}.zip" />
     <property name="sourcezipfile.name" value="${build.basedir}/RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
     <echo message="Zipfile is ${zipfile.name}"/>
     <echo message="SourceZipfile is ${sourcezipfile.name}"/>
   </target>
- 
+
   <target name="zip" depends="zipfilename">
     <delete file="${zipfile.name}" failonerror="false" />
     <zip zipfile="${zipfile.name}">
@@ -540,10 +579,10 @@
       </fileset>
     </zip>
   </target>
-  
+
   <target name="getcurrent" depends="initNoConfig">
     <property name="local.currentdir" value="${solution.basedir}/build/Current" />
-    
+
     <delete failonerror="false">
       <fileset>
         <includes name="${local.currentdir}//*" />
