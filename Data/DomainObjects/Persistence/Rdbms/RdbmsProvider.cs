@@ -21,8 +21,6 @@ public abstract class RdbmsProvider : StorageProvider
   private IDbConnection _connection;
   private IDbTransaction _transaction;
 
-  private bool _disposed = false;
-
   // construction and disposing
 
   protected RdbmsProvider (RdbmsProviderDefinition rdbmsProviderDefinition) : base (rdbmsProviderDefinition)
@@ -31,17 +29,19 @@ public abstract class RdbmsProvider : StorageProvider
 
   protected override void Dispose (bool disposing)
   {
-    if (!_disposed)
+    if (!IsDisposed)
     {
       try
       {
         if (disposing)
-          Disconnect ();
+        {
+          DisposeTransaction ();
+          DisposeConnection ();
+        }
       }
       finally
       {
         base.Dispose (disposing);
-        _disposed = true;
       }
     }
   }
@@ -55,6 +55,8 @@ public abstract class RdbmsProvider : StorageProvider
 
   public virtual void Connect ()
   {
+    CheckDisposed ();
+
     if (!IsConnected)
     {
       try
@@ -74,8 +76,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public virtual void Disconnect()
   {
-    DisposeTransaction ();
-    DisposeConnection ();
+    Dispose ();
   }
 
   public virtual bool IsConnected
@@ -91,6 +92,8 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override void BeginTransaction ()
   {
+    CheckDisposed ();
+
     Connect ();
 
     if (_transaction != null)
@@ -108,6 +111,8 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override void Commit ()
   {
+    CheckDisposed ();
+
     if (_transaction == null)
     {
       throw new InvalidOperationException (
@@ -130,6 +135,8 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override void Rollback ()
   {
+    CheckDisposed ();
+
     if (_transaction == null)
     {
       throw new InvalidOperationException (
@@ -155,6 +162,7 @@ public abstract class RdbmsProvider : StorageProvider
       string propertyName, 
       ObjectID relatedID)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("relatedID", relatedID);
@@ -181,6 +189,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override DataContainer LoadDataContainer (ObjectID id)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (id.ClassID);
@@ -205,6 +214,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override void Save (DataContainerCollection dataContainers)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     Connect ();
@@ -242,6 +252,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override void SetTimestamp (DataContainerCollection dataContainers)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     Connect ();
@@ -255,6 +266,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
     return DataContainer.CreateNew (CreateNewObjectID (classDefinition));
@@ -262,6 +274,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   protected virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
     return new ObjectID (this.ID, classDefinition.ID, Guid.NewGuid ());
@@ -269,6 +282,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   protected virtual IDataReader ExecuteReader (ClassDefinition classDefinition, IDbCommand command, CommandBehavior behavior)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("command", command);
     if (!Enum.IsDefined (typeof (CommandBehavior), behavior)) throw new ArgumentException (string.Format ("Invalid command behavior '{0}' provided.", behavior), "behavior");
@@ -286,6 +300,7 @@ public abstract class RdbmsProvider : StorageProvider
   
   protected virtual void SetTimestamp (DataContainer dataContainer)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (dataContainer.State == StateType.Deleted)
@@ -309,6 +324,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   protected virtual void Save (IDbCommand command, DataContainer dataContainer)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     if (command == null)
@@ -337,17 +353,29 @@ public abstract class RdbmsProvider : StorageProvider
 
   protected new RdbmsProviderDefinition StorageProviderDefinition
   {
-    get { return (RdbmsProviderDefinition) base.StorageProviderDefinition; }
+    get 
+    { 
+      CheckDisposed ();
+      return (RdbmsProviderDefinition) base.StorageProviderDefinition; 
+    }
   }
   
   public IDbConnection Connection
   {
-    get { return _connection; }
+    get 
+    { 
+      CheckDisposed ();
+      return _connection; 
+    }
   }
 
   public IDbTransaction Transaction
   {
-    get { return _transaction; }
+    get 
+    { 
+      CheckDisposed ();
+      return _transaction; 
+    }
   }
 
   protected StorageProviderException CreateStorageProviderException (
@@ -392,7 +420,7 @@ public abstract class RdbmsProvider : StorageProvider
   private void DisposeConnection ()
   {
     if (_connection != null)
-      _connection.Close();
+      _connection.Close ();
     
     _connection = null;
   }

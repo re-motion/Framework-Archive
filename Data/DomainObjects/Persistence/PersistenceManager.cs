@@ -14,6 +14,7 @@ public class PersistenceManager : IDisposable
 
   // member fields
 
+  private bool _disposed = false;
   private StorageProviderManager _storageProviderManager;
 
   // construction and disposing
@@ -25,13 +26,18 @@ public class PersistenceManager : IDisposable
 
   #region IDisposable Members
 
-  public virtual void Dispose ()
+  public void Dispose ()
   {
-    if (_storageProviderManager != null)
-      _storageProviderManager.Dispose ();
-    
-    _storageProviderManager = null;
-    GC.SuppressFinalize (this);
+    if (!_disposed)
+    {
+      if (_storageProviderManager != null)
+        _storageProviderManager.Dispose ();
+      
+      _storageProviderManager = null;
+
+      _disposed = true;
+      GC.SuppressFinalize (this);
+    }
   }
 
   #endregion
@@ -40,6 +46,7 @@ public class PersistenceManager : IDisposable
 
   public DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
     StorageProvider provider = _storageProviderManager.GetMandatoryStorageProvider (classDefinition.StorageProviderID);
@@ -48,6 +55,9 @@ public class PersistenceManager : IDisposable
 
   public void Save (DataContainerCollection dataContainers)
   {
+    CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+
     if (dataContainers.Count == 0)
       return;
 
@@ -68,6 +78,7 @@ public class PersistenceManager : IDisposable
 
   public DataContainer LoadDataContainer (ObjectID id)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
 
     StorageProvider provider = _storageProviderManager.GetMandatoryStorageProvider (id.StorageProviderID);
@@ -81,6 +92,7 @@ public class PersistenceManager : IDisposable
 
   public DataContainerCollection LoadRelatedDataContainers (RelationEndPointID relationEndPointID)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
     if (!relationEndPointID.IsVirtual)
@@ -120,6 +132,7 @@ public class PersistenceManager : IDisposable
 
   public DataContainer LoadRelatedDataContainer (DataContainer dataContainer, RelationEndPointID relationEndPointID)
   {
+    CheckDisposed ();
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
@@ -187,6 +200,12 @@ public class PersistenceManager : IDisposable
   private PersistenceException CreatePersistenceException (string message, params object[] args)
   {
     return new PersistenceException (string.Format (message, args));
+  }
+
+  private void CheckDisposed ()
+  {
+    if (_disposed)
+      throw new ObjectDisposedException ("PersistenceManager", "A disposed PersistenceManager cannot be accessed.");
   }
 }
 }
