@@ -216,14 +216,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   #region ICollectionChangeDelegate Members
 
-  void ICollectionChangeDelegate.PerformAdd (DomainObjectCollection collection, DomainObject domainObject)
-  {
-    if (_changeDelegate == null)
-      throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
-
-    _changeDelegate.PerformAdd (this, domainObject);
-  }
-
   void ICollectionChangeDelegate.PerformInsert (DomainObjectCollection collection, DomainObject domainObject, int index)
   {
     if (_changeDelegate == null)
