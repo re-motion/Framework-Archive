@@ -12,6 +12,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   A <see cref="BocItemCommand"/> defines an action the user can invoke on a datarow.
 /// </summary>
+//  TODO: BocItemCommand: Event
+//  TODO: BocItemCommand: Script
+//  TODO: BocItemCommand: WebExecutionEngine
 [TypeConverter (typeof (BocItemCommandConverter))]
 public class BocItemCommand
 {
@@ -21,6 +24,7 @@ public class BocItemCommand
   private string _href;
   private string _target;
 
+  /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
   {}
 
@@ -41,6 +45,13 @@ public class BocItemCommand
     return command;
   }
 
+  /// <summary>
+  ///   Instantiates a <see cref="BocItemCommand"/> of type <see cref="BocItemCommandType.Href"/>.
+  /// </summary>
+  /// <param name="href"> 
+  ///   The hyperlink reference of the command. Use {0} for the index and {1} for the ID.
+  /// </param>
+  /// <returns> A <see cref="BocItemCommand"/>. </returns>
   public static BocItemCommand CreateHrefItemCommand (string href)
   {
     return BocItemCommand.CreateHrefItemCommand (href, null);
@@ -48,8 +59,14 @@ public class BocItemCommand
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"></param>
-  /// <param name="index"></param>
-  /// <param name="id"></param>
+  /// <param name="index">
+  ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
+  /// <param name="id">
+  ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
   public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
   {
     switch (_type)
@@ -203,13 +220,13 @@ public class BocItemCommand
   }
 }
 
-// TODO: Doc BocItemCommandType
+// TODO: BocItemCommandType: Documentation
 public enum BocItemCommandType
 {
   Href
 }
 
-// TODO: Doc BocItemCommandShow
+// TODO: BocItemCommandShow: Documentation
 public enum BocItemCommandShow
 {
   Always,

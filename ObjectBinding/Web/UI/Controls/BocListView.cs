@@ -16,6 +16,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocColumnDefinitionSet
 {
+  /// <summary> The ID of this column definition. </summary>
+  private string _id;
   /// <summary> The displayed name of the set. </summary>
   private object _title;
   /// <summary> The <see cref="BocColumnDefinition"/> objects stored in the set. </summary>
@@ -75,10 +77,26 @@ public class BocColumnDefinitionSet
   /// </returns>
   public override string ToString()
   {
-    if (StringUtility.IsNullOrEmpty (Title))
-      return GetType().Name;
+    string displayName = ID;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = Title;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      return DisplayedTypeName;
     else
-      return string.Format ("{0} ({1})", GetType().Name, Title);
+      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+  }
+
+  /// <summary> The ID of this column definition set. </summary>
+  /// <value> A <see cref="string"/> providing an identifier for this column definition set. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Description ("The ID of this column definition set.")]
+  [Category ("Misc")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string ID
+  {
+    get { return _id; }
+    set { _id = value; }
   }
 
   /// <summary> The displayed name of the set. </summary>
@@ -121,6 +139,12 @@ public class BocColumnDefinitionSet
       _ownerControl = value; 
       _columnDefinitionCollection.OwnerControl = _ownerControl;
     }
+  }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected virtual string DisplayedTypeName
+  {
+    get { return "ColumnDefinitionSet"; }
   }
 }
 

@@ -16,7 +16,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
-//  TODO: Date-Picker
+//  TODO: BocDateTimeValue: Date-Picker
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -356,7 +356,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
     dateTimeValidator.ID = this.ID + "_ValidatorDateTime";
     dateTimeValidator.ControlToValidate = ID;
-    //  TODO: Get Message from ResourceProvider
+    //  TODO: BocDateTimeValue: Get validation messages from ResourceProvider
     dateTimeValidator.RequiredErrorMessage = c_requiredErrorMessage;
     dateTimeValidator.IncompleteErrorMessage = c_incompleteErrorMessage;
     dateTimeValidator.InvalidDateAndTimeErrorMessage = c_invalidDateAndTimeErrorMessage;

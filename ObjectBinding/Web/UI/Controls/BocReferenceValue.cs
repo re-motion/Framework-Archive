@@ -15,6 +15,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> This control can be used to display or edit reference values. </summary>
 /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
+//  TODO: BocReferenceValue: Menu like SharePoint for creating new items and stuff.
+//  TODO: BocReferenceValue: Page changes?
+//  TODO: BocReferenceValue: Link to DetailsPage?
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -308,7 +311,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     notNullItemValidator.ControlToValidate = TargetControl.ID;
     notNullItemValidator.ValueToCompare = c_nullIdentifier;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    //  TODO: Get Message from ResourceProvider
+    //  TODO: BocReferenceValue: Get validation message from ResourceProvider
     notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = notNullItemValidator;

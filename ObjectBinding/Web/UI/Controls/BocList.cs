@@ -20,6 +20,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
+// TODO: BocList: Details View
+// TODO: BocList: Sort-Buttons
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatchTarget
 {
@@ -442,7 +444,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
 
     if (ShowSelection)
     {
-      //  TODO: Select all checkbox
+      // TODO: BocList: CheckBox SelectAll implementation
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       //string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
@@ -744,7 +746,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl, IResourceDispatch
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
-    //  TODO: BindingChanged
+    //  TODO: BocList: BindingChanged
   }
 
   private void PopulateAdditionalColumnsList()

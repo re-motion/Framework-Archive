@@ -296,7 +296,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
     notNullItemValidator.ControlToValidate = TargetControl.ID;
     notNullItemValidator.ValueToCompare = c_nullIdentifier;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    //  TODO: Get Message from ResourceProvider
+    //  TODO: BocEnumValue: Get validation message from ResourceProvider
     notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = notNullItemValidator;

@@ -20,7 +20,6 @@ public abstract class BocColumnDefinition
 {
   /// <summary> The ID of this column definition. </summary>
   private string _id;
-
   /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
   /// <summary> The width of the column. </summary>
@@ -56,14 +55,17 @@ public abstract class BocColumnDefinition
   /// </returns>
   public override string ToString()
   {
-    if (StringUtility.IsNullOrEmpty (ColumnTitle))
-      return GetType().Name;
+    string displayName = ID;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = ColumnTitle;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      return DisplayedTypeName;
     else
-      return string.Format ("{0} ({1})", GetType().Name, ColumnTitle);
+      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> The ID of this column definition. </summary>
-  /// <value> A <see cref="string"/> providing an identifier for this column. </value>
+  /// <value> A <see cref="string"/> providing an identifier for this column definition. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The ID of this column definition.")]
   [Category ("Misc")]
@@ -112,6 +114,12 @@ public abstract class BocColumnDefinition
   { 
     get { return _width; } 
     set { _width = value; }
+  }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected virtual string DisplayedTypeName
+  {
+    get { return "ColumnDefinition"; }
   }
 
   /// <summary>
@@ -180,10 +188,15 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// </returns>
   public override string ToString()
   {
-    if (StringUtility.IsNullOrEmpty (Label))
-      return GetType().Name;
+    string displayName = ID;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = ColumnTitle;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      displayName = Label;
+    if (StringUtility.IsNullOrEmpty (displayName))
+      return DisplayedTypeName;
     else
-      return string.Format ("{0} ({1})", GetType().Name, Label);
+      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
@@ -221,6 +234,12 @@ public class BocCommandColumnDefinition: BocColumnDefinition
     get { return _iconPath; }
     set { _iconPath = value; }
   }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "CommandColumnDefinition"; }
+  }
 }
 
 /// <summary> A column definition for displaying data. </summary>
@@ -242,6 +261,12 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
   /// <param name="obj"> The <see cref="IBusinessObject"/> to be displayed in this column. </param>
   /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
   public abstract string GetStringValue (IBusinessObject obj);
+
+  /// <summary> The human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "ValueColumnDefinition"; }
+  }
 }
 
 /// <summary> A column definition for displaying a single property path. </summary>
@@ -379,6 +404,12 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
       else
         return string.Empty;
     }
+  }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "SimpleColumnDefinition"; }
   }
 }
 
@@ -537,6 +568,12 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
       ArgumentUtility.CheckNotNullOrEmpty ("ColumnTitle", value);
       base.ColumnTitle = value;
     }
+  }
+
+  /// <summary> The human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "CompoundColumnDefinition"; }
   }
 }
 
