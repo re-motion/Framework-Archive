@@ -37,7 +37,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
   /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
 	public ResourceManagerSet (params IResourceManager[] resourceManagers)
 	{
-    ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("resourceManagers", resourceManagers);
+    ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
     TypedArrayList list = new TypedArrayList (typeof (IResourceManager));
     foreach (IResourceManager rm in resourceManagers)
@@ -45,7 +45,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
       ResourceManagerSet rmset = rm as ResourceManagerSet;
       if (rmset != null)
         list.AddRange (rmset.InnerList);
-      else
+      else if (rm != null)
         list.Add (rm);
     }
 
