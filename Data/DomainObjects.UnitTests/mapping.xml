@@ -422,223 +422,159 @@
 				but orders cannot exists without a customer. -->	
 		<relation id="CustomerToOrder">
 			<virtualEndPoint cardinality="many" isMandatory="false">
-				<class>Customer</class>
-				<property>
-					<name>Orders</name>
+				<class id="Customer" />
+				<property name="Orders">
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</type>
 				</property>
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>Order</class>
-				<property>
-					<name>Customer</name>
-				</property>
+				<class id="Order" />
+				<property name="Customer" />
 			</endPoint>
 		</relation>
 
 		<!-- Example for a mandatory 1 to 1 relation. -->
 		<relation id="OrderToOrderTicket">
 			<virtualEndPoint cardinality="one" isMandatory="true">
-				<class>Order</class>
-				<property>
-					<name>OrderTicket</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Order" />
+				<property name="OrderTicket" />
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>OrderTicket</class>
-				<property>
-					<name>Order</name>
-				</property>
+				<class id="OrderTicket" />
+				<property name="Order" />
 			</endPoint>
 		</relation>
 
 		<relation id="OrderToOrderItem">
 			<virtualEndPoint cardinality="many" isMandatory="true">
-				<class>Order</class>
-				<property>
-					<name>OrderItems</name>
-				</property>
+				<class id="Order" />
+				<property name="OrderItems" />
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>OrderItem</class>
-				<property>
-					<name>Order</name>
-				</property>
+				<class id="OrderItem" />
+				<property name="Order" />
 			</endPoint>
 		</relation>
 
 		<relation id="OfficialToOrder">
 			<virtualEndPoint cardinality="many" isMandatory="false">
-				<class>Official</class>
-				<property>
-					<name>Orders</name>
-				</property>
+				<class id="Official" />
+				<property name="Orders" />
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>Order</class>
-				<property>
-					<name>Official</name>
-				</property>
+				<class id="Order" />
+				<property name="Official" />
 			</endPoint>
 		</relation>
 
 		<relation id="CompanyToCeo">
 			<virtualEndPoint cardinality="one" isMandatory="true">
-				<class>Company</class>
-				<property>
-					<name>Ceo</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Company" />
+				<property name="Ceo" />
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>Ceo</class>
-				<property>
-					<name>Company</name>
-				</property>
+				<class id="Ceo" />
+				<property name="Company" />
 			</endPoint>
 		</relation>
 
 		<relation id="PartnerToPerson">
 			<endPoint isMandatory="true">
-				<class>Partner</class>
-				<property>
-					<name>ContactPerson</name>
-				</property>
+				<class id="Partner" />
+				<property name="ContactPerson" />
 			</endPoint>
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>Person</class>
-				<property>
-					<name>AssociatedPartnerCompany</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Person" />
+				<property name="AssociatedPartnerCompany" />
 			</virtualEndPoint>
 		</relation>
 
 		<relation id="PartnerToClassWithoutRelatedClassIDColumn">
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>Partner</class>
-				<property>
-					<name>ClassWithoutRelatedClassIDColumn</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Partner" />
+				<property name="ClassWithoutRelatedClassIDColumn" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>ClassWithoutRelatedClassIDColumn</class>
-				<property>
-					<name>Partner</name>
-				</property>
+				<class id="ClassWithoutRelatedClassIDColumn" />
+				<property name="Partner" />
 			</endPoint>
 		</relation>
 
 		<relation id="CompanyToClassWithoutRelatedClassIDColumnAndDerivation">
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>Company</class>
-				<property>
-					<name>ClassWithoutRelatedClassIDColumnAndDerivation</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Company" />
+				<property name="ClassWithoutRelatedClassIDColumnAndDerivation" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>ClassWithoutRelatedClassIDColumnAndDerivation</class>
-				<property>
-					<name>Company</name>
-				</property>
+				<class id="ClassWithoutRelatedClassIDColumnAndDerivation" />
+				<property name="Company" />
 			</endPoint>
 		</relation>
 
 		<relation id="ClassWithGuidKeyToClassWithValidRelationsOptional">
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>ClassWithGuidKey</class>
-				<property>
-					<name>ClassWithValidRelationsOptional</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="ClassWithGuidKey" />
+				<property name="ClassWithValidRelationsOptional" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>ClassWithValidRelations</class>
-				<property>
-					<name>ClassWithGuidKeyOptional</name>
-				</property>
+				<class id="ClassWithValidRelations" />
+				<property name="ClassWithGuidKeyOptional" />
 			</endPoint>
 		</relation>
 
 		<relation id="ClassWithGuidKeyToClassWithValidRelationsNonOptional">
 			<virtualEndPoint cardinality="one" isMandatory="true">
-				<class>ClassWithGuidKey</class>
-				<property>
-					<name>ClassWithValidRelationsNonOptional</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="ClassWithGuidKey" />
+				<property name="ClassWithValidRelationsNonOptional" />
 			</virtualEndPoint>
 			<endPoint isMandatory="true">
-				<class>ClassWithValidRelations</class>
-				<property>
-					<name>ClassWithGuidKeyNonOptional</name>
-				</property>
+				<class id="ClassWithValidRelations" />
+				<property name="ClassWithGuidKeyNonOptional" />
 			</endPoint>
 		</relation>
 
 		<relation id="ClassWithGuidKeyToClassWithInvalidRelation">
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>ClassWithGuidKey</class>
-				<property>
-					<name>ClassWithInvalidRelation</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="ClassWithGuidKey" />
+				<property name="ClassWithInvalidRelation" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>ClassWithInvalidRelation</class>
-				<property>
-					<name>ClassWithGuidKey</name>
-				</property>
+				<class id="ClassWithInvalidRelation" />
+				<property name="ClassWithGuidKey" />
 			</endPoint>
 		</relation>
 		
 		<relation id="IndustrialSectorToCompany">
 			<virtualEndPoint cardinality="many" isMandatory="true">
-				<class>IndustrialSector</class>
-				<property>
-					<name>Companies</name>
-				</property>
+				<class id="IndustrialSector" />
+				<property name="Companies" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>Company</class>
-				<property>
-					<name>IndustrialSector</name>
-				</property>
+				<class id="Company" />
+				<property name="IndustrialSector" />
 			</endPoint>
 		</relation>
 
 		<relation id="SupervisorToSubordinate">
 			<virtualEndPoint cardinality="many" isMandatory="false">
-				<class>Employee</class>
-				<property>
-					<name>Subordinates</name>
-				</property>
+				<class id="Employee" />
+				<property name="Subordinates" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>Employee</class>
-				<property>
-					<name>Supervisor</name>
-				</property>
+				<class id="Employee" />
+				<property name="Supervisor" />
 			</endPoint>
 		</relation>
 
 		<!-- Example for an optional 1 to 1 relation. -->
 		<relation id="EmployeeToComputer">
 			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class>Employee</class>
-				<property>
-					<name>Computer</name>
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.UnitTests</type>
-				</property>
+				<class id="Employee" />
+				<property name="Computer" />
 			</virtualEndPoint>
 			<endPoint isMandatory="false">
-				<class>Computer</class>
-				<property>
-					<name>Employee</name>
-				</property>
+				<class id="Computer" />
+				<property name="Employee" />
 			</endPoint>
 		</relation>
 

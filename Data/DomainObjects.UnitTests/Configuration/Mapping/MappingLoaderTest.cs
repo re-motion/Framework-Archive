@@ -232,20 +232,5 @@ public class LoaderTest
         @"storageProvidersWithXmlException.xml", 
         @"storageProviders.xsd");
   }
-
-
-  [Test]
-  [ExpectedException (typeof (MappingException), 
-      "Virtual end point of one-to-one relation 'OrderToOrderTicket' does not define a property type.")]
-  public void MappingWithOneToOneRelationWithoutPropertyType ()
-  {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithOneToOneRelationWithoutPropertyType.xml", 
-        @"mapping.xsd");
-    
-    RelationDefinitionCollection relations = loader.GetRelationDefinitions (loader.GetClassDefinitions ());
-  }
-
-  
 }
 }

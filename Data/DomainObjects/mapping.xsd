@@ -35,8 +35,8 @@
 
           <xs:key name="relationClassPropertyKey">
             <xs:selector xpath="m:relation/m:*" />
-            <xs:field xpath="m:class" />
-            <xs:field xpath="m:property/m:name" />
+            <xs:field xpath="m:class/@id" />
+            <xs:field xpath="m:property/@name" />
           </xs:key>
 
         </xs:element>
@@ -51,7 +51,7 @@
 
     <xs:keyref name="endPointToClass" refer="m:classKey">
       <xs:selector xpath="m:relations/m:relation/m:*" />
-      <xs:field xpath="m:class" />
+      <xs:field xpath="m:class/@id" />
     </xs:keyref>
 
   </xs:element>
@@ -98,9 +98,9 @@
           <xs:element name="property">
             <xs:complexType>
               <xs:sequence>
-                <xs:element name="name" type="t:requiredStringType" />
                 <xs:element name="type" type="t:dotNetType" minOccurs="0" />
               </xs:sequence>
+              <xs:attribute name="name" type="t:requiredStringType" use="required" /> 	  	              
             </xs:complexType>
           </xs:element>
         </xs:sequence>
@@ -122,9 +122,7 @@
         <xs:sequence>
           <xs:element name="property">
             <xs:complexType>
-              <xs:sequence>
-                <xs:element name="name" type="t:requiredStringType" />
-              </xs:sequence>
+              <xs:attribute name="name" type="t:requiredStringType" use="required" /> 	  	
             </xs:complexType>
           </xs:element>
         </xs:sequence>
@@ -134,7 +132,11 @@
 
   <xs:complexType name="endPointBaseType">
     <xs:sequence>
-      <xs:element name="class" type="t:requiredStringType" />
+      <xs:element name="class">
+      	<xs:complexType>
+      		<xs:attribute name="id" type="t:requiredStringType" use="required" />
+      	</xs:complexType>
+      </xs:element>
     </xs:sequence>
     <xs:attribute name="isMandatory" type="xs:boolean" use="required" />
   </xs:complexType>

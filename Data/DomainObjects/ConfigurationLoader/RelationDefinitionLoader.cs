@@ -93,14 +93,14 @@ public class RelationDefinitionLoader
   private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, XmlNode endPointNode)
   {
     string classAsString = endPointNode.SelectSingleNode (FormatXPath (
-        "{0}:class"), _namespaceManager).InnerText;
+        "{0}:class/@id"), _namespaceManager).InnerText;
 
     ClassDefinition classDefinition = _classDefinitions.GetByClassID (classAsString);
 
     bool isMandatory = bool.Parse (endPointNode.SelectSingleNode ("@isMandatory", _namespaceManager).InnerText);
 
     XmlNode propertyNode = endPointNode.SelectSingleNode (FormatXPath ("{0}:property"), _namespaceManager);
-    string propertyName = propertyNode.SelectSingleNode (FormatXPath ("{0}:name"), _namespaceManager).InnerText;
+    string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
 
     if (endPointNode.LocalName == "virtualEndPoint")
     {
@@ -124,11 +124,16 @@ public class RelationDefinitionLoader
 
     if (cardinality == CardinalityType.One)
     {
-      throw CreateMappingException (
-          "Virtual end point of one-to-one relation '{0}' does not define a property type.", relationDefinitionID);
+      string oppositeClassID = 
+          propertyNode.SelectSingleNode (FormatXPath ("../../{0}:endPoint/{0}:class/@id"), _namespaceManager).InnerText;
+
+      string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class[@id = \"" + oppositeClassID + "\"]/{0}:type");
+      return LoaderUtility.GetTypeFromNode (propertyNode, FormatXPath (xPath), _namespaceManager);
     }
-  
-    return typeof (DomainObjectCollection);
+    else
+    {
+      return typeof (DomainObjectCollection);
+    }
   }
 
   private CardinalityType GetCardinality (XmlNode endPointNode)
