@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class RegisterInRelationEndPointCollectionTest 
+public class RegisterInRelationEndPointMapTest 
 {
   // types
 
@@ -15,11 +15,11 @@ public class RegisterInRelationEndPointCollectionTest
 
   // member fields
 
-  private RelationEndPointCollection _endPoints;
+  private RelationEndPointMap _endPoints;
 
   // construction and disposing
 
-  public RegisterInRelationEndPointCollectionTest ()
+  public RegisterInRelationEndPointMapTest ()
   {
   }
 
@@ -28,7 +28,7 @@ public class RegisterInRelationEndPointCollectionTest
   [SetUp]
   public void SetUp ()
   {
-    _endPoints = new RelationEndPointCollection ();
+    _endPoints = new RelationEndPointMap ();
   }
 
   [Test]
