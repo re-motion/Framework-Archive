@@ -48,7 +48,7 @@ public class ResourceManagerWrapper: IResourceManager
   /// <summary>
   ///   Constructor for wrapping multiple resource managers
   /// </summary>
-  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManagers"]' />
+  /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManager"]' />
   public ResourceManagerWrapper (ResourceManager resourceManager)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
