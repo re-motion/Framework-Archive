@@ -2,6 +2,7 @@ using System;
 using Rubicon.NullableValueTypes;
 
 using Rubicon.Globalization;
+using Rubicon.Utilities;
 
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
@@ -12,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
 public class ClassWithAllDataTypes : BindableDomainObject
 {
   // types
-
+  [EnumDescriptionResource ("Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Globalization.ClassWithAllDataTypes")]
   public enum EnumType
   {
     Value0 = 0,
