@@ -5,11 +5,14 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI.Design;
+using System.Web.UI.HtmlControls;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
+using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -32,10 +35,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
-  private const int c_defaultDropDownListWidthInPoints = 120;
+  private const string c_defaultControlWidth = "150pt";
 
   private const string c_whiteSpace = "&nbsp;";
   private const string c_designModeWhiteSpace = " ";
+
+  private const string c_bocReferenceValueScriptUrl = "BocReferenceValue.js";
 
   // types
 
@@ -45,6 +50,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       typeof (IBusinessObjectReferenceProperty) };
 
   private static readonly object s_eventSelectionChanged = new object();
+  private static readonly object EventMenuItemClick = new object();
 
 	// member fields
 
@@ -62,8 +68,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon ;
-
-  private LiteralControl _iconSpacer; 
 
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private CompareValidator _notNullItemValidator;
@@ -103,12 +107,24 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   private string _select = String.Empty;
 
+  private DropDownMenu _optionsMenu;
+  private string _optionsTitle = "Options";
+  /// <summary> Determines whether the options menu is shown. </summary>
+  private bool _showOptionsMenu = true;
+  /// <summary> The width applied to the <c>menu block</c>. </summary>
+  private Unit _optionsMenuWidth = Unit.Empty;
+  private BocMenuItemCollection _optionsMenuItems;
+  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
+  private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
+  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
+  private BocMenuItem[] _optionsMenuItemsRenderPhase;
+
   // construction and disposing
 
   /// <summary> Simple constructor. </summary>
 	public BocReferenceValue()
 	{
-    //  empty
+    _optionsMenuItems = new BocMenuItemCollection (this);
   }
 
 	// methods and properties
@@ -121,15 +137,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _icon.Visible = EnableIcon;
     Controls.Add (_icon);
 
-    _iconSpacer = new LiteralControl();
-    _iconSpacer.EnableViewState = false;
-    _iconSpacer.Visible = EnableIcon;
-    if (IsDesignMode)
-      _iconSpacer.Text = c_designModeWhiteSpace;
-    else
-      _iconSpacer.Text = c_whiteSpace;
-    Controls.Add (_iconSpacer);
-
     _dropDownList = new DropDownList();
     _dropDownList.ID = ID + "_Boc_DropDownList";
     _dropDownList.EnableViewState = true;
@@ -139,6 +146,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
+    
+    _optionsMenu = new DropDownMenu (this);
+    _optionsMenu.ID = ID + "_Boc_OptionsMenu";
+    Controls.Add (_optionsMenu);
 
     _notNullItemValidator = new CompareValidator();
   }
@@ -153,6 +164,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
+    _optionsMenu.Click += new MenuItemClickEventHandler(OptionsMenu_Click);
   }
 
   /// <summary>
@@ -180,6 +192,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       if (newInternalValue != null && _newInternalValue != _internalValue)
         _isDirty = true;
     }
+
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -202,6 +217,33 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     //  First call
     EnsureChildControlsPreRendered();
+
+    string key = typeof (BocReferenceValue).FullName + "_Script";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+    }
+
+    key = typeof (BocReferenceValue).FullName+ "_Startup";
+    if (! Page.IsStartupScriptRegistered (key))
+    {
+      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
+      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+    }
+
+    string getSelectionCount;
+    if (IsReadOnly)
+    {
+      if (InternalValue != null)
+        getSelectionCount = "function() { return 1; }";
+      else 
+        getSelectionCount = "function() { return 0; }";
+    }
+    else
+      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
+    _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
   /// <summary>
@@ -422,93 +464,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
     _dropDownList.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
-
-    //  Prevent a collapsed control
-    _dropDownList.Width = Unit.Point (c_defaultDropDownListWidthInPoints);
-
-    Unit iconWidth = (_icon.Visible) ? _icon.Width : Unit.Empty;
-
-    Unit innerControlWidth = Unit.Empty;
-
-    if (! IsDesignMode)
+  
+    if (HasOptionsMenu)
     {
-      if (! Width.IsEmpty && Width.Type == _icon.Width.Type)
-      {
-        int innerControlWidthValue = (int) (Width.Value - _icon.Width.Value);
-        innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-        switch (Width.Type)
-        {
-          case UnitType.Percentage:
-          {
-          innerControlWidth = Unit.Percentage (innerControlWidthValue);
-          break;
-          }
-          case UnitType.Pixel:
-          {
-            innerControlWidth = Unit.Pixel (innerControlWidthValue);
-            break;
-          }
-          case UnitType.Point:
-          {
-            innerControlWidth = Unit.Point (innerControlWidthValue);
-            break;
-          }
-          default:
-          {
-            break;
-          }
-        }
-      }
-      else
-      {
-        innerControlWidth = Width;
-        Width = Unit.Empty;
-      }
-    }
-    else // is design mode
-    {
-      if (! Width.IsEmpty)
-      {
-        //  Handle icon width approximation
-        switch (Width.Type)
-        {
-          case UnitType.Percentage:
-          {
-            int designModeIconWidth = 20;
-            int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            innerControlWidth = Unit.Percentage (innerControlWidthValue);
-            _icon.Width = Unit.Percentage (designModeIconWidth);
-            break;
-          }
-          case UnitType.Pixel:
-          {
-            int designModeIconWidth = 24;
-            int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            innerControlWidth = Unit.Pixel (innerControlWidthValue);
-            _icon.Width = Unit.Pixel (designModeIconWidth);
-            break;
-          }
-          case UnitType.Point:
-          {
-            int designModeIconWidth = 15;
-            int innerControlWidthValue = (int) (Width.Value - designModeIconWidth);
-            innerControlWidthValue = (innerControlWidthValue > 0) ? innerControlWidthValue : 0;
-
-            innerControlWidth = Unit.Point (innerControlWidthValue);
-            _icon.Width = Unit.Point (designModeIconWidth);
-            break;
-          }
-          default:
-          {
-            break;
-          }
-        }
-      }
+      _optionsMenu.MenuItems.Clear();
+      _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
+      _optionsMenu.TitleText = _optionsTitle;
     }
 
     if (isReadOnly)
@@ -516,7 +477,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _label.Style["vertical-align"] = "middle";
       _icon.Style["vertical-align"] = "middle";
 
-      _label.Width = innerControlWidth;
+      _label.Width = Unit.Percentage (100);
       _label.Height = Height;
       _label.ApplyStyle (_commonStyle);
       _label.ApplyStyle (_labelStyle);
@@ -534,19 +495,71 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _icon.Style["vertical-align"] = "middle";
 
       _dropDownList.ApplyStyle (_commonStyle);
-      if (! innerControlWidth.IsEmpty)
-        _dropDownList.Width = innerControlWidth;
+      _dropDownList.Width = Unit.Percentage (100);
       _dropDownList.Height = Height;
       _dropDownListStyle.ApplyStyle (_dropDownList);
 
     }
 
-    if (_icon.Visible)
-      Style.Add ("white-space", "nowrap");
-
-      //  Common style not useful with icon
-      //  _icon.ApplyStyle (_commonStyle);
     _icon.ApplyStyle (_iconStyle);
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    if (Width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    else
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+    if (_icon.Visible)
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+      writer.AddStyleAttribute ("padding-right", "3pt");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      _icon.RenderControl (writer);
+      writer.RenderEndTag();
+    }   
+
+    if (IsReadOnly)
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      _label.RenderControl (writer);
+      writer.RenderEndTag();
+    }
+    else
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      _dropDownList.RenderControl (writer);
+      writer.RenderEndTag();
+
+    }
+
+    if (HasOptionsMenu)
+    {
+      writer.AddStyleAttribute ("padding-left", "3pt");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      _optionsMenu.Width = _optionsMenuWidth;
+      _optionsMenu.RenderControl (writer);
+      writer.RenderEndTag();
+    }
+
+    writer.RenderEndTag();
+    writer.RenderEndTag();
+  }
+
+
+  private bool HasOptionsMenu
+  {
+    get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
   }
 
   /// <summary> Refreshes the sub-controls for the new value. </summary>
@@ -621,40 +634,31 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
 
       IBusinessObjectWebUIService webUIService = service as IBusinessObjectWebUIService;
 
-      IconInfo iconIcon = null;
+      IconInfo iconInfo = null;
       if (webUIService != null)
       {
         if (Value != null)
-          iconIcon = webUIService.GetIcon (Value);
+          iconInfo = webUIService.GetIcon (Value);
         else
-          iconIcon = webUIService.GetNullValueIcon ();
+          iconInfo = webUIService.GetNullValueIcon ();
       }
 
-      if (iconIcon != null)
+      if (iconInfo != null)
       {
-        _icon.ImageUrl = iconIcon.Url;
-        _icon.Width = iconIcon.Width;
-        _icon.Height = iconIcon.Height;
+        _icon.ImageUrl = iconInfo.Url;
+        _icon.Width = iconInfo.Width;
+        _icon.Height = iconInfo.Height;
 
         _icon.Visible = EnableIcon;
-        _iconSpacer.Visible = EnableIcon;
       }
       else
       {
         _icon.Visible = false;
-        _iconSpacer.Visible = false;
-
-        //  For debugging
-        //  _icon.ImageUrl = "/images/Help.gif";
-        //  _icon.Width = Unit.Pixel(24);       
-        //  _icon.Height = Unit.Pixel(24);      
-        //  _icon.Visible = true;               
       }
     }
     else
     {
       _icon.Visible = false;
-      _iconSpacer.Visible = false;
     }
   }
 
@@ -687,6 +691,89 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     ListItem emptyItem = new ListItem (string.Empty, c_nullIdentifier);
     return emptyItem;
+  }
+
+    private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
+  {
+    if (_optionsMenuItemsPostBackEventHandlingPhase == null)
+    {
+      _optionsMenuItemsPostBackEventHandlingPhase = 
+          GetOptionsMenuItemsForPreviousLifeCycle (_optionsMenuItems.ToArray());
+    }
+    return _optionsMenuItemsPostBackEventHandlingPhase;
+  }
+
+  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  {
+    if (_optionsMenuItemsRenderPhase == null)
+      _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
+    return _optionsMenuItemsRenderPhase;
+  }
+
+  /// <summary>
+  ///   Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s options menu
+  ///   during the previous page life cycle.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
+  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
+  ///     or a data changed event.
+  ///   </para><para>
+  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
+  ///     method's body to return the passed <c>menuItems</c>.
+  ///   </para>
+  /// </remarks>
+  /// <param name="menuItems"> 
+  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
+  /// </param>
+  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  {
+    //  return menuItems;
+    return EnsureOptionsMenuItemsGot();
+  }
+
+  /// <summary>
+  ///   Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s options menu
+  ///   in the current page life cycle.
+  /// </summary>
+  /// <remarks>
+  ///   This call can happen more than once in the control's life cycle, passing different 
+  ///   arrays in <paramref name="menuItems" />. It is therefor important to not cache the return value
+  ///   in the override of <see cref="GetOptionsMenuItems"/>.
+  /// </remarks>
+  /// <param name="menuItems"> 
+  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
+  /// </param>
+  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  protected virtual BocMenuItem[] GetOptionsMenuItems (BocMenuItem[] menuItems)
+  {
+    return menuItems;
+  }
+
+  private void OptionsMenu_Click(object sender, MenuItemClickEventArgs e)
+  {
+    OnMenuItemClick ((BocMenuItem) e.Item);
+  }
+
+  protected virtual void OnMenuItemClick (BocMenuItem menuItem)
+  {
+    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[EventMenuItemClick];
+    if (menuItem != null && menuItem.Command != null)
+      ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
+    if (menuItemClickHandler != null)
+    {
+      MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
+      menuItemClickHandler (this, e);
+    }
+  }
+
+  [Category ("Action")]
+  public event MenuItemClickEventHandler MenuItemClick
+  {
+    add { Events.AddHandler (EventMenuItemClick, value); }
+    remove { Events.RemoveHandler (EventMenuItemClick, value); }
   }
 
   /// <summary>
@@ -949,6 +1036,50 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   {
     get { return _select; }
     set { _select = value; }
+  }
+
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <c>options menu</c>. </summary>
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Menu")]
+  [Description ("The menu items displayed by options menu.")]
+  [DefaultValue ((string) null)]
+  public BocMenuItemCollection OptionsMenuItems
+  {
+    get { return _optionsMenuItems; }
+  }
+
+  /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
+  [Category ("Menu")]
+  [Description ("The text that is rendered as a label for the options menu.")]
+  [DefaultValue ("Options")]
+  public string OptionsTitle
+  {
+    get { return _optionsTitle; }
+    set { _optionsTitle = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to display the options menu.
+  /// </summary>
+  /// <value> <see langword="true"/> to show the options menu. </value>
+  [Category ("Menu")]
+  [Description ("Enables the options menu.")]
+  [DefaultValue (true)]
+  public bool ShowOptionsMenu
+  {
+    get { return _showOptionsMenu; }
+    set { _showOptionsMenu = value; }
+  }
+
+  /// <summary> Gets or sets the width of the options menu. </summary>
+  [Category ("Menu")]
+  [Description ("The width of the options menu.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit OptionsMenuWidth
+  {
+    get { return _optionsMenuWidth; }
+    set { _optionsMenuWidth = value; }
   }
 
   /// <summary>
