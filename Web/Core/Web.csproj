@@ -183,6 +183,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\StandardControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\StandardPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
