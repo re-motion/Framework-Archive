@@ -7,10 +7,9 @@ namespace OBRTest
 {
 public class PersonCustomCell: IBocCustomColumnDefinitionCell
 {
-  public PersonCustomCell()
+  public PersonCustomCell (string argument)
   {
   }
-
 
   public void OnClick(
       BocList list, 

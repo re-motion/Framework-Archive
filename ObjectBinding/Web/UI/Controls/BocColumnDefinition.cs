@@ -105,6 +105,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
   }
 }
 
+/// <summary> A column defintion with the possibility of rendering a command in the cell. </summary>
 public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
 {
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
@@ -196,9 +197,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   {
   }
 
-  /// <summary>
-  ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
-  /// </summary>
+  /// <summary> Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>. </summary>
   /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
   public override string ToString()
   {
@@ -263,7 +262,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   }
 }
 
-/// <summary> A column definition for displaying data. </summary>
+/// <summary> A column definition for displaying data and an optional command. </summary>
 public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinition
 {
   /// <summary> Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class. </summary>
@@ -516,10 +515,9 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 }
 
-/// <summary> A column definition using <see cref="IBocCustomColumnDefinitionCell"/> for rendering. </summary>
+/// <summary> A column definition using <see cref="IBocCustomColumnDefinitionCell"/> for rendering the data. </summary>
 public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
 {
-  /// <summary> The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> internally. </summary>
   private PropertyPathBinding _propertyPathBinding;
   private IBocCustomColumnDefinitionCell _customCell;
   private string _customCellType;
@@ -538,6 +536,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     base.OnOwnerControlChanged();
   }
 
+  /// <summary> The <see cref="IBocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public IBocCustomColumnDefinitionCell CustomCell
@@ -547,19 +546,21 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
       if (_customCell == null)
       {
         Type type = TypeUtility.GetType (_customCellType, true, false);
-        object[] argument = null;
-        if (! StringUtility.IsNullOrEmpty (_customCellArgument))
-          argument = new object[] {argument};
-        _customCell = (IBocCustomColumnDefinitionCell) Activator.CreateInstance (type, argument);
+        object[] arguments = new object[] {_customCellArgument};
+        _customCell = (IBocCustomColumnDefinitionCell) Activator.CreateInstance (type, arguments);
       }
       return _customCell; 
     }
     set { _customCell = value; }
   }
 
+  /// <summary> Gets or sets the type of the <see cref="IBocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
+  /// <remarks>
+  ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
+  /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
-  [Description ("")]
+  [Description ("The IBocCustomColumnDefinitionCell to be used for rendering.")]
   //  No default value
   [NotifyParentProperty (true)]
   public string CustomCellType
@@ -568,9 +569,10 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     set { _customCellType = value; }
   }
 
+  /// <summary> Gets or sets the argument to be passed to the constructor of the <see cref="CustomCellType"/>. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
-  [Description ("")]
+  [Description ("The argument to be passed to the constructor of the CustomCellType.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string CustomCellArgument
@@ -580,9 +582,8 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> used by 
-  ///   to access the value of an <see cref="IBusinessObject"/>. 
-  ///   Must not be <see langword="null"/>.
+  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> used by to access the value of an 
+  ///   <see cref="IBusinessObject"/>. Must not be <see langword="null"/>.
   /// </summary>
   /// <value> A <see cref="BusinessObjectPropertyPath"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -643,8 +644,28 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   } 
 }
 
+/// <summary> 
+///   This interface allows for customized rendering of a column's contents and registering for post backs.
+/// </summary>
 public interface IBocCustomColumnDefinitionCell
 {
+  /// <summary>
+  ///   
+  /// </summary>
+  /// <param name="writer"></param>
+  /// <param name="list"></param>
+  /// <param name="businessObject"> The <see cref="IBusinessObject"/> to be rendered. </param>
+  /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
+  /// <param name="columnIndex"> 
+  ///   The index of the rendered column. Pass this value to the <paramref name="list"/>'s 
+  ///   <see cref="BocList.GetCustomCellPostBackClientHyperlink"/> or 
+  ///   <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
+  /// </param>
+  /// <param name="listIndex"> 
+  ///   The index of the <see cref="IBusinessObject"/> in the values collection of the <see cref="BocList"/>.
+  ///    Pass this value to the <paramref name="list"/>'s <see cref="BocList.GetCustomCellPostBackClientHyperlink"/> 
+  ///    or <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
+  /// </param>
   void Render (
       HtmlTextWriter writer, 
       BocList list,
