@@ -43,6 +43,11 @@ public class BusinessObjectTreeNode: BocTreeNode
     if (_property != null)
       _propertyIdentifier = property.Identifier;
     _businessObject = businessObject;
+
+    //if (_businessObject == null && ! Text.EndsWith ("(null)"))
+    //  Text += "(null)";
+    //else if (_businessObject != null && Text.EndsWith ("(null)"))
+    //  Text = Text.Remove (Text.Length - 6, 6);
   }
 
   public BusinessObjectTreeNode (
@@ -57,7 +62,15 @@ public class BusinessObjectTreeNode: BocTreeNode
   public IBusinessObjectWithIdentity BusinessObject
   {
     get { return _businessObject; }
-    set { _businessObject = value; }
+    set 
+    {
+      _businessObject = value; 
+
+      //if (_businessObject == null && ! Text.EndsWith ("(null)"))
+      //  Text += "(null)";
+      //else if (_businessObject != null && Text.EndsWith ("(null)"))
+      //  Text = Text.Remove (Text.Length - 6, 6);
+    }
   }
 
   public IBusinessObjectReferenceProperty Property
@@ -102,6 +115,11 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
     : base (nodeID, text, icon)
   {
     _property = property;
+
+    //if (_property == null && ! Text.EndsWith (" (null)"))
+    //  Text += " (null)";
+    //else if (_property != null && Text.EndsWith (" (null)"))
+    //  Text = Text.Remove (Text.Length - 6, 6);
   }
 
   public BusinessObjectPropertyTreeNode (
@@ -115,7 +133,15 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   public IBusinessObjectReferenceProperty Property
   {
     get { return _property; }
-    set { _property = value; }
+    set 
+    {
+      _property = value; 
+
+      //if (_property == null && ! Text.EndsWith (" (null)"))
+      //  Text += " (null)";
+      //else if (_property != null && Text.EndsWith (" (null)"))
+      //  Text = Text.Remove (Text.Length - 6, 6);
+    }
   }
 
   ///<summary> Gets the human readable name of this type. </summary>

@@ -21,6 +21,8 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
   protected OBRTest.PersonTreeView PersonTreeView;
+  protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
+  protected System.Web.UI.WebControls.Button Button1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
@@ -125,6 +127,11 @@ public class SingleTestTreeView : SingleBocTestBasePage
   private void PersonTreeView_Click(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventArgs e)
   {
     TreeViewLabel.Text = "Node = " + e.Node.Text;
+  }
+
+  private void RefreshPesonTreeViewButton_Click(object sender, System.EventArgs e)
+  {
+    PersonTreeView.InvalidateTreeNodes();
   }
 }
 
