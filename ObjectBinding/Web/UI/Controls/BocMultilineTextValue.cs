@@ -271,7 +271,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
-    if (! IsRequired)
+    if (IsReadOnly || ! IsRequired)
       return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
