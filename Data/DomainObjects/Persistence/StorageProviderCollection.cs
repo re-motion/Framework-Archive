@@ -37,13 +37,9 @@ public class StorageProviderCollection : CollectionBase, IDisposable
   public virtual void Dispose ()
   {
     for (int i = Count - 1; i>= 0; i--)
-    {
-      StorageProvider provider = this[i];
-      this.Remove (provider.ID);
-      provider.Dispose ();      
-      provider = null;
-    }
+      this[i].Dispose ();      
 
+    ClearCollection ();
     GC.SuppressFinalize (this);
   }
 
