@@ -70,15 +70,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="TextBox"/> used in edit mode for the date component. </summary>
-  private TextBox _dateTextBox = new TextBox();
+  private TextBox _dateTextBox;
   /// <summary> The <see cref="TextBox"/> used in edit mode for the time component. </summary>
-  private TextBox _timeTextBox = new TextBox();
+  private TextBox _timeTextBox;
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
-  private Label _label = new Label();
+  private Label _label;
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
-  private Image _datePickerImage = new Image();
+  private Image _datePickerImage;
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
+  private BocDateTimeValueValidator _dateTimeValueValidator;
 
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
@@ -138,6 +138,31 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
 	// methods and properties
 
+  protected override void CreateChildControls()
+  {
+    _dateTextBox = new TextBox();
+    _dateTextBox.ID = ID + "_Boc_DateTextBox";
+    _dateTextBox.EnableViewState = false;
+    Controls.Add (_dateTextBox);
+
+    _datePickerImage = new Image();
+    _datePickerImage.ID = ID + "_Boc_DatePickerImage";
+    _datePickerImage.EnableViewState = false;
+    Controls.Add (_datePickerImage);
+
+    _timeTextBox = new TextBox();
+    _timeTextBox.ID = ID + "_Boc_TimeTextBox";
+    _timeTextBox.EnableViewState = false;
+    Controls.Add (_timeTextBox);
+
+    _label = new Label();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
+
+    _dateTimeValueValidator = new BocDateTimeValueValidator();
+  }
+
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
   /// </summary>
@@ -145,23 +170,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    _dateTextBox.ID = this.ID + "_Boc_DateTextBox";
-    _dateTextBox.EnableViewState = false;
-
-    _datePickerImage.ID = this.ID + "_Boc_DatePickerImage";
-    _datePickerImage.EnableViewState = false;
-
-    _timeTextBox.ID = this.ID + "_Boc_TimeTextBox";
-    _timeTextBox.EnableViewState = false;
-
-    _label.ID = this.ID + "_Boc_Label";
-    _label.EnableViewState = false;
-
-    Controls.Add (_dateTextBox);
-    Controls.Add (_datePickerImage);
-    Controls.Add (_timeTextBox);
-    Controls.Add (_label);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dateTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
@@ -175,8 +183,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-
-    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -232,7 +238,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.OnPreRender (e);
 
     //  First call
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
   }
 
   /// <summary>
@@ -246,7 +252,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     //  Second call has practically no overhead
     //  Required to get optimum designer support.
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
 
     base.Render (writer);
   }
@@ -321,6 +327,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _provideMaxLength = (bool) values[6];
     _savedDateTimeValue = (NaDateTime) values[7];
     _isDirty = (bool) values[8];
+
+    _dateTextBox.Text = _internalDateValue;
+    _timeTextBox.Text = _internalTimeValue;
   }
 
   /// <summary>
@@ -401,7 +410,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   {
     BaseValidator[] validators = new BaseValidator[1];
 
-    _dateTimeValueValidator.ID = this.ID + "_ValidatorDateTime";
+    _dateTimeValueValidator.ID = ID + "_ValidatorDateTime";
     _dateTimeValueValidator.ControlToValidate = ID;
 
     if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.RequiredErrorMessage))
@@ -424,7 +433,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   }
 
   /// <summary> Initializes the child controls. </summary>
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
 
