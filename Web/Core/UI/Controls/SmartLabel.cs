@@ -1,6 +1,7 @@
 using System;
-using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using Rubicon.Web.UI.Design;
 
@@ -43,11 +44,22 @@ public class SmartLabel: WebControl
 
     Control target = NamingContainer.FindControl (ForControl);
     ISmartControl smartControl = target as ISmartControl;
+    bool useLabel;
     if (smartControl != null)
+    {
       target = smartControl.TargetControl;
+      useLabel = smartControl.UseLabel;
+    }
+    else
+    {
+      useLabel = ! (target is DropDownList || target is HtmlSelect);
+    }
 
-    if (target != null)
+    if (useLabel && target != null)
       writer.AddAttribute (HtmlTextWriterAttribute.For, target.ClientID);
+
+    // TODO: add <a href="ToName(target.ClientID)"> ...
+    // ToName: '.' -> '_'
   }
 }
 
