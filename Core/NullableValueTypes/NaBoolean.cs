@@ -346,6 +346,20 @@ public struct NaBoolean: INaNullable, IComparable, ISerializable, IFormattable
   }
 
   /// <summary>
+  /// Gets the value of this <see cref="NaBoolean"/> structure. This property is read-only.
+  /// </summary>
+  /// <value>
+  /// An Object representing the value of this NaBoolean structure.
+  /// </value>
+  /// <exception cref="NaNullValueException">
+  /// The property contains <see cref="Null"/>.
+  /// </exception>
+  object INaNullable.Value
+  {
+    get { return Value; }
+  }
+
+  /// <summary>
   /// Gets the value of the structure for debugger watch windows.
   /// </summary>
   /// <remarks>Modify Visual Studio's mcee_cs.dat file to set this as the default property for watch windows.</remarks>
