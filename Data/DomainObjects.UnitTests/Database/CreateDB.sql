@@ -1,6 +1,6 @@
 USE master
 
-IF EXISTS (SELECT * FROM sys.sysdatabases WHERE name = 'TestDomain')
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'TestDomain')
   DROP DATABASE TestDomain
 GO  
   
