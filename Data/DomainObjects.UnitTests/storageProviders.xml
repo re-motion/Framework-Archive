@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <storageProviders 
 		application="UnitTests" 
-		xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence" 
+		xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0" 
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence ..\storageProviders.xsd">
+		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\storageProviders.xsd">
 		
 	<storageProvider id="TestDomain">
 		<type>Rubicon.Data.DomainObjects.Persistence.SqlProvider, Rubicon.Data.DomainObjects</type>

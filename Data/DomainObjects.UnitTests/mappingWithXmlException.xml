@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping 
     application="UnitTests" 
-    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping ..\mapping.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
   <classes>
     <!-- This file generates an MappingException when read, due to the lacking " after Company. -->
 		<class id="Company>
