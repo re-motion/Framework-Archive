@@ -15,6 +15,7 @@
       </sources>
       <references failonempty="true">
         <includes name="${project.builddir}/Rubicon.Core.dll" />
+        <includes name="${project.builddir}/Rubicon.Web.dll" />
         <includes name="${project.builddir}/Rubicon.ObjectBinding.dll" />
         <includes name="${project.builddir}/Rubicon.ObjectBinding.Web.dll" />
         <includes asis="true" name="System.dll"/>
