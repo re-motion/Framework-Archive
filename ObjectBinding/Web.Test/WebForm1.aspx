@@ -1,6 +1,6 @@
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebForm1" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -21,7 +21,7 @@
         runat="server" ForControl="FirstNameField"></rwc:SmartLabel>
       <obc:boctextvalue id=LastNameField style="Z-INDEX: 103; LEFT: 224px; POSITION: absolute; TOP: 48px" runat="server" PropertyIdentifier="LastName" DataSource="<%# CurrentObjectDataSource %>">
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel2" style="Z-INDEX: 104; LEFT: 16px; POSITION: absolute; TOP: 48px"
-        runat="server" ForControl="LastNameField"></rwc:SmartLabel><obc:boctextvalue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 224px; POSITION: absolute; TOP: 80px" runat="server" PropertyIdentifier="DateOfBirth" DataSource="<%# CurrentObjectDataSource %>" ValueType="Date">
+        runat="server" ForControl="LastNameField"></rwc:SmartLabel><obc:boctextvalue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 224px; POSITION: absolute; TOP: 80px" runat="server" PropertyIdentifier="DateOfBirth" DataSource="<%# CurrentObjectDataSource %>" ValueType="Date" >
       </obc:boctextvalue><rwc:SmartLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 16px; POSITION: absolute; TOP: 80px"
         runat="server" ForControl="DateOfBirthField"></rwc:SmartLabel><obc:boctextvaluevalidator id="BocTextValueValidator1" style="Z-INDEX: 108; LEFT: 480px; POSITION: absolute; TOP: 80px"
         runat="server" ControlToValidate="DateOfBirthField" EnableClientScript="False"></obc:boctextvaluevalidator><obc:boctextvalue id=HeightField style="Z-INDEX: 109; LEFT: 224px; POSITION: absolute; TOP: 112px" runat="server" PropertyIdentifier="Height" DataSource="<%# CurrentObjectDataSource %>">
