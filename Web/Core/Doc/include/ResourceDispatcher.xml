@@ -68,11 +68,10 @@
         The control to be dispatched.
     </param>
     <param name="elements">
-      The <see cref="IDictionary"/> to be dispatched. Must not be <see langname="null"/>.
+      The <see cref="IDictionary"/> to be dispatched. Must not be <see langname="null"/>. Type is IDictionary&lt;string, IDictionary&lt;string, string&gt;&gt;.
     </param>  
-    <param name="resourceManager">
-      The resource manager from which the elements IDictonary has been filled.
-      Used only for background information on the resources contained in elements.
+    <param name="resourceSource">
+      The name of the resource manager (used for logging).
     </param>  
   </DispatchMain>
   <DispatchGeneric>
@@ -80,9 +79,8 @@
       The control to be dispatched. Must not be <see langname="null"/>.
     </param>
     <param name="values">
-      A dictonary consisting of name/value pairs
-      corresponding to property's name and value resprectively.
-      Must not be <see langname="null"/>.
+      A dictonary consisting of name/value pairs corresponding to property's name and value resprectively. Must not be <see langname="null"/>.
+      Type is IDictionary&lt;string, string&gt;.
     </param>
    </DispatchGeneric>
 </ResourceDispatcher>
