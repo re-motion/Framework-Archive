@@ -34,18 +34,20 @@ public sealed class ResourceUrlResolver
       ResourceType resourceType, 
       string relativeUrl)
   {
-    if (! s_resolverInitialized)
+    if (context != null)
     {
-      lock (typeof (ResourceUrlResolver))
+      if (! s_resolverInitialized)
       {
-        if (! s_resolverInitialized)
+        lock (typeof (ResourceUrlResolver))
         {
-          s_resolver = context.ApplicationInstance as IResourceUrlResolver;
-          s_resolverInitialized = true;
+          if (! s_resolverInitialized)
+          {
+            s_resolver = context.ApplicationInstance as IResourceUrlResolver;
+            s_resolverInitialized = true;
+          }
         }
       }
     }
-
     if (s_resolver != null)
     {
       return s_resolver.GetResourceUrl (definingType, resourceType, relativeUrl);
@@ -53,8 +55,28 @@ public sealed class ResourceUrlResolver
     else
     {
       string assemblyName = definingType.Assembly.FullName.Split(',')[0];
-      return HttpRuntime.AppDomainAppVirtualPath + "/res/" + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
+      string root;
+      if (context == null && Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
+         root = GetTheDesignTimeRoot (control.Site);
+      else 
+        root = HttpRuntime.AppDomainAppVirtualPath;
+      return root + "/res/" + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
     }
+  }
+  private static string GetTheDesignTimeRoot (System.ComponentModel.ISite site)
+  {
+    EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
+    if(environment != null)
+    {
+      EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;          
+      //  project.Properties uses a 1-based index
+      for (int i = 1; i <= project.Properties.Count; i++)
+      {
+        if(project.Properties.Item (i).Name == "ActiveFileSharePath")
+          return project.Properties.Item (i).Value.ToString();
+      }
+    }
+    return string.Empty;
   }
 }
 

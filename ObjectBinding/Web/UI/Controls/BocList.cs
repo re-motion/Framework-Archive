@@ -71,12 +71,18 @@ public class BocList:
   /// <summary> The key identifying a fixed column resource entry. </summary>
   private const string c_resourceKeyFixedColumns = "FixedColumns";
 
+  private const string c_defaultListBlockWidth = "80%";
+  private const string c_defaultMenuBlockWidth = "20%";
+  private const string c_defaultMenuBlockOffset = "10pt";
+
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyContents = "#";
   private const string c_designModeDummyColumnTitle = "Column Title {0}";
   private const int c_designModeDummyColumnCount = 3;
+
+  private const int c_designModeAdditionalColumnsListWidthInPoints = 70;
 
   // types
   
@@ -206,8 +212,25 @@ public class BocList:
   /// </summary>
   private bool _isDirty = true;
 
+  /// <summary> The width applied to the <c>list block</c>. </summary>
+  private Unit _listBlockWidth = Unit.Empty;
+  /// <summary> The width applied to the <c>menu block</c>. </summary>
+  private Unit _menuBlockWidth = Unit.Empty;
+  /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
+  private Unit _menuBlockOffset = Unit.Empty;
+
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
+
+  /// <summary> 
+  ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
+  /// </summary>
+  private string _additionalColumnsTitle = "Additional Columns";
+
+  /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
+  private Unit _additionalColumnsListWidth = Unit.Empty;
+
+  private string _optionsTitle = "Options";
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton = null;
@@ -245,11 +268,6 @@ public class BocList:
   ///   <see cref="AvailableColumnDefinitionSets"/>.
   /// </summary>
   private int _selectedColumnDefinitionSetIndex = -1;
-
-  /// <summary>
-  ///   The <see cref="DropDownListStyle"/> applied to the <see cref="_additionalColumnsList"/>. 
-  /// </summary>
-  private DropDownListStyle _additionalColumnsListStyle = new DropDownListStyle();
  
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
@@ -330,7 +348,7 @@ public class BocList:
 
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
     _additionalColumnsList.EnableViewState = true;
-    _additionalColumnsListStyle.AutoPostback = true;
+    _additionalColumnsList.AutoPostBack = true;
     _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
 
@@ -543,10 +561,11 @@ public class BocList:
     }
   }
 
-  /// <summary>  
+  /// <summary> Overrides the parent's <c>OnPreRender</c> method. </summary>
+  /// <remarks>  
   ///   Calculates the page count depending on an optional move command, 
   ///   and registeres the client scripts.
-  /// </summary>
+  /// </remarks>
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnPreRender(EventArgs e)
   {
@@ -598,7 +617,17 @@ public class BocList:
 
     if (_hasClientScript)
     {
-      string key = typeof (BocList).FullName+ "_Startup";
+      //  Include script file
+      string key = typeof (BocList).FullName;
+      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+            this, Context, typeof (BocList), ResourceType.Html, c_bocListScriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+      }
+
+      //  Startup script initalizing the global values of the script.
+      key = typeof (BocList).FullName+ "_Startup";
       if (! Page.IsStartupScriptRegistered (key))
       {
         string script = string.Format (
@@ -608,14 +637,6 @@ public class BocList:
             CssClassDataCellOddSelected,
             CssClassDataCellEvenSelected);
         PageUtility.RegisterStartupScriptBlock (Page, key, script);
-      }
-
-      key = typeof (BocList).FullName;
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, this.GetType(), ResourceType.Html, c_bocListScriptUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
     }
   }
@@ -644,10 +665,200 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Id, ID);
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.AddStyleAttribute ("position", "relative");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
-    //  The title block
-    RenderTitle (writer);
+    //  Render list block / menu block
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);
+
+    //  Two columns
+    writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
+
+    //  Left: list block
+    string listBlockWidth = c_defaultListBlockWidth;
+    if (! _listBlockWidth.IsEmpty)
+      listBlockWidth =  _listBlockWidth.ToString();
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, listBlockWidth);
+    writer.RenderBeginTag (HtmlTextWriterTag.Col);
+    writer.RenderEndTag();
+
+    //  Right: menu block
+    string menuBlockWidth = c_defaultMenuBlockWidth;
+    if (! _menuBlockWidth.IsEmpty)
+      menuBlockWidth = _menuBlockWidth.ToString();
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);
+    string menuBlockOffset = c_defaultMenuBlockOffset;
+    if (! _menuBlockOffset.IsEmpty)
+      menuBlockOffset = _menuBlockWidth.ToString();
+    writer.AddStyleAttribute ("padding-left", menuBlockOffset);
+    writer.RenderBeginTag (HtmlTextWriterTag.Col);
+    writer.RenderEndTag();
+
+    writer.RenderEndTag();  //  End ColGroup
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+    
+    //  List Block
+    writer.AddStyleAttribute ("vertical-align", "top");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
+    RenderListBlock (writer);
+    writer.RenderEndTag();
+
+    //  Menu Block
+    writer.AddStyleAttribute ("vertical-align", "top");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
+    RenderMenuBlock (writer);
+    writer.RenderEndTag();
+
+    writer.RenderEndTag();  //  TR
+
+    writer.RenderEndTag();  //  Table
+
+    //  The navigation block
+    if (_alwaysShowPageInfo || _pageCount > 1)
+      RenderNavigator (writer);
+
+    //  Close the control
+    writer.RenderEndTag();
+  }
+
+  /// <summary> Renders the menu block of the control. </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     The menu block is rendered to the right of the list, 
+  ///     using a <c>div</c>-tag with an <c>absolute position</c>.
+  ///   </para><para> 
+  ///     Contains the drop down list for selcting a column configuration 
+  ///     and the options menu. 
+  ///   </para>
+  /// </remarks>
+  /// <param name="writer"> 
+  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
+  /// </param>
+  private void RenderMenuBlock (HtmlTextWriter writer)
+  {
+    if (_showAdditionalColumnsList)
+    {
+      writer.AddStyleAttribute ("position", "relative");
+      writer.AddStyleAttribute ("z-index", "10");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      writer.Write (_additionalColumnsTitle + c_whiteSpace);
+      if (IsDesignMode && _additionalColumnsListWidth.IsEmpty)
+        _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
+      _additionalColumnsList.RenderControl (writer);
+      writer.RenderEndTag();
+    }
+
+    RenderDropDownMenu (writer, Unit.Percentage(100), 100);
+
+    #region Temporay filling material
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 1");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 2");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 3");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 4");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 5");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 6");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 7");
+    writer.RenderEndTag();
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", "10");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "#ffffcc");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "50%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("Other stuff 8");
+    writer.RenderEndTag();
+    #endregion
+  }
+
+  private void RenderDropDownMenu (HtmlTextWriter writer, Unit width, int zIndex)
+  {
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute ("z-index", zIndex.ToString());
+    if (width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    else
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, width.ToString());
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Options-Div
+
+    //  Options Drop Down Titel
+    writer.AddStyleAttribute ("position", "relative");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "lightcyan");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write (_optionsTitle);
+    writer.RenderEndTag();
+    
+    //  Options Drop Down Icon 
+    writer.AddStyleAttribute ("position", "absolute");
+    writer.AddStyleAttribute ("right", "0px");
+    writer.AddStyleAttribute ("top", "0px");
+    writer.AddStyleAttribute ("height", "100%");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "cyan");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.Write ("V");
+    writer.RenderEndTag();
+
+    //  Options Drop Down Menu
+    writer.AddStyleAttribute ("position", "absolute");
+    writer.AddStyleAttribute ("right", "0px");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, "lime");
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.WriteLine ("<div>Item 1</div>"); // width: 100% spans menu across the whole options-div
+    writer.WriteLine ("<div>Item 2</div>");
+    writer.WriteLine ("<div>Item 3</div>");
+    writer.WriteLine ("<div>Item 4</div>");
+    writer.RenderEndTag();
+
+    writer.RenderEndTag(); // End Options-Div
+  }
+
+  /// <summary> Renders the list of values as an <c>table</c>. </summary>
+  /// <param name="writer"> 
+  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
+  /// </param>
+  private void RenderListBlock (HtmlTextWriter writer)
+  {
     //  The table non-data sections
     RenderTableOpeningTag (writer);
     RenderColGroup (writer);
@@ -687,13 +898,10 @@ public class BocList:
 
     //  Close the table
     RenderTableClosingTag (writer);
-    //  The navigation block
-    if (_alwaysShowPageInfo || _pageCount > 1)
-      RenderNavigator (writer);
 
-    //  Render the init script for the client side selection handling
-    if (_hasClientScript && _enableSelection)
+        if (_hasClientScript && _enableSelection)
     {
+      //  Render the init script for the client side selection handling
       int count = 0;
       if (! _pageSize.IsNull)
         count = _pageSize.Value;
@@ -701,7 +909,7 @@ public class BocList:
         count = Value.Count;
 
       string script = "<script type=\"text/javascript\">\r\n<!--\r\n"
-          + "BocList_InitializeBocList ("
+          + "BocList_InitializeList ("
           + "document.all['" + ID + "'], '"
           + ID + c_dataRowIDSuffix + "', '"
           + ID + c_dataRowCheckBoxIDSuffix + "', "
@@ -709,23 +917,6 @@ public class BocList:
           + count.ToString() + ");"
           + "\r\n//-->\r\n</script>";
       writer.Write (script);
-    }
-
-    //  Close the control
-    writer.RenderEndTag();
-  }
-
-  /// <summary> Renders the title block of the control. </summary>
-  /// <remarks> Contains the <see cref="_additionalColumnsList"/>. </remarks>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
-  private void RenderTitle (HtmlTextWriter writer)
-  {
-    if (_showAdditionalColumnsList)
-    {
-      _additionalColumnsListStyle.ApplyStyle (_additionalColumnsList);
-      _additionalColumnsList.RenderControl (writer);
     }
   }
 
@@ -743,6 +934,7 @@ public class BocList:
     if (! Width.IsEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNavigator);
+    writer.AddStyleAttribute ("position", "relative");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
     //  Page info
@@ -1822,19 +2014,6 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets or sets a value that indicates whether the control displays a drop down list 
-  ///   containing the available column definition sets.
-  /// </summary>
-  [Category ("Appearance")]
-  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
-  [DefaultValue (true)]
-  public bool ShowAdditionalColumnsList
-  {
-    get { return _showAdditionalColumnsList; }
-    set { _showAdditionalColumnsList = value; }
-  }
-
-  /// <summary>
   ///   Gets or sets the selected <see cref="BocColumnDefinitionSet"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
@@ -2105,16 +2284,96 @@ public class BocList:
     }
   }
 
+  /// <summary> Gets or sets the width of the list of values. </summary>
+  /// <remarks> 
+  ///   For optimum result, the <see cref="ListBlockWidth"/> should be comaptible with
+  ///   both the <see cref="MenuBlockWidth"/> and the <see cref="Width"/> of the control.
+  /// </remarks>
+  [Category ("Appearance")]
+  [Description ("The width of the list of values.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit ListBlockWidth
+  {
+    get { return _listBlockWidth; }
+    set { _listBlockWidth = value; }
+  }
+
+  /// <summary> Gets or sets the width reserved for the menu block. </summary>
+  /// <remarks> 
+  ///   For optimum result, the <see cref="MenuBlockWidth"/> should be comaptible with
+  ///   both the <see cref="ListBlockWidth"/> and the <see cref="Width"/> of the control.
+  /// </remarks>
+  [Category ("Appearance")]
+  [Description ("The width reserved for the menu section.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit MenuBlockWidth
+  {
+    get { return _menuBlockWidth; }
+    set { _menuBlockWidth = value; }
+  }
+
+  /// <summary> Gets or sets the offset between the <c>list block</c> and the <c>menu block</c>. </summary>
+  /// <remarks> 
+  ///   The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute.
+  /// </remarks>
+  [Category ("Appearance")]
+  [Description ("The offset between the list of values and the menu section.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit MenuBlockOffset
+  {
+    get { return _menuBlockOffset; }
+    set { _menuBlockOffset = value; }
+  }
+
+
   /// <summary>
-  ///   Gets or sets the style that you want to apply to the drop down list used to display the 
+  ///   Gets or sets a value that indicates whether the control displays a drop down list 
+  ///   containing the available column definition sets.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
+  [DefaultValue (true)]
+  public bool ShowAdditionalColumnsList
+  {
+    get { return _showAdditionalColumnsList; }
+    set { _showAdditionalColumnsList = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the text that is rendered as a title for the drop list of additional columns.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("The text that is rendered as a title for the list of additional columns.")]
+  [DefaultValue ("Additional Columns")]
+  public string AdditionalColumnsTitle
+  {
+    get { return _additionalColumnsTitle; }
+    set { _additionalColumnsTitle = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the width that you want to apply to the drop down list used to display the 
   ///   user selectable columns.
   /// </summary>
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the drop down list used to display the user selectable columns.")]
-  public DropDownListStyle AdditionalColumnsListStyle
+  [Category ("Appearance")]
+  [Description ("The width that you want to apply to the drop down list used to display the user selectable columns.")]
+  [DefaultValue (typeof (Unit), "")]
+  public Unit AdditionalColumnsListWidth
   {
-    get { return _additionalColumnsListStyle; }
-    set { _additionalColumnsListStyle = value; }
+    get { return _additionalColumnsListWidth; }
+    set { _additionalColumnsListWidth = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the text that is rendered as a label for the <c>Options</c> menu.
+  /// </summary>
+  [Category ("Appearance")]
+  [Description ("The text that is rendered as a label for the Options menu.")]
+  [DefaultValue ("Options")]
+  public string OptionsTitle
+  {
+    get { return _optionsTitle; }
+    set { _optionsTitle = value; }
   }
 
   #region protected virtual string CssClass...
@@ -2157,6 +2416,11 @@ public class BocList:
   /// <remarks> Class: <c>bocListNavigator</c> </remarks>
   protected virtual string CssClassNavigator
   { get { return "bocListNavigator"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additionalc columns. </summary>
+  /// <remarks> Class: <c>bocListAdditionalColumnsList</c> </remarks>
+  protected virtual string CssClassAdditionalColumnsList
+  { get { return "bocListAdditionalColumnsList"; } }
   #endregion
 
   /// <summary>

@@ -27,13 +27,10 @@ public class WebFormBase:
 {
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
-  protected HtmlGenericControl HtmlHead;
 
   protected override void OnInit(EventArgs e)
   {
-    if (HtmlHead == null)
-      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHead'.");
-
+    base.OnInit (e);
     try
     {
       Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
@@ -48,14 +45,8 @@ public class WebFormBase:
     {}
 
     string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
-    base.OnInit (e);
-  }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
-  {
-    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
-    base.RenderChildren (writer);
+    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
   }
 
   protected override void OnPreRender(EventArgs e)

@@ -341,7 +341,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, this.GetType(), ResourceType.Html, c_bocBooleanValueScriptUrl);
+            this, Context, typeof (BocBooleanValue), ResourceType.Html, c_bocBooleanValueScriptUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 

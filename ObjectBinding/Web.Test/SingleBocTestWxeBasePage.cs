@@ -28,13 +28,9 @@ public class WxeWebFormBase:
   private static Hashtable s_chachedResourceManagers = new Hashtable();
   
   private Button _nextButton = new Button();
-  protected HtmlGenericControl HtmlHead;
 
   protected override void OnInit(EventArgs e)
   {
-    if (HtmlHead == null)
-      throw new HttpException (Page.GetType().FullName + " does not initialize field 'HtmlHead'.");
-
     if (! ControlHelper.IsDesignMode (this, Context))
     {
       try
@@ -59,12 +55,6 @@ public class WxeWebFormBase:
     string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
     HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
     base.OnInit (e);
-  }
-
-  protected override void RenderChildren(HtmlTextWriter writer)
-  {
-    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
-    base.RenderChildren (writer);
   }
 
   protected override void OnPreRender(EventArgs e)

@@ -42,15 +42,15 @@ function BocList_InitializeGlobals (
   _bocList_TdEvenClassNameSelected = tdEvenClassNameSelected;
 }
 
-//  Initalizes an individual BocList. The initialization synchronizes the selection state arrays 
-//  with the BocList's selected rows.
+//  Initalizes an individual BocList's List. The initialization synchronizes the selection state 
+//  arrays with the BocList's selected rows.
 //  Call this method once for each BocList on the page.
 //  bocList: The BocList to which the row belongs.
 //  rowPrefix: The common part of the rows' ID (everything before the index).
 //  checkBoxPrefix: The common part of the checkBoxes' ID (everything before the index).
 //  firstRow: The index of the first data row in the BocList.
 //  count: The number of data rows in the BocList.
-function BocList_InitializeBocList (bocList, rowPrefix, checkBoxPrefix, firstRow, count)
+function BocList_InitializeList (bocList, rowPrefix, checkBoxPrefix, firstRow, count)
 {
   var selectedRows = new Array();
   var selectedRowsLength = 0

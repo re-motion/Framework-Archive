@@ -43,9 +43,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> String inserted before the date pciker button during design mode. </summary>
   private const string c_designModeDatePickerImageSpacer = " ";
 
-  const int c_defaultDateTextBoxWidthInPoints = 70;
-  const int c_defaultTimeTextBoxWidthInPoints = 40;
-  const int c_defaultDatePickerLengthInPoints = 150;
+  private const int c_defaultDateTextBoxWidthInPoints = 70;
+  private const int c_defaultTimeTextBoxWidthInPoints = 40;
+  private const int c_defaultDatePickerLengthInPoints = 150;
 
   private const string c_requiredErrorMessage = "Please enter a value.";
   private const string c_incompleteErrorMessage = "Please enter a date.";
@@ -675,16 +675,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
       //  and remove RenderContents.
-      if (_hasClientScript)
+      if (   _enableClientScript && IsDesignMode 
+          || _hasClientScript)
       {
         string imageUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
-
         if (imageUrl == null)
           _datePickerImage.ImageUrl = DatePickerImageUrl;  
         else
           _datePickerImage.ImageUrl = imageUrl;
-
+      }
+      else if (_hasClientScript)
+      {
         string pickerActionButton = "this";
         string pickerActionContainer = "document.all['" + ClientID + "']";
         string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";

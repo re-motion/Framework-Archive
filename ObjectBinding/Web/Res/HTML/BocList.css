@@ -98,3 +98,8 @@ span.bocListSortingOrder
 div.bocListNavigator
 {
 }
+
+/*  Style applied to the BocList's list of additionalc columns. */
+input.bocListAdditionalColumnsList
+{
+}
