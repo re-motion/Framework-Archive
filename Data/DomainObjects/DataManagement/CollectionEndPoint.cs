@@ -18,7 +18,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
 
-  private CollectionEndPointChangeWorker _changeWorker;
+  private CollectionEndPointChangeAgent _changeAgent;
 
   // construction and disposing
 
@@ -135,10 +135,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new ArgumentException ("One endPoint must be a NullEndPoint.", "oldEndPoint, newEndPoint");
 
     if (!oldEndPoint.IsNull && newEndPoint.IsNull)
-       _changeWorker = CollectionEndPointChangeWorker.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
+       _changeAgent = CollectionEndPointChangeAgent.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
     if (!newEndPoint.IsNull && oldEndPoint.IsNull)
-      _changeWorker = CollectionEndPointChangeWorker.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
+      _changeAgent = CollectionEndPointChangeAgent.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
     BeginRelationChange ();
   }
@@ -151,7 +151,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    _changeWorker = CollectionEndPointChangeWorker.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index);
+    _changeAgent = CollectionEndPointChangeAgent.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index);
 
     BeginRelationChange ();
   }
@@ -161,7 +161,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    _changeWorker = CollectionEndPointChangeWorker.CreateForReplace (
+    _changeAgent = CollectionEndPointChangeAgent.CreateForReplace (
         _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ()));
 
     BeginRelationChange ();
@@ -169,10 +169,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override void PerformRelationChange ()
   {
-    if (_changeWorker == null)
+    if (_changeAgent == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
-    _changeWorker.PerformRelationChange ();
+    _changeAgent.PerformRelationChange ();
   }
 
   public override void PerformDelete ()
@@ -182,11 +182,11 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override void EndRelationChange ()
   {
-    if (_changeWorker == null)
+    if (_changeAgent == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
 
-    _changeWorker.EndRelationChange ();
-    _changeWorker = null;
+    _changeAgent.EndRelationChange ();
+    _changeAgent = null;
 
     base.EndRelationChange ();
   }
@@ -208,8 +208,8 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private void BeginRelationChange ()
   {
-    _changeWorker.BeginRelationChange ();
-    base.BeginRelationChange (_changeWorker.OldEndPoint, _changeWorker.NewEndPoint);
+    _changeAgent.BeginRelationChange ();
+    base.BeginRelationChange (_changeAgent.OldEndPoint, _changeAgent.NewEndPoint);
   }
 
   #region ICollectionChangeDelegate Members

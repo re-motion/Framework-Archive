@@ -133,6 +133,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Initializes a new <b>DomainObjectCollection</b>.
   /// </summary>
+  /// <remarks>A derived class must support this constructor.</remarks>
   public DomainObjectCollection () : this (null)
   {
   }
@@ -201,6 +202,24 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   // methods and properties
+
+  /// <summary>
+  /// Adds all items of the given <see cref="DomainObjectCollection"/> to the <b>DomainObjectCollection</b>, that are not already part of it.
+  /// </summary>
+  /// <remarks>The method does not modify the given <see cref="DomainObjectCollection"/>.</remarks>
+  /// <param name="domainObjects">The <see cref="DomainObjectCollection"/> to add items from.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  public void Combine (DomainObjectCollection domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+    if (IsReadOnly) throw new NotSupportedException ("A read-only collection cannot be combined with another collection.");
+
+    foreach (DomainObject domainObject in domainObjects)
+    {
+      if (!Contains (domainObject))
+        Add (domainObject);
+    }
+  }
 
   /// <summary>
   /// Returns all items of a given <see cref="DomainObjectCollection"/> that are not part of the <b>DomainObjectCollection</b>.
@@ -597,18 +616,27 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   }
 
   /// <summary>
-  /// Creates a shallow copy of this collection. Must be overridden in derived classes.
+  /// Creates a shallow copy of this collection. Can be overridden in derived classes.
   /// </summary>
   /// <param name="makeCloneReadOnly">Specifies whether the cloned collection should be read-only.</param>
   /// <returns>The cloned collection.</returns>
   /// <remarks>
   /// A shallow copy creates a new <see cref="DomainObjectCollection"/> instance
   /// which can be independently modified without affecting the original collection.
-  /// Thus meaning the references to the domain objects are copied, not the domain objects themselves. 
+  /// Thus meaning the references to the domain objects are copied, not the domain objects themselves.<br/><br/>
+  /// The <see cref="System.Type"/> of the cloned collection is equal to the <see cref="System.Type"/> of the <b>DomainObjectCollection</b>.
   /// </remarks>
   public virtual DomainObjectCollection Clone (bool makeCloneReadOnly)
   {
-    return new DomainObjectCollection (this, makeCloneReadOnly);
+    DomainObjectCollection clone = Create (this.GetType ());
+    
+    foreach (DomainObject domainObject in this)
+      clone.Add (domainObject);
+
+    clone._requiredItemType = this.RequiredItemType;
+    clone.SetIsReadOnly (makeCloneReadOnly);
+    
+    return clone;
   }
 
   #endregion
@@ -623,10 +651,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   internal protected void PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    if (IsReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
     CheckItemType (domainObject, "domainObject");
 
     base.Add (domainObject.ID, domainObject);
@@ -650,6 +680,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformInsert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    if (IsReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckItemType (domainObject, "domainObject");
 
     base.Insert (index, domainObject.ID, domainObject);
@@ -674,6 +705,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformRemove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    if (IsReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
     base.Remove (domainObject.ID);
   }
@@ -686,8 +718,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <summary>
   /// Clears the <see cref="DomainObjectCollection"/> without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
   /// </summary>
+  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   internal protected new void ClearCollection ()
   {
+    if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
+
     base.ClearCollection ();
   }
 
