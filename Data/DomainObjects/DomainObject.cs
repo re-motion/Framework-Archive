@@ -93,35 +93,35 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    return ClientTransaction.Current.GetRelatedObject (new RelationEndPoint (this, propertyName));
+    return ClientTransaction.Current.GetRelatedObject (new ObjectEndPoint (this, propertyName));
   }
 
   protected virtual DomainObject GetOriginalRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    return ClientTransaction.Current.GetOriginalRelatedObject (new RelationEndPoint (this, propertyName));
+    return ClientTransaction.Current.GetOriginalRelatedObject (new ObjectEndPoint (this, propertyName));
   }
 
   protected virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    return ClientTransaction.Current.GetOriginalRelatedObjects (new RelationEndPoint (this, propertyName));
+    return ClientTransaction.Current.GetOriginalRelatedObjects (new ObjectEndPoint (this, propertyName));
   }
 
   protected virtual DomainObjectCollection GetRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    return ClientTransaction.Current.GetRelatedObjects (new RelationEndPoint (this, propertyName));
+    return ClientTransaction.Current.GetRelatedObjects (new ObjectEndPoint (this, propertyName));
   }
 
   protected virtual void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    ClientTransaction.Current.SetRelatedObject (new RelationEndPoint (this, propertyName), newRelatedObject);
+    ClientTransaction.Current.SetRelatedObject (new ObjectEndPoint (this, propertyName), newRelatedObject);
   }
 
   internal bool BeginRelationChange (

@@ -37,10 +37,10 @@ public class ClientTransactionMock : ClientTransaction
     return base.LoadObject (id);
   }
 
-  protected override DomainObject LoadRelatedObject (RelationEndPoint relationEndPoint)
+  protected override DomainObject LoadRelatedObject (ObjectEndPoint objectEndPoint)
   {
     _numberOfCallsToLoadRelatedObject++;
-    return base.LoadRelatedObject (relationEndPoint);
+    return base.LoadRelatedObject (objectEndPoint);
   }
 
   public new DomainObject GetObject (ObjectID id)
@@ -48,24 +48,24 @@ public class ClientTransactionMock : ClientTransaction
     return base.GetObject (id);
   }
 
-  public new DomainObject GetRelatedObject (RelationEndPoint relationEndPoint)
+  public new DomainObject GetRelatedObject (ObjectEndPoint objectEndPoint)
   {
-    return base.GetRelatedObject (relationEndPoint);
+    return base.GetRelatedObject (objectEndPoint);
   }
 
-  public new DomainObjectCollection GetOriginalRelatedObjects (RelationEndPoint relationEndPoint)
+  public new DomainObjectCollection GetOriginalRelatedObjects (ObjectEndPoint objectEndPoint)
   {
-    return base.GetOriginalRelatedObjects (relationEndPoint);
+    return base.GetOriginalRelatedObjects (objectEndPoint);
   }
 
-  public new DomainObjectCollection GetRelatedObjects (RelationEndPoint relationEndPoint)
+  public new DomainObjectCollection GetRelatedObjects (ObjectEndPoint objectEndPoint)
   {
-    return base.GetRelatedObjects (relationEndPoint);
+    return base.GetRelatedObjects (objectEndPoint);
   }
 
-  public new void SetRelatedObject (RelationEndPoint relationEndPoint, DomainObject newRelatedObject)
+  public new void SetRelatedObject (ObjectEndPoint objectEndPoint, DomainObject newRelatedObject)
   {
-    base.SetRelatedObject (relationEndPoint, newRelatedObject);
+    base.SetRelatedObject (objectEndPoint, newRelatedObject);
   }
 
   public int NumberOfCallsToLoadDataContainer
