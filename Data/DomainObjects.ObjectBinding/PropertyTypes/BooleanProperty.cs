@@ -37,6 +37,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
       return NaBoolean.FromBoxedBoolean (publicValue);
     else
       return publicValue;
+
   }
 
   public IEnumerationValueInfo[] GetEnabledValues()
