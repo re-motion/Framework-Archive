@@ -16,7 +16,7 @@ public class InvalidEnumDefinitionException : DomainObjectException
 
   // construction and disposing
 
-  public InvalidEnumDefinitionException () : base ("Enumeration does not contain any values.") 
+  public InvalidEnumDefinitionException () : this ("Enumeration does not contain any values.") 
   {
   }
 
