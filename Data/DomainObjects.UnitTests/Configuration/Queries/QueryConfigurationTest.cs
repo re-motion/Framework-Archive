@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.Loader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Configuration.Queries;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
