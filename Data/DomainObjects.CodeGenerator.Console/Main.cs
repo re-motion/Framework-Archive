@@ -3,14 +3,12 @@ using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
-//TODO: REMOVE THE PROJECT REFERENCE TO DomainObjects.UnitTests.
 class MainClass
 {
   // types
 
   // static members and constants
 
-  //TODO: Find a way to provide path to the (stubs-)dll files (for dom/sql generation) as command line argument
 	[STAThread]
 	static void Main(string[] args)
 	{

@@ -7,7 +7,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-//TODO: make usage of nvarchar/varchar for string properties configurable (app.config)
 public class SqlBuilder : ConfigurationBasedBuilder
 {
   // types

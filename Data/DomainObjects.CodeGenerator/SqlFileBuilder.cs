@@ -31,6 +31,7 @@ public class SqlFileBuilder : BaseBuilder
     s_sqlTypeMapping.Add ("int32", "int");
     s_sqlTypeMapping.Add ("int64", "bigint");
     s_sqlTypeMapping.Add ("single", "float");
+//TODO: make usage of nvarchar/varchar for string properties configurable (app.config)
     s_sqlTypeMapping.Add ("string", "nvarchar");
     s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
   }

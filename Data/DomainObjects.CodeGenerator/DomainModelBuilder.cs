@@ -17,7 +17,6 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
 
   // member fields
 
-  private string _outputFolder;
   private IBuilder[] _domainObjectBuilders;
   private IBuilder[] _domainObjectCollectionBuilders;
 
@@ -33,18 +32,13 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
 
-    if (outputFolder != string.Empty)
-      _outputFolder = outputFolder;
-    else
-      _outputFolder = "";
-
     ArrayList domainObjectBuilders = new ArrayList ();
     ArrayList domainObjectCollectionBuilders = new ArrayList ();
 
     foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
     {
       domainObjectBuilders.Add (new DomainObjectBuilder (
-          Path.Combine (_outputFolder, classDefinition.ClassType.Name + s_fileExtention), 
+          Path.Combine (outputFolder, classDefinition.ClassType.Name + s_fileExtention), 
           classDefinition, domainObjectBaseClass));
 
       foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
@@ -58,7 +52,7 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
         Type requiredItemType = classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassType;
 
         domainObjectCollectionBuilders.Add (new DomainObjectCollectionBuilder (
-            Path.Combine (_outputFolder, endPointDefinition.PropertyType.Name + s_fileExtention), 
+            Path.Combine (outputFolder, endPointDefinition.PropertyType.Name + s_fileExtention), 
             endPointDefinition.PropertyType, 
             requiredItemType.Name,
             domainObjectCollectionBaseClass));
