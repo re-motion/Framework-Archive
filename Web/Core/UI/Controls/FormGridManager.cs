@@ -962,7 +962,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   private bool isResourceManagerUndefined;
 
   /// <summary> <see langword="true"/> if PostBack and ViewState was loaded. </summary>
-  private bool hasViewState = false;
+  private bool _hasViewState = false;
 
   private bool _formGridListPopulated = false;
 
@@ -1169,7 +1169,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     EnsureFormGridListPopulated();
     if (    ! ControlHelper.IsDesignMode (this, Context)
         &&  Page.IsPostBack
-        &&  ! hasViewState)
+        &&  ! _hasViewState)
     {
       throw new InvalidOperationException ("FormGrid '" + ID + "' did not receive a view state.");
     }
@@ -1213,7 +1213,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     if (savedState != null)
     {
-      hasViewState = true;
+      _hasViewState = true;
 
       base.LoadViewState (savedState);
  
