@@ -18,7 +18,7 @@ public class DomainModelBuilder : IBuilder
   // member fields
 
   private bool _disposed = false;
-  private string _outputFolder = "";
+  private string _outputFolder;
   private string _mappingFile;
   private string _mappingSchemaFile;
   private string _storageProvidersFile;
@@ -55,6 +55,8 @@ public class DomainModelBuilder : IBuilder
 
     if (outputFolder != string.Empty)
       _outputFolder = outputFolder;
+    else
+      _outputFolder = "";
 
     _mappingFile = mappingFile;
     _mappingSchemaFile = mappingSchemaFile;

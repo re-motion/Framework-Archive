@@ -32,7 +32,6 @@ public class SqlFileBuilder : BaseBuilder
     s_sqlTypeMapping.Add ("int64", "bigint");
     s_sqlTypeMapping.Add ("single", "float");
     s_sqlTypeMapping.Add ("string", "nvarchar");
-    s_sqlTypeMapping.Add ("char", "nchar(1)");
     s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
   }
 
@@ -48,93 +47,101 @@ public class SqlFileBuilder : BaseBuilder
     else if (propertyType.IsEnum)
       return (string) s_sqlTypeMapping["int32"];
 
-    throw new ArgumentException (string.Format ("Cannot map type {0} to the corresponding database type", mappingType), "mappingType");
+    throw new ArgumentException (string.Format ("Cannot map type {0} to the corresponding database type.", mappingType), "mappingType");
   }
+
+  private static readonly string s_classIdDatabaseType = "varchar (100)";
+  private static readonly string s_fullObjectIdDatabaseType = "varchar (255)";
+
+  #region Tags
+
+  private static readonly string s_databasenameTag = "%databasename%";
+  private static readonly string s_tablenameTag = "%tablename%";
+  private static readonly string s_columnnameTag = "%columnname%";
+  private static readonly string s_datatypeTag = "%datatype%";
+  private static readonly string s_nullableTag = "%nullable%";
+  private static readonly string s_commentTag = "%comment%";
+  private static readonly string s_classnameTag = "%classname%";
+  private static readonly string s_refClassnameTag = "%refClassname%";
+  private static readonly string s_refTablenameTag = "%refTablename%";
+  private static readonly string s_refColumnnameTag = "%refColumnname%";
+
+  #endregion
+
+  #region Templates
+
+  private static readonly string s_fileHeader = 
+      "USE %databasename%" + Environment.NewLine;
+  private static readonly string s_go = 
+      "GO" + Environment.NewLine
+      + "" + Environment.NewLine;
+  private static readonly string s_dropTable = 
+      "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '%tablename%')" + Environment.NewLine
+      + "DROP TABLE [%tablename%]" + Environment.NewLine;
+  private static readonly string s_tableHeader = 
+      "CREATE TABLE [%tablename%]" + Environment.NewLine
+      + "(" + Environment.NewLine;
+  private static readonly string s_timestampColumn = 
+    "  [Timestamp] rowversion NOT NULL," + Environment.NewLine;
+  private static readonly string s_idColumn = 
+    "  [ID] uniqueidentifier NOT NULL," + Environment.NewLine;
+  private static readonly string s_classIdColumn = 
+    "  [ClassID] varchar (100) NOT NULL," + Environment.NewLine;
+  private static readonly string s_column = 
+    "  [%columnname%] %datatype% %nullable%," + Environment.NewLine;
+  private static readonly string s_columnComment = 
+      "  -- %comment%" + Environment.NewLine;
+  private static readonly string s_primaryKey = 
+      "  CONSTRAINT [PK_%tablename%] PRIMARY KEY CLUSTERED ([ID])" + Environment.NewLine;
+  private static readonly string s_tableFooter = 
+      ")" + Environment.NewLine;
+  private static readonly string s_alterTableHeader = 
+      "ALTER TABLE [%tablename%]" + Environment.NewLine
+      + "(" + Environment.NewLine;
+  private static readonly string s_foreignKey = 
+      "  CONSTRAINT [FK_%classname%_%refClassname%] FOREIGN KEY ([%columnname%]) REFERENCES [%refTablename%] ([%refColumnname%])," + Environment.NewLine;
+  private static readonly string s_alterTableFooter = 
+      ")" + Environment.NewLine;
+
+  #endregion
 
   // member fields
 
-  private MappingConfiguration _mappingConfig;
-  private StorageProviderConfiguration _storageProviderConfig;
-  //TODO: eliminate this member and everything that's related to it
-  private string _outputFile;
+  private string _storageProviderID;
 
   // construction and disposing
 
-  public SqlFileBuilder (string outputFile) : this (outputFile, null, null, null, null)
+  public SqlFileBuilder (string outputFile, string storageProviderID)
+      : base (outputFile)
 	{
+    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+
+    _storageProviderID = storageProviderID;
   }
-
-  public SqlFileBuilder (
-      string outputFile, 
-      string mappingFile, 
-      string mappingSchemaFile, 
-      string storageProviderFile, 
-      string storageProviderSchemaFile)
-          : base (outputFile)
-	{
-    if (mappingFile != null)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("mappingFile", mappingFile);
-      ArgumentUtility.CheckNotNullOrEmpty ("mappingSchemaFile", mappingSchemaFile);
-
-      MappingConfiguration.SetCurrent (new MappingConfiguration (mappingFile, mappingSchemaFile));
-    }
-    _mappingConfig = MappingConfiguration.Current;
-
-    if (storageProviderFile != null)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderFile", storageProviderFile);
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderSchemaFile", storageProviderSchemaFile);
-
-      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (storageProviderFile, storageProviderSchemaFile));
-    }
-    _storageProviderConfig = StorageProviderConfiguration.Current;
-
-    _outputFile = outputFile;
-	}
 
   // methods and properties
 
   public override void Build ()
   {
-    string[] storageProviderIDs = GetDistinctStorageProviderIDs ();
+    OpenFile ();
+    BeginFile (GetDatabasename (_storageProviderID));
 
-    foreach (string storageProviderID in storageProviderIDs)
+    foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
-      string filename = _outputFile;
-      if (storageProviderIDs.Length > 1)
-        filename = filename.Insert (filename.LastIndexOf ("."), "_" + storageProviderID);
-
-      CreateSqlFile (filename, storageProviderID);
+      DropTable (baseClass.EntityName);
     }
-  }
 
-  private void CreateSqlFile (string filename, string storageProviderID)
-  {
-    using (StreamWriter writer = new StreamWriter (filename))
+    foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
-      SqlBuilder builder = new SqlBuilder (writer, GetDatabasename (storageProviderID));
-
-      foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
-      {
-        builder.DropTable (baseClass.EntityName);
-      }
-
-      foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
-      {
-        bool hasChildClasses = baseClass.DerivedClasses.Count != 0;
-
-        builder.CreateTable (baseClass.EntityName, hasChildClasses, GetColumns (baseClass));
-      }
-
-      foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
-      {
-        ConstraintDefinition[] constraints = GetConstraintsRecursive (baseClass);
-        builder.AddConstraints (constraints);
-      }
-
-      writer.Close ();
+      CreateTable (baseClass);
     }
+
+    foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
+    {
+      AddConstraints (baseClass);
+    }
+
+    CloseFile ();
   }
 
   private ConstraintDefinition[] GetConstraintsRecursive (ClassDefinition classDefinition)
@@ -156,36 +163,12 @@ public class SqlFileBuilder : BaseBuilder
     return (ConstraintDefinition[]) constraints.ToArray (typeof (ConstraintDefinition));
   }
 
-  private ColumnDefinition[] GetColumns (ClassDefinition baseClass)
-  {
-    ArrayList columns = new ArrayList ();
-    MergeColumnDefinitions (columns, baseClass);
-    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass, true))
-      MergeColumnDefinitions (columns, derivedClass);
-
-    return (ColumnDefinition[]) columns.ToArray (typeof (ColumnDefinition));
-  }
-
-  private void MergeColumnDefinitions (ArrayList columns, ClassDefinition classDefinition)
+  private void MergePropertyDefinitions (PropertyDefinitionCollection propertyDefinitions, ClassDefinition classDefinition)
   {
     foreach (PropertyDefinition property in classDefinition.MyPropertyDefinitions)
     {
-      string dataType = GetDBType (property.MappingType, property.PropertyType, property.MaxLength);
-      if (property.MappingType == "objectID" && 
-          GetOppositeClass (classDefinition, property.PropertyName).StorageProviderID != classDefinition.StorageProviderID)
-      {
-        dataType = SqlBuilder.FullObjectIdDatabaseType;
-      }
+      propertyDefinitions.Add (property);
 
-      columns.Add (new ColumnDefinition (
-          property.ColumnName, dataType, property.IsNullable, classDefinition.ID));
-
-      if (property.PropertyType == typeof (ObjectID) 
-          && GetOppositeClass (classDefinition, property.PropertyName).IsPartOfInheritanceHierarchy
-          && GetOppositeClass (classDefinition, property.PropertyName).StorageProviderID == classDefinition.StorageProviderID)
-      {
-        columns.Add (new ColumnDefinition (property.ColumnName + "ClassID", SqlBuilder.ClassIdDatabaseType, false, classDefinition.ID));
-      }
     }
   }
 
@@ -197,7 +180,7 @@ public class SqlFileBuilder : BaseBuilder
   private ArrayList GetBaseClassDefinitions (string storageProviderID)
   {
     ArrayList baseClasses = new ArrayList ();
-    foreach (ClassDefinition classDefinition in _mappingConfig.ClassDefinitions)
+    foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
     {
       if (classDefinition.BaseClass == null 
           && (storageProviderID == null || storageProviderID == classDefinition.StorageProviderID))
@@ -231,17 +214,6 @@ public class SqlFileBuilder : BaseBuilder
     return derivedClasses;
   }
 
-  private string[] GetDistinctStorageProviderIDs ()
-  {
-    ArrayList storageProviderIDs = new ArrayList();
-    foreach (ClassDefinition classDefinition in _mappingConfig.ClassDefinitions)
-    {
-      if (!storageProviderIDs.Contains (classDefinition.StorageProviderID))
-        storageProviderIDs.Add (classDefinition.StorageProviderID);
-    }
-    return (string[]) storageProviderIDs.ToArray (typeof (string));
-  }
-
   private string GetDatabasename (string storageProviderID)
   {
     RdbmsProviderDefinition provider = 
@@ -256,6 +228,114 @@ public class SqlFileBuilder : BaseBuilder
     string temp = connectionString.Substring (connectionString.IndexOf ("Initial Catalog=") + "Initial Catalog=".Length);
     string databasename = temp.Substring (0, temp.IndexOf (";"));
     return databasename;
+  }
+
+  private void AddConstraints (ClassDefinition baseClass)
+  {
+    ConstraintDefinition[] constraints = GetConstraintsRecursive (baseClass);
+
+    if (constraints.Length == 0)
+      return;
+
+    Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, constraints[0].Tablename));
+
+    foreach (ConstraintDefinition constraint in constraints)
+    {
+      Write (GetConstraintText (constraint));
+    }
+
+    Write (s_alterTableFooter);
+    Write (s_go);
+  }
+
+  private string GetConstraintText (ConstraintDefinition constraint)
+  {
+    string constraintText = s_foreignKey;
+    constraintText = ReplaceTag (constraintText, s_columnnameTag, constraint.Columnname);
+    constraintText = ReplaceTag (constraintText, s_refTablenameTag, constraint.ReferencedTable);
+    constraintText = ReplaceTag (constraintText, s_refColumnnameTag, constraint.ReferencedColumn);
+    constraintText = ReplaceTag (constraintText, s_classnameTag, constraint.ClassName);
+    constraintText = ReplaceTag (constraintText, s_refClassnameTag, constraint.ReferencedClassName);
+    return constraintText;
+  }
+
+  private void DropTable (string tableName)
+  {
+    Write (ReplaceTag (s_dropTable, s_tablenameTag, tableName));
+    Write (s_go);
+  }
+
+  private void CreateTable (ClassDefinition baseClass)
+  {
+    Write (ReplaceTag (s_tableHeader, s_tablenameTag, baseClass.EntityName));
+
+    Write (s_idColumn);
+
+    if (baseClass.DerivedClasses.Count != 0)
+      Write (s_classIdColumn);
+
+    Write (s_timestampColumn);
+
+    WriteColumns (baseClass);
+    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass, true))
+      WriteColumns (derivedClass);
+
+    WriteLine ();
+    Write (ReplaceTag (s_primaryKey, s_tablenameTag, baseClass.EntityName));
+
+    Write (s_tableFooter);
+    Write (s_go);
+  }
+
+  private void WriteColumns (ClassDefinition classDefinition)
+  {
+    string comment = classDefinition.ID + " columns";
+    WriteLine ();
+    Write (ReplaceTag (s_columnComment, s_commentTag, comment));
+
+    foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+    {
+      string dataType;
+      if (propertyDefinition.MappingType == "objectID" && !HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
+        dataType = s_fullObjectIdDatabaseType;
+      else
+        dataType = GetDBType (propertyDefinition.MappingType, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
+
+      WriteColumn (propertyDefinition.ColumnName, dataType, propertyDefinition.IsNullable);
+
+      if (propertyDefinition.PropertyType == typeof (ObjectID) 
+          && GetOppositeClass (classDefinition, propertyDefinition.PropertyName).IsPartOfInheritanceHierarchy
+          && HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
+      {
+        WriteColumn (propertyDefinition.ColumnName + "ClassID", s_classIdDatabaseType, false);
+      }
+    }
+  }
+
+  private void WriteColumn (string columnName, string dataType, bool isNullable)
+  {
+    string column = s_column;
+    column = ReplaceTag (column, s_columnnameTag, columnName);
+
+    column = ReplaceTag (column, s_datatypeTag, dataType);
+
+    if (isNullable)
+      column = ReplaceTag (column, s_nullableTag, "NULL");
+    else
+      column = ReplaceTag (column, s_nullableTag, "NOT NULL");
+
+    Write (column);
+  }
+
+  private bool HasOppositeClassSameStorageProviderID (ClassDefinition classDefinition, string propertyName)
+  {
+    return GetOppositeClass (classDefinition, propertyName).StorageProviderID == classDefinition.StorageProviderID;
+  }
+
+  private void BeginFile (string databasename)
+  {
+    Write (ReplaceTag (s_fileHeader, s_databasenameTag, databasename));
+    Write (s_go);
   }
 }
 }
