@@ -251,12 +251,8 @@ public abstract class RdbmsProvider : StorageProvider
     CheckStorageProviderID (id, "id");
     CheckObjectIDValue (id, "id");
 
+    // TODO: Provide ClassDefinition in ObjectID
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[id.ClassID];
-    if (classDefinition == null)
-    {
-      throw CreateStorageProviderException ("Mapping does not contain a class definition with ID '{0}'.", 
-          id.ClassID);
-    }
 
     Connect();
 
@@ -356,7 +352,7 @@ public abstract class RdbmsProvider : StorageProvider
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     CheckClassDefinition (classDefinition, "classDefinition");
 
-    return new ObjectID (this.ID, classDefinition.ID, Guid.NewGuid ());
+    return new ObjectID (classDefinition.ID, Guid.NewGuid ());
   }
 
   protected virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
