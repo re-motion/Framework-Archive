@@ -292,12 +292,14 @@ public class TabControl: Control, IPostBackEventHandler
   {
     if (tab >= _items.Count) throw new ArgumentOutOfRangeException ("tab");
 
-    _activeTab = tab;
-    Tab selectedTab = _items[_activeTab];
+    Tab selectedTab = _items[tab];
 
     string url = GetCompleteUrl (selectedTab, tab, 0);
     if (AllowNavigation (url))
+    {
+      _activeTab = tab;      
       Page.Response.Redirect (url);
+    }
   }
 
   public void MoveToMenu (int menu)
@@ -305,12 +307,14 @@ public class TabControl: Control, IPostBackEventHandler
     Tab activeTab = (Tab) Items[_activeTab];
     if (menu >= activeTab.Controls.Count) throw new ArgumentOutOfRangeException ("menu");
 
-    _activeMenu = menu;
     TabMenu selectedMenu = (TabMenu) activeTab.Controls[menu];
 
     string url = GetCompleteUrl (selectedMenu, _activeTab, menu);
     if (AllowNavigation (url))
+    {
+      _activeMenu = menu;
       Page.Response.Redirect (url);
+    }
   }
 
   private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
