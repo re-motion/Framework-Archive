@@ -28,21 +28,21 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
   /// <summary> The width of the column. </summary>
   private Unit _width; 
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
-  private BocListItemCommand _command;
+  private SingleControlItemCollection _command;
 
   /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
   {
     _columnTitle = string.Empty;
     _width = Unit.Empty;
-    _command = new BocListItemCommand();
+    _command = new SingleControlItemCollection (new BocListItemCommand(), new Type[] {typeof (BocListItemCommand)});
   }
 
   protected override void OnOwnerControlChanged()
   {
     base.OnOwnerControlChanged();
-    if (_command != null)
-      _command.OwnerControl = OwnerControl;
+    if (Command != null)
+      Command.OwnerControl = OwnerControl;
   }
 
   public override string ToString()
@@ -112,37 +112,27 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
 
   /// <summary> Gets or sets the <see cref="BocListItemCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocListItemCommand"/>. </value>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Category ("Action")]
   [Description ("The command rendered in this column.")]
   [NotifyParentProperty (true)]
   public BocListItemCommand Command
   {
-    get { return _command; }
+    get { return (BocListItemCommand) _command.Item; }
     set 
     { 
-      _command = value; 
+      _command.Item = value; 
       if (OwnerControl != null)
-        _command.OwnerControl = OwnerControl;
+        _command.Item.OwnerControl = (Control) OwnerControl;
     }
   }
 
-  /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
-  /// <remarks> 
-  ///   Does not persist <see cref="BocListItemCommand"/> objects with a 
-  ///   <c>Command.Type</c> set to <see cref="CommandType.None"/>.
-  /// </remarks>
-  /// <returns> 
-  ///   <see langref="true"/> if the <see cref="BocListItemCommand"/> object's
-  ///   <c>Command.Type</c> is set to <see cref="CommandType.None"/>.
-  /// </returns>
   private bool ShouldSerializeCommand()
   {
-    if (_command == null)
+    if (Command == null)
       return false;
 
-    if (_command.Type == CommandType.None)
+    if (Command.Type == CommandType.None)
       return false;
     else
       return true;
@@ -150,13 +140,33 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
 
   /// <summary> Sets the <see cref="Command"/> to it's default value. </summary>
   /// <remarks> 
-  ///   The defualt value is a <see cref="BocListItemCommand"/> object with a 
-  ///   <c>Command.Type</c> set to <see cref="CommandType.None"/>.
+  ///   The default value is a <see cref="BocListItemCommand"/> object with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
   /// </remarks>
   private void ResetCommand()
   {
-    _command = new BocListItemCommand();
-    _command.Type = CommandType.None;
+    if (Command != null)
+    {
+      Command = (BocListItemCommand) Activator.CreateInstance (Command.GetType());
+      Command.Type = CommandType.None;
+    }
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [Browsable (false)]
+  public SingleControlItemCollection PersistedCommand
+  {
+    get { return _command; }
+  }
+
+  /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
+  /// <remarks> 
+  ///   Does not persist <see cref="BocListItemCommand"/> objects with a <c>Command.Type</c> set to 
+  ///   <see cref="CommandType.None"/>.
+  /// </remarks>
+  private bool ShouldSerializePersistedCommand()
+  {
+    return ShouldSerializeCommand();
   }
 
   /// <summary> Gets the human readable name of this type. </summary>

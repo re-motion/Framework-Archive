@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Specialized;
+using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -16,7 +16,7 @@ namespace Rubicon.Web.UI.Controls
 //  TODO: Command: Move long comment blocks to xml-file
 /// <summary> An <see cref="Command"/> defines an action the user can invoke. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class Command
+public class Command: IControlItem
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -364,14 +364,8 @@ public class Command
   [NotifyParentProperty (true)]
   public CommandType Type
   {
-    get
-    {
-      return _type; 
-    }
-    set 
-    {
-      _type = value; 
-    }
+    get { return _type; }
+    set { _type = value; }
   }
 
   /// <summary>
@@ -408,14 +402,8 @@ public class Command
   [NotifyParentProperty (true)]
   public virtual HrefCommandInfo HrefCommand
   {
-    get
-    {
-      return _hrefCommand; 
-    }
-    set
-    { 
-      _hrefCommand = value;
-    }
+    get { return _hrefCommand; }
+    set { _hrefCommand = value; }
   }
 
   /// <summary>
@@ -435,14 +423,8 @@ public class Command
   [NotifyParentProperty (true)]
   public virtual WxeFunctionCommandInfo WxeFunctionCommand
   {
-    get 
-    {
-      return _wxeFunctionCommand; 
-    }
-    set 
-    {
-      _wxeFunctionCommand = value; 
-    }
+    get { return _wxeFunctionCommand; }
+    set { _wxeFunctionCommand = value; }
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>

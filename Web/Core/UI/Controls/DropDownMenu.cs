@@ -161,6 +161,7 @@ public class DropDownMenu: WebControl, IControl
                       || ! _isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
 
       bool isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
+      isCommandEnabled = false; // HACK
       if (isCommandEnabled)
       {    
         bool isPostBackCommand =    menuItem.Command.Type == CommandType.Event 
@@ -181,7 +182,7 @@ public class DropDownMenu: WebControl, IControl
     }
 
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}', {4}, {5});",
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', '{3}', {4}, {5})",
         menuItemIndex.ToString(), menuItem.Category, menuItem.Text, menuItem.Icon, href, target);
   }
 

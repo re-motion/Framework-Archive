@@ -12,7 +12,7 @@ public interface IControlItem
   Control OwnerControl { get; set; }
 }
 
-public abstract class ControlItemCollection: CollectionBase
+public class ControlItemCollection: CollectionBase
 {
   private Control _ownerControl;
   private Type[] _supportedTypes;
@@ -79,6 +79,11 @@ public abstract class ControlItemCollection: CollectionBase
 
     base.OnInsert (index, value);
     controlItem.OwnerControl = _ownerControl;
+  }
+
+  protected override void OnInsertComplete(int index, object value)
+  {
+    base.OnInsertComplete (index, value);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
   }
@@ -91,6 +96,11 @@ public abstract class ControlItemCollection: CollectionBase
 
     base.OnSet (index, oldValue, newValue);
     controlItem.OwnerControl = _ownerControl;
+  }
+
+  protected override void OnSetComplete(int index, object oldValue, object newValue)
+  {
+    base.OnSetComplete (index, oldValue, newValue);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, oldValue));
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, newValue));
@@ -98,15 +108,18 @@ public abstract class ControlItemCollection: CollectionBase
 
   public int Add (IControlItem value)
   {
-    return List.Add (value);
+    int count = List.Add (value);
+    return count;
   }
 
   public void AddRange (IControlItem[] values)
   {
     ArgumentUtility.CheckNotNull ("values", values);
 
+    BeginEdit();
     foreach (IControlItem controlItem in values)
-      Add (controlItem );
+      Add (controlItem);
+    EndEdit();
   }
 
   /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </summary>
@@ -117,8 +130,8 @@ public abstract class ControlItemCollection: CollectionBase
   }
 
   /// <remarks> 
-  ///   Do not redefine the indexer as a public member in any derived class if you intend to use in the VS Designer. 
-  ///   Otherwise VS Designer will not know which property to use, this one or the new one.
+  ///   Do not redefine the indexer as a public member in any derived class if you intend to use it in a peristed
+  ///   property. Otherwise ASP.net will not know which property to use, this one or the new one.
   ///   It is possible to redefine it as a non-public member.
   /// <remarks>
   public IControlItem this[int index]

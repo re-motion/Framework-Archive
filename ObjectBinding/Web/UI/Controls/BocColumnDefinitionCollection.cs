@@ -24,6 +24,7 @@ public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
     return (BocColumnDefinition[]) arrayList.ToArray (typeof (BocColumnDefinition));
   }
 
+  //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new BocColumnDefinition this[int index]
   {
     get { return (BocColumnDefinition) List[index]; }
