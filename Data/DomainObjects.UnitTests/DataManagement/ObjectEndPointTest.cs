@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -105,6 +106,63 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
     _endPoint.OppositeObjectID = null;
 
     Assert.IsTrue (_endPoint.HasChanged);
+  }
+
+  [Test]
+  public void GetEndPointDefinition ()
+  {
+    IRelationEndPointDefinition endPointDefinition = _endPoint.Definition;
+    Assert.IsNotNull (endPointDefinition);
+
+    Assert.AreSame (
+        MappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem"), 
+        endPointDefinition.ClassDefinition);
+
+    Assert.AreEqual ("Order", endPointDefinition.PropertyName);
+  }
+
+  [Test]
+  public void GetOppositeEndPointDefinition ()
+  {
+    IRelationEndPointDefinition oppositeEndPointDefinition = _endPoint.OppositeEndPointDefinition;
+    Assert.IsNotNull (oppositeEndPointDefinition);
+
+    Assert.AreSame (
+        MappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"),
+        oppositeEndPointDefinition.ClassDefinition);
+
+    Assert.AreEqual ("OrderItems", oppositeEndPointDefinition.PropertyName);
+  }
+
+  [Test]
+  public void GetRelationDefinition ()
+  {
+    RelationDefinition relationDefinition = _endPoint.RelationDefinition;
+    Assert.IsNotNull (relationDefinition);
+    Assert.AreEqual ("OrderToOrderItem", relationDefinition.ID);
+  }
+
+  [Test]
+  public void IsVirtual ()
+  {
+    DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
+    RelationEndPoint orderEndPoint = new ObjectEndPoint (orderContainer, "OrderTicket", DomainObjectIDs.OrderTicket1);
+
+    Assert.AreEqual (true, orderEndPoint.IsVirtual);
+  }
+
+  [Test]
+  public void IsNotVirtual ()
+  {
+    Assert.AreEqual (false, _endPoint.IsVirtual);
+  }
+
+  [Test]
+  public void ID ()
+  {
+    Assert.IsNotNull (_endPoint.ID);
+    Assert.AreEqual ("Order", _endPoint.ID.PropertyName);
+    Assert.AreEqual (DomainObjectIDs.OrderItem1, _endPoint.ID.ObjectID);
   }
 }
 }
