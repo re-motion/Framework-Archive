@@ -7,5 +7,7 @@ nant setrelease all alltests
   if errorlevel 1 pause "build error"
 nant doc-public doc-internal
   if errorlevel 1 pause "build error"
-nant cleantemp zip
+nant cleantemp zip sourcezip
+  if errorlevel 1 pause "build error"
+nant getcurrent
   if errorlevel 1 pause "build error"
