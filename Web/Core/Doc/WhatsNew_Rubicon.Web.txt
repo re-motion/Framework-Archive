@@ -1,4 +1,4 @@
-3.1.1.0 (noch kein Build)
+3.1.1.0
 =======
 
 - Neue Methoden in PageUtility: 
