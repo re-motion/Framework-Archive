@@ -13,6 +13,7 @@ namespace Rubicon.ObjectBinding
 public interface IBusinessObjectProvider
 {
   IBusinessObjectService GetService (Type serviceType);
+  char GetPropertyPathSeparator ();
 }
 
 public abstract class BusinessObjectProvider: IBusinessObjectProvider
@@ -27,6 +28,11 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   public void AddService (Type serviceType, IBusinessObjectService service)
   {
     ServiceDictionary.Add (serviceType, service);
+  }
+
+  public virtual char GetPropertyPathSeparator ()
+  {
+    return '.';
   }
 }
 
