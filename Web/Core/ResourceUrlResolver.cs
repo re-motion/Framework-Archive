@@ -19,7 +19,7 @@ public sealed class ResourceUrlResolver
   /// </summary>
   /// <remarks>
   ///   If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application object
-  ///   creates the URL string. Otherwise, the URL /&lt;AppDir&gt;/res/&ltdefiningType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
+  ///   creates the URL string. Otherwise, the URL /&lt;AppDir&gt;/res/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
   ///   is used. (e.g., /rubicon.res/Rubicon.Web/Image/Help.gif)
   /// </remarks>
   /// <param name="control"> The current <see cref="Control"/>. Currently, this parameter is ignored. </param>

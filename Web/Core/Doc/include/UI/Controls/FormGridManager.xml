@@ -159,7 +159,7 @@
         Override this method to change how the <see cref="HtmlTable"/> will be interpreted.
       </para>
     </remarks>
-    <param name="formGrid">
+    <param name="table">
       The <see cref="FormGrid"/> for which the rows are to be created
     </param>
     <returns>
@@ -270,7 +270,7 @@
   </TransformIntoFormGridPostValidation>
   <LoadNewFormGridRows>
     <remarks>
-      Knows how to build rows from the base implementation of <see cref="FormGridRowPrototype"/>.
+      Knows how to build rows from the base implementation of <see cref="FormGridRowInfo"/>.
     </remarks>
     <param name="formGrid">
       The form grid for which to load the rows. Must not be <see langname="null"/>.
@@ -662,7 +662,7 @@
       <para>
         Directory: <c>images/</c>
       </para><para>
-        Only used if parent hierarchy does not implement interface <see cref="IImageUrlResolver"/>
+        Only used if parent hierarchy does not implement interface <see cref="IResourceUrlResolver"/>
       </para>
     </remarks>
   </ImageDirectory>
@@ -745,10 +745,6 @@
     <Constructor>
       <param name="table">
         The <see cref="HtmlTable"/> to be used as the base for the <c>FormGrid</c>
-      </param>
-      <param name="createRows">
-        The callback mehtod used to create the <see cref="FormGridRow"/> objects 
-        from the <see cref="HtmlTable"/>.
       </param>
     </Constructor>
     <GetHashCode>

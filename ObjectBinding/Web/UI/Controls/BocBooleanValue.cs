@@ -338,11 +338,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       string script;
 
       string key = typeof (BocBooleanValue).FullName;
-      if (! HtmlHeaderFactory.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.Html, c_bocBooleanValueScriptUrl);
-        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 
       key = typeof (BocBooleanValue).FullName+ "_Startup";

@@ -28,6 +28,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Details View
 // TODO: BocList: IsDirty
 // TODO: Accessibility for Buttons (Alt-Tags)
+// TODO: Shift+Click (Start) - Shift+Click (Stop) selects range
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -610,11 +611,11 @@ public class BocList:
       }
 
       key = typeof (BocList).FullName;
-      if (! HtmlHeaderFactory.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, this.GetType(), ResourceType.Html, c_bocListScriptUrl);
-        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
     }
   }
@@ -1081,7 +1082,6 @@ public class BocList:
         writer.AddAttribute ("onSelectStart", "return false");
       }
     }
-
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
     if (_enableSelection)

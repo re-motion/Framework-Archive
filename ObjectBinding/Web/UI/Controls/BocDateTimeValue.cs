@@ -445,11 +445,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     if (_hasClientScript && ! isReadOnly)
     {
       string key = typeof (BocDateTimeValue).FullName;
-    if (! HtmlHeaderFactory.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-        HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 
       key = typeof (BocDateTimeValue).FullName + "_DocumentClickHandler";

@@ -38,7 +38,7 @@ public class DatePickerPage : Page
   private const string c_datePickerScriptUrl = "DatePicker.js";
   
   protected HtmlForm Form;
-  protected HtmlGenericControl HtmlHeader;
+  protected HtmlGenericControl HtmlHead;
   protected Calendar Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
   private HtmlInputHidden TargetIDField;
@@ -51,8 +51,8 @@ public class DatePickerPage : Page
 	{
     if (Form == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");
-    if (HtmlHeader == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHeader'.");
+    if (HtmlHead == null)
+      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHead'.");
     if (Calendar == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
 
@@ -105,11 +105,11 @@ public class DatePickerPage : Page
   protected override void OnPreRender(EventArgs e)
   {
     string key = typeof (DatePickerPage).FullName;
-    if (! HtmlHeaderFactory.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-      HtmlHeaderFactory.Current.RegisterJavaScriptInclude (key, scriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
     }
 
     base.OnPreRender (e);
@@ -117,7 +117,7 @@ public class DatePickerPage : Page
 
   protected override void RenderChildren(HtmlTextWriter writer)
   {
-    HtmlHeaderFactory.Current.EnsureAppendHeaders (HtmlHeader.Controls);
+    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
     base.RenderChildren (writer);
   }
 
