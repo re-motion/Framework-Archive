@@ -18,6 +18,15 @@ public class ControlHelper
 
   // static members
 
+  public static string EventTarget
+  { get { return "__EVENTTARGET";} }
+  
+  public static string EventArgument
+  { get { return "__EVENTARGUMENT"; } }
+  
+  public static string ViewState
+  { get { return "__VIEWSTATE"; } }
+
   public static Control[] GetControlsRecursive (Control parentControl, Type type)
   {
     ArrayList controlList = new ArrayList ();
