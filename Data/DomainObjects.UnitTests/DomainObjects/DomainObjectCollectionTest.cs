@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
@@ -828,6 +829,16 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   public void SetNumericIndexerWithInvalidType ()
   {
     _collection[0] = new Order ();
+  }
+
+  [Test]
+  public void CreateWithItemType ()
+  {
+    DomainObjectCollection collection = DomainObjectCollection.Create (
+        typeof (DomainObjectCollection), new DataContainerCollection (), typeof (Order));
+
+    Assert.IsNotNull (collection);
+    Assert.AreEqual (typeof (Order), collection.RequiredItemType);
   }
 
   private DomainObjectCollection CreateCustomerCollection ()

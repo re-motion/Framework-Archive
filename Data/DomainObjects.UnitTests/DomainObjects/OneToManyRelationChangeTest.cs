@@ -312,5 +312,25 @@ public class OneToManyRelationChangeTest : ClientTransactionBaseTest
 
     Assert.AreEqual (2, subordinates.Count);  
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void CheckRequiredItemTypeForExisting ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    DomainObjectCollection orderItems = order.OrderItems;
+
+    orderItems.Add (new Customer ());
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void CheckRequiredItemTypeForNew ()
+  {
+    Order order = new Order ();
+    DomainObjectCollection orderItems = order.OrderItems;
+
+    orderItems.Add (new Customer ());
+  }
 }
 }

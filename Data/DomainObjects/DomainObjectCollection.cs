@@ -182,8 +182,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     set 
     {
-      // TODO: Check index for validity
-      // TODO: check type
+      CheckIndexForIndexer ("index", index);
+      if (IsReadOnly) throw new NotSupportedException ("Cannot modify a read-only collection.");
 
       // If new value is null: This is actually a remove operation
       if (value == null)
@@ -191,7 +191,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
         RemoveAt (index);
         return;
       }
-
+      
+      CheckItemType (value, "value");
+      
       // If old and new objects are the same: Perform no operation
       if (object.ReferenceEquals (this[index], value))
         return;
@@ -241,8 +243,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public int Add (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    
-    // TODO: check type
+    CheckItemType (domainObject, "domainObject");
+    if (IsReadOnly) throw new NotSupportedException ("Cannot add an element to a read-only collection.");
 
     if (Contains (domainObject))
     {
@@ -295,6 +297,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public void Remove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    if (IsReadOnly) throw new NotSupportedException ("Cannot remove an element from a read-only collection.");
 
     // Do not perform remove, if domain object is not part of this collection     
     if (this[domainObject.ID] == null)
@@ -319,6 +322,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   public void Clear ()
   {
+    if (IsReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
+
     for (int i = Count - 1; i >= 0; i--)
       Remove (this[i].ID);
   }
@@ -344,9 +349,10 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public void Insert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckIndex ("index", index);
-    // TODO: check type
-
+    CheckIndexForInsert ("index", index);
+    if (IsReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
+    CheckItemType (domainObject, "domainObject");
+    
     if (Contains (domainObject))
     {
       throw CreateArgumentException (
@@ -493,7 +499,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckItemType (_requiredItemType, domainObject.GetType (), "domainObject");
+    CheckItemType (domainObject, "domainObject");
 
     base.Add (domainObject.ID, domainObject);
   }
@@ -501,7 +507,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformInsert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckItemType (_requiredItemType, domainObject.GetType (), "domainObject");
+    CheckItemType (domainObject, "domainObject");
 
     base.Insert (index, domainObject.ID, domainObject);
   }
@@ -545,36 +551,20 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     base.ClearCollection ();
   }
 
+  private void CheckItemType (DomainObject domainObject, string argumentName)
+  {
+    CheckItemType (_requiredItemType, domainObject.GetType (), argumentName);
+  }
+
   private void CheckItemType (Type requiredType, Type itemType, string argumentName)
   {
-    if (!ValidateItemType (requiredType, itemType))
+    if (requiredType != null && !requiredType.Equals (itemType) && !itemType.IsSubclassOf (requiredType))
     {
       throw CreateArgumentException (
         argumentName,
         "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.", 
         itemType, 
         requiredType);
-    }
-  }
-
-  private bool ValidateItemType (Type requiredType, Type itemType)
-  {
-    // TODO: Simplify this
-    if (requiredType != null)
-    {
-      while (itemType != null)
-      {
-        if (itemType == requiredType) 
-          return true;
-
-        itemType = itemType.BaseType;
-      }
-
-      return false;
-    }
-    else
-    {
-      return true;
     }
   }
 
