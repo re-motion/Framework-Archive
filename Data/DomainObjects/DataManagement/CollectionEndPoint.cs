@@ -109,7 +109,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override bool HasChanged
   {
-    get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects); } 
+    get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects, true); } 
   }
 
   public override void CheckMandatory ()

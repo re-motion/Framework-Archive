@@ -98,13 +98,39 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
 
     for (int i = 0; i < collection1.Count; i++)
     {
-      if (!collection1[i].Equals (collection2[i]))
+      if (collection1[i] != (collection2[i]))
         return false;
     }
 
     return true;
   }
 
+  /// <summary>
+  /// Compares two instances of <see cref="DomainObjectCollection"/> for equality.
+  /// </summary>
+  /// <param name="collection1">The first <see cref="DomainObjectCollection"/>.</param>
+  /// <param name="collection2">The second <see cref="DomainObjectCollection"/>.</param>
+  /// <param name="ignoreItemOrder">Indicates whether the compare should ignore the order of the items in the collections for the compare operation.</param>
+  /// <returns><b>true</b> if the collections are equal; otherwise, <b>false</b>.</returns>
+  public static bool Compare (DomainObjectCollection collection1, DomainObjectCollection collection2, bool ignoreItemOrder)
+  {
+    if (!ignoreItemOrder)
+      return (Compare (collection1, collection2));
+
+    if (collection1 == null && collection2 == null) return true;
+    if (collection1 == null) return false;
+    if (collection2 == null) return false;
+    if (collection1.Count != collection2.Count) return false;
+
+    foreach (DomainObject domainObject in collection1)
+    {
+      if (!collection2.Contains (domainObject))
+        return false;
+    }
+
+    return true;
+  }
+  
   // member fields
 
   /// <summary>
