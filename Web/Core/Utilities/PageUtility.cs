@@ -389,7 +389,6 @@ public class PageUtility
       ShowNavigationBar showNavBar,
       string referrerUrl)
   {    
-
     // Add referrer information for all pages
     parameters.Add ("Referrer", referrerUrl); 
 
@@ -454,10 +453,6 @@ public class PageUtility
       if (info != null)
         parameters = info.PageValues["callParameters"] as IDictionary;
     }  
-    /*   
-    if (token != null)
-      parameters = (IDictionary) page.Session[token];
-    */
 
     if (requireParameters && parameters == null)
     {

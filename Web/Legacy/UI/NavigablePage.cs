@@ -10,14 +10,42 @@ using Rubicon.Web.UI.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 /// <summary>
-/// Provides a common implementation for interface INavigablePage with a TabControl for navigation.
+/// Provides common features for page navigation and session state handling.
 /// </summary>
-internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEventHandler
+public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHandler
 {
   // types
 
+  protected enum ShowBackLinkType 
+  {
+    Always,
+    Never,
+    Default
+  }
+
   // static members and constants
-/*
+
+  private const string c_eventNameShowMessageBoxResult = "ShowMessageBoxResult:";
+  private const string c_eventNameNavigationRequest = "NavigablePageNavigationRequest";
+  private const string c_viewStateNavigationUrl = "NavigationRequest:NavigateToUrl";
+
+  /// <summary>
+  /// returns a formatted GUID string
+  /// </summary>
+  /// <returns></returns>
+  public static string GetUniqueToken ()
+  {
+    return PageUtility.GetUniqueToken ();
+  }
+
+  /// <summary>
+  /// Returns the correct page's URL even if cookieless mode is activated.
+  /// </summary>
+  protected static string GetPhysicalPageUrl (Page page)
+  {
+    return PageUtility.GetPhysicalPageUrl (page);
+  }
+
   protected static void CallPage (
       Page sourcePage, 
       string destinationUrl, 
@@ -61,70 +89,128 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
 
   // member fields
 
+
   // construction and disposing
-
-  protected override void InitializeSecurityService ()
-  {
-    try
-    {
-      SetSecurityService (WebGovSecurityService.GetOrCreateCurrent (Context));
-    }
-    catch (PortalParameterMissingFormsLoginException)
-    {
-      WebGovSecurityService.DeleteFormsLoginCookie (this.Response);
-      this.Response.Redirect (PageUtility.GetPhysicalPageUrl (this, "default.aspx?newWindow=false"));
-    }
-    catch (MaintenanceModeException)
-    {
-      this.Response.Redirect (ResourceHelper.Current.GetUrl ("MaintenanceMode.htm"));
-    }
-    catch (InvalidClientAccessException e)
-    {
-      DBEventLog.WriteException (e, this.Session);
-      this.Response.Redirect (ResourceHelper.Current.GetUrl ("InvalidClientAccess.htm"));
-    }
-    catch (DisabledLocationException e)
-    {
-      DBEventLog.WriteException (e, this.Session);
-      this.Response.Redirect (ResourceHelper.Current.GetUrl ("DisabledLocation.htm"));      
-    }
-  }
-
-  protected virtual SecurityService.AccessType GetRequiredAccessType()
-  {
-    return Rubicon.Findit.Common.Domain.SecurityService.AccessType.NoProtection;
-  }
 
 	protected override void OnInit(EventArgs e)
 	{
     base.OnInit(e);
 
-    DBEventLog.WriteSessionState (this.Session, "WebGovPage.OnInit");
-   
     if (! IsPostBack)
     {
       string cleanupToken = this.Request.QueryString["cleanupToken"];
       CleanupSession (cleanupToken);
       PageUtility.DeleteOutdatedSessions( this );
     }
-
-    Rubicon.Findit.Common.Domain.SecurityService.AccessType requiredAccessType = GetRequiredAccessType();
-    if (! this.SecurityService.HasAccess (requiredAccessType) )
-      throw new AccessDeniedException (requiredAccessType);
-
-    this.Unload += new EventHandler (this.Page_Unload);
 	}
+
+  public NavigablePage()
+  {
+    this.ID = "PageIDNotSet";
+  }
+
 
   // methods and properties
 
-  private void Page_Unload (object sender, System.EventArgs e)
+  protected object GetSessionValue (string key)
   {
-    DBEventLog.WriteSessionState (this.Session, "WebGovPage.Unload");
+    return GetSessionValue (key, true);
+  }
+  
+  protected object GetSessionValue (string key, bool isRequired)
+  {
+    return GetSessionValue (this.Token, key, isRequired);
   }
 
-  public new WebGovSecurityService SecurityService
+  protected void SetSessionValue (string key, object sessionValue)
   {
-    get {return (WebGovSecurityService) base.SecurityService; }
+    SetSessionValue (this.Token, key, sessionValue);
+  }
+
+  protected void ClearSessionValue (string key)
+  { 
+    ClearSessionValue (this.Token, key);
+  }
+  
+  public object GetGlobalSessionValue (string key, bool isRequired)
+  {
+    object sessionValue = Page.Session[key];
+
+    if (isRequired && sessionValue == null)
+    {
+      if (Session.IsNewSession)
+        throw new SessionTimeoutException ();
+      else
+        throw new SessionVariableNotFoundException (key);
+    }
+
+    return sessionValue;
+  }
+
+  public void SetGlobalSessionValue (string key, object sessionValue)
+  {
+    Page.Session[key] = sessionValue;
+  }
+
+  public void ClearGlobalSessionValue (string key)
+  { 
+    PageUtility.ClearSessionValue (this, key);
+  }
+  
+  protected object GetSessionValue (string token, string key, bool required)
+  {
+    if (token == null) token = string.Empty;
+    return PageUtility.GetSessionValue (this, token, key, required);
+  }
+
+  protected void SetSessionValue (string token, string key, object sessionValue)
+  {
+    if (token == null) token = string.Empty;
+    PageUtility.SetSessionValue (this, token, key, sessionValue);
+  }
+
+  protected void ClearSessionValue (string token, string key)
+  { 
+    PageUtility.ClearSessionValue (this, token, key);
+  }
+
+  protected void CleanupSession ()
+  {
+    CleanupSession (this.Token);
+  }
+  
+  protected void CleanupSession (string token)
+  {
+    PageUtility.ClearSession (this, token);
+  }
+
+
+  public string Token
+  {
+    get {return PageUtility.GetToken (this);}
+  }
+  
+  public string GetParentToken()
+  {
+    return PageUtility.GetParentToken (this);
+  }
+
+  /// <summary>
+  /// Returns an IDictionary with the parameters the page was called with
+  /// and copies the parameters to the new token
+  /// </summary>
+  /// <param name="requireParameters">If false, no exception is thrown if parameters are not found.</param>
+  /// <exception cref="NoPageParametersException">Thrown when a page is called without parameters.</exception>
+  /// <exception cref="SessionTimeout">Thrown when the session is timed out.</exception>
+  /// <returns>IDictionary containing parameters</returns>
+  public IDictionary GetCallParameters (bool requireParameters)
+  {
+    return PageUtility.GetCallParameters (this, requireParameters);    
+  }
+  
+  public IDictionary GetCallParameters ()
+  {
+    return GetCallParameters (true);
   }
 
   public virtual bool AllowImmediateClose
@@ -173,14 +259,11 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
     PageUtility.Redirect (this.Response, url);
   }
 
-  private const string c_eventNameShowMessageBoxResult = "ShowMessageBoxResult:";
-  private const string c_eventNameNavigationRequest = "WebGovPageNavigationRequest";
-  private const string c_viewStateNavigationUrl = "NavigationRequest:NavigateToUrl";
 
   public void RegisterMessageBox (string message, string eventName)
   {
     if (this.ID == null || this.ID == string.Empty)
-      throw new InvalidOperationException ("Page must have ID in order to use ShowMessageBox.");
+      throw new InvalidOperationException ("Page must have ID in order to use RegisterMessageBox.");
 
     string script = string.Format (
         "<script language=\"javascript\"> \n"
@@ -191,7 +274,7 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
             + "</script>",
         message);
 
-    this.RegisterStartupScript ("WebGovPage_ShowMessageBoxScript", script);
+    this.RegisterStartupScript ("NavigablePage_ShowMessageBoxScript", script);
   }
 
   public void InitiateConditionalNavigation (string url, string message)
@@ -213,7 +296,7 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
       bool result = resultString == "OK";
       HandleMessageBoxResult (eventName, result);
     }
-    else if (eventArgument == "WebGovPageBackLink")
+    else if (eventArgument == "NavigablePageBackLink")
     {
       CallBackLink();
     }
@@ -241,27 +324,19 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
     return PageUtility.GetUniqueKey (this, key);
   }
 
-
-  protected enum ShowBackLinkType 
-  {
-    Always,
-    Never,
-    Default
-  }
-
   protected virtual ShowBackLinkType GetShowBackLinkType ()
   {
     return ShowBackLinkType.Default;
   }
 
-  protected virtual bool IsServerSideBackLink()
+  protected virtual bool IsServerSideBackLink ()
   {
     return false;
   }
 
-  public bool ShowBackLink()
+  public bool ShowBackLink ()
   {
-    ShowBackLinkType showBackLink = GetShowBackLinkType();
+    ShowBackLinkType showBackLink = GetShowBackLinkType ();
     if (showBackLink == ShowBackLinkType.Always)
       return true;
     else if (showBackLink == ShowBackLinkType.Never)
@@ -276,7 +351,7 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
   public virtual string GetBackLinkUrl ()
   {
     if (IsServerSideBackLink())
-      return "javascript:" + GetPostBackClientEvent (this, "WebGovPageBackLink");
+      return "javascript:" + GetPostBackClientEvent (this, "NavigablePageBackLink");
 
     IDictionary parameters = GetCallParameters (false);
     if (parameters != null)
@@ -301,6 +376,5 @@ internal class NavigablePage //: MultiLingualPage, INavigablePage, IPostBackEven
   protected virtual void CallBackLink ()
   {
   }
-  */
 }
 }

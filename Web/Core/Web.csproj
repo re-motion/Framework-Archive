@@ -174,7 +174,12 @@
                 />
                 <File
                     RelPath = "Controls\NavigablePage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\StandardPage.cs"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File

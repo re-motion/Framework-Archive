@@ -5,6 +5,7 @@
   * CheckActiveMenu + GetCurrentUrl werten activeMenu nur aus wenn min. 1 TabMenu in Tab.Controls
     vorhanden.
   * GetCurrentUrl liefert HRef von Tag wenn TabMenu nicht vorhanden
+- Neue Klassen NavigablePage und StandardPage.
 
 3.0.0.0
 =======
