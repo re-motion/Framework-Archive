@@ -362,9 +362,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
       }
 
       string requiredFlag = IsRequired ? "true" : "false";
-      string imageButton = "this.parentElement.all['" + _imageButton.ID + "']";
-      string label = _showDescription ? "this.parentElement.all['" + _label.ID + "']" : "null";
-      string hiddenField = "this.parentElement.all['" + _hiddenField.ID + "']";
+      string imageButton = "this.parentElement.all['" + _imageButton.UniqueID + "']";
+      string label = _showDescription ? "this.parentElement.all['" + _label.UniqueID + "']" : "null";
+      string hiddenField = "this.parentElement.all['" + _hiddenField.UniqueID + "']";
       script = "BocBooleanValue_SelectNextCheckboxValue (" 
           + imageButton + ", " 
           + label + ", " 
