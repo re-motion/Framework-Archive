@@ -112,6 +112,21 @@ public class RelationDefinitionChecker
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.Cardinality, 
         actualEndPointDefinition.Cardinality);
+
+
+    if (expectedEndPointDefinition is VirtualRelationEndPointDefinition)
+    {
+      VirtualRelationEndPointDefinition expectedVirtualEndPointDefinition = (VirtualRelationEndPointDefinition) expectedEndPointDefinition;
+      VirtualRelationEndPointDefinition actualVirtualEndPointDefinition = (VirtualRelationEndPointDefinition) actualEndPointDefinition;
+
+      Assert.AreEqual (expectedVirtualEndPointDefinition.SortExpression, actualVirtualEndPointDefinition.SortExpression, 
+          "SortExpression of end point defintions (relation definition: '{0}', property name: '{1}')"
+              + " does not match. Expected: {2}, actual: {3}", 
+          relationDefinition.ID,  
+          expectedVirtualEndPointDefinition.PropertyName,
+          expectedVirtualEndPointDefinition.SortExpression, 
+          actualVirtualEndPointDefinition.SortExpression);
+    }
   }      
 }
 }
