@@ -117,6 +117,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "BooleanToEnumPropertyConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "BusinessObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
