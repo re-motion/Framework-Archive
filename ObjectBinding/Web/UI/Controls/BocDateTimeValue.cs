@@ -34,7 +34,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> String inserted between the date and the time text boxes. </summary>
   private const string c_dateTimeSpacer = "&nbsp;";
   /// <summary> String inserted before the date pciker button. </summary>
-  private const string c_datePickerImageSpacer = "&nbsp;";
+  private const string c_datePickerButtonSpacer = "&nbsp;";
   /// <summary> String inserted between the date and the time text boxes during design mode. </summary>
   private const string c_designModeDateTimeSpacer = " ";
   /// <summary> String inserted before the date pciker button during design mode. </summary>
@@ -84,7 +84,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
-  private Image _datePickerImage;
+  private ImageButton _datePickerButton;
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private BocDateTimeValueValidator _dateTimeValueValidator;
 
@@ -99,7 +99,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
   /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
-  private Style _datePickerImageStyle;
+  private Style _datePickerButtonStyle;
 
   /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
@@ -146,9 +146,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBoxStyle = new SingleRowTextBoxStyle();
     _timeTextBoxStyle = new SingleRowTextBoxStyle();
     _labelStyle = new Style();
-    _datePickerImageStyle = new Style();
+    _datePickerButtonStyle = new Style();
     _dateTextBox = new TextBox();
-    _datePickerImage = new Image();
+    _datePickerButton = new ImageButton();
     _timeTextBox = new TextBox();
     _label = new Label();
     _dateTimeValueValidator = new BocDateTimeValueValidator();
@@ -162,9 +162,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBox.EnableViewState = false;
     Controls.Add (_dateTextBox);
 
-    _datePickerImage.ID = ID + "_Boc_DatePickerImage";
-    _datePickerImage.EnableViewState = false;
-    Controls.Add (_datePickerImage);
+    _datePickerButton.ID = ID + "_Boc_DatePickerButton";
+    _datePickerButton.EnableViewState = false;
+    Controls.Add (_datePickerButton);
 
     _timeTextBox.ID = ID + "_Boc_TimeTextBox";
     _timeTextBox.EnableViewState = false;
@@ -275,7 +275,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
     //  and remove AddAttributesToRender.
-    if (_datePickerImage.Visible && _hasClientScript)
+    if (_datePickerButton.Visible && _hasClientScript)
     {
       Unit width = _datePickerPopupWidth;
       if (width.IsEmpty)
@@ -297,7 +297,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
       //  and remove RenderContents.
-      if (control == _datePickerImage && control.Visible && _hasClientScript)
+      if (control == _datePickerButton && control.Visible && _hasClientScript)
       {
         string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
@@ -473,7 +473,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTextBox.Visible = ! isReadOnly;
     _timeTextBox.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
-    _datePickerImage.Visible = ! isReadOnly;
+    _datePickerButton.Visible = ! isReadOnly;
 
     if (isReadOnly)
     {
@@ -558,10 +558,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           || ActualValueType == BocDateTimeValueType.Date
           || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined)
       {
-        int datePickerImageIndex = Controls.IndexOf (_datePickerImage);
+        int datePickerImageIndex = Controls.IndexOf (_datePickerButton);
 
         if (! IsDesignMode)
-          datePickerImageSpacer = new LiteralControl (c_datePickerImageSpacer);
+          datePickerImageSpacer = new LiteralControl (c_datePickerButtonSpacer);
         else
           datePickerImageSpacer = new LiteralControl (c_designModeDatePickerImageSpacer);
 
@@ -694,27 +694,33 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         string imageUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocDateTimeValue), ResourceType.Image, DatePickerImageUrl);
         if (imageUrl == null)
-          _datePickerImage.ImageUrl = DatePickerImageUrl;  
+          _datePickerButton.ImageUrl = DatePickerImageUrl;  
         else
-          _datePickerImage.ImageUrl = imageUrl; 
+          _datePickerButton.ImageUrl = imageUrl; 
 
+       string script;
        if (Enabled && _hasClientScript)
        {
           string pickerActionButton = "this";
           string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
           string pickerActionTarget = "document.getElementById ('" + _dateTextBox.ClientID + "')";
           string pickerActionFrame = "document.getElementById ('" + ClientID + "_frame')";
-          string pickerAction = "DatePicker_ShowDatePicker("
+          script = "DatePicker_ShowDatePicker("
               + pickerActionButton + ", "
               + pickerActionContainer + ", "
               + pickerActionTarget + ", "
-              + pickerActionFrame + ");";
-          _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+              + pickerActionFrame + ");"
+              + "return false;";
         }
+        else
+        {
+         script = "return false;";
+        }
+        _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
       }
       else
       {
-        _datePickerImage.Visible = false;
+        _datePickerButton.Visible = false;
       }
 
       _dateTextBox.ReadOnly = ! Enabled;
@@ -722,7 +728,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";
-      _datePickerImage.Style["vertical-align"] = "text-bottom";
+      _datePickerButton.Style["vertical-align"] = "text-bottom";
 
       if (! dateTextBoxWidth.IsEmpty)
         _dateTextBox.Width = dateTextBoxWidth;
@@ -741,8 +747,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       _timeTextBoxStyle.ApplyStyle (_timeTextBox);
 
       //  Common style not useful with image button
-      //  _datePickerImage.ApplyStyle (_commonStyle);
-      _datePickerImage.ApplyStyle (_datePickerImageStyle);
+      //  _datePickerButton.ApplyStyle (_commonStyle);
+      _datePickerButton.ApplyStyle (_datePickerButtonStyle);
     }
   }
   
@@ -1335,7 +1341,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style ButtonStyle
   {
-    get { return _datePickerImageStyle; }
+    get { return _datePickerButtonStyle; }
   }
 
   /// <summary> The width of the IFrame used to display the date picker. </summary>
@@ -1450,11 +1456,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="Image"/> used in edit mode for opening the date picker. </summary>
+  /// <summary> Gets the <see cref="ImageButton"/> used in edit mode for opening the date picker. </summary>
   [Browsable (false)]
-  public Image DatePickerImage
+  public ImageButton DatePickerButton
   {
-    get { return _datePickerImage; }
+    get { return _datePickerButton; }
   }
 
   /// <summary> The URL of the image used by the <see cref="DatePickerImage"/>. </summary>
