@@ -16,6 +16,11 @@
                   <xs:field xpath="@name" />
                 </xs:key>
 
+                <xs:key name="columnKey">
+                  <xs:selector xpath="m:properties/m:property" />
+                  <xs:field xpath="m:column" />
+                </xs:key>
+
               </xs:element>
             </xs:sequence>
           </xs:complexType>

@@ -40,28 +40,6 @@ public class IntegrationTest: ClientTransactionBaseTest
 
   // methods and properties
 
-// TODO: Reactivate this test
-//  // The same column should not be referenced twice !!!
-//  [Test]
-//  public void AddPropertyValueWithExistingColumnTest ()
-//  {
-//    Employee employee = new Employee ();
-//
-//    PropertyDefinition propertyDefinition = new PropertyDefinition (
-//      "Name1", "Name", typeof (string), true, 10);
-//    PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
-//    PropertyValue propertyValue = new PropertyValue (propertyDefinition);
-//
-//    Assert.IsFalse (propertyValues.Contains ("Name1"));
-//    Assert.AreEqual ("Name", propertyValues["Name"].Definition.ColumnName);
-//  
-//    propertyValues.Add (propertyValue);
-//
-//    // should be forbidden
-//    Assert.Fail ();
-//  }
-//
-
   [Test]
   public void RelationEventTest ()
   {
