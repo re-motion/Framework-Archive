@@ -352,7 +352,17 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
+    if (Enabled)
+    {
+      writer.RenderBeginTag (HtmlTextWriterTag.A);
+    }
+    else
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Color, "GrayText");
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    }
     writer.Write (_titleText);
+    writer.RenderEndTag();
     writer.RenderEndTag();
 
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1em");
