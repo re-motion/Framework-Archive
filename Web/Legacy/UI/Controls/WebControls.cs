@@ -32,6 +32,17 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
     return false;
   }
 
+  public TabItem GetTabItem (string tabID)
+  {
+    foreach (TabItem tab in Items)
+    {
+      if (tab.ID == tabID)
+        return tab;
+    }
+
+    return null;
+  }
+
   public bool ShowTab (string tabID)
   {
     int tabCount = 0;
