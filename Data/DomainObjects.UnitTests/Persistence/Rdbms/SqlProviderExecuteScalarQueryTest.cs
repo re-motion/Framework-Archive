@@ -98,8 +98,7 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
       + " The value of this parameter is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: query")]
   public void InvalidObjectIDValue ()
   {
-    ObjectID invalidCustomerID = new ObjectID (
-        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+    ObjectID invalidCustomerID = new ObjectID (DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
 
     Query query = new Query ("BulkUpdateQuery");
     query.Parameters.Add ("@customerID", invalidCustomerID);

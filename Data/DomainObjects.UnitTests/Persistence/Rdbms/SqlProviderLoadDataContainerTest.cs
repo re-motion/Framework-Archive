@@ -31,8 +31,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [Test]
   public void LoadDataContainerWithGuidID ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
 
@@ -44,8 +43,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithInvalidIDType ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithKeyOfInvalidType", 
-        new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+    ObjectID id = new ObjectID ("ClassWithKeyOfInvalidType", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
     try
     {
@@ -62,8 +60,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [ExpectedException (typeof (StorageProviderException), "Error while executing SQL command.")]
   public void LoadDataContainerWithoutIDColumn ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutIDProperty", 
-        new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+    ObjectID id = new ObjectID ("ClassWithoutIDProperty", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
     try
     {
@@ -80,8 +77,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [ExpectedException (typeof (StorageProviderException), "The mandatory column 'ClassID' could not be found.")]
   public void LoadDataContainerWithoutClassIDColumn ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutClassIDProperty", 
-        new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
+    ObjectID id = new ObjectID ("ClassWithoutClassIDProperty", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
   }
@@ -90,8 +86,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [ExpectedException (typeof (StorageProviderException), "The mandatory column 'Timestamp' could not be found.")]
   public void LoadDataContainerWithoutTimestampColumn ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutTimestampProperty", 
-        new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
+    ObjectID id = new ObjectID ("ClassWithoutTimestampProperty", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
   }
@@ -101,8 +96,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
       "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf' encountered.")]
   public void LoadDataContainerWithNonExistingClassID ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
   }
@@ -111,8 +105,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [ExpectedException (typeof (StorageProviderException), "The mandatory column 'OrderNo' could not be found.")]
   public void LoadDataContainerWithClassIDFromOtherClass ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithGuidKey", 
-        new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
+    ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
   }
@@ -120,8 +113,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [Test]
   public void LoadDataContainerByNonExistingID ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithAllDataTypes",
-        new Guid ("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
 
     Assert.IsNull (Provider.LoadDataContainer (id));
   }
@@ -129,8 +121,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [Test]
   public void LoadDataContainerByID ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, 
-        "ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
     DataContainer actualContainer = Provider.LoadDataContainer (id);
 
@@ -163,8 +154,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   [Test]
   public void LoadDataContainerWithNullForeignKey ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
-        new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
+    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
     DataContainer container = Provider.LoadDataContainer (id);
 
@@ -195,8 +185,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
       + " Class must have column 'PartnerIDClassID' defined, because it points to derived class 'Partner'.")]
   public void LoadDataContainerWithoutRelatedIDColumn ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutRelatedClassIDColumn", 
-        new Guid ("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}")); 
+    ObjectID id = new ObjectID ("ClassWithoutRelatedClassIDColumn", new Guid ("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}")); 
 
     Provider.LoadDataContainer (id);
   }
@@ -208,7 +197,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
       + " Class must have column 'CompanyIDClassID' defined, because at least one class inherits from 'Company'.")]
   public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
   {
-    ObjectID id = new ObjectID (c_testDomainProviderID, "ClassWithoutRelatedClassIDColumnAndDerivation", 
+    ObjectID id = new ObjectID ("ClassWithoutRelatedClassIDColumnAndDerivation", 
         new Guid ("{4821D7F7-B586-4435-B572-8A96A44B113E}")); 
 
     Provider.LoadDataContainer (id);
@@ -219,19 +208,17 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
       "The value of the provided ObjectID is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: id")]
   public void LoadDataContainerWithObjectIDWithValueOfInvalidType ()
   {
-    ObjectID invalidID = new ObjectID (
-        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+    ObjectID invalidID = new ObjectID (DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
 
     Provider.LoadDataContainer (invalidID);
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentException), 
-      "The StorageProviderID 'OtherProvider' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
+      "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
   public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
   {
-    ObjectID invalidID = new ObjectID (
-        "OtherProvider", DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+    ObjectID invalidID = new ObjectID (DomainObjectIDs.Official1.ClassID, DomainObjectIDs.Official1.Value);
 
     Provider.LoadDataContainer (invalidID);
   }
