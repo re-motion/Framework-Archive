@@ -1,3 +1,12 @@
+3.1.6.2 (noch kein Build)
+=======
+
+- EntryFieldBreak und EntryTitle können jetzt auch in einem ViewControl platziert werden =>
+  Property EntryFormGrid in beiden entfernt. Dafür private property ImagePath eingeführt.
+- Methoden für das Handling von Images von EntryFormGrid in UIUtility ausgelagert.
+- Neue Methode UrlUtility.Combine (...): Fügt 2 Webpfade zusammen. 
+
+
 3.1.6.1
 =======
 
