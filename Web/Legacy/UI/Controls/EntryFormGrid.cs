@@ -168,7 +168,7 @@ public class EntryFormGrid: Control
     // adjust child control font sizes
     if (! FieldFontSize.IsEmpty)
     {
-      ArrayList controls = ControlHelper.GetControlsRecursive (this, typeof (WebControl));
+      WebControl[] controls = (WebControl[]) ControlHelper.GetControlsRecursive (this, typeof (WebControl));
       foreach (WebControl control in controls)
       {
         if ((control is TextBox || control is DropDownList) && control.Font.Size.IsEmpty)
