@@ -196,7 +196,8 @@ public class Command: IControlItem
     }
   }
 
-  private CommandType _type = CommandType.None;
+  private CommandType _type;
+  private CommandType _defaultType = CommandType.None;
   private CommandShow _show = CommandShow.Always;
   private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
 
@@ -208,6 +209,17 @@ public class Command: IControlItem
   //private ScriptCommandInfo _scriptCommand = null;
 
   private Control _ownerControl = null;
+
+  public Command ()
+    : this (CommandType.None)
+  {
+  }
+
+  public Command (CommandType defaultType)
+  {
+    _defaultType = defaultType;
+    _type = _defaultType;
+  }
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
@@ -346,18 +358,11 @@ public class Command: IControlItem
     }
   }
 
-  /// <summary>
-  ///   The <see cref="CommandType"/> represented by this instance of 
-  ///   <see cref="Command"/>.
-  /// </summary>
-  /// <value> 
-  ///   One of the <see cref="CommandType"/> enumeration values. 
-  ///   The default is <see cref="CommandType.None"/>.
-  /// </value>
+  /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
+  /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The type of command generated.")]
-  [DefaultValue (CommandType.None)]
   [NotifyParentProperty (true)]
   public CommandType Type
   {
@@ -365,13 +370,30 @@ public class Command: IControlItem
     set { _type = value; }
   }
 
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public bool IsDefaultType
+  {
+    get { return _type == _defaultType; }
+  }
+
+  /// <summary> Controls the persisting of the <see cref="Type"/>. </summary>
+  protected bool ShouldSerializeType()
+  {
+    return ! IsDefaultType;
+  }
+
+  /// <summary> Sets the <see cref="Type"/> to it's default value. </summary>
+  protected void ResetType()
+  {
+    _type = _defaultType;
+  }
+
   /// <summary>
-  ///   Determines when the item command is shown to the user in regard of the parent control's 
-  ///   read-only setting.
+  ///   Determines when the item command is shown to the user in regard of the parent control's read-only setting.
   /// </summary>
   /// <value> 
-  ///   One of the <see cref="CommandShow"/> enumeration values. 
-  ///   The default is <see cref="CommandShow.Always"/>.
+  ///   One of the <see cref="CommandShow"/> enumeration values. The default is <see cref="CommandShow.Always"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
@@ -404,12 +426,10 @@ public class Command: IControlItem
   }
 
   /// <summary>
-  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a 
-  ///   <see cref="WxeFunction"/>.
+  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
   /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to 
-  ///   <see cref="CommandType.WxeFunction"/>.
+  ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.WxeFunction"/>.
   /// </remarks>
   /// <value> A <see cref="WxeFunctionCommandInfo"/> object. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]

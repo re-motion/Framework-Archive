@@ -37,7 +37,7 @@ function DropDownMenu_AddMenuInfo (menuInfo)
   _dropDownMenu_menuInfos[menuInfo.ID] = menuInfo;
 }
 
-function DropDownMenu_ItemInfo (id, category, text, icon, iconDisabled, requiredSelection, href, target)
+function DropDownMenu_ItemInfo (id, category, text, icon, iconDisabled, requiredSelection, isDisabled, href, target)
 {
   this.ID = id;
   this.Category = category;
@@ -45,6 +45,7 @@ function DropDownMenu_ItemInfo (id, category, text, icon, iconDisabled, required
   this.Icon = icon;
   this.IconDisabled = iconDisabled;
   this.RequiredSelection = requiredSelection;
+  this.IsDisabled = isDisabled;
   this.Href = href;
   this.Target = target;
 }
@@ -223,15 +224,23 @@ function DropDownMenu_CreateItem (popUpDocument, itemInfo, selectionCount, showE
 function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCount)
 {
   var isEnabled = true;
-  if (   itemInfo.RequiredSelection == _dropDownMenu_requiredSelectionExactlyOne
-      && selectionCount != 1)
+  
+  if (itemInfo.IsDisabled)
   {
     isEnabled = false;
   }
-  if (   itemInfo.RequiredSelection == _dropDownMenu_requiredSelectionOneOrMore
-      && selectionCount < 1)
+  else
   {
-    isEnabled = false;
+    if (   itemInfo.RequiredSelection == _dropDownMenu_requiredSelectionExactlyOne
+        && selectionCount != 1)
+    {
+      isEnabled = false;
+    }
+    if (   itemInfo.RequiredSelection == _dropDownMenu_requiredSelectionOneOrMore
+        && selectionCount < 1)
+    {
+      isEnabled = false;
+    }
   }
   
 	item.id = itemInfo.ID;

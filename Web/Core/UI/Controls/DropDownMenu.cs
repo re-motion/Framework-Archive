@@ -258,13 +258,14 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
     string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7})",
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7}, {8})",
         menuItemIndex.ToString(), 
         menuItem.Category, 
         menuItem.Text, 
         icon, 
         iconDisabled, 
         (int) menuItem.RequiredSelection, 
+        menuItem.IsDisabled ? "true" : "false",
         href, 
         target);
   }
