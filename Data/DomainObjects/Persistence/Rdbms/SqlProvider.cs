@@ -26,7 +26,10 @@ public class SqlProvider : RdbmsProvider
   {
     CheckDisposed ();
     
-    return "@" + name;
+    if (name.StartsWith ("@"))
+      return name;
+    else
+      return "@" + name;
   }
 
   protected override IDbConnection CreateConnection ()

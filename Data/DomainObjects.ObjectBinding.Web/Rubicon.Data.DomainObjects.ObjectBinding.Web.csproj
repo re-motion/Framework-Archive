@@ -94,26 +94,6 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\References\Rubicon.Core.dll"
-                />
-                <Reference
-                    Name = "Rubicon.ObjectBinding.Web"
-                    AssemblyName = "Rubicon.ObjectBinding.Web"
-                    HintPath = "..\References\Rubicon.ObjectBinding.Web.dll"
-                />
-                <Reference
-                    Name = "Rubicon.ObjectBinding"
-                    AssemblyName = "Rubicon.ObjectBinding"
-                    HintPath = "..\References\Rubicon.ObjectBinding.dll"
-                />
-                <Reference
-                    Name = "Rubicon.Web"
-                    AssemblyName = "Rubicon.Web"
-                    HintPath = "..\References\Rubicon.Web.dll"
-                />
-                <Reference
                     Name = "system.web"
                     AssemblyName = "System.Web"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.web.dll"
@@ -122,6 +102,26 @@
                     Name = "system.drawing"
                     AssemblyName = "System.Drawing"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Core"
+                    AssemblyName = "Rubicon.Core"
+                    HintPath = "..\..\..\References\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "Rubicon.ObjectBinding"
+                    AssemblyName = "Rubicon.ObjectBinding"
+                    HintPath = "..\..\..\References\Rubicon.ObjectBinding.dll"
+                />
+                <Reference
+                    Name = "Rubicon.ObjectBinding.Web"
+                    AssemblyName = "Rubicon.ObjectBinding.Web"
+                    HintPath = "..\..\..\References\Rubicon.ObjectBinding.Web.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Web"
+                    AssemblyName = "Rubicon.Web"
+                    HintPath = "..\..\..\References\Rubicon.Web.dll"
                 />
             </References>
         </Build>

@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding", "DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding", "DomainObjects\ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "DomainObjects\ObjectBinding\Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
