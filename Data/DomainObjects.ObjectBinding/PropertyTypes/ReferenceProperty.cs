@@ -11,7 +11,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-public class ReferenceProperty : DomainObjectProperty, IBusinessObjectReferenceProperty
+public class ReferenceProperty : NullableProperty, IBusinessObjectReferenceProperty
 {
   private IRelationEndPointDefinition _relationEndPointDefinition;
 
@@ -21,7 +21,7 @@ public class ReferenceProperty : DomainObjectProperty, IBusinessObjectReferenceP
       IRelationEndPointDefinition relationEndPointDefinition,
       Type itemType, 
       bool isList)
-      : base (propertyInfo, propertyDefinition, itemType, isList)
+      : base (propertyInfo, propertyDefinition, itemType, isList, true)
   {
     _relationEndPointDefinition = relationEndPointDefinition;
   }
