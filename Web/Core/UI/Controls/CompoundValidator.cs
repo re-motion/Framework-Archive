@@ -78,6 +78,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     {
       BaseValidator validator = control as BaseValidator;
       validator.EnableClientScript = this.EnableClientScript;
+      validator.Display = this.Display;
       if (validator != null)
         validator.ApplyStyle (ValidatorStyle);
     }
