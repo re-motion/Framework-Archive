@@ -41,8 +41,47 @@ public class BocItemCommand
     return BocItemCommand.CreateHrefItemCommand (href, null);
   }
 
+  public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
+  {
+    string href = string.Format (_href, index, id);
+    writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+    if (_target != null) 
+      writer.AddAttribute (HtmlTextWriterAttribute.Target, _target);
+    writer.RenderBeginTag (HtmlTextWriterTag.A);    
+  }
+
+  public virtual void RenderEnd (HtmlTextWriter writer)
+  {
+    writer.RenderEndTag();
+  }
+
+  public override string ToString()
+  {
+    StringBuilder stringBuilder = new StringBuilder (50);
+
+    stringBuilder.Append (_type.ToString());
+
+    switch (_type)
+    {
+      case BocItemCommandType.Href:
+      {
+        if (! StringUtility.IsNullOrEmpty (Href))
+          stringBuilder.AppendFormat (": {0}", Href);
+        if (! StringUtility.IsNullOrEmpty (Target))
+          stringBuilder.AppendFormat (", {0}", Target);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+
+    return stringBuilder.ToString();
+  }
+
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The hyperlink reference of the command.")]
+  [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
   [DefaultValue(".aspx?{1}")]
   public string Href 
   {
@@ -85,46 +124,6 @@ public class BocItemCommand
     get { return _type; }
     set { _type = value; }
   }
-
-  public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
-  {
-    string href = string.Format (_href, index, id);
-    writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
-    if (_target != null) 
-      writer.AddAttribute (HtmlTextWriterAttribute.Target, _target);
-    writer.RenderBeginTag (HtmlTextWriterTag.A);    
-  }
-
-  public virtual void RenderEnd (HtmlTextWriter writer)
-  {
-    writer.RenderEndTag();
-  }
-
-  public override string ToString()
-  {
-    StringBuilder stringBuilder = new StringBuilder (50);
-
-    stringBuilder.Append (_type.ToString());
-
-    switch (_type)
-    {
-      case BocItemCommandType.Href:
-      {
-        if (! StringUtility.IsNullOrEmpty (Href))
-          stringBuilder.AppendFormat (": {0}", Href);
-        if (! StringUtility.IsNullOrEmpty (Target))
-          stringBuilder.AppendFormat (", {0}", Target);
-        break;
-      }
-      default:
-      {
-        break;
-      }
-    }
-
-    return stringBuilder.ToString();
-  }
-
 }
 
 public enum BocItemCommandType

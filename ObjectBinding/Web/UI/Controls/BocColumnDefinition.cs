@@ -34,6 +34,9 @@ public abstract class BocColumnDefinition
     : this (null, Unit.Empty)
   {}
 
+  protected virtual void OnOwnerControlChanged()
+  {}
+
   /// <summary>
   ///   The displayed value of the column header.
   /// </summary>
@@ -83,9 +86,6 @@ public abstract class BocColumnDefinition
       }
     }
   }
-
-  protected virtual void OnOwnerControlChanged()
-  {}
 }
 
 /// <summary>
@@ -118,19 +118,13 @@ public class BocCommandColumnDefinition: BocColumnDefinition
     _command = BocItemCommand.CreateHrefItemCommand (".aspx?{0}");
   }
 
-//  protected void RenderLabel (HtmlTextWriter writer)
-//  {
-//    if (_label != null)
-//    {
-//      HttpUtility.HtmlEncode (Label, writer);
-//    }
-//    else
-//    {
-//      writer.AddAttribute (HtmlTextWriterAttribute.Href, _iconPath);
-//      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-//      writer.RenderEndTag ();
-//    }
-//  }
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (Label))
+      return "Command Column";
+    else
+      return Label;
+  }
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue("")]
@@ -154,14 +148,6 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   {
     get { return _command; }
     set { _command = value; }
-  }
-
-  public override string ToString()
-  {
-    if (StringUtility.IsNullOrEmpty (Label))
-      return "Command Column";
-    else
-      return Label;
   }
 }
 
@@ -218,6 +204,22 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     _propertyPathBinding = new PropertyPathBinding();
   }
 
+  public override string GetStringValue (IBusinessObject obj)
+  {
+    if (PropertyPath != null)
+      return PropertyPath.GetStringValue (obj);
+    else
+      return string.Empty;
+  }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (ColumnHeader))
+      return "Simple Value Column";
+    else
+      return ColumnHeader;
+  }
+
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public BusinessObjectPropertyPath PropertyPath 
@@ -268,22 +270,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
       else
         return string.Empty;
     }
-  }
-
-  public override string GetStringValue (IBusinessObject obj)
-  {
-    if (PropertyPath != null)
-      return PropertyPath.GetStringValue (obj);
-    else
-      return string.Empty;
-  }
-
-  public override string ToString()
-  {
-    if (StringUtility.IsNullOrEmpty (ColumnHeader))
-      return "Simple Value Column";
-    else
-      return ColumnHeader;
   }
 }
 
@@ -339,6 +325,23 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     _formatString = string.Empty;
   }
 
+  public override string GetStringValue (IBusinessObject obj)
+  {
+    string[] strings = new string[_propertyPathBindings.Count];
+    for (int i = 0; i < _propertyPathBindings.Count; ++i)
+      strings[i] = _propertyPathBindings[i].PropertyPath.GetStringValue (obj);
+
+    return string.Format (_formatString, strings);
+  }
+
+  public override string ToString()
+  {
+    if (StringUtility.IsNullOrEmpty (ColumnHeader))
+      return "Simple Value Column";
+    else
+      return ColumnHeader;
+  }
+
   protected override void OnOwnerControlChanged()
   {
     base.OnOwnerControlChanged();
@@ -365,15 +368,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     }
   }
 
-  public override string GetStringValue (IBusinessObject obj)
-  {
-    string[] strings = new string[_propertyPathBindings.Count];
-    for (int i = 0; i < _propertyPathBindings.Count; ++i)
-      strings[i] = _propertyPathBindings[i].PropertyPath.GetStringValue (obj);
-
-    return string.Format (_formatString, strings);
-  }
-
   [Description ("The assigned value of the column header, must not be empty or null.")]
   public override string ColumnHeader
   {
@@ -383,14 +377,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
       ArgumentUtility.CheckNotNullOrEmpty ("ColumnHeader", value);
       base.ColumnHeader = value;
     }
-  }
-
-  public override string ToString()
-  {
-    if (StringUtility.IsNullOrEmpty (ColumnHeader))
-      return "Simple Value Column";
-    else
-      return ColumnHeader;
   }
 }
 

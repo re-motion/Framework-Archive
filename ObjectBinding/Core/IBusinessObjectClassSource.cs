@@ -25,13 +25,13 @@ public class PropertyPathBinding
   public PropertyPathBinding (BusinessObjectPropertyPath propertyPath)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-    _propertyPath = propertyPath;
+    PropertyPath = propertyPath;
   }
 
   public PropertyPathBinding (string propertyPathIdentifier)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
-    _propertyPathIdentifier = propertyPathIdentifier;
+    PropertyPathIdentifier = propertyPathIdentifier;
   }
 
   public PropertyPathBinding()

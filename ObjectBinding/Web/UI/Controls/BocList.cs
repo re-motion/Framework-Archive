@@ -17,7 +17,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 [ToolboxItemFilter("System.Web.UI")]
-[Obsolete ("BocList implementation not completed")]
 public class BocList: BusinessObjectBoundModifiableWebControl
 {
   //  constants
@@ -40,6 +39,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private const string c_designModeEmptyContents = "#";
   private const string c_designModeDummyColumnHeader = "Column Header {0}";
   private const int c_designModeDummyColumnCount = 3;
+
   // types
   
   private enum GoToOption
