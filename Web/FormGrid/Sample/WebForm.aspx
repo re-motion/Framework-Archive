@@ -1,16 +1,17 @@
-<%@ Page language="c#" Codebehind="WebForm.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Sample.WebForm" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="WebForm.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Sample.WebForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head id="HtmlHead" runat="server">
+  <head>
     <title>WebForm1</title>
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
+<rwc:htmlheadcontents runat="server" id="HtmlHeadContents"></rwc:htmlheadcontents>
   </head>
 <body>
-<form id=Form1 method=post runat="server"><rwc:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" DESIGNTIMEDRAGDROP="62"></rwc:ValidationStateViewer>
+<form id=Form1 method=post runat="server"><rwc:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" DESIGNTIMEDRAGDROP="62" validationerrorstyle="DetailedMessages"></rwc:ValidationStateViewer>
 <table id=MainFormGrid cellSpacing=0 cellPadding=0 
 runat="server">
   <tr>
