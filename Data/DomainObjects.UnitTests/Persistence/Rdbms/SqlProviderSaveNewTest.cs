@@ -34,7 +34,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   public void NewDataContainer ()
   {
     DataContainer newDataContainer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"));
+        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
 
     newDataContainer["DeliveryDate"] = new DateTime (2005, 1, 5);
 
@@ -164,7 +164,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   public void NewObjectRelatesToExisting ()
   {
     DataContainer newDataContainer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"));
+        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
 
     newDataContainer["DeliveryDate"] = new DateTime (2005, 12, 24);
 
@@ -187,10 +187,10 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   public void NewRelatedObjects ()
   {
     DataContainer newCustomer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Customer"));
+        TestMappingConfiguration.Current.ClassDefinitions["Customer"]);
 
     DataContainer newOrder = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"));
+        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
 
     newOrder["DeliveryDate"] = new DateTime (2005, 12, 24);
 
