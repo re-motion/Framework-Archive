@@ -1,0 +1,111 @@
+using System;
+using NUnit.Framework;
+
+using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
+
+namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+{
+[TestFixture]
+public class ObjectEndPointTest : ClientTransactionBaseTest
+{
+  // types
+
+  // static members and constants
+
+  // member fields
+
+  private RelationEndPointID _endPointID;
+  private ObjectEndPoint _endPoint;
+  private ObjectID _oppositeObjectID;
+
+  // construction and disposing
+
+  public ObjectEndPointTest ()
+  {
+  }
+
+  // methods and properties
+
+  [SetUp]
+  public void SetUp ()
+  {
+    _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Order");
+    _oppositeObjectID = DomainObjectIDs.Order1;
+    
+    _endPoint = new ObjectEndPoint (_endPointID, _oppositeObjectID);    
+  }
+
+  [Test]
+  public void Initialize ()
+  {
+    Assert.AreEqual (_endPointID, _endPoint.ID);
+    Assert.AreEqual (_oppositeObjectID, _endPoint.OriginalOppositeObjectID);
+    Assert.AreEqual (_oppositeObjectID, _endPoint.OppositeObjectID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void InitializeWithInvalidRelationEndPointID ()
+  {
+    ObjectID id = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    ObjectEndPoint endPoint = new ObjectEndPoint (null, id);
+  }
+
+  [Test]
+  public void InitializeWithNullObjectID ()
+  {
+    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+
+    Assert.IsNull (endPoint.OriginalOppositeObjectID);
+    Assert.IsNull (endPoint.OppositeObjectID);
+  }
+
+  [Test]
+  public void ChangeOppositeObjectID ()
+  {
+    ObjectID newObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    _endPoint.OppositeObjectID = newObjectID;
+
+    Assert.AreSame (newObjectID, _endPoint.OppositeObjectID);
+    Assert.AreEqual (_oppositeObjectID, _endPoint.OriginalOppositeObjectID);
+  }
+
+  [Test]
+  public void HasChanged ()
+  {
+    Assert.IsFalse (_endPoint.HasChanged);
+
+    _endPoint.OppositeObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+    Assert.IsTrue (_endPoint.HasChanged);
+
+    _endPoint.OppositeObjectID = _oppositeObjectID;
+    Assert.IsFalse (_endPoint.HasChanged);
+  }
+
+  [Test]
+  public void HasChangedWithInitializedWithNull ()
+  {
+    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+
+    Assert.IsFalse (endPoint.HasChanged);
+  }
+
+  [Test]
+  public void HasChangedWithOldNullValue ()
+  {
+    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+    endPoint.OppositeObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
+
+    Assert.IsTrue (endPoint.HasChanged);
+  }
+
+  [Test]
+  public void HasChangedWithNewNullValue ()
+  {
+    _endPoint.OppositeObjectID = null;
+
+    Assert.IsTrue (_endPoint.HasChanged);
+  }
+}
+}
