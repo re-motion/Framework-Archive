@@ -248,7 +248,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   ///   information if <paramref name="interim"/> is <see langword="false"/>.
   /// </summary>
   /// <param name="interim">
-  ///   <see langword="true"/> to load the <see cref="Value"/> from the 
+  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
   ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
   /// </param>
   public override void LoadValue (bool interim)
@@ -269,7 +269,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Writes the <see cref="Value"/> into the 
   ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="true"/>.
+  ///   is <see langword="false"/>.
   /// </summary>
   /// <param name="interim">
   ///   <see langword="false"/> to write the <see cref="Value"/> into the 
