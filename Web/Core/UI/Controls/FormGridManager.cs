@@ -1159,24 +1159,24 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
+
+    NamingContainer.Load += new EventHandler(NamingContainer_Load);
+    NamingContainer.PreRender += new EventHandler(NamingContainer_PreRender);
   }
 
-  protected override void OnLoad (EventArgs e)
+  private void NamingContainer_Load (object sender, EventArgs e)
   {
-    base.OnLoad (e);
+    EnsureFormGridListPopulated();
     if (    ! ControlHelper.IsDesignMode (this, Context)
         &&  Page.IsPostBack
         &&  ! hasViewState)
     {
       throw new InvalidOperationException ("FormGrid '" + ID + "' did not receive a view state.");
     }
-
-    Page.PreRender += new EventHandler(Page_PreRender);
   }
 
-  private void Page_PreRender (object sender, EventArgs e)
+  private void NamingContainer_PreRender (object sender, EventArgs e)
   {
-    EnsureFormGridListPopulated();
     string key = typeof (FormGridManager).FullName + "_Style";
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
@@ -1187,13 +1187,22 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   }
 
   /// <summary>
-  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/> and <see cref="TransformIntoFormGridPostValidation"/>.
+  ///   Calls <see cref="EnsureTransformIntoFormGridPreLoadViewState"/>.
+  /// </summary>
+  private void Table_Load (object sender, EventArgs e)
+  {
+    string formGridID = ((HtmlTable) sender).UniqueID;
+    FormGrid formGrid = (FormGrid) _formGrids[formGridID];
+    EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+  }
+
+  /// <summary>
+  ///   Calls <see cref="TransformIntoFormGridPostValidation"/>.
   /// </summary>
   private void Table_PreRender (object sender, EventArgs e)
   {
     string formGridID = ((HtmlTable) sender).UniqueID;
     FormGrid formGrid = (FormGrid) _formGrids[formGridID];
-    EnsureTransformIntoFormGridPreLoadViewState (formGrid);
     TransformIntoFormGridPostValidation (formGrid);
   }
 
@@ -2696,8 +2705,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     {
       FormGridRow[] rows = CreateFormGridRows (table, _labelsColumn, _controlsColumn);
       _formGrids[table.UniqueID] = new FormGrid (table, rows, _labelsColumn, _controlsColumn);
+      table.Load += new EventHandler (Table_Load);
       table.PreRender += new EventHandler (Table_PreRender);
-
     }
   }
 
