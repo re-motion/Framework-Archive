@@ -19,10 +19,12 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary> This control can be used to display or edit date/time values. </summary>
 /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
 //  TODO: BocDateTimeValue: Try to extract the DatePickerButton functionality into a Control
-//    and add it to Rubicon.Web.UI.Controls.
+//      and add it to Rubicon.Web.UI.Controls.
 //  WORKAROUND: BocDateTimeValue: DatePicker only actived for Internet Explorer 5.5 and higher
-//    IFrame does not hidden with Firefox. Opera and Netscape not testet.
-//    Internet Explorer 5.01 does not open IFrame
+//      IFrame does not hidden with Firefox. Opera and Netscape not testet.
+//      Internet Explorer 5.01 does not open IFrame
+//  TODO: BocDateTimeValue: DatePicker only closes on DateClick if other Date selected
+//      Problem: Calendar only offers a SelectionChanged Event.
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -78,13 +80,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="TextBox"/> used in edit mode for the date component. </summary>
-  private TextBox _dateTextBox = null;
+  private TextBox _dateTextBox = new TextBox();
   /// <summary> The <see cref="TextBox"/> used in edit mode for the time component. </summary>
-  private TextBox _timeTextBox = null;
+  private TextBox _timeTextBox = new TextBox();
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
-  private Label _label = null;
+  private Label _label = new Label();
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
-  private Image _datePickerImage = null;
+  private Image _datePickerImage = new Image();
   /// <summary> The <see cref="BocDateTimeValueValidator"/> returned by <see cref="CreateValidators"/>. </summary>
   private BocDateTimeValueValidator _dateTimeValueValidator = new BocDateTimeValueValidator();
 
@@ -153,11 +155,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    _dateTextBox = new TextBox();
-    _timeTextBox = new TextBox();
-    _label = new Label();
-    _datePickerImage = new Image();
 
     _dateTextBox.ID = this.ID + "_Boc_DateTextBox";
     _dateTextBox.EnableViewState = false;
@@ -445,7 +442,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     if (_hasClientScript && ! isReadOnly)
     {
       string key = typeof (BocDateTimeValue).FullName;
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (key))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
@@ -684,19 +681,20 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           _datePickerImage.ImageUrl = DatePickerImageUrl;  
         else
           _datePickerImage.ImageUrl = imageUrl;
-      }
-      else if (_hasClientScript)
-      {
-        string pickerActionButton = "this";
-        string pickerActionContainer = "document.all['" + ClientID + "']";
-        string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
-        string pickerActionFrame = "document.all['" + ClientID + "_frame']";
-        string pickerAction = "DatePicker_ShowDatePicker("
-            + pickerActionButton + ", "
-            + pickerActionContainer + ", "
-            + pickerActionTarget + ", "
-            + pickerActionFrame + ");";
-        _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+
+       if (_hasClientScript)
+       {
+          string pickerActionButton = "this";
+          string pickerActionContainer = "document.all['" + ClientID + "']";
+          string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
+          string pickerActionFrame = "document.all['" + ClientID + "_frame']";
+          string pickerAction = "DatePicker_ShowDatePicker("
+              + pickerActionButton + ", "
+              + pickerActionContainer + ", "
+              + pickerActionTarget + ", "
+              + pickerActionFrame + ");";
+          _datePickerImage.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = pickerAction;
+        }
       }
       else
       {
@@ -913,6 +911,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
+    RefreshPropertiesFromObjectModel();
+  }
+
+  /// <summary>
+  ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
+  ///   <see cref="Property"/>.
+  /// </summary>
+  private void RefreshPropertiesFromObjectModel()
+  {
     if (_valueType == BocDateTimeValueType.Undefined)
       _actualValueType = GetBocDateTimeValueType (Property);
   }
@@ -1003,7 +1010,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
         try
         {
-          dateTimeValue = DateTime.Parse (InternalDateValue).Date;
+          if (   ! ControlHelper.IsDesignMode (this, Context)
+              || InternalDateValue != string.Empty)
+          {
+            dateTimeValue = DateTime.Parse (InternalDateValue).Date;
+          }
         }
         catch (FormatException ex)
         {
@@ -1019,7 +1030,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {        
         try
         {
-          dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+          if (   ! ControlHelper.IsDesignMode (this, Context)
+              || InternalDateValue != string.Empty)
+          {
+            dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+          }
+        }
+        catch (FormatException ex)
+        {
+          throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
+        }
 
           //  Restore the seconds if the control does not display them.
           if (   ! ShowSeconds
@@ -1027,11 +1047,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
           {
             dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Second);
           }
-        }
-        catch (FormatException ex)
-        {
-          throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
-        }
       }
       else if (    ActualValueType == BocDateTimeValueType.Date
                 && ! _savedDateTimeValue.IsNull)
@@ -1363,6 +1378,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get 
     {
       Binding.EvaluateBinding();
+      RefreshPropertiesFromObjectModel();
+
       return _actualValueType; 
     }
   }

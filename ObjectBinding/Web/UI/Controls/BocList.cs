@@ -29,7 +29,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 // TODO: BocList: Details View
 // TODO: BocList: IsDirty
 // TODO: Accessibility for Buttons (Alt-Tags)
-// TODO: Shift+Click (Start) - Shift+Click (Stop) selects range
+// TODO: BocList: Shift+Click (Start) - Shift+Click (Stop) selects range
+// TODO: BocList: Sorting: Last sorting criteria: RowIndex
+// TODO: BocList: TypeResolution using TypeUtility
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -198,7 +200,7 @@ public class BocList:
 
   // static members
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectProperty) };
+      typeof (IBusinessObjectReferenceProperty) };
   
   /// <summary> The log4net logger. </summary>
   private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -252,7 +254,7 @@ public class BocList:
   ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
   ///   <see cref="IBusinessObject"/>. 
   /// </summary>
-  private BocColumnDefinition[] _allPropertyColumns = new BocColumnDefinition[0];
+  private BocColumnDefinition[] _allPropertyColumns = null;
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _renderColumns;
 
@@ -550,12 +552,10 @@ public class BocList:
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnCommandClick/*' />
   protected virtual void OnCommandClick (string columnID, int listIndex, string businessObjectID)
   {
-    BocItemCommandClickEventHandler commandClickHandler = 
-      (BocItemCommandClickEventHandler) Events[EventCommandClick];
+    BocItemCommandClickEventHandler commandClickHandler = (BocItemCommandClickEventHandler) Events[EventCommandClick];
     if (commandClickHandler != null)
     {
-      BocItemCommandClickEventArgs e = 
-        new BocItemCommandClickEventArgs (columnID, listIndex, businessObjectID);
+      BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (columnID, listIndex, businessObjectID);
       commandClickHandler (this, e);
     }
   }
@@ -1259,8 +1259,7 @@ public class BocList:
     bool isReadOnly = IsReadOnly;
 
     string objectID = null;
-    IBusinessObjectWithIdentity businessObjectWithIdentity = 
-      businessObject as IBusinessObjectWithIdentity;
+    IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
 
@@ -1551,27 +1550,30 @@ public class BocList:
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
-    if (DataSource != null)
-    {
-      IBusinessObjectProperty[] properties = 
-        DataSource.BusinessObjectClass.GetPropertyDefinitions();
+    _allPropertyColumns = null;
+  }
 
-      _allPropertyColumns = new BocColumnDefinition[properties.Length];
-      for (int i = 0; i < properties.Length; i++)
-      {
-        IBusinessObjectProperty property = properties[i];
-        BocSimpleColumnDefinition column = new BocSimpleColumnDefinition ();
-        column.ColumnTitle = property.DisplayName;
-        column.PropertyPath = new BusinessObjectPropertyPath (
-          new IBusinessObjectProperty[] {property});
-        column.OwnerControl = this;
-        _allPropertyColumns[i] = column;
-      }
-    }
-    else
+  private BocColumnDefinition[] GetAllPropertyColumns()
+  {
+    if (_allPropertyColumns != null)
+      return _allPropertyColumns;
+
+    if (Property == null)
+      return new BocColumnDefinition[0];
+
+    IBusinessObjectProperty[] properties = 
+        ((IBusinessObjectReferenceProperty)Property).ReferenceClass.GetPropertyDefinitions();
+    _allPropertyColumns = new BocColumnDefinition[properties.Length];
+    for (int i = 0; i < properties.Length; i++)
     {
-      _allPropertyColumns = new BocColumnDefinition[0];
+      IBusinessObjectProperty property = properties[i];
+      BocSimpleColumnDefinition column = new BocSimpleColumnDefinition ();
+      column.ColumnTitle = property.DisplayName;
+      column.PropertyPath = new BusinessObjectPropertyPath (new IBusinessObjectProperty[] {property});
+      column.OwnerControl = this;
+      _allPropertyColumns[i] = column;
     }
+    return _allPropertyColumns;
   }
 
   /// <summary> Refreshes the <see cref="_additionalColumnsList"/>. </summary>
@@ -1583,8 +1585,7 @@ public class BocList:
     {
       for (int i = 0; i < _availableColumnDefinitionSets.Count; i++)
       {
-        BocColumnDefinitionSet columnDefinitionCollection = 
-          _availableColumnDefinitionSets[i];
+        BocColumnDefinitionSet columnDefinitionCollection = _availableColumnDefinitionSets[i];
 
         ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
         _additionalColumnsList.Items.Add (item);
@@ -1594,8 +1595,8 @@ public class BocList:
       {
         _selectedColumnDefinitionSetIndex = -1;
       }
-      else if (    _selectedColumnDefinitionSetIndex < 0
-                && _availableColumnDefinitionSets.Count > 0)
+      else if (   _selectedColumnDefinitionSetIndex < 0
+               && _availableColumnDefinitionSets.Count > 0)
       {
         _selectedColumnDefinitionSetIndex = 0;
       }
@@ -1664,7 +1665,7 @@ public class BocList:
   {
     BocColumnDefinition[] allPropertyColumns = null;
     if (_showAllProperties)
-      allPropertyColumns = _allPropertyColumns;
+      allPropertyColumns = GetAllPropertyColumns();
     else
       allPropertyColumns = new BocColumnDefinition[0];
 
@@ -1692,7 +1693,7 @@ public class BocList:
     {
       int fixedColumnCount = _fixedColumns.Count;
       if (_showAllProperties)
-        fixedColumnCount += _allPropertyColumns.Length;
+        fixedColumnCount += GetAllPropertyColumns().Length;
       ArrayList entriesToBeRemoved = new ArrayList();
       for (int idxSortingKeys = 0; idxSortingKeys < _sortingOrder.Count; idxSortingKeys++)
       {
@@ -1750,10 +1751,8 @@ public class BocList:
         if (! (_renderColumns[currentEntry.ColumnIndex] is BocValueColumnDefinition))
           throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + currentEntry.ColumnIndex + ".");
 
-        BocSimpleColumnDefinition simpleColumn = 
-            _renderColumns[currentEntry.ColumnIndex] as BocSimpleColumnDefinition;
-        BocCompoundColumnDefinition compoundColumn = 
-            _renderColumns[currentEntry.ColumnIndex] as BocCompoundColumnDefinition;
+        BocSimpleColumnDefinition simpleColumn = _renderColumns[currentEntry.ColumnIndex] as BocSimpleColumnDefinition;
+        BocCompoundColumnDefinition compoundColumn = _renderColumns[currentEntry.ColumnIndex] as BocCompoundColumnDefinition;
         
         if (simpleColumn != null)
         {
@@ -1951,6 +1950,25 @@ public class BocList:
     }
   }
 
+  /// <summary>
+  ///   The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to.
+  /// </summary>
+  /// <remarks>
+  ///   Explicit setting of <see cref="Property"/> is not offically supported.
+  /// </remarks>
+  /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
+  public new IBusinessObjectReferenceProperty Property
+  {
+    get { return (IBusinessObjectReferenceProperty) base.Property; }
+    set 
+    {
+      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
+      if (value.IsList == false)
+        throw new ArgumentException ("Only properties supporting IList can be assigned to the BocList.", "value");
+      base.Property = (IBusinessObjectReferenceProperty) value; 
+    }
+  }
+
   /// <summary> Gets or sets the current value. </summary>
   /// <value> An object implementing <see cref="IList"/>. </value>
   [Browsable (false)]
@@ -2052,9 +2070,7 @@ public class BocList:
     set
     {
       _selectedColumnDefinitionSet = value; 
-
       ArgumentUtility.CheckNotNullOrEmpty ("AvailableColumnDefinitionSets", _availableColumnDefinitionSets);
-      
       _selectedColumnDefinitionSetIndex = -1;
 
       if (_selectedColumnDefinitionSet != null)
