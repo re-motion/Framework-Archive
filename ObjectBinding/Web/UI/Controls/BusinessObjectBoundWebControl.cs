@@ -301,16 +301,21 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     if (! SupportsPropertyMultiplicity (property.IsList))
       return false;
 
-    bool isSupportedPropertyType = false;
-    foreach (Type supportedInterface in SupportedPropertyInterfaces)
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (property, SupportedPropertyInterfaces);
+  }
+
+  public static bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
+  {
+    bool isSupportedPropertyInterface = false;
+    foreach (Type supportedInterface in supportedPropertyInterfaces)
     {
       if (supportedInterface.IsAssignableFrom (property.GetType()))
       {
-        isSupportedPropertyType = true;
+        isSupportedPropertyInterface = true;
         break;
       }
     }
-    return isSupportedPropertyType;
+    return isSupportedPropertyInterface;
   }
 
   /// <summary>
