@@ -59,55 +59,29 @@ public class PropertyDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
-    Type propertyType = MappingUtility.MapType (mappingType);
+    TypeInfo typeInfo = new TypeInfo (mappingType, isNullable);
     
-    if (propertyType == typeof (string) && maxLength == NaInt32.Null)
+    if (typeInfo.Type == typeof (string) && maxLength == NaInt32.Null)
     {
       throw CreateMappingException (
           "Property '{0}' of type 'System.String' must have MaxLength defined.", propertyName);
     }
 
-    if (propertyType != typeof (string) && !maxLength.IsNull)
+    if (typeInfo.Type != typeof (string) && !maxLength.IsNull)
     {
       throw CreateMappingException (
-          "MaxLength parameter cannot be supplied with value of type '{0}'.", propertyType);
+          "MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
     }
 
     _propertyName = propertyName;
     _columnName = columnName;
-    _propertyType = GetPropertyType (propertyType, isNullable);
+    _propertyType = typeInfo.Type;
     _mappingType = mappingType;
     _isNullable = isNullable;
     _maxLength = maxLength;
   }
 
   // methods and properties
-
-  private Type GetPropertyType (Type type, bool isNullable)
-  {
-    // TODO: Move this method to TypeConversion. Review when adding new Na* types.
-    if (isNullable)
-    {
-      if (type == typeof (bool))
-        return typeof (NaBoolean);
-
-      if (type == typeof (int))
-        return typeof (NaInt32);
-
-      if (type == typeof (double))
-        return typeof (NaDouble);
-
-      if (type == typeof (DateTime))
-        return typeof (NaDateTime);
-
-      if (type == typeof (string) || type == typeof (ObjectID))
-        return type;
-
-      throw CreateNotImplementedException ("IsNullable cannot be set to true for type '{0}'.", type);
-    }
-
-    return type;
-  }
 
   private NotImplementedException CreateNotImplementedException (string message, params object[] args)
   {
