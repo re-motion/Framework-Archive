@@ -102,7 +102,7 @@ public class DataDropDownList: DropDownList, IResourceDispatchTarget
   /// <summary>
   /// Returns the value of the selected item, or -1 if no item or the empty item is selected.
   /// </summary>
-  public int SelectedValue
+  public new int SelectedValue
   {
     get
     {
