@@ -216,7 +216,7 @@
   <!--======================= PROJECTS =======================-->
 
   <target name="all" 
-      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web" />
+      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator" />
 
   <target name="forCooNet" 
       depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web" />
@@ -250,6 +250,22 @@
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
     <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="Data.DomainObjects.CodeGenerator" depends="Data.DomainObjects,initialize">
+    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator" />
+    <property name="project.dir" value="Data/DomainObjects/CodeGenerator" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="Data.DomainObjects.CodeGenerator.Console" depends="Data.DomainObjects.CodeGenerator,initialize">
+    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.Console" />
+    <property name="project.dir" value="Data/DomainObjects/CodeGenerator/Console" />
+    <property name="project.output" value="DOGen" />
+    <property name="project.extension" value="exe" />
     <call target="build" />
   </target>
 
