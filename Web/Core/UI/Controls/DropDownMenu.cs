@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
-
+//  TODO: Disabled Falg for menu items
 /*
   Edit
   Duplicate
@@ -87,7 +87,6 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private const string c_dropDownIcon = "DropDownMenuArrow.gif";
 
-  private string _groupID = "";
   private string _titleText = "";
   private string _titleIcon = "";
   private bool _isReadOnly = false;
@@ -96,15 +95,13 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private MenuItemCollection _menuItems;
 
-	public DropDownMenu (string groupID, Control ownerControl, Type[] supportedMenuItemTypes)
+	public DropDownMenu (Control ownerControl, Type[] supportedMenuItemTypes)
 	{
-    ArgumentUtility.CheckNotNullOrEmpty ("groupID", groupID);
-    _groupID = groupID;
     _menuItems = new MenuItemCollection (ownerControl, supportedMenuItemTypes);
 	}
 
-  public DropDownMenu (string groupID, Control ownerControl)
-    : this (groupID, ownerControl, new Type[] {typeof (MenuItem)})
+  public DropDownMenu (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (MenuItem)})
 	{
   }
 
@@ -188,12 +185,12 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       PageUtility.RegisterStartupScriptBlock (Page, key, script);
     }
 
-    key = typeof (DropDownMenu).FullName + _groupID;
+    key = typeof (DropDownMenu).FullName + ID;
     if (! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
       script.Append ("DropDownMenu_AddMenuInfo (\r\n\t");
-      script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", _groupID);
+      script.AppendFormat ("new DropDownMenu_MenuInfo ('{0}', new Array (\r\n", ClientID);
       bool isFirstItem = true;
 
       MenuItem[] menuItems;
@@ -288,9 +285,9 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
     string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
-    string script = "DropDownMenu_OnClick (this, '" + _groupID + "', " + getSelectionCount + ");";
+    string script = "DropDownMenu_OnClick (this, '" + ClientID + "', " + getSelectionCount + ");";
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
-    writer.AddAttribute ("id", ID + "_MenuDiv");
+    writer.AddAttribute ("id", ClientID + "_MenuDiv");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Menu-Div
 
     RenderHead (writer);
@@ -307,7 +304,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute ("position", "relative");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-    writer.AddAttribute ("id", ID + "_HeadDiv");
+    writer.AddAttribute ("id", ClientID + "_HeadDiv");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHead);
     writer.AddAttribute ("OnMouseOver", "DropDownMenu_OnHeadMouseOver (this)");
     writer.AddAttribute ("OnMouseOut", "DropDownMenu_OnHeadMouseOut (this)");
