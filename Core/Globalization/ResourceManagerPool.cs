@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 
+using Rubicon.Findit.Globalization.Globalization;
+
 namespace Rubicon.Findit.Globalization.Classes
 {
 
@@ -44,6 +46,8 @@ public sealed class ResourceDispatcher
 
     if (text == null)
       text = "###";
+
+    text = GlobalResources.ReplaceGlobalPlaceholders (text);
 
     return text;
   }
@@ -83,7 +87,7 @@ public sealed class ResourceDispatcher
             elementValues = new HybridDictionary ();
             elements[elementID] = elementValues;
           }
-          elementValues.Add (argument, resourceEntry.Value);
+          elementValues.Add (argument, GlobalResources.ReplaceGlobalPlaceholders ((string) resourceEntry.Value));
         }
       }
     }
