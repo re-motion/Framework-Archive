@@ -19,7 +19,7 @@ public class TestTabbedPersonDetailsUserControl :
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
-  public override IBusinessObjectDataSourceControl DataSource
+  public override IBusinessObjectDataSource DataSource
   {
     get { return ReflectionBusinessObjectDataSourceControl; }
   }
