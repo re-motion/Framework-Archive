@@ -15,15 +15,15 @@ div.dropDownMenuHeadFocus
   background-color: #fafafa;
 }
 
-span.dropDownMenuHeadTitle,
-span.dropDownMenuHeadTitleFocus
+.dropDownMenuHeadTitle,
+.dropDownMenuHeadTitleFocus
 {
   vertical-align: middle;
 }
 
 /*  */
-span.dropDownMenuHeadButton,
-span.dropDownMenuHeadButtonFocus
+.dropDownMenuHeadButton,
+.dropDownMenuHeadButtonFocus
 {
   vertical-align: middle;
   cursor: hand;
