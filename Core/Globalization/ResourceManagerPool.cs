@@ -16,19 +16,27 @@ public sealed class ResourceDispatcher
 
   // static members and constants
 
-  public static string GetResourceText (Control control, string name)
+  private static Hashtable s_resourceManagerCache = new Hashtable ();
+
+  public static string GetResourceText (Type objectType, string name)
   {
-    return GetResourceText (control, GetControlType (control), name);  
+    return GetResourceText (null, objectType, GetResourceName (objectType), name);
   }
 
-  public static string GetResourceText (Control control, Type controlType, string name)
+  public static string GetResourceText (object objectToGetResourceFor, string name)
   {
-    return GetResourceText (control, controlType, GetResourceName (control, controlType), name);
+    Type type = GetType (objectToGetResourceFor);
+
+    return GetResourceText (objectToGetResourceFor, type, GetResourceName (type), name);  
   }
 
-  public static string GetResourceText (Control control, Type controlType, string resourceName, string name)
+  public static string GetResourceText (
+      object objectToGetResourceFor, 
+      Type objectType, 
+      string resourceName, 
+      string name)
   {
-    ResourceManager rm = GetOrCreateResourceManager (controlType, resourceName);
+    ResourceManager rm = GetOrCreateResourceManager (objectType, resourceName);
 
 
     string text = rm.GetString (name, MultiLingualUtility.GetUICulture ());
@@ -41,12 +49,12 @@ public sealed class ResourceDispatcher
 
   public static void Dispatch (Control control)
   {
-    Dispatch (control, GetControlType (control));
+    Dispatch (control, GetType (control));
   }
 
   public static void Dispatch (Control control, Type controlType)
   {
-    Dispatch (control, controlType, GetResourceName (control, controlType));
+    Dispatch (control, controlType, GetResourceName (controlType));
   }
 
   public static void Dispatch (Control control, Type controlType, string resourceName)
@@ -54,7 +62,7 @@ public sealed class ResourceDispatcher
     // Hashtable<string elementID, IDictionary<string argument, string value> elementValues>
     IDictionary elements = new Hashtable (); 
 
-    ResourceSet resources = GetResourceSet (control, controlType, resourceName);
+    ResourceSet resources = GetResourceSet (controlType, resourceName);
 
     foreach (DictionaryEntry resourceEntry in resources)
     {
@@ -110,9 +118,9 @@ public sealed class ResourceDispatcher
     }
   }
 
-  private static Type GetControlType (Control control)
+  private static Type GetType (object objectToGetTypeFor)
   {
-    Type type = control.GetType();
+    Type type = objectToGetTypeFor.GetType();
     
     if (type != null && 
         typeof(Control).IsAssignableFrom (type) && 
@@ -125,9 +133,9 @@ public sealed class ResourceDispatcher
     return type;
   }
 
-  private static string GetResourceName (Control control, Type controlType)
+  private static string GetResourceName (Type objectType)
   {
-    ControlResourcesAttribute[] resourceAttributes = (ControlResourcesAttribute[]) controlType.GetCustomAttributes (
+    ControlResourcesAttribute[] resourceAttributes = (ControlResourcesAttribute[]) objectType.GetCustomAttributes (
       typeof (ControlResourcesAttribute), false);
 
     if (resourceAttributes.Length == 0)
@@ -136,15 +144,34 @@ public sealed class ResourceDispatcher
     return resourceAttributes[0].ResourceName;
   }
 
-  private static ResourceSet GetResourceSet (Control control, Type controlType, string resourceName)
+  private static ResourceSet GetResourceSet (Type objectType, string resourceName)
   {
-    ResourceManager rm = GetOrCreateResourceManager (controlType, resourceName);
+    ResourceManager rm = GetOrCreateResourceManager (objectType, resourceName);
 
     return rm.GetResourceSet (MultiLingualUtility.GetUICulture (), true, true);
   }
 
-  private static ResourceManager GetOrCreateResourceManager (Type controlType, string resourceName)
+  private static ResourceManager GetOrCreateResourceManager (Type objectType, string resourceName)
   {
+    if (s_resourceManagerCache.ContainsKey (resourceName))
+    {
+      return (ResourceManager) s_resourceManagerCache[resourceName];
+    }
+    else
+    {
+      ResourceManager rm = new ResourceManager (resourceName, objectType.Assembly);
+      if (rm == null)
+        throw new ApplicationException ("No resource with name " + resourceName + " found.");
+
+      lock (typeof (ResourceDispatcher))
+      {
+        s_resourceManagerCache[resourceName] = rm;
+      }
+
+      return rm;
+    }
+
+    /*
     if (HttpContext.Current.Application[resourceName] != null)
     {
       return (ResourceManager) HttpContext.Current.Application[resourceName];
@@ -159,6 +186,7 @@ public sealed class ResourceDispatcher
 
       return rm;
     }
+    */
   }
 
   // member fields
