@@ -39,7 +39,7 @@ public class PageUtility
       if (page.Session.IsNewSession)
         throw new SessionTimeoutException ();
       else
-        throw new SessionVariableNotFound (key);
+        throw new SessionVariableNotFoundException (key);
     }
 
     return o;
@@ -64,7 +64,7 @@ public class PageUtility
       if (page.Session.IsNewSession)
         throw new SessionTimeoutException ();
       else
-        throw new SessionVariableNotFound (key);
+        throw new SessionVariableNotFoundException (key);
     }
 
     return o;
@@ -318,15 +318,6 @@ public class PageUtility
 }
 
 [Serializable]
-public class SessionTimeoutException : ApplicationException
-{
-  public override string Message 
-  {
-    get { return "Session expired"; }
-  }
-}
-
-[Serializable]
 public class NoPageParametersException : ApplicationException
 {
   private Page _page;
@@ -377,11 +368,11 @@ public class NoPageTokenException : ApplicationException
 }
 
 [Serializable]
-public class SessionVariableNotFound : ApplicationException
+public class SessionVariableNotFoundException : ApplicationException
 {
   private string _key;
 
-  public SessionVariableNotFound (string key)
+  public SessionVariableNotFoundException (string key)
   {
     _key = key;
   }
@@ -397,6 +388,15 @@ public class SessionVariableNotFound : ApplicationException
     { 
       return string.Format ("The current session does not contain a key \"{0}\".", _key);
     }
+  }
+}
+
+[Serializable]
+public class SessionTimeoutException : ApplicationException
+{
+  public override string Message 
+  {
+    get { return "Session expired"; }
   }
 }
 

@@ -175,9 +175,8 @@ public class EntryField: Control
 
 //  private int _height = -1;
 //  private int _width = -1;
-  private bool _hide = false;
 
-	public string Label 
+  public string Label 
 	{
 		get { return _label; }
 		set { _label = value; }
@@ -201,12 +200,6 @@ public class EntryField: Control
   {
     get { return _title; }
     set { _title = value; }
-  }
-
-  public bool Hide
-  {
-    get { return _hide; }
-    set { _hide = value; }
   }
 
   /// <summary>
@@ -346,7 +339,7 @@ public class EntryField: Control
     }
 
     string tagStyle = string.Empty;
-    if (_hide)
+    if (! Visible)
       tagStyle = " style=\"display:none\"";
 
 		writer.WriteLine ("<tr{0}>", tagStyle);
