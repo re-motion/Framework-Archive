@@ -1,3 +1,24 @@
+3.1.0.0 (noch kein Build)
+=======
+
+- Rubicon.Data.TableModules unterstützt ab Version 3.1.0.0 auch Guids als ID-Spalten.
+  * ExtendedDropDownList unterstützt nun ebenfalls Guids als eindeutigen Identifier =>
+    Folgende Änderungen:
+      SelectedValue: Datentyp ist statt "int" jetzt "string" (wie Basisklasse DropDownList)
+      SelectedIntValue: Für Listen mit Datentyp "int" als eindeutigen Identifier
+      SelectedGuidValue: Für Listen mit Datentyp "Guid" als eindeutigen Identifier
+      Add (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
+      GetListItemByValue (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
+  * In DataDropDownList wurde folgendes geändert:
+      Property EmptyValue entfernt
+      SelectedValue, SelectedIntValue, SelectedGuidValue wie ExtendedDropDownList nur 
+      zusätzliches Handling für Leerzeile. Bei Leerzeilen werden folgende Werte retourniert:
+        SelectedValue: string.Empty
+        SelectedIntValue: -1
+        SelectedGuidValue: Guid.Empty 
+      Interne Implementierungen geändert.
+      
+        
 3.0.5.1
 =======
 

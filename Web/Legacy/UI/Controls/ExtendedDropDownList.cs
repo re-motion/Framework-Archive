@@ -34,19 +34,19 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
     }
 
     if (selectedValue != -1)
-      this.SelectedValue = selectedValue;
+      this.SelectedIntValue = selectedValue;
   }
 
-  public void Add (string text, int value)
+  public void Add (string text, object value)
   {
     this.Items.Add (new ListItem (text, value.ToString()));
   }
 
-  public ListItem GetListItemByValue (string value)
+  public ListItem GetListItemByValue (object value)
   {
     foreach (ListItem item in this.Items)
     {
-      if (item.Value == value)
+      if (item.Value.Equals (value.ToString ()))
       {
         return item;
       }
@@ -73,32 +73,38 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
     }
   }
 
-  public new int SelectedValue
+  public virtual int SelectedIntValue
   {
-    get 
-    { 
-      return int.Parse (base.SelectedValue); 
-    }
-    set 
-    {  
-      for (int i = 0; i < this.Items.Count; ++i)
-      {
-        try
-        {
-          if (value == int.Parse (this.Items[i].Value))
-          {
-            SelectedIndex = i;
-            return;
-          }
-        }
-        catch (FormatException)
-        {
-        }
-      }
+    get { return int.Parse (base.SelectedValue); }
+    set { SetSelectedValue (value); }
+  }
 
-      throw new ArgumentOutOfRangeException (
-        "value", value, "List does not contain an item with the specified value.");    
+  public virtual Guid SelectedGuidValue
+  {
+    get { return new Guid (base.SelectedValue); }
+    set { SetSelectedValue (value); }
+  }
+
+  public new string SelectedValue
+  {
+    get { return base.SelectedValue; }
+    set { SetSelectedValue (value); }
+  }
+
+
+  private void SetSelectedValue (object value)
+  {
+    for (int i = 0; i < this.Items.Count; ++i)
+    {
+      if (this.Items[i].Value.Equals (value.ToString ()))
+      {
+        SelectedIndex = i;
+        return;
+      }
     }
+
+    throw new ArgumentOutOfRangeException (
+        "value", value, "List does not contain an item with the specified value.");    
   }
 }
 }
