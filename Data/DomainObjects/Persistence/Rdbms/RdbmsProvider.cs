@@ -251,7 +251,7 @@ public abstract class RdbmsProvider : StorageProvider
     CheckStorageProviderID (id, "id");
     CheckObjectIDValue (id, "id");
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (id.ClassID);
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[id.ClassID];
     if (classDefinition == null)
     {
       throw CreateStorageProviderException ("Mapping does not contain a class definition with ID '{0}'.", 
