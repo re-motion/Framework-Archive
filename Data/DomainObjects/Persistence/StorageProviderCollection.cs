@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
-public class StorageProviderCollection : CollectionBase, IDisposable
+public class StorageProviderCollection : BaseCollection, IDisposable
 {
   // types
 

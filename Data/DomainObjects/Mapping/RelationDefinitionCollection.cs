@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-public class RelationDefinitionCollection : CollectionBase
+public class RelationDefinitionCollection : BaseCollection
 {
   // types
 
