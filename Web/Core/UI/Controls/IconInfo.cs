@@ -22,8 +22,24 @@ public sealed class IconInfo: ISerializable
     _height = height;
   }
 
+  public IconInfo (string url, string width, string height)
+    : this (url, new Unit (width), new Unit (height))
+  {
+  }
+
+  public IconInfo (string url)
+    : this (url, Unit.Empty, Unit.Empty)
+  {
+  }
+
+  public IconInfo ()
+    : this (string.Empty)
+  {
+  }
+
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue ("")]
+  [NotifyParentProperty (true)]
   public string Url
   {
     get { return _url; }
@@ -32,6 +48,7 @@ public sealed class IconInfo: ISerializable
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue (typeof (Unit), "")]
+  [NotifyParentProperty (true)]
   public Unit Width
   {
     get { return _width; }
@@ -40,6 +57,7 @@ public sealed class IconInfo: ISerializable
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue (typeof (Unit), "")]
+  [NotifyParentProperty (true)]
   public Unit Height
   {
     get { return _height; }
