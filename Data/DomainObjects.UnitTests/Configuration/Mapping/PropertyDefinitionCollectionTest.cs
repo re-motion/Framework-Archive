@@ -124,5 +124,13 @@ public class PropertyDefinitionCollectionTest
   {
     _collection.Contains ((PropertyDefinition) null);
   }
+
+  [Test]
+  public void ContainsColumName ()
+  {
+    _collection.Add (new PropertyDefinition ("PropertyName", "ColumnName", "int32"));
+
+    Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
+  }
 }
 }
