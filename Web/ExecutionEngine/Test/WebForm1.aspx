@@ -1,6 +1,6 @@
-<%@ Register TagPrefix="uc1" TagName="UserControl1" Src="UserControl1.ascx" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="uc1" TagName="UserControl1" Src="UserControl1.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -12,10 +12,12 @@
   </HEAD>
   <body MS_POSITIONING="GridLayout">
     <FORM id="Form" method="post" runat="server">
-      <asp:textbox id="TextBox1" style="Z-INDEX: 101; LEFT: 80px; POSITION: absolute; TOP: 48px" runat="server"></asp:textbox><asp:label id="Var2Label" style="Z-INDEX: 111; LEFT: 376px; POSITION: absolute; TOP: 56px"
-        runat="server" Height="32px" Width="488px"></asp:label><asp:label id="Label5" style="Z-INDEX: 110; LEFT: 288px; POSITION: absolute; TOP: 56px" runat="server">Var2</asp:label><asp:label id="Var1Label" style="Z-INDEX: 104; LEFT: 376px; POSITION: absolute; TOP: 24px"
-        runat="server" Height="32px" Width="488px"></asp:label><asp:button id="Stay" style="Z-INDEX: 102; LEFT: 40px; POSITION: absolute; TOP: 144px" runat="server"
-        Text="Stay"></asp:button><asp:button id="Next" style="Z-INDEX: 103; LEFT: 216px; POSITION: absolute; TOP: 144px" runat="server"
+      <asp:textbox id="TextBox1" style="Z-INDEX: 100; LEFT: 80px; POSITION: absolute; TOP: 48px" runat="server"></asp:textbox>
+      <asp:Button id="ThrowText" style="Z-INDEX: 118; LEFT: 128px; POSITION: absolute; TOP: 200px"
+        runat="server" Text='Throw ("test")'></asp:Button><asp:label id="Var2Label" style="Z-INDEX: 110; LEFT: 376px; POSITION: absolute; TOP: 56px"
+        runat="server" Height="32px" Width="488px"></asp:label><asp:label id="Label5" style="Z-INDEX: 109; LEFT: 288px; POSITION: absolute; TOP: 56px" runat="server">Var2</asp:label><asp:label id="Var1Label" style="Z-INDEX: 103; LEFT: 376px; POSITION: absolute; TOP: 24px"
+        runat="server" Height="32px" Width="488px"></asp:label><asp:button id="Stay" style="Z-INDEX: 101; LEFT: 40px; POSITION: absolute; TOP: 144px" runat="server"
+        Text="Stay"></asp:button><asp:button id="Next" style="Z-INDEX: 102; LEFT: 216px; POSITION: absolute; TOP: 144px" runat="server"
         Text="Next"></asp:button>
       <DIV style="WIDTH: 16px; HEIGHT: 16.5em"></DIV>
       <asp:TextBox id="SubNoReturnField" style="Z-INDEX: 117; LEFT: 904px; POSITION: absolute; TOP: 72px"
@@ -28,11 +30,11 @@
         runat="server" Width="488px"></asp:Label>
       <asp:Label id="Label1" style="Z-INDEX: 113; LEFT: 288px; POSITION: absolute; TOP: 88px" runat="server">RetVal</asp:Label>
       <uc1:UserControl1 id="UserControl11" runat="server"></uc1:UserControl1>
-      <asp:Button id="Throw" style="Z-INDEX: 112; LEFT: 56px; POSITION: absolute; TOP: 192px" runat="server"
+      <asp:Button id="Throw" style="Z-INDEX: 112; LEFT: 56px; POSITION: absolute; TOP: 200px" runat="server"
         Text="Throw"></asp:Button>
-      <asp:label id="Label3" style="Z-INDEX: 109; LEFT: 280px; POSITION: absolute; TOP: 128px" runat="server">Stack</asp:label><asp:label id="Label2" style="Z-INDEX: 108; LEFT: 288px; POSITION: absolute; TOP: 24px" runat="server">Var1</asp:label><asp:label id="StackLabel" style="Z-INDEX: 107; LEFT: 376px; POSITION: absolute; TOP: 128px"
-        runat="server" Height="168px" Width="480px"></asp:label><asp:button id="Sub" style="Z-INDEX: 106; LEFT: 96px; POSITION: absolute; TOP: 144px" runat="server"
-        Text="Sub"></asp:button><asp:checkbox id="IsPostBackCheck" style="Z-INDEX: 105; LEFT: 88px; POSITION: absolute; TOP: 96px"
+      <asp:label id="Label3" style="Z-INDEX: 108; LEFT: 280px; POSITION: absolute; TOP: 128px" runat="server">Stack</asp:label><asp:label id="Label2" style="Z-INDEX: 107; LEFT: 288px; POSITION: absolute; TOP: 24px" runat="server">Var1</asp:label><asp:label id="StackLabel" style="Z-INDEX: 106; LEFT: 376px; POSITION: absolute; TOP: 128px"
+        runat="server" Height="168px" Width="480px"></asp:label><asp:button id="Sub" style="Z-INDEX: 105; LEFT: 96px; POSITION: absolute; TOP: 144px" runat="server"
+        Text="Sub"></asp:button><asp:checkbox id="IsPostBackCheck" style="Z-INDEX: 104; LEFT: 88px; POSITION: absolute; TOP: 96px"
         runat="server" Text="IsPostBack" Enabled="False"></asp:checkbox>
     </FORM>
   </body>

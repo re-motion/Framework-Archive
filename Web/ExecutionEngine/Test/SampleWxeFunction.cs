@@ -28,8 +28,13 @@
 //   }
 //   catch (ApplicationException e)
 //   {
-//     Var1 = "Exception: " + e.Message;
-// 
+//     if (e.Message != null && e.Message.Length > 0)
+//     {
+//       Var1 = e.Message;
+//       WxePageStep ("WebForm1.aspx");
+//     }
+//
+//     Var1 = "Exception caught.";
 //     WxePageStep ("WebForm1.aspx");
 //   }
 //   finally 
@@ -142,12 +147,32 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
     {
       SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
 
-      void Step1 (WxeContext context)
+      class Step1: WxeIf 
       {
-        Function.Var1 = "Exception: " + Exception.Message;
+        SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
+
+        bool If ()
+        {
+          return CurrentException.Message != null && CurrentException.Message.Length > 0;
+        }
+        class Then: WxeStepList
+        {
+          SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
+
+          void Step1()
+          {
+            Function.Var1 = CurrentException.Message;
+          }
+          WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+        }
       }
 
-      WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+      void Step2 (WxeContext context)
+      {
+        Function.Var1 = "Exception caught.";
+      }
+
+      WxeStep Step3 = new WxePageStep ("WebForm1.aspx");
     }
 
     class Finally: WxeFinallyBlock

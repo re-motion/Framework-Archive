@@ -39,6 +39,7 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Button SubExtButton;
     protected System.Web.UI.WebControls.Button SubNoReturnButton;
     protected System.Web.UI.WebControls.TextBox SubNoReturnField;
+    protected System.Web.UI.WebControls.Button ThrowText;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -81,11 +82,12 @@ namespace Rubicon.PageTransition
 		{    
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
+      this.SubNoReturnField.TextChanged += new System.EventHandler(this.SubNoReturnField_TextChanged);
+      this.SubNoReturnButton.Click += new System.EventHandler(this.SubNoReturnButton_Click);
       this.SubExtButton.Click += new System.EventHandler(this.SubExtButton_Click);
       this.Throw.Click += new System.EventHandler(this.Throw_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);
-      this.SubNoReturnButton.Click += new System.EventHandler(this.SubNoReturnButton_Click);
-      this.SubNoReturnField.TextChanged += new System.EventHandler(this.SubNoReturnField_TextChanged);
+      this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
@@ -120,7 +122,12 @@ namespace Rubicon.PageTransition
 
     private void Throw_Click (object sender, System.EventArgs e)
     {
-      throw new ApplicationException ("test exception");
+      throw new ApplicationException (string.Empty);
+    }
+
+    private void ThrowText_Click(object sender, System.EventArgs e)
+    {
+      throw new ApplicationException ("test");
     }
 
     private void SubExtButton_Click(object sender, System.EventArgs e)
