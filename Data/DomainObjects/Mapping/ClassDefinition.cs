@@ -265,6 +265,7 @@ public class ClassDefinition
 	{
 		get { return _propertyDefinitions; }
 	}
+
   public RelationDefinitionCollection MyRelationDefinitions
   {
     get { return _relationDefinitions; }

@@ -53,7 +53,7 @@ public class ClassDefinitionTest
   [Test]
   public void GetAllRelationDefinitions ()
   {
-    RelationDefinitionCollection relations = _distributorClass.GetAllRelationDefinitions ();
+    RelationDefinitionCollection relations = _distributorClass.GetRelationDefinitions ();
  
     Assert.IsNotNull (relations);
     Assert.AreEqual (5, relations.Count);
@@ -267,7 +267,7 @@ public class ClassDefinitionTest
   [Test]
   public void GetAllRelationEndPointDefinitions ()
   {
-    IRelationEndPointDefinition[] relationEndPointDefinitions = _orderClass.GetAllRelationEndPointDefinitions ();
+    IRelationEndPointDefinition[] relationEndPointDefinitions = _orderClass.GetRelationEndPointDefinitions ();
 
     IRelationEndPointDefinition customerEndPoint = _orderClass.GetRelationEndPointDefinition ("Customer");
     IRelationEndPointDefinition orderTicketEndPoint = _orderClass.GetRelationEndPointDefinition ("OrderTicket");
@@ -284,7 +284,7 @@ public class ClassDefinitionTest
   [Test]
   public void GetRelationEndPointDefinitions ()
   {
-    IRelationEndPointDefinition[] relationEndPointDefinitions = _distributorClass.GetRelationEndPointDefinitions ();
+    IRelationEndPointDefinition[] relationEndPointDefinitions = _distributorClass.GetMyRelationEndPointDefinitions ();
 
     Assert.IsNotNull (relationEndPointDefinitions);
     Assert.AreEqual (1, relationEndPointDefinitions.Length);
@@ -294,7 +294,7 @@ public class ClassDefinitionTest
   [Test]
   public void GetAllRelationEndPointDefinitionsWithInheritance ()
   {
-    IRelationEndPointDefinition[] relationEndPointDefinitions = _distributorClass.GetAllRelationEndPointDefinitions ();
+    IRelationEndPointDefinition[] relationEndPointDefinitions = _distributorClass.GetRelationEndPointDefinitions ();
 
     IRelationEndPointDefinition classWithoutRelatedClassIDColumnEndPoint = _distributorClass.GetRelationEndPointDefinition ("ClassWithoutRelatedClassIDColumn");
     IRelationEndPointDefinition contactPersonEndPoint = _distributorClass.GetRelationEndPointDefinition ("ContactPerson");
