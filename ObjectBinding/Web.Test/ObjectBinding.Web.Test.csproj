@@ -576,6 +576,38 @@
                     RelPath = "Globalization\TestBasePage.resx"
                     BuildAction = "EmbeddedResource"
                 />
+                <File
+                    RelPath = "Images\CopyItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\CopyItemDisabled.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\DeleteItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\DeleteItemDisabled.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\EditItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\NullIcon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\OBRTest.Job.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\OBRTest.Person.gif"
+                    BuildAction = "Content"
+                />
             </Include>
         </Files>
     </CSHARP>
