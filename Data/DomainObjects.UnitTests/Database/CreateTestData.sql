@@ -249,6 +249,10 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
     values ('{2E8AE776-DC3A-45a5-9B0C-35900CC78FDC}', 'Ceo', 'Gitti Linzer', 
     '{247206C3-7B48-4e17-91DD-3363B568D7E4}', 'Distributor')
 
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{FD1B587C-3E26-43f8-9866-8B770194D70F}', 'Ceo', 'Harry Fleischer', 
+    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer')
+
 
 -- ClassWithoutRelatedClassIDColumn
 insert into [TableWithoutRelatedClassIDColumn] (ID, ClassID, PartnerID) 

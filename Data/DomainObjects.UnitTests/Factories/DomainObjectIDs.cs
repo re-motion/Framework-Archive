@@ -154,7 +154,7 @@ public sealed class DomainObjectIDs
 
 
   // IndustrialSector: -
-  // Ceo: Ceo6
+  // Ceo: Ceo12
   // Orders: Order3, Order4
   public static readonly ObjectID Customer4 = new ObjectID (
     DatabaseTest.c_testDomainProviderID, "Customer", new Guid ("{B3F0A333-EC2A-4ddd-9035-9ADA34052450}"));
@@ -353,6 +353,10 @@ public sealed class DomainObjectIDs
   // Company: Distributor2
   public static readonly ObjectID Ceo11 = new ObjectID (
       DatabaseTest.c_testDomainProviderID, "Ceo", new Guid ("{2E8AE776-DC3A-45a5-9B0C-35900CC78FDC}"));
+
+  // Company: Customer4
+  public static readonly ObjectID Ceo12 = new ObjectID (
+      DatabaseTest.c_testDomainProviderID, "Ceo", new Guid ("{FD1B587C-3E26-43f8-9866-8B770194D70F}"));
   
   #endregion
 
