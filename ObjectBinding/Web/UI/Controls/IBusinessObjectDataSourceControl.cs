@@ -7,11 +7,11 @@ using Rubicon.ObjectBinding;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-public interface IBusinessObjectDataSourceControl : IBusinessObjectDataSource, IControl
+public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IControl
 {
 }
 
-public abstract class BusinessObjectDataSourceControl : Control, IBusinessObjectDataSourceControl
+public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectDataSourceControl
 {
   protected override void Render (HtmlTextWriter writer)
   {
@@ -20,22 +20,22 @@ public abstract class BusinessObjectDataSourceControl : Control, IBusinessObject
 
   public virtual void LoadValues(bool interim)
   {
-    DataSource.LoadValues (interim);
+    GetDataSource().LoadValues (interim);
   }
 
   public virtual void SaveValues (bool interim)
   {
-    DataSource.SaveValues (interim);
+    GetDataSource().SaveValues (interim);
   }
 
   public virtual void Register (IBusinessObjectBoundControl control)
   {
-    DataSource.Register (control);
+    GetDataSource().Register (control);
   }
 
   public virtual void Unregister (IBusinessObjectBoundControl control)
   {
-    DataSource.Unregister (control);
+    GetDataSource().Unregister (control);
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -43,33 +43,33 @@ public abstract class BusinessObjectDataSourceControl : Control, IBusinessObject
   [DefaultValue(true)]
   public virtual bool EditMode
   {
-    get { return DataSource.EditMode; }
-    set { DataSource.EditMode = value; }
+    get { return GetDataSource().EditMode; }
+    set { GetDataSource().EditMode = value; }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public virtual IBusinessObject BusinessObject
   {
-    get { return DataSource.BusinessObject; }
-    set { DataSource.BusinessObject = value; }
+    get { return GetDataSource().BusinessObject; }
+    set { GetDataSource().BusinessObject = value; }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public virtual IBusinessObjectClass BusinessObjectClass
   {
-    get { return DataSource.BusinessObjectClass; }
+    get { return GetDataSource().BusinessObjectClass; }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public virtual IBusinessObjectProvider BusinessObjectProvider
   {
-    get { return DataSource.BusinessObjectProvider; }
+    get { return GetDataSource().BusinessObjectProvider; }
   }
 
-  protected abstract IBusinessObjectDataSource GetDataSource()
+  protected abstract IBusinessObjectDataSource GetDataSource();
 }
 
 }
