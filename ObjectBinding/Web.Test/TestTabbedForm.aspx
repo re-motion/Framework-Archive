@@ -1,8 +1,8 @@
-<%@ Register TagPrefix="iuc" TagName="CompleteBocTestUserControl" Src="CompleteBocTestUserControl.ascx" %>
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm" smartNavigation="True"%>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm" smartNavigation="True"%>
+<%@ Register TagPrefix="iuc" TagName="CompleteBocTestUserControl" Src="CompleteBocTestUserControl.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -23,9 +23,8 @@
 <asp:linkbutton id=CancelButton runat="server">Cancel</asp:linkbutton></div><rwc:validationstateviewer id=ValidationStateViewer runat="server" DESIGNTIMEDRAGDROP="119" visible="true"></rwc:validationstateviewer>
 <rwc:webtabstrip id=PagesTabStrip runat="server" width="100%" tabspanesize="4"></rwc:webtabstrip>
 <p></p>
-<rwc:tabbedMultiView id=MultiView runat="server" SelectedIndex="-1"></rwc:tabbedMultiView>
+<rwc:tabbedMultiView id=MultiView runat="server" SelectedIndex="-1" ></rwc:tabbedMultiView>
 <asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button>
-<asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form>
-</FORM>
+<asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form></FORM>
   </body>
 </html>
