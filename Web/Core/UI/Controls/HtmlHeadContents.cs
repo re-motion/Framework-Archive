@@ -45,7 +45,6 @@ public class HtmlHeadContents : Control
         control.RenderControl(writer);
         writer.WriteLine();
      }
-
     }
   }
 
