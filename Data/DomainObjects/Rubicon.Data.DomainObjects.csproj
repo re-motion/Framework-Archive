@@ -158,16 +158,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MandatoryMappingTypeNotFoundException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MandatoryTypeNotFoundException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "mapping.xsd"
                     BuildAction = "None"
                 />
@@ -377,6 +367,16 @@
                 />
                 <File
                     RelPath = "Mapping\IRelationEndPointDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Mapping\MandatoryMappingTypeNotFoundException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Mapping\MandatoryTypeNotFoundException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
