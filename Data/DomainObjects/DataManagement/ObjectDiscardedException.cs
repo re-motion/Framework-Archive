@@ -5,6 +5,23 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
+/// <summary>
+/// The exception that is thrown when properties or methods of a discarded object are accessed.
+/// </summary>
+/// <remarks>
+/// An object is discarded in one of the following situations:
+/// <list type="buttons">
+///   <description>
+///     A new <see cref="DomainObject"/> is created and the <see cref="ClientTransaction"/> has been rolled back.
+///   </description>
+///   <description>
+///     A new <see cref="DomainObject"/> is created and deleted.
+///   </description>
+///   <description>
+///     An existing <see cref="DomainObject"/> is deleted and the <see cref="ClientTransaction"/> has been committed.
+///   </description>
+/// </list>
+/// </remarks>
 [Serializable]
 public class ObjectDiscardedException : DomainObjectException
 {
@@ -48,6 +65,9 @@ public class ObjectDiscardedException : DomainObjectException
 
   // methods and properties
 
+  /// <summary>
+  /// The <see cref="ObjectID"/> of the object that caused the exception.
+  /// </summary>
   public ObjectID ID
   {
     get { return _id; }
