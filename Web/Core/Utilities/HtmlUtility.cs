@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI.Utilities
+namespace Rubicon.Web.Utilities
 {
 public class HtmlUtility
 {
