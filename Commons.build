@@ -88,7 +88,18 @@
     <buildversion versionfile="build/buildversion.xml" increment="true" />
     <echo message="new version is ${build.version.noconfig}"/>
   </target>
-  
+
+  <!--======================= LABEL =======================-->
+  <target name="label">
+    <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <echo message="labeling with ${build.version.noconfig}"/>
+    <exec program="SS" append="true" commandline="Label -L${build.version.noconfig} -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32">
+      <environment>
+        <variable name="SSDIR" value="\\at-vie-dc-02\Development\VSSDB\rubicon" />
+      </environment>  
+    </exec>
+  </target>
+
   <!--======================= VS.NET =======================-->
   <target name="preparevs">
     <call target="setdocumentation" />
