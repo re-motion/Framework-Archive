@@ -42,6 +42,7 @@ public class BocList:
   private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
   private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
   private const string c_dropDownMenuIDSuffix = "_Boc_DropDownMenu";
+  private const string c_dropDownMenuGroupID = "BocList";
 
   /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
   private const string c_eventCommandPrefix = "Event=";
@@ -217,7 +218,7 @@ public class BocList:
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _additionalColumnsList = new DropDownList();
 
-  private DropDownMenu _dropDownMenu = new DropDownMenu();
+  private DropDownMenu _dropDownMenu = new DropDownMenu (c_dropDownMenuGroupID);
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -818,11 +819,14 @@ public class BocList:
   {
     if (_showAdditionalColumnsList)
     {
+      writer.AddStyleAttribute ("position", "relative");
+      writer.AddStyleAttribute ("z-index", "0");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.Write (_additionalColumnsTitle + c_whiteSpace);
       if (IsDesignMode && _additionalColumnsListWidth.IsEmpty)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
+      _additionalColumnsList.Style["z-index"] = "0";
       _additionalColumnsList.RenderControl (writer);
       writer.RenderEndTag();
     }
@@ -1068,7 +1072,8 @@ public class BocList:
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
     //  TODO: Browser Switch: Css2.1: 100%, IE 5.01: auto
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    if (! (writer is Html32TextWriter))
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
