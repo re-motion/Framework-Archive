@@ -54,5 +54,27 @@ public class ClassForRelationTest : BindableDomainObject
   {
     get { return null; }
   }
+
+  public ClassWithAllDataTypes ClassWithAllDataTypesMandatory
+  {
+    get { return (ClassWithAllDataTypes) GetRelatedObject ("ClassWithAllDataTypesMandatory"); }
+    set { SetRelatedObject ("ClassWithAllDataTypesMandatory", value); }
+  }
+
+  public ClassWithAllDataTypes ClassWithAllDataTypesOptional
+  {
+    get { return (ClassWithAllDataTypes) GetRelatedObject ("ClassWithAllDataTypesOptional"); }
+    set { SetRelatedObject ("ClassWithAllDataTypesOptional", value); }
+  }
+
+  public DomainObjectCollection ClassesWithAllDataTypesMandatoryNavigateOnly
+  {
+    get { return GetRelatedObjects ("ClassesWithAllDataTypesMandatoryNavigateOnly"); }
+  }
+
+  public DomainObjectCollection ClassesWithAllDataTypesOptionalNavigateOnly
+  {
+    get { return GetRelatedObjects ("ClassesWithAllDataTypesOptionalNavigateOnly"); }
+  }
 }
 }
