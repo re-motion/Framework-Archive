@@ -1,3 +1,19 @@
+1.1.26.0
+========
+
+- Rubicon.Web.UI.HtmlHeadAppender
+  * Neue Klasse
+  * Bietet die Möglichkeit, Elemente in den HTML Head einzuhängen.
+  * Registrieren: HtmlHeadAppender.Current.Register...(key, ...)
+  * Die registierten Elemente werden mit Hilfe des Controls HtmlHeadContents gerendert.
+  * Sämtliche Elemente müssen vor Begin der Render-Phase registriert werden.
+
+- Rubicon.Web.UI.Controls.HtmlHeadContents
+  * Neue Klasse
+  * Rendered die Elemente, welche über den HtmlHeadAppender registriert wurden.
+  * Verwendung: HtmlHeadContents wird als Servercontrol in den HTML Head der ASPX-Seite eingefügt:
+    <{0}:HtmlHeadContents runat="server" id="HtmlHeadContents"></{0}:HtmlHeadContents>
+    
 1.1.24.0
 ========
 
@@ -9,7 +25,7 @@
 
 - UI.Controls.DatePickerPage
   * Neue Klasse
-  * bietet zusammen mit Res\UI\DatePickerForm.aspx und Res\Html\DatePicker.js einen Kalender
+  * Bietet zusammen mit Res\UI\DatePickerForm.aspx und Res\Html\DatePicker.js einen Kalender
     als IFrame an.
   * Aufruf über die Funktion ShowDatePicker in DatePicker.js.
   
