@@ -42,14 +42,34 @@ public class Query
 
   // methods and properties
 
+  public QueryDefinition Definition 
+  {
+    get { return _definition; }
+  }
+
   public string QueryID
   {
     get { return _definition.QueryID; }
   }
 
-  public QueryDefinition Definition 
+  public Type CollectionType 
   {
-    get { return _definition; }
+    get { return _definition.CollectionType; }
+  }
+
+  public QueryType QueryType 
+  {
+    get { return _definition.QueryType; }
+  }
+
+  public string Statement 
+  {
+    get { return _definition.Statement; }
+  }
+
+  public string StorageProviderID
+  {
+    get { return _definition.StorageProviderID; }
   }
 
   public QueryParameterCollection Parameters

@@ -37,6 +37,9 @@ public class QueryDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
     ArgumentUtility.CheckValidEnumValue (queryType, "queryType");
 
+    // TODO: If querytype = collection and collectionType = null, use DomainObjectCollection
+    // If qureytype = value and collectionType != null raise exception
+
     _queryID = queryID;
     _storageProviderID = storageProviderID;
     _statement = statement;

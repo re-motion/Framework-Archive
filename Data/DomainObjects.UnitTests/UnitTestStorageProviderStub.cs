@@ -4,6 +4,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
@@ -30,6 +31,11 @@ public class UnitTestStorageProviderStub : StorageProvider
     PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
     container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
     return container;
+  }
+
+  public override object ExecuteScalarQuery (Query query)
+  {
+    return null;
   }
 
   public override void Save (DataContainerCollection dataContainers)

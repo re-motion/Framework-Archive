@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
@@ -154,6 +155,29 @@ public abstract class RdbmsProvider : StorageProvider
     finally
     {
       DisposeTransaction ();
+    }
+  }
+
+  public override object ExecuteScalarQuery (Query query)
+  {
+    CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("query", query);
+
+    Connect ();
+
+    using (IDbCommand command = _connection.CreateCommand ())
+    {
+      command.CommandText = query.Statement;
+
+      try
+      {
+        return command.ExecuteScalar ();
+      }
+      catch (Exception e)
+      {
+        throw CreateStorageProviderException (
+            e, "Error while executing SQL command for query '{0}'.", query.QueryID);
+      }
     }
   }
 

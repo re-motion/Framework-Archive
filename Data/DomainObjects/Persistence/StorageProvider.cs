@@ -3,6 +3,7 @@ using System;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
@@ -60,6 +61,7 @@ public abstract class StorageProvider : IDisposable
   public abstract void Commit ();
   public abstract void Rollback ();
   public abstract DataContainer CreateNewDataContainer (ClassDefinition classDefinition);
+  public abstract object ExecuteScalarQuery (Query query);
 
   // methods and properties
 

@@ -34,6 +34,10 @@ public class QueryTest
     QueryDefinition definition = QueryConfiguration.Current["OrderQuery"];
     Assert.AreSame (definition, query.Definition);
     Assert.AreEqual (definition.QueryID, query.QueryID);
+    Assert.AreEqual (definition.CollectionType, query.CollectionType);
+    Assert.AreEqual (definition.QueryType, query.QueryType);
+    Assert.AreEqual (definition.Statement, query.Statement);
+    Assert.AreEqual (definition.StorageProviderID, query.StorageProviderID);
     Assert.AreSame (parameters, query.Parameters);
   }
 
