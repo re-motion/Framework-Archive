@@ -254,16 +254,14 @@ public class ReflectionBusinessObjectRefernceProperty: ReflectionBusinessObjectP
 
   public IBusinessObjectWithIdentity[] SearchAvailableObjects(IBusinessObject obj, string searchStatement)
   {
-    // TODO:  Add ReflectionBusinessObjectRefernceProperty.SearchAvailableObjects implementation
-    return null;
+    return ReflectionBusinessObjectStorage.GetObjects (obj.GetType());
   }
 
   public bool SupportsSearchAvailableObjects
   {
     get
     {
-      // TODO:  Add ReflectionBusinessObjectRefernceProperty.SupportsSearchAvailableObjects getter implementation
-      return false;
+      return true;
     }
   }
 }

@@ -44,6 +44,33 @@ public class ReflectionBusinessObjectStorage
     }
   }
 
+  public static ReflectionBusinessObject[] GetObjects (Type concreteType)
+  {
+    ArrayList objects = new ArrayList();
+
+    string typeDir = Path.Combine (_rootPath, concreteType.FullName);
+    string[] filenames = Directory.GetFiles (typeDir);
+
+    foreach (string filename in filenames)
+    {
+      Guid id = Guid.Empty;
+      try 
+      {
+        id = new Guid (new FileInfo(filename).Name);
+      }
+      catch (FormatException)
+      {
+        continue;
+      }
+
+      ReflectionBusinessObject obj = ReflectionBusinessObjectStorage.GetObject (concreteType, id);
+      if (obj != null)
+        objects.Add (obj);
+    }
+
+    return (ReflectionBusinessObject[])objects.ToArray (typeof (ReflectionBusinessObject));
+  }
+
   public static Guid GetID (ReflectionBusinessObject obj)
   {
     if (obj == null)
