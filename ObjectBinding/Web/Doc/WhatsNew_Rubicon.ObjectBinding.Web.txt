@@ -3,9 +3,11 @@
 
 - BocList
   * OptionsMenu und ListMenu unterstützen WxeCommands
+  * OptionsMenu und ListMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
 
 - BocReferenceValue
   * OptionsMenu integriert
+  * OptionsMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
   
 1.1.36.0
 ========
