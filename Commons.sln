@@ -44,7 +44,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "Globalizat
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "Web.UI\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "Web.UI\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -99,7 +99,7 @@ Global
 		SccProjectName10 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
 		SccLocalPath10 = Globalization
 		CanCheckoutShared = false
-		SccProjectUniqueName11 = Web.UI\\Web.UI.csproj
+		SccProjectUniqueName11 = Web.UI\\Core\\Web.UI.csproj
 		SccProjectName11 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
 		SccLocalPath11 = Web.UI
 		CanCheckoutShared = false
