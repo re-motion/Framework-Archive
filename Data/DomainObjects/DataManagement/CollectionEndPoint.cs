@@ -18,6 +18,9 @@ public class CollectionEndPoint : RelationEndPoint
 
   // construction and disposing
 
+  // TODO: New ctor parameter: domainObject (e.g. order for a orderItem collection)
+  //       ctors with propertyName (see ObjectEndPoint)
+  //       Make domainObjects optional and use ClientTx, if not provided
   public CollectionEndPoint (DomainObjectCollection domainObjects, VirtualRelationEndPointDefinition definition)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);

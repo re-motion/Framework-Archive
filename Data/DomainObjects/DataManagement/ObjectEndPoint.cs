@@ -17,6 +17,9 @@ public class ObjectEndPoint : RelationEndPoint, INullable
 
   // construction and disposing
 
+  // TODO: New ctor parameter: destinationDomainObject
+  //       Make destinationDomainObject optional and use ClientTx, if not provided
+
   public ObjectEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
     : this (domainObject.DataContainer, definition)
   {
