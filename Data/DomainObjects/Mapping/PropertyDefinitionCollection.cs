@@ -38,6 +38,19 @@ public class PropertyDefinitionCollection : CollectionBase
 
   // methods and properties
 
+  public bool ContainsColumnName (string columnName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
+
+    foreach (PropertyDefinition propertyDefinition in this)
+    {
+      if (propertyDefinition.ColumnName == columnName)
+        return true;
+    }
+
+    return false;
+  }
+
   protected virtual void OnAdding (PropertyDefinitionAddingEventArgs args)
   {
     if (Adding != null)
