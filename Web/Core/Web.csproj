@@ -220,6 +220,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\TabControl.en.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\TabControl.resx"
                     BuildAction = "EmbeddedResource"
                 />
