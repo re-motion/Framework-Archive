@@ -55,5 +55,12 @@ public class SqlProviderTest : SqlProviderBaseTest
     RdbmsProvider rdbmsProvider = Provider;
     Assert.IsFalse (rdbmsProvider.IsConnected);
   }
+
+  [Test]
+  public void GetParameterName ()
+  {
+    Assert.AreEqual ("@parameter", Provider.GetParameterName ("parameter"));    
+    Assert.AreEqual ("@parameter", Provider.GetParameterName ("@parameter"));
+  }
 }
 }
