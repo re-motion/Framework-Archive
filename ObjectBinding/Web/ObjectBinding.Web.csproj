@@ -226,11 +226,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\PropertyPathBindingCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\Styles.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
@@ -262,11 +257,6 @@
                 />
                 <File
                     RelPath = "Design\ComponentBindingExpressionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\PropertyPathBindingCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
