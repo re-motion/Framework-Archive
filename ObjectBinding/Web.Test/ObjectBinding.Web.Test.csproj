@@ -444,6 +444,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestUserControlBinding.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestUserControlBinding.aspx.cs"
+                    DependentUpon = "TestUserControlBinding.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestUserControlBinding.aspx.resx"
+                    DependentUpon = "TestUserControlBinding.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "TestWxeBasePage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
