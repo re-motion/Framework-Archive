@@ -286,8 +286,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// Gets or sets the <see cref="DomainObject"/> with a given <i>index</i> in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException">
@@ -393,8 +393,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// </summary>
   /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void RemoveAt (int index)
@@ -408,7 +408,8 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove.</param>
   /// <exception cref="System.ArgumentNullException">
   ///   <i>id</i> is a null reference. <br />
-  ///   <i>id</i> is not in the collection.</exception>
+  ///   <i>id</i> is not in the collection.
+  /// </exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Remove (ObjectID id)
   {
@@ -490,12 +491,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="domainObject">The <i>domainObject</i> to add.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is greater than <see cref="Count"/>.
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   The <i>domainObject</i> already exists in the collection. <br />
+  ///   The <i>domainObject</i> already exists in the collection.<br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
   /// </exception>
   public void Insert (int index, DomainObject domainObject)
@@ -669,12 +670,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   /// <param name="domainObject">The <i>domainObject</i> to add.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is greater than <see cref="Count"/>.
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   The <i>domainObject</i> already exists in the collection. <br />
+  ///   The <i>domainObject</i> already exists in the collection.<br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
   /// </exception>
   internal protected void PerformInsert (int index, DomainObject domainObject)
