@@ -27,6 +27,7 @@ public class Person: ReflectionBusinessObject
   private NaInt32 _income = 1;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
+  private Person _partner;
 
   public void SaveToXml (string fileName)
   {
@@ -85,6 +86,12 @@ public class Person: ReflectionBusinessObject
   {
     get { return _marriageStatus; }
     set { _marriageStatus = value; }
+  }
+
+  public Person Partner
+  {
+    get { return _partner; }
+    set { _partner = value; }
   }
 }
 
