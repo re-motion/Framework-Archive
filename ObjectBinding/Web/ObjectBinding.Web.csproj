@@ -146,6 +146,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Controls\BocBusinessObjectBoundWebControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocColumnDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -191,16 +196,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BocPropertyPathWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\BocPropertyPathWrapperCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\BocReferenceValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -221,7 +216,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BusinessObjectBoundWebControl.cs"
+                    RelPath = "Controls\BusinessObjectPropertyPathWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BusinessObjectPropertyPathWrapperCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

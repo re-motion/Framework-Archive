@@ -63,6 +63,7 @@ public class BocPropertyPathWrapper
           throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
 
         _propertyPath = BusinessObjectPropertyPath.Parse (_dataSource, _propertyPathIdentifier);
+        _isPopertyPathEvaluated = true;
       }
 
       return _propertyPath;

@@ -279,6 +279,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
 //  private string _columnHeader;
   private string _formatString;
+
   private BocPropertyPathWrapperCollection _propertyPathWrappers;
 
   public BocCompoundColumnDefinition (
@@ -315,6 +316,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     : base (string.Empty, Unit.Empty)
   {
     _propertyPathWrappers = new BocPropertyPathWrapperCollection (null);
+    _formatString = string.Empty;
   }
 
   protected override void OnOwnerControlChanged()
@@ -322,6 +324,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     base.OnOwnerControlChanged();
 
     _propertyPathWrappers.OwnerControl = OwnerControl;
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue("")]
+  public string FormatString
+  {
+    get { return _formatString; }
+    set { _formatString = value; }
   }
 
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
@@ -378,7 +388,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     for (int i = 0; i < _propertyPathWrappers.Count; ++i)
       strings[i] = _propertyPathWrappers[i].PropertyPath.GetStringValue (obj);
 
-    return String.Format (_formatString, strings);
+    return string.Format (_formatString, strings);
   }
 
   [Description ("The assigned value of the column header, must not be empty or null.")]

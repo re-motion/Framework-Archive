@@ -332,7 +332,14 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <value> The element at the specified index. </value>
   public BocPropertyPathWrapper this[int index]
   {
-    get { return (BocPropertyPathWrapper) _items[index]; }
+    get
+    {
+      BocPropertyPathWrapper propertyPathWrapper = (BocPropertyPathWrapper) _items[index];
+      if (propertyPathWrapper.DataSource == null)
+        propertyPathWrapper.DataSource = _ownerControl.DataSource;
+
+      return propertyPathWrapper;
+    }
   }
 
   /// <summary> Gets the number of elements contained in the <see cref="ICollection"/>. </summary>
@@ -396,12 +403,7 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   internal IBusinessObjectBoundWebControl OwnerControl
   {
     get { return _ownerControl; }
-    set 
-    {
-      _ownerControl = value; 
-      foreach (BocPropertyPathWrapper propertyPathWrapper in _items)
-        propertyPathWrapper.DataSource = _ownerControl.DataSource;
-    }
+    set { _ownerControl = value; }
   }
 }
 

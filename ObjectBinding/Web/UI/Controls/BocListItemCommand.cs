@@ -27,6 +27,7 @@ public class BocHrefItemCommand: BocItemCommand
     _target = target;
   }
 
+
   public string Href 
   {
     get { return _href; }
