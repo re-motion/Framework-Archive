@@ -12,16 +12,19 @@ public class StorageProviderConfigurationLoader : BaseLoader
 
   // static members and constants
 
+  public const string ConfigurationAppSettingKey =
+      "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile";
+
+  public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile";
+
   private const string c_defaultConfigurationFile = "storageProviders.xml";
   private const string c_defaultSchemaFile = "storageProviders.xsd";
 
   public static StorageProviderConfigurationLoader Create ()
   {
     return new StorageProviderConfigurationLoader (
-        LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile", c_defaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (
-            "Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile", c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, c_defaultConfigurationFile),
+        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, c_defaultSchemaFile));
   }
 
   // member fields
