@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using System.Collections;
 
 namespace Rubicon.Utilities
 {
@@ -29,13 +30,51 @@ public sealed class ArgumentUtility
       throw new ArgumentEmptyException (argumentName);
   }
 
-  public static void CheckNotNullOrEmpty (string argumentName, System.Collections.ICollection collection)
+  public static void CheckNotNullOrEmpty (string argumentName, ICollection collection)
   {
     CheckNotNull (argumentName, collection);
     if (collection.Count == 0)
       throw new ArgumentEmptyException (argumentName);
   }
 
+  public static void CheckNotNullOrItemsNull (string argumentName, System.Array array)
+  {
+    CheckNotNull (argumentName, array);
+
+    for (int i = 0; i < array.LongLength; ++i)
+    {
+      if (array.GetValue (i) == null)
+        throw new ArgumentItemNullException (argumentName, i);
+    }
+  }
+
+  public static void CheckNotNullOrItemsNull (string argumentName, ICollection collection)
+  {
+    CheckNotNull (argumentName, collection);
+
+    int i = 0;
+    foreach (object item in collection)
+    {
+      if (item == null)
+        throw new ArgumentItemNullException (argumentName, i);
+      ++i;
+    }
+  }
+  
+  public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, System.Array array)
+  {
+    CheckNotNullOrEmptyOrItemsNull (argumentName, array);
+    if (array.Length == 0)
+      throw new ArgumentEmptyException (argumentName);
+  }
+
+  public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, ICollection collection)
+  {
+    CheckNotNullOrEmptyOrItemsNull (argumentName, collection);
+    if (collection.Count == 0)
+      throw new ArgumentEmptyException (argumentName);
+  }
+  
   public static void ThrowEnumArgumentOutOfRangeException (string argumentName, System.Enum actualValue)
   {
     string message = string.Format ("The value of argument {0} is not a valid value of the type {1}. Actual value was {2}.",
@@ -77,6 +116,36 @@ public sealed class ArgumentUtility
     if (! expectedType.IsAssignableFrom (actualValue.GetType()))
       throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType());
     return actualValue;
+  }
+
+  public static void CheckItemsType (string argumentName, ICollection collection, Type itemType)
+  {
+    if (collection == null)
+      return;
+
+    int index = 0;
+    foreach (object item in collection)
+    {
+      if (item != null && ! itemType.IsAssignableFrom (item.GetType()))
+        throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
+      ++ index;
+    }
+  }
+
+  public static void CheckItemsNotNullAndType (string argumentName, ICollection collection, Type itemType)
+  {
+    if (collection == null)
+      return;
+
+    int index = 0;
+    foreach (object item in collection)
+    {
+      if (item == null)
+        throw new ArgumentItemNullException (argumentName, index);
+      if (! itemType.IsAssignableFrom (item.GetType()))
+        throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
+      ++ index;
+    }
   }
 
 	public static void CheckValidEnumValue (System.Enum enumValue, string argumentName)
@@ -134,6 +203,51 @@ public class ArgumentEmptyException: ArgumentException
   private static string FormatMessage (string argumentName)
   {
     return string.Format ("Argument {0} is empty.", argumentName);
+  }
+}
+
+/// <summary>
+/// This exception is thrown if a list argument contains a null reference.
+/// </summary>
+[Serializable]
+public class ArgumentItemNullException: ArgumentException
+{
+  public ArgumentItemNullException (string argumentName, int index)
+    : base (FormatMessage (argumentName, index))
+  {
+  }
+
+  public ArgumentItemNullException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
+
+  private static string FormatMessage (string argumentName, int index)
+  {
+    return string.Format ("Item {0} of argument {1} is null.", index, argumentName);
+  }
+}
+
+
+/// <summary>
+/// This exception is thrown if a list argument contains an item of the wrong type.
+/// </summary>
+[Serializable]
+public class ArgumentItemTypeException: ArgumentException
+{
+  public ArgumentItemTypeException (string argumentName, int index, Type expectedType, Type actualType)
+    : base (FormatMessage (argumentName, index, expectedType, actualType))
+  {
+  }
+
+  public ArgumentItemTypeException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
+
+  private static string FormatMessage (string argumentName, int index, Type expectedType, Type actualType)
+  {
+    return string.Format ("Item {0} of argument {1} has the type {2} instead of {3}.", index, argumentName, actualType.FullName, expectedType.FullName);
   }
 }
 
