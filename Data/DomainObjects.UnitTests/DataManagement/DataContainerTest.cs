@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -98,14 +99,20 @@ public class DataContainerTest : ClientTransactionBaseTest
     PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver (
         _newDataContainer, true);
 
-    _newDataContainer["Name"] = "Zaphod Beeblebrox";
-
-    Assert.AreEqual (StateType.New, _newDataContainer.State);
-    Assert.AreEqual ("Arthur Dent", _newDataContainer["Name"]);
-    Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
-    Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-    Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-    Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    try
+    {
+      _newDataContainer["Name"] = "Zaphod Beeblebrox";
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (StateType.New, _newDataContainer.State);
+      Assert.AreEqual ("Arthur Dent", _newDataContainer["Name"]);
+      Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+      Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    }
   }
 
   [Test]
@@ -134,14 +141,20 @@ public class DataContainerTest : ClientTransactionBaseTest
     PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver (
         _existingDataContainer, true);
 
-    _existingDataContainer["Name"] = "Zaphod Beeblebrox";
-
-    Assert.AreEqual (StateType.Unchanged, _existingDataContainer.State);
-    Assert.AreEqual ("Arthur Dent", _existingDataContainer["Name"]);
-    Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
-    Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-    Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-    Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    try
+    {
+      _existingDataContainer["Name"] = "Zaphod Beeblebrox";
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (StateType.Unchanged, _existingDataContainer.State);
+      Assert.AreEqual ("Arthur Dent", _existingDataContainer["Name"]);
+      Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+      Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    }
   }
 
   [Test]

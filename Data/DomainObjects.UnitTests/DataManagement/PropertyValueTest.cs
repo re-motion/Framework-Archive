@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -199,18 +200,24 @@ public class PropertyValueTest
     Assert.AreEqual (5, propertyValue.Value, "Value");
     Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
     Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
-    Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
+    Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
+    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
 
-    propertyValue.Value = 10;
-
-    Assert.AreEqual (5, propertyValue.Value, "Value");
-    Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-    Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
-    Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
-    Assert.AreEqual (5, eventReceiver.OldValue);
-    Assert.AreEqual (10, eventReceiver.NewValue);
+    try
+    {
+      propertyValue.Value = 10;
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (5, propertyValue.Value, "Value");
+      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
+      Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
+      Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
+      Assert.AreEqual (5, eventReceiver.OldValue);
+      Assert.AreEqual (10, eventReceiver.NewValue);
+    }
   }
 
   [Test]
@@ -224,18 +231,23 @@ public class PropertyValueTest
     Assert.AreEqual (null, propertyValue.Value, "Value");
     Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");
     Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
-    Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
+    Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
+    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
 
-    propertyValue.Value = "Test string";
-
-    Assert.AreEqual (null, propertyValue.Value, "Value");
-    Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");
-    Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
-    Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-    Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
-    Assert.AreEqual (null, eventReceiver.OldValue);
-    Assert.AreEqual ("Test string", eventReceiver.NewValue);
+    try
+    {
+      propertyValue.Value = "Test string";
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (null, propertyValue.Value, "Value");
+      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
+      Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
+      Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
+      Assert.AreEqual (null, eventReceiver.OldValue);
+      Assert.AreEqual ("Test string", eventReceiver.NewValue);
+    }
   }
 
   [Test]

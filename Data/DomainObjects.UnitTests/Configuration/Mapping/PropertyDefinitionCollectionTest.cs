@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -59,10 +60,16 @@ public class PropertyDefinitionCollectionTest
     PropertyDefinitionCollectionEventReceiver eventReceiver = new PropertyDefinitionCollectionEventReceiver (
         _collection, true);
 
-    _collection.Add (_propertyDefinition);    
-
-    Assert.AreSame (_propertyDefinition, eventReceiver.AddingPropertyDefinition);
-    Assert.AreSame (null, eventReceiver.AddedPropertyDefinition);
+    try
+    {
+      _collection.Add (_propertyDefinition);    
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreSame (_propertyDefinition, eventReceiver.AddingPropertyDefinition);
+      Assert.AreSame (null, eventReceiver.AddedPropertyDefinition);
+    }
   }
 
   [Test]

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -62,12 +63,18 @@ public class PropertyValueCollectionTest
     PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver
       (propertyValueCollection, true);
 
-    propertyValueCollection["Property 2"].Value = "Zaphod Beeblebrox";
-
-    Assert.AreSame (propertyValue2, eventReceiver.ChangingPropertyValue);
-    Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-    Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-    Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    try
+    {
+      propertyValueCollection["Property 2"].Value = "Zaphod Beeblebrox";
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreSame (propertyValue2, eventReceiver.ChangingPropertyValue);
+      Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+    }
   }
 
   [Test]
@@ -91,7 +98,7 @@ public class PropertyValueCollectionTest
   }
 
   [Test]
-  public void DoNotOverrideCancelFlagOfPreviousEvents ()
+  public void PreviousEventCancels ()
   {
     PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
     PropertyValueEventReceiver valueEventReceiver = new PropertyValueEventReceiver (value, true);
@@ -102,10 +109,16 @@ public class PropertyValueCollectionTest
     PropertyValueContainerEventReceiver collectionEventReceiver =
         new PropertyValueContainerEventReceiver (collection, false);
 
-    value.Value = 45;
-
-    Assert.AreEqual (42, value.Value, "Value");
-    Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
+    try
+    {
+      value.Value = 45;
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.AreEqual (42, value.Value, "Value");
+      Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
+    }
   }
 
   private PropertyValue CreatePropertyValue (string name, string mappingType, object value)
