@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
 
-namespace OBWTest
+namespace OBRTest
 {
 
 [XmlType]
