@@ -81,15 +81,15 @@ public class ClassDefinitionTest
   [Test]
   public void GetRelatedClassDefinition ()
   {
-    Assert.IsNotNull (_distributorClass.GetRelatedClassDefinition ("Ceo"));
-    Assert.IsNotNull (_distributorClass.GetRelatedClassDefinition ("ContactPerson"));
+    Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("Ceo"));
+    Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("ContactPerson"));
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentEmptyException))]
   public void GetRelatedClassDefinitionWithEmtpyPropertyName ()
   {
-    _distributorClass.GetRelatedClassDefinition (string.Empty);
+    _distributorClass.GetOppositeClassDefinition (string.Empty);
   }
 
   [Test]
