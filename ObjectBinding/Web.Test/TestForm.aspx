@@ -41,7 +41,7 @@
 </FixedColumns>
 
 <optionsmenuitems>
-<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-Parameters="Test'Test" WxeFunctionCommand-TypeName="MyType"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -61,12 +61,12 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Text="Kopieren" ItemID="Copy" Icon="Images/CopyItem.gif" Category="Edit" IconDisabled="Images/CopyItemDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Kopieren" ItemID="Copy" Icon="Images/CopyItem.gif" Category="Edit" IconDisabled="Images/CopyItemDisabled.gif" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Text="Ausschneiden" ItemID="Cut" Category="Edit" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Ausschneiden" ItemID="Cut" Category="Edit" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -81,7 +81,7 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Text="L&#246;schen" ItemID="Delete" Icon="Images/DeleteItem.gif" Category="Edit" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="L&#246;schen" ItemID="Delete" Icon="Images/DeleteItem.gif" Category="Edit" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="javascript:DoSomething();"></obc:BocMenuItemCommand>
 </PersistedCommand>
@@ -99,7 +99,7 @@
 <obc:BocMenuItemCommand Type="Href" HrefCommand-Href="link.htm"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
-<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" Category="PostBacks" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="OneOrMore">
+<obc:BocMenuItem Text="Wxe" Icon="Images/RefelctionBusinessObjectIcon.gif" Category="PostBacks" IconDisabled="Images/RefelctionBusinessObjectIconDisabled.gif" RequiredSelection="AtLeastOne">
 <persistedcommand>
 <obc:BocMenuItemCommand Type="WxeFunction" WxeFunctionCommand-TypeName="MyType, MyAssembly"></obc:BocMenuItemCommand>
 </PersistedCommand>
