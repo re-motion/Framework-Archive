@@ -24,7 +24,7 @@ public sealed class ResourceDispatcher
   // types
 
   // static members and constants
-	private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
 
   /// <summary>
   ///   Dispatches resources
