@@ -198,7 +198,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     ClassDefinition classDefinition = dataContainer.ClassDefinition;
 
-    foreach (RelationDefinition relationDefinition in classDefinition.GetAllRelationDefinitions ())
+    foreach (RelationDefinition relationDefinition in classDefinition.GetRelationDefinitions ())
     {
       foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
       {
