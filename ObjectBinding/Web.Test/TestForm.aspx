@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -18,6 +18,13 @@
   <tr>
     <td></td>
     <td><obc:BocList id="BocList" runat="server">
+<optionsmenuitems>
+<rwc:MenuItem ID="myID" Icon="myIcon" Category="myCategory" Text="myText">
+<command type="Href" hrefcommand-target="myTarget" hrefcommand-href="myHref">
+</Command>
+</rwc:MenuItem>
+</OptionsMenuItems>
+
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd"></obc:BocCommandColumnDefinition>
 </FixedColumns></obc:BocList></td></tr>
