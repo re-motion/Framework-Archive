@@ -194,7 +194,29 @@ public class CommitEventsTest : ClientTransactionBaseTest
 
     Assert.AreEqual (0, clientTransactionEventReceiver.CommittingDomainObjects.Count);
     Assert.AreEqual (0, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+  }
 
+  [Test]
+  public void CommitWithExistingObjectDeleted ()
+  {
+    ClientTransactionEventReceiver clientTransactionEventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
+
+    ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+    ObjectID classWithAllDataTypesID = classWithAllDataTypes.ID;
+
+    classWithAllDataTypes.Delete ();
+
+    ClientTransactionMock.Commit ();
+
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
+    Assert.AreEqual (1, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+
+    DomainObjectCollection committingDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittingDomainObjects[0];
+    DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
+
+    Assert.AreEqual (1, committingDomainObjects.Count);
+
+    Assert.IsTrue (committingDomainObjects.Contains (classWithAllDataTypesID));
   }
 
   private void Customer_CommittingForModifyOtherObjectInDomainObjectCommitting (object sender, EventArgs e)
