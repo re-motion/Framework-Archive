@@ -277,6 +277,14 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       PageUtility.RegisterStartupScriptBlock (Page, key, script);
     }
 
+    key = typeof (BocReferenceValue).FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+    }
+
     string getSelectionCount;
     if (IsReadOnly)
     {
@@ -515,7 +523,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     else
       _label.Text = String.Empty;
 
-    _label.Width = Unit.Percentage (100);
     _label.Height = Height;
     _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
@@ -651,6 +658,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       writer.AddStyleAttribute ("padding-right", "3pt");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
         Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
@@ -659,12 +668,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
         Command.RenderEnd (writer);
 
       writer.RenderEndTag();
+      writer.RenderEndTag();
     }   
 
     if (isReadOnly)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
         Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
@@ -673,11 +685,14 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
         Command.RenderEnd (writer);
       
       writer.RenderEndTag();
+      writer.RenderEndTag();
     }
     else
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
         Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
@@ -685,6 +700,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       if (isCommandEnabled)
         Command.RenderEnd (writer);
       
+      writer.RenderEndTag();
       writer.RenderEndTag();
     }
 
@@ -1189,6 +1205,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     get { return _notNullItemValidator.ErrorMessage; }
     set { _notNullItemValidator.ErrorMessage = value; }
   }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s value. </summary>
+  /// <remarks> Class: <c>bocReferenceValue</c> </remarks>
+  protected virtual string CssClassValue
+  { get { return "bocReferenceValue"; } }
 }
 
 }

@@ -12,6 +12,7 @@ div.dropDownMenuHeadFocus
 {
   color: Blue;
   vertical-align: middle;
+  cursor: default;
 }
 
 /*  */
@@ -19,7 +20,7 @@ div.dropDownMenuHeadFocus
 .dropDownMenuHeadButtonFocus
 {
   vertical-align: middle;
-  cursor: hand;
+  cursor: default;
   background-color: #d7e7fd;
 }
 
