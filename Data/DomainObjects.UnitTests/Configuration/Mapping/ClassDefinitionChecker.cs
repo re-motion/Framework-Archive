@@ -129,6 +129,11 @@ public class ClassDefinitionChecker
         "PropertyType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
         expectedDefinition.PropertyType, actualDefinition.PropertyType);
+
+    Assert.AreEqual (expectedDefinition.MappingType, actualDefinition.MappingType, 
+        "MappingType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
+        expectedDefinition.PropertyName, classDefinition, 
+        expectedDefinition.MappingType, actualDefinition.MappingType);
   }      
 }
 }
