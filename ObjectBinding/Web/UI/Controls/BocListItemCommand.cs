@@ -19,7 +19,6 @@ public class BocHrefItemCommand: BocItemCommand
   /// <summary>
   /// 
   /// </summary>
-  /// <param name="label"></param>
   /// <param name="href">{0} index, {1} ID</param>
   /// <param name="target"></param>
   public BocHrefItemCommand (string href, string target)

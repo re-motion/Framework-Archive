@@ -34,6 +34,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   private const string c_whiteSpace = "&nbsp;";
 
+  /// <summary> 
+  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
+  /// </summary>
+  private const string c_designModeEmptyContents = "#";
+
   // types
   
   private enum GoToOption
@@ -64,13 +69,13 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   private IList _value = null;
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="ColumnConfigurationList"/>. </summary>
+  /// <summary> The <see cref="Style"/> applied to the <see cref="_additionalColumnsList"/>. </summary>
   private DropDownListStyle _additionalColumnsListStyle = null;
 
   // can only be set at design time.
   private BocColumnDefinitionCollection _fixedColumns;
   
-  // may be set at run time. these columns do usually not contain commands.
+  // may be set at run time. these columnDefinitions do usually not contain commands.
   private BocColumnDefinitionSet _selectedColumnDefinitionSet;
   
   // the command to be used for the first ValueColumnDefinition column
@@ -79,7 +84,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   // show check boxes for each object
   private bool _showSelection = false;
   
-  // show drop down list for selecting additional columns
+  // show drop down list for selecting additional columnDefinitions
   private bool _showAdditionalColumnsList = true;
 
   // user may choose one ColumnDefinitionSet
@@ -109,7 +114,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   /// <summary></summary>
 	public BocList()
-	{}
+	{
+    _fixedColumns = new BocColumnDefinitionCollection (this);
+    _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
+  }
 
 	// methods and properties
 
@@ -121,9 +129,6 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    _fixedColumns = new BocColumnDefinitionCollection (this);
-    _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
-    
     _additionalColumnsList = new DropDownList();
     goToFirstButton = new LinkButton();
     goToLastButton = new LinkButton();
@@ -152,7 +157,10 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     Controls.Add (goToNextButton);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    PreRender += new EventHandler(BocList_PreRender);
+
+    if (! IsPostBack)
+      PopulateAdditionalColumnsList();
+    _availableColumnDefinitionSets.CollectionChanged += new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
       
     if (IsPostBack && Page != null)
     {
@@ -170,15 +178,17 @@ public class BocList: BusinessObjectBoundModifiableWebControl
           _checkBoxCheckedState[key] = true; 
       }
     }
-
-    _availableColumnDefinitionSets.CollectionChanged += new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
   }
 
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
     
-    if (! _pageSize.IsNull && Value != null)
+    if (_pageSize.IsNull || Value == null)
+    {
+      _pageCount = 1;
+    }
+    else
     {
       _currentPage = _currentRow / _pageSize.Value;
       _pageCount = (int) Math.Round ((double)Value.Count / _pageSize.Value + 0.5, 0);
@@ -219,22 +229,32 @@ public class BocList: BusinessObjectBoundModifiableWebControl
 
   protected override void Render (HtmlTextWriter writer)
   {
-    BocColumnDefinition[] columns = _fixedColumns.ToArray();
+    BocColumnDefinition[] columnDefinitions = _fixedColumns.ToArray();
     if (_selectedColumnDefinitionSet != null)
-      ArrayUtility.Combine (columns, _selectedColumnDefinitionSet.Columns.ToArray());
-
-    if (IsDesignMode && columns.Length == 0)
     {
-        columns = new BocColumnDefinition[] {
+      columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
+        columnDefinitions, 
+        _selectedColumnDefinitionSet.ColumnDefinitionCollection.ToArray());
+    }
+
+    if (IsDesignMode)
+    {
+      if (_pageCount == 0)
+        _pageCount = 1;
+
+      if (columnDefinitions.Length == 0)
+      {
+        columnDefinitions = new BocColumnDefinition[] {
           new BocDesignerColumnDefinition ("#", Unit.Empty),
           new BocDesignerColumnDefinition ("#", Unit.Empty),
           new BocDesignerColumnDefinition ("#", Unit.Empty)};
+      }
     }
  
     RenderHeader (writer);
     RenderTableOpeningTag (writer);
-    RenderColGroup (writer, columns);
-    RenderColumnTitlesRow (writer, columns);
+    RenderColGroup (writer, columnDefinitions);
+    RenderColumnHeadersRow (writer, columnDefinitions);
 
     int firstRow = 0;
     int rowCountWithOffset = (Value != null) ? Value.Count : 0;
@@ -250,7 +270,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     if (Value != null)
     {
       for (int idxRow = firstRow; idxRow < rowCountWithOffset; idxRow++)
-        RenderDataRow (writer, columns, idxRow);
+        RenderDataRow (writer, columnDefinitions, idxRow);
     }
 
     RenderTableClosingTag (writer);
@@ -305,17 +325,18 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     writer.RenderEndTag();
   }
 
-  private void RenderColGroup (HtmlTextWriter writer, BocColumnDefinition[] columns)
+  private void RenderColGroup (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
   {
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     if (ShowSelection)
     {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(0).ToString());
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
       writer.RenderEndTag ();
     }
 
-    foreach (BocColumnDefinition column in columns)
+    foreach (BocColumnDefinition column in columnDefinitions)
     {
       if (! column.Width.IsEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
@@ -327,7 +348,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     writer.RenderEndTag ();
   }
 
-  private void RenderColumnTitlesRow (HtmlTextWriter writer, BocColumnDefinition[] columns)
+  private void RenderColumnHeadersRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions)
   {
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -340,17 +361,22 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       writer.RenderEndTag();
     }
 
-    foreach (BocColumnDefinition column in columns)
+    foreach (BocColumnDefinition column in columnDefinitions)
     {
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      HttpUtility.HtmlEncode (column.ColumnHeaderDisplayValue, writer);
+
+      if (IsDesignMode && column.ColumnHeaderDisplayValue.Length == 0)
+          writer.Write (c_designModeEmptyContents);
+      else
+        HttpUtility.HtmlEncode (column.ColumnHeaderDisplayValue, writer);
+
       writer.RenderEndTag ();
     }
     
     writer.RenderEndTag ();
   }
 
-  private void RenderDataRow (HtmlTextWriter writer, BocColumnDefinition[] columns, int rowIndex)
+  private void RenderDataRow (HtmlTextWriter writer, BocColumnDefinition[] columnDefinitions, int rowIndex)
   {
     IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
     if (businessObject == null)
@@ -375,7 +401,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
       writer.RenderEndTag();
     }
 
-    foreach (BocColumnDefinition column in columns)
+    foreach (BocColumnDefinition column in columnDefinitions)
     {
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
@@ -568,10 +594,6 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     //  TODO: BindingChanged
   }
 
-  private void BocList_PreRender(object sender, EventArgs e)
-  {
-  }
-
   private void PopulateAdditionalColumnsList()
   {
     _additionalColumnsList.Items.Clear();
@@ -688,7 +710,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   ///   Indicates whether properties with the specified multiplicity are supported.
   /// </summary>
   /// <returns>
-  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList" is 
+  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
   ///   supported.
   /// </returns>
   protected override bool SupportsPropertyMultiplicity (bool isList)
@@ -852,6 +874,13 @@ public class BocList: BusinessObjectBoundModifiableWebControl
   private bool IsPostBack
   {
     get { return !IsDesignMode && Page != null && Page.IsPostBack; }
+  }
+
+  [Category ("Style")]
+  public DropDownListStyle AdditionalColumnsListStyle
+  {
+    get { return _additionalColumnsListStyle; }
+    set { _additionalColumnsListStyle = value; }
   }
 }
 
