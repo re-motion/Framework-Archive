@@ -1,0 +1,7 @@
+; append this to %programfiles%\Microsoft Visual Studio .NET 2003\Common7\Packages\Debugger\autoexp.dat
+
+; Rubicon.NullableValueTypes
+Rubicon.NullableValueTypes.NaInt32=<DebuggingValue>
+Rubicon.NullableValueTypes.NaBoolean=<DebuggingValue>
+Rubicon.NullableValueTypes.NaDateTime=<DebuggingValue>
+Rubicon.NullableValueTypes.NaDouble=<DebuggingValue>
