@@ -266,7 +266,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       throw new InvalidOperationException ("Page must have ID in order to use RegisterMessageBox.");
 
     string script = string.Format (
-        "<script language=\"javascript\"> \n"
+        "<script language=\"javascript\" type=\"text/javascript\"> \n"
             + "if (confirm (\"{0}\")) \n"
             + "  " + this.GetPostBackClientEvent (this, c_eventNameShowMessageBoxResult + eventName + ":OK") + "\n"
             + "else \n"

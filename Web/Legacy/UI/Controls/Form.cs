@@ -285,7 +285,7 @@ public class Form : HtmlForm
     if (Page_RegisteredArrayDeclares != null && !AreRegisteredArrayDeclaresRendered)
     {
       output.WriteLine ();
-      output.WriteLine ("<script language=\"javascript\">\r\n<!--");
+      output.WriteLine ("<script language=\"javascript\" type=\"text/javascript\">\r\n<!--");
       ++output.Indent;
 
       IDictionaryEnumerator registeredArrayDeclaresEnumerator = 
@@ -335,7 +335,7 @@ public class Form : HtmlForm
   private void Page_RenderPostBackScript (HtmlTextWriter output, string formUniqueID)
   {
     string postBackScript = @"
-        <script language=""javascript"">
+        <script language=""javascript"" type=""text/javascript"">
           <!--
 	          function __doPostBack(eventTarget, eventArgument) {
 		          var controlID = eventTarget.split(""$"").join(""_"");

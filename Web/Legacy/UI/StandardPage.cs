@@ -85,7 +85,7 @@ public class StandardPage : NavigablePage
         _focusControl.ClientID);
 
       this.RegisterStartupScript ("SetPageFocus", 
-        "<script language=\"javascript\">\n" + setFocusScript + "\n</script>");
+        "<script language=\"javascript\" type=\"text/javascript\">\n" + setFocusScript + "\n</script>");
     }
 
     if (PreventClientCaching)
