@@ -123,22 +123,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\ActionCellCreateEventArgs.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\CommandHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\DataDropDownList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\DataTableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -184,16 +174,6 @@
                 />
                 <File
                     RelPath = "Controls\NavigablePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\PagingNavigationControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\PagingPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
