@@ -201,7 +201,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrder1, "OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
     };      
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
   
     eventReceiver = new SequenceEventReceiver (
@@ -222,7 +222,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
 
     //15a
@@ -242,7 +242,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newCustomer1, "Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
     };
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
     
     //15b
@@ -266,7 +266,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
     };
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
 
     //16
@@ -291,7 +291,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
     };
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
 
     //17
@@ -309,7 +309,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
-    eventReceiver.Compare (expectedChangeStates);
+    eventReceiver.Check (expectedChangeStates);
     eventReceiver.Unregister ();
   }
 
