@@ -10,7 +10,7 @@ using System.ComponentModel.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
@@ -161,7 +161,7 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     if (! IsPostBack)
       PopulateAdditionalColumnsList();
     _availableColumnDefinitionSets.CollectionChanged += new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
-      
+    
     if (IsPostBack && Page != null)
     {
       string dataRowCheckBoxFilter = ID + c_dataRowCheckBoxIDSuffix;

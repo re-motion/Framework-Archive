@@ -4,9 +4,9 @@ using Rubicon.ObjectBinding.Web.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class BusinessObjectPropertyPathBindingCollectionEditor: CollectionEditor
+public class PropertyPathBindingCollectionEditor: CollectionEditor
 {
-  public BusinessObjectPropertyPathBindingCollectionEditor (Type type)
+  public PropertyPathBindingCollectionEditor (Type type)
     : base (type)
   {
   }
@@ -14,7 +14,7 @@ public class BusinessObjectPropertyPathBindingCollectionEditor: CollectionEditor
   protected override Type[] CreateNewItemTypes()
   {
     return new Type[] {
-      typeof (BusinessObjectPropertyPathBinding)};
+      typeof (PropertyPathBinding)};
   }
 }
 

@@ -13,28 +13,28 @@ using Rubicon.ObjectBinding.Web.Design;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 /// <summary>
-/// Summary description for BusinessObjectPropertyPathBinding.
+/// Summary description for PropertyPathBinding.
 /// </summary>
-public class BusinessObjectPropertyPathBinding
+public class PropertyPathBinding
 {
   private bool _isPopertyPathEvaluated;
   private IBusinessObjectDataSource _dataSource;
   private BusinessObjectPropertyPath _propertyPath;
   private string _propertyPathIdentifier;
 
-  public BusinessObjectPropertyPathBinding (BusinessObjectPropertyPath propertyPath)
+  public PropertyPathBinding (BusinessObjectPropertyPath propertyPath)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
     _propertyPath = propertyPath;
   }
 
-  public BusinessObjectPropertyPathBinding (string propertyPathIdentifier)
+  public PropertyPathBinding (string propertyPathIdentifier)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
     _propertyPathIdentifier = propertyPathIdentifier;
   }
 
-  public BusinessObjectPropertyPathBinding()
+  public PropertyPathBinding()
   {}
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

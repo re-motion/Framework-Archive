@@ -216,12 +216,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BusinessObjectPropertyPathBinding.cs"
+                    RelPath = "Controls\PropertyPathBinding.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BusinessObjectPropertyPathBindingCollection.cs"
+                    RelPath = "Controls\PropertyPathBindingCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -251,12 +251,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Design\BusinessObjectPropertyPathBindingCollectionEditor.cs"
+                    RelPath = "Design\ComponentBindingExpressionUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Design\ComponentBindingExpressionUtility.cs"
+                    RelPath = "Design\PropertyPathBindingCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -10,7 +10,7 @@ using System.Globalization;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -179,7 +179,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition
 {
-  private BusinessObjectPropertyPathBinding _propertyPathBinding;
+  private PropertyPathBinding _propertyPathBinding;
 
   public BocSimpleColumnDefinition (
       BusinessObjectPropertyPath propertyPath,
@@ -188,7 +188,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     : base (columnHeader, width)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-    _propertyPathBinding = new BusinessObjectPropertyPathBinding (propertyPath);
+    _propertyPathBinding = new PropertyPathBinding (propertyPath);
   }
 
   public BocSimpleColumnDefinition (
@@ -198,13 +198,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     : base (columnHeader, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
-    _propertyPathBinding = new BusinessObjectPropertyPathBinding (propertyPathIdentifier);
+    _propertyPathBinding = new PropertyPathBinding (propertyPathIdentifier);
   }
 
   public BocSimpleColumnDefinition ()
     : base (string.Empty, Unit.Empty)
   {
-    _propertyPathBinding = new BusinessObjectPropertyPathBinding();
+    _propertyPathBinding = new PropertyPathBinding();
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -280,7 +280,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 //  private string _columnHeader;
   private string _formatString;
 
-  private BusinessObjectPropertyPathBindingCollection _propertyPathBindings;
+  private PropertyPathBindingCollection _propertyPathBindings;
 
   public BocCompoundColumnDefinition (
       string formatString,
@@ -294,7 +294,8 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
     ColumnHeader = columnHeader;
     _formatString = formatString;
-    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null, propertyPaths);
+    _propertyPathBindings = new PropertyPathBindingCollection (null);
+    _propertyPathBindings.AddRange (propertyPaths);
   }
 
   public BocCompoundColumnDefinition (
@@ -309,13 +310,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
     ColumnHeader = columnHeader;
     _formatString = formatString;
-    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null, propertyPathIdentifiers);
+    _propertyPathBindings = new PropertyPathBindingCollection (null);
+    _propertyPathBindings.AddRange (propertyPathIdentifiers);
   }
 
   public BocCompoundColumnDefinition()
     : base (string.Empty, Unit.Empty)
   {
-    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null);
+    _propertyPathBindings = new PropertyPathBindingCollection (null);
     _formatString = string.Empty;
   }
 
@@ -337,7 +339,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
   [ListBindable (false)]
   [DefaultValue ((string) null)]
-  public BusinessObjectPropertyPathBindingCollection PropertyPathBindings
+  public PropertyPathBindingCollection PropertyPathBindings
   {
     get 
     { 
