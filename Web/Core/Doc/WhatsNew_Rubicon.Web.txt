@@ -1,3 +1,23 @@
+1.1.46.0
+========
+
+- Rubicon.Web.UI.Controls.WebTreeView
+  * Neue Klasse
+  * Bietet einen TreeView (kein ClientSide Script).
+  * Nodes können On-Demand befüllt werden.
+
+1.1.45.0
+========
+
+- Rubicon.Web.UI.Controls.MenuItem
+  * Umbenannt zu WebMenuItem
+
+- Rubicon.Web.UI.Controls.MenuItemClickEventHandler
+  * Umbenannt zu WebMenuItemClickEventHandler
+
+- Rubicon.Web.UI.Controls.MenuItemClickEventArgs
+  * Umbenannt zu WebMenuItemClickEventArgs
+
 1.1.40.0
 ========
 
