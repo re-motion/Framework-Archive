@@ -60,3 +60,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
+
+//  log4net settings
+[assembly: log4net.Config.DOMConfigurator(ConfigFileExtension="log4net", Watch=true)]
