@@ -79,6 +79,12 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity
   {
     get { return _type.FullName; }
   }
+
+  public Type Type
+  {
+    get { return _type; }
+    set { _type = value; }
+  }
 }
 
 }

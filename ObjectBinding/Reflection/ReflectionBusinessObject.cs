@@ -62,7 +62,10 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public abstract string DisplayName { get; }
+  public virtual string DisplayName 
+  { 
+    get { return GetType().FullName; }
+  }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
   string IBusinessObjectWithIdentity.UniqueIdentifier
