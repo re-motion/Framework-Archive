@@ -19,7 +19,7 @@ public class SmartLabel: WebControl
 	}
 
   /// <summary>
-  ///   The ID
+  ///   The ID of the control to display a label for.
   /// </summary>
   [TypeConverter (typeof (SmartControlToStringConverter))]
   public string ForControl
@@ -33,7 +33,7 @@ public class SmartLabel: WebControl
     this.RenderBeginTag (writer);
 
     ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
-    if (smartControl != null)
+    if (smartControl != null && smartControl.DisplayName != null)
       writer.Write (smartControl.DisplayName);
     else
       writer.Write ("[Label for " + ForControl + "]");
