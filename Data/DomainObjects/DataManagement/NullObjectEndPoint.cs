@@ -56,14 +56,14 @@ public class NullObjectEndPoint : ObjectEndPoint
     get { return false; }
   }
 
-  public override DataContainer DataContainer
+  public override DataContainer GetDataContainer ()
   {
-    get { return null; }
+    return null;
   }
 
-  public override DomainObject DomainObject
+  public override DomainObject GetDomainObject ()
   {
-    get { return null; }
+    return null;
   }
 
   public override ObjectID ObjectID
