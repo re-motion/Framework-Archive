@@ -135,7 +135,7 @@ public class PersistenceManager : IDisposable
     if (relationEndPointID.Definition.IsMandatory && oppositeDataContainers.Count == 0)
     {
       throw CreatePersistenceException (
-          "Collection for mandatory relation '{0}' (property: '{1}') contains no elements.", 
+          "Collection for mandatory relation '{0}' (property: '{1}') contains no items.", 
           relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName);
     }
 
