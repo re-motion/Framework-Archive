@@ -1,3 +1,9 @@
+3.1.2.1
+=======
+
+- Klasse Form: HTML 4.0 erlaubt kein name-Attribut beim Form-Tag -> name-Attribut wird nicht gerendert.
+
+
 3.1.2.0
 =======
 

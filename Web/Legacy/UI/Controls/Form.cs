@@ -109,11 +109,12 @@ public class Form : HtmlForm
   /// </remarks>
   private void RenderAttributesLikeBaseClass (HtmlTextWriter output)
   {
-    output.WriteAttribute ("name", Name);
+    // To avoid a HTML 4.0 error the name attribute is not being rendered
+    //output.WriteAttribute ("name", Name);
     output.WriteAttribute ("method", Method);
     
     // Remove written attributes
-    Attributes.Remove ("name");
+    //Attributes.Remove ("name");
     Attributes.Remove ("method");
 			
     string submitEvent = Page_ClientOnSubmitEvent;
