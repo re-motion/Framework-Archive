@@ -7,15 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding", "DomainObjects\ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "DomainObjects\ObjectBinding\Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -33,24 +33,24 @@ Global
 		SccLocalPath2 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection2 = DomainObjects\\UnitTests\\
-		SccProjectUniqueName3 = DomainObjects.ObjectBinding\\Rubicon.Data.DomainObjects.ObjectBinding.csproj
-		SccProjectName3 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding\u0022,\u0020NQZAAAAA
-		SccLocalPath3 = DomainObjects.ObjectBinding
+		SccProjectUniqueName3 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj
+		SccProjectName3 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
+		SccLocalPath3 = DomainObjects.ObjectBinding.Web.Test
 		CanCheckoutShared = false
-		SccProjectUniqueName4 = DomainObjects.ObjectBinding.Web\\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj
-		SccProjectName4 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web\u0022,\u0020OQZAAAAA
-		SccLocalPath4 = DomainObjects.ObjectBinding.Web
+		SccProjectFilePathRelativizedFromConnection3 = http://localhost/RpaTest
+		SccProjectUniqueName4 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj
+		SccProjectName4 = \u0022$/libraries/Commons/Data/DomainObjects/ObjectBinding/Web/Test\u0022,\u0020ESZAAAAA
+		SccLocalPath4 = DomainObjects\\ObjectBinding\\Web\\Test
 		CanCheckoutShared = false
-		SccProjectUniqueName5 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj
-		SccProjectName5 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
-		SccLocalPath5 = DomainObjects.ObjectBinding.Web.Test
+		SccProjectEnlistmentChoice4 = 2
+		SccProjectUniqueName5 = DomainObjects\\ObjectBinding\\Rubicon.Data.DomainObjects.ObjectBinding.csproj
+		SccProjectName5 = \u0022$/libraries/Commons/Data/DomainObjects/ObjectBinding\u0022,\u0020NQZAAAAA
+		SccLocalPath5 = DomainObjects\\ObjectBinding
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection5 = http://localhost/RpaTest
-		SccProjectUniqueName6 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.csproj
-		SccProjectName6 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web.Test\u0022,\u0020ESZAAAAA
-		SccLocalPath6 = DomainObjects.ObjectBinding.Web.Test
+		SccProjectUniqueName6 = DomainObjects\\ObjectBinding\\Web\\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj
+		SccProjectName6 = \u0022$/libraries/Commons/Data/DomainObjects/ObjectBinding/Web\u0022,\u0020OQZAAAAA
+		SccLocalPath6 = DomainObjects\\ObjectBinding\\Web
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice6 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -65,6 +65,10 @@ Global
 		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Debug.Build.0 = Debug|.NET
 		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release.ActiveCfg = Release|.NET
 		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release.Build.0 = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.ActiveCfg = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
 		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug.ActiveCfg = Debug|.NET
 		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug.Build.0 = Debug|.NET
 		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Release.ActiveCfg = Release|.NET
@@ -73,10 +77,6 @@ Global
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug.Build.0 = Debug|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.ActiveCfg = Release|.NET
 		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release.Build.0 = Release|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.ActiveCfg = Debug|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		References\log4net.dll = References\log4net.dll
