@@ -73,7 +73,11 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
       Enum.Parse (PropertyType, valueString, false);
       bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
 
-      return new EnumerationValueInfo (value, value.ToString(), value.ToString(), isEnabled);
+      string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
+
+      string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
+
+      return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
     }
   }
 
@@ -83,7 +87,11 @@ public class EnumerationProperty : DomainObjectProperty, IBusinessObjectEnumerat
     string valueString = value.ToString();
     bool isEnabled = ! valueString.StartsWith (c_disabledPrefix);
 
-    return new EnumerationValueInfo (value, value.ToString(), value.ToString(), isEnabled);
+    string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
+
+    string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
+
+    return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
   }
 
   public override bool IsRequired
