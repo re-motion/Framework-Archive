@@ -335,6 +335,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\ConfigurationUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\EnumDescription.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
