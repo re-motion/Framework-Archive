@@ -49,7 +49,7 @@ public class PersistenceManager : IDisposable
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    StorageProvider provider = _storageProviderManager.GetMandatoryStorageProvider (classDefinition.StorageProviderID);
+    StorageProvider provider = _storageProviderManager.GetMandatory (classDefinition.StorageProviderID);
     return provider.CreateNewDataContainer (classDefinition);
   }
 
@@ -68,7 +68,7 @@ public class PersistenceManager : IDisposable
         throw CreatePersistenceException ("Save does not support multiple storage providers.");
     }
 
-    StorageProvider provider = _storageProviderManager.GetMandatoryStorageProvider (storageProviderID);
+    StorageProvider provider = _storageProviderManager.GetMandatory (storageProviderID);
 
     provider.BeginTransaction ();
     provider.Save (dataContainers);
@@ -81,7 +81,7 @@ public class PersistenceManager : IDisposable
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
 
-    StorageProvider provider = _storageProviderManager.GetMandatoryStorageProvider (id.StorageProviderID);
+    StorageProvider provider = _storageProviderManager.GetMandatory (id.StorageProviderID);
     DataContainer dataContainer = provider.LoadDataContainer (id);
 
     if (dataContainer == null)
@@ -112,7 +112,7 @@ public class PersistenceManager : IDisposable
 
     IRelationEndPointDefinition oppositeEndPointDefinition = relationEndPointID.OppositeEndPointDefinition;
 
-    StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (
+    StorageProvider oppositeProvider = _storageProviderManager.GetMandatory (
         oppositeEndPointDefinition.ClassDefinition.StorageProviderID);
 
     DataContainerCollection dataContainers = oppositeProvider.LoadDataContainersByRelatedID (
@@ -151,7 +151,7 @@ public class PersistenceManager : IDisposable
           relationEndPointID.RelationDefinition.ID);
     }
 
-    StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (
+    StorageProvider oppositeProvider = _storageProviderManager.GetMandatory (
         relationEndPointID.OppositeEndPointDefinition.ClassDefinition.StorageProviderID);
 
     DataContainerCollection oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID (
@@ -173,7 +173,7 @@ public class PersistenceManager : IDisposable
     if (id == null)
       return GetNullDataContainerWithRelationCheck (relationEndPointID);
 
-    StorageProvider oppositeProvider = _storageProviderManager.GetMandatoryStorageProvider (id.StorageProviderID);
+    StorageProvider oppositeProvider = _storageProviderManager.GetMandatory (id.StorageProviderID);
     DataContainer oppositeDataContainer = oppositeProvider.LoadDataContainer (id);
     if (oppositeDataContainer == null)
     {

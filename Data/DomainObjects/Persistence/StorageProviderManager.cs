@@ -43,7 +43,7 @@ public class StorageProviderManager : IDisposable
 
   // methods and properties
 
-  public StorageProvider GetMandatoryStorageProvider (string storageProviderID)
+  public StorageProvider GetMandatory (string storageProviderID)
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
@@ -68,10 +68,8 @@ public class StorageProviderManager : IDisposable
       if (_storageProviders.Contains (storageProviderID))
         return _storageProviders[storageProviderID];
 
-      StorageProviderDefinition providerDefinition = StorageProviderConfiguration.Current[storageProviderID];
-
-      if (providerDefinition == null)
-        return null;
+      StorageProviderDefinition providerDefinition = 
+          StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (storageProviderID);
 
       StorageProvider provider = (StorageProvider) ReflectionUtility.CreateObject (
           providerDefinition.StorageProviderType, providerDefinition);
