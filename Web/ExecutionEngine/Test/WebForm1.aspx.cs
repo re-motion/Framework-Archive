@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Collections.Specialized;
 using Rubicon.PageTransition;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.PageTransition
 {
@@ -34,6 +35,7 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Button Throw;
     protected System.Web.UI.WebControls.Label Label1;
     protected System.Web.UI.WebControls.Label RetValLabel;
+    protected System.Web.UI.WebControls.Button SubExtButton;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -61,6 +63,36 @@ namespace Rubicon.PageTransition
 			Var1Label.Text = Function.Var1;
       Var2Label.Text = Function.Var2;
       IsPostBackCheck.Checked = IsPostBack;
+
+      GetPostBackEventReference (this); // force __doPostBack script
+      PageUtility.RegisterClientScriptBlock (this, "doSubmit",
+          "function doSubmit (button, pageToken) {"
+          + "  var theForm = document." + Form.ClientID + ";"
+          // + "  document.getElementById(button).value = button; "
+          + "  theForm.returningToken.value = pageToken;"
+          + "  document.getElementById(button).click();"
+          + "  }");
+      HtmlInputHidden returningTokenField = new HtmlInputHidden ();
+      returningTokenField.ID = "returningToken";
+      Form.Controls.Add (returningTokenField);
+
+      NameValueCollection postBackCollection = GetPostBackCollection();
+      if (postBackCollection != null)
+      {
+        string returningToken = postBackCollection["returningToken"];
+        if (returningToken != null)
+        {
+          ArrayList pages = (ArrayList) Session["WxePages"];
+          foreach (WxePageSession pageSession in pages)
+          {
+            if (pageSession.PageToken == returningToken)
+            {
+              WxeContext.Current.ReturningFunction = pageSession.Function;
+              WxeContext.Current.IsReturningPostBack = true;
+            }
+          }
+        }
+      }
 		}
 
 		#region Web Form Designer generated code
@@ -83,6 +115,7 @@ namespace Rubicon.PageTransition
       this.Next.Click += new System.EventHandler(this.Next_Click);
       this.Throw.Click += new System.EventHandler(this.Throw_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);
+      this.SubExtButton.Click += new System.EventHandler(this.SubExtButton_Click);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
@@ -95,7 +128,7 @@ namespace Rubicon.PageTransition
 
     private void Next_Click (object sender, System.EventArgs e)
     {
-      CurrentStep.ExecuteNextStep ();
+      ExecuteNextStep ();
 //      WxeFunction currentFunction = ((WxeFunction) Session["CurrentFunction"]);
 //      currentFunction.ExecutingStep.ExecuteNextStep (Context);
     }
@@ -103,15 +136,15 @@ namespace Rubicon.PageTransition
     private void Sub_Click (object sender, System.EventArgs e)
     {
       // CurrentStep.ExecuteFunction ((Control)sender, this, new SubFunction("call var1", "call var2"));
-      if (! WxeContext.Current.IsReturningPostBack)
+      if (! IsReturningPostBack)
       {
-        Variables["xx"] = "call var 1!";
-        CurrentStep.ExecuteFunction (this, new SubFunction("@xx", "call var2"));
+        SubFunction subFunction = new SubFunction ("call var 1!", "vall var2");
+        ExecuteFunction (subFunction);
       }
       else
       {
-        RetValLabel.Text = (string) Variables["xx"];
-        Variables.Remove ("xx");
+        SubFunction subFunction = (SubFunction) ReturningFunction;
+        RetValLabel.Text = subFunction.Var1;
       }
     }
 
@@ -120,10 +153,29 @@ namespace Rubicon.PageTransition
       throw new ApplicationException ("test exception");
     }
 
+    private void SubExtButton_Click(object sender, System.EventArgs e)
+    {
+      if (! IsReturningPostBack)
+      {
+        SubFunction subFunction = new SubFunction ("call var 1!", "vall var2");
+        ExecuteFunction (subFunction, "_blank", (Control) sender);
+      }
+      else
+      {
+        SubFunction subFunction = (SubFunction) ReturningFunction;
+        RetValLabel.Text = subFunction.Var1;
+      }
+    }
+
     public class SubFunction: WxeFunction, ISampleFunctionVariables
     {
-      public SubFunction (object var1, object var2)
+      public SubFunction (string var1, string var2)
         : base (var1, var2)
+      {
+      }
+
+      public SubFunction (params object[] args)
+        : base (args)
       {
       }
 
