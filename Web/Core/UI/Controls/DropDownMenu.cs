@@ -86,11 +86,12 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private const string c_dropDownIcon = "DropDownMenuArrow.gif";
 
-  private string _groupID;
-  private string _titleText;
-  private string _titleIcon;
-  private bool _isReadOnly;
+  private string _groupID = "";
+  private string _titleText = "";
+  private string _titleIcon = "";
+  private bool _isReadOnly = false;
   private bool _enableGrouping = true;
+  private string _getSelectionCount = "";
 
   private MenuItemCollection _menuItems;
 
@@ -258,8 +259,15 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     string icon = (StringUtility.IsNullOrEmpty (menuItem.Icon) ? "null" : "'" +  menuItem.Icon + "'");
     string iconDisabled = (StringUtility.IsNullOrEmpty (menuItem.IconDisabled) ? "null" : "'" +  menuItem.IconDisabled + "'");
     stringBuilder.AppendFormat (
-        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6})",
-        menuItemIndex.ToString(), menuItem.Category, menuItem.Text, icon, iconDisabled, href, target);
+        "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7})",
+        menuItemIndex.ToString(), 
+        menuItem.Category, 
+        menuItem.Text, 
+        icon, 
+        iconDisabled, 
+        (int) menuItem.RequiredSelection, 
+        href, 
+        target);
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -275,7 +283,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute ("position", "relative");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-    string script = "DropDownMenu_OnClick (this, '" + _groupID + "');";
+    string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
+    string script = "DropDownMenu_OnClick (this, '" + _groupID + "', " + getSelectionCount + ");";
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
     writer.AddAttribute ("id", ID + "_MenuDiv");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Menu-Div
@@ -391,6 +400,13 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   {
     get { return _enableGrouping; }
     set { _enableGrouping = value; }
+  }
+
+  [DefaultValue ("")]
+  public string GetSelectionCount
+  {
+    get { return _getSelectionCount; }
+    set { _getSelectionCount = value; }
   }
 
   /// <summary> 

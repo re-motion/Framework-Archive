@@ -12,32 +12,40 @@ public class MenuItem: IControlItem
 {
   public static MenuItem GetSeparator()
   {
-    return new MenuItem (null, null, "-", null, null, null);
+    return new MenuItem (null, null, "-", null, null, RequiredSelection.Any, null);
   }
 
-  string _itemID;
-  string _category;
-  string _text;
-  string _icon;
-  string _iconDisabled;
-
+  private string _itemID = "";
+  private string _category = "";
+  private string _text = "";
+  private string _icon = "";
+  private string _iconDisabled = "";
+  private RequiredSelection _requiredSelection = RequiredSelection.Any;
   /// <summary> The command rendered for this menu item. </summary>
-  private SingleControlItemCollection _command;
+  private SingleControlItemCollection _command = null;
   /// <summary> The control to which this object belongs. </summary>
-  private Control _ownerControl;
+  private Control _ownerControl = null;
 
-  public MenuItem (string itemID, string category, string text, string icon, string iconDisabled, Command command)
+  public MenuItem (
+      string itemID, 
+      string category, 
+      string text, 
+      string icon, 
+      string iconDisabled, 
+      RequiredSelection requiredSelection, 
+      Command command)
   {
     _itemID = itemID;
     _category = category;
     _text = text;
     _icon = icon;
     _iconDisabled = iconDisabled;
+    _requiredSelection = requiredSelection;
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
   }
 
   public MenuItem ()
-    : this (null, null, null, null, null, new Command())
+    : this (null, null, null, null, null, RequiredSelection.Any, new Command())
   {
   }
 
@@ -103,6 +111,14 @@ public class MenuItem: IControlItem
   {
     get { return _iconDisabled; }
     set { _iconDisabled = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue (RequiredSelection.Any)]
+  public RequiredSelection RequiredSelection
+  {
+    get { return _requiredSelection; }
+    set { _requiredSelection = value; }
   }
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
@@ -184,4 +200,10 @@ public class MenuItem: IControlItem
   }
 }
 
+public enum RequiredSelection
+{
+  Any = 0,
+  ExactlyOne = 1,
+  OneOrMore = 2
+}
 }
