@@ -21,6 +21,8 @@ Controls in a single Form or User Control<br>
       <p>Wxe-Enabled Test for a Tabbed Form<br>
         <a href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false">
           WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false</a></p>
+<p>Test Tree View<br>
+<A href="SingleTestTreeView.aspx">SingleTestTreeView.aspx</a></p>
     </form>
 
   </body>
