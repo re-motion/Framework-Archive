@@ -257,6 +257,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\ITemplateControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\IUserControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\MultiLingualPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"

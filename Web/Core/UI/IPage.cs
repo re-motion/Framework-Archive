@@ -9,24 +9,6 @@ namespace Rubicon.Web.UI
 {
 
 /// <summary>
-///   This interface contains all public members of System.Web.UI.TemplateControl. It is used to derive interfaces that will be
-///   implemented by deriving from System.Web.UI.TemplateControl.
-/// </summary>
-/// <remarks>
-///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.TemplateControl.
-/// </remarks>
-public interface ITemplateControl: IControl, INamingContainer
-{
-  event EventHandler AbortTransaction;
-  event EventHandler CommitTransaction;
-  event EventHandler Error;
-
-  Control LoadControl(string virtualPath);
-  ITemplate LoadTemplate(string virtualPath);
-  Control ParseControl(string content);
-}
-
-/// <summary>
 ///   This interface contains all public members of System.Web.UI.Page. It is used to derive interfaces that will be
 ///   implemented by deriving from System.Web.UI.Page.
 /// </summary>
@@ -70,23 +52,6 @@ public interface IPage: ITemplateControl, IHttpHandler
   IPrincipal User { get; }
   ValidatorCollection Validators { get; }
   string ViewStateUserKey { get; set; }
-}
-
-public interface IUserControl: ITemplateControl, IAttributeAccessor, IUserControlDesignerAccessor
-{
-  void DesignerInitialize();
-  void InitializeAsUserControl(Page page);
-  string MapPath(string virtualPath);
-
-  HttpApplicationState Application { get; }
-  AttributeCollection Attributes { get; }
-  Cache Cache { get; }
-  bool IsPostBack { get; }
-  HttpRequest Request { get; }
-  HttpResponse Response { get; }
-  HttpServerUtility Server { get; }
-  HttpSessionState Session { get; }
-  TraceContext Trace { get; }
 }
  
 }
