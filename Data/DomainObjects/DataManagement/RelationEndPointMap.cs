@@ -401,7 +401,6 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ((ICollectionEndPointChangeDelegate) this).PerformInsert (endPoint, domainObject, endPoint.OppositeDomainObjects.Count); 
   }
 
-
   void ICollectionEndPointChangeDelegate.PerformInsert  (
       CollectionEndPoint endPoint, 
       DomainObject domainObject,
@@ -429,6 +428,34 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
       addingEndPoint.EndRelationChange ();
       oldRelatedEndPoint.EndRelationChange ();
+      endPoint.EndRelationChange ();
+    }
+  }
+
+  void ICollectionEndPointChangeDelegate.PerformReplace  (
+      CollectionEndPoint endPoint, 
+      DomainObject domainObject,
+      int index)
+  {
+    CheckDeleted (endPoint);
+    CheckDeleted (domainObject);
+
+    ObjectEndPoint newEndPoint = (ObjectEndPoint) GetRelationEndPoint (
+        domainObject, endPoint.OppositeEndPointDefinition);
+
+    ObjectEndPoint oldEndPoint = (ObjectEndPoint) GetRelationEndPoint (
+        endPoint.OppositeDomainObjects[index], endPoint.OppositeEndPointDefinition);
+    
+    if (oldEndPoint.BeginRelationChange (endPoint)
+        && newEndPoint.BeginRelationChange (RelationEndPoint.CreateNullRelationEndPoint (newEndPoint.OppositeEndPointDefinition))
+        && endPoint.BeginReplace (oldEndPoint, newEndPoint))
+    {
+      oldEndPoint.PerformRelationChange ();
+      newEndPoint.PerformRelationChange ();
+      endPoint.PerformRelationChange ();
+
+      oldEndPoint.EndRelationChange ();
+      newEndPoint.EndRelationChange ();
       endPoint.EndRelationChange ();
     }
   }

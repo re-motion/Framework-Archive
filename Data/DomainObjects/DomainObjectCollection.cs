@@ -182,15 +182,24 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     }
     set 
     {
-      DomainObject oldObject = this[index];
+      // TODO: Check index for validity
 
-      if (BeginRemove (oldObject) && BeginAdd (value))
+      if (_changeDelegate != null)
       {
-        PerformRemove (oldObject);
-        PerformInsert (index, value);
+        _changeDelegate.PerformReplace (this, value, index);
+      }
+      else
+      {
+        DomainObject oldObject = this[index];
 
-        EndRemove (oldObject);
-        EndAdd (value);
+        if (BeginRemove (oldObject) && BeginAdd (value))
+        {
+          PerformRemove (oldObject);
+          PerformInsert (index, value);
+
+          EndRemove (oldObject);
+          EndAdd (value);
+        }
       }
     }
   }
