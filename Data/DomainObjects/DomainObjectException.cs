@@ -17,7 +17,7 @@ public class DomainObjectException : Exception
 
   // construction and disposing
 
-  public DomainObjectException () {}
+  public DomainObjectException () : this ("A domain object exception occurred.") {}
   public DomainObjectException (string message) : base (message) {}
   public DomainObjectException (string message, Exception inner) : base (message, inner) {}
   protected DomainObjectException (SerializationInfo info, StreamingContext context) : base (info, context) {}
