@@ -51,7 +51,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary> A list of control wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
-  [ResourceIdentifier ()]
+  [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocBooleanValue")]
   protected enum ResourceIdentifier
   {
