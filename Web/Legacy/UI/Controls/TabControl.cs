@@ -606,7 +606,7 @@ public class TabControl: Control, IPostBackEventHandler
 			}
 			if (activeVisibleTab >= 0 && activeVisibleTab < numVisibleTabs)
 			{
-				output.WriteLine ("<td colspan=\"3\" {0} <img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
+				output.WriteLine ("<td colspan=\"3\" {0}><img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
 						activeClassAttrib, _emptyImage);
 			}
       if (activeVisibleTab < (numVisibleTabs - 1))
@@ -627,10 +627,10 @@ public class TabControl: Control, IPostBackEventHandler
     { 
       output.WriteLine ("<tr>");
       int colspan = _tabs.Count * 4;
-			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">", colspan);
+			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"middle\">", colspan);
 
       output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
-      output.WriteLine ("<tr class=\"tabSubMenuBar\"><td nowrap width=\"100%\">&nbsp;");
+      output.WriteLine ("<tr class=\"tabSubMenuBar\"><td >&nbsp;");
 
       Tab activeTab = Tabs[_activeTab];
       bool isFirstMenu = true;
@@ -657,7 +657,7 @@ public class TabControl: Control, IPostBackEventHandler
 
       if (StatusMessage != string.Empty)
       {
-        output.WriteLine ("</td><td nowrap align=\"right\" class=\"tabSubLink\">{0}", StatusMessage);
+        output.WriteLine ("</td><td align=\"right\" class=\"tabSubLink\">{0}", StatusMessage);
       }
       output.WriteLine ("</td></tr></table>");
 

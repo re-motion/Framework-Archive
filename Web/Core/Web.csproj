@@ -91,6 +91,11 @@
                     AssemblyName = "System.Windows.Forms"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Windows.Forms.dll"
                 />
+                <Reference
+                    Name = "Microsoft.Web.UI.WebControls"
+                    AssemblyName = "Microsoft.Web.UI.WebControls"
+                    HintPath = "..\..\..\..\Program Files\Microsoft Internet Explorer WebControls\Microsoft.Web.UI.WebControls.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -157,6 +162,11 @@
                 />
                 <File
                     RelPath = "ViewControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebControls.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
