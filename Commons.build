@@ -342,6 +342,8 @@
       <fileset basedir="${project.dir}/Database/">
         <includes name="*.sql" />
       </fileset>
+    </copy>
+    <copy todir="${tests.builddir}" >
       <fileset basedir="${project.dir}/">
         <includes name="*.xml" />
       </fileset>
