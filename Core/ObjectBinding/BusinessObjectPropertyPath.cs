@@ -16,13 +16,15 @@ public class BusinessObjectPropertyPath
   private IBusinessObjectProperty[] _properties; 
  
   public static BusinessObjectPropertyPath Parse (
-    IBusinessObjectDataSource dataSource, 
-    string propertyPathIdentifier)
+      IBusinessObjectDataSource dataSource, 
+      string propertyPathIdentifier)
   {
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+    
+    char separator = dataSource.BusinessObjectProvider.GetPropertyPathSeparator();
 
-    string[] propertyIdentifiers = propertyPathIdentifier.Split ('.');
+    string[] propertyIdentifiers = propertyPathIdentifier.Split (separator);
     IBusinessObjectProperty[] properties = new IBusinessObjectProperty [propertyIdentifiers.Length];
 
     int lastProperty = propertyIdentifiers.Length - 1;
@@ -121,10 +123,13 @@ public class BusinessObjectPropertyPath
     get
     {
       StringBuilder sb = new StringBuilder (100);
+      char separator = '\0';
 		  for (int i = 0; i < _properties.Length; i++)
 		  {
-			  if (i > 0)
-	  			sb.Append (".");
+			  if (i == 0)
+          separator = _properties[i].BusinessObjectProvider.GetPropertyPathSeparator();
+        else
+	  			sb.Append (separator);
         sb.Append (_properties[i].Identifier);
       }
       return sb.ToString();
