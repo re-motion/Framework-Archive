@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using Rubicon.ObjectBinding;
 
 namespace Rubicon.ObjectBinding.Reflection
 {
 
-public class ReflectionBusinessObjectProvider: IBusinessObjectProvider
+public class ReflectionBusinessObjectProvider: BusinessObjectProvider
 {
   public static ReflectionBusinessObjectProvider s_instance = new ReflectionBusinessObjectProvider();
 
@@ -13,10 +14,13 @@ public class ReflectionBusinessObjectProvider: IBusinessObjectProvider
     get { return s_instance; }
   }
 
-  public IBusinessObjectService GetService (Type serviceType)
+  private Hashtable _serviceDictionary = new Hashtable();
+
+  protected override IDictionary ServiceDictionary
   {
-    return null;
+    get { return _serviceDictionary; }
   }
+
 }
 
 }
