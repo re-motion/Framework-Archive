@@ -60,14 +60,6 @@ public class ObjectIDTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), "Type 'System.Double' is not supported.\r\nParameter name: value")]
-  public void InvalidValueType ()
-  {
-    double value = 42.4242424242;
-    ObjectID id = new ObjectID ("Order", value);
-  }
-
-  [Test]
   public void DeserializeStringValue ()
   {
     string idString = "Order|Arthur Dent|System.String";
@@ -335,6 +327,25 @@ public class ObjectIDTest
       
       Assert.AreEqual (DomainObjectIDs.Order1, id);
     }    
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'"
+      + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
+  public void InitializeWithInvalidClassDefinition ()
+  {
+    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", typeof (Customer), "TestDomain");
+    ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
+  public void InitializeWithClassDefinitionNotPartOfMappingConfiguration ()
+  {
+    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+    ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
   }
 }
 }

@@ -218,7 +218,7 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
       "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
   public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
   {
-    ObjectID invalidID = new ObjectID (DomainObjectIDs.Official1.ClassID, DomainObjectIDs.Official1.Value);
+    ObjectID invalidID = new ObjectID (DomainObjectIDs.Official1.ClassID, (int) DomainObjectIDs.Official1.Value);
 
     Provider.LoadDataContainer (invalidID);
   }

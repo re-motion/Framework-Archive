@@ -318,7 +318,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
       + " and the ClassID of the loaded DataContainer 'Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid' differ.")]
   public void LoadDataContainerWithInvalidClassID ()
   {
-    ObjectID id = new ObjectID ("Distributor", DomainObjectIDs.Partner1.Value);
+    ObjectID id = new ObjectID ("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
     _persistenceManager.LoadDataContainer (id);
   }
 
@@ -329,7 +329,7 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   public void LoadRelatedDataContainerWithInvalidClassIDOverEndPoint ()
   {
     DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-    orderContainer["Customer"] = new ObjectID ("Company", DomainObjectIDs.Customer1.Value);
+    orderContainer["Customer"] = new ObjectID ("Company", (Guid) DomainObjectIDs.Customer1.Value);
     RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Customer");
 
     _persistenceManager.LoadRelatedDataContainer (orderContainer, endPointID);
