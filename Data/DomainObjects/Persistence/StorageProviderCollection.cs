@@ -20,7 +20,7 @@ public class StorageProviderCollection : CollectionBase, IDisposable
   }
 
   // standard constructor for collections
-  public StorageProviderCollection (StorageProviderCollection collection, bool isCollectionReadOnly)  
+  public StorageProviderCollection (StorageProviderCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -29,7 +29,7 @@ public class StorageProviderCollection : CollectionBase, IDisposable
       Add (provider);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   #region IDisposable Members

@@ -51,7 +51,7 @@ public class PropertyValueCollection : CollectionBase
   /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
   // standard constructor for collections
-  public PropertyValueCollection (PropertyValueCollection collection, bool isCollectionReadOnly)  
+  public PropertyValueCollection (PropertyValueCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -60,7 +60,7 @@ public class PropertyValueCollection : CollectionBase
       Add (propertyValue);
     }
 
-    this.SetIsReadOnly (isCollectionReadOnly);
+    this.SetIsReadOnly (makeCollectionReadOnly);
   }
 
   // methods and properties
