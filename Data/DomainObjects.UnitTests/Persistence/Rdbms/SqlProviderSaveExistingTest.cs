@@ -232,7 +232,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (StorageProviderException), 
+  [ExpectedException (typeof (ConcurrencyViolationException), 
       "Concurrency violation encountered. Object"
       + " 'TestDomain|Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
       + " has already been changed by someone else.")]
