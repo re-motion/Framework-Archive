@@ -394,6 +394,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\RelatioEndPointID.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\RelationEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -405,11 +410,6 @@
                 />
                 <File
                     RelPath = "DataManagement\RelationLink.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationLinkID.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

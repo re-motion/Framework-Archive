@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class RelationLinkID
+public class RelationEndPointID
 {
   // types
 
@@ -15,7 +15,7 @@ public class RelationLinkID
 
   // construction and disposing
 
-  public RelationLinkID (ObjectID objectID, string propertyName)
+  public RelationEndPointID (ObjectID objectID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -33,12 +33,12 @@ public class RelationLinkID
 
   public override bool Equals (object obj)
   {
-    RelationLinkID relationLinkID = obj as RelationLinkID;
-    if (relationLinkID == null)
+    RelationEndPointID endPointID = obj as RelationEndPointID;
+    if (endPointID == null)
       return false;
 
-    return this._objectID.Equals (relationLinkID.ObjectID)
-        && this._propertyName.Equals (relationLinkID.PropertyName);
+    return this._objectID.Equals (endPointID.ObjectID)
+        && this._propertyName.Equals (endPointID.PropertyName);
   }
 
   public override string ToString ()

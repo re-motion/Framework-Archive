@@ -14,7 +14,7 @@ public class RelationEndPoint : INullable
 
   private DataContainer _dataContainer;
   private IRelationEndPointDefinition _definition;
-  private RelationLinkID _linkID;
+  private RelationEndPointID _endPointID;
 
   // construction and disposing
   
@@ -41,7 +41,7 @@ public class RelationEndPoint : INullable
 
     _definition = dataContainer.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
     _dataContainer = dataContainer;
-    _linkID = new RelationLinkID (dataContainer.ID, propertyName);
+    _endPointID = new RelationEndPointID (dataContainer.ID, propertyName);
   }
 
   protected RelationEndPoint (IRelationEndPointDefinition definition)
@@ -119,9 +119,9 @@ public class RelationEndPoint : INullable
     get { return _definition.IsVirtual; }
   }
 
-  public virtual RelationLinkID LinkID
+  public virtual RelationEndPointID EndPointID
   {
-    get { return _linkID; }
+    get { return _endPointID; }
   }
 
   #region INullable Members
