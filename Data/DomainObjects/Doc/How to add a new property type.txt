@@ -1,5 +1,5 @@
-Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte in RPF:
----------------------------------------------------------------------------------------
+Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
+--------------------------------------------------------------------------------
 
 1. Folgende Tests in Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TypeInfoTest erweitern:
     - MappingTypes
