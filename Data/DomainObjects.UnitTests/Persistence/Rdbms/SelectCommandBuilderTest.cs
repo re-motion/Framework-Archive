@@ -28,7 +28,7 @@ public class SelectCommandBuilderTest : SqlProviderBaseTest
   [Test]
   public void CreateWithOrderClause ()
   {
-    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order");
+    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
     
     SelectCommandBuilder builder = new SelectCommandBuilder (
         Provider, "*", orderDefinition, "CustomerID", DomainObjectIDs.Customer1, "OrderNumber desc");
