@@ -98,16 +98,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override void Commit ()
   {
     if (HasChanged)
-      _originalOppositeDomainObjects = _oppositeDomainObjects.Clone (true);
+      _originalOppositeDomainObjects.Commit (_oppositeDomainObjects);
   }
 
   public override void Rollback ()
   {
     if (HasChanged)
-    {
-      _oppositeDomainObjects = _originalOppositeDomainObjects.Clone (_oppositeDomainObjects.IsReadOnly);
-      _oppositeDomainObjects.ChangeDelegate = this;
-    }
+      _oppositeDomainObjects.Rollback (_originalOppositeDomainObjects);
   }
 
   public override bool HasChanged
@@ -180,7 +177,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override void PerformDelete ()
   {
-    _oppositeDomainObjects.PerformClear ();
+    _oppositeDomainObjects.PerformDelete ();
   }
 
   public override void EndRelationChange ()

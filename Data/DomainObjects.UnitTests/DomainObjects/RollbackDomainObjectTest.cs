@@ -186,5 +186,18 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     Assert.AreSame (order, orderItem.Order);
     Assert.IsTrue (order.OrderItems.Contains (orderItem));
   }
+
+  [Test]
+  public void DomainObjectCollectionIsSameAfterRollback ()
+  {
+    Order order = Order.GetObject (DomainObjectIDs.Order1);
+    DomainObjectCollection orderItems = order.OrderItems;
+    OrderItem orderItem = new OrderItem (order);
+
+    ClientTransactionMock.Rollback ();
+
+    Assert.AreSame (orderItems, order.OrderItems);
+    Assert.IsFalse (order.OrderItems.IsReadOnly);
+  }
 }
 }
