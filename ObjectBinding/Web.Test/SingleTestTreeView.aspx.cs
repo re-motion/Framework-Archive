@@ -33,6 +33,11 @@ public class SingleTestTreeView : SingleBocTestBasePage
 
     this.DataBind();
 
+    if (person.Children == null)
+    {
+      person.Children = null;
+      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+    }
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
   }
 
