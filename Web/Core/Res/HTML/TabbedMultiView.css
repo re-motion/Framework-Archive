@@ -11,6 +11,6 @@ div.tabbedMultiViewActiveView
 	border-bottom: solid 1px #2254b1;	
 	height: 300pt;
 	padding: 2pt;
-	overflow: scroll;
+	overflow: auto;
 }
 
