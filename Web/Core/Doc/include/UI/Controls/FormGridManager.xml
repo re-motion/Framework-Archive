@@ -250,7 +250,7 @@
             Call to <see cref="CreateValidators"/>
           </item>
           <item>
-            Call to <see cref="OverrideValidators"/>
+            Call to <see cref="ApplyValidatorSettings"/>
           </item>
           <item>
             Call to <see cref="LoadMarkersIntoCell"/>.
@@ -391,11 +391,6 @@
       The <see cref="FormGridRow"/> for which the marker cell should be created.
     </param>
   </LoadMarkersIntoCell>
-  <OverrideValidators>
-   <param name="dataRow">
-    The <see cref="FormGridRow"/> containing the validators to be overridden.
-  </param>
-  </OverrideValidators>
   <LoadValidationMessagesIntoCell>
     <remarks>
       <para>
