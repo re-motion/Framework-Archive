@@ -72,25 +72,13 @@ public class TabView : Rubicon.Web.UI.Controls.PageView
 
   private bool ShouldSerializeIcon()
   {
-    if (_icon == null)
-    {
-      return false;
-    }
-    else if (   StringUtility.IsNullOrEmpty (_icon.Url)
-             && _icon.Height.IsEmpty
-             && _icon.Width.IsEmpty)
-    {
-      return false;
-    }
-    else
-    {
-      return true;
-    }
+    return IconInfo.ShouldSerialize (_icon);
   }
 
   private void ResetIcon()
   {
-    _icon = new IconInfo (string.Empty, Unit.Empty, Unit.Empty);
-  }}
+    _icon.Reset();
+  }
+}
 
 }
