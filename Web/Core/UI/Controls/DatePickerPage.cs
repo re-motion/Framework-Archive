@@ -102,7 +102,8 @@ public class DatePickerPage : Page
   {
     string scriptUrl = ResourceUrlResolver.GetResourceUrl (
         this, Context, this.GetType(), ResourceType.Html, c_datePickerScriptUrl);
-    PageUtility.RegisterClientScriptFile (
+
+    PageUtility.RegisterClientScriptInclude (
         this,
         typeof (DatePickerPage).FullName, 
         scriptUrl);
@@ -112,10 +113,10 @@ public class DatePickerPage : Page
 
   private void Calendar_SelectionChanged(object sender, EventArgs e)
   {
-    PageUtility.RegisterStartupScript (
-      this, 
-      typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged",
-      "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "')");
+    PageUtility.RegisterStartupScriptBlock (
+        this, 
+        typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged",
+        "Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "')");
   }
 }
 

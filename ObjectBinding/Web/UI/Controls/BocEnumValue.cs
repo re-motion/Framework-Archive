@@ -324,7 +324,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
         if (! IsRequired)
           _listControl.Items.Add (CreateNullItem());
 
-        IEnumerationValueInfo [] valueInfos = Property.GetEnabledValues();
+        IEnumerationValueInfo[] valueInfos = Property.GetEnabledValues();
 
         foreach (IEnumerationValueInfo valueInfo in valueInfos)
         {
@@ -609,13 +609,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
       }
       else if (oldInternalValue != null && Property != null)
       {
-        IEnumerationValueInfo oldEnumerationValueInfo 
-          = Property.GetValueInfoByIdentifier (oldInternalValue);
+        IEnumerationValueInfo oldEnumerationValueInfo =
+            Property.GetValueInfoByIdentifier (oldInternalValue);
         
         if (oldEnumerationValueInfo != null && ! oldEnumerationValueInfo.IsEnabled)
-        {
           removeItemWithIdentifier = oldInternalValue;
-        }
       }
       
       InternalLoadValue (removeItemWithIdentifier);

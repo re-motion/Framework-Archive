@@ -490,11 +490,13 @@ public class PageUtility
     }
   }  
 
-  /// <summary> Used to register client scripts located inside a script file. </summary>
+  /// <summary> 
+  ///   Used to register client scripts include directives.
+  /// </summary>
   /// <param name="page"> The <see cref="Page"/> where the script file will be registered. </param>
   /// <param name="key"> The key identifying the registered script file. </param>
   /// <param name="scriptUrl"> The url of the script file. </param>
-  public static void RegisterClientScriptFile (Page page, string key, string scriptUrl)
+  public static void RegisterClientScriptInclude (Page page, string key, string scriptUrl)
   {
     string script = 
         @"<script language=""Javascript"" type=""text/javascript"" src=""" +
@@ -515,13 +517,13 @@ public class PageUtility
   }
 
   /// <summary>
-  ///   Used to register a client script that will be automatically executed after the page is 
-  ///   loaded.
+  ///   Used to register a client javascript script that will be automatically executed after the page is 
+  ///   loaded. The script is automatically surrounded by &lt;script&gt; tags.
   /// </summary>
   /// <param name="page"> The <see cref="Page"/> where the script will be registered. </param>
   /// <param name="key"> The key identifying the registered script file. </param>
   /// <param name="javascript"> The client script that will be registered. </param>
-  public static void RegisterStartupScript (Page page, string key, string javascript)
+  public static void RegisterStartupScriptBlock (Page page, string key, string javascript)
   {
     string script = 
         @"<script language=""javascript"" type=""text/javascript"">" +
