@@ -16,4 +16,10 @@ public interface IBusinessObject
   IBusinessObjectClass BusinessObjectClass { get; }
 }
 
+public interface IBusinessObjectWithIdentity
+{
+  string DisplayName { get; }
+  string UniqueIdentifier { get; }
+}
+
 }

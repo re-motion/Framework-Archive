@@ -123,6 +123,9 @@ public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
   ///   Gets the class information for elements of this property.
   /// </summary>
   IBusinessObjectClass ReferenceClass { get; }
+
+  bool SupportsSearchAvailableObjects { get; }
+  IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string searchStatement); 
 }
 
 public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
