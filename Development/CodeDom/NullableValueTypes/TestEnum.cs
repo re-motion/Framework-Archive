@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.NullableValueTypes.CodeDom
+namespace Rubicon.CodeDom.NullableValueTypes.Sample
 {
 
 public enum ValueType { Value1, Value2 }
