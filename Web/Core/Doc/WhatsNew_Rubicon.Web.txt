@@ -3,7 +3,7 @@
 
 - Rubicon.Web.UI.IFormGridRowProvider
   * Methoden GetHiddenRows (string) und GetAdditionalRows (string)
-     Der erwartete Parameter ist jetzt die UniqueID des jeweiligen Tables, nicht die ID.
+     Der erwartete Parameter ist jetzt der jeweiligen Table, nicht die ID.
   
 1.1.26.0
 ========

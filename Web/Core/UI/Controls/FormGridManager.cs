@@ -1662,7 +1662,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     if (rowProvider == null)
       return;
 
-    FormGridRowInfoCollection formGridRowInfos = rowProvider.GetAdditionalRows (formGrid.Table.UniqueID);
+    FormGridRowInfoCollection formGridRowInfos = rowProvider.GetAdditionalRows (formGrid.Table);
     if (formGridRowInfos == null)
       return;
 
@@ -1723,7 +1723,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
     if (rowProvider == null)
       return;
 
-    StringCollection strings = rowProvider.GetHiddenRows (formGrid.Table.UniqueID);
+    StringCollection strings = rowProvider.GetHiddenRows (formGrid.Table);
     if (strings == null)
       return; 
 
