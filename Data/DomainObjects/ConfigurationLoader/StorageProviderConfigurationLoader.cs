@@ -18,10 +18,10 @@ public class StorageProviderConfigurationLoader : BaseLoader
   public static StorageProviderConfigurationLoader Create ()
   {
     return new StorageProviderConfigurationLoader (
-      LoaderUtility.GetXmlFileName (
-          "Rubicon.Data.DomainObjects.Configuration.StorageProviderConfigurationFile", c_defaultConfigurationFile),
-      LoaderUtility.GetXmlFileName (
-          "Rubicon.Data.DomainObjects.Configuration.StorageProviderSchemaFile", c_defaultSchemaFile));
+        LoaderUtility.GetXmlFileName (
+            "Rubicon.Data.DomainObjects.Configuration.StorageProviderConfigurationFile", c_defaultConfigurationFile),
+        LoaderUtility.GetXmlFileName (
+            "Rubicon.Data.DomainObjects.Configuration.StorageProviderSchemaFile", c_defaultSchemaFile));
   }
 
   // member fields
@@ -32,11 +32,11 @@ public class StorageProviderConfigurationLoader : BaseLoader
   {
     try
     {
-    base.Initialize (
-        configurationFile, 
-        schemaFile, 
-        new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
-        PrefixNamespace.StorageProviderConfigurationNamespace);
+      base.Initialize (
+          configurationFile, 
+          schemaFile, 
+          new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
+          PrefixNamespace.StorageProviderConfigurationNamespace);
     }
     catch (XmlSchemaException e)
     {
