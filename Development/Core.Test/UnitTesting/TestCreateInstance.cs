@@ -2,7 +2,9 @@ using System;
 using System.Text;
 using NUnit.Framework;
 
-namespace Rubicon.UnitTests.UnitTests
+using Rubicon.Development.UnitTesting;
+
+namespace Rubicon.Development.UnitTests.UnitTesting
 {
 
 public class PublicClass
