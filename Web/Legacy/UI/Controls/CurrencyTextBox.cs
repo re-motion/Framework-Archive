@@ -13,7 +13,7 @@ namespace Rubicon.Web.UI.Controls
 /// Default position is before the text box.
 /// </remarks>
 [ValidationPropertyAttribute("AmountText")]
-public class CurrencyTextBox: Control, INamingContainer
+public class CurrencyTextBox: Control, INamingContainer, IPostBackDataHandler
 {
   // types
 
@@ -22,6 +22,9 @@ public class CurrencyTextBox: Control, INamingContainer
     BeforeTextBox = 0,
     AfterTextBox = 1
   }
+
+  public delegate void TextChangedHandler ();
+  public event TextChangedHandler TextChanged;
 
   // static members and constants
 
@@ -33,6 +36,7 @@ public class CurrencyTextBox: Control, INamingContainer
   private TextBox _amountTextBox;
   private string _cssClass = string.Empty;
 
+  private RangeValidator _rangeValidator;
   private string _errorMessageCssClass = string.Empty;
   private string _errorMessage = "Bitte gültigen Betrag eingeben.";
   private ValidatorDisplay _errorMessageDisplay = ValidatorDisplay.Dynamic;
@@ -44,6 +48,7 @@ public class CurrencyTextBox: Control, INamingContainer
   /// </summary>
   public CurrencyTextBox()
   {
+    CreateAmountTextBox ();
   }
 
   // abstract methods and properties 
@@ -155,45 +160,40 @@ public class CurrencyTextBox: Control, INamingContainer
     return values;
   }
 
-  private string GetAmountToDisplay ()
-  {
-    string amount = this.Page.Request.Form[_amountTextBox.UniqueID];
-
-    if (!this.Page.IsPostBack && (amount == null || amount == string.Empty))
-      amount = _amountText;
-
-    return amount;
-  }
-
   protected override void CreateChildControls()
   {
-    this.Controls.Add (CreateMainTable ());
+    CreateAndAppendMainTable ();
 
     base.CreateChildControls ();
-
-    _amountTextBox.Text = GetAmountToDisplay ();
-    AmountText = GetAmountToDisplay ();
   }
 
-  private HtmlTable CreateMainTable ()
+  protected override void Render(HtmlTextWriter writer)
   {
-    HtmlTable table = new HtmlTable ();
+    // Render dummy input control with the id of the CurrencyTextBox-control to
+    //  be able to handle posted data
+    writer.Write("<input type=\"text\" style=\"display:none;\" name=\"" + this.UniqueID + "\">");
+    
+    base.Render (writer);
+  }
+
+  private void CreateAndAppendMainTable ()
+  {
+    Table table = new Table ();
     table.CellPadding = 0;
     table.CellSpacing = 0;
 
     if (_cssClass != string.Empty)
-      table.Attributes["class"] = _cssClass;
+      table.CssClass = _cssClass;
 
-    HtmlTableRow row = new HtmlTableRow ();
-    HtmlTableCell cell = null;
+    TableRow row = new TableRow ();
+    TableCell cell = null;
 
     if (CurrencySymbolPosition == CurrencySymbolPositionType.BeforeTextBox)
       row.Cells.Add (CreateCurrencySymbolCell ());
 
-    cell = new HtmlTableCell ();
-    cell.VAlign = "Middle";
+    cell = new TableCell ();
+    cell.VerticalAlign = VerticalAlign.Middle;
 
-    CreateAmountTextBox ();
     cell.Controls.Add (_amountTextBox);
   
     row.Cells.Add (cell);
@@ -202,32 +202,34 @@ public class CurrencyTextBox: Control, INamingContainer
       row.Cells.Add (CreateCurrencySymbolCell ());
 
     table.Rows.Add (row);
-   
-    row = new HtmlTableRow ();
-    cell = new HtmlTableCell ();
-    cell.ColSpan = 2;
 
-    cell.Controls.Add (CreateValidator ());  
+    row = new TableRow ();
+    cell = new TableCell ();
+    cell.ColumnSpan = 2;
+
+    CreateValidator ();
+    cell.Controls.Add (_rangeValidator);  
 
     row.Cells.Add (cell);
 
     table.Rows.Add (row);
-
-    return table;
+   
+    this.Controls.Add (table);
   }
 
   private void CreateAmountTextBox ()
   {
     _amountTextBox = new TextBox ();
     _amountTextBox.ID = "AmountTextBox";
+    _amountTextBox.Text = _amountText;
     _amountTextBox.MaxLength = 13;
-    _amountTextBox.Width = new Unit (10, UnitType.Em);
+    _amountTextBox.Style["width"] = "10em";
   }
 
-  private HtmlTableCell CreateCurrencySymbolCell ()
+  private TableCell CreateCurrencySymbolCell ()
   {
-    HtmlTableCell cell = new HtmlTableCell ();
-    cell.VAlign = "Middle";
+    TableCell cell = new TableCell ();
+    cell.VerticalAlign = VerticalAlign.Middle;
     cell.Controls.Add (CreateCurrencySymbol ());
 
     return cell;
@@ -236,7 +238,6 @@ public class CurrencyTextBox: Control, INamingContainer
   private Label CreateCurrencySymbol ()
   {
     Label currencySymbolLabel = new Label ();
-    currencySymbolLabel.CssClass = "labelOpen";
 
     if (CurrencySymbolPosition == CurrencySymbolPositionType.AfterTextBox)
       currencySymbolLabel.Controls.Add (new LiteralControl ("&nbsp;"));
@@ -249,20 +250,50 @@ public class CurrencyTextBox: Control, INamingContainer
     return currencySymbolLabel;
   }
 
-  private RangeValidator CreateValidator ()
+  private void CreateValidator ()
   {
-    RangeValidator rangeValidator = new RangeValidator ();
-    rangeValidator.ID = "AmountRangeValidator";
-    rangeValidator.ErrorMessage = _errorMessage;
-    rangeValidator.Display = _errorMessageDisplay;
-    rangeValidator.MinimumValue = "0";
-    rangeValidator.MaximumValue = "1200000000000";
-    rangeValidator.Type = ValidationDataType.Double;
-    rangeValidator.CssClass = _errorMessageCssClass;
-    rangeValidator.EnableClientScript = false;
-    rangeValidator.ControlToValidate = _amountTextBox.ID;
+    _rangeValidator = new RangeValidator ();
+    _rangeValidator.ID = "AmountRangeValidator";
+    _rangeValidator.ErrorMessage = _errorMessage;
+    _rangeValidator.Display = _errorMessageDisplay;
+    _rangeValidator.MinimumValue = "0";
+    _rangeValidator.MaximumValue = "1200000000000";
+    _rangeValidator.Type = ValidationDataType.Double;
+    _rangeValidator.CssClass = _errorMessageCssClass;
+    _rangeValidator.EnableClientScript = false;
+    _rangeValidator.ControlToValidate = _amountTextBox.ID;
+  }
 
-    return rangeValidator;
+  #region IPostBackDataHandler Members
+
+  public void RaisePostDataChangedEvent()
+  {
+    OnTextChanged ();
+  }
+
+  public bool LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+  {
+    string currentValue = _amountText;
+
+    this.Controls.Add (_amountTextBox);
+    string postedValue = postCollection[_amountTextBox.UniqueID];
+    this.Controls.Remove (_amountTextBox);
+
+    if (!currentValue.Equals (postedValue))
+    {
+      _amountText = postedValue;
+      return true;
+    }
+
+    return false;
+  }
+
+  #endregion
+
+  protected virtual void OnTextChanged ()
+  {
+    if (TextChanged != null)
+      TextChanged ();
   }
 }
 
