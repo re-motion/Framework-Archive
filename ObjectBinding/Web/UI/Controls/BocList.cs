@@ -1074,9 +1074,9 @@ public class BocList:
   /// </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
-    //  TODO: Browser Switch: Css2.1: 100%, IE 5.01: auto
+    //  TODO: Browser Switch: Css2.1: 100%, IE 5.01: inherit
     if (! (writer is Html32TextWriter))
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "inherit");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
@@ -1107,10 +1107,25 @@ public class BocList:
       writer.RenderEndTag();
     }
 
+    bool isFirstColumnUndefinedWidth = true;
     foreach (BocColumnDefinition column in _renderColumns)
     {
       if (! column.Width.IsEmpty)
+      {
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
+      }
+      else 
+      {
+        if (isFirstColumnUndefinedWidth)
+        {
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(1).ToString());
+          isFirstColumnUndefinedWidth = false;
+        }
+        else
+        {
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+        }
+      }
 
       writer.RenderBeginTag (HtmlTextWriterTag.Col);
       writer.RenderEndTag();

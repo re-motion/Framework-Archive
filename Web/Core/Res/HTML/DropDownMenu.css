@@ -31,23 +31,70 @@ span.dropDownMenuHeadButtonFocus
 }
 
 /*  */
-div.dropDownMenuPopUpTextPane
+div.dropDownMenuPopUp
 {
-  padding-right: 0px;
-  padding-left: 0px;
-  font-size: 66.67%;
-  padding-bottom: 0px;
-  margin: 0px;
+  border-color: #2254b1;
   border-top-style: none;
-  padding-top: 0px;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 1px;
+  background-color: #fafafa;
+}
+
+div.dropDownMenuItem
+{
+	margin: 1px;
+	padding: 2px;
+	vertical-align: middle;	
+}
+
+div.dropDownMenuItemHover
+{
+	margin: 1px;
+	padding: 2px;
+	vertical-align: middle;
+	border-color: #2254b1;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fee197;
+	
+}
+
+/*  */
+div.dropDownMenuItemTextPane
+{
+  padding: 0px;
+  margin: 0px;
+  font-size: 66.67%;
   font-family: Verdana, sans-serif;
-  border-right-style: none;
-  border-left-style: none;
-  border-bottom-style: none;
+  border-style: none;
 }
 
 
 /*  */
-div.dropDownMenuPopUpIconPane
+div.dropDownMenuItemIconPane
 {
+}
+
+.ms-MenuUIPopupBody {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 66.67%; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; FONT-FAMILY: Verdana, sans-serif; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.ms-MenuUIPopupBody TABLE {
+	FONT-SIZE: 100%; WIDTH: 100%; COLOR: #003399
+}
+.ms-MenuUIPopupBody IMG {
+	WIDTH: 16px; HEIGHT: 16px
+}
+.ms-MenuUI {
+	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; CURSOR: hand; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fafafa
+}
+.ms-MenuUIItemTableCell {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
+}
+.ms-MenuUIItemTableCellHover {
+	PADDING-RIGHT: 1px; PADDING-LEFT: 1px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px
+}
+.ms-MenuUIItemTableHover {
+	BORDER-RIGHT: #2254b1 1px solid; BORDER-TOP: #2254b1 1px solid; BORDER-LEFT: #2254b1 1px solid; BORDER-BOTTOM: #2254b1 1px solid; BACKGROUND-COLOR: #fee197
 }
