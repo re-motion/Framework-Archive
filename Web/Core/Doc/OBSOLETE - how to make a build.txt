@@ -16,5 +16,6 @@ Build:
     Datei "Build_<major-version>.<minor-version>.<build-num>.<rev-num>.zip" packen
   * ZIP-Datei in den Buildordner C:\Development\Libraries\Rubicon\Web.UI\build kopieren
   * ZIP-Datei in VSS einchecken
+  * Visual Studio: close solution
   * Gesamten Source Code auf 
     \\at-vie-dc-02\buildsources$\Libraries\Rubicon\Rubicon.Web.UI\<major-version>-<minor-version>-<build-num>-<rev-num> kopieren
