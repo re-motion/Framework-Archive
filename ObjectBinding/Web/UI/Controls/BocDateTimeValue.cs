@@ -358,7 +358,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _dateTimeValueValidator.ID = this.ID + "_ValidatorDateTime";
     _dateTimeValueValidator.ControlToValidate = ID;
 
-    //  TODO: BocDateTimeValue: Get validation messages from ResourceProvider
     if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.RequiredErrorMessage))
       _dateTimeValueValidator.RequiredErrorMessage = c_requiredErrorMessage;
     if (StringUtility.IsNullOrEmpty (_dateTimeValueValidator.IncompleteErrorMessage))
@@ -1263,6 +1262,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the control is not filled out.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the control is not filled out.")]
   [Category ("Validator")]
   [DefaultValue("")]
@@ -1275,6 +1278,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the control's contents is incomplete.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the control's contents is incomplete.")]
   [Category ("Validator")]
   [DefaultValue("")]
@@ -1287,6 +1294,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the date value is invalid.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the date value is invalid.")]
   [Category ("Validator")]
   [DefaultValue("")]
@@ -1299,6 +1310,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the time value is invalid.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the time value is invalid.")]
   [Category ("Validator")]
   [DefaultValue("")]
@@ -1311,6 +1326,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the date and time values are invalid.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the date and time values are invalid.")]
   [Category ("Validator")]
   [DefaultValue("")]

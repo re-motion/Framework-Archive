@@ -314,7 +314,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     _notNullItemValidator.ControlToValidate = TargetControl.ID;
     _notNullItemValidator.ValueToCompare = c_nullIdentifier;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    //  TODO: BocReferenceValue: Get validation message from ResourceProvider
     _notNullItemValidator.ErrorMessage = c_nullItemValidationMessage;
 
     validators[0] = _notNullItemValidator;
@@ -945,6 +944,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <summary>
   ///   Validation message if the null item is selected but a valid selection is required.
   /// </summary>
+  /// <remarks> 
+  ///   Use this property to automatically assign a validation message by 
+  ///   <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>. 
+  /// </remarks>
   [Description("Validation message if the null item is selected but a valid selection is required.")]
   [Category ("Validator")]
   [DefaultValue("")]

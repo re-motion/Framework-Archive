@@ -322,7 +322,7 @@ public class BocItemCommand
   /// <param name="businessObjectID"> 
   ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
   ///   <see cref="IBusinessObject"/> in the row where the command was clicked 
-  ///   is an <see cref="IBusinessObjectWIthIdentity"/>.
+  ///   is an <see cref="IBusinessObjectWithIdentity"/>.
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, string businessObjectID)
   {
