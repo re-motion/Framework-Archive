@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
-
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 public class RelationEndPointCollection : CollectionBase
@@ -33,37 +31,6 @@ public class RelationEndPointCollection : CollectionBase
   }
 
   // methods and properties
-
-  public void Register (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    ClassDefinition classDefinition = dataContainer.ClassDefinition;
-
-    foreach (RelationDefinition relationDefinition in classDefinition.GetAllRelationDefinitions ())
-    {
-      foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
-      {
-        if (!endPointDefinition.IsVirtual)
-        {
-          if (classDefinition.IsRelationEndPoint (endPointDefinition))
-          {
-            ObjectID oppositeObjectID = dataContainer.GetObjectID (endPointDefinition.PropertyName);
-            ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer, endPointDefinition, oppositeObjectID);
-            Add (endPoint);
-
-            if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.One && endPoint.OppositeObjectID != null)
-            {
-              ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-                  endPoint.OppositeObjectID, endPoint.OppositeEndPointDefinition, endPoint.ObjectID);
-
-              Add (oppositeEndPoint);
-            }
-          }
-        }
-      }
-    }
-  }
   
   #region Standard implementation for collections
 
