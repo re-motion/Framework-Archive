@@ -99,49 +99,55 @@ public class SmartLabel: WebControl
     this.RenderBeginTag (writer);
     string text = string.Empty;
 
-    ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
-    if (smartControl != null && smartControl.DisplayName != null)
+    if (StringUtility.IsNullOrEmpty (ForControl))
     {
-      text = smartControl.DisplayName;
+      text = "[Label for Undefined Control]";
     }
-    // TODO: use access key (nicht für texte aus dem control)
-    //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
-    //    else if (!StringUtility.IsNullOrEmpty (_text))
-    //    {
-    //      // TODO: use access key (nicht für texte aus dem control)
-    //      Control associatedControl = NamingContainer.FindControl (ForControl);
-    //    
-    //      if (associatedControl != null)
-    //      {
-    //        ISmartControl smartControl = control as ISmartControl;
-    //        if (smartControl != null && smartControl.UseLabel)
-    //        {
-    //          string accessKey;
-    //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
-    //          label.AccessKey = accessKey;
-    //        }
-    //        else if (control is DropDownList || control is HtmlSelect)
-    //        {
-    //          text = SmartLabel.FormatLabelText (label.Text, false);
-    //          label.AccessKey = "";
-    //        }
-    //        else
-    //        {
-    //          string accessKey;
-    //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
-    //          label.AccessKey = accessKey;
-    //        }
-    //      }
-    //      else
-    //      {
-    //        text = SmartLabel.FormatLabelText (label.Text, false);
-    //      }
-    //    }
     else
     {
-      text = "[Label for " + ForControl + "]";
+      ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
+      if (smartControl != null && smartControl.DisplayName != null)
+      {
+        text = smartControl.DisplayName;
+      }
+      // TODO: use access key (nicht für texte aus dem control)
+      //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
+      //    else if (!StringUtility.IsNullOrEmpty (_text))
+      //    {
+      //      // TODO: use access key (nicht für texte aus dem control)
+      //      Control associatedControl = NamingContainer.FindControl (ForControl);
+      //    
+      //      if (associatedControl != null)
+      //      {
+      //        ISmartControl smartControl = control as ISmartControl;
+      //        if (smartControl != null && smartControl.UseLabel)
+      //        {
+      //          string accessKey;
+      //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+      //          label.AccessKey = accessKey;
+      //        }
+      //        else if (control is DropDownList || control is HtmlSelect)
+      //        {
+      //          text = SmartLabel.FormatLabelText (label.Text, false);
+      //          label.AccessKey = "";
+      //        }
+      //        else
+      //        {
+      //          string accessKey;
+      //          text = SmartLabel.FormatLabelText (label.Text, true, out accessKey);
+      //          label.AccessKey = accessKey;
+      //        }
+      //      }
+      //      else
+      //      {
+      //        text = SmartLabel.FormatLabelText (label.Text, false);
+      //      }
+      //    }
+      else
+      {
+        text = "[Label for " + ForControl + "]";
+      }
     }
-
     writer.Write (text);
     this.RenderEndTag (writer);
   }
