@@ -32,7 +32,7 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo, itemType, isList, isNullableType);
     else if (propertyInfo.PropertyType.IsEnum)
       return new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, isList);
-    else if (propertyInfo.PropertyType.IsAssignableFrom (typeof (IBusinessObjectWithIdentity)))
+    else if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (propertyInfo.PropertyType))
       return new ReflectionBusinessObjectRefernceProperty (propertyInfo, itemType, isList);
     else
       return new ReflectionBusinessObjectProperty (propertyInfo, itemType, isList);
@@ -248,8 +248,7 @@ public class ReflectionBusinessObjectRefernceProperty: ReflectionBusinessObjectP
   {
     get
     {
-      // TODO:  Add ReflectionBusinessObjectRefernceProperty.ReferenceClass getter implementation
-      return null;
+      return new ReflectionBusinessObjectClass (this.PropertyType);
     }
   }
 
