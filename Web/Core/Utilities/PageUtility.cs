@@ -498,7 +498,6 @@ public class PageUtility
 
 	        function WindowOpen (url, useScrollBars)
 	        { 
-	          <%-- Set height so that IE window fits for 1024x768 with windows taskbar --%>
 	          var windowMaxWidth = 1010;
 	          var windowMaxHeight = 700;
 	          var windowLeft = (screen.width - windowMaxWidth) / 2;
@@ -506,12 +505,10 @@ public class PageUtility
 	          var windowTop;
 	          if (screen.height > 768)
 	          {
-	            <%-- Center window vertical for resolutions greater than 1024x768 --%>  
 	            windowTop = (screen.height - windowMaxHeight) / 2;
 	          }
             else  	      
             {
-              <%-- Do not center window because of window taskbar --%>  
 	            windowTop = 5; 
 	          }   
     	      
@@ -527,7 +524,7 @@ public class PageUtility
 
   public static string GetWindowOpenJavascript (string url, bool useScrollbars)
   {
-    return string.Format ("WindowOpen ({0}, {1}", url, useScrollbars ? "yes" : "no");
+    return string.Format ("WindowOpen ('{0}', '{1}')", url, useScrollbars ? "yes" : "no");
   }
 
 }
