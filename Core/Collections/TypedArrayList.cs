@@ -1,21 +1,41 @@
 using System;
 using System.Collections;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Collections
 {
 
 /// <summary>
-/// A list of objects of a certain type.
+/// A strongly typed version of <see cref="ArrayList"/>.
 /// </summary>
+[Serializable]
 public class TypedArrayList: ArrayList
 {
   private Type _elementType;
 
 	public TypedArrayList (Type elementType)
 	{
-    _elementType = elementType;
+    Initialize (elementType);
 	}
+
+  public TypedArrayList (Type elementType, int capacity)
+    : base (capacity)
+  {
+    Initialize (elementType);
+  }
+
+  public TypedArrayList (Type elementType, ICollection collection)
+    : base (collection)
+  {
+    Initialize (elementType);
+  }
+
+  private void Initialize (Type elementType)
+  {
+    ArgumentUtility.CheckNotNull ("elementType", elementType);
+    _elementType = elementType;
+  }
 
   public override int Add (object value)
   {
