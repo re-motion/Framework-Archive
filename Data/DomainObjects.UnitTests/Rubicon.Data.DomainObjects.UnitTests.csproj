@@ -805,6 +805,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestDomain\ClassWithRelatedClassIDColumnAndNoInheritance.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\ClassWithValidRelations.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
