@@ -35,7 +35,7 @@ public class BocListItemCommand: BocCommand
     ///   The URL to link to when the rendered command is clicked. The default value is 
     ///   <see cref="String.Empty"/>. 
     /// </value>
-    [Description ("The hyperlink reference of the command. Use {0} to insert the Busines Object's index in the list and {1} to insert the Business Object's ID.")]
+    [Description ("The hyperlink reference of the command. Use {0} to insert the Business Object's index in the list and {1} to insert the Business Object's ID.")]
     public override string Href 
     {
       get { return base.Href; }
@@ -222,21 +222,20 @@ public class BocListItemCommand: BocCommand
 public delegate void BocListItemCommandClickEventHandler (object sender, BocListItemCommandClickEventArgs e);
 
 /// <summary> Provides data for the <see cref="BocListItemCommand.Click"/> event. </summary>
-public class BocListItemCommandClickEventArgs: EventArgs
+public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
 {
   private BocCommandEnabledColumnDefinition _column;
   private int _listIndex;
-  private IBusinessObject _businessObject;
 
   /// <summary> Initializes a new instance. </summary>
   public BocListItemCommandClickEventArgs (
       BocCommandEnabledColumnDefinition column, 
       int listIndex, 
       IBusinessObject businessObject)
+    : base (businessObject)
   {
     _column = column;
     _listIndex = listIndex;
-    _businessObject = businessObject;
   }
 
   /// <summary>
@@ -253,14 +252,6 @@ public class BocListItemCommandClickEventArgs: EventArgs
   public int ListIndex
   {
     get { return _listIndex; }
-  }
-
-  /// <summary>
-  ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
-  /// </summary>
-  public IBusinessObject BusinessObject
-  {
-    get { return _businessObject; }
   }
 }
 
