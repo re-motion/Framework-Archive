@@ -366,8 +366,8 @@ public class DomainObject
   /// <summary>
   /// Raises the <see cref="Deleting"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="DeletingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnDeleting (DeletingEventArgs args)
+  /// <param name="args">A <see cref="System.EventArgs"/> object that contains the event data.</param>
+  protected virtual void OnDeleting (EventArgs args)
   {
     if (Deleting != null)
       Deleting (this, args);
@@ -383,7 +383,7 @@ public class DomainObject
       Deleted (this, args);
   }
 
-  internal bool BeginRelationChange (
+  internal void BeginRelationChange (
     string propertyName,
     DomainObject oldRelatedObject,
     DomainObject newRelatedObject)
@@ -392,7 +392,6 @@ public class DomainObject
 
     RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
     OnRelationChanging (args);
-    return !args.Cancel;
   }
 
   internal void EndObjectLoading ()
@@ -407,11 +406,9 @@ public class DomainObject
     OnRelationChanged (new RelationChangedEventArgs (propertyName));
   }
 
-  internal bool BeginDelete ()
+  internal void BeginDelete ()
   {
-    DeletingEventArgs args = new DeletingEventArgs ();
-    OnDeleting (args);
-    return !args.Cancel;
+    OnDeleting (new EventArgs ());
   }
 
   internal void EndDelete ()

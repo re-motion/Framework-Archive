@@ -4,9 +4,9 @@ using NUnit.Framework;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventSequence
+namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-public class SequenceEventReceiver
+public class SequenceEventReceiver : EventReceiverBase
 {
   // types
 
@@ -138,7 +138,7 @@ public class SequenceEventReceiver
     _states.Add (new PropertyChangeState (sender, args.PropertyValue, args.OldValue, args.NewValue));
 
     if (_states.Count == _cancelEventNumber)
-      args.Cancel = true;
+      CancelOperation ();
   }
 
   private void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
@@ -146,7 +146,7 @@ public class SequenceEventReceiver
     _states.Add (new RelationChangeState (sender, args.PropertyName, args.OldRelatedObject, args.NewRelatedObject));
 
     if (_states.Count == _cancelEventNumber)
-      args.Cancel = true;
+      CancelOperation ();
   }
 
   private void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
@@ -159,7 +159,7 @@ public class SequenceEventReceiver
     _states.Add (new ObjectDeletionState (sender));
 
     if (_states.Count == _cancelEventNumber)
-      args.Cancel = true;
+      CancelOperation ();
   }
 
   private void DomainObject_Deleted (object sender, EventArgs args)
@@ -172,7 +172,7 @@ public class SequenceEventReceiver
     _states.Add (new CollectionChangeState (sender, args.DomainObject));
 
     if (_states.Count == _cancelEventNumber)
-      args.Cancel = true;
+      CancelOperation ();
   }
 
   private void Collection_Changed (object sender, DomainObjectCollectionChangedEventArgs args)

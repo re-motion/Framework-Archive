@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
-using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 

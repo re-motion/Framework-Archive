@@ -106,21 +106,13 @@ public class CollectionEndPointChangeWorker
     
   // methods and properties
 
-  public bool BeginRelationChange ()
+  public void BeginRelationChange ()
   {
     if (MustRemoveObject)
-    {
-      if (!_oppositeDomainObjects.BeginRemove (OldRelatedObject))
-        return false;
-    }
+      _oppositeDomainObjects.BeginRemove (OldRelatedObject);
 
     if (MustAddObject)
-    {
-      if (!_oppositeDomainObjects.BeginAdd (NewRelatedObject))
-        return false;
-    }
-
-    return true;
+      _oppositeDomainObjects.BeginAdd (NewRelatedObject);
   }
 
   public void PerformRelationChange ()

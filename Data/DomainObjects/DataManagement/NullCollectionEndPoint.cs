@@ -21,25 +21,22 @@ public class NullCollectionEndPoint : CollectionEndPoint
 
   // methods and properties
 
-  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-    return true;
   }
 
-  public override bool BeginInsert (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint, int index)
+  public override void BeginInsert (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint, int index)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-    return true;
   }
 
-  public override bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-    return true;    
   }
 
   public override void PerformRelationChange ()

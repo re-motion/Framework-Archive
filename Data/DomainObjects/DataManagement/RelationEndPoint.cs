@@ -103,19 +103,19 @@ public abstract class RelationEndPoint : INullable
 
   // methods and properties
 
-  public bool BeginRelationChange (RelationEndPoint oldEndPoint)
+  public void BeginRelationChange (RelationEndPoint oldEndPoint)
   {
-    return BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    
+    BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    
   }
 
-  public virtual bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public virtual void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
     DomainObject domainObject = GetDomainObject ();
 
-    return domainObject.BeginRelationChange (
+    domainObject.BeginRelationChange (
         PropertyName, oldEndPoint.GetDomainObject (), newEndPoint.GetDomainObject ());
   }
 

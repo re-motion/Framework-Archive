@@ -254,11 +254,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\PropertyDefinitionCollectionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Configuration\Mapping\PropertyDefinitionCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -386,16 +381,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\PropertyValueContainerEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\PropertyValueEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DataManagement\PropertyValueTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -471,17 +456,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DomainObjects\DomainObjectCollectionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObjects\DomainObjectCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DomainObjectEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -531,32 +506,77 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\ChangeState.cs"
+                    RelPath = "EventReceiver\ChangeState.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\CollectionChangeState.cs"
+                    RelPath = "EventReceiver\ClientTransactionEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\ObjectDeletionState.cs"
+                    RelPath = "EventReceiver\CollectionChangeState.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\PropertyChangeState.cs"
+                    RelPath = "EventReceiver\DomainObjectCollectionEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\RelationChangeState.cs"
+                    RelPath = "EventReceiver\DomainObjectEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "EventSequence\SequenceEventReceiver.cs"
+                    RelPath = "EventReceiver\DomainObjectRelationCheckEventReceiver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\EventReceiverBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\EventReceiverCancelException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\ObjectDeletionState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\PropertyChangeState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\PropertyDefinitionCollectionEventReceiver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\PropertyValueContainerEventReceiver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\PropertyValueEventReceiver.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\RelationChangeState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "EventReceiver\SequenceEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -587,11 +607,6 @@
                 />
                 <File
                     RelPath = "IntegrationTests\DomainObjectEventRelationsTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IntegrationTests\DomainObjectRelationCheckEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -827,11 +842,6 @@
                 />
                 <File
                     RelPath = "TestDomain\TestDomainBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Transaction\ClientTransactionEventReceiver.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

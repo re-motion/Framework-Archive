@@ -40,7 +40,7 @@ public class RelationEndPointCollection : CollectionBase
       Add (endPoint);
   }
 
-  public bool BeginDelete (DomainObject domainObject)
+  public void BeginDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -50,10 +50,8 @@ public class RelationEndPointCollection : CollectionBase
       RelationEndPoint oldEndPoint = this[new RelationEndPointID (domainObject.ID, endPointDefinition)];
       RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
 
-      if (!oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint))
-        return false;
+      oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint);
     }
-    return true;
   }
 
   public void EndDelete ()

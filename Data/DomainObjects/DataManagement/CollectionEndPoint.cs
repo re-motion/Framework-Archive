@@ -123,7 +123,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     }
   }
 
-  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -140,10 +140,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (!newEndPoint.IsNull && oldEndPoint.IsNull)
       _changeWorker = CollectionEndPointChangeWorker.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
 
-    return BeginRelationChange ();
+    BeginRelationChange ();
   }
 
-  public virtual bool BeginInsert (
+  public virtual void BeginInsert (
       RelationEndPoint oldEndPoint, 
       RelationEndPoint newEndPoint,
       int index)
@@ -153,10 +153,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     _changeWorker = CollectionEndPointChangeWorker.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index);
 
-    return BeginRelationChange ();
+    BeginRelationChange ();
   }
 
-  public virtual bool BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public virtual void BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -164,7 +164,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _changeWorker = CollectionEndPointChangeWorker.CreateForReplace (
         _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ()));
 
-    return BeginRelationChange ();
+    BeginRelationChange ();
   }
 
   public override void PerformRelationChange ()
@@ -206,12 +206,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     set { _changeDelegate = value; }
   }
 
-  private bool BeginRelationChange ()
+  private void BeginRelationChange ()
   {
-    if (!_changeWorker.BeginRelationChange ())
-      return false;
-
-    return base.BeginRelationChange (_changeWorker.OldEndPoint, _changeWorker.NewEndPoint);
+    _changeWorker.BeginRelationChange ();
+    base.BeginRelationChange (_changeWorker.OldEndPoint, _changeWorker.NewEndPoint);
   }
 
   #region ICollectionChangeDelegate Members

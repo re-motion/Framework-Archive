@@ -124,14 +124,13 @@ public class ObjectEndPoint : RelationEndPoint, INullable
     }    
   }
 
-  public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
     _newEndPoint = newEndPoint;
-
-    return base.BeginRelationChange (oldEndPoint, newEndPoint);
+    base.BeginRelationChange (oldEndPoint, newEndPoint);
   }
 
   public override void PerformRelationChange ()

@@ -112,14 +112,13 @@ public class DataManager
     RelationEndPointCollection allAffectedRelationEndPoints = 
       _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
 
-    if (BeginDelete (domainObject, allAffectedRelationEndPoints))
-    {
-      RelationEndPointCollection allOppositeRelationEndPoints = 
-          allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
+    BeginDelete (domainObject, allAffectedRelationEndPoints);
 
-      PerformDelete (domainObject);
-      EndDelete (domainObject, allOppositeRelationEndPoints);
-    }
+    RelationEndPointCollection allOppositeRelationEndPoints = 
+        allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
+
+    PerformDelete (domainObject);
+    EndDelete (domainObject, allOppositeRelationEndPoints);
   }
 
   private void PerformDelete (DomainObject domainObject)
@@ -129,12 +128,10 @@ public class DataManager
     domainObject.DataContainer.Delete ();
   }
 
-  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
+  private void BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
   {
-    if (!domainObject.BeginDelete ())
-      return false;
-
-    return allAffectedRelationEndPoints.BeginDelete (domainObject);
+    domainObject.BeginDelete ();
+    allAffectedRelationEndPoints.BeginDelete (domainObject);
   }
 
   private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)

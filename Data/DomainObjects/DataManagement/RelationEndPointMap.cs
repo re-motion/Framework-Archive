@@ -332,21 +332,20 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           GetRelatedObject (newRelatedEndPoint.ID), endPoint.Definition);
     }
 
-    if (endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint)
-        && oldRelatedEndPoint.BeginRelationChange (endPoint, RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition))
-        && newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint)
-        && oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition)))
-    {
-      endPoint.PerformRelationChange ();
-      oldRelatedEndPoint.PerformRelationChange ();
-      newRelatedEndPoint.PerformRelationChange ();
-      oldRelatedEndPointOfNewRelatedEndPoint.PerformRelationChange ();
+    endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
+    oldRelatedEndPoint.BeginRelationChange (endPoint, RelationEndPoint.CreateNullRelationEndPoint (endPoint.Definition));
+    newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint);
+    oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint, RelationEndPoint.CreateNullRelationEndPoint (newRelatedEndPoint.Definition));
 
-      endPoint.EndRelationChange ();
-      oldRelatedEndPoint.EndRelationChange ();
-      newRelatedEndPoint.EndRelationChange ();
-      oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
-    }
+    endPoint.PerformRelationChange ();
+    oldRelatedEndPoint.PerformRelationChange ();
+    newRelatedEndPoint.PerformRelationChange ();
+    oldRelatedEndPointOfNewRelatedEndPoint.PerformRelationChange ();
+
+    endPoint.EndRelationChange ();
+    oldRelatedEndPoint.EndRelationChange ();
+    newRelatedEndPoint.EndRelationChange ();
+    oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
   }
 
   private void SetRelatedObjectForOneToManyRelation (
@@ -435,18 +434,17 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     RelationEndPoint oldRelatedEndPoint = (CollectionEndPoint) GetRelationEndPoint (
         GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
 
-    if (addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint)
-        && oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition))
-        && endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index))
-    {
-      addingEndPoint.PerformRelationChange ();
-      oldRelatedEndPoint.PerformRelationChange ();
-      endPoint.PerformRelationChange ();
+    addingEndPoint.BeginRelationChange (oldRelatedEndPoint, endPoint);
+    oldRelatedEndPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition));
+    endPoint.BeginInsert (RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition), addingEndPoint, index);
 
-      addingEndPoint.EndRelationChange ();
-      oldRelatedEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
-    }
+    addingEndPoint.PerformRelationChange ();
+    oldRelatedEndPoint.PerformRelationChange ();
+    endPoint.PerformRelationChange ();
+
+    addingEndPoint.EndRelationChange ();
+    oldRelatedEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformReplace  (
@@ -466,36 +464,34 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     CollectionEndPoint oldEndPointOfNewEndPoint = (CollectionEndPoint) GetRelationEndPoint (
         GetRelatedObject (newEndPoint.ID), newEndPoint.OppositeEndPointDefinition);
  
-    if (oldEndPoint.BeginRelationChange (endPoint)
-        && newEndPoint.BeginRelationChange (oldEndPointOfNewEndPoint, endPoint)
-        && endPoint.BeginReplace (oldEndPoint, newEndPoint)
-        && oldEndPointOfNewEndPoint.BeginRelationChange (newEndPoint))
-    {
-      oldEndPoint.PerformRelationChange ();
-      newEndPoint.PerformRelationChange ();
-      endPoint.PerformRelationChange ();
-      oldEndPointOfNewEndPoint.PerformRelationChange ();
+    oldEndPoint.BeginRelationChange (endPoint);
+    newEndPoint.BeginRelationChange (oldEndPointOfNewEndPoint, endPoint);
+    endPoint.BeginReplace (oldEndPoint, newEndPoint);
+    oldEndPointOfNewEndPoint.BeginRelationChange (newEndPoint);
 
-      oldEndPoint.EndRelationChange ();
-      newEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
-      oldEndPointOfNewEndPoint.EndRelationChange ();
-    }
+    oldEndPoint.PerformRelationChange ();
+    newEndPoint.PerformRelationChange ();
+    endPoint.PerformRelationChange ();
+    oldEndPointOfNewEndPoint.PerformRelationChange ();
+
+    oldEndPoint.EndRelationChange ();
+    newEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
+    oldEndPointOfNewEndPoint.EndRelationChange ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
   {
     ObjectEndPoint removingEndPoint = (ObjectEndPoint) GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
 
-    if (removingEndPoint.BeginRelationChange (endPoint)
-        && endPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition)))
-    {
-      removingEndPoint.PerformRelationChange ();
-      endPoint.PerformRelationChange ();
+    removingEndPoint.BeginRelationChange (endPoint);
+    endPoint.BeginRelationChange (GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition));
 
-      removingEndPoint.EndRelationChange ();
-      endPoint.EndRelationChange ();
-    }
+    removingEndPoint.PerformRelationChange ();
+    endPoint.PerformRelationChange ();
+
+    removingEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
   }
 
   #endregion
