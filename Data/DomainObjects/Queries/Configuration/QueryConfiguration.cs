@@ -29,15 +29,34 @@ public class QueryConfiguration
     }
   }
 
+  public static void SetCurrent (QueryConfiguration queryConfiguration)
+  {
+    lock (typeof (QueryConfiguration))
+    {
+      s_queryConfiguration = queryConfiguration;
+    }
+  }
+
   // member fields
 
   private QueryDefinitionCollection _queryDefinitions;
+  private string _configurationFile;
+  private string _schemaFile;
 
   // construction and disposing
 
-  private QueryConfiguration (QueryConfigurationLoader loader)
+  public QueryConfiguration (string configurationFile, string schemaFile) 
+      : this (new QueryConfigurationLoader (configurationFile, schemaFile))
   {
+  }
+
+  public QueryConfiguration (QueryConfigurationLoader loader)
+  {
+    ArgumentUtility.CheckNotNull ("loader", loader);
+
     _queryDefinitions = loader.GetQueryDefinitions ();
+    _configurationFile = loader.ConfigurationFile;
+    _schemaFile = loader.SchemaFile;
   }
 
   // methods and properties
@@ -54,6 +73,16 @@ public class QueryConfiguration
   public QueryDefinitionCollection QueryDefinitions
   {
     get { return _queryDefinitions; }
+  }
+
+  public string ConfigurationFile
+  {
+    get { return _configurationFile; }
+  }
+
+  public string SchemaFile
+  {
+    get { return _schemaFile; }
   }
 }
 }
