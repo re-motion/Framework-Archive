@@ -208,6 +208,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\EntryFormGrid.en.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\EntryFormGrid.fr.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -221,6 +225,14 @@
                 />
                 <File
                     RelPath = "Globalization\TabControl.en.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\TabControl.fr.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\TabControl.it.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
