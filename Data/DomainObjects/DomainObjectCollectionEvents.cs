@@ -18,7 +18,7 @@ public delegate void DomainObjectCollectionChangedEventHandler (object sender, D
 /// <summary>
 /// Provides data for the <see cref="DomainObjectCollection.Changing"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
-public class DomainObjectCollectionChangingEventArgs : CancelEventArgs
+public class DomainObjectCollectionChangingEventArgs : EventArgs
 {
   private DomainObject _domainObject;
 
@@ -27,17 +27,7 @@ public class DomainObjectCollectionChangingEventArgs : CancelEventArgs
   /// </summary>
   /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
-  public DomainObjectCollectionChangingEventArgs (DomainObject domainObject) : this (domainObject, false)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>DomainObjectCollectionChangingEventArgs</b> class with the <see cref="Cancel"/> property set to the given value.
-  /// </summary>
-  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection.</param>
-  /// <param name="cancel"><b>true</b> to cancel the event; otherwise, <b>false</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
-  public DomainObjectCollectionChangingEventArgs (DomainObject domainObject, bool cancel) : base (cancel)
+  public DomainObjectCollectionChangingEventArgs (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     _domainObject = domainObject;

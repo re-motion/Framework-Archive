@@ -33,12 +33,12 @@ public delegate void RelationChangedEventHandler (object sender, RelationChanged
 /// <summary>
 /// Represents the method that will handle the <see cref="DomainObject.Deleting"/> event of the <see cref="DomainObject"/>.
 /// </summary>
-public delegate void DeletingEventHandler (object sender, DeletingEventArgs args);
+public delegate void DeletingEventHandler (object sender, EventArgs args);
 
 /// <summary>
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>
-public class ValueChangingEventArgs : CancelEventArgs
+public class ValueChangingEventArgs : EventArgs
 {
   private object _oldValue;
   private object _newValue;
@@ -48,17 +48,7 @@ public class ValueChangingEventArgs : CancelEventArgs
   /// </summary>
   /// <param name="oldValue">The old value.</param>
   /// <param name="newValue">The new value.</param>
-  public ValueChangingEventArgs (object oldValue, object newValue) : this (oldValue, newValue, false)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class with the <see cref="Cancel"/> property set to the given value.
-  /// </summary>
-  /// <param name="oldValue">The old value.</param>
-  /// <param name="newValue">The new value.</param>
-  /// <param name="cancel"><b>true</b> to cancel the event; otherwise, <b>false</b>.</param>
-  public ValueChangingEventArgs (object oldValue, object newValue, bool cancel) : base (cancel)
+  public ValueChangingEventArgs (object oldValue, object newValue)
   {
     _oldValue = oldValue;
     _newValue = newValue;
@@ -96,23 +86,9 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
   /// <param name="newValue">The new value.</param>
   /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is a null reference.</exception>
   public PropertyChangingEventArgs (PropertyValue propertyValue, object oldValue, object newValue) 
-      : this (propertyValue, oldValue, newValue, false)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class with the <see cref="Cancel"/> property set to the given value.
-  /// </summary>
-  /// <param name="propertyValue">The <see cref="PropertyValue"/> that is being changed.</param>
-  /// <param name="oldValue">The old value.</param>
-  /// <param name="newValue">The new value.</param>
-  /// <param name="cancel"><b>true</b> to cancel the event; otherwise, <b>false</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is a null reference.</exception>
-  public PropertyChangingEventArgs (PropertyValue propertyValue, object oldValue, object newValue, bool cancel) 
-      : base (oldValue, newValue, cancel)
+      : base (oldValue, newValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
     _propertyValue = propertyValue;
   }
 
@@ -156,7 +132,7 @@ public class PropertyChangedEventArgs : EventArgs
 /// <summary>
 /// Provides data for a <b>RelationChanging</b> event.
 /// </summary>
-public class RelationChangingEventArgs : CancelEventArgs
+public class RelationChangingEventArgs : EventArgs
 {
   private string _propertyName;
   private DomainObject _oldRelatedObject;
@@ -173,24 +149,6 @@ public class RelationChangingEventArgs : CancelEventArgs
       string propertyName, 
       DomainObject oldRelatedObject, 
       DomainObject newRelatedObject) 
-      : this (propertyName, oldRelatedObject, newRelatedObject, false)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>RelationChangingEventArgs</b> class with the <see cref="Cancel"/> property set to the given value.
-  /// </summary>
-  /// <param name="propertyName">The name of the <see cref="PropertyValue"/> that is being changed due to the relation change.</param>
-  /// <param name="oldRelatedObject">The <see cref="DomainObject"/> that was related.</param>
-  /// <param name="newRelatedObject">The <see cref="DomainObject"/> that is related.</param>
-  /// <param name="cancel"><b>true</b> to cancel the event; otherwise, <b>false</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
-  public RelationChangingEventArgs (
-      string propertyName, 
-      DomainObject oldRelatedObject, 
-      DomainObject newRelatedObject,     
-      bool cancel) 
-      : base (cancel)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
@@ -249,28 +207,6 @@ public class RelationChangedEventArgs : EventArgs
   public string PropertyName
   {
     get { return _propertyName; }
-  }
-}
-
-/// <summary>
-/// Provides data for the <see cref="DomainObject.Deleting"/> event of the <see cref="DomainObject"/>.
-/// </summary>
-public class DeletingEventArgs : CancelEventArgs
-{
-
-  /// <summary>
-  /// Initializes a new instance of the <b>DeletingEventArgs</b> class.
-  /// </summary>
-  public DeletingEventArgs () : this (false)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>DeletingEventArgs</b> class.
-  /// </summary>
-  /// <param name="cancel"><b>true</b> to cancel the event; otherwise, <b>false</b>.</param>
-  public DeletingEventArgs (bool cancel) : base (cancel)
-  {
   }
 }
 }
