@@ -8,9 +8,9 @@ using Rubicon.ObjectBinding.Web.Design;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
  
-/// <summary> A collection of <see cref="BocPropertyPathWrapper"/> objects. </summary>
-[Editor (typeof (BocPropertyPathWrapperCollectionEditor), typeof (UITypeEditor))]
-public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnumerable
+/// <summary> A collection of <see cref="BusinessObjectPropertyPathBinding"/> objects. </summary>
+[Editor (typeof (BusinessObjectPropertyPathBindingCollectionEditor), typeof (UITypeEditor))]
+public sealed class BusinessObjectPropertyPathBindingCollection : IList, ICollection, IEnumerable
 {
   /// <summary> <see langword="true"/> if <see cref="BeginEdit"/> was called. </summary>
   private bool _isEditing;
@@ -40,15 +40,15 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
-  /// <param name="propertyPathWrappers">
-  ///   The <see cref="BocPropertyPathWrapper"/> objects to initialize the collection with.
+  /// <param name="propertyPathBindings">
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> objects to initialize the collection with.
   /// </param>
-  internal BocPropertyPathWrapperCollection (
+  internal BusinessObjectPropertyPathBindingCollection (
       IBusinessObjectBoundWebControl ownerControl, 
-      BocPropertyPathWrapper[] propertyPathWrappers)
+      BusinessObjectPropertyPathBinding[] propertyPathBindings)
     : this (ownerControl)
   {
-    AddRange (propertyPathWrappers);
+    AddRange (propertyPathBindings);
   }
 
   /// <summary>
@@ -60,14 +60,14 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <param name="propertyPaths">
   ///   The <see cref="BusinessObjectPropertyPath"/> objects to initialize the collection with.
   /// </param>
-  internal BocPropertyPathWrapperCollection (
+  internal BusinessObjectPropertyPathBindingCollection (
       IBusinessObjectBoundWebControl ownerControl, 
       BusinessObjectPropertyPath[] propertyPaths)
     : this (ownerControl)
   {
     BeginEdit();
     foreach (BusinessObjectPropertyPath propertyPath in propertyPaths)
-      Add (new BocPropertyPathWrapper (propertyPath));
+      Add (new BusinessObjectPropertyPathBinding (propertyPath));
     EndEdit();
   }
 
@@ -80,14 +80,14 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <param name="propertyPathIdentifiers">
   ///   The property path identifier to initialize the collection with.
   /// </param>
-  internal BocPropertyPathWrapperCollection (
+  internal BusinessObjectPropertyPathBindingCollection (
       IBusinessObjectBoundWebControl ownerControl, 
       string[] propertyPathIdentifiers)
     : this (ownerControl)
   {
     BeginEdit();
     foreach (string propertyPathIdentifier in propertyPathIdentifiers)
-      Add (new BocPropertyPathWrapper (propertyPathIdentifier));
+      Add (new BusinessObjectPropertyPathBinding (propertyPathIdentifier));
     EndEdit();
   }
 
@@ -97,7 +97,7 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
-  internal BocPropertyPathWrapperCollection (IBusinessObjectBoundWebControl ownerControl)
+  internal BusinessObjectPropertyPathBindingCollection (IBusinessObjectBoundWebControl ownerControl)
   {
     _ownerControl = ownerControl;
     _items = new ArrayList();
@@ -153,18 +153,18 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// </returns>
   bool IList.Contains (object value)
   {
-    return Contains ((BocPropertyPathWrapper) value);
+    return Contains ((BusinessObjectPropertyPathBinding) value);
   }
 
   /// <summary> Determines whether the <see cref="IList"/> contains a specific value. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> to locate in the <see cref="IList"/>. 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to locate in the <see cref="IList"/>. 
   /// </param>
   /// <returns> 
-  ///   <see langword="true"/> if the <see cref="BocPropertyPathWrapper"/> is found in the 
+  ///   <see langword="true"/> if the <see cref="BusinessObjectPropertyPathBinding"/> is found in the 
   ///   <see cref="IList"/>; otherwise, <see langword="false"/>.
   /// </returns>
-  public bool Contains (BocPropertyPathWrapper value)
+  public bool Contains (BusinessObjectPropertyPathBinding value)
   { 
     int index = IndexOf (value); 
     return (index != -1);
@@ -184,36 +184,36 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <returns> The index of <paramref name="value"/> if found in the list; otherwise, -1. </returns>
   int IList.IndexOf (object value)
   {
-    return IndexOf ((BocPropertyPathWrapper) value);
+    return IndexOf ((BusinessObjectPropertyPathBinding) value);
   }
 
   /// <summary> Determines the index of a specific item in the <see cref="IList"/>. </summary>
   /// <param name="value">
-  ///   The <see cref="BocPropertyPathWrapper"/> to locate in the <see cref="IList"/>. 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to locate in the <see cref="IList"/>. 
   /// </param>
   /// <returns> The index of <paramref name="value"/> if found in the list; otherwise, -1. </returns>
-  public int IndexOf (BocPropertyPathWrapper value)
+  public int IndexOf (BusinessObjectPropertyPathBinding value)
   { 
     return _items.IndexOf (value);
   }
 
-  /// <summary> Adds an item of type <see cref="BocPropertyPathWrapper"/> to the <see cref="IList"/>. </summary>
+  /// <summary> Adds an item of type <see cref="BusinessObjectPropertyPathBinding"/> to the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> to add to the <see cref="IList"/>.
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to add to the <see cref="IList"/>.
   /// </param>
   /// <returns> The position into which the new element was inserted. </returns>
   int IList.Add (object value)
   {
-    ArgumentUtility.CheckType ("value", value, typeof (BocPropertyPathWrapper));
-    return Add ((BocPropertyPathWrapper) value);
+    ArgumentUtility.CheckType ("value", value, typeof (BusinessObjectPropertyPathBinding));
+    return Add ((BusinessObjectPropertyPathBinding) value);
   }
 
   /// <summary> Adds an item to the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> to add to the <see cref="IList"/>. 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to add to the <see cref="IList"/>. 
   /// </param>
   /// <returns> The position into which the new element was inserted. </returns>
-  public int Add (BocPropertyPathWrapper value)
+  public int Add (BusinessObjectPropertyPathBinding value)
   {
     int count = _items.Add (value);
     if (_ownerControl != null)
@@ -223,38 +223,38 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
     return count;
   }
 
-  /// <summary> Adds <see cref="BocPropertyPathWrapper"/> array to the <see cref="IList"/>. </summary>
-  /// <param name="propertyPathWrappers"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> array to add to the <see cref="IList"/>. 
+  /// <summary> Adds <see cref="BusinessObjectPropertyPathBinding"/> array to the <see cref="IList"/>. </summary>
+  /// <param name="propertyPathBindings"> 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> array to add to the <see cref="IList"/>. 
   ///   Must not be <see langword="null"/>.
   /// </param>
-  public void AddRange (BocPropertyPathWrapper[] propertyPathWrappers)
+  public void AddRange (BusinessObjectPropertyPathBinding[] propertyPathBindings)
   {
-    ArgumentUtility.CheckNotNull ("propertyPathWrappers", propertyPathWrappers);
+    ArgumentUtility.CheckNotNull ("propertyPathBindings", propertyPathBindings);
 
     BeginEdit();
-    foreach (BocPropertyPathWrapper cropertyPathWrapper in propertyPathWrappers)
-      Add (cropertyPathWrapper);
+    foreach (BusinessObjectPropertyPathBinding cropertyPathBinding in propertyPathBindings)
+      Add (cropertyPathBinding);
     EndEdit();
   }
 
   /// <summary> Inserts an item to the <see cref="IList"/> at the specified position. </summary>
   /// <param name="index"> The zero-based index at which <paramref name="value"/> should be inserted. </param>
   /// <param name="value">
-  ///   The <see cref="BocPropertyPathWrapper"/> to insert into the <see cref="IList"/>.
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to insert into the <see cref="IList"/>.
   /// </param>
   void IList.Insert(int index, object value)
   {
-    ArgumentUtility.CheckType ("value", value, typeof (BocPropertyPathWrapper));
-    Insert (index, (BocPropertyPathWrapper) value);
+    ArgumentUtility.CheckType ("value", value, typeof (BusinessObjectPropertyPathBinding));
+    Insert (index, (BusinessObjectPropertyPathBinding) value);
   }
 
   /// <summary> Inserts an item to the <see cref="IList"/> at the specified position. </summary>
   /// <param name="index"> The zero-based index at which <paramref name="value"/> should be inserted. </param>
   /// <param name="value">
-  ///   The <see cref="BocPropertyPathWrapper"/> to insert into the <see cref="IList"/>.
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to insert into the <see cref="IList"/>.
   /// </param>
-  void Insert(int index, BocPropertyPathWrapper value)
+  void Insert(int index, BusinessObjectPropertyPathBinding value)
   {
     _items.Insert (index, value);
     value.DataSource = _ownerControl.DataSource;
@@ -264,22 +264,22 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
 
   /// <summary> Removes the first occurrence of a specific object from the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> to remove from the <see cref="IList"/>. 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to remove from the <see cref="IList"/>. 
   /// </param>
   void IList.Remove (object value)
   { 
-    ArgumentUtility.CheckType ("value", value, typeof (BocPropertyPathWrapper));
-    Remove ((BocPropertyPathWrapper) value);
+    ArgumentUtility.CheckType ("value", value, typeof (BusinessObjectPropertyPathBinding));
+    Remove ((BusinessObjectPropertyPathBinding) value);
   }
 
   /// <summary> Removes the first occurrence of a specific object from the <see cref="IList"/>. </summary>
   /// <param name="value"> 
-  ///   The <see cref="BocPropertyPathWrapper"/> to remove from the <see cref="IList"/>. 
+  ///   The <see cref="BusinessObjectPropertyPathBinding"/> to remove from the <see cref="IList"/>. 
   /// </param>
-  public void Remove (BocPropertyPathWrapper value)
+  public void Remove (BusinessObjectPropertyPathBinding value)
   {
     int removeAt = IndexOf (value);
-    if (removeAt == -1) throw new InvalidOperationException("The passed BocPropertyPathWrapper is not part of this collection");
+    if (removeAt == -1) throw new InvalidOperationException("The passed BusinessObjectPropertyPathBinding is not part of this collection");
     RemoveAt(removeAt);
   }
 
@@ -287,10 +287,10 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
   /// <param name="index"> The zero-based index of the item to remove. </param>
   public void RemoveAt(int index)
   {
-    BocPropertyPathWrapper cropertyPathWrapper = (BocPropertyPathWrapper) _items[index];
+    BusinessObjectPropertyPathBinding cropertyPathBinding = (BusinessObjectPropertyPathBinding) _items[index];
     _items.RemoveAt(index);
     _isChanged |= _isEditing;
-    OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, cropertyPathWrapper));
+    OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, cropertyPathBinding));
   }
 
   /// <summary>
@@ -311,12 +311,12 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
 
   /// <summary> Copies the elements of the <see cref="IList"/> to a new array. </summary>
   /// <returns> 
-  ///   An <see cref="BocPropertyPathWrapper"/> array containing the elements of the 
+  ///   An <see cref="BusinessObjectPropertyPathBinding"/> array containing the elements of the 
   ///   <see cref="IList"/>.
   /// </returns>
-  public BocPropertyPathWrapper[] ToArray()
+  public BusinessObjectPropertyPathBinding[] ToArray()
   {
-    return (BocPropertyPathWrapper[]) _items.ToArray (typeof (BocPropertyPathWrapper));
+    return (BusinessObjectPropertyPathBinding[]) _items.ToArray (typeof (BusinessObjectPropertyPathBinding));
   }
 
   /// <summary> Gets the element at the specified index. </summary>
@@ -330,15 +330,15 @@ public sealed class BocPropertyPathWrapperCollection : IList, ICollection, IEnum
 
   /// <summary> Gets the element at the specified index. </summary>
   /// <value> The element at the specified index. </value>
-  public BocPropertyPathWrapper this[int index]
+  public BusinessObjectPropertyPathBinding this[int index]
   {
     get
     {
-      BocPropertyPathWrapper propertyPathWrapper = (BocPropertyPathWrapper) _items[index];
-      if (propertyPathWrapper.DataSource == null)
-        propertyPathWrapper.DataSource = _ownerControl.DataSource;
+      BusinessObjectPropertyPathBinding propertyPathBinding = (BusinessObjectPropertyPathBinding) _items[index];
+      if (propertyPathBinding.DataSource == null)
+        propertyPathBinding.DataSource = _ownerControl.DataSource;
 
-      return propertyPathWrapper;
+      return propertyPathBinding;
     }
   }
 

@@ -7,9 +7,9 @@ namespace Rubicon.ObjectBinding.Web.Design
 /// <summary>
 /// Summary description for ColumnDefinitionCollectionEditor.
 /// </summary>
-public class BocPropertyPathWrapperCollectionEditor: CollectionEditor
+public class BusinessObjectPropertyPathBindingCollectionEditor: CollectionEditor
 {
-  public BocPropertyPathWrapperCollectionEditor (Type type)
+  public BusinessObjectPropertyPathBindingCollectionEditor (Type type)
     : base (type)
   {
   }
@@ -17,7 +17,7 @@ public class BocPropertyPathWrapperCollectionEditor: CollectionEditor
   protected override Type[] CreateNewItemTypes()
   {
     return new Type[] {
-      typeof (BocPropertyPathWrapper)};
+      typeof (BusinessObjectPropertyPathBinding)};
   }
 }
 

@@ -179,7 +179,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition
 {
-  private BocPropertyPathWrapper _propertyPathWrapper;
+  private BusinessObjectPropertyPathBinding _propertyPathBinding;
 
   public BocSimpleColumnDefinition (
       BusinessObjectPropertyPath propertyPath,
@@ -188,7 +188,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     : base (columnHeader, width)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
-    _propertyPathWrapper = new BocPropertyPathWrapper (propertyPath);
+    _propertyPathBinding = new BusinessObjectPropertyPathBinding (propertyPath);
   }
 
   public BocSimpleColumnDefinition (
@@ -198,13 +198,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
     : base (columnHeader, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
-    _propertyPathWrapper = new BocPropertyPathWrapper (propertyPathIdentifier);
+    _propertyPathBinding = new BusinessObjectPropertyPathBinding (propertyPathIdentifier);
   }
 
   public BocSimpleColumnDefinition ()
     : base (string.Empty, Unit.Empty)
   {
-    _propertyPathWrapper = new BocPropertyPathWrapper();
+    _propertyPathBinding = new BusinessObjectPropertyPathBinding();
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -218,15 +218,15 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
       
       if (! ControlHelper.IsDesignMode (OwnerControl))
       {
-        _propertyPathWrapper.DataSource = OwnerControl.DataSource;
-        return _propertyPathWrapper.PropertyPath;
+        _propertyPathBinding.DataSource = OwnerControl.DataSource;
+        return _propertyPathBinding.PropertyPath;
       }
       else
         return null;
     }
     set
     {
-      _propertyPathWrapper.PropertyPath = value;
+      _propertyPathBinding.PropertyPath = value;
     }
   }
 
@@ -236,11 +236,11 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
   { 
     get
     { 
-      return _propertyPathWrapper.PropertyPathIdentifier; 
+      return _propertyPathBinding.PropertyPathIdentifier; 
     }
     set
     { 
-      _propertyPathWrapper.PropertyPathIdentifier = value; 
+      _propertyPathBinding.PropertyPathIdentifier = value; 
     }
   }
 
@@ -274,13 +274,13 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
 /// <remarks>
 ///   Note that values in these columnDefinitions can usually not be modified directly.
 /// </remarks>
-[ParseChildren (true, "PropertyPathWrappers")]
+[ParseChildren (true, "PropertyPathBindings")]
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
 //  private string _columnHeader;
   private string _formatString;
 
-  private BocPropertyPathWrapperCollection _propertyPathWrappers;
+  private BusinessObjectPropertyPathBindingCollection _propertyPathBindings;
 
   public BocCompoundColumnDefinition (
       string formatString,
@@ -294,7 +294,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
     ColumnHeader = columnHeader;
     _formatString = formatString;
-    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null, propertyPaths);
+    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null, propertyPaths);
   }
 
   public BocCompoundColumnDefinition (
@@ -309,13 +309,13 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
     ColumnHeader = columnHeader;
     _formatString = formatString;
-    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null, propertyPathIdentifiers);
+    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null, propertyPathIdentifiers);
   }
 
   public BocCompoundColumnDefinition()
     : base (string.Empty, Unit.Empty)
   {
-    _propertyPathWrappers = new BocPropertyPathWrapperCollection (null);
+    _propertyPathBindings = new BusinessObjectPropertyPathBindingCollection (null);
     _formatString = string.Empty;
   }
 
@@ -323,7 +323,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   {
     base.OnOwnerControlChanged();
 
-    _propertyPathWrappers.OwnerControl = OwnerControl;
+    _propertyPathBindings.OwnerControl = OwnerControl;
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -337,11 +337,11 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
   [ListBindable (false)]
   [DefaultValue ((string) null)]
-  public BocPropertyPathWrapperCollection PropertyPathWrappers
+  public BusinessObjectPropertyPathBindingCollection PropertyPathBindings
   {
     get 
     { 
-      return _propertyPathWrappers; 
+      return _propertyPathBindings; 
     }
   }
 
@@ -356,15 +356,15 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 //      
 //      if (! ControlHelper.IsDesignMode (OwnerControl))
 //      {
-//        _propertyPathWrapper.DataSource = OwnerControl.DataSource;
-//        return _propertyPathWrapper.PropertyPath;
+//        _propertyPathBinding.DataSource = OwnerControl.DataSource;
+//        return _propertyPathBinding.PropertyPath;
 //      }
 //      else
 //        return null;
 //    }
 //    set
 //    {
-//      _propertyPathWrapper.PropertyPath = value;
+//      _propertyPathBinding.PropertyPath = value;
 //    }
 //  }
 //
@@ -374,19 +374,19 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 //  { 
 //    get
 //    { 
-//      return _propertyPathWrapper.PropertyPathIdentifier; 
+//      return _propertyPathBinding.PropertyPathIdentifier; 
 //    }
 //    set
 //    { 
-//      _propertyPathWrapper.PropertyPathIdentifier = value; 
+//      _propertyPathBinding.PropertyPathIdentifier = value; 
 //    }
 //  }
 
   public override string GetStringValue (IBusinessObject obj)
   {
-    string[] strings = new string[_propertyPathWrappers.Count];
-    for (int i = 0; i < _propertyPathWrappers.Count; ++i)
-      strings[i] = _propertyPathWrappers[i].PropertyPath.GetStringValue (obj);
+    string[] strings = new string[_propertyPathBindings.Count];
+    for (int i = 0; i < _propertyPathBindings.Count; ++i)
+      strings[i] = _propertyPathBindings[i].PropertyPath.GetStringValue (obj);
 
     return string.Format (_formatString, strings);
   }
