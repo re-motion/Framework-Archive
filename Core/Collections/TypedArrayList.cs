@@ -26,9 +26,12 @@ public class TypedArrayList: ArrayList, ISerializable
   }
 
   public TypedArrayList (Type elementType, ICollection collection)
-    : base (collection)
+    : base ()
+  // problem: if Constructor public TypedArrayList (Type elementType, ICollection collection) : base (collection)
+  // is used, base (collection) calls AddRange. At this time, _elementType is still null, but AddRange checks Type
   {
     Initialize (elementType);
+    AddRange (collection);
   }
 
   public TypedArrayList (TypedArrayList list)
