@@ -15,36 +15,6 @@ public sealed class LoaderUtility
 
   // static members and constants
 
-  public static Type MapType (XmlNode node)
-  {
-    ArgumentUtility.CheckNotNull ("node", node);
-
-    return MappingUtility.MapType (node.InnerText.Trim ());    
-  }
-
-  public static Type MapType (XmlNode node, string xPath, XmlNamespaceManager namespaceManager)
-  {
-    ArgumentUtility.CheckNotNull ("node", node);
-    ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
-    ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
-
-    return MapType (node.SelectSingleNode (xPath, namespaceManager));
-  }
-
-  public static Type MapOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
-  {
-    ArgumentUtility.CheckNotNull ("selectionNode", selectionNode);
-    ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
-    ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
-    
-    XmlNode typeNode = selectionNode.SelectSingleNode (xPath, namespaceManager);
-
-    if (typeNode != null)
-      return MapType (typeNode);
-    else
-      return null;
-  }
-
   public static Type GetType (XmlNode node)
   {
     ArgumentUtility.CheckNotNull ("node", node);

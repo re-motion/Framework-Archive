@@ -26,6 +26,7 @@ public class TypeMappingTest
   [Test]
   public void TypeMapping ()
   {
+    // TODO: Test nullable types too.
     string[] mappingTypes = new string[]
     {
       "byte",
@@ -66,7 +67,8 @@ public class TypeMappingTest
 
     for (int i = 0; i < mappingTypes.Length; i++)
     {
-      Assert.AreEqual (expectedTypes[i], MappingUtility.MapType (mappingTypes[i]));
+      TypeInfo typeInfo = new TypeInfo (mappingTypes[i]);
+      Assert.AreEqual (expectedTypes[i], typeInfo.Type);
     }
   }
 }
