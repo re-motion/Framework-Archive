@@ -73,10 +73,15 @@ public abstract class WxeFunction: WxeStepList
     _actualParameters = actualParameters;
   }
 
+  /// <summary> Take the actual parameters without any conversion. </summary>
+
   public override void Execute (WxeContext context)
   {
-    if (ParentStep != null && ! ExecutionStarted)
-      WxeParameterDeclaration.CopyToCallee (ParameterDeclarations, _actualParameters, ParentStep.Variables, this.Variables);
+    if (! ExecutionStarted)
+    {
+      NameObjectCollection parentVariables = (ParentStep != null) ? ParentStep.Variables : null;
+      WxeParameterDeclaration.CopyToCallee (ParameterDeclarations, _actualParameters, parentVariables, this.Variables);
+    }
 
     base.Execute (context);
 

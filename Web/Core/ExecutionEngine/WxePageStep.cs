@@ -15,12 +15,14 @@ public class WxeExecuteNextStepException: Exception
 public class WxePageStep: WxeStep
 {
   private string _page;
+  private string _pageToken;
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
 
   public WxePageStep (string page)
   {
     _page = page;
+    _pageToken = Guid.NewGuid().ToString();
     _function = null;
   }
 
@@ -107,6 +109,11 @@ public class WxePageStep: WxeStep
     _function.ParentStep = this;
 
     Execute();
+  }
+
+  public string PageToken
+  {
+    get { return _pageToken; }
   }
 
   public override string ToString()

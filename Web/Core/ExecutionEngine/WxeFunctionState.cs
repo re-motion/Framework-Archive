@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+using System.Web;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -8,8 +9,11 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public class WxeWindowStateCollection
 {
-  /// <summary> The key for storing the global window state list in the application's session. </summary>
-  public const string SessionKey = "WxeWindowStates";
+  public static WxeWindowStateCollection Instance
+  {
+    get { return (WxeWindowStateCollection) HttpContext.Current.Session["WxeWindowStates"]; }
+    set { HttpContext.Current.Session["WxeWindowStates"] = value; }
+  }
 
   private ArrayList _windowStates = new ArrayList();
 
@@ -23,6 +27,11 @@ public class WxeWindowStateCollection
         window.Dispose();
       }
     }
+  }
+
+  public void Add (WxeWindowState windowState)
+  {
+    _windowStates.Add (windowState);
   }
 
   public WxeWindowState GetItem (string windowToken)

@@ -108,7 +108,7 @@ namespace Rubicon.PageTransition
       // CurrentStep.ExecuteFunction ((Control)sender, this, new SubFunction("call var1", "call var2"));
       if (! IsReturningPostBack)
       {
-        SubFunction subFunction = new SubFunction ("call var 1!", "vall var2");
+        SubFunction subFunction = new SubFunction ("sub var 1", "vall var2");
         ExecuteFunction (subFunction);
       }
       else
@@ -127,7 +127,7 @@ namespace Rubicon.PageTransition
     {
       if (! IsReturningPostBack)
       {
-        SubFunction subFunction = new SubFunction ("@call var 1!", "vall var2");
+        SubFunction subFunction = new SubFunction ("subext var 1", "vall var2");
         ExecuteFunction (subFunction, "_blank", (Control) sender);
       }
       else
@@ -175,14 +175,16 @@ namespace Rubicon.PageTransition
 
       private void Step1 (WxeContext context)
       {
-        Var1 = "SubFunction Step1";
+        Var2 = "SubFunction Step1";
       }
 
       private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
 
+      private static int counter = 0;
       private void Step3 (WxeContext context)
       {
-        Var1 = "SubFunction Step3";
+        ++counter;
+        Var1 += " SubFunction " + counter.ToString();
       }
     }
 	}

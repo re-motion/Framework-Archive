@@ -79,9 +79,8 @@ public class WxeForm: HtmlForm
 
     // from HtmlControl
     if (this.ID != null)
-    {
-          writer.WriteAttribute("id", this.ClientID);
-    }
+      writer.WriteAttribute("id", this.ClientID);
+
     this.Attributes.Render(writer);
   }
 

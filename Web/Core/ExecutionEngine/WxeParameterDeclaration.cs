@@ -135,7 +135,7 @@ public class WxeParameterDeclaration
       if (i < actualParameters.Length && actualParameters[i] != null)
       {
         WxeVariableReference varRef = actualParameters[i] as WxeVariableReference;
-        if (varRef != null)
+        if (callerVariables != null && varRef != null)
           parameterDeclarations[i].CopyToCallee (varRef.Name, callerVariables, calleeVariables);
         else
           parameterDeclarations[i].CopyToCallee (actualParameters[i], calleeVariables);

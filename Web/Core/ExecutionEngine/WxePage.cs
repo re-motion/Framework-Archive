@@ -53,13 +53,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       form = _form;
     }
 
+    HtmlInputHidden wxePageTokenField = new HtmlInputHidden();
+    wxePageTokenField.ID = "wxePageToken";
+    wxePageTokenField.Value = _page.CurrentStep.PageToken;
+    _form.Controls.Add (wxePageTokenField);
+
     _page.Load += new EventHandler (Page_Load);
   }
 
   private void Page_Load (object sender, EventArgs e)
   {
-    // GetPostBackEventReference (this); // force __doPostBack script
-
     PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeDoSubmit",
         "function wxeDoSubmit (button, pageToken) { \n"
         + "  var theForm = document." + _form.ClientID + "; \n"
@@ -74,7 +77,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       // string returningToken = postBackCollection["returningToken"];
       if (! StringUtility.IsNullOrEmpty (returningToken))
       {
-        WxeWindowStateCollection windowStates = (WxeWindowStateCollection) _page.Session[WxeWindowStateCollection.SessionKey];
+        WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
         WxeWindowState windowState = windowStates.GetItem (returningToken);
         if (windowState != null)
         {
@@ -131,35 +134,34 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender)
   {
-    ArrayList pages = (ArrayList) _page.Session["WxePages"];
     WxeWindowState windowState = new WxeWindowState (function, 20);
-    pages.Add (windowState);
+    WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
+    windowStates.Add (windowState);
 
     string href = _page.Request.Path + "?WxeWindowToken=" + windowState.WindowToken;
     string openScript = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
     string returnScript;
-    string pageToken = null;
     if (UsesEventTarget)
     {
       string eventtarget = _page.GetPostBackCollection()["__EVENTTARGET"];
       string eventargument = _page.GetPostBackCollection()["__EVENTARGUMENT"];
       returnScript = string.Format (
-            "if (window.opener && window.opener.__doPostBack && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
+            "if (window.opener && window.opener.__doPostBack && window.opener.document.getElementById(\"wxePageToken\") && window.opener.document.getElementById(\"wxePageToken\").value == \"{0}\") \n"
           + "  window.opener.__doPostBack(\"{1}\", \"{2}\"); \n"
           + "window.close();", 
-          pageToken,
+          _page.CurrentStep.PageToken,
           eventtarget, 
           eventargument);
     }
     else
     {
       returnScript = string.Format (
-            "if (window.opener && window.opener.wxeDoSubmit && window.opener.wxePageToken && window.opener.wxePageToken = \"{0}\") \n"
+            "if (window.opener && window.opener.wxeDoSubmit && window.opener.document.getElementById(\"wxePageToken\") && window.opener.document.getElementById(\"wxePageToken\").value == \"{0}\") \n"
           + "  window.opener.wxeDoSubmit(\"{1}\", \"{2}\"); \n"
           + "window.close();", 
-          pageToken,
+          _page.CurrentStep.PageToken,
           sender.ClientID, 
           windowState.WindowToken);
     }

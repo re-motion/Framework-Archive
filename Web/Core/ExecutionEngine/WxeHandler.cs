@@ -28,7 +28,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   {
     WxeWindowState windowState = null;
     string windowToken = context.Request.Params["WxeWindowToken"];
-    WxeWindowStateCollection windowStates = (WxeWindowStateCollection) context.Session[WxeWindowStateCollection.SessionKey];
+    WxeWindowStateCollection windowStates = WxeWindowStateCollection.Instance;
     if (windowToken != null)
     {
       if (windowStates == null)
@@ -60,14 +60,13 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       Type type = TypeUtility.GetType (typeName, true, false);
       _currentFunction = (WxeFunction) Activator.CreateInstance (type);
 
-      ArrayList pages = (ArrayList) context.Session ["WxePages"];
-      if (pages == null)
+      if (windowStates == null)
       {
-        pages = new ArrayList(1);
-        context.Session["WxePages"] = pages;
+        windowStates = new WxeWindowStateCollection();
+        WxeWindowStateCollection.Instance = windowStates;
       }
       windowState = new WxeWindowState (_currentFunction, 20); // TODO: make lifetime configurable
-      pages.Add (windowState);
+      windowStates.Add (windowState);
 
       WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables, CultureInfo.InvariantCulture);
     }
