@@ -44,12 +44,12 @@ public class TestTabbedForm : TestWxeBasePage
 	{
     // add tabs 
     AddTab ("1", "Test Tab 1", null);
-    AddTab ("2", "Test Tab 2", null);
-    AddTab ("3", "Test Tab 3", null);
-    AddTab ("4", "Test Tab 4", null);
+    AddTab ("2", "Test Tab 2 foo bar", null);
+    AddTab ("3", "Test Tab 3 foo", null);
+    AddTab ("4", "Test Tab 4 foo foo bar", null);
     AddTab ("5", "Test Tab 5", null);
-    AddTab ("6", "Test Tab 6", null);
-    AddTab ("7", "Test Tab 7", null);
+    AddTab ("6", "Test Tab 6 foo", null);
+    AddTab ("7", "Test Tab 7 foo foo bar", null);
 
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages
@@ -65,13 +65,13 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void AddTab (string id, string text, IconInfo icon)
   {
+    PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
+    
     WebTab tab = new WebTab ();
     tab.Text = text;
     tab.TabID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add (tab);
-    
-    PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
   }
 
   private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
