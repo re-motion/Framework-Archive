@@ -95,8 +95,8 @@
     <property name="project.dir" value="Development/CodeDom" />
     <call target="vsassemblyinfo" />
     
-    <property name="project.name" value="Web.UI" />
-    <property name="project.dir" value="Web.UI/Core" />
+    <property name="project.name" value="Web" />
+    <property name="project.dir" value="Web/Core" />
     <call target="vsassemblyinfo" />
     
     <property name="project.name" value="ObjectBinding" />
@@ -114,7 +114,7 @@
   
   <!--======================= PROJECTS =======================-->
 
-  <target name="all" depends="Core,DevelopmentCore,CodeDom,Web.UI,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection" />
+  <target name="all" depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection" />
 
   <target name="Core" depends="initialize">
     <property name="project.name" value="Core" />
@@ -140,10 +140,10 @@
     <call target="build" />
   </target>
         
-  <target name="Web.UI" depends="Core,initialize">
-    <property name="project.name" value="Web.UI" />
-    <property name="project.dir" value="Web.UI/Core" />
-    <property name="project.output" value="Rubicon.Web.UI" />
+  <target name="Web" depends="Core,initialize">
+    <property name="project.name" value="Web" />
+    <property name="project.dir" value="Web/Core" />
+    <property name="project.output" value="Rubicon.Web" />
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
@@ -297,7 +297,7 @@
         <includes name="Rubicon.Core.dll" />
         <includes name="Rubicon.Development.dll" />
         <includes name="Rubicon.Development.CodeDom.dll" />
-        <includes name="Rubicon.Web.UI.dll" />
+        <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
         <includes name="Rubicon.ObjectBinding.Reflection.dll" />
@@ -343,7 +343,7 @@
         <includes name="Rubicon.Core.dll" />
         <includes name="Rubicon.Development.dll" />
         <includes name="Rubicon.Development.CodeDom.dll" />
-        <includes name="Rubicon.Web.UI.dll" />
+        <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
         <includes name="Rubicon.ObjectBinding.Reflection.dll" />
@@ -418,7 +418,7 @@
         <includes name="Core.Test/**/*" />
         <includes name="Development/**/*" />
         <includes name="ObjectBinding/**/*" />
-        <includes name="Web.UI/**/*" />
+        <includes name="Web/**/*" />
         <includes name="build/*.xml" />
         <excludes name="**/*.zip" />
         <excludes name="**/*.dll" />

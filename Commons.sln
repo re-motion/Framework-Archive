@@ -28,10 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "h
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625} = {2AA369EC-A4E7-4D75-9101-EFA90E902625}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "Web.UI\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -45,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core.Test", "De
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.CodeDom", "Development\CodeDom\Development.CodeDom.csproj", "{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Core\Web.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -79,26 +79,25 @@ Global
 		SccLocalPath6 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection6 = prereq\\
-		SccProjectUniqueName7 = Web.UI\\Core\\Web.UI.csproj
-		SccProjectName7 = \u0022$/libraries/Commons/Web.UI\u0022,\u0020EVHAAAAA
-		SccLocalPath7 = Web.UI
+		SccProjectUniqueName7 = Core.Test\\Core.Test.csproj
+		SccProjectName7 = \u0022$/libraries/Commons/Core.Test\u0022,\u0020LNDAAAAA
+		SccLocalPath7 = Core.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection7 = Core\\
-		SccProjectUniqueName8 = Core.Test\\Core.Test.csproj
-		SccProjectName8 = \u0022$/libraries/Commons/Core.Test\u0022,\u0020LNDAAAAA
-		SccLocalPath8 = Core.Test
+		SccProjectUniqueName8 = Development\\Core\\Development.Core.csproj
+		SccProjectName8 = \u0022$/libraries/Commons/Development/Core\u0022,\u0020LQAAAAAA
+		SccLocalPath8 = Development\\Core
 		CanCheckoutShared = false
-		SccProjectUniqueName9 = Development\\Core\\Development.Core.csproj
-		SccProjectName9 = \u0022$/libraries/Commons/Development/Core\u0022,\u0020LQAAAAAA
-		SccLocalPath9 = Development\\Core
+		SccProjectUniqueName9 = Development\\Core.Test\\Development.Core.Test.csproj
+		SccProjectName9 = \u0022$/libraries/Commons/Development/Core.Test\u0022,\u0020TQAAAAAA
+		SccLocalPath9 = Development\\Core.Test
 		CanCheckoutShared = false
-		SccProjectUniqueName10 = Development\\Core.Test\\Development.Core.Test.csproj
-		SccProjectName10 = \u0022$/libraries/Commons/Development/Core.Test\u0022,\u0020TQAAAAAA
-		SccLocalPath10 = Development\\Core.Test
+		SccProjectUniqueName10 = Development\\CodeDom\\Development.CodeDom.csproj
+		SccProjectName10 = \u0022$/libraries/Commons/Development/CodeDom\u0022,\u0020ERAAAAAA
+		SccLocalPath10 = Development\\CodeDom
 		CanCheckoutShared = false
-		SccProjectUniqueName11 = Development\\CodeDom\\Development.CodeDom.csproj
-		SccProjectName11 = \u0022$/libraries/Commons/Development/CodeDom\u0022,\u0020ERAAAAAA
-		SccLocalPath11 = Development\\CodeDom
+		SccProjectUniqueName11 = Web\\Core\\Web.csproj
+		SccProjectName11 = \u0022$/libraries/Commons/Web/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath11 = Web\\Core
 		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -130,10 +129,6 @@ Global
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
-		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
-		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
-		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
-		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.ActiveCfg = Debug|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.Build.0 = Debug|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.ActiveCfg = Release|.NET
@@ -150,6 +145,10 @@ Global
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Debug.Build.0 = Debug|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.ActiveCfg = Release|.NET
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}.Release.Build.0 = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
