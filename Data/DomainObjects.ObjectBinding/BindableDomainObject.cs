@@ -7,6 +7,8 @@ using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
+using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
+
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 
@@ -52,6 +54,13 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
         value = list[0];
       else 
         value = null;
+    }
+    else if (property.GetType () == typeof(EnumerationProperty))
+    {
+      object internalValue = obj.GetProperty (property);
+
+      value = ((EnumerationProperty)property).GetValueInfoByValue (internalValue).DisplayName;
+      count = 1;
     }
     else
     {
