@@ -29,7 +29,7 @@ public class WxeUserCancelException: Exception
   {
   }
   public WxeUserCancelException(string message, Exception innerException)
-    : base (message, exception)
+    : base (message, innerException)
   {
   }
 }
