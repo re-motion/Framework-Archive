@@ -48,16 +48,16 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance ("objectID", true));
 
     Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance ("boolean", false));
-    Check (new TypeInfo (typeof (byte), "byte", false, (byte) 0), TypeInfo.GetInstance ("byte", false));
+    Check (new TypeInfo (typeof (byte), "byte", false, byte.MinValue), TypeInfo.GetInstance ("byte", false));
     Check (new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue), TypeInfo.GetInstance ("dateTime", false));
     Check (new TypeInfo (typeof (DateTime), "date", false, DateTime.MinValue), TypeInfo.GetInstance ("date", false));
-    Check (new TypeInfo (typeof (decimal), "decimal", false, (decimal) 0), TypeInfo.GetInstance ("decimal", false));
-    Check (new TypeInfo (typeof (double), "double", false, (double) 0), TypeInfo.GetInstance ("double", false));
+    Check (new TypeInfo (typeof (decimal), "decimal", false, decimal.MinValue), TypeInfo.GetInstance ("decimal", false));
+    Check (new TypeInfo (typeof (double), "double", false, double.MinValue), TypeInfo.GetInstance ("double", false));
     Check (new TypeInfo (typeof (Guid), "guid", false, Guid.Empty), TypeInfo.GetInstance ("guid", false));
-    Check (new TypeInfo (typeof (short), "int16", false, (short) 0), TypeInfo.GetInstance ("int16", false));
-    Check (new TypeInfo (typeof (int), "int32", false, (int) 0), TypeInfo.GetInstance ("int32", false));
-    Check (new TypeInfo (typeof (long), "int64", false, (long) 0), TypeInfo.GetInstance ("int64", false));
-    Check (new TypeInfo (typeof (float), "single", false, (float) 0), TypeInfo.GetInstance ("single", false));
+    Check (new TypeInfo (typeof (short), "int16", false, short.MinValue), TypeInfo.GetInstance ("int16", false));
+    Check (new TypeInfo (typeof (int), "int32", false, int.MinValue), TypeInfo.GetInstance ("int32", false));
+    Check (new TypeInfo (typeof (long), "int64", false, long.MinValue), TypeInfo.GetInstance ("int64", false));
+    Check (new TypeInfo (typeof (float), "single", false, float.MinValue), TypeInfo.GetInstance ("single", false));
     Check (new TypeInfo (typeof (string), "string", false, string.Empty), TypeInfo.GetInstance ("string", false));
     Check (new TypeInfo (typeof (ObjectID), "objectID", false, null), TypeInfo.GetInstance ("objectID", false));  
   }
@@ -80,15 +80,15 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance (typeof (ObjectID)));
 
     Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance (typeof (bool)));
-    Check (new TypeInfo (typeof (byte), "byte", false, (byte) 0), TypeInfo.GetInstance (typeof (byte)));
+    Check (new TypeInfo (typeof (byte), "byte", false, byte.MinValue), TypeInfo.GetInstance (typeof (byte)));
     Check (new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue), TypeInfo.GetInstance (typeof (DateTime)));
-    Check (new TypeInfo (typeof (decimal), "decimal", false, (decimal) 0), TypeInfo.GetInstance (typeof (decimal)));
-    Check (new TypeInfo (typeof (double), "double", false, (double) 0), TypeInfo.GetInstance (typeof (double)));
+    Check (new TypeInfo (typeof (decimal), "decimal", false, decimal.MinValue), TypeInfo.GetInstance (typeof (decimal)));
+    Check (new TypeInfo (typeof (double), "double", false, double.MinValue), TypeInfo.GetInstance (typeof (double)));
     Check (new TypeInfo (typeof (Guid), "guid", false, Guid.Empty), TypeInfo.GetInstance (typeof (Guid)));
-    Check (new TypeInfo (typeof (short), "int16", false, (short) 0), TypeInfo.GetInstance (typeof (short)));
-    Check (new TypeInfo (typeof (int), "int32", false, (int) 0), TypeInfo.GetInstance (typeof (int)));
-    Check (new TypeInfo (typeof (long), "int64", false, (long) 0), TypeInfo.GetInstance (typeof (long)));
-    Check (new TypeInfo (typeof (float), "single", false, (float) 0), TypeInfo.GetInstance (typeof (float)));
+    Check (new TypeInfo (typeof (short), "int16", false, short.MinValue), TypeInfo.GetInstance (typeof (short)));
+    Check (new TypeInfo (typeof (int), "int32", false, int.MinValue), TypeInfo.GetInstance (typeof (int)));
+    Check (new TypeInfo (typeof (long), "int64", false, long.MinValue), TypeInfo.GetInstance (typeof (long)));
+    Check (new TypeInfo (typeof (float), "single", false, float.MinValue), TypeInfo.GetInstance (typeof (float)));
   }
 
   [Test]
