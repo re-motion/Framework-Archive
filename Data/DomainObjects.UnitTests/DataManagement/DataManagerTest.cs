@@ -87,7 +87,7 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.Register (orderTicket2);
     _dataManager.Register (orderWithoutOrderItemDataContainer);
 
-    RelationEndPoint order1EndPoint = new RelationEndPoint (order1, "OrderTicket");
+    ObjectEndPoint order1EndPoint = new ObjectEndPoint (order1, "OrderTicket");
     _clientTransaction.SetRelatedObject (order1EndPoint, orderTicket2.DomainObject);
 
     DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
@@ -124,16 +124,16 @@ public class DataManagerTest : ClientTransactionBaseTest
     _dataManager.Register (orderTicket2);
     _dataManager.Register (orderWithoutOrderItemDataContainer);
 
-    RelationEndPoint order1EndPoint = new RelationEndPoint (order1, "OrderTicket");
+    ObjectEndPoint order1EndPoint = new ObjectEndPoint (order1, "OrderTicket");
     _clientTransaction.SetRelatedObject (order1EndPoint, orderTicket2.DomainObject);
 
     _dataManager.Commit ();
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
     Assert.AreSame (orderTicket2.DomainObject, _clientTransaction.GetRelatedObject (order1EndPoint));
-    Assert.AreSame (order1.DomainObject, _clientTransaction.GetRelatedObject (new RelationEndPoint (orderTicket2, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPoint (orderTicket1, "Order")));
-    Assert.IsNull (_clientTransaction.GetRelatedObject (new RelationEndPoint (orderWithoutOrderItemDataContainer, "OrderTicket")));
+    Assert.AreSame (order1.DomainObject, _clientTransaction.GetRelatedObject (new ObjectEndPoint (orderTicket2, "Order")));
+    Assert.IsNull (_clientTransaction.GetRelatedObject (new ObjectEndPoint (orderTicket1, "Order")));
+    Assert.IsNull (_clientTransaction.GetRelatedObject (new ObjectEndPoint (orderWithoutOrderItemDataContainer, "OrderTicket")));
     Assert.IsFalse (_dataManager.HasRelationChanged (order1));
     Assert.IsFalse (_dataManager.HasRelationChanged (orderWithoutOrderItemDataContainer));
     Assert.IsFalse (_dataManager.HasRelationChanged (orderTicket1));
@@ -151,7 +151,7 @@ public class DataManagerTest : ClientTransactionBaseTest
 
     Assert.AreEqual (0, _dataManager.GetChangedDomainObjects().Count);
     Assert.IsNull (order1.Customer);
-    Assert.AreEqual (0, _clientTransaction.GetOriginalRelatedObjects(new RelationEndPoint (customer1, "Orders")).Count);
+    Assert.AreEqual (0, _clientTransaction.GetOriginalRelatedObjects(new ObjectEndPoint (customer1, "Orders")).Count);
     Assert.AreEqual (0, customer1.Orders.Count);
   }
 
@@ -176,8 +176,8 @@ public class DataManagerTest : ClientTransactionBaseTest
 
     computer.Employee = employee;
 
-    RelationEndPoint computerEndPoint = new RelationEndPoint (computer, "Employee");
-    RelationEndPoint employeeEndPoint = new RelationEndPoint (employee, "Computer");
+    ObjectEndPoint computerEndPoint = new ObjectEndPoint (computer, "Employee");
+    ObjectEndPoint employeeEndPoint = new ObjectEndPoint (employee, "Computer");
 
     Assert.AreSame (computer.ID, _dataManager.GetSingleObjectRelationLink (employeeEndPoint).DestinationObjectID);
     Assert.AreSame (employee.ID, _dataManager.GetSingleObjectRelationLink (computerEndPoint).DestinationObjectID);
@@ -196,8 +196,8 @@ public class DataManagerTest : ClientTransactionBaseTest
   
     orderItem.Order = order;
 
-    RelationEndPoint orderEndPoint = new RelationEndPoint (order, "OrderItems");
-    RelationEndPoint orderItemEndPoint = new RelationEndPoint (orderItem, "Order");
+    ObjectEndPoint orderEndPoint = new ObjectEndPoint (order, "OrderItems");
+    ObjectEndPoint orderItemEndPoint = new ObjectEndPoint (orderItem, "Order");
 
     Assert.AreSame (order.ID, _dataManager.GetSingleObjectRelationLink (orderItemEndPoint).DestinationObjectID);
 

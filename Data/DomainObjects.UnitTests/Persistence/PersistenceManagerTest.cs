@@ -77,7 +77,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer orderTicketContainer = TestDataContainerFactory.CreateOrderTicket1DataContainer ();
 
     DataContainer orderContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (orderTicketContainer, "Order"));
+        new ObjectEndPoint (orderTicketContainer, "Order"));
 
     DataContainerChecker checker = new DataContainerChecker ();
     checker.Check (TestDataContainerFactory.CreateOrder1DataContainer (), orderContainer);
@@ -89,7 +89,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
 
     DataContainer orderTicketContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (orderContainer, "OrderTicket"));
+        new ObjectEndPoint (orderContainer, "OrderTicket"));
 
     DataContainerChecker checker = new DataContainerChecker ();
     checker.Check (TestDataContainerFactory.CreateOrderTicket1DataContainer (), orderTicketContainer);
@@ -104,7 +104,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
     DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (dataContainer, "ClassWithGuidKeyOptional"));
+        new ObjectEndPoint (dataContainer, "ClassWithGuidKeyOptional"));
 
     Assert.IsNull (relatedDataContainer);
   }
@@ -119,7 +119,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
     DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (dataContainer, "ClassWithValidRelationsOptional"));
+        new ObjectEndPoint (dataContainer, "ClassWithValidRelationsOptional"));
 
     Assert.IsNull (relatedDataContainer);
   }
@@ -137,7 +137,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
     _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (dataContainer, "ClassWithGuidKeyNonOptional"));
+        new ObjectEndPoint (dataContainer, "ClassWithGuidKeyNonOptional"));
   }
 
   [Test]
@@ -148,7 +148,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadRelatedDataContainerByNonOptionalNullIDWithInheritance ()
   {
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.DistributorWithoutContactPersonAndCeo);
-    _persistenceManager.LoadRelatedDataContainer (new RelationEndPoint (dataContainer, "ContactPerson"));
+    _persistenceManager.LoadRelatedDataContainer (new ObjectEndPoint (dataContainer, "ContactPerson"));
   }
 
   [Test]
@@ -165,7 +165,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
     _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (dataContainer, "ClassWithValidRelationsNonOptional"));
+        new ObjectEndPoint (dataContainer, "ClassWithValidRelationsNonOptional"));
   }
 
   [Test]
@@ -176,7 +176,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadRelatedDataContainerByNonOptionalNullIDVirtualWithInheritance ()
   {
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.PartnerWithoutCeo);
-    _persistenceManager.LoadRelatedDataContainer (new RelationEndPoint (dataContainer, "Ceo"));
+    _persistenceManager.LoadRelatedDataContainer (new ObjectEndPoint (dataContainer, "Ceo"));
   }
 
   [Test]
@@ -188,7 +188,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
     DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (classWithGuidKey, "ClassWithValidRelationsNonOptional"));
+        new ObjectEndPoint (classWithGuidKey, "ClassWithValidRelationsNonOptional"));
 
     ObjectID expectedID = new ObjectID (c_testDomainProviderID, "ClassWithValidRelations", 
         new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
@@ -210,7 +210,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
     DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (classWithGuidKey, "ClassWithValidRelationsNonOptional"));
+        new ObjectEndPoint (classWithGuidKey, "ClassWithValidRelationsNonOptional"));
   }
 
   [Test]
@@ -225,7 +225,7 @@ public class PersistenceManagerTest : DatabaseTest
 
     DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
-    _persistenceManager.LoadRelatedDataContainer (new RelationEndPoint (dataContainer, "ClassWithGuidKey"));
+    _persistenceManager.LoadRelatedDataContainer (new ObjectEndPoint (dataContainer, "ClassWithGuidKey"));
   }
 
   [Test]
@@ -234,7 +234,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
  
     DataContainer officialContainer = _persistenceManager.LoadRelatedDataContainer (
-        new RelationEndPoint (orderContainer, "Official"));
+        new ObjectEndPoint (orderContainer, "Official"));
 
     Assert.IsNotNull (officialContainer);
     Assert.AreEqual ("UnitTestStorageProviderStub", officialContainer.ID.StorageProviderID, "StorageProviderID");
@@ -248,7 +248,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer customerContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Customer1);
 
     DataContainerCollection collection = _persistenceManager.LoadRelatedDataContainers (
-        new RelationEndPoint (customerContainer, "Orders"));
+        new ObjectEndPoint (customerContainer, "Orders"));
 
     Assert.IsNotNull (collection);
     Assert.AreEqual (2, collection.Count, "DataContainerCollection.Count");
@@ -263,7 +263,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadRelatedDataContainersForNonVirtualEndPoint ()
   {
     DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
-    _persistenceManager.LoadRelatedDataContainers (new RelationEndPoint (orderContainer, "Customer"));
+    _persistenceManager.LoadRelatedDataContainers (new ObjectEndPoint (orderContainer, "Customer"));
   }
 
   [Test]
@@ -272,7 +272,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadEmptyRelatedDataContainersForMandatoryRelation ()
   {
     DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.OrderWithoutOrderItem);
-    _persistenceManager.LoadRelatedDataContainers (new RelationEndPoint (orderContainer, "OrderItems"));
+    _persistenceManager.LoadRelatedDataContainers (new ObjectEndPoint (orderContainer, "OrderItems"));
   }
 
   [Test]
@@ -281,7 +281,7 @@ public class PersistenceManagerTest : DatabaseTest
     DataContainer customerContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Customer2);
 
     DataContainerCollection orderContainers = _persistenceManager.LoadRelatedDataContainers (
-        new RelationEndPoint (customerContainer, "Orders"));
+        new ObjectEndPoint (customerContainer, "Orders"));
 
     Assert.AreEqual (0, orderContainers.Count);
   }
@@ -292,7 +292,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadRelatedDataContainerForOneToManyRelation ()
   {
     DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
-    _persistenceManager.LoadRelatedDataContainer (new RelationEndPoint (orderContainer, "OrderItems"));
+    _persistenceManager.LoadRelatedDataContainer (new ObjectEndPoint (orderContainer, "OrderItems"));
   }
 
   [Test]
@@ -301,7 +301,7 @@ public class PersistenceManagerTest : DatabaseTest
   public void LoadRelatedDataContainersForOneToOneRelation ()
   {
     DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
-    _persistenceManager.LoadRelatedDataContainers (new RelationEndPoint (orderContainer, "OrderTicket"));
+    _persistenceManager.LoadRelatedDataContainers (new ObjectEndPoint (orderContainer, "OrderTicket"));
   }
 
   [Test]
