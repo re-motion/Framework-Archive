@@ -2285,7 +2285,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
       if (helpUrl != null && helpUrl != String.Empty)
       {
-        helpUrl = ResourceUrlResolver.GetResourceUrl (this, null, ResourceType.HelpPage, helpUrl);
+        helpUrl = ResourceUrlResolver.GetResourceUrl (this, Context, null, ResourceType.HelpPage, helpUrl);
         dataRow.HelpProvider = GetHelpProvider (helpUrl);
 
         //  We have a help provider, first come, only one served
@@ -2556,7 +2556,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   {
     string relativeUrl = image.ToString() + ImageExtension;
 
-    string imageUrl = ResourceUrlResolver.GetResourceUrl (this, typeof (FormGridManager), ResourceType.Image, relativeUrl);
+    string imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Image, relativeUrl);
 
     if (imageUrl != null)
       return imageUrl;
