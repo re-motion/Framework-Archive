@@ -642,7 +642,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [MergableProperty(false)]
-  [Category ("Nodes")]
+  //  Default category
   [Description ("The tree nodes displayed by this tree view.")]
   [DefaultValue ((string) null)]
   public virtual WebTreeNodeCollection Nodes
