@@ -39,7 +39,7 @@ public interface IBusinessObjectProperty
   ///   The type of the property.
   /// </summary>
   /// <remarks> 
-  ///   This is the type of elements returned by <see cref="IBusinessObject.GetValue"/> and set via <see cref="IBusinessObject.SetValue"/>.
+  ///   This is the type of elements returned by <see cref="IBusinessObject.GetProperty"/> and set via <see cref="IBusinessObject.SetProperty"/>.
   ///   If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> interface, and the
   ///   items contained in this list must have the type <see cref="ItemType"/>.
   /// </remarks>
