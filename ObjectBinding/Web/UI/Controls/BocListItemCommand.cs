@@ -421,8 +421,9 @@ public class BocItemCommand
   ///   The index of the <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
   /// <param name="businessObjectID"> 
-  ///   The <c>UniqueIdentifier</c>, if the <see cref="IBusinessObject"/> in the row where the
-  ///   command was clicked is an <see cref="IBusinessObjectWIthIdentity"/>.
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
+  ///   <see cref="IBusinessObject"/> in the row where the command was clicked 
+  ///   is an <see cref="IBusinessObjectWIthIdentity"/>.
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, string businessObjectID)
   {

@@ -1324,6 +1324,10 @@ public class BocList:
     }
   }
 
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control automatically generates a column for
+  /// each property of the bound object.
+  /// </summary>
   [Category ("Behavior")]
   [Description ("Indicates whether to the show the page count even when there is just one page.")]
   [DefaultValue (false)]
@@ -1333,8 +1337,12 @@ public class BocList:
     set { _alwaysShowPageInfo = value; }
   }
 
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control displays a drop down list 
+  /// containing the available column definition sets.
+  /// </summary>
   [Category ("Appearance")]
-  [Description ("Indicates wheter the control displays a drop down list containing the available column definition sets.")]
+  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
   [DefaultValue (true)]
   public bool ShowAdditionalColumnsList
   {
@@ -1342,8 +1350,12 @@ public class BocList:
     set { _showAdditionalColumnsList = value; }
   }
 
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control displays a checkbox 
+  /// in front of each row.
+  /// </summary>
   [Category ("Appearance")]
-  [Description ("Indicates wheter the control displays a checkbox in front of each row.")]
+  [Description ("Indicates whether the control displays a checkbox in front of each row.")]
   [DefaultValue (false)]
   public bool ShowSelection
   {
@@ -1351,8 +1363,12 @@ public class BocList:
     set { _showSelection = value; }
   }
 
+  /// <summary>
+  /// Gets or sets a value that indicates whether the control automatically generates a column for
+  /// each property of the bound object.
+  /// </summary>
   [Category ("Appearance")]
-  [Description ("Indicates wheter the control automatically generates a column for each property of the bound object.")]
+  [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
   [DefaultValue (false)]
   public bool ShowAllProperties
   {
@@ -1384,7 +1400,12 @@ public class BocList:
     set { _pageInfo = value; }
   }
 
+  /// <summary> 
+  ///   Occurs when a command of type <see cref="BocItemCommandType.Event"/> 
+  ///   or <see cref="BocItemCommandType.WxeFunction"/> is clicked. 
+  /// </summary>
   [Category ("Action")]
+  [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
   public event BocItemCommandClickEventHandler CommandClick
   {
     add 
@@ -1397,11 +1418,10 @@ public class BocList:
     }
   }
 
-  private bool IsPostBack
-  {
-    get { return !IsDesignMode && Page != null && Page.IsPostBack; }
-  }
-
+  /// <summary>
+  ///   The style that you want to apply to the drop down list used to display the user selectable 
+  ///   columns.
+  /// </summary>
   [Category ("Style")]
   [Description ("The style that you want to apply to the drop down list used to display the user selectable columns.")]
   public DropDownListStyle AdditionalColumnsListStyle
@@ -1434,24 +1454,46 @@ public class BocList:
   /// <remarks> Class: <c>bocListNavigator</c> </remarks>
   protected virtual string CssClassNavigator
   { get { return "bocListNavigator"; } }
+
+  private bool IsPostBack
+  {
+    get { return !IsDesignMode && Page != null && Page.IsPostBack; }
+  }
 }
 
 public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
 
 public class BocItemCommandClickEventArgs: EventArgs
 {
+  /// <summary>
+  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the clicked command 
+  ///   belongs to.
+  /// </summary>
   private string _columnID;
+  /// <summary>
+  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </summary>
   private int _listIndex;
+  /// <summary>
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
+  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
+  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
   private string _businessObjectID;
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="columnID">
+  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the command belongs.
+  /// </param>
   /// <param name="listIndex">
-  ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
   ///   applied on.
   /// </param>
   /// <param name="businessObjectID">
-  ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
-  ///   applied on.
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
+  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
+  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
   /// </param>
   public BocItemCommandClickEventArgs (
       string columnID, 
@@ -1463,18 +1505,28 @@ public class BocItemCommandClickEventArgs: EventArgs
     _businessObjectID = StringUtility.EmptyToNull (businessObjectID);
   }
 
-
-
+  /// <summary>
+  ///   The <see cref="BocColumnDefinition.ID"/> of the column to which the command belongs.
+  /// </summary>
   public string ColumnID
   {
     get { return _columnID; }
   }
 
+  /// <summary>
+  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </summary>
   public int ListIndex
   {
     get { return _listIndex; }
   }
 
+  /// <summary>
+  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
+  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
+  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
   public string BusinessObjectID
   {
     get { return _businessObjectID; }
