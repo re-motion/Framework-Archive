@@ -70,7 +70,7 @@ public abstract class WxeFunction: WxeStepList
   {
     _variables = new NameObjectCollection(); // TODO: use a case sensitive collection
     _returnUrl = null;
-    _actualParameters = WxeParameterDeclaration.ParseVariableReferences (actualParameters);
+    _actualParameters = actualParameters;
   }
 
   public override void Execute (WxeContext context)
@@ -82,14 +82,24 @@ public abstract class WxeFunction: WxeStepList
 
     if (_returnUrl != null)
     {
-      Variables.Clear();
-      context.HttpContext.Response.Redirect (_returnUrl, true);
+      // Variables.Clear();
+      if (_returnUrl.StartsWith ("javascript:"))
+      {
+        context.HttpContext.Response.Clear();
+        string script = _returnUrl.Substring ("javascript:".Length);
+        context.HttpContext.Response.Write ("<html><script language=\"JavaScript\">" + script + "</script></html>");
+        context.HttpContext.Response.End();
+      }
+      else
+      {
+        context.HttpContext.Response.Redirect (_returnUrl, true);
+      }
     }
 
     if (ParentStep != null)
       WxeParameterDeclaration.CopyToCaller (ParameterDeclarations, _actualParameters, this.Variables, ParentStep.Variables);
     
-    Variables.Clear();
+    // Variables.Clear();
 
     if (ParentStep == null)
       context.HttpContext.Response.End();
