@@ -30,20 +30,14 @@ public class EntryFieldBreak: Control
   protected override void Render (HtmlTextWriter writer)
   {
     EntryField parentField = (EntryField) this.Parent;
+
     writer.Write ("</td></tr><tr><td colspan=\"5\">{0}</td><td>{0}", 
-      this.EntryFormGrid.GetWhitespaceImage (0, 0));
+        UIUtility.GetWhitespaceImage (ImagePath, 0, 0));
   }
 
-  public EntryFormGrid EntryFormGrid
+  private string ImagePath
   {
-    get 
-    {
-      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
-      if (entryFormGrid == null)
-        throw new InvalidOperationException ("EntryFieldBreak must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
-
-      return entryFormGrid;
-    }
+    get { return UIUtility.GetImagePathFromParentControl (this); } 
   }
 }
 
@@ -75,7 +69,7 @@ public class EntryFormGrid: Control
   private FontUnit _fieldFontSize;
   private string _infoBase = string.Empty;
   private string _infoImage = "field-info.gif";
-  private string _imagePath = Path.Combine (HttpContext.Current.Request.ApplicationPath, "images");
+  private string _imagePath = UrlUtility.Combine (HttpContext.Current.Request.ApplicationPath, "images");
 
   // methods and properties
 
@@ -85,23 +79,19 @@ public class EntryFormGrid: Control
     set { _imagePath = value; }
   }
 
-  public string GetImagePath (string imgFileName)
+  public string GetImagePath (string imageFileName)
   {
-    return Path.Combine (_imagePath, imgFileName);
+    return UIUtility.GetImagePath (ImagePath, imageFileName);
   }
 
   public string GetWhitespaceImage (int width, int height)
   {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-      width, height, GetImagePath ("ws.gif"));
+    return UIUtility.GetWhitespaceImage (ImagePath, width, height);
   }
 
   public string GetWhitespaceImage (string width, string height)
   {
-    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
-      width, height, GetImagePath ("ws.gif"));
+    return UIUtility.GetWhitespaceImage (ImagePath, width, height);
   }
 
   public string InfoImagePath 
@@ -271,16 +261,9 @@ public class EntryTitle: Control
   
   private int _colSpan = 6;
 
-  public EntryFormGrid EntryFormGrid
+  private string ImagePath
   {
-    get 
-    {
-      EntryFormGrid entryFormGrid = EntryFormGrid.GetParentEntryFormGrid (this.Parent);
-      if (entryFormGrid == null)
-        throw new InvalidOperationException ("EntryTitle must be a direct child of a EntryFormGrid to access EntryFormGrid property.");
-
-      return entryFormGrid;
-    }
+    get { return UIUtility.GetImagePathFromParentControl (this); } 
   }
 
   public int ColSpan
@@ -303,7 +286,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td>{0}</td></tr>", this.EntryFormGrid.GetWhitespaceImage ("1", Padding));
+      writer.WriteLine ("<tr><td>{0}</td></tr>", UIUtility.GetWhitespaceImage (ImagePath, "1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -311,12 +294,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"formGroupSeparatorLine\" width=\"100%\">"
-			  	+ this.EntryFormGrid.GetWhitespaceImage (1, 1)
+			  	+ UIUtility.GetWhitespaceImage (ImagePath, 1, 1)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td>{0}</td> </tr>", this.EntryFormGrid.GetWhitespaceImage (1, 3));
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", UIUtility.GetWhitespaceImage (ImagePath, 1, 3));
 	}
 }
 

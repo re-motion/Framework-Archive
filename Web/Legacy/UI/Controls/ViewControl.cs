@@ -1,11 +1,14 @@
 using System;
-using System.Diagnostics;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
 using System.Globalization;
+
+using Rubicon.Web.UI.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -17,6 +20,13 @@ public class ViewControl: Control
   private string _title = string.Empty;
   private Unit _labelColumnWidth;
   private Unit _valueColumnWidth;
+  private string _imagePath = UrlUtility.Combine (HttpContext.Current.Request.ApplicationPath, "images");
+
+  public virtual string ImagePath
+  {
+    get { return _imagePath; }
+    set { _imagePath = value; }
+  }
 
   public string Title
   {
