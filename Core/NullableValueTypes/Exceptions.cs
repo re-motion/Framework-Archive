@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.Serialization;
-using System.Data.SqlTypes;
 
-namespace Rubicon.Data.NullableValueTypes
+namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>

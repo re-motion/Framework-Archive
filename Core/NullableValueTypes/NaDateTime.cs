@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
 
-namespace Rubicon.Data.NullableValueTypes
+namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>

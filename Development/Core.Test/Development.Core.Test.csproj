@@ -74,14 +74,14 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\..\Program Files\NUnit V2.0\bin\nunit.framework.dll"
-                />
-                <Reference
                     Name = "DevelopmentCore"
                     Project = "{B719A305-0493-4C72-88FE-9A2FC6964578}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\..\..\Program Files\NUnit V2.1\bin\nunit.framework.dll"
                 />
             </References>
         </Build>

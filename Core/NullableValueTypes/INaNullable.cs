@@ -1,11 +1,11 @@
 using System;
-using System.Data.SqlTypes;
 using System.Runtime.Serialization;
+using System.Data.SqlTypes;
 
-namespace Rubicon.Data.NullableValueTypes
+namespace Rubicon.NullableValueTypes
 {
 /// <summary>
-///   Base interface for value types that support the nullable semantics of the <c>Rubicon.Data.NullableValues</c> namespace.
+///   Base interface for value types that support the nullable semantics of the <c>Rubicon.NullableValues</c> namespace.
 /// </summary>
 /// <remarks>
 ///   <para>
@@ -85,7 +85,7 @@ public interface INaNullable: INullable, ISerializable
 /// Specify this attribute for types that implement INaNullable.
 /// </summary>
 [AttributeUsage (AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
-public class NaBasicTypeAttribute: Attribute
+public class  NaBasicTypeAttribute: Attribute
 {
   private Type _basicType;
 

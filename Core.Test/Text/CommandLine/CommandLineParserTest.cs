@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Globalization;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.NullableValueTypes;
+using Rubicon.NullableValueTypes;
 using Rubicon.Development.UnitTesting;
 
 using Rubicon.Text.CommandLine;

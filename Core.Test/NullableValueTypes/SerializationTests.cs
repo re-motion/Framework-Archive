@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
-using Rubicon.Data.NullableValueTypes;
+using Rubicon.NullableValueTypes;
 
-namespace Rubicon.Data.UnitTests.NullableValueTypes
+namespace Rubicon.UnitTests.NullableValueTypes
 {
 
 [TestFixture]
