@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class DataManager : ICollectionEndPointChangeDelegate
+public class DataManager
 {
   // types
 
@@ -14,7 +14,6 @@ public class DataManager : ICollectionEndPointChangeDelegate
 
   private DataContainerCollection _dataContainerMap;
   private RelationEndPointMap _relationEndPointMap;
-  private ICollectionEndPointChangeDelegate _changeDelegate = null;
 
   // construction and disposing
 
@@ -112,46 +111,6 @@ public class DataManager : ICollectionEndPointChangeDelegate
     return false;
   }
 
-  public void ChangeLinks (
-      ObjectEndPoint relationEndPoint,
-      ObjectEndPoint newRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPoint,
-      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-    ArgumentUtility.CheckNotNull ("newRelatedEndPoint", newRelatedEndPoint);
-    ArgumentUtility.CheckNotNull ("oldRelatedEndPoint", oldRelatedEndPoint);
-    ArgumentUtility.CheckNotNull ("oldRelatedEndPointOfNewRelatedEndPoint", oldRelatedEndPointOfNewRelatedEndPoint);
-
-    if (!newRelatedEndPoint.IsNull)
-    {
-      ChangeLink (relationEndPoint.ID, newRelatedEndPoint.DomainObject);
-      ChangeLink (newRelatedEndPoint.ID, relationEndPoint.DomainObject);
-    }
-    else
-    {
-      ChangeLink (relationEndPoint.ID, null);
-    }
-
-    if (!oldRelatedEndPoint.IsNull)
-      ChangeLink (oldRelatedEndPoint.ID, null);
-
-    if (!oldRelatedEndPointOfNewRelatedEndPoint.IsNull)
-      ChangeLink (oldRelatedEndPointOfNewRelatedEndPoint.ID, null);
-  }
-
-  public void ChangeLink (RelationEndPointID id, DomainObject newRelatedObject)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    ObjectEndPoint endPoint = (ObjectEndPoint) _relationEndPointMap[id];
-
-    if (newRelatedObject != null)
-      endPoint.OppositeObjectID = newRelatedObject.ID;
-    else
-      endPoint.OppositeObjectID = null;
-  }
-
   public void WriteAssociatedPropertiesForRelationChange (
       ObjectEndPoint relationEndPoint,
       ObjectEndPoint newRelatedEndPoint,
@@ -218,6 +177,16 @@ public class DataManager : ICollectionEndPointChangeDelegate
     }
   }
 
+  public void ChangeLinks (
+      ObjectEndPoint relationEndPoint,
+      ObjectEndPoint newRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+  {
+    _relationEndPointMap.ChangeLinks (
+        relationEndPoint, newRelatedEndPoint, oldRelatedEndPoint, oldRelatedEndPointOfNewRelatedEndPoint);
+  }
+
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
@@ -236,7 +205,7 @@ public class DataManager : ICollectionEndPointChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
 
-    collectionEndPoint.ChangeDelegate = this;
+    collectionEndPoint.ChangeDelegate = _relationEndPointMap;
     _relationEndPointMap.Add (collectionEndPoint);
   }
 
@@ -303,30 +272,5 @@ public class DataManager : ICollectionEndPointChangeDelegate
       }
     }
   }
-
-  internal ICollectionEndPointChangeDelegate CollectionEndPointChangeDelegate
-  {
-    set { _changeDelegate = value; }
-  }
-
-  #region ICollectionEndPointChangeDelegate Members
-
-  void ICollectionEndPointChangeDelegate.PerformAdd (CollectionEndPoint endPoint, DomainObject domainObject)
-  {
-    if (_changeDelegate == null)
-      throw new DataManagementException ("Internal error: DataManager must have an ICollectionChangeDelegate registered.");
-
-    _changeDelegate.PerformAdd (endPoint, domainObject);
-  }
-
-  void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
-  {
-    if (_changeDelegate == null)
-      throw new DataManagementException ("Internal error: DataManager must have an ICollectionChangeDelegate registered.");
-
-    _changeDelegate.PerformRemove (endPoint, domainObject);
-  }
-
-  #endregion
 }
 }
