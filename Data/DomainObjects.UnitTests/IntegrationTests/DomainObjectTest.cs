@@ -364,7 +364,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     {
       ClientTransactionMock.Commit ();
     }
-    catch (MandatoryRelationNotSetException e)
+    catch (MandatoryRelationNotSetException)
     {
       Assert.Fail ("MandatoryRelationNotSetException was thrown when none was expected.");
     }
