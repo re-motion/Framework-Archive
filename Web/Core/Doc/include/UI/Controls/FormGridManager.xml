@@ -743,11 +743,6 @@
       </remarks>    
     </CreateRows>
     <Constructor>
-      <remarks>
-        <para>
-          The <paramref name="createRows"/> is called at the end of the construction.
-        </para>
-      </remarks>
       <param name="table">
         The <see cref="HtmlTable"/> to be used as the base for the <c>FormGrid</c>
       </param>
