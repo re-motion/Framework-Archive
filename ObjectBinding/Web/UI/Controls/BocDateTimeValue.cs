@@ -475,7 +475,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       Unit dateTextBoxWidth = Unit.Empty;
       Unit timeTextBoxWidth = Unit.Empty;
 
-      if (Width != Unit.Empty)
+      if (! Width.IsEmpty)
       {
         int imageButtonWidth = 0;
 
@@ -605,9 +605,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       _timeTextBox.Style["vertical-align"] = "middle";
       _imageButton.Style["vertical-align"] = "middle";
 
-      if (dateTextBoxWidth != Unit.Empty)
+      if (! dateTextBoxWidth.IsEmpty)
         _dateTextBox.Width = dateTextBoxWidth;
-      if (timeTextBoxWidth != Unit.Empty)
+      if (! timeTextBoxWidth.IsEmpty)
         _timeTextBox.Width = timeTextBoxWidth;
 
       _dateTextBox.Height = this.Height;
