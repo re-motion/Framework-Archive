@@ -30,6 +30,19 @@ public class WxeParameterDeclarationTest
   }
 
   [Test]
+  public void TestParse2 ()
+  {
+    // "value", true, 2004-03-25 12:00, var1
+    string args = @"""value"", true, 2004-03-25 12:00, var1";
+    object[] result = CallParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
+    Assert.AreEqual (4, result.Length);
+    Assert.AreEqual ("value", result[0]);
+    Assert.AreEqual (true, result[1]);
+    Assert.AreEqual (new DateTime (2004, 3, 25, 12, 0, 0), result[2]);
+    Assert.AreEqual (new WxeVariableReference ("var1"), result[3]);
+  }
+
+  [Test]
   [ExpectedException (typeof (ApplicationException))]
   public void TestParseEx1 ()
   {
