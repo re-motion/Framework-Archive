@@ -440,5 +440,12 @@ public class OneToOneRelationChangeTest : ClientTransactionBaseTest
 
     eventReceiver.Check (expectedStates);
   }
+
+  [Test]
+  [ExpectedException (typeof (MappingException))]  
+  public void SetInvalidRelatedObject ()
+  {
+    _order.SetRelatedObject ("OrderTicket", new Ceo ());    
+  }
 }
 }
