@@ -68,16 +68,28 @@
 	        [Single] > @singleLowerBound and [Single] < @singleUpperBound and
 	        [String] = @string and 
 	        [NaBoolean] = @naBoolean and
+	        [NaByte] = @naByte and
 	        [NaDate] = @naDate and
 	        [NaDateTime] = @naDateTime and
+	        [NaDecimal] = @naDecimal and
 	        [NaDouble] = @naDouble and
+	        [NaGuid] = @naGuid and
+	        [NaInt16] = @naInt16 and
 	        [NaInt32] = @naInt32 and
+	        [NaInt64] = @naInt64 and
+	        [NaSingle] > @naSingleLowerBound and [NaSingle] < @naSingleUpperBound and
 	        [StringWithNullValue] = @stringWithNullValue and
 	        [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+	        [NaByteWithNullValue] = @naByteWithNullValue and 
 	        [NaDateWithNullValue] = @naDateWithNullValue and
 	        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+	        [NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
 	        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
-	        [NaInt32WithNullValue] = @naInt32WithNullValue;
+	        [NaGuidWithNullValue] = @naGuidWithNullValue and
+	        [NaInt16WithNullValue] = @naInt16WithNullValue and
+	        [NaInt32WithNullValue] = @naInt32WithNullValue and
+	        [NaInt64WithNullValue] = @naInt64WithNullValue and
+	        [NaSingleWithNullValue] = @naSingleWithNullValue;
 	    ]]>      
     </statement>
   </query>

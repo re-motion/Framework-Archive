@@ -511,12 +511,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="bool"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Boolean"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="bool"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Boolean"/>.</exception>
   public bool GetBoolean (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -526,12 +526,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="byte"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Byte"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="byte"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Byte"/>.</exception>
   public byte GetByte (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -546,7 +546,7 @@ public class DataContainer
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="System.DateTime"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.DateTime"/>.</exception>
   public DateTime GetDateTime (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -556,12 +556,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="decimal"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Decimal"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="decimal"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Decimal"/>.</exception>
   public decimal GetDecimal (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -571,12 +571,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="double"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Double"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="double"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Double"/>.</exception>
   public double GetDouble (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -586,12 +586,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="System.Guid"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Guid"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="System.Guid"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Guid"/>.</exception>
   public Guid GetGuid (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -601,12 +601,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="short"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int16"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="short"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int16"/>.</exception>
   public short GetInt16 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -616,12 +616,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="int"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int32"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="int"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int32"/>.</exception>
   public int GetInt32 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -631,12 +631,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="long"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int64"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="long"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int64"/>.</exception>
   public long GetInt64 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -646,12 +646,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="float"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Single"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="float"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Single"/>.</exception>
   public float GetSingle (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -661,12 +661,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="string"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.String"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="string"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.String"/>.</exception>
   public string GetString (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -675,15 +675,13 @@ public class DataContainer
     return (string) this[propertyName];
   }
 
-  // TODO: Provide typed accessor methods for new Na* types.
-
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.</exception>
   public NaBoolean GetNaBoolean (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -693,12 +691,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.</exception>
   public NaDateTime GetNaDateTime (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -708,12 +706,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="Rubicon.NullableValueTypes.NaDouble"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDouble"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaDouble"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDouble"/>.</exception>
   public NaDouble GetNaDouble (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -723,18 +721,108 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="Rubicon.NullableValueTypes.NaInt32"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt32"/>.
   /// </summary>
   /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="Rubicon.NullableValueTypes.NaInt32"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt32"/>.</exception>
   public NaInt32 GetNaInt32 (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckDiscarded ();
 
     return (NaInt32) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaByte"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaByte"/>.</exception>
+  public NaByte GetNaByte (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaByte) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDecimal"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDecimal"/>.</exception>
+  public NaDecimal GetNaDecimal (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaDecimal) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaGuid"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaGuid"/>.</exception>
+  public NaGuid GetNaGuid (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaGuid) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt16"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt16"/>.</exception>
+  public NaInt16 GetNaInt16 (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaInt16) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt64"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt64"/>.</exception>
+  public NaInt64 GetNaInt64 (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaInt64) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaSingle"/>.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaSingle"/>.</exception>
+  public NaSingle GetNaSingle (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (NaSingle) this[propertyName];
   }
 
   #endregion
