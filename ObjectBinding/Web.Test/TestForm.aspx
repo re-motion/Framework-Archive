@@ -20,32 +20,7 @@
     <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px">
 <textboxstyle autopostback="True" cssclass="MyCssClass">
 </TextBoxStyle>
-</obc:boctextvalue></td></tr>
-  <tr>
-    <td><rwc:smartlabel id=SmartLabel2 runat="server" ForControl="LastNameField"></rwc:smartlabel></td>
-    <td><obc:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px"></obc:boctextvalue></td></tr>
-  <tr>
-    <td><rwc:smartlabel id=SmartLabel3 runat="server" ForControl="DateOfBirthField"></rwc:smartlabel></td>
-    <td><obc:boctextvalue id=DateOfBirthField runat="server" PropertyIdentifier="DateOfBirth" DataSource="<%# reflectionBusinessObjectDataSource %>" ValueType="Date" Width="200px"></obc:boctextvalue><obc:boctextvaluevalidator id=BocTextValueValidator1 runat="server" EnableClientScript="False" ControlToValidate="DateOfBirthField"></obc:boctextvaluevalidator></td></tr>
-  <tr>
-    <td><rwc:smartlabel id=SmartLabel4 runat="server" ForControl="HeightField"></rwc:smartlabel></td>
-    <td><obc:boctextvalue id=HeightField runat="server" PropertyIdentifier="Height" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px"></obc:boctextvalue><obc:boctextvaluevalidator id=BocTextValueValidator2 runat="server" EnableClientScript="False" ControlToValidate="HeightField"></obc:boctextvaluevalidator></td></tr>
-  <tr>
-    <td><rwc:smartlabel id=SmartLabel5 runat="server" ForControl="GenderField"></rwc:smartlabel></td>
-    <td><obc:bocenumvalue id=GenderField runat="server" PropertyIdentifier="Gender" DataSource="<%# reflectionBusinessObjectDataSource %>" Height="24px" Width="152px">
-<listcontrolstyle radiobuttonlisttextalign="Right" font-bold="True" bordercolor="Red" forecolor="Green" radionbuttonlistrepeatlayout="Table" backcolor="#FFFF80" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
-</ListControlStyle></obc:bocenumvalue></td></tr>
-  <tr>
-    <td><rwc:smartlabel id=SmartLabel6 runat="server" ForControl="MarriageStatusField"></rwc:smartlabel></td>
-    <td><obc:bocenumvalue id=MarriageStatusField runat="server" PropertyIdentifier="MarriageStatus" DataSource="<%# reflectionBusinessObjectDataSource %>" Width="200px">
-<listcontrolstyle radiobuttonlisttextalign="Right" radionbuttonlistrepeatlayout="Table" controltype="DropDownList" radiobuttonlistrepeatdirection="Vertical">
-</ListControlStyle>
-</obc:bocenumvalue></td></tr>
-  <tr>
-    <td></td>
-    <td><listcontrolstyle 
-      radiobuttonlisttextalign="Right" radionbuttonlistrepeatlayout="Table" 
-      controltype="DropDownList" radiobuttonlistrepeatdirection="Vertical"><obc:BocReferenceValue id="PartnerField" runat="server" width="200px" datasource="<%# reflectionBusinessObjectDataSource %>" propertyidentifier="Partner" enableicon="True" required="True"></obc:BocReferenceValue></listcontrolstyle></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button><asp:button id=TestSetNullButton runat="server" Text="Set Null"></asp:button><asp:button id="TestSetNewItemButton" runat="server" Text="Set New Item"></asp:button><asp:button id="TestReadValueButton" runat="server" Text="Read Value"></asp:button><asp:Label id="ReadValueLabel" runat="server">not set</asp:Label></form>
+</obc:boctextvalue></td></tr></table><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></form>
 	
   </body>
 </html>
