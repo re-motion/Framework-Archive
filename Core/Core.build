@@ -20,6 +20,7 @@
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
+        <includes name="${project.builddir}/log4net.dll" />
         <includes asis="true" name="System.dll"/>
         <includes asis="true" name="System.Data.dll"/>
       </references>
