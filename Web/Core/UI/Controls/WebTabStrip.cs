@@ -63,9 +63,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     //  Is PostBack caused by this tab strip ?
-    if (postCollection[ControlHelper.EventTarget] == ClientID)
+    if (postCollection[ControlHelper.PostEventSourceID] == ClientID)
     {
-      _tabToBeSelected = postCollection[ControlHelper.EventArgument];
+      _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID ];
       ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected);
       if (_tabToBeSelected != _selectedTabID)
         return true;
