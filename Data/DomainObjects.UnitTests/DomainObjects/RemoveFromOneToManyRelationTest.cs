@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -84,31 +85,37 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     _subordinateCollectionEventReceiver.Cancel = false;
     _supervisorEventReceiver.Cancel = false;
 
-    _supervisor.Subordinates.Remove (_subordinate);
+    try
+    {
+      _supervisor.Subordinates.Remove (_subordinate);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
+      Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
+      Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
 
-    Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
-    Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
-    Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
+      Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
+      Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
+      Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovingDomainObjects.Count);
+      Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
 
-    Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
-    Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
-    Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovingDomainObjects.Count);
-    Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
+      Assert.IsFalse (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.IsNull (_supervisorEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
+      Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
+      Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.IsFalse (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.IsNull (_supervisorEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
-    Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
-    Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
-
-    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
-    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
-    Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
-    Assert.AreSame (_supervisor, _subordinate.Supervisor);
+      Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+      Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+      Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
+      Assert.AreSame (_supervisor, _subordinate.Supervisor);
+    }
   }
 
 
@@ -119,32 +126,39 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     _subordinateCollectionEventReceiver.Cancel = true;
     _supervisorEventReceiver.Cancel = false;
 
-    _supervisor.Subordinates.Remove (_subordinate);
+    try
+    {
+      _supervisor.Subordinates.Remove (_subordinate);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
+      Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
+      Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
 
-    Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
-    Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
-    Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
+      Assert.IsTrue (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
+      Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
+      Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
+      Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
 
-    Assert.IsTrue (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
-    Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
-    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
-    Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
+      Assert.IsFalse (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.IsNull (_supervisorEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
+      Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
+      Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.IsFalse (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.IsNull (_supervisorEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
-    Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
-    Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
-
-    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
-    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
-    Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
-    Assert.AreSame (_supervisor, _subordinate.Supervisor);
+      Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+      Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+      Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
+      Assert.AreSame (_supervisor, _subordinate.Supervisor);
+    }
   }
+
   [Test]
   public void SupervisorCancelsChangeEvent ()
   {  
@@ -152,31 +166,37 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     _subordinateCollectionEventReceiver.Cancel = false;
     _supervisorEventReceiver.Cancel = true;
 
-    _supervisor.Subordinates.Remove (_subordinate);
+    try
+    {
+      _supervisor.Subordinates.Remove (_subordinate);
+      Assert.Fail ("EventReceiverCancelException should be raised.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
+      Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
+      Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
 
-    Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.AreEqual ("Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
-    Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
-    Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
+      Assert.IsTrue (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
+      Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
+      Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
+      Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
 
-    Assert.IsTrue (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
-    Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
-    Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
-    Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
+      Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
+      Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
+      Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
+      Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
+      Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
-    Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-    Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
-    Assert.IsNull ( _supervisorEventReceiver.ChangedRelationPropertyName);
-    Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
-    Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
-
-    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
-    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
-    Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
-    Assert.AreSame (_supervisor, _subordinate.Supervisor);
+      Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+      Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+      Assert.IsNotNull (_supervisor.Subordinates[_subordinate.ID]);
+      Assert.AreSame (_supervisor, _subordinate.Supervisor);
+    }
   }
 
   [Test]
