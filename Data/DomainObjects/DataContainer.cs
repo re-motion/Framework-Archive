@@ -103,11 +103,65 @@ public class DataContainer
     _timestamp = timestamp;
 
     _propertyValues = new PropertyValueCollection ();
+
     _propertyValues.PropertyChanging += new PropertyChangingEventHandler(PropertyValues_PropertyChanging);
     _propertyValues.PropertyChanged += new PropertyChangedEventHandler(PropertyValues_PropertyChanged);
   }
 
   // methods and properties
+
+  /// <summary>
+  /// Returns whether the property specified by <i>propertyName</i> is null.
+  /// </summary>
+  /// <param name="propertyName">The name of the <see cref="PropertyValue"/>.</param>
+  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is null; otherwise, <b>false</b>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  public bool IsNull (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    object value = this[propertyName];
+
+    if (value == null)
+      return true;
+
+    INaNullable naNullable = value as INaNullable;
+    if (naNullable != null)
+      return naNullable.IsNull;
+
+    return false;
+  }
+
+  /// <summary>
+  /// Returns whether the property specified by <i>propertyName</i> is null or empty.
+  /// </summary>
+  /// <remarks>If a <see cref="System.String"/> or a <see cref="System.Guid"/> are equal to empty this method returns true.</remarks>
+  /// <param name="propertyName">The name of the <see cref="PropertyValue"/>.</param>
+  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is equal to null or empty; otherwise, <b>false</b>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">Properties were accessed after a newly instantiated (uncommitted) <see cref="DataContainer"/> was deleted.</exception>
+  public bool IsNullOrEmpty (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    if (IsNull (propertyName))
+      return true;
+
+    object value = this[propertyName];
+    
+    if (value.GetType () == typeof (string))
+      return (((string) value) == string.Empty);
+    
+    if (value.GetType () == typeof (Guid))
+      return (((Guid) value) == Guid.Empty);
+
+    return false;
+  }
 
   /// <summary>
   /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i>.
