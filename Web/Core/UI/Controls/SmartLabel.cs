@@ -3,16 +3,17 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.ComponentModel;
 using Rubicon.ObjectBinding;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 [ToolboxItemFilter("System.Web.UI")]
-public class BocPropertyLabel: WebControl
+public class SmartLabel: WebControl
 {
   private string _forControl = null;
 
-	public BocPropertyLabel()
+	public SmartLabel()
     : base (HtmlTextWriterTag.Label)
 	{
 	}
@@ -28,9 +29,9 @@ public class BocPropertyLabel: WebControl
   {
     this.RenderBeginTag (writer);
 
-    IBusinessObjectBoundControl objectBoundControl = NamingContainer.FindControl (ForControl) as IBusinessObjectBoundControl;
-    if (objectBoundControl != null && objectBoundControl.Property != null)
-      writer.Write (objectBoundControl.Property.DisplayName);
+    ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
+    if (smartControl != null)
+      writer.Write (smartControl.DisplayName);
     else
       writer.Write ("[Label for " + ForControl + "]");
 
@@ -42,9 +43,10 @@ public class BocPropertyLabel: WebControl
     base.AddAttributesToRender (writer);
 
     Control target = NamingContainer.FindControl (ForControl);
-    IGetTargetControl getTargetControl = target as IGetTargetControl;
-    if (getTargetControl != null)
-      target = getTargetControl.GetTargetControl();
+    ISmartControl smartControl = target as ISmartControl;
+    if (smartControl != null)
+      target = smartControl.TargetControl;
+
     if (target != null)
       writer.AddAttribute (HtmlTextWriterAttribute.For, target.ClientID);
   }
