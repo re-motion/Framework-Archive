@@ -9,8 +9,6 @@ table.bocListTable
 td.bocListTitleCell
 {
 	font-weight: bold;
-	/*  no inheritence from body */
-	/*font-size: 1.25em; */
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
@@ -21,7 +19,7 @@ td.bocListTitleCell
   border-color: Black;
 }
 
-/*  Style applied to the cells in the BocList's even data rows. */
+/*  Style applied to the cells in the BocList's odd data rows. */
 td.bocListDataCellOdd
 {
 	background-color: #FFFFFF;
@@ -49,7 +47,55 @@ td.bocListDataCellEven
   border-color: White;
 }
 
+/*  Style applied to the cells in the BocList's selected odd data rows. */
+td.bocListDataCellOddSelected
+{
+	background-color: Navy;
+  color: White;
+  
+  padding: 2px 2px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
+}
+
+/*  Style applied to the cells in the BocList's selected even data rows. */
+td.bocListDataCellEvenSelected
+{
+	background-color: Navy;
+  color: White;
+
+  padding: 2px 2px 2px 5px;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-color: White;
+}
+
+/* Style applied to the text providing the sorting order's index. */
+span.bocListSortingOrder
+{
+  color: Gray;
+  font-size: 80%;
+  font-weight: normal;
+}
+
 /*  Style applied to the BocList's navigator. */
 div.bocListNavigator
 {
+}
+
+td.bocListDataCellOddSelected a
+{
+  color: White;
+}
+
+td.bocListDataCellEvenSelected a
+{
+  color: White;
 }
