@@ -137,10 +137,14 @@ public class DataDropDownList: ExtendedDropDownList
     this.SelectedIndex = 0;
   }
 
+  public bool Contains (int value)
+  {
+    return (Items.FindByValue (value.ToString()) != null);
+  }
+
   private void AddEmptyItem()
   {
     this.Items.Insert (0, new ListItem (string.Empty, "-1"));
   }
-  }
-
+}
 }
