@@ -5,9 +5,9 @@ namespace Rubicon.ObjectBinding
 
 public interface IBusinessObjectClass
 {
-  IBusinessObjectProperty GetProperty (string propertyIdentifier);
+  IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier);
 
-  IBusinessObjectProperty[] GetProperties ();
+  IBusinessObjectProperty[] GetPropertyDefinitions ();
 }
 
 }
