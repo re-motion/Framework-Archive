@@ -96,7 +96,7 @@ public class PropertyPathBinding: IReferencePropertySource
   {
     get
     {
-      if (_ownerControl != null && _dataSource != _ownerControl.DataSource)
+      if (_ownerControl != null && _ownerControl.DataSource != null && _dataSource != _ownerControl.DataSource)
         _dataSource = _ownerControl.DataSource;
       return _dataSource; 
     }
