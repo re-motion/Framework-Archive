@@ -30,6 +30,7 @@ public class TestForm : Page
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
   protected System.Web.UI.WebControls.Label TreeViewLabel;
+  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	override protected void OnInit(EventArgs e)
