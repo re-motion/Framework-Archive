@@ -569,5 +569,4 @@ public enum BocItemCommandShow
   EditMode
 }
 
-
 }

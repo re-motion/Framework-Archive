@@ -12,11 +12,12 @@ using System.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
+//  TODO: BocColumnDefinitionSet: Move long comment blocks to xml-file
 /// <summary> A BocColumnDefinitionSet is a named collection of column definitions. </summary>
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocColumnDefinitionSet
 {
-  /// <summary> The ID of this column definition. </summary>
+  /// <summary> The programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   private string _id;
   /// <summary> The displayed name of the set. </summary>
   private object _title;
@@ -25,7 +26,10 @@ public class BocColumnDefinitionSet
   /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Constructor used to initialize the set with an array of <see cref="BocColumnDefinition"/> 
+  ///   objects. 
+  /// </summary>
   /// <param name="ownerControl">
   ///   The control this <see cref="BocColumnDefinitionSet"/> belongs to.
   /// </param>
@@ -51,7 +55,10 @@ public class BocColumnDefinitionSet
       _columnDefinitionCollection.AddRange (columnDefinitions);
   }
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Constructor used to initialize the set with an array of <see cref="BocColumnDefinition"/> 
+  ///   objects. 
+  /// </summary>
   /// <param name="title">
   ///   The <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> 
   ///   on the rendered page.
@@ -86,8 +93,10 @@ public class BocColumnDefinitionSet
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
-  /// <summary> The ID of this column definition set. </summary>
-  /// <value> A <see cref="string"/> providing an identifier for this column definition set. </value>
+  /// <summary> The programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
+  /// <value> 
+  ///   A <see cref="string"/> providing an identifier for this <see cref="BocColumnDefinitionSet"/>.
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The ID of this column definition set.")]
   [Category ("Misc")]

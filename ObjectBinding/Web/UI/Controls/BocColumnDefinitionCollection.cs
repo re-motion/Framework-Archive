@@ -17,7 +17,10 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
-  /// <summary> The BocColumnDefinition types supported by this collection instance. </summary>
+  /// <summary> 
+  ///   The types derived from <see cref="BocColumnDefinition"/> which may be added 
+  ///   to the collection. 
+  /// </summary>
   private Type[] _supportedTypes;
 
   /// <summary> Simple Constructor. </summary>
@@ -25,7 +28,8 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
   /// <param name="supportedTypes"> 
-  ///   The <see cref="BocColumnDefinition"/> types supported by this collection. 
+  ///   The types derived from <see cref="BocColumnDefinition"/> which may be added 
+  ///   to the collection. 
   /// </param>
   internal BocColumnDefinitionCollection (
       IBusinessObjectBoundWebControl ownerControl, 

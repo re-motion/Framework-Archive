@@ -50,8 +50,10 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
   }
 
   /// <summary> Returns the collection to normal mode. </summary>
-  /// <remarks> A common <see cref="CollectionChanged"/> event is raised if changes 
-  /// occured during edit-mode. </remarks>
+  /// <remarks>
+  ///   A common <see cref="CollectionChanged"/> event is raised if changes 
+  ///   occured during edit-mode. 
+  /// </remarks>
   public void EndEdit()
   {
     if (_isEditing)

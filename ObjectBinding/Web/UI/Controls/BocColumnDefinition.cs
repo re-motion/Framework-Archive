@@ -16,11 +16,13 @@ using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
+
+//  TODO: BocColumnDefinition: Move long comment blocks to xml-file
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition
 {
-  /// <summary> The programmatic name of the column definition. </summary>
+  /// <summary> The programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
   private string _id;
   /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
@@ -53,7 +55,7 @@ public abstract class BocColumnDefinition
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
   /// </summary>
   /// <returns>
-  ///   Returns the class name of the instance, followed by the <see cref="ColumnTitle"/>.
+  ///   Returns the <see cref="ColumnTitle"/>, followed by the class name of the instance.
   /// </returns>
   public override string ToString()
   {
@@ -66,8 +68,10 @@ public abstract class BocColumnDefinition
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
-  /// <summary> The programmatic name of the column definition. </summary>
-  /// <value> A <see cref="string"/> providing an identifier for this column definition. </value>
+  /// <summary> The programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
+  /// <value>
+  ///   A <see cref="string"/> providing an identifier for the <see cref="BocColumnDefinition"/>. 
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Misc")]
   [Description ("The programmatic name of the column definition.")]
@@ -95,10 +99,10 @@ public abstract class BocColumnDefinition
   ///   Override this property to add validity checks to the set accessor.
   ///   The get accessor should return the value verbatim.
   /// </remarks>
-  /// <value> A <see cref="string"/> representing the externally set title of this column. </value>
+  /// <value> A <see cref="string"/> representing the manually set title of this column. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The assigned value of the column title, can be empty.")]
+  [Description ("The manually assigned value of the column title, can be empty.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public virtual string ColumnTitle
@@ -190,7 +194,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
   /// </summary>
   /// <returns> 
-  ///   Returns the class name of the instance, followed by the <see cref="Label"/>. 
+  ///   Returns <see cref="Label"/>, followed by the the class name of the instance. 
   /// </returns>
   public override string ToString()
   {
@@ -293,7 +297,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathBinding
 {
   /// <summary>
-  ///   A format string describing how the value access through the 
+  ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
   /// </summary>
   private string _formatString;
@@ -306,7 +310,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="formatString"> 
-  ///   A format string describing how the value access through the 
+  ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
   /// </param>
   /// <param name="propertyPath">
@@ -329,7 +333,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="formatString"> 
-  ///   A format string describing how the value access through the 
+  ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
   /// </param>
   /// <param name="propertyPathIdentifier">
@@ -524,7 +528,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
   /// <summary>
-  ///   A format string describing how the values access through the 
+  ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </summary>
   private string _formatString;
@@ -537,7 +541,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="formatString"> 
-  ///   A format string describing how the values access through the 
+  ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </param>
   /// <param name="propertyPaths">
@@ -564,7 +568,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="formatString"> 
-  ///   A format string describing how the values access through the 
+  ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </param>
   /// <param name="propertyPathIdentifiers">
