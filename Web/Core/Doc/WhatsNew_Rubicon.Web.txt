@@ -1,6 +1,13 @@
 1.1.26.0
 ========
 
+- BugFix Form.cs:
+  * Gewünschtes Verhalten: Wenn die action-Url bei einem rubicon:Form auf eine andere Seite zeigt, 
+      soll der Viewstate nicht gerendert werden!!
+  * Jetzt werden die Url-Parameter der action-Url beim Vergleich der aktuellen Seite und der action-Url 
+    gefiltert, somit wird der ViewState bei Postbacks auf die eigene Seite gerendert. 
+    (Bisher ergab der Vergleich immer false, da die Url-Parameter nur auf einer Seite berücksichtigt wurden)
+    
 - Rubicon.Web.UI.HtmlHeadAppender
   * Neue Klasse
   * Bietet die Möglichkeit, Elemente in den HTML Head einzuhängen.
