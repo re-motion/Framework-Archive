@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition
 {
-  /// <summary> The ID of this column definition. </summary>
+  /// <summary> The programmatic name of the column definition. </summary>
   private string _id;
   /// <summary> The text displayed in the column title. </summary>
   private string _columnTitle;
@@ -45,10 +45,6 @@ public abstract class BocColumnDefinition
     : this (null, Unit.Empty)
   {}
 
-  /// <summary> Is called when the value of <see cref="OwnerControl"/> is changeing. </summary>
-  protected virtual void OnOwnerControlChange()
-  {}
-
   /// <summary> Is called when the value of <see cref="OwnerControl"/> was changed. </summary>
   protected virtual void OnOwnerControlChanged()
   {}
@@ -70,11 +66,11 @@ public abstract class BocColumnDefinition
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
-  /// <summary> The ID of this column definition. </summary>
+  /// <summary> The programmatic name of the column definition. </summary>
   /// <value> A <see cref="string"/> providing an identifier for this column definition. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this column definition.")]
   [Category ("Misc")]
+  [Description ("The programmatic name of the column definition.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
@@ -101,8 +97,8 @@ public abstract class BocColumnDefinition
   /// </remarks>
   /// <value> A <see cref="string"/> representing the externally set title of this column. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The assigned value of the column title, can be empty.")]
   [Category ("Appearance")]
+  [Description ("The assigned value of the column title, can be empty.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public virtual string ColumnTitle
@@ -111,10 +107,11 @@ public abstract class BocColumnDefinition
     set { _columnTitle = StringUtility.NullToEmpty (value); }
   }
 
-  /// <summary> The width of the column. </summary>
+  /// <summary> The width of the column definition. </summary>
   /// <value> A <see cref="Unit"/> providing the width of this column when it is rendered. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Layout")]
+  [Description ("The width of the rendered column.")]
   [DefaultValue(typeof (Unit), "")]
   [NotifyParentProperty (true)]
   public Unit Width 
@@ -142,7 +139,6 @@ public abstract class BocColumnDefinition
     {
       if (_ownerControl != value)
       {
-        OnOwnerControlChange();
         _ownerControl = value;
         OnOwnerControlChanged();
       }
@@ -214,6 +210,8 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Action")]
+  [Description ("The command rendered in this column.")]
+  //  No default value
   [NotifyParentProperty (true)]
   public BocItemCommand Command
   {
@@ -231,6 +229,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <value> A <see cref="string"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
+  [Description ("The text representing the command in the rendered page.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string Label
@@ -243,6 +242,7 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <value> An <see cref="Image"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
+  [Description ("The relative url to image representing the command in the rendered page.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string IconPath 
@@ -393,7 +393,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   }
 
   /// <summary>
-  ///   A format string describing how the value access through the 
+  ///   A format string describing how the value accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
   /// </summary>
   /// <value> 
@@ -401,6 +401,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
+  [Description ("A format string describing how the value accessed through the Property Path is formatted.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string FormatString
@@ -451,6 +452,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
+  [Description ("The string representation of the Property Path. Must not be emtpy.")]
   //  No default value
   [NotifyParentProperty (true)]
   public string PropertyPathIdentifier
@@ -618,7 +620,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 
   /// <summary>
-  ///   A format string describing how the values access through the 
+  ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </summary>
   /// <value> 
@@ -628,6 +630,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
+  [Description ("A format string describing how the values accessed through the Property Path are merged.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string FormatString
@@ -649,6 +652,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// <value> A collection of <see cref="PropertyPathBinding"/> objects. </value>
   [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
+  [Description ("The Property Paths used to access the values of Business Object.")]
   [NotifyParentProperty (true)]
   public PropertyPathBindingCollection PropertyPathBindings
   {
@@ -662,7 +666,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   The text displayed in the column title. Must not be empty or <see langword="null"/>.
   /// </summary>
   /// <value> A <see cref="string"/> representing the title of this column. </value>
-  [Description ("The assigned value of the column title, must not be empty or null.")]
+  [Description ("The assigned value of the column title, must not be empty.")]
   [DefaultValue ("")]
   [NotifyParentProperty (true)]
   public override string ColumnTitle

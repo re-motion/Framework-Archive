@@ -1310,7 +1310,7 @@ public class BocList:
   }
 
   [Category ("Behavior")]
-  [Description ("The number of rows displayed per page or <= 0 / null for all rows.")]
+  [Description ("The number of rows displayed per page. Set PageSize to 0 to show all rows.")]
   [DefaultValue (typeof(NaInt32), "null")]
   public NaInt32 PageSize
   {
@@ -1325,7 +1325,7 @@ public class BocList:
   }
 
   [Category ("Behavior")]
-  [Description ("Set true to force the showing of the page count even when there is just one page.")]
+  [Description ("Indicates whether to the show the page count even when there is just one page.")]
   [DefaultValue (false)]
   public bool AlwaysShowPageInfo
   {
@@ -1334,7 +1334,7 @@ public class BocList:
   }
 
   [Category ("Appearance")]
-  [Description ("If true, the control displays a drop down list containing the available column definition sets.")]
+  [Description ("Indicates wheter the control displays a drop down list containing the available column definition sets.")]
   [DefaultValue (true)]
   public bool ShowAdditionalColumnsList
   {
@@ -1343,7 +1343,7 @@ public class BocList:
   }
 
   [Category ("Appearance")]
-  [Description ("If true, the control displays a checkbox in front of each data.")]
+  [Description ("Indicates wheter the control displays a checkbox in front of each row.")]
   [DefaultValue (false)]
   public bool ShowSelection
   {
@@ -1352,7 +1352,7 @@ public class BocList:
   }
 
   [Category ("Appearance")]
-  [Description ("If true, the list generates column for all properties of the bound object.")]
+  [Description ("Indicates wheter the control automatically generates a column for each property of the bound object.")]
   [DefaultValue (false)]
   public bool ShowAllProperties
   {
@@ -1364,7 +1364,7 @@ public class BocList:
   ///   Set <see langword="true"/> to display an icon in front of the first value column.
   /// </summary>
   [Category ("Appearance")]
-  [Description ("Set true to enable the icon in front of the first value column.")]
+  [Description ("Enables the icon in front of the first value column.")]
   [DefaultValue (true)]
   public bool EnableIcon
   {
@@ -1403,6 +1403,7 @@ public class BocList:
   }
 
   [Category ("Style")]
+  [Description ("The style that you want to apply to the drop down list used to display the user selectable columns.")]
   public DropDownListStyle AdditionalColumnsListStyle
   {
     get { return _additionalColumnsListStyle; }

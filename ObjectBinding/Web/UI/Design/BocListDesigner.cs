@@ -75,9 +75,9 @@ public class BocListDesigner:
   {
     dialog.Size = new Size (800, 500);
     dialog.StartPosition = FormStartPosition.CenterParent;
-    SetPropertyGridSplitter (propertyGrid, 4);
 
     PropertyGrid propertyGrid = GetPropertyGrid (dialog);
+    SetPropertyGridSplitter (propertyGrid, 4);
     propertyGrid.HelpVisible = true;
     propertyGrid.BackColor = System.Drawing.SystemColors.Control;
     

@@ -18,7 +18,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// </summary>
 //  TODO: BocItemCommand: Script
 [TypeConverter (typeof (ExpandableObjectConverter))]
-//[TypeConverter (typeof (BocItemCommandConverter))]
 public class BocItemCommand
 {
   [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -49,7 +48,7 @@ public class BocItemCommand
       return stringBuilder.ToString();
     }
 
-    [Obsolete()]
+    [Obsolete ("Only user for HrefCommandPropertiesConverter.")]
     internal static HrefCommandProperties Parse (string value)
     {
       // parse the format "href" or "href, target"
@@ -78,7 +77,7 @@ public class BocItemCommand
     /// <value> A <see cref="string"/> representing the hyperlink reference. </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("The hyperlink reference of the command. Use {0} for the index and {1} for the ID.")]
+    [Description ("The hyperlink reference of the command. Use {0} to insert the Busines Object's index in the list and {1} to insert the Business Object's ID.")]
     [DefaultValue("")]
     [NotifyParentProperty (true)]
     public string Href 
@@ -143,7 +142,7 @@ public class BocItemCommand
       return stringBuilder.ToString();
     }
 
-    [Obsolete()]
+    [Obsolete ("Only used for WxeFunctionCommandPropertiesConverter.")]
     internal static WxeFunctionCommandProperties Parse (string value)
     {
       // parse the format "functionTypeName ([parameter1[, parameter2[, ...]]])"
@@ -173,7 +172,7 @@ public class BocItemCommand
 
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("The type name of the WxeFunction used for this command.")]
+    [Description ("The complete type name (type, assembly) of the WxeFunction used for the command.")]
     [DefaultValue("")]
     [NotifyParentProperty (true)]
     public string TypeName
@@ -206,7 +205,7 @@ public class BocItemCommand
 
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("A comma seperated list of parameters for this command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
+    [Description ("A comma seperated list of parameters for the command. Use '%ID' to pass the BusinessObject's ID and '%Index' to pass the BusinessObject's index in the list.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
     public string ParameterList
@@ -297,10 +296,10 @@ public class BocItemCommand
   ///   applied on.
   /// </param>
   public virtual void RenderBegin (
-    HtmlTextWriter writer, 
-    int listIndex, 
-    string businessObjectID,
-    string postBackLink)
+      HtmlTextWriter writer, 
+      int listIndex, 
+      string businessObjectID,
+      string postBackLink)
   {
     switch (_type)
     {
@@ -428,7 +427,7 @@ public class BocItemCommand
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("The type of the command.")]
+  [Description ("The type of command generated.")]
   //  No default value
   [NotifyParentProperty (true)]
   public BocItemCommandType Type
@@ -452,8 +451,8 @@ public class BocItemCommand
   ///   The default is <see cref="BocItemCommandShow.Always"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
   [Category ("Behavior")]
+  [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
   [DefaultValue (BocItemCommandShow.Always)]
   [NotifyParentProperty (true)]
   public BocItemCommandShow Show
@@ -464,8 +463,8 @@ public class BocItemCommand
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("")]
   [Category ("Behavior")]
+  [Description ("The parameters of the hyperlink. Interpreted if Type is set to Href.")]
   [DefaultValue ((string)null)]
   [NotifyParentProperty (true)]
   public HrefCommandProperties HrefCommand
@@ -482,8 +481,8 @@ public class BocItemCommand
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("")]
   [Category ("Behavior")]
+  [Description ("The parameters of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
   [DefaultValue ((string)null)]
   [NotifyParentProperty (true)]
   public WxeFunctionCommandProperties WxeFunctionCommand
