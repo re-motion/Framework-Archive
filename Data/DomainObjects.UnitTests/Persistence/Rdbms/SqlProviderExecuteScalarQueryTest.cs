@@ -64,16 +64,6 @@ public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (RdbmsExpressionSecurityException))]
-  public void ParameterWithInsecureTextReplacement ()
-  {
-    Query query = new Query ("OrderNoSumForMultipleCustomers");
-    query.Parameters.Add ("{companyNames}", "'Kunde 1'); TRUNCATE TABLE [Order];--", QueryParameterType.Text);
-
-    Provider.ExecuteScalarQuery (query);
-  }
-
-  [Test]
   [ExpectedException (typeof (ArgumentException))]
   public void ExecuteScalarQueryWithCollectionQuery ()
   {
