@@ -303,9 +303,7 @@ public class BocList:
     Controls.Add (_additionalColumnsList);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
+  /// <summary> Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls. </summary>
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnInit(EventArgs e)
   {
@@ -374,9 +372,7 @@ public class BocList:
   }
 
   /// <summary> Handles post back events raised by a list item event. </summary>
-  /// <param name="eventArgument">
-  ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
-  /// </param>
+  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;] </param>
   private void HandleEventListItemCommand (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
@@ -584,10 +580,7 @@ public class BocList:
   }
 
   /// <summary> Overrides the parent's <c>OnPreRender</c> method. </summary>
-  /// <remarks>  
-  ///   Calculates the page count depending on an optional move command, 
-  ///   and registeres the client scripts.
-  /// </remarks>
+  /// <remarks> Calculates the page count depending on an optional move command, and registeres the client scripts. </remarks>
   /// <param name="e"> The <see cref="EventArgs"/>. </param>
   protected override void OnPreRender(EventArgs e)
   {
@@ -681,12 +674,8 @@ public class BocList:
     base.OnPreRender (e);
   }
 
-  /// <summary>
-  ///   Overrides the parent's <c>Render</c> method.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <summary> Overrides the parent's <c>Render</c> method. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   protected override void Render (HtmlTextWriter writer)
   {
     if (Page != null)
@@ -803,9 +792,7 @@ public class BocList:
     writer.RenderEndTag();  //  End table
   }
 
-  /// <remarks>
-  ///   Use display:table, display:table-row, ... for opera and mozilla/firefox
-  /// </remarks>
+  /// <remarks> Use display:table, display:table-row, ... for opera and mozilla/firefox </remarks>
   private void RenderTableAndMenuLegacyBrowser (HtmlTextWriter writer)
   {
     //  Render list block / menu block
@@ -875,13 +862,8 @@ public class BocList:
   }
 
   /// <summary> Renders the menu block of the control. </summary>
-  /// <remarks> 
-  ///   Contains the drop down list for selcting a column configuration 
-  ///   and the options menu. 
-  /// </remarks>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <remarks> Contains the drop down list for selcting a column configuration and the options menu.  </remarks>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderMenuBlock (HtmlTextWriter writer)
   {
     if (HasAdditionalColumnsList)
@@ -945,9 +927,7 @@ public class BocList:
   }
 
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableBlock (HtmlTextWriter writer)
   {
     //  The table non-data sections
@@ -1025,12 +1005,8 @@ public class BocList:
     }
   }
 
-  /// <summary> 
-  ///   Renders the navigation bar consisting of the move buttons and the <see cref="PageInfo"/>.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <summary> Renders the navigation bar consisting of the move buttons and the <see cref="PageInfo"/>. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderNavigator (HtmlTextWriter writer)
   {
     bool isFirstPage = _currentPage == 0;
@@ -1131,9 +1107,7 @@ public class BocList:
   }
 
   /// <summary> Renderes the opening tag of the table. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
     if (! (writer is Html32TextWriter))
@@ -1145,18 +1119,14 @@ public class BocList:
   }
 
   /// <summary> Renderes the closing tag of the table. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableClosingTag (HtmlTextWriter writer)
   {
     writer.RenderEndTag();
   }
 
   /// <summary> Renderes the column group, which provides the table's column layout. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderColGroup (HtmlTextWriter writer)
   {
     BocColumnDefinition[] renderColumns = EnsureColumnsGot();
@@ -1195,12 +1165,8 @@ public class BocList:
   }
 
   /// <summary> Renders the table row containing the column titles and sorting buttons. </summary>
-  /// <remarks> 
-  ///   Title format: &lt;span&gt;label button &lt;span&gt;sort order&lt;/span&gt;&lt;/span&gt;
-  /// </remarks>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <remarks> Title format: &lt;span&gt;label button &lt;span&gt;sort order&lt;/span&gt;&lt;/span&gt; </remarks>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderColumnTitlesRow (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
@@ -1330,9 +1296,7 @@ public class BocList:
   }
 
   /// <summary> Renders a table row containing the data for <paramref name="businessObject"/>. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> whose data will be rendered. </param>
   /// <param name="rowIndex"> The row number in the current view. </param>
   /// <param name="originalRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
@@ -1493,8 +1457,8 @@ public class BocList:
         writer.RenderEndTag();
       }
 
-      if (commandColumn.Label != null)
-        writer.Write (commandColumn.Label);
+      if (commandColumn.Text != null)
+        writer.Write (commandColumn.Text);
     }
     else if (compoundColumn != null)
     {
@@ -1520,12 +1484,8 @@ public class BocList:
   }
 
   /// <summary> Renders a <see cref="CheckBox"/> used for row selection. </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content.
-  /// </param>
-  /// <param name="id"> 
-  ///   The <see cref="string"/> rendered into the <c>id</c> and <c>name</c> attributes.
-  /// </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
+  /// <param name="id"> The <see cref="string"/> rendered into the <c>id</c> and <c>name</c> attributes. </param>
   /// <param name="value"> The value of the <see cref="CheckBox"/>. </param>
   /// <param name="isChecked"> <see langword="true"/> if the <c>CheckBox</c> is checked. </param>
   /// <param name="isSelectAllCheckBox"> 
@@ -1573,12 +1533,8 @@ public class BocList:
     writer.RenderEndTag();
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
+  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
+  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -1590,12 +1546,8 @@ public class BocList:
     _isDirty = (bool) values[4];
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>SaveViewState</c> method and saves this control's specific data.
-  /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
+  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
+  /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
     object[] values = new object[5];
@@ -1720,33 +1672,25 @@ public class BocList:
     PopulateAdditionalColumnsList();
   }
 
-  /// <summary>
-  ///   Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveFirstButton"/>.
-  /// </summary>
+  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveFirstButton"/>. </summary>
   private void MoveFirstButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.First;
   }
 
-  /// <summary>
-  ///   Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveLastButton"/>.
-  /// </summary>
+  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveLastButton"/>. </summary>
   private void MoveLastButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.Last;
   }
   
-  /// <summary>
-  ///   Handles the <see cref="ImageButton.Click"/> event of the <see cref="_movePreviousButton"/>.
-  /// </summary>
+  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_movePreviousButton"/>. </summary>
   private void MovePreviousButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.Previous;
   }
   
-  /// <summary>
-  ///   Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveNextButton"/>.
-  /// </summary>
+  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveNextButton"/>. </summary>
   private void MoveNextButton_Click(object sender, ImageClickEventArgs e)
   {
     _move = MoveOption.Next;
@@ -2134,10 +2078,7 @@ public class BocList:
     return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
   }
 
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocList"/>'s
-  ///   properties.
-  /// </summary>
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocList"/>'s properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
   public void Dispatch (IDictionary values)
   {
@@ -2235,8 +2176,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the 
-  ///   properties of <paramref name="obj"/>.
+  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
   /// <param name="obj"> The object receving the resources. </param>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string property-name, string value&gt;. </param>
@@ -2296,12 +2236,8 @@ public class BocList:
     }
   }
 
-  /// <summary>
-  ///   The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to.
-  /// </summary>
-  /// <remarks>
-  ///   Explicit setting of <see cref="Property"/> is not offically supported.
-  /// </remarks>
+  /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
+  /// <remarks> Explicit setting of <see cref="Property"/> is not offically supported. </remarks>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -2326,9 +2262,7 @@ public class BocList:
     set { _value = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the current value when <see cref="Value"/> through polymorphism.
-  /// </summary>
+  /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -2336,8 +2270,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using it's ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using it's ClientID.
   /// </summary>
   public override Control TargetControl 
   {
@@ -2361,22 +2294,16 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets or sets the list of<see cref="Type"/> objects for the 
-  ///   <see cref="IBusinessObjectProperty"/> implementations that can be bound to this control.
+  ///   Gets or sets the list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
+  ///   implementations that can be bound to this control.
   /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary>
-  ///   Gets a value that indicates whether properties with the specified multiplicity are 
-  ///   supported.
-  /// </summary>
-  /// <returns>
-  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
-  ///   supported.
-  /// </returns>
+  /// <summary> Gets a value that indicates whether properties with the specified multiplicity are supported. </summary>
+  /// <returns> <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is supported. </returns>
   protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return isList;
@@ -2444,7 +2371,6 @@ public class BocList:
   ///   Gets or sets the index of the selected <see cref="BocColumnDefinitionSet"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
-  [Browsable (false)]
   protected int SelectedColumnDefinitionSetIndex
   {
     get { return _selectedColumnDefinitionSetIndex; }
@@ -2476,8 +2402,7 @@ public class BocList:
   }
 
   /// <summary> Gets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
-  /// <value> An array of <see cref="IBusinessObject"/> objects. </value>
-  [Browsable (false)]
+  /// <returns> An array of <see cref="IBusinessObject"/> objects. </returns>
   public IBusinessObject[] GetSelectedBusinessObjects()
   {
     int[] selectedRows = GetSelectedRows();
@@ -2494,8 +2419,7 @@ public class BocList:
   }
 
   /// <summary> Gets indeces for the rows selected in the <see cref="BocList"/>. </summary>
-  /// <value> An array of <see cref="int"/> values. </value>
-  [Browsable (false)]
+  /// <returns> An array of <see cref="int"/> values. </returns>
   public int[] GetSelectedRows()
   {
     string commonCheckBoxID = ID + c_dataRowCheckBoxIDSuffix;
@@ -2673,27 +2597,15 @@ public class BocList:
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
   public event BocListItemCommandClickEventHandler ListItemCommandClick
   {
-    add 
-    {
-      Events.AddHandler (EventListItemCommandClick, value);
-    }
-    remove 
-    { 
-      Events.RemoveHandler (EventListItemCommandClick, value);
-    }
+    add { Events.AddHandler (EventListItemCommandClick, value); }
+    remove { Events.RemoveHandler (EventListItemCommandClick, value); }
   }
 
   [Category ("Action")]
   public event MenuItemClickEventHandler MenuItemClick
   {
-    add 
-    {
-      Events.AddHandler (EventMenuItemClick, value);
-    }
-    remove 
-    { 
-      Events.RemoveHandler (EventMenuItemClick, value);
-    }
+    add { Events.AddHandler (EventMenuItemClick, value); }
+    remove { Events.RemoveHandler (EventMenuItemClick, value); }
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>

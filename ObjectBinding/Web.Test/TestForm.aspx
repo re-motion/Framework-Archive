@@ -16,7 +16,7 @@
 <table id=FormGrid width="80%" runat="server">
   <tr>
     <td></td>
-    <td><obc:boclist id=BocList runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children">
+    <td><obc:boclist id=BocList runat="server" propertyidentifier="Children" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
 <optionsmenuitems>
 <obc:BocMenuItem ItemID="" Icon="Images/RefelctionBusinessObjectIcon.gif" Text="Wxe" Category="">
 <persistedcommand>
@@ -36,7 +36,7 @@
 </OptionsMenuItems>
 
 <fixedcolumns>
-<obc:BocCommandColumnDefinition Label="Event">
+<obc:BocCommandColumnDefinition Text="Event">
 <persistedcommand>
 <obc:BocListItemCommand Type="Event"></obc:BocListItemCommand>
 </PersistedCommand>
@@ -81,7 +81,7 @@ visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecont
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
 TypeName="OBWTest.Person, OBWTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
 <p><asp:button id=Button1 runat="server" Text="Post Back"></asp:button></p>
-<p><asp:Label id="EventLabel" runat="server">###</asp:Label></p></form>
+<p><asp:label id=EventLabel runat="server">###</asp:label></p></form>
 
   </body>
 </html>

@@ -1,3 +1,13 @@
+1.1.34.0
+========
+
+- BocList
+  * BocCommandColumnDefinition: Property 'Label' auf 'Text' umbenannt. 
+    'Label' wird voraussichtlich Ende April entfernt und ab da als ungültiges Attribut identifiziert.
+    Auswirkungen nur bei jenen Listen deren Properties nicht mehr editiert werden. Andernfalls wird automatisch
+    die neue Property (Text) persistiert und die alte (Label) entfernt.
+    
+
 1.1.33.0
 ========
 

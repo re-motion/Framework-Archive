@@ -180,7 +180,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
 public class BocCommandColumnDefinition: BocColumnDefinition
 {
   /// <summary> The text representing the command on the rendered page. </summary>
-  private string _label;
+  private string _text;
   /// <summary> The image representing the command on the rendered page. </summary>
   private string _iconPath;
 
@@ -192,14 +192,14 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>.
   /// </summary>
-  /// <returns> Returns <see cref="Label"/>, followed by the the class name of the instance.  </returns>
+  /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
   public override string ToString()
   {
     string displayName = ColumnID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = ColumnTitle;
     if (StringUtility.IsNullOrEmpty (displayName))
-      displayName = Label;
+      displayName = Text;
     if (StringUtility.IsNullOrEmpty (displayName))
       return DisplayedTypeName;
     else
@@ -213,10 +213,27 @@ public class BocCommandColumnDefinition: BocColumnDefinition
   [Description ("The text representing the command in the rendered page.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
+  public string Text
+  {
+    get { return StringUtility.NullToEmpty (_text); }
+    set { _text = value; }
+  }
+
+  /// <summary> Depracated property. Only used for designer. Use <see cref="Text"/> instead. </summary>
+  /// TODO: Remove in a few weeks. (End of April).
+  /// Used right now only in demo applications
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue("")]
+  [Browsable (false)]
+  [Obsolete ("Not functional. Use 'Text' instead.")]
   public string Label
   {
-    get { return StringUtility.NullToEmpty (_label); }
-    set { _label = value; }
+    get { return ""; }
+    set 
+    {
+      if (StringUtility.IsNullOrEmpty (Text))
+        Text = value; 
+    }
   }
 
   /// <summary> Gets or sets the image representing the command in the rendered page. </summary>

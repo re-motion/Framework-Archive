@@ -2,6 +2,7 @@
 <BocList>
   <Class>
     <remarks>
+      Use the following resource identifiers for dispatching strings to the boc list.
       <list type="table">
         <listheader>
           <term>Property</term>
@@ -28,12 +29,30 @@
         </item>
         <item>
           <term>
-            FixedColumns[x].Label
+            FixedColumns[x].Text
           </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Label </para>
-            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:Label </para>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:Text </para>
             <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            OptionsMenuItems[x].Text
+          </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:OptionsMenuItems:FirstItem:Text </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            ListMenuItems[x].Text
+          </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:ListMenuItems:FirstItem:Text </para>
           </description>
         </item>
       </list>
