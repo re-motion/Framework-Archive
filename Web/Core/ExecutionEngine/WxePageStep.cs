@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -18,7 +19,10 @@ public class WxeExecuteNextStepException: Exception
 
 public class WxePageStep: WxeStep
 {
-  private string _page;
+  private string _page = null;
+  private string _pageref = null;
+  private Assembly _resourceAssembly = null;
+  private string _resourceAssemblyName = null;
   private string _pageToken;
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
@@ -26,10 +30,56 @@ public class WxePageStep: WxeStep
   public WxePageStep (string page)
   {
     _page = page;
-    _pageToken = Guid.NewGuid().ToString();
-    _function = null;
+    init();
   }
 
+  protected WxePageStep (Assembly resourceAssembly, string page)
+  {
+    _resourceAssembly = resourceAssembly;
+    _page = page;
+    init();
+  }
+  public WxePageStep (WxeVariableReference page)
+  {
+    _pageref = page.Name;
+    init();
+  }
+  protected WxePageStep (Assembly resourceAssembly, WxeVariableReference page)
+  {
+    _resourceAssembly = resourceAssembly;
+    _pageref = page.Name;
+    init();
+  }
+
+  private void init()
+  {
+    _pageToken = Guid.NewGuid().ToString();
+    _function = null;
+    if (_resourceAssembly != null)
+    {
+       _resourceAssemblyName = _resourceAssembly.FullName;
+      int comma = _resourceAssemblyName.IndexOf (',');
+      if (comma >= 0)
+        _resourceAssemblyName = _resourceAssemblyName.Substring (0, comma);
+    }
+  }
+
+  protected string Page
+  { 
+    get
+    {
+      string name;
+      if (_page != null)
+        name = _page;
+      else if (_pageref != null && Variables[_pageref] != null)
+        name = (string) Variables[_pageref];
+      else
+        throw new ApplicationException ("No Page specified for " + this.GetType().FullName + ".");
+      if (_resourceAssemblyName != null)
+        name = "res/" + _resourceAssemblyName + "/" + name;
+      return name;
+    }
+  }
   public override void Execute (WxeContext context)
   {
     if (_function != null)
@@ -50,7 +100,7 @@ public class WxePageStep: WxeStep
 
     try 
     {
-      context.HttpContext.Server.Transfer (_page, context.IsPostBack);
+      context.HttpContext.Server.Transfer (Page, context.IsPostBack);
     }
     catch (HttpException e)
     {
@@ -122,7 +172,7 @@ public class WxePageStep: WxeStep
 
   public override string ToString()
   {
-    return _page;
+    return Page;
   }
 }
 
