@@ -62,7 +62,7 @@ public class DataContainerTest
   {
     _existingDataContainer.PropertyValues.Add (_nameProperty);
 
-    Assert.AreEqual (StateType.Original, _existingDataContainer.State);
+    Assert.AreEqual (StateType.Unchanged, _existingDataContainer.State);
     Assert.AreEqual ("Arthur Dent", _existingDataContainer["Name"]);
 
     _existingDataContainer["Name"] = "Zaphod Beeblebrox";
@@ -135,7 +135,7 @@ public class DataContainerTest
 
     _existingDataContainer["Name"] = "Zaphod Beeblebrox";
 
-    Assert.AreEqual (StateType.Original, _existingDataContainer.State);
+    Assert.AreEqual (StateType.Unchanged, _existingDataContainer.State);
     Assert.AreEqual ("Arthur Dent", _existingDataContainer["Name"]);
     Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
     Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
@@ -193,7 +193,7 @@ public class DataContainerTest
     Assert.AreEqual (42, container.GetInt32 ("OrderNumber"));
 
     container["OrderNumber"] = 1;
-    Assert.AreEqual (StateType.Original, container.State);
+    Assert.AreEqual (StateType.Unchanged, container.State);
     Assert.AreEqual (1, container.GetInt32 ("OrderNumber"));
   }
 
