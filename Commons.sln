@@ -56,9 +56,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test", "Web\Test\Web.Te
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formserver", "http://localhost/dev/prototypes/formserver/formserver.csproj", "{7A044777-3884-4107-BDC6-F475D205174F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 14
+		SccNumberOfProjects = 15
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -116,6 +120,11 @@ Global
 		SccLocalPath13 = web\\ExecutionEngine\\Test
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice13 = 2
+		SccProjectUniqueName14 = http://localhost/dev/prototypes/formserver/formserver.csproj
+		SccProjectName14 = \u0022$/prototypes/formserver\u0022,\u0020ZKZAAAAA
+		SccLocalPath14 = ..\\..\\prototypes\\formserver
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice14 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -172,6 +181,10 @@ Global
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Debug.Build.0 = Debug|.NET
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.ActiveCfg = Release|.NET
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.Build.0 = Release|.NET
+		{7A044777-3884-4107-BDC6-F475D205174F}.Debug.ActiveCfg = Debug|.NET
+		{7A044777-3884-4107-BDC6-F475D205174F}.Debug.Build.0 = Debug|.NET
+		{7A044777-3884-4107-BDC6-F475D205174F}.Release.ActiveCfg = Release|.NET
+		{7A044777-3884-4107-BDC6-F475D205174F}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
