@@ -133,7 +133,6 @@ public class CollectionBase : ICollection
   }
 
 //TODO documentation: check param description
-//TODO: Would an InvalidOperationException be more appropriate than a NotSupportedException?
   /// <summary>
   /// Adds an object to the collection with a specified key.
   /// </summary>
@@ -151,7 +150,6 @@ public class CollectionBase : ICollection
     _version++;
   }
 
-//TODO: Would an InvalidOperationException be more appropriate than a NotSupportedException?
   /// <summary>
   /// Removes an object from the collection with a specified key.
   /// </summary>
@@ -191,21 +189,33 @@ public class CollectionBase : ICollection
   protected void Insert (int index, object key, object value)
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot insert an element to a read-only collection.");
-    CheckIndex ("index", index);
+    CheckIndexForInsert ("index", index);
 
     _collectionData.Add (key, value);
     _collectionKeys.Insert (index, key);
   }
 
   // TODO documentation:
-  protected void CheckIndex (string argumentName, int index)
+  protected void CheckIndexForInsert (string argumentName, int index)
   {
     if (index < 0 || index > Count)
     {
       throw new ArgumentOutOfRangeException (
           argumentName, 
           index, 
-          "Index is out of range.  Must be non-negative and less than or equal to size.");
+          "Index is out of range. Must be non-negative and less than or equal to the size of the collection.");
+    }
+  }
+
+  // TODO documentation:
+  protected void CheckIndexForIndexer (string argumentName, int index)
+  {
+    if (index < 0 || index >= Count)
+    {
+      throw new ArgumentOutOfRangeException (
+          argumentName, 
+          index, 
+          "Index is out of range. Must be non-negative and less than the size of the collection.");
     }
   }
 
@@ -254,7 +264,6 @@ public class CollectionBase : ICollection
     get { return _collectionData.Count; }
   }
 
-//TODO: ArgumentOutOfRange better suited for index >= array.Length?
   /// <summary>
   /// Copies the elements of the <see cref="CollectionBase"/> to an Array, starting at a particular Array index.
   /// </summary>
