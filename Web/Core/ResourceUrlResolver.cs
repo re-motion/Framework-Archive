@@ -4,7 +4,7 @@ using System.Web;
 
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.Web.UI.Utilities
+namespace Rubicon.Web.UI
 {
 
 /// <summary> Utility methods for URL resolving. </summary>
