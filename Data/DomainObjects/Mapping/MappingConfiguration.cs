@@ -28,6 +28,14 @@ public class MappingConfiguration
     }
   }
 
+  public static void SetCurrent (MappingConfiguration mappingConfiguration)
+  {
+    lock (typeof (MappingConfiguration))
+    {
+      s_mappingConfiguration = mappingConfiguration;
+    }
+  }
+
   // member fields
 
   private ClassDefinitionCollection _classDefinitions;
@@ -35,7 +43,7 @@ public class MappingConfiguration
 
   // construction and disposing
 
-  private MappingConfiguration (MappingLoader mappingDataLoader)
+  public MappingConfiguration (MappingLoader mappingDataLoader)
   {
     _classDefinitions = mappingDataLoader.GetClassDefinitions ();
     _relationDefinitions = mappingDataLoader.GetRelationDefinitions (_classDefinitions);
