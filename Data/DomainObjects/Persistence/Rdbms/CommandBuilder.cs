@@ -49,7 +49,11 @@ public abstract class CommandBuilder
 
     IDataParameter commandParameter = command.CreateParameter ();
     commandParameter.ParameterName = Provider.GetParameterName (parameterName);
-    commandParameter.Value = DBValueConverter.GetDBValue (parameterValue);
+
+    if (parameterValue != null && parameterValue.GetType () == typeof (ObjectID))
+      commandParameter.Value = DBValueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
+    else
+      commandParameter.Value = DBValueConverter.GetDBValue (parameterValue);
 
     command.Parameters.Add (commandParameter);
   }
@@ -64,7 +68,7 @@ public abstract class CommandBuilder
     return command;
   }
 
-  protected void AddObjectIDParameter (      
+  protected void AddObjectIDAndClassIDParameters (      
       IDbCommand command, 
       ClassDefinition classDefinition,
       PropertyValue propertyValue)
