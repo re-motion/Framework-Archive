@@ -358,7 +358,7 @@ public class TestMappingConfiguration
         DatabaseTest.c_testDomainProviderID);
 
     classDefinition.PropertyDefinitions.Add (new PropertyDefinition (
-        "Partner", "PartnerID", "objectID"));
+        "Distributor", "DistributorID", "objectID"));
 
     return classDefinition;
   }
@@ -424,7 +424,7 @@ public class TestMappingConfiguration
     relationDefinitions.Add (CreateCompanyToCeoRelationDefinition ());    
     relationDefinitions.Add (CreatePartnerToPersonRelationDefinition ());    
     relationDefinitions.Add (CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ());
-    relationDefinitions.Add (CreatePartnerToClassWithoutRelatedClassIDColumnRelationDefinition ());
+    relationDefinitions.Add (CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsOptional ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithInvalidRelation ());
@@ -555,25 +555,25 @@ public class TestMappingConfiguration
     return relation;
   }
 
-  private RelationDefinition CreatePartnerToClassWithoutRelatedClassIDColumnRelationDefinition ()
+  private RelationDefinition CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ()
   {
-    ClassDefinition partnerClass = _classDefinitions["Partner"];
+    ClassDefinition distributorClass = _classDefinitions["Distributor"];
   
     ClassDefinition classWithoutRelatedClassIDColumnClass = _classDefinitions["ClassWithoutRelatedClassIDColumn"];
     
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-        partnerClass, 
+        distributorClass, 
         "ClassWithoutRelatedClassIDColumn", 
         false, 
         CardinalityType.One, 
         typeof (ClassWithoutRelatedClassIDColumn));
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-        classWithoutRelatedClassIDColumnClass, "Partner", false);
+        classWithoutRelatedClassIDColumnClass, "Distributor", false);
 
-    RelationDefinition relation = new RelationDefinition ("PartnerToClassWithoutRelatedClassIDColumn", endPoint1, endPoint2);
+    RelationDefinition relation = new RelationDefinition ("DistributorToClassWithoutRelatedClassIDColumn", endPoint1, endPoint2);
 
-    partnerClass.RelationDefinitions.Add (relation);
+    distributorClass.RelationDefinitions.Add (relation);
     classWithoutRelatedClassIDColumnClass.RelationDefinitions.Add (relation);
 
     return relation;
