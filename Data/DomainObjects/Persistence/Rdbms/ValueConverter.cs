@@ -61,7 +61,7 @@ public class ValueConverter
     }
 
     if (value.GetType () != typeof (Guid))
-      throw CreateArgumentException ("value", "DBValueConverter does not support ObjectID values of type '{0}'.", value.GetType ());
+      throw CreateArgumentException ("value", "ValueConverter does not support ObjectID values of type '{0}'.", value.GetType ());
 
     return new ObjectID (classDefinition.ID, (Guid) value);
   }
@@ -90,30 +90,33 @@ public class ValueConverter
 
     if (propertyDefinition.PropertyType == typeof (ObjectID))
     {
-      ClassDefinition relatedClassDefinition = GetRelatedClassDefinition (propertyDefinition, dataReader);
+      ClassDefinition relatedClassDefinition = GetRelatedClassDefinitionFromClassIDColumn (propertyDefinition, dataReader);
       if (relatedClassDefinition == null)
       {
         relatedClassDefinition = GetRelatedClassDefinition (classDefinition, propertyDefinition);
 
-        if (relatedClassDefinition.BaseClass != null)
+        if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
         {
-          throw CreateRdbmsProviderException (
-              "Incorrect database format encountered."
-              + " Class must have column '{0}' defined, because it points to derived class '{1}'.",
-              GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
-              relatedClassDefinition.ID);    
-        }
+          if (relatedClassDefinition.BaseClass != null)
+          {
+            throw CreateRdbmsProviderException (
+                "Incorrect database format encountered."
+                + " Class must have column '{0}' defined, because it points to derived class '{1}'.",
+                GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
+                relatedClassDefinition.ID);    
+          }
 
-        ClassDefinitionCollection derivedClasses = 
-            MappingConfiguration.Current.ClassDefinitions.GetDirectlyDerivedClassDefinitions (relatedClassDefinition);
+          ClassDefinitionCollection derivedClasses = 
+              MappingConfiguration.Current.ClassDefinitions.GetDirectlyDerivedClassDefinitions (relatedClassDefinition);
 
-        if (derivedClasses.Count > 0)
-        {
-          throw CreateRdbmsProviderException (
-              "Incorrect database format encountered."
-              + " Class must have column '{0}' defined, because at least one class inherits from '{1}'.",
-              GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
-              relatedClassDefinition.ID);    
+          if (derivedClasses.Count > 0)
+          {
+            throw CreateRdbmsProviderException (
+                "Incorrect database format encountered."
+                + " Class must have column '{0}' defined, because at least one class inherits from '{1}'.",
+                GetRelatedClassIDColumnName (propertyDefinition.ColumnName), 
+                relatedClassDefinition.ID);    
+          }
         }
       }
 
@@ -161,7 +164,7 @@ public class ValueConverter
     return new ArgumentException (string.Format (message, args), argumentName);
   }
 
-  private ClassDefinition GetRelatedClassDefinition (PropertyDefinition propertyDefinition, IDataReader dataReader)
+  private ClassDefinition GetRelatedClassDefinitionFromClassIDColumn (PropertyDefinition propertyDefinition, IDataReader dataReader)
   {
     string relatedClassIDColumnName = GetRelatedClassIDColumnName (propertyDefinition.ColumnName);
     try

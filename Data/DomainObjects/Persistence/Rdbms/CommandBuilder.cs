@@ -93,7 +93,9 @@ public abstract class CommandBuilder
     }
 
     AddCommandParameter (command, propertyValue.Definition.ColumnName, relatedIDValue);
-    AddClassIDParameter (command, relatedClassDefinition, propertyValue);
+
+    if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
+      AddClassIDParameter (command, relatedClassDefinition, propertyValue);
   }
 
   protected void AddClassIDParameter (
