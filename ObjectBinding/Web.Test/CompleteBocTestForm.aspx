@@ -1,8 +1,8 @@
-<%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocForm" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -14,52 +14,54 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<h1>CompleteBocTest: Form, No UserControl</H1>
+<h1>CompleteBocTest: Form, No UserControl</h1>
 <p>
 <table id=FormGrid runat="server">
   <tr>
-    <td colSpan=2><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" ReadOnly="True"></obc:boctextvalue>&nbsp;<obc:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" ReadOnly="True"></obc:boctextvalue></TD></TR>
+    <td colSpan=2><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" ReadOnly="True"></obc:boctextvalue>&nbsp;<obc:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" ReadOnly="True"></obc:boctextvalue></td></tr>
   <tr>
-    <td></TD>
-    <td><obw:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner">
+    <td></td>
+    <td><obw:boctextvalue id=TextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="FirstName" errormessage="Fehler">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle></obw:boctextvalue></td></tr>
+  <tr>
+    <td></td>
+    <td><obw:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
+<textboxstyle textmode="MultiLine">
+</TextBoxStyle></obw:bocmultilinetextvalue></td></tr>
+  <tr>
+    <td></td>
+    <td><obw:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth" errormessage="Fehler"></obw:bocdatetimevalue></td></tr>
+  <tr>
+    <td></td>
+    <td><obw:bocenumvalue id=EnumField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="MarriageStatus" errormessage="Fehler">
+<listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+</ListControlStyle></obw:bocenumvalue></td></tr>
+  <tr>
+    <td></td>
+    <td><obw:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner" errormessage="Fehler">
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
 
 <persistedcommand>
-<obc:BocCommand Type="None"></obc:BocCommand>
-</PersistedCommand></obw:bocreferencevalue></TD></TR>
+<obw:BocCommand Type="None"></obw:BocCommand>
+</PersistedCommand></obw:bocreferencevalue></td></tr>
   <tr>
-    <td></TD>
-    <td><obw:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37">
-<textboxstyle textmode="MultiLine">
-</TextBoxStyle></obw:bocmultilinetextvalue></TD></TR>
+    <td></td>
+    <td><obw:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Deceased" errormessage="Fehler"></obw:bocbooleanvalue></td></tr>
   <tr>
-    <td></TD>
-    <td><obw:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth"></obw:bocdatetimevalue></TD></TR>
-  <tr>
-    <td></TD>
-    <td><obw:bocenumvalue id=EnumField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="MarriageStatus"><listcontrolstyle 
-      radiobuttonlistcellpadding="" 
-      radiobuttonlistcellspacing=""></LISTCONTROLSTYLE></obw:bocenumvalue></TD></TR>
-  <tr>
-    <td></TD>
-    <td><obw:boctextvalue id=TextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="FirstName"></obw:boctextvalue></TD></TR>
-  <tr>
-    <td></TD>
-    <td><obw:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Deceased"></obw:bocbooleanvalue></TD></TR>
-  <tr>
-    <td></TD>
-    <td></TD></TR>
+    <td></td>
+    <td></td></tr>
   <tr>
     <td colSpan=2><obw:boclist id=ListField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True" enableselection="True">
 <fixedcolumns>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="Title"></obw:BocSimpleColumnDefinition>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate"></obw:BocSimpleColumnDefinition>
-</FixedColumns></obw:boclist></TD></TR></TABLE></P>
+</FixedColumns></obw:boclist></td></tr></table></p>
 <p><rwc:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
-<p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></P></FORM>
+typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
+<p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p></form>
   </body>
 </html>

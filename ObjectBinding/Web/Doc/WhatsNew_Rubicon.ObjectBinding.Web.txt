@@ -5,6 +5,10 @@
   * Verhalten der Value Property an die ASP.net Controls angeglichen:
     Der neue Wert ist ab dem Aufruf von LoadPostData für das jeweilige BocControl (überlicherweise vor OnLoad)
     verfügbar. Bisher: erst mit dem jeweiligen Changed-Event.
+  * ValidationMessages können über Resourcen für jede Klasse angegeben werden.
+    VSS: tools\ResourceSummaryUtility zum Auslesen der ResourceIdentifier aus der Rubicon.ObjectBinding.Web.dll
+  * Parallel kann für jedes Control eine ErrorMessage im Designer bzw über "auto:" angegeben werden.
+    Die individuellen Messages ziehen vor den klassenspezifischen.
 
 1.2.6.0
 =======
