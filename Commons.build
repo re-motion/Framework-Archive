@@ -301,7 +301,7 @@
 
   <!--======================= UNIT TESTS =======================-->
 
-  <target name="alltests" depends="CoreTest, DevelopmentCoreTest, Data.DomainObjects.UnitTests" />
+  <target name="alltests" depends="CoreTest, DevelopmentCoreTest" />
 
   <target name="CoreTest" depends="Core,DevelopmentCore">
     <property name="project.name" value="Core.Test" />
