@@ -19,10 +19,12 @@
     <td></td>
     <td><obc:BocList id="BocList" runat="server">
 <optionsmenuitems>
-<rwc:MenuItem ID="myID" Icon="myIcon" Category="myCategory" Text="myText">
-<command type="Href" hrefcommand-target="myTarget" hrefcommand-href="myHref">
-</Command>
-</rwc:MenuItem>
+<obc:BocMenuItem ID="Open" Icon="Open.gif" Category="Object" Text="&#214;ffnen"></obc:BocMenuItem>
+<obc:BocMenuItem ID="Copy" Icon="Copy.gif" Category="Edit" Text="Kopieren"></obc:BocMenuItem>
+<obc:BocMenuItem ID="Cut" Icon="Cut.gif" Category="Edit" Text="Ausschneiden"></obc:BocMenuItem>
+<obc:BocMenuItem ID="Paste" Icon="Paste.gif" Category="Edit" Text="Einf&#252;gen"></obc:BocMenuItem>
+<obc:BocMenuItem ID="Duplicate" Icon="Duplicate.gif" Category="Edit" Text="Duplizieren"></obc:BocMenuItem>
+<obc:BocMenuItem ID="Delete" Icon="Delete.gif" Category="Edit" Text="L&#246;schen"></obc:BocMenuItem>
 </OptionsMenuItems>
 
 <fixedcolumns>

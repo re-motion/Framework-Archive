@@ -7,19 +7,6 @@ using Rubicon.Web.UI.Design;
 namespace Rubicon.ObjectBinding.Web.Design
 {
 
-public class BocMenuItemCollectionEditor: MenuItemCollectionEditor
-{
-  public BocMenuItemCollectionEditor (Type type)
-    : base (type)
-  {
-  }
-
-  protected override Type[] CreateNewItemTypes()
-  {
-    return new Type[] {typeof (BocMenuItem)};
-  }
-}
-
 public class BocColumnDefinitionCollectionEditor: CollectionEditor
 {
   public BocColumnDefinitionCollectionEditor (Type type)

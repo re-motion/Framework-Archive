@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.ComponentModel;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -18,6 +19,12 @@ public class BocMenuItem: MenuItem
   public BocMenuItem ()
       : this (null, null, null, null, new BocCommand())
   {
+  }
+
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "BocMenuItem"; }
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -37,6 +44,20 @@ public class BocMenuItem: MenuItem
     set { Command = (BocCommand) value; }
   }
 
+  /// <summary>
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. 
+  /// </summary>
+  protected internal new IBusinessObjectBoundWebControl OwnerControl
+  {
+    get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation;  }
+    set { base.OwnerControlImplementation = value; }
+  }
+
+  protected override IControl OwnerControlImplementation
+  {
+    get { return OwnerControl; }
+    set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+  }
 }
 
 }
