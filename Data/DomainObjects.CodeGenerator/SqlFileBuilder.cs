@@ -60,9 +60,8 @@ public class SqlFileBuilder : BaseBuilder
   private static readonly string s_columnnameTag = "%columnname%";
   private static readonly string s_datatypeTag = "%datatype%";
   private static readonly string s_nullableTag = "%nullable%";
+  private static readonly string s_constraintnameTag = "%constraintname%";
   private static readonly string s_commentTag = "%comment%";
-  private static readonly string s_classnameTag = "%classname%";
-  private static readonly string s_refClassnameTag = "%refClassname%";
   private static readonly string s_refTablenameTag = "%refTablename%";
   private static readonly string s_refColumnnameTag = "%refColumnname%";
 
@@ -92,14 +91,14 @@ public class SqlFileBuilder : BaseBuilder
   private static readonly string s_columnComment = 
       "  -- %comment%" + Environment.NewLine;
   private static readonly string s_primaryKey = 
-      "  CONSTRAINT [PK_%tablename%] PRIMARY KEY CLUSTERED ([ID])" + Environment.NewLine;
+      "  CONSTRAINT [PK_%constraintname%] PRIMARY KEY CLUSTERED ([ID])" + Environment.NewLine;
   private static readonly string s_tableFooter = 
       ")" + Environment.NewLine;
   private static readonly string s_alterTableHeader = 
       "ALTER TABLE [%tablename%]" + Environment.NewLine
       + "(" + Environment.NewLine;
   private static readonly string s_foreignKey = 
-      "  CONSTRAINT [FK_%classname%_%refClassname%] FOREIGN KEY ([%columnname%]) REFERENCES [%refTablename%] ([%refColumnname%])," + Environment.NewLine;
+      "  CONSTRAINT [FK_%constraintname%] FOREIGN KEY ([%columnname%]) REFERENCES [%refTablename%] ([%refColumnname%])," + Environment.NewLine;
   private static readonly string s_alterTableFooter = 
       ")" + Environment.NewLine;
 
@@ -128,48 +127,47 @@ public class SqlFileBuilder : BaseBuilder
 
     foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
-      DropTable (baseClass.EntityName);
+      WriteDropTable (baseClass.EntityName);
     }
 
     foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
-      CreateTable (baseClass);
+      WriteCreateTable (baseClass);
     }
 
     foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
-      AddConstraints (baseClass);
+      WriteConstraints (baseClass);
     }
 
     CloseFile ();
   }
 
-  private ConstraintDefinition[] GetConstraintsRecursive (ClassDefinition classDefinition)
+  private RelationEndPointDefinition[] GetRelationEndPointsWithForeignKey (ClassDefinition classDefinition)
   {
-    ArrayList constraints = new ArrayList();
-    foreach (PropertyDefinition property in classDefinition.MyPropertyDefinitions)
+    ArrayList relationEndPoints = new ArrayList ();
+    foreach (IRelationEndPointDefinition endPoint in classDefinition.GetMyRelationEndPointDefinitions ())
     {
-      if (property.MappingType != "objectID") 
-        continue;
-      ClassDefinition oppositeClass = GetOppositeClass (classDefinition, property.PropertyName);
-
-      if (classDefinition.StorageProviderID == oppositeClass.StorageProviderID)
-        constraints.Add (new ConstraintDefinition (classDefinition.ID, oppositeClass.ID, classDefinition.EntityName, property.ColumnName, oppositeClass.EntityName, "ID"));
+      RelationEndPointDefinition relationEndPoint = endPoint as RelationEndPointDefinition;
+      if (relationEndPoint != null)
+      {
+        if (HasOppositeClassSameStorageProviderID (relationEndPoint.ClassDefinition, relationEndPoint.PropertyName))
+          relationEndPoints.Add (relationEndPoint);
+      }
     }
-
-    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (classDefinition))
-      constraints.AddRange (GetConstraintsRecursive (derivedClass));
-
-    return (ConstraintDefinition[]) constraints.ToArray (typeof (ConstraintDefinition));
+    return (RelationEndPointDefinition[]) relationEndPoints.ToArray (typeof (RelationEndPointDefinition));
   }
 
-  private void MergePropertyDefinitions (PropertyDefinitionCollection propertyDefinitions, ClassDefinition classDefinition)
+  private RelationEndPointDefinition[] GetRelationEndPointsWithForeignKeyRecursive (ClassDefinition baseClass)
   {
-    foreach (PropertyDefinition property in classDefinition.MyPropertyDefinitions)
-    {
-      propertyDefinitions.Add (property);
+    ArrayList relationEndPoints = new ArrayList ();
+    relationEndPoints.AddRange (GetRelationEndPointsWithForeignKey (baseClass));
 
+    foreach (ClassDefinition classDefinition in GetDerivedClassDefinitions (baseClass))
+    {
+      relationEndPoints.AddRange (GetRelationEndPointsWithForeignKey (classDefinition));
     }
+    return (RelationEndPointDefinition[]) relationEndPoints.ToArray (typeof (RelationEndPointDefinition));
   }
 
   private ClassDefinition GetOppositeClass (ClassDefinition classDefinition, string propertyName)
@@ -193,22 +191,14 @@ public class SqlFileBuilder : BaseBuilder
 
   private ClassDefinitionCollection GetDerivedClassDefinitions (ClassDefinition baseClass)
   {
-    return GetDerivedClassDefinitions (baseClass, false);
-  }
-
-  private ClassDefinitionCollection GetDerivedClassDefinitions (ClassDefinition baseClass, bool recursive)
-  {
     ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection ();
 
     foreach (ClassDefinition derivedClass in baseClass.DerivedClasses)
     {
       derivedClasses.Add (derivedClass);
 
-      if (recursive)
-      {
-        foreach (ClassDefinition classDefinition in GetDerivedClassDefinitions (derivedClass, true))
-          derivedClasses.Add (classDefinition);
-      }
+      foreach (ClassDefinition classDefinition in GetDerivedClassDefinitions (derivedClass))
+        derivedClasses.Add (classDefinition);
     }
 
     return derivedClasses;
@@ -220,52 +210,48 @@ public class SqlFileBuilder : BaseBuilder
         StorageProviderConfiguration.Current.StorageProviderDefinitions[storageProviderID] as RdbmsProviderDefinition;
     if (provider == null)
       return string.Empty;
-    return ExtractDatabasenameFromConnectionString (provider.ConnectionString);
+    return GetDatabasenameFromConnectionString (provider.ConnectionString);
   }
 
-  private string ExtractDatabasenameFromConnectionString (string connectionString)
+  private string GetDatabasenameFromConnectionString (string connectionString)
   {
     string temp = connectionString.Substring (connectionString.IndexOf ("Initial Catalog=") + "Initial Catalog=".Length);
     string databasename = temp.Substring (0, temp.IndexOf (";"));
     return databasename;
   }
 
-  private void AddConstraints (ClassDefinition baseClass)
+  private void WriteConstraints (ClassDefinition classDefinition)
   {
-    ConstraintDefinition[] constraints = GetConstraintsRecursive (baseClass);
-
-    if (constraints.Length == 0)
+    RelationEndPointDefinition[] endPoints = GetRelationEndPointsWithForeignKeyRecursive (classDefinition);
+    if (endPoints.Length == 0)
       return;
 
-    Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, constraints[0].Tablename));
+    Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, classDefinition.EntityName));
 
-    foreach (ConstraintDefinition constraint in constraints)
-    {
-      Write (GetConstraintText (constraint));
-    }
+    foreach (RelationEndPointDefinition endPoint in endPoints)
+      WriteConstraint (endPoint);
 
     Write (s_alterTableFooter);
     Write (s_go);
   }
 
-  private string GetConstraintText (ConstraintDefinition constraint)
+  private void WriteConstraint (RelationEndPointDefinition endPoint)
   {
     string constraintText = s_foreignKey;
-    constraintText = ReplaceTag (constraintText, s_columnnameTag, constraint.Columnname);
-    constraintText = ReplaceTag (constraintText, s_refTablenameTag, constraint.ReferencedTable);
-    constraintText = ReplaceTag (constraintText, s_refColumnnameTag, constraint.ReferencedColumn);
-    constraintText = ReplaceTag (constraintText, s_classnameTag, constraint.ClassName);
-    constraintText = ReplaceTag (constraintText, s_refClassnameTag, constraint.ReferencedClassName);
-    return constraintText;
+    constraintText = ReplaceTag (constraintText, s_columnnameTag, endPoint.PropertyDefinition.ColumnName);
+    constraintText = ReplaceTag (constraintText, s_refTablenameTag, GetOppositeClass (endPoint.ClassDefinition, endPoint.PropertyName).EntityName);
+    constraintText = ReplaceTag (constraintText, s_refColumnnameTag, "ID");
+    constraintText = ReplaceTag (constraintText, s_constraintnameTag, endPoint.ClassDefinition.GetRelationDefinition(endPoint.PropertyName).ID);
+    Write (constraintText);
   }
 
-  private void DropTable (string tableName)
+  private void WriteDropTable (string tableName)
   {
     Write (ReplaceTag (s_dropTable, s_tablenameTag, tableName));
     Write (s_go);
   }
 
-  private void CreateTable (ClassDefinition baseClass)
+  private void WriteCreateTable (ClassDefinition baseClass)
   {
     Write (ReplaceTag (s_tableHeader, s_tablenameTag, baseClass.EntityName));
 
@@ -277,11 +263,11 @@ public class SqlFileBuilder : BaseBuilder
     Write (s_timestampColumn);
 
     WriteColumns (baseClass);
-    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass, true))
+    foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass))
       WriteColumns (derivedClass);
 
     WriteLine ();
-    Write (ReplaceTag (s_primaryKey, s_tablenameTag, baseClass.EntityName));
+    Write (ReplaceTag (s_primaryKey, s_constraintnameTag, baseClass.EntityName));
 
     Write (s_tableFooter);
     Write (s_go);

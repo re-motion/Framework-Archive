@@ -17,6 +17,8 @@ public class SqlBuilder : IBuilder
 
   // member fields
 
+  private bool _disposed = false;
+
   private string _outputFile;
   private string _mappingFile = MappingLoader.DefaultConfigurationFile;
   private string _mappingSchemaFile = MappingLoader.DefaultSchemaFile;
@@ -70,6 +72,31 @@ public class SqlBuilder : IBuilder
     _builders = (IBuilder[]) builders.ToArray (typeof (IBuilder));
 	}
 
+  ~SqlBuilder ()
+  {
+    Dispose (false);
+  }
+
+  public void Dispose()
+  {
+    Dispose (true);
+    GC.SuppressFinalize (this);
+  }
+  
+  protected virtual void Dispose (bool disposing)
+  {
+    if (!_disposed)
+    {
+      if (disposing)
+      {
+        foreach (IBuilder builder in _builders)
+          builder.Dispose ();
+        _builders = null;
+      }
+      _disposed = true;
+    }
+  }
+
   // methods and properties
 
   #region IBuilder Members
@@ -78,15 +105,6 @@ public class SqlBuilder : IBuilder
   {
     foreach (IBuilder builder in _builders)
       builder.Build ();
-  }
-
-  #endregion
-
-  #region IDisposable Members
-
-  public void Dispose()
-  {
-    // TODO:  Add SqlBuilder.Dispose implementation
   }
 
   #endregion
