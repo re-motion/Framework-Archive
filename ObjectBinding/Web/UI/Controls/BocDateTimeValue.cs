@@ -17,16 +17,20 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 {
+	// constants
+
+  // types
+
+  // static members
+	
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
   /// <summary> This event is fired when the date is changed in the UI. </summary>
   /// <remarks> The event is fired only if the date change is caused by the user. </remarks>
-  public event EventHandler DateChanged;
+  public event EventHandler DateTimeChanged;
 
-  /// <summary> This event is fired when the time is changed in the UI. </summary>
-  /// <remarks> The event is fired only if the time change is caused by the user. </remarks>
-  public event EventHandler TimeChanged;
+	// member fields
 
 //  private BocTextValueType _valueType = BocTextValueType.Undefined;
 //  private BocTextValueType _actualValueType = BocTextValueType.Undefined;
@@ -39,32 +43,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   private TextBox _dateTextBox = null;
   private TextBox _timeTextBox = null;
-  private Label _dateLabel = null;
-  private Label _timeLabel = null;
+  private Label _label = null;
+  private Button _button = null;
 
-  [Browsable (false)]
-  public TextBox DateTextBox
-  {
-    get { return _dateTextBox; }
-  }
+  private Style _commonStyle = new Style();
+  private SingleRowTextBoxStyle _dateTimeTextBoxStyle = new SingleRowTextBoxStyle();
+  private SingleRowTextBoxStyle _dateTextBoxStyle = new SingleRowTextBoxStyle();
+  private SingleRowTextBoxStyle _timeTextBoxStyle = new SingleRowTextBoxStyle();
+  private Style _labelStyle = new Style();
+  private Style _buttonStyle = new Style();
 
-  [Browsable (false)]
-  public TextBox TimeTextBox
-  {
-    get { return _timeTextBox; }
-  }
-
-  [Browsable (false)]
-  public Label DateLabel
-  {
-    get { return _dateLabel; }
-  }
-
-  [Browsable (false)]
-  public Label TimeLabel
-  {
-    get { return _timeLabel; }
-  }
+  // construction and disposing
 
 	public BocDateTimeValue()
 	{
@@ -77,14 +66,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     //    _timeLabel = new Label();
 	}
 
+	// methods and properties
+
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
 
     _dateTextBox = new TextBox();
     _timeTextBox = new TextBox();
-    _dateLabel = new Label();
-    _timeLabel = new Label();
+    _label = new Label();
 
     _dateTextBox.ID = this.ID + "_DateTextBox";
     _dateTextBox.EnableViewState = false;
@@ -94,13 +84,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _timeTextBox.EnableViewState = false;
     Controls.Add (_timeTextBox);
 
-    _dateLabel.ID = this.ID + "_DateLabel";
-    _dateLabel.EnableViewState = false;
-    Controls.Add (_dateLabel);
-
-    _timeLabel.ID = this.ID + "_TimeLabel";
-    _timeLabel.EnableViewState = false;
-    Controls.Add (_timeLabel);
+    _label.ID = this.ID + "_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
 
     //  Moved to OnLoad
     //    if (! IsDesignMode)
@@ -130,85 +116,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     //      _isDirty = true;
   }
 
-  //  TODO: handle text changed, differentiate between date and time
-  //  internal void HandleTextChange (BocTextBox textBox)
-  //  {
-  //    if (_newText != null && _newText != _text)
-  //    {
-  //      Text = _newText;
-  //      OnTextChanged (EventArgs.Empty);
-  //    }
-  //  }
-
-  /// <summary>
-  /// Fires the <see cref="TextChanged"/> event.
-  /// </summary>
-  /// <param name="e"> Empty. </param>
-  protected virtual void OnTextChanged (EventArgs e)
-  {
-    // _isDirty = true; // moved to OnLoad
-
-    //  TODO: fire DateChanged, TimeChanged
-    //    if (TextChanged != null)
-    //      TextChanged (this, e);
-  }
-
-  private void Binding_BindingChanged (object sender, EventArgs e)
-  {
-    if (Property != null)
-    {
-      //  TODO: Bidning Changed
-      //      if (_valueType == BocTextValueType.Undefined)
-      //        _actualValueType = GetBocTextValueType (Property);
-      //      
-      //      IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
-      //      if (stringProperty != null)
-      //      {
-      //        NaInt32 length = stringProperty.MaxLength;
-      //        if (! length.IsNull)
-      //          _textBox.MaxLength = length.Value;
-      //      }
-    }
-  }
-
-  public override void LoadValue (bool interim)
-  {
-    if (! interim)
-    {
-      Binding.EvaluateBinding();
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        Value = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
-      }
-    }
-  }
-
-//  private BocTextValueType GetBocTextValueType (IBusinessObjectProperty property)
-//  {
-//    if (property is IBusinessObjectStringProperty)
-//      return BocTextValueType.String;
-//    else if (property is IBusinessObjectInt32Property)
-//      return BocTextValueType.Integer;
-//    else if (property is IBusinessObjectDoubleProperty)
-//      return BocTextValueType.Double;
-//    else if (property is IBusinessObjectDateProperty)
-//      return BocTextValueType.Date;
-//    else if (property is IBusinessObjectDateTimeProperty)
-//      return BocTextValueType.DateTime;
-//    else
-//      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
-//  }
-
-  public override void SaveValue (bool interim)
-  {
-    if (! interim)
-    {
-      Binding.EvaluateBinding();
-      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
-        DataSource.BusinessObject.SetProperty (Property, Value);
-    }
-  }
 
   /// <summary>
   ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
@@ -239,106 +146,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     base.Render (writer);
   }
 
-  protected override void InitializeChildControls()
-  {
-    bool isReadOnly = IsReadOnly;
-
-    _dateTextBox.Visible = ! isReadOnly;
-    _timeTextBox.Visible = ! isReadOnly;
-    _dateLabel.Visible = isReadOnly;
-    _timeLabel.Visible = isReadOnly;
-
-    //  TODO: Initialize Child Controls
-    if (isReadOnly)
-    {
-    //      _label.Text = _text;
-    //
-    //      _label.Width = this.Width;
-    //      _label.Height = this.Height;
-    //      _label.ApplyStyle (_commonStyle);
-    //      _label.ApplyStyle (_labelStyle);
-    }
-    else
-    {
-    //      _textBox.Width = this.Width;
-    //      _textBox.Height = this.Height;
-    //      _textBox.ApplyStyle (_commonStyle);
-    //      _textBoxStyle.ApplyStyle (_textBox);
-    }
-  }
-
-  private Style _commonStyle = new Style();
-  private TextBoxStyle _textBoxStyle = new TextBoxStyle();
-  private Style _labelStyle = new Style();
-  private Style _buttonStyle = new Style();
-
-  /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
-  /// </summary>
-  /// <remarks>
-  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
-  ///   the respective modes. Note that if you set one of the <c>Font</c> attributes (Bold, Italic etc.) to 
-  ///   <c>true</c>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
-  ///   properties.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style CommonStyle
-  {
-    get { return _commonStyle; }
-  }
-
-  /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) only.")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public TextBoxStyle TextBoxStyle
-  {
-    get { return _textBoxStyle; }
-  }
-
-  /// <summary>
-  ///   The style that you want to apply to the Label (read-only mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the Label (read-only mode) only.")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style LabelStyle
-  {
-    get { return _labelStyle; }
-  }
-
-  /// <summary>
-  ///   The style that you want to apply to the Button (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the Button (edit mode) only.")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style ButtonStyle
-  {
-    get { return _buttonStyle; }
-  }
-
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -360,6 +167,136 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     //    values[3] = _actualValueType;
     values[4] = _isDirty;
     return values;
+  }
+
+
+  public override void LoadValue (bool interim)
+  {
+    if (! interim)
+    {
+      Binding.EvaluateBinding();
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        Value = DataSource.BusinessObject.GetProperty (Property);
+        _isDirty = false;
+      }
+    }
+  }
+
+  public override void SaveValue (bool interim)
+  {
+    if (! interim)
+    {
+      Binding.EvaluateBinding();
+      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+        DataSource.BusinessObject.SetProperty (Property, Value);
+    }
+  }
+
+  //  private BocTextValueType GetBocTextValueType (IBusinessObjectProperty property)
+  //  {
+  //    if (property is IBusinessObjectStringProperty)
+  //      return BocTextValueType.String;
+  //    else if (property is IBusinessObjectInt32Property)
+  //      return BocTextValueType.Integer;
+  //    else if (property is IBusinessObjectDoubleProperty)
+  //      return BocTextValueType.Double;
+  //    else if (property is IBusinessObjectDateProperty)
+  //      return BocTextValueType.Date;
+  //    else if (property is IBusinessObjectDateTimeProperty)
+  //      return BocTextValueType.DateTime;
+  //    else
+  //      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
+  //  }
+
+  /// <summary>
+  ///   Generates the validators depending on the control's configuration.
+  /// </summary>
+  /// <remarks>
+  ///   
+  /// </remarks>
+  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  public override BaseValidator[] CreateValidators()
+  {
+    if (! IsRequired)
+      return new BaseValidator[]{};
+
+    BaseValidator[] validators = new BaseValidator[0];
+
+    //  TODO: validation
+
+    return validators;
+  }
+
+  protected override void InitializeChildControls()
+  {
+    bool isReadOnly = IsReadOnly;
+
+    _dateTextBox.Visible = ! isReadOnly;
+    _timeTextBox.Visible = ! isReadOnly;
+    _label.Visible = isReadOnly;
+
+    //  TODO: Initialize Child Controls
+    if (isReadOnly)
+    {
+      //      _label.Text = _text;
+      if (    IsDesignMode &&  StringUtility.IsNullOrEmpty (_label.Text))
+      {
+        //  nothing
+        //  _dateLabel.Text = c_nullDisplayName;
+        //  _dateLabel.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
+
+      //      _label.Width = this.Width;
+      //      _label.Height = this.Height;
+      
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
+    }
+    else
+    {
+      //      _textBox.Width = this.Width;
+      //      _textBox.Height = this.Height;
+
+      _dateTextBox.ApplyStyle (_commonStyle);
+      _dateTextBoxStyle.ApplyStyle (_dateTextBox);
+      _dateTextBoxStyle.ApplyStyle (_dateTextBox);
+
+      _timeTextBox.ApplyStyle (_commonStyle);
+      _timeTextBoxStyle.ApplyStyle (_timeTextBox);
+      _timeTextBoxStyle.ApplyStyle (_timeTextBox);
+    }
+  }
+
+  /// <summary>
+  /// Fires the <see cref="DateTimeChanged"/> event.
+  /// </summary>
+  /// <param name="e"> Empty. </param>
+  protected virtual void OnDateTimeChanged (EventArgs e)
+  {
+    // _isDirty = true; // moved to OnLoad
+
+    //  TODO: fire DateTimeChanged
+    //    if (DateTimeChanged != null)
+    //      DateTimeChanged (this, e);
+  }
+
+  private void Binding_BindingChanged (object sender, EventArgs e)
+  {
+    if (Property != null)
+    {
+      //  TODO: Bidning Changed
+      //      if (_valueType == BocTextValueType.Undefined)
+      //        _actualValueType = GetBocTextValueType (Property);
+      //      
+      //      IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
+      //      if (stringProperty != null)
+      //      {
+      //        NaInt32 length = stringProperty.MaxLength;
+      //        if (! length.IsNull)
+      //          _textBox.MaxLength = length.Value;
+      //      }
+    }
   }
 
   /// <summary>
@@ -425,45 +362,45 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-//  [Description("Gets or sets the string representation of the current value.")]
-//  [Category("Data")]
-//  public string Text
-//  {
-//    get { return _text; }
-//    set { _text = StringUtility.NullToEmpty (value); }
-//  }
+  //  [Description("Gets or sets the string representation of the current value.")]
+  //  [Category("Data")]
+  //  public string Text
+  //  {
+  //    get { return _text; }
+  //    set { _text = StringUtility.NullToEmpty (value); }
+  //  }
 
-//  [Description("Gets or sets a fixed value type.")]
-//  [Category("Data")]
-//  [DefaultValue(typeof(BocTextValueType), "Undefined")]
-//  public BocTextValueType ValueType
-//  {
-//    get { return _valueType; }
-//    set 
-//    {
-//      if (_valueType != value)
-//      {
-//        _valueType = value;
-//        _actualValueType = value;
-//        if (_valueType != BocTextValueType.Undefined)
-//          _text = string.Empty;
-//      }
-//    }
-//  }
+  //  [Description("Gets or sets a fixed value type.")]
+  //  [Category("Data")]
+  //  [DefaultValue(typeof(BocTextValueType), "Undefined")]
+  //  public BocTextValueType ValueType
+  //  {
+  //    get { return _valueType; }
+  //    set 
+  //    {
+  //      if (_valueType != value)
+  //      {
+  //        _valueType = value;
+  //        _actualValueType = value;
+  //        if (_valueType != BocTextValueType.Undefined)
+  //          _text = string.Empty;
+  //      }
+  //    }
+  //  }
 
-//  /// <summary>
-//  /// Gets the controls fixed value type or, if undefined, the property's value type.
-//  /// </summary>
-//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-//  [Browsable (false)]
-//  public BocTextValueType ActualValueType
-//  {
-//    get 
-//    {
-//      Binding.EvaluateBinding();
-//      return _actualValueType;
-//    }
-//  }
+  //  /// <summary>
+  //  /// Gets the controls fixed value type or, if undefined, the property's value type.
+  //  /// </summary>
+  //  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  //  [Browsable (false)]
+  //  public BocTextValueType ActualValueType
+  //  {
+  //    get 
+  //    {
+  //      Binding.EvaluateBinding();
+  //      return _actualValueType;
+  //    }
+  //  }
 
   public override Control TargetControl
   {
@@ -489,11 +426,136 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     get { return s_supportedPropertyInterfaces; }
   }
 
-  public override BaseValidator[] CreateValidators()
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.Controls.ISmartControl.UseLabel"/>. </summary>
+  public override bool UseLabel
   {
-    //  TODO: Create Validators
-    return new BaseValidator[0];
+    get { return true; }
   }
+
+  /// <summary>
+  ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
+  /// </summary>
+  /// <remarks>
+  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
+  ///   the respective modes. Note that if you set one of the <c>Font</c> attributes (Bold, Italic etc.) to 
+  ///   <c>true</c>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
+  ///   properties.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style CommonStyle
+  {
+    get { return _commonStyle; }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to both the date and the time TextBoxes (edit mode) only.
+  /// </summary>
+  /// <remarks>
+  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public SingleRowTextBoxStyle DateTimeTextBoxStyle
+  {
+    get { return _dateTimeTextBoxStyle; }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to the date TextBox (edit mode) only.
+  /// </summary>
+  /// <remarks>
+  ///   These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to only the date TextBox (edit mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public SingleRowTextBoxStyle DateTextBoxStyle
+  {
+    get { return _dateTextBoxStyle; }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to the time TextBox (edit mode) only.
+  /// </summary>
+  /// <remarks>
+  ///   These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to only the time TextBox (edit mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public SingleRowTextBoxStyle TimeTextBoxStyle
+  {
+    get { return _timeTextBoxStyle; }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to the Label
+  ///   (read-only mode) only.
+  /// </summary>
+  /// <remarks>
+  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the Label (read-only mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style LabelStyle
+  {
+    get { return _labelStyle; }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to the Button (edit mode) only.
+  /// </summary>
+  /// <remarks>
+  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the Button (edit mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style ButtonStyle
+  {
+    get { return _buttonStyle; }
+  }
+
+  [Browsable (false)]
+  public TextBox DateTextBox
+  {
+    get { return _dateTextBox; }
+  }
+
+  [Browsable (false)]
+  public TextBox TimeTextBox
+  {
+    get { return _timeTextBox; }
+  }
+
+  [Browsable (false)]
+  public Label Label
+  {
+    get { return _label; }
+  }
+
+  [Browsable (false)]
+  public Button Button
+  {
+    get { return _button; }
+  }
+
 }
 
 }

@@ -331,9 +331,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
     if (Property == null)
       return;
 
+    IBusinessObjectWithIdentity[] businessObjects = null;
+
     //  Get all matching business objects
-    IBusinessObjectWithIdentity[] businessObjects
-      = Property.SearchAvailableObjects (DataSource.BusinessObject , _select);
+    if (DataSource != null)
+      businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, _select);
 
     RefreshBusinessObjectList (businessObjects);
   }
@@ -471,7 +473,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       _label.ApplyStyle (_labelStyle);
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
-          _label.Text = c_nullDisplayName;
+      {
+        //  nothing
+        //  _label.Text = c_nullDisplayName;
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
     }
     else
     {
@@ -639,11 +645,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
   public new IBusinessObjectReferenceProperty Property
   {
-    get
-    { 
-      return (IBusinessObjectReferenceProperty) base.Property; 
-    }
-    set
+    get { return (IBusinessObjectReferenceProperty) base.Property; }
+    set 
     {
       ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
 

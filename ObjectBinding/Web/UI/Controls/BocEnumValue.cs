@@ -344,7 +344,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
-        _label.Text = c_nullDisplayName;
+        //  nothing
+        //  _label.Text = c_nullDisplayName;
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
       else if (! IsDesignMode && EnumerationValueInfo != null)
       {
@@ -455,22 +457,17 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   /// <summary>
   ///   The <see cref="IBusinessObjectEnumerationProperty"/> object this control is bound to.
   /// </summary>
-  /// <remarks>
-  ///   Explicit setting of <see cref="Property"/> is not offically supported.
-  /// </remarks>
   /// <value>An <see cref="IBusinessObjectEnumerationProperty"/> object.</value>
   public new IBusinessObjectEnumerationProperty Property
   {
     get { return (IBusinessObjectEnumerationProperty) base.Property; }
     set 
-    { 
+    {
       ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectEnumerationProperty));
-    
+
       base.Property = (IBusinessObjectEnumerationProperty) value; 
-      RefreshEnumList();
     }
   }
-
   
   /// <summary>
   ///   Gets or sets the current value.
