@@ -5,8 +5,12 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
+
 namespace Rubicon.Data.DomainObjects
 {
+/// <summary>
+/// TODO: write this comment
+/// </summary>
 public class ClientTransaction
 {
   // types
@@ -16,6 +20,9 @@ public class ClientTransaction
   [ThreadStatic]
   private static ClientTransaction s_clientTransaction;
 
+  /// <summary>
+  /// Gets the default <b>ClientTransaction</b> of the current thread.
+  /// </summary>
   public static ClientTransaction Current
   {
     get 
@@ -27,6 +34,10 @@ public class ClientTransaction
     }
   }
 
+  /// <summary>
+  /// Sets the default <b>ClientTransaction</b> of the current thread.
+  /// </summary>
+  /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
   public static void SetCurrent (ClientTransaction clientTransaction)
   {
     s_clientTransaction = clientTransaction;
@@ -34,12 +45,18 @@ public class ClientTransaction
 
   // member fields
 
+  /// <summary>
+  /// Occurs when the <b>ClientTransaction</b> has loaded a new object.
+  /// </summary>
   public event LoadedEventHandler Loaded;
   
   private DataManager _dataManager;
 
   // construction and disposing
 
+  /// <summary>
+  /// Initializes a new instance of the <b>ClientTransaction</b> class.
+  /// </summary>
   public ClientTransaction ()
   {
     Initialize ();
@@ -47,6 +64,9 @@ public class ClientTransaction
 
   // methods and properties
 
+  /// <summary>
+  /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
+  /// </summary>
   public void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
@@ -58,16 +78,32 @@ public class ClientTransaction
     _dataManager.Commit ();
   }
 
+  /// <summary>
+  /// Performs a rollback of all changes withing the <b>ClientTransaction</b>.
+  /// </summary>
   public void Rollback ()
   {
     _dataManager.Rollback ();
   }
 
+  /// <summary>
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded.</param>
+  /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   public virtual DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
   }
 
+  /// <summary>
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded.</param>
+  /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
+  /// <returns>The <see cref="DomainObject"/> with the specified <i>id</i>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -90,6 +126,12 @@ public class ClientTransaction
     }    
   }
 
+  /// <summary>
+  /// Evaluates if any relations of the given <see cref="DomainObject"/> have changed since instantiation, loading, commit or rollback.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to evaluate.</param>
+  /// <returns><b>true</b> if any relations have changed; otherwise, <b>false</b>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected bool HasRelationChanged (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -97,42 +139,94 @@ public class ClientTransaction
     return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
   }
 
+//TODO: check if the statement about the invalidCastOperation is right
+  /// <summary>
+  /// Gets the related object of a given <see cref="DataManagement.RelationEndPointID"/>.
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.ObjectEndPoint"/>.</param>
+  /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   internal protected DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
   }
 
+//TODO: check if the statement about the invalidCastOperation is right
+  /// <summary>
+  /// Gets the original related object of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.ObjectEndPoint"/>.</param>
+  /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   internal protected DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
   }
 
+//TODO: check if the statement about the invalidCastOperation is right
+  /// <summary>
+  /// Gets the related objects of a given <see cref="DataManagement.RelationEndPointID"/>.
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.CollectionEndPoint"/>.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
   internal protected DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
   }
 
+//TODO: check if the statement about the invalidCastOperation is right
+  /// <summary>
+  /// Gets the original related objects of a given <see cref="DataManagement.RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> to evaluate. It must refer to a <see cref="DataManagement.CollectionEndPoint"/>.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
   internal protected DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     return _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
   }  
 
+  /// <summary>
+  /// Sets a relation between two relationEndPoints.
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> referring the <see cref="DataManagement.RelationEndPoint"/> that should point to a new <see cref="DomainObject"/>.</param>
+  /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; null indicates that no object should be referenced.</param>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
   internal protected void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
   }
   
+  /// <summary>
+  /// Deletes a <see cref="DomainObject"/>.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to delete.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     _dataManager.Delete (domainObject);
   }
   
+  /// <summary>
+  /// Loads an object from the datasource.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="id">An <see cref="ObjectID"/> object indicating which <see cref="DomainObject"/> to load.</param>
+  /// <returns>The <see cref="DomainObject"/> object that was loaded.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -150,6 +244,17 @@ public class ClientTransaction
     }
   }
 
+//TODO: check if the statement about the invalidCastOperation is right
+  /// <summary>
+  /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="ObjectEndPoint"/>.</param>
+  /// <returns>The related <see cref="DomainObject"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -176,6 +281,13 @@ public class ClientTransaction
     }
   }
 
+  /// <summary>
+  /// Loads all related <see cref="DomainObject"/>s of a given <see cref="DataManagement.RelationEndPointID"/>. 
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>relationEndPointID</i> is a null reference.</exception>
+  /// <exception cref="System.InvalidCastException"><i>relationEndPointID</i> does not refer to an <see cref="DataManagement.CollectionEndPoint"/></exception>
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -201,6 +313,11 @@ public class ClientTransaction
     }
   }
 
+  /// <summary>
+  /// Sets the ClientTransaction property of all <see cref="DataContainer"/>s of a given <see cref="DataManagement.DataContainerCollection"/>.
+  /// </summary>
+  /// <param name="dataContainers">The <see cref="DataContainerCollection"/> with all the <see cref="DataContainer"/> objects that should be set to the <b>ClientTransaction</b>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is a null reference.</exception>
   protected void SetClientTransaction (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
@@ -208,12 +325,21 @@ public class ClientTransaction
       SetClientTransaction (dataContainer);
   }
 
+  /// <summary>
+  /// Sets the ClientTransaction property of a given <see cref="DataContainer"/>
+  /// </summary>
+  /// <param name="dataContainer">The <see cref="DataContainer"/> that should be set to the <b>ClientTransaction</b>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>dataContainer</i> is a null reference.</exception>
   protected void SetClientTransaction (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     dataContainer.SetClientTransaction (this);
   }
 
+  /// <summary>
+  /// Raises the <see cref="Loaded"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="LoadedEventArgs"/> object that contains the event data.</param>
   protected virtual void OnLoaded (LoadedEventArgs args)
   {
     args.LoadedDomainObject.EndObjectLoading ();
@@ -222,6 +348,9 @@ public class ClientTransaction
       Loaded (this, args);
   }
 
+  /// <summary>
+  /// Gets the current <see cref="DataManager"/> of the <b>ClientTransaction</b>.
+  /// </summary>
   protected DataManager DataManager
   {
     get { return _dataManager; }
