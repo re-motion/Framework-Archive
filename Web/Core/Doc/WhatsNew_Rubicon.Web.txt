@@ -1,6 +1,10 @@
 3.0.4.0 (noch kein Build verfügbar)
 =======
 
+- EntryFormGrid: Images müssen lt. HTML 4.0 einen Alt-Text definieren -> Whitespace-Images um leeren
+    alt-text erweitert (Für eGovernment Gütesiegel)
+- EntryField: For-Attribute der Labels werden nur gerendert, wenn diese auch beim EntryField 
+    spezifiziert sind -> keine Defaultwerte
 - StandardPage schreibt jetzt immer ResponseHeader, die Caching (im Browser, Proxyserver) verhindern.
 - Bugfix in PageUtility.CallPage (...): Abfrage von ShowNavigationBar.Show und ShowNavigationBar.Hide 
   waren vertauscht => Bei Hide wurde ShowNavigationBar angezeigt und umgekehrt. 

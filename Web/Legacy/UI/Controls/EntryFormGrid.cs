@@ -193,13 +193,15 @@ public class EntryFormGrid: Control
 	
   public static string GetWhitespaceImage (int width, int height)
   {
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
         width, height, EntryFormGrid.GetImagePath ("ws.gif"));
   }
 
   public static string GetWhitespaceImage (string width, string height)
   {
-    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\">", 
+    // Specify at least an empty alt text to be HTML 4.0 conform (eGov Gütesiegel)
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"{2}\" alt=\"\">", 
         width, height, EntryFormGrid.GetImagePath ("ws.gif"));
   }
 }
@@ -423,8 +425,8 @@ public class EntryField: Control
   protected override void Render (HtmlTextWriter writer)
 	{
 		string label;
-    string clientId = String.Empty;
-    string validatorMessages = String.Empty ;
+    string clientId = string.Empty;
+    string validatorMessages = string.Empty ;
     bool validatorsInvalid = false;
 
     // search for Validator child controls and keep if at least one is invalid
@@ -432,15 +434,8 @@ public class EntryField: Control
     CheckForInvalidValidators (this.Controls, ref validatorMessages, ref validatorsInvalid);
 
     Control labeledControl = null;
-    if (For == String.Empty)
-    {
-      if (this.Controls.Count >= 2)
-        labeledControl = this.Controls[1];
-    }
-    else
-    {
+    if (For != null && For != string.Empty)
       labeledControl = this.FindControl (For);
-    }
 
     if (labeledControl != null)
     {
