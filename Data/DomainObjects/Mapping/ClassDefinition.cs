@@ -256,17 +256,16 @@ public class ClassDefinition
     get { return _storageProviderID; }
   }
 
-  public PropertyDefinitionCollection PropertyDefinitions
-  {
-    get { return _propertyDefinitions; }
-  }
-
   public ClassDefinition BaseClass
   {
     get { return _baseClass; }
   }
 
-  public RelationDefinitionCollection RelationDefinitions
+  public PropertyDefinitionCollection MyPropertyDefinitions
+	{
+		get { return _propertyDefinitions; }
+	}
+  public RelationDefinitionCollection MyRelationDefinitions
   {
     get { return _relationDefinitions; }
   }
