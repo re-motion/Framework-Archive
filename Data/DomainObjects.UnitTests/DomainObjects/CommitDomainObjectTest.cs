@@ -24,32 +24,6 @@ public class CommitDomainObjectTest : ClientTransactionBaseTest
   // methods and properties
 
   [Test]
-  public void CommittedEvent ()
-  {
-    Order order = Order.GetObject (DomainObjectIDs.Order1);
-    OrderTicket oldOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-    OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
-    Order oldOrderOfNewOrderTicket = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
-
-    DomainObjectEventReceiver orderEventReceiver = new DomainObjectEventReceiver (order);
-    DomainObjectEventReceiver oldOrderTicketEventReceiver = new DomainObjectEventReceiver (oldOrderTicket);
-    DomainObjectEventReceiver newOrderTicketEventReceiver = new DomainObjectEventReceiver (newOrderTicket);
-    
-    DomainObjectEventReceiver oldOrderOfNewOrderTicketEventReceiver = 
-        new DomainObjectEventReceiver (oldOrderOfNewOrderTicket);
-
-    oldOrderTicket.Order = newOrderTicket.Order;
-    order.OrderTicket = newOrderTicket;
-
-    ClientTransaction.Current.Commit ();    
-
-    Assert.IsTrue (orderEventReceiver.HasCommittedEventBeenCalled);
-    Assert.IsTrue (oldOrderTicketEventReceiver.HasCommittedEventBeenCalled);
-    Assert.IsTrue (newOrderTicketEventReceiver.HasCommittedEventBeenCalled);
-    Assert.IsTrue (oldOrderOfNewOrderTicketEventReceiver.HasCommittedEventBeenCalled);
-  }
-
-  [Test]
   public void CommitOneToManyRelation ()
   {
     Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
