@@ -264,7 +264,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void GetRelatedObjectsWithObjectOverSingleObjectRelationLink ()
+  public void GetRelatedObjectsWithLazyLoad ()
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
@@ -277,7 +277,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void GetRelatedObjectsWithObjectOverMultipleObjectRelationLink ()
+  public void GetRelatedObjectsAndNavigateBack ()
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
