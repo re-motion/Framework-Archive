@@ -88,6 +88,21 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
+                <Reference
+                    Name = "system.design"
+                    AssemblyName = "system.design"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
+                />
+                <Reference
+                    Name = "system.windows.forms"
+                    AssemblyName = "system.windows.forms"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
+                />
+                <Reference
+                    Name = "system.drawing"
+                    AssemblyName = "system.drawing"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -138,8 +153,8 @@
                 />
                 <File
                     RelPath = "Design\PropertyPickerControl.cs"
-                    SubType = "Code"
-                    BuildAction = "None"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Design\PropertyPickerControl.resx"
@@ -149,7 +164,7 @@
                 <File
                     RelPath = "Design\PropertyPickerEditor.cs"
                     SubType = "Code"
-                    BuildAction = "None"
+                    BuildAction = "Compile"
                 />
             </Include>
         </Files>

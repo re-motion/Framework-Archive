@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="BocTest.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="OBWTest.Global" %>

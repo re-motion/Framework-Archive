@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using System.Diagnostics;
+
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
@@ -17,6 +19,8 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
       return new ReflectionBusinessObjectStringProperty (propertyInfo);
     else if (propertyInfo.PropertyType == typeof (DateTime))
       return new ReflectionBusinessObjectDateTimeProperty (propertyInfo);
+    else if (propertyInfo.PropertyType.IsEnum)
+      return new ReflectionBusinessObjectEnumerationProperty (propertyInfo);
     else
       return new ReflectionBusinessObjectProperty (propertyInfo);
   }
@@ -100,6 +104,33 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectProp
   public bool AllowNegative
   {
     get { return true; }
+  }
+}
+
+public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectEnumerationProperty
+{
+  public ReflectionBusinessObjectEnumerationProperty (PropertyInfo propertyInfo)
+    : base (propertyInfo)
+  {
+  }
+
+  public IEnumerationValueInfo[] GetEnabledValues()
+  {
+    return GetAllValues();
+  }
+
+  public IEnumerationValueInfo[] GetAllValues()
+  {
+    Type type = PropertyInfo.GetType();
+    Debug.Assert (type.IsEnum, "type.IsEnum");
+    FieldInfo[] fields = type.GetFields (BindingFlags.Static | BindingFlags.Public);
+    IEnumerationValueInfo[] valueInfos = new IEnumerationValueInfo [fields.Length];
+    if (Enum.GetUnderlyingType (type) != typeof (int))
+      throw new NotSupportedException ("Only Int32-based enumerations are supported by Rubicon.ObjectBinding.Reflection.");
+
+    for (int i = 0; i < fields.Length; ++i)
+      valueInfos[i] = new EnumerationValueInfo ((int)fields[i].GetValue (null), fields[i].Name, fields[i].Name, true);
+    return valueInfos;
   }
 }
 

@@ -12,6 +12,11 @@ public interface IBusinessObjectBoundControl: IComponent
   object Value { get; set; }
 
   void LoadValue();
+
+  /// <summary>
+  /// Gets the interfaces derived from IBusinessObjectProperty that this control supports, or <see langword="null"/> if no restrictions are made.
+  /// </summary>
+  Type[] SupportedPropertyInterfaces { get; }
 }
 
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 using System.IO;
 using Rubicon.ObjectBinding.Reflection;
 
-namespace BocTest
+namespace OBWTest
 {
 
 [XmlType]
@@ -23,6 +23,7 @@ public class Person: ReflectionBusinessObject
   private string _lastName;
   private DateTime _dateOfBirth;
   private int _height;
+  private Gender _gender;
 
   public void SaveToXml (string fileName)
   {
@@ -61,6 +62,18 @@ public class Person: ReflectionBusinessObject
     get { return _height; }
     set { _height = value; }
   }
+
+  public Gender Gender
+  {
+    get { return _gender; }
+    set { _gender = value; }
+  }
+}
+
+public enum Gender
+{
+  Male,
+  Female
 }
 
 }

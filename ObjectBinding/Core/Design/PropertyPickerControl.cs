@@ -8,111 +8,69 @@ using System.Windows.Forms.Design;
 
 namespace Rubicon.ObjectBinding
 {
-/// <summary>
-/// Summary description for PropertyPathPicker.
-/// </summary>
-public class PropertyPathPicker : System.Windows.Forms.UserControl
+
+public class PropertyPathPickerControl: System.Windows.Forms.UserControl
 {
-  private System.Windows.Forms.TreeView PathTree;
   private System.Windows.Forms.Label FilterLabel;
   private System.Windows.Forms.TextBox FilterField;
   private System.Windows.Forms.Button SelectButton;
 
-  private CnObject _objectClass;
+  private IBusinessObjectBoundControl _control;
   private string _value;
   private IWindowsFormsEditorService _editorService;
-  private System.Windows.Forms.CheckBox ClassFilterCheck;
+  private System.Windows.Forms.ListBox PropertiesList;
 
 	/// <summary> 
 	/// Required designer variable.
 	/// </summary>
 	private System.ComponentModel.Container components = null;
 
-	public PropertyPathPicker (CnObject objectClass)
+	public PropertyPathPickerControl (IBusinessObjectBoundControl control)
 	{
+    if (control.DataSource == null)
+      throw new InvalidOperationException ("Cannot use PropertyPathEditor for controls without DataSource.");
+
 		// This call is required by the Windows.Forms Form Designer.
 		InitializeComponent();
 
-    ClassFilterCheck.Text = string.Format (ClassFilterCheck.Text, objectClass.Name);
-
     _editorService = (IWindowsFormsEditorService) GetService (typeof (IWindowsFormsEditorService));
+    _control = control;
 
-    if (objectClass == null)
-      _objectClass = Classes.Object;
-    else
-      _objectClass = objectClass;
-
-    FillTree();
+    FillList();
   }
 
-  private void FillTree()
+  private void FillList()
   {
-    PathTree.Nodes.Clear();
+    PropertiesList.Items.Clear();
+
     string filter = FilterField.Text.ToLower().Trim();
-    CnObject[] properties;
-    if (ClassFilterCheck.Checked)
-    {
-      properties = (CnObject[]) _objectClass.GetAttribute (Attributes.classallattributes);
-    }
-    else
-    {
-      QueryBuilder query = new QueryBuilder (Classes.AttributeDefinition);
-      query.Limit = 200;
-      if (filter.Length > 0)
-        query.WhereClause.AddCondition (new QueryCompareCondition (".reference", QueryCompareOperator.Like, "%" + filter + "%"));
-      properties = CnRuntime.Current.SearchObjects (query.ToString());
+    IBusinessObjectProperty[] properties = _control.DataSource.BusinessObjectClass.GetProperties();
 
-//      properties = CnRuntime.Current.SearchObjects ("SELECT * FROM AttributeDefinition where reference LIKE \"%" + Query.QueryBuilder.To
-//      CnObject[] searchResult = CnRuntime.Current.SearchLocalObjects ("AttributeDefinition");
-//      const int maxResult = 200;
-//      if (searchResult.Length > maxResult)
-//      {
-//        properties = new CnObject[maxResult];
-//        Array.Copy (searchResult, 0, properties, 0, maxResult);
-//      }
-//      else
-//      {
-//        properties = searchResult;
-//      }
-    }
-
-    foreach (CnObject property in properties)
+    foreach (IBusinessObjectProperty property in properties)
     {
       if (   filter.Length == 0 
-          || (property.Reference != null && property.Reference.ToLower().IndexOf (filter) >= 0))
+          || (property.Identifier != null && property.Identifier.ToLower().IndexOf (filter) >= 0))
       {
-        TreeNode node = new TreeNode (property.Reference);
-        AddChildren (node, property);
-
-			  PathTree.Nodes.Add (node);
+        bool isSupportedPropertyType = true;
+        if (_control.SupportedPropertyInterfaces != null)
+        {
+          isSupportedPropertyType = false;
+          foreach (Type supportedInterface in _control.SupportedPropertyInterfaces)
+          {
+            if (supportedInterface.IsAssignableFrom (property.GetType()))
+            {
+              isSupportedPropertyType = true;
+              break;
+            }
+          }
+        }
+        if (isSupportedPropertyType)
+          PropertiesList.Items.Add (property.Identifier);
       }
     }
 
-    PathTree.PathSeparator = "~";
-    PathTree.Sorted = true;
+    PropertiesList.Sorted = true;
 	}
-
-  private void AddChildren (TreeNode node, CnObject property)
-  {
-    CnObject type = (CnObject) property.GetAttributeValue (Attributes.attrtype);
-    if (type == null)
-      return;
-
-    CnObject typeClass = type.Class;
-    if (typeClass == Classes.TypeObjectDef)
-    {
-      // TODO
-    }
-    else if (typeClass == Classes.TypeAggregateDef)
-    {
-      foreach (CnObject compProperty in type.GetAttribute ("typecompattrs"))
-      {
-        TreeNode childNode = new TreeNode (compProperty.Reference);
-        AddChildren (childNode, compProperty);
-        node.Nodes.Add (childNode);
-      }
-    }
-  }
 
 	/// <summary> 
 	/// Clean up any resources being used.
@@ -136,24 +94,11 @@ public class PropertyPathPicker : System.Windows.Forms.UserControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-    this.PathTree = new System.Windows.Forms.TreeView();
     this.FilterLabel = new System.Windows.Forms.Label();
     this.FilterField = new System.Windows.Forms.TextBox();
     this.SelectButton = new System.Windows.Forms.Button();
-    this.ClassFilterCheck = new System.Windows.Forms.CheckBox();
+    this.PropertiesList = new System.Windows.Forms.ListBox();
     this.SuspendLayout();
-    // 
-    // PathTree
-    // 
-    this.PathTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-      | System.Windows.Forms.AnchorStyles.Left) 
-      | System.Windows.Forms.AnchorStyles.Right)));
-    this.PathTree.ImageIndex = -1;
-    this.PathTree.Location = new System.Drawing.Point(0, 32);
-    this.PathTree.Name = "PathTree";
-    this.PathTree.SelectedImageIndex = -1;
-    this.PathTree.Size = new System.Drawing.Size(304, 208);
-    this.PathTree.TabIndex = 0;
     // 
     // FilterLabel
     // 
@@ -184,29 +129,23 @@ public class PropertyPathPicker : System.Windows.Forms.UserControl
     this.SelectButton.Text = "&Select";
     this.SelectButton.Click += new System.EventHandler(this.SelectButton_Click);
     // 
-    // ClassFilterCheck
+    // PropertiesList
     // 
-    this.ClassFilterCheck.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-      | System.Windows.Forms.AnchorStyles.Right)));
-    this.ClassFilterCheck.Checked = true;
-    this.ClassFilterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-    this.ClassFilterCheck.Location = new System.Drawing.Point(88, 240);
-    this.ClassFilterCheck.Name = "ClassFilterCheck";
-    this.ClassFilterCheck.Size = new System.Drawing.Size(208, 32);
-    this.ClassFilterCheck.TabIndex = 4;
-    this.ClassFilterCheck.Text = "&Properties of class {0} only";
-    this.ClassFilterCheck.CheckedChanged += new System.EventHandler(this.ClassFilterCheck_CheckedChanged);
+    this.PropertiesList.Location = new System.Drawing.Point(8, 32);
+    this.PropertiesList.Name = "PropertiesList";
+    this.PropertiesList.Size = new System.Drawing.Size(288, 199);
+    this.PropertiesList.TabIndex = 5;
     // 
     // PropertyPathPicker
     // 
     this.BackColor = System.Drawing.Color.FromArgb(((System.Byte)(224)), ((System.Byte)(224)), ((System.Byte)(224)));
-    this.Controls.Add(this.ClassFilterCheck);
+    this.Controls.Add(this.PropertiesList);
     this.Controls.Add(this.SelectButton);
     this.Controls.Add(this.FilterField);
     this.Controls.Add(this.FilterLabel);
-    this.Controls.Add(this.PathTree);
     this.Name = "PropertyPathPicker";
     this.Size = new System.Drawing.Size(304, 272);
+    this.Load += new System.EventHandler(this.PropertyPathPicker_Load);
     this.ResumeLayout(false);
 
   }
@@ -214,23 +153,19 @@ public class PropertyPathPicker : System.Windows.Forms.UserControl
 
   private void SelectButton_Click(object sender, System.EventArgs e)
   {
-    if (PathTree.SelectedNode != null)
-    {
-      string path = PathTree.SelectedNode.FullPath;
-      _value = path.Replace ("@", "_").Replace (":", "_").Replace (".", "_").Replace ("~", ".");
-      if (_editorService != null)
-        _editorService.CloseDropDown ();
-    }
+    _value = (string) PropertiesList.SelectedItem;
+    if (_editorService != null)
+      _editorService.CloseDropDown ();
   }
 
   private void FilterField_TextChanged(object sender, System.EventArgs e)
   {
-    FillTree();
+    FillList();
   }
 
-  private void ClassFilterCheck_CheckedChanged(object sender, System.EventArgs e)
+  private void PropertyPathPicker_Load(object sender, System.EventArgs e)
   {
-    FillTree();
+  
   }
 
   public IWindowsFormsEditorService EditorService
@@ -253,27 +188,13 @@ public class PropertyPathPicker : System.Windows.Forms.UserControl
       else
         _value = value.Trim();
 
-      if (value.Length > 0)
+      if (_value.Length > 0)
       {
-        CnPropertyPath path = CnPropertyPath.Parse (value);
-        TreeNodeCollection nodes = PathTree.Nodes;
-        foreach (CnPropertyPath.Element element in path)
+        for (int i = 0; i < PropertiesList.Items.Count; ++i)
         {
-          if (nodes == null)
-            break;
-          TreeNode node = null;
-          foreach (TreeNode childNode in nodes)
-          {
-            if (childNode.Text == element.Property.Reference)
-            {
-              node = childNode;
-              break;
-            }
-          }
-          if (node == null)
-            break;
-          PathTree.SelectedNode = node;
-          nodes = node.Nodes;
+          string item = (string) PropertiesList.Items[i];
+          if (item == value)
+            PropertiesList.SelectedIndex = i;
         }
       }
     }

@@ -6,12 +6,11 @@ using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using System.ComponentModel;
 
-using Rubicon.CooNet.Web.Controls;
 
 namespace Rubicon.ObjectBinding
 {
 
-public class PropertyPathEditor: UITypeEditor
+public class PropertyPathPickerEditor: UITypeEditor
 {
   private IWindowsFormsEditorService _editorService = null;
 
@@ -25,16 +24,16 @@ public class PropertyPathEditor: UITypeEditor
 
       if (_editorService != null)
       {
-        CnObject objectClass = null;
-        IFscObjectBoundControl source = context.Instance as IFscObjectBoundControl;
-        if (source != null && source.FscObject != null)
-          objectClass = source.FscObject.ObjectClass;
+        IBusinessObjectBoundControl control = context.Instance as IBusinessObjectBoundControl;
+        if (control == null)
+          throw new InvalidOperationException ("Cannot use PropertyPathEditor for objects other than IBusinessObjectBoundControl.");
 
-        PropertyPathPicker pathPicker = new PropertyPathPicker (objectClass);
-        pathPicker.Value = (string) value;
-        pathPicker.EditorService = _editorService;
-        _editorService.DropDownControl (pathPicker);
-        value = pathPicker.Value;
+        PropertyPathPickerControl pathPickerControl = new PropertyPathPickerControl (control);
+
+        pathPickerControl.Value = (string) value;
+        pathPickerControl.EditorService = _editorService;
+        _editorService.DropDownControl (pathPickerControl);
+        value = pathPickerControl.Value;
       }
     }
     return value;

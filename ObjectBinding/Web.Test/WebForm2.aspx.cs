@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.ObjectBinding.Reflection;
 
-namespace BocTest
+namespace OBWTest
 {
 
 public class WebForm2 : System.Web.UI.Page
@@ -60,7 +60,7 @@ public class WebForm2 : System.Web.UI.Page
     // 
     this.reflectionBusinessObjectDataSource1.BusinessObject = null;
     this.reflectionBusinessObjectDataSource1.EditMode = true;
-    this.reflectionBusinessObjectDataSource1.TypeName = "BocTest.Person, BocTest";
+    this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
     this.Load += new System.EventHandler(this.Page_Load);
 
   }

@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.ObjectBinding.Reflection;
 
-namespace BocTest
+namespace OBWTest
 {
 
 public class WebForm1 : System.Web.UI.Page
@@ -28,6 +28,7 @@ public class WebForm1 : System.Web.UI.Page
   protected Rubicon.ObjectBinding.Web.Controls.BocPropertyLabel BocPropertyLabel4;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator2;
   protected System.Web.UI.WebControls.Label Label1;
+  protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -63,12 +64,13 @@ public class WebForm1 : System.Web.UI.Page
 	{    
     this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+    this.RadioButtonList1.SelectedIndexChanged += new System.EventHandler(this.RadioButtonList1_SelectedIndexChanged);
     // 
     // reflectionBusinessObjectDataSource1
     // 
     this.reflectionBusinessObjectDataSource1.BusinessObject = null;
     this.reflectionBusinessObjectDataSource1.EditMode = true;
-    this.reflectionBusinessObjectDataSource1.TypeName = "BocTest.Person, BocTest";
+    this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -81,6 +83,11 @@ public class WebForm1 : System.Web.UI.Page
       reflectionBusinessObjectDataSource1.SaveValues("dummy");
       string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;
     }
+  }
+
+  private void RadioButtonList1_SelectedIndexChanged(object sender, System.EventArgs e)
+  {
+  
   }
 }
 

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
-namespace BocTest 
+namespace OBWTest 
 {
 	/// <summary>
 	/// Summary description for Global.
