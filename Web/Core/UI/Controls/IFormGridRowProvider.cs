@@ -8,9 +8,9 @@ namespace Rubicon.Web.UI.Controls
 
 /// <summary>
 ///   Interface for allowing the <see cref="FormGridManager"/> to query it's parent page
-///   for rows to be isnerted and rows to be hidden.
+///   for rows to be inserted and rows to be hidden.
 /// </summary>
-public interface IFormGridRowProvider: IPage
+public interface IFormGridRowProvider: IControl
 {
   /// <summary>
   ///   Returns a list of IDs identifying the rows to be hidden in a form grid.
