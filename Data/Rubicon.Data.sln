@@ -37,6 +37,7 @@ Global
 		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
+		References\log4net.dll = References\log4net.dll
 		References\nunit.framework.dll = References\nunit.framework.dll
 		References\nunit.framework.xml = References\nunit.framework.xml
 		References\Rubicon.Core.dll = References\Rubicon.Core.dll
