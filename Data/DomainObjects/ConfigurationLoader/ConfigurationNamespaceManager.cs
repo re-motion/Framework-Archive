@@ -3,7 +3,7 @@ using System.Xml;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Loader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
 public class ConfigurationNamespaceManager : XmlNamespaceManager
 {
