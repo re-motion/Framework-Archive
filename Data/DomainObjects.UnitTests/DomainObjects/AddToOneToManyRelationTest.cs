@@ -105,8 +105,8 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
     Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.AreEqual (2, _supervisor.Subordinates.Count);
     Assert.IsNull (_subordinate.Supervisor);
   }
@@ -140,8 +140,8 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
     Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.AreEqual (2, _supervisor.Subordinates.Count);
     Assert.IsNull (_subordinate.Supervisor);
   }
@@ -174,8 +174,8 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
     Assert.AreSame (_subordinate, _supervisorEventReceiver.NewRelatedObject);
 
-    Assert.AreEqual (StateType.Original, _subordinate.State);
-    Assert.AreEqual (StateType.Original, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
     Assert.AreEqual (2, _supervisor.Subordinates.Count);
     Assert.IsNull (_subordinate.Supervisor);
   }
@@ -183,8 +183,8 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
   [Test]
   public void StateTracking ()
   {
-    Assert.AreEqual (StateType.Original, _supervisor.State);
-    Assert.AreEqual (StateType.Original, _subordinate.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _subordinate.State);
 
     _supervisor.Subordinates.Add (_subordinate);
 
@@ -224,8 +224,8 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
     Employee employeeWithSupervisor = (Employee) _supervisor.Subordinates[DomainObjectIDs.Employee4];
     employeeWithSupervisor.Supervisor = _supervisor;
 
-    Assert.AreEqual (StateType.Original, _supervisor.State);
-    Assert.AreEqual (StateType.Original, employeeWithSupervisor.State);
+    Assert.AreEqual (StateType.Unchanged, _supervisor.State);
+    Assert.AreEqual (StateType.Unchanged, employeeWithSupervisor.State);
   }
 
   [Test]
