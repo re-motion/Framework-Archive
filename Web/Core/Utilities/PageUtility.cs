@@ -194,10 +194,10 @@ public class PageUtility
   }
     */
 
-    public static string AddCleanupToken (Page page, string url)
-    {
-      return AddUrlParameter (url, "cleanupToken", GetToken(page));
-    }
+  public static string AddCleanupToken (Page page, string url)
+  {
+    return AddUrlParameter (url, "cleanupToken", GetToken(page));
+  }
 
   public static string AddParentToken (Page page, string url)
   {
