@@ -9,29 +9,97 @@
         </listheader>
         <item>
           <term>
-            CurrentPageInfo
+            PageInfo
           </term>
           <description>
-            &lt;BocList Resource ID&gt;:PageInfo
+            <para> &lt;BocList Resource ID&gt;:PageInfo </para>
+            <para> e.g. auto:MyBocList:PageInfo </para>
           </description>
         </item>
         <item>
           <term>
-            BocColumnDefinition: FixedColumns[x].ColumnTitle
+            FixedColumns[x].ColumnTitle
           </term>
           <description>
-            &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
+            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:ColumnTitle </para>
+            <para> Applies to all columns. </para>
           </description>
         </item>
         <item>
           <term>
-            BocCommandColumnDefinition: FixedColumns[x].Label
+            FixedColumns[x].Label
           </term>
           <description>
-            &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Label
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Label </para>
+            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:Label </para>
+            <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
           </description>
         </item>
       </list>
     </remarks>
   </Class>
+  <OnCommandClick>
+    <param name="columnID"> 
+      The ID of the column whose command was clicked. 
+    </param>
+    <param name="listIndex">
+      An index that indtifies the <see cref="IBusinessObject"/> with which the clicked command 
+      is associated.
+    </param>
+    <param name="businessObjectID">
+      An identifier for the <see cref="IBusinessObject"/> with which the clicked command 
+      is associated.
+    </param>
+  </OnCommandClick>
+  <SortingOrderEntry>
+    <Constructor>
+      <param name="columnIndex"> 
+        The index of the column. 
+      </param>
+      <param name="direction"> 
+        The sorting direction for the column. 
+      </param>
+    </Constructor>
+    <OperatorEqual>
+      <param name="left">
+        The <see cref="SortingOrderEntry"/> structure that is to the left of the equality operator. 
+      </param>
+      <param name="right">
+        The <see cref="SortingOrderEntry"/> structure that is to the right of the equality operator. 
+      </param>
+      <returns>
+        This operator returns <see langword="true"/> if the two <see cref="SortingOrderEntry"/>
+        structures are equal; otherwise, <see langword="false"/>.
+      </returns>
+    </OperatorEqual>
+    <OperatorDifferent>
+      <param name="left">
+        The <see cref="SortingOrderEntry"/> structure that is to the left of the inequality operator. 
+      </param>
+      <param name="right">
+        The <see cref="SortingOrderEntry"/> structure that is to the right of the inequality operator. 
+      </param>
+      <returns>
+        This operator returns <see langword="true"/> if the two <see cref="SortingOrderEntry"/>
+        structures are different; otherwise, <see langword="false"/>.
+      </returns>
+    </OperatorDifferent>
+    <Equals>
+      <param name="obj">
+        The object to test. 
+      </param>
+      <returns>
+        This method returns <see langword="true"/> if <paramref name="obj"/> 
+        is a <see cref="SortingOrderEntry"/> structure equivalent to this 
+        <see cref="SortingOrderEntry"/> structure; otherwise, <see langword="false"/>.
+      </returns>
+    </Equals>
+    <GetHashCode>
+      <returns> 
+        An integer value that specifies the hash code for this  <see cref="SortingOrderEntry"/> 
+        structure. 
+      </returns>
+    </GetHashCode>
+  </SortingOrderEntry>
 </BocList>
