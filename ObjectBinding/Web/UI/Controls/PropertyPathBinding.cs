@@ -94,16 +94,8 @@ public class PropertyPathBinding: IBusinessObjectClassSource
   [Browsable (false)]
   public IBusinessObjectDataSource DataSource
   {
-    get
-    {
-      if (_ownerControl != null && _ownerControl.DataSource != null && _dataSource != _ownerControl.DataSource)
-        _dataSource = _ownerControl.DataSource;
-      return _dataSource; 
-    }
-    set 
-    {
-      _dataSource = value; 
-    }
+    get { return _dataSource; }
+    set { _dataSource = value; }
   }
 
   /// <summary> 
@@ -141,12 +133,7 @@ public class PropertyPathBinding: IBusinessObjectClassSource
           if (isDataSourceNull)
             throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
 
-          if (ReferenceProperty != null)
-            _propertyPath = BusinessObjectPropertyPath.Parse (ReferenceProperty.ReferenceClass, _propertyPathIdentifier);
-          else if (DataSource.BusinessObjectClass != null)
-            _propertyPath = BusinessObjectPropertyPath.Parse (DataSource.BusinessObjectClass, _propertyPathIdentifier);
-          else
-            _propertyPath = null;
+          _propertyPath = BusinessObjectPropertyPath.Parse (BusinessObjectClass, _propertyPathIdentifier);
         }
         _isPopertyPathEvaluated = true;
       }
@@ -212,11 +199,18 @@ public class PropertyPathBinding: IBusinessObjectClassSource
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
+  public IBusinessObjectClass BusinessObjectClass
   {
     get 
     {
-      throw new NotImplementedException();
+      IBusinessObjectReferenceProperty property = ReferenceProperty;
+      if (property != null)
+        return property.ReferenceClass;
+
+      if (DataSource != null)
+        return DataSource.BusinessObjectClass;
+
+      return null;
     }
   }
 }
