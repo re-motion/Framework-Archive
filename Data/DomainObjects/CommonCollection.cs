@@ -94,8 +94,8 @@ public class CollectionBase : ICollection
   /// <param name="index">The index of the object to return.</param>
   /// <returns>The object with the given index.</returns>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   protected object GetObject (int index)
   {
@@ -204,8 +204,8 @@ public class CollectionBase : ICollection
   /// <param name="value">The <i>value</i> of the item to add. The <i>value</i> can be a null reference.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is greater than <see cref="Count"/>.
   /// </exception>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException">An item with the same <i>key</i> already exists in the collection.</exception>
@@ -225,8 +225,8 @@ public class CollectionBase : ICollection
   /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
   /// <param name="index">The <i>index</i> to check.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is greater than <see cref="Count"/>.
   /// </exception>
   protected void CheckIndexForInsert (string argumentName, int index)
   {
@@ -245,8 +245,8 @@ public class CollectionBase : ICollection
   /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
   /// <param name="index">The <i>index</i> to check.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <param><i>index</i> is less than zero.</param>
-  ///   <param><i>index</i> is equal to or greater than <see cref="Count"/>.</param>
+  ///   <i>index</i> is less than zero.<br />
+  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   protected void CheckIndexForIndexer (string argumentName, int index)
   {
@@ -312,8 +312,8 @@ public class CollectionBase : ICollection
   /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <i>array</i> is not a one-dimensional array.
-  ///   <i>index</i> is greater than the current length of the array.
+  ///   <i>array</i> is not a one-dimensional array.<br />
+  ///   <i>index</i> is greater than the current length of the array.<br />
   ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
   /// </exception>
   public virtual void CopyTo (Array array, int index)
