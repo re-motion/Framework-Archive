@@ -1,3 +1,29 @@
+3.1.6.0
+=======
+
+- EntryFormGrid: Folgende statics zu instance members gemacht: 
+  * ImagePath
+  * GetImagePath (...)
+  * GetWhitespaceImage (...) + Overload
+  
+- EntryFieldBreak: 
+  * Neue property EntryFormGrid
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+  * EntryFieldBreak darf nur mehr in EntryFormGrid platziert werden
+  
+- EntryTitle: 
+  * Neue property EntryFormGrid
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+  * EntryTitle darf nur mehr in EntryFormGrid platziert werden
+  
+- EntryField: 
+  * Neue property EntryFormGrid
+  * Protected property ParentGrid entfernt
+  * Implementierung von Render (...) geändert => Statt cast und Abfrage auf null beim Zugriff auf EntryFormGrid
+    neue property EntryFormGrid verwendet => EntryField darf nur mehr in einem EntryFormGrid platziert werden.
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+
+  
 3.1.5.0
 =======
 
