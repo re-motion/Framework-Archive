@@ -446,9 +446,13 @@
   <target name="getcurrent" depends="initNoConfig">
     <property name="local.currentdir" value="${solution.basedir}/build/Current" />
     
-    <if targetexists="${local.currentdir}">
-      <delete dir="${local.currentdir}"/>
-    </if>
+    <delete failonerror="false">
+      <fileset>
+        <includes name="${local.currentdir}//*" />
+        <includes name="${local.currentdir}" />
+      </fileset>
+    </delete>
+
     <copy todir="${local.currentdir}">
       <fileset basedir="${build.basedir}">
         <includes name="**/*" />
