@@ -103,17 +103,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "ChangeTrackingEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ClientTransaction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ClientTransactionEvents.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -149,6 +139,11 @@
                 />
                 <File
                     RelPath = "DomainObjectException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Events.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

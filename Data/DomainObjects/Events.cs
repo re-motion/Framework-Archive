@@ -32,14 +32,14 @@ public delegate void RelationChangingEventHandler (object sender, RelationChangi
 public delegate void RelationChangedEventHandler (object sender, RelationChangedEventArgs args);
 
 /// <summary>
-/// Represents the method that will handle the <see cref="DomainObject.Deleting"/> event of the <see cref="DomainObject"/>.
-/// </summary>
-public delegate void DeletingEventHandler (object sender, EventArgs args);
-
-/// <summary>
 /// Represents the method that will handle the <see cref="ClientTransaction.Loaded"/> event of a <see cref="ClientTransaction"/>.
 /// </summary>
 public delegate void LoadedEventHandler (object sender, LoadedEventArgs args);
+
+/// <summary>
+/// Represents the method that will handle the <see cref="ClientTransaction.Committed"/> and <see cref="ClientTransaction.Committing"/> events of a <see cref="ClientTransaction"/>.
+/// </summary>
+public delegate void CommitEventHandler (object sender, CommitEventArgs args);
 
 /// <summary>
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
@@ -50,7 +50,7 @@ public class ValueChangingEventArgs : EventArgs
   private object _newValue;
 
   /// <summary>
-  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class with the <see cref="Cancel"/> property set to false.
+  /// Initializes a new instance of the <b>ValueChangingEventArgs</b>.
   /// </summary>
   /// <param name="oldValue">The old value.</param>
   /// <param name="newValue">The new value.</param>
@@ -85,7 +85,7 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
   private PropertyValue _propertyValue;
 
   /// <summary>
-  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class with the <see cref="Cancel"/> property set to false.
+  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class.
   /// </summary>
   /// <param name="propertyValue">The <see cref="PropertyValue"/> that is being changed.</param>
   /// <param name="oldValue">The old value.</param>
@@ -145,7 +145,7 @@ public class RelationChangingEventArgs : EventArgs
   private DomainObject _newRelatedObject;
 
   /// <summary>
-  /// Initializes a new instance of the <b>RelationChangingEventArgs</b> class with the <see cref="Cancel"/> property set to false.
+  /// Initializes a new instance of the <b>RelationChangingEventArgs</b> class.
   /// </summary>
   /// <param name="propertyName">The name of the property that is being changed due to the relation change.</param>
   /// <param name="oldRelatedObject">The old object that was related.</param>
@@ -240,6 +240,34 @@ public class LoadedEventArgs : EventArgs
   public DomainObject LoadedDomainObject
   {
     get { return _loadedDomainObject; }
+  }
+}
+
+
+/// <summary>
+/// Provides data for the <see cref="ClientTransaction.Committing"/> and <see cref="ClientTransaction.Committed"/> events of a <see cref="ClientTransaction"/>.
+/// </summary>
+public class CommitEventArgs : EventArgs
+{
+  private DomainObjectCollection _domainObjects;
+
+  /// <summary>
+  /// Initializes a new instance of the <b>CommitEventArgs</b> class.
+  /// </summary>
+  /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  public CommitEventArgs (DomainObjectCollection domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+    _domainObjects = domainObjects;
+  }
+
+  /// <summary>
+  /// Gets the <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.
+  /// </summary>
+  public DomainObjectCollection DomainObjects
+  {
+    get { return _domainObjects; }
   }
 }
 }

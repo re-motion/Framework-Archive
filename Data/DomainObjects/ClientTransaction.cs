@@ -50,7 +50,17 @@ public class ClientTransaction
   /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
   public event LoadedEventHandler Loaded;
-  
+
+  /// <summary>
+  /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Commit"/> operation.
+  /// </summary>
+  public event CommitEventHandler Committing;
+
+  /// <summary>
+  /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Commit"/> operation.
+  /// </summary>
+  public event CommitEventHandler Committed;
+
   private DataManager _dataManager;
   private QueryManager _queryManager;
 
@@ -73,6 +83,9 @@ public class ClientTransaction
   //todo documentation: exceptions
   public virtual void Commit ()
   {
+    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects (); 
+    BeginCommit (changedDomainObjects);
+
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
@@ -80,6 +93,7 @@ public class ClientTransaction
     }
 
     _dataManager.Commit ();
+    EndCommit (changedDomainObjects);
   }
 
   /// <summary>
@@ -424,6 +438,26 @@ public class ClientTransaction
   }
 
   /// <summary>
+  /// Raises the <see cref="Committing"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="CommitEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitting (CommitEventArgs args)
+  {
+    if (Committing != null)
+      Committing (this, args);
+  }
+
+  /// <summary>
+  /// Raises the <see cref="Committed"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="CommitEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitted (CommitEventArgs args)
+  {
+    if (Committed != null)
+      Committed (this, args);
+  }
+
+  /// <summary>
   /// Gets the <see cref="DataManager"/> of the <b>ClientTransaction</b>.
   /// </summary>
   protected DataManager DataManager
@@ -437,6 +471,22 @@ public class ClientTransaction
   public QueryManager QueryManager 
   {
     get { return _queryManager; }
+  }
+
+  private void BeginCommit (DomainObjectCollection changedDomainObjects)
+  {
+    foreach (DomainObject changedDomainObject in changedDomainObjects)
+      changedDomainObject.BeginCommit ();
+
+    OnCommitting (new CommitEventArgs (changedDomainObjects));
+  }
+
+  private void EndCommit (DomainObjectCollection changedDomainObjects)
+  {
+    foreach (DomainObject changedDomainObject in changedDomainObjects)
+      changedDomainObject.EndCommit ();
+    
+    OnCommitted (new CommitEventArgs (changedDomainObjects));
   }
 }
 }

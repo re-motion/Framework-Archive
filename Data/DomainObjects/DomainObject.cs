@@ -110,7 +110,17 @@ public class DomainObject
   /// <summary>
   /// Occurs before the <b>DomainObject</b> is deleted.
   /// </summary>
-  public event DeletingEventHandler Deleting;
+  public event EventHandler Deleting;
+
+  /// <summary>
+  /// Occurs before the changes of a <b>DomainObject</b> are committed.
+  /// </summary>
+  public event EventHandler Committing;
+
+  /// <summary>
+  /// Occurs after the changes of a <b>DomainObject</b> are successfully committed.
+  /// </summary>
+  public event EventHandler Committed;
 
   /// <summary>
   /// Occurs after the <b>DomainObject</b> has been deleted.
@@ -328,6 +338,26 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Raises the <see cref="Committing"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="System.EventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitting (EventArgs args)
+  {
+    if (Committing != null)
+      Committing (this, args);
+  }
+
+  /// <summary>
+  /// Raises the <see cref="Committed"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="System.EventArgs"/> object that contains the event data.</param>
+  protected virtual void OnCommitted (EventArgs args)
+  {
+    if (Committed != null)
+      Committed (this, args);
+  }
+
+  /// <summary>
   /// Raises the <see cref="RelationChanging"/> event.
   /// </summary>
   /// <param name="args">A <see cref="RelationChangingEventArgs"/> object that contains the event data.</param>
@@ -417,8 +447,17 @@ public class DomainObject
 
   internal void EndDelete ()
   {
-    EventArgs args = new EventArgs ();
-    OnDeleted (args);
+    OnDeleted (new EventArgs ());
+  }
+
+  internal void BeginCommit ()
+  {
+    OnCommitting (new EventArgs ());
+  }
+
+  internal void EndCommit ()
+  {
+    OnCommitted (new EventArgs ());
   }
 
   private void DataContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
