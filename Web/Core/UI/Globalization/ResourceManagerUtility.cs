@@ -3,7 +3,7 @@ using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Collections;
 
-namespace Rubicon.Web.Utilities
+namespace Rubicon.Web.UI.Globalization
 {
 /// <summary>
 ///   Functionality for working with <see cref="IResourceManager"/> in Controls.
