@@ -96,8 +96,15 @@ public class SmartLabel: WebControl
 
   protected override void Render(HtmlTextWriter writer)
   {
-    ForControl = StringUtility.NullToEmpty (ForControl);
     this.RenderBeginTag (writer);
+    writer.Write (GetText());
+    this.RenderEndTag (writer);
+  }
+
+  public string GetText()
+  {
+    string forControlBackUp = ForControl;
+    ForControl = StringUtility.NullToEmpty (ForControl);
     string text = string.Empty;
 
     if (ForControl == string.Empty)
@@ -149,8 +156,8 @@ public class SmartLabel: WebControl
         text = "[Label for " + ForControl + "]";
       }
     }
-    writer.Write (text);
-    this.RenderEndTag (writer);
+    ForControl = forControlBackUp;
+    return text;
   }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)

@@ -64,6 +64,14 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     //  ValidationErrorInfoTitle,
   }
   
+  protected enum TransformationStep
+  {
+    TransformationNotStarted = 0,
+    PreLoadViewStateTransformationCompleted = 1,
+    PostLoadTransformationCompleted = 2,
+    PostValidationTransformationCompleted = 3
+  }
+
   /// <summary>
   ///   Wrapper class for a single HtmlTable plus the additional information
   ///   added through the <see cref="FormGridManager"/>.
@@ -936,11 +944,14 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary> Enable/Disable the help providers. </summary>
   private bool _showHelpProviders;
 
-  /// <summary> State variable for the two part transformation process. Hashtable&lt;string uniqueID, bool&gt; </summary>
-  private Hashtable _hasCompletedTransformationStepPreLoadViewState = new Hashtable();
+  /// <summary> 
+  ///   State variable for the two part transformation process. 
+  ///   Hashtable&lt;FormGrid, TransformationStep completedStep&gt; 
+  /// </summary>
+  private Hashtable _completedTransformationStep = new Hashtable();
 
-  /// <summary> State variable for automatic validators creation. </summary>
-  private bool _hasValidatorsCreated;
+//  /// <summary> State variable for automatic validators creation. </summary>
+//  private bool _hasValidatorsCreated;
 
   /// <summary> Caches the <see cref="IFormGridRowProvider"/> for this <see cref="FormGridManager"/>. </summary>
   private IFormGridRowProvider _cachedFormGridRowProvider;
@@ -980,7 +991,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Validate/*' />
   public bool Validate()
   {
-    EnsureFormGridListPopulated();
+    EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
 
     bool isValid = true;
     foreach (FormGrid formGrid in _formGrids.Values)
@@ -1007,8 +1018,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
   public virtual void Dispatch (IDictionary values)
   {
-    EnsureFormGridListPopulated();
-    EnsureTransformIntoFormGridPreLoadViewState();
+    EnsureTransformationStep (TransformationStep.PreLoadViewStateTransformationCompleted);
 
     Hashtable formGridControls = new Hashtable();
 
@@ -1180,19 +1190,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     string formGridID = ((HtmlTable) sender).UniqueID;
     FormGrid formGrid = (FormGrid) _formGrids[formGridID];
-    EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+    EnsureTransformationStep (formGrid, TransformationStep.PreLoadViewStateTransformationCompleted);
   }
-
-  private bool _postLoadExecuted = false;
 
   /// <summary>
   /// Optionally called after the <c>Load</c> event.
   /// </summary>
   public void OnPostLoad()
   {
-    foreach (FormGrid grid in _formGrids.Values)
-      TransformIntoFormGridPostValidation (grid);
-    _postLoadExecuted = true;
+    EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
   }
 
   /// <summary>
@@ -1200,12 +1206,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// </summary>
   private void Table_PreRender (object sender, EventArgs e)
   {
-    if (! _postLoadExecuted)
-    {
-      string formGridID = ((HtmlTable) sender).UniqueID;
-      FormGrid formGrid = (FormGrid) _formGrids[formGridID];
-      TransformIntoFormGridPostValidation (formGrid);
-    }
+    string formGridID = ((HtmlTable) sender).UniqueID;
+    FormGrid formGrid = (FormGrid) _formGrids[formGridID];
+    EnsureTransformationStep (formGrid, TransformationStep.PostValidationTransformationCompleted);
   }
 
   /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
@@ -1250,8 +1253,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
 
     //  Rebuild the HTML tables used as form grids
-    EnsureFormGridListPopulated();
-    EnsureTransformIntoFormGridPreLoadViewState();
+    EnsureTransformationStep (TransformationStep.PreLoadViewStateTransformationCompleted);
 
 
     //  Restore the view state to the form grids
@@ -1512,24 +1514,14 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
   private bool ValidateFormGrid (FormGrid formGrid)
   {
-    if (formGrid == null) throw new ArgumentNullException ("formGrid");
-
     bool isValid = true;
     foreach (FormGridRow formGridRow in formGrid.Rows)
     {
       if (formGridRow.Type != FormGridRowType.DataRow)
         continue;
 
-      if (! _hasValidatorsCreated)
-      {
-        CreateValidators (formGridRow);
-        ApplyValidatorSettings (formGridRow);
-      }
-
       isValid &= ValidateDataRow (formGridRow);
     }
-
-    _hasValidatorsCreated = true;
     return isValid;
   }
 
@@ -1569,10 +1561,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary>
-  ///   Creates the appropriate validation marker and <see cref="ValidationError"/> objects.
+  ///   Creates the appropriate validation marker and <see cref="ValidationError"/> objects and adds them to the 
+  ///   <paramref name="dataRow"/>.
   /// </summary>
-  /// <param name="dataRow"></param>
-  private void FormatValidators (FormGridRow dataRow)
+  /// <param name="dataRow"> The <see cref="FormGridRow"/> for which the validation errors will analyzed and registered. </param>
+  private void RegisterValidationErrors (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
@@ -1619,22 +1612,56 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray (typeof (ValidationError));
   }
 
-  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
-  protected void EnsureTransformIntoFormGridPreLoadViewState()
+  protected void EnsureTransformationStep (TransformationStep stepToBeCompleted)
   {
+    EnsureFormGridListPopulated();
+
     foreach (FormGrid formGrid in _formGrids.Values)
-      EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+      EnsureTransformationStep (formGrid, stepToBeCompleted);
   }
-  
-  private void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
+
+  private void EnsureTransformationStep (FormGrid formGrid, TransformationStep stepToBeCompleted)
   {
-    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
+    object boxedCompletedStep = _completedTransformationStep [formGrid];
+    TransformationStep completedStep = TransformationStep.TransformationNotStarted;
+    if (boxedCompletedStep != null)
+      completedStep = (TransformationStep) boxedCompletedStep;
 
-    object hasCompleted = _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID];
-    if (hasCompleted != null && (bool) hasCompleted)
-      return;
+    if (   completedStep < TransformationStep.PreLoadViewStateTransformationCompleted 
+        && completedStep < stepToBeCompleted)
+    {
+      completedStep = TransformIntoFormGridPreLoadViewState (formGrid);
+    }
+    if (   completedStep < TransformationStep.PostLoadTransformationCompleted 
+        && completedStep < stepToBeCompleted)
+    {
+      completedStep = TransformIntoFormGridPostLoad (formGrid);
+    }
+    if (   completedStep < TransformationStep.PostValidationTransformationCompleted
+        && completedStep < stepToBeCompleted)
+    {
+      completedStep = TransformIntoFormGridPostValidation (formGrid);
+    }
+  }
 
+//  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
+//  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPreLoadViewState/*' />
+//  protected void EnsureTransformIntoFormGridPreLoadViewState()
+//  {
+//    foreach (FormGrid formGrid in _formGrids.Values)
+//      EnsureTransformIntoFormGridPreLoadViewState (formGrid);
+//  }
+//  
+//  private void EnsureTransformIntoFormGridPreLoadViewState (FormGrid formGrid)
+//  {
+//    object hasCompleted = _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID];
+//    if (hasCompleted != null && (bool) hasCompleted)
+//      return;
+//    TransformIntoFormGridPreLoadViewState (formGrid);
+//  }
+
+  private TransformationStep TransformIntoFormGridPreLoadViewState (FormGrid formGrid)
+  {
     formGrid.Table.EnableViewState = false;
 
     formGrid.BuildIDCollection();
@@ -1643,20 +1670,39 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ComposeFormGridContents (formGrid);
     FormatFormGrid (formGrid);
 
-    _hasCompletedTransformationStepPreLoadViewState[formGrid.Table.UniqueID] = true;
+    TransformationStep completedStep = TransformationStep.PreLoadViewStateTransformationCompleted;
+    _completedTransformationStep[formGrid] = completedStep;
+    return completedStep;
   }
 
-  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPostValidation/*' />
-  protected void TransformIntoFormGridPostValidation()
+  private TransformationStep TransformIntoFormGridPostLoad (FormGrid formGrid)
   {
-    foreach (FormGrid formGrid in _formGrids.Values)
-      TransformIntoFormGridPostValidation (formGrid);
-  }
+    foreach (FormGridRow formGridRow in formGrid.Rows)
+    {
+      if (formGridRow.Type == FormGridRowType.DataRow)
+      {
+//        CreateRequiredMarker (formGridRow);
+//        CreateHelpProvider(formGridRow);
+        CreateValidators (formGridRow);
+        ApplyValidatorSettings (formGridRow);
+      }
+    }
 
-  private void TransformIntoFormGridPostValidation (FormGrid formGrid)
+    TransformationStep completedStep = TransformationStep.PostLoadTransformationCompleted;
+    _completedTransformationStep[formGrid] = completedStep;
+    return completedStep;
+  }  
+
+//  /// <summary> Transforms the <see cref="HtmlTable"/> into a form grid. </summary>
+//  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/TransformIntoFormGridPostValidation/*' />
+//  protected void TransformIntoFormGridPostValidation()
+//  {
+//    foreach (FormGrid formGrid in _formGrids.Values)
+//      TransformIntoFormGridPostValidation (formGrid);
+//  }
+
+  private TransformationStep TransformIntoFormGridPostValidation (FormGrid formGrid)
   {
-    ArgumentUtility.CheckNotNull ("formGrid", formGrid);
     foreach (FormGridRow formGridRow in formGrid.Rows)
     {
       if (formGridRow.Type == FormGridRowType.DataRow)
@@ -1664,13 +1710,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         CreateRequiredMarker (formGridRow);
         CreateHelpProvider(formGridRow);
 
-        if (! _hasValidatorsCreated)
-        {
-          CreateValidators (formGridRow);
-          ApplyValidatorSettings (formGridRow);
-        }
-
-        FormatValidators (formGridRow);
+        RegisterValidationErrors (formGridRow);
 
         LoadMarkersIntoCell (formGridRow);
         if (    ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
@@ -1686,7 +1726,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       AddShowEmptyCellsHack (formGridRow);
     }
 
-    _hasValidatorsCreated = true;
+    TransformationStep completedStep = TransformationStep.PostValidationTransformationCompleted;
+    _completedTransformationStep[formGrid] = completedStep;
+    return completedStep;
   }
 
   /// <summary>
@@ -2172,8 +2214,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary>
-  ///   Creates the validators from the controls inside <paramref name="dataRow"/>
-  ///   if they do not already exist.
+  ///   Creates the validators from the controls inside <paramref name="dataRow"/> if they do not already exist.
   /// </summary>
   /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
   protected virtual void CreateValidators (FormGridRow dataRow)
@@ -2204,13 +2245,13 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       {
         BaseValidator baseValidator = validator as BaseValidator;
         IBaseValidator iBaseValidator = validator as IBaseValidator;
-        if (    baseValidator != null
-            &&  baseValidator.ControlToValidate == smartControl.ID)
+        if (   baseValidator != null
+            && baseValidator.ControlToValidate == smartControl.ID)
         {
           return;
         }
-        else if (     iBaseValidator != null
-                  &&  iBaseValidator.ControlToValidate == smartControl.ID)
+        else if (   iBaseValidator != null
+                 && iBaseValidator.ControlToValidate == smartControl.ID)
         {
           return;
         }
