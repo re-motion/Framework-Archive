@@ -313,6 +313,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\ObjectEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\PropertyValueCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -349,11 +354,6 @@
                 />
                 <File
                     RelPath = "DataManagement\RelationEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\SingleObjectRelationLinkTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1,55 +1,102 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
-[TestFixture]
-public class CollectionEndPointTest : ClientTransactionBaseTest
-{
-  // types
+  [TestFixture]
+  public class CollectionEndPointTest : DatabaseTest
+  {
+    // types
 
-  // static members and constants
+    // static members and constants
 
-  // member fields
+    // member fields
 
-  private VirtualRelationEndPointDefinition _orderEndPointDefinition;
-  private Order _order;
-  private DomainObjectCollection _orderItems;
-  private CollectionEndPoint _orderItemEndPoint;
+    private RelationEndPointID _customerEndPointID;
+    private DomainObjectCollection _orders;
+    private CollectionEndPoint _customerEndPoint;
+    private DomainObject _order1;
+    private DomainObject _order2;
+
+    // construction and disposing
+
+    public CollectionEndPointTest ()
+    {
+    }
+
+    // methods and properties
   
-  // construction and disposing
+    public override void SetUp ()
+    {
+      base.SetUp ();
 
-  public CollectionEndPointTest ()
-  {
-  }
+      _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Orders");
+      _order1 = Order.GetObject (DomainObjectIDs.Order1);
+      _order2 = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
 
-  // methods and properties
+      _orders = new DomainObjectCollection ();
+      _orders.Add (_order1);
+      _orders.Add (_order2);
 
-  public override void SetUp()
-  {
-    base.SetUp ();
+      _customerEndPoint = new CollectionEndPoint (_customerEndPointID, _orders);
+    }
 
-    _order = Order.GetObject (DomainObjectIDs.Order1);
-    ClassDefinition orderItemClass = MappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem");
+    [Test]
+    public void Initialize ()
+    {  
+      Assert.AreEqual (_customerEndPointID, _customerEndPoint.ID);
     
-    _orderEndPointDefinition = 
-        (VirtualRelationEndPointDefinition) orderItemClass.GetOppositeEndPointDefinition ("Order");
-    
-    _orderItems = _order.OrderItems;
-    _orderItemEndPoint = new CollectionEndPoint (_order, _orderEndPointDefinition, _orderItems);
-  }
+      Assert.AreEqual (_orders.Count, _customerEndPoint.OriginalOppositeDomainObjects.Count);
+      Assert.IsNotNull (_customerEndPoint.OriginalOppositeDomainObjects[_order1.ID]);
+      Assert.IsNotNull (_customerEndPoint.OriginalOppositeDomainObjects[_order2.ID]);
 
-  [Test]
-  public void Initialize ()
-  {
-    Assert.AreSame (_order, _orderItemEndPoint.DomainObject);
-    Assert.AreSame (_orderEndPointDefinition, _orderItemEndPoint.Definition);
-    Assert.AreSame (_orderItems, _orderItemEndPoint.OppositeDomainObjects);
+      Assert.AreSame (_orders, _customerEndPoint.OppositeDomainObjects);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void InitializeWithInvalidRelationEndPointID ()
+    {
+      CollectionEndPoint endPoint = new CollectionEndPoint (null, _orders);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void InitializeWithNullObjectIDCollection ()
+    {
+      CollectionEndPoint endPoint = new CollectionEndPoint (_customerEndPointID, null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (DataManagementException), "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
+    public void RemoveFromOppositeDomainObjects ()
+    {
+      _customerEndPoint.OppositeDomainObjects.Remove (_order1.ID);
+    }
+
+    [Test]
+    [ExpectedException (typeof (DataManagementException), "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
+    public void AddToOppositeDomainObjects ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
+      _customerEndPoint.OppositeDomainObjects.Add (newOrder);
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException))]
+    public void ChangeOriginalOppositeDomainObjects ()
+    {
+      _customerEndPoint.OriginalOppositeDomainObjects.Remove (_order1.ID);
+    }
+
+    [Test]
+    public void HasChangedFalse ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+    }
   }
-}
 }

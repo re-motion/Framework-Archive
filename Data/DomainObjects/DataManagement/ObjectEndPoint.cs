@@ -12,6 +12,7 @@ public class ObjectEndPoint : RelationEndPoint
 
   // member fields
 
+  private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
   private RelationEndPoint _newEndPoint;
 
@@ -61,12 +62,52 @@ public class ObjectEndPoint : RelationEndPoint
       ObjectID objectID, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : base (objectID, propertyName)
+      : this (new RelationEndPointID (objectID, propertyName), oppositeObjectID)
+  {
+  }
+
+  public ObjectEndPoint (RelationEndPointID id, ObjectID oppositeObjectID) : base (id)
   {
     _oppositeObjectID = oppositeObjectID;
+    _originalOppositeObjectID = oppositeObjectID;
   }
 
   // methods and properties
+
+  public override void Commit ()
+  {
+    if (HasChanged)
+      _originalOppositeObjectID = _oppositeObjectID;
+  }
+
+  public override void Rollback ()
+  {
+    if (HasChanged)
+      _oppositeObjectID = _originalOppositeObjectID;
+  }
+
+  public override bool HasChanged 
+  {
+    get
+    {
+      if (_oppositeObjectID == null && _originalOppositeObjectID == null) 
+        return false;
+
+      if (_oppositeObjectID == null) 
+        return true;
+
+      return !_oppositeObjectID.Equals (_originalOppositeObjectID);
+    }
+  }
+
+  public override void CheckMandatory ()
+  {
+    if (_oppositeObjectID == null)
+    {
+      throw CreateMandatoryRelationNotSetException (
+          "Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID);
+    }    
+  }
 
   public override bool BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
   {
@@ -85,9 +126,20 @@ public class ObjectEndPoint : RelationEndPoint
     _oppositeObjectID = _newEndPoint.ObjectID;
   }
 
+  public ObjectID OriginalOppositeObjectID
+  {
+    get { return _originalOppositeObjectID; }
+  }
+
   public ObjectID OppositeObjectID
   {
     get { return _oppositeObjectID; }
+    
+    set 
+    {
+      // TODO: Perform the changement through BeginRelationChange and EndRelationChange instead!
+      _oppositeObjectID = value; 
+    }
   }
 }
 }

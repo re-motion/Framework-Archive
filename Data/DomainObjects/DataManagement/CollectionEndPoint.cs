@@ -62,7 +62,11 @@ public class CollectionEndPoint : RelationEndPoint
       ObjectID objectID, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : base (objectID, propertyName)
+      : this (new RelationEndPointID (objectID, propertyName), oppositeDomainObjects)
+  {
+  }
+
+  public CollectionEndPoint (RelationEndPointID id, DomainObjectCollection oppositeDomainObjects) : base (id)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     _oppositeDomainObjects = oppositeDomainObjects;

@@ -263,7 +263,7 @@ public class DataContainerFactory
     try
     {
       string classID = _dataReader.GetString (_dataReader.GetOrdinal (relatedClassIDColumnName));
-      return MappingConfiguration.Current.ClassDefinitions.GetByClassID (classID);
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
     }
     catch (IndexOutOfRangeException)
     {

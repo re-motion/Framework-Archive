@@ -12,12 +12,11 @@ public class RelationEndPoint : INullable
 
   // member fields
 
-  private ObjectID _objectID;
   private IRelationEndPointDefinition _definition;
   private RelationEndPointID _id;
 
   // construction and disposing
-  
+
   public RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
       : this (domainObject.ID, definition)
   {
@@ -44,15 +43,17 @@ public class RelationEndPoint : INullable
   {
   }
 
-  public RelationEndPoint (ObjectID objectID, string propertyName)
+  public RelationEndPoint (ObjectID objectID, string propertyName) : this (new RelationEndPointID (objectID, propertyName))
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+  }
+  
+  public RelationEndPoint (RelationEndPointID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (objectID.ClassID);
-    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
-    _objectID = objectID;
-    _id = new RelationEndPointID (objectID, propertyName);
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (id.ObjectID.ClassID);
+    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (id.PropertyName);
+    _id = id;
   }
 
   protected RelationEndPoint (IRelationEndPointDefinition definition)
@@ -100,7 +101,7 @@ public class RelationEndPoint : INullable
     get 
     {
       // TODO: This property should return a deleted domainObject too!
-      return ClientTransaction.Current.GetObject (_objectID); 
+      return ClientTransaction.Current.GetObject (ObjectID); 
     }
   }
 
@@ -111,7 +112,7 @@ public class RelationEndPoint : INullable
 
   public virtual ObjectID ObjectID
   {
-    get { return _objectID; }
+    get { return _id.ObjectID; }
   }
 
   public RelationDefinition RelationDefinition
@@ -137,6 +138,41 @@ public class RelationEndPoint : INullable
   public virtual RelationEndPointID ID
   {
     get { return _id; }
+  }
+
+
+  public virtual bool HasChanged 
+  {
+    get 
+    { 
+      // TODO: Make this property abstract
+      throw new InvalidOperationException ("HasChanged must be overridden in a derived class.");
+    }
+  }
+
+  public virtual void Commit ()
+  {
+    // TODO: Make this method abstract
+    throw new InvalidOperationException ("Commit must be overridden in a derived class.");
+  }
+
+  public virtual void Rollback ()
+  {
+    // TODO: Make this method abstract
+    throw new InvalidOperationException ("Rollback must be overridden in a derived class.");
+  }
+
+  public virtual void CheckMandatory ()
+  {
+    // TODO: Make this method abstract
+    throw new InvalidOperationException ("CheckMandatory must be overridden in a derived class.");
+  }
+
+  protected MandatoryRelationNotSetException CreateMandatoryRelationNotSetException (
+      string formatString, 
+      params object[] args)
+  {
+    return new MandatoryRelationNotSetException (string.Format (formatString, args));
   }
 
   #region INullable Members

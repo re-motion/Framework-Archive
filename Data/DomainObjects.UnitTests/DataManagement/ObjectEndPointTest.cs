@@ -27,8 +27,7 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
 
   // methods and properties
 
-  [SetUp]
-  public void SetUp ()
+  public override void SetUp ()
   {
     _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Order");
     _oppositeObjectID = DomainObjectIDs.Order1;
