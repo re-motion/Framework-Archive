@@ -104,7 +104,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override void Rollback ()
   {
     if (HasChanged)
+    {
       _oppositeDomainObjects = _originalOppositeDomainObjects.Clone (_oppositeDomainObjects.IsReadOnly);
+      _oppositeDomainObjects.ChangeDelegate = this;
+    }
   }
 
   public override bool HasChanged
