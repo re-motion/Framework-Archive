@@ -29,11 +29,13 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
       int editorHeight, 
       double propertyGridLabelRatio)
     : this (baseServiceProvider, new Size (editorWidth, editorHeight), propertyGridLabelRatio)
-	{}
+	{
+  }
 
 	public CollectionEditorServiceProvider (IServiceProvider baseServiceProvider)
     : this (baseServiceProvider, new Size (300, 400), 2)
-	{}
+	{
+  }
 
   public virtual object GetService (Type serviceType)
   {

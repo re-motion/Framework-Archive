@@ -15,7 +15,8 @@ public class BocColumnDefinitionSetCollectionEditor: CollectionEditor
   protected override Type[] CreateNewItemTypes()
   {
     return new Type[] {
-      typeof (BocColumnDefinitionSet)};
+        typeof (BocColumnDefinitionSet)
+    };
   }
 
   public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value)
