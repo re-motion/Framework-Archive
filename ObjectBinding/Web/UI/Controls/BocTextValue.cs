@@ -234,6 +234,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       //  Provide a default width
       _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
+      _textBox.ReadOnly = ! Enabled;
       if (Width != Unit.Empty)
         _textBox.Width = Width;
       _textBox.Height = Height;

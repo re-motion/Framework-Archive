@@ -213,7 +213,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     }
 
     key = UniqueID;
-    if (! Page.IsStartupScriptRegistered (key))
+    if (   Enabled 
+        && ! Page.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
       script.Append ("DropDownMenu_AddMenuInfo (\r\n\t");
@@ -314,9 +315,12 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute ("position", "relative");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-    string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
-    string script = "DropDownMenu_OnClick (this, '" + ClientID + "', " + getSelectionCount + ");";
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+    if (Enabled)
+    {
+      string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
+      string script = "DropDownMenu_OnClick (this, '" + ClientID + "', " + getSelectionCount + ");";
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+    }
     writer.AddAttribute ("id", ClientID + "_MenuDiv");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Menu-Div
 
