@@ -275,6 +275,24 @@ public class PageUtility
     //return url + parameterSeperator + name + "=" + value;
   }
 
+  public static string GetUrlParameter (string url, string name)
+  {
+    int startPos = url.IndexOf (name) + name.Length + 1;
+    
+    if (startPos >= 0)
+    {
+      int endPos = url.IndexOf ("&", startPos);
+      if (endPos == -1)
+        endPos = url.Length;
+
+      int length = endPos - startPos;
+
+      return url.Substring (startPos, length);
+    }
+
+    return string.Empty;
+  }
+
   public static string GetToken (Page page)
   {
     return page.Request.QueryString["pageToken"];
