@@ -139,12 +139,12 @@ namespace Rubicon.PageTransition
 
     private void SubNoReturnButton_Click (object sender, System.EventArgs e)
     {
-      CurrentStep.ExecuteFunctionNoRepost (this, new SubFunction ("v1", "button"), (Control) sender);    
+      ExecuteFunctionNoRepost (new SubFunction ("v1", "button"), (Control) sender);    
     }
 
-    private void SubNoReturnField_TextChanged(object sender, System.EventArgs e)
+    private void SubNoReturnField_TextChanged (object sender, System.EventArgs e)
     {
-      CurrentStep.ExecuteFunctionNoRepost (this, new SubFunction ("v1", "textbox"), (Control) sender);    
+      ExecuteFunctionNoRepost (new SubFunction ("v1", "textbox"), (Control) sender);    
     }
 
     public class SubFunction: WxeFunction, ISampleFunctionVariables
