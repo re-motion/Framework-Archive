@@ -177,6 +177,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "queries.xsd"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "ReflectionUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
