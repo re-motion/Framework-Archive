@@ -52,21 +52,6 @@ public class PageUtility
           + "</script>");
   }
 
-  public static void CloseBrowserWindow (Page page, bool refreshParent)
-  {
-    string refreshParentScript = string.Empty;
-
-    if (refreshParent)
-      refreshParentScript = "window.opener.Refresh();\n";
-
-    string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
-      refreshParentScript +
-      "window.close ();\n" +
-      "</script>";
-
-    page.RegisterStartupScript ("CloseWindowKey", script);
-  }
-
   public static object GetSessionValue (Page page, string key, bool required)
   {
     object o = page.Session[GetUniqueKey (page, key)];
@@ -548,6 +533,20 @@ public class PageUtility
     return string.Format ("WindowOpen ('{0}', '{1}')", url, useScrollbars ? "yes" : "no");
   }
 
+  public static void CloseBrowserWindow (Page page, bool refreshParent)
+  {
+    string refreshParentScript = string.Empty;
+
+    if (refreshParent)
+      refreshParentScript = "window.opener.refresh();\n";
+
+    string script = "<script language=\"javascript\" type=\"text/javascript\">\n" + 
+      refreshParentScript +
+      "window.close ();\n" +
+      "</script>";
+
+    page.RegisterStartupScript ("CloseWindowKey", script);
+  }
 }
 
 [Serializable]
