@@ -5,15 +5,28 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
+using System.Globalization;
 
 namespace Rubicon.Findit.Client.Controls
 {
 
+/// <summary>
+/// Inserts line breaks in the value column.
+/// </summary>
+/// <remarks>
+/// If the part after the break contains any white space, the resulting row will be at least as high
+/// as the current font size. Avoid white space by attaching opening tags to the preceeding closing tags.
+/// Example:
+/// &lt;EntryFieldBreak /&gt;&lt;
+/// SomeOtherTag&gt; ... &lt;/SomeOtherTag
+/// &gt;&lt;/EntryField&gt;
+/// </remarks>
 public class EntryFieldBreak: Control
 {
   protected override void Render (HtmlTextWriter writer)
   {
-    writer.Write ("</td></tr><tr><td colspan=\"4\"></td><td>");
+    writer.Write ("</td></tr><tr><td colspan=\"4\">{0}</td><td>{0}", 
+      EntryFormGrid.GetWhitespaceImage (0, 0));
   }
 }
   
@@ -24,7 +37,8 @@ public class EntryFieldBreak: Control
 public class EntryFormGrid: Control
 {
   private Unit _labelColumnWidth;
-  private Unit _valueColumnWidth;
+  [Obsolete] private Unit _valueColumnWidth;
+  private Unit _width;
   private FontUnit _fieldFontSize;
 
   public Unit LabelColumnWidth 
@@ -33,16 +47,28 @@ public class EntryFormGrid: Control
     set { _labelColumnWidth = value; }
   }
 	
+  //[Obsolete]
   public Unit ValueColumnWidth 
   {
     get { return _valueColumnWidth; }
     set { _valueColumnWidth = value; }
   }
 
+  public Unit Width 
+  {
+    get { return _width; }
+    set { _width = value; }
+  }
+
   public FontUnit FieldFontSize
   {
     get { return _fieldFontSize; }
     set { _fieldFontSize = value; }
+  }
+
+  public bool FixedLayout
+  {
+    get { return (! _labelColumnWidth.IsEmpty) && (! _width.IsEmpty); }    
   }
 
   /// <summary>
@@ -94,7 +120,41 @@ public class EntryFormGrid: Control
 			return;
 		}
 
-    writer.WriteLine ("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+    writer.WriteLine (
+        "<table border=\"0\" {0} cellspacing=\"0\" cellpadding=\"0\" style=\"width: {0}; {1}\">",
+        Width.ToString (CultureInfo.InvariantCulture),
+        FixedLayout ? "table-layout: fixed;" : string.Empty);
+
+    if (FixedLayout)
+    {
+      writer.WriteLine ("<colgroup>");
+
+      // label column
+      if (!_labelColumnWidth.IsEmpty)
+      {
+        writer.WriteLine ("  <col style=\"width: {0}\">", 
+            _labelColumnWidth.ToString (CultureInfo.InvariantCulture));
+      }
+      else
+      {
+        writer.WriteLine ("  <col>");
+      }
+
+      // seperator columns
+      writer.WriteLine ("  <col style=\"width: 7\">");
+      writer.WriteLine ("  <col style=\"width: 3\">");
+
+      // indicator columns
+      writer.WriteLine ("  <col style=\"width: 32\">");
+
+      // value column
+      if (_width.IsEmpty &&  !_valueColumnWidth.IsEmpty)
+        writer.WriteLine ("  <col style=\"width: {0}\">", _valueColumnWidth);
+      else
+        writer.WriteLine ("  <col style=\"width: 100%\">");
+
+      writer.WriteLine ("</colgroup>");
+    }
 
 		for (int i = 0; i < this.Controls.Count; ++i)
 		{
@@ -102,14 +162,25 @@ public class EntryFormGrid: Control
 
 			// write vertical empty space before titles
 			if (i != 0 && control is EntryTitle)
-				writer.WriteLine ("<tr><td> <img src=\"../Images/ws.gif\" height=\"10\" width=\"1\"></td></tr>");
+				writer.WriteLine ("<tr><td>{0}</td></tr>", GetWhitespaceImage (1, 10));
 
-			control.RenderControl(writer);
+			control.RenderControl (writer);
 		}
 
 		writer.WriteLine ("</table>");
 	}
 	
+  internal static string GetWhitespaceImage (int width, int height)
+  {
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"../Images/ws.gif\">", 
+        width, height);
+  }
+
+  internal static string GetWhitespaceImage (string width, string height)
+  {
+    return string.Format ("<img border=\"0\" width=\"{0}\" height=\"{1}\" src=\"../Images/ws.gif\">", 
+        width, height);
+  }
 }
 
 public class EntryFormGridControlBuilder: ControlBuilder
@@ -162,8 +233,7 @@ public class EntryTitle: Control
 	{
     if (Padding != String.Empty)
     {
-      writer.WriteLine ("<tr><td><img src=\"../Images/ws.gif\" width=\"1\" height=\"{0}\"/></td></tr>",
-          Padding);
+      writer.WriteLine ("<tr><td>{0}</td></tr>", EntryFormGrid.GetWhitespaceImage ("1", Padding));
     }
 
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"" + ColSpan + "\"> {0} </td></tr>", this.Title);
@@ -171,12 +241,12 @@ public class EntryTitle: Control
     {
 		  writer.WriteLine ("<tr><td colspan=\"" + ColSpan + "\"> "
           + "<table bgcolor=\"black\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"100%\">"
-			  	+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\">"
+			  	+ EntryFormGrid.GetWhitespaceImage (1, 2)
           + "</td></tr></table>"
           + "</td></tr>");
     }
 
-		writer.WriteLine ("<tr> <td><img height=\"3\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 3));
 	}
 }
 
@@ -348,12 +418,12 @@ public class EntryField: Control
     string labelWidthAttribute = string.Empty;
     string valueWidthAttribute = string.Empty;
     EntryFormGrid parentGrid = Parent as EntryFormGrid;
-    if (parentGrid != null)
+    if (parentGrid != null && ! parentGrid.FixedLayout)
     {
       if (! parentGrid.LabelColumnWidth.IsEmpty)
-        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        labelWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.LabelColumnWidth.ToString(CultureInfo.InvariantCulture));
       if (! parentGrid.ValueColumnWidth.IsEmpty)
-        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        valueWidthAttribute = string.Format ("style=\"width: {0};\"", parentGrid.ValueColumnWidth.ToString(CultureInfo.InvariantCulture));
     }
 
     string tagStyle = string.Empty;
@@ -363,8 +433,8 @@ public class EntryField: Control
 		writer.WriteLine ("<tr{0}>", tagStyle);
 		writer.WriteLine ("<td class=\"label\" valign=\"center\" align=\"right\" {0} >{1}</td>", 
         labelWidthAttribute, label);
-		writer.WriteLine ("<td class=\"label\"><img height=\"1\" width=\"7\" src=\"../Images/ws.gif\"/></td>");
-		writer.WriteLine ("<td><img height=\"1\" width=\"3\" src=\"../Images/ws.gif\"/></td>");
+		writer.WriteLine ("<td class=\"label\">{0}</td>", EntryFormGrid.GetWhitespaceImage (7, 1));
+		writer.WriteLine ("<td>{0}</td>", EntryFormGrid.GetWhitespaceImage (3, 1));
 		writer.WriteLine ("<td nowrap>");
 
     if (validatorsInvalid)
@@ -385,7 +455,7 @@ public class EntryField: Control
       }
       else
       {
-        writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\" border=\"0\" />");
+        writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
       }
     }
     
@@ -399,16 +469,16 @@ public class EntryField: Control
     }
 		else
 		{
-			writer.WriteLine ("<img src=\"../Images/ws.gif\" width=\"12\" height=\"20\" border=\"0\" />");
+			writer.WriteLine (EntryFormGrid.GetWhitespaceImage (12, 20));
 		}
 
 		writer.WriteLine ("</td><td {0}>", valueWidthAttribute);
 
     RenderChildren(writer);
 
-		writer.WriteLine ("</td>");
+		writer.Write ("</td>");
 		writer.WriteLine ("</tr>");
-		writer.WriteLine ("<tr> <td><img height=\"1\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
+		writer.WriteLine ("<tr> <td>{0}</td> </tr>", EntryFormGrid.GetWhitespaceImage (1, 1));
 	}
 
   private void CheckForInvalidValidators(ControlCollection controls, ref string validatorMessages, ref bool validatorsInvalid)

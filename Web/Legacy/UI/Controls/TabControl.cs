@@ -630,27 +630,8 @@ public class TabControl: Control, IPostBackEventHandler
 			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">", colspan);
 
       output.WriteLine ("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" >");
-      output.WriteLine ("<tr><td nowrap width=\"100%\">");
+      output.WriteLine ("<tr class=\"tabSubMenuBar\"><td nowrap width=\"100%\">&nbsp;");
 
-      output.WriteLine ("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
-      output.WriteLine ("<tr valign=\"middle\" class=\"tabSubMenuBar\"><td>&nbsp;</td><td>");
-      if (BackLinkUrl != string.Empty)
-      {
-        output.WriteLine ("<a class=\"tabActiveBackLink\" href=\"{0}\"><img src=\"{1}\" border=\"0\"></a>",
-            BackLinkUrl,
-            _activeBackLinkImage);
-        output.WriteLine ("</td><td nowrap>");
-        output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">Zur&uuml;ck</a>&nbsp;&nbsp;",
-            BackLinkUrl);
-      }
-      else
-      {
-        output.WriteLine ("<img src=\"{0}\" border=\"0\">", _inactiveBackLinkImage);
-        output.WriteLine ("</td><td nowrap>");
-        output.WriteLine ("&nbsp;<span class=\"tabInactiveBackLink\">Zur&uuml;ck</span>&nbsp;&nbsp;");
-      }
-      output.WriteLine ("</td><td width=\"100%\" class=\"tabSubMenuBar\">");
-  
       Tab activeTab = Tabs[_activeTab];
       bool isFirstMenu = true;
       for (int i = 0; i < activeTab.Controls.Count; ++i)
@@ -680,7 +661,20 @@ public class TabControl: Control, IPostBackEventHandler
       }
       output.WriteLine ("</td></tr></table>");
 
-      output.WriteLine ("</td></tr></table>");
+      if (BackLinkUrl != string.Empty)
+      {
+        output.WriteLine ("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+        output.WriteLine ("<tr valign=\"middle\"><td>&nbsp;</td><td>");
+        output.WriteLine ("<a class=\"tabActiveBackLink\" href=\"{0}\"><img src=\"{1}\" border=\"0\"></a>",
+            BackLinkUrl,
+            _activeBackLinkImage);
+        output.WriteLine ("</td><td nowrap>");
+        output.WriteLine ("&nbsp;<a class=\"tabActiveBackLink\" href=\"{0}\">Zur&uuml;ck</a>&nbsp;&nbsp;",
+            BackLinkUrl);
+        output.WriteLine ("</td><td width=\"100%\">");
+        output.WriteLine ("</td></tr></table>");
+      }
+
       output.WriteLine ("</td>");
       output.WriteLine ("</tr>");
     }
