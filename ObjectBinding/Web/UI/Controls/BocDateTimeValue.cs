@@ -51,11 +51,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
   private const string c_datePickerScriptUrl = "DatePicker.js";
-  private const string c_datePickerDocumentClickHanderInternetExplorer = 
-      "<script for=\"document\" event=\"onclick()\"  language=\"JScript\" type=\"text/jscript\">\r\n<!--\r\n"
-      + "{ DatePicker_OnDocumentClick(); return true; }"
-      + "\r\n//-->\r\n</script>";
-  
+
   // types
 
   // static members
@@ -442,10 +438,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
-
-      key = typeof (BocDateTimeValue).FullName + "_DocumentClickHandler";
-      if (! Page.IsClientScriptBlockRegistered (key))
-        Page.RegisterClientScriptBlock (key, c_datePickerDocumentClickHanderInternetExplorer);
     }
 
     _dateTextBox.Visible = ! isReadOnly;
@@ -679,9 +671,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
        if (_hasClientScript)
        {
           string pickerActionButton = "this";
-          string pickerActionContainer = "document.all['" + ClientID + "']";
-          string pickerActionTarget = "document.all['" + _dateTextBox.ClientID + "']";
-          string pickerActionFrame = "document.all['" + ClientID + "_frame']";
+          string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
+          string pickerActionTarget = "document.getElementById ('" + _dateTextBox.ClientID + "')";
+          string pickerActionFrame = "document.getElementById ('" + ClientID + "_frame')";
           string pickerAction = "DatePicker_ShowDatePicker("
               + pickerActionButton + ", "
               + pickerActionContainer + ", "
