@@ -17,6 +17,7 @@
         <includes name="ObjectBinding/**/*.cs" />
         <includes name="Text/**/*.cs" />
         <includes name="Utilities/**/*.cs" />
+        <includes name="Collections/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
