@@ -138,6 +138,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ControlWithAllDataTypes.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ControlWithAllDataTypes.ascx.cs"
+                    DependentUpon = "ControlWithAllDataTypes.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ControlWithAllDataTypes.ascx.resx"
+                    DependentUpon = "ControlWithAllDataTypes.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "default.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
@@ -167,6 +183,22 @@
                 <File
                     RelPath = "Global.asax.resx"
                     DependentUpon = "Global.asax.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "NewObject.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "NewObject.aspx.cs"
+                    DependentUpon = "NewObject.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NewObject.aspx.resx"
+                    DependentUpon = "NewObject.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
