@@ -15,10 +15,11 @@ using Rubicon.NullableValueTypes;
 
 namespace OBWTest
 {
+
 /// <summary>
 /// Summary description for WebFormMK.
 /// </summary>
-public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
+public class WebFormMK : WebFormBase
 
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
@@ -105,34 +106,6 @@ public class WebFormMK : System.Web.UI.Page, IImageUrlResolver
         person.Partner.SaveObject();
     }
   }
-
-  /// <summary>
-  ///   Interface method: IImageUrlResolver
-  /// </summary>
-  /// <param name="relativeUrl"></param>
-  /// <returns></returns>
-  public virtual string GetImageUrl (string relativeUrl)
-  {
-    //  Build the relative URL appended to the application root
-    StringBuilder imageUrlBuilder = new StringBuilder (200);
-
-    //  Insert your own logic to get translate the relatveURL passed to this method
-    //  into a relative URL compatible with this applications folder structure.
-    imageUrlBuilder.Append (ImageDirectory);
-    imageUrlBuilder.Append (relativeUrl);
-
-    //  Join the relative URL with the applications root
-    return UrlUtility.Combine (
-        HttpContext.Current.Request.ApplicationPath,
-        imageUrlBuilder.ToString());
-  }
-
-  /// <summary>
-  ///   Directory for the images, starting at application root.
-  /// </summary>
-  protected virtual string ImageDirectory
-  { get { return "images/"; } }
-
 }
 
 }
