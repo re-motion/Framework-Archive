@@ -1160,8 +1160,8 @@ public class BocList:
         if (businessObjectWithIdentity != null)
           argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        
-        column.Command.RenderBegin (writer, rowIndex, objectID, postBackLink);
+        string onClick = "BocList_OnCommandClick();";
+        column.Command.RenderBegin (writer, rowIndex, objectID, postBackLink, onClick);
       }
 
       //  Render the icon

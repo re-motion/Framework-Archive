@@ -20,10 +20,14 @@ var _bocList_selectedRows = new Array();
 //  An associative array containing the number of selected rows (non-null values) for each BocList.
 var _bocList_selectedRowsLength = new Array();
 
-//  A flag indicating that the OnClick event for a selection checkBox has been raised
+//  A flag that indicates that the OnClick event for a selection checkBox has been raised
 //  prior to the row's OnClick event.
 var _bocList_isCheckBoxClick = false;
   
+//  A flag that indicates that the OnClick event for an anchor tag (command) has been raised
+//  prior to the row's OnClick event.
+var _bocList_isCommandClick = false;
+
 //  Initializes the class names of the css classes used to format the table cells.
 //  Call this method once in a startup script.
 function BocList_InitializeGlobals (
@@ -73,12 +77,19 @@ function BocList_InitializeBocList (bocList, rowPrefix, checkBoxPrefix, firstRow
 //  Event handler for a table row in the BocList. 
 //  Selects/unselects a row/all rows depending on it's selection state,
 //      whether CTRL has been pressed and if _bocList_isCheckBoxClick is true.
+//  Aborts the execution if _bocList_isCommandClick is true.
 //  bocList: The BocList to which the row belongs.
 //  currentRow: The row that fired the click event.
 //  checkBox: The selection checkBox in this row.
 //  isOdd: True if it is an odd data row, otherwise false.
 function BocList_OnRowClick (bocList, currentRow, checkBox, isOdd)
 {
+  if (_bocList_isCommandClick)
+  {
+    _bocList_isCommandClick = false;
+    return;
+  }  
+  
   var selectedRows = _bocList_selectedRows[bocList.id];
   var selectedRowsLength = _bocList_selectedRowsLength[bocList.id];
   var className; //  The css-class
@@ -243,4 +254,11 @@ function BocList_OnSelectAllCheckBoxClick (
 function BocList_OnSelectionCheckBoxClick()
 {
   _bocList_isCheckBoxClick = true;
+}
+
+//  Event handler for the anchor tags (commands) in a data row.
+//  Sets the _bocList_isCommandClick flag.
+function BocList_OnCommandClick()
+{
+  _bocList_isCommandClick = true;
 }

@@ -222,7 +222,8 @@ public class BocItemCommand
       HtmlTextWriter writer, 
       int listIndex, 
       string businessObjectID,
-      string postBackLink)
+      string postBackLink,
+      string onClick)
   {
     switch (_type)
     {
@@ -254,6 +255,7 @@ public class BocItemCommand
         break;
       }
     }
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
   }
 
