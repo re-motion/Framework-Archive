@@ -436,6 +436,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   ///   The <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to.
   /// </summary>
   /// <value>An <see cref="IBusinessObjectBooleanProperty"/> object.</value>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectBooleanProperty Property
   {
     get { return (IBusinessObjectBooleanProperty) base.Property; }
