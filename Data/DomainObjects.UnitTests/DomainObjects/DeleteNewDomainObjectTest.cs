@@ -447,5 +447,33 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
 
     eventReceiver.Compare (expectedStates);
   }
+
+  [Test]
+  public void DeleteFromManyToOneRelation ()
+  {
+    Customer newCustomer = new Customer ();
+
+    _newOrder.Customer = newCustomer;
+    
+    ObjectID newOrderID = _newOrder.ID;
+
+    _newOrder.Delete ();
+
+    Assert.IsFalse (newCustomer.Orders.Contains (newOrderID));
+  }
+
+  [Test]
+  public void DeleteFromOneToManyRelation ()
+  {
+    Customer newCustomer = new Customer ();
+
+    _newOrder.Customer = newCustomer;
+    
+    ObjectID newCustomerID = newCustomer.ID;
+
+    newCustomer.Delete ();
+
+    Assert.IsNull (_newOrder.Customer);
+  }
 }
 }
