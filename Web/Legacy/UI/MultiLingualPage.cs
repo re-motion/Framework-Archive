@@ -37,6 +37,10 @@ public class MultiLingualPage : Page
           
     base.OnInit (e);
   }
-
+  
+  protected string GetResourceText (string name)
+  {
+    return ResourceDispatcher.GetResourceText (this, name);
+  }
 }
 }
