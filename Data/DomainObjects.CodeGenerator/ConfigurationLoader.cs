@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
@@ -24,6 +25,8 @@ public class StubsBuilder : CodeBuilder
 
   public StubsBuilder (string stubsfile, string mappingFile) : base (stubsfile)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("stubsfile", stubsfile);
+
     _mappingDocument = CreateXmlDocuemt (mappingFile);
 
     PrefixNamespace[] prefixNamespaces = new PrefixNamespace[1] { PrefixNamespace.MappingNamespace } ;
