@@ -183,6 +183,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     set 
     {
       // TODO: Check index for validity
+      // TODO: check type
 
       // If new value is null: This is actually a remove operation
       if (value == null)
@@ -240,6 +241,14 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   public int Add (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    
+    // TODO: check type
+
+    if (Contains (domainObject))
+    {
+      throw CreateArgumentException (
+          "domainObject", "Cannot add object '{0}' already part of this collection.", domainObject.ID);
+    }
 
     if (_changeDelegate != null)
     {
@@ -336,6 +345,13 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckIndex ("index", index);
+    // TODO: check type
+
+    if (Contains (domainObject))
+    {
+      throw CreateArgumentException (
+          "domainObject", "Cannot insert object '{0}' already part of this collection.", domainObject.ID);
+    }
 
     if (_changeDelegate != null)
     {
@@ -477,7 +493,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckItemType (_requiredItemType, domainObject.GetType ());
+    CheckItemType (_requiredItemType, domainObject.GetType (), "domainObject");
 
     base.Add (domainObject.ID, domainObject);
   }
@@ -485,7 +501,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   internal protected void PerformInsert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckItemType (_requiredItemType, domainObject.GetType ());
+    CheckItemType (_requiredItemType, domainObject.GetType (), "domainObject");
 
     base.Insert (index, domainObject.ID, domainObject);
   }
@@ -529,19 +545,21 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
     base.ClearCollection ();
   }
 
-  private void CheckItemType (Type requiredType, Type itemType)
+  private void CheckItemType (Type requiredType, Type itemType, string argumentName)
   {
     if (!ValidateItemType (requiredType, itemType))
     {
-      throw new ArgumentException (string.Format (
-        "Values of type '{0}' cannot be added to this collection. " + 
-        "Values must be of type '{1}' or derived from '{1}'.", 
-        itemType, requiredType));
+      throw CreateArgumentException (
+        argumentName,
+        "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.", 
+        itemType, 
+        requiredType);
     }
   }
 
   private bool ValidateItemType (Type requiredType, Type itemType)
   {
+    // TODO: Simplify this
     if (requiredType != null)
     {
       while (itemType != null)
@@ -603,6 +621,11 @@ public class DomainObjectCollection : CollectionBase, ICloneable, IList
   private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
   {
     return new InvalidOperationException (string.Format (message, args));
+  }
+
+  private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), argumentName);
   }
 }
 }
