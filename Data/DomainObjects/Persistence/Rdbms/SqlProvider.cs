@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class SqlProvider : RdbmsProvider
 {

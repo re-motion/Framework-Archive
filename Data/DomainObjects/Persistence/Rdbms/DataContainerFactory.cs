@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class DataContainerFactory
 {
@@ -59,8 +59,8 @@ public class DataContainerFactory
           "Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
     }
 
-    DBValueConverter dbValueConverter = new DBValueConverter ();
-    ObjectID id = dbValueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
+    ValueConverter valueConverter = new ValueConverter ();
+    ObjectID id = valueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
     DataContainer dataContainer = DataContainer.CreateForExisting (id, _dataReader["Timestamp"]);
 
     foreach (PropertyDefinition propertyDefinition in classDefinition.GetAllPropertyDefinitions ())
@@ -71,7 +71,7 @@ public class DataContainerFactory
 
       try
       {
-        dataValue = dbValueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
+        dataValue = valueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
       }
       catch (StorageProviderException e)
       {

@@ -1,9 +1,10 @@
 using System;
 using System.Xml;
 
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class RdbmsProviderDefinition : StorageProviderDefinition
 {

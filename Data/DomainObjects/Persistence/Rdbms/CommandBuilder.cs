@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public abstract class CommandBuilder
 {
@@ -50,11 +50,11 @@ public abstract class CommandBuilder
     IDataParameter commandParameter = command.CreateParameter ();
     commandParameter.ParameterName = Provider.GetParameterName (parameterName);
 
-    DBValueConverter dbValueConverter = new DBValueConverter ();
+    ValueConverter valueConverter = new ValueConverter ();
     if (parameterValue != null && parameterValue.GetType () == typeof (ObjectID))
-      commandParameter.Value = dbValueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
+      commandParameter.Value = valueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
     else
-      commandParameter.Value = dbValueConverter.GetDBValue (parameterValue);
+      commandParameter.Value = valueConverter.GetDBValue (parameterValue);
 
     command.Parameters.Add (commandParameter);
   }

@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class WhereClauseBuilder
 {

@@ -4,7 +4,7 @@ using System.Data;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class QueryCommandBuilder : CommandBuilder
 {

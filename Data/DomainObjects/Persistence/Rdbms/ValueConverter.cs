@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class DBValueConverter
+public class ValueConverter
 {
   // types
 
@@ -227,7 +227,7 @@ public class DBValueConverter
 
   // construction and disposing
 
-  public DBValueConverter ()
+  public ValueConverter ()
   {
   }
 

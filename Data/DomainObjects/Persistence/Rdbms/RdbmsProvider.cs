@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public abstract class RdbmsProvider : StorageProvider
 {
