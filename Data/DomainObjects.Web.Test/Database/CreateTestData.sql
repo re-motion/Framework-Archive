@@ -34,4 +34,8 @@ insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesM
 insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesMandatory], [TableWithAllDataTypesOptional])
     values ('{0498C3E5-30FA-45f1-A9A1-966D4655C3C7}', 'ClassForRelationTest', 'RelationTest4', '{D2146236-FBD4-4b93-A835-26563FE3F043}', null)
 insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesMandatory], [TableWithAllDataTypesOptional])
-    values ('{7E86BD49-6D7D-4d73-87AC-9F7C5F46DEFB}', 'ClassForRelationTest', 'RelationTest5', '{D2146236-FBD4-4b93-A835-26563FE3F043}', null)            
+    values ('{7E86BD49-6D7D-4d73-87AC-9F7C5F46DEFB}', 'ClassForRelationTest', 'RelationTest5', '{583EC716-8443-4b55-92BF-09F7C8768529}', null)            
+insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesMandatory], [TableWithAllDataTypesOptional])
+    values ('{9E86BD49-6D7D-4d73-87AC-9F7C5F46DEFB}', 'ClassForRelationTest', 'RelationTest6', '{583EC716-8443-4b55-92BF-09F7C8768529}', null)            
+    
+    
