@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocEnumValue: BusinessObjectBoundModifiableWebControl
+public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
 	// constants
 
@@ -70,20 +71,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The actual enum value. </summary>
   private object _value = null;
 
-  /// <summary> 
-  ///   The <see cref="IEnumerationValueInfo.Identifier"/> matching the <see cref="_value"/>.
-  /// </summary>
+  /// <summary> The <see cref="IEnumerationValueInfo.Identifier"/> matching the <see cref="_value"/>. </summary>
   private string _internalValue = null;
 
-  /// <summary> 
-  ///   The <see cref="IEnumerationValueInfo.Identifier"/> set through the 
-  ///   <see cref="ListControl"/>. 
-  /// </summary>
-  private string _newInternalValue = null;
-
-  /// <summary>
-  ///   The chached <see cref="IEnumerationValueInfo"/> object matching the <see cref="_value"/>.
-  /// </summary>
+  /// <summary> The chached <see cref="IEnumerationValueInfo"/> object matching the <see cref="_value"/>. </summary>
   private IEnumerationValueInfo _enumerationValueInfo = null;
  
   /// <summary> The <see cref="Style"/> applied to this controls an all sub-controls. </summary>
@@ -154,21 +145,42 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
+  }
 
-    if (! IsDesignMode)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
+  }
+
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    string newValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID);
+    bool isDataChanged = false;
+    if (_internalValue == null && newValue != c_nullIdentifier)
+      isDataChanged = true;
+    else if (_internalValue != null && newValue != _internalValue)
+      isDataChanged = true;
+
+    if (isDataChanged)
     {
-      string newInternalValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID); // gets enum identifier
-
-      if (newInternalValue == c_nullIdentifier)
-        _newInternalValue = null;
-      else if (newInternalValue != null)
-        _newInternalValue = newInternalValue;
+      if (newValue == c_nullIdentifier)
+        InternalValue = null;
       else
-        _newInternalValue = null;
-
-      if (newInternalValue != null && _newInternalValue != InternalValue)
-        _isDirty = true;
+        InternalValue = newValue;
+      _isDirty = true;
     }
+    return isDataChanged;
+  }
+
+  /// <summary>
+  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
+  ///   through the <see cref="ListControl"/>.
+  /// </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void ListControl_SelectedIndexChanged (object sender, EventArgs e)
+  {
+    OnSelectionChanged (EventArgs.Empty);
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -191,6 +203,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
 
     //  First call
     EnsureChildControlsPreRendered();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary>
@@ -450,22 +464,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
 
         _listControl.SelectedValue = InternalValue;
       }
-    }
-  }
-
-  /// <summary>
-  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
-  ///   through the <see cref="ListControl"/>.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void ListControl_SelectedIndexChanged (object sender, EventArgs e)
-  {
-    if (_newInternalValue != InternalValue)
-    {
-      InternalValue = _newInternalValue;
-
-      OnSelectionChanged (EventArgs.Empty);
     }
   }
 

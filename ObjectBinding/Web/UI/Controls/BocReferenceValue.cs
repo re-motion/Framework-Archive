@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -26,7 +27,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
 [Designer (typeof (BocReferenceValueDesigner))]
-public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBackEventHandler
+public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBackEventHandler, IPostBackDataHandler
 {
   // constants
 	
@@ -95,9 +96,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   private string _internalValue = null;
 
-  /// <summary> The <c>SelectedValue</c> of <see cref="DropDownList"/>. </summary>
-  private string _newInternalValue = null;
-
   /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
 
@@ -165,7 +163,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   {
     base.OnInit (e);
 
-    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
     _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
@@ -179,26 +176,47 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   {
     base.OnLoad (e);
 
-    if (! IsDesignMode)
-    {
-      string newInternalValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
-
-      if (newInternalValue == c_nullIdentifier)
-        _newInternalValue = null;
-      else if (newInternalValue != null)
-        _newInternalValue = newInternalValue;
-      else
-        _newInternalValue = null;
-
-      if (! Page.IsPostBack)
-        RefreshBusinessObjectList();
-
-      if (newInternalValue != null && _newInternalValue != _internalValue)
-        _isDirty = true;
-    }
+    if (! IsDesignMode && ! Page.IsPostBack)
+      RefreshBusinessObjectList();
 
     _optionsMenu.MenuItems.Clear();
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
+  }
+
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
+  }
+
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
+    bool isDataChanged = false;
+    if (_internalValue == null && newValue != c_nullIdentifier)
+      isDataChanged = true;
+    else if (_internalValue != null && newValue != _internalValue)
+      isDataChanged = true;
+
+    if (isDataChanged)
+    {
+      if (newValue == c_nullIdentifier)
+        InternalValue = null;
+      else
+        InternalValue = newValue;
+      _isDirty = true;
+    }
+    return isDataChanged;
+  }
+
+  /// <summary>
+  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
+  ///   through the <see cref="DropDownList"/>.
+  /// </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
+  {
+    OnSelectionChanged (EventArgs.Empty);
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -261,6 +279,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
     //  First call
     EnsureChildControlsPreRendered();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
 
     string key = typeof (BocReferenceValue).FullName + "_Script";
     if (! HtmlHeadAppender.Current.IsRegistered (key))
@@ -328,6 +348,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     if (values[1] != null)    
       InternalValue = (string) values[1];  
     _isDirty = (bool) values[2];
+
+    //  Drop down list has enabled view state, selected value must not be restored
   }
 
   /// <summary>
@@ -341,7 +363,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     object[] values = new object[3];
 
     values[0] = base.SaveViewState();
-    values[1] = InternalValue;
+    values[1] = _internalValue;
     values[2] = _isDirty;
 
     return values;
@@ -725,30 +747,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   private bool HasOptionsMenu
   {
     get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
-  }
-
-
-  /// <summary>
-  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
-  ///   through the <see cref="DropDownList"/>.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
-  {
-    if (_newInternalValue != _internalValue)
-    {
-      InternalValue = _newInternalValue;
-      OnSelectionChanged (EventArgs.Empty);
-    }
-  }
-
-  /// <summary> Handles refreshing the bound control. </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void Binding_BindingChanged (object sender, EventArgs e)
-  {
-    // Nothing to do.
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>

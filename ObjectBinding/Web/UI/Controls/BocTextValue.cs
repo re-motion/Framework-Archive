@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocTextValue: BusinessObjectBoundModifiableWebControl
+public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
   //  constants
 
@@ -64,7 +64,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   private BocTextValueType _actualValueType = BocTextValueType.Undefined;
 
   private string _text = string.Empty;
-  private string _newText = null;
   private bool _isDirty = true;
   private TextBox _textBox;
   private Label _label;
@@ -98,19 +97,26 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
 
-  protected override void OnLoad (EventArgs e)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
-    base.OnLoad (e);
+    //  The data control's changed event is sufficient.
+  }
 
-    if (! IsDesignMode)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
+    bool isDataChanged = StringUtility.NullToEmpty (_text) != newValue;
+    if (isDataChanged)
     {
-      string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
-      if (newValue != null)
-        _newText = newValue;
-
-      if (_newText != null && _newText != _text)
-        _isDirty = true;
+      _text = newValue;
+      _isDirty = true;
     }
+    return isDataChanged;
+  }
+
+  private void TextBox_TextChanged (object sender, EventArgs e)
+  {
+    OnTextChanged (EventArgs.Empty);
   }
 
   /// <summary>
@@ -199,6 +205,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnPreRender (e);
     EnsureChildControlsPreRendered ();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -214,7 +222,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _label.Visible = isReadOnly;
     if (isReadOnly)
     {
-      _label.Text = Text;
+      _label.Text = _text;
 
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
@@ -230,7 +238,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
-      _textBox.Text = Text;
+      _textBox.Text = _text;
       //  Provide a default width
       _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
@@ -241,12 +249,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
     }
-  }
-
-  private void TextBox_TextChanged (object sender, EventArgs e)
-  {
-    Text = _newText;
-    OnTextChanged (EventArgs.Empty);
   }
 
   /// <summary> This event is fired when the text is changed between postbacks. </summary>
@@ -318,7 +320,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     _actualValueType = (BocTextValueType) values[3];
     _isDirty = (bool)  values[4];
 
-    _textBox.Text = Text;
+    _textBox.Text = _text;
   }
 
   protected override object SaveViewState()
@@ -349,7 +351,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       if (text != null)
         text = text.Trim();
 
-      if (text == null || text.Length == 0)
+      if (StringUtility.IsNullOrEmpty (text))
         return null;
 
       if (_actualValueType == BocTextValueType.Integer)
@@ -368,7 +370,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     { 
       if (value == null)
       {
-        _text = string.Empty;
+        _text = null;
         return;
       }
 
@@ -403,8 +405,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   [Category("Data")]
   public string Text
   {
-    get { return _text; }
-    set { _text = StringUtility.NullToEmpty (value); }
+    get { return StringUtility.NullToEmpty (_text); }
+    set { _text = value; }
   }
 
   [Description("Gets or sets a fixed value type.")]

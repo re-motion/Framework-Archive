@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
+public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
 	// constants
 
@@ -80,10 +80,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   /// <remarks> Uses <c>\r\n</c> as separation characters. </remarks>
   private string _internalValue = null;
 
-  /// <summary> The string returned by the <see cref="TextBox"/>. </summary>
-  /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. </remarks>
-  private string _newInternalValue = null;
-
   // construction and disposing
 
 	public BocMultilineTextValue()
@@ -117,25 +113,29 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
-
-  /// <summary>
-  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnLoad (EventArgs e)
+  
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
-    base.OnLoad (e);
+    //  The data control's changed event is sufficient.
+  }
 
-    if (! IsDesignMode)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
+    bool isDataChanged = StringUtility.NullToEmpty (_internalValue) != newValue;
+    if (isDataChanged)
     {
-      _newInternalValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
-      
-      if (_newInternalValue != null && _newInternalValue != _internalValue)
-        _isDirty = true;
+      _internalValue = newValue;
+      _isDirty = true;
     }
+    return isDataChanged;
+  }
+
+  private void TextBox_TextChanged(object sender, EventArgs e)
+  {
+    OnTextChanged (EventArgs.Empty);
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
@@ -158,6 +158,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     
     //  First call
     EnsureChildControlsPreRendered();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary>
@@ -325,21 +327,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  
-  private void TextBox_TextChanged(object sender, EventArgs e)
-  {
-    _internalValue = _newInternalValue;
-    OnTextChanged (EventArgs.Empty);
-  }
-
-  /// <summary> Handles refreshing the bound control. </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void Binding_BindingChanged (object sender, EventArgs e)
-  {
-    //  nothing to do
-  }
-
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectStringProperty"/> object 
   ///   this control is bound to.
@@ -369,7 +356,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     {
-      if (_internalValue == null)
+      string text = _internalValue;
+      if (text != null)
+        text = text.Trim();
+
+      if (StringUtility.IsNullOrEmpty (text))
       {
         return null;
       }
@@ -404,7 +395,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     get 
     { 
-      return _internalValue;
+      return StringUtility.NullToEmpty (_internalValue);
     }
     set 
     {

@@ -1,3 +1,11 @@
+1.2.7.0
+=======
+
+- BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue
+  * Verhalten der Value Property an die ASP.net Controls angeglichen:
+    Der neue Wert ist ab dem Aufruf von LoadPostData für das jeweilige BocControl (überlicherweise vor OnLoad)
+    verfügbar. Bisher: erst mit dem jeweiligen Changed-Event.
+
 1.2.6.0
 =======
 

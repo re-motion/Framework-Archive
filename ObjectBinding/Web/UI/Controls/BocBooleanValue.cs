@@ -38,7 +38,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
+public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
 	// constants
 
@@ -97,9 +97,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The tristate value of the checkbox. </summary>
   private NaBoolean _value = NaBoolean.Null;
 
-  /// <summary> The new tristate value of the checkbox. </summary>
-  private NaBoolean _newValue = NaBoolean.Null;
-
   /// <summary> Flag that determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
@@ -154,26 +151,29 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _hiddenField.ValueChanged += new EventHandler(HiddenField_ValueChanged);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnLoad (EventArgs e)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
-    base.OnLoad (e);
+    //  The data control's changed event is sufficient.
+  }
 
-    if (! IsDesignMode)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    NaBoolean newValue = NaBoolean.Parse (PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID));
+    bool isDataChanged = _value != newValue;
+    if (isDataChanged)
     {
-      string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
-      _newValue = NaBoolean.Parse (newValue);
-
-      if (newValue != null && _newValue != _value)
-        _isDirty = true;
+      _value = newValue;
+      _isDirty = true;
     }
+    return isDataChanged;
+  }
+
+  private void HiddenField_ValueChanged(object sender, EventArgs e)
+  {
+    OnCheckedChanged (EventArgs.Empty);
   }
 
   /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
@@ -196,6 +196,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     
     //  First call
     EnsureChildControlsPreRendered();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary>
@@ -439,21 +441,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
     _label.Height = Height;
     _label.ApplyStyle (_labelStyle);
-  }
-
-  
-  private void HiddenField_ValueChanged(object sender, EventArgs e)
-  {
-    _value = _newValue;
-    OnCheckedChanged (EventArgs.Empty);
-  }
-
-  /// <summary> Handles refreshing the bound control. </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void Binding_BindingChanged (object sender, EventArgs e)
-  {
-    //  nothing to do
   }
 
   private void DetermineClientScriptLevel() 

@@ -23,7 +23,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
+public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
   //  constants
 
@@ -105,10 +105,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
   private string _internalDateValue = null;
   /// <summary>  The string displayed in the time text box. </summary>
   private string _internalTimeValue = null;
-  /// <summary> The string enterd into the date text box by the user. </summary>
-  private string _newInternalDateValue = null;
-  /// <summary> The string enterd into the time text box by the user. </summary>
-  private string _newInternalTimeValue = null;
   /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
   private NaDateTime _savedDateTimeValue = NaDateTime.Null;
 
@@ -188,46 +184,68 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
     _timeTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
-  /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnLoad (EventArgs e)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
-    base.OnLoad (e);
+    //  The data control's changed event is sufficient.
+  }
 
-    if (! IsDesignMode)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    //  Date input field
+
+    string newDateValue = PageUtility.GetRequestCollectionItem (Page, _dateTextBox.UniqueID);
+    bool isDateChanged =   newDateValue != null 
+                        && StringUtility.NullToEmpty (_internalDateValue) != newDateValue;
+    if (isDateChanged)
     {
-      //  Date input field
+      InternalDateValue = StringUtility.EmptyToNull (newDateValue);
+      
+      //  Reset the time in if the control is displayed in date mode and the date was changed
+      if (   ActualValueType == BocDateTimeValueType.Date
+          && ! _savedDateTimeValue.IsNull)
+      {
+         _savedDateTimeValue = _savedDateTimeValue.Date;
+      }
+      _isDirty = true;
+    }
 
-      string newInternalDateValue = PageUtility.GetRequestCollectionItem (Page, _dateTextBox.UniqueID);
+    //  Time input field
 
-      if (newInternalDateValue == "")
-        _newInternalDateValue = null;
-      else if (newInternalDateValue != null)
-        _newInternalDateValue = newInternalDateValue;
-      else
-        _newInternalDateValue = null;
+    string newTimeValue = PageUtility.GetRequestCollectionItem (Page, _timeTextBox.UniqueID);
+    bool isTimeChanged =   newTimeValue != null 
+                        && StringUtility.NullToEmpty (_internalTimeValue) != newTimeValue;
+    if (isTimeChanged)
+    {
+      InternalTimeValue = StringUtility.EmptyToNull (newTimeValue);
+      
+      //  Reset the seconds if the control does not display seconds and the time was changed
+      if (   ! ShowSeconds
+          && ! _savedDateTimeValue.IsNull)
+      {
+          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
+         _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
+      }
+      _isDirty = true;
+    }
 
-      if (newInternalDateValue != null && _newInternalDateValue != _internalDateValue)
-            _isDirty = true;
+    return isDateChanged || isTimeChanged;
+  }
 
-
-      //  Time input field
-
-      string newInternalTimeValue = PageUtility.GetRequestCollectionItem (Page, _timeTextBox.UniqueID);
-        
-      if (newInternalTimeValue == "")
-        _newInternalTimeValue = null;
-      else if (newInternalTimeValue != null)
-        _newInternalTimeValue = newInternalTimeValue;
-      else
-        _newInternalTimeValue = null;
-
-      if (newInternalTimeValue != null && _newInternalTimeValue != _internalTimeValue)
-        _isDirty = true;
+  /// <summary>
+  ///   Raises this control's <see cref="DateTimeChanged"/> event if the value was changed 
+  ///   through the text boxes.
+  /// </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void DateTimeTextBoxes_TextChanged (object sender, EventArgs e)
+  {
+    if (! _isDateTimeChangedRaised)
+    {
+      OnDateTimeChanged (EventArgs.Empty);
+      _isDateTimeChangedRaised = true;
     }
   }
+  bool _isDateTimeChangedRaised = false;
 
   /// <summary>
   /// Fires the <see cref="DateTimeChanged"/> event.
@@ -251,6 +269,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
 
     //  First call
     EnsureChildControlsPreRendered ();
+    if (! IsDesignMode && ! IsReadOnly)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary>
@@ -889,46 +909,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       maxTime = new DateTime (1, 1, 1, 23, 30, 30).ToString ("t");
 
     return maxTime.Length;
-  }
-
-  /// <summary>
-  ///   Raises this control's <see cref="DateTimeChanged"/> event if the value was changed 
-  ///   through the text boxes.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void DateTimeTextBoxes_TextChanged (object sender, EventArgs e)
-  {
-    bool isDateChanged = _newInternalDateValue != _internalDateValue;
-    bool isTimeChanged = _newInternalTimeValue != _internalTimeValue;
-
-    if (isDateChanged)
-    {
-      InternalDateValue = _newInternalDateValue;
-      
-      //  Reset the time in if the control is displayed in date mode and the date was changed
-      if (   ActualValueType == BocDateTimeValueType.Date
-          && ! _savedDateTimeValue.IsNull)
-      {
-         _savedDateTimeValue = _savedDateTimeValue.Date;
-      }
-    }
-
-    if (isTimeChanged)
-    {
-      InternalTimeValue = _newInternalTimeValue;
-      
-      //  Reset the seconds if the control does not display seconds and the time was changed
-      if (   ! ShowSeconds
-          && ! _savedDateTimeValue.IsNull)
-      {
-          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
-         _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
-      }
-    }
-
-    if (isDateChanged || isTimeChanged)
-      OnDateTimeChanged (EventArgs.Empty);
   }
 
   /// <summary> Handles refreshing the bound control. </summary>
