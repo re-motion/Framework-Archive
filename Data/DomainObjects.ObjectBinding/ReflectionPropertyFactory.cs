@@ -128,6 +128,14 @@ public class ReflectionPropertyFactory
 
   protected virtual bool IsPropertyRequired (PropertyInfo propertyInfo)
   {
+    object[] isRequiredAttributes = propertyInfo.GetCustomAttributes (typeof (IsRequiredAttribute), true);
+
+    if (isRequiredAttributes.Length > 0)
+      return ((IsRequiredAttribute) isRequiredAttributes[0]).IsRequired;
+      
+    if (NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType) || propertyInfo.PropertyType == typeof (string))
+      return false;
+
     return true;
   }
 
@@ -138,6 +146,11 @@ public class ReflectionPropertyFactory
 
   protected virtual bool IsDateType (PropertyInfo propertyInfo)
   {
+    object[] isDateTypeAttributes = propertyInfo.GetCustomAttributes (typeof (IsDateTypeAttribute), true);
+
+    if (isDateTypeAttributes.Length > 0)
+      return ((IsDateTypeAttribute) isDateTypeAttributes[0]).IsDateType;
+
     return false;
   }
 
