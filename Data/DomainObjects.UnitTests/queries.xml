@@ -44,42 +44,40 @@
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
+    <statement>select * from Customer where CustomerType = @customerType order by Name asc;</statement>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-      select TableWithAllDataTypes.* from TableWithAllDataTypes where 
-        ID = '{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}' and 
-        ClassID = 'ClassWithAllDataTypes' and
-        [Boolean] = 0 and
-        [Byte] = 85 and
-        [Char] = 'a' and
-        [Date] = '2005/01/01' and
-        [DateTime] = '2005/01/01 17:00' and
-        [Decimal] = 123456.789 and
-        [Double] = 987654.321 and
-        [Enum] = 1 and
-        [Guid] = '{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}' and
-        [Int16] = 32767 and
-        [Int32] = 2147483647 and
-        [Int64] = 9223372036854775807 and
-        [Single] = 6789.321 and
-        [String] = 'abcdeföäü' and 
-        [NaBoolean] = 1 and
-        [NaDate] = '2005/02/01' and
-        [NaDateTime] = '2005/02/01 05:00' and
-        [NaDouble] = 654321.789 and
-        [NaInt32] = -2147483647 and
-        [StringWithNullValue] is null and
-        [NaBooleanWithNullValue] is null and 
-        [NaDateWithNullValue] is null and
-        [NaDateTimeWithNullValue] is null and
-        [NaDoubleWithNullValue] is null and
-        [NaInt32WithNullValue] is null
+      set ANSI_NULLS OFF;
+      select * from TableWithAllDataTypes where 
+        [Boolean] = @boolean and
+        [Byte] = @byte and
+        [Char] = @char and
+        [Date] = @date and
+        [DateTime] = @dateTime and
+        [Decimal] = @decimal and
+        [Double] = @double and
+        [Enum] = @enum and
+        [Guid] = @guid and
+        [Int16] = @int16 and
+        [Int32] = @int32 and
+        [Int64] = @int64 and
+        [Single] = @single and
+        [String] = @string and 
+        [NaBoolean] = @naBoolean and
+        [NaDate] = @naDate and
+        [NaDateTime] = @naDateTime and
+        [NaDouble] = @naDouble and
+        [NaInt32] = @naInt32 and
+        [StringWithNullValue] = @stringWithNullValue and
+        [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+        [NaDateWithNullValue] = @naDateWithNullValue and
+        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
+        [NaInt32WithNullValue] = @naInt32WithNullValue;
     </statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
 </queries>
