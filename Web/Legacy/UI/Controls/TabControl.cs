@@ -8,10 +8,9 @@ using System.Drawing;
 using System.Reflection;
 
 using Rubicon;
-using Rubicon.Findit.Client.Controls;
 using Rubicon.Findit.Globalization.Classes;
 
-namespace Rubicon.Findit.Client.Controls
+namespace Rubicon.Web.UI.Controls
 {
 
 public interface INavigablePage
@@ -130,7 +129,7 @@ public class TabMenu: Control, ITabItem
   }
 }
 
-[MultiLingualResources ("Rubicon.Findit.Client.Controls.Globalization.TabControl")] 
+[MultiLingualResources ("Rubicon.Web.UI.Controls.Globalization.TabControl")] 
 [ParseChildren (true, "Tabs")]
 public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 {
