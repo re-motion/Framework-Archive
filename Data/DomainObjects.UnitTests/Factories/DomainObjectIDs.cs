@@ -362,7 +362,7 @@ public sealed class DomainObjectIDs
 
   #region Official
 
-  // Orders: Order1, Order2, OrderWithoutOrderItem
+  // Orders: Order1, Order2, OrderWithoutOrderItem, Order3, Order4
   public static readonly ObjectID Official1 = new ObjectID (
       DatabaseTest.c_unitTestStorageProviderStubID, "Official", 1);
 
