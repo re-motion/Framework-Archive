@@ -1,10 +1,10 @@
 /*  */
-div.treeViewParentNode
+div.treeViewNode
 {
 }
 
 /*  */
-div.treeViewNodeGroup
+div.treeViewNodeChildren
 {
   background-image: url(../Image/TreeViewI.gif);
   background-repeat: repeat-y;  
@@ -12,7 +12,23 @@ div.treeViewNodeGroup
 }
 
 /*  */
-div.treeViewLastNodeGroup
+div.treeViewLastNodeChildren
 {
   padding-left: 16px;
+}
+
+/*  */
+span.treeViewNodeHead a
+{
+  padding: 2px;
+}
+
+/*  */
+span.treeViewNodeHead a:hover
+{
+	padding: 1px;
+	border-width: 1px;
+	border-color: #2254b1;
+	border-style: solid;
+	background-color: #fee197;	
 }
