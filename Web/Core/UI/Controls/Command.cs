@@ -383,7 +383,7 @@ public class Command: IControlItem
     return ! IsDefaultType;
   }
 
-  /// <summary> Sets the <see cref="Type"/> to it's default value. </summary>
+  /// <summary> Sets the <see cref="Type"/> to its default value. </summary>
   protected void ResetType()
   {
     _type = _defaultType;
