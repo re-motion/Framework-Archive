@@ -17,6 +17,14 @@ public class WxeExecuteNextStepException: Exception
   }
 }
 
+public class WxeUserCancelException: Exception
+{
+  public WxeUserCancelException()
+    : base ("User cancelled this step.")
+  {
+  }
+}
+
 public class WxePageStep: WxeStep
 {
   private string _page = null;
