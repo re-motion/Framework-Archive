@@ -168,6 +168,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\FormGridLabel.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\FormGridManager.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -179,6 +184,11 @@
                 />
                 <File
                     RelPath = "Controls\FormGridRowPrototypeCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\IControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
