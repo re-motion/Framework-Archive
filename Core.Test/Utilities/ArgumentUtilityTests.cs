@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Rubicon;
+using Rubicon.Utilities;
 
 namespace Rubicon.UnitTests
 {
