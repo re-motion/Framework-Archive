@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class DataContainerCollection : CollectionBase
+public class DataContainerCollection : BaseCollection
 {
   // types
 

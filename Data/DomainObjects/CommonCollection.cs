@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Base class for all collections of Rubicon.Data.DomainObjects.
 /// </summary>
-public class CollectionBase : ICollection
+public class BaseCollection : ICollection
 {
   // types
 
@@ -16,9 +16,9 @@ public class CollectionBase : ICollection
   {
     private int _index;
     private long _collectionVersion;
-    private CollectionBase _collection;
+    private BaseCollection _collection;
 
-    public CollectionEnumerator (CollectionBase collection)
+    public CollectionEnumerator (BaseCollection collection)
     {
       ArgumentUtility.CheckNotNull ("collection", collection);
       _collection = collection;
@@ -78,7 +78,7 @@ public class CollectionBase : ICollection
   /// <summary>
   /// Initializes a new <b>ColletionBase</b>.
   /// </summary>
-  protected CollectionBase ()
+  protected BaseCollection ()
   {
     _collectionData = new Hashtable ();
     _collectionKeys = new ArrayList ();
@@ -114,7 +114,7 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Gets a value indicating whether the <see cref="CollectionBase"/> is read-only.
+  /// Gets a value indicating whether the <see cref="BaseCollection"/> is read-only.
   /// </summary>
   public virtual bool IsReadOnly
   {
@@ -122,10 +122,10 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Determines whether the <see cref="CollectionBase"/> contains a specific key.
+  /// Determines whether the <see cref="BaseCollection"/> contains a specific key.
   /// </summary>
-  /// <param name="key">The key to locate in the <see cref="CollectionBase"/>.</param>
-  /// <returns><b>true</b> if the <see cref="CollectionBase"/> contains the key; otherwise <b>false</b>.</returns>
+  /// <param name="key">The key to locate in the <see cref="BaseCollection"/>.</param>
+  /// <returns><b>true</b> if the <see cref="BaseCollection"/> contains the key; otherwise <b>false</b>.</returns>
   /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
   protected bool ContainsKey (object key)
   {
@@ -274,9 +274,9 @@ public class CollectionBase : ICollection
   #region IEnumerable Members
 
   /// <summary>
-  /// Returns an enumerator that can iterate through the <see cref="CollectionBase"/>.
+  /// Returns an enumerator that can iterate through the <see cref="BaseCollection"/>.
   /// </summary>
-  /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="CollectionBase"/>.</returns>
+  /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="BaseCollection"/>.</returns>
   public virtual IEnumerator GetEnumerator ()
   {
     return new CollectionEnumerator (this);
@@ -287,7 +287,7 @@ public class CollectionBase : ICollection
   #region ICollection Members
 
   /// <summary>
-  /// Gets a value indicating whether access to the <see cref="CollectionBase"/> is synchronized (thread-safe).
+  /// Gets a value indicating whether access to the <see cref="BaseCollection"/> is synchronized (thread-safe).
   /// </summary>
   public virtual bool IsSynchronized
   {
@@ -295,7 +295,7 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Gets the number of items contained in the <see cref="CollectionBase"/>.
+  /// Gets the number of items contained in the <see cref="BaseCollection"/>.
   /// </summary>
   public virtual int Count
   {
@@ -303,9 +303,9 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Copies the items of the <see cref="CollectionBase"/> to an Array, starting at a particular Array index.
+  /// Copies the items of the <see cref="BaseCollection"/> to an Array, starting at a particular Array index.
   /// </summary>
-  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CollectionBase"/>. The array must have zero-based indexing.</param>
+  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="BaseCollection"/>. The array must have zero-based indexing.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
   /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
@@ -327,7 +327,7 @@ public class CollectionBase : ICollection
   }
 
   /// <summary>
-  /// Gets an object that can be used to synchronize access to the <see cref="CollectionBase"/>.
+  /// Gets an object that can be used to synchronize access to the <see cref="BaseCollection"/>.
   /// </summary>
   public virtual object SyncRoot
   {
