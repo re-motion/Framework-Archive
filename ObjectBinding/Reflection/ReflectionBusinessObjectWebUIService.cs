@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI.WebControls;
 using Rubicon.ObjectBinding.Web;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Reflection
 {

@@ -51,6 +51,14 @@ public class SingleBocTestBasePage:
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
+
+    string key = GetType().FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (ResourceUrlResolver), ResourceType.Html, "Style.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+    }
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this, this.GetResourceManager());
