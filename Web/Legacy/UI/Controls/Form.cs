@@ -11,6 +11,8 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+using Rubicon.Web.UI.Utilities;
+
 namespace Rubicon.Web.UI.Controls
 {
 /// <summary>
@@ -29,14 +31,12 @@ public class Form : HtmlForm
   // member fields
 
   private string _action;
-  private bool _allowMultipeForms;
 
   // construction and disposing
 
   public Form ()
   {
     _action = string.Empty;
-    _allowMultipeForms = false;
   }
 
   // abstract methods
@@ -64,11 +64,41 @@ public class Form : HtmlForm
   /// </remarks>
   protected override void RenderAttributes (System.Web.UI.HtmlTextWriter output) 
   {
-    output.WriteAttribute ("action", _action);
+    output.WriteAttribute ("action", Page.ResolveUrl (_action));
     Attributes.Remove ("action");
 
     RenderAttributesLikeBaseClass (output);
   }
+
+  protected override void RenderChildren (HtmlTextWriter output) 
+  {
+    // Cache the hidden fields (EVENTTARGET, EVENTARGUMENT, ...) for another form on the same page
+    if (CachedRegisteredHiddenFields != null)
+      Page_RegisteredHiddenFields = CachedRegisteredHiddenFields;
+    else
+      CachedRegisteredHiddenFields = Page_RegisteredHiddenFields;
+
+    Page_OnFormRender (output);
+    RenderChildrenLikeBaseClass (output);    
+    Page_OnFormPostRender (output);
+  }
+
+  private void CheckMembers ()
+  {
+    if (_action == null || _action == string.Empty) throw new InvalidOperationException ("'Action' attribute must not be empty string.");
+  }
+
+  /// <summary>
+  /// Gets or sets the action attribute of the html form.
+  /// </summary>
+  public string Action
+  {
+    get { return _action; }
+    set { _action = value; }
+  }
+
+
+  #region Private implementation for all Render... (...) methods of base class
 
   /// <summary>
   /// Implements RenderAttributes from base class HtmlForm.
@@ -87,7 +117,7 @@ public class Form : HtmlForm
     Attributes.Remove ("method");
 			
     string submitEvent = Page_ClientOnSubmitEvent;
-    if (submitEvent != null && submitEvent.Length > 0) 
+    if (submitEvent != null && submitEvent != string.Empty) 
     {
       if (this.Attributes["onsubmit"] != null) 
       {
@@ -100,25 +130,10 @@ public class Form : HtmlForm
     
     output.WriteAttribute ("id", ClientID);
 
+    // Is normally done by HtmlContainerControl
     ViewState.Remove ("innerhtml");
-    Attributes.Render (output);
-  }
 
-  protected override void RenderChildren (HtmlTextWriter output) 
-  {
-    if (_allowMultipeForms)
-    {
-      // If multiple forms should be allowed the complete RenderChildren method has
-      // to be implemented by ourselves.
-      Page_OnFormRender (output);
-      RenderChildrenLikeBaseClass (output);    
-      Page_OnFormPostRender (output);
-    }
-    else
-    {
-      // Multiple forms are not allowed
-      base.RenderChildren (output);
-    }
+    Attributes.Render (output);
   }
 
   private void RenderChildrenLikeBaseClass (HtmlTextWriter output)
@@ -138,28 +153,10 @@ public class Form : HtmlForm
 
   private void Page_OnFormRender (HtmlTextWriter output) 
   {
-    SetPrivateFieldValue (typeof (Page), "_inOnFormRender", Page, true);
+    SetHiddenFieldValue (typeof (Page), "_inOnFormRender", Page, true);
     Page_RenderHiddenFields (output);
 
-    if (Page_ViewStateToPersist != null)
-    {
-      if (Page_Formatter == null)
-        Page_CreateLosFormatter ();
-
-      output.WriteLine();
-      output.Write("<input type=\"hidden\" name=\"");
-      output.Write("__VIEWSTATE");
-      output.Write("\" value=\"");
-      Page_Formatter.Serialize(output, Page_ViewStateToPersist);
-      output.WriteLine("\" />");
-    }
-    else
-    {
-      output.WriteLine();
-      output.Write("<input type=\"hidden\" name=\"");
-      output.Write("__VIEWSTATE");
-      output.Write("\" value=\"\" />");
-    }
+    RenderViewState (output);
 
     if (Page_FRequirePostBackScript && !IsPostBackScriptRendered)
       Page_RenderPostBackScript (output, UniqueID);
@@ -171,41 +168,104 @@ public class Form : HtmlForm
     }
   }
 
+  private void RenderViewState (HtmlTextWriter output) 
+  {
+    if (IsActionSetToCurrentPage)
+    {
+      if (Page_ViewStateToPersist != null)
+      {
+        if (Page_Formatter == null)
+          Page_CreateLosFormatter ();
+
+        output.WriteLine();
+        output.Write("<input type=\"hidden\" name=\"");
+        output.Write("__VIEWSTATE");
+        output.Write("\" value=\"");
+        Page_Formatter.Serialize(output, Page_ViewStateToPersist);
+        output.WriteLine("\" />");
+      }
+      else
+      {
+        output.WriteLine();
+        output.Write("<input type=\"hidden\" name=\"");
+        output.Write("__VIEWSTATE");
+        output.Write("\" value=\"\" />");
+      }
+    }
+  }
+
+  private IDictionary CachedRegisteredHiddenFields
+  {
+    get 
+    { 
+      return (IDictionary) Page_ViewState["Rubicon.Web.UI.Controls.Form.CachedRegisteredHiddenFields"];
+    }
+    set
+    {
+      Page_ViewState["Rubicon.Web.UI.Controls.Form.CachedRegisteredHiddenFields"] = value;
+    }
+
+  }
+
+  private bool IsActionSetToCurrentPage
+  {
+    get 
+    { 
+      return UrlUtility.GetAbsoluteUrlWithoutProtocol (Page, _action) == 
+          UrlUtility.GetAbsoluteUrlWithoutProtocol (Page, UrlUtility.GetAbsolutePageUrl (Page));
+    }
+  }
+
   private bool AreRegisteredClientScriptBlocksRendered
   {
     get 
     { 
-      return (ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"] != null 
-          && (bool) ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"]);
+      return (Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"] != null 
+          && (bool) Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"]);
     }
     set
     {
-      ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"] = value;
+      Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientScriptBlocksRendered"] = value;
     }
   }
+
 
   private bool IsPostBackScriptRendered
   {
     get 
     { 
-      return (ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"] != null 
-        && (bool) ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"]);
+      return (Page_ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"] != null 
+        && (bool) Page_ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"]);
     }
     set
     {
-      ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"] = value;
+      Page_ViewState["Rubicon.Web.UI.Controls.Form.IsPostBackScriptRendered"] = value;
     }
   }
+
+  private bool AreRegisteredArrayDeclaresRendered
+  {
+    get 
+    { 
+      return (Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredArrayDeclaresRendered"] != null 
+        && (bool) Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredArrayDeclaresRendered"]);
+    }
+    set
+    {
+      Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredArrayDeclaresRendered"] = value;
+    }
+  }
+
   private bool AreRegisteredClientStartupScriptsRendered
   {
     get 
     { 
-      return (ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"] != null 
-        && (bool) ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"]);
+      return (Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"] != null 
+        && (bool) Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"]);
     }
     set
     {
-      ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"] = value;
+      Page_ViewState["Rubicon.Web.UI.Controls.Form.AreRegisteredClientStartupScriptsRendered"] = value;
     }
   }
 
@@ -217,12 +277,12 @@ public class Form : HtmlForm
     MethodInfo renderScriptBlockMethod = pageType.GetMethod (
       "RenderScriptBlock", BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic);
 
-    renderScriptBlockMethod.Invoke (Page, new object[] {output});     
+    renderScriptBlockMethod.Invoke (Page, new object[] {output, scriptBlocks});     
   }
 
   private void Page_OnFormPostRender (HtmlTextWriter output) 
   {
-    if (Page_RegisteredArrayDeclares != null)
+    if (Page_RegisteredArrayDeclares != null && !AreRegisteredArrayDeclaresRendered)
     {
       output.WriteLine ();
       output.WriteLine ("<script language=\"javascript\">\r\n<!--");
@@ -254,6 +314,8 @@ public class Form : HtmlForm
       ++output.Indent;
       output.WriteLine("// -->\r\n</script>");
       output.WriteLine();
+
+      AreRegisteredArrayDeclaresRendered = true;
     }
 
     Page_RenderHiddenFields (output);
@@ -267,31 +329,33 @@ public class Form : HtmlForm
       AreRegisteredClientStartupScriptsRendered = true;
     }
 
-    SetPrivateFieldValue (typeof (Page), "_inOnFormRender", Page, false);
+    SetHiddenFieldValue (typeof (Page), "_inOnFormRender", Page, false);
   }
 
   private void Page_RenderPostBackScript (HtmlTextWriter output, string formUniqueID)
   {
     string postBackScript = @"
         <script language=""javascript"">
-        <!--
-	        function __doPostBack(eventTarget, eventArgument) {
-		        var controlID = eventTarget.split(""$"").join(""_"");
-        		
-		        var control = document[controlID];
+          <!--
+	          function __doPostBack(eventTarget, eventArgument) {
+		          var controlID = eventTarget.split(""$"").join(""_"");
+          		
+		          var control = document[controlID];
 
-		        if (control == null && document.all != null)
-		          control = document.all[controlID];
-        		  
-		        if (control == null && document.getElementById != null)
-		          control = document.getElementById (controlID);
-        		
-		        var theform = control.form;
-		        theform.__EVENTTARGET.value = controlID;
-		        theform.__EVENTARGUMENT.value = eventArgument;
-		        theform.submit();
-	        }
-        // -->";
+		          if (control == null && document.all != null)
+		            control = document.all[controlID];
+          		  
+		          if (control == null && document.getElementById != null)
+		            control = document.getElementById (controlID);
+          		
+		          var theform = control.form;
+		          theform.__EVENTTARGET.value = controlID;
+		          theform.__EVENTARGUMENT.value = eventArgument;
+		          theform.submit();
+	          }
+          // -->
+        </script>
+        ";
     
     output.Write(postBackScript);
     IsPostBackScriptRendered = true;
@@ -324,7 +388,7 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (string) GetPrivatePropertyValue (typeof(Page), "ClientOnSubmitEvent", Page);
+      return (string) GetHiddenPropertyValue (typeof(Page), "ClientOnSubmitEvent", Page);
     }
   }
 
@@ -335,7 +399,18 @@ public class Form : HtmlForm
   {
     get 
     {
-      return GetPrivateFieldValue (typeof(Page), "_viewStateToPersist", this);
+      return GetHiddenFieldValue (typeof(Page), "_viewStateToPersist", Page);
+    }
+  }
+
+  /// <summary>
+  /// Uses reflection to access the ViewState property of the Page class
+  /// </summary>
+  private StateBag Page_ViewState 
+  {
+    get 
+    {
+      return (StateBag) GetHiddenPropertyValue (typeof(Page), "ViewState", Page);
     }
   }
 
@@ -346,7 +421,22 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (IDictionary) GetPrivateFieldValue (typeof(Page), "_registeredClientScriptBlocks", this);
+      return (IDictionary) GetHiddenFieldValue (typeof(Page), "_registeredClientScriptBlocks", Page);
+    }
+  }
+
+  /// <summary>
+  /// Uses reflection to access the _registeredHiddenFields field of the Page class
+  /// </summary>
+  private IDictionary Page_RegisteredHiddenFields 
+  {
+    get 
+    {
+      return (IDictionary) GetHiddenFieldValue (typeof(Page), "_registeredHiddenFields", Page);
+    }
+    set
+    {
+      SetHiddenFieldValue (typeof (Page), "_registeredHiddenFields", Page, value);
     }
   }
 
@@ -357,7 +447,7 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (IDictionary) GetPrivateFieldValue (typeof(Page), "_registeredClientStartupScripts", this);
+      return (IDictionary) GetHiddenFieldValue (typeof(Page), "_registeredClientStartupScripts", Page);
     }
   }
 
@@ -368,7 +458,7 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (IDictionary) GetPrivateFieldValue (typeof(Page), "_registeredArrayDeclares", this);
+      return (IDictionary) GetHiddenFieldValue (typeof(Page), "_registeredArrayDeclares", Page);
     }
   }
   /// <summary>
@@ -378,11 +468,11 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (bool) GetPrivateFieldValue (typeof(Page), "_fRequirePostBackScript", this);
+      return (bool) GetHiddenFieldValue (typeof(Page), "_fRequirePostBackScript", Page);
     }
     set
     {
-      SetPrivateFieldValue (typeof (Page), "_fRequirePostBackScript", Page, value);
+      SetHiddenFieldValue (typeof (Page), "_fRequirePostBackScript", Page, value);
     }
   }
 
@@ -393,7 +483,7 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (LosFormatter) GetPrivateFieldValue (typeof (Page), "_formatter", this);
+      return (LosFormatter) GetHiddenFieldValue (typeof (Page), "_formatter", Page);
     }
   }
   /// <summary>
@@ -403,13 +493,15 @@ public class Form : HtmlForm
   {
     get 
     {
-      return (RenderMethod) GetPrivateFieldValue (typeof(Page), "_renderMethod", this);
+      return (RenderMethod) GetHiddenFieldValue (typeof(Page), "_renderMethod", this);
     }
   }
+  #endregion
 
-  private Object GetPrivatePropertyValue (Type targetType, String propertyName, Object target) 
+  #region Reflection helpers
+  private Object GetHiddenPropertyValue (Type targetType, String propertyName, Object target) 
   {
-    PropertyInfo property = GetPrivateProperty (targetType, propertyName);
+    PropertyInfo property = GetHiddenProperty (targetType, propertyName);
 
     if (property != null) 
       return property.GetValue (target, null);		
@@ -417,15 +509,15 @@ public class Form : HtmlForm
       return null; 
   }
 
-  private PropertyInfo GetPrivateProperty (Type targetType, String propertyName) 
+  private PropertyInfo GetHiddenProperty (Type targetType, String propertyName) 
   {
     return targetType.GetProperty (
         propertyName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic);
   }
 
-  private Object GetPrivateFieldValue (Type targetType, String fieldName, Object target) 
+  private object GetHiddenFieldValue (Type targetType, String fieldName, Object target) 
   {
-    FieldInfo field = GetPrivateField (targetType, fieldName);
+    FieldInfo field = GetHiddenField (targetType, fieldName);
 
     if (field != null) 
       return field.GetValue (target);		
@@ -433,9 +525,9 @@ public class Form : HtmlForm
       return null; 
   }
 
-  private void SetPrivateFieldValue (Type targetType, String fieldName, Object target, object value) 
+  private void SetHiddenFieldValue (Type targetType, String fieldName, Object target, object value) 
   {
-    FieldInfo field = GetPrivateField (targetType, fieldName);
+    FieldInfo field = GetHiddenField (targetType, fieldName);
 
     if (field != null) 
     {
@@ -448,34 +540,12 @@ public class Form : HtmlForm
     }
   }
 
-  private FieldInfo GetPrivateField (Type targetType, String fieldName) 
+  private FieldInfo GetHiddenField (Type targetType, String fieldName) 
   {
     return targetType.GetField (
         fieldName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic);
   }
-
-  private void CheckMembers ()
-  {
-    if (_action == null || _action == string.Empty) throw new InvalidOperationException ("'Action' attribute must not be empty string.");
-  }
-
-  /// <summary>
-  /// Gets or sets the action attribute of the html form.
-  /// </summary>
-  public string Action
-  {
-    get { return _action; }
-    set { _action = value; }
-  }
-
-  /// <summary>
-  /// Gets or sets whether multiple html forms are allowed on a single page.
-  /// </summary>
-  public bool AllowMultipeForms
-  {
-    get { return _allowMultipeForms; }
-    set { _allowMultipeForms = value; }
-  }
+  #endregion
 }
 }
 
