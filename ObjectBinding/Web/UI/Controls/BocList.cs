@@ -980,6 +980,11 @@ public class BocList: BusinessObjectBoundModifiableWebControl
     get { return _additionalColumnsListStyle; }
     set { _additionalColumnsListStyle = value; }
   }
+
+  /// <summary> CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
+  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
+  protected virtual string CssClassTable
+  { get { return "bocListTable"; } }
 }
 
 
