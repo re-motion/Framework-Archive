@@ -562,8 +562,8 @@
   <!--======================= CLEANING =======================-->
 
   <target name="cleantemp" depends="setdocumentation">
-    <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}\temp" />
-    <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}\temp" />
+    <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}\temp" failonerror="false"/>
+    <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}\temp" failonerror="false"/>
     <delete>
       <fileset failonempty="false">
         <includes name="${build.basedir}/temp/**/*"/>
@@ -573,8 +573,8 @@
   </target>
 
   <target name="clean" depends="setdocumentation">
-    <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}" />
-    <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}" />
+    <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}" failonerror="false"/>
+    <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}" failonerror="false"/>
     <delete>
       <fileset failonempty="false">
         <includes name="${build.basedir}/**/*"/>
