@@ -53,7 +53,7 @@ public class UserControl1 : WxeUserControl
 
   private void Sub_Click (object sender, System.EventArgs e)
   {
-    CurrentStep.ExecuteFunction ((Control) sender, Page, new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"));  
+    CurrentStep.ExecuteFunction (Page, new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
   }
 
   private void Next_Click (object sender, System.EventArgs e)

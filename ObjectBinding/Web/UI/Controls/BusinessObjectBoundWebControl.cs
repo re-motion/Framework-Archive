@@ -377,7 +377,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
         return false;
       if (! IsDesignMode && DataSource.BusinessObject == null)
         return true;
-      if (! DataSource.IsWritable)
+      if (! DataSource.EditMode)
         return true;
       return Property.IsReadOnly (DataSource.BusinessObject);
     }

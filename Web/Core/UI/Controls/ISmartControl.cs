@@ -9,7 +9,7 @@ namespace Rubicon.Web.UI
 
 /// <summary>
 ///   This interfaces declares advanced properties and methods for data-aware controls.
-///   <seealso cref="FormGridManager"/>
+///   <seealso cref="Rubicon.Web.UI.Controls.FormGridManager"/>
 /// </summary>
 public interface ISmartControl: IControl
 {

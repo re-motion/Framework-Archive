@@ -67,6 +67,11 @@ public class WxeStepList: WxeStep
     Add (new WxeMethodStep (method));
   }
 
+  public void Add (WxeMethodWithContext method)
+  {
+    Add (new WxeMethodStep (method));
+  }
+
   public override WxeStep ExecutingStep
   {
     get
@@ -104,10 +109,19 @@ public class WxeStepList: WxeStep
         FieldInfo fieldInfo = (FieldInfo) member;
         Add ((WxeStep) fieldInfo.GetValue (this));
       }
-      else
+      else if (member is MethodInfo)
       {
-        WxeMethod method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), this, member.Name, false);
-        Add (method);
+        MethodInfo methodInfo = (MethodInfo) member;
+        if (methodInfo.GetParameters().Length == 0)
+        {
+          WxeMethod method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), this, member.Name, false);
+          Add (method);
+        }
+        else
+        {
+          WxeMethodWithContext method = (WxeMethodWithContext) Delegate.CreateDelegate (typeof (WxeMethodWithContext), this, member.Name, false);
+          Add (method);
+        }
       }
     }
   }

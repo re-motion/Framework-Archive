@@ -58,7 +58,7 @@ public class WxePageInfo: WxeTemplateControlInfo
 /// <remarks>
 ///   The <see cref="HtmlForm"/> must use the ID "Form". 
 ///   If you cannot derive your pages from this class (e.g., because you need to derive from another class), you may
-///   implement <see cref="IWxePage"/> and override <see cref="Page.OnLoad"/> and <see cref="Page.DeterminePostBackMode"/>. 
+///   implement <see cref="IWxePage"/> and override <see cref="OnInit"/> and <see cref="Page.DeterminePostBackMode"/>. 
 ///   Use <see cref="WxePageInfo"/> to implementat all methods and properties.
 /// </remarks>
 public class WxePage: Page, IWxePage

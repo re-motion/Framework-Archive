@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Specialized;
+using System.Reflection;
 using Rubicon.Collections;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -139,6 +141,42 @@ public class WxeParameterDeclaration
       else if (parameterDeclarations[i].Required)
       {
         throw new ApplicationException ("Parameter '" + parameterDeclarations[i].Name + "' is missing.");
+      }
+    }
+  }
+
+  public static void CopyToCallee (
+      WxeParameterDeclaration[] parameterDeclarations, NameValueCollection parameters, NameObjectCollection calleeVariables)
+  {
+    for (int i = 0; i < parameterDeclarations.Length; ++i)
+    {
+      WxeParameterDeclaration paramDeclaration = parameterDeclarations[i];
+      string strval = parameters[paramDeclaration.Name];
+      if (strval != null)
+      {
+        try
+        {
+          // calleeVariables[paramDeclaration.Name] = ((IConvertible)strval).ToType (paramDeclaration.Type, System.Threading.Thread.CurrentThread.CurrentCulture);
+          MethodInfo parseMethod = paramDeclaration.Type.GetMethod (
+              "Parse", 
+              BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
+              null, 
+              new Type[] {typeof (string)}, 
+              null);
+
+          if (parseMethod == null || ! paramDeclaration.Type.IsAssignableFrom (parseMethod.ReturnType))
+            throw new ApplicationException ("Cannot convert parameter '" + paramDeclaration.Name + "' to type " + paramDeclaration.Type.Name + ". Type does not have method 'public static " + paramDeclaration.Type + " Parse (string s)'.");
+
+          calleeVariables[paramDeclaration.Name] = parseMethod.Invoke (null, new object[] { strval } );
+        }
+        catch (InvalidCastException e)
+        {
+          throw new ApplicationException ("Cannot convert parameter '" + paramDeclaration.Name + "' to type " + paramDeclaration.Type.Name + ". Method 'Parse' failed.", e);
+        }
+      }
+      else if (paramDeclaration.Required)
+      {
+        throw new ApplicationException ("Parameter '" + paramDeclaration.Name + "' is missing.");
       }
     }
   }

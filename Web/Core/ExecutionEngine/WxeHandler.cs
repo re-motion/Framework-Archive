@@ -32,6 +32,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       Type type = Type.GetType (typeName, true);
       _currentFunction = (WxeFunction) Activator.CreateInstance (type);
 
+      WxeParameterDeclaration.CopyToCallee (_currentFunction.ParameterDeclarations, context.Request.Params, _currentFunction.Variables);
+
       context.Session["CurrentFunction"] = _currentFunction;
     }
 

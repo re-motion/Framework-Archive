@@ -77,11 +77,13 @@ public abstract class WxeStep
   }
 }
 
-public delegate void WxeMethod (WxeContext context);
+public delegate void WxeMethod ();
+public delegate void WxeMethodWithContext (WxeContext context);
 
 public class WxeMethodStep: WxeStep
 {
   private WxeMethod _method;
+  private WxeMethodWithContext _methodWithContext;
 
   public WxeMethodStep (WxeMethod method)
   {
@@ -89,9 +91,18 @@ public class WxeMethodStep: WxeStep
     _method = method;
   }
 
+  public WxeMethodStep (WxeMethodWithContext method)
+  {
+    ArgumentUtility.CheckNotNull ("method", method);
+    _methodWithContext = method;
+  }
+
   public override void Execute (WxeContext context)
   {
-    _method (context);
+    if (_method != null)
+      _method ();
+    else
+      _methodWithContext (context);
   }
 }
 
