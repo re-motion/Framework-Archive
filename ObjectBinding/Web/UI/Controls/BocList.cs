@@ -46,7 +46,8 @@ public class BocList:
   private const int c_titleRowIndex = -1;
 
   /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
-  private const string c_eventCommandPrefix = "Event=";
+  private const string c_eventListItemCommandPrefix = "ListCommand=";
+  private const string c_eventMenuItemPrefix = "MenuItem=";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -100,97 +101,25 @@ public class BocList:
     Next
   }
 
-  /// <summary> The possible sorting directions. </summary>
-  private enum SortingDirection
-  {
-    /// <summary> Don't sort. </summary>
-    None,
-    /// <summary> Sort ascending. </summary>
-    Ascending,
-    /// <summary> Sort descending. </summary>
-    Descending
-  }
-
   /// <summary> Represents the sorting direction for an individual column. </summary>
+  /// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
   [Serializable]
   private struct SortingOrderEntry
   {
-    private int _columnIndex;
-    private SortingDirection _direction;
+    /// <summary> Gets or sets the index of the column for which the <see cref="Direction"/> is entered. </summary>
+    public int ColumnIndex;
+    /// <summary> Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>. </summary>
+    public SortingDirection Direction;
 
     /// <summary> Represents a null <see cref="SortingOrderEntry"/>. </summary>
-    public static readonly SortingOrderEntry Empty = 
-        new SortingOrderEntry (Int32.MinValue, SortingDirection.None);
+    public static readonly SortingOrderEntry Empty = new SortingOrderEntry (Int32.MinValue, SortingDirection.None);
 
-    /// <summary>
-    ///   Initializes a new instance of the <see cref="SortingOrderEntry"/> class with
-    ///   a column index and the <see cref="SortingDirection"/> for this column.
-    /// </summary>
+    /// <summary> Initializes a new instance. </summary>
     /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Constructor/*' />
     public SortingOrderEntry (int columnIndex, SortingDirection direction)
     {
-      _columnIndex = columnIndex;
-      _direction = direction;
-    }
-
-    /// <summary>
-    ///   Tests whether two specified <see cref="SortingOrderEntry"/> structures are equivalent.
-    /// </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/OperatorEqual/*' />
-    public static bool operator == (SortingOrderEntry left, SortingOrderEntry right)
-    {
-      return left.ColumnIndex == right.ColumnIndex && left.Direction == right.Direction;
-    }
-
-    /// <summary>
-    ///   Tests whether two specified <see cref="SortingOrderEntry"/> structures are different.
-    /// </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/OperatorDifferent/*' />
-    public static bool operator != (SortingOrderEntry left, SortingOrderEntry right)
-    {
-      return !(left == right);
-    }
-
-    /// <summary>
-    ///   Tests whether the specified object is a <see cref="SortingOrderEntry"/> structure 
-    ///   and is equivalent to this <see cref="SortingOrderEntry"/> structure.
-    /// </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Equals/*' />
-    public override bool Equals (object obj)
-    {
-      if (obj is SortingOrderEntry)
-      {
-        SortingOrderEntry entry = (SortingOrderEntry) obj;
-        return _columnIndex == entry.ColumnIndex && _direction == entry.Direction;;
-      }
-      return false;
-    }
-
-    /// <summary>
-    ///   Returns a hash code for this <see cref="SortingOrderEntry"/> structure.
-    /// </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/GetHashCode/*' />
-    public override int GetHashCode()
-    {
-      return _columnIndex.GetHashCode() ^ _direction.GetHashCode();
-    }
-
-    /// <summary>
-    ///   Gets or sets the index of the column for which the <see cref="Direction"/> is entered.
-    /// </summary>
-    public int ColumnIndex
-    {
-      get { return _columnIndex; }
-      set { _columnIndex = value; }
-    }
-
-    /// <summary>
-    ///   Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>.
-    /// </summary>
-    public SortingDirection Direction
-    {
-      get { return _direction; }
-      set { _direction = value; }
+      ColumnIndex = columnIndex;
+      Direction = direction;
     }
   }
 
@@ -201,7 +130,8 @@ public class BocList:
   /// <summary> The log4net logger. </summary>
   private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-  private static readonly object EventCommandClick = new object();
+  private static readonly object EventListItemCommandClick = new object();
+  private static readonly object EventMenuItemClick = new object();
 
 	// member fields
 
@@ -212,7 +142,7 @@ public class BocList:
   private bool _isDirty = true;
 
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
-  private DropDownList _additionalColumnsList = new DropDownList();
+  private DropDownList _additionalColumnsList;
 
   /// <summary> 
   ///   The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>.
@@ -223,13 +153,13 @@ public class BocList:
   private Unit _additionalColumnsListWidth = Unit.Empty;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
-  private ImageButton _moveFirstButton = new ImageButton();
+  private ImageButton _moveFirstButton;
   /// <summary> The <see cref="ImageButton"/> used to navigate to the last page. </summary>
-  private ImageButton _moveLastButton =  new ImageButton();
+  private ImageButton _moveLastButton;
   /// <summary> The <see cref="ImageButton"/> used to navigate to the previous page. </summary>
-  private ImageButton _movePreviousButton = new ImageButton();
+  private ImageButton _movePreviousButton;
   /// <summary> The <see cref="ImageButton"/> used to navigate to the next page. </summary>
-  private ImageButton _moveNextButton = new ImageButton();
+  private ImageButton _moveNextButton;
 
   /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
   private IList _value = null;
@@ -339,15 +269,9 @@ public class BocList:
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
 	public BocList()
 	{
-    //  Reference 'this' is not used for anything but storing the reference to the BocList
-    _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
-    //  Reference 'this' is not used for anything but storing the reference to the BocList
     _listMenuItems = new BocMenuItemCollection (this);
-    //  Reference 'this' is not used for anything but storing the reference to the BocList
     _optionsMenuItems = new BocMenuItemCollection (this);
-    //  Reference 'this' is not used for anything but storing the reference to the BocList
     _fixedColumns = new BocColumnDefinitionCollection (this);
-    //  Reference 'this' is not used for anything but storing the reference to the BocList
     _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
   }
 
@@ -355,6 +279,28 @@ public class BocList:
 
   protected override void CreateChildControls()
   {
+    _optionsMenu = new DropDownMenu (c_optionsMenuGroupID, this);
+    _optionsMenu.ID = this.ID + c_optionsMenuIDSuffix;
+    Controls.Add (_optionsMenu);
+
+    _moveFirstButton = new ImageButton();
+    Controls.Add (_moveFirstButton);
+
+    _moveLastButton =  new ImageButton();
+    Controls.Add (_moveLastButton);
+
+    _movePreviousButton = new ImageButton();
+    Controls.Add (_movePreviousButton);
+
+    _moveNextButton = new ImageButton();
+    Controls.Add (_moveNextButton);
+
+    _additionalColumnsList = new DropDownList();
+    _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
+    _additionalColumnsList.EnableViewState = true;
+    _additionalColumnsList.AutoPostBack = true;
+    _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
+    Controls.Add (_additionalColumnsList);
   }
 
   /// <summary>
@@ -365,23 +311,11 @@ public class BocList:
   {
     base.OnInit (e);
 
-    _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
-    _additionalColumnsList.EnableViewState = true;
-    _additionalColumnsList.AutoPostBack = true;
-    _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
-    Controls.Add (_additionalColumnsList);
-
-    _optionsMenu.ID = this.ID + c_optionsMenuIDSuffix;
-    Controls.Add (_optionsMenu);
-
+    _optionsMenu.Click += new MenuItemClickEventHandler(OptionsMenu_Click);
     _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
-    Controls.Add (_moveFirstButton);
     _moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
-    Controls.Add (_moveLastButton);
     _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
-    Controls.Add (_movePreviousButton);
     _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
-    Controls.Add (_moveNextButton);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
@@ -413,6 +347,14 @@ public class BocList:
     }
   }
 
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+    
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
+  }
+
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
   /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
   public void RaisePostBackEvent (string eventArgument)
@@ -421,19 +363,21 @@ public class BocList:
 
     eventArgument = eventArgument.Trim();
 
-    if (eventArgument.StartsWith (c_eventCommandPrefix))
-      HandleEventCommand (eventArgument.Substring (c_eventCommandPrefix.Length));
+    if (eventArgument.StartsWith (c_eventListItemCommandPrefix))
+      HandleEventListItemCommand (eventArgument.Substring (c_eventListItemCommandPrefix.Length));
+    else if (eventArgument.StartsWith (c_eventMenuItemPrefix))
+      HandleEventMenuItem (eventArgument.Substring (c_eventMenuItemPrefix.Length));
     else if (eventArgument.StartsWith (c_sortCommandPrefix))
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
     else
-      throw new ArgumentException ("Argument 'eventArgument' must begin with on of the following prefixes: '" + c_eventCommandPrefix + "' or '" + c_sortCommandPrefix + "'.");
+      throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
 
-  /// <summary> Handles post back events raised by an <see cref="Command"/> of type event. </summary>
+  /// <summary> Handles post back events raised by a list item event. </summary>
   /// <param name="eventArgument">
   ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
   /// </param>
-  private void HandleEventCommand (string eventArgument)
+  private void HandleEventListItemCommand (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -486,15 +430,7 @@ public class BocList:
     {
       case CommandType.Event:
       {
-        string columnID = string.Empty;
-        if (column != null)
-        {
-          if (StringUtility.IsNullOrEmpty (column.ColumnID))
-            throw new InvalidOperationException ("The column No. " + columnIndex + " does not have an ID but raised an event.");
-          columnID = column.ColumnID;
-        }
-
-        OnCommandClick (columnID, listIndex, businessObjectID);
+        OnListItemCommandClick (column, listIndex, (IBusinessObject) this.Value[listIndex]);
         break;
       }
       case CommandType.WxeFunction:
@@ -507,6 +443,43 @@ public class BocList:
         break;
       }
     }
+  }
+
+  /// <summary> Handles post back events raised by a menu item event. </summary>
+  private void HandleEventMenuItem (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
+
+    //  First part: index
+    int index;
+    eventArgumentParts[0] = eventArgumentParts[0].Trim();
+    try 
+    {
+      if (eventArgumentParts[0].Length == 0)
+        throw new FormatException();
+      index = int.Parse (eventArgumentParts[0]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>[,<business-object-id>]'.");
+    }
+
+    //  Second part, optional: item ID
+    string id = null;
+    if (eventArgumentParts.Length == 2)
+      id = eventArgumentParts[1].Trim();
+
+    BocMenuItem[] menuItems = EnsureListMenuItemsForPreviousLifeCycleGot();
+    if (index >= menuItems.Length)
+      throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
+
+    BocMenuItem menuItem = menuItems[index];
+    if (menuItem.Command == null)
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command associated with list menu item " + index + ".");
+
+    OnMenuItemClick (menuItem);
   }
 
   /// <summary> Handles post back events raised by a sorting button. </summary>
@@ -545,7 +518,10 @@ public class BocList:
     }
 
     //  Cycle: Ascending -> Descending -> None -> Ascending
-    if (sortingOrderEntry != SortingOrderEntry.Empty)
+    bool isEmptySortingOrder =    
+           sortingOrderEntry.ColumnIndex != SortingOrderEntry.Empty.ColumnIndex 
+        && sortingOrderEntry.Direction != SortingOrderEntry.Empty.Direction;
+    if (isEmptySortingOrder)
     {
       _sortingOrder.Remove (sortingOrderEntry);
       switch (sortingOrderEntry.Direction)
@@ -575,15 +551,35 @@ public class BocList:
     _sortingOrder.Add (sortingOrderEntry);
   }
 
-  /// <summary> Fires the <see cref="CommandClick"/> event. </summary>
+  /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnCommandClick/*' />
-  protected virtual void OnCommandClick (string columnID, int listIndex, string businessObjectID)
+  protected virtual void OnListItemCommandClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
   {
-    BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[EventCommandClick];
+    BocListItemCommandClickEventHandler commandClickHandler = 
+        (BocListItemCommandClickEventHandler) Events[EventListItemCommandClick];
+    if (column != null && column.Command != null)
+      column.Command.OnClick (column, listIndex, businessObject);
     if (commandClickHandler != null)
     {
-      BocCommandClickEventArgs e = new BocCommandClickEventArgs (columnID, listIndex, businessObjectID);
+      BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (column, listIndex, businessObject);
       commandClickHandler (this, e);
+    }
+  }
+
+  private void OptionsMenu_Click(object sender, MenuItemClickEventArgs e)
+  {
+    OnMenuItemClick ((BocMenuItem) e.Item);
+  }
+
+  protected virtual void OnMenuItemClick (BocMenuItem menuItem)
+  {
+    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[EventMenuItemClick];
+    if (menuItem != null && menuItem.Command != null)
+      ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
+    if (menuItemClickHandler != null)
+    {
+      MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
+      menuItemClickHandler (this, e);
     }
   }
 
@@ -678,8 +674,10 @@ public class BocList:
     }
 
     if (_showOptionsMenu)
+    {
+      _optionsMenu.MenuItems.Clear();
       _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
-     
+    }
     base.OnPreRender (e);
   }
 
@@ -907,12 +905,43 @@ public class BocList:
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      foreach (BocMenuItem menuItem in _listMenuItems)
-      {
-        writer.Write ("{0} <br>", menuItem.Text);
-      }
+      for (int idxItems = 0; idxItems < _listMenuItems.Count; idxItems++)
+        RenderListMenuItem (writer, _listMenuItems[idxItems], idxItems);
       writer.RenderEndTag();
     }
+  }
+
+  private void RenderListMenuItem (HtmlTextWriter writer, BocMenuItem menuItem, int index)
+  {
+    //  Render the command
+    bool isCommandEnabled = false;
+    bool isReadOnly = IsReadOnly;
+    if (menuItem.Command != null)
+    {
+      bool isActive =    menuItem.Command.Show == CommandShow.Always
+                      || isReadOnly && menuItem.Command.Show == CommandShow.ReadOnly
+                      || ! isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
+      if (   isActive
+          && menuItem.Command.Type != CommandType.None)
+      {
+        isCommandEnabled = true;
+      }
+    }
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    if (isCommandEnabled)
+    {    
+      string argument = c_eventMenuItemPrefix + index;
+      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string onClick = "BocList_OnCommandClick();";
+      menuItem.Command.RenderBegin (writer, postBackLink, onClick);
+    }
+
+    writer.Write (menuItem.Text);
+
+    if (isCommandEnabled)
+      menuItem.Command.RenderEnd (writer);
+    writer.RenderEndTag();
   }
 
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
@@ -1419,7 +1448,7 @@ public class BocList:
 
     if (isCommandEnabled)
     {    
-      string argument = c_eventCommandPrefix + idxColumn + "," + originalRowIndex;
+      string argument = c_eventListItemCommandPrefix + idxColumn + "," + originalRowIndex;
       if (businessObjectWithIdentity != null)
         argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
       string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
@@ -1676,8 +1705,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the 
-  ///   <see cref="_additionalColumnsList"/>.
+  ///   Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="_additionalColumnsList"/>.
   /// </summary>
   private void AdditionalColumnsList_SelectedIndexChanged (object sender, EventArgs e)
   {
@@ -1685,8 +1713,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Handles the <see cref="BocColumnDefinitionSetCollection.CollectionChanged"/> event of the 
-  ///   <see cref="AvailableColumnDefinitionSets"/> collection.
+  ///   Handles the <c>CollectionChanged</c> event of the <see cref="AvailableColumnDefinitionSets"/> collection.
   /// </summary>
   private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
   {
@@ -1817,7 +1844,7 @@ public class BocList:
     return columnDefinitions;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGor()
+  private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
   {
     if (_optionsMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -2644,15 +2671,28 @@ public class BocList:
   /// </summary>
   [Category ("Action")]
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
-  public event BocCommandClickEventHandler CommandClick
+  public event BocListItemCommandClickEventHandler ListItemCommandClick
   {
     add 
     {
-      Events.AddHandler (EventCommandClick, value);
+      Events.AddHandler (EventListItemCommandClick, value);
     }
     remove 
     { 
-      Events.RemoveHandler (EventCommandClick, value);
+      Events.RemoveHandler (EventListItemCommandClick, value);
+    }
+  }
+
+  [Category ("Action")]
+  public event MenuItemClickEventHandler MenuItemClick
+  {
+    add 
+    {
+      Events.AddHandler (EventMenuItemClick, value);
+    }
+    remove 
+    { 
+      Events.RemoveHandler (EventMenuItemClick, value);
     }
   }
 
@@ -2793,85 +2833,15 @@ public class BocList:
     get { return !IsDesignMode && Page != null && Page.IsPostBack; }
   }
 }
-
-/// <summary>
-///   Represents the method that handles the <see cref="BocList.CommandClick"/> event
-///   raised when clicking on an <see cref="Command"/> 
-///   of type <see cref="CommandType.Event"/>.
-/// </summary>
-public delegate void BocCommandClickEventHandler (object sender, BocCommandClickEventArgs e);
-
-/// <summary>
-///   Provides data for the <see cref="BocList.CommandClick"/> event.
-/// </summary>
-public class BocCommandClickEventArgs: EventArgs
+/// <summary> The possible sorting directions. </summary>
+public enum SortingDirection
 {
-  /// <summary>
-  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the clicked command 
-  ///   belongs to.
-  /// </summary>
-  private string _columnID;
-  /// <summary>
-  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
-  ///   applied on.
-  /// </summary>
-  private int _listIndex;
-  /// <summary>
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
-  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
-  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
-  /// </summary>
-  private string _businessObjectID;
-
-  /// <summary> Simple Constructor. </summary>
-  /// <param name="columnID">
-  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the command belongs.
-  /// </param>
-  /// <param name="listIndex">
-  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
-  ///   applied on.
-  /// </param>
-  /// <param name="businessObjectID">
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
-  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
-  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
-  /// </param>
-  public BocCommandClickEventArgs (
-      string columnID, 
-      int listIndex, 
-      string businessObjectID)
-  {
-    _columnID = columnID;
-    _listIndex = listIndex;
-    _businessObjectID = StringUtility.EmptyToNull (businessObjectID);
-  }
-
-  /// <summary>
-  ///   The <see cref="BocColumnDefinition.ColumnID"/> of the column to which the command belongs.
-  /// </summary>
-  public string ColumnID
-  {
-    get { return _columnID; }
-  }
-
-  /// <summary>
-  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is 
-  ///   applied on.
-  /// </summary>
-  public int ListIndex
-  {
-    get { return _listIndex; }
-  }
-
-  /// <summary>
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>, if the 
-  ///   <see cref="IBusinessObject"/> on which the rendered command is applied on 
-  ///   is of type <see cref="IBusinessObjectWithIdentity"/>.
-  /// </summary>
-  public string BusinessObjectID
-  {
-    get { return _businessObjectID; }
-  }
+  /// <summary> Don't sort. </summary>
+  None,
+  /// <summary> Sort ascending. </summary>
+  Ascending,
+  /// <summary> Sort descending. </summary>
+  Descending
 }
 
 }

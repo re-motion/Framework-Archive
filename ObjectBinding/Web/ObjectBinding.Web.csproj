@@ -161,11 +161,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\BocColumnCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\BocColumnDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -211,12 +206,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocListItemCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocMenuItem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\BocMenuItemCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocMenuItemCommand.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

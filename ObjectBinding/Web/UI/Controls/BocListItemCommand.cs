@@ -108,11 +108,21 @@ public class BocListItemCommand: BocCommand
   /// </summary>
   private ColumnWxeFunctionCommandInfo _wxeFunctionCommand = new ColumnWxeFunctionCommandInfo();
 
-  //private ScriptCommandInfo _scriptCommand = null;
+  public BocListItemCommandClickEventHandler Click;
 
   /// <summary> Simple Constructor. </summary>
   public BocListItemCommand()
   {
+  }
+
+  /// <summary> Fires the <see cref="Click"/> event. </summary>
+  internal virtual void OnClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  {
+    if (Click != null)
+    {
+      BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (column, listIndex, businessObject);
+      Click (this, e);
+    }
   }
 
   /// <summary> Renders the opening tag for the command. </summary>
@@ -202,6 +212,63 @@ public class BocListItemCommand: BocCommand
   {
     get { return _wxeFunctionCommand; }
     set { _wxeFunctionCommand = (ColumnWxeFunctionCommandInfo) value; }
+  }
+}
+
+/// <summary>
+///   Represents the method that handles the <see cref="BocListItemCommand.Click"/> event
+///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
+/// </summary>
+public delegate void BocListItemCommandClickEventHandler (object sender, BocListItemCommandClickEventArgs e);
+
+/// <summary>
+///   Provides data for the <see cref="BocListItemCommand.Click"/> event.
+/// </summary>
+public class BocListItemCommandClickEventArgs: EventArgs
+{
+  /// <summary>
+  ///   The <see cref="BocColumnDefinition"/> to which the clicked command belongs to.
+  /// </summary>
+  private BocColumnDefinition _column;
+  /// <summary>
+  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is applied on.
+  /// </summary>
+  private int _listIndex;
+  /// <summary>
+  ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
+  /// </summary>
+  private IBusinessObject _businessObject;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListItemCommandClickEventArgs (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  {
+    _column = column;
+    _listIndex = listIndex;
+    _businessObject = businessObject;
+  }
+
+  /// <summary>
+  ///   The <see cref="BocColumnDefinition"/> of the column to which the command belongs.
+  /// </summary>
+  public BocColumnDefinition Column
+  {
+    get { return _column; }
+  }
+
+  /// <summary>
+  ///   An index that identifies the <see cref="IBusinessObject"/> on which the rendered command is applied on.
+  /// </summary>
+  public int ListIndex
+  {
+    get { return _listIndex; }
+  }
+
+  /// <summary>
+  ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
+  /// </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
   }
 }
 
