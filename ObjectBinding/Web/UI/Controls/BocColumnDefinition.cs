@@ -11,6 +11,8 @@ using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -403,6 +405,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition
   ///   <see langword="null"/> or emtpy.
   /// </summary>
   /// <value> A <see cref="string"/> representing the <see cref="PropertyPath"/>. </value>
+  //[Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
   //  No default value

@@ -5,12 +5,11 @@ using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.Design;
-using System.Web.UI.WebControls;
 using System.Globalization;
 using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding
 {
 /// <summary>
 /// Summary description for PropertyPathBinding.
