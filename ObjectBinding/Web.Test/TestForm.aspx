@@ -17,14 +17,10 @@
 <table id=FormGrid runat="server">
   <tr>
     <td></td>
-    <td><obc:BocTextValue id="BocTextValue1" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="FirstName">
-<textboxstyle textmode="SingleLine">
-</TextBoxStyle></obc:BocTextValue></td></tr>
-      <tr>
-    <td></td>
-    <td><obc:BocList id="BocList" runat="server">
+    <td><obc:BocList id="BocList" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
 <fixedcolumns>
 <obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
+<obc:BocSimpleColumnDefinition PropertyPathIdentifier="FirstName"></obc:BocSimpleColumnDefinition>
 </FixedColumns>
 
 <optionsmenuitems>
@@ -36,12 +32,12 @@
 <obc:BocMenuItem Icon="Delete.gif" Category="Edit" Text="L&#246;schen" ItemID="Delete"></obc:BocMenuItem>
 </OptionsMenuItems>
 </obc:BocList></td></tr>
+      <tr>
+    <td></td>
+    <td></td></tr>
   <tr>
     <td></td>
-    <td><obc:boclist id="Boclist2" runat="server">
-<fixedcolumns>
-<obc:BocCommandColumnDefinition Label="Cmd" ColumnTitle="Cmd" ColumnID="Cmd"></obc:BocCommandColumnDefinition>
-</FixedColumns></obc:boclist></td></tr>
+    <td></td></tr>
 </table>
 <p>
 <rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" TypeName="OBWTest.Person, OBWTest"></obr:ReflectionBusinessObjectDataSourceControl></p>

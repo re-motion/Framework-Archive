@@ -27,8 +27,6 @@ public class TestForm : Page
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList Boclist2;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected System.Web.UI.WebControls.Button Button1;
   protected Rubicon.ObjectBinding.Web.Controls.BocList BocList;

@@ -63,19 +63,19 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="ImageButton"/> used in edit mode. </summary>
-  private ImageButton _imageButton = new ImageButton();
+  private ImageButton _imageButton;
 
   /// <summary> The <see cref="Image"/> used in read-only mode. </summary>
-  private Image _image = new Image();
+  private Image _image;
 
   /// <summary> The <see cref="Label"/> used to provide textual representation of the check state. </summary>
-  private Label _label = new Label();
+  private Label _label;
 
   /// <summary> The <see cref="BocInputHidden"/> used to hold the check state. </summary>
-  private BocInputHidden _hiddenField = new BocInputHidden();
+  private BocInputHidden _hiddenField;
 
   /// <summary> The <see cref="CompareValidator"/> returned by <see cref="CreateValidators"/>. </summary>
-  private CompareValidator _notNullItemValidator = new CompareValidator();
+  private CompareValidator _notNullItemValidator;
 
   /// <summary> The tristate value of the checkbox. </summary>
   private NaBoolean _value = NaBoolean.Null;
@@ -109,6 +109,31 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
   // methods and properties
 
+  protected override void CreateChildControls()
+  {
+    _hiddenField = new BocInputHidden();
+    _hiddenField.ID = ID + "_Boc_HiddenField";
+    _hiddenField.EnableViewState = false;
+    Controls.Add (_hiddenField);
+
+    _imageButton = new ImageButton();
+    _imageButton.ID = ID + "_Boc_ImageButton";
+    _imageButton.EnableViewState = false;
+    Controls.Add (_imageButton);
+
+    _image = new Image();
+    _image.ID = ID + "_Boc_Image";
+    _image.EnableViewState = false;
+    Controls.Add (_image);
+
+    _label = new Label();
+    _label.ID = ID + "_Boc_Label";
+    _label.EnableViewState = false;
+    Controls.Add (_label);
+ 
+    _notNullItemValidator = new CompareValidator();
+  }
+
   /// <summary>
   ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
   /// </summary>
@@ -116,22 +141,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
-    _hiddenField.ID = ID + "_Boc_HiddenField";
-    _hiddenField.EnableViewState = true;
-    Controls.Add (_hiddenField);
-
-    _imageButton.ID = ID + "_Boc_ImageButton";
-    _imageButton.EnableViewState = false;
-    Controls.Add (_imageButton);
-
-    _image.ID = ID + "_Boc_Image";
-    _image.EnableViewState = false;
-    Controls.Add (_image);
-
-    _label.ID = ID + "_Boc_Label";
-    _label.EnableViewState = false;
-    Controls.Add (_label);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     _hiddenField.ValueChanged += new EventHandler(HiddenField_ValueChanged);
@@ -144,8 +153,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-
-    //Binding.EvaluateBinding();
 
     if (! IsDesignMode)
     {
@@ -176,7 +183,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     base.OnPreRender (e);
     
     //  First call
-    EnsureChildControlsInitialized();
+    EnsureChildControlsPreRendered();
   }
 
   /// <summary>
@@ -190,7 +197,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   {
     //  Second call has practically no overhead
     //  Required to get optimum designer support.
-    EnsureChildControlsInitialized ();
+    EnsureChildControlsPreRendered ();
 
     base.Render (writer);
   }
@@ -208,6 +215,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     base.LoadViewState (values[0]);
     _value = (NaBoolean) values[1];
     _isDirty = (bool)  values[2];
+
+    _hiddenField.Value = _value.ToString();
   }
 
   /// <summary>
@@ -283,7 +292,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    _notNullItemValidator.ID = this.ID + "_ValidatorNotNullItem";
+    _notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     _notNullItemValidator.ControlToValidate = ID;
     _notNullItemValidator.ValueToCompare = NaBoolean.NullString;
     _notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
@@ -295,7 +304,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   }
   
   /// <summary> Initializes the child controls. </summary>
-  protected override void InitializeChildControls()
+  protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
 

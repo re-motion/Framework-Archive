@@ -378,28 +378,8 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   [Browsable (false)]
   public BusinessObjectPropertyPath PropertyPath 
   { 
-    get
-    {
-      return _propertyPathBinding.PropertyPath;
-//      if (OwnerControl == null)
-//        throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundWebControl.");
-//      
-//      if (! ControlHelper.IsDesignMode (OwnerControl))
-//      {
-//        return _propertyPathBinding.PropertyPath;
-//      }
-//      else
-//      {
-//        if (OwnerControl.DataSource != null)
-//          return _propertyPathBinding.PropertyPath;
-//        else
-//          return null;
-//      }
-    }
-    set
-    {
-      _propertyPathBinding.PropertyPath = value;
-    }
+    get { return _propertyPathBinding.PropertyPath; }
+    set { _propertyPathBinding.PropertyPath = value; }
   }
 
   /// <summary>
@@ -425,23 +405,16 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     }
   }
 
-  /// <summary> 
-  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
-  ///   <see cref="PropertyPathIdentifier"/>. 
-  /// </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public IBusinessObjectDataSource DataSource
-  {
-    get
-    {
-      return _propertyPathBinding.DataSource; 
-    }
-    set 
-    {
-      _propertyPathBinding.DataSource = value; 
-    }
-  }
+//  /// <summary> 
+//  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
+//  ///   <see cref="PropertyPathIdentifier"/>. 
+//  /// </summary>
+//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+//  [Browsable (false)]
+//  public IBusinessObjectDataSource DataSource
+//  {
+//    get { return _propertyPathBinding.DataSource; }
+//  }
 
   /// <summary> Gets the displayed value of the column title. </summary>
   /// <remarks> 
@@ -472,17 +445,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
 
   IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
   {
-    get 
-    {
-      if (OwnerControl != null)
-      {
-        if (OwnerControl.Property is IBusinessObjectReferenceProperty)
-          return ((IBusinessObjectReferenceProperty)OwnerControl.Property).ReferenceClass;
-        else if (OwnerControl.DataSource != null)
-          return OwnerControl.DataSource.BusinessObjectClass;
-      }
-      return null; 
-    }
+    get { return _propertyPathBinding.BusinessObjectClass; }
   } 
 }
 

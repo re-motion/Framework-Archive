@@ -68,6 +68,19 @@ public class CompleteBocUserControl :
       ReferenceField.RefreshBusinessObjectList (objects);
     }
 
+	}
+
+	override protected void OnInit(EventArgs e)
+	{
+		//
+		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+		//
+		InitializeComponent();
+		base.OnInit(e);
+
+      if (!IsPostBack)
+    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
 
     BocTextValue incomeField = new BocTextValue();
@@ -81,18 +94,6 @@ public class CompleteBocUserControl :
         FormGridRowInfo.RowType.ControlInRowWithLabel, 
         BooleanField.ID, 
         FormGridRowInfo.RowPosition.AfterRowWithID));
-	}
-
-	override protected void OnInit(EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-
-      if (!IsPostBack)
-    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
   }
 
   private void SaveButton_Click(object sender, System.EventArgs e)
