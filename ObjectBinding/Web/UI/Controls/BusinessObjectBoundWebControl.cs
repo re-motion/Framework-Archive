@@ -12,7 +12,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.Design;
-using Rubicon.Web.UI.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
