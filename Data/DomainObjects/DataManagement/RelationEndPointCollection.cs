@@ -13,24 +13,16 @@ public class RelationEndPointCollection : CollectionBase
 
   // member fields
 
-  private ClientTransaction _clientTransaction;
-
   // construction and disposing
 
-  public RelationEndPointCollection (ClientTransaction clientTransaction)
+  public RelationEndPointCollection ()
   {
-    Initialize (clientTransaction);
   }
 
-  public RelationEndPointCollection (
-      ClientTransaction clientTransaction, 
-      RelationEndPointCollection collection, 
-      bool isCollectionReadOnly)
+  public RelationEndPointCollection (RelationEndPointCollection collection, bool isCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
     
-    Initialize (clientTransaction);
-
     foreach (RelationEndPoint endPoint in collection)
     {
       Add (endPoint);
@@ -39,39 +31,36 @@ public class RelationEndPointCollection : CollectionBase
     this.SetIsReadOnly (isCollectionReadOnly);
   }
 
-  private void Initialize (ClientTransaction clientTransaction)
-  {
-    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    _clientTransaction = clientTransaction;
-  }
-
   // methods and properties
+
+  public void Merge (RelationEndPointCollection relationEndPoints)
+  {
+    foreach (RelationEndPoint endPoint in relationEndPoints)
+      Add (endPoint);
+  }
 
   public bool BeginDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    foreach (RelationEndPoint endPoint in this)
+    foreach (RelationEndPoint oppositeEndPoint in GetOppositeRelationEndPoints (domainObject))
     {
-      IRelationEndPointDefinition endPointDefinition = endPoint.OppositeEndPointDefinition;
-      RelationEndPoint oldEndPoint = _clientTransaction.GetRelationEndPoint (domainObject, endPointDefinition);
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = this[new RelationEndPointID (domainObject.ID, endPointDefinition)];
       RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
 
-      if (!endPoint.BeginRelationChange (oldEndPoint, newEndPoint))
+      if (!oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint))
         return false;
     }
     return true;
   }
 
-  public void EndDelete ()
+  public void EndDelete (DomainObject domainObject)
   {
-    foreach (RelationEndPoint endPoint in this)
-      endPoint.EndRelationChange ();    
-  }
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-  protected ClientTransaction ClientTransaction 
-  {
-    get { return _clientTransaction; }
+    foreach (RelationEndPoint endPoint in GetOppositeRelationEndPoints (domainObject))
+      endPoint.EndRelationChange ();    
   }
 
   #region Standard implementation for collections
@@ -127,5 +116,46 @@ public class RelationEndPointCollection : CollectionBase
   }
 
   #endregion
+
+  protected RelationEndPointCollection GetOppositeRelationEndPoints (DomainObject domainObject)
+  {
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+
+    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+      oppositeEndPoints.Merge (GetOppositeRelationEndPoints (this[endPointID]));
+
+    return oppositeEndPoints;
+  }
+
+  protected RelationEndPointCollection GetOppositeRelationEndPoints (RelationEndPoint endPoint)
+  {
+    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+    if (endPoint.Definition.Cardinality == CardinalityType.One)
+    {
+      ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
+      if (objectEndPoint.OppositeObjectID != null)
+      {
+        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+            objectEndPoint.OppositeObjectID, objectEndPoint.OppositeEndPointDefinition);
+
+        oppositeEndPoints.Add (this[oppositeEndPointID]);
+      }
+    }
+    else
+    {
+      CollectionEndPoint collectionEndPoint = (CollectionEndPoint) endPoint;
+      foreach (DomainObject oppositeDomainObject in collectionEndPoint.OppositeDomainObjects)
+      {
+        RelationEndPointID oppositeEndPointID = new RelationEndPointID (
+            oppositeDomainObject.ID, collectionEndPoint.OppositeEndPointDefinition);
+
+        oppositeEndPoints.Add (this[oppositeEndPointID]);
+      }
+    }
+
+    return oppositeEndPoints;
+  }
 }
 }

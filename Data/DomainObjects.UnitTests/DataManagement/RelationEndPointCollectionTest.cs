@@ -33,7 +33,7 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
 
     OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
     _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Order", DomainObjectIDs.Order1);
-    _endPoints = new RelationEndPointCollection (ClientTransaction.Current);
+    _endPoints = new RelationEndPointCollection ();
   }
 
   [Test]
@@ -90,8 +90,7 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
   {
     _endPoints.Add (_orderTicketEndPoint);
 
-    RelationEndPointCollection copiedCollection = new RelationEndPointCollection (
-        ClientTransaction.Current, _endPoints, false);
+    RelationEndPointCollection copiedCollection = new RelationEndPointCollection (_endPoints, false);
 
     Assert.AreEqual (1, copiedCollection.Count);
     Assert.AreSame (_orderTicketEndPoint, copiedCollection[0]);

@@ -27,12 +27,41 @@ public class DataManager
 
   // methods and properties
 
+  public DataContainerCollection GetChangedDataContainersForCommit ()
+  {
+    DataContainerCollection changedDataContainers = new DataContainerCollection ();
+    foreach (DomainObject domainObject in GetChangedDomainObjects ())
+    {
+      _relationEndPointMap.CheckMandatoryRelations (domainObject);
+
+      if (domainObject.DataContainer.State != StateType.Original)
+        changedDataContainers.Add (domainObject.DataContainer);
+    }
+
+    return changedDataContainers;
+  }
+
+  public DomainObjectCollection GetChangedDomainObjects ()
+  {
+    DomainObjectCollection changedDomainObjects = new DomainObjectCollection ();
+
+    foreach (DataContainer dataContainer in _dataContainerMap)
+    {
+      if (dataContainer.DomainObject.State != StateType.Original)
+        changedDomainObjects.Add (dataContainer.DomainObject);
+    }
+
+    return changedDomainObjects;
+  }
+
   public void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    RelationEndPointCollection oppositeEndPoints = _relationEndPointMap.CloneOppositeRelationEndPoints (domainObject);
-    if (BeginDelete (domainObject, oppositeEndPoints))
+    RelationEndPointCollection allAffectedRelationEndPoints = 
+        _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
+
+    if (BeginDelete (domainObject, allAffectedRelationEndPoints))
     {
       /*
       foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
@@ -63,21 +92,8 @@ public class DataManager
       }
       */
 
-      EndDelete (domainObject, oppositeEndPoints);
+      EndDelete (domainObject, allAffectedRelationEndPoints);
     }
-  }
-
-  public DomainObjectCollection GetChangedDomainObjects ()
-  {
-    DomainObjectCollection changedDomainObjects = new DomainObjectCollection ();
-
-    foreach (DataContainer dataContainer in _dataContainerMap)
-    {
-      if (dataContainer.DomainObject.State != StateType.Original)
-        changedDomainObjects.Add (dataContainer.DomainObject);
-    }
-
-    return changedDomainObjects;
   }
 
   public DataContainerCollection MergeWithExisting (DataContainerCollection dataContainers)
@@ -139,27 +155,29 @@ public class DataManager
     }
   }
 
+
   public DataContainerCollection DataContainerMap
   {
     get { return _dataContainerMap; }
   }
+
   public RelationEndPointMap RelationEndPointMap
   {
     get { return _relationEndPointMap; }
   }
 
-  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
   {
     if (!domainObject.BeginDelete ())
       return false;
 
-    return oppositeEndPoints.BeginDelete (domainObject);
+    return allAffectedRelationEndPoints.BeginDelete (domainObject);
   }
 
-  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
+  private void EndDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
   {
     domainObject.EndDelete ();
-    oppositeEndPoints.EndDelete ();
+    allAffectedRelationEndPoints.EndDelete (domainObject);
   }
 
   private DomainObjectCollection GetNewDomainObjects ()
