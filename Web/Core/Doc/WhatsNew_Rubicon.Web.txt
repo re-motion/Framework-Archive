@@ -6,6 +6,10 @@
     Wenn der FormGridManager eine HtmlTable managed, welche auf einem nicht angewählten Tab liegt,
     dann gab es beim Wechsel auf einen bisher nicht angezeigten Tab eine ViewStateException.
 
+- BugFix Rubicon.Web.UI.Controls.SmartLabel
+  * Gefixed:
+    Exception wenn ForControl nicht gesetzt wurde. Neues Verhalten: Default Text.
+    
 1.1.30.0
 ========
 
