@@ -73,16 +73,18 @@ public class BocListDesigner:
 
   public System.Windows.Forms.DialogResult ShowDialog(Form dialog)
   {
-    // TODO: BocListDesigner: Add description panel
-    //  doccomment might be property description, is disabled
-
     dialog.Size = new Size (800, 500);
     dialog.StartPosition = FormStartPosition.CenterParent;
-    SetPropertyGridSplitter (dialog, 4);
+    SetPropertyGridSplitter (propertyGrid, 4);
+
+    PropertyGrid propertyGrid = GetPropertyGrid (dialog);
+    propertyGrid.HelpVisible = true;
+    propertyGrid.BackColor = System.Drawing.SystemColors.Control;
+    
     return dialog.ShowDialog();
   }
 
-  private void SetPropertyGridSplitter (Form editor, double labelRatio)
+  private PropertyGrid GetPropertyGrid (Form editor)
   {
     const string collectionEditorCollectionFormTypeName = "System.ComponentModel.Design.CollectionEditor+CollectionEditorCollectionForm";
 
@@ -103,18 +105,24 @@ public class BocListDesigner:
         "propertyBrowser",
         bindingFlags);
     PropertyGrid propertyBrowser = (PropertyGrid) propertyBrowserFieldInfo.GetValue(editor);
-    
+
+    return propertyBrowser;
+  }
+
+  private void SetPropertyGridSplitter (PropertyGrid propertyGrid, double labelRatio)
+  {
+    BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+
     //  private PropertyGridView PropertyGrid.gridView
     MethodInfo getPropertyGridViewMethodInfo = typeof (PropertyGrid).GetMethod (
         "GetPropertyGridView",
         bindingFlags);
-    object propertyGridView = getPropertyGridViewMethodInfo.Invoke (propertyBrowser, null);
+    object propertyGridView = getPropertyGridViewMethodInfo.Invoke (propertyGrid, null);
 
     //  public double PropertyGridView.labelRatio
     Type propertyGridViewType = propertyGridView.GetType();
     FieldInfo labelRatioFieldInfo = propertyGridViewType.GetField ("labelRatio");
     labelRatioFieldInfo.SetValue(propertyGridView, labelRatio);
-
   }
 }
 
