@@ -81,7 +81,7 @@ public class UpdateCommandBuilder : CommandBuilder
     if (propertyValue.PropertyType != typeof (ObjectID))
       AddCommandParameter (command, propertyValue.Definition.ColumnName, propertyValue);
     else
-      AddObjectIDParameter (command, _dataContainer.ClassDefinition, propertyValue);
+      AddObjectIDAndClassIDParameters (command, _dataContainer.ClassDefinition, propertyValue);
   }
 
   private bool MustBeUpdated (PropertyValue propertyValue)

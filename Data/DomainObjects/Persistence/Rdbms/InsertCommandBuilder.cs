@@ -48,7 +48,7 @@ public class InsertCommandBuilder : CommandBuilder
     AppendColumn (idColumn, idColumn);
     AppendColumn (classIDColumn, classIDColumn);
 
-    AddCommandParameter (command, idColumn, _dataContainer.ID.Value);
+    AddCommandParameter (command, idColumn, _dataContainer.ID);
     AddCommandParameter (command, classIDColumn, _dataContainer.ID.ClassID);
 
     foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)
