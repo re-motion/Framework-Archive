@@ -83,10 +83,26 @@ public class ClassDefinitionChecker
           expectedDefinition.ID, expectedDefinition.BaseClass.ID, actualDefinition.BaseClass.ID));
     }
 
-    CheckPropertyDefinitions (
-        expectedDefinition.MyPropertyDefinitions, 
-        actualDefinition.MyPropertyDefinitions, 
-        expectedDefinition);
+    CheckDerivedClasses (expectedDefinition.DerivedClasses, actualDefinition.DerivedClasses, expectedDefinition);
+    CheckPropertyDefinitions (expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
+  }
+
+  private void CheckDerivedClasses (
+      ClassDefinitionCollection expectedDerivedClasses, 
+      ClassDefinitionCollection actualDerivedClasses, 
+      ClassDefinition expectedClassDefinition)
+  {
+    Assert.AreEqual (expectedDerivedClasses.Count, actualDerivedClasses.Count, 
+        string.Format ("Number of derived classes of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedClassDefinition.ID, expectedDerivedClasses.Count, actualDerivedClasses.Count));
+
+    foreach (ClassDefinition expectedDerivedClass in expectedDerivedClasses)
+    {
+      Assert.IsNotNull (
+          actualDerivedClasses[expectedDerivedClass.ID],         
+          string.Format ("Actual class definition '{0}' does not contain expected derived class '{1}'.", 
+              expectedClassDefinition.ID, expectedDerivedClass.ID));      
+    }
   }
 
   private void CheckPropertyDefinitions (
