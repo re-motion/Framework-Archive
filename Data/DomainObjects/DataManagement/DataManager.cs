@@ -13,7 +13,7 @@ public class DataManager : ICollectionEndPointChangeDelegate
   // member fields
 
   private DataContainerCollection _dataContainerMap;
-  private RelationEndPointCollection _relationEndPointMap;
+  private RelationEndPointMap _relationEndPointMap;
   private ICollectionEndPointChangeDelegate _changeDelegate = null;
 
   // construction and disposing
@@ -21,7 +21,7 @@ public class DataManager : ICollectionEndPointChangeDelegate
   public DataManager ()
   {
     _dataContainerMap = new DataContainerCollection ();
-    _relationEndPointMap = new RelationEndPointCollection ();
+    _relationEndPointMap = new RelationEndPointMap ();
   }
 
   // methods and properties
