@@ -145,7 +145,7 @@ public class ResourceManagerWrapper: IResourceManager
     if (result != null)
       return result;
     
-    s_log.Warn ("Could not find resource with ID '" + id + "' in reosurce container '" + _resourceManager.BaseName + "'.");
+    s_log.Debug ("Could not find resource with ID '" + id + "' in reosurce container '" + _resourceManager.BaseName + "'.");
     return id;
   }
 
