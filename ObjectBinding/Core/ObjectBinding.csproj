@@ -136,7 +136,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "TypeConverters.cs"
+                    RelPath = "Design\BindingExpression.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -152,6 +152,11 @@
                 />
                 <File
                     RelPath = "Design\PropertyPickerEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\TypeConverters.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
