@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Resources;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
@@ -110,11 +111,22 @@ public sealed class ResourceDispatcher
       string propertyName = (string) entry.Key;
       string propertyValue = (string) entry.Value;
 
-      PropertyInfo property = control.GetType().GetProperty (propertyName, typeof (string));
-      if (property == null)
-        throw new ApplicationException ("Type " + control.GetType().FullName + " does not contain a public property " + propertyName + ".");
+      HtmlControl genericHtmlControl = control as HtmlControl;
+      if (genericHtmlControl != null)
+      {
+        genericHtmlControl.Attributes[propertyName] = propertyValue;
+      }
+      else  
+      {
+        PropertyInfo property = control.GetType().GetProperty (propertyName, typeof (string));
 
-      property.SetValue (control, propertyValue, new object[0]);
+        if (property == null)
+        {
+          throw new ApplicationException ("Type " + control.GetType().FullName + " does not contain a public property " + propertyName + ".");
+        }
+
+        property.SetValue (control, propertyValue, new object[0]);
+      }
     }
   }
 
