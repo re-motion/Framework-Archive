@@ -424,7 +424,9 @@
 			<virtualEndPoint cardinality="many" isMandatory="false">
 				<class id="Customer" />
 				<property name="Orders">
-					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</type>
+					<collectionType>
+						Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests
+				 	</collectionType>
 				</property>
 			</virtualEndPoint>
 			<endPoint isMandatory="true">

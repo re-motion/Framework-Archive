@@ -127,6 +127,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithCollectionTypeAndOneToOneRelation.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithDerivationAndInvalidEntityName.xml"
                     BuildAction = "Content"
                 />
