@@ -98,6 +98,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "CodeDom.build"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "CodeOperatorChainExpression.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

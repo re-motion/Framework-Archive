@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.CooNet">  
+
+  <target name="build" description="perform a build">
+
+    <csc  target="library" 
+          output="${project.builddir}/${project.output}.${project.extension}" 
+          unsafe="true" 
+          doc="${project.doc}" 
+          nowarn="1591" 
+          debug="${build.debug}">
+      <sources failonempty="true">
+        <includes name="*.cs" />
+        <includes name="NullableValueTypes/**/*.cs" />
+        <excludes name="AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <includes name="${project.builddir}/Rubicon.Core.dll" />
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="VJSharpCodeProvider.dll"/>
+      </references>
+    </csc>
+        
+  </target>
+
+</project>

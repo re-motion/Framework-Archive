@@ -83,6 +83,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "DevelopmentCore.build"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "UnitTesting\PrivateInvoke.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -78,11 +78,6 @@
                     AssemblyName = "System.Data"
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
                 />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
             </References>
         </Build>
         <Files>
@@ -96,6 +91,14 @@
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Core.build"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "EnumDescription.cs"

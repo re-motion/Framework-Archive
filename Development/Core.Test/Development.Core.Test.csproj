@@ -93,6 +93,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfoTemplate.cs"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "DevelopmentCoreTest.build"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "UnitTesting\TestCreateInstance.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -8,10 +8,10 @@ using System.Runtime.CompilerServices;
 //
 [assembly: AssemblyTitle("Rubicon Extended CodeDOM Library")]
 [assembly: AssemblyDescription("CodeDOM Enhancements")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("rubicon informationstechnologie gmbh, Austria. www.rubicon-it.com")]
+[assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: documentation")]
+[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Libraries")]
-[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh")]
+[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("0.9.13.10")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -54,5 +54,5 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"..\..\..\..\..\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]

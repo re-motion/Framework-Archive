@@ -6,11 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Development Support Library Unit Tests")]
-[assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: release")]
-[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Libraries")]
-[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTitle("Rubicon Core Library")]
+[assembly: AssemblyDescription("General .NET classes and utilities.")]
+[assembly: AssemblyConfiguration("@buildinfo@")]
+[assembly: AssemblyCompany("@company@")]
+[assembly: AssemblyProduct("@productname@")]
+[assembly: AssemblyCopyright("@copyright@")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -25,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.9.13.11")]
+[assembly: AssemblyVersion("@versionnumber@")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -53,5 +54,5 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
