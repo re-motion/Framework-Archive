@@ -366,6 +366,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\WhatsNew_Rubicon.Data.DomainObjects.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Mapping\ClassDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
