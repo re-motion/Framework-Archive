@@ -11,10 +11,12 @@ namespace Rubicon.Findit.Client.Controls
 
 public interface INavigablePage
 {
-  bool AllowImmediateClose {get; }
+  bool AllowImmediateClose { get; }
+  bool CleanupOnImmediateClose { get; }
   bool NavigationRequest (string url);
   bool AutoDeleteSessionVariables { get; }
   void NavigateTo (string url, bool returnToThisPage);
+  string GetToken();
 }
 
 public interface ITabItem
@@ -143,6 +145,27 @@ public class TabControl: Control, IPostBackEventHandler
   private bool _hasMenuBar = false;
   private string _statusMessage = string.Empty;
   private bool _serverSideNavigation = true;
+
+  // construction and disposal
+
+  protected override void OnInit (EventArgs e)
+  {
+    base.OnInit(e);
+
+		string selectedTab = Page.Request.QueryString["navSelectedTab"];
+    if (selectedTab != null)
+      _activeTab = int.Parse (selectedTab);
+    else
+      _activeTab = 0;
+
+		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
+    if (selectedMenu != null)
+      _activeMenu = int.Parse (selectedMenu);
+    else
+      _activeMenu = 0;
+  }
+
+  // methods and properties
 
 	public string FirstImage
 	{ 
@@ -339,22 +362,41 @@ public class TabControl: Control, IPostBackEventHandler
     string eventArgument = eventName + ":" + itemIndex.ToString();
 		string script = Page.GetPostBackClientEvent (this, eventArgument);
 
-    string href = GetCompleteUrl (tabItem, tabIndex, menuIndex);
+    string url = GetCompleteUrl (tabItem, tabIndex, menuIndex);
 
-    if (href != string.Empty)
+    if (url != string.Empty)
     {
       INavigablePage navigablePage = this.Page as INavigablePage;
       bool isNavigablePage = navigablePage != null;
       bool allowImmediateClose = isNavigablePage && navigablePage.AllowImmediateClose;
+      bool clientSideLink = false;
 
       if (   ! _serverSideNavigation 
           || ! isNavigablePage 
-          || allowImmediateClose)
+          || allowImmediateClose) 
 		  {
+        clientSideLink = true;
+        if (isNavigablePage && navigablePage.CleanupOnImmediateClose)
+        {
+          if (tabItem.RequiresPageToken)
+          {
+            url = PageUtility.AddUrlParameter (url, "cleanupToken", navigablePage.GetToken());
+          }
+          else
+          {
+            // use server-side link because target cannot clean up session state
+            clientSideLink = false;
+          }
+        }
+      }
+
+      if (clientSideLink)
+      {
+        // create a link for client-side navigation
 			  if (_target != string.Empty)
-				  script = "window.open('" + href + "', '" + _target + "'); " + script; // TODO: replace w/ <a target=...>
+				  script = "window.open('" + url + "', '" + _target + "'); " + script; 
 			  else
-				  resultHref = "href=\"" + href + "\"";
+				  resultHref = "href=\"" + url + "\"";
 		  }
     }
 		if (resultHref == null)
@@ -366,18 +408,6 @@ public class TabControl: Control, IPostBackEventHandler
   
   protected override void Render (HtmlTextWriter output)
 	{
-		string selectedTab = Page.Request.QueryString["navSelectedTab"];
-    if (selectedTab != null)
-      _activeTab = int.Parse (selectedTab);
-    else
-      _activeTab = 0;
-
-		string selectedMenu = Page.Request.QueryString["navSelectedMenu"];
-    if (selectedMenu != null)
-      _activeMenu = int.Parse (selectedMenu);
-    else
-      _activeMenu = 0;
-
     if (this.Site != null && this.Site.DesignMode)
 		{
 			output.WriteLine ("[TabControl - edit in HTML view]");
