@@ -180,9 +180,9 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
 
   [Test]
   [ExpectedException (typeof (RdbmsProviderException), 
-      "Error while reading property 'Partner' for class 'ClassWithoutRelatedClassIDColumn':" 
+      "Error while reading property 'Distributor' for class 'ClassWithoutRelatedClassIDColumn':" 
       + " Incorrect database format encountered."
-      + " Entity must have column 'PartnerIDClassID' defined, because opposite class 'Partner' is part of an inheritance hierarchy.")]
+      + " Entity must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
   public void LoadDataContainerWithoutRelatedIDColumn ()
   {
     ObjectID id = new ObjectID ("ClassWithoutRelatedClassIDColumn", new Guid ("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}")); 
