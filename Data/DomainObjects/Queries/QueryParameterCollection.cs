@@ -33,6 +33,21 @@ public class QueryParameterCollection : CollectionBase
 
   // methods and properties
 
+  public void Add (string parameterName, object parameterValue)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
+
+    Add (new QueryParameter (parameterName, parameterValue));
+  }
+
+  public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
+    ArgumentUtility.CheckValidEnumValue (parameterType, "parameterType");
+
+    Add (new QueryParameter (parameterName, parameterValue, parameterType));
+  }
+
   #region Standard implementation for "add-only" collections
 
   public bool Contains (QueryParameter queryParameter)
