@@ -81,8 +81,7 @@ public class DataDropDownList: DropDownList
       int val = value;
       if (val == _emptyValue)
       {
-        SelectedIndex = -1;
-        return;
+        SetEmpty();
       }
 
       for (int i = 0; i < this.Items.Count; ++i)
@@ -127,10 +126,22 @@ public class DataDropDownList: DropDownList
   /// <remarks>
   /// Do not use Items.Clear().
   /// </remarks>
-  public void Clear()
+  public void ClearItems()
   {
     this.Items.Clear();
     AddEmptyItem();
+  }
+
+  public bool IsEmpty()
+  {
+    return this.SelectedValue == this.EmptyValue;
+  }
+
+  public void SetEmpty()
+  {
+    if (this.Items.Count < 1 || this.Items[0].Value != "-1")
+      AddEmptyItem();
+    this.SelectedIndex = 0;
   }
 
   public void Add (string text, int value)
@@ -140,7 +151,7 @@ public class DataDropDownList: DropDownList
 
   private void AddEmptyItem()
   {
-    this.Items.Add (new ListItem (string.Empty, "-1"));
+    this.Items.Insert (0, new ListItem (string.Empty, "-1"));
   }
 }
 

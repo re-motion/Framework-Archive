@@ -25,6 +25,7 @@ public class EntryFormGrid: Control
 {
   private Unit _labelColumnWidth;
   private Unit _valueColumnWidth;
+  private FontUnit _fieldFontSize;
 
   public Unit LabelColumnWidth 
   {
@@ -36,6 +37,12 @@ public class EntryFormGrid: Control
   {
     get { return _valueColumnWidth; }
     set { _valueColumnWidth = value; }
+  }
+
+  public FontUnit FieldFontSize
+  {
+    get { return _fieldFontSize; }
+    set { _fieldFontSize = value; }
   }
 
   /// <summary>
@@ -53,7 +60,7 @@ public class EntryFormGrid: Control
     foreach (Control control in Controls)
     {
       EntryField field = control as EntryField;
-      if (field != null)
+      if (field != null && field.Visible)
       {
         if (! field.Validate (ignoreRequiredFieldValidators, showErrors))
           isValid = false;
@@ -70,6 +77,17 @@ public class EntryFormGrid: Control
 
   protected override void Render (HtmlTextWriter writer)
 	{
+    // adjust child control font sizes
+    if (! FieldFontSize.IsEmpty)
+    {
+      ArrayList controls = ControlHelper.GetControlsRecursive (this, typeof (WebControl));
+      foreach (WebControl control in controls)
+      {
+        if ((control is TextBox || control is DropDownList) && control.Font.Size.IsEmpty)
+          control.Font.Size = FieldFontSize;
+      }
+    }
+
 		if (this.Site != null && this.Site.DesignMode)
 		{
 			writer.WriteLine ("[EntryFormGrid - edit in HTML view]");
