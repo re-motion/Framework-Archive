@@ -18,9 +18,9 @@
   9.	Source Safe Label mit der Versionsnummer vergeben (angenäherter Stand).
   10.	Solution schließen
   11.	.net Kommandozeile: buildall [nodoc]
-  12.	Falls die Solution erfolgreich kompiliert
+  12a.	Falls die Solution in NAnt erfolgreich kompiliert
       Einchecken von: C:\Development\libraries\Commons\build\VERSION
       RubiconCommons_VERSION.zip und RubiconCommons_SourceCode_VERSION.zip
       nach SourceSafe rubicon\libraries\Commons\build.
-  13.	Falls bei NAnt Kompilierungsfehler auftreten, diese beheben, neu einchecken und das
+  12b.	Falls bei NAnt Kompilierungsfehler auftreten, diese beheben, neu einchecken und das
       Source Safe Label neu vergeben. Anschließend zurück zu Punkt 11.
