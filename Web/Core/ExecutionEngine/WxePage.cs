@@ -56,7 +56,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     HtmlInputHidden wxePageTokenField = new HtmlInputHidden();
     wxePageTokenField.ID = "wxePageToken";
-    wxePageTokenField.Value = _page.CurrentStep.PageToken;
+    if (_page.CurrentStep != null)
+      wxePageTokenField.Value = _page.CurrentStep.PageToken;
     _form.Controls.Add (wxePageTokenField);
 
     _page.Load += new EventHandler (Page_Load);
