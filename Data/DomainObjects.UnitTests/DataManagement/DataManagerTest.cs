@@ -216,5 +216,16 @@ public class DataManagerTest : ClientTransactionBaseTest
     Assert.IsNull (orderEndPoint);
     Assert.IsNull (orderItemEndPoint);
   }
+
+  [Test]
+  public void GetChangedDataContainersForCommitWithDeletedObject ()
+  {
+    OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+    orderItem1.Delete ();
+
+    _dataManager.GetChangedDataContainersForCommit ();
+
+    // expectation: no exception
+  }
 }
 }
