@@ -56,7 +56,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   private bool _isDirty = true;
 
   /// <summary> The <see cref="TextBox"/> used in edit mode. </summary>
-  private TextBox _internalValueBox = new TextBox();
+  private TextBox _textBox = new TextBox();
 
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label = new Label();
@@ -75,7 +75,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The <see cref="Style"/> applied the <see cref="TextBox"/> and the <see cref="Label"/>. </summary>
   private Style _commonStyle = new Style();
   /// <summary> The <see cref="TextBoxStyle"/> applied to the <see cref="TextBox"/>. </summary>
-  private TextBoxStyle _internalValueBoxStyle = new TextBoxStyle ();
+  private TextBoxStyle _textBoxStyle = new TextBoxStyle (TextBoxMode.MultiLine);
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle = new Style();
 
@@ -95,16 +95,16 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     base.OnInit (e);
 
-    _label.ID = ID + "_Boc_internalValueBox";
-    _label.EnableViewState = false;
-    Controls.Add (_internalValueBox);
+    _textBox.ID = ID + "_Boc_TextBox";
+    _textBox.EnableViewState = false;
+    Controls.Add (_textBox);
 
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    _internalValueBox.TextChanged += new EventHandler(TextBox_TextChanged);
+    _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
 
   /// <summary>
@@ -119,7 +119,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
 
     if (! IsDesignMode)
     {
-      _newInternalValue = PageUtility.GetRequestCollectionItem (Page, _internalValueBox.UniqueID);
+      _newInternalValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
       
       if (_newInternalValue != null && _newInternalValue != _internalValue)
         _isDirty = true;
@@ -266,7 +266,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   {
     bool isReadOnly = IsReadOnly;
 
-    _internalValueBox.Visible = ! isReadOnly;
+    _textBox.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
 
     if (isReadOnly)
@@ -287,16 +287,16 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
-      _internalValueBox.Text = Text;
+      _textBox.Text = Text;
 
       //  Provide a default width
-      _internalValueBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
+      _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
 
       if (Width != Unit.Empty)
-        _internalValueBox.Width = Width;
-      _internalValueBox.Height = Height;
-      _internalValueBox.ApplyStyle (_commonStyle);
-      _internalValueBoxStyle.ApplyStyle (_internalValueBox);
+        _textBox.Width = Width;
+      _textBox.Height = Height;
+      _textBox.ApplyStyle (_commonStyle);
+      _textBoxStyle.ApplyStyle (_textBox);
     }
   }
 
@@ -320,6 +320,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   ///   this control is bound to.
   /// </summary>
   /// <value>An <see cref="IBusinessObjectStringProperty"/> object.</value>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectStringProperty Property
   {
     get { return (IBusinessObjectStringProperty) base.Property; }
@@ -391,7 +393,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   /// </summary>
   public override Control TargetControl 
   {
-    get { return IsReadOnly ? (Control) this : _internalValueBox; }
+    get { return IsReadOnly ? (Control) this : _textBox; }
   }
 
   /// <summary>
@@ -478,7 +480,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public TextBoxStyle TextBoxStyle
   {
-    get { return _internalValueBoxStyle; }
+    get { return _textBoxStyle; }
   }
 
   /// <summary>
@@ -501,7 +503,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl
   [Browsable (false)]
   public TextBox TextBox
   {
-    get { return _internalValueBox; }
+    get { return _textBox; }
   }
 
   /// <summary> Gets the <see cref="Label"/> used for in readonly mode. </summary>
