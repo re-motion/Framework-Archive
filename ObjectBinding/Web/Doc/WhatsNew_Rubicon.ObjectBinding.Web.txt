@@ -9,6 +9,9 @@
   * OptionsMenu integriert
   * OptionsMenu: RequiredSelection.OneOrMore zu RequiredSelection.AtLeastOne geändert.
 
+- BocBooleanValue
+  * BugFix: Die Description Werte wurden jeweils vom ersten BocBooleanValue Control auf der Seite übernommen.
+  
 - Boc allgemein
   * Bugfix: Als Properties im Designer eingebene Validation Error Messages führten zu Fehlermeldungen.
   
