@@ -336,10 +336,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     if (! _tabsPaneSize.IsNull)
       writer.AddStyleAttribute ("white-space", "nowrap");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
   }
 
   protected virtual void RenderEndTabsPane (HtmlTextWriter writer)
   {
+    writer.RenderEndTag();
     writer.RenderEndTag();
   }
 
