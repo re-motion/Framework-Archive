@@ -12,9 +12,7 @@ using System.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
-/// <summary>
-///   A BocColumnDefinitionSet is a named collection of column definitions.
-/// </summary>
+/// <summary> A BocColumnDefinitionSet is a named collection of column definitions. </summary>
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocColumnDefinitionSet
 {
@@ -25,6 +23,18 @@ public class BocColumnDefinitionSet
   /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
+  /// <summary> Simple Constructor. </summary>
+  /// <param name="ownerControl">
+  ///   The control this <see cref="BocColumnDefinitionSet"/> belongs to.
+  /// </param>
+  /// <param name="title">
+  ///   The <see cref="string"/> symbolizing this <see cref="BocColumnDefinitionSet"/> 
+  ///   on the rendered page.
+  /// </param>
+  /// <param name="columnDefinitions">
+  ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
+  ///   <see cref="BocColumnDefinitionSet"/>.
+  /// </param>
   public BocColumnDefinitionSet (
     IBusinessObjectBoundWebControl ownerControl, 
     object title, 
@@ -39,14 +49,20 @@ public class BocColumnDefinitionSet
       _columnDefinitionCollection.AddRange (columnDefinitions);
   }
 
+  /// <summary> Simple Constructor. </summary>
+  /// <param name="title">
+  ///   The <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> 
+  ///   on the rendered page.
+  /// </param>
+  /// <param name="columnDefinitions">
+  ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
+  ///   <see cref="BocColumnDefinitionSet"/>.
+  /// </param>
   public BocColumnDefinitionSet (object title, BocColumnDefinition[] columnDefinitions)
     : this (null, title, columnDefinitions)
   {}
 
-  public BocColumnDefinitionSet (object title)
-    : this (null, title, null)
-  {}
-
+  /// <summary> Simple Constructor. </summary>
   public BocColumnDefinitionSet()
     : this (null, string.Empty, null)
   {}
@@ -66,6 +82,10 @@ public class BocColumnDefinitionSet
   }
 
   /// <summary> The displayed name of the set. </summary>
+  /// <value> 
+  ///   A <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> on the 
+  ///   rendered page.
+  /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [DefaultValue("")]
@@ -76,6 +96,10 @@ public class BocColumnDefinitionSet
   }
 
   /// <summary> The <see cref="BocColumnDefintion"/> objects stored in the set. </summary>
+  /// <value>
+  ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
+  ///   <see cref="BocColumnDefinitionSet"/>.
+  /// </value>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
   [ListBindable (false)]

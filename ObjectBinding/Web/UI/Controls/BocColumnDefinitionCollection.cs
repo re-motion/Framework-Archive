@@ -20,9 +20,7 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   /// <summary> The BocColumnDefinition types supported by this collection instance. </summary>
   private Type[] _supportedTypes;
 
-  /// <summary>
-  ///   Constructor.
-  /// </summary>
+  /// <summary> Simple Constructor. </summary>
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
@@ -39,9 +37,7 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
     _supportedTypes = supportedTypes;
   }
 
-  /// <summary>
-  ///   Constructor.
-  /// </summary>
+  /// <summary> Simple Constructor. </summary>
   /// <param name="ownerControl">
   ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
   /// </param>
@@ -137,7 +133,7 @@ public sealed class BocColumnDefinitionCollection : CollectionBase
   ///   collection.
   /// </summary>
   /// <param name="columnDefinition"> The <see cref="BocColumnDefinition"/> to be tested. </param>
-  /// <returns><see langword="true"/> if the <see cref="BocColumnDefinition"/> is suppported. </returns>
+  /// <returns> <see langword="true"/> if the <see cref="BocColumnDefinition"/> is suppported. </returns>
   private bool IsSupportedType (BocColumnDefinition columnDefinition)
   {
     Type columnDefinitionType = columnDefinition.GetType();
