@@ -74,7 +74,7 @@ public class IntegrationTest: ClientTransactionBaseTest
 //    //expectation: no exception
 //  }
 
-// TODO: Reactivate this test
+  // TODO: Reacticate this test
 //  [Test]
 //  public void RelationEventTest ()
 //  {
@@ -217,10 +217,17 @@ public class IntegrationTest: ClientTransactionBaseTest
 //
 //    //14
 //    newOrderTicket1.Order = newOrder2;
+//
 //    //15
-//    newOrder2.Delete ();
+//    newOrder2.Customer = newCustomer2;
+//
 //    //16
-//    newOrderTicket1.Order = newOrder1;
+//    //Todo: reactivate this line    
+//    //newOrder2.Delete ();     //Throws objectNotFoundException for Object newOrder2 in EndDelete of CollectionEndPoint
+//
+//    //17
+//    //Todo: reactivate this line    
+//    //newOrderTicket1.Order = newOrder1;
 //
 //    expectedChangeStates = new ChangeState[]
 //    { 
@@ -231,23 +238,36 @@ public class IntegrationTest: ClientTransactionBaseTest
 //      new RelationChangeState (newOrder1, "OrderTicket", null, null, "14: 5. Changed event of newOrder1 from newOrderTicket1 to null"),
 //      new RelationChangeState (newOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
 //
-//      new ObjectDeletionState (newOrder2, "15: 1. Deleting event of newOrder2"),
-//      new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "15: 2. Changing event of newOrderTicket1 from newOrder2 to null"),
-//      new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "15: 3. Changing event of newOrderItem1 from newOrder2 to null"),
-//      new ObjectDeletionState (newOrder2, "15: 4. Deleted event of newOrder2"),
-//      new RelationChangeState (newOrderTicket1, "Order", null, null, "15: 5. Changed event of newOrderTicket1 from newOrder2 to null"),
-//      new RelationChangeState (newOrderItem1, "Order", null, null, "15: 6. Changed event of newOrderItem1 from newOrder2 to null"),
-//
+//      new RelationChangeState (newOrder2, "Customer", null, newCustomer2, "15: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
+//      new RelationChangeState (newOrder2, "Customer", null, null, "15: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
 //      // Todo: Check why are these events not firing?
-//      //        new CollectionChangeState (newCustomer1.Orders, newOrder2, "15: ?. Removed of newOrder2 from newCustomer1"),
-//      //        new RelationChangeState (newCustomer1, "Orders", null, null, "15: ?. Changed event of newCustomer1 from null to newCeo1"),
-//      //        new CollectionChangeState (newCustomer1.Orders, newOrder2, "15: ?. Removing of newOrder2 from newCustomer1"),
-//      //        new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "15: ?. Changing event of newCustomer1 from null to newCeo1"),
+//      //      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15: 2. Removing of newOrder2 from newCustomer1"),
+//      //      new RelationChangeState (newCustomer1, "Orders", newOrder2, null, "15: 3. Changing event of newCustomer1 from newOrder2 to null"),
+//      //      new CollectionChangeState (newCustomer2.Orders, newOrder2, "15: 4. Adding of newOrder2 to newCustomer2"),
+//      //      new RelationChangeState (newCustomer2, "Orders", null, newOrder2, "15: 5. Changing event of newCustomer2 from null to newOrder2"),
+//      //      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15: 7. Removed of newOrder2 from newCustomer1"),
+//      //      new RelationChangeState (newCustomer1, "Orders", null, null, "15: 8. Changed event of newCustomer1 from newOrder2 to null"),
+//      //      new CollectionChangeState (newCustomer2.Orders, newOrder2, "15: 9. Added of newOrder2 to newCustomer2"),
+//      //      new RelationChangeState (newCustomer2, "Orders", null, null, "15: 10. Changed event of newCustomer2 from null to newOrder2"),
 //
-//      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "16: 1. Changing event of newOrderTicket1 from null to newOrder1"),
-//      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "16: 2. Changing event of newOrder1 from null to newOrderTicket1"),
-//      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 3. Changed event of newOrderTicket1 from null to newOrder1"),
-//      new RelationChangeState (newOrder1, "OrderTicket", null, null, "16: 4. Changed event of newOrder1 from null to newOrderTicket1"),
+//      // Todo: reactivate these lines
+//      //      new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
+//      //      new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "16: 2. Changing event of newOrderTicket1 from newOrder2 to null"),
+//      //      new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "16: 3. Changing event of newOrderItem1 from newOrder2 to null"),
+//      //      new ObjectDeletionState (newOrder2, "16: 4. Deleted event of newOrder2"),
+//      //      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 5. Changed event of newOrderTicket1 from newOrder2 to null"),
+//      //      new RelationChangeState (newOrderItem1, "Order", null, null, "16: 6. Changed event of newOrderItem1 from newOrder2 to null"),
+//      // Todo: Check why are these events not firing?
+//      //      new CollectionChangeState (newCustomer1.Orders, newOrder2, "16: ?. Removed of newOrder2 from newCustomer1"),
+//      //      new RelationChangeState (newCustomer1, "Orders", null, null, "16: ?. Changed event of newCustomer1 from null to newCeo1"),
+//      //      new CollectionChangeState (newCustomer1.Orders, newOrder2, "16: ?. Removing of newOrder2 from newCustomer1"),
+//      //      new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "16: ?. Changing event of newCustomer1 from null to newCeo1"),
+//
+//      // Todo: reactivate these lines
+//      //      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
+//      //      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
+//      //      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
+//      //      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
 //    };
 //
 //    eventReceiver.Compare (expectedChangeStates);
