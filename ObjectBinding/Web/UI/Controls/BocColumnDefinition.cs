@@ -361,7 +361,7 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 ///   Note that using the methods of <see cref="BusinessObjectPropertyPath"/>, 
 ///   the original value of this property can be retreived or changed.
 /// </remarks>
-public class BocSimpleColumnDefinition: BocValueColumnDefinition, IReferencePropertySource
+public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjectClassSource
 {
   /// <summary>
   ///   A format string describing how the value accessed through the 
