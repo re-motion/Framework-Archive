@@ -49,7 +49,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
       new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
       new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order"),
       new ObjectDeletionState (_orderTicket, "3. Deleted event of orderTicket"),
-      new RelationChangeState (_order, "OrderTicket", null, null, "4. Relation changed event of order"),
+      new RelationChangeState (_order, "OrderTicket", null, null, "4. Relation changed event of order")
     };
 
     _eventReceiver.Compare (expectedStates);

@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects
 {
-public class ClientTransaction : IDisposable
+public class ClientTransaction
 {
   // types
 
@@ -28,9 +28,6 @@ public class ClientTransaction : IDisposable
 
   public static void SetCurrent (ClientTransaction clientTransaction)
   {
-    if (s_clientTransaction != null)
-      s_clientTransaction.Dispose ();
-
     s_clientTransaction = clientTransaction;
   }
 
@@ -49,21 +46,15 @@ public class ClientTransaction : IDisposable
     Initialize ();
   }
 
-  #region IDisposable Members
-
-  public void Dispose ()
-  {
-    _persistenceManager.Dispose ();
-  }
-
-  #endregion
-
   // methods and properties
 
   public void Commit ()
   {
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
-    _persistenceManager.Save (changedDataContainers);
+    using (_persistenceManager)
+    {
+      _persistenceManager.Save (changedDataContainers);
+    }
 
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     _dataManager.Commit ();
@@ -80,10 +71,14 @@ public class ClientTransaction : IDisposable
     ArgumentUtility.CheckNotNull ("type", type);
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
-    DataContainer newDataContainer = _persistenceManager.CreateNewDataContainer (classDefinition); 
-    _dataManager.RegisterNewDataContainer (newDataContainer);
+    
+    using (_persistenceManager)
+    {
+      DataContainer newDataContainer = _persistenceManager.CreateNewDataContainer (classDefinition); 
+      _dataManager.RegisterNewDataContainer (newDataContainer);
 
-    return newDataContainer;
+      return newDataContainer;
+    }    
   }
 
   internal protected bool HasRelationChanged (DomainObject domainObject)
@@ -139,12 +134,16 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
-    _dataManager.RegisterExistingDataContainer (dataContainer);
+    using (_persistenceManager)
+    {
+      DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
-    OnLoaded (new LoadedEventArgs (dataContainer.DomainObject));
+      _dataManager.RegisterExistingDataContainer (dataContainer);
 
-    return dataContainer.DomainObject;
+      OnLoaded (new LoadedEventArgs (dataContainer.DomainObject));
+
+      return dataContainer.DomainObject;
+    }
   }
 
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
@@ -153,19 +152,22 @@ public class ClientTransaction : IDisposable
 
     DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
-    DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-        domainObject.DataContainer, relationEndPointID);
+    using (_persistenceManager)
+    {
+      DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
+          domainObject.DataContainer, relationEndPointID);
 
-    if (relatedDataContainer != null)
-    {
-      _dataManager.RegisterExistingDataContainer (relatedDataContainer);
-      OnLoaded (new LoadedEventArgs (relatedDataContainer.DomainObject));
-      return relatedDataContainer.DomainObject;
-    }
-    else
-    {
-      _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
-      return null;
+      if (relatedDataContainer != null)
+      {
+        _dataManager.RegisterExistingDataContainer (relatedDataContainer);
+        OnLoaded (new LoadedEventArgs (relatedDataContainer.DomainObject));
+        return relatedDataContainer.DomainObject;
+      }
+      else
+      {
+        _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
+        return null;
+      }
     }
   }
 
@@ -173,21 +175,24 @@ public class ClientTransaction : IDisposable
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPointID);
+    using (_persistenceManager)
+    {
+      DataContainerCollection relatedDataContainers = _persistenceManager.LoadRelatedDataContainers (relationEndPointID);
 
-    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
-    _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
+      DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotExisting (relatedDataContainers);
+      _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
-    DomainObjectCollection domainObjects = DomainObjectCollection.Create (
-        relationEndPointID.Definition.PropertyType,
-        _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
+      DomainObjectCollection domainObjects = DomainObjectCollection.Create (
+          relationEndPointID.Definition.PropertyType,
+          _dataManager.DataContainerMap.MergeWithExisting (relatedDataContainers));
 
-    _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
+      _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
-    foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
-      OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
+      foreach (DataContainer newLoadedDataContainer in newLoadedDataContainers)
+        OnLoaded (new LoadedEventArgs (newLoadedDataContainer.DomainObject));
 
-    return domainObjects;
+      return domainObjects;
+    }
   }
 
   protected virtual void OnLoaded (LoadedEventArgs args)

@@ -40,6 +40,7 @@ public abstract class RdbmsProvider : StorageProvider
       finally
       {
         base.Dispose (disposing);
+        _disposed = true;
       }
     }
   }

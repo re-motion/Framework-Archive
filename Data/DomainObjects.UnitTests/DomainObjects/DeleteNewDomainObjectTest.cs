@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.EventSequence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
@@ -425,6 +426,26 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
     _newOrder.Delete ();
     
     _orderNumberValue.GetHashCode ();
+  }
+
+  [Test]
+  public void Events ()
+  {
+    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
+        new DomainObject[] {_newOrder, _newOrderTicket},
+        new DomainObjectCollection[] {_newOrder.OrderItems});
+
+    _newOrder.Delete ();
+
+    ChangeState[] expectedStates = new ChangeState[]
+    {
+      new ObjectDeletionState (_newOrder, "1. Deleting event of order"),
+      new RelationChangeState (_newOrderTicket, "Order", _newOrder, null, "2. Relation changing event of orderTicket"),
+      new ObjectDeletionState (_newOrder, "3. Deleted event of order"),
+      new RelationChangeState (_newOrderTicket, "Order", null, null, "4. Relation changed event of orderTicket")
+    };
+
+    eventReceiver.Compare (expectedStates);
   }
 }
 }

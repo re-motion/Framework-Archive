@@ -219,7 +219,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return !addingArgs.Cancel;
   }
 
-  internal protected virtual void PerformAdd (DomainObject domainObject)
+  internal protected void PerformAdd (DomainObject domainObject)
   {
     base.Add (domainObject.ID, domainObject);
   }
@@ -238,7 +238,7 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return !removingArgs.Cancel;
   }
 
-  internal protected virtual void PerformRemove (DomainObject domainObject)
+  internal protected void PerformRemove (DomainObject domainObject)
   {
     base.Remove (domainObject.ID);
   }
