@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.CooNet">
+    
+  <include buildfile="build/properties.include.xml"/>
+
+  <property name="doc.sdkdocversion" value="SDK_v1_1" />
+  <property name="nunit.bindir" value="c:\program files\nunit v2.0\bin" />
+  <property name="global.dir" value="\development\global" />
+  <property name="solution.basedir" value="${nant.project.basedir}" />
+
+  <property name="build.keyfile" value="\development\global\rubicon.snk" />
+      
+  <target name="initialize">
+    <!-- make sure that one of the set...-targets was called -->
+    <property name="local.setnotcalled" value="true"/>
+    <if propertyexists="project.config">
+      <property name="local.setnotcalled" value="false"/>
+    </if>
+    <if propertytrue="local.setnotcalled">
+      <fail message="Specify a set&lt;configuration&gt; target first. (setdebug, setrelease or setdocumentation)" />
+    </if>
+    
+    <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />
+    <property name="project.builddir" value="${build.basedir}/${nant.settings.currentframework}/bin/${project.config}" />
+    <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
+    <property name="project.tempdir" value="${build.basedir}/temp/${nant.settings.currentframework}/${project.config}" />
+    <property name="tests.builddir" value="${build.basedir}/temp/${nant.settings.currentframework}/tests/${project.config}" />
+  </target>
+ 
+  <!--======================= CONFIGURATION  =======================-->
+  <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
+  
+  <target name="setdebug">
+    <property name="build.createdoc" value="false" />
+    <property name="project.config" value="debug" />
+    <property name="build.debug" value="true" />
+    <call target="initialize" force="true" />
+  </target>
+  
+  <target name="setrelease">
+    <property name="build.createdoc" value="false" />
+    <property name="project.config" value="release" />
+    <property name="build.debug" value="false" />
+    <call target="initialize" force="true" />
+  </target>
+  
+  <target name="setdocumentation">
+    <property name="build.createdoc" value="true" />
+    <property name="project.config" value="documentation" />
+    <property name="build.debug" value="false" />
+    <call target="initialize" force="true" />
+  </target>
+  
+  <!--======================= VERSION =======================-->
+  
+  <target name="incversion">
+    <buildversion versionfile="build/buildversion.xml" increment="true" />
+  </target>
+  
+  <!--======================= PROJECTS =======================-->
+
+  <target name="all" depends="Core,DevelopmentCore,CodeDom" />
+
+  <target name="Core" depends="initialize">
+    <property name="project.name" value="Core" />
+    <property name="project.directory" value="Core" />
+    <property name="project.output" value="Rubicon.Core" />
+    <property name="project.extension" value="dll" />
+    <call target="build" force="true" />
+  </target>
+  
+  <target name="DevelopmentCore" depends="initialize">
+    <property name="project.name" value="DevelopmentCore" />
+    <property name="project.directory" value="Development" />
+    <property name="project.output" value="Rubicon.Development" />
+    <property name="project.extension" value="dll" />
+    <call target="build" force="true" />
+  </target>
+  
+  <target name="CodeDom" depends="Core,initialize">
+    <property name="project.name" value="CodeDom" />
+    <property name="project.directory" value="Development" />
+    <property name="project.output" value="Rubicon.Development.CodeDom" />
+    <property name="project.extension" value="dll" />
+    <call target="build" force="true" />
+  </target>
+  
+  <!--======================= UNIT TESTS =======================-->
+  
+  <target name="alltests" depends="CoreTest, DevelopmentCoreTest" />
+
+  <target name="CoreTest" depends="Core,DevelopmentCore">
+    <property name="project.name" value="CoreTest" />
+    <property name="project.directory" value="Core" />
+    <property name="project.output" value="Rubicon.Core.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" force="true" />
+    <nunit2>
+      <test assemblyname="${tests.builddir}/Rubicon.Core.UnitTests.dll" />
+    </nunit2>
+  </target>
+  
+  <target name="DevelopmentCoreTest" depends="Core,DevelopmentCore">
+    <property name="project.name" value="DevelopmentCoreTest" />
+    <property name="project.directory" value="Development" />
+    <property name="project.output" value="Rubicon.Development.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" force="true" />
+    <nunit2>
+      <test assemblyname="${tests.builddir}/Rubicon.Development.UnitTests.dll" />
+    </nunit2>
+  </target>
+  
+  <!--======================= BUILD =======================-->
+  
+  <target name="build">
+    <echo message="building ${project.output}.${project.extension} ${build.version}"/>
+    <if if="${build.createdoc}">
+      <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
+    </if> <if unless="${build.createdoc}">
+      <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
+    </if>
+
+    <property name="project.basedir" value="${nant.project.basedir}/${project.directory}/${project.name}" />
+    
+    <mkdir dir="${project.builddir}"/>
+    <mkdir dir="${project.tempdir}"/>
+    <call target="prepareassemblyinfo" force="true" />
+    
+    <nant buildfile="${project.directory}/${project.name}/${project.name}.build" target="build" />
+    
+    <if unless="${build.createdoc}">
+      <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />    
+    </if>
+  </target>
+  
+  <target name="buildtest">
+    <echo message="building unit tests ${project.output}.${project.extension} ${build.version}"/>
+    <property name="project.doc" value="" />
+
+    <property name="project.basedir" value="${nant.project.basedir}/${project.directory}/${project.name}" />
+    
+    <mkdir dir="${tests.builddir}"/>
+    
+    <copy todir="${tests.builddir}" file="${nunit.bindir}/nunit.framework.dll" overwrite="true"/>
+    <copy todir="${tests.builddir}">
+      <fileset basedir="${project.builddir}">
+        <includes name="*.dll" />
+        <includes name="*.pdb" />
+      </fileset>
+    </copy>
+    
+    <call target="prepareassemblyinfo" force="true" />
+    
+    <nant buildfile="${project.directory}/${project.name}/${project.name}.build" target="build" />
+  </target>
+
+  <target name="prepareassemblyinfo">
+    <copy file="${project.basedir}/AssemblyInfoTemplate.cs"  tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
+    <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
+    <replace>
+      <filterset>
+        <filter token="keyfile" value="${build.keyfile}" />  
+        <filter token="versionnumber" value="${build.version}" />
+        <filter token="buildinfo" value=".NET Framework: ${nant.settings.currentframework}, build type: ${project.config}" />
+        <filter token="company" value="${text.companyname}" />
+        <filter token="copyright" value="${text.copyright}" />
+        <filter token="productname" value="${text.productname}" />
+      </filterset>
+      <fileset>
+        <includes name="${project.basedir}/AssemblyInfo.cs" />
+      </fileset>
+    </replace>
+  </target>
+    
+  <!--======================= DOCUMENTATION =======================-->
+
+  <target name="doc-public" depends="setdocumentation,all">
+    <property name="doc.suffix" value="" />
+    
+    <property name="doc.filebase" value="${text.productshortname}${doc.suffix}" />
+    <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
+    <mkdir dir="${doc.tempdir}"/>
+    <mkdir dir="${doc.targetdir}"/>
+    <ndoc>
+      <assemblies basedir="${project.builddir}" failonempty="true">
+        <includes name="Rubicon.Core.dll" />
+        <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Development.dll" />
+      </assemblies>
+      <documenters>
+        <documenter name="MSDN">
+          <property name="OutputDirectory" value="${doc.tempdir}" />
+          <property name="LinkToSdkDocVersion" value="${doc.sdkdocversion}" />
+          <property name="HtmlHelpName" value="${doc.filebase}" />
+          <property name="HtmlHelpCompilerFilename" value="hhc.exe" />
+          <property name="IncludeFavorites" value="False" />
+          <property name="Title" value="${text.productname}" />
+          <property name="SplitTOCs" value="False" />
+          <property name="DefaulTOC" value="" />
+          <property name="ShowVisualBasic" value="True" />
+          <property name="ShowMissingSummaries" value="False" />
+          <property name="ShowMissingRemarks" value="False" />
+          <property name="ShowMissingParams" value="False" />
+          <property name="ShowMissingReturns" value="False" />
+          <property name="ShowMissingValues" value="False" />
+          <property name="DocumentInternals" value="False" />
+          <property name="DocumentProtected" value="True" />
+          <property name="DocumentPrivates" value="False" />
+          <property name="DocumentEmptyNamespaces" value="False" />
+          <property name="IncludeAssemblyVersion" value="False" />
+          <property name="CopyrightText" value="${text.companyname}" />
+          <property name="CopyrightHref" value="${text.companyurl}" />
+        </documenter>
+      </documenters>
+    </ndoc>
+    <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
+  </target>
+
+  <target name="doc-internal" depends="setdocumentation,all">
+    <property name="doc.suffix" value="Internal" />
+
+    <property name="doc.filebase" value="${text.productshortname}${doc.suffix}" />
+    <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
+    <mkdir dir="${doc.tempdir}"/>
+    <mkdir dir="${doc.targetdir}"/>
+    <ndoc>
+      <assemblies basedir="${project.builddir}" failonempty="true">
+        <includes name="Rubicon.Core.dll" />
+        <includes name="Rubicon.Development.CodeDom.dll" />
+        <includes name="Rubicon.Development.dll" />
+      </assemblies>
+      <documenters>
+        <documenter name="MSDN">
+          <property name="OutputDirectory" value="${doc.tempdir}" />
+          <property name="LinkToSdkDocVersion" value="${doc.sdkdocversion}" />
+          <property name="HtmlHelpName" value="${doc.filebase}" />
+          <property name="HtmlHelpCompilerFilename" value="hhc.exe" />
+          <property name="IncludeFavorites" value="False" />
+          <property name="Title" value="${text.productname} Internal" />
+          <property name="SplitTOCs" value="False" />
+          <property name="DefaulTOC" value="" />
+          <property name="ShowVisualBasic" value="False" />
+          <property name="ShowMissingSummaries" value="True" />
+          <property name="ShowMissingRemarks" value="True" />
+          <property name="ShowMissingParams" value="True" />
+          <property name="ShowMissingReturns" value="True" />
+          <property name="ShowMissingValues" value="True" />
+          <property name="DocumentInternals" value="True" />
+          <property name="DocumentProtected" value="True" />
+          <property name="DocumentPrivates" value="True" />
+          <property name="DocumentEmptyNamespaces" value="True" />
+          <property name="IncludeAssemblyVersion" value="True" />
+          <property name="CopyrightText" value="${text.companyname}" />
+          <property name="CopyrightHref" value="${text.companyurl}" />
+        </documenter>
+      </documenters>
+    </ndoc>
+    <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
+  </target>
+
+  <!--======================= CLEANING =======================-->
+
+  <target name="cleantemp" depends="setdocumentation">
+    <delete>
+      <fileset failonempty="false">
+        <includes name="${build.basedir}/temp/**/*"/>
+        <includes name="${build.basedir}/temp"/> 
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="clean" depends="setdocumentation">
+    <delete>
+      <fileset failonempty="false">
+        <includes name="${build.basedir}/**/*"/>
+        <includes name="${build.basedir}"/>
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="zip" depends="setdocumentation">
+    <property name="local.zipfile" value="${build.basedir}/RubiconLibraries_${build.version.noconfig}.zip" />
+    <delete file="${local.zipfile}" failonerror="false" />
+    <zip zipfile="${local.zipfile}">
+      <fileset basedir="${build.basedir}">
+        <includes name="**/*" />
+        <excludes name="*/bin/documentation/*" />
+        <excludes name="temp/**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+</project>
