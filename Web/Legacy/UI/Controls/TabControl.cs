@@ -9,10 +9,50 @@ using System.Drawing;
 namespace Rubicon.Findit.Client.Controls
 {
 
-public class Tab
+[ParseChildren (false, "Controls")]
+[ControlBuilder (typeof (TabControlBuilder))]
+public class Tab: Control
 {
-	private string _label;
-	private string _href;
+	private string _label = string.Empty;
+	private string _href = string.Empty;
+
+	public string Label
+	{
+		get { return _label; }
+		set { _label = value; }
+	}
+	public string Href
+	{
+		get { return _href; }
+		set { _href = value; }
+	}
+}
+
+public class TabControlBuilder: ControlBuilder
+{
+	public override bool AllowWhitespaceLiterals ()
+	{
+		return false;
+	}
+	
+	public override Type GetChildControlType (string tag, IDictionary attribs)
+	{
+		string unqualifiedTag = tag;
+		int posColon = tag.IndexOf (':');
+		if (posColon >= 0 && posColon < tag.Length + 1)
+			unqualifiedTag = tag.Substring (posColon + 1);
+
+		if (unqualifiedTag == "TabMenu")
+			return typeof (TabMenu);
+
+    throw new ApplicationException ("Only TabMenu tags are allowed in Tab controls");
+	}
+}
+
+public class TabMenu: Control
+{
+	private string _label = string.Empty;
+	private string _href = string.Empty;
 
 	public string Label
 	{
@@ -43,6 +83,7 @@ public class TabControl: Control, IPostBackEventHandler
 	private Color _lineColor;
 	private bool _seperatorLine = false;
 	private bool _vertical = false;
+  private bool _hasMenuBar = false;
 
 	public string FirstImage
 	{ 
@@ -109,6 +150,11 @@ public class TabControl: Control, IPostBackEventHandler
 		get { return _vertical; }
 		set { _vertical = value; }
 	}
+  public bool HasMenuBar
+  {
+    get { return _hasMenuBar; }
+    set { _hasMenuBar = value; }
+  }
 
 	public TabCollection Items
 	{
@@ -117,7 +163,23 @@ public class TabControl: Control, IPostBackEventHandler
 
 	void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
 	{
-		_activeTab = Int32.Parse (eventArgument);
+    int colonPos = eventArgument.IndexOf (":");
+    if (colonPos >= 0)
+    {
+      string eventName = eventArgument.Substring (0, colonPos);
+      string argument = eventArgument.Substring (colonPos + 1);
+      switch (eventName)
+      {
+        // TODO: raise events
+        case "TabSelected":
+          _activeTab = Int32.Parse (argument);
+          break;
+
+        case "MenuSelected":
+          break;
+      }
+    }
+		
 	}
 
 	protected override object SaveViewState ()
@@ -131,6 +193,25 @@ public class TabControl: Control, IPostBackEventHandler
 		base.LoadViewState (state.First);
 		_activeTab = (int) state.Second;
 	}
+
+  private string GetHref (string eventName, int itemIndex, string rawHref)
+  {
+		string resultHref = null;
+    string eventArgument = eventName + ":" + itemIndex.ToString();
+		string script = Page.GetPostBackClientEvent (this, eventArgument);
+
+		if (rawHref != string.Empty)
+		{
+			if (_target != string.Empty)
+				script = "window.open('" + rawHref + "', '" + _target + "'); " + script;
+			else
+				resultHref = "href=\"" + rawHref + "\"";
+		}
+		if (resultHref == null)
+			resultHref = "href=\"javascript:" + script + "\"";
+
+    return resultHref;
+  }
 
 	protected override void Render (HtmlTextWriter output)
 	{
@@ -169,17 +250,7 @@ public class TabControl: Control, IPostBackEventHandler
 			if (i == _activeTab)
 				classAttrib = activeClassAttrib;
 
-			string href = null;
-			string script = Page.GetPostBackClientEvent (this, i.ToString());
-			if (tab.Href != null)
-			{
-				if (_target != String.Empty)
-					script = "window.open('" + tab.Href + "', '" + _target + "'); " + script;
-				else
-					href = "href=\"" + tab.Href + "\"";
-			}
-			if (href == null)
-				href = "href=\"javascript:" + script + "\"";
+      string href = GetHref ("TabSelected", i, tab.Href);
 
 			/*
 				href = "href=\"javascript:window.open('" + tab.Href + "'); " + Page.GetPostBackClientEvent (this, i.ToString()) + "\"";
@@ -209,6 +280,7 @@ public class TabControl: Control, IPostBackEventHandler
 		output.WriteLine ("</tr>");
 		if (_seperatorLine)
 		{
+  		output.WriteLine ("<tr>");
 			if (_activeTab != 0)
 			{
 				output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
@@ -219,14 +291,45 @@ public class TabControl: Control, IPostBackEventHandler
 				output.WriteLine ("<td colspan=\"3\" {0} <img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
 						activeClassAttrib, _emptyImage);
 			}
-			output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
-					(_items.Count - _activeTab - 1) * 4, lineColor, _emptyImage);
+      if (_activeTab < (_items.Count - 1))
+      {
+			  output.WriteLine ("<td colspan=\"{0}\" bgcolor=\"{1}\"><img src=\"{2}\" width=\"1\" height=\"1\" /></td>",
+					  (_items.Count - _activeTab - 1) * 4, lineColor, _emptyImage);
+      }
 			output.WriteLine ("<td width=\"100%\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"1\" height=\"1\" /></td>",
 					lineColor, _emptyImage);
+  		output.WriteLine ("</tr>");
 		}
+
+    //output.WriteLine ("<table bgcolor=\"{0}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr>", backColor);
+
+    if (_hasMenuBar)
+    { 
+      output.WriteLine ("<tr class=\"tabSubLink\">");
+      int colspan = _items.Count * 4;
+			output.WriteLine ("<td colspan=\"{0}\" width=\"100%\" height=\"12em\" valign=\"center\">&nbsp;", colspan);
+
+      Tab activeTab = Items[_activeTab];
+      bool isFirstMenu = true;
+      for (int i = 0; i < activeTab.Controls.Count; ++i)
+      {
+        TabMenu menu = activeTab.Controls[i] as TabMenu;
+        if (menu != null)
+        {
+          if (! isFirstMenu)
+            output.WriteLine (" | ");
+
+          //string menuHref = GetHref ("MenuSelected", i, menu.Href);
+          string menuHref = string.Format ("href=\"{0}\" target=\"{1}\"", menu.Href, _target);
+          output.WriteLine ("<a class=\"tabSubLink\" {0}>{1}</a> ", menuHref, menu.Label);
+          isFirstMenu = false;
+        }
+      }
+      output.WriteLine ("</td>");
+      output.WriteLine ("</tr>");
+    }
 		output.WriteLine ("</table>");
 	}
-
 }
 
 public class TabCollection: IList
