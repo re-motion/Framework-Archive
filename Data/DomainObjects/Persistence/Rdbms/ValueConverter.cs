@@ -31,10 +31,6 @@ public sealed class DBValueConverter
 
     if (type.IsEnum)
       return (int) value;
-
-    // TODO: Remove this line when char is removed 
-    if (type == typeof (char))
-      return value.ToString ();
     
     return value;
   }
@@ -113,10 +109,6 @@ public sealed class DBValueConverter
     if (propertyDefinition.PropertyType.IsEnum)
       return GetEnumValue (propertyDefinition, dataReader.GetValue (columnOrdinal));
 
-    // TODO: Remove line below and method GetCharValue:
-    if (propertyDefinition.PropertyType == typeof (char))
-      return GetCharValue (propertyDefinition, dataReader.GetString (columnOrdinal));
-
     if (propertyDefinition.PropertyType == typeof (NaBoolean))
       return new NaBoolean (dataReader.GetBoolean (columnOrdinal));
 
@@ -162,20 +154,6 @@ public sealed class DBValueConverter
     }
 
     return relatedClassDefinition;
-  }
-
-  private static char GetCharValue (PropertyDefinition propertyDefinition, string stringValue)
-  {
-    if (stringValue.Length == 1)
-    {
-      return stringValue[0];
-    }
-    else 
-    {
-      throw CreateStorageProviderException (
-          "Value '{0}' is not supported for System.Char datatype, property: {1}.",
-          stringValue, propertyDefinition.PropertyName);
-    }
   }
 
   private static object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)

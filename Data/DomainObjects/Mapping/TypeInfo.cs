@@ -123,7 +123,7 @@ public class TypeInfo
 
   private static TypeInfo[] GetAllKnownTypeInfos ()
   {
-    TypeInfo[] allTypeInfos = new TypeInfo[21];
+    TypeInfo[] allTypeInfos = new TypeInfo[20];
 
     // Note: Nullable types must be added first to ensure hashtable s_types contains the nullable version
     allTypeInfos[0] = new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null);
@@ -148,9 +148,8 @@ public class TypeInfo
     allTypeInfos[15] = new TypeInfo (typeof (int), "int32", false, (int) 0);
     allTypeInfos[16] = new TypeInfo (typeof (long), "int64", false, (long) 0);
     allTypeInfos[17] = new TypeInfo (typeof (float), "single", false, (float) 0);
-    allTypeInfos[18] = new TypeInfo (typeof (char), "char", false, ' ');
-    allTypeInfos[19] = new TypeInfo (typeof (string), "string", false, string.Empty);
-    allTypeInfos[20] = new TypeInfo (typeof (ObjectID), "objectID", false, null);
+    allTypeInfos[18] = new TypeInfo (typeof (string), "string", false, string.Empty);
+    allTypeInfos[19] = new TypeInfo (typeof (ObjectID), "objectID", false, null);
 
     return allTypeInfos;
   }

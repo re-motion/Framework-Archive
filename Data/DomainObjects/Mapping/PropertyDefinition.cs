@@ -103,11 +103,6 @@ public class PropertyDefinition
 
   // methods and properties
 
-  private NotImplementedException CreateNotImplementedException (string message, params object[] args)
-  {
-    return new NotImplementedException (string.Format (message, args));
-  }
-
   private MappingException CreateMappingException (string message, params object[] args)
   {
     return new MappingException (string.Format (message, args));
