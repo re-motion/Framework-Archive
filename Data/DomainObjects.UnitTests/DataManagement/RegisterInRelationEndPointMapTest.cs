@@ -29,7 +29,7 @@ public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _endPoints = new RelationEndPointMap (ClientTransaction.Current);
+    _endPoints = ClientTransactionMock.DataManager.RelationEndPointMap;
   }
 
   [Test]
