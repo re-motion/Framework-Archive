@@ -445,7 +445,7 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (_newOrderTicket, "Order", null, null, "4. Relation changed event of orderTicket")
     };
 
-    eventReceiver.Compare (expectedStates);
+    eventReceiver.Check (expectedStates);
   }
 
   [Test]
