@@ -64,7 +64,8 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     classWithAllDataTypes["BooleanProperty"] = true;
     classWithAllDataTypes["ByteProperty"] = (byte) 42;
     classWithAllDataTypes["CharProperty"] = 'z';
-    classWithAllDataTypes["DateTimeProperty"] = new DateTime (1974, 10, 26);
+    classWithAllDataTypes["DateProperty"] = new DateTime (1974, 10, 25);
+    classWithAllDataTypes["DateTimeProperty"] = new DateTime (1974, 10, 26, 18, 9, 18);
     classWithAllDataTypes["DecimalProperty"] = (decimal) 564.956;
     classWithAllDataTypes["DoubleProperty"] = 5334.2456;
     classWithAllDataTypes["EnumProperty"] = ClassWithAllDataTypes.EnumType.Value0;
@@ -75,7 +76,8 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     classWithAllDataTypes["SingleProperty"] = (float) 42.42;
     classWithAllDataTypes["StringProperty"] = "zyxwvuZaphodBeeblebrox";
     classWithAllDataTypes["NaBooleanProperty"] = new NaBoolean (false);
-    classWithAllDataTypes["NaDateTimeProperty"] = new NaDateTime (new DateTime (2005, 1, 18));
+    classWithAllDataTypes["NaDateProperty"] = new NaDateTime (new DateTime (2007, 1, 18));
+    classWithAllDataTypes["NaDateTimeProperty"] = new NaDateTime (new DateTime (2005, 1, 18, 11, 11, 11));
     classWithAllDataTypes["NaDoubleProperty"] = new NaDouble (56.87);
     classWithAllDataTypes["NaInt32Property"] = new NaInt32 (-42);
 
@@ -91,7 +93,8 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
       Assert.AreEqual (true, classWithAllDataTypes["BooleanProperty"]);
       Assert.AreEqual (42, classWithAllDataTypes["ByteProperty"]);
       Assert.AreEqual ('z', classWithAllDataTypes["CharProperty"]);
-      Assert.AreEqual (new DateTime (1974, 10, 26), classWithAllDataTypes["DateTimeProperty"]);
+      Assert.AreEqual (new DateTime (1974, 10, 25), classWithAllDataTypes["DateProperty"]);
+      Assert.AreEqual (new DateTime (1974, 10, 26, 18, 9, 18), classWithAllDataTypes["DateTimeProperty"]);
       Assert.AreEqual (564.956, classWithAllDataTypes["DecimalProperty"]);
       Assert.AreEqual (5334.2456, classWithAllDataTypes["DoubleProperty"]);
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, classWithAllDataTypes["EnumProperty"]);
@@ -102,12 +105,14 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
       Assert.AreEqual (42.42, classWithAllDataTypes["SingleProperty"]);
       Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["StringProperty"]);
       Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);
-      Assert.AreEqual (new NaDateTime (new DateTime (2005, 1, 18)), classWithAllDataTypes["NaDateTimeProperty"]);
+      Assert.AreEqual (new NaDateTime (new DateTime (2007, 1, 18)), classWithAllDataTypes["NaDateProperty"]);
+      Assert.AreEqual (new NaDateTime (new DateTime (2005, 1, 18, 11, 11, 11)), classWithAllDataTypes["NaDateTimeProperty"]);
       Assert.AreEqual (new NaDouble (56.87), classWithAllDataTypes["NaDoubleProperty"]);
       Assert.AreEqual (new NaInt32 (-42), classWithAllDataTypes["NaInt32Property"]);
 
       Assert.IsNull (classWithAllDataTypes["StringWithNullValueProperty"]);
       Assert.AreEqual (NaBoolean.Null, classWithAllDataTypes["NaBooleanWithNullValueProperty"]);
+      Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes["NaDateWithNullValueProperty"]);
       Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes["NaDateTimeWithNullValueProperty"]);
       Assert.AreEqual (NaDouble.Null, classWithAllDataTypes["NaDoubleWithNullValueProperty"]);
       Assert.AreEqual (NaInt32.Null, classWithAllDataTypes["NaInt32WithNullValueProperty"]);
