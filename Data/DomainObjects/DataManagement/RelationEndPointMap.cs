@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPointChangeDelegate, ICloneable
+public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPointChangeDelegate
 {
   // types
 
@@ -298,16 +298,6 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
     }
   }
 
-  public RelationEndPointMap CloneForDelete (DomainObject domainObject)
-  {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-
-    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
-      GetRelationEndPointWithLazyLoad (endPointID);
-
-    return (RelationEndPointMap) this.Clone ();
-  }
-
   public RelationEndPointCollection GetAllRelationEndPointsWithLazyLoad (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -479,20 +469,6 @@ public class RelationEndPointMap : RelationEndPointCollection, ICollectionEndPoi
       removingEndPoint.EndRelationChange ();
       endPoint.EndRelationChange ();
     }
-  }
-
-  #endregion
-
-  #region ICloneable Members
-
-  public object Clone ()
-  {
-    RelationEndPointMap clone = new RelationEndPointMap (_clientTransaction);
-
-    foreach (RelationEndPoint endPoint in this)
-      clone.Add (endPoint);
-
-    return clone;
   }
 
   #endregion
