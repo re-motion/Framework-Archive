@@ -42,10 +42,12 @@ public class WebForm1 :
 
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
+  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
+  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager1;
   private AutoInitHashtable _listOfHiddenRows = 
       new AutoInitHashtable (typeof (StringCollection));
 
-	private void Page_Load(object sender, System.EventArgs e)
+  override protected void OnLoad(System.EventArgs e)
 	{
 
     if (!IsPostBack)
@@ -134,8 +136,6 @@ public class WebForm1 :
     this.GenderList.SelectedIndexChanged += new System.EventHandler(this.GenderList_SelectedIndexChanged);
     this.DropDownList2.SelectedIndexChanged += new System.EventHandler(this.DropDownList2_SelectedIndexChanged);
     this.Button1.Click += new System.EventHandler(this.Button1_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
-    this.PreRender += new System.EventHandler(this.WebForm1_PreRender);
 
   }
   #endregion
@@ -188,8 +188,9 @@ public class WebForm1 :
   
   }
 
-  private void WebForm1_PreRender(object sender, System.EventArgs e)
+  protected override void OnPreRender (System.EventArgs e)
   {
+    base.OnPreRender (e);
     ResourceDispatcher.Dispatch (this);
   }
 

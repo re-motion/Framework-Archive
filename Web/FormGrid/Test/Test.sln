@@ -14,21 +14,21 @@ EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 4
+		SccProjectUniqueName0 = http://localhost/dev/libraries/Commons/Web/FormGrid/Test/Test.csproj
 		SccLocalPath0 = .
 		CanCheckoutShared = false
+		SccProjectEnlistmentChoice0 = 2
+		SccProjectUniqueName1 = ..\\..\\..\\Core\\Core.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath1 = ..\\..\\..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName2 = ..\\..\\Core\\Web.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Web/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath2 = ..\\..\\Core
+		CanCheckoutShared = false
+		SccLocalPath3 = .
+		CanCheckoutShared = false
 		SolutionUniqueID = {2F11921A-DF99-4EA0-B9CD-9734FAA2E0F9}
-		SccProjectUniqueName1 = http://localhost/dev/libraries/Commons/Web/FormGrid/Test/Test.csproj
-		SccLocalPath1 = .
-		CanCheckoutShared = false
-		SccProjectEnlistmentChoice1 = 2
-		SccProjectUniqueName2 = ..\\..\\..\\Core\\Core.csproj
-		SccProjectName2 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
-		SccLocalPath2 = ..\\..\\..\\Core
-		CanCheckoutShared = false
-		SccProjectUniqueName3 = ..\\..\\Core\\Web.csproj
-		SccProjectName3 = \u0022$/libraries/Commons/Web/Core\u0022,\u0020EVHAAAAA
-		SccLocalPath3 = ..\\..\\Core
-		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -39,6 +39,7 @@ Global
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
 		{B4A30549-A642-433C-8A0E-FD87F9393C47}.Debug.ActiveCfg = Debug|.NET

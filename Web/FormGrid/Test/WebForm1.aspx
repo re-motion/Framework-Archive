@@ -10,7 +10,7 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><LINK href="Html/global.css" type=text/css rel=stylesheet >
   </head>
 <body>
-<form id=Form1 method=post runat="server"><rwc:FormGridManager id="GlobalFormGridManager" runat="server" visible="true" validatorvisibility="ValidationMessageAfterControlsColumn"></rwc:FormGridManager><rwc:ValidationStateViewer id="ValidationStateViewer" runat="server" visible="true" validationerrorstyle="DetailedMessages"></rwc:ValidationStateViewer>
+<form id=Form1 method=post runat="server"><rwc:FormGridManager id="GlobalFormGridManager" runat="server" visible="true" validatorvisibility="ValidationMessageAfterControlsColumn"></rwc:FormGridManager><rwc:ValidationStateViewer id="ValidationStateViewer1" runat="server" visible="true"></rwc:ValidationStateViewer>
 <TABLE id=TableDesignTimeFormGrid cellSpacing=0 cellPadding=0 runat="server">
   <TR>
     <TD colSpan=5><asp:label id=PersonDataLabel runat="server">###</asp:label></TD></TR>
@@ -18,7 +18,7 @@
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td>
     <TD><asp:label id=NameLabel runat="server" AssociatedControlID="NameField">&Name Local</asp:label></TD>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td>
-    <TD><asp:textbox id=NameField runat="server">&amp;Name</asp:textbox><asp:comparevalidator id=CompareValidator1 runat="server" ErrorMessage='Please enter "Hello World" for a name.' ControlToValidate="NameField" valuetocompare="Hello World" tooltip='Name is not "Hello World"'></asp:comparevalidator></TD>
+    <TD><asp:textbox id=NameField runat="server"></asp:textbox><asp:comparevalidator id=CompareValidator1 runat="server" ErrorMessage='Please enter "Hello World" for a name.' ControlToValidate="NameField" valuetocompare="Hello World" tooltip='Name is not "Hello World"'></asp:comparevalidator></TD>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td></TR>
   <tr>
     <td style="BACKGROUND-COLOR: green"></td>
@@ -39,7 +39,7 @@
     <TD></TD>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td>
     <TD>
-      <P><asp:textbox id=ZipField runat="server">&amp;Plz</asp:textbox><asp:textbox id=PlaceField runat="server">&amp;Ort</asp:textbox></P></TD>
+      <P><asp:textbox id=ZipField runat="server"></asp:textbox><asp:textbox id=PlaceField runat="server"></asp:textbox></P></TD>
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td></TR>
   <TR>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td>
