@@ -71,9 +71,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
   /// <summary> The new tristate value of the checkbox. </summary>
   private NaBoolean _newValue = NaBoolean.Null;
 
-  /// <summary> Flag that determines whether the client script is enabled. </summary>
-  private bool _enableClientScript = true;
-
   /// <summary> Flag that determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
@@ -419,17 +416,14 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
     if (! ControlHelper.IsDesignMode (this, Context))
     {
-      if (EnableClientScript) 
-      {
-        _hasClientScript = true;
-        //bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
-        //                        ||   Context.Request.Browser.MajorVersion == 5 
-        //                          && Context.Request.Browser.MinorVersion >= 0.5;
-        //bool isInternetExplorer55AndHigher = 
-        //    Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
-        //
-        //_hasClientScript = isInternetExplorer55AndHigher;
-      }
+      _hasClientScript = true;
+      //bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
+      //                        ||   Context.Request.Browser.MajorVersion == 5 
+      //                          && Context.Request.Browser.MinorVersion >= 0.5;
+      //bool isInternetExplorer55AndHigher = 
+      //    Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
+      //
+      //_hasClientScript = isInternetExplorer55AndHigher;
     }
   }
 
@@ -532,17 +526,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
     get { return _hiddenField.Value; }
   }
 
-  /// <summary> Flag that determines whether the client script is enabled. </summary>
-  /// <value> <see langref="true"/> to enable the client script. </value>
-  [Category ("Behavior")]
-  [Description (" True to enable the client script required for tristate checkbox. ")]
-  [DefaultValue (true)]
-  public bool EnableClientScript
-  {
-    get { return _enableClientScript; }
-    set { _enableClientScript = value; }
-  }
-
   /// <summary> Occurs when the <see cref="Value"/> property changes between posts to the server. </summary>
   [Category ("Action")]
   [Description ("Fires when the checked state of the control changes.")]
@@ -626,7 +609,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 ///   event when it's contents has been modified.
 /// </summary>
 /// <remarks>
-///   net 2.0 will provide such a control in it's class library.
+///   .net 2.0 will provide such a control in it's class library.
 /// </remarks>
 internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
 {

@@ -206,6 +206,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocMultilineTextValue.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocReferenceValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
