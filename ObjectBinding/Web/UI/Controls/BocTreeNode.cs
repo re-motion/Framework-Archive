@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding.Web.Design;
-using log4net;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -33,8 +32,6 @@ public abstract class BocTreeNode: WebTreeNode
 
 public class BusinessObjectTreeNode: BocTreeNode
 {
-	private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectTreeNode));
-
   IBusinessObjectWithIdentity _businessObject;
   IBusinessObjectReferenceProperty _property;
   string _propertyIdentifier;
@@ -75,14 +72,6 @@ public class BusinessObjectTreeNode: BocTreeNode
     set 
     {
       _businessObject = value; 
-
-      if (s_log.IsDebugEnabled)
-      {
-        if (_businessObject == null && ! Text.EndsWith (" (null)"))
-          Text += " (null)";
-        else if (_businessObject != null && Text.EndsWith (" (null)"))
-          Text = Text.Remove (Text.Length - 6, 6);
-      }
     }
   }
 
@@ -194,7 +183,6 @@ public class BusinessObjectTreeNode: BocTreeNode
 
 public class BusinessObjectPropertyTreeNode: BocTreeNode
 {
-	private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectPropertyTreeNode));
   IBusinessObjectReferenceProperty _property;
 
   public BusinessObjectPropertyTreeNode (
@@ -228,14 +216,6 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
     set 
     {
       _property = value; 
-
-      if (s_log.IsDebugEnabled)
-      {
-        if (_property == null && ! Text.EndsWith (" (null)"))
-          Text += " (null)";
-        else if (_property != null && Text.EndsWith (" (null)"))
-          Text = Text.Remove (Text.Length - 6, 6);
-      }
     }
   }
 
