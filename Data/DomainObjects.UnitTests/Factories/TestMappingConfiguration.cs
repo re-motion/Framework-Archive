@@ -427,12 +427,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateCustomerToOrderRelationDefinition ()
   {  
-    ClassDefinition customer = _classDefinitions.GetByClassID ("Customer");
+    ClassDefinition customer = _classDefinitions["Customer"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         customer, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
 
-    ClassDefinition orderClass = _classDefinitions.GetByClassID ("Order");
+    ClassDefinition orderClass = _classDefinitions["Order"];
     
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         orderClass, "Customer", true);
@@ -447,12 +447,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateOrderToOrderTicketRelationDefinition ()
   {
-    ClassDefinition orderClass = _classDefinitions.GetByClassID ("Order");
+    ClassDefinition orderClass = _classDefinitions["Order"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         orderClass, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
-    ClassDefinition orderTicketClass = _classDefinitions.GetByClassID ("OrderTicket");
+    ClassDefinition orderTicketClass = _classDefinitions["OrderTicket"];
     
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         orderTicketClass, "Order", true);
@@ -467,12 +467,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateOrderToOrderItemRelationDefinition ()
   {
-    ClassDefinition orderClass = _classDefinitions.GetByClassID ("Order");
+    ClassDefinition orderClass = _classDefinitions["Order"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         orderClass, "OrderItems", true, CardinalityType.Many, typeof (DomainObjectCollection));
 
-    ClassDefinition orderItemClass = _classDefinitions.GetByClassID ("OrderItem");
+    ClassDefinition orderItemClass = _classDefinitions["OrderItem"];
     
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         orderItemClass, "Order", true);
@@ -487,12 +487,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateOrderToOfficialRelationDefinition ()
   {
-    ClassDefinition officialClass = _classDefinitions.GetByClassID ("Official");
+    ClassDefinition officialClass = _classDefinitions["Official"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         officialClass, "Orders", false, CardinalityType.Many, typeof (DomainObjectCollection));
 
-    ClassDefinition orderClass = _classDefinitions.GetByClassID ("Order");
+    ClassDefinition orderClass = _classDefinitions["Order"];
     
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         orderClass, "Official", true);
@@ -507,12 +507,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateCompanyToCeoRelationDefinition ()
   {
-    ClassDefinition companyClass = _classDefinitions.GetByClassID ("Company");
+    ClassDefinition companyClass = _classDefinitions["Company"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         companyClass, "Ceo", true, CardinalityType.One, typeof (Ceo));
 
-    ClassDefinition ceoClass = _classDefinitions.GetByClassID ("Ceo");
+    ClassDefinition ceoClass = _classDefinitions["Ceo"];
     
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         ceoClass, "Company", true);
@@ -527,9 +527,9 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreatePartnerToPersonRelationDefinition ()
   {
-    ClassDefinition personClass = _classDefinitions.GetByClassID ("Person");
+    ClassDefinition personClass = _classDefinitions["Person"];
 
-    ClassDefinition partnerClass = _classDefinitions.GetByClassID ("Partner");
+    ClassDefinition partnerClass = _classDefinitions["Partner"];
     
     RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition (
         partnerClass, "ContactPerson", true);
@@ -547,10 +547,9 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreatePartnerToClassWithoutRelatedClassIDColumnRelationDefinition ()
   {
-    ClassDefinition partnerClass = _classDefinitions.GetByClassID ("Partner");
+    ClassDefinition partnerClass = _classDefinitions["Partner"];
   
-    ClassDefinition classWithoutRelatedClassIDColumnClass = _classDefinitions.GetByClassID (
-        "ClassWithoutRelatedClassIDColumn");
+    ClassDefinition classWithoutRelatedClassIDColumnClass = _classDefinitions["ClassWithoutRelatedClassIDColumn"];
     
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         partnerClass, 
@@ -572,10 +571,9 @@ public class TestMappingConfiguration
   
   private RelationDefinition CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ()
   {
-    ClassDefinition companyClass = _classDefinitions.GetByClassID ("Company");
+    ClassDefinition companyClass = _classDefinitions["Company"];
   
-    ClassDefinition classWithoutRelatedClassIDColumnAndDerivation = _classDefinitions.GetByClassID (
-        "ClassWithoutRelatedClassIDColumnAndDerivation");
+    ClassDefinition classWithoutRelatedClassIDColumnAndDerivation = _classDefinitions["ClassWithoutRelatedClassIDColumnAndDerivation"];
     
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         companyClass, 
@@ -598,12 +596,12 @@ public class TestMappingConfiguration
   
   private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsOptional ()
   {
-    ClassDefinition classWithGuidKey = _classDefinitions.GetByClassID ("ClassWithGuidKey");
+    ClassDefinition classWithGuidKey = _classDefinitions["ClassWithGuidKey"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         classWithGuidKey, "ClassWithValidRelationsOptional", false, CardinalityType.One, typeof (ClassWithValidRelations));
 
-    ClassDefinition classWithValidRelations = _classDefinitions.GetByClassID ("ClassWithValidRelations");
+    ClassDefinition classWithValidRelations = _classDefinitions["ClassWithValidRelations"];
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         classWithValidRelations, "ClassWithGuidKeyOptional", false);
@@ -619,7 +617,7 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ()
   {
-    ClassDefinition classWithGuidKey = _classDefinitions.GetByClassID ("ClassWithGuidKey");
+    ClassDefinition classWithGuidKey = _classDefinitions["ClassWithGuidKey"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         classWithGuidKey, 
@@ -628,7 +626,7 @@ public class TestMappingConfiguration
         CardinalityType.One, 
         typeof (ClassWithValidRelations));
 
-    ClassDefinition classWithValidRelations = _classDefinitions.GetByClassID ("ClassWithValidRelations");
+    ClassDefinition classWithValidRelations = _classDefinitions["ClassWithValidRelations"];
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         classWithValidRelations, "ClassWithGuidKeyNonOptional", true);
@@ -644,12 +642,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateClassWithGuidKeyToClassWithInvalidRelation ()
   {
-    ClassDefinition classWithGuidKey = _classDefinitions.GetByClassID ("ClassWithGuidKey");
+    ClassDefinition classWithGuidKey = _classDefinitions["ClassWithGuidKey"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         classWithGuidKey, "ClassWithInvalidRelation", false, CardinalityType.One, typeof (ClassWithInvalidRelation));
 
-    ClassDefinition classWithInvalidRelation = _classDefinitions.GetByClassID ("ClassWithInvalidRelation");
+    ClassDefinition classWithInvalidRelation = _classDefinitions["ClassWithInvalidRelation"];
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         classWithInvalidRelation, "ClassWithGuidKey", false);
@@ -665,12 +663,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateIndustrialSectorToCompanyRelationDefinition ()
   {
-    ClassDefinition industrialSectorClass = _classDefinitions.GetByClassID ("IndustrialSector");
+    ClassDefinition industrialSectorClass = _classDefinitions["IndustrialSector"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         industrialSectorClass, "Companies", true, CardinalityType.Many, typeof (DomainObjectCollection));
 
-    ClassDefinition companyClass = _classDefinitions.GetByClassID ("Company");
+    ClassDefinition companyClass = _classDefinitions["Company"];
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         companyClass, "IndustrialSector", false);
@@ -685,7 +683,7 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateSupervisorToSubordinateRelationDefinition ()
   {
-    ClassDefinition employeeClass = _classDefinitions.GetByClassID ("Employee");
+    ClassDefinition employeeClass = _classDefinitions["Employee"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         employeeClass, "Subordinates", false, CardinalityType.Many, typeof (DomainObjectCollection));
@@ -702,12 +700,12 @@ public class TestMappingConfiguration
 
   private RelationDefinition CreateEmployeeToComputerRelationDefinition ()
   {
-    ClassDefinition employeeClass = _classDefinitions.GetByClassID ("Employee");
+    ClassDefinition employeeClass = _classDefinitions["Employee"];
 
     VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
         employeeClass, "Computer", false, CardinalityType.One, typeof (Computer));
 
-    ClassDefinition computerClass = _classDefinitions.GetByClassID ("Computer");
+    ClassDefinition computerClass = _classDefinitions["Computer"];
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         computerClass, "Employee", false);
