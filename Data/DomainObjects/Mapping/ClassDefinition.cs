@@ -158,10 +158,10 @@ public class ClassDefinition
     if (relationDefinition == null)
       return null;
 
-    ClassDefinition relatedClass = relationDefinition.GetOppositeClassDefinition (_id, propertyName);
+    ClassDefinition oppositeClass = relationDefinition.GetOppositeClassDefinition (_id, propertyName);
     
-    if (relatedClass != null)
-      return relatedClass;
+    if (oppositeClass != null)
+      return oppositeClass;
 
     if (_baseClass != null)
       return _baseClass.GetOppositeClassDefinition (propertyName);
