@@ -369,7 +369,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     }  
   }
   
-  private string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
+  protected virtual string GetCompleteUrl (ITabItem tabItem, int newSelectedTabIndex, int newSelectedMenuIndex)
   {
     ITabItem navigableItem = tabItem.GetNavigableItem();
 
