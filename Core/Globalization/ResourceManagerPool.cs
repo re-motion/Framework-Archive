@@ -54,7 +54,6 @@ public sealed class ResourceDispatcher
     // Hashtable<string elementID, IDictionary<string argument, string value> elementValues>
     IDictionary elements = new Hashtable (); 
 
-    // TODO: Read current CultureInfo from user, domain, ...
     ResourceSet resources = GetResourceSet (control, controlType, resourceName);
 
     foreach (DictionaryEntry resourceEntry in resources)
