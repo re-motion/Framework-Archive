@@ -1,3 +1,18 @@
+1.1.21.0
+========
+
+- UIUtility:
+  * "internal sealed class UIUtility" in "public class ImageUtility" umbenannt
+  * Neue Methode "GetErrorImageUrl"
+
+- EntryFormGrid.cs:
+  * Neues property "EntryFormGrid" bei Klasse "EntryTitle"
+  
+- ViewControl.cs:
+  * Neue Methoden "GetWhitespaceImage" und "GetImagePath" bei Klasse "ViewControl"
+   
+
+
 1.1.18.0
 ========
 
