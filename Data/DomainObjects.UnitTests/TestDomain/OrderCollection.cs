@@ -27,11 +27,6 @@ public class OrderCollection : DomainObjectCollection
 
   // methods and properties
 
-  public override DomainObjectCollection Clone (bool isReadOnly)
-  {
-    return new OrderCollection (this, isReadOnly);
-  }
-
   public new void SetIsReadOnly (bool isReadOnly)
   {
     base.SetIsReadOnly (isReadOnly);
