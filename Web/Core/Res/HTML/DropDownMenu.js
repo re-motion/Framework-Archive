@@ -58,7 +58,6 @@ function DropDownMenu_OpenPopUp (id, menuID, context)
   popUpWindow = window.createPopup();
   var popUpDocument = popUpWindow.document;
   var styleSheet = popUpDocument.createStyleSheet (_dropDownMenu_styleSheetLink);
-  
 	//  Other
 	//  var popUpDocument = window.document;
 	var popUp = popUpDocument.createElement("div");

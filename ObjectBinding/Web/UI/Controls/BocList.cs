@@ -918,6 +918,15 @@ public class BocList:
       menuItem.Command.RenderBegin (writer, postBackLink, onClick);
     }
 
+    if (! StringUtility.IsNullOrEmpty (menuItem.Icon))
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
+      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderEndTag();
+      writer.Write (c_whiteSpace);
+    }
+
     writer.Write (menuItem.Text);
 
     if (isCommandEnabled)
