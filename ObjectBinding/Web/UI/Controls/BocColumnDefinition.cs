@@ -17,7 +17,6 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-//  TODO: BocColumnDefinition: Move long comment blocks to xml-file
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition
