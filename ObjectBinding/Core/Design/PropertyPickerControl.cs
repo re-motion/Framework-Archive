@@ -43,20 +43,23 @@ public class PropertyPickerControl: System.Windows.Forms.UserControl
   {
     PropertiesList.Items.Clear();
 
-    string filter = FilterField.Text.ToLower().Trim();
-    IBusinessObjectProperty[] properties = _control.DataSource.BusinessObjectClass.GetPropertyDefinitions();
-
-    foreach (IBusinessObjectProperty property in properties)
+    if (_control.DataSource != null && _control.DataSource.BusinessObjectClass != null)
     {
-      if (   filter.Length == 0 
-          || (property.Identifier != null && property.Identifier.ToLower().IndexOf (filter) >= 0))
-      {
-        if (_control.SupportsProperty (property))
-          PropertiesList.Items.Add (property.Identifier);
-      }
-    }
+      string filter = FilterField.Text.ToLower().Trim();
+      IBusinessObjectProperty[] properties = _control.DataSource.BusinessObjectClass.GetPropertyDefinitions();
 
-    PropertiesList.Sorted = true;
+      foreach (IBusinessObjectProperty property in properties)
+      {
+        if (   filter.Length == 0 
+            || (property.Identifier != null && property.Identifier.ToLower().IndexOf (filter) >= 0))
+        {
+          if (_control.SupportsProperty (property))
+            PropertiesList.Items.Add (property.Identifier);
+        }
+      }
+
+      PropertiesList.Sorted = true;
+    }
 	}
 
 	/// <summary> 
