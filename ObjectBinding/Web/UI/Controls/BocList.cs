@@ -377,8 +377,8 @@ public class BocList:
     
     if (IsPostBack && Page != null)
     {
-      string dataRowCheckBoxFilter = ID + c_dataRowCheckBoxIDSuffix;
-      string titleRowCheckBoxFilter = ID + c_titleRowCheckBoxIDSuffix;
+      string dataRowCheckBoxFilter = ClientID + c_dataRowCheckBoxIDSuffix;
+      string titleRowCheckBoxFilter = ClientID + c_titleRowCheckBoxIDSuffix;
 
       NameValueCollection formVariables = PageUtility.GetRequestCollection(Page);
       if (formVariables != null)
