@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
+//TODO documentation: Write summary for class
 [Serializable]
 public class ValueTooLongException : DomainObjectException
 {
