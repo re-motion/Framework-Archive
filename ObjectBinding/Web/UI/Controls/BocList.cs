@@ -805,6 +805,8 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
 
+    EnsureRowEditModeRestored();
+
     base.OnPreRender (e);
   }
 
@@ -1020,6 +1022,7 @@ public class BocList:
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
+      _additionalColumnsList.Enabled = ! IsRowEditMode;
       _additionalColumnsList.RenderControl (writer);
       writer.RenderEndTag();
     }
@@ -1305,13 +1308,12 @@ public class BocList:
     string imageUrl = null;
 
     //  Move to first page button
-    if (isFirstPage)
+    if (isFirstPage || IsRowEditMode)
       imageUrl = c_moveFirstInactiveIcon;
     else
       imageUrl = c_moveFirstIcon;      
-    imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isFirstPage)
+    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isFirstPage || IsRowEditMode)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -1325,13 +1327,12 @@ public class BocList:
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     //  Move to previous page button
-    if (isFirstPage)
+    if (isFirstPage || IsRowEditMode)
       imageUrl = c_movePreviousInactiveIcon;
     else
       imageUrl = c_movePreviousIcon;      
-    imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isFirstPage)
+    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isFirstPage || IsRowEditMode)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -1345,13 +1346,12 @@ public class BocList:
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     //  Move to next page button
-    if (isLastPage)
+    if (isLastPage || IsRowEditMode)
       imageUrl = c_moveNextInactiveIcon;
     else
       imageUrl = c_moveNextIcon;      
-    imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isLastPage)
+    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isLastPage || IsRowEditMode)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -1365,13 +1365,12 @@ public class BocList:
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
     //  Move to last page button
-    if (isLastPage)
+    if (isLastPage || IsRowEditMode)
       imageUrl = c_moveLastInactiveIcon;
     else
       imageUrl = c_moveLastIcon;     
-    imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isLastPage)
+    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+    if (isLastPage || IsRowEditMode)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -1487,7 +1486,7 @@ public class BocList:
                               && (   column is BocValueColumnDefinition
                                   || (   column is BocCustomColumnDefinition 
                                       && ((BocCustomColumnDefinition) column).IsSortable));
-      if (hasSortingButton)
+      if (hasSortingButton && ! IsRowEditMode)
       {
         string argument = c_sortCommandPrefix + idxColumns.ToString();
         if (_hasClientScript)
@@ -1559,7 +1558,8 @@ public class BocList:
           writer.RenderEndTag();
         }
 
-        writer.RenderEndTag();  //  close A sorting
+        if (hasSortingButton && ! IsRowEditMode)
+          writer.RenderEndTag();  //  close A sorting
       }
       writer.RenderEndTag();  //  td
     }
@@ -1669,6 +1669,9 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
     bool isReadOnly = IsReadOnly;
+    bool hasEditModeControl =    _rowEditModeControls != null 
+                              && _rowEditModeControls.Length > 0 
+                              && _rowEditModeControls[columnIndex] != null;
 
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1691,7 +1694,8 @@ public class BocList:
                         || isReadOnly && commandEnabledColumn.Command.Show == CommandShow.ReadOnly
                         || ! isReadOnly && commandEnabledColumn.Command.Show == CommandShow.EditMode;
         if (   isActive
-            && commandEnabledColumn.Command.Type != CommandType.None)
+            && commandEnabledColumn.Command.Type != CommandType.None
+            && ! hasEditModeControl)
         {
           isCommandEnabled = true;
         }
@@ -1728,7 +1732,7 @@ public class BocList:
         }
       }
 
-      //  Render the label
+      //  Render the labe
       if (commandColumn != null)
       {
         if (commandColumn.IconPath != null)
@@ -1751,11 +1755,18 @@ public class BocList:
       }
       else if (simpleColumn != null)
       {
-        string contents = simpleColumn.GetStringValue (businessObject);
-        contents = HttpUtility.HtmlEncode (contents);
-        if (contents == string.Empty)
-          contents = c_whiteSpace;
-        writer.Write (contents);
+        if (hasEditModeControl)
+        {
+          _rowEditModeControls[columnIndex].RenderControl (writer);
+        }
+        else
+        {
+          string contents = simpleColumn.GetStringValue (businessObject);
+          contents = HttpUtility.HtmlEncode (contents);
+          if (contents == string.Empty)
+            contents = c_whiteSpace;
+          writer.Write (contents);
+        }
       }
 
       if (isCommandEnabled)
@@ -1872,20 +1883,22 @@ public class BocList:
     _selectedColumnDefinitionSetIndex = (NaInt32) values[1];
     _currentRow = (int) values[2];
     _sortingOrder = (ArrayList) values[3];
-    _isDirty = (bool) values[4];
+    _editableRowIndex = (NaInt32) values[4];
+    _isDirty = (bool) values[5];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[5];
+    object[] values = new object[6];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedColumnDefinitionSetIndex;
     values[2] = _currentRow;
     values[3] = _sortingOrder;
-    values[4] = _isDirty;
+    values[4] = _editableRowIndex;
+    values[5] = _isDirty;
 
     return values;
   }
@@ -2065,7 +2078,7 @@ public class BocList:
       allPropertyColumns = new BocColumnDefinition[0];
 
     BocColumnDefinition[] selectedColumns = null;
-    EnsureSetSelectedColumnDefinitionIndex();
+    EnsureSelectedColumnDefinitionIndexSet();
     if (_selectedColumnDefinitionSet != null)
       selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitions.ToArray();
     else
@@ -2340,11 +2353,17 @@ public class BocList:
         if (simpleColumn != null || customColumn != null)
         {
           BusinessObjectPropertyPath propertyPath;
+          string formatString = null;
           if (simpleColumn != null)
+          {
             propertyPath = simpleColumn.PropertyPath;
+            formatString = simpleColumn.FormatString;
+          }
           else
+          {
             propertyPath = customColumn.PropertyPath;
-          //  one value
+          }
+          //  single value
           int compareResult = 0;
           if (currentEntry.Direction == SortingDirection.Ascending)
             compareResult = ComparePropertyPathValues (propertyPath, businessObjectA, businessObjectB);
@@ -2352,13 +2371,25 @@ public class BocList:
             compareResult = ComparePropertyPathValues (propertyPath, businessObjectB, businessObjectA);
           if (compareResult != 0)
             return compareResult;
+
+          if (simpleColumn != null)
+          {
+            string stringValueA = simpleColumn.GetStringValue (businessObjectA);
+            string stringValueB = simpleColumn.GetStringValue (businessObjectB);
+            if (currentEntry.Direction == SortingDirection.Ascending)
+              compareResult = string.Compare (stringValueA, stringValueB);
+            else
+              compareResult = string.Compare (stringValueB, stringValueA);
+            if (compareResult != 0)
+              return compareResult;
+          }
         }
         else if (compoundColumn != null)
         {
+          int compareResult = 0;
           //  Compund column, list of values.
           foreach (PropertyPathBinding propertyPathBinding in compoundColumn.PropertyPathBindings)
           {
-            int compareResult = 0;
             if (currentEntry.Direction == SortingDirection.Ascending)
               compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectA, businessObjectB);
             else
@@ -2366,6 +2397,15 @@ public class BocList:
             if (compareResult != 0)
               return compareResult;
           }
+              
+          string stringValueA = compoundColumn.GetStringValue (businessObjectA);
+          string stringValueB = compoundColumn.GetStringValue (businessObjectB);
+          if (currentEntry.Direction == SortingDirection.Ascending)
+            compareResult = string.Compare (stringValueA, stringValueB);
+          else
+            compareResult = string.Compare (stringValueB, stringValueA);
+          if (compareResult != 0)
+            return compareResult;
         }
       } 
     }
@@ -2382,6 +2422,9 @@ public class BocList:
   ///   Compares the values of the <see cref="IBusinessObjectProperty"/> identified by <paramref name="propertyPath"/>
   ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
   /// </summary>
+  /// <remarks>
+  ///   Only compares values supporting <see cref="ICompareable"/>. Returns 0 for other value types.
+  /// </remarks>
   /// <param name="propertyPath">
   ///   The <see cref="BusinessObjectPropertyPath"/> to be used for accessing the values.
   /// </param>
@@ -2440,7 +2483,10 @@ public class BocList:
 
     if (valueA is IComparable && valueB is IComparable)
       return Comparer.Default.Compare (valueA, valueB);
-    return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
+
+    return 0;
+    //Better leave the comparisson of non-ICompareables to the calling method. ToString is not always the right choice.
+    //return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
   }
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocList"/>'s properties. </summary>
@@ -2653,20 +2699,182 @@ public class BocList:
     }
   }
 
+  private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
+  private IBusinessObjectBoundWebControl[] _rowEditModeControls;
+  private bool _isRowEditModeRestored = false;
+
+  /// <summary>
+  ///   Saves changes to previous edited row and starts editing for the new row.
+  /// </summary>
+  /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index)
   {
+    EnsureRowEditModeRestored();
+
+    if (IsRowEditMode)
+      EndRowEditMode (true);
+    if (IsReadOnly)
+      return;
+
     if (Value.Count > index)
       _editableRowIndex = index;
+    else
+      throw new ArgumentOutOfRangeException ("index");
+
+    CreateRowEditModeControls (EnsureColumnsGot());
   }
 
-  public void ClearEditMode()
+  public void EndRowEditMode (bool saveChanges)
   {
+    EnsureRowEditModeRestored();
+
+    if (! IsRowEditMode)
+      return;
+
+    if (saveChanges && ! IsReadOnly)
+    {
+    }
+
+    // TODO: Remove controls
     _editableRowIndex = NaInt32.Null;
+  }
+
+  private void EnsureRowEditModeRestored()
+  {
+    if (_isRowEditModeRestored)
+      return;
+    _isRowEditModeRestored = true;
+    if (! IsRowEditMode)
+      return;
+
+    CreateRowEditModeControls (EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  private void CreateRowEditModeControls (BocColumnDefinition[] columns)
+  {
+    if (! IsRowEditMode)
+      return;
+
+    _rowEditModeDataSource = CreateRowEditModeDataSource ((IBusinessObject) Value[_editableRowIndex.Value]);
+    _rowEditModeControls = new IBusinessObjectBoundWebControl[columns.Length];
+
+    for (int i = 0; i < columns.Length; i++)
+    {
+      BocSimpleColumnDefinition simpleColumn = columns[i] as BocSimpleColumnDefinition;
+      if (simpleColumn == null)
+        continue;
+      if (simpleColumn.PropertyPath.Properties.Length > 1)
+        continue;
+
+      IBusinessObjectBoundWebControl control = CreateRowEditModeControl (simpleColumn, i);
+      control.DataSource = _rowEditModeDataSource;
+      _rowEditModeControls[i] = control;
+      if (control != null)
+        Controls.Add ((Control) control);
+    }                 
+  }
+
+  protected virtual IBusinessObjectReferenceDataSource CreateRowEditModeDataSource (IBusinessObject businessObject)
+  {
+    IBusinessObjectReferenceDataSource dataSource = new BusinessObjectReferenceDataSource();
+    dataSource.BusinessObject = businessObject;
+    return dataSource;
+  }
+
+  protected virtual IBusinessObjectBoundWebControl CreateRowEditModeControl (
+    BocSimpleColumnDefinition column,
+    int columnIndex)
+  {
+    IBusinessObjectBoundWebControl control;
+    IBusinessObjectProperty property = column.PropertyPath.LastProperty;
+
+    if (IsBocReferenceValueSupported (property))
+      control = new BocReferenceValue();
+    else if (IsBocDateTimeValueSupported (property))
+      control = new BocDateTimeValue();
+    else if (IsBocBooleanValueSupported (property))
+      control = new BocBooleanValue();
+    else if (IsBocEnumValueSupported (property))
+      control = new BocEnumValue();
+    else if (IsBocMultilineTextValueSupported (property))
+      control = new BocMultilineTextValue();
+    else if (IsBocTextValueSupported (property))
+      control = new BocTextValue();
+    else
+      return null;
+    
+    control.ID = ID + "_RowEditControl_" + columnIndex.ToString();
+    control.Property = property;
+
+    return control;
+  }
+
+  protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocTextValue.GetSupportedPropertyInterfaces());
+  }
+
+  protected bool IsBocMultilineTextValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocMultilineTextValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocMultilineTextValue.GetSupportedPropertyInterfaces());
+  }
+
+  protected bool IsBocBooleanValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocBooleanValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocBooleanValue.GetSupportedPropertyInterfaces());
+  }
+
+  protected bool IsBocEnumValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocEnumValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocEnumValue.GetSupportedPropertyInterfaces());
+  }
+
+  protected bool IsBocDateTimeValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocDateTimeValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocDateTimeValue.GetSupportedPropertyInterfaces());
+  }
+
+  protected bool IsBocReferenceValueSupported (IBusinessObjectProperty property)
+  {
+    if (! BocReferenceValue.IsPropertyMultiplicitySupported (property.IsList))
+      return false;
+    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+        property, 
+        BocReferenceValue.GetSupportedPropertyInterfaces());
   }
 
   public NaInt32 EditableRowIndex
   {
     get { return _editableRowIndex; }
+  }
+
+  /// <remarks>
+  ///   Queried where the rendering depends on whether the list is in edit mode. 
+  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
+  /// </remarks>
+  protected bool IsRowEditMode
+  {
+    get { return ! _editableRowIndex.IsNull; } 
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
@@ -2776,7 +2984,7 @@ public class BocList:
   {
     get 
     {
-      EnsureSetSelectedColumnDefinitionIndex();
+      EnsureSelectedColumnDefinitionIndexSet();
       return _selectedColumnDefinitionSet; 
     }
     set
@@ -2805,7 +3013,7 @@ public class BocList:
     }
   }
 
-  private void EnsureSetSelectedColumnDefinitionIndex()
+  private void EnsureSelectedColumnDefinitionIndexSet()
   {
     if (_isSelectedColumnDefinitionIndexSet)
       return;
@@ -2826,6 +3034,14 @@ public class BocList:
       {
         throw new ArgumentOutOfRangeException ("value", value, "SelectedColumnDefinitionSetIndex is outside the bounds of AvailableColumnDefinitionSets");
       }
+
+      if (   IsRowEditMode
+          && _isSelectedColumnDefinitionIndexSet
+          && _selectedColumnDefinitionSetIndex != value)
+      {
+        throw new InvalidOperationException ("The selected column defintion set cannot be changed while the BocList is in row edit mode.");
+      }
+
       _selectedColumnDefinitionSetIndex = value; 
       _isSelectedColumnDefinitionIndexSet = true;
 
