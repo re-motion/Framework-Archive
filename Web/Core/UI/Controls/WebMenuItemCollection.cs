@@ -11,7 +11,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="WebMenuItem"/> objects. </summary>
-[Editor (typeof (MenuItemCollectionEditor), typeof (UITypeEditor))]
+[Editor (typeof (WebMenuItemCollectionEditor), typeof (UITypeEditor))]
 public class WebMenuItemCollection: ControlItemCollection
 {
   /// <summary> Initializes a new instance. </summary>

@@ -6,9 +6,9 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Design
 {
-public class MenuItemCollectionEditor: AdvancedCollectionEditor
+public class WebMenuItemCollectionEditor: AdvancedCollectionEditor
 {
-  public MenuItemCollectionEditor (Type type)
+  public WebMenuItemCollectionEditor (Type type)
     : base (type)
   {
   }

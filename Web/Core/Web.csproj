@@ -545,12 +545,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\MenuItemCollectionEditor.cs"
+                    RelPath = "UI\Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\SmartControlToStringConverter.cs"
+                    RelPath = "UI\Design\WebMenuItemCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
