@@ -122,6 +122,39 @@ public class BocList:
       ColumnIndex = columnIndex;
       Direction = direction;
     }
+
+    public bool IsEmpty
+    {
+      get 
+      {
+        return    this.ColumnIndex == SortingOrderEntry.Empty.ColumnIndex 
+               && this.Direction == SortingOrderEntry.Empty.Direction;
+      }
+    }
+
+    /// <summary>
+    ///   Tests whether the specified object is a <see cref="SortingOrderEntry"/> structure 
+    ///   and is equivalent to this <see cref="SortingOrderEntry"/> structure.
+    /// </summary>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Equals/*' />
+    public override bool Equals (object obj)
+    {
+      if (obj is SortingOrderEntry)
+      {
+        SortingOrderEntry entry = (SortingOrderEntry) obj;
+        return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
+      }
+      return false;
+    }
+
+    /// <summary>
+    ///   Returns a hash code for this <see cref="SortingOrderEntry"/> structure.
+    /// </summary>
+    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/GetHashCode/*' />
+    public override int GetHashCode()
+    {
+      return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
+    }
   }
 
   // static members
@@ -518,10 +551,7 @@ public class BocList:
     }
 
     //  Cycle: Ascending -> Descending -> None -> Ascending
-    bool isEmptySortingOrder =    
-           sortingOrderEntry.ColumnIndex != SortingOrderEntry.Empty.ColumnIndex 
-        && sortingOrderEntry.Direction != SortingOrderEntry.Empty.Direction;
-    if (isEmptySortingOrder)
+    if (! sortingOrderEntry.IsEmpty)
     {
       _sortingOrder.Remove (sortingOrderEntry);
       switch (sortingOrderEntry.Direction)
@@ -533,7 +563,7 @@ public class BocList:
         }
         case SortingDirection.Descending:
         {
-          sortingOrderEntry.Direction = SortingDirection.None;
+          sortingOrderEntry = SortingOrderEntry.Empty;
           break;
         }
         case SortingDirection.None:
@@ -548,11 +578,12 @@ public class BocList:
       sortingOrderEntry = new SortingOrderEntry (columnIndex, SortingDirection.Ascending);
     }
 
-    _sortingOrder.Add (sortingOrderEntry);
+    if (! sortingOrderEntry.IsEmpty)
+      _sortingOrder.Add (sortingOrderEntry);
   }
 
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnCommandClick/*' />
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
   protected virtual void OnListItemCommandClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
   {
     BocListItemCommandClickEventHandler commandClickHandler = 
@@ -1314,9 +1345,9 @@ public class BocList:
       }
     }
 
-    for (int idxColumn = 0; idxColumn < renderColumns.Length; idxColumn++)
+    for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
     {
-      BocColumnDefinition column = renderColumns[idxColumn];
+      BocColumnDefinition column = renderColumns[idxColumns];
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1326,7 +1357,7 @@ public class BocList:
                               && column is BocValueColumnDefinition;
       if (hasSortingButton)
       {
-        string argument = c_sortCommandPrefix + idxColumn.ToString();
+        string argument = c_sortCommandPrefix + idxColumns.ToString();
         if (_hasClientScript)
         {
           string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
@@ -1348,7 +1379,7 @@ public class BocList:
 
       if (hasSortingButton)
       {
-        object obj = sortingDirections[idxColumn];
+        object obj = sortingDirections[idxColumns];
         SortingDirection sortingDirection = SortingDirection.None; 
         if (obj != null)
           sortingDirection = (SortingDirection)obj;
@@ -1389,7 +1420,7 @@ public class BocList:
 
           if (_showSortingOrder && sortingOrder.Count > 1)
           {
-            int orderIndex = sortingOrder.IndexOf (idxColumn);
+            int orderIndex = sortingOrder.IndexOf (idxColumns);
             writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
           }
           writer.RenderEndTag();
@@ -1479,16 +1510,16 @@ public class BocList:
     }
 
     bool firstValueColumnRendered = false;
-    for (int idxColumn = 0; idxColumn < renderColumns.Length; idxColumn++)
+    for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
     {
       bool showIcon = false;
-      BocColumnDefinition column = renderColumns[idxColumn];
+      BocColumnDefinition column = renderColumns[idxColumns];
       if ( (!firstValueColumnRendered) && column is BocValueColumnDefinition)
       {
         firstValueColumnRendered = true;
         showIcon = EnableIcon;
       }
-      RenderDataCell (writer, idxColumn, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
+      RenderDataCell (writer, idxColumns, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
     }
     
     writer.RenderEndTag();
@@ -1496,7 +1527,7 @@ public class BocList:
 
   private void RenderDataCell (
       HtmlTextWriter writer, 
-      int idxColumn, BocColumnDefinition column, 
+      int idxColumns, BocColumnDefinition column, 
       int originalRowIndex, IBusinessObject businessObject,
       bool showIcon, string cssClassTableCell)
   {
@@ -1530,7 +1561,7 @@ public class BocList:
 
     if (isCommandEnabled)
     {    
-      string argument = c_eventListItemCommandPrefix + idxColumn + "," + originalRowIndex;
+      string argument = c_eventListItemCommandPrefix + idxColumns + "," + originalRowIndex;
       string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
       string onClick = "BocList_OnCommandClick();";
       column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
