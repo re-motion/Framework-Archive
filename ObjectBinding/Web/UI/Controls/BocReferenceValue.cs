@@ -397,8 +397,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
   /// </remarks>
   protected override void InitializeChildControls()
   {
-    _dropDownList.Visible = ! IsReadOnly;
-    _label.Visible = IsReadOnly;
+    bool isReadOnly = IsReadOnly;
+
+    _dropDownList.Visible = ! isReadOnly;
+    _label.Visible = isReadOnly;
 
     Unit iconWidth = (_icon.Visible) ? _icon.Width : Unit.Empty;
 
@@ -458,7 +460,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl
       }
     }
 
-    if (IsReadOnly)
+    if (isReadOnly)
     {
       _label.Style["vertical-align"] = "middle";
       _icon.Style["vertical-align"] = "middle";

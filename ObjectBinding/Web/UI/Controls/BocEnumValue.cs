@@ -331,7 +331,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl //, IPostBack
   protected override void InitializeChildControls()
   {
     bool isReadOnly = IsReadOnly;
-    _listControl.Visible = ! IsReadOnly;
+
+    _listControl.Visible = ! isReadOnly;
     _label.Visible = isReadOnly;
 
     if (isReadOnly)
