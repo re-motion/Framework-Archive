@@ -106,5 +106,25 @@ public class QueryParameterCollectionTest
   {
     _collection.Contains ((string) null);
   }
+
+  [Test]
+  public void AddShorthand1 ()
+  {
+    _collection.Add (_parameter.Name, _parameter.Value, _parameter.ParameterType);
+    Assert.AreEqual (1, _collection.Count);
+    Assert.AreEqual (_parameter.Name, _collection[0].Name);
+    Assert.AreEqual (_parameter.Value, _collection[0].Value);
+    Assert.AreEqual (_parameter.ParameterType, _collection[0].ParameterType);
+  }
+
+  [Test]
+  public void AddShorthand2 ()
+  {
+    _collection.Add (_parameter.Name, _parameter.Value);
+    Assert.AreEqual (1, _collection.Count);
+    Assert.AreEqual (_parameter.Name, _collection[0].Name);
+    Assert.AreEqual (_parameter.Value, _collection[0].Value);
+    Assert.AreEqual (QueryParameterType.Value, _collection[0].ParameterType);
+  }
 }
 }

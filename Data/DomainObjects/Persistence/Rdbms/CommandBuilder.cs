@@ -39,27 +39,22 @@ public abstract class CommandBuilder
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
-    if (propertyValue.PropertyType.IsEnum)
-      AddCommandParameter (command, parameterName, (int) propertyValue.Value);
-    else if (propertyValue.PropertyType == typeof (char))
-      AddCommandParameter (command, parameterName, propertyValue.Value.ToString ());
-    else 
-      AddCommandParameter (command, parameterName, ConvertToDBType (propertyValue));
+    AddCommandParameter (command, parameterName, propertyValue.Value);
   }
 
   public void AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
   {
     ArgumentUtility.CheckNotNull ("command", command);
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-    ArgumentUtility.CheckNotNull ("parameterValue", parameterValue);
 
     IDataParameter commandParameter = command.CreateParameter ();
-    commandParameter.ParameterName = parameterName;
-    commandParameter.Value = parameterValue;
+    commandParameter.ParameterName = Provider.GetParameterName (parameterName);
+    commandParameter.Value = ConvertToDBType (parameterValue);
 
     command.Parameters.Add (commandParameter);
   }
 
+  
   protected IDbCommand CreateCommand ()
   {
     IDbCommand command = _provider.Connection.CreateCommand ();
@@ -89,10 +84,10 @@ public abstract class CommandBuilder
     else
     {
       relatedClassDefinition = classDefinition.GetRelatedClassDefinition (propertyValue.Name);
-      relatedIDValue = DBNull.Value;
+      relatedIDValue = null;
     }
 
-    AddCommandParameter (command, _provider.GetParameterName (propertyValue.Definition.ColumnName), relatedIDValue);
+    AddCommandParameter (command, propertyValue.Definition.ColumnName, relatedIDValue);
     AddClassIDParameter (command, relatedClassDefinition, propertyValue);
   }
 
@@ -111,16 +106,13 @@ public abstract class CommandBuilder
     if (relatedClassDefinition.BaseClass != null || derivedClasses.Count > 0)
     {
       string classIDColumnName = propertyValue.Definition.ColumnName + "ClassID";
-      string classIDParameterName = _provider.GetParameterName (classIDColumnName);
-      AppendColumn (classIDColumnName, classIDParameterName);
+      AppendColumn (classIDColumnName, classIDColumnName);
 
       object classID = null;
       if (propertyValue.Value != null)
         classID = relatedClassDefinition.ID;
-      else
-        classID = DBNull.Value;
 
-      AddCommandParameter (command, classIDParameterName, classID);
+      AddCommandParameter (command, classIDColumnName, classID);
     }  
   }
 
@@ -134,50 +126,56 @@ public abstract class CommandBuilder
       return id.ToString ();
   }
 
-  protected object ConvertToDBType (PropertyValue propertyValue)
+  protected object ConvertToDBType (object value)
   {
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+    if (value == null)
+      return DBNull.Value;
 
-    if (propertyValue.PropertyType == typeof (NaBoolean))
+    Type type = value.GetType ();
+
+    if (type == typeof (NaBoolean))
     {
-      NaBoolean naBooleanValue = (NaBoolean) propertyValue.Value;
+      NaBoolean naBooleanValue = (NaBoolean) value;
       if (!naBooleanValue.IsNull)
         return naBooleanValue.Value;
       else
         return DBNull.Value;
     }
 
-    if (propertyValue.PropertyType == typeof (NaDateTime))
+    if (type == typeof (NaDateTime))
     {
-      NaDateTime naDateTimeValue = (NaDateTime) propertyValue.Value;
+      NaDateTime naDateTimeValue = (NaDateTime) value;
       if (!naDateTimeValue.IsNull)
         return naDateTimeValue.Value;
       else
         return DBNull.Value;
     }
 
-    if (propertyValue.PropertyType == typeof (NaDouble))
+    if (type == typeof (NaDouble))
     {
-      NaDouble naDoubleValue = (NaDouble) propertyValue.Value;
+      NaDouble naDoubleValue = (NaDouble) value;
       if (!naDoubleValue.IsNull)
         return naDoubleValue.Value;
       else
         return DBNull.Value;
     }
 
-    if (propertyValue.PropertyType == typeof (NaInt32))
+    if (type == typeof (NaInt32))
     {
-      NaInt32 naInt32Value = (NaInt32) propertyValue.Value;
+      NaInt32 naInt32Value = (NaInt32) value;
       if (!naInt32Value.IsNull)
         return naInt32Value.Value;
       else
         return DBNull.Value;
     }
 
-    if (propertyValue.Value != null)
-      return propertyValue.Value;
-    else
-      return DBNull.Value;
+    if (type.IsEnum)
+      return (int) value;
+
+    if (type == typeof (char))
+      return value.ToString ();
+    
+    return value;
   }
 
   public RdbmsProvider Provider

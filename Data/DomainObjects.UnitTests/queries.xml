@@ -12,7 +12,7 @@
     
 	<query id="OrderQuery" type="collection">
 	    <storageProviderID>TestDomain</storageProviderID>
-	    <statement>select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
+	    <statement>select [Order].* from [Order] inner join Customer where Customer.ID = @customerID order by OrderNo asc;</statement>
 	    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
 	</query>
 	
@@ -21,9 +21,13 @@
 	    <statement>select Customer.* from Customer where CustomerType = @customerType order by Name asc;</statement>
 	</query>
 	
-	<query id="OrderSumQuery" type="scalar">
+	<query id="OrderNoSumByCustomerNameQuery" type="scalar">
 	    <storageProviderID>TestDomain</storageProviderID>        
-	    <statement>select sum(quantity) from Order where CustomerID = @customerID;</statement>
+	    <statement>
+	      select sum(OrderNo) 
+	        from [Order] inner join Company on [Order].CustomerID = Company.ID
+	        where Company.Name = @customerName;
+	    </statement>
 	</query>
 	
 </queries>

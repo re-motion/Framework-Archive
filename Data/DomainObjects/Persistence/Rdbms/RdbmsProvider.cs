@@ -169,6 +169,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       command.CommandText = query.Statement;
 
+
       try
       {
         return command.ExecuteScalar ();

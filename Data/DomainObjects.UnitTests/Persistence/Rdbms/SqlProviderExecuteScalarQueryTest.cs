@@ -42,5 +42,14 @@ public class SqlProviderQueryTest: SqlProviderBaseTest
 
     Provider.ExecuteScalarQuery (new Query (definition));
   }
+
+//  [Test]
+//  public void ExecuteScalarQueryWithParameter ()
+//  {
+//    Query query = new Query ("OrderNoSumByCustomerNameQuery");
+//    query.Parameters.Add ("@customerName", "Kunde 1");
+//
+//    Assert.AreEqual (3, Provider.ExecuteScalarQuery (query));
+//  }
 }
 }

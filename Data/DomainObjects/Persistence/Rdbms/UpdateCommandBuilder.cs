@@ -71,16 +71,15 @@ public class UpdateCommandBuilder : CommandBuilder
     if (_updateBuilder.Length > 0)
       _updateBuilder.Append (", ");
 
-    _updateBuilder.AppendFormat ("[{0}] = {1}", columnName, parameterName);
+    _updateBuilder.AppendFormat ("[{0}] = {1}", columnName, Provider.GetParameterName (parameterName));
   }
 
   private void AddPropertyValue (IDbCommand command, PropertyValue propertyValue)
   {
-    string parameterName = Provider.GetParameterName (propertyValue.Definition.ColumnName);
-    AppendColumn (propertyValue.Definition.ColumnName, parameterName);
+    AppendColumn (propertyValue.Definition.ColumnName, propertyValue.Definition.ColumnName);
 
     if (propertyValue.PropertyType != typeof (ObjectID))
-      AddCommandParameter (command, parameterName, propertyValue);
+      AddCommandParameter (command, propertyValue.Definition.ColumnName, propertyValue);
     else
       AddObjectIDParameter (command, _dataContainer.ClassDefinition, propertyValue);
   }

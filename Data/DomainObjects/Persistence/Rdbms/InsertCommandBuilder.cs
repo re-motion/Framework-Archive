@@ -42,22 +42,21 @@ public class InsertCommandBuilder : CommandBuilder
     _columnBuilder = new StringBuilder ();
     _valueBuilder = new StringBuilder ();
 
-    string idParameter = Provider.GetParameterName ("id");
-    string classIDParameter = Provider.GetParameterName ("classID");
+    string idColumn = "ID";
+    string classIDColumn = "ClassID";
 
-    AppendColumn ("ID", idParameter);
-    AppendColumn ("ClassID", classIDParameter);
+    AppendColumn (idColumn, idColumn);
+    AppendColumn (classIDColumn, classIDColumn);
 
-    AddCommandParameter (command, idParameter, _dataContainer.ID.Value);
-    AddCommandParameter (command, classIDParameter, _dataContainer.ID.ClassID);
+    AddCommandParameter (command, idColumn, _dataContainer.ID.Value);
+    AddCommandParameter (command, classIDColumn, _dataContainer.ID.ClassID);
 
     foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)
     {
       if (propertyValue.PropertyType != typeof (ObjectID))
       {
-        string parameterName = Provider.GetParameterName (propertyValue.Definition.ColumnName);
-        AppendColumn (propertyValue.Definition.ColumnName, parameterName);
-        AddCommandParameter (command, parameterName, propertyValue);
+        AppendColumn (propertyValue.Definition.ColumnName, propertyValue.Definition.ColumnName);
+        AddCommandParameter (command, propertyValue.Definition.ColumnName, propertyValue);
       }
     }
 
@@ -79,7 +78,7 @@ public class InsertCommandBuilder : CommandBuilder
     if (_valueBuilder.Length > 0)
       _valueBuilder.Append (", ");
 
-    _valueBuilder.Append (parameterName);    
+    _valueBuilder.Append (Provider.GetParameterName (parameterName));    
   }
 }
 }
