@@ -22,24 +22,26 @@ public class ControlHelper
 
   // static members
 
-  public static ArrayList GetControlsRecursive (Control parentControl, Type type)
+  public static Control[] GetControlsRecursive (Control parentControl, Type type)
   {
     return GetControlsRecursive (parentControl, type, null);
   }
 
-  public static ArrayList GetControlsRecursive (Control parentControl, Type type, Control[] stopList)
+  public static Control[] GetControlsRecursive (Control parentControl, Type type, Control[] stopList)
   {
     ArrayList controlList = new ArrayList ();
     ArrayList stopListArray = stopList == null ? new ArrayList () : new ArrayList (stopList);
     GetControlsRecursiveInternal (parentControl, type, stopListArray, controlList);
-    return controlList;
+    return (Control[]) controlList.ToArray (type);
   }
 
   private static void GetControlsRecursiveInternal 
       (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
   {
-    foreach (Control control in parentControl.Controls)
+    ControlCollection controls = parentControl.Controls;
+    for (int i = 0; i < controls.Count; ++i)
     {
+      Control control = controls[i];
       if (!stopList.Contains (control))
       {
         if (type.IsInstanceOfType (control))
