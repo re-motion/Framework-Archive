@@ -26,8 +26,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationDefinitionCollection actualDefinitions)
     {
       Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
-        "Number of relation definitions does not match. Expected: {0}, actual: {1}", 
-        expectedDefinitions.Count, actualDefinitions.Count);
+        string.Format ("Number of relation definitions does not match. Expected: {0}, actual: {1}", 
+        expectedDefinitions.Count, actualDefinitions.Count));
 
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {
@@ -41,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationDefinition actualDefinition)
     {
       Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID, 
-        "IDs of relation definitions do not match. Expected: {0}, actual: {1}", 
-        expectedDefinition.ID, actualDefinition.ID);
+        string.Format ("IDs of relation definitions do not match. Expected: {0}, actual: {1}", 
+        expectedDefinition.ID, actualDefinition.ID));
 
       CheckEndPointDefinitions (expectedDefinition, actualDefinition);
     }
@@ -66,52 +66,52 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationDefinition relationDefinition)
     {
       Assert.AreEqual (expectedEndPointDefinition.GetType (), actualEndPointDefinition.GetType (), 
-        "End point definitions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("End point definitions (relation definition: '{0}', property name: '{1}')"
         + " are not of same type. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.GetType (), 
-        actualEndPointDefinition.GetType ());
+        actualEndPointDefinition.GetType ()));
 
       Assert.AreEqual (expectedEndPointDefinition.ClassDefinition.ID, actualEndPointDefinition.ClassDefinition.ID, 
-        "ClassDefinition of end point defintions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("ClassDefinition of end point defintions (relation definition: '{0}', property name: '{1}')"
         + " does not match. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.ClassDefinition.ID, 
-        actualEndPointDefinition.ClassDefinition.ID);
+        actualEndPointDefinition.ClassDefinition.ID));
     
       Assert.AreEqual (expectedEndPointDefinition.PropertyName, actualEndPointDefinition.PropertyName, 
-        "PropertyName of end point defintions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("PropertyName of end point defintions (relation definition: '{0}', property name: '{1}')"
         + " does not match. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.PropertyName, 
-        actualEndPointDefinition.PropertyName);
+        actualEndPointDefinition.PropertyName));
 
       Assert.AreEqual (expectedEndPointDefinition.PropertyType, actualEndPointDefinition.PropertyType, 
-        "PropertyType of end point defintions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("PropertyType of end point defintions (relation definition: '{0}', property name: '{1}')"
         + " does not match. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.PropertyType, 
-        actualEndPointDefinition.PropertyType);
+        actualEndPointDefinition.PropertyType));
 
       Assert.AreEqual (expectedEndPointDefinition.IsMandatory, actualEndPointDefinition.IsMandatory, 
-        "IsMandatory of end point defintions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("IsMandatory of end point defintions (relation definition: '{0}', property name: '{1}')"
         + " does not match. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.IsMandatory, 
-        actualEndPointDefinition.IsMandatory);
+        actualEndPointDefinition.IsMandatory));
 
       Assert.AreEqual (expectedEndPointDefinition.Cardinality, actualEndPointDefinition.Cardinality, 
-        "Cardinality of end point defintions (relation definition: '{0}', property name: '{1}')"
+        string.Format ("Cardinality of end point defintions (relation definition: '{0}', property name: '{1}')"
         + " does not match. Expected: {2}, actual: {3}", 
         relationDefinition.ID,  
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.Cardinality, 
-        actualEndPointDefinition.Cardinality);
+        actualEndPointDefinition.Cardinality));
 
 
       if (expectedEndPointDefinition is VirtualRelationEndPointDefinition)
@@ -120,12 +120,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         VirtualRelationEndPointDefinition actualVirtualEndPointDefinition = (VirtualRelationEndPointDefinition) actualEndPointDefinition;
 
         Assert.AreEqual (expectedVirtualEndPointDefinition.SortExpression, actualVirtualEndPointDefinition.SortExpression, 
-          "SortExpression of end point defintions (relation definition: '{0}', property name: '{1}')"
+          string.Format ("SortExpression of end point defintions (relation definition: '{0}', property name: '{1}')"
           + " does not match. Expected: {2}, actual: {3}", 
           relationDefinition.ID,  
           expectedVirtualEndPointDefinition.PropertyName,
           expectedVirtualEndPointDefinition.SortExpression, 
-          actualVirtualEndPointDefinition.SortExpression);
+          actualVirtualEndPointDefinition.SortExpression));
       }
     }      
   }
