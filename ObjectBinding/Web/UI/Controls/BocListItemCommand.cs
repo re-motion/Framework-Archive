@@ -34,7 +34,7 @@ public class BocItemCommand: Control, IPostBackEventHandler
   private string _functionTypeName;
   private string[] _functionParameters;
 
-  public event BocItemCommandClickEventHandler Click;
+  public event BocItemCommandClickEventHandler EventCommand;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -209,14 +209,70 @@ public class BocItemCommand: Control, IPostBackEventHandler
     if (eventArgumentParts.Length > 1)
       id = eventArgumentParts[1].Trim();
 
-    BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (index, id);
-    OnClick (e);
+    switch (Type)
+    {
+      case BocItemCommandType.Href:
+      {
+        break;
+      }
+      case BocItemCommandType.WxeFunction:
+      {
+        OnWxeFunctionClick (index, id);
+        break;
+      }
+      // case BocItemCommandType.Event:
+      // {
+      //   BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (index, id);
+      //   OnEventClick (e);
+      //   break;
+      // }
+      default:
+      {
+        break;
+      }
+    }
   }
 
-  protected void OnClick (BocItemCommandClickEventArgs e)
+  protected void OnEventCommandClick (BocItemCommandClickEventArgs e)
   {
-    if (Click != null)
-      Click (this, e);
+    throw new NotImplementedException();
+//    if (command.Type != BocItemCommandType.Event)
+//      throw new InvalidOperationException ("Call to OnEventCommandClick not allowed unless Type is set to BocItemCommandType.Event.");
+//    if (EventCommandClick != null)
+//      EventCommand (this, e);
+  }
+
+  protected void OnWxeFunctionClick (int index, string id)
+  {
+    if (Type != BocItemCommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to OnWxeFunctionClick not allowed unless Type is set to BocItemCommandType.WxeFunction.");
+
+    IWxePage wxePage = this.Page as IWxePage;
+    if (wxePage == null)
+       throw new InvalidOperationException ("BocItemCommand '" + ID + "'is set to a Type of BocItemCommandType.WxeFunction but parent page '" + Page.ToString() + "' is not an IWxePage.");
+
+    string functionTypeName = FunctionTypeName + ", ";
+    if (StringUtility.IsNullOrEmpty (FunctionAssemblyName))
+    {
+      Assembly pageAssembly = Page.GetType().BaseType.Assembly;
+      functionTypeName += pageAssembly.FullName;
+    }
+    else
+    {
+      functionTypeName += FunctionAssemblyName;
+    }
+    Type functionType = System.Type.GetType (functionTypeName); 
+
+    object [] arguments = new object[FunctionParameters.Length];
+    for (int i = 0; i < FunctionParameters.Length; i++)
+    {
+      //  TODO: BocItemCommand: Interpret BocItemCommand FunctionParameters
+      arguments[i] = FunctionParameters[i];
+    }
+
+    WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
+    
+    wxePage.CurrentStep.ExecuteFunction (this, wxePage, function);
   }
 
   /// <summary> The ID of this command. </summary>

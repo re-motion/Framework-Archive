@@ -34,6 +34,10 @@ public class PropertyPathBinding: IPropertyPathBinding
   ///   by this <see cref="PropertyPathBinding"/>.
   /// </summary>
   private string _propertyPathIdentifier;
+  /// <summary>
+  ///   The <see cref="IBusinessObjectBoundControl"/> containing the <see cref="DataSource"/>. 
+  /// </summary>
+  private IBusinessObjectBoundControl _ownerControl;
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="propertyPath">
@@ -82,6 +86,8 @@ public class PropertyPathBinding: IPropertyPathBinding
   {
     get
     {
+      if (_ownerControl != null && _dataSource != _ownerControl.DataSource)
+        _dataSource = _ownerControl.DataSource;
       return _dataSource; 
     }
     set 
@@ -107,10 +113,10 @@ public class PropertyPathBinding: IPropertyPathBinding
     {
       if (! _isPopertyPathEvaluated)
       {
-        if (_dataSource == null)
+        if (DataSource == null)
           throw new InvalidOperationException ("PropertyPath could not be resolved because the DataSource is not set.");
 
-        _propertyPath = BusinessObjectPropertyPath.Parse (_dataSource, _propertyPathIdentifier);
+        _propertyPath = BusinessObjectPropertyPath.Parse (DataSource, _propertyPathIdentifier);
         _isPopertyPathEvaluated = true;
       }
 
@@ -132,6 +138,7 @@ public class PropertyPathBinding: IPropertyPathBinding
   ///   A <see cref="string"/> formatted as a valid property path. 
   ///   Must not be assigned <see langword="null"/> or emtpy.
   /// </value>
+  [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
   [Description ("A string representing a valid property path.")]
@@ -148,6 +155,22 @@ public class PropertyPathBinding: IPropertyPathBinding
       _propertyPathIdentifier = value;
       _propertyPath = null;
       _isPopertyPathEvaluated = false;
+    }
+  }
+
+  /// <summary>
+  ///   The <see cref="IBusinessObjectBoundControl"/> to containing the <see cref="DataSource"/>. 
+  /// </summary>
+  protected internal IBusinessObjectBoundControl OwnerControl
+  {
+    get
+    {
+      return _ownerControl; 
+    }
+    set
+    {
+      if (_ownerControl != value)
+        _ownerControl = value;
     }
   }
 }

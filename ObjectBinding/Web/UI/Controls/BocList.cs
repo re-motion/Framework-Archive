@@ -131,9 +131,6 @@ public class BocList:
 
   private string __pageInfo = "Page {0} of {1}";
 
-  // TODO: Boclist: Remove LinkButton _testLink
-  private LinkButton _testLink;
-  
   // construction and disposing
 
   /// <summary></summary>
@@ -180,12 +177,6 @@ public class BocList:
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
-    // TODO: Boclist: Remove LinkButton _testLink
-    _testLink = new LinkButton();
-    _testLink.Text = "Test";
-    _testLink.Click +=new EventHandler(_testLink_Click);
-    Controls.Add (_testLink);
-
     if (! IsPostBack)
       PopulateAdditionalColumnsList();
     _availableColumnDefinitionSets.CollectionChanged += new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
@@ -211,80 +202,10 @@ public class BocList:
   protected override void OnLoad(EventArgs e)
   {
     base.OnLoad (e);
-
-    if (_firstColumnCommand != null)
-      _firstColumnCommand.Click += new BocItemCommandClickEventHandler (Command_Click);
-
-    foreach (BocColumnDefinition columnDefinition in _fixedColumns)
-    {
-      BocCommandColumnDefinition commandColumnDefinition = 
-        columnDefinition as BocCommandColumnDefinition;
-      
-      if (    commandColumnDefinition != null 
-          &&  commandColumnDefinition.Command != null)
-      {
-        commandColumnDefinition.Command.Click += 
-          new BocItemCommandClickEventHandler (Command_Click);
-      }
-    }
-  }
-
-
-  // TODO: Boclist: Remove LinkButton _testLink
-  private void _testLink_Click(object sender, EventArgs e)
-  {
   }
 
   public void RaisePostBackEvent (string eventArgument)
   {
-  }
-
-  private void Command_Click(object sender, BocItemCommandClickEventArgs e)
-  {
-    BocItemCommand command = (BocItemCommand)sender;
-
-    switch (command.Type)
-    {
-      case BocItemCommandType.Href:
-      {
-        break;
-      }
-      case BocItemCommandType.WxeFunction:
-      {
-        IWxePage wxePage = this.Page as IWxePage;
-        if (wxePage == null)
-          throw new InvalidOperationException ("BocList '" + ID + "' contains a BocItemCommand of BocItemCommandType.WxeFunction but is not part of an IWxePage.");
-
-        string functionTypeName = command.FunctionTypeName + ", ";
-        if (StringUtility.IsNullOrEmpty (command.FunctionAssemblyName))
-        {
-          Assembly pageAssembly = Page.GetType().BaseType.Assembly;
-          functionTypeName += pageAssembly.FullName;
-        }
-        else
-        {
-          functionTypeName += command.FunctionAssemblyName;
-        }
-        Type functionType = System.Type.GetType (functionTypeName); 
-
-        object [] arguments = new object[command.FunctionParameters.Length];
-        for (int i = 0; i < command.FunctionParameters.Length; i++)
-        {
-          //  TODO: Boclist: Interpret BocItemCommand FunctionParameters
-          arguments[i] = command.FunctionParameters[i];
-        }
-
-        WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
-        
-        wxePage.CurrentStep.ExecuteFunction (this, wxePage, function);
-        
-        break;
-      }
-      default:
-      {
-        break;
-      }
-    }
   }
 
   protected override void OnPreRender(EventArgs e)
@@ -379,9 +300,6 @@ public class BocList:
     RenderTableClosingTag (writer);
     if (_alwaysShowPageInfo || _pageCount > 1)
       RenderNavigator (writer);
-
-    // TODO: Boclist: Remove LinkButton _testLink
-    _testLink.RenderControl (writer);
   }
 
   private void RenderTitle (HtmlTextWriter writer)

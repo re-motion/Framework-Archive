@@ -13,21 +13,17 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public sealed class PropertyPathBindingCollection : CollectionBase
 {
   /// <summary> 
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
   /// </summary>
-  private IBusinessObjectBoundWebControl _ownerControl;
+  private IBusinessObjectBoundControl _ownerControl;
 
   /// <summary> Simple Constructor. </summary>
   /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
   /// </param>
-  internal PropertyPathBindingCollection (IBusinessObjectBoundWebControl ownerControl)
+  internal PropertyPathBindingCollection (IBusinessObjectBoundControl ownerControl)
   {
     _ownerControl = ownerControl;
-  }
-  protected override void OnValidate(object value)
-  {
-    base.OnValidate (value);
   }
 
   /// <summary> Performs additional custom processes before inserting a new element. </summary>
@@ -105,7 +101,7 @@ public sealed class PropertyPathBindingCollection : CollectionBase
     ArrayList arrayList = new ArrayList (List);
     return (PropertyPathBinding[]) arrayList.ToArray (typeof (PropertyPathBinding));
   }
-
+ 
   /// <summary> Gets the element at the specified index. </summary>
   /// <value> The element at the specified index. </value>
   public PropertyPathBinding this[int index]
@@ -113,8 +109,6 @@ public sealed class PropertyPathBindingCollection : CollectionBase
     get
     {
       PropertyPathBinding propertyPathBinding = (PropertyPathBinding) List[index];
-      if (propertyPathBinding.DataSource == null)
-        propertyPathBinding.DataSource = _ownerControl.DataSource;
 
       return propertyPathBinding;
     }
@@ -125,12 +119,20 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
   /// </summary>
-  internal IBusinessObjectBoundWebControl OwnerControl
+  internal IBusinessObjectBoundControl OwnerControl
   {
-    get { return _ownerControl; }
-    set { _ownerControl = value; }
+    get
+    { 
+      return _ownerControl; 
+    }
+    set
+    {
+      _ownerControl = value; 
+      foreach (PropertyPathBinding binding in List)
+        binding.OwnerControl = _ownerControl;
+    }
   }
 }
 

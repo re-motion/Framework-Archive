@@ -309,10 +309,14 @@ public abstract class BocValueColumnDefinition: BocColumnDefinition
 ///   Note that using the methods of <see cref="BusinessObjectPropertyPath"/>, 
 ///   the original value of this property can be retreived or changed.
 /// </remarks>
-// TODO: BocSimpleColumnDefinition: PropertyPathPicker
-// TODO: FormatString Property
 public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathBinding
 {
+  /// <summary>
+  ///   A format string describing how the value access through the 
+  ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
+  /// </summary>
+  private string _formatString;
+
   /// <summary>
   ///   The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> 
   ///   internally.
@@ -320,6 +324,10 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   private PropertyPathBinding _propertyPathBinding;
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="formatString"> 
+  ///   A format string describing how the value access through the 
+  ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
+  /// </param>
   /// <param name="propertyPath">
   ///   The <see cref="BusinessObjectPropertyPath"/> used by <see cref="GetStringValue"/> 
   ///   to access the value of an <see cref="IBusinessObject"/>. Must not be <see langword="null"/>.
@@ -327,16 +335,22 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
   public BocSimpleColumnDefinition (
+      string formatString,
       BusinessObjectPropertyPath propertyPath,
       string columnTitle, 
       Unit width)
     : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+    FormatString = formatString;
     _propertyPathBinding = new PropertyPathBinding (propertyPath);
   }
 
   /// <summary> Simple Constructor. </summary>
+  /// <param name="formatString"> 
+  ///   A format string describing how the value access through the 
+  ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
+  /// </param>
   /// <param name="propertyPathIdentifier">
   ///   The string representation of the <see cref="PropertyPath"/>. Must not be 
   ///   <see langword="null"/> or emtpy.
@@ -344,12 +358,14 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   /// <param name="columnTitle"> The text displayed in the title row. </param>
   /// <param name="width"> The width of the rendered column. </param>
   public BocSimpleColumnDefinition (
+      string formatString,
       string propertyPathIdentifier,
       string columnTitle, 
       Unit width)
     : base (columnTitle, width)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+    FormatString = formatString;
     _propertyPathBinding = new PropertyPathBinding (propertyPathIdentifier);
   }
 
@@ -357,7 +373,18 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   public BocSimpleColumnDefinition ()
     : base (string.Empty, Unit.Empty)
   {
+    _formatString = string.Empty;
     _propertyPathBinding = new PropertyPathBinding();
+  }
+
+  /// <summary>
+  ///   Passes the new <see cref="BocColumnDefinition.OwnerControl"/> to the 
+  ///   <see cref="PropertyPathBindingCollection"/>.
+  /// </summary>
+  protected override void OnOwnerControlChanged()
+  {
+    _propertyPathBinding.OwnerControl = OwnerControl;
+    base.OnOwnerControlChanged();
   }
 
   /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -365,10 +392,46 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
   public override string GetStringValue (IBusinessObject obj)
   {
-    if (PropertyPath != null)
-      return PropertyPath.GetStringValue (obj);
-    else
+    if (PropertyPath == null)
       return string.Empty;
+
+    string formatString = _formatString;
+    if (StringUtility.IsNullOrEmpty (formatString))
+    {
+      IBusinessObjectProperty lastProperty = PropertyPath.LastProperty;
+      bool isDate = lastProperty is IBusinessObjectDateProperty;
+      bool isDateTime = lastProperty is IBusinessObjectDateTimeProperty;
+
+      if (isDate)
+        formatString = "d";
+      else if (isDateTime)
+        formatString = "g";
+    }
+
+    return string.Format ("{0:" + formatString + "}", PropertyPath.GetValue (obj));
+  }
+
+  /// <summary>
+  ///   A format string describing how the value access through the 
+  ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
+  /// </summary>
+  /// <value> 
+  ///   A <see cref="string"/> representing a valid format string. 
+  /// </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Format")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string FormatString
+  {
+    get
+    {
+      return _formatString;
+    }
+    set
+    {
+      _formatString = StringUtility.NullToEmpty (value); 
+    }
   }
 
   /// <summary>
@@ -387,7 +450,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
       
       if (! ControlHelper.IsDesignMode (OwnerControl))
       {
-        DataSource = OwnerControl.DataSource;
         return _propertyPathBinding.PropertyPath;
       }
       else
@@ -414,7 +476,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
   { 
     get
     { 
-      DataSource = OwnerControl.DataSource;
       return _propertyPathBinding.PropertyPathIdentifier; 
     }
     set
@@ -476,7 +537,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IPropertyPathB
 /// <remarks>
 ///   Note that values in these columnDefinitions can usually not be modified directly.
 /// </remarks>
-// TODO: BocSimpleColumnDefinition: PropertyPathPicker
 [ParseChildren (true, "PropertyPathBindings")]
 public class BocCompoundColumnDefinition: BocValueColumnDefinition
 {
@@ -541,7 +601,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
 
     ColumnTitle = columnTitle;
-    _formatString = formatString;
+    FormatString = formatString;
     _propertyPathBindings = new PropertyPathBindingCollection (null);
     _propertyPathBindings.AddRange (propertyPathIdentifiers);
   }
@@ -559,11 +619,11 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
   public override string GetStringValue (IBusinessObject obj)
   {
-    string[] strings = new string[_propertyPathBindings.Count];
+    object[] values = new object[_propertyPathBindings.Count];
     for (int i = 0; i < _propertyPathBindings.Count; ++i)
-      strings[i] = _propertyPathBindings[i].PropertyPath.GetStringValue (obj);
+      values[i] = _propertyPathBindings[i].PropertyPath.GetValue (obj);
 
-    return string.Format (_formatString, strings);
+    return string.Format (_formatString, values);
   }
 
   /// <summary>
@@ -581,7 +641,8 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </summary>
   /// <value> 
-  ///   A <see cref="string"/> containing zero or more format items. The indices must match the 
+  ///   A <see cref="string"/> containing a format item for each 
+  ///   <see cref="BusinessObjectPropertyPath"/> to be displayed. The indices must match the 
   ///   order of the <see cref="BusinessObjectPropertyPath"/> objects to be formatted.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -590,8 +651,14 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   [NotifyParentProperty (true)]
   public string FormatString
   {
-    get { return _formatString; }
-    set { _formatString = value; }
+    get
+    {
+      return _formatString;
+    }
+    set
+    {
+      _formatString = StringUtility.NullToEmpty (value); 
+    }
   }
 
   /// <summary>
