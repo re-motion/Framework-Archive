@@ -2,6 +2,8 @@ using System;
 
 namespace Rubicon.Data.DomainObjects
 {
+//Documentation: All done
+
 /// <summary>
 /// Indicates the state of a <see cref="DomainObject"/>.
 /// </summary>
