@@ -43,7 +43,7 @@ public class Form : HtmlForm
 
   // methods and properties
 
-  public string GetActionUrlFromRequest (HttpRequest request)
+  public string GetPageUrlWithoutPath (HttpRequest request)
   {
     return Path.GetFileName (request.FilePath) + request.Url.Query;
   }
