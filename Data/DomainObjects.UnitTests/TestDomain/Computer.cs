@@ -23,6 +23,10 @@ public class Computer : TestDomainBase
   {
   }
 
+  public Computer (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Computer (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -30,6 +30,10 @@ public class Customer : Company
   {
   }
 
+  public Customer (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Customer (DataContainer dataContainer) : base (dataContainer)
   {
   }

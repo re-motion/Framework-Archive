@@ -21,6 +21,10 @@ public class Official : TestDomainBase
   {
   }
 
+  public Official (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Official (DataContainer dataContainer) : base (dataContainer)
   {
   }

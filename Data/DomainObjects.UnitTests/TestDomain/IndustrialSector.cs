@@ -21,6 +21,10 @@ public class IndustrialSector : TestDomainBase
   {
   }
 
+  public IndustrialSector (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected IndustrialSector (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -1,5 +1,7 @@
 using System;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
 public class OrderTicket : TestDomainBase
@@ -18,8 +20,14 @@ public class OrderTicket : TestDomainBase
   // construction and disposing
 
   // New OrderTickets need an associated order for correct initialization.
-  public OrderTicket (Order order)
+  public OrderTicket (Order order) : this (order, ClientTransaction.Current)
   {
+  }
+
+  // New OrderTickets need an associated order for correct initialization.
+  public OrderTicket (Order order, ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("order", order);
     Order = order;
   }
 

@@ -21,6 +21,10 @@ public class Distributor : Partner
   {
   }
 
+  public Distributor (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Distributor (DataContainer dataContainer) : base (dataContainer)
   {
   }

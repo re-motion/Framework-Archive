@@ -21,6 +21,10 @@ public class Order : TestDomainBase
   {
   }
 
+  public Order (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Order (DataContainer dataContainer) : base (dataContainer)
   {
   }

@@ -21,6 +21,10 @@ public class Employee : TestDomainBase
   {
   }
 
+  public Employee (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
   protected Employee (DataContainer dataContainer) : base (dataContainer)
   {
   }
