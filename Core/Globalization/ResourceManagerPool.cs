@@ -40,7 +40,7 @@ public sealed class ResourceManagerPool
 
     foreach (MultiLingualResourcesAttribute resourceAttribute in resourceAttributes)
     {
-      resourceName = resourceAttribute.ResourceName;
+      resourceName = resourceAttribute.BaseName;
       break;
     }
   }
