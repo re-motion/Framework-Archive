@@ -96,22 +96,22 @@
                 <Reference
                     Name = "log4net"
                     AssemblyName = "log4net"
-                    HintPath = "..\prereq\log4net.dll"
+                    HintPath = "References\log4net.dll"
                 />
                 <Reference
                     Name = "Rubicon.Core"
                     AssemblyName = "Rubicon.Core"
-                    HintPath = "..\prereq\Rubicon.Core.dll"
+                    HintPath = "References\Rubicon.Core.dll"
                 />
                 <Reference
                     Name = "Rubicon.Globalization"
                     AssemblyName = "Rubicon.Globalization"
-                    HintPath = "..\prereq\Rubicon.Globalization.dll"
+                    HintPath = "References\Rubicon.Globalization.dll"
                 />
                 <Reference
                     Name = "Rubicon.Web.UI"
                     AssemblyName = "Rubicon.Web.UI"
-                    HintPath = "..\prereq\Rubicon.Web.UI.dll"
+                    HintPath = "References\Rubicon.Web.UI.dll"
                 />
             </References>
         </Build>
@@ -182,6 +182,50 @@
                 />
                 <File
                     RelPath = "Images\ValidationError.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\log4net.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\log4net.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Core.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Core.pdb"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Globalization.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Globalization.pdb"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Web.UI.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\Rubicon.Web.UI.pdb"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\en\Rubicon.Web.UI.resources.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\fr\Rubicon.Web.UI.resources.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "References\it\Rubicon.Web.UI.resources.dll"
                     BuildAction = "Content"
                 />
             </Include>
