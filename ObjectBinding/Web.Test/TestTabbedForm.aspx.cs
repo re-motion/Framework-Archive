@@ -32,6 +32,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected System.Web.UI.WebControls.Button ValidateButton;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function
@@ -42,8 +43,6 @@ public class TestTabbedForm : TestWxeBasePage
 	private void Page_Load(object sender, System.EventArgs e)
 	{
     // add tabs 
-    AddTab ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"));
-    AddTab ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"));
     AddTab ("1", "Test Tab 1", null);
     AddTab ("2", "Test Tab 2", null);
     AddTab ("3", "Test Tab 3", null);
@@ -55,33 +54,33 @@ public class TestTabbedForm : TestWxeBasePage
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
-	}
+  }
 
   private void AddTab (string id, string text, IconInfo icon)
   {
-    MultiPageTab tab = new MultiPageTab ();
+    WebTab tab = new WebTab ();
     tab.Text = text;
-    tab.TabID = id + "_tab";
-    tab.Target = id + "_view";
+    tab.TabID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add (tab);
     
     PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
   }
 
-  private IDataEditControl AddPage (string id, string path)
+  private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
   {
-    PageView pageView = new PageView();
-    pageView.ID = id + "_view";
-    PagesMultiPage.Controls.Add (pageView);
+    TabView view = new TabView();
+    view.ID = id+ "_View";
+    view.Title = title;
+    view.Icon = icon;
+    MultiView.TabViews.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
     control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
@@ -90,7 +89,7 @@ public class TestTabbedForm : TestWxeBasePage
     //if (formPageControl != null)
     //  formPageControl.FormPageObject = formPage;
 
-    pageView.Controls.Add (control);
+    view.Controls.Add (control);
 
     IDataEditControl dataEditControl = control as IDataEditControl;
     if (dataEditControl != null)

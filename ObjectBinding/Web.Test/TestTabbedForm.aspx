@@ -21,12 +21,11 @@
 <h1>Test Tabbed Form</h1>
 <div style="HEIGHT: 2em"><asp:linkbutton id=SaveButton runat="server">Save</asp:linkbutton>&nbsp; 
 <asp:linkbutton id=CancelButton runat="server">Cancel</asp:linkbutton></div><rwc:validationstateviewer id=ValidationStateViewer runat="server" DESIGNTIMEDRAGDROP="119" visible="true"></rwc:validationstateviewer>
-<div><rwc:webtabstrip id=PagesTabStrip runat="server" width="100%" tabspanesize="4"></rwc:webtabstrip>
-<table 
-style="BORDER-RIGHT: black 2px solid; PADDING-LEFT: 1em; BORDER-LEFT: black 1px solid; WIDTH: 100%; BORDER-BOTTOM: black 2px solid; HEIGHT: 20em" 
-cellPadding=0>
-  <tr>
-    <td style="VERTICAL-ALIGN: top"><rwc:multipage id=PagesMultiPage runat="server" SelectedIndex="-1"></rwc:multipage></td></tr></table></div><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button><asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form>
-<div></div></FORM>
+<rwc:webtabstrip id=PagesTabStrip runat="server" width="100%" tabspanesize="4"></rwc:webtabstrip>
+<p></p>
+<rwc:tabbedMultiView id=MultiView runat="server" SelectedIndex="-1"></rwc:tabbedMultiView>
+<asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button>
+<asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form>
+</FORM>
   </body>
 </html>
