@@ -235,6 +235,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\IResourceDispatchTarget.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\ResourceDispatcher.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\EntryFormGrid.en.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -249,6 +257,11 @@
                 <File
                     RelPath = "Globalization\EntryFormGrid.resx"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\IResourceDispatchTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Globalization\ResourceDispatcher.cs"
