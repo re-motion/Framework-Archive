@@ -119,7 +119,6 @@ public class EntryField: Control
 	{
 		string label;
     string clientId = String.Empty;
-    Control labeledControl;
     string validatorMessages = String.Empty ;
     bool validatorsInvalid = false;
 
@@ -140,10 +139,16 @@ public class EntryField: Control
       }
     }
 
+    Control labeledControl = null;
     if (For == String.Empty)
-      labeledControl = this.Controls[1];
+    {
+      if (this.Controls.Count >= 2)
+        labeledControl = this.Controls[1];
+    }
     else
+    {
       labeledControl = this.FindControl (For);
+    }
 
     if (labeledControl != null)
     {
