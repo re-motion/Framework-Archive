@@ -5,7 +5,7 @@ using System.Web.Caching;
 using System.Web.SessionState;
 using System.Security.Principal;
 
-namespace Rubicon.Web.UI.Controls
+namespace Rubicon.Web.UI
 {
 
 /// <summary>
@@ -15,7 +15,7 @@ namespace Rubicon.Web.UI.Controls
 /// <remarks>
 ///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.TemplateControl.
 /// </remarks>
-public interface ITemplateControl: IControl
+public interface ITemplateControl: IControl, INamingContainer
 {
   event EventHandler AbortTransaction;
   event EventHandler CommitTransaction;
@@ -72,5 +72,21 @@ public interface IPage: ITemplateControl, IHttpHandler
   string ViewStateUserKey { get; set; }
 }
 
-}
+public interface IUserControl: ITemplateControl, IAttributeAccessor, IUserControlDesignerAccessor
+{
+  void DesignerInitialize();
+  void InitializeAsUserControl(Page page);
+  string MapPath(string virtualPath);
 
+  HttpApplicationState Application { get; }
+  AttributeCollection Attributes { get; }
+  Cache Cache { get; }
+  bool IsPostBack { get; }
+  HttpRequest Request { get; }
+  HttpResponse Response { get; }
+  HttpServerUtility Server { get; }
+  HttpSessionState Session { get; }
+  TraceContext Trace { get; }
+}
+ 
+}
