@@ -92,6 +92,11 @@ public class DataDropDownList: ExtendedDropDownList
     }
   }
 
+  public ListItem GetListItemByValue (int value)
+  {
+    return GetListItemByValue (value.ToString ());
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     // delete all empty items (except the one that is selected)
