@@ -11,7 +11,6 @@ namespace Rubicon.ObjectBinding.Web
 public interface IBusinessObjectWebUIService: IBusinessObjectService
 {
   IconInfo GetIcon (IBusinessObject obj);
-  IconInfo GetNullValueIcon ();
 }
 
 }
