@@ -108,16 +108,15 @@ public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBase
 
   }
 
-// TODO: Reactivate code below
-//  [Test]
-//  public void Relations ()
-//  {
-//    int numberOfOrderItemsBeforeDelete = _order.OrderItems.Count;
-//    _orderItem.Delete ();
-//
-//    Assert.IsNull (_orderItem.Order);
-//    Assert.AreEqual (numberOfOrderItemsBeforeDelete - 1, _order.OrderItems.Count);
-//    Assert.IsFalse (_order.OrderItems.Contains (_orderItem.ID));
-//  }
+  [Test]
+  public void Relations ()
+  {
+    int numberOfOrderItemsBeforeDelete = _order.OrderItems.Count;
+    _orderItem.Delete ();
+
+    Assert.IsNull (_orderItem.Order);
+    Assert.AreEqual (numberOfOrderItemsBeforeDelete - 1, _order.OrderItems.Count);
+    Assert.IsFalse (_order.OrderItems.Contains (_orderItem.ID));
+  }
 }
 }
