@@ -260,10 +260,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
   }
 
-  [Browsable(false)]
-  public abstract bool IsDirty { get; set; }
-
-
   public virtual bool SupportsProperty (IBusinessObjectProperty property)
   {
     if (SupportedPropertyInterfaces == null)
@@ -416,6 +412,9 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
     get { return _readOnly; }
     set { _readOnly = value; }
   }
+
+  [Browsable(false)]
+  public abstract bool IsDirty { get; set; }
 
   public abstract void SaveValue (bool interim);
 
