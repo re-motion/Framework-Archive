@@ -12,46 +12,58 @@ public class ObjectEndPoint : RelationEndPoint
 
   // member fields
 
-  private DataContainer _oppositeDataContainer;
+  private ObjectID _oppositeObjectID;
   private RelationEndPoint _newEndPoint;
 
   // construction and disposing
 
-  // TODO: New ctor parameter: destinationDomainObject
-  //       Make destinationDomainObject optional and use ClientTx, if not provided
-
   public ObjectEndPoint (
       DomainObject domainObject, 
       IRelationEndPointDefinition definition, 
-      DomainObject oppositeDomainObject) 
-      : this (domainObject.DataContainer, definition, oppositeDomainObject.DataContainer)
+      ObjectID oppositeObjectID) 
+      : this (domainObject.ID, definition, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
       DataContainer dataContainer, 
       IRelationEndPointDefinition definition, 
-      DataContainer oppositeDataContainer) 
-      : this (dataContainer, definition.PropertyName, oppositeDataContainer)
+      ObjectID oppositeObjectID) 
+      : this (dataContainer.ID, definition, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
       DomainObject domainObject, 
       string propertyName,
-      DomainObject oppositeDomainObject) 
-      : this (domainObject.DataContainer, propertyName, oppositeDomainObject.DataContainer)
+      ObjectID oppositeObjectID) 
+      : this (domainObject.ID, propertyName, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
       DataContainer dataContainer, 
       string propertyName,
-      DataContainer oppositeDataContainer) 
-      : base (dataContainer, propertyName)
+      ObjectID oppositeObjectID) 
+      : this (dataContainer.ID, propertyName, oppositeObjectID)
   {
-    ArgumentUtility.CheckNotNull ("oppositeDataContainer", oppositeDataContainer);
-    _oppositeDataContainer = oppositeDataContainer;
+  }
+
+  public ObjectEndPoint (
+      ObjectID objectID, 
+      IRelationEndPointDefinition definition, 
+      ObjectID oppositeObjectID) 
+      : this (objectID, definition.PropertyName, oppositeObjectID)
+  {
+  }
+
+  public ObjectEndPoint (
+      ObjectID objectID, 
+      string propertyName,
+      ObjectID oppositeObjectID) 
+      : base (objectID, propertyName)
+  {
+    _oppositeObjectID = oppositeObjectID;
   }
 
   // methods and properties
@@ -70,17 +82,12 @@ public class ObjectEndPoint : RelationEndPoint
 
     base.EndRelationChange ();
 
-    _oppositeDataContainer = _newEndPoint.DataContainer;
+    _oppositeObjectID = _newEndPoint.ObjectID;
   }
 
-  public DataContainer OppositeDataContainer
+  public ObjectID OppositeObjectID
   {
-    get { return _oppositeDataContainer; }
-  }
-
-  public DomainObject OppositeDomainObject 
-  {
-    get { return _oppositeDataContainer.DomainObject; }
+    get { return _oppositeObjectID; }
   }
 }
 }

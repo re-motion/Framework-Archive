@@ -12,36 +12,47 @@ public class RelationEndPoint : INullable
 
   // member fields
 
-  private DataContainer _dataContainer;
+  private ObjectID _objectID;
   private IRelationEndPointDefinition _definition;
-  private RelationEndPointID _endPointID;
+  private RelationEndPointID _id;
 
   // construction and disposing
   
   public RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
-      : this (domainObject.DataContainer, definition)
+      : this (domainObject.ID, definition)
   {
   }
 
   public RelationEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
-      : this (dataContainer, definition.PropertyName) 
+      : this (dataContainer.ID, definition.PropertyName) 
   {
   }
 
 
   public RelationEndPoint (DomainObject domainObject, string propertyName) 
-      : this (domainObject.DataContainer, propertyName)
+      : this (domainObject.ID, propertyName)
   {
   }
 
   public RelationEndPoint (DataContainer dataContainer, string propertyName)
+      : this (dataContainer.ID, propertyName)
   {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+  }
+
+  public RelationEndPoint (ObjectID objectID, IRelationEndPointDefinition definition) 
+      : this (objectID, definition.PropertyName) 
+  {
+  }
+
+  public RelationEndPoint (ObjectID objectID, string propertyName)
+  {
+    ArgumentUtility.CheckNotNull ("objectID", objectID);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    _definition = dataContainer.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
-    _dataContainer = dataContainer;
-    _endPointID = new RelationEndPointID (dataContainer.ID, propertyName);
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetByClassID (objectID.ClassID);
+    _definition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
+    _objectID = objectID;
+    _id = new RelationEndPointID (objectID, propertyName);
   }
 
   protected RelationEndPoint (IRelationEndPointDefinition definition)
@@ -76,7 +87,7 @@ public class RelationEndPoint : INullable
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
     if (!IsVirtual)
-      _dataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
+      DataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
   }
 
   public IRelationEndPointDefinition Definition 
@@ -84,19 +95,23 @@ public class RelationEndPoint : INullable
     get { return _definition; }
   }
 
-  public virtual DataContainer DataContainer
-  {
-    get { return _dataContainer; }
-  }
-
   public virtual DomainObject DomainObject
   {
-    get { return _dataContainer.DomainObject; }
+    get 
+    {
+      // TODO: This property should return a deleted domainObject too!
+      return ClientTransaction.Current.GetObject (_objectID); 
+    }
+  }
+
+  public virtual DataContainer DataContainer
+  {
+    get { return DomainObject.DataContainer; }
   }
 
   public virtual ObjectID ObjectID
   {
-    get { return _dataContainer.ID; }
+    get { return _objectID; }
   }
 
   public RelationDefinition RelationDefinition
@@ -119,9 +134,9 @@ public class RelationEndPoint : INullable
     get { return _definition.IsVirtual; }
   }
 
-  public virtual RelationEndPointID EndPointID
+  public virtual RelationEndPointID ID
   {
-    get { return _endPointID; }
+    get { return _id; }
   }
 
   #region INullable Members

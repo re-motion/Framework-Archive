@@ -18,15 +18,11 @@ public class CollectionEndPoint : RelationEndPoint
 
   // construction and disposing
 
-  // TODO: New ctor parameter: domainObject (e.g. order for a orderItem collection)
-  //       ctors with propertyName (see ObjectEndPoint)
-  //       Make domainObjects optional and use ClientTx, if not provided
-  
   public CollectionEndPoint (
       DomainObject domainObject, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.DataContainer, definition, oppositeDomainObjects)
+      : this (domainObject.ID, definition, oppositeDomainObjects)
   {
   }
 
@@ -34,7 +30,7 @@ public class CollectionEndPoint : RelationEndPoint
       DataContainer dataContainer, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (dataContainer, definition.PropertyName, oppositeDomainObjects)
+      : this (dataContainer.ID, definition, oppositeDomainObjects)
   {
   }
 
@@ -42,7 +38,7 @@ public class CollectionEndPoint : RelationEndPoint
       DomainObject domainObject, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.DataContainer, propertyName, oppositeDomainObjects)
+      : this (domainObject.ID, propertyName, oppositeDomainObjects)
   {
   }
 
@@ -50,7 +46,23 @@ public class CollectionEndPoint : RelationEndPoint
       DataContainer dataContainer, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : base (dataContainer, propertyName)
+      : this (dataContainer.ID, propertyName, oppositeDomainObjects)
+  {
+  }
+
+  public CollectionEndPoint (
+      ObjectID objectID, 
+      VirtualRelationEndPointDefinition definition, 
+      DomainObjectCollection oppositeDomainObjects) 
+      : this (objectID, definition.PropertyName, oppositeDomainObjects)
+  {
+  }
+
+  public CollectionEndPoint (
+      ObjectID objectID, 
+      string propertyName,
+      DomainObjectCollection oppositeDomainObjects) 
+      : base (objectID, propertyName)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     _oppositeDomainObjects = oppositeDomainObjects;

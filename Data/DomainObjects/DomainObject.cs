@@ -166,9 +166,9 @@ public class DomainObject
     OnDeleted (args);
   }
 
-  internal RelationEndPointList GetOppositeRelationEndPoints ()
+  internal RelationEndPointCollection GetOppositeRelationEndPoints ()
   {
-    RelationEndPointList oppositeEndPoints = new RelationEndPointList ();
+    RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
 
     foreach (RelationEndPoint relationEndPoint in _dataContainer.RelationEndPoints)
     {
@@ -180,7 +180,7 @@ public class DomainObject
           if (relationEndPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.One)
           {
             ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-                oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this);
+                oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this.ID);
 
             oppositeEndPoints.Add (relationEndPoint);    
           }
@@ -205,7 +205,7 @@ public class DomainObject
         foreach (DomainObject oppositeDomainObject in ClientTransaction.Current.GetRelatedObjects (relationEndPoint))
         {
           ObjectEndPoint oppositeEndPoint = new ObjectEndPoint (
-              oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this);
+              oppositeDomainObject, relationEndPoint.OppositeEndPointDefinition, this.ID);
 
           oppositeEndPoints.Add (oppositeEndPoint);
         }

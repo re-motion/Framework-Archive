@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class RelationEndPointListTest : ClientTransactionBaseTest
+public class RelationEndPointCollectionTest : ClientTransactionBaseTest
 {
   // types
 
@@ -16,12 +16,12 @@ public class RelationEndPointListTest : ClientTransactionBaseTest
 
   // member fields
 
-  private RelationEndPoint _endPoint;
-  private RelationEndPointList _endPointList;
+  private RelationEndPoint _orderTicketEndPoint;
+  private RelationEndPointCollection _endPoints;
 
   // construction and disposing
 
-  public RelationEndPointListTest ()
+  public RelationEndPointCollectionTest ()
   {
   }
 
@@ -31,80 +31,123 @@ public class RelationEndPointListTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _endPoint = new RelationEndPoint (Order.GetObject (DomainObjectIDs.Order1), "OrderTicket");
-    _endPointList = new RelationEndPointList ();
-  }
-
-  [Test]
-  public void Initialize ()
-  {
-    Assert.AreEqual (0, _endPointList.Count);
+    OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+    _orderTicketEndPoint = new ObjectEndPoint (orderTicket, "Order", DomainObjectIDs.Order1);
+    _endPoints = new RelationEndPointCollection ();
   }
 
   [Test]
   public void Add ()
   {
-    _endPointList.Add (_endPoint);
-
-    Assert.AreEqual (1, _endPointList.Count);
-    Assert.AreSame (_endPoint, _endPointList[0]);
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreEqual (1, _endPoints.Count);
   }
 
   [Test]
-  public void RemoveAt ()
+  public void EndPointIDIndexer ()
   {
-    _endPointList.Add (_endPoint);
-    Assert.AreEqual (1, _endPointList.Count);
-
-    _endPointList.RemoveAt (0);
-    Assert.AreEqual (0, _endPointList.Count);
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreSame (_orderTicketEndPoint, _endPoints[_orderTicketEndPoint.ID]);  
   }
 
   [Test]
-  public void Remove ()
+  public void NumericIndexer ()
   {
-    _endPointList.Add (_endPoint);
-    Assert.AreEqual (1, _endPointList.Count);
-
-    _endPointList.Remove (_endPoint);
-    Assert.AreEqual (0, _endPointList.Count);
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreSame (_orderTicketEndPoint, _endPoints[0]);  
   }
 
   [Test]
-  public void Contains ()
+  public void ContainsTrue ()
   {
-    Assert.IsFalse (_endPointList.Contains (_endPoint));
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.IsTrue (_endPoints.Contains (_orderTicketEndPoint.ID));
+  }
 
-    _endPointList.Add (_endPoint);
-    
-    Assert.IsTrue (_endPointList.Contains (_endPoint));
+  [Test]
+  public void ContainsFalse ()
+  {
+    Assert.IsFalse (_endPoints.Contains (_orderTicketEndPoint.ID));
+  }
+
+  [Test]
+  public void ContainsEndPoint ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+
+    Assert.IsTrue (_endPoints.Contains (_orderTicketEndPoint));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void ContainsNullEndPoint ()
+  {
+    _endPoints.Contains ((RelationEndPoint) null);
+  }
+
+  [Test]
+  public void CopyConstructor ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+
+    RelationEndPointCollection copiedCollection = new RelationEndPointCollection (_endPoints, false);
+
+    Assert.AreEqual (1, copiedCollection.Count);
+    Assert.AreSame (_orderTicketEndPoint, copiedCollection[0]);
+  }
+
+  [Test]
+  public void RemoveByEndPointID ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreEqual (1, _endPoints.Count);
+
+    _endPoints.Remove (_orderTicketEndPoint.ID);
+    Assert.AreEqual (0, _endPoints.Count);
+  }
+
+  [Test]
+  public void RemoveByRelationEndPoint ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreEqual (1, _endPoints.Count);
+
+    _endPoints.Remove (_orderTicketEndPoint);
+    Assert.AreEqual (0, _endPoints.Count);
+  }
+
+  [Test]
+  public void RemoveByIndex ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreEqual (1, _endPoints.Count);
+
+    _endPoints.Remove (0);
+    Assert.AreEqual (0, _endPoints.Count);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void RemoveNullEndPoint ()
+  {
+    _endPoints.Remove ((RelationEndPoint) null);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void RemoveNullEndPointID ()
+  {
+    _endPoints.Remove ((RelationEndPointID) null);
   }
 
   [Test]
   public void Clear ()
   {
-    _endPointList.Add (_endPoint);
-    Assert.AreEqual (1, _endPointList.Count);
+    _endPoints.Add (_orderTicketEndPoint);
+    Assert.AreEqual (1, _endPoints.Count);
 
-    _endPointList.Clear ();
-    Assert.AreEqual (0, _endPointList.Count);
-  }
-
-  [Test]
-  public void IndexOf ()
-  {
-    _endPointList.Add (_endPoint);
-
-    Assert.AreEqual (0, _endPointList.IndexOf (_endPoint));
-  }
-
-  [Test]
-  public void Enumeration ()
-  {
-    _endPointList.Add (_endPoint);
-    
-    foreach (RelationEndPoint relationEndPoint in _endPointList)
-      Assert.AreSame (_endPoint, relationEndPoint);
+    _endPoints.Clear ();
+    Assert.AreEqual (0, _endPoints.Count);
   }
 }
 }

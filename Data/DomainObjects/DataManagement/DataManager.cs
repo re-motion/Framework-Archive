@@ -87,7 +87,7 @@ public class DataManager : ILinkChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
-    SingleObjectRelationLink backLink = _singleObjectRelationLinkMap[relationEndPoint.EndPointID];
+    SingleObjectRelationLink backLink = _singleObjectRelationLinkMap[relationEndPoint.ID];
 
     if (newRelatedObject != null)
       backLink.DestinationObjectID = newRelatedObject.ID;
@@ -172,7 +172,7 @@ public class DataManager : ILinkChangeDelegate
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
     SingleObjectRelationLink link = new SingleObjectRelationLink (
-        relationEndPoint.EndPointID, destinationObjectID);
+        relationEndPoint.ID, destinationObjectID);
 
     _singleObjectRelationLinkMap.Add (link);
   }
@@ -185,7 +185,7 @@ public class DataManager : ILinkChangeDelegate
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
     MultipleObjectsRelationLink link = new MultipleObjectsRelationLink (
-        relationEndPoint.EndPointID, domainObjects);
+        relationEndPoint.ID, domainObjects);
 
     link.ChangeDelegate = this;
     _multipleObjectsRelationLinkMap.Add (link);
@@ -195,14 +195,14 @@ public class DataManager : ILinkChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
-    return _singleObjectRelationLinkMap[relationEndPoint.EndPointID];
+    return _singleObjectRelationLinkMap[relationEndPoint.ID];
   }
 
   public MultipleObjectsRelationLink GetMultipleObjectsRelationLink (RelationEndPoint relationEndPoint)
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
-    return _multipleObjectsRelationLinkMap[relationEndPoint.EndPointID];
+    return _multipleObjectsRelationLinkMap[relationEndPoint.ID];
   }
 
   public RelationLink GetRelationLink (RelationEndPoint relationEndPoint)
@@ -219,8 +219,8 @@ public class DataManager : ILinkChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
-    if (_multipleObjectsRelationLinkMap.Contains (relationEndPoint.EndPointID))
-      return _multipleObjectsRelationLinkMap[relationEndPoint.EndPointID].DestinationDomainObjects;
+    if (_multipleObjectsRelationLinkMap.Contains (relationEndPoint.ID))
+      return _multipleObjectsRelationLinkMap[relationEndPoint.ID].DestinationDomainObjects;
 
     return null;
   }

@@ -51,7 +51,7 @@ public class NullRelationEndPoint : RelationEndPoint
     get { return null; }
   }
 
-  public override RelationEndPointID EndPointID
+  public override RelationEndPointID ID
   {
     get { return null; }
   }

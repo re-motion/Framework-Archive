@@ -100,7 +100,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
 
     // TODO: Move BeginDelete and EndDelete to DomainObject!!!
 
-    RelationEndPointList oppositeEndPoints = domainObject.GetOppositeRelationEndPoints ();
+    RelationEndPointCollection oppositeEndPoints = domainObject.GetOppositeRelationEndPoints ();
     if (BeginDelete (domainObject, oppositeEndPoints))
     {
       /*
@@ -135,7 +135,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     }
   }
 
-  private bool BeginDelete (DomainObject domainObject, RelationEndPointList oppositeEndPoints)
+  private bool BeginDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
   {
     if (!domainObject.BeginDelete ())
       return false;
@@ -153,7 +153,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
     return true;
   }
 
-  private void EndDelete (DomainObject domainObject, RelationEndPointList oppositeEndPoints)
+  private void EndDelete (DomainObject domainObject, RelationEndPointCollection oppositeEndPoints)
   {
     domainObject.EndDelete ();
 
@@ -422,7 +422,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
 
   void ILinkChangeDelegate.PerformAdd  (MultipleObjectsRelationLink link, DomainObject domainObject)
   {
-    RelationEndPoint relationEndPoint = new RelationEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
+    RelationEndPoint relationEndPoint = new RelationEndPoint (link.ID.ObjectID, link.ID.PropertyName);
 
     RelationEndPoint addingEndPoint = new RelationEndPoint (
         domainObject, relationEndPoint.OppositeEndPointDefinition);
@@ -475,7 +475,7 @@ public class ClientTransaction : ILinkChangeDelegate, IDisposable
 
   void ILinkChangeDelegate.PerformRemove (MultipleObjectsRelationLink link, DomainObject domainObject)
   {
-    RelationEndPoint relationEndPoint = new RelationEndPoint (GetObject (link.ID.ObjectID), link.ID.PropertyName);
+    RelationEndPoint relationEndPoint = new RelationEndPoint (link.ID.ObjectID, link.ID.PropertyName);
 
     RelationEndPoint removingEndPoint = new RelationEndPoint (
         domainObject, relationEndPoint.OppositeEndPointDefinition);

@@ -288,11 +288,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\CreateSingleObjectRelationLinkCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DataManagement\DataContainerCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -338,22 +333,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\RegisterInRelationEndPointCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\RelationEndPointCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\RelationEndPointIDTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\RelationEndPointListTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DataManagement\RelationEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\SingleObjectRelationLinkCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
