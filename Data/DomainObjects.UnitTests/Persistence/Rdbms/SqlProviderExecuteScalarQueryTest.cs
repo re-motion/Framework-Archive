@@ -80,5 +80,12 @@ public class SqlProviderExecuteScalarQueryTest: SqlProviderBaseTest
 
     Provider.ExecuteScalarQuery (query);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void ExecuteScalarQueryWithCollectionQuery ()
+  {
+    Provider.ExecuteScalarQuery (new Query ("OrderQuery"));
+  }
 }
 }
