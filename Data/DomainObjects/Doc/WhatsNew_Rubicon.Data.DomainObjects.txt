@@ -1,7 +1,17 @@
+1.2.14.0
+========
+
+- Neue Assembly Rubicon.Data.DomainObjects.CodeGenerator eingeführt.
+  Diese Assembly bietet Klassen zum automatischen Generieren des C# Source Codes eines Domain Models und der SQL Scripts für den Datenbankaufbau.
+
+
 1.2.13.0
 ========
 
-- Klasse PerformanceCounters wurde entfernt.
+- Klasse PerformanceCounters wurde entfernt, da die darunterliegende Windows API von Windows Server 2003 und Windows XP zum aktuellen Zeitpunkt
+  einen nicht behobenen Bug aufweist. Details siehe:
+  http://groups.google.at/groups?hl=de&lr=&newwindow=1&threadm=7%24tO0xvQEHA.3664%40cpmsftngxa10.phx.gbl&rnum=2&prev=/groups%3Fq%3D%2522Win32Exception%2522%2B%2522The%2Bdevice%2Bis%2Bnot%2Bready%2522%26hl%3Dde%26lr%3D%26newwindow%3D1%26selm%3D7%2524tO0xvQEHA.3664%2540cpmsftngxa10.phx.gbl%26rnum%3D2
+
 
 1.2.12.0
 ========
