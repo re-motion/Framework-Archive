@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <%@ Page language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" %>
+<%@ Register TagPrefix="cc1" Namespace="OBRTest" Assembly="OBRTest" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -13,17 +14,17 @@
   </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
-<h1>SingleTest TreeView</H1>
-<p><obc:boctreeview id=BocTreeView runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Children"></obc:boctreeview></P>
-<p>&nbsp;</P>
-<p><rubicon:webtreeview id=WebTreeView runat="server"></rubicon:webtreeview></P>
-<p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></P><rubicon:formgridmanager 
+<h1>SingleTest TreeView</h1>
+<p><cc1:PersonTreeView id="PersonTreeView" runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" EnableTopLevelExpander="False"></cc1:PersonTreeView></p>
+<p>&nbsp;</p>
+<p><rubicon:webtreeview id=WebTreeView runat="server" visible="False"></rubicon:webtreeview></p>
+<p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></p><rubicon:formgridmanager 
 id=FormGridManager 
 runat="server"></rubicon:formgridmanager>
 <p><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
-typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></P>
-<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label></p></FORM>
+typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
+<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label></p></form>
 	
   </body>
 </html>

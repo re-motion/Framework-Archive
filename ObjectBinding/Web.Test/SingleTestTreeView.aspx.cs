@@ -18,9 +18,9 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected System.Web.UI.WebControls.Label TreeViewLabel;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTreeView BocTreeView;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
+  protected OBRTest.PersonTreeView PersonTreeView;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
@@ -91,8 +91,15 @@ public class SingleTestTreeView : SingleBocTestBasePage
     nodes.Add (new WebTreeNode ("node42", "Node 4-2"));
     nodes.Add (new WebTreeNode ("node43", "Node 4-3"));
     ((WebTreeNode) WebTreeView.Nodes[4]).IsEvaluated = true;
+
+    WebTreeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
 	}
 	
+  private void EvaluateTreeNode (WebTreeNode node)
+  {
+    node.IsEvaluated = true;
+  }
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.

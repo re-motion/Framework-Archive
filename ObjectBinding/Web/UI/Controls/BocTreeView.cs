@@ -51,7 +51,8 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     _treeView.ID = ID + "_Boc_TreeView";
     _treeView.Click += new WebTreeNodeClickEventHandler(TreeView_Click);
-    _treeView.EvaluateTreeNode += new EvaluateWebTreeNode (EvaluateTreeNode);
+    _treeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
+    _treeView.SetCreateRootTreeNodesDelegate (new CreateRootWebTreeNodes (CreateRootTreeNodes));
     Controls.Add (_treeView);
   }
 
@@ -98,13 +99,24 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     _treeView.Width = Width;
     _treeView.Height = Height;
-    foreach (IBusinessObjectWithIdentity businessObject in Value)
-      CreateRootNode (Nodes, businessObject, ! EnableTopLevelExpander);
+  }
+
+  private void CreateRootTreeNodes()
+  {
+    if (Value != null)
+    {
+      foreach (IBusinessObjectWithIdentity businessObject in Value)
+        CreateRootNode (Nodes, businessObject, ! EnableTopLevelExpander);
+    }
+    else
+    {
+      CreateRootNode (Nodes, (IBusinessObjectWithIdentity) DataSource.BusinessObject, ! EnableTopLevelExpander);
+    }
   }
 
   private void EvaluateTreeNode (WebTreeNode node)
   {
-    ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+    ArgumentUtility.CheckNotNull ("node", node);
 
     BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
     BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
@@ -125,17 +137,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     BusinessObjectTreeNode rootNode = CreateBusinessObjectNode (rootBusinessObject);
     rootNodes.Add (rootNode);
     if (expandNode)
-    {
-      //CreateAppendBusinessObjectNodeChildren (rootNode);
-      rootNode.IsExpanded = true;
-    }
+      rootNode.EvaluateExpand();
     else
       rootNode.IsEvaluated = false;
   }
 
   private void CreateAppendBusinessObjectNodeChildren (BusinessObjectTreeNode businessObjectNode)
   {
-    IBusinessObjectWithIdentity businessObject = businessObjectNode.BusinessObject;
+    IBusinessObject businessObject = businessObjectNode.BusinessObject;
     BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos = GetPropertyNodes (businessObject);
     if (propertyNodeInfos == null)
     {
@@ -171,9 +180,15 @@ public class BocTreeView: BusinessObjectBoundWebControl
       IBusinessObjectReferenceProperty property)
   {
     IList children = (IList) parentBusinessObject.GetProperty (property);
-    foreach (IBusinessObjectWithIdentity childBusinessObject in children)
+    for (int i = 0; i < children.Count; i++)
     {
-      BusinessObjectTreeNode childNode = CreateBusinessObjectNode (childBusinessObject);
+      IBusinessObject childBusinessObject = (IBusinessObject) children[i];
+      
+      BusinessObjectTreeNode childNode;
+      if (childBusinessObject is IBusinessObjectWithIdentity)
+        childNode = CreateBusinessObjectNode ((IBusinessObjectWithIdentity)childBusinessObject);
+      else
+        childNode = CreateBusinessObjectNode (childBusinessObject, i);
       businessObjectNodes.Add (childNode);
     }
   }
@@ -195,10 +210,22 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
 
+  private BusinessObjectTreeNode CreateBusinessObjectNode (IBusinessObject businessObject, int index)
+  {
+    string id = index.ToString();
+    string text = businessObject.ToString();
+    return CreateBusinessObjectNode (businessObject, id, text);
+  }
+
   private BusinessObjectTreeNode CreateBusinessObjectNode (IBusinessObjectWithIdentity businessObject)
   {
     string id = businessObject.UniqueIdentifier;
     string text = businessObject.DisplayName;
+    return CreateBusinessObjectNode (businessObject, id, text);
+  }
+
+  private BusinessObjectTreeNode CreateBusinessObjectNode (IBusinessObject businessObject, string id, string text)
+  {
     IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
         businessObject, 
         businessObject.BusinessObjectClass.BusinessObjectProvider);
@@ -322,14 +349,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
     get { return _treeView.EnableTopLevelExpander; }
     set { _treeView.EnableTopLevelExpander = value; }
   }
-
-//  [Browsable (false)]
-//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-//  public EvaluateWebTreeNode EvaluateTreeNode
-//  {
-//    get { return _treeView.EvaluateTreeNode; }
-//    set { _treeView.EvaluateTreeNode = value; }
-//  }
 
   /// <summary> Occurs when a node is clicked. </summary>
   [Category ("Action")]

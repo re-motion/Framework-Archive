@@ -36,7 +36,7 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   #endregion
 
   /// <summary> The separator used for the node path. </summary>
-  private const char c_pathSeparator = '|';
+  private const char c_pathSeparator = '\t';
   /// <summary> The prefix for the expansion command. </summary>
   private const string c_expansionCommandPrefix = "Expand=";
   /// <summary> The prefix for the click command. </summary>
@@ -72,19 +72,15 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   private WebTreeNodeCollection _nodes;
 
   private bool _enableTopLevelExpander = true;
+  private bool _hasTreeNodesCreated = false;
 
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
   ///   is expanded.
   /// </summary>
-  /// <exception cref="NullReferenceException">
-  ///   Thrown by the caller if no method is registered for this delegate but a node with 
-  ///   <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/> is going to be expanded.
-  /// </exception>
-  /// <exception cref="InvalidOperationException"> 
-  ///   Thrown by the caller if the registered method has not set the <see cref="WebTreeNode.IsEvaluated"/> flag.
-  /// </exception>
-  public EvaluateWebTreeNode EvaluateTreeNode;
+  private EvaluateWebTreeNode _evaluateTreeNode;
+
+  private CreateRootWebTreeNodes _createRootTreeNodes;
 
   //  construction and destruction
 
@@ -108,9 +104,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+    EnsureTreeNodesCreated();
 
     eventArgument = eventArgument.Trim();
-
     if (eventArgument.StartsWith (c_expansionCommandPrefix))
       HandleEventExpansionCommand (eventArgument.Substring (c_expansionCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_clickCommandPrefix))
@@ -154,6 +150,16 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     }
   }
 
+  public void SetEvaluateTreeNodeDelegate (EvaluateWebTreeNode evaluateTreeNode)
+  {
+    _evaluateTreeNode = evaluateTreeNode;
+  }
+
+  public void SetCreateRootTreeNodesDelegate (CreateRootWebTreeNodes createRootTreeNodes)
+  {
+    _createRootTreeNodes = createRootTreeNodes;
+  }
+
   //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
   //  public void CollapseAll()
   //  {
@@ -165,6 +171,20 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   //  {
   //    _nodes.SetExpansion (true);
   //  }
+
+  private void EnsureTreeNodesCreated()
+  {
+    if (_hasTreeNodesCreated)
+      return;
+
+    if (_createRootTreeNodes != null) 
+      _createRootTreeNodes();
+
+    if (_nodeViewStates != null)
+      LoadNodeViewStateRecursive (_nodeViewStates, _nodes);
+
+    _hasTreeNodesCreated = true;
+  }
 
   /// <summary>
   ///   Calles the delegate <see cref="EvaluateTreeNode"/> with the passed <paramref name="node"/>.
@@ -178,9 +198,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   /// </exception>
   protected internal void EvaluateTreeNodeInternal (WebTreeNode node)
   {
-    if (EvaluateTreeNode == null) 
+    if (_evaluateTreeNode == null) 
       throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + node.NodeID + "' is not evaluated.");
-    EvaluateTreeNode (node);
+    _evaluateTreeNode (node);
     if (! node.IsEvaluated) 
       throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.NodeID + "' but did not evaluate the tree node.");
   }
@@ -196,6 +216,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
           this, Context, typeof (DropDownMenu), ResourceType.Html, "TreeView.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
     }
+
+    EnsureTreeNodesCreated();
+    
     base.OnPreRender (e);
   }
 
@@ -207,8 +230,9 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
     object[] values = (object[]) savedState;
     
     base.LoadViewState (values[0]);
-    LoadNodeViewStateRecursive (values[1], _nodes);
+    _nodeViewStates = (Triplet[]) values[1];
   }
+  private Triplet[] _nodeViewStates;
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
@@ -223,9 +247,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
   }
 
   /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="viewState"/>. </summary>
-  private void LoadNodeViewStateRecursive (object viewState, WebTreeNodeCollection nodes)
+  private void LoadNodeViewStateRecursive (Triplet[] nodeViewStates, WebTreeNodeCollection nodes)
   {
-    Triplet[] nodeViewStates = (Triplet[]) viewState;
     foreach (Triplet nodeViewState in nodeViewStates)
     {
       string nodeID = (string) nodeViewState.First;
@@ -234,14 +257,18 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
       {
         object[] values = (object[]) nodeViewState.Second;
         node.IsExpanded = (bool) values[0];
-        node.IsEvaluated = (bool) values[1];
-        LoadNodeViewStateRecursive (nodeViewState.Third, node.Children);
+        bool isEvaluated = (bool) values[1];
+        if (isEvaluated && ! node.IsEvaluated)
+          EvaluateTreeNodeInternal (node);
+        else
+          node.IsEvaluated = false;
+        LoadNodeViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
       }
     }
   }
 
   /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
-  private object SaveNodeViewStateRecursive (WebTreeNodeCollection nodes)
+  private Triplet[] SaveNodeViewStateRecursive (WebTreeNodeCollection nodes)
   {
     Triplet[] nodeViewStates = new Triplet[nodes.Count];
     for (int i = 0; i < nodes.Count; i++)
@@ -640,6 +667,8 @@ public class WebTreeView : WebControl, IControl, IPostBackEventHandler
 ///   set to <see langword="false"/> is expanded.
 /// </summary>
 public delegate void EvaluateWebTreeNode (WebTreeNode expandingNode);
+
+public delegate void CreateRootWebTreeNodes();
 
 /// <summary> Represents the method that handles the <c>Click</c> event raised when clicking on a tree node. </summary>
 public delegate void WebTreeNodeClickEventHandler (object sender, WebTreeNodeClickEventArgs e);
