@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
