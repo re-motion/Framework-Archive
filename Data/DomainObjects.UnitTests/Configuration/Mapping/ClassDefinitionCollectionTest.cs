@@ -121,5 +121,27 @@ public class ClassDefinitionCollectionTest
   {
     _collection.Contains ((ClassDefinition) null);
   }
+
+  [Test]
+  public void ContainsClassID ()
+  {
+    _collection.Add (_classDefinition);
+    Assert.IsTrue (_collection.Contains (_classDefinition.ID));
+  }
+
+  [Test]
+  public void AddTwiceWithSameClassID ()
+  {
+    _collection.Add (_classDefinition);
+    try
+    {
+      _collection.Add (new ClassDefinition ("Order", "Order", typeof (Customer), DatabaseTest.c_testDomainProviderID));
+      Assert.Fail ("Expected an ArgumentException.");
+    }
+    catch (ArgumentException)
+    {
+      Assert.IsFalse (_collection.Contains (typeof (Customer)));
+    }
+  }
 }
 }

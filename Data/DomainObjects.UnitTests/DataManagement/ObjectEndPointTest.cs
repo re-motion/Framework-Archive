@@ -117,7 +117,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
     Assert.IsNotNull (endPointDefinition);
 
     Assert.AreSame (
-      MappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem"), 
+      MappingConfiguration.Current.ClassDefinitions["OrderItem"], 
       endPointDefinition.ClassDefinition);
 
     Assert.AreEqual ("Order", endPointDefinition.PropertyName);
@@ -130,7 +130,7 @@ public class ObjectEndPointTest : RelationEndPointBaseTest
     Assert.IsNotNull (oppositeEndPointDefinition);
 
     Assert.AreSame (
-      MappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"),
+      MappingConfiguration.Current.ClassDefinitions["Order"],
       oppositeEndPointDefinition.ClassDefinition);
 
     Assert.AreEqual ("OrderItems", oppositeEndPointDefinition.PropertyName);

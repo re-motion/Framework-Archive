@@ -33,8 +33,8 @@ public class RelationDefinitionTest
   [SetUp]
   public void Setup ()
   {
-    _customerClass = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Customer");
-    _orderClass = TestMappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order");
+    _customerClass = TestMappingConfiguration.Current.ClassDefinitions["Customer"];
+    _orderClass = TestMappingConfiguration.Current.ClassDefinitions["Order"];
     _customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["CustomerToOrder"];
     _customerEndPoint = (VirtualRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
     _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];

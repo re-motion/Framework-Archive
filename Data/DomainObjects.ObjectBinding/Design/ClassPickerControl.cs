@@ -143,7 +143,7 @@ public class ClassPickerControl: System.Windows.Forms.UserControl
   {
     if (ClassList.SelectedItem != null)
     {
-      Type classType = MappingConfiguration.Current.ClassDefinitions.GetByClassID (ClassList.SelectedItem.ToString ()).ClassType;
+      Type classType = MappingConfiguration.Current.ClassDefinitions[ClassList.SelectedItem.ToString ()].ClassType;
       _value = string.Format ("{0}, {1}", classType.FullName, classType.Assembly.GetName().Name);
     }
 
