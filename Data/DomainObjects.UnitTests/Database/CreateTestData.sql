@@ -153,30 +153,30 @@ insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [Ind
 -- Order
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'Order', 1, '2005/01/01', 
-    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'Official|1|System.Int32')
     
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{83445473-844A-4d3f-A8C3-C27F8D98E8BA}', 'Order', 3, '2005/03/01', 
-    '{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    '{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'Official|1|System.Int32')
 
 -- No OrderItem points to this Order => This leads to a PersistenceException when navigating over relation
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{F4016F41-F4E4-429e-B8D1-659C8C480A67}', 'Order', 2, '2005/02/01', 
-    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'Official|1|System.Int32')
 
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}', 'Order', 4, '2006/02/01', 
-    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Official|1|System.Int32')
 
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{90E26C86-611F-4735-8D1B-E1D0918515C2}', 'Order', 5, '2006/03/01', 
-    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'UnitTestStorageProviderStub|Official|1|System.Int32')
+    '{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Official|1|System.Int32')
 
 -- This order does not conform to mapping: CustomerIDClassID is invalid, no OrderTicket points to this Order and
 -- this Order has no OrderItems and the Official does not exist
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
     values ('{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Order', 6, '2006/03/01', 
-    '{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Company', 'UnitTestStorageProviderStub|Official|-1|System.Int32')
+    '{DA658F26-8107-44ce-9DD0-1804503ECCAF}', 'Company', 'Official|-1|System.Int32')
 
 
 -- OrderItem
