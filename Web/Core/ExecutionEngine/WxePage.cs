@@ -32,27 +32,42 @@ public class WxePageInfo: WxeTemplateControlInfo
     }
   }
 
+  private bool _postbackCollectionInitialized = false;
+  private NameValueCollection _postbackCollection = null;
+
   public NameValueCollection DeterminePostBackMode (HttpContext context)
   {
-    if (! WxeContext.Current.IsPostBack)
-      return null;
+    if (! _postbackCollectionInitialized)
+    {
+      if (! WxeContext.Current.IsPostBack)
+      {
+        _postbackCollection = null;
+      }
+      else if (WxeContext.Current.PostBackCollection != null)
+      {
+        _postbackCollection = WxeContext.Current.PostBackCollection;
+      }
+      else if (context.Request == null)
+      {
+        _postbackCollection = null;
+      }
+      else
+      {
+        NameValueCollection collection;
+        if (0 == string.Compare (context.Request.HttpMethod, "POST", false, CultureInfo.InvariantCulture))
+          collection = context.Request.Form;
+        else
+          collection = context.Request.QueryString;
 
-    if (WxeContext.Current.PostBackCollection != null)
-      return WxeContext.Current.PostBackCollection;
+        if ((collection["__VIEWSTATE"] == null) && (collection["__EVENTTARGET"] == null))
+          _postbackCollection = null;
+        else
+          _postbackCollection = collection;
+      }
 
-    if (context.Request == null)
-      return null;
-
-    NameValueCollection collection;
-    if (0 == string.Compare (context.Request.HttpMethod, "POST", false, CultureInfo.InvariantCulture))
-      collection = context.Request.Form;
-    else
-      collection = context.Request.QueryString;
-
-    if ((collection["__VIEWSTATE"] == null) && (collection["__EVENTTARGET"] == null))
-      return null;
-
-    return collection;
+      _postbackCollectionInitialized = true;
+    }
+    return _postbackCollection;
   }  
 }
 
