@@ -13,8 +13,27 @@ public interface IBusinessObjectDataSource
   void Register (IBusinessObjectBoundControl control);
   void Unregister (IBusinessObjectBoundControl control);
 
-  void LoadValues ();
-  void SaveValues ();
+  /// <summary>
+  ///   Load the values of the business object into all registered controls.
+  /// </summary>
+  /// <remarks>
+  ///   On initial loads, all values must be loaded. On interim loads, each control decides whether it keeps its own 
+  ///   value (e.g., using view state) or whether it reloads the value (useful for complex structures that need no 
+  ///   validation).
+  /// </remarks>
+  /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+  void LoadValues (bool interim);
+
+  /// <summary>
+  ///   Save the values of the business object from all registered controls.
+  /// </summary>
+  /// <remarks>
+  ///   On final saves, all values must be saved. (It is assumed that invalid values were already identified using 
+  ///   validators.) On interim saves, each control decides whether it saves its values into the business object or
+  ///   using an alternate mechanism (e.g. view state).
+  /// </remarks>
+  /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
+  void SaveValues (bool interim);
 
   IBusinessObject BusinessObject { get; set; }
   IBusinessObjectClass BusinessObjectClass { get; }
@@ -54,16 +73,16 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
       _boundControls.Remove (control);
   }
 
-  public void LoadValues ()
+  public void LoadValues (bool interim)
   {
     if (_boundControls != null)
     {
       foreach (IBusinessObjectBoundControl control in _boundControls)
-        control.LoadValue ();
+        control.LoadValue (interim);
     }
   }
 
-  public void SaveValues ()
+  public void SaveValues (bool interim)
   {
     if (_boundControls != null)
     {
@@ -71,7 +90,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
       {
         IBusinessObjectBoundModifiableControl writeableControl = control as IBusinessObjectBoundModifiableControl;
         if (writeableControl != null)
-          writeableControl.SaveValue ();
+          writeableControl.SaveValue (interim);
       }
     }
   }
