@@ -1,8 +1,8 @@
-<%@ Register TagPrefix="iuc" TagName="CompleteBocTestUserControl" Src="CompleteBocTestUserControl.ascx" %>
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm" smartNavigation="True"%>
+<%@ Register TagPrefix="iuc" TagName="CompleteBocTestUserControl" Src="CompleteBocTestUserControl.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -27,7 +27,7 @@
 style="BORDER-RIGHT: black 2px solid; PADDING-LEFT: 1em; BORDER-LEFT: black 1px solid; WIDTH: 100%; BORDER-BOTTOM: black 2px solid; HEIGHT: 20em" 
 cellpadding="0" ?>
   <tr>
-    <td style="vertical-align:top;">
+    <td style="VERTICAL-ALIGN:top">
       <rwc:multipage id=PagesMultiPage runat="server" SelectedIndex="-1"></rwc:multipage></td></tr></table></div><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></form>
   </body>
 </html>
