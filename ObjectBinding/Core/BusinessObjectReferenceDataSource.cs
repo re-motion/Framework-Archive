@@ -168,6 +168,18 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   {
     get { return _dataSource; }
   }
+
+  [Browsable (false)]
+  public bool IsValid
+  {
+    get 
+    { 
+      if (_dataSource == null || _property == null)
+        return true;
+
+      return _property.IsAccessible (_dataSource.BusinessObjectClass, _dataSource.BusinessObject);
+    }
+  }
 }
 
 }
