@@ -1,3 +1,8 @@
+1.2.13.0
+========
+
+- Klasse PerformanceCounters wurde entfernt.
+
 1.2.12.0
 ========
 
@@ -15,6 +20,7 @@
 
 - Basisklasse für alle Konfigurationsklassen (Mapping, StorageProviders, Queries) eingeführt. Neue Eigenschaft ApplicationName eingeführt.
 
+- Neue Klasse PerformanceCounters mit Methoden zum Installieren und Deinstallieren der Performance Counter eingeführt.
 
 <= 1.2.10.0
 ===========
