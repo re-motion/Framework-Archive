@@ -128,11 +128,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataContainerCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DomainObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -345,6 +340,11 @@
                 />
                 <File
                     RelPath = "DataManagement\CollectionEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\DataContainerCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
