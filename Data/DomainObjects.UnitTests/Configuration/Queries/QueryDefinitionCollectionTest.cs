@@ -43,7 +43,7 @@ public class QueryDefinitionCollectionTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException), 
-      "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: value")]
+      "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition")]
   public void DuplicateQueryIDs ()
   {
     _collection.Add (_definition);
