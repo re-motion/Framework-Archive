@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects
 {
 public class CollectionBase : ICollection
