@@ -645,7 +645,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary>
   ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using it's ClientID.
+  ///   using its ClientID.
   /// </summary>
   public override Control TargetControl 
   {

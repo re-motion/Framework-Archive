@@ -512,7 +512,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
   /// <summary>
   ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using it's ClientID.
+  ///   using its ClientID.
   /// </summary>
   public override Control TargetControl 
   {
@@ -642,10 +642,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
 
 /// <summary>
 ///   A special version of the <see cref="HtmlInputHidden"/> control that can raise a data changed
-///   event when it's contents has been modified.
+///   event when its contents has been modified.
 /// </summary>
 /// <remarks>
-///   .net 2.0 will provide such a control in it's class library.
+///   .net 2.0 will provide such a control in its class library.
 /// </remarks>
 internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
 {
