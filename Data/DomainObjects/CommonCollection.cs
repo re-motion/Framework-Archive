@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-//TODO documentation: comment this class
+//TODO documentation: Write summary for class
 public class CollectionBase : ICollection
 {
   // types
