@@ -60,9 +60,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formserver", "http://localh
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection.Test", "ObjectBinding\Reflection.Test\ObjectBinding.Reflection.Test.csproj", "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 15
+		SccNumberOfProjects = 16
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -125,6 +129,10 @@ Global
 		SccLocalPath14 = ..\\..\\prototypes\\formserver
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice14 = 2
+		SccProjectUniqueName15 = ObjectBinding\\Reflection.Test\\ObjectBinding.Reflection.Test.csproj
+		SccProjectName15 = \u0022$/libraries/Commons/ObjectBinding/Reflection.Test\u0022,\u0020TIABAAAA
+		SccLocalPath15 = ObjectBinding\\Reflection.Test
+		CanCheckoutShared = false
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -185,6 +193,10 @@ Global
 		{7A044777-3884-4107-BDC6-F475D205174F}.Debug.Build.0 = Debug|.NET
 		{7A044777-3884-4107-BDC6-F475D205174F}.Release.ActiveCfg = Release|.NET
 		{7A044777-3884-4107-BDC6-F475D205174F}.Release.Build.0 = Release|.NET
+		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Debug.ActiveCfg = Debug|.NET
+		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Debug.Build.0 = Debug|.NET
+		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Release.ActiveCfg = Release|.NET
+		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
