@@ -1,3 +1,10 @@
+3.0.5.1
+=======
+
+- Bei Klassen Form, NavigablePage, Standardpage u. PageUtility: Bei allen Script-tags type="text/javascript" angeben ->
+    HTML 4.0 Konformität hauptsächlich für eGovernment Gütesiegel
+    
+
 3.0.5.0
 =======
 
