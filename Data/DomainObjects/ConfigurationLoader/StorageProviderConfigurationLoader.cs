@@ -19,9 +19,9 @@ public class StorageProviderConfigurationLoader : BaseLoader
   {
     return new StorageProviderConfigurationLoader (
       LoaderUtility.GetXmlFileName (
-          "Rubicon.Data.DomainObjects.StorageProviderConfigurationFile", c_defaultConfigurationFile),
+          "Rubicon.Data.DomainObjects.Configuration.StorageProviderConfigurationFile", c_defaultConfigurationFile),
       LoaderUtility.GetXmlFileName (
-          "Rubicon.Data.DomainObjects.StorageProviderSchemaFile", c_defaultSchemaFile));
+          "Rubicon.Data.DomainObjects.Configuration.StorageProviderSchemaFile", c_defaultSchemaFile));
   }
 
   // member fields
