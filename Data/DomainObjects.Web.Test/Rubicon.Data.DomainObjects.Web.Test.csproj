@@ -182,6 +182,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "bin\queries.xsd"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "bin\storageProviders.xml"
                     BuildAction = "Content"
                 />
