@@ -41,5 +41,11 @@ public class MappingConfigurationTest
       MappingConfiguration.SetCurrent (null);
     }
   }
+
+  [Test]
+  public void ApplicationName ()
+  {
+    Assert.AreEqual ("UnitTests", MappingConfiguration.Current.ApplicationName);
+  }
 }
 }
