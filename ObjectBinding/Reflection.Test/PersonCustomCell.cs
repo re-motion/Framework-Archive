@@ -7,7 +7,7 @@ namespace OBRTest
 {
 public class PersonCustomCell: IBocCustomColumnDefinitionCell
 {
-  public PersonCustomCell (string argument)
+  public PersonCustomCell ()
   {
   }
 
@@ -25,11 +25,13 @@ public class PersonCustomCell: IBocCustomColumnDefinitionCell
       IBusinessObject businessObject, 
       BocCustomColumnDefinition columnDefiniton, 
       int columnIndex, 
-      int listIndex)
+      int listIndex,
+      string onClick)
   {
     writer.AddAttribute (
         HtmlTextWriterAttribute.Href, 
         list.GetCustomCellPostBackClientHyperlink (columnIndex, listIndex, "1"));
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("1 <br>");
     writer.RenderEndTag();
@@ -37,6 +39,7 @@ public class PersonCustomCell: IBocCustomColumnDefinitionCell
     writer.AddAttribute (
         HtmlTextWriterAttribute.Href, 
         list.GetCustomCellPostBackClientHyperlink (columnIndex, listIndex, "2"));
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("2 <br>");
     writer.RenderEndTag();
