@@ -17,12 +17,9 @@
   6.	buildversion.xml auschecken
   7.	.net Kommandozeile: nant incversion
   8.	buildversion.xml einchecken
-  9.	Source Safe Label mit der Versionsnummer vergeben (angen‰herter Stand).
-  10.	Solution schlieﬂen
-  11.	.net Kommandozeile: buildall [nodoc]
-  12a.	Falls die Solution in NAnt erfolgreich kompiliert
-      Einchecken von: C:\Development\libraries\Commons\build\VERSION
-      RubiconCommons_VERSION.zip und RubiconCommons_SourceCode_VERSION.zip
-      nach SourceSafe rubicon\libraries\Commons\build.
-  12b.	Falls bei NAnt Kompilierungsfehler auftreten, diese beheben, neu einchecken und das
-      Source Safe Label neu vergeben. Anschlieﬂend zur¸ck zu Punkt 11.
+  9.	Solution schlieﬂen
+  10.	.net Kommandozeile: buildall [nodoc]
+  11.   Einchecken von: C:\Development\libraries\Commons\build\<VERSION>
+  12.   RubiconCommons_VERSION.zip und RubiconCommons_SourceCode_<VERSION>.zip
+        nach SourceSafe rubicon\libraries\Commons\build.
+  13.   Source Safe Label mit der Versionsnummer vergeben (angen‰herter Stand).
