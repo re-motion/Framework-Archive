@@ -7,6 +7,72 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding
 {
 
+public abstract class BusinessObjectReferenceDataSourceBase: BusinessObjectDataSource, IBusinessObjectDataSource
+{
+  [CLSCompliant (false)]
+  protected IBusinessObject _businessObject;
+
+  [CLSCompliant (false)]
+  protected bool _businessObjectChanged = false;
+
+  public void LoadValue (bool interim)
+  {
+    // load value from "parent" data source
+    if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null)
+    {
+      _businessObject = (IBusinessObject) ReferencedDataSource.BusinessObject[ReferenceProperty];
+      _businessObjectChanged = false;
+    }
+
+    // load values into "child" controls
+    LoadValues (interim);
+  }
+
+  public void SaveValue (bool interim)
+  {
+    // save values from "child" controls
+    SaveValues (interim);
+
+    // if required, save value into "parent" data source
+    if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null 
+        && ReferenceProperty.ReferenceClass != null 
+        && (_businessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
+    {
+      ReferencedDataSource.BusinessObject[ReferenceProperty] = _businessObject;
+      _businessObjectChanged = false;
+    }
+  }
+
+  public bool SupportsProperty (IBusinessObjectProperty property)
+  {
+    return property is IBusinessObjectReferenceProperty;
+  }
+
+  public override IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+    set { _businessObject = value; }
+  }
+
+  public override IBusinessObjectClass BusinessObjectClass
+  {
+    get 
+    { 
+      IBusinessObjectReferenceProperty property = ReferenceProperty;
+      return (property == null) ? null : property.ReferenceClass; 
+    }
+  }
+
+  public override IBusinessObjectProvider BusinessObjectProvider
+  {
+    get { return (ReferencedDataSource == null) ? null : ReferencedDataSource.BusinessObjectProvider; }
+  }
+
+  public abstract IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
+
+  public abstract IBusinessObjectDataSource ReferencedDataSource { get; }
+}
+
 /// <summary>
 ///   This data source provides access to the objects returned by other data sources's using the specified property.
 /// </summary>
@@ -16,11 +82,8 @@ namespace Rubicon.ObjectBinding
 ///   <see cref="IBusinessObjectDataSource.BusinessObject"/> and <see cref="IBusinessObjectBoundControl.Value"/>
 ///   are always identical.
 /// </remarks>
-public class BusinessObjectReferenceDataSource: BusinessObjectDataSource, IBusinessObjectDataSource, IBusinessObjectBoundModifiableControl
+public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase, IBusinessObjectBoundModifiableControl
 {
-  private IBusinessObject _businessObject;
-  private bool _businessObjectChanged = false;
-
   private IBusinessObjectDataSource _dataSource;
   private string _propertyIdentifier;
   private IBusinessObjectReferenceProperty _property;
@@ -54,7 +117,7 @@ public class BusinessObjectReferenceDataSource: BusinessObjectDataSource, IBusin
   }
 
   [Browsable(false)]
-  public IBusinessObjectProperty Property
+  IBusinessObjectProperty IBusinessObjectBoundControl.Property
   {
     get { return ReferenceProperty; }
     set 
@@ -64,7 +127,7 @@ public class BusinessObjectReferenceDataSource: BusinessObjectDataSource, IBusin
   }
 
   [Browsable(false)]
-  public IBusinessObjectReferenceProperty ReferenceProperty
+  public override IBusinessObjectReferenceProperty ReferenceProperty
   {
     get 
     { 
@@ -95,57 +158,9 @@ public class BusinessObjectReferenceDataSource: BusinessObjectDataSource, IBusin
     }
   }
 
-  public void LoadValue (bool interim)
+  public override IBusinessObjectDataSource ReferencedDataSource
   {
-    // load value from "parent" data source
-    if (_dataSource != null && _dataSource.BusinessObject != null && ReferenceProperty != null)
-    {
-      _businessObject = (IBusinessObject) _dataSource.BusinessObject[ReferenceProperty];
-      _businessObjectChanged = false;
-    }
-
-    // load values into "child" controls
-    LoadValues (interim);
-  }
-
-  public void SaveValue (bool interim)
-  {
-    // save values from "child" controls
-    SaveValues (interim);
-
-    // if required, save value into "parent" data source
-    if (_dataSource != null && _dataSource.BusinessObject != null && ReferenceProperty != null 
-        && ReferenceProperty.ReferenceClass != null 
-        && (_businessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
-    {
-      _dataSource.BusinessObject[ReferenceProperty] = _businessObject;
-      _businessObjectChanged = false;
-    }
-  }
-
-  public bool SupportsProperty (IBusinessObjectProperty property)
-  {
-    return property is IBusinessObjectReferenceProperty;
-  }
-
-  public override IBusinessObject BusinessObject
-  {
-    get { return _businessObject; }
-    set { _businessObject = value; }
-  }
-
-  public override IBusinessObjectClass BusinessObjectClass
-  {
-    get 
-    { 
-      IBusinessObjectReferenceProperty property = ReferenceProperty;
-      return (property == null) ? null : property.ReferenceClass; 
-    }
-  }
-
-  public override IBusinessObjectProvider BusinessObjectProvider
-  {
-    get { return (_dataSource == null) ? null : _dataSource.BusinessObjectProvider; }
+    get { return _dataSource; }
   }
 }
 

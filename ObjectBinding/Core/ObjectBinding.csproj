@@ -137,6 +137,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "BusinessObjectReferenceDataSource.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IBusinessObjectBoundControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -149,11 +154,6 @@
                 <File
                     RelPath = "ObjectBinding.build"
                     BuildAction = "None"
-                />
-                <File
-                    RelPath = "PropertyBusinessObjectDataSource.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Design\BindingExpression.cs"
