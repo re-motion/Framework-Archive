@@ -3,6 +3,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Configuration.Loader
 {
 public class BaseLoader
