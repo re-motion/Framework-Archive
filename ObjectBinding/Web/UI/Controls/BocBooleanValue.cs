@@ -374,34 +374,44 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
       }
 
-      key = typeof (BocBooleanValue).FullName+ "_Startup";
-      if (! Page.IsStartupScriptRegistered (key))
+      if (Enabled)
       {
-        string trueValue = NaBoolean.True.ToString();
-        string falseValue = NaBoolean.False.ToString();
-        string nullValue = NaBoolean.Null.ToString();
+        key = typeof (BocBooleanValue).FullName+ "_Startup";
+        if (! Page.IsStartupScriptRegistered (key))
+        {
+          string trueValue = NaBoolean.True.ToString();
+          string falseValue = NaBoolean.False.ToString();
+          string nullValue = NaBoolean.Null.ToString();
 
-        script = string.Format (
-            "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');",
-            trueValue, falseValue, nullValue, 
-            defaultTrueDescription, defaultFalseDescription, defaultNullDescription, 
-            trueIconUrl, falseIconUrl, nullIconUrl);
-        PageUtility.RegisterStartupScriptBlock (Page, key, script);
+          script = string.Format (
+              "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');",
+              trueValue, falseValue, nullValue, 
+              defaultTrueDescription, defaultFalseDescription, defaultNullDescription, 
+              trueIconUrl, falseIconUrl, nullIconUrl);
+          PageUtility.RegisterStartupScriptBlock (Page, key, script);
+        }
       }
 
-      string requiredFlag = IsRequired ? "true" : "false";
-      string imageButton = "document.getElementById ('" + _imageButton.ClientID + "')";
-      string label = _showDescription ? "document.getElementById ('" + _label.ClientID + "')" : "null";
-      string hiddenField = "document.getElementById ('" + _hiddenField.ClientID + "')";
-      script = "BocBooleanValue_SelectNextCheckboxValue (" 
-          + imageButton + ", " 
-          + label + ", " 
-          + hiddenField + ", "
-          + requiredFlag + ", "
-          + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
-          + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ", "
-          + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");"
-          + "return false;";
+      if (Enabled)
+      {
+        string requiredFlag = IsRequired ? "true" : "false";
+        string imageButton = "document.getElementById ('" + _imageButton.ClientID + "')";
+        string label = _showDescription ? "document.getElementById ('" + _label.ClientID + "')" : "null";
+        string hiddenField = "document.getElementById ('" + _hiddenField.ClientID + "')";
+        script = "BocBooleanValue_SelectNextCheckboxValue (" 
+            + imageButton + ", " 
+            + label + ", " 
+            + hiddenField + ", "
+            + requiredFlag + ", "
+            + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
+            + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ", "
+            + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");"
+            + "return false;";
+      }
+      else
+      {
+        script = "return false;";
+      }
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
     }
