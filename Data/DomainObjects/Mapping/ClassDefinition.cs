@@ -122,7 +122,23 @@ public class ClassDefinition
   {
     ArrayList relationEndPointDefinitions = new ArrayList ();
 
-    foreach (RelationDefinition relationDefinition in GetAllRelationDefinitions ())
+    foreach (IRelationEndPointDefinition relationEndPointDefinition in GetRelationEndPointDefinitions ())
+      relationEndPointDefinitions.Add (relationEndPointDefinition);
+
+    if (_baseClass != null)
+    {
+      foreach (IRelationEndPointDefinition baseRelationEndPointDefinition in _baseClass.GetAllRelationEndPointDefinitions ())
+        relationEndPointDefinitions.Add (baseRelationEndPointDefinition);
+    }
+
+    return (IRelationEndPointDefinition[]) relationEndPointDefinitions.ToArray (typeof (IRelationEndPointDefinition));
+  }
+
+  public IRelationEndPointDefinition[] GetRelationEndPointDefinitions ()
+  {
+    ArrayList relationEndPointDefinitions = new ArrayList ();
+
+    foreach (RelationDefinition relationDefinition in _relationDefinitions)
     {
       foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
       {
