@@ -137,8 +137,8 @@ public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
   IEnumerationValueInfo[] GetAllValues ();
   IEnumerationValueInfo[] GetEnabledValues ();
 
-  IEnumerationValueInfo GetValueInfo (object value);
-  IEnumerationValueInfo GetValueInfo (string identifier);
+  IEnumerationValueInfo GetValueInfoByValue (object value);
+  IEnumerationValueInfo GetValueInfoByIdentifier (string identifier);
 }
 
 public interface IEnumerationValueInfo
