@@ -218,31 +218,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Queries\QueryConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ConfigurationLoader\BaseLoader.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -588,6 +563,31 @@
                 />
                 <File
                     RelPath = "Queries\QueryParameterType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\Configuration\QueryConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\Configuration\QueryConfigurationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\Configuration\QueryDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\Configuration\QueryDefinitionCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Queries\Configuration\QueryType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

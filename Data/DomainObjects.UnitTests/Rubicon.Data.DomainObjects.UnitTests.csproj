@@ -641,12 +641,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Persistence\SqlProviderLoadByIDTest.cs"
+                    RelPath = "Persistence\SqlProviderLoadDataContainersByRelatedID.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Persistence\SqlProviderLoadDataContainersByRelatedID.cs"
+                    RelPath = "Persistence\SqlProviderLoadDataContainerTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
