@@ -1,3 +1,9 @@
+1.2.7.0
+=======
+
+- TabControl:
+  * 2 neue Properties "SelectedTab" und "SelectedMenu"
+
 1.2.6.0
 =======
 
