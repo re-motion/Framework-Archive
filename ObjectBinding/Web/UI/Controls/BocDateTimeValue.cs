@@ -696,9 +696,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
         if (imageUrl == null)
           _datePickerImage.ImageUrl = DatePickerImageUrl;  
         else
-          _datePickerImage.ImageUrl = imageUrl;
+          _datePickerImage.ImageUrl = imageUrl; 
 
-       if (_hasClientScript)
+       if (Enabled && _hasClientScript)
        {
           string pickerActionButton = "this";
           string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
@@ -716,6 +716,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl
       {
         _datePickerImage.Visible = false;
       }
+
+      _dateTextBox.ReadOnly = ! Enabled;
+      _timeTextBox.ReadOnly = ! Enabled;
 
       _dateTextBox.Style["vertical-align"] = "middle";
       _timeTextBox.Style["vertical-align"] = "middle";

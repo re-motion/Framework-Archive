@@ -384,6 +384,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl
     }
     else
     {
+      _listControl.Enabled = Enabled;
+
       //  Prevent a collapsed control
       _listControl.Width = Unit.Point (c_defaultListControlWidthInPoints);
 
