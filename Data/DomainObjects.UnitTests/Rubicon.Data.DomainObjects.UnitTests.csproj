@@ -621,6 +621,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\RdbmsExpressionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\SqlProviderBaseTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -18,6 +18,10 @@ public class QueryParameter
 
   // construction and disposing
 
+  public QueryParameter (string name, object value) : this (name, value, QueryParameterType.Value)
+  {
+  }
+
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("name", name);

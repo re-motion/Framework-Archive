@@ -348,6 +348,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Queries\QueryType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\StorageProviders\RdbmsProviderDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -557,7 +562,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Queries\IQuery.cs"
+                    RelPath = "Queries\Query.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -573,11 +578,6 @@
                 />
                 <File
                     RelPath = "Queries\QueryParameterType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
