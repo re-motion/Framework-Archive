@@ -301,7 +301,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
-  /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <see cref="ObjectID"/> <i>id</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <i>id</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference</exception>
   public bool Contains (ObjectID id)
   {
@@ -376,7 +376,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <remarks>The indexer returns null if the given ID was not found.</remarks>
+  /// <remarks>The indexer returns null if the given <i>id</i> was not found.</remarks>
   public DomainObject this[ObjectID id]  
   {
     get { return (DomainObject) BaseGetObject (id); }
