@@ -46,9 +46,9 @@ public class DataManager : ILinkChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    foreach (RelationEndPoint relationEndPoint in dataContainer.RelationEndPoints)
+    foreach (ObjectEndPoint objectEndPoint in dataContainer.ObjectEndPoints)
     {
-      RelationLink link = GetRelationLink (relationEndPoint);
+      RelationLink link = GetRelationLink (objectEndPoint);
       if (link != null && link.HasChanged)
         return true;
     }
@@ -57,10 +57,10 @@ public class DataManager : ILinkChangeDelegate
   }
 
   public void ChangeLinks (
-      RelationEndPoint relationEndPoint,
-      RelationEndPoint newRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+      ObjectEndPoint relationEndPoint,
+      ObjectEndPoint newRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
     ArgumentUtility.CheckNotNull ("newRelatedEndPoint", newRelatedEndPoint);
@@ -84,11 +84,11 @@ public class DataManager : ILinkChangeDelegate
       ChangeLink (oldRelatedEndPointOfNewRelatedEndPoint, null);
   }
 
-  public void ChangeLink (RelationEndPoint relationEndPoint, DomainObject newRelatedObject)
+  public void ChangeLink (ObjectEndPoint objectEndPoint, DomainObject newRelatedObject)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
-    SingleObjectRelationLink backLink = _singleObjectRelationLinkMap[relationEndPoint.CreateRelationLinkID ()];
+    SingleObjectRelationLink backLink = _singleObjectRelationLinkMap[objectEndPoint.CreateRelationLinkID ()];
 
     if (newRelatedObject != null)
       backLink.DestinationObjectID = newRelatedObject.ID;
@@ -97,14 +97,14 @@ public class DataManager : ILinkChangeDelegate
   }
 
   public void WriteAssociatedPropertiesForRelationChange (
-      RelationEndPoint relationEndPoint,
-      RelationEndPoint newRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPoint,
-      RelationEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
+      ObjectEndPoint objectEndPoint,
+      ObjectEndPoint newRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPoint,
+      ObjectEndPoint oldRelatedEndPointOfNewRelatedEndPoint)
   {
-    relationEndPoint.SetOppositeEndPoint (newRelatedEndPoint);
-    newRelatedEndPoint.SetOppositeEndPoint (relationEndPoint);
-    oldRelatedEndPoint.SetOppositeEndPoint (new NullRelationEndPoint (relationEndPoint.Definition));
+    objectEndPoint.SetOppositeEndPoint (newRelatedEndPoint);
+    newRelatedEndPoint.SetOppositeEndPoint (objectEndPoint);
+    oldRelatedEndPoint.SetOppositeEndPoint (new NullRelationEndPoint (objectEndPoint.Definition));
 
     oldRelatedEndPointOfNewRelatedEndPoint.SetOppositeEndPoint (
         new NullRelationEndPoint (newRelatedEndPoint.Definition));
@@ -136,20 +136,20 @@ public class DataManager : ILinkChangeDelegate
   {
     Register (dataContainer);
 
-    foreach (RelationEndPoint relationEndPoint in dataContainer.RelationEndPoints)
+    foreach (ObjectEndPoint objectEndPoint in dataContainer.ObjectEndPoints)
     {
-      if (relationEndPoint.IsVirtual)
+      if (objectEndPoint.IsVirtual)
       {
-        if (relationEndPoint.Definition.Cardinality == CardinalityType.One) 
+        if (objectEndPoint.Definition.Cardinality == CardinalityType.One) 
         {
-          RegisterInSingleObjectRelationLinkMap (relationEndPoint, null);
+          RegisterInSingleObjectRelationLinkMap (objectEndPoint, null);
         }
         else
         {
           DomainObjectCollection domainObjects = DomainObjectCollection.Create (
-            relationEndPoint.Definition.PropertyType);
+            objectEndPoint.Definition.PropertyType);
 
-          RegisterInMultipleObjectsRelationLinkMap (relationEndPoint, domainObjects);
+          RegisterInMultipleObjectsRelationLinkMap (objectEndPoint, domainObjects);
         }
       }
     }
@@ -168,59 +168,59 @@ public class DataManager : ILinkChangeDelegate
     }
   }
 
-  public void RegisterInSingleObjectRelationLinkMap (RelationEndPoint relationEndPoint, ObjectID destinationObjectID)
+  public void RegisterInSingleObjectRelationLinkMap (ObjectEndPoint objectEndPoint, ObjectID destinationObjectID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
     SingleObjectRelationLink link = new SingleObjectRelationLink (
-        relationEndPoint.CreateRelationLinkID (), destinationObjectID);
+        objectEndPoint.CreateRelationLinkID (), destinationObjectID);
 
     _singleObjectRelationLinkMap.Add (link);
   }
 
   public void RegisterInMultipleObjectsRelationLinkMap (
-      RelationEndPoint relationEndPoint, 
+      ObjectEndPoint objectEndPoint, 
       DomainObjectCollection domainObjects)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
     MultipleObjectsRelationLink link = new MultipleObjectsRelationLink (
-        relationEndPoint.CreateRelationLinkID (), domainObjects);
+        objectEndPoint.CreateRelationLinkID (), domainObjects);
 
     link.ChangeDelegate = this;
     _multipleObjectsRelationLinkMap.Add (link);
   }
 
-  public SingleObjectRelationLink GetSingleObjectRelationLink (RelationEndPoint relationEndPoint)
+  public SingleObjectRelationLink GetSingleObjectRelationLink (ObjectEndPoint objectEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
-    return _singleObjectRelationLinkMap[relationEndPoint.CreateRelationLinkID ()];
+    return _singleObjectRelationLinkMap[objectEndPoint.CreateRelationLinkID ()];
   }
 
-  public MultipleObjectsRelationLink GetMultipleObjectsRelationLink (RelationEndPoint relationEndPoint)
+  public MultipleObjectsRelationLink GetMultipleObjectsRelationLink (ObjectEndPoint objectEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
-    return _multipleObjectsRelationLinkMap[relationEndPoint.CreateRelationLinkID ()];
+    return _multipleObjectsRelationLinkMap[objectEndPoint.CreateRelationLinkID ()];
   }
 
-  public RelationLink GetRelationLink (RelationEndPoint relationEndPoint)
+  public RelationLink GetRelationLink (ObjectEndPoint objectEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
-    if (relationEndPoint.Definition.Cardinality == CardinalityType.One)
-      return GetSingleObjectRelationLink (relationEndPoint);
+    if (objectEndPoint.Definition.Cardinality == CardinalityType.One)
+      return GetSingleObjectRelationLink (objectEndPoint);
     else
-      return GetMultipleObjectsRelationLink (relationEndPoint);
+      return GetMultipleObjectsRelationLink (objectEndPoint);
   }
 
-  public DomainObjectCollection GetRelatedObjects (RelationEndPoint relationEndPoint)
+  public DomainObjectCollection GetRelatedObjects (ObjectEndPoint objectEndPoint)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+    ArgumentUtility.CheckNotNull ("objectEndPoint", objectEndPoint);
 
-    RelationLinkID linkID = relationEndPoint.CreateRelationLinkID ();
+    RelationLinkID linkID = objectEndPoint.CreateRelationLinkID ();
     if (_multipleObjectsRelationLinkMap.Contains (linkID))
       return _multipleObjectsRelationLinkMap[linkID].DestinationDomainObjects;
 
@@ -242,9 +242,9 @@ public class DataManager : ILinkChangeDelegate
     {
       domainObject.DataContainer.Commit ();
 
-      foreach (RelationEndPoint relationEndPoint in domainObject.DataContainer.RelationEndPoints)
+      foreach (ObjectEndPoint objectEndPoint in domainObject.DataContainer.ObjectEndPoints)
       {
-        RelationLink link = GetRelationLink (relationEndPoint);
+        RelationLink link = GetRelationLink (objectEndPoint);
         if (link != null)
           link.Commit ();
       }
@@ -260,9 +260,9 @@ public class DataManager : ILinkChangeDelegate
       if (domainObject.State == StateType.New)
         _dataContainerMap.Remove (domainObject.ID);
 
-      foreach (RelationEndPoint relationEndPoint in domainObject.DataContainer.RelationEndPoints)
+      foreach (ObjectEndPoint objectEndPoint in domainObject.DataContainer.ObjectEndPoints)
       {
-        RelationLink link = GetRelationLink (relationEndPoint);
+        RelationLink link = GetRelationLink (objectEndPoint);
         if (link != null)
           link.Rollback ();
 

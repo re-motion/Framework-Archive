@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class RelationEndPoint : INullable
+public class ObjectEndPoint : RelationEndPoint, INullable
 {
   // types
 
@@ -14,16 +14,15 @@ public class RelationEndPoint : INullable
   // member fields
 
   private DataContainer _dataContainer;
-  private IRelationEndPointDefinition _definition;
 
   // construction and disposing
 
-  public RelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
+  public ObjectEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition) 
     : this (domainObject.DataContainer, definition)
   {
   }
 
-  public RelationEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
+  public ObjectEndPoint (DataContainer dataContainer, IRelationEndPointDefinition definition) 
   {
     ArgumentUtility.CheckNotNull ("definition", definition);
 
@@ -31,17 +30,17 @@ public class RelationEndPoint : INullable
   }
 
 
-  public RelationEndPoint (DomainObject domainObject, string propertyName) 
+  public ObjectEndPoint (DomainObject domainObject, string propertyName) 
       : this (domainObject.DataContainer, propertyName)
   {
   }
 
-  public RelationEndPoint (DataContainer dataContainer, string propertyName)
+  public ObjectEndPoint (DataContainer dataContainer, string propertyName)
   {
     Initialize (dataContainer, propertyName);
   }
 
-  protected RelationEndPoint ()
+  protected ObjectEndPoint ()
   {
   }
 
@@ -50,13 +49,13 @@ public class RelationEndPoint : INullable
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    _definition = dataContainer.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
+    base.Initialize (dataContainer.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyName));
     _dataContainer = dataContainer;
   }
 
   // methods and properties
 
-  public virtual void SetOppositeEndPoint (RelationEndPoint relationEndPoint)
+  public virtual void SetOppositeEndPoint (ObjectEndPoint relationEndPoint)
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
@@ -69,12 +68,12 @@ public class RelationEndPoint : INullable
     return new RelationLinkID (_dataContainer.ID, PropertyName);
   }
 
-  public virtual bool BeginRelationChange (RelationEndPoint oldRelatedEndPoint)
+  public virtual bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint)
   {
     return BeginRelationChange (oldRelatedEndPoint, new NullRelationEndPoint (oldRelatedEndPoint.Definition));    
   }
 
-  public virtual bool BeginRelationChange (RelationEndPoint oldRelatedEndPoint, RelationEndPoint newRelatedEndPoint)
+  public virtual bool BeginRelationChange (ObjectEndPoint oldRelatedEndPoint, ObjectEndPoint newRelatedEndPoint)
   {
     return DomainObject.BeginRelationChange (
         PropertyName, oldRelatedEndPoint.DomainObject, newRelatedEndPoint.DomainObject);
@@ -98,64 +97,6 @@ public class RelationEndPoint : INullable
   public virtual ObjectID ObjectID
   {
     get { return _dataContainer.ID; }
-  }
-
-  public virtual RelationDefinition RelationDefinition
-  {
-    get 
-    {
-      CheckDefinition ();
-      return _definition.ClassDefinition.GetRelationDefinition (PropertyName); 
-    }
-  }
-
-  public virtual IRelationEndPointDefinition Definition
-  {
-    get 
-    {
-      CheckDefinition ();
-      return _definition; 
-    }
-  }
-
-  protected void SetDefinition (IRelationEndPointDefinition definition)
-  {
-    ArgumentUtility.CheckNotNull ("definition", definition);
-
-    _definition = definition;
-  }
-
-  public virtual IRelationEndPointDefinition OppositeEndPointDefinition
-  {
-    get 
-    {
-      CheckDefinition ();
-      return _definition.ClassDefinition.GetOppositeEndPointDefinition (PropertyName); 
-    }
-  }
-
-  public virtual string PropertyName
-  {
-    get 
-    { 
-      CheckDefinition ();
-      return _definition.PropertyName; 
-    }
-  }
-
-  public virtual bool IsVirtual
-  {
-    get 
-    {
-      CheckDefinition ();
-      return _definition.IsVirtual; 
-    }
-  }
-
-  private void CheckDefinition ()
-  {
-    if (_definition == null)
-      throw new InvalidOperationException ("Initialize must be called first.");
   }
 
   #region INullable Members

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Configuration.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Relations
 {
-public class NullRelationEndPoint : RelationEndPoint
+public class NullRelationEndPoint : ObjectEndPoint
 {
   // types
 
@@ -17,7 +17,7 @@ public class NullRelationEndPoint : RelationEndPoint
 
   public NullRelationEndPoint (IRelationEndPointDefinition definition)
   {
-    SetDefinition (definition);
+    base.Initialize (definition);
   }
 
   // methods and properties
@@ -52,33 +52,18 @@ public class NullRelationEndPoint : RelationEndPoint
     get { return null; }
   }
 
-  public override void SetOppositeEndPoint (RelationEndPoint relationEndPoint)
+  public override void SetOppositeEndPoint (ObjectEndPoint relationEndPoint)
   {
     ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
   }
 
-  public override bool BeginRelationChange(RelationEndPoint oldRelationEndPoint, RelationEndPoint newRelationEndPoint)
+  public override bool BeginRelationChange(ObjectEndPoint oldRelationEndPoint, ObjectEndPoint newRelationEndPoint)
   {
     return true;
   }
 
   public override void EndRelationChange()
   {
-  }
-
-  public override bool IsVirtual
-  {
-    get { return base.IsVirtual; }
-  }
-
-  public override IRelationEndPointDefinition Definition
-  {
-    get { return base.Definition; }
-  }
-
-  public override string PropertyName
-  {
-    get { return base.PropertyName; }
   }
 
   public override ObjectID ObjectID
