@@ -33,6 +33,11 @@ public class ReflectionBusinessObjectClass: IBusinessObjectClass
 
     return properties;
   }
+
+  public IBusinessObjectProvider BusinessObjectProvider 
+  {
+    get { return ReflectionBusinessObjectProvider.Instance; }
+  }
 }
 
 }
