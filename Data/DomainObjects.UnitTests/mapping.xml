@@ -63,6 +63,7 @@
           <type>int32</type>
           <column>NumberOfShops</column>
         </property>
+        <relationProperty name="ClassWithoutRelatedClassIDColumn" relationID="DistributorToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false" />
       </properties>
     </class>
     <!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
@@ -75,7 +76,6 @@
         <relationProperty name="ContactPerson" relationID="PartnerToPerson" cardinality="one" isMandatory="true">
           <column>ContactPersonID</column>
         </relationProperty>
-        <relationProperty name="ClassWithoutRelatedClassIDColumn" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false" />
       </properties>
     </class>
     <class id="Ceo">
@@ -466,8 +466,8 @@
       <entity name="TableWithoutRelatedClassIDColumn" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
-        <relationProperty name="Partner" relationID="PartnerToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false">
-          <column>PartnerID</column>
+        <relationProperty name="Distributor" relationID="DistributorToClassWithoutRelatedClassIDColumn" cardinality="one" isMandatory="false">
+          <column>DistributorID</column>
         </relationProperty>
       </properties>
     </class>
