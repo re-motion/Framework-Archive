@@ -35,13 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "..\Web\Core\Web.cspr
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Utilities.Installer", "DomainObjects\Utilities\Installer\Rubicon.Data.DomainObjects.Utilities.Installer.csproj", "{82A9FBD7-2272-43F2-8B66-E4B5A836676D}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 11
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {15D953AA-128D-410E-90E9-33617BB62CB3}
@@ -87,10 +83,6 @@ Global
 		SccLocalPath10 = DomainObjects\\ObjectBinding\\Web\\Test
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice10 = 2
-		SccProjectUniqueName11 = DomainObjects\\Utilities\\Installer\\Rubicon.Data.DomainObjects.Utilities.Installer.csproj
-		SccLocalPath11 = .
-		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection11 = DomainObjects\\Utilities\\Installer\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -133,10 +125,6 @@ Global
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
-		{82A9FBD7-2272-43F2-8B66-E4B5A836676D}.Debug.ActiveCfg = Debug|.NET
-		{82A9FBD7-2272-43F2-8B66-E4B5A836676D}.Debug.Build.0 = Debug|.NET
-		{82A9FBD7-2272-43F2-8B66-E4B5A836676D}.Release.ActiveCfg = Release|.NET
-		{82A9FBD7-2272-43F2-8B66-E4B5A836676D}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
