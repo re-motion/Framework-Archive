@@ -3,6 +3,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Web.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -37,11 +38,7 @@ public class BusinessObjectBinding
         {
           System.Web.UI.DataBinding binding = _control.DataBindings ["DataSource"];
           if (binding != null)
-          {
-            Page page = ((Control)_control).Page;
-            string name = binding.Expression.Trim();
-            _dataSource = page.Site.Container.Components[name] as IBusinessObjectDataSource;
-          }
+            _dataSource = ComponentBindingExpressionUtility.ResolveExpression (_control, binding.Expression.Trim()) as IBusinessObjectDataSource;
         }
       }
       return _dataSource;

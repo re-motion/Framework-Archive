@@ -163,7 +163,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return true; }
   }
 
-  public abstract void LoadValue ();
+  public abstract void LoadValue (bool interim);
   
   [Browsable (false)]
   public abstract object Value { get; set; }
@@ -316,7 +316,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
     set { _readOnly = value; }
   }
 
-  public abstract void SaveValue ();
+  public abstract void SaveValue (bool interim);
 
   public override bool IsReadOnly
   {

@@ -145,13 +145,16 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     }
   }
 
-  public override void LoadValue()
+  public override void LoadValue (bool interim)
   {
-    Binding.EvaluateBinding();
-    if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+    if (! interim)
     {
-      Value = DataSource.BusinessObject.GetProperty (Property);
-      _isDirty = false;
+      Binding.EvaluateBinding();
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        Value = DataSource.BusinessObject.GetProperty (Property);
+        _isDirty = false;
+      }
     }
   }
 
@@ -171,11 +174,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
   }
 
-  public override void SaveValue()
+  public override void SaveValue (bool interim)
   {
-    Binding.EvaluateBinding();
-    if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
-      DataSource.BusinessObject.SetProperty (Property, Value);
+    if (! interim)
+    {
+      Binding.EvaluateBinding();
+      if (Property != null && DataSource != null &&  DataSource.BusinessObject != null && ! IsReadOnly)
+        DataSource.BusinessObject.SetProperty (Property, Value);
+    }
   }
 
   protected override void OnPreRender (EventArgs e)
