@@ -77,12 +77,14 @@ public class BocColumnDefinitionSet
   /// </param>
   public BocColumnDefinitionSet (object title, BocColumnDefinition[] columnDefinitions)
     : this (null, title, columnDefinitions)
-  {}
+  {
+  }
 
   /// <summary> Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class. </summary>
   public BocColumnDefinitionSet()
     : this (null, string.Empty, null)
-  {}
+  {
+  }
 
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinitionSet"/>.
