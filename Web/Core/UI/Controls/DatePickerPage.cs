@@ -104,7 +104,7 @@ public class DatePickerPage : Page
 
   protected override void OnPreRender(EventArgs e)
   {
-    string key = typeof (DatePickerPage).FullName;
+    string key = typeof (DatePickerPage).FullName + "_Script";
     if (! HtmlHeadAppender.Current.IsRegistered (key))
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
