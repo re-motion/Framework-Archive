@@ -251,12 +251,9 @@ public abstract class RdbmsProvider : StorageProvider
     CheckStorageProviderID (id, "id");
     CheckObjectIDValue (id, "id");
 
-    // TODO: Provide ClassDefinition in ObjectID
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[id.ClassID];
-
     Connect();
 
-    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, classDefinition, "ID", id.Value);
+    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, id.ClassDefinition, "ID", id.Value);
     using (IDbCommand command = commandBuilder.Create ())
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))

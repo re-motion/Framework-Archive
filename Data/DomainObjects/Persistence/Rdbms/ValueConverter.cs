@@ -7,13 +7,13 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
 {
-public sealed class DBValueConverter
+public class DBValueConverter
 {
   // types
 
   // static members and constants
 
-  public static object GetDBValue (object value)
+  public object GetDBValue (object value)
   {
     if (value == null)
       return DBNull.Value;
@@ -35,7 +35,7 @@ public sealed class DBValueConverter
     return value;
   }
 
-  public static ObjectID GetObjectID (
+  public virtual ObjectID GetObjectID (
       ClassDefinition classDefinition, 
       object value)
   {
@@ -60,10 +60,13 @@ public sealed class DBValueConverter
         return id;
     }
 
-    return new ObjectID (classDefinition.ID, value);
+    if (value.GetType () != typeof (Guid))
+      throw CreateArgumentException ("value", "DBValueConverter does not support ObjectID values of type '{0}'.", value.GetType ());
+
+    return new ObjectID (classDefinition.ID, (Guid) value);
   }
 
-  public static object GetDBValue (ObjectID id, string storageProviderID)
+  public object GetDBValue (ObjectID id, string storageProviderID)
   {
     ArgumentUtility.CheckNotNull ("id", id);
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
@@ -74,7 +77,7 @@ public sealed class DBValueConverter
       return id.ToString ();
   }
 
-  public static object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader)
+  public object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
@@ -153,7 +156,12 @@ public sealed class DBValueConverter
     return dataReader.GetValue (columnOrdinal);
   }
 
-  private static ClassDefinition GetRelatedClassDefinition (PropertyDefinition propertyDefinition, IDataReader dataReader)
+  protected ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), argumentName);
+  }
+
+  private ClassDefinition GetRelatedClassDefinition (PropertyDefinition propertyDefinition, IDataReader dataReader)
   {
     string relatedClassIDColumnName = GetRelatedClassIDColumnName (propertyDefinition.ColumnName);
     try
@@ -168,7 +176,7 @@ public sealed class DBValueConverter
     return null;
   }
 
-  private static ClassDefinition GetRelatedClassDefinition (
+  private ClassDefinition GetRelatedClassDefinition (
       ClassDefinition classDefinition,
       PropertyDefinition propertyDefinition)
   {
@@ -185,7 +193,7 @@ public sealed class DBValueConverter
     return relatedClassDefinition;
   }
 
-  private static object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
+  private object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
   {
     if (Enum.IsDefined (propertyDefinition.PropertyType, dataValue))
       return Enum.ToObject (propertyDefinition.PropertyType, dataValue);
@@ -195,19 +203,19 @@ public sealed class DBValueConverter
         propertyDefinition.PropertyType.FullName, dataValue, propertyDefinition.PropertyName);
   }
 
-  private static string GetRelatedClassIDColumnName (string columnName)
+  private string GetRelatedClassIDColumnName (string columnName)
   {
     return columnName + "ClassID";
   }
 
-  private static StorageProviderException CreateStorageProviderException (
+  private StorageProviderException CreateStorageProviderException (
       string formatString,
       params object[] args)
   {
     return CreateStorageProviderException (null, formatString, args);
   }
 
-  private static StorageProviderException CreateStorageProviderException (
+  private StorageProviderException CreateStorageProviderException (
       Exception innerException,
       string formatString,
       params object[] args)
@@ -219,7 +227,7 @@ public sealed class DBValueConverter
 
   // construction and disposing
 
-  private DBValueConverter ()
+  public DBValueConverter ()
   {
   }
 

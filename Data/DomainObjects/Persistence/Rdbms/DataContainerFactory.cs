@@ -59,7 +59,8 @@ public class DataContainerFactory
           "Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
     }
 
-    ObjectID id = DBValueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
+    DBValueConverter dbValueConverter = new DBValueConverter ();
+    ObjectID id = dbValueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
     DataContainer dataContainer = DataContainer.CreateForExisting (id, _dataReader["Timestamp"]);
 
     foreach (PropertyDefinition propertyDefinition in classDefinition.GetAllPropertyDefinitions ())
@@ -70,7 +71,7 @@ public class DataContainerFactory
 
       try
       {
-        dataValue = DBValueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
+        dataValue = dbValueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
       }
       catch (StorageProviderException e)
       {
