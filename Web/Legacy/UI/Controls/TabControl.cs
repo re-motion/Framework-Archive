@@ -645,7 +645,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   /// <summary>
   /// Check if the Active Tab (Default Tab) is Visible, if not, set the first visible Tab active
   /// </summary>
-  private void CheckActiveTab()
+  protected virtual void CheckActiveTab()
   {
     if (!Tabs[_activeTab].Visible)
     {
