@@ -44,5 +44,13 @@ public class NullableProperty : DomainObjectProperty
       return base.FromInternalType (internalValue);
   }
 
+  protected internal override object ToInternalType(object publicValue)
+  {
+    if (!IsNullableType && publicValue == null)
+      throw new InvalidNullAssignmentException (ItemType);
+
+    return publicValue;
+  }
+
 }
 }

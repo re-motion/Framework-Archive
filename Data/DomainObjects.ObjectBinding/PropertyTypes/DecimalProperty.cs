@@ -52,7 +52,7 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
         return NaDecimal.Null;
     }
 
-    return decimal.Parse (publicValue.ToString ());
+    return decimal.Parse (base.ToInternalType (publicValue).ToString ());
   }
 }
 }

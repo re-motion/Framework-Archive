@@ -52,7 +52,7 @@ public class Int16Property : NullableProperty, IBusinessObjectInt32Property
         return NaInt16.Null;
     }
 
-    return short.Parse (publicValue.ToString ());
+    return short.Parse (base.ToInternalType (publicValue).ToString ());
   }
 }
 }

@@ -37,6 +37,8 @@ public class DateTimeProperty : NullableProperty, IBusinessObjectDateTimePropert
   {
     if (!IsList && IsNullableType)
       return NaDateTime.FromBoxedDateTime (publicValue);
+    else if (!IsList && !IsNullableType)
+      return base.ToInternalType (publicValue);
     else
       return publicValue;
   }

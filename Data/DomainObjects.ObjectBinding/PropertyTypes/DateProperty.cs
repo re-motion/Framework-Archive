@@ -36,7 +36,7 @@ public class DateProperty : NullableProperty, IBusinessObjectDateProperty
     }
     else
     {
-      return ((DateTime)internalValue).Date;
+      return internalValue;
     }
   }
 
@@ -44,8 +44,10 @@ public class DateProperty : NullableProperty, IBusinessObjectDateProperty
   {
     if (!IsList && IsNullableType)
       return NaDateTime.FromBoxedDateTime (publicValue).Date;
+    else if (!IsList && !IsNullableType)
+      return base.ToInternalType (publicValue);
     else
-      return ((DateTime)publicValue).Date;
+      return publicValue;
   }
 }
 }

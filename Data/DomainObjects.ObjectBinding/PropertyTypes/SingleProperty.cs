@@ -52,7 +52,7 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
         return NaSingle.Null;
     }
 
-    return float.Parse (publicValue.ToString ());
+    return float.Parse (base.ToInternalType (publicValue).ToString ());
   }
 }
 }

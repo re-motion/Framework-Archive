@@ -57,7 +57,7 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
         return NaGuid.Null;
     }
 
-    return new Guid (publicValue.ToString ());
+    return new Guid (base.ToInternalType (publicValue).ToString ());
   }
 }
 }

@@ -52,7 +52,7 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
         return NaByte.Null;
     }
 
-    return byte.Parse (publicValue.ToString ());
+    return byte.Parse (base.ToInternalType (publicValue).ToString ());
   }
 }
 }
