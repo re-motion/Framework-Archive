@@ -116,35 +116,35 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void EmptyCombine ()
+  public void EmptyMerge ()
   {
-    DataContainerCollection combinedCollection = _collection.Combine (new DataContainerCollection ());
-    Assert.AreEqual (0, combinedCollection.Count);
+    DataContainerCollection mergedCollection = _collection.Merge (new DataContainerCollection ());
+    Assert.AreEqual (0, mergedCollection.Count);
   }
 
   [Test]
-  public void CombineCollectionAndEmptyCollection ()
+  public void MergeeCollectionAndEmptyCollection ()
   {
     _collection.Add (_dataContainer);
-    DataContainerCollection combinedCollection = _collection.Combine (new DataContainerCollection ());
+    DataContainerCollection mergedCollection = _collection.Merge (new DataContainerCollection ());
 
-    Assert.AreEqual (1, combinedCollection.Count);
-    Assert.AreSame (_dataContainer, combinedCollection[0]);
+    Assert.AreEqual (1, mergedCollection.Count);
+    Assert.AreSame (_dataContainer, mergedCollection[0]);
   }
 
   [Test]
-  public void CombineEmptyCollectionAndCollection ()
+  public void MergeEmptyCollectionAndCollection ()
   {
     DataContainerCollection secondCollection = new DataContainerCollection ();
     secondCollection.Add (_dataContainer);
 
-    DataContainerCollection combinedCollection = _collection.Combine (secondCollection);
+    DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
 
-    Assert.AreEqual (0, combinedCollection.Count);
+    Assert.AreEqual (0, mergedCollection.Count);
   }
 
   [Test]
-  public void CombineTwoCollectionsWithEqualDataContainer ()
+  public void MergeTwoCollectionsWithEqualDataContainer ()
   {
     _collection.Add (_dataContainer);
 
@@ -152,14 +152,14 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
     DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
     secondCollection.Add (container);
 
-    DataContainerCollection combinedCollection = _collection.Combine (secondCollection);
+    DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
 
-    Assert.AreEqual (1, combinedCollection.Count);
-    Assert.AreSame (container, combinedCollection[0]);
+    Assert.AreEqual (1, mergedCollection.Count);
+    Assert.AreSame (container, mergedCollection[0]);
   }
 
   [Test]
-  public void CombineTwoCollections ()
+  public void MergeTwoCollections ()
   {
     _collection.Add (_dataContainer);
     DataContainer order2 = TestDataContainerFactory.CreateOrder2DataContainer ();
@@ -169,11 +169,11 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
     DataContainer order1 = TestDataContainerFactory.CreateOrder1DataContainer ();
     secondCollection.Add (order1);
 
-    DataContainerCollection combinedCollection = _collection.Combine (secondCollection);
+    DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
 
-    Assert.AreEqual (2, combinedCollection.Count);
-    Assert.AreSame (order1, combinedCollection[_dataContainer.ID]);
-    Assert.AreSame (order2, combinedCollection[order2.ID]);
+    Assert.AreEqual (2, mergedCollection.Count);
+    Assert.AreSame (order1, mergedCollection[_dataContainer.ID]);
+    Assert.AreSame (order2, mergedCollection[order2.ID]);
   }
 
   [Test]
