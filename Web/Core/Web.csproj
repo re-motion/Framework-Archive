@@ -551,6 +551,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UI\Globalization\FormGridManager.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "UI\Globalization\IResourceDispatchTarget.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -37,7 +37,7 @@ public class ResourceIdentifierAttribute: Attribute
   /// <summary> Initializes a new instance. </summary>
   public ResourceIdentifierAttribute (string defaultResourceBaseName)
   {
-    _defaultResourceBaseName = defaultResourceFileName;
+    _defaultResourceBaseName = defaultResourceBaseName;
   }
 
   /// <summary> The basename of the resource container. </summary>

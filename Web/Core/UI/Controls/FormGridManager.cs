@@ -47,7 +47,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
   /// <summary> A list of form grid manager wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Type, Enum). </remarks>
   [ResourceIdentifier ("Rubicon.Web.UI.Globalization.FormGridManager")]
-  protected enum ResourceIdentifiers
+  protected enum ResourceIdentifier
   {
     /// <summary>The alternate text for the required icon. Defaults to '*'.</summary>
     RequiredFieldAlternateText,
@@ -2565,15 +2565,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     if (resourceManager != null)
     {
-      string alternateText = resourceManager.GetString (ResourceIdentifiers.RequiredFieldAlternateText);
+      string alternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
 
       if (alternateText != null)
-          requiredIcon.AlternateText = alternateText;
+        requiredIcon.AlternateText = alternateText;
 
-      string toolTip = resourceManager.GetString (ResourceIdentifiers.RequiredFieldTitle);
+      string toolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
 
       if (toolTip != null)
-          requiredIcon.ToolTip = toolTip;
+        requiredIcon.ToolTip = toolTip;
     }
 
     return requiredIcon;
@@ -2592,12 +2592,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     if (resourceManager != null)
     {
-      string alternateText = resourceManager.GetString (ResourceIdentifiers.HelpAlternateText);
+      string alternateText = resourceManager.GetString (ResourceIdentifier.HelpAlternateText);
 
       if (alternateText != null)
         helpIcon.AlternateText = alternateText;
 
-      string toolTip = resourceManager.GetString (ResourceIdentifiers.HelpTitle);
+      string toolTip = resourceManager.GetString (ResourceIdentifier.HelpTitle);
 
       if (toolTip != null)
         helpIcon.ToolTip = toolTip;
@@ -2625,7 +2625,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
 
     if (resourceManager != null)
     {
-      string alternateText = resourceManager.GetString (ResourceIdentifiers.ValidationErrorInfoAlternateText);
+      string alternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
 
       if (alternateText != null)
         validationErrorIcon.AlternateText = alternateText;
