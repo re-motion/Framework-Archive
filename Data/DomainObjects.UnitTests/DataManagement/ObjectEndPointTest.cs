@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
 [TestFixture]
-public class ObjectEndPointTest : ClientTransactionBaseTest
+public class ObjectEndPointTest : RelationEndPointBaseTest
 {
   // types
 
@@ -32,8 +32,8 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
   {
     _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Order");
     _oppositeObjectID = DomainObjectIDs.Order1;
-    
-    _endPoint = new ObjectEndPoint (_endPointID, _oppositeObjectID);    
+  
+    _endPoint = CreateObjectEndPoint (_endPointID, _oppositeObjectID);    
   }
 
   [Test]
@@ -49,13 +49,13 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
   public void InitializeWithInvalidRelationEndPointID ()
   {
     ObjectID id = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
-    ObjectEndPoint endPoint = new ObjectEndPoint (null, id);
+    ObjectEndPoint endPoint = CreateObjectEndPoint (null, id);
   }
 
   [Test]
   public void InitializeWithNullObjectID ()
   {
-    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+    ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
 
     Assert.IsNull (endPoint.OriginalOppositeObjectID);
     Assert.IsNull (endPoint.OppositeObjectID);
@@ -86,7 +86,7 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
   [Test]
   public void HasChangedWithInitializedWithNull ()
   {
-    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+    ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
 
     Assert.IsFalse (endPoint.HasChanged);
   }
@@ -94,7 +94,7 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
   [Test]
   public void HasChangedWithOldNullValue ()
   {
-    ObjectEndPoint endPoint = new ObjectEndPoint (_endPointID, null);
+    ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
     endPoint.OppositeObjectID = new ObjectID ("StorageProverID", "ClassID", Guid.NewGuid ());
 
     Assert.IsTrue (endPoint.HasChanged);
@@ -115,8 +115,8 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
     Assert.IsNotNull (endPointDefinition);
 
     Assert.AreSame (
-        MappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem"), 
-        endPointDefinition.ClassDefinition);
+      MappingConfiguration.Current.ClassDefinitions.GetByClassID ("OrderItem"), 
+      endPointDefinition.ClassDefinition);
 
     Assert.AreEqual ("Order", endPointDefinition.PropertyName);
   }
@@ -128,8 +128,8 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
     Assert.IsNotNull (oppositeEndPointDefinition);
 
     Assert.AreSame (
-        MappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"),
-        oppositeEndPointDefinition.ClassDefinition);
+      MappingConfiguration.Current.ClassDefinitions.GetByClassID ("Order"),
+      oppositeEndPointDefinition.ClassDefinition);
 
     Assert.AreEqual ("OrderItems", oppositeEndPointDefinition.PropertyName);
   }
@@ -146,7 +146,7 @@ public class ObjectEndPointTest : ClientTransactionBaseTest
   public void IsVirtual ()
   {
     DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-    RelationEndPoint orderEndPoint = new ObjectEndPoint (orderContainer, "OrderTicket", DomainObjectIDs.OrderTicket1);
+    RelationEndPoint orderEndPoint = CreateObjectEndPoint (orderContainer, "OrderTicket", DomainObjectIDs.OrderTicket1);
 
     Assert.AreEqual (true, orderEndPoint.IsVirtual);
   }
