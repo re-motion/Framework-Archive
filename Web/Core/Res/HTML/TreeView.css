@@ -30,8 +30,8 @@ span.treeViewNodeHead
 /* Applied to the node's head if it is the selected node. */
 span.treeViewNodeHeadSelected
 {
-	background-color: Navy;
-  color: White;
+	background-color: Highlight;
+  color: HighlightText;
 }
 
 span.treeViewNodeHead a
@@ -41,7 +41,7 @@ span.treeViewNodeHead a
 
 span.treeViewNodeHeadSelected a
 {
-  color: White;
+  color: HighlightText;
   padding: 2px;
 }
 
