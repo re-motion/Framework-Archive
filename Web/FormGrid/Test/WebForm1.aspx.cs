@@ -36,9 +36,6 @@ public class WebForm1 :
   private static IResourceManager s_chachedResourceManager;
 
 	private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-  protected Rubicon.Web.UI.Controls.FormGridLabel FormGridLabel;
-  protected System.Web.UI.WebControls.Label ToBeHiddenLabel;
-  protected System.Web.UI.WebControls.TextBox ToBeHiddenTextBox;
 
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
@@ -47,6 +44,35 @@ public class WebForm1 :
   private AutoInitHashtable _listOfHiddenRows = 
       new AutoInitHashtable (typeof (StringCollection));
 
+  protected HtmlGenericControl HtmlHead;
+  protected Rubicon.Web.UI.Controls.FormGridLabel FormGridLabel;
+  protected System.Web.UI.WebControls.Label ToBeHiddenLabel;
+  protected System.Web.UI.WebControls.TextBox ToBeHiddenTextBox;
+  protected System.Web.UI.WebControls.DropDownList DropDownList2;
+  protected System.Web.UI.WebControls.TextBox TextBox4;
+  protected System.Web.UI.WebControls.TextBox TextBox5;
+  protected System.Web.UI.HtmlControls.HtmlTable TableRunTime;
+  protected System.Web.UI.WebControls.Label PersonDataLabel;
+  protected System.Web.UI.WebControls.Label NameLabel;
+  protected System.Web.UI.WebControls.TextBox NameField;
+  protected System.Web.UI.WebControls.CompareValidator CompareValidator1;
+  protected System.Web.UI.WebControls.DropDownList GenderList;
+  protected System.Web.UI.WebControls.TextBox ZipField;
+  protected System.Web.UI.WebControls.TextBox PlaceField;
+  protected System.Web.UI.WebControls.TextBox AddressField;
+  protected System.Web.UI.WebControls.TextBox TextBox1;
+  protected System.Web.UI.WebControls.TextBox TextBox2;
+  protected System.Web.UI.WebControls.Table SomeBigMultiFieldThing;
+  protected System.Web.UI.WebControls.Button Button1;
+  protected System.Web.UI.HtmlControls.HtmlTable TableDesignTimeFormGrid;
+  protected System.Web.UI.WebControls.CompareValidator CompareValidator2;
+  protected System.Web.UI.WebControls.CompareValidator CompareValidator3;
+  protected System.Web.UI.WebControls.CompareValidator Comparevalidator4;
+  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
+  protected System.Web.UI.WebControls.Label Label1;
+  protected Rubicon.Web.UI.Controls.FormGridLabel AddressFieldLabel;
+  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+	
   override protected void OnLoad(System.EventArgs e)
 	{
 
@@ -96,37 +122,15 @@ public class WebForm1 :
       SomeBigMultiFieldThing.ID, 
       FormGridRowInfo.RowPosition.BeforeRowWithID));
 
+    string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+    HtmlHeadAppender.Current.RegisterStylesheetLink ("FormGrid_Style", url);
+
 		InitializeComponent();
 		base.OnInit(e);
 	}
 
 	#region Web Form Designer generated code
 
-  protected System.Web.UI.WebControls.DropDownList DropDownList2;
-  protected System.Web.UI.WebControls.TextBox TextBox4;
-  protected System.Web.UI.WebControls.TextBox TextBox5;
-  protected System.Web.UI.HtmlControls.HtmlTable TableRunTime;
-  protected System.Web.UI.WebControls.Label PersonDataLabel;
-  protected System.Web.UI.WebControls.Label NameLabel;
-  protected System.Web.UI.WebControls.TextBox NameField;
-  protected System.Web.UI.WebControls.CompareValidator CompareValidator1;
-  protected System.Web.UI.WebControls.DropDownList GenderList;
-  protected System.Web.UI.WebControls.TextBox ZipField;
-  protected System.Web.UI.WebControls.TextBox PlaceField;
-  protected System.Web.UI.WebControls.Label AddressLabel;
-  protected System.Web.UI.WebControls.TextBox AddressField;
-  protected System.Web.UI.WebControls.TextBox TextBox1;
-  protected System.Web.UI.WebControls.TextBox TextBox2;
-  protected System.Web.UI.WebControls.Table SomeBigMultiFieldThing;
-  protected System.Web.UI.WebControls.Button Button1;
-  protected System.Web.UI.HtmlControls.HtmlTable TableDesignTimeFormGrid;
-  protected System.Web.UI.WebControls.CompareValidator CompareValidator2;
-  protected System.Web.UI.WebControls.CompareValidator CompareValidator3;
-  protected System.Web.UI.WebControls.CompareValidator Comparevalidator4;
-  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
-  protected System.Web.UI.WebControls.Label Label1;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-	
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
@@ -158,12 +162,12 @@ public class WebForm1 :
     return s_chachedResourceManager;
   }
 
-  public virtual StringCollection GetListOfHiddenRows (string table)
+  public virtual StringCollection GetHiddenRows (string table)
   {
     return (StringCollection) _listOfHiddenRows[table];
   }
 
-  public virtual FormGridRowInfoCollection GetListOfFormGridRowInfos (string table)
+  public virtual FormGridRowInfoCollection GetAdditionalRows (string table)
   {
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
@@ -192,6 +196,12 @@ public class WebForm1 :
   {
     base.OnPreRender (e);
     ResourceDispatcher.Dispatch (this);
+  }
+	
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
+    base.RenderChildren (writer);
   }
 
   /// <summary>

@@ -2234,7 +2234,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget
       string helpUrl = smartControl.HelpUrl;
       if (helpUrl != null && helpUrl != String.Empty)
       {
-        helpUrl = ResourceUrlResolver.GetResourceUrl (this, Context, null, ResourceType.HelpPage, helpUrl);
+        helpUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.HelpPage, helpUrl);
         dataRow.HelpProvider = GetHelpProvider (helpUrl);
 
         //  We have a help provider, first come, only one served

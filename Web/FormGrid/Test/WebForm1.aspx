@@ -2,7 +2,7 @@
 <%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="FormGrid.Test.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head>
+  <head id="HtmlHead" runat="server">
     <title>WebForm1</title>
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
@@ -43,7 +43,7 @@
     <td style="BACKGROUND-COLOR: aqua">&nbsp;</td></TR>
   <TR>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td>
-    <TD><asp:label id=AddressLabel runat="server">Address</asp:label></TD>
+    <TD><rwc:FormGridLabel id="AddressFieldLabel" runat="server" AssociatedControlID="AddressField"></rwc:FormGridLabel></TD>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td>
     <TD><asp:textbox id=AddressField runat="server" ReadOnly="True">Die Adresse ist Read-Only</asp:textbox></TD>
     <td style="BACKGROUND-COLOR: red">&nbsp;</td></TR>
