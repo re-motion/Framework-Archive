@@ -74,11 +74,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
     base.OnInit (e);
 
 
-    _textBox.ID = this.ID + "_TextBox";
+    _textBox.ID = this.ID + "_Boc_TextBox";
     _textBox.EnableViewState = false;
     Controls.Add (_textBox);
 
-    _label.ID = this.ID + "_Label";
+    _label.ID = this.ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
 
