@@ -12,11 +12,24 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   // static members and constants
 
+  /// <summary>
+  /// Creates an empty <see cref="DomainObjectCollection"/> of a given <see cref="Type"/>.
+  /// </summary>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType)
   {
     return Create (collectionType, new DataContainerCollection ());
   }
 
+  /// <summary>
+  /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and adds the <see cref="DomainObject"/>s of the given <see cref="DataContainerCollection"/>.
+  /// </summary>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
+  /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
+  /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
@@ -30,6 +43,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return domainObjects;
   }
 
+  /// <summary>
+  /// Compares two instances of <see cref="DomainObjectCollection"/> for equality.
+  /// </summary>
+  /// <param name="collection1">The first <see cref="DomainObjectCollection"/>.</param>
+  /// <param name="collection2">The second <see cref="DomainObjectCollection"/>.</param>
+  /// <returns><b>true</b> if the collections are equal; otherwise, <b>false</b>.</returns>
   public static bool Compare (DomainObjectCollection collection1, DomainObjectCollection collection2)
   {
     if (collection1 == null && collection2 == null) return true;
@@ -48,10 +67,22 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   // member fields
 
+  /// <summary>
+  /// Occurs before an object is added to the collection.
+  /// </summary>
   public event DomainObjectCollectionChangingEventHandler Adding;
+  /// <summary>
+  /// Occurs after an object is added to the collection.
+  /// </summary>
   public event DomainObjectCollectionChangedEventHandler Added;
 
+  /// <summary>
+  /// Occurs before an object is removed to the collection.
+  /// </summary>
   public event DomainObjectCollectionChangingEventHandler Removing;
+  /// <summary>
+  /// Occurs after an object is removed to the collection.
+  /// </summary>
   public event DomainObjectCollectionChangedEventHandler Removed;
 
   private Type _requiredItemType;
@@ -59,16 +90,33 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   // construction and disposing
 
+  /// <summary>
+  /// Initializes a new <b>DomainObjectCollection</b>.
+  /// </summary>
   public DomainObjectCollection () : this (null)
   {
   }
 
+  /// <summary>
+  /// Initializes a new <b>DomainObjectCollection</b> that only takes a certain <see cref="Type"/> as members.
+  /// </summary>
+  /// <param name="requiredItemType">The <see cref="Type"/> that are required for members.</param>
   public DomainObjectCollection (Type requiredItemType)
   {
     _requiredItemType = requiredItemType;    
   }
 
   // standard constructor for collections
+  /// <summary>
+  /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <remarks>
+  /// The new <b>DomainObjectCollection</b> has the same <see cref="RequiredItemType"/> and the same elements as the 
+  /// given <i>collection</i>.
+  /// </remarks>
+  /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
+  /// <param name="isCollectionReadOnly">Indicates wheather the new collection should be read only.</param>
+  /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
   public DomainObjectCollection (DomainObjectCollection collection, bool isCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
@@ -84,6 +132,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   // methods and properties
 
+  /// <summary>
+  /// Gets the required <see cref="Type"/> for all members of the collection.
+  /// </summary>
   public Type RequiredItemType
   {
     get { return _requiredItemType; }
@@ -96,6 +147,12 @@ public class DomainObjectCollection : CollectionBase, ICloneable
 
   #region Standard implementation for collections
 
+  /// <summary>
+  /// Determines whether and element is in the <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
+  /// <returns><b>true</b> if <i>domainObject</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference</exception>
   public bool Contains (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -103,21 +160,40 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return Contains (domainObject.ID);
   }
 
+  /// <summary>
+  /// Determines whether and element is in the <see cref="DomainObjectCollection"/>.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
+  /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <see cref="ObjectID"/> <i>id</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference</exception>
   public bool Contains (ObjectID id)
   {
+    ArgumentUtility.CheckNotNull ("id", id);
     return base.ContainsKey (id);
   }
 
+  /// <summary>
+  /// Gets the <see cref="DomainObject"/> with a given <i>index</i> in the <see cref="DomainObjectCollection"/>.
+  /// </summary>
   public DomainObject this[int index]  
   {
     get { return (DomainObject) GetObject (index); }
   }
 
+  /// <summary>
+  /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
+  /// </summary>
   public DomainObject this[ObjectID id]  
   {
     get { return (DomainObject) GetObject (id); }
   }
 
+  /// <summary>
+  /// Adds a <see cref="DomainObject"/> to the collection.
+  /// </summary>
+  /// <param name="value">The <see cref="DomainObject"/> to add.</param>
+  /// <exception cref="System.ArgumentNullException"><i>value</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentException"><i>value</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   public void Add (DomainObject value)
   {
     ArgumentUtility.CheckNotNull ("value", value);
@@ -137,16 +213,32 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     }
   }
 
+//TODO documentation: ArgumentOutOfRangeException?
+//TODO documentation: ArgumentNullException?
+  /// <summary>
+  /// Removes a <see cref="DomainObject"/> from the collection.
+  /// </summary>
+  /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
   public void Remove (int index)
   {
     Remove (this[index]);
   }
 
+//TODO documentation: ArgumentNullException?
+  /// <summary>
+  /// Removes a <see cref="DomainObject"/> from the collection.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove.</param>
   public void Remove (ObjectID id)
   {
     Remove (this[id]);
   }
 
+  /// <summary>
+  /// Removes a <see cref="DomainObject"/> from the collection.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to remove.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   public void Remove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -169,6 +261,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     }
   }
 
+  /// <summary>
+  /// Removes all elements from the <see cref="DomainObjectCollection"/>.
+  /// </summary>
   public void Clear ()
   {
     for (int i = Count - 1; i >= 0; i--)
@@ -220,8 +315,16 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return !addingArgs.Cancel;
   }
 
+  /// <summary>
+  /// Adds a <see cref="DomainObject"/> to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected void PerformAdd (DomainObject domainObject)
   {
+//TODO: Added by ES, check with ML
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
     base.Add (domainObject.ID, domainObject);
   }
 
@@ -239,8 +342,16 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     return !removingArgs.Cancel;
   }
 
+  /// <summary>
+  /// Removes a <see cref="DomainObject"/> from the collection without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to remove from the collection.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   internal protected void PerformRemove (DomainObject domainObject)
   {
+//TODO: Added by ES, check with ML
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
     base.Remove (domainObject.ID);
   }
 
@@ -249,6 +360,9 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     OnRemoved (new DomainObjectCollectionChangedEventArgs (domainObject));
   }
 
+  /// <summary>
+  /// Clears the <see cref="DomainObjectCollection"/> without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
+  /// </summary>
   internal protected new void ClearCollection ()
   {
     base.ClearCollection ();
@@ -285,24 +399,40 @@ public class DomainObjectCollection : CollectionBase, ICloneable
     }
   }
 
+  /// <summary>
+  /// Raises the <see cref="Adding"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnAdding (DomainObjectCollectionChangingEventArgs args)
   {
     if (Adding != null)
       Adding (this, args);
   }
 
+  /// <summary>
+  /// Raises the <see cref="Added"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
   protected virtual void OnAdded (DomainObjectCollectionChangedEventArgs args)
   {
     if (Added != null)
       Added (this, args);
   }
 
+  /// <summary>
+  /// Raises the <see cref="Removing"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRemoving (DomainObjectCollectionChangingEventArgs args)
   {
     if (Removing != null)
       Removing (this, args);
   }
 
+  /// <summary>
+  /// Raises the <see cref="Removed"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRemoved (DomainObjectCollectionChangedEventArgs args)
   {
     if (Removed != null)
