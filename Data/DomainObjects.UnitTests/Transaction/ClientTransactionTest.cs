@@ -478,5 +478,32 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.AreEqual (StateType.Deleted, order.State);
     Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
   }
+
+  [Test]
+  public void CommitIndependentTransactions ()
+  {
+    ClientTransaction clientTransaction1 = new ClientTransaction ();
+    ClientTransaction clientTransaction2 = new ClientTransaction ();
+
+    Order order1 = (Order) clientTransaction1.GetObject (DomainObjectIDs.Order1);
+    order1.OrderNumber = 50;
+    
+    Order order2 = (Order) clientTransaction2.GetObject (DomainObjectIDs.Order2);
+    order2.OrderNumber = 60;
+
+    clientTransaction1.Commit ();
+    clientTransaction2.Commit ();
+
+    ClientTransaction clientTransaction3 = new ClientTransaction ();
+
+    Order changedOrder1 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order1);
+    Order changedOrder2 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order2);
+
+    Assert.IsFalse (object.ReferenceEquals (order1, changedOrder1));
+    Assert.IsFalse (object.ReferenceEquals (order2, changedOrder2));
+
+    Assert.AreEqual (50, changedOrder1.OrderNumber);
+    Assert.AreEqual (60, changedOrder2.OrderNumber);
+  }
 }
 }
