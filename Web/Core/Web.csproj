@@ -126,11 +126,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "FinditPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "TabControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
