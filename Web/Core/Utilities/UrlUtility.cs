@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI.Utilities
+namespace Rubicon.Web.Utilities
 {
 /// <summary>
 /// Provided helper functions for working with URLs.
