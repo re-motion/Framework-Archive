@@ -48,24 +48,24 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
-  [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Data")]
-  [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
-  [DefaultValue ("")]
-  public string DataSourceControl
+  /// <summary>
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> this 
+  ///   <see cref="IBusinessObjectBoundWebControl"/> is bound to.
+  /// </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public IBusinessObjectDataSource DataSource
   {
     get 
     { 
-      return _dataSourceControl; 
+      if (_binding.DataSource == null)
+        InitializeDataSource();
+      return _binding.DataSource; 
     }
     set 
     { 
-      if (_dataSourceControl != value)
-      {
-        _dataSourceControl = value; 
-        _binding.DataSource = null;
-      }
+      _binding.DataSource = value;
+      _dataSourceControl = null;
     }
   }
 
@@ -110,6 +110,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
       InitializeDataSource();
   }
 
+  /// <summary>
+  ///   Evaluates control ID stored in <see cref="DataSourceControl"/> and binds this 
+  ///   <see cref="IBusinessObjectBoundWebControl"/> the <see cref="IBusinessObjectDataSource"/>.
+  /// </summary>
   private void InitializeDataSource()
   {
     if (NamingContainer == null)
@@ -129,20 +133,29 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _binding.DataSource = dataSource;
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public IBusinessObjectDataSource DataSource
+  /// <summary>
+  ///   Gets or sets the ID of the <see cref="IBusinessObjectDataSourceControl"/> 
+  ///   encapsulating the <see cref="IBusinessObjectDataSource"/> this 
+  ///   <see cref="IBusinessObjectBoundWebControl"/> is bound to.
+  /// </summary>
+  [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Data")]
+  [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+  [DefaultValue ("")]
+  public string DataSourceControl
   {
     get 
     { 
-      if (_binding.DataSource == null)
-        InitializeDataSource();
-      return _binding.DataSource; 
+      return _dataSourceControl; 
     }
     set 
     { 
-      _binding.DataSource = value;
-      _dataSourceControl = null;
+      if (_dataSourceControl != value)
+      {
+        _dataSourceControl = value; 
+        _binding.DataSource = null;
+      }
     }
   }
 

@@ -13,13 +13,18 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public sealed class PropertyPathBindingCollection : CollectionBase
 {
   /// <summary> 
-  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundControl"/> to which this 
+  ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </summary>
   private IBusinessObjectBoundControl _ownerControl;
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="PropertyPathBindingCollection"/> class
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs.
+  /// </summary>
   /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundControl"/> to which this 
+  ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </param>
   internal PropertyPathBindingCollection (IBusinessObjectBoundControl ownerControl)
   {
@@ -102,14 +107,13 @@ public sealed class PropertyPathBindingCollection : CollectionBase
     return (PropertyPathBinding[]) arrayList.ToArray (typeof (PropertyPathBinding));
   }
  
-  /// <summary> Gets the element at the specified index. </summary>
+  /// <summary> Gets or sets the element at the specified index. </summary>
   /// <value> The element at the specified index. </value>
   public PropertyPathBinding this[int index]
   {
     get
     {
       PropertyPathBinding propertyPathBinding = (PropertyPathBinding) List[index];
-
       return propertyPathBinding;
     }
     set
@@ -119,7 +123,8 @@ public sealed class PropertyPathBindingCollection : CollectionBase
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundControl"/> to which this collection belongs to.
+  ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> to which this 
+  ///   <see cref="PropertyPathBindingCollection"/> belongs.
   /// </summary>
   internal IBusinessObjectBoundControl OwnerControl
   {

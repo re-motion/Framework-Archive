@@ -22,20 +22,24 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
   private bool _isChanged;
 
   /// <summary> 
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this
+  ///   <see cref="BocColumnDefinitionSetCollection"/> belongs.
   /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary>
-  ///   The event raised after the items contained in the collection have been changed.
+  ///   The event raised after the items contained in the 
+  ///   <see cref="BocColumnDefinitionSetCollection"/> have been changed.
   /// </summary>
   public event CollectionChangeEventHandler CollectionChanged;
 
-  /// <summary>
-  ///   Constructor.
-  /// </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="BocColumnDefinitionSetCollection"/> class
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs.
+  ///  </summary>
   /// <param name="ownerControl">
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinitionSetCollection"/> belongs to.
   /// </param>
   internal BocColumnDefinitionSetCollection (IBusinessObjectBoundWebControl ownerControl)
   {
@@ -49,7 +53,7 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
     _isEditing = true;
   }
 
-  /// <summary> Returns the collection to normal mode. </summary>
+  /// <summary> Returns the <see cref="BocColumnDefinitionSetCollection"/> to normal mode. </summary>
   /// <remarks>
   ///   A common <see cref="CollectionChanged"/> event is raised if changes 
   ///   occured during edit-mode. 
@@ -147,7 +151,8 @@ public sealed class BocColumnDefinitionSetCollection : CollectionBase
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this collection belongs to.
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinitionSetCollection"/> belongs.
   /// </summary>
   internal IBusinessObjectBoundWebControl OwnerControl
   {

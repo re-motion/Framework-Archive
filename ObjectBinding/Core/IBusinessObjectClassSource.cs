@@ -2,19 +2,22 @@ using System;
 
 namespace Rubicon.ObjectBinding
 {
+
 /// <summary>
-/// Summary description for PropertyPathBinding.
+///   An <see cref="IPropertyPathBinding"/> encapsulates the creation of a 
+///   <see cref="BusinessObjectPropertyPath"/> from it's string representation and an
+///   <see cref="IBusinessObjectDataSource"/>
 /// </summary>
 public interface IPropertyPathBinding
 {
   /// <summary> 
-  ///   The <see cref="IBusinessObjectDataSource"/> used to evaluate the 
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
   ///   <see cref="PropertyPathIdentifier"/>. 
   /// </summary>
   IBusinessObjectDataSource DataSource { get; set; }
 
   /// <summary> 
-  ///   The <see cref="BusinessObjectPropertyPath"/> mananged by this 
+  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> mananged by this 
   ///   <see cref="IPropertyPathBinding"/>.
   /// </summary>
   /// <value>
@@ -25,8 +28,8 @@ public interface IPropertyPathBinding
   BusinessObjectPropertyPath PropertyPath { get; set; }
 
   /// <summary> 
-  ///   The <see cref="string"/> representing the <see cref="BusinessObjectPropertyPath"/> mananged 
-  ///   by this <see cref="IPropertyPathBinding"/>.
+  ///   Gets or sets the <see cref="string"/> representing the 
+  ///   <see cref="BusinessObjectPropertyPath"/> mananged by this <see cref="IPropertyPathBinding"/>.
   /// </summary>
   /// <value> 
   ///   A <see cref="string"/> formatted as a valid property path. 
@@ -34,4 +37,5 @@ public interface IPropertyPathBinding
   /// </value>
   string PropertyPathIdentifier { get; set; }
 }
+
 }

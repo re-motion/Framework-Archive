@@ -39,7 +39,10 @@ public class PropertyPathBinding: IPropertyPathBinding
   /// </summary>
   private IBusinessObjectBoundControl _ownerControl;
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="PropertyPathBinding"/> class with the
+  ///   <see cref="BusinessObjectPropertyPath"/> managed by this instance.
+  ///  </summary>
   /// <param name="propertyPath">
   ///   The <see cref="BusinessObjectPropertyPath"/> mananged by this 
   ///   <see cref="PropertyPathBinding"/>.
@@ -50,7 +53,11 @@ public class PropertyPathBinding: IPropertyPathBinding
     PropertyPath = propertyPath;
   }
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> 
+  ///   Initializes a new instance of the <see cref="PropertyPathBinding"/> class with the
+  ///   string representation of the <see cref="BusinessObjectPropertyPath"/> managed by this 
+  ///   instance.
+  /// </summary>
   /// <param name="propertyPathIdentifier">
   ///   The <see cref="string"/> representing the <see cref="BusinessObjectPropertyPath"/> mananged 
   ///   by this <see cref="PropertyPathBinding"/>.
@@ -61,7 +68,7 @@ public class PropertyPathBinding: IPropertyPathBinding
     PropertyPathIdentifier = propertyPathIdentifier;
   }
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> Initializes a new instance of the <see cref="PropertyPathBinding"/> class.  </summary>
   public PropertyPathBinding()
   {}
 
@@ -77,7 +84,7 @@ public class PropertyPathBinding: IPropertyPathBinding
   }
 
   /// <summary> 
-  ///   The <see cref="IBusinessObjectDataSource"/> used to evaluate the 
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
   ///   <see cref="PropertyPathIdentifier"/>. 
   /// </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -97,7 +104,7 @@ public class PropertyPathBinding: IPropertyPathBinding
   }
 
   /// <summary> 
-  ///   The <see cref="BusinessObjectPropertyPath"/> mananged by this 
+  ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> mananged by this 
   ///   <see cref="PropertyPathBinding"/>.
   /// </summary>
   /// <value>
@@ -131,8 +138,8 @@ public class PropertyPathBinding: IPropertyPathBinding
   }
 
   /// <summary> 
-  ///   The <see cref="string"/> representing the <see cref="BusinessObjectPropertyPath"/> mananged 
-  ///   by this <see cref="PropertyPathBinding"/>.
+  ///   Gets or sets the <see cref="string"/> representing the 
+  ///   <see cref="BusinessObjectPropertyPath"/> mananged by this <see cref="PropertyPathBinding"/>.
   /// </summary>
   /// <value> 
   ///   A <see cref="string"/> formatted as a valid property path. 
@@ -159,19 +166,13 @@ public class PropertyPathBinding: IPropertyPathBinding
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectBoundControl"/> to containing the <see cref="DataSource"/>. 
+  ///   Gets or sets the <see cref="IBusinessObjectBoundControl"/> containing the 
+  ///   <see cref="DataSource"/>. 
   /// </summary>
   protected internal IBusinessObjectBoundControl OwnerControl
   {
-    get
-    {
-      return _ownerControl; 
-    }
-    set
-    {
-      if (_ownerControl != value)
-        _ownerControl = value;
-    }
+    get { return _ownerControl;  }
+    set { _ownerControl = value; }
   }
 }
 }

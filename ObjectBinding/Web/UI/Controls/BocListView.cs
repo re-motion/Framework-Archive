@@ -19,19 +19,27 @@ public class BocColumnDefinitionSet
 {
   /// <summary> The programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   private string _id;
-  /// <summary> The displayed name of the set. </summary>
+  /// <summary> The displayed name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   private object _title;
-  /// <summary> The <see cref="BocColumnDefinition"/> objects stored in the set. </summary>
+  /// <summary> 
+  ///   The <see cref="BocColumnDefinition"/> objects stored in the 
+  ///   <see cref="BocColumnDefinitionSet"/>. 
+  /// </summary>
   private BocColumnDefinitionCollection _columnDefinitionCollection;
-  /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
+  /// <summary>
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinitionSet"/> belongs. 
+  /// </summary>
   private IBusinessObjectBoundWebControl _ownerControl;
 
   /// <summary> 
-  ///   Constructor used to initialize the set with an array of <see cref="BocColumnDefinition"/> 
-  ///   objects. 
+  ///   Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class 
+  ///   with the <see cref="IBusinessObjectBoundWebControl"/> to which it belongs, a title,
+  ///   and an array of <see cref="BocColumnDefinition"/> objects. 
   /// </summary>
   /// <param name="ownerControl">
-  ///   The control this <see cref="BocColumnDefinitionSet"/> belongs to.
+  ///   The <see cref="IBusinessObjectBoundWebControl"/> this <see cref="BocColumnDefinitionSet"/> 
+  ///   belongs.
   /// </param>
   /// <param name="title">
   ///   The <see cref="string"/> symbolizing this <see cref="BocColumnDefinitionSet"/> 
@@ -56,8 +64,8 @@ public class BocColumnDefinitionSet
   }
 
   /// <summary> 
-  ///   Constructor used to initialize the set with an array of <see cref="BocColumnDefinition"/> 
-  ///   objects. 
+  ///   Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class with a title
+  ///   and an array of <see cref="BocColumnDefinition"/> objects. 
   /// </summary>
   /// <param name="title">
   ///   The <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> 
@@ -71,7 +79,7 @@ public class BocColumnDefinitionSet
     : this (null, title, columnDefinitions)
   {}
 
-  /// <summary> Simple Constructor. </summary>
+  /// <summary> Initialize a new instance of the <see cref="BocColumnDefinitionSet"/> class. </summary>
   public BocColumnDefinitionSet()
     : this (null, string.Empty, null)
   {}
@@ -79,9 +87,7 @@ public class BocColumnDefinitionSet
   /// <summary>
   ///   Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinitionSet"/>.
   /// </summary>
-  /// <returns>
-  ///   Returns the class name of the instance, followed by the <see cref="Title"/>.
-  /// </returns>
+  /// <returns> Returns the class name of the instance, followed by the <see cref="Title"/>. </returns>
   public override string ToString()
   {
     string displayName = ID;
@@ -93,7 +99,7 @@ public class BocColumnDefinitionSet
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
-  /// <summary> The programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
+  /// <summary> Gets or sets the programmatic name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   /// <value> 
   ///   A <see cref="string"/> providing an identifier for this <see cref="BocColumnDefinitionSet"/>.
   /// </value>
@@ -108,7 +114,7 @@ public class BocColumnDefinitionSet
     set { _id = value; }
   }
 
-  /// <summary> The displayed name of the set. </summary>
+  /// <summary> Gets or sets the displayed name of the <see cref="BocColumnDefinitionSet"/>. </summary>
   /// <value> 
   ///   A <see cref="string"/> representing this <see cref="BocColumnDefinitionSet"/> on the 
   ///   rendered page.
@@ -123,7 +129,10 @@ public class BocColumnDefinitionSet
     set { _title = value; }
   }
 
-  /// <summary> The <see cref="BocColumnDefinition"/> objects stored in the set. </summary>
+  /// <summary> 
+  ///   Gets the <see cref="BocColumnDefinition"/> objects stored in the 
+  ///   <see cref="BocColumnDefinitionSet"/>. 
+  /// </summary>
   /// <value>
   ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this 
   ///   <see cref="BocColumnDefinitionSet"/>.
@@ -139,7 +148,9 @@ public class BocColumnDefinitionSet
     get { return _columnDefinitionCollection; }
   }
 
-  /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> to which this set belongs to. </summary>
+  /// <summary> 
+  ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this 
+  ///   <see cref="BocColumnDefinitionSet"/> belongs. </summary>
   internal IBusinessObjectBoundWebControl OwnerControl
   {
     get { return _ownerControl; }
@@ -150,7 +161,7 @@ public class BocColumnDefinitionSet
     }
   }
 
-  /// <summary> The human readable name of this type. </summary>
+  /// <summary> Gets the human readable name of this type. </summary>
   protected virtual string DisplayedTypeName
   {
     get { return "ColumnDefinitionSet"; }
