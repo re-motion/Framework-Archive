@@ -75,8 +75,8 @@
     </param>  
   </DispatchMain>
   <DispatchGeneric>
-    <param name="control">
-      The control to be dispatched. Must not be <see langname="null"/>.
+    <param name="obj">
+      The object to be dispatched. Must not be <see langname="null"/>.
     </param>
     <param name="values">
       A dictonary consisting of name/value pairs corresponding to property's name and value resprectively. Must not be <see langname="null"/>.
