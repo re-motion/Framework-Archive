@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
 [TestFixture]
-public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseTest
+public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBaseTest
 {
   // types
 
@@ -22,7 +22,7 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
 
   // construction and disposing
 
-  public DeleteDomainObjectWithOneToOneRelationTest ()
+  public DeleteDomainObjectWithManyToOneRelationTest ()
   {
   }
 
@@ -56,25 +56,6 @@ public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseT
     };
 
     _eventReceiver.Compare (expectedStates);
-  }
-
-  [Test]
-  public void DeleteComputerWithoutEmployeeEvents ()
-  {
-    Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-
-    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] {computer}, new DomainObjectCollection[0]);
-
-    computer.Delete ();
-
-    ChangeState[] expectedStates = new ChangeState [] 
-    {
-      new ObjectDeletionState (computer, "1. Deleting of computer"),
-      new ObjectDeletionState (computer, "2. Deleted of computer")
-    };
-
-    eventReceiver.Compare (expectedStates); 
   }
 
   [Test]
