@@ -273,6 +273,7 @@ public class PropertyPathPickerControl : System.Windows.Forms.UserControl
     FillTree();
   }
 
+
   public IWindowsFormsEditorService EditorService
   {
     get { return _editorService; }

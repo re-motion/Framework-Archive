@@ -15,7 +15,7 @@ public interface IPropertyPathBinding
 
   /// <summary> 
   ///   The <see cref="BusinessObjectPropertyPath"/> mananged by this 
-  ///   <see cref="PropertyPathBinding"/>.
+  ///   <see cref="IPropertyPathBinding"/>.
   /// </summary>
   /// <value>
   ///   A <see cref="BusinessObjectPropertyPath"/> or <see langword="null"/> if the 
@@ -26,7 +26,7 @@ public interface IPropertyPathBinding
 
   /// <summary> 
   ///   The <see cref="string"/> representing the <see cref="BusinessObjectPropertyPath"/> mananged 
-  ///   by this <see cref="PropertyPathBinding"/>.
+  ///   by this <see cref="IPropertyPathBinding"/>.
   /// </summary>
   /// <value> 
   ///   A <see cref="string"/> formatted as a valid property path. 

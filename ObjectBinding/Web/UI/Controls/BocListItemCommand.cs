@@ -249,11 +249,9 @@ public class BocItemCommand
   private BocItemCommandType _type = BocItemCommandType.Event;
   private BocItemCommandShow _show = BocItemCommandShow.Always;
 
-  private HrefCommandProperties _hrefCommand = null;
-  private WxeFunctionCommandProperties _wxeFunctionCommand = null;
+  private HrefCommandProperties _hrefCommand = new HrefCommandProperties();
+  private WxeFunctionCommandProperties _wxeFunctionCommand = new WxeFunctionCommandProperties();
   //private ScriptCommandProperties _scriptCommand = null;
-
-  private bool _isCommandTypeInitialized = false;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -438,36 +436,11 @@ public class BocItemCommand
   {
     get
     {
-      if (!_isCommandTypeInitialized)
-        _isCommandTypeInitialized = true;
       return _type; 
     }
     set 
     {
       _type = value; 
-      if (!_isCommandTypeInitialized)
-        _isCommandTypeInitialized = true;
-      switch (_type)
-      {
-        case BocItemCommandType.Href:
-        {
-          _hrefCommand = new HrefCommandProperties();
-          _wxeFunctionCommand = null;
-          break;
-        }
-        case BocItemCommandType.WxeFunction:
-        {
-          _hrefCommand = null;
-          _wxeFunctionCommand = new WxeFunctionCommandProperties();
-          break;
-        }
-        default:
-        {
-          _hrefCommand = null;
-          _wxeFunctionCommand = null;
-         break;
-        }
-      }
     }
   }
 
@@ -500,16 +473,10 @@ public class BocItemCommand
   {
     get
     {
-      if (!_isCommandTypeInitialized)
-        Type = BocItemCommandType.Href;
       return _hrefCommand; 
     }
     set
     { 
-      if (!_isCommandTypeInitialized)
-        Type = BocItemCommandType.Href;
-      if (_type != BocItemCommandType.Href)
-        throw new InvalidOperationException ("HrefCommand can only be set if Type is Href.");
       _hrefCommand = value;
     }
   }
@@ -524,16 +491,10 @@ public class BocItemCommand
   {
     get 
     {
-      if (!_isCommandTypeInitialized)
-        Type = BocItemCommandType.WxeFunction;
       return _wxeFunctionCommand; 
     }
     set 
     {
-      if (!_isCommandTypeInitialized)
-        Type = BocItemCommandType.WxeFunction;
-      if (_type != BocItemCommandType.WxeFunction)
-        throw new InvalidOperationException ("WxeFunctionCommand can only be set if Type is WxeFunction.");
       _wxeFunctionCommand = value; 
     }
   }
