@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="IndependentUserControl.ascx.cs" Inherits="OBWTest.IndependentUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="IntegrationTestUserControl.ascx.cs" Inherits="OBWTest.IntegrationTestUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 <%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
@@ -13,7 +13,10 @@
     <td><obw:BocTextValue id="TextField" runat="server" propertyidentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obw:BocTextValue></td></tr>
   <tr>
     <td></td>
-    <td><obw:BocMultilineTextValue id="MultilineTextField" runat="server" DESIGNTIMEDRAGDROP="37" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obw:BocMultilineTextValue></td></tr>
+    <td><obw:BocMultilineTextValue id="MultilineTextField" runat="server">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle>
+</obw:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
     <td><obw:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obw:BocDateTimeValue></td></tr>
@@ -32,7 +35,7 @@
     <td></td>
     <td></td></tr>
   <tr>
-    <td colspan="2"><obw:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True">
+    <td colspan="2"><obw:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True">
 <fixedcolumns>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="Title"></obw:BocSimpleColumnDefinition>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate"></obw:BocSimpleColumnDefinition>

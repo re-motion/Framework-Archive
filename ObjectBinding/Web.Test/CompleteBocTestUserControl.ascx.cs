@@ -13,7 +13,7 @@ using Rubicon.ObjectBinding;
 
 namespace OBWTest
 {
-public class IndependentUserControl : 
+public class IntegrationTestUserControl : 
     System.Web.UI.UserControl,
     IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
@@ -28,12 +28,12 @@ public class IndependentUserControl :
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue TextField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateTimeField;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue EnumField;
   protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue ReferenceField;
   protected Rubicon.ObjectBinding.Web.Controls.BocList ListField;
   protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BooleanField;
+  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
   private void Page_Load(object sender, System.EventArgs e)
