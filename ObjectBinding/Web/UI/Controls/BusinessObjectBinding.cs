@@ -36,44 +36,13 @@ public class BusinessObjectBinding
   {
     get 
     { 
-      if (_dataSourceChanged)
-      {
-        // set _dataSource from ID in _dataSourceControl
-        if (_dataSourceControl == null)
-        {
-          _dataSource = null;
-        }
-        else
-        {
-          if (_control.NamingContainer == null)
-            throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
-
-          Control control = ControlHelper.FindControl (_control.NamingContainer, _dataSourceControl);
-          if (control == null)
-            throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
-
-          IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
-          if (dataSource == null)
-            throw new HttpException(string.Format ("The value '{0}' of the DataSource property of '{1}' cannot be converted to type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
-
-          _dataSource = dataSource;
-        }
-
-        _dataSourceChanged = false;
-      }
+      EnsureDataSource();
       return _dataSource; 
     }
 
     set
     {
-      if (_dataSource != null)
-        _dataSource.Unregister (Control);
-
-      _dataSource = value;
-
-      if (value != null)
-        value.Register (Control); 
-      _bindingChanged = true;
+      SetDataSource (value);
 
       Control dataSourceControl = value as Control;
       if (dataSourceControl != null)
@@ -81,6 +50,50 @@ public class BusinessObjectBinding
       else
         _dataSourceControl = null;
     }
+  }
+
+  public void EnsureDataSource()
+  {
+    if (_dataSourceChanged)
+    {
+      // set _dataSource from ID in _dataSourceControl
+      if (_dataSourceControl == null)
+      {
+        SetDataSource (null);
+      }
+      else
+      {
+        if (_control.NamingContainer == null)
+          throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
+
+        Control control = ControlHelper.FindControl (_control.NamingContainer, _dataSourceControl);
+        if (control == null)
+          throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+
+        IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
+        if (dataSource == null)
+          throw new HttpException(string.Format ("The value '{0}' of the DataSource property of '{1}' cannot be converted to type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
+
+        SetDataSource (dataSource);
+      }
+
+      _dataSourceChanged = false;
+    }
+  }
+
+  private void SetDataSource (IBusinessObjectDataSource dataSource)
+  {
+    if (_dataSource == dataSource)
+      return;
+
+    if (_dataSource != null)
+      _dataSource.Unregister (Control);
+
+    _dataSource = dataSource;
+
+    if (dataSource != null)
+      dataSource.Register (Control); 
+    _bindingChanged = true;
   }
 
   public string DataSourceControl

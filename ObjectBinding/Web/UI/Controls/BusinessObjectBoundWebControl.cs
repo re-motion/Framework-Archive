@@ -34,7 +34,7 @@ public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundW
 /// <summary>
 /// Provides a GUI designer for BusinessObjectBoundControl
 /// </summary>
-[Designer (typeof (BocDesigner))]
+//[Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
   #region IBusinessObjectBoundControl implementation
@@ -99,9 +99,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     base.OnInit (e);
 
-    // TODO: raushaun?
     //if (!ControlHelper.IsDesignMode (this, this.Context))
-    //  InitializeDataSource();
+    _binding.EnsureDataSource();
   }
 
 
