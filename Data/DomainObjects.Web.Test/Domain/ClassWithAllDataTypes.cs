@@ -46,6 +46,11 @@ public class ClassWithAllDataTypes : BindableDomainObject
 
   // methods and properties
 
+  public ObjectID ObjectID
+  {
+    get { return base.ID; }
+  }
+
   public bool BooleanProperty
   {
     get { return DataContainer.GetBoolean ("BooleanProperty"); }
