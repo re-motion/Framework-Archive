@@ -49,6 +49,7 @@ public class BocList:
   /// <summary> Prefix applied to the post back argument of the event type command columns. </summary>
   private const string c_eventListItemCommandPrefix = "ListCommand=";
   private const string c_eventMenuItemPrefix = "MenuItem=";
+  const string c_customCellEventPrefix = "CustomCell=";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -421,6 +422,8 @@ public class BocList:
       HandleEventMenuItem (eventArgument.Substring (c_eventMenuItemPrefix.Length));
     else if (eventArgument.StartsWith (c_sortCommandPrefix))
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
+    else if (eventArgument.StartsWith (c_customCellEventPrefix))
+      HandleCustomCellEvent (eventArgument.Substring (c_customCellEventPrefix.Length));
     else
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
@@ -466,7 +469,7 @@ public class BocList:
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
 
-    BocColumnDefinition column = columns[columnIndex];
+    BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition) columns[columnIndex];
     if (column.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
     BocListItemCommand command = column.Command;
@@ -602,9 +605,62 @@ public class BocList:
       _sortingOrder.Add (sortingOrderEntry);
   }
 
+  /// <summary> Handles post back events raised by a custom cell event. </summary>
+  /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;,&lt;argument&gt; </param>
+  private void HandleCustomCellEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 3);
+
+    //  First part: column index
+    int columnIndex;
+    eventArgumentParts[0] = eventArgumentParts[0].Trim();
+    try 
+    {
+      if (eventArgumentParts[0].Length == 0)
+        throw new FormatException();
+      columnIndex = int.Parse (eventArgumentParts[0]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>,<argument>'.");
+    }
+
+    //  Second part: list index
+    int listIndex;
+    eventArgumentParts[1] = eventArgumentParts[1].Trim();
+    try 
+    {
+      if (eventArgumentParts[1].Length == 0)
+        throw new FormatException();
+      listIndex = int.Parse (eventArgumentParts[1]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>,<argument>'.");
+    }
+
+    //  Thrid part: argument
+    string customCellArgument;
+    eventArgumentParts[2] = eventArgumentParts[2].Trim();
+    customCellArgument = eventArgumentParts[2];
+
+    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+
+    if (columnIndex >= columns.Length)
+      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
+
+    BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
+    column.CustomCell.OnClick (this, (IBusinessObject) Value[listIndex], column, customCellArgument);
+  }
+
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
-  protected virtual void OnListItemCommandClick (BocColumnDefinition column, int listIndex, IBusinessObject businessObject)
+  protected virtual void OnListItemCommandClick (
+      BocCommandEnabledColumnDefinition column, 
+      int listIndex, 
+      IBusinessObject businessObject)
   {
     BocListItemCommandClickEventHandler commandClickHandler = 
         (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
@@ -1587,7 +1643,7 @@ public class BocList:
 
   private void RenderDataCell (
       HtmlTextWriter writer, 
-      int idxColumns, BocColumnDefinition column, 
+      int columnIndex, BocColumnDefinition column, 
       int originalRowIndex, IBusinessObject businessObject,
       bool showIcon, string cssClassTableCell)
   {
@@ -1600,88 +1656,98 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
-    BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
-    BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
-    BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
-    BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
+    BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
+    BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
 
-    //  Render the command
-    bool isCommandEnabled = false;
-    if (column.Command != null)
+    if (commandEnabledColumn != null)
     {
-      bool isActive =    column.Command.Show == CommandShow.Always
-                      || isReadOnly && column.Command.Show == CommandShow.ReadOnly
-                      || ! isReadOnly && column.Command.Show == CommandShow.EditMode;
-      if (   isActive
-          && column.Command.Type != CommandType.None)
+      BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
+      BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
+      BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
+      BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
+
+      //  Render the command
+      bool isCommandEnabled = false;
+      if (commandEnabledColumn.Command != null)
       {
-        isCommandEnabled = true;
-      }
-    }
-
-    if (isCommandEnabled)
-    {    
-      string argument = c_eventListItemCommandPrefix + idxColumns + "," + originalRowIndex;
-      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-      string onClick = "BocList_OnCommandClick();";
-      column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
-    }
-
-    //  Render the icon
-    if (showIcon)
-    {
-      IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
-          businessObject, 
-          businessObject.BusinessObjectClass.BusinessObjectProvider);
-
-      if (icon != null)
-      {
-        writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
-        if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+        bool isActive =    commandEnabledColumn.Command.Show == CommandShow.Always
+                        || isReadOnly && commandEnabledColumn.Command.Show == CommandShow.ReadOnly
+                        || ! isReadOnly && commandEnabledColumn.Command.Show == CommandShow.EditMode;
+        if (   isActive
+            && commandEnabledColumn.Command.Type != CommandType.None)
         {
-          writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
-          writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
+          isCommandEnabled = true;
         }
-        writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-        writer.AddStyleAttribute ("vertical-align", "middle");
-        writer.RenderBeginTag (HtmlTextWriterTag.Img);
-        writer.RenderEndTag();
-        writer.Write (c_whiteSpace);
       }
-    }
 
-    //  Render the label
-    if (commandColumn != null)
-    {
-      if (commandColumn.IconPath != null)
+      if (isCommandEnabled)
+      {    
+        string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
+        string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+        string onClick = "BocList_OnCommandClick();";
+        commandEnabledColumn.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
+      }
+
+      //  Render the icon
+      if (showIcon)
       {
-        writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
-        writer.RenderBeginTag (HtmlTextWriterTag.Img);
-        writer.RenderEndTag();
+        IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
+            businessObject, 
+            businessObject.BusinessObjectClass.BusinessObjectProvider);
+
+        if (icon != null)
+        {
+          writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
+          if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+          {
+            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
+            writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Height.ToString());
+          }
+          writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+          writer.AddStyleAttribute ("vertical-align", "middle");
+          writer.RenderBeginTag (HtmlTextWriterTag.Img);
+          writer.RenderEndTag();
+          writer.Write (c_whiteSpace);
+        }
       }
 
-      if (commandColumn.Text != null)
-        writer.Write (commandColumn.Text);
-    }
-    else if (compoundColumn != null)
-    {
-      string contents = compoundColumn.GetStringValue (businessObject);
-      contents = HttpUtility.HtmlEncode (contents);
-      if (contents == string.Empty)
-        contents = c_whiteSpace;
-      writer.Write (contents);
-    }
-    else if (simpleColumn != null)
-    {
-      string contents = simpleColumn.GetStringValue (businessObject);
-      contents = HttpUtility.HtmlEncode (contents);
-      if (contents == string.Empty)
-        contents = c_whiteSpace;
-      writer.Write (contents);
-    }
+      //  Render the label
+      if (commandColumn != null)
+      {
+        if (commandColumn.IconPath != null)
+        {
+          writer.AddAttribute (HtmlTextWriterAttribute.Src, commandColumn.IconPath);
+          writer.RenderBeginTag (HtmlTextWriterTag.Img);
+          writer.RenderEndTag();
+        }
 
-    if (isCommandEnabled)
-      column.Command.RenderEnd (writer);
+        if (commandColumn.Text != null)
+          writer.Write (commandColumn.Text);
+      }
+      else if (compoundColumn != null)
+      {
+        string contents = compoundColumn.GetStringValue (businessObject);
+        contents = HttpUtility.HtmlEncode (contents);
+        if (contents == string.Empty)
+          contents = c_whiteSpace;
+        writer.Write (contents);
+      }
+      else if (simpleColumn != null)
+      {
+        string contents = simpleColumn.GetStringValue (businessObject);
+        contents = HttpUtility.HtmlEncode (contents);
+        if (contents == string.Empty)
+          contents = c_whiteSpace;
+        writer.Write (contents);
+      }
+
+      if (isCommandEnabled)
+        commandEnabledColumn.Command.RenderEnd (writer);
+    }
+    else if (customColumn != null)
+    {
+      customColumn.CustomCell.Render (writer, this, businessObject, customColumn, columnIndex, originalRowIndex);
+    }
 
     writer.RenderEndTag();
   }
@@ -1734,6 +1800,18 @@ public class BocList:
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Input);
     writer.RenderEndTag();
+  }
+
+  public string GetPostBackClientEvent (int columnIndex, int listIndex, string argument)
+  {
+    string postBackArgument = c_customCellEventPrefix + columnIndex + "," + listIndex + "," + argument;
+    return Page.GetPostBackClientEvent (this, postBackArgument);
+  }
+
+  public string GetPostBackClientHyperlink (int columnIndex, int listIndex, string argument)
+  {
+    string postBackArgument = c_customCellEventPrefix + columnIndex + "," + listIndex + "," + argument;
+    return Page.GetPostBackClientHyperlink (this, postBackArgument);
   }
 
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
@@ -3091,6 +3169,7 @@ public class BocList:
     get { return !IsDesignMode && Page != null && Page.IsPostBack; }
   }
 }
+
 /// <summary> The possible sorting directions. </summary>
 public enum SortingDirection
 {
