@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
-public class SqlProviderBaseTest : DatabaseTest
+public class SqlProviderBaseTest : ClientTransactionBaseTest
 {
   // types
 
@@ -35,8 +35,7 @@ public class SqlProviderBaseTest : DatabaseTest
     _provider = new SqlProvider (_providerDefinition);
   }
   
-  [TearDown]
-  public virtual void TearDown ()
+  public override void TearDown ()
   {
     _provider.Dispose ();
   }
