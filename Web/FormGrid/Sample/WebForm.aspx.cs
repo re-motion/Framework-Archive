@@ -12,8 +12,9 @@ using System.Text;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Utilities;
-using Rubicon.Web.UI;
+using Rubicon.Web.Utilities;
+using Rubicon.Web;
+using Rubicon.Collections;
 
 namespace FormGrid.Sample
 {
@@ -33,13 +34,13 @@ public class WebForm :
   /// <summary> Caches the IResourceManager returned by GetResourceManager. </summary>
   private static IResourceManager s_chachedResourceManager;
 
-  /// <summary> Helper implementation for IFormGridRowProvider. </summary>
-  private FormGridRowProvider _formGridRowProvider;
-
-	private void Page_Load(object sender, System.EventArgs e)
-	{
-		// Put user code to initialize the page here
-	}
+  private AutoInitHashtable _listOfFormGridRowInfos =
+      new AutoInitHashtable (typeof (FormGridRowInfoCollection));
+  private AutoInitHashtable _listOfHiddenRows = 
+      new AutoInitHashtable (typeof (StringCollection));
+  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
+  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Rubicon.Web.UI.Controls.FormGridLabel AddressLabel;
 
 	override protected void OnInit(EventArgs e)
 	{
@@ -49,33 +50,29 @@ public class WebForm :
 		InitializeComponent();
 		base.OnInit(e);
 
-    //  Required
-    _formGridRowProvider = new FormGridRowProvider();
-
     //  Demonstration of IFormGridRowProvider
     //  Data would normally be read by this WebForm from some external source
     //  This would either have to happen during page initialization
     //  or dynamically when the interface methods are called.
 
-    StringCollection hiddenRows = _formGridRowProvider.GetListOfHiddenRows (
-      MainFormGrid.ID);
+    StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[MainFormGrid.ID];
 
     //  This row should be hidden
     hiddenRows.Add (FirstNameField.ID);
   
-    FormGridRowPrototypeCollection newRows = _formGridRowProvider.GetListOfFormGridRowPrototypes (
-      MainFormGrid.ID);
+    FormGridRowInfoCollection newRows = 
+        (FormGridRowInfoCollection)_listOfFormGridRowInfos[MainFormGrid.ID];
 
     TextBox textBox = new TextBox();
     textBox.ID = "MyNewTextBox";
     textBox.Text = "Eine neue Zeile";
 
     //  A new row
-    newRows.Add (new FormGridRowPrototype(
+    newRows.Add (new FormGridRowInfo(
       textBox, 
-      FormGridRowPrototype.RowType.ControlInRowWithLabel, 
+      FormGridRowInfo.RowType.ControlInRowWithLabel, 
       AddressField.ID, 
-      FormGridRowPrototype.RowPosition.AfterRowWithID));
+      FormGridRowInfo.RowPosition.AfterRowWithID));
 
     textBox = new TextBox();
     textBox.ID = "MyOtherNewTextBox";
@@ -84,11 +81,11 @@ public class WebForm :
     textBox.Height = Unit.Parse ("3em");
 
     //  A second new row
-    newRows.Add (new FormGridRowPrototype(
+    newRows.Add (new FormGridRowInfo(
       textBox, 
-      FormGridRowPrototype.RowType.ControlInRowAfterLabel, 
+      FormGridRowInfo.RowType.ControlInRowAfterLabel, 
       CompaniesTable.ID, 
-      FormGridRowPrototype.RowPosition.BeforeRowWithID));
+      FormGridRowInfo.RowPosition.BeforeRowWithID));
 
 	}
 	
@@ -103,18 +100,15 @@ public class WebForm :
   protected System.Web.UI.WebControls.TextBox PlaceField;
   protected System.Web.UI.WebControls.TextBox AddressField;
   protected System.Web.UI.HtmlControls.HtmlTable MainFormGrid;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected System.Web.UI.WebControls.CompareValidator NameFieldCompareValidator;
   protected System.Web.UI.WebControls.CompareValidator GenderListCompareValidator;
   protected System.Web.UI.WebControls.Table CompaniesTable;
   protected System.Web.UI.WebControls.RequiredFieldValidator CompaniesTableRequiredFieldValidator;
   protected System.Web.UI.WebControls.Button submitButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
   protected System.Web.UI.WebControls.Label EducationLavel;
   protected System.Web.UI.WebControls.TextBox EducationField;
   protected System.Web.UI.WebControls.TextBox FirstNameField;
   protected System.Web.UI.WebControls.TextBox LastNameField;
-  protected Rubicon.Web.UI.Controls.FormGridLabel AdressFormGridLabel;
   protected System.Web.UI.WebControls.Label CombinedName_Label;
 
   /// <summary>
@@ -124,7 +118,6 @@ public class WebForm :
 	private void InitializeComponent()
 	{    
     this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
     this.PreRender += new System.EventHandler(this.WebForm_PreRender);
 
   }
@@ -157,7 +150,7 @@ public class WebForm :
   public virtual StringCollection GetListOfHiddenRows (string table)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
-    return _formGridRowProvider.GetListOfHiddenRows (table);
+    return (StringCollection) _listOfHiddenRows[table];
   }
 
   /// <summary>
@@ -165,10 +158,10 @@ public class WebForm :
   /// </summary>
   /// <param name="table"></param>
   /// <returns></returns>
-  public virtual FormGridRowPrototypeCollection GetListOfFormGridRowPrototypes (string table)
+  public virtual FormGridRowInfoCollection GetListOfFormGridRowInfos (string table)
   {
     //  Logic sufficient if all loading happens during OnInit, as shown in this example
-    return _formGridRowProvider.GetListOfFormGridRowPrototypes (table);
+    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
   /// <summary>
