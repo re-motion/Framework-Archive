@@ -39,8 +39,8 @@ public class BocList:
 {
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
-  private const string c_dataRowCheckBoxIDSuffix = "_Boc_CheckBox_";
-  private const string c_titleRowCheckBoxIDSuffix = "_Boc_CheckBox_SelectAll";
+  private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectorControl_";
+  private const string c_titleRowSelectorControlIDSuffix = "_Boc_SelectorControl_SelectAll";
   private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
   private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
 
@@ -333,10 +333,10 @@ public class BocList:
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
   private RowSelection _selection = RowSelection.Disabled;
   /// <summary> 
-  ///   Contains the checked state for each of the selection checkBoxes in the <see cref="BocList"/>.
+  ///   Contains the checked state for each of the selector controls in the <see cref="BocList"/>.
   ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
   /// </summary>
-  private Hashtable _checkBoxCheckedState = new Hashtable();
+  private Hashtable _selectorControlCheckedState = new Hashtable();
 
   /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
   private NaInt32 _pageSize = NaInt32.Null; 
@@ -371,6 +371,7 @@ public class BocList:
   private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
   private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
   private bool _isRowEditModeRestored = false;
+  private bool _isRowEditModeValidatorsRestored = false;
   /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
   private BaseValidator[][] _rowEditModeValidators;
 
@@ -445,8 +446,8 @@ public class BocList:
     
     if (IsPostBack && Page != null)
     {
-      string dataRowCheckBoxFilter = ClientID + c_dataRowCheckBoxIDSuffix;
-      string titleRowCheckBoxFilter = ClientID + c_titleRowCheckBoxIDSuffix;
+      string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
+      string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
 
       NameValueCollection formVariables = PageUtility.GetRequestCollection(Page);
       if (formVariables != null)
@@ -455,17 +456,19 @@ public class BocList:
         {
           string key = formVariables.Keys[i];
 
-          bool isDataRowCheckBox = key.StartsWith (dataRowCheckBoxFilter);
-          bool isTitleRowCheckBox = (key == titleRowCheckBoxFilter);
-          if (isDataRowCheckBox || isTitleRowCheckBox)
+          bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
+          bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
+          if (isDataRowSelectorControl || isTitleRowSelectorControl)
           {
-            if (   _selection == RowSelection.Single 
-                && (_checkBoxCheckedState.Count > 1  || isTitleRowCheckBox))
+            if (   (   _selection == RowSelection.SingleCheckBox
+                    || _selection == RowSelection.SingleRadioButton)
+                && (   _selectorControlCheckedState.Count > 1 
+                    || isTitleRowSelectorControl))
             {
               continue;
             }
             int rowIndex = int.Parse (formVariables[i]);
-            _checkBoxCheckedState[rowIndex] = true; 
+            _selectorControlCheckedState[rowIndex] = true; 
           }
         }
       }
@@ -955,7 +958,7 @@ public class BocList:
       }
 
       if (_move != MoveOption.Undefined)
-        _checkBoxCheckedState.Clear();
+        _selectorControlCheckedState.Clear();
     }
 
     string key;
@@ -993,6 +996,7 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
 
+    EnsureRowEditModeValidatorsRestored();
     base.OnPreRender (e);
   }
 
@@ -1468,7 +1472,7 @@ public class BocList:
       string script = "<script type=\"text/javascript\">\r\n<!--\r\n"
           + "BocList_InitializeList ("
           + "document.getElementById ('" + ClientID + "'), '"
-          + ClientID + c_dataRowCheckBoxIDSuffix + "', "
+          + ClientID + c_dataRowSelectorControlIDSuffix + "', "
           + count.ToString() + ","
           + (int) _selection + ");"
           + "\r\n//-->\r\n</script>";
@@ -1649,9 +1653,9 @@ public class BocList:
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       if (_selection == RowSelection.Multiple)
       {
-        string checkBoxName = ID + c_titleRowCheckBoxIDSuffix;
-        bool isChecked = (_checkBoxCheckedState[c_titleRowIndex] != null);
-        RenderCheckBox (writer, checkBoxName, c_titleRowIndex.ToString(), isChecked, true);
+        string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
+        bool isChecked = (_selectorControlCheckedState[c_titleRowIndex] != null);
+        RenderSelectorControl (writer, selectorControlName, c_titleRowIndex.ToString(), isChecked, true);
       }
       else
       {
@@ -1864,8 +1868,8 @@ public class BocList:
     if (businessObjectWithIdentity != null)
       objectID = businessObjectWithIdentity.UniqueIdentifier;
 
-    string checkBoxID = ClientID + c_dataRowCheckBoxIDSuffix + rowIndex.ToString();
-    bool isChecked = (_checkBoxCheckedState[originalRowIndex] != null);
+    string selectorControlID = ClientID + c_dataRowSelectorControlIDSuffix + rowIndex.ToString();
+    bool isChecked = (_selectorControlCheckedState[originalRowIndex] != null);
 
     string cssClassTableCell;
     if (isChecked && _hasClientScript)
@@ -1884,8 +1888,9 @@ public class BocList:
     }
 
     if (   IsSelectionEnabled 
-        && (   EditableRowIndex.IsNull 
-            || EditableRowIndex.Value != originalRowIndex))
+      )
+//        && (   EditableRowIndex.IsNull 
+//            || EditableRowIndex.Value != originalRowIndex))
     {
       if (_hasClientScript)
       {
@@ -1893,7 +1898,7 @@ public class BocList:
         string script = "BocList_OnRowClick ("
             + "document.getElementById ('" + ClientID + "'), "
             + "this, "
-            + "document.getElementById ('" + checkBoxID + "'), "
+            + "document.getElementById ('" + selectorControlID + "'), "
             + isOddRowString 
             + ");";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
@@ -1906,7 +1911,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      RenderCheckBox (writer, checkBoxID, originalRowIndex.ToString(), isChecked, false);
+      RenderSelectorControl (writer, selectorControlID, originalRowIndex.ToString(), isChecked, false);
       writer.RenderEndTag();
     }
 
@@ -1952,6 +1957,8 @@ public class BocList:
     }
 
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+    if (IsSelectionEnabled && hasEditModeControl)
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
     if (commandEnabledColumn != null)
@@ -1993,27 +2000,33 @@ public class BocList:
     writer.RenderEndTag();
   }
 
-  /// <summary> Renders a <see cref="CheckBox"/> used for row selection. </summary>
+  /// <summary> Renders a <see cref="CheckBox"/> or <see cref="RadioButton"/> used for row selection. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   /// <param name="id"> The <see cref="string"/> rendered into the <c>id</c> and <c>name</c> attributes. </param>
-  /// <param name="value"> The value of the <see cref="CheckBox"/>. </param>
-  /// <param name="isChecked"> <see langword="true"/> if the <c>CheckBox</c> is checked. </param>
-  /// <param name="isSelectAllCheckBox"> 
-  ///   <see langword="true"/> if the rendered <c>CheckBox</c> is the title row's <c>CheckBox</c>. </param>
-  private void RenderCheckBox (
+  /// <param name="value"> The value of the <see cref="CheckBox"/> or <see cref="RadioButton"/>. </param>
+  /// <param name="isChecked"> 
+  ///   <see langword="true"/> if the <see cref="CheckBox"/> or <see cref="RadioButton"/> is checked. 
+  /// </param>
+  /// <param name="isSelectAllSelectorControl"> 
+  ///   <see langword="true"/> if the rendered <see cref="CheckBox"/> or <see cref="RadioButton"/> is in the title row.
+  /// </param>
+  private void RenderSelectorControl (
       HtmlTextWriter writer, 
       string id, 
       string value, 
       bool isChecked, 
-      bool isSelectAllCheckBox)
+      bool isSelectAllSelectorControl)
   {
-    writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
+    if (_selection == RowSelection.SingleRadioButton)
+      writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
+    else
+      writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
     writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
     if (isChecked)
       writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");      
-    if (isSelectAllCheckBox)
+    if (isSelectAllSelectorControl)
     {
       int count = 0;
       if (! _pageSize.IsNull)
@@ -2023,10 +2036,10 @@ public class BocList:
 
       if (_hasClientScript)
       {
-        string script = "BocList_OnSelectAllCheckBoxClick ("
+        string script = "BocList_OnSelectAllSelectorControlClick ("
             + "document.getElementById ('" + ClientID + "'), "
             + "this , '"
-            + ClientID + c_dataRowCheckBoxIDSuffix + "', "
+            + ClientID + c_dataRowSelectorControlIDSuffix + "', "
             + count.ToString() + ");";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
@@ -2035,7 +2048,7 @@ public class BocList:
     {
       if (_hasClientScript)
       {
-        string script = "BocList_OnSelectionCheckBoxClick();";
+        string script = "BocList_OnSelectionSelectorControlClick();";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
     }
@@ -3252,7 +3265,25 @@ public class BocList:
         _rowEditModeValidators[i] = control.CreateValidators();
       }
     }    
-    
+  }
+
+  /// <remarks>
+  ///   Validators must be added to the controls collection after LoadPostData is complete.
+  ///   If not, invalid validators will know that they are invalid without first calling validate.
+  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
+  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
+  ///   and the <c>FormGridManager</c> match.
+  /// </remarks>
+  private void EnsureRowEditModeValidatorsRestored()
+  {
+    if (_isRowEditModeValidatorsRestored)
+      return;
+    _isRowEditModeValidatorsRestored = true;
+    if (! IsRowEditMode)
+      return;
+    if (_rowEditModeValidators == null)
+      return;
+
     foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
     {
       if (columnValidators == null)
@@ -3264,6 +3295,8 @@ public class BocList:
 
   public bool ValiadateModifiableRow()
   {
+    EnsureRowEditModeValidatorsRestored();
+
     bool isValid = true;
     if (_rowEditModeValidators == null)
       return isValid;
@@ -3589,7 +3622,7 @@ public class BocList:
 
   public void ClearSelectedRows()
   {
-    _checkBoxCheckedState.Clear();
+    _selectorControlCheckedState.Clear();
   }
 
   /// <summary> Gets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
@@ -3614,7 +3647,7 @@ public class BocList:
   public int[] GetSelectedRows()
   {
     ArrayList selectedRows = new ArrayList();
-    foreach (DictionaryEntry entry in _checkBoxCheckedState)
+    foreach (DictionaryEntry entry in _selectorControlCheckedState)
     {
       int rowIndex = (int) entry.Key;
       if (rowIndex == c_titleRowIndex)
@@ -3665,11 +3698,15 @@ public class BocList:
     if (_selection == RowSelection.Disabled && selectedRows.Length > 0)
       throw new InvalidOperationException ("Cannot select rows if the BocList is set to RowSelection.Disabled.");
 
-    if (_selection == RowSelection.Single && selectedRows.Length > 1)
+    if (   (   _selection == RowSelection.SingleCheckBox 
+            || _selection == RowSelection.SingleRadioButton)
+        && selectedRows.Length > 1)
+    {
       throw new InvalidOperationException ("Cannot select more than one row if the BocList is set to RowSelection.Single.");
+    }
 
     foreach (int rowIndex in selectedRows)
-      _checkBoxCheckedState[rowIndex] = true;
+      _selectorControlCheckedState[rowIndex] = true;
   }
 
   /// <summary> Gets or sets a flag that determines wheter an empty list will still render its headers. </summary>
@@ -4062,8 +4099,9 @@ public enum SortingDirection
 public enum RowSelection
 { 
   Disabled = 0,
-  Single = 1,
-  Multiple = 2 
+  SingleCheckBox = 1,
+  SingleRadioButton = 2,
+  Multiple = 3 
 }
 
 public enum ListMenuLineBreaks
