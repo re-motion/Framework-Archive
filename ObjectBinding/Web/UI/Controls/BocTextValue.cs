@@ -302,8 +302,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
   /// </value>
   /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.</exception>
   [Description("Gets or sets the current value.")]
-  [Browsable(false)]
-  public override object Value
+  public new object Value
   {
     get 
     {
@@ -352,6 +351,13 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl
       }
     }
   }
+
+  protected override object ValueImplementation
+  {
+    get { return Value; }
+    set { Value = value; }
+  }
+
 
   [Description("Gets or sets the string representation of the current value.")]
   [Category("Data")]

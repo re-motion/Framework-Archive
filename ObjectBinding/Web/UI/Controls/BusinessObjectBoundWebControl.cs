@@ -182,8 +182,19 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   public abstract void LoadValue (bool interim);
   
+  /// <remarks>
+  ///   Override <see cref="ValueImplementation"/> to define the behaviour of <c>Value</c>. 
+  ///   Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) to provide a typesafe implementation in derived classes.
+  /// </remarks>
   [Browsable (false)]
-  public abstract object Value { get; set; }
+  public object Value 
+  { 
+    get { return ValueImplementation; }
+    set { ValueImplementation = value; }
+  }
+
+  [Browsable (false)]
+  protected abstract object ValueImplementation { get; set; }
 
   protected override void OnPreRender(EventArgs e)
   {
