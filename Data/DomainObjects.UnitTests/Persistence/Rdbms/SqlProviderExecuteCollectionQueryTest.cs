@@ -43,7 +43,7 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  public void ExecuteCollectionQueryWithAllDataTypes ()
+  public void AllDataTypes ()
   {
     Query query = new Query ("QueryWithAllDataTypes");
     query.Parameters.Add ("@boolean", false);
@@ -99,14 +99,14 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentException))]
-  public void ExecuteCollectionQueryWithScalarQuery ()
+  public void ScalarQuery ()
   {
     Provider.ExecuteCollectionQuery (new Query ("OrderNoSumByCustomerNameQuery"));
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentException))]
-  public void ExecuteCollectionQueryWithDifferentStorageProviderID ()
+  public void DifferentStorageProviderID ()
   {
     QueryDefinition definition = new QueryDefinition (
         "QueryWithDifferentStorageProviderID", 
@@ -118,7 +118,7 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  public void ExecuteCollectionQueryWithObjectIDParameter ()
+  public void ObjectIDParameter ()
   {
     Query query = new Query ("OrderQuery");
     query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
@@ -131,7 +131,7 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  public void ExecuteCollectionQueryWithObjectIDOfDifferentStorageProvider ()
+  public void ObjectIDOfDifferentStorageProvider ()
   {
     Query query = new Query ("OrderByOfficialQuery");
     query.Parameters.Add ("@officialID", DomainObjectIDs.Official1);
@@ -146,6 +146,21 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
     Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.Order4));
     Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.OrderWithoutOrderItem));    
 
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "The query parameter '@customerID' is of type 'Rubicon.Data.DomainObjects.ObjectID'."
+      + " The value of this parameter is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: query")]
+  public void InvalidObjectIDValue ()
+  {
+    ObjectID invalidCustomerID = new ObjectID (
+        DomainObjectIDs.Customer1.StorageProviderID, DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
+
+    Query query = new Query ("OrderQuery");
+    query.Parameters.Add ("@customerID", invalidCustomerID);
+
+    Provider.ExecuteCollectionQuery (query);
   }
 }
 }
