@@ -260,7 +260,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       IBusinessObjectWithIdentity parentBusinessObject,
       IBusinessObjectReferenceProperty property)
   {
-    IList children = (IList) parentBusinessObject.GetProperty (property);
+    IList children = GetBusinessObjects (parentBusinessObject, property);
     foreach (IBusinessObjectWithIdentity childBusinessObject in children)
     {
       BusinessObjectTreeNode childNode = CreateBusinessObjectNode (property, childBusinessObject);
@@ -297,6 +297,15 @@ public class BocTreeView: BusinessObjectBoundWebControl
     BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, icon, property, businessObject);
     node.IsEvaluated = false;
     return node;
+  }
+
+  protected virtual IBusinessObjectWithIdentity[] GetBusinessObjects (
+      IBusinessObjectWithIdentity parent,
+      IBusinessObjectReferenceProperty property)
+  {
+    IList children = (IList) parent.GetProperty (property);
+    ArrayList childrenList = new ArrayList (children);
+    return  (IBusinessObjectWithIdentity[]) childrenList.ToArray (typeof (IBusinessObjectWithIdentity));
   }
 
   protected virtual BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes (IBusinessObjectWithIdentity businessObject)
@@ -377,15 +386,10 @@ public class BocTreeView: BusinessObjectBoundWebControl
     if (businessObjectParentNode != null)
     {
       EnsureBusinessObjectTreeNode (businessObjectParentNode);
-      BusinessObjectPropertyTreeNodeInfo[] nodeInfos = GetPropertyNodes (businessObjectParentNode.BusinessObject);
-      foreach (BusinessObjectPropertyTreeNodeInfo nodeInfo in nodeInfos)
-      {
-        if (nodeInfo.Property.Identifier == node.PropertyIdentifier)
-        {
-          node.Property = nodeInfo.Property;
-          break;
-        }
-      }
+
+      IBusinessObjectProperty property = 
+          businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (node.PropertyIdentifier);
+      node.Property = (IBusinessObjectReferenceProperty) property;
 
       if (node.Property == null) // This test could be omitted if graceful recovery is wanted.
         throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + node.PropertyIdentifier + "'.");
