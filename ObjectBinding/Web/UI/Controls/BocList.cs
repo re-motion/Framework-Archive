@@ -362,8 +362,8 @@ public class BocList:
   {
     base.OnInit (e);
 
-    _optionsMenu.EventCommandClick += new MenuItemClickEventHandler (OptionsMenu_EventCommandClick);
-    _optionsMenu.WxeFunctionCommandClick += new MenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
+    _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
+    _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
     _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
     _moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
     _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
@@ -617,24 +617,24 @@ public class BocList:
     }
   }
 
-  private void OptionsMenu_EventCommandClick(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_EventCommandClick(object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
   protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
-    MenuItemClickEventHandler menuItemClickHandler = (MenuItemClickEventHandler) Events[s_menuItemClickEvent];
+    WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
       ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
     if (menuItemClickHandler != null)
     {
-      MenuItemClickEventArgs e = new MenuItemClickEventArgs (menuItem);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
       menuItemClickHandler (this, e);
     }
   }
 
-  private void OptionsMenu_WxeFunctionCommandClick(object sender, MenuItemClickEventArgs e)
+  private void OptionsMenu_WxeFunctionCommandClick(object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
   }
@@ -981,8 +981,8 @@ public class BocList:
   private void RenderListMenu (HtmlTextWriter writer, string menuID)
   {
     ArrayList listMenuItems = new ArrayList (EnsureListMenuItemsGot());
-    MenuItem[] groupedListMenuItems = MenuItemCollection.GroupMenuItems (
-        (MenuItem[]) listMenuItems.ToArray (typeof (MenuItem)), 
+    WebMenuItem[] groupedListMenuItems = WebMenuItemCollection.GroupMenuItems (
+        (WebMenuItem[]) listMenuItems.ToArray (typeof (WebMenuItem)), 
         false);
 
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
@@ -991,7 +991,7 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
     {
-      MenuItem currentItem = groupedListMenuItems[idxItems];
+      WebMenuItem currentItem = groupedListMenuItems[idxItems];
 
       bool isFirstItem = idxItems == 0;
       bool isLastItem = idxItems == groupedListMenuItems.Length - 1;
@@ -1026,7 +1026,7 @@ public class BocList:
 
       for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
       {
-        MenuItem currentItem = groupedListMenuItems[idxItems];
+        WebMenuItem currentItem = groupedListMenuItems[idxItems];
         if (isFirstItem)
           isFirstItem = false;
         else
@@ -1044,7 +1044,7 @@ public class BocList:
     }
   }
 
-  private void AppendListMenuItem (StringBuilder stringBuilder, MenuItem menuItem, string menuID, int menuItemIndex)
+  private void AppendListMenuItem (StringBuilder stringBuilder, WebMenuItem menuItem, string menuID, int menuItemIndex)
   {
     bool isReadOnly = IsReadOnly;
     string href = "null";
@@ -1076,8 +1076,8 @@ public class BocList:
       }
     }
 
-    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
-    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showIcon = menuItem.Style == WebMenuItemStyle.Icon ||  menuItem.Style == WebMenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == WebMenuItemStyle.Text ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     string icon = "null";
     if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
       icon =  "'" + menuItem.Icon + "'";
@@ -1099,10 +1099,10 @@ public class BocList:
         target);
   }
 
-  private void RenderListMenuItem (HtmlTextWriter writer, MenuItem menuItem, string menuID, int index)
+  private void RenderListMenuItem (HtmlTextWriter writer, WebMenuItem menuItem, string menuID, int index)
   {
-    bool showIcon = menuItem.Style == MenuItemStyle.Icon ||  menuItem.Style == MenuItemStyle.IconAndText;
-    bool showText = menuItem.Style == MenuItemStyle.Text ||  menuItem.Style == MenuItemStyle.IconAndText;
+    bool showIcon = menuItem.Style == WebMenuItemStyle.Icon ||  menuItem.Style == WebMenuItemStyle.IconAndText;
+    bool showText = menuItem.Style == WebMenuItemStyle.Text ||  menuItem.Style == WebMenuItemStyle.IconAndText;
 
     writer.AddAttribute (HtmlTextWriterAttribute.Id, menuID + "_" + index.ToString());
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -2926,20 +2926,19 @@ public class BocList:
     set { _enableClientScript = value; }
   }
 
-  /// <summary> 
-  ///   Occurs when a command of type <see cref="CommandType.Event"/> 
-  ///   or <see cref="CommandType.WxeFunction"/> is clicked. 
-  /// </summary>
+  /// <summary> Is raised when a column with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
-  [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
+  [Description ("Occurs when a column with a command of type Event is clicked inside an column.")]
   public event BocListItemCommandClickEventHandler ListItemCommandClick
   {
     add { Events.AddHandler (s_listItemCommandClickEvent, value); }
     remove { Events.RemoveHandler (s_listItemCommandClickEvent, value); }
   }
 
+  /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
-  public event MenuItemClickEventHandler MenuItemClick
+  [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+  public event WebMenuItemClickEventHandler MenuItemClick
   {
     add { Events.AddHandler (s_menuItemClickEvent, value); }
     remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
