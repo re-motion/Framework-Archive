@@ -251,8 +251,10 @@ public class BocList:
   ///   <see cref="IBusinessObject"/>. 
   /// </summary>
   private BocColumnDefinition[] _allPropertyColumns = null;
+  /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the handling of the post back events. </summary>
+  private BocColumnDefinition[] _columnDefinitionsPostBackEventHandlingPhase = null;
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
-  private BocColumnDefinition[] _renderColumns;
+  private BocColumnDefinition[] _columnDefinitionsRenderPhase = null;
 
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
   private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
@@ -409,7 +411,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' must begin with on of the following prefixes: '" + c_eventCommandPrefix + "' or '" + c_sortCommandPrefix + "'.");
   }
 
-  /// <summary> Handles post back events raised by an <see cref="BocItemCommand"/> of type event. </summary>
+  /// <summary> Handles post back events raised by an <see cref="ItemCommand"/> of type event. </summary>
   /// <param name="eventArgument">
   ///   &lt;column-index&gt;,&lt;list-index&gt;[,&lt;business-object-id&gt;]
   /// </param>
@@ -452,7 +454,7 @@ public class BocList:
     if (eventArgumentParts.Length == 3)
       businessObjectID = eventArgumentParts[2].Trim();
 
-    BocColumnDefinition[] columns = GetColumns();
+    BocColumnDefinition[] columns = EnsureGetColumnsPostBackEventHandlingPhase();
 
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
@@ -460,11 +462,11 @@ public class BocList:
     BocColumnDefinition column = columns[columnIndex];
     if (column.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
-    BocItemCommand command = column.Command;
+    BocColumnItemCommand command = column.Command;
 
     switch (command.Type)
     {
-      case BocItemCommandType.Event:
+      case ItemCommandType.Event:
       {
         string columnID = string.Empty;
         if (column != null)
@@ -477,7 +479,7 @@ public class BocList:
         OnCommandClick (columnID, listIndex, businessObjectID);
         break;
       }
-      case BocItemCommandType.WxeFunction:
+      case ItemCommandType.WxeFunction:
       {
         command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, (IBusinessObject) this.Value[listIndex], businessObjectID);
         break;
@@ -507,7 +509,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
     }
 
-    BocColumnDefinition[] columns = GetColumns();
+    BocColumnDefinition[] columns = EnsureGetColumnsPostBackEventHandlingPhase();
 
     if (columnIndex >= columns.Length)
       throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
@@ -671,7 +673,7 @@ public class BocList:
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    _renderColumns = GetColumns();
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
 
     if (IsDesignMode)
     {
@@ -1112,6 +1114,8 @@ public class BocList:
   /// </param>
   private void RenderColGroup (HtmlTextWriter writer)
   {
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
+
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     if (EnableSelection)
@@ -1122,7 +1126,7 @@ public class BocList:
     }
 
     bool isFirstColumnUndefinedWidth = true;
-    foreach (BocColumnDefinition column in _renderColumns)
+    foreach (BocColumnDefinition column in renderColumns)
     {
       if (! column.Width.IsEmpty)
       {
@@ -1146,7 +1150,7 @@ public class BocList:
     }
     
     //  Design-mode and empty table
-    if (IsDesignMode && _renderColumns.Length == 0)
+    if (IsDesignMode && renderColumns.Length == 0)
     {
       for (int i = 0; i < c_designModeDummyColumnCount; i++)
       {
@@ -1168,6 +1172,7 @@ public class BocList:
   private void RenderColumnTitlesRow (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -1193,9 +1198,9 @@ public class BocList:
       }
     }
 
-    for (int idxColumn = 0; idxColumn < _renderColumns.Length; idxColumn++)
+    for (int idxColumn = 0; idxColumn < renderColumns.Length; idxColumn++)
     {
-      BocColumnDefinition column = _renderColumns[idxColumn];
+      BocColumnDefinition column = renderColumns[idxColumn];
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1276,7 +1281,7 @@ public class BocList:
       writer.RenderEndTag();  //  td
     }
     
-    if (IsDesignMode && _renderColumns.Length == 0)
+    if (IsDesignMode && renderColumns.Length == 0)
     {
       for (int i = 0; i < c_designModeDummyColumnCount; i++)
       {
@@ -1305,6 +1310,7 @@ public class BocList:
       bool isOddRow)
   {
     bool isReadOnly = IsReadOnly;
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
 
     string objectID = null;
     IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
@@ -1357,9 +1363,9 @@ public class BocList:
 
     bool isFirstValueColumnRendered = false;
 
-    for (int idxColumn = 0; idxColumn < _renderColumns.Length; idxColumn++)
+    for (int idxColumn = 0; idxColumn < renderColumns.Length; idxColumn++)
     {
-      BocColumnDefinition column = _renderColumns[idxColumn];
+      BocColumnDefinition column = renderColumns[idxColumn];
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -1375,11 +1381,11 @@ public class BocList:
       bool isCommandEnabled = false;
       if (column.Command != null)
       {
-        bool isActive =    column.Command.Show == BocItemCommandShow.Always
-                        || isReadOnly && column.Command.Show == BocItemCommandShow.ReadOnly
-                        || ! isReadOnly && column.Command.Show == BocItemCommandShow.EditMode;
+        bool isActive =    column.Command.Show == ItemCommandShow.Always
+                        || isReadOnly && column.Command.Show == ItemCommandShow.ReadOnly
+                        || ! isReadOnly && column.Command.Show == ItemCommandShow.EditMode;
         if (   isActive
-            && column.Command.Type != BocItemCommandType.None)
+            && column.Command.Type != ItemCommandType.None)
         {
           isCommandEnabled = true;
         }
@@ -1392,7 +1398,7 @@ public class BocList:
           argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
         string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
         string onClick = "BocList_OnCommandClick();";
-        column.Command.RenderBegin (writer, originalRowIndex, objectID, postBackLink, onClick);
+        column.Command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
       }
 
       //  Render the icon
@@ -1704,7 +1710,7 @@ public class BocList:
   ///   into a single array.
   /// </summary>
   /// <returns> An array of <see cref="BocColumnDefinition"/> objects. </returns>
-  private BocColumnDefinition[] GetColumns()
+  private BocColumnDefinition[] GetColumns (bool isPostBackEventPhase)
   {
     BocColumnDefinition[] allPropertyColumns = null;
     if (_showAllProperties)
@@ -1723,6 +1729,54 @@ public class BocList:
       allPropertyColumns,
       selectedColumns);
 
+    if (isPostBackEventPhase)
+      return OnGetColumnsForPreviousLifeCycle (columnDefinitions);
+    else
+      return OnGetColumnsForCurrentLifeCycle (columnDefinitions);
+  }
+
+  private BocColumnDefinition[] EnsureGetColumnsPostBackEventHandlingPhase()
+  {
+    if (_columnDefinitionsPostBackEventHandlingPhase == null)
+      _columnDefinitionsPostBackEventHandlingPhase = GetColumns (true);
+    return _columnDefinitionsPostBackEventHandlingPhase;
+  }
+
+  private BocColumnDefinition[] EnsureGetColumnsRenderPhase()
+  {
+    if (_columnDefinitionsRenderPhase == null)
+      _columnDefinitionsRenderPhase = GetColumns (false);
+    return _columnDefinitionsRenderPhase;
+  }
+
+  /// <summary>
+  ///   Override this method to modify the column definitions displayed in the <see cref="BocList"/> during the
+  ///   previous page life cycle.
+  /// </summary>
+  /// <remarks>
+  ///   The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
+  ///   to correctly handle the events raised on the BocList, such as an <see cref="ItemCommand"/> event 
+  ///   or a data changed event.
+  /// </remarks>
+  /// <param name="columnDefinitions"> 
+  ///   The <see cref="BocColumnDefinition"/> array containing the columns defined by the <see cref="BocList"/>. 
+  /// </param>
+  /// <returns> The <see cref="BocColumnDefinition"/> array. </returns>
+  protected virtual BocColumnDefinition[] OnGetColumnsForPreviousLifeCycle (BocColumnDefinition[] columnDefinitions)
+  {
+    return columnDefinitions;
+  }
+
+  /// <summary>
+  ///   Override this method to modify the column definitions displayed in the <see cref="BocList"/> in the
+  ///   current page life cycle.
+  /// </summary>
+  /// <param name="columnDefinitions"> 
+  ///   The <see cref="BocColumnDefinition"/> array containing the columns defined by the <see cref="BocList"/>. 
+  /// </param>
+  /// <returns> The <see cref="BocColumnDefinition"/> array. </returns>
+  protected virtual BocColumnDefinition[] OnGetColumnsForCurrentLifeCycle (BocColumnDefinition[] columnDefinitions)
+  {
     return columnDefinitions;
   }
 
@@ -1786,15 +1840,16 @@ public class BocList:
     IBusinessObject businessObjectA = objectA as IBusinessObject;
     IBusinessObject businessObjectB = objectB as IBusinessObject;
 
+    BocColumnDefinition[] renderColumns = EnsureGetColumnsRenderPhase();
     foreach (SortingOrderEntry currentEntry in _sortingOrder)
     {
       if (currentEntry.Direction != SortingDirection.None)
       {
-        if (! (_renderColumns[currentEntry.ColumnIndex] is BocValueColumnDefinition))
+        if (! (renderColumns[currentEntry.ColumnIndex] is BocValueColumnDefinition))
           throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + currentEntry.ColumnIndex + ".");
 
-        BocSimpleColumnDefinition simpleColumn = _renderColumns[currentEntry.ColumnIndex] as BocSimpleColumnDefinition;
-        BocCompoundColumnDefinition compoundColumn = _renderColumns[currentEntry.ColumnIndex] as BocCompoundColumnDefinition;
+        BocSimpleColumnDefinition simpleColumn = renderColumns[currentEntry.ColumnIndex] as BocSimpleColumnDefinition;
+        BocCompoundColumnDefinition compoundColumn = renderColumns[currentEntry.ColumnIndex] as BocCompoundColumnDefinition;
         
         if (simpleColumn != null)
         {
@@ -2397,8 +2452,8 @@ public class BocList:
   }
 
   /// <summary> 
-  ///   Occurs when a command of type <see cref="BocItemCommandType.Event"/> 
-  ///   or <see cref="BocItemCommandType.WxeFunction"/> is clicked. 
+  ///   Occurs when a command of type <see cref="ItemCommandType.Event"/> 
+  ///   or <see cref="ItemCommandType.WxeFunction"/> is clicked. 
   /// </summary>
   [Category ("Action")]
   [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
@@ -2545,8 +2600,8 @@ public class BocList:
 
 /// <summary>
 ///   Represents the method that handles the <see cref="BocList.CommandClick"/> event
-///   raised when clicking on an <see cref="BocItemCommand"/> 
-///   of type <see cref="BocItemCommandType.Event"/>.
+///   raised when clicking on an <see cref="ItemCommand"/> 
+///   of type <see cref="ItemCommandType.Event"/>.
 /// </summary>
 public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
 

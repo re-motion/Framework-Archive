@@ -9,38 +9,55 @@ using System.Reflection;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-//  TODO: BocItemCommand: Move long comment blocks to xml-file
-/// <summary> A <see cref="BocItemCommand"/> defines an action the user can invoke on a datarow. </summary>
+//  TODO: BocColumnItemCommand: Move long comment blocks to xml-file
+/// <summary> A <see cref="BocColumnItemCommand"/> defines an action the user can invoke on a datarow. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class BocItemCommand
+public class BocColumnItemCommand: ItemCommand
 {
-  /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class HrefCommandInfo
+  public class CommandParameters: IItemCommandParameters
   {
-    private string _href = string.Empty;
-    private string _target = string.Empty;
+    private int _listIndex;
+    private IBusinessObject _businessObject;
+    private string _businessObjectID;
 
-    /// <summary> Simple constructor. </summary>
-    public HrefCommandInfo()
+    public CommandParameters (int listIndex, IBusinessObject businessObject, string businessObjectID)
     {
+      _listIndex = listIndex;
+      _businessObject = businessObject;
+      _businessObjectID = businessObjectID;
     }
 
-    /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
-    /// <remarks> Foramt: Href, Target </remarks>
-    /// <returns> A <see cref="string"/>. </returns>
-    public override string ToString()
+    public int ListIndex
     {
-      StringBuilder stringBuilder = new StringBuilder (50);
+      get { return _listIndex; }
+      set { _listIndex = value; }
+    }
 
-      if (_href == string.Empty || _target == string.Empty)
-        return _href;
-      else
-        return _href + ", " + _target;
+    public IBusinessObject BusinessObject
+    {
+      get { return _businessObject; }
+      set { _businessObject = value; }
+    }
+
+    public string BusinessObjectID
+    {
+      get { return _businessObjectID; }
+      set { _businessObjectID = value; }
+    }
+  }
+
+  /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
+  [TypeConverter (typeof (ExpandableObjectConverter))]
+  public class ColumnHrefCommandInfo: ItemCommand.HrefCommandInfo
+  {
+    /// <summary> Simple constructor. </summary>
+    public ColumnHrefCommandInfo()
+    {
     }
 
     /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
@@ -48,100 +65,21 @@ public class BocItemCommand
     ///   The URL to link to when the rendered command is clicked. The default value is 
     ///   <see cref="String.Empty"/>. 
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
     [Description ("The hyperlink reference of the command. Use {0} to insert the Busines Object's index in the list and {1} to insert the Business Object's ID.")]
-    [DefaultValue("")]
-    [NotifyParentProperty (true)]
-    public string Href 
+    public override string Href 
     {
-      get
-      {
-        return _href; 
-      }
-      set
-      {
-        _href = StringUtility.NullToEmpty (value); 
-        _href = _href.Trim();
-      }
-    }
-
-    /// <summary> 
-    ///   Gets or sets the target window or frame to display the Web page content linked to when 
-    ///   the rendered command is clicked.
-    /// </summary>
-    /// <value> 
-    ///   The target window or frame to load the Web page linked to when the rendered command
-    ///   is clicked.  The default value is <see cref="String.Empty"/>. 
-    /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The target frame of the command. Leave it blank for no target.")]
-    [DefaultValue("")]
-    [NotifyParentProperty (true)]
-    public string Target 
-    { 
-      get
-      { 
-        return _target; 
-      }
-      set
-      {
-         _target = StringUtility.NullToEmpty (value); 
-         _target = _target.Trim();
-      }
+      get { return base.Href; }
+      set { base.Href = value; }
     }
   }
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class WxeFunctionCommandInfo
+  public class ColumnWxeFunctionCommandInfo: ItemCommand.WxeFunctionCommandInfo
   {
-    private string _typeName = string.Empty;
-    private string _parameters = string.Empty;
-
     /// <summary> Simple constructor. </summary>
-    public WxeFunctionCommandInfo()
+    public ColumnWxeFunctionCommandInfo()
     {
-    }
-
-    /// <summary>
-    ///   Returns a string representation of this <see cref="WxeFunctionCommandInfo"/>.
-    /// </summary>
-    /// <remarks> Foramt: Href, Target </remarks>
-    /// <returns> A <see cref="string"/>. </returns>
-    public override string ToString()
-    {
-      if (_typeName == string.Empty)
-        return string.Empty;
-      else
-        return _typeName + " (" + _parameters + ")";
-    }
-
-    /// <summary> 
-    ///   Gets or sets the complete type name of the WxeFunction to call when the rendered 
-    ///   command is clicked. The type name is requried.
-    /// </summary>
-    /// <value> 
-    ///   The complete type name of the WxeFunction to call when the rendered command is clicked. 
-    ///   The default value is <see cref="String.Empty"/>. 
-    /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The complete type name (type, assembly) of the WxeFunction used for the command.")]
-    [DefaultValue("")]
-    [NotifyParentProperty (true)]
-    public string TypeName
-    {
-      get
-      {
-        return _typeName; 
-      }
-      set
-      {
-        _typeName = StringUtility.NullToEmpty (value); 
-        _typeName = _typeName.Trim();
-      }
     }
 
     /// <summary> 
@@ -183,62 +121,43 @@ public class BocItemCommand
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
     [Description ("A comma separated list of parameters for the command. The following reference parameter are available: @index, @id, @object, @parent, @parentproperty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
-    public string Parameters
+    public override string Parameters
     {
-      get
-      {
-        return _parameters;
-      }
-      set
-      {
-        _parameters = StringUtility.NullToEmpty (value);
-        _parameters = _parameters.Trim();
-      }
+      get { return base.Parameters; }
+      set { base.Parameters = value; }
     }
   }
 
-  /// <summary> Wraps the properties required for rendering a script command. </summary>
-  public class ScriptCommandInfo
-  {
-    //  Add enum value Script to BocItemCommandType
-    //  Add property ScriptCommand to BocItemCommand
-  }
+  /// <summary>
+  ///   The <see cref="ColumnHrefCommandInfo"/> used when rendering the command as a hyperlink.
+  /// </summary>
+  private ColumnHrefCommandInfo _hrefCommand = new ColumnHrefCommandInfo();
+  /// <summary>
+  ///   The <see cref="ColumnWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
+  /// </summary>
+  private ColumnWxeFunctionCommandInfo _wxeFunctionCommand = new ColumnWxeFunctionCommandInfo();
 
-  /// <summary>
-  ///   The <see cref="BocItemCommandType"/> represented by this instance of 
-  ///   <see cref="BocItemCommand"/>.
-  /// </summary>
-  private BocItemCommandType _type = BocItemCommandType.None;
-  /// <summary>
-  ///   Determines when the item command is shown to the user in regard of the parent control's 
-  ///   read-only setting.
-  /// </summary>
-  private BocItemCommandShow _show = BocItemCommandShow.Always;
-  /// <summary>
-  ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
-  /// </summary>
-  private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
-  /// <summary>
-  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a 
-  ///   <see cref="WxeFunction"/>.
-  /// </summary>
-  private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo();
   private IBusinessObjectBoundWebControl _ownerControl = null;
 
   //private ScriptCommandInfo _scriptCommand = null;
 
   /// <summary> Simple Constructor. </summary>
-  public BocItemCommand()
+  public BocColumnItemCommand()
   {
   }
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
+  /// <param name="postBackLink">
+  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
+  ///   <see cref="ItemCommandType.Event"/> or <see cref="ItemCommandType.WxeFunction"/>.
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   to force a post back.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
   /// <param name="listIndex">
   ///   An index that indentifies the <see cref="IBusinessObject"/> on which the rendered command 
   ///   is applied on.
@@ -247,115 +166,29 @@ public class BocItemCommand
   ///   An identifier for the <see cref="IBusinessObject"/> to which the rendered command is 
   ///   applied.
   /// </param>
-  /// <param name="postBackLink">
-  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
-  ///   <see cref="BocItemCommandType.Event"/> or <see cref="BocItemCommandType.WxeFunction"/>.
-  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
-  ///   to force a post back.
-  /// </param>
-  /// <param name="onClick"> 
-  ///   The string rendered in the <c>onClick</c> tag of the anchor element. 
-  /// </param>
-  public virtual void RenderBegin (
-      HtmlTextWriter writer, 
-      int listIndex, 
-      string businessObjectID,
+  public void RenderBegin (
+      HtmlTextWriter writer,
       string postBackLink,
-      string onClick)
+      string onClick, 
+      int listIndex, 
+      string businessObjectID)
   {
-    switch (_type)
-    {
-      case BocItemCommandType.Href:
-      {
-        string encodedBusinessObjectID = 
-            HttpUtility.UrlEncode (businessObjectID, HttpContext.Current.Response.ContentEncoding);
-        string href = string.Format (HrefCommand.Href, listIndex, encodedBusinessObjectID);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
-        if (HrefCommand.Target != null) 
-          writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
-        break;
-      }
-      case BocItemCommandType.Event:
-      {
-        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-        break;
-      }
-      case BocItemCommandType.WxeFunction:
-      {
-        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-
-        break;
-      }
-      default:
-      {
-        break;
-      }
-    }
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-    writer.RenderBeginTag (HtmlTextWriterTag.A);
+    base.RenderBegin (writer, postBackLink, onClick, listIndex.ToString(), businessObjectID);
   }
 
-  /// <summary> Renders the closing tag for the command. </summary>
-  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
-  public virtual void RenderEnd (HtmlTextWriter writer)
+  public override void RenderBegin (
+      HtmlTextWriter writer, 
+      string postBackLink,
+      string onClick,
+      IItemCommandParameters parameters)
   {
-    writer.RenderEndTag();
+    ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
+    CommandParameters columnParameters = (CommandParameters) parameters;
+    this.RenderBegin (writer, postBackLink, onClick, columnParameters.ListIndex, columnParameters.BusinessObjectID);
   }
 
   /// <summary>
-  ///   Returns a string representation of this <see cref="BocItemCommand"/>.
-  /// </summary>
-  /// <remarks>
-  ///   <list type="table">
-  ///     <listheader>
-  ///     <term>Type</term> 
-  ///     <description>Format</description>
-  ///     </listheader>
-  ///     <item>
-  ///       <term>Href</term>
-  ///       <description> Href: &lt;HrefCommand.ToString()&gt; </description>
-  ///     </item>
-  ///     <item>
-  ///       <term>WxeFunction</term>
-  ///       <description> WxeFunction: &lt;WxeFunctionCommand.ToString()&gt; </description>
-  ///     </item>
-  ///   </list>
-  /// </remarks>
-  /// <returns> A <see cref="string"/>. </returns>
-  public override string ToString()
-  {
-    StringBuilder stringBuilder = new StringBuilder (50);
-
-    stringBuilder.Append (Type.ToString());
-
-    switch (Type)
-    {
-      case BocItemCommandType.Href:
-      {
-        if (HrefCommand != null)
-          stringBuilder.AppendFormat (": {0}", HrefCommand.ToString());
-        break;
-      }
-      case BocItemCommandType.WxeFunction:
-      {
-        if (WxeFunctionCommand != null)
-          stringBuilder.AppendFormat (": {0}", WxeFunctionCommand.ToString());
-        break;
-      }
-      default:
-      {
-        break;
-      }
-    }
-
-    return stringBuilder.ToString();
-  }
-
-  /// <summary>
-  ///   Executes the <see cref="WxeFunction"/> defined by the 
-  ///   <see cref="WxeFunctionCommandInfo"/>.
+  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/>.
   /// </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
   /// <param name="listIndex"> 
@@ -370,7 +203,7 @@ public class BocItemCommand
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
-    if (Type != BocItemCommandType.WxeFunction)
+    if (Type != ItemCommandType.WxeFunction)
       throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to BocItemCommandType.WxeFunction.");
 
     if (! WxeContext.Current.IsReturningPostBack)
@@ -400,101 +233,42 @@ public class BocItemCommand
     }
   }
 
-  /// <summary>
-  ///   The <see cref="BocItemCommandType"/> represented by this instance of 
-  ///   <see cref="BocItemCommand"/>.
-  /// </summary>
-  /// <value> 
-  ///   One of the <see cref="BocItemCommandType"/> enumeration values. 
-  ///   The default is <see cref="BocItemCommandType.None"/>.
-  /// </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("The type of command generated.")]
-  [DefaultValue (BocItemCommandType.None)]
-  [NotifyParentProperty (true)]
-  public BocItemCommandType Type
+  public override void ExecuteWxeFunction (IWxePage wxePage, IItemCommandParameters parameters)
   {
-    get
-    {
-      return _type; 
-    }
-    set 
-    {
-      _type = value; 
-    }
+    ArgumentUtility.CheckNotNullAndType ("parameters", parameters, typeof (CommandParameters));
+    CommandParameters columnParameters = (CommandParameters) parameters;
+    this.ExecuteWxeFunction (
+        wxePage, columnParameters.ListIndex, columnParameters.BusinessObject, columnParameters.BusinessObjectID);
   }
 
   /// <summary>
-  ///   Determines when the item command is shown to the user in regard of the parent control's 
-  ///   read-only setting.
-  /// </summary>
-  /// <value> 
-  ///   One of the <see cref="BocItemCommandShow"/> enumeration values. 
-  ///   The default is <see cref="BocItemCommandShow.Always"/>.
-  /// </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("Determines when to show the item command to the user in regard to the parent controls read-only setting.")]
-  [DefaultValue (BocItemCommandShow.Always)]
-  [NotifyParentProperty (true)]
-  public BocItemCommandShow Show
-  {
-    get { return _show; }
-    set { _show = value; }
-  }
-
-  /// <summary>
-  ///   The <see cref="HrefCommandInfo"/> used when rendering the command as a hyperlink.
+  ///   The <see cref="ColumnHrefCommandInfo"/> used when rendering the command as a hyperlink.
   /// </summary>
   /// <remarks> 
-  ///   Only interpreted if <see cref="Type"/> is set to <see cref="BocItemCommandType.Href"/>.
+  ///   Only interpreted if <see cref="Type"/> is set to <see cref="ItemCommandType.Href"/>.
   /// </remarks>
-  /// <value> A <see cref="HrefCommandInfo"/> object. </value>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("The properties of the hyperlink. Interpreted if Type is set to Href.")]
-  [DefaultValue ((string)null)]
-  [NotifyParentProperty (true)]
-  public HrefCommandInfo HrefCommand
+  /// <value> A <see cref="ColumnHrefCommandInfo"/> object. </value>
+  public override HrefCommandInfo HrefCommand
   {
-    get
-    {
-      return _hrefCommand; 
-    }
-    set
-    { 
-      _hrefCommand = value;
-    }
+    get { return _hrefCommand;  }
+    set { _hrefCommand = (ColumnHrefCommandInfo) value; }
   }
 
   /// <summary>
-  ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a 
+  ///   The <see cref="ColumnWxeFunctionCommandInfo"/> used when rendering the command as a 
   ///   <see cref="WxeFunction"/>.
   /// </summary>
   /// <remarks> 
   ///   Only interpreted if <see cref="Type"/> is set to 
-  ///   <see cref="BocItemCommandType.WxeFunction"/>.
+  ///   <see cref="ItemCommandType.WxeFunction"/>.
   /// </remarks>
-  /// <value> A <see cref="WxeFunctionCommandInfo"/> object. </value>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
-  [DefaultValue ((string)null)]
-  [NotifyParentProperty (true)]
-  public WxeFunctionCommandInfo WxeFunctionCommand
+  /// <value> A <see cref="ColumnWxeFunctionCommandInfo"/> object. </value>
+  public override WxeFunctionCommandInfo WxeFunctionCommand
   {
-    get 
-    {
-      return _wxeFunctionCommand; 
-    }
-    set 
-    {
-      _wxeFunctionCommand = value; 
-    }
+    get { return _wxeFunctionCommand; }
+    set { _wxeFunctionCommand = (ColumnWxeFunctionCommandInfo) value; }
   }
+
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> 
   ///   to which this object belongs. 
@@ -504,30 +278,6 @@ public class BocItemCommand
     get { return _ownerControl;  }
     set { _ownerControl = value; }
   }
-}
-
-/// <summary> The possible command types of a <see cref="BocItemCommand"/>. </summary>
-public enum BocItemCommandType
-{
-  /// <summary> No command will be generated. </summary>
-  None,
-  /// <summary> A server side event will be raised upon a command click. </summary>
-  Event,
-  /// <summary> A hyperlink will be rendered on the page. </summary>
-  Href,
-  /// <summary> A <see cref="WxeFunction"/> will be called upon a command click. </summary>
-  WxeFunction
-}
-
-/// <summary> Defines when the command will be active on the page. </summary>
-public enum BocItemCommandShow
-{
-  /// <summary> The command is always active. </summary>
-  Always,
-  /// <summary> The command is only active if the <see cref="BocList"/> is read-only. </summary>
-  ReadOnly,
-  /// <summary> The command is only active if the <see cref="BocList"/> is in edit-mode. </summary>
-  EditMode
 }
 
 }
