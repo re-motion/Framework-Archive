@@ -214,20 +214,64 @@ public class EntryField: Control
     foreach (Control control in Controls)
     {
       BaseValidator validator = control as BaseValidator;
-      if (   validator != null
-          && ! (    ignoreRequiredFieldValidators 
-                 && (    validator is RequiredFieldValidator
-                      || validator.ID.EndsWith ("RequiredValidator"))))
+
+      if (validator == null)
       {
-        validator.Validate();
-        if (! validator.IsValid)
+        if( !ValidateSubControls (control, ignoreRequiredFieldValidators) )
           isValid = false;
+      }
+      else
+        if( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
+      {
+        isValid = false;
       }
     }
 
     _showErrors = showErrors;
     return isValid;
   }
+
+
+  private bool ValidateSubControls (Control control, bool ignoreRequiredFieldValidators)
+  {
+    //  check if given control is a user control
+
+    UserControl userControl = control as UserControl;
+
+    if (userControl == null)
+      return true;
+
+    bool isValid = true;
+
+    foreach (Control subControl in userControl.Controls)
+    {
+      BaseValidator validator = subControl as BaseValidator;
+
+      if( !ExecuteValidation (validator, ignoreRequiredFieldValidators) )
+        isValid = false;
+    }
+
+    return isValid;
+  }
+
+
+  private bool ExecuteValidation (BaseValidator validator, bool ignoreRequiredFieldValidators)
+  {
+    bool isValid = true;
+
+    if (   validator != null
+        && ! (    ignoreRequiredFieldValidators 
+                && (    validator is RequiredFieldValidator
+                    || validator.ID.EndsWith ("RequiredValidator"))))
+    {
+      validator.Validate();
+      if (! validator.IsValid)
+        isValid = false;
+    }
+
+    return isValid;
+  }
+
 
   public bool Validate (bool ignoreRequiredFieldValidators)
   {
@@ -242,21 +286,8 @@ public class EntryField: Control
     bool validatorsInvalid = false;
 
     // search for Validator child controls and keep if at least one is invalid
-    foreach ( Control childControl in this.Controls )
-    {
-      if ( childControl is BaseValidator && _showErrors)
-      {
-        BaseValidator validator = (BaseValidator) childControl;
-        if ( !validator.IsValid )
-        {
-          // Validator is invalid => save status and its error message
-          validatorsInvalid = true;
-          if ( validatorMessages.Length > 0 )
-            validatorMessages += "\r\n";
-          validatorMessages += validator.ErrorMessage;
-        }
-      }
-    }
+
+    CheckForInvalidValidators (out validatorMessages, out validatorsInvalid);
 
     Control labeledControl = null;
     if (For == String.Empty)
@@ -355,7 +386,49 @@ public class EntryField: Control
 		writer.WriteLine ("</tr>");
 		writer.WriteLine ("<tr> <td><img height=\"1\" width=\"1\" src=\"../Images/ws.gif\"/></td> </tr>");
 	}
+
+  private void CheckForInvalidValidators(out string validatorMessages, out bool validatorsInvalid)
+  {
+    validatorMessages = String.Empty;
+    validatorsInvalid = false;
+
+
+    // search for Validator child controls and keep if at least one is invalid
+
+    foreach ( Control childControl in this.Controls )
+    {
+      if ( childControl is BaseValidator && _showErrors)
+      {
+        CheckInvalidValidator (childControl, ref validatorMessages, ref validatorsInvalid);
+      }
+      else
+      {
+        UserControl userControl = childControl as UserControl;
+
+        if (userControl != null)
+        {
+          foreach (Control subControl in userControl.Controls)
+            CheckInvalidValidator (subControl, ref validatorMessages, ref validatorsInvalid);
+        }
+      }
+    }
+  }
 	
+
+  private void CheckInvalidValidator(Control control, ref string validatorMessages, ref bool validatorsInvalid)
+  {
+    BaseValidator validator = control as BaseValidator;
+
+    if ( (validator != null) && (!validator.IsValid) )
+    {
+      validatorsInvalid = true;
+  
+      if ( validatorMessages.Length > 0 )
+        validatorMessages += "\r\n";
+  
+      validatorMessages += validator.ErrorMessage;
+    }
+  }
 }
 
 }
