@@ -15,7 +15,7 @@ public class RelationDefinitionLoader
 
   // member fields
 
-  private XmlNodeList _relationNodeList;
+  private XmlDocument _document;
   private ConfigurationNamespaceManager _namespaceManager;
   private ClassDefinitionCollection _classDefinitions;
 
@@ -30,13 +30,7 @@ public class RelationDefinitionLoader
     ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
     ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-    string xPath = namespaceManager.FormatXPath (
-        "{0}:mapping/{0}:relations/{0}:relation", 
-        PrefixNamespace.MappingNamespace.Uri);
-    
-    XmlNodeList relationNodeList = document.SelectNodes (xPath, namespaceManager);
-
-    _relationNodeList = relationNodeList;
+    _document = document;
     _namespaceManager = namespaceManager;
     _classDefinitions = classDefinitions;
   }
@@ -50,31 +44,63 @@ public class RelationDefinitionLoader
 
   public RelationDefinitionCollection GetRelationDefinitions ()
   {
-    RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection ();
+    CheckNumberOfEndPoints ();
 
-    foreach (XmlNode relationNode in _relationNodeList)
+    RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection ();
+    foreach (XmlNode distinctRelationPropertyNode in GetDistinctRelationPropertyNodes ())
     {
-      RelationDefinition relationDefinition = GetRelationDefinition (relationNode);
+      RelationDefinition relationDefinition = GetRelationDefinition (distinctRelationPropertyNode);
       relationDefinitions.Add (relationDefinition);
     }
     
     return relationDefinitions;
   }
 
-  private RelationDefinition GetRelationDefinition (XmlNode relationNode)
+  private void CheckNumberOfEndPoints ()
   {
-    string relationDefinitionID = relationNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
+    foreach (string relationDefinitionID in GetAllRelationDefinitionIDs ())
+    {
+      string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:relationProperty[@relationID = '{relationDefinitionID}']");
+      xPath = xPath.Replace ("{relationDefinitionID}", relationDefinitionID);
 
-    XmlNodeList endPointNodeList = relationNode.SelectNodes (
-        FormatXPath ("{0}:virtualEndPoint | {0}:endPoint"), _namespaceManager);
+      if (_document.SelectNodes(xPath, _namespaceManager).Count != 2)
+        throw CreateMappingException ("Relation '{0}' does not have exactly two end points.", relationDefinitionID);  
+    }
+  }
 
-    if (endPointNodeList.Count != 2)
-      throw CreateMappingException ("Relation '{0}' does not have exactly two end points.", relationDefinitionID);
+  private XmlNodeList GetDistinctRelationPropertyNodes ()
+  {
+    // Select distinct the first relationProperty of every relation (identified through @relationID):
+    string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:relationProperty[not (preceding::{0}:relationProperty/@relationID = ./@relationID)]");
+    return _document.SelectNodes (xPath, _namespaceManager);
+  }
+
+  private string[] GetAllRelationDefinitionIDs ()
+  {
+    XmlNodeList distinctRelationPropertyNodes = GetDistinctRelationPropertyNodes ();
+    string[] allRelationDefinitionIDs = new string[distinctRelationPropertyNodes.Count];
+    for (int i = 0; i < distinctRelationPropertyNodes.Count; i++)
+    {
+      XmlNode distinctRelationPropertyNode = distinctRelationPropertyNodes[i];
+      allRelationDefinitionIDs[i] = distinctRelationPropertyNode.SelectSingleNode ("@relationID").InnerText;
+    }
+
+    return allRelationDefinitionIDs;
+  }
+
+  private RelationDefinition GetRelationDefinition (XmlNode relationPropertyNode)
+  {
+    string relationDefinitionID = relationPropertyNode.SelectSingleNode ("@relationID", _namespaceManager).InnerText;
+    string propertyName = GetPropertyName (relationPropertyNode);
+
+    XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
+    string oppositePropertyName = GetPropertyName (oppositeRelationPropertyNode);
+
 
     RelationDefinition newRelationDefinition = new RelationDefinition (
         relationDefinitionID,
-        GetEndPointDefinition (relationDefinitionID, endPointNodeList[0]),
-        GetEndPointDefinition (relationDefinitionID, endPointNodeList[1]));
+        GetEndPointDefinition (relationDefinitionID, propertyName, relationPropertyNode),
+        GetEndPointDefinition (relationDefinitionID, oppositePropertyName, oppositeRelationPropertyNode));
 
     AddRelationDefinitionToClassDefinitions (newRelationDefinition);
     return newRelationDefinition;
@@ -91,70 +117,94 @@ public class RelationDefinitionLoader
       endPoint2.ClassDefinition.RelationDefinitions.Add (relationDefinition);
   }
 
-  private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, XmlNode endPointNode)
+  private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode)
   {
-    string classAsString = endPointNode.SelectSingleNode (FormatXPath (
-        "{0}:class/@id"), _namespaceManager).InnerText;
-
+    string classAsString = relationPropertyNode.SelectSingleNode ("../../@id", _namespaceManager).InnerText;
     ClassDefinition classDefinition = _classDefinitions.GetByClassID (classAsString);
 
-    bool isMandatory = bool.Parse (endPointNode.SelectSingleNode ("@isMandatory", _namespaceManager).InnerText);
+    bool isMandatory = bool.Parse (relationPropertyNode.SelectSingleNode ("@isMandatory", _namespaceManager).InnerText);
 
-    XmlNode propertyNode = endPointNode.SelectSingleNode (FormatXPath ("{0}:property"), _namespaceManager);
-    string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
+    XmlNode columnNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager);
+    bool isVirtualEndPoint = (columnNode == null);
 
-    if (endPointNode.LocalName == "virtualEndPoint")
+    CardinalityType cardinality = GetCardinality (relationPropertyNode);
+    if (isVirtualEndPoint)
     {
-      CardinalityType cardinality = GetCardinality (endPointNode);
-      Type propertyType = GetTypeFromPropertyNode (propertyNode, cardinality, relationDefinitionID);
+      Type propertyType = GetTypeFromVirtualRelationPropertyNode (relationDefinitionID, propertyName, relationPropertyNode, cardinality);
 
       return new VirtualRelationEndPointDefinition (
           classDefinition, propertyName, isMandatory, cardinality, propertyType);
     }
     else
     {
+      if (cardinality == CardinalityType.Many)
+      {
+        throw CreateMappingException (
+            "Property '{0}' of relation '{1}' defines a column and a cardinality equal to 'many', which is not valid.", propertyName, relationDefinitionID);
+      }
+
       return new RelationEndPointDefinition (classDefinition, propertyName, isMandatory);
     }
   }
 
-  private Type GetTypeFromPropertyNode (XmlNode propertyNode, CardinalityType cardinality, string relationDefinitionID)
+  private string GetPropertyName (XmlNode propertyNodeOrRelationPropertyNode)
   {
-    XmlNode typeNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:collectionType"), _namespaceManager);
+    return propertyNodeOrRelationPropertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
+  }
+
+  private Type GetTypeFromVirtualRelationPropertyNode (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode, CardinalityType cardinality)
+  {
+    XmlNode typeNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:collectionType"), _namespaceManager);
 
     if (typeNode != null)
     {
       if (cardinality == CardinalityType.One)
       {
         throw CreateMappingException (
-            "Virtual end point of relation '{0}' must not contain element 'collectionType'."
-                + " Element 'collectionType' is only valid for virtual end points with cardinality equal 'many'.",
-            relationDefinitionID);
+            "RelationProperty '{0}' of relation '{1}' must not contain element 'collectionType'."
+                + " Element 'collectionType' is only valid for relation properties with cardinality equal to 'many'.",
+            propertyName, relationDefinitionID);
       }
       else
       {
-        return LoaderUtility.MapType (typeNode);
+        return LoaderUtility.GetType (typeNode);
       }
     }
     else
     {
       if (cardinality == CardinalityType.One)
-      {
-        string oppositeClassID = 
-            propertyNode.SelectSingleNode (FormatXPath ("../../{0}:endPoint/{0}:class/@id"), _namespaceManager).InnerText;
-
-        string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class[@id = \"" + oppositeClassID + "\"]/{0}:type");
-        return LoaderUtility.MapType (propertyNode, FormatXPath (xPath), _namespaceManager);
-      }
+        return GetOppositeClassType (relationDefinitionID, propertyName);
       else
-      {
         return typeof (DomainObjectCollection);
-      }
     }
   }
 
-  private CardinalityType GetCardinality (XmlNode endPointNode)
+  private XmlNode GetOppositeRelationPropertyNode (string relationDefinitionID, string propertyName)
   {
-    string cardinality = endPointNode.SelectSingleNode ("@cardinality", _namespaceManager).InnerText;
+    string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:relationProperty[@relationID = '{relationDefinitionID}' and @name != '{propertyName}']");
+    xPath = xPath.Replace ("{relationDefinitionID}", relationDefinitionID);
+    xPath = xPath.Replace ("{propertyName}", propertyName);
+
+    XmlNode oppositeRelationPropertyNode = _document.SelectSingleNode (xPath, _namespaceManager);
+
+    // Note: It has already been checked that there are exactly two end points for this relation.
+    if (oppositeRelationPropertyNode == null)
+      throw CreateMappingException ("Both property names of relation '{0}' are '{1}', which is not valid.", relationDefinitionID, propertyName);
+
+    return oppositeRelationPropertyNode;
+  }
+
+  private Type GetOppositeClassType (string relationDefinitionID, string propertyName)
+  {
+    XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
+    XmlNode typeNode = oppositeRelationPropertyNode.SelectSingleNode (FormatXPath ("../../{0}:type"), _namespaceManager);
+    
+    return LoaderUtility.GetType (typeNode);
+  }
+
+  private CardinalityType GetCardinality (XmlNode relationPropertyNode)
+  {
+    string cardinality = relationPropertyNode.SelectSingleNode ("@cardinality", _namespaceManager).InnerText;
     if (cardinality == "one")
       return CardinalityType.One;
     else

@@ -19,38 +19,18 @@
               <xs:element name="class" type="m:classType" maxOccurs="unbounded">
 
                 <xs:key name="propertyKey">
-                  <xs:selector xpath="m:properties/m:property" />
+                  <xs:selector xpath="m:properties/m:property | m:properties/m:relationProperty" />
                   <xs:field xpath="@name" />
                 </xs:key>
-
+                
                 <xs:key name="columnKey">
                   <xs:selector xpath="m:properties/m:property" />
                   <xs:field xpath="m:column" />
                 </xs:key>
-
+                
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-
-        </xs:element>
-        <xs:element name="relations" minOccurs="0">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="relation" type="m:relationType" maxOccurs="unbounded" />
-            </xs:sequence>
-          </xs:complexType>
-
-          <xs:key name="relationKey">
-            <xs:selector xpath="m:relation" />
-            <xs:field xpath="@id" />
-          </xs:key>
-
-          <xs:key name="relationClassPropertyKey">
-            <xs:selector xpath="m:relation/m:*" />
-            <xs:field xpath="m:class/@id" />
-            <xs:field xpath="m:property/@name" />
-          </xs:key>
-
         </xs:element>
       </xs:sequence>
       <xs:attribute name="application" type="t:requiredStringType" use="required" />
@@ -60,11 +40,6 @@
       <xs:selector xpath="m:classes/m:class" />
       <xs:field xpath="@id" />
     </xs:key>
-
-    <xs:keyref name="endPointToClass" refer="m:classKey">
-      <xs:selector xpath="m:relations/m:relation/m:*" />
-      <xs:field xpath="m:class/@id" />
-    </xs:keyref>
 
   </xs:element>
 
@@ -76,13 +51,13 @@
       		<xs:attribute name="name" type="t:requiredStringType" use="required" />
       	</xs:complexType>
       </xs:element>
-      
       <xs:element name="storageProviderID" type="t:requiredStringType" />
       <xs:element name="properties">
         <xs:complexType>
-          <xs:sequence>
-            <xs:element name="property" type="m:propertyType" minOccurs="0" maxOccurs="unbounded" />
-          </xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="property" type="m:propertyType" />
+            <xs:element name="relationProperty" type="m:relationPropertyType" />
+				</xs:choice>
         </xs:complexType>
       </xs:element>
     </xs:sequence>
@@ -100,62 +75,22 @@
     <xs:attribute name="name" type="t:requiredStringType" use="required" />
   </xs:complexType>
 
-  <xs:complexType name="relationType">
-    <xs:all>
-      <xs:element name="virtualEndPoint" type="m:virtualEndPointType" />
-      <xs:element name="endPoint" type="m:endPointType" />
-    </xs:all>
-    <xs:attribute name="id" type="t:requiredStringType" use="required" />
-  </xs:complexType>
-
-  <xs:complexType name="virtualEndPointType">
-    <xs:complexContent>
-      <xs:extension base="m:endPointBaseType">
-        <xs:sequence>
-          <xs:element name="property">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:element name="collectionType" type="t:dotNetType" minOccurs="0" />
-              </xs:sequence>
-              <xs:attribute name="name" type="t:requiredStringType" use="required" /> 	  	              
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-        <xs:attribute name="cardinality" use="required">
-          <xs:simpleType>
-            <xs:restriction base="xs:string">
-              <xs:enumeration value="one" />
-              <xs:enumeration value="many" />
-            </xs:restriction>
-          </xs:simpleType>
-        </xs:attribute>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="endPointType">
-    <xs:complexContent>
-      <xs:extension base="m:endPointBaseType">
-        <xs:sequence>
-          <xs:element name="property">
-            <xs:complexType>
-              <xs:attribute name="name" type="t:requiredStringType" use="required" /> 	  	
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="endPointBaseType">
-    <xs:sequence>
-      <xs:element name="class">
-      	<xs:complexType>
-      		<xs:attribute name="id" type="t:requiredStringType" use="required" />
-      	</xs:complexType>
-      </xs:element>
-    </xs:sequence>
+  <xs:complexType name="relationPropertyType">
+    <xs:choice minOccurs="0">
+      <xs:element name="column" type="t:requiredStringType" />
+      <xs:element name="collectionType" type="t:dotNetType" />
+    </xs:choice>
+    <xs:attribute name="name" type="t:requiredStringType" use="required" />
+    <xs:attribute name="relationID" type="t:requiredStringType" use="required" />    
     <xs:attribute name="isMandatory" type="xs:boolean" use="required" />
+    <xs:attribute name="cardinality" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="one" />
+          <xs:enumeration value="many" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute> 
   </xs:complexType>
 
   <xs:simpleType name="positiveIntType">
@@ -183,7 +118,6 @@
       <xs:enumeration value="single" />
       <xs:enumeration value="string" />
       <xs:enumeration value="char" />
-      <xs:enumeration value="objectID" />
     </xs:restriction>
   </xs:simpleType>
 

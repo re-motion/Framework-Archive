@@ -3,7 +3,7 @@
     application="RplObjectBindingTest" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 mapping.xsd">
 	<classes>
 		<class id="ClassWithAllDataTypes">
 			<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
@@ -123,14 +123,14 @@
 					<column>NaInt32WithNullValue</column>
 					<nullable>true</nullable>
 				</property>
-				<property name="ClassForRelationTestMandatory">
-					<type>objectID</type>
+				<relationProperty name="ClassForRelationTestMandatory" relationID="ClassWithAllDataTypesToClassForRelationTestMandatory" cardinality="one" isMandatory="true">
 					<column>TableForRelationTestMandatory</column>
-				</property>
-				<property name="ClassForRelationTestOptional">
-					<type>objectID</type>
+				</relationProperty>
+				<relationProperty name="ClassForRelationTestOptional" relationID="ClassWithAllDataTypesToClassForRelationTestOptional" cardinality="one" isMandatory="false">
 					<column>TableForRelationTestOptional</column>
-				</property>					
+				</relationProperty>
+				<relationProperty name="ClassesForRelationTestMandatoryNavigateOnly" relationID="ClassForRelationTestToClassWithAllDataTypesMandatory" cardinality="many" isMandatory="true" />
+				<relationProperty name="ClassesForRelationTestOptionalNavigateOnly" relationID="ClassForRelationTestToClassWithAllDataTypesOptional" cardinality="many" isMandatory="false" />
 			</properties>
 		</class>
 				
@@ -144,64 +144,16 @@
 					<column>Name</column>
 					<maxLength>100</maxLength>
 				</property>
-				<property name="ClassWithAllDataTypesMandatory">
-					<type>objectID</type>
+				<relationProperty name="ClassWithAllDataTypesMandatoryNavigateOnly" relationID="ClassWithAllDataTypesToClassForRelationTestMandatory" cardinality="one" isMandatory="true" />
+				<relationProperty name="ClassWithAllDataTypesOptionalNavigateOnly" relationID="ClassWithAllDataTypesToClassForRelationTestOptional" cardinality="one" isMandatory="false" />
+				<relationProperty name="ClassWithAllDataTypesMandatory" relationID="ClassForRelationTestToClassWithAllDataTypesMandatory" cardinality="one" isMandatory="true">
 					<column>TableWithAllDataTypesMandatory</column>
-				</property>
-				<property name="ClassWithAllDataTypesOptional">
-					<type>objectID</type>
+				</relationProperty>
+				<relationProperty name="ClassWithAllDataTypesOptional" relationID="ClassForRelationTestToClassWithAllDataTypesOptional" cardinality="one" isMandatory="false">
 					<column>TableWithAllDataTypesOptional</column>
-				</property>				
+				</relationProperty>			
 			</properties>
 		</class>
 					
 	</classes>
-
-	
-	<relations>
-		<relation id="ClassWithAllDataTypesToClassForRelationTestMandatory">
-			<virtualEndPoint cardinality="one" isMandatory="true">
-				<class id="ClassForRelationTest" />
-				<property name="ClassWithAllDataTypesMandatoryNavigateOnly" />
-			</virtualEndPoint>
-			<endPoint isMandatory="true">
-				<class id="ClassWithAllDataTypes" />
-				<property name="ClassForRelationTestMandatory" />
-			</endPoint>
-		</relation>
-		
-		<relation id="ClassWithAllDataTypesToClassForRelationTestOptional">
-			<virtualEndPoint cardinality="one" isMandatory="false">
-				<class id="ClassForRelationTest" />
-				<property name="ClassWithAllDataTypesOptionalNavigateOnly" />
-			</virtualEndPoint>
-			<endPoint isMandatory="false">
-				<class id="ClassWithAllDataTypes" />
-				<property name="ClassForRelationTestOptional" />
-			</endPoint>
-		</relation>	
-		
-		<relation id="ClassForRelationTestToClassWithAllDataTypesMandatory">
-			<virtualEndPoint cardinality="many" isMandatory="true">
-				<class id="ClassWithAllDataTypes" />
-				<property name="ClassesForRelationTestMandatoryNavigateOnly" />
-			</virtualEndPoint>
-			<endPoint isMandatory="true">
-				<class id="ClassForRelationTest" />
-				<property name="ClassWithAllDataTypesMandatory" />
-			</endPoint>
-		</relation>
-	
-		<relation id="ClassForRelationTestToClassWithAllDataTypesOptional">
-			<virtualEndPoint cardinality="many" isMandatory="false">
-				<class id="ClassWithAllDataTypes" />
-				<property name="ClassesForRelationTestOptionalNavigateOnly" />
-			</virtualEndPoint>
-			<endPoint isMandatory="false">
-				<class id="ClassForRelationTest" />
-				<property name="ClassWithAllDataTypesOptional" />
-			</endPoint>
-		</relation>
-		
-	</relations>
 </mapping>

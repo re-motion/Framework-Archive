@@ -99,7 +99,7 @@ public class PropertyDefinition
       if (type == typeof (DateTime))
         return typeof (NaDateTime);
 
-      if (type == typeof (string))
+      if (type == typeof (string) || type == typeof (ObjectID))
         return type;
 
       throw CreateNotImplementedException ("IsNullable cannot be set to true for type '{0}'.", type);
