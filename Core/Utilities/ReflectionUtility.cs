@@ -45,6 +45,7 @@ public sealed class ReflectionUtility
     return null;
   }
 
+
   public static object GetAttributeMemberValue (MemberInfo reflectionObject, Type attributeType, bool inherit, MemberInfo fieldOrProperty)
   {
     object[] attributes = reflectionObject.GetCustomAttributes (attributeType, inherit);
@@ -70,6 +71,19 @@ public sealed class ReflectionUtility
     return null;
   }
 
+
+  public static object GetFieldOrPropertyValue (object obj, string fieldOrPropertyName)
+  {
+    return ReflectionUtility.GetFieldOrPropertyValue (obj, fieldOrPropertyName, BindingFlags.Public);
+  }
+   
+  public static object GetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags)
+  {
+    ArgumentUtility.CheckNotNull("obj", obj);
+    MemberInfo fieldOrProperty = ReflectionUtility.GetFieldOrProperty (obj.GetType(), fieldOrPropertyName, bindingFlags, true);
+    return ReflectionUtility.GetFieldOrPropertyValue (obj, fieldOrProperty);
+  }
+ 
   public static object GetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty)
   {
     if (obj == null)
@@ -85,6 +99,19 @@ public sealed class ReflectionUtility
       throw new ArgumentException (string.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().FullName), "member");
   }
 
+
+  public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, object value)
+  {
+    ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrPropertyName, BindingFlags.Public, value);
+  }
+   
+  public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags, object value)
+  {
+    ArgumentUtility.CheckNotNull ("obj", obj);
+    MemberInfo fieldOrProperty = ReflectionUtility.GetFieldOrProperty (obj.GetType(), fieldOrPropertyName, bindingFlags, true);
+    ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrProperty, value);
+  }
+   
   public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object value)
   {
     if (obj == null)
@@ -100,6 +127,7 @@ public sealed class ReflectionUtility
       throw new ArgumentException (string.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().FullName), "member");
   }
 
+
   public static Type GetFieldOrPropertyType (MemberInfo fieldOrProperty)
   {
     if (fieldOrProperty is FieldInfo)
@@ -109,6 +137,7 @@ public sealed class ReflectionUtility
     else 
       throw new ArgumentException ("Argument must be FieldInfo or PropertyInfo.", "fieldOrProperty");
   }
+
 
   private ReflectionUtility()
   {
