@@ -74,7 +74,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
 
-    // TODO: Use clone instead to assure correct collection type:
+    // TODO: Use DomainObjectCollection.Create instead to assure correct collection type:
     _originalOppositeDomainObjects = new DomainObjectCollection (oppositeDomainObjects, true);
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
@@ -90,7 +90,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {
     if (HasChanged)
     {
-      // TODO: Use clone instead to assure correct collection type:
+      // TODO: Use DomainObjectCollection.Create instead to assure correct collection type:
       _originalOppositeDomainObjects = new DomainObjectCollection (_oppositeDomainObjects, true);
     }
   }
