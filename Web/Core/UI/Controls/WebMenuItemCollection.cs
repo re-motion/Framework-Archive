@@ -10,42 +10,42 @@ using Rubicon.Collections;
 namespace Rubicon.Web.UI.Controls
 {
 
-/// <summary> A collection of <see cref="MenuItem"/> objects. </summary>
+/// <summary> A collection of <see cref="WebMenuItem"/> objects. </summary>
 [Editor (typeof (MenuItemCollectionEditor), typeof (UITypeEditor))]
-public class MenuItemCollection: ControlItemCollection
+public class WebMenuItemCollection: ControlItemCollection
 {
   /// <summary> Initializes a new instance. </summary>
-  public MenuItemCollection (Control ownerControl, Type[] supportedTypes)
+  public WebMenuItemCollection (Control ownerControl, Type[] supportedTypes)
     : base (ownerControl, supportedTypes)
   {
   }
 
   /// <summary> Initializes a new instance. </summary>
-  public MenuItemCollection (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (MenuItem)})
+  public WebMenuItemCollection (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (WebMenuItem)})
   {
   }
 
-  public new MenuItem[] ToArray()
+  public new WebMenuItem[] ToArray()
   {
     ArrayList arrayList = new ArrayList (List);
-    return (MenuItem[]) arrayList.ToArray (typeof (MenuItem));
+    return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
   }
 
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
-  protected internal new MenuItem this[int index]
+  protected internal new WebMenuItem this[int index]
   {
-    get { return (MenuItem) List[index]; }
+    get { return (WebMenuItem) List[index]; }
     set { List[index] = value; }
   }
 
-  public static MenuItem[] GroupMenuItems (MenuItem[] menuItems, bool generateSeparators)
+  public static WebMenuItem[] GroupMenuItems (WebMenuItem[] menuItems, bool generateSeparators)
   {
     //  <string category, ArrayList menuItems>
     NameObjectCollection groupedMenuItems = new NameObjectCollection();
     ArrayList categories = new ArrayList();
     
-    foreach (MenuItem menuItem in menuItems)
+    foreach (WebMenuItem menuItem in menuItems)
     {
       string category = StringUtility.NullToEmpty (menuItem.Category);
       ArrayList menuItemsForCategory;
@@ -71,16 +71,16 @@ public class MenuItemCollection: ControlItemCollection
         if (isFirst)
           isFirst = false;
         else
-          arrayList.Add (MenuItem.GetSeparator());
+          arrayList.Add (WebMenuItem.GetSeparator());
       }
       arrayList.AddRange ((ArrayList) groupedMenuItems[category]);
     }
-    return (MenuItem[]) arrayList.ToArray (typeof (MenuItem));
+    return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
   }
 
-  public MenuItem[] GroupMenuItems (bool generateSeparators)
+  public WebMenuItem[] GroupMenuItems (bool generateSeparators)
   {
-    return MenuItemCollection.GroupMenuItems (ToArray(), generateSeparators);
+    return WebMenuItemCollection.GroupMenuItems (ToArray(), generateSeparators);
   }
 }
 
