@@ -3,6 +3,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
+using System.IO;
+using Rubicon.ObjectBinding.Reflection;
 
 namespace OBWTest 
 {
@@ -23,7 +25,11 @@ namespace OBWTest
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{
+      string objectPath = Server.MapPath ("objects");
+      if (! Directory.Exists (objectPath))
+        Directory.CreateDirectory (objectPath);
 
+      ReflectionBusinessObjectStorage.RootPath = objectPath;
 		}
  
 		protected void Session_Start(Object sender, EventArgs e)
