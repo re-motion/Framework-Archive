@@ -16,9 +16,27 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   // static members and constants
 
-  internal static new BindableDomainObject GetObject (ObjectID id)
+  internal protected static new BindableDomainObject GetObject (ObjectID id)
   {
-    return (BindableDomainObject) GetObject (id, false);
+    return (BindableDomainObject) DomainObject.GetObject (id);
+  }
+
+  internal protected static new BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
+  {
+    return (BindableDomainObject) DomainObject.GetObject (id, includeDeleted);
+  }
+
+  internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction);
+  }
+
+  internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+    return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction, includeDeleted);
   }
 
   public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
