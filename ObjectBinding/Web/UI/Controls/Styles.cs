@@ -178,48 +178,35 @@ public class ListControlStyle: Style
 }
 
 /// <summary>
-/// Styles for TextBox controls.
+/// Styles for single row TextBox controls.
 /// </summary>
-public class TextBoxStyle: Style
+public class SingleRowTextBoxStyle: Style
 {
   private int _columns = 0;
   private int _maxLength = 0;
   private bool _readOnly = false;
-  private int _rows = 0;
-  private TextBoxMode _textMode = TextBoxMode.SingleLine;
-  private bool _wrap = true;
   private bool _autoPostback = false;
 
-  public void ApplyStyle (TextBox textBox)
+  public virtual void ApplyStyle (TextBox textBox)
   {
     textBox.ApplyStyle (this);
     if (_maxLength != 0)
       textBox.MaxLength = _maxLength;
     if (_columns != 0)
       textBox.Columns = _columns;
-    if (_rows != 0)
-      textBox.Rows = _rows;
-    if (_wrap != true)
-      textBox.Wrap = _wrap;
-
     textBox.AutoPostBack = _autoPostback;
-
     textBox.ReadOnly = _readOnly;
-    textBox.TextMode = _textMode;
   }
 
   public override void CopyFrom (Style s)
   {
     base.CopyFrom (s);
-    TextBoxStyle ts = s as TextBoxStyle;
+    SingleRowTextBoxStyle ts = s as SingleRowTextBoxStyle;
     if (ts != null)
     {
       this.MaxLength = ts.MaxLength;
       this.Columns = ts.Columns;
       this.ReadOnly = ts.ReadOnly;
-      this.Rows = ts.Rows;
-      this.TextMode = ts.TextMode;
-      this.Wrap = ts.Wrap;
     }
   }
 
@@ -253,6 +240,48 @@ public class TextBoxStyle: Style
     set { _readOnly = value; }
   }
 
+  [Description("Automatically postback to the server after the text is modified.")]
+  [Category("Behavior")]
+  [DefaultValue (false)]
+  [NotifyParentProperty (true)]
+  public bool AutoPostBack
+  {
+    get { return _autoPostback; }
+    set { _autoPostback = value; }
+  }
+}
+
+/// <summary>
+/// Styles for TextBox controls.
+/// </summary>
+public class TextBoxStyle: SingleRowTextBoxStyle
+{
+  private int _rows = 0;
+  private TextBoxMode _textMode = TextBoxMode.SingleLine;
+  private bool _wrap = true;
+
+  public override void ApplyStyle (TextBox textBox)
+  {
+    base.ApplyStyle (textBox);
+    if (_rows != 0)
+      textBox.Rows = _rows;
+    if (_wrap != true)
+      textBox.Wrap = _wrap;
+
+    textBox.TextMode = _textMode;
+  }
+
+  public override void CopyFrom (Style s)
+  {
+    base.CopyFrom (s);
+    TextBoxStyle ts = s as TextBoxStyle;
+    if (ts != null)
+    {
+      this.Rows = ts.Rows;
+      this.TextMode = ts.TextMode;
+      this.Wrap = ts.Wrap;
+    }
+  }
   [Description("The number of lines to display for a multiline textbox.")]
   [Category("Behavior")]
   [DefaultValue (0)]
@@ -281,16 +310,6 @@ public class TextBoxStyle: Style
   {
     get { return _wrap; }
     set { _wrap = value; }
-  }
-
-  [Description("Automatically postback to the server after the text is modified.")]
-  [Category("Behavior")]
-  [DefaultValue (false)]
-  [NotifyParentProperty (true)]
-  public bool AutoPostBack
-  {
-    get { return _autoPostback; }
-    set { _autoPostback = value; }
   }
 }
 
