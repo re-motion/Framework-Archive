@@ -112,7 +112,6 @@ public class BocList:
     set { _showAllProperties = value; }
   }
 
-
   // show check boxes for each object
   private bool _showSelection = false;
   
@@ -211,6 +210,12 @@ public class BocList:
         else if (key.StartsWith (titleRowCheckBoxFilter))
           _checkBoxCheckedState[key] = true; 
       }
+    }
+
+    if (IsDesignMode && _firstColumnCommand == null)
+    {
+      //  Initialize the command to simplify the designer's work
+      _firstColumnCommand = new BocItemCommand();
     }
   }
 
@@ -676,7 +681,6 @@ public class BocList:
             argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
           string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
           
-          writer.RenderBeginTag (HtmlTextWriterTag.A);
           FirstColumnCommand.RenderBegin (writer, rowIndex, objectID, postBackLink);
         }
 
@@ -1128,6 +1132,7 @@ public class BocList:
   [Category ("Column Definition")]
   [Description ("The ItemCommand added to the first value column.")]
   [DefaultValue ((string) null)]
+  [NotifyParentProperty (true)]
   public BocItemCommand FirstColumnCommand
   {
     get
@@ -1138,6 +1143,24 @@ public class BocList:
     {
       _firstColumnCommand = value; 
     }
+  }
+
+  private bool ShouldSerializeFirstColumnCommand()
+  {
+    if (_firstColumnCommand == null)
+      return false;
+
+    if (_firstColumnCommand.Type != BocItemCommandType.Href)
+      return true;
+
+    if (    _firstColumnCommand.HrefCommand == null
+        ||      StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Href)
+            &&  StringUtility.IsNullOrEmpty (_firstColumnCommand.HrefCommand.Target))
+    {
+      return false;
+    }
+
+    return true;
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]

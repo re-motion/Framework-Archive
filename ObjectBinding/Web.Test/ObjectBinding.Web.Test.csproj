@@ -173,6 +173,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PersonDetailsPage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PersonDetailsPage.aspx.cs"
+                    DependentUpon = "PersonDetailsPage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PersonDetailsPage.aspx.resx"
+                    DependentUpon = "PersonDetailsPage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Startpage.aspx"
                     BuildAction = "Content"
                 />
