@@ -7,10 +7,12 @@ using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
+using Rubicon.Collections;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UI.Controls
 {
-//  TODO: Disabled Falg for menu items
+
 /*
   Edit
   Duplicate
@@ -18,7 +20,6 @@ namespace Rubicon.Web.UI.Controls
   Öffnen
   auto:list1:menu:cut:text = "Ausschneiden"
 */
-//  Disable item hook: State: Disable menu items for only 1 selected, Disable items for none selected (DHTML)
 /// <remarks>
 ///   Work in Progress
 /// </remarks>
@@ -83,7 +84,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     return output.ToString();
   }
  
-  private static readonly object EventClick = new object();
+  private static readonly object s_eventCommandClickEvent = new object();
+  private static readonly object s_wxeFunctionCommandClickEvent = new object();
 
   private const string c_dropDownIcon = "DropDownMenuArrow.gif";
 
@@ -105,32 +107,29 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 	{
   }
 
+  public DropDownMenu ()
+    : this (null, new Type[] {typeof (MenuItem)})
+  {
+  }
+
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
-  /// <param name="eventArgument"> &lt;index&gt;[,&lt;ID&gt;] </param>
+  /// <param name="eventArgument"> &lt;index&gt; </param>
   public void RaisePostBackEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
-    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
-
     //  First part: index
     int index;
-    eventArgumentParts[0] = eventArgumentParts[0].Trim();
     try 
     {
-      if (eventArgumentParts[0].Length == 0)
+      if (eventArgument.Length == 0)
         throw new FormatException();
-      index = int.Parse (eventArgumentParts[0]);
+      index = int.Parse (eventArgument);
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>[,<business-object-id>]'.");
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
     }
-
-    //  Second part, optional: item ID
-    string id = null;
-    if (eventArgumentParts.Length == 2)
-      id = eventArgumentParts[1].Trim();
 
     if (index >= _menuItems.Count)
       throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
@@ -139,13 +138,41 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     if (item.Command == null)
       throw new ArgumentOutOfRangeException ("The DropDownMenu '" + ID + "' does not have a command associated with menu item " + index + ".");
 
-    OnClick (index, id, item);
+    switch (item.Command.Type)
+    {
+      case CommandType.Event:
+      {
+        OnEventCommandClick (item);
+        break;
+      }
+      case CommandType.WxeFunction:
+      {
+        OnWxeFunctionCommandClick (item);
+        break; 
+      }
+      default:
+      {
+        break;
+      }
+    }
+
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
-  protected virtual void OnClick (int index, string id, MenuItem item)
+  protected virtual void OnEventCommandClick (MenuItem item)
   {
-    MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[EventClick];
+    MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_eventCommandClickEvent];
+    if (clickHandler != null)
+    {
+      MenuItemClickEventArgs e = new MenuItemClickEventArgs (item);
+      clickHandler (this, e);
+    }
+  }
+
+  /// <summary> Fires the <see cref="Click"/> event. </summary>
+  protected virtual void OnWxeFunctionCommandClick (MenuItem item)
+  {
+    MenuItemClickEventHandler clickHandler = (MenuItemClickEventHandler) Events[s_wxeFunctionCommandClickEvent];
     if (clickHandler != null)
     {
       MenuItemClickEventArgs e = new MenuItemClickEventArgs (item);
@@ -236,13 +263,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         if (isPostBackCommand)
         {
           string argument = menuItemIndex.ToString();
-          if (menuItem.Command.Type == CommandType.WxeFunction)
-            argument += "," + menuItem.Command.WxeFunctionCommand.Parameters;
-          //string test = "test'test";
-          //string s1 = Page.GetPostBackClientHyperlink (this, test);
-          //string s2 = DropDownMenu.EscapeJavaScript (s1);
           href = Page.GetPostBackClientHyperlink (this, argument);
-          //href = href.Replace ("'", @"\'");
           //  HACK: EscapeJavaScript will be moved to extra class 
           href = DropDownMenu.EscapeJavaScript (href);
           href = "'" + href + "'";
@@ -411,16 +432,22 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     set { _getSelectionCount = value; }
   }
 
-  /// <summary> 
-  ///   Occurs when a command of type <see cref="CommandType.Event"/> 
-  ///   or <see cref="CommandType.WxeFunction"/> is clicked. 
-  /// </summary>
+  /// <summary> Occurs when a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
-  [Description ("Occurs when a command of type Event or WxeFunction is clicked.")]
-  public event MenuItemClickEventHandler Click
+  [Description ("Occurs when a command of type Event is clicked.")]
+  public event MenuItemClickEventHandler EventCommandClick
   {
-    add { Events.AddHandler (EventClick, value); }
-    remove { Events.RemoveHandler (EventClick, value); }
+    add { Events.AddHandler (s_eventCommandClickEvent, value); }
+    remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
+  }
+
+  /// <summary> Occurs when a command of type <see cref="CommandType.WxeFunction"/> is clicked. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when a command of type WxeFunction is clicked.")]
+  public event MenuItemClickEventHandler WxeFunctionCommandClick
+  {
+    add { Events.AddHandler (s_wxeFunctionCommandClickEvent, value); }
+    remove { Events.RemoveHandler (s_wxeFunctionCommandClickEvent, value); }
   }
 
   protected virtual string CssClassHead
@@ -457,32 +484,6 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   protected virtual string CssClassItemIconPane
   { get { return "dropDownMenuItemIconPane"; } }
-}
-
-/// <summary>
-///   Represents the method that handles the <c>Click</c> event raised when clicking on a menu item.
-/// </summary>
-public delegate void MenuItemClickEventHandler (object sender, MenuItemClickEventArgs e);
-
-/// <summary>
-///   Provides data for the <c>Click</c> event.
-/// </summary>
-public class MenuItemClickEventArgs: EventArgs
-{
-  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
-  private MenuItem _item;
-
-  /// <summary> Initializes an instance. </summary>
-  public MenuItemClickEventArgs (MenuItem item)
-  {
-    _item = item;
-  }
-
-  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
-  public MenuItem Item
-  {
-    get { return _item; }
-  }
 }
 
 }

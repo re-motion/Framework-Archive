@@ -218,4 +218,31 @@ public enum RequiredSelection
   ExactlyOne = 1,
   OneOrMore = 2
 }
+
+/// <summary>
+///   Represents the method that handles the <c>Click</c> event raised when clicking on a menu item.
+/// </summary>
+public delegate void MenuItemClickEventHandler (object sender, MenuItemClickEventArgs e);
+
+/// <summary>
+///   Provides data for the <c>Click</c> event.
+/// </summary>
+public class MenuItemClickEventArgs: EventArgs
+{
+  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
+  private MenuItem _item;
+
+  /// <summary> Initializes an instance. </summary>
+  public MenuItemClickEventArgs (MenuItem item)
+  {
+    _item = item;
+  }
+
+  /// <summary> The <see cref="MenuItem"/> that was clicked. </summary>
+  public MenuItem Item
+  {
+    get { return _item; }
+  }
+}
+
 }
