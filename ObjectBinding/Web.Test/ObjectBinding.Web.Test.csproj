@@ -138,6 +138,11 @@
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
                 />
+                <Reference
+                    Name = "ObjectBinding.Reflection.Test"
+                    Project = "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -214,18 +219,8 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Job.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "OBWTest.dll.log4net"
                     BuildAction = "None"
-                />
-                <File
-                    RelPath = "Person.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "PersonDetailsForm.aspx"
