@@ -1,1 +1,1 @@
-nant clean resources && nant debug && nant cleantemp getcurrent
+nant local clean resources && nant local debug && nant local cleantemp 
