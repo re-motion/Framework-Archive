@@ -1310,6 +1310,8 @@ public class BocList:
       writer.RenderEndTag();
     }
 
+    bool isFirstValueColumnRendered = false;
+
     for (int idxColumn = 0; idxColumn < _renderColumns.Length; idxColumn++)
     {
       BocColumnDefinition column = _renderColumns[idxColumn];
@@ -1347,7 +1349,7 @@ public class BocList:
       }
 
       //  Render the icon
-      if (EnableIcon)
+      if (EnableIcon && !isFirstValueColumnRendered)
       {
         IBusinessObjectService service
           = businessObject.BusinessObjectClass.BusinessObjectProvider.GetService(
@@ -1408,6 +1410,8 @@ public class BocList:
       if (isCommandEnabled)
         column.Command.RenderEnd (writer);
 
+      if (valueColumn != null && !isFirstValueColumnRendered)
+        isFirstValueColumnRendered = true;
       writer.RenderEndTag();
     }
     
@@ -1510,14 +1514,11 @@ public class BocList:
   /// </param>
   public override void LoadValue (bool interim)
   {
-    if (! interim)
+    Binding.EvaluateBinding();
+    if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
-      Binding.EvaluateBinding();
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
-      }
+      ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+      _isDirty = false;
     }
   }
 
@@ -1532,17 +1533,14 @@ public class BocList:
   /// </param>
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    Binding.EvaluateBinding();
+    if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
-      Binding.EvaluateBinding();
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
-      {
-        DataSource.BusinessObject.SetProperty (Property, Value);
+      DataSource.BusinessObject.SetProperty (Property, Value);
 
-        //  get_Value parses the internal representation of the date/time value
-        //  set_Value updates the internal representation of the date/time value
-        Value = Value;
-      }
+      //  get_Value parses the internal representation of the date/time value
+      //  set_Value updates the internal representation of the date/time value
+      Value = Value;
     }
   }
   /// <summary> Handles refreshing the bound control. </summary>
