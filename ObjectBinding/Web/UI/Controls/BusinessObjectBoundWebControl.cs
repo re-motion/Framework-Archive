@@ -276,6 +276,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <remarks>
   ///   Used by <see cref="SupportsProperty"/>.
   /// </remarks>
+  /// <returns>
+  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList" is 
+  ///   supported.
+  /// </returns>
   protected virtual bool SupportsPropertyMultiplicity (bool isList)
   {
     return ! isList;
@@ -336,7 +340,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
   ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsRequired"/>).
   /// </remarks>
   [Description("Explicitly specifies whether the control is required.")]
-  [Category("Data")]
+  [Category ("Data")]
   [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
   public NaBooleanEnum Required
   {
@@ -351,7 +355,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
   ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsReadOnly"/>).
   /// </remarks>
   [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
-  [Category("Data")]
+  [Category ("Data")]
   [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
   public NaBooleanEnum ReadOnly
   {
