@@ -69,6 +69,16 @@
       The <see cref="IBusinessObject"/> with which the clicked command is associated.
     </param>
   </OnListItemCommandClick>
+  <OnMenuItemEventCommandClick>
+    <param name="menuItem"> 
+      The <see cref="BocMenuItem"/> whose command was clicked. 
+    </param>
+  </OnMenuItemEventCommandClick>
+  <OnMenuItemWxeFunctionCommandClick>
+    <param name="menuItem"> 
+      The <see cref="BocMenuItem"/> whose command was clicked. 
+    </param>
+  </OnMenuItemWxeFunctionCommandClick>
   <SortingOrderEntry>
     <Equals>
       <param name="obj">
