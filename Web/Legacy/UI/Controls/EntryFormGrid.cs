@@ -18,9 +18,15 @@ public class EntryFormGrid: Control
 	{
 		writer.WriteLine ("<table border=\"0\" cellspacing=\"\0\" cellpadding=\"0\">");
 
-		for (int i=0; i<this.Controls.Count; ++i)
+		for (int i = 0; i < this.Controls.Count; ++i)
 		{
-			this.Controls[i].RenderControl(writer);
+			Control control = this.Controls[i];
+
+			// write vertical empty space before titles
+			if (i != 0 && control is EntryTitle)
+				writer.WriteLine ("<tr><td> <img src=\"../Images/ws.gif\" height=\"10\" width=\"1\"></td></tr>");
+
+			control.RenderControl(writer);
 		}
 
 		writer.WriteLine ("</table>");
@@ -61,8 +67,6 @@ public class EntryTitle: Control
 	}
 	protected override void Render (HtmlTextWriter writer)
 	{
-		writer.WriteLine ("<tr><td> <img src=\"../Images/ws.gif\" height=\"10\" width=\"1\"></td></tr>");
-
 		writer.WriteLine ("<tr><td class=\"formGroup\" colspan=\"6\"> {0} </td></tr>", this.Title);
 		writer.WriteLine ("<tr><td bgcolor=\"black\" colspan=\"6\"> "
 				+ "<img src=\"../Images/ws.gif\" height=\"2\" width=\"1\"></td></tr>");

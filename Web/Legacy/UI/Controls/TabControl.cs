@@ -189,16 +189,19 @@ public class TabControl: Control, IPostBackEventHandler
 				//href = String.Format ("href=\"javascript:__doPostBack('{0}','{1}')\"", this.ID, i);
 			*/
 
+			// write seperator cell
 			if (i > 0)
-				output.WriteLine ("<td width=\"3\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"5\"></td>", backColor, _emptyImage);
+				output.WriteLine ("<td width=\"3\" bgcolor=\"{0}\"><img src=\"{1}\" width=\"3\"></td>", backColor, _emptyImage);
 
+			// write cell with first image
 			output.WriteLine ("<td {0} {1} align=\"left\" valign=\"top\">", classAttrib, heightAttrib);
 			output.WriteLine ("<img align=\"top\" width=\"5\" height=\"5\" border=\"0\" src=\"{0}\"/>", _firstImage);
 			output.WriteLine ("</td>");
 
+			// write cell with tab text
 			output.WriteLine ("<td {0}> <a {0} {1}>{2}</a></td>", classAttrib, href, tab.Label);
 
-
+			// write cell with second image
 			output.WriteLine ("<td {0} {1} align=\"right\" valign=\"top\">", classAttrib, heightAttrib);
 			output.WriteLine ("<img align=\"top\" width=\"5\" height=\"5\" border=\"0\" src=\"{0}\"/>", _secondImage);
 			output.WriteLine ("</td>");
