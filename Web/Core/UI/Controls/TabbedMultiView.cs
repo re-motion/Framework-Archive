@@ -146,13 +146,15 @@ public class TabbedMultiView: WebControl, IControl
   private void OnTabViewInserted (TabView view)
   {
     EnsureChildControls();
+
+    _tabStrip.Tabs.Add (WebTab.GetSeparator());
+
     MultiViewTab tab = new MultiViewTab ();
     tab.TabID = view.ID + "_Tab";
     tab.Text = view.Title;
     tab.Icon = view.Icon;
     tab.Target = view.ID;
     _tabStrip.Tabs.Add (tab);
-    _tabStrip.Tabs.Add (WebTab.GetSeparator());
   }
 
   public void ActivateView (int index)
@@ -321,25 +323,25 @@ public class TabbedMultiView: WebControl, IControl
     get { return _tabStrip.SeparatorStyle; }
   }
 
-  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
-  /// <value> 
-  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
-  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
-  /// </value>
-  [Category ("Appearance")]
-  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
-  [DefaultValue (typeof(NaInt32), "null")]
-  public NaInt32 TabsPaneSize
-  {
-    get { return _tabStrip.TabsPaneSize; }
-    set
-    {
-      if (value.IsNull || value.Value <= 0)
-        _tabStrip.TabsPaneSize = NaInt32.Null;
-      else
-        _tabStrip.TabsPaneSize = value; 
-    }
-  }
+//  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
+//  /// <value> 
+//  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
+//  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
+//  /// </value>
+//  [Category ("Appearance")]
+//  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
+//  [DefaultValue (typeof(NaInt32), "null")]
+//  public NaInt32 TabsPaneSize
+//  {
+//    get { return _tabStrip.TabsPaneSize; }
+//    set
+//    {
+//      if (value.IsNull || value.Value <= 0)
+//        _tabStrip.TabsPaneSize = NaInt32.Null;
+//      else
+//        _tabStrip.TabsPaneSize = value; 
+//    }
+//  }
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
