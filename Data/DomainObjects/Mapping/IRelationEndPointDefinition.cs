@@ -2,7 +2,7 @@ using System;
 
 using Rubicon.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.Mapping
 {
 
 public enum CardinalityType
