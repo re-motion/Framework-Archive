@@ -48,6 +48,9 @@ public class BocList:
 
   private const string c_whiteSpace = "&nbsp;";
 
+  private const string c_resourceKeyPageInfo = "PageInfo";
+  private const string c_resourceKeyFixedColumns = "FixedColumns";
+
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
@@ -99,7 +102,17 @@ public class BocList:
   
   // the command to be used for the first ValueColumnDefinition column
   private BocItemCommand _firstColumnCommand;
-  
+ 
+  private bool _showAllProperties;
+
+
+  public bool ShowAllProperties
+  {
+    get { return _showAllProperties; }
+    set { _showAllProperties = value; }
+  }
+
+
   // show check boxes for each object
   private bool _showSelection = false;
   
@@ -129,7 +142,9 @@ public class BocList:
 
   private MoveOption _move = MoveOption.Undefined;
 
-  private string __pageInfo = "Page {0} of {1}";
+  private string _pageInfo = "Page {0} of {1}";
+
+  public event BocColumnCommandClickEventHandler ColumnCommandClick;
 
   // construction and disposing
 
@@ -204,10 +219,94 @@ public class BocList:
     base.OnLoad (e);
   }
 
+  // eventArgument: "<column-index>,<list-index>,<business-object-id>"
   public void RaisePostBackEvent (string eventArgument)
   {
-  }
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
+    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 3);
+
+    int columnIndex;
+    int listIndex;
+    string businessObjectID = null;
+    
+    eventArgumentParts[0] = eventArgumentParts[0].Trim();
+    try 
+    {
+      if (eventArgumentParts[0].Length == 0)
+        throw new FormatException();
+      columnIndex = int.Parse (eventArgumentParts[0]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>' or '<column-index>,<list-index>,<business-object-id>'.");
+    }
+
+    eventArgumentParts[1] = eventArgumentParts[1].Trim();
+    try 
+    {
+      if (eventArgumentParts[1].Length == 0)
+        throw new FormatException();
+      listIndex = int.Parse (eventArgumentParts[1]);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>' or '<column-index>,<list-index>,<business-object-id>'.");
+    }
+    
+    if (eventArgumentParts.Length == 3)
+      businessObjectID = eventArgumentParts[2].Trim();
+
+    if (columnIndex >= _fixedColumns.Count)
+      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of fixed columns.'");
+
+    BocItemCommand command = null;
+
+    if (columnIndex == -1)
+    {
+      command = _firstColumnCommand;
+      if (command == null)
+        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does have a command for the first value column.");
+    }
+    else
+    {
+      BocCommandColumnDefinition column = _fixedColumns[columnIndex] as BocCommandColumnDefinition;
+      if (column == null)
+        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does have a command inside column " + columnIndex + ".");
+      
+      command = column.Command;
+    }
+
+    switch (command.Type)
+    {
+      case BocItemCommandType.WxeFunction:
+      {
+        command.ExecuteWxeFunction ((WxePage) this.Page, listIndex, businessObjectID);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+  }
+  /// <summary> Simple Constructor. </summary>
+  /// <param name="listIndex">
+  ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
+  /// <param name="businessObjectID">
+  ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
+  protected virtual void OnColumnCommandClick (
+    string columnID, 
+    int listIndex, 
+    string businessObjectID)
+  {
+    if (ColumnCommandClick != null)
+      ColumnCommandClick (this, new BocColumnCommandClickEventArgs (columnID, listIndex, businessObjectID));
+  }
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
@@ -271,6 +370,10 @@ public class BocList:
         _pageCount = 1;
     }
  
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, ID);
+    if (! Width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
     RenderTitle (writer);
     RenderTableOpeningTag (writer);
     RenderColGroup (writer, columnDefinitions);
@@ -300,6 +403,8 @@ public class BocList:
     RenderTableClosingTag (writer);
     if (_alwaysShowPageInfo || _pageCount > 1)
       RenderNavigator (writer);
+
+    writer.RenderEndTag();
   }
 
   private void RenderTitle (HtmlTextWriter writer)
@@ -321,7 +426,7 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNavigator);
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
-    writer.Write (__pageInfo, _currentPage + 1, _pageCount);
+    writer.Write (_pageInfo, _currentPage + 1, _pageCount);
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
     string imageUrl = null;
@@ -545,8 +650,10 @@ public class BocList:
       writer.RenderEndTag();
     }
 
-    foreach (BocColumnDefinition column in columnDefinitions)
+    for (int idxColumns = 0; idxColumns < columnDefinitions.Length; idxColumns++)
     {
+      BocColumnDefinition column = columnDefinitions[idxColumns];
+
       if (isOddRow)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDataCellOdd);
       else
@@ -563,8 +670,14 @@ public class BocList:
       {
         //  Render FirstColumnCommand BeginTag
         if (isFirstValueColumnCommandEnabled)
-        {
-          FirstColumnCommand.RenderBegin (writer, rowIndex, objectID);
+        {    
+          string argument = string.Format ("{0},{1}", -1, rowIndex);
+          if (businessObjectWithIdentity != null)
+            argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
+          string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+          
+          writer.RenderBeginTag (HtmlTextWriterTag.A);
+          FirstColumnCommand.RenderBegin (writer, rowIndex, objectID, postBackLink);
         }
 
         //  Render Icon
@@ -614,8 +727,15 @@ public class BocList:
         }
 
         if (isCommandEnabled)
-          commandColumn.Command.RenderBegin (writer, rowIndex, objectID);
-        
+        {
+          string argument = string.Format ("{0},{1}", idxColumns, rowIndex);
+          if (businessObjectWithIdentity != null)
+            argument += "," + businessObjectWithIdentity.UniqueIdentifier; 
+          string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+         
+          commandColumn.Command.RenderBegin (writer, rowIndex, objectID, postBackLink);
+        } 
+       
         if (commandColumn.IconPath != null)
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Href, commandColumn.IconPath);
@@ -818,8 +938,6 @@ public class BocList:
     _move = MoveOption.Next;
   }
 
-  private const string c_resourcePageInfo = "PageInfo";
-  private const string c_resourceFixedColumns = "FixedColumns";
 
   public void Dispatch(IDictionary values)
   {
@@ -852,7 +970,7 @@ public class BocList:
         //  Switch to the right collection
         switch (collectionID)
         {
-          case c_resourceFixedColumns:
+          case c_resourceKeyFixedColumns:
           {
             currentCollection = fixedColumns;
             break;
@@ -934,6 +1052,7 @@ public class BocList:
       }
     }
   }
+
 
   /// <summary>
   ///   Gets or sets the current value.
@@ -1018,9 +1137,6 @@ public class BocList:
     set 
     {
       _firstColumnCommand = value; 
-
-      if (_firstColumnCommand != null)
-        Controls.Add (_firstColumnCommand);
     }
   }
 
@@ -1174,8 +1290,8 @@ public class BocList:
   [DefaultValue ("Page {0} of {1}")]
   public string PageInfo
   {
-    get { return __pageInfo; }
-    set { __pageInfo = value; }
+    get { return _pageInfo; }
+    set { _pageInfo = value; }
   }
 
   private bool IsPostBack
@@ -1216,5 +1332,49 @@ public class BocList:
   { get { return "bocListNavigator"; } }
 }
 
+public delegate void BocColumnCommandClickEventHandler (object sender, BocColumnCommandClickEventArgs e);
+
+public class BocColumnCommandClickEventArgs: EventArgs
+{
+  private string _columnID;
+  private int _listIndex;
+  private string _businessObjectID;
+
+  /// <summary> Simple Constructor. </summary>
+  /// <param name="listIndex">
+  ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
+  /// <param name="businessObjectID">
+  ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
+  ///   applied on.
+  /// </param>
+  public BocColumnCommandClickEventArgs (
+    string columnID, 
+    int listIndex, 
+    string businessObjectID)
+  {
+    _columnID = columnID;
+    _listIndex = listIndex;
+    _businessObjectID = StringUtility.EmptyToNull (businessObjectID);
+  }
+
+
+
+  public string ColumnID
+  {
+    get { return _columnID; }
+  }
+
+  public int ListIndex
+  {
+    get { return _listIndex; }
+  }
+
+  public string BusinessObjectID
+  {
+    get { return _businessObjectID; }
+  }
+}
 
 }

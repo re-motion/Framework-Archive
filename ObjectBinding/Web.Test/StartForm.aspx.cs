@@ -19,7 +19,8 @@ public class StartPage : System.Web.UI.Page
 {
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Response.Redirect ("WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest");
+    Session.Clear();
+//    Response.Redirect ("WxeHandler.ashx?WxeFunctionType=OBWTest.MainWxeFunction,OBWTest");
 	}
 
 	#region Web Form Designer generated code
@@ -41,20 +42,6 @@ public class StartPage : System.Web.UI.Page
 		this.Load += new System.EventHandler(this.Page_Load);
 	}
 	#endregion
-}
-
-public class MainWxeFunction: WxeFunction
-{
-  public MainWxeFunction ()
-  {
-    ReturnUrl = "Start.aspx";
-  }
-
-  // steps
-
-  private WxeStep Step1 = new WxePageStep ("TestListPage.aspx");
-  //private WxeStep Step1 = new WxePageStep ("TestListPage.aspx");
-
 }
 
 }

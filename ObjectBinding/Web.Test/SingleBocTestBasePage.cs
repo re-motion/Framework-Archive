@@ -31,6 +31,20 @@ public class WebFormBase:
     base.OnInit (e);
   }
 
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+    LiteralControl stack = new LiteralControl();
+
+    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    sb.Append ("<b>Stack:</b><br>");
+    for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
+      sb.AppendFormat ("{0}<br>", step.ToString());      
+    stack.Text = sb.ToString();
+    
+    Controls.Add (stack);
+  }
+
   /// <summary>
   ///   Interface implementation: IObjectWithResources
   /// </summary>

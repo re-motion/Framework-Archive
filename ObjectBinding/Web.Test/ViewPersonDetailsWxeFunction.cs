@@ -22,6 +22,6 @@ public class ViewPersonDetailsWxeFunction: WxeFunction
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("TestTextValuePage.aspx");
+  private WxeStep Step1 = new WxePageStep ("PersonDetailsPage.aspx");
 }
 }

@@ -20,10 +20,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 //  TODO: BocItemCommand: Script
 //  TODO: BocItemCommand: WebExecutionEngine
 [TypeConverter (typeof (BocItemCommandConverter))]
-public class BocItemCommand: Control, IPostBackEventHandler
+public class BocItemCommand
 {
-  private string _id;
-
   private BocItemCommandType _type = BocItemCommandType.Href;
   private BocItemCommandShow _show = BocItemCommandShow.Always;
 
@@ -33,8 +31,6 @@ public class BocItemCommand: Control, IPostBackEventHandler
   private string _functionAssemblyName;
   private string _functionTypeName;
   private string[] _functionParameters;
-
-  public event BocItemCommandClickEventHandler EventCommand;
 
   /// <summary> Simple Constructor. </summary>
   public BocItemCommand()
@@ -74,21 +70,25 @@ public class BocItemCommand: Control, IPostBackEventHandler
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"></param>
-  /// <param name="index">
+  /// <param name="listIndex">
   ///   An index that indtifies the <see cref="IBusinessObject"/> on which the rendered command is 
   ///   applied on.
   /// </param>
-  /// <param name="id">
+  /// <param name="businessObjectID">
   ///   An identifier for the <see cref="IBusinessObject"/> on which the rendered command is 
   ///   applied on.
   /// </param>
-  public virtual void RenderBegin (HtmlTextWriter writer, int index, string id)
+  public virtual void RenderBegin (
+    HtmlTextWriter writer, 
+    int listIndex, 
+    string businessObjectID,
+    string postBackLink)
   {
     switch (_type)
     {
       case BocItemCommandType.Href:
       {
-        string href = string.Format (Href, index, id);
+        string href = string.Format (Href, listIndex, businessObjectID);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
         if (Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, Target);
@@ -97,16 +97,8 @@ public class BocItemCommand: Control, IPostBackEventHandler
       }
       case BocItemCommandType.WxeFunction:
       {
-        if (Page == null)
-          throw new InvalidOperationException ("'" + typeof (BocItemCommand).FullName + "' can only be rendered when it is part of a '" + typeof (Page).FullName + "'.");
-                
-        string argument = index.ToString();
-        if (! StringUtility.IsNullOrEmpty (id))
-          argument += "," + id;
-        
-        writer.AddAttribute (
-          HtmlTextWriterAttribute.Href, 
-          Page.GetPostBackClientHyperlink (this, argument));
+        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
         writer.RenderBeginTag (HtmlTextWriterTag.A);
 
         break;
@@ -166,7 +158,7 @@ public class BocItemCommand: Control, IPostBackEventHandler
       {
         if (! StringUtility.IsNullOrEmpty (FunctionTypeName))
         {
-          stringBuilder.AppendFormat (": {0}, {1}", FunctionAssemblyName, FunctionTypeName);
+          stringBuilder.AppendFormat (": {0}", FunctionTypeName);
           if (FunctionParameters != null)
           {
             stringBuilder.AppendFormat (
@@ -185,114 +177,33 @@ public class BocItemCommand: Control, IPostBackEventHandler
     return stringBuilder.ToString();
   }
 
-  public void RaisePostBackEvent (string eventArgument)
+  public void ExecuteWxeFunction (IWxePage wxePage, int index, string id)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+    ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
-    string[] eventArgumentParts = eventArgument.Split (new char[] {','}, 2);
-
-    int index;
-    string id = null;
-    
-    eventArgumentParts[0] = eventArgumentParts[0].Trim();
-    if (eventArgumentParts[0].Length == 0)
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: 'Int32' or 'Int32,String'.");
-    try 
-    {
-      index = int.Parse (eventArgumentParts[0]);
-    }
-    catch (FormatException)
-    {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: 'Int32' or 'Int32,String'.");
-    }
-    
-    if (eventArgumentParts.Length > 1)
-      id = eventArgumentParts[1].Trim();
-
-    switch (Type)
-    {
-      case BocItemCommandType.Href:
-      {
-        break;
-      }
-      case BocItemCommandType.WxeFunction:
-      {
-        OnWxeFunctionClick (index, id);
-        break;
-      }
-      // case BocItemCommandType.Event:
-      // {
-      //   BocItemCommandClickEventArgs e = new BocItemCommandClickEventArgs (index, id);
-      //   OnEventClick (e);
-      //   break;
-      // }
-      default:
-      {
-        break;
-      }
-    }
-  }
-
-  protected void OnEventCommandClick (BocItemCommandClickEventArgs e)
-  {
-    throw new NotImplementedException();
-//    if (command.Type != BocItemCommandType.Event)
-//      throw new InvalidOperationException ("Call to OnEventCommandClick not allowed unless Type is set to BocItemCommandType.Event.");
-//    if (EventCommandClick != null)
-//      EventCommand (this, e);
-  }
-
-  protected void OnWxeFunctionClick (int index, string id)
-  {
     if (Type != BocItemCommandType.WxeFunction)
-      throw new InvalidOperationException ("Call to OnWxeFunctionClick not allowed unless Type is set to BocItemCommandType.WxeFunction.");
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to BocItemCommandType.WxeFunction.");
 
-    IWxePage wxePage = this.Page as IWxePage;
-    if (wxePage == null)
-       throw new InvalidOperationException ("BocItemCommand '" + ID + "'is set to a Type of BocItemCommandType.WxeFunction but parent page '" + Page.ToString() + "' is not an IWxePage.");
-
-    string functionTypeName = FunctionTypeName + ", ";
-    if (StringUtility.IsNullOrEmpty (FunctionAssemblyName))
+    if (! WxeContext.Current.IsReturningPostBack)
     {
-      Assembly pageAssembly = Page.GetType().BaseType.Assembly;
-      functionTypeName += pageAssembly.FullName;
+      Type functionType = System.Type.GetType (FunctionTypeName); 
+
+      object [] arguments = new object[FunctionParameters.Length];
+      for (int i = 0; i < FunctionParameters.Length; i++)
+      {
+        //  TODO: BocItemCommand: Interpret BocItemCommand FunctionParameters
+        if (FunctionParameters[i] == "%ID")
+          arguments[i] = id;
+        else if (FunctionParameters[i] == "%Index")
+          arguments[i] = index;
+        else
+          arguments[i] = FunctionParameters[i];
+      }
+
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
+      
+      wxePage.CurrentStep.ExecuteFunction (wxePage, function);
     }
-    else
-    {
-      functionTypeName += FunctionAssemblyName;
-    }
-    Type functionType = System.Type.GetType (functionTypeName); 
-
-    object [] arguments = new object[FunctionParameters.Length];
-    for (int i = 0; i < FunctionParameters.Length; i++)
-    {
-      //  TODO: BocItemCommand: Interpret BocItemCommand FunctionParameters
-      arguments[i] = FunctionParameters[i];
-    }
-
-    WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType, arguments);
-    
-    wxePage.CurrentStep.ExecuteFunction (this, wxePage, function);
-  }
-
-  /// <summary> The ID of this command. </summary>
-  /// <value> A <see cref="string"/> providing an identifier for this command. </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this command.")]
-  [Category ("Misc")]
-  [DefaultValue("")]
-  [NotifyParentProperty (true)]
-  public override string ID
-  {
-    get { return _id; }
-    set { _id = value; }
-  }
-
-  [Browsable (false)]
-  public override bool Visible
-  {
-    get { return base.Visible; }
-    set { base.Visible = value; }
   }
 
   /// <summary>
@@ -483,28 +394,5 @@ public enum BocItemCommandShow
   EditMode
 }
 
-public delegate void BocItemCommandClickEventHandler (object sender, BocItemCommandClickEventArgs e);
-
-public class BocItemCommandClickEventArgs: EventArgs
-{
-  private int _index;
-  private string _id;
-
-  public BocItemCommandClickEventArgs (int index, string id)
-  {
-    _index = index;
-    _id = StringUtility.EmptyToNull (id);
-  }
-
-  public int Index
-  {
-    get { return _index; }
-  }
-
-  public string ID
-  {
-    get { return _id; }
-  }
-}
 
 }

@@ -209,25 +209,6 @@ public class BocCommandColumnDefinition: BocColumnDefinition
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
   }
 
-  protected override void OnOwnerControlChange()
-  {
-    base.OnOwnerControlChange();
-  
-    if (OwnerControl != null && _command != null)
-    {
-      OwnerControl.Controls.Remove (_command);
-    }
-  }
-
-  protected override void OnOwnerControlChanged()
-  {
-    if (OwnerControl != null && _command != null)
-    {
-      OwnerControl.Controls.Add (_command);
-    }
-    base.OnOwnerControlChanged();
-  }
-
   /// <summary> The <see cref="BocItemCommand"/> rendered in this column. </summary>
   /// <value> A <see cref="BocItemCommand"/>. </value>
   [PersistenceMode (PersistenceMode.InnerProperty)]
