@@ -60,14 +60,13 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void AddTab (string id, string text)
   {
-    PageViewTab tab = new PageViewTab ();
+    MultiPageTab tab = new MultiPageTab ();
     tab.Text = text;
     tab.TabID = id + "_tab";
     tab.Target = id + "_view";
-    tab.MultiPage = PagesMultiPage.UniqueID;
-    PagesTabStrip.Items.Add (tab);
+    PagesTabStrip.Tabs.Add (tab);
     
-    PagesTabStrip.Items.Add (WebTab.GetSeparator());
+    PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
   }
 
   private IDataEditControl AddPage (string id, string path)
