@@ -27,7 +27,7 @@ public class SampleWxeFunction: WxeFunction, ISampleFunctionVariables
 
   // steps
 
-  private void Step1 (WxeContext context)
+  private void Step1 ()
   {
     Var1 = "SampleWxeFunction Step1";
     Var2 = "Var2 - Step1";
