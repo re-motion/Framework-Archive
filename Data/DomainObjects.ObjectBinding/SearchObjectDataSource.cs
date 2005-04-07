@@ -6,7 +6,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public class QueryObjectDataSource : BusinessObjectDataSource
+public class SearchObjectDataSource : BusinessObjectDataSource
 {
   private string _typeName;
   private IBusinessObject _object;
@@ -39,7 +39,7 @@ public class QueryObjectDataSource : BusinessObjectDataSource
     get 
     { 
       Type type = Type;
-      return new QueryClass (type); 
+      return new SearchObjectClass (type); 
     }
   }
 }

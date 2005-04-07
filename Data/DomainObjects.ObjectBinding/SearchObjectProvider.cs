@@ -5,16 +5,16 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public class QueryProvider : BusinessObjectProvider
+public class SearchObjectProvider : BusinessObjectProvider
 {
-  private static QueryProvider s_instance = new QueryProvider ();
+  private static SearchObjectProvider s_instance = new SearchObjectProvider ();
   
-  public static QueryProvider Instance
+  public static SearchObjectProvider Instance
   {
     get { return s_instance; }
   }
 
-	private QueryProvider()
+	private SearchObjectProvider()
 	{
 	}
 

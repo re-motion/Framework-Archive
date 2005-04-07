@@ -15,7 +15,6 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
 {
 public class SearchObjectPage : System.Web.UI.Page
 {
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.QueryObjectDataSourceControl CurrentSearchObject;
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue StringPropertyValue;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl FoundObjects;
@@ -27,14 +26,15 @@ public class SearchObjectPage : System.Web.UI.Page
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyFromValue;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyToValue;
+  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl CurrentSearchObject;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
     if (!IsPostBack)
-      Session["QueryObject"] = new ClassWithAllDataTypesQuery ();
+      Session["SearchObject"] = new ClassWithAllDataTypesSearch ();
 
-    CurrentSearchObject.BusinessObject = (ClassWithAllDataTypesQuery) Session["QueryObject"];;
+    CurrentSearchObject.BusinessObject = (ClassWithAllDataTypesSearch) Session["SearchObject"];;
     CurrentSearchObject.LoadValues (IsPostBack);
 	}
 
@@ -65,8 +65,8 @@ public class SearchObjectPage : System.Web.UI.Page
     if (SearchFormGridManager.Validate ())
     {
       CurrentSearchObject.SaveValues (false);
-      ClassWithAllDataTypesQuery queryObject = (ClassWithAllDataTypesQuery) CurrentSearchObject.BusinessObject;
-      ResultList.Value = ClientTransaction.Current.QueryManager.GetCollection (queryObject);
+      ClassWithAllDataTypesSearch searchObject = (ClassWithAllDataTypesSearch) CurrentSearchObject.BusinessObject;
+      ResultList.Value = ClientTransaction.Current.QueryManager.GetCollection (searchObject.CreateQuery ());
       ResultList.LoadValue (false);
     }
   }

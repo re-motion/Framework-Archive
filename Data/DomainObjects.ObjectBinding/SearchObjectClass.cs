@@ -5,11 +5,11 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public class QueryClass : IBusinessObjectClass
+public class SearchObjectClass : IBusinessObjectClass
 {
   private BusinessObjectClassReflector _classReflector;
 
-	public QueryClass (Type type)
+	public SearchObjectClass (Type type)
 	{
     ArgumentUtility.CheckNotNull ("type", type);
 
@@ -31,7 +31,7 @@ public class QueryClass : IBusinessObjectClass
 
   public IBusinessObjectProvider BusinessObjectProvider
   {
-    get { return QueryProvider.Instance; }
+    get { return SearchObjectProvider.Instance; }
   }
 
   public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)

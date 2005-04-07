@@ -133,7 +133,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BindableQuery.cs"
+                    RelPath = "BindableSearchObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -188,21 +188,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "QueryClass.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "QueryObjectDataSource.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "QueryProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ReflectionPropertyFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -210,6 +195,21 @@
                 <File
                     RelPath = "Rubicon.Data.DomainObjects.ObjectBinding.build"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "SearchObjectClass.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SearchObjectDataSource.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SearchObjectProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Design\ClassPickerControl.cs"

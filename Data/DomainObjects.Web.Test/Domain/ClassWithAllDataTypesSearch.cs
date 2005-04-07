@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
 {
-public class ClassWithAllDataTypesQuery : BindableSearchObject
+public class ClassWithAllDataTypesSearch : BindableSearchObject
 {
   private string _stringProperty;
   private NaByte _bytePropertyFrom;

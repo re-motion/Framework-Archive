@@ -77,6 +77,7 @@
             </PersistedCommand>
           </obw:BocSimpleColumnDefinition>
         </FixedColumns>
-      </obw:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><cc1:queryobjectdatasourcecontrol id="CurrentSearchObject" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypesQuery, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:queryobjectdatasourcecontrol><cc1:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:domainobjectdatasourcecontrol></form>
+      </obw:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><cc1:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:domainobjectdatasourcecontrol>
+      <cc1:SearchObjectDataSourceControl id="CurrentSearchObject" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypesSearch, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:SearchObjectDataSourceControl></form>
   </body>
 </HTML>

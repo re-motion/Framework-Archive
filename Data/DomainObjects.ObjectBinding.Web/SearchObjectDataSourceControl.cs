@@ -7,9 +7,9 @@ using Rubicon.ObjectBinding.Web.Controls;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
 {
-public class QueryObjectDataSourceControl : BusinessObjectDataSourceControl
+public class SearchObjectDataSourceControl : BusinessObjectDataSourceControl
 {
-  private QueryObjectDataSource _dataSource = new QueryObjectDataSource ();
+  private SearchObjectDataSource _dataSource = new SearchObjectDataSource ();
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]

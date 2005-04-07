@@ -7,11 +7,11 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-public abstract class BindableQuery : IBusinessObject, IQuery
+public abstract class BindableSearchObject : IBusinessObject
 {
   private BusinessObjectReflector _objectReflector;
 
-	public BindableQuery()
+	public BindableSearchObject()
 	{
     _objectReflector = new BusinessObjectReflector (this);
   }
@@ -20,6 +20,8 @@ public abstract class BindableQuery : IBusinessObject, IQuery
   {
     return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
   }
+
+  public abstract IQuery CreateQuery ();
 
   #region IBusinessObject Members
 
@@ -75,40 +77,6 @@ public abstract class BindableQuery : IBusinessObject, IQuery
   {
     get { return new DomainObjectClass (this.GetType()); }
   }
-
-  #endregion
-
-  #region IQuery Members
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public virtual Type CollectionType
-  {
-    get
-    {
-      if (this.QueryType != QueryType.Collection)
-        return null;
-
-      return typeof (DomainObjectCollection);
-    }
-  }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public virtual string QueryID
-  {
-    get { return this.GetType ().FullName; }
-  }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public abstract QueryType QueryType { get; }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public abstract string Statement { get; }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public abstract string StorageProviderID { get; }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public abstract QueryParameterCollection Parameters { get; }
 
   #endregion
 }
