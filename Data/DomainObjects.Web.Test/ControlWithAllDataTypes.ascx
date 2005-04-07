@@ -290,44 +290,54 @@
   </tr>
   <TR>
     <TD></TD>
-    <TD><obc:bocreferencevalue id="BocReferenceValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestMandatory"></obc:bocreferencevalue></TD>
+    <TD><obc:bocreferencevalue id="BocReferenceValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestMandatory"
+        Select="GetAllRelatedObjects">
+        <PersistedCommand>
+          <obc:BocCommand Type="None"></obc:BocCommand>
+        </PersistedCommand>
+      </obc:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocreferencevalue id="BocReferenceValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestOptional"></obc:bocreferencevalue></TD>
+    <TD><obc:bocreferencevalue id="BocReferenceValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestOptional"
+        Select="GetAllRelatedObjects">
+        <PersistedCommand>
+          <obc:BocCommand Type="None"></obc:BocCommand>
+        </PersistedCommand>
+      </obc:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>
     <TD><obc:boclist id="BocList1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestMandatoryNavigateOnly">
-<FixedColumns>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-<PersistedCommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
-<PersistedCommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-</FixedColumns>
+        <FixedColumns>
+          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+            <PersistedCommand>
+              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+            </PersistedCommand>
+          </obc:BocSimpleColumnDefinition>
+          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+            <PersistedCommand>
+              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+            </PersistedCommand>
+          </obc:BocSimpleColumnDefinition>
+        </FixedColumns>
       </obc:boclist></TD>
   </TR>
   <TR>
     <TD></TD>
     <TD><obc:boclist id="BocList2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestOptionalNavigateOnly">
-<FixedColumns>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-<PersistedCommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
-<PersistedCommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
-</PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-</FixedColumns>
+        <FixedColumns>
+          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+            <PersistedCommand>
+              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+            </PersistedCommand>
+          </obc:BocSimpleColumnDefinition>
+          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+            <PersistedCommand>
+              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+            </PersistedCommand>
+          </obc:BocSimpleColumnDefinition>
+        </FixedColumns>
       </obc:boclist></TD>
   </TR>
 </TABLE>
