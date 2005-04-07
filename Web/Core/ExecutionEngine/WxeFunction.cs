@@ -7,6 +7,7 @@ using System.Text;
 using System.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Collections;
+using log4net;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -62,6 +63,8 @@ public abstract class WxeFunction: WxeStepList
   /// <summary> Hashtable&lt;Type, WxeParameterDeclaration[]&gt; </summary>
   private static Hashtable s_parameterDeclarations = new Hashtable();
 
+  private static ILog s_log = LogManager.GetLogger (typeof (WxeFunction));
+
   private NameObjectCollection _variables;
 
   private string _returnUrl;
@@ -81,6 +84,7 @@ public abstract class WxeFunction: WxeStepList
   {
     if (! ExecutionStarted)
     {
+      s_log.Debug ("Initializing execution of " + this.GetType().FullName + ".");
       NameObjectCollection parentVariables = (ParentStep != null) ? ParentStep.Variables : null;
       EnsureParametersInitialized (null);
     }
@@ -89,6 +93,7 @@ public abstract class WxeFunction: WxeStepList
 
     if (ParentStep != null)
       ReturnParametersToCaller();
+    s_log.Debug ("Ending Execution of " + this.GetType().FullName + ".");
   }
 
   public string ReturnUrl
