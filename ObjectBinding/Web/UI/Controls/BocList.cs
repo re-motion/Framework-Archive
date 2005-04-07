@@ -309,8 +309,9 @@ public class BocList:
   private BocMenuItem[] _listMenuItemsRenderPhase;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
  
-  /// <summary> Determines wheter an empty list will still render its headers. </summary>
+  /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
   private bool _showEmptyList = true;
+  private bool _showMenuForEmptyList = true;
 
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
@@ -329,6 +330,8 @@ public class BocList:
 
   /// <summary> Determines whether the options menu is shown. </summary>
   private bool _showOptionsMenu = true;
+  /// <summary> Determines whether the list menu is shown. </summary>
+  private bool _showListMenu = true;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
   private RowSelection _selection = RowSelection.Disabled;
@@ -1179,19 +1182,41 @@ public class BocList:
 
   private bool HasAdditionalColumnsList
   {
-    get { return _showAdditionalColumnsList && _additionalColumnsList.Items.Count > 1; }
+    get
+    {
+      return   _showAdditionalColumnsList
+            && _additionalColumnsList.Items.Count > 1
+            && (   ! IsEmptyList
+                || IsEmptyList && _showEmptyList);
+    }
   }
 
   private bool HasOptionsMenu
   {
-    get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
+    get
+    {
+      return   _showOptionsMenu
+            && EnsureOptionsMenuItemsGot().Length > 0
+            && (   ! IsEmptyList
+                || IsEmptyList && _showMenuForEmptyList);
+    }
   }
 
   private bool HasListMenu
   {
-    get { return EnsureListMenuItemsGot().Length > 0; }
+    get
+    {
+      return   _showListMenu
+            && EnsureListMenuItemsGot().Length > 0
+            && (   ! IsEmptyList
+                || IsEmptyList && _showMenuForEmptyList);
+    }
   }
 
+  private bool IsEmptyList
+  {
+    get { return Value == null || Value.Count == 0; }
+  }
   /// <summary> Renders the menu block of the control. </summary>
   /// <remarks> Contains the drop down list for selcting a column configuration and the options menu.  </remarks>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
@@ -1396,10 +1421,8 @@ public class BocList:
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableBlock (HtmlTextWriter writer)
-  {
-    bool isEmpty = Value == null || Value.Count == 0;
-    
-    if (isEmpty && ! _showEmptyList)
+  {   
+    if (IsEmptyList && ! _showEmptyList)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
@@ -1433,7 +1456,7 @@ public class BocList:
         rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
       }
 
-      if (! isEmpty)
+      if (! IsEmptyList)
       {
         bool isOddRow = true;
 
@@ -3730,15 +3753,31 @@ public class BocList:
       _selectorControlCheckedState[rowIndex] = true;
   }
 
-  /// <summary> Gets or sets a flag that determines wheter an empty list will still render its headers. </summary>
-  /// <value> <see langword="false"/> to hide the headers if the list is empty. </value>
+  /// <summary> 
+  ///   Gets or sets a flag that determines wheter an empty list will still render its headers 
+  ///   and the additonal column sets. 
+  /// </summary>
+  /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
   [Category ("Behavior")]
-  [Description ("Determines whether the list headers will be rendered if no data is provided.")]
+  [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided.")]
   [DefaultValue (true)]
   public bool ShowEmptyList
   {
     get { return _showEmptyList; }
     set { _showEmptyList = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets a flag that determines wheter an empty list will still render its option and list menus. 
+  /// </summary>
+  /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
+  [Category ("Behavior")]
+  [Description ("Determines whether the options and list menus will be rendered if no data is provided.")]
+  [DefaultValue (true)]
+  public bool ShowMenuForEmptyList
+  {
+    get { return _showMenuForEmptyList; }
+    set { _showMenuForEmptyList = value; }
   }
 
   /// <summary>
@@ -3812,6 +3851,19 @@ public class BocList:
   {
     get { return _showOptionsMenu; }
     set { _showOptionsMenu = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to display the list menu.
+  /// </summary>
+  /// <value> <see langword="true"/> to show the list menu. </value>
+  [Category ("Menu")]
+  [Description ("Enables the list menu.")]
+  [DefaultValue (true)]
+  public bool ShowListMenu
+  {
+    get { return _showListMenu; }
+    set { _showListMenu = value; }
   }
 
   /// <summary>
