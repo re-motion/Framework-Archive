@@ -1,0 +1,98 @@
+How to perform a test of the CodeGenerator:
+-------------------------------------------
+
+1. Create a test project
+
+   Add references to the Rubicon.Core and Rubicon.Data.DomainObjects assemblies
+   Set assembly name of project to Rubicon.Data.DomainObjects.UnitTests
+
+   Add Post-Build-Step to project:
+   - copy $(ProjectDir)*.xml $(TargetDir)
+   - copy $(ProjectDir)*.xsd $(TargetDir)
+   - copy $(ProjectDir)Database\*.sql $(TargetDir)
+
+   copy the *.xsd files to the project directory (or amend the path to the files in the Post-Build-Step above)
+
+   copy all files and folders (except bin, obj, *.csproj, *.scc) from the Data.DomainObjects.UnitTests folder into a test project folder
+   
+   duplicate folder "TestDomain" to "TestDomain_original"
+   delete all files in folder "TestDomain" except "ClassNotDerivedFromDomainObject.cs" and "TestDomainBase.cs"
+
+   rename file "SetupDB.sql" to "SetupDB_original.sql" in folder "Database"
+
+   include files in project:
+   - mapping.xml
+   - storageProviders.xml
+   - UnitTestStorageProviderStub.cs
+   - UnitTestStorageProviderStubDefinition.cs
+
+2. Prepare for main generation
+
+   run the following command from the project directory:
+     DOGen.exe /stubs
+
+   include the file "stubs.cs" in project
+
+   compile the project
+
+3. Generate the SQL files
+
+   run the following command from the project directory:
+     DOGen.exe /assembly bin\debug /sql /sqlfile Database\SetupDB.sql
+
+   include "Database\SetupDB_TestDomain.sql" in the project
+
+4. Amend the generated SQL files for the unit tests
+
+   Modify the file "SetupDB_TestDomain.sql": 
+   - replace the "CREATE TABLE" statements with the ones from "setupDB_original.sql":
+     . [TableWithRelatedClassIDColumnAndNoInheritance]
+     . [TableWithInvalidRelation]
+     . [TableWithValidRelations]
+     . [TableWithoutTimestampColumn]
+     . [TableWithoutClassIDColumn]
+     . [TableWithoutIDColumn]
+     . [TableWithKeyOfInvalidType]
+     . [TableWithGuidKey]
+     . [TableWithoutRelatedClassIDColumnAndDerivation]
+     . [TableWithoutRelatedClassIDColumn]
+   - remove all foreign key constraints from the "CREATE TABLE" statements just replaced
+   - remove the "ALTER TABLE" statement for table "TableWithInvalidRelation"
+
+5. Generate Domain Model
+
+   Run the following command from the project directory:
+     DOGen.exe /schema ..\.. /assembly bin\debug /dom /domfolder TestDomain /dombase TestDomainBase
+
+6. Amend the generated Domain Model for the unit tests
+
+   change name of property CustomerType to Type in TestDomain\Customer.cs
+
+   copy content from original Classes to generated classes:
+   - Customer.CustomerType
+   - ClassWithAllDataTypes.EnumType
+
+   copy methods from original class to generated class:
+   - OrderItem.ctor (Order order)
+   - OrderTicket.ctors (2x)
+   - Employee.DeleteWithSubordinates ()
+   - ClassWithAllDataTypes.OnLoadedHasBeenCalled
+   - ClassWithAllDataTypes.OnLoaded
+   - ClassWithAllDataTypes._OnLoadedHasBeenCalled
+   - Ordercollection.SetIsReadOnly
+   - Company.NamePropertyOfInvalidType
+
+   add "using Rubicon.Utilities" to files:
+   - orderTicket.cs
+   - orderItem.cs
+
+   exclude the file "stubs.cs" from the project
+   include all files in folder "TestDomain" in the project
+
+7. Run the test
+
+   run the SQL script "Database\SetupDB_TestDomain.sql" against the database
+
+   compile the project
+
+   run the unit tests
