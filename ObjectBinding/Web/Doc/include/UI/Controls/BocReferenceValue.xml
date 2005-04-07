@@ -75,7 +75,7 @@
         <see cref="Value"/> must be set to display the current item and queried to save it back 
         into the <see cref="IBusinessObject"/>.
       </para><para>
-        If no <see cref="Select"/> statement is provided, use <see cref="SetBusinessObjectReferenceList"/>
+        If no <see cref="Select"/> statement is provided, use <see cref="SetBusinessObjectList"/>
         to fill the list of <see cref="IBusinessObjectWithIdentity"/> objects.
       </para>
     </remarks>
