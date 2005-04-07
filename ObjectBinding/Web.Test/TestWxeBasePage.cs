@@ -49,7 +49,7 @@ public class TestWxeBasePage:
       _nextButton.ID = "NextButton";
       _nextButton.Text = "Next";
       _nextButton.Click += new EventHandler(NextButton_Click);
-      WxeForm.Controls.AddAt (0, _nextButton);
+      WxeControls.AddAt (0, _nextButton);
     }
 
     base.OnInit (e);
@@ -80,7 +80,7 @@ public class TestWxeBasePage:
     sb.Append ("</div>");
     stack.Text = sb.ToString();
     
-    WxeForm.Controls.Add (stack);
+    WxeControls.Add (stack);
   }
 
   public virtual IResourceManager GetResourceManager()
@@ -110,6 +110,11 @@ public class TestWxeBasePage:
   private void NextButton_Click(object sender, System.EventArgs e)
   {
     ExecuteNextStep();
+  }
+
+  protected virtual ControlCollection WxeControls
+  {
+    get { return WxeForm.Controls; }
   }
 }
 
