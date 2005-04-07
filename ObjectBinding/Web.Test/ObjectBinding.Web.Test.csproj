@@ -153,6 +153,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ClientForm.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ClientForm.aspx.cs"
+                    DependentUpon = "ClientForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ClientForm.aspx.resx"
+                    DependentUpon = "ClientForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "CompleteBocTestForm.aspx"
                     BuildAction = "Content"
                 />
