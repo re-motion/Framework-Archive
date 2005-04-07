@@ -1,8 +1,16 @@
+1.2.15.0
+========
+
+- Neue Assembly DOGen.exe eingeführt.
+  Diese Assembly ist eine Konsolenanwendung zum automatischen Generieren des C# Source Codes eines Domain Models und der SQL Skripts für den 
+  Datenbankaufbau.
+
+
 1.2.14.0
 ========
 
 - Neue Assembly Rubicon.Data.DomainObjects.CodeGenerator eingeführt.
-  Diese Assembly bietet Klassen zum automatischen Generieren des C# Source Codes eines Domain Models und der SQL Scripts für den Datenbankaufbau.
+  Diese Assembly bietet Klassen zum automatischen Generieren des C# Source Codes eines Domain Models und der SQL Skripts für den Datenbankaufbau.
 
 
 1.2.13.0
