@@ -855,17 +855,17 @@ public interface IBocCustomColumnDefinitionCell
 }
 
 /// <summary> Represents the method that handles the <see cref="BocList.CustomCellClick"/> event. </summary>
-public delegate void BocCustomColumnClickEventHandler (object sender, BocCustomColumnClickEventArgs e);
+public delegate void BocCustomCellClickEventHandler (object sender, BocCustomCellClickEventArgs e);
 
 /// <summary> Provides data for the <see cref="BocList.CustomCellClick"/> event. </summary>
-public class BocCustomColumnClickEventArgs: EventArgs
+public class BocCustomCellClickEventArgs: EventArgs
 {
   private IBusinessObject _businessObject;
   private BocCustomColumnDefinition _column;
   private string _argument;
 
   /// <summary> Initializes a new instance. </summary>
-  public BocCustomColumnClickEventArgs (
+  public BocCustomCellClickEventArgs (
       BocCustomColumnDefinition column, 
       IBusinessObject businessObject,
       string argument)
@@ -897,7 +897,7 @@ public class BocCustomColumnClickEventArgs: EventArgs
   }
 }
 
-/// <summary> Defines when the <see cref="BocEditDetailsColumnDefintion"/> will be shown in the <see cref="BocList"/>. </summary>
+/// <summary> Defines when the <see cref="BocEditDetailsColumnDefinition"/> will be shown in the <see cref="BocList"/>. </summary>
 public enum BocEditDetailsColumnDefintionShow
 {
   /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read only. </summary>
