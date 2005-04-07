@@ -289,7 +289,7 @@ public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
 }
 
 /// <summary> 
-///   This interface allows for the customized disabling of the <see cref="BocCommandEnabledColumnDefintion"/>'s 
+///   This interface allows for the customized disabling of the <see cref="BocCommandEnabledColumnDefinition"/>'s 
 ///   <see cref="BocListItemCommand"/>.
 /// </summary>
 public interface IBocListItemCommandState
