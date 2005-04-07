@@ -160,7 +160,6 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
 	var parentWidth = (context != null) ? context.offsetWidth : 0;
 	var left = parentWidth - popUpWidth;
 	var top = context.offsetHeight - 1; 
-	//  popUpHeight + 7: corrective offset, reason unkown but it works
 	popUpWindow.show(left, top, popUpWidth, popUpHeight, context);
 
 	_oContents = _dropDownMenu_currentPopUp;
