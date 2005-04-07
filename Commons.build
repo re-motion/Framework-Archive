@@ -216,7 +216,7 @@
   <!--======================= PROJECTS =======================-->
 
   <target name="all" 
-      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator" />
+      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator,Data.DomainObjects.CodeGenerator.Console" />
 
   <target name="forCooNet" 
       depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web" />
