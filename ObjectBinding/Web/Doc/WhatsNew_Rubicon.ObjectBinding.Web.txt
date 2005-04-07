@@ -28,6 +28,9 @@
     Neue Property
     Kontrolliert die Ausblendung des List-Menüs.
   
+- BocEnumValue
+  * BugFix: Listentyp (Radio-Buttons, Liste, Drop-Down) wurde nicht angewandt. Aufgetreten mit 1.1.40.0.
+  
 1.2.14.0
 ========
 

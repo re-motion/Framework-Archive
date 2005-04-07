@@ -99,12 +99,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _commonStyle = new Style ();
     _listControlStyle = new ListControlStyle ();
     _labelStyle = new Style ();
-    _listControl = _listControlStyle.Create (false);
-    if (_listControl == null)
-    {
-      _listControl = new DropDownList();
-      ReadOnly = NaBoolean.True;
-    }
     _label = new Label();
     _validators = new ArrayList();
 	}
@@ -113,6 +107,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   protected override void CreateChildControls()
   {
+    _listControl = _listControlStyle.Create (false);
+    if (_listControl == null)
+    {
+      _listControl = new DropDownList();
+      ReadOnly = NaBoolean.True;
+    }
     _listControl.ID = ID + "_Boc_ListControl";
     _listControl.EnableViewState = true;
     Controls.Add (_listControl);
@@ -501,7 +501,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     string nullDisplayName = string.Empty;
     if (! (_listControl is DropDownList))
-      nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullDisplayName);
+    {
+      if (IsDesignMode)
+        nullDisplayName = "undefined";
+      else
+        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullDisplayName);
+    }
 
     ListItem emptyItem = new ListItem (nullDisplayName, c_nullIdentifier);
     return emptyItem;
@@ -778,7 +783,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [Browsable (false)]
   public ListControl ListControl
   {
-    get { return _listControl; }
+    get
+    {
+      EnsureChildControls();
+      return _listControl; 
+    }
   }
 
   /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>

@@ -13,7 +13,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<table height="100%" cellspacing=0 cellpadding=0 width="100%" border=0>
+<table style="height:100%; width:100%;" cellspacing=0 cellpadding=0 border=0>
 <tr>
 <td style="height:0%;">
 <h1>Test Tabbed Form</h1>
