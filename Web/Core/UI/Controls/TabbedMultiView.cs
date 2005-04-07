@@ -478,17 +478,17 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewTabStrip</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="TabStripStyle"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="TabStripStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassTabStrip
   {
     get { return "tabbedMultiViewTabStrip"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiActiveView"/>'s active view. </summary>
+  /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s active view. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewActiveView</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="ActiveViewStyle"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="ActiveViewStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassActiveView
   {
@@ -498,7 +498,7 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the top section. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewTopControls</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="TopControlsStyle"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="TopControlsStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassTopControls
   {
@@ -508,7 +508,7 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the bottom section. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewBottomControls</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> of the <see cref="BottomControlsStyle"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="BottomControlsStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassBottomControls
   {
