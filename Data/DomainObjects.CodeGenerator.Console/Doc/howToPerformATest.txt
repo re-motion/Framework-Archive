@@ -3,7 +3,7 @@ How to perform a test of the CodeGenerator:
 
 1. Create a test project
 
-   Add references to the Rubicon.Core and Rubicon.Data.DomainObjects assemblies
+   Add references to the Rubicon.Core, Rubicon.Data.DomainObjects, NUnit.Framework assemblies
    Set assembly name of project to Rubicon.Data.DomainObjects.UnitTests
 
    Add Post-Build-Step to project:
@@ -62,7 +62,7 @@ How to perform a test of the CodeGenerator:
 5. Generate Domain Model
 
    Run the following command from the project directory:
-     DOGen.exe /schema ..\.. /assembly bin\debug /dom /domfolder TestDomain /dombase TestDomainBase
+     DOGen.exe /assembly bin\debug /dom /domfolder TestDomain /dombase TestDomainBase
 
 6. Amend the generated Domain Model for the unit tests
 
@@ -86,8 +86,8 @@ How to perform a test of the CodeGenerator:
    - orderTicket.cs
    - orderItem.cs
 
+   include all *.cs files in the project
    exclude the file "stubs.cs" from the project
-   include all files in folder "TestDomain" in the project
 
 7. Run the test
 
