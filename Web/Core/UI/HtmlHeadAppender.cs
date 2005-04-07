@@ -41,7 +41,7 @@ public class HtmlHeadAppender
   {
     get 
     { 
-      const string contextKey = "Rubicon.Web.HtmlHeadAppender.Curremt";
+      const string contextKey = "Rubicon.Web.UI.HtmlHeadAppender.Current";
       HtmlHeadAppender current = (HtmlHeadAppender) CallContext.GetData (contextKey);
       if (current == null)
       {
