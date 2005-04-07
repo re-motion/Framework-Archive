@@ -129,5 +129,9 @@ function BocBooleanValue_SelectNextCheckboxValue (
 function BocBooleanValue_OnKeyDown (context)
 {
   if (event.keyCode == 32)
+  {
     context.click();
+    event.cancelBubble = true;
+    event.returnValue = false;
+  }
 }
