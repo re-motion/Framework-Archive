@@ -30,7 +30,18 @@
               </listcontrolstyle></obc:bocenumvalue></td></tr>
         <tr>
           <td style="HEIGHT: 14px"></td>
-          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner"></obc:bocreferencevalue></td></tr>
+          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner">
+<optionsmenuitems>
+<obc:BocMenuItem Text="Copy" ItemID="Copy" RequiredSelection="ExactlyOne">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+</OptionsMenuItems>
+
+<persistedcommand>
+<obc:BocCommand Type="None"></obc:BocCommand>
+</PersistedCommand></obc:bocreferencevalue></td></tr>
         <tr>
           <td></td>
           <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth"></obc:bocdatetimevalue></td></tr>
@@ -44,7 +55,14 @@
 </TextBoxStyle></obc:BocMultilineTextValue></td></tr>
         <tr>
           <td style="HEIGHT: 17px"></td>
-          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAdditionalColumnsList="False" ShowAllProperties="True" ShowOptionsMenu="False" EnableSelection="True"></obc:BocList></td></tr>
+          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAdditionalColumnsList="False" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
+<optionsmenuitems>
+<obc:BocMenuItem Text="Copy" ItemID="Copy">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
+</OptionsMenuItems></obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
       <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p></form>
