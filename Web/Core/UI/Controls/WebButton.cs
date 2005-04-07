@@ -8,7 +8,7 @@ using Rubicon.Web.UI.Design;
 namespace Rubicon.Web.UI.Controls
 {
 
-/// <summary> A <c>Button</c> using <c>&</c> as access key prefix in <see cref="Button.Text"/>. </summary>
+/// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
 //TODO: .net2.0 complier switch. .net2.0 has more elegant way of doing buttons, making .net1.1 a workaround
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
