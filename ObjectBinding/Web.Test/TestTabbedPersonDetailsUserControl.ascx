@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonDetailsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonDetailsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
 <table id="FormGrid" runat="server">
@@ -27,6 +27,17 @@
 </ListControlStyle></rubicon:bocenumvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocreferencevalue id="PartnerField" runat="server" propertyidentifier="Partner" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" nullitemerrormessage="Eingabe erforderlich"></rubicon:bocreferencevalue></td></tr>
+    <td><rubicon:bocreferencevalue id="PartnerField" runat="server" propertyidentifier="Partner" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" nullitemerrormessage="Eingabe erforderlich">
+<optionsmenuitems>
+<rubicon:BocMenuItem Text="Copy" ItemID="Copy" RequiredSelection="ExactlyOne">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+</OptionsMenuItems>
+
+<persistedcommand>
+<rubicon:BocCommand Type="None"></rubicon:BocCommand>
+</PersistedCommand></rubicon:bocreferencevalue></td></tr>
 </table>
 <p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
