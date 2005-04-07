@@ -319,7 +319,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   { 
     base.AddAttributesToRender (writer);
     if (_enableScrollBars)
-      writer.AddStyleAttribute ("overflow", "scroll");
+      writer.AddStyleAttribute ("overflow", "auto");
   }
 
   /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
