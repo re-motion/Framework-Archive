@@ -203,7 +203,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   }
 
   /// <summary>
-  ///   Calles the delegate <see cref="EvaluateTreeNode"/> with the passed <paramref name="node"/>.
+  ///   Calles the delegate set using <see cref="SetEvaluateTreeNodeDelegate"/> with the passed <paramref name="node"/>.
   /// </summary>
   /// <exception cref="NullReferenceException">
   ///   Thrown if no method is registered for this delegate but a node with 
