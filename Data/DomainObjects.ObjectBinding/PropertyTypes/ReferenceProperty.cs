@@ -1,6 +1,9 @@
 using System;
 using System.Reflection;
 
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
 
@@ -22,14 +25,24 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
     get { return new DomainObjectClass ((IsList) ? ItemType : PropertyType); }
   }
 
-  public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string searchStatement)
+  public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string queryID)
   {
-    return new BindableDomainObject[] {};
+    if (queryID == null || queryID == string.Empty)
+      return new BindableDomainObject[] {};
+
+    QueryDefinition definition = QueryConfiguration.Current.QueryDefinitions.GetMandatory (queryID);
+    if (definition.QueryType != QueryType.Collection)
+      throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", queryID), "queryID");
+
+    DomainObjectCollection result = ClientTransaction.Current.QueryManager.GetCollection (new Query (definition));
+    IBusinessObjectWithIdentity[] availableObjects = new IBusinessObjectWithIdentity[result.Count];
+    result.CopyTo (availableObjects, 0);
+    return availableObjects;
   }
 
   public bool SupportsSearchAvailableObjects
   {
-    get { return false; }
+    get { return true; }
   }
 }
 }
