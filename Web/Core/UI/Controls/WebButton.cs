@@ -18,7 +18,8 @@ public class WebButton :
   // .net 2.0 resolves this issue for controls using a javascript induced postback event.
   IPostBackDataHandler
 {
-  IconInfo _icon;
+  private IconInfo _icon;
+  private bool _useSubmitBehavior = true;
 
   public WebButton()
   {
@@ -56,6 +57,9 @@ public class WebButton :
   {
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
+
+    if (! _useSubmitBehavior) // System.Web.UI.WebControls.Button already adds a type=submit
+      writer.AddAttribute(HtmlTextWriterAttribute.Type, "button");
 
     if (Page != null)
     {
@@ -138,6 +142,17 @@ public class WebButton :
     get { return _icon; }
     set { _icon = value; }
   }
+
+  //TODO: .net2.0 complier switch. Property already exists in .net 2.0
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category("Behavior")]
+  [DefaultValue(true)]
+  [Description ("Indicates whether the button renders as a submit button.")]
+  public virtual bool UseSubmitBehavior
+  {
+    get { return _useSubmitBehavior; }
+    set { _useSubmitBehavior = value; }
+  } 
 }
 
 }
