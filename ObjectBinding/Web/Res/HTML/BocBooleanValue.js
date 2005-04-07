@@ -125,3 +125,9 @@ function BocBooleanValue_SelectNextCheckboxValue (
   if (label != null)
     label.innerHTML = labelText;
 }
+
+function BocBooleanValue_OnKeyDown (context)
+{
+  if (event.keyCode == 32)
+    context.click();
+}
