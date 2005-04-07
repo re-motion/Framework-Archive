@@ -29,18 +29,29 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   if (target.disabled || target.readOnly)
     return;
 
-  var left = button.offsetWidth;
+   
+  var left = 0;
   var top = 0;
   
-  //  Claculate the offset of the frame in respect to the left top corner of the page.
+  //  Calculate the offset of the frame in respect to the left top corner of the page.
+  var frameParent = null;
   for (var currentNode = button; 
-      currentNode && (currentNode.tagName != 'BODY'); 
+         currentNode != null
+      && currentNode.tagName.toLowerCase() != 'body'; 
       currentNode = currentNode.offsetParent)
   {
-    left += currentNode.offsetLeft;
-    top += currentNode.offsetTop;
+    left += currentNode.offsetLeft + currentNode.clientLeft;
+    top += currentNode.offsetTop - currentNode.clientTop;
+    if (   currentNode.style.overflow.toLowerCase() == 'auto' 
+        || currentNode.style.overflow.toLowerCase() == 'scroll')
+    {
+      left -= currentNode.scrollLeft;
+      top -= currentNode.scrollTop;
+    }
   }
-
+  frame.parentElement.removeChild (frame);
+  window.document.body.appendChild (frame);
+  
   //  Position at the top bottom corner of the button
   frame.style.left = left;
   frame.style.top = top;
@@ -52,8 +63,8 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   //  Adjust position so the date picker is shown below 
   //  and aligned with the right border of the button.
   frame.style.display = '';
-  frame.style.left = frame.offsetLeft - frame.offsetWidth;
-  frame.style.top = frame.offsetTop + container.offsetHeight;
+  frame.style.left = frame.offsetLeft - frame.clientWidth + button.offsetWidth - button.clientLeft;
+  frame.style.top = frame.offsetTop + container.offsetHeight + button.offsetTop;
   frame.style.display = 'none';
 
   if (window.frames[frame.id].DatePicker_InitializeCalendarFrame != null)
