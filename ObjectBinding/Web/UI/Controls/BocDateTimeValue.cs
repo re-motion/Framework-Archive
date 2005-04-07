@@ -32,14 +32,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
   private const string c_designModeEmptyLabelContents = "#";
-  /// <summary> String inserted between the date and the time text boxes. </summary>
-  private const string c_dateTimeSpacer = "&nbsp;";
-  /// <summary> String inserted before the date pciker button. </summary>
-  private const string c_datePickerButtonSpacer = "&nbsp;";
-  /// <summary> String inserted between the date and the time text boxes during design mode. </summary>
-  private const string c_designModeDateTimeSpacer = " ";
-  /// <summary> String inserted before the date pciker button during design mode. </summary>
-  private const string c_designModeDatePickerImageSpacer = " ";
 
   private const string c_defaultControlWidth = "150pt";
   private const int c_defaultDatePickerLengthInPoints = 150;
@@ -84,7 +76,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
   /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
-  private ImageButton _datePickerButton;
+  private HyperLink _datePickerButton;
 
   /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
   private Style _commonStyle;
@@ -145,7 +137,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _labelStyle = new Style();
     _datePickerButtonStyle = new Style();
     _dateTextBox = new TextBox();
-    _datePickerButton = new ImageButton();
+    _datePickerButton = new HyperLink();
     _timeTextBox = new TextBox();
     _label = new Label();
     _validators = new ArrayList();
@@ -346,9 +338,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     {
       bool hasDateField =    ActualValueType == BocDateTimeValueType.DateTime
                           || ActualValueType == BocDateTimeValueType.Date
-                          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined;
+                          || ActualValueType == BocDateTimeValueType.Undefined;
       bool hasTimeField =    ActualValueType == BocDateTimeValueType.DateTime
-                          || IsDesignMode && ActualValueType == BocDateTimeValueType.Undefined;
+                          || ActualValueType == BocDateTimeValueType.Undefined;
       bool hasDatePicker =    hasDateField 
                            && (   _enableClientScript && IsDesignMode 
                                || _hasClientScript);
@@ -695,6 +687,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {
         script = "return false;";
       }
+      _datePickerButton.NavigateUrl = "#";
       _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
     }
 
@@ -855,8 +848,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// </summary>
   private void RefreshPropertiesFromObjectModel()
   {
-    if (_valueType == BocDateTimeValueType.Undefined)
-      _actualValueType = GetBocDateTimeValueType (Property);
+    if (Property != null)
+    {
+      if (_valueType == BocDateTimeValueType.Undefined)
+        _actualValueType = GetBocDateTimeValueType (Property);
+    }
   }
 
   /// <summary>
@@ -936,7 +932,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       //  Parse Date
 
       if (    ActualValueType == BocDateTimeValueType.DateTime
-          ||  ActualValueType == BocDateTimeValueType.Date)
+          ||  ActualValueType == BocDateTimeValueType.Date
+          || ActualValueType == BocDateTimeValueType.Undefined)
       {
         if (InternalDateValue == null)
         {
@@ -960,7 +957,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
       //  Parse Time
 
-      if (   ActualValueType == BocDateTimeValueType.DateTime
+      if (   (   ActualValueType == BocDateTimeValueType.DateTime
+              || ActualValueType == BocDateTimeValueType.Undefined)
           && InternalTimeValue != null)
       {        
         try
@@ -1006,7 +1004,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       _savedDateTimeValue = new NaDateTime (dateTimeValue);
 
       if (   ActualValueType == BocDateTimeValueType.DateTime
-          || ActualValueType == BocDateTimeValueType.Date)
+          || ActualValueType == BocDateTimeValueType.Date
+          || ActualValueType == BocDateTimeValueType.Undefined)
       {
         try
         {
@@ -1022,7 +1021,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         InternalDateValue = null;
       }
 
-      if (ActualValueType == BocDateTimeValueType.DateTime)
+      if (   ActualValueType == BocDateTimeValueType.DateTime
+          || ActualValueType == BocDateTimeValueType.Undefined)
       {
         try
         {
@@ -1320,7 +1320,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> The <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
   [Description("Gets or sets a fixed value type.")]
   [Category ("Data")]
-  [DefaultValue(typeof(BocDateTimeValueType), "Undefined")]
   public BocDateTimeValueType ValueType
   {
     get 
@@ -1376,9 +1375,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="ImageButton"/> used in edit mode for opening the date picker. </summary>
+  /// <summary> Gets the <see cref="HyperLink"/> used in edit mode for opening the date picker. </summary>
   [Browsable (false)]
-  public ImageButton DatePickerButton
+  public HyperLink DatePickerButton
   {
     get { return _datePickerButton; }
   }

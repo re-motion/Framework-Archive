@@ -169,6 +169,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "ClientFormWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "CompleteBocTestForm.aspx"
                     BuildAction = "Content"
                 />

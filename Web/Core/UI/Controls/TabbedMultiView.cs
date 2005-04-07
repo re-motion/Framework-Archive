@@ -14,7 +14,7 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-[ToolboxData("<{0}:TabbedMultiView runat=server></{0}:TabbedMultiView>")]
+[ToolboxData("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\" cssclass=\"tabbedMultiView\"></{0}:TabbedMultiView>")]
 public class TabbedMultiView: WebControl, IControl
 {
   // constants

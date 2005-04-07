@@ -10,6 +10,12 @@
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
 <rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<script language="javascript">
+function OpenWindow (url)
+{
+  window.open (url, 'ClientWindow', 'menubar=no,toolbar=no,status=yes');
+}
+</script>
   </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
@@ -19,7 +25,6 @@ Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWx
 Controls in a single Form or User Control<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</A></p>
 <p>Wxe-Enabled Test for a Tabbed Form<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false" >WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false</A></p>
 <p>Test Tree View<br><A href="SingleTestTreeView.aspx" >SingleTestTreeView.aspx</A></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p></form>
+<p><a href="javascript:OpenWindow ('WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest');">Open Window ("WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest")</a></p></form>
   </body>
 </html>

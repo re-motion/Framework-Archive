@@ -28,10 +28,10 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///     and <see langword="null"/>. 
 ///     The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
 ///   </para><para>
-///     The control is displayed using an <see cref="ImageButton"/> (edit mode only) 
+///     The control is displayed using an <see cref="HyperLink"/> (edit mode only) 
 ///     or an <see cref="Image"/> (read-only mode only) to simulate a check box. It also offers 
 ///     a <see cref="Label"/> containing the string representation of the current value, rendered 
-///     next to the image. Use the <see cref="ImageButton"/>, <see cref="Image"/>, and 
+///     next to the image. Use the <see cref="HyperLink"/>, <see cref="Image"/>, and 
 ///     <see cref="Label"/> properties to access these controls directly.
 ///   </para>
 /// </remarks>
@@ -81,8 +81,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The <see cref="ImageButton"/> used in edit mode. </summary>
-  private ImageButton _imageButton;
+  /// <summary> The <see cref="HyperLink"/> used in edit mode. </summary>
+  private HyperLink _imageButton;
   /// <summary> The <see cref="Image"/> used in read-only mode. </summary>
   private Image _image;
   /// <summary> The <see cref="Label"/> used to provide textual representation of the check state. </summary>
@@ -118,7 +118,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 	{
     _labelStyle = new Style();
     _hiddenField = new BocInputHidden();
-    _imageButton = new ImageButton();
+    _imageButton = new HyperLink();
     _image = new Image();
     _label = new Label();
     _validators = new ArrayList();
@@ -132,13 +132,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     _hiddenField.EnableViewState = false;
     Controls.Add (_hiddenField);
 
-    _imageButton.ID = ID + "_Boc_ImageButton";
+    _imageButton.ID = ID + "_Boc_HyperLink";
     _imageButton.EnableViewState = false;
     Controls.Add (_imageButton);
 
     _image.ID = ID + "_Boc_Image";
     _image.EnableViewState = false;
-    Controls.Add (_image);
+    _imageButton.Controls.Add (_image);
 
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
@@ -409,11 +409,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       if (Enabled)
       {
         string requiredFlag = IsRequired ? "true" : "false";
-        string imageButton = "document.getElementById ('" + _imageButton.ClientID + "')";
+        string image = "document.getElementById ('" + _image.ClientID + "')";
         string label = _showDescription ? "document.getElementById ('" + _label.ClientID + "')" : "null";
         string hiddenField = "document.getElementById ('" + _hiddenField.ClientID + "')";
         script = "BocBooleanValue_SelectNextCheckboxValue (" 
-            + imageButton + ", " 
+            + image + ", " 
             + label + ", " 
             + hiddenField + ", "
             + requiredFlag + ", "
@@ -428,25 +428,15 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       }
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
+      _imageButton.NavigateUrl = "#";
     }
 
-    _hiddenField.Visible = ! isReadOnly;
-    _imageButton.Visible = ! isReadOnly;
-    _image.Visible = isReadOnly;
-
-    if (isReadOnly)
-    {
-      _image.ImageUrl = imageUrl;
-      _image.AlternateText = description;
-      _image.Style["vertical-align"] = "middle";
-    }
-    else
-    {
+    if (!isReadOnly)
       _hiddenField.Value = _value.ToString();
-      _imageButton.ImageUrl = imageUrl;
-      _imageButton.AlternateText = description;
-      _imageButton.Style["vertical-align"] = "middle";
-    }
+    _hiddenField.Visible = ! isReadOnly;
+    _image.ImageUrl = imageUrl;
+    _image.AlternateText = description;
+    _image.Style["vertical-align"] = "middle";
 
     if (_showDescription)
       _label.Text = description;
