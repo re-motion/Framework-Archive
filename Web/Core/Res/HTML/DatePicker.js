@@ -50,7 +50,7 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
     }
   }
   frame.parentElement.removeChild (frame);
-  window.document.body.appendChild (frame);
+  window.document.body.insertBefore (frame, window.document.body.children[0]);
   
   //  Position at the top bottom corner of the button
   frame.style.left = left;
@@ -63,7 +63,7 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   //  Adjust position so the date picker is shown below 
   //  and aligned with the right border of the button.
   frame.style.display = '';
-  frame.style.left = frame.offsetLeft - frame.clientWidth + button.offsetWidth - button.clientLeft;
+  frame.style.left = frame.offsetLeft - frame.clientWidth + button.offsetWidth;
   frame.style.top = frame.offsetTop + container.offsetHeight + button.offsetTop;
   frame.style.display = 'none';
 

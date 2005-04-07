@@ -397,7 +397,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
         writer.AddAttribute("marginheight", "0", false);
         writer.AddAttribute("marginwidth", "0", false);
-        writer.AddAttribute("noresize", "noresize", false);
         writer.AddAttribute("frameborder", "0", false);
         writer.AddAttribute("scrolling", "no", false);
         writer.AddStyleAttribute("position", "absolute");
