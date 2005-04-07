@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
-/// <summary> A <c>LinkButton</c> using <c>&</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
+/// <summary> A <c>LinkButton</c> using <c>&amp;</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
 [ToolboxData("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
 public class WebLinkButton : LinkButton
 {
