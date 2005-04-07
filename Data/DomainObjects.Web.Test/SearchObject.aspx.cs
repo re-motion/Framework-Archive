@@ -27,6 +27,8 @@ public class SearchObjectPage : System.Web.UI.Page
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyFromValue;
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyToValue;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl CurrentSearchObject;
+  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateTimeFromValue;
+  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	private void Page_Load(object sender, System.EventArgs e)

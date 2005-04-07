@@ -17,6 +17,8 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
   private ClassWithAllDataTypes.EnumType _enumProperty;
   private NaDateTime _datePropertyFrom;
   private NaDateTime _datePropertyTo;
+  private NaDateTime _dateTimePropertyFrom;
+  private NaDateTime _dateTimePropertyTo;
 
   public string StringProperty
   {
@@ -42,18 +44,32 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
     set { _enumProperty = value; }
   }
 
-  [IsDateType (true)]
+  [DateType (DateTypeEnum.Date)]
   public NaDateTime DatePropertyFrom
   {
     get { return _datePropertyFrom; }
     set { _datePropertyFrom = value; }
   }
 
-  [IsDateType (true)]
+  [DateType (DateTypeEnum.Date)]
   public NaDateTime DatePropertyTo
   {
     get { return _datePropertyTo; }
     set { _datePropertyTo = value; }
+  }
+
+  [DateType (DateTypeEnum.DateTime)]
+  public NaDateTime DateTimePropertyFrom
+  {
+    get { return _dateTimePropertyFrom; }
+    set { _dateTimePropertyFrom = value; }
+  }
+
+  [DateType (DateTypeEnum.DateTime)]
+  public NaDateTime DateTimePropertyTo
+  {
+    get { return _dateTimePropertyTo; }
+    set { _dateTimePropertyTo = value; }
   }
 
   public override IQuery CreateQuery()
@@ -93,6 +109,12 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
 
     if (!_datePropertyTo.IsNull)
       AddParameter (whereClauseBuilder, parameters, "Date <=", "DatePropertyTo", _datePropertyTo);
+
+    if (!_dateTimePropertyFrom.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "DateTime >=", "DateTimePropertyFrom", _dateTimePropertyFrom);
+
+    if (!_dateTimePropertyTo.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "DateTime <=", "DateTimePropertyTo", _dateTimePropertyTo);
   }
 
   private void AddParameter (

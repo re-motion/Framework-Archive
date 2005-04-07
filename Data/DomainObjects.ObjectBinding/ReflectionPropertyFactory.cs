@@ -146,10 +146,10 @@ public class ReflectionPropertyFactory
 
   protected virtual bool IsDateType (PropertyInfo propertyInfo)
   {
-    object[] isDateTypeAttributes = propertyInfo.GetCustomAttributes (typeof (IsDateTypeAttribute), true);
+    object[] dateTypeAttributes = propertyInfo.GetCustomAttributes (typeof (DateTypeAttribute), true);
 
-    if (isDateTypeAttributes.Length > 0)
-      return ((IsDateTypeAttribute) isDateTypeAttributes[0]).IsDateType;
+    if (dateTypeAttributes.Length > 0)
+      return ((DateTypeAttribute) dateTypeAttributes[0]).DateType == DateTypeEnum.Date;
 
     return false;
   }

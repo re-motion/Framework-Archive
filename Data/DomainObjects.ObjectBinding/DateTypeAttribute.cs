@@ -2,20 +2,26 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
-public class IsDateTypeAttribute : Attribute
+public enum DateTypeEnum
 {
-  private bool _isDateType;
+  Date = 0,
+  DateTime
+}
 
-	public IsDateTypeAttribute (bool isDateType)
+[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
+public class DateTypeAttribute : Attribute
+{
+  private DateTypeEnum _dateType;
+
+	public DateTypeAttribute (DateTypeEnum dateType)
 	{
-    _isDateType = isDateType;
+    _dateType = dateType;
 	}
 
-  public bool IsDateType
+  public DateTypeEnum DateType
   {
-    get { return _isDateType; }
-    set { _isDateType = value; }
+    get { return _dateType; }
+    set { _dateType = value; }
   }
 }
 }

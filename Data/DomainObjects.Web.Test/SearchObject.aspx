@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="cc1" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="SearchObject.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.SearchObjectPage" %>
+<%@ Register TagPrefix="cc1" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -53,6 +53,16 @@
           <TD>
             <obw:BocDateTimeValue id="DatePropertyToValue" runat="server" PropertyIdentifier="DatePropertyTo" DataSourceControl="CurrentSearchObject"></obw:BocDateTimeValue></TD>
         </TR>
+        <TR>
+          <TD></TD>
+          <TD>
+            <obw:BocDateTimeValue id="DateTimeFromValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="DateTimePropertyFrom"></obw:BocDateTimeValue></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD>
+            <obw:BocDateTimeValue id="BocDateTimeValue2" runat="server" PropertyIdentifier="DateTimePropertyTo" DataSourceControl="CurrentSearchObject"></obw:BocDateTimeValue></TD>
+        </TR>
       </TABLE>
       <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><obw:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
         <FixedColumns>
@@ -72,6 +82,11 @@
             </PersistedCommand>
           </obw:BocSimpleColumnDefinition>
           <obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateProperty">
+            <PersistedCommand>
+              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+            </PersistedCommand>
+          </obw:BocSimpleColumnDefinition>
+          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateTimeProperty">
             <PersistedCommand>
               <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
             </PersistedCommand>

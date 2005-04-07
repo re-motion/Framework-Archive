@@ -148,6 +148,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DateTypeAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DomainObjectClass.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -169,11 +174,6 @@
                 />
                 <File
                     RelPath = "InvalidNullAssignmentException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IsDateTypeAttribute.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
