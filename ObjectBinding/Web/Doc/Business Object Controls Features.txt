@@ -1,0 +1,61 @@
+Business Object Controls Vorteile:
+
+Wenn sie an ein Business Object Model gebunden sind:
+- Automatische Auswertung von Read-Only und Required Informationen aus dem Objectmodell.
+- Automatische Erkennung des Datentyps
+- Durch Business Object Data Binding zentrales Laden und Speichern der Werte.
+- Nachdem das Business Object Model erstellt wurde, ist der Aufwand für die Präsentation
+  der Daten signifikant niedriger verglichen mit herkömmlichen ASP.net Architekturen.
+  
+In Verbindung mit Data Domain Objects
+- *** Vorteile bitte selber ausfüllen ***
+
+In Verbindung mit dem FormGridManager:
+- Automatische Erstellung von den benötigten Validatoren für Required und den Datentyp.
+- Automatische Erstellung von Labels aus dem Business Object Model.
+
+In Verbidnung mit der Web Execution Engine:
+- Auslösen von WXE-Aktionen durch Business Object Controls.
+
+In Verbindung mit Resourcen:
+- BusinessObjects unterstützen typspezifische Standardtexte, wo benötigt
+  und enthalten diese standardmäßig für Deutsch und Englisch
+- Zentral abgelegte und damit konfigurierbare StyleSheets und Icons.
+
+In der Anwendung:
+- Die Möglichkeit zur Erstellung von Eingabemasken nur im Designer (kein Code-Behind).
+  Voraussetzung: eine Basisklasse der Seite implementiert Laden und Speichern 
+  des durch die IBusinessObjectDataSource bereitgestellten IBusinessObjects.
+  
+Vorhandene Business Object Controls
+- BocBooleanValue
+  Zur Darstellung von Booleans
+- BocDateTimeValue
+  Zur Darstellung von DateTime und Date Werten
+  Enthält einen DatePicker 
+- BocEnumValue
+  Zur Darstellung von Enums und Booleans
+- BocList
+  Zur Darstellung von IBusinessObject Listen
+  Unterstützt Editieren von einzelnen Zeilen.
+  Enthält ein Drop-Down Menü und In-Place Menü.
+  Die Möglichkeit für Daten-Spalten als auch in extra Spalten 
+    Befehle (HyperLinks, PostBacks, WXE-Aktionen) zu hinterlegen.
+- BocMultilineTextValue
+  Zur Darstellung von String-Arrays
+- BocReferenceValue
+  Zur Darstellung von IBusinessObjectWithIdentity Objekten
+  Enthält ein Drop-Down Menü
+- BocTextValue
+  Zur Darstellung von Strings, Numerics, und Date/Time Werten
+- BocTreeView
+  Zur Darstellung von hierarchischen IBusinessObjectWithIdentity Listen
+  
+Als Beispiel:
+- <table> erstellen als Basis für das FormGrid
+- Drag and Drop FormGridManager
+- Drag and Drop IBusinessObjectDataSource
+  und konfigurieren im Designer
+- Drag and Drop Business Object Controls
+  und Konfigurieren im Designer (DataSource und Property)
+- Implementierung des Ladens und Speicherns des IBusinessObject, welches durch die DataSource angeboten werden soll.
