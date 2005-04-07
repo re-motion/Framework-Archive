@@ -204,7 +204,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   }
 
   /// <summary>
-  ///   The <see cref="IBusinessObjectReferenceProperty"/> of this <see cref="BusinessObjectProeprtyTreeNode"/>.
+  ///   The <see cref="IBusinessObjectReferenceProperty"/> of this <see cref="BusinessObjectPropertyTreeNode"/>.
   /// </summary>
   public IBusinessObjectReferenceProperty Property
   {
