@@ -96,7 +96,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   private SingleRowTextBoxStyle _timeTextBoxStyle;
   /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerImage"/>. </summary>
+  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerButton"/>. </summary>
   private Style _datePickerButtonStyle;
 
   /// <summary> The string displayed in the date text box. </summary>
@@ -1383,7 +1383,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _datePickerButton; }
   }
 
-  /// <summary> The URL of the image used by the <see cref="DatePickerImage"/>. </summary>
+  /// <summary> The URL of the image used by the <see cref="DatePickerButton"/>. </summary>
   [Browsable (false)]
   protected virtual string DatePickerImageUrl
   {

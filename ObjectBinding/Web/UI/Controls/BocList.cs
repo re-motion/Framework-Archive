@@ -233,7 +233,7 @@ public class BocList:
 
   private static readonly object s_listItemCommandClickEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();
-  private static readonly object s_customColummClickEvent = new object();
+  private static readonly object s_customCellClickEvent = new object();
 
 	// member fields
 
@@ -873,11 +873,11 @@ public class BocList:
       string argument)
   {
     column.CustomCell.OnClick (this, businessObject, column, argument);
-    BocCustomColumnClickEventHandler clickHandler = 
-        (BocCustomColumnClickEventHandler) Events[s_customColummClickEvent];
+    BocCustomCellClickEventHandler clickHandler = 
+        (BocCustomCellClickEventHandler) Events[s_customCellClickEvent];
     if (clickHandler != null)
     {
-      BocCustomColumnClickEventArgs e = new BocCustomColumnClickEventArgs (column, businessObject, argument);
+      BocCustomCellClickEventArgs e = new BocCustomCellClickEventArgs (column, businessObject, argument);
       clickHandler (this, e);
     }
   }
@@ -2965,7 +2965,7 @@ public class BocList:
   ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
   /// </summary>
   /// <remarks>
-  ///   Only compares values supporting <see cref="ICompareable"/>. Returns 0 for other value types.
+  ///   Only compares values supporting <see cref="IComparable"/>. Returns 0 for other value types.
   /// </remarks>
   /// <param name="propertyPath">
   ///   The <see cref="BusinessObjectPropertyPath"/> to be used for accessing the values.
@@ -3994,10 +3994,10 @@ public class BocList:
   /// <summary> Is raised when a column type <see cref="BocCustomColumnDefinition"/> is clicked on. </summary>
   [Category ("Action")]
   [Description ("Occurs when a custom column is clicked on.")]
-  public event BocCustomColumnClickEventHandler CustomColumnClick
+  public event BocCustomCellClickEventHandler CustomCellClick
   {
-    add { Events.AddHandler (s_customColummClickEvent, value); }
-    remove { Events.RemoveHandler (s_customColummClickEvent, value); }
+    add { Events.AddHandler (s_customCellClickEvent, value); }
+    remove { Events.RemoveHandler (s_customCellClickEvent, value); }
   }
 
   /// <summary> Is raised when a column with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
