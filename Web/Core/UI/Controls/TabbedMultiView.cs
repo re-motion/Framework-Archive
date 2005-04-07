@@ -260,7 +260,9 @@ public class TabbedMultiView: WebControl, IControl
       foreach (Control control in view.Controls)
         control.RenderControl (writer);
     }
+    
     writer.RenderEndTag(); // end div
+
     writer.RenderEndTag(); // end td
     writer.RenderEndTag(); // end tr
   }
@@ -282,6 +284,7 @@ public class TabbedMultiView: WebControl, IControl
     _topControl.RenderControl (writer);
 
     writer.RenderEndTag(); // end div
+
     writer.RenderEndTag(); // end td
     writer.RenderEndTag(); // end tr
   }
