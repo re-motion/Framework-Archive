@@ -117,7 +117,7 @@ public class DomainObjectCollectionBuilder : CodeBuilder
 
   protected void WriteIndexer (string classname, string requiredTypename, string parameter, string baseParameter, bool noSetter)
   {
-    BeginIndexer (s_accessibilityDefault, requiredTypename, parameter);
+    BeginIndexer (s_accessibilityDefault + " " + s_accessibilityNew, requiredTypename, parameter);
     WriteIndexerGetStatement (requiredTypename, baseParameter);
     if (!noSetter)
       WriteIndexerSetStatement (baseParameter);

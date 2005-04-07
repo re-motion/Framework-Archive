@@ -34,7 +34,7 @@ public class DomainObjectBuilder : CodeBuilder
   private static readonly string s_valuePropertyGetStatement = 
       "    get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }" + Environment.NewLine;
   private static readonly string s_valuePropertySetStatement = 
-      "    set { DataConatainer[\"%propertyname%\"] = value; }" + Environment.NewLine;
+      "    set { DataContainer[\"%propertyname%\"] = value; }" + Environment.NewLine;
 
   private static readonly string s_relationPropertyCardinalityOneGetStatement = 
       "    get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }" + Environment.NewLine;
@@ -74,7 +74,10 @@ public class DomainObjectBuilder : CodeBuilder
 
     BeginNamespace (type.Namespace);
 
-    BeginClass (type.Name, _baseClass);
+    if (_classDefinition.BaseClass == null)
+      BeginClass (type.Name, _baseClass);
+    else
+      BeginClass (type.Name, _classDefinition.BaseClass.ID);
 
     // types
     WriteComment ("types");
@@ -120,10 +123,10 @@ public class DomainObjectBuilder : CodeBuilder
     foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetMyRelationEndPointDefinitions ())
     {
       if (endPointDefinition.Cardinality == CardinalityType.One)
-        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, TypeToCSharpString (endPointDefinition.PropertyType));
+        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, _classDefinition.GetOppositeClassDefinition(endPointDefinition.PropertyName).ID);
 
       if (endPointDefinition.Cardinality == CardinalityType.Many)
-        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, TypeToCSharpString (endPointDefinition.PropertyType));
+        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
     }
 
     EndClass ();
@@ -183,7 +186,7 @@ public class DomainObjectBuilder : CodeBuilder
 
   protected void BeginGetObject (string className, string parameters)
   {
-    string accessibility = s_accessibilityPublic + " " + s_accessibilityStatic;
+    string accessibility = s_accessibilityPublic + " " + s_accessibilityStatic + " " + s_accessibilityNew;
     BeginMethod (accessibility, className, "GetObject", parameters);
   }
 

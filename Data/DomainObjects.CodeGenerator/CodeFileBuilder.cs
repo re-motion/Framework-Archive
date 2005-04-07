@@ -14,7 +14,7 @@ public abstract class CodeBuilder : BaseBuilder
 
   // static members and constants
 
-  #region CSharp 
+  #region CSharp
 
   private static Hashtable s_TypeToCSharpType;
 
@@ -57,7 +57,9 @@ public abstract class CodeBuilder : BaseBuilder
       "  // %comment%" + Environment.NewLine;
   private static readonly string s_fileHeader = 
       "using System;" + Environment.NewLine
+      + "" + Environment.NewLine 
       + "using Rubicon.Data.DomainObjects;" + Environment.NewLine 
+      + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
       + Environment.NewLine;
 
   private static readonly string s_namespaceHeader = 

@@ -24,13 +24,13 @@ public class SqlFileBuilder : BaseBuilder
     s_sqlTypeMapping.Add ("byte", "tinyint");
     s_sqlTypeMapping.Add ("date", "datetime");
     s_sqlTypeMapping.Add ("dateTime", "datetime");
-    s_sqlTypeMapping.Add ("decimal", "decimal");
-    s_sqlTypeMapping.Add ("double", "real");
+    s_sqlTypeMapping.Add ("decimal", "decimal (38, 3)");
+    s_sqlTypeMapping.Add ("double", "float");
     s_sqlTypeMapping.Add ("guid", "uniqueidentifier");
     s_sqlTypeMapping.Add ("int16", "smallint");
     s_sqlTypeMapping.Add ("int32", "int");
     s_sqlTypeMapping.Add ("int64", "bigint");
-    s_sqlTypeMapping.Add ("single", "float");
+    s_sqlTypeMapping.Add ("single", "real");
 //TODO: make usage of nvarchar/varchar for string properties configurable (app.config)
     s_sqlTypeMapping.Add ("string", "nvarchar");
     s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
@@ -78,6 +78,15 @@ public class SqlFileBuilder : BaseBuilder
   private static readonly string s_dropTable = 
       "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '%tablename%')" + Environment.NewLine
       + "DROP TABLE [%tablename%]" + Environment.NewLine;
+  private static readonly string s_dropConstraints = 
+      "-- Drop foreign keys of all tables that will be created below" + Environment.NewLine
+      + "DECLARE @statement nvarchar (4000)" + Environment.NewLine
+      + "SET @statement = ''" + Environment.NewLine
+      + "SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' " + Environment.NewLine
+      + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id " + Environment.NewLine
+      + "    WHERE fk.xtype = 'F' AND t.name IN (%tablename%)" + Environment.NewLine
+      + "    ORDER BY t.name, fk.name" + Environment.NewLine
+      + "exec sp_executesql @statement" + Environment.NewLine;
   private static readonly string s_tableHeader = 
       "CREATE TABLE [%tablename%]" + Environment.NewLine
       + "(" + Environment.NewLine;
@@ -96,12 +105,13 @@ public class SqlFileBuilder : BaseBuilder
   private static readonly string s_tableFooter = 
       ")" + Environment.NewLine;
   private static readonly string s_alterTableHeader = 
-      "ALTER TABLE [%tablename%]" + Environment.NewLine
-      + "(" + Environment.NewLine;
+      "ALTER TABLE [%tablename%] ADD" + Environment.NewLine;
   private static readonly string s_foreignKey = 
-      "  CONSTRAINT [FK_%constraintname%] FOREIGN KEY ([%columnname%]) REFERENCES [%refTablename%] ([%refColumnname%])," + Environment.NewLine;
+      "  CONSTRAINT [FK_%constraintname%] FOREIGN KEY ([%columnname%]) REFERENCES [%refTablename%] ([%refColumnname%])";
+  private static readonly string s_foreignKeySeparator = 
+      "," + Environment.NewLine;
   private static readonly string s_alterTableFooter = 
-      ")" + Environment.NewLine;
+      "" + Environment.NewLine;
 
   #endregion
 
@@ -125,6 +135,8 @@ public class SqlFileBuilder : BaseBuilder
   {
     OpenFile ();
     BeginFile (GetDatabasename (_storageProviderID));
+
+    WriteDropConstraints (_storageProviderID);
 
     foreach (ClassDefinition baseClass in GetBaseClassDefinitions (_storageProviderID))
     {
@@ -229,8 +241,16 @@ public class SqlFileBuilder : BaseBuilder
 
     Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, classDefinition.EntityName));
 
+    bool constraintWritten = false;
     foreach (RelationEndPointDefinition endPoint in endPoints)
+    {
+      if (constraintWritten)
+      {
+        Write (s_foreignKeySeparator);
+      }
       WriteConstraint (endPoint);
+      constraintWritten = true;
+    }
 
     Write (s_alterTableFooter);
     Write (s_go);
@@ -246,26 +266,40 @@ public class SqlFileBuilder : BaseBuilder
     Write (constraintText);
   }
 
+  private void WriteDropConstraints (string storageProviderID)
+  {
+    string tableNames = null;
+    foreach (ClassDefinition classDefinition in GetBaseClassDefinitions (storageProviderID))
+    {
+      if (tableNames != null)
+        tableNames += ", '" + classDefinition.EntityName + "'";
+      else
+        tableNames = "'" + classDefinition.EntityName + "'";
+    }
+
+    Write (ReplaceTag (s_dropConstraints, s_tablenameTag, tableNames));
+    Write (s_go);
+  }
+
   private void WriteDropTable (string tableName)
   {
     Write (ReplaceTag (s_dropTable, s_tablenameTag, tableName));
     Write (s_go);
   }
-
+  
   private void WriteCreateTable (ClassDefinition baseClass)
   {
     Write (ReplaceTag (s_tableHeader, s_tablenameTag, baseClass.EntityName));
 
     Write (s_idColumn);
 
-    if (baseClass.DerivedClasses.Count != 0)
-      Write (s_classIdColumn);
+    Write (s_classIdColumn);
 
     Write (s_timestampColumn);
 
-    WriteColumns (baseClass);
+    WriteColumns (baseClass, false);
     foreach (ClassDefinition derivedClass in GetDerivedClassDefinitions (baseClass))
-      WriteColumns (derivedClass);
+      WriteColumns (derivedClass, true);
 
     WriteLine ();
     Write (ReplaceTag (s_primaryKey, s_constraintnameTag, baseClass.EntityName));
@@ -274,7 +308,7 @@ public class SqlFileBuilder : BaseBuilder
     Write (s_go);
   }
 
-  private void WriteColumns (ClassDefinition classDefinition)
+  private void WriteColumns (ClassDefinition classDefinition, bool allColumnsNullable)
   {
     string comment = classDefinition.ID + " columns";
     WriteLine ();
@@ -288,13 +322,13 @@ public class SqlFileBuilder : BaseBuilder
       else
         dataType = GetDBType (propertyDefinition.MappingType, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
 
-      WriteColumn (propertyDefinition.ColumnName, dataType, propertyDefinition.IsNullable);
+      WriteColumn (propertyDefinition.ColumnName, dataType, allColumnsNullable || propertyDefinition.IsNullable);
 
       if (propertyDefinition.PropertyType == typeof (ObjectID) 
           && GetOppositeClass (classDefinition, propertyDefinition.PropertyName).IsPartOfInheritanceHierarchy
           && HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
       {
-        WriteColumn (propertyDefinition.ColumnName + "ClassID", s_classIdDatabaseType, false);
+        WriteColumn (propertyDefinition.ColumnName + "ClassID", s_classIdDatabaseType, allColumnsNullable || propertyDefinition.IsNullable);
       }
     }
   }
