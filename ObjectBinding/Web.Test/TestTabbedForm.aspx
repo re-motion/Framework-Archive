@@ -13,10 +13,17 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
+<table height="100%" cellspacing=0 cellpadding=0 width="100%" border=0>
+<tr>
+<td style="height:0%;">
 <h1>Test Tabbed Form</h1>
-<div style="HEIGHT: 2em"><asp:linkbutton id=SaveButton runat="server">Save</asp:linkbutton>&nbsp; 
-<asp:linkbutton id=CancelButton runat="server">Cancel</asp:linkbutton></div><rwc:validationstateviewer id=ValidationStateViewer runat="server" visible="true" DESIGNTIMEDRAGDROP="119"></rwc:validationstateviewer><rwc:webtabstrip id=PagesTabStrip runat="server" width="100%"></rwc:webtabstrip>
-<p></p><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
-</rwc:tabbedmultiview><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button><asp:button id=ValidateButton runat="server" Text="Validate"></asp:button></form></FORM>
+<rwc:validationstateviewer id=ValidationStateViewer runat="server" visible="true"></rwc:validationstateviewer>
+<rwc:webtabstrip id=PagesTabStrip runat="server" width="100%"></rwc:webtabstrip></td>
+</tr>
+<tr>
+<td style="border: solid 1px red; padding:10px;"><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+</rwc:tabbedmultiview></td>
+</tr>
+</table></form>
   </body>
 </html>
