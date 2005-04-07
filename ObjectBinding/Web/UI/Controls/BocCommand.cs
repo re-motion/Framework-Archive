@@ -146,9 +146,6 @@ public class BocCommand: Command
   ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/>.
   /// </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. </param>
-  /// <param name="listIndex"> 
-  ///   The index of the <see cref="IBusinessObject"/> in the row where the command was clicked.
-  /// </param>
   /// <param name="businessObject">
   ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
@@ -171,7 +168,7 @@ public class BocCommand: Command
     }
   }
 
-  /// <summary> The <see cref="BocValueHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>
+  /// <summary> The <see cref="BocHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>
   /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>. </remarks>
   /// <value> A <see cref="BocHrefCommandInfo"/> object. </value>
   public override HrefCommandInfo HrefCommand
