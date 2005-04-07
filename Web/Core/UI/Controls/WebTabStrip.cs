@@ -587,7 +587,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTabStrip"/> itself. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabStrip</c>. </para>
-  ///   <para> Applied only if the <see cref="CssClass"/> is not set. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassBase
   {
