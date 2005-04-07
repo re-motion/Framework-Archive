@@ -246,6 +246,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "bin\queries.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "bin\queries.xsd"
                     BuildAction = "Content"
                 />
