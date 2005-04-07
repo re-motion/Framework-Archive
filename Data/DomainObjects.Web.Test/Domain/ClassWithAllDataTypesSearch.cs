@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
 {
-public class ClassWithAllDataTypesQuery : BindableQuery
+public class ClassWithAllDataTypesQuery : BindableSearchObject
 {
   private string _stringProperty;
   private NaByte _bytePropertyFrom;
@@ -56,80 +56,58 @@ public class ClassWithAllDataTypesQuery : BindableQuery
     set { _datePropertyTo = value; }
   }
 
-  public override QueryParameterCollection Parameters
-  {
-    get { return CreateParameterCollection (); }
-  }
-
-  public override QueryType QueryType
-  {
-    get { return QueryType.Collection; }
-  }
-
-  public override string Statement
-  {
-    get { return CreateStatement (); }
-  }
-
-  public override string StorageProviderID
-  {
-    get { return "RpaTest"; }
-  }
-
-  private string CreateStatement ()
+  public override IQuery CreateQuery()
   {
     StringBuilder whereClauseBuilder = new StringBuilder ();
+    QueryParameterCollection parameters = new QueryParameterCollection ();
 
-    if (_stringProperty != null)
-      AppendToWhereClauseBuilder (whereClauseBuilder, "StringProperty = @StringProperty");
+    AddParameters (whereClauseBuilder, parameters);
 
-    if (!_bytePropertyFrom.IsNull)
-      AppendToWhereClauseBuilder (whereClauseBuilder, "Byte >= @BytePropertyFrom");
+    if (whereClauseBuilder.Length > 0)
+      whereClauseBuilder.Insert (0, " WHERE ");
 
-    if (!_bytePropertyTo.IsNull)
-      AppendToWhereClauseBuilder (whereClauseBuilder, "Byte <= @BytePropertyTo");
-
-    AppendToWhereClauseBuilder (whereClauseBuilder, "Enum = @EnumProperty");
-
-    if (!_datePropertyFrom.IsNull)
-      AppendToWhereClauseBuilder (whereClauseBuilder, "Date >= @DatePropertyFrom");
-
-    if (!_datePropertyTo.IsNull)
-      AppendToWhereClauseBuilder (whereClauseBuilder, "Date <= @DatePropertyTo");
-
-    return string.Format ("SELECT [TableWithAllDataTypes].* FROM TableWithAllDataTypes WHERE {0};", whereClauseBuilder.ToString ());
+    return CreateQuery (string.Format ("SELECT [TableWithAllDataTypes].* FROM TableWithAllDataTypes{0};", whereClauseBuilder.ToString ()), parameters);
   }
 
-  private void AppendToWhereClauseBuilder (StringBuilder whereClauseBuilder, string condition)
+  private Query CreateQuery (string sqlStatement, QueryParameterCollection parameters)
+  {
+    QueryDefinition definition = new QueryDefinition ("ClassWithAllDataTypesQuery", "RpaTest", sqlStatement, QueryType.Collection, typeof (DomainObjectCollection));
+    return new Query (definition, parameters);
+  }
+
+  private void AddParameters (StringBuilder whereClauseBuilder, QueryParameterCollection parameters)
+  {
+    if (_stringProperty != null)
+      AddParameter (whereClauseBuilder, parameters, "StringProperty =", "StringProperty", _stringProperty);
+
+    if (!_bytePropertyFrom.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "Byte >=", "BytePropertyFrom", _bytePropertyFrom);
+
+    if (!_bytePropertyTo.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "Byte <=", "BytePropertyTo", _bytePropertyTo);
+
+    AddParameter (whereClauseBuilder, parameters, "Enum =", "EnumProperty", _enumProperty);
+
+    if (!_datePropertyFrom.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "Date >=", "DatePropertyFrom", _datePropertyFrom);
+
+    if (!_datePropertyTo.IsNull)
+      AddParameter (whereClauseBuilder, parameters, "Date <=", "DatePropertyTo", _datePropertyTo);
+  }
+
+  private void AddParameter (
+      StringBuilder whereClauseBuilder,
+      QueryParameterCollection parameters,
+      string whereClauseExpression,
+      string parameterName,
+      object parameterValue)
   {
     if (whereClauseBuilder.Length > 0)
       whereClauseBuilder.Append (" AND ");
 
-    whereClauseBuilder.Append (condition);
-  }
+    whereClauseBuilder.Append (string.Format ("{0} @{1}", whereClauseExpression, parameterName));
 
-  private QueryParameterCollection CreateParameterCollection ()
-  {
-    QueryParameterCollection parameterCollection = new QueryParameterCollection ();
-
-    if (_stringProperty != null)
-      parameterCollection.Add (new QueryParameter ("StringProperty", _stringProperty));
-
-    if (!_bytePropertyFrom.IsNull)
-      parameterCollection.Add (new QueryParameter ("BytePropertyFrom", _bytePropertyFrom));
-
-    if (!_bytePropertyTo.IsNull)
-      parameterCollection.Add (new QueryParameter ("BytePropertyTo", _bytePropertyTo));
-
-    parameterCollection.Add (new QueryParameter ("EnumProperty", _enumProperty));
-
-    if (!_datePropertyFrom.IsNull)
-      parameterCollection.Add (new QueryParameter ("DatePropertyFrom", _datePropertyFrom));
-
-    if (!_datePropertyTo.IsNull)
-      parameterCollection.Add (new QueryParameter ("DatePropertyTo", _datePropertyTo));
-
-    return parameterCollection;
+    parameters.Add (new QueryParameter (parameterName, parameterValue));
   }
 }
 }
