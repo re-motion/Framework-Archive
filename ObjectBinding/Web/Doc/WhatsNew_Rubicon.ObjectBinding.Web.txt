@@ -14,11 +14,16 @@
     Die bearbeitete Zeile wird über den Index indentifziert. Es muss daher sicher gestellt sein, dass der Index
     der gerade bearbeiteten Zeile nicht geändert wird. Ansonsten wird beim darauf folgenden Rendern die falsche 
     Zeile bearbeitet.    
-  * ShowMenuForEmptyList: 
+  * ShowMenuForEmptyListReadOnlyMode, ShowMenuForEmptyListEditMode: 
     Neue Property
     Kontrolliert das Ausblenden des Options- und des List Menüs wenn die Liste leer ist.
-  * ShowEmptyList: 
-    Kontrolliert nun auch das Ausblenden der AdditionalColumnDefinitionSets wenn die Liste leer ist.
+  * ShowEmptyList:
+    Umbenannt zu ShowEmptyListEditMode, muss gegebenenfalls im HTML-View angepasst werden.
+    Kontrolliert nun auch das Ausblenden der AdditionalColumnDefinitionSets wenn die Liste leer ist im edit mode.
+  * ShowEmptyListReadOnlyMode
+    Neue Property
+    Kontrolliert das Ausblenden Listen Kopfzeile und AdditionalColumnDefinitionSets wenn die Liste leer ist
+    im read-only mode.
   * ShowListMenu:
     Neue Property
     Kontrolliert die Ausblendung des List-Menüs.

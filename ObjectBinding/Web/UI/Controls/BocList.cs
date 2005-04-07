@@ -310,8 +310,10 @@ public class BocList:
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
  
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
-  private bool _showEmptyList = true;
-  private bool _showMenuForEmptyList = true;
+  private bool _showEmptyListEditMode = true;
+  private bool _showMenuForEmptyListEditMode = true;
+  private bool _showEmptyListReadOnlyMode = false;
+  private bool _showMenuForEmptyListReadOnlyMode = false;
 
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
@@ -1184,10 +1186,13 @@ public class BocList:
   {
     get
     {
-      return   _showAdditionalColumnsList
-            && _additionalColumnsList.Items.Count > 1
-            && (   ! IsEmptyList
-                || IsEmptyList && _showEmptyList);
+      bool showAdditionalColumnsList =   _showAdditionalColumnsList 
+                                      && _additionalColumnsList.Items.Count > 1;
+      bool isReadOnly = IsReadOnly;
+      bool showForEmptyList =   isReadOnly && _showEmptyListReadOnlyMode
+                             || ! isReadOnly && _showEmptyListEditMode;
+      return   showAdditionalColumnsList
+            && (! IsEmptyList || showForEmptyList);
     }
   }
 
@@ -1195,10 +1200,13 @@ public class BocList:
   {
     get
     {
-      return   _showOptionsMenu
-            && EnsureOptionsMenuItemsGot().Length > 0
-            && (   ! IsEmptyList
-                || IsEmptyList && _showMenuForEmptyList);
+      bool showOptionsMenu =   _showOptionsMenu 
+                            && EnsureOptionsMenuItemsGot().Length > 0;
+      bool isReadOnly = IsReadOnly;
+      bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
+                             || ! isReadOnly && _showMenuForEmptyListEditMode;
+      return   showOptionsMenu
+            && (! IsEmptyList || showForEmptyList);
     }
   }
 
@@ -1206,10 +1214,13 @@ public class BocList:
   {
     get
     {
-      return   _showListMenu
-            && EnsureListMenuItemsGot().Length > 0
-            && (   ! IsEmptyList
-                || IsEmptyList && _showMenuForEmptyList);
+      bool showListMenu =   _showListMenu 
+                            && EnsureListMenuItemsGot().Length > 0;
+      bool isReadOnly = IsReadOnly;
+      bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
+                             || ! isReadOnly && _showMenuForEmptyListEditMode;
+      return   showListMenu
+            && (! IsEmptyList || showForEmptyList);
     }
   }
 
@@ -1421,8 +1432,12 @@ public class BocList:
   /// <summary> Renders the list of values as an <c>table</c>. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableBlock (HtmlTextWriter writer)
-  {   
-    if (IsEmptyList && ! _showEmptyList)
+  {
+    bool isReadOnly = IsReadOnly;
+    bool showForEmptyList =    isReadOnly && _showEmptyListReadOnlyMode
+                            || ! isReadOnly && _showEmptyListEditMode;
+   
+    if (IsEmptyList && ! showForEmptyList)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
@@ -3755,29 +3770,58 @@ public class BocList:
 
   /// <summary> 
   ///   Gets or sets a flag that determines wheter an empty list will still render its headers 
-  ///   and the additonal column sets. 
+  ///   and the additonal column sets  (read-only mode only). 
   /// </summary>
   /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
   [Category ("Behavior")]
-  [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided.")]
-  [DefaultValue (true)]
-  public bool ShowEmptyList
+  [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")]
+  [DefaultValue (false)]
+  public bool ShowEmptyListReadOnlyMode
   {
-    get { return _showEmptyList; }
-    set { _showEmptyList = value; }
+    get { return _showEmptyListReadOnlyMode; }
+    set { _showEmptyListReadOnlyMode = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets a flag that determines wheter an empty list will still render its headers 
+  ///   and the additonal column sets (edit mode only). 
+  /// </summary>
+  /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
+  [Category ("Behavior")]
+  [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
+  [DefaultValue (true)]
+  public bool ShowEmptyListEditMode
+  {
+    get { return _showEmptyListEditMode; }
+    set { _showEmptyListEditMode = value; }
   }
 
   /// <summary> 
   ///   Gets or sets a flag that determines wheter an empty list will still render its option and list menus. 
+  ///   (read-only mode only).
   /// </summary>
   /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
   [Category ("Behavior")]
-  [Description ("Determines whether the options and list menus will be rendered if no data is provided.")]
-  [DefaultValue (true)]
-  public bool ShowMenuForEmptyList
+  [Description ("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
+  [DefaultValue (false)]
+  public bool ShowMenuForEmptyListReadOnlyMode
   {
-    get { return _showMenuForEmptyList; }
-    set { _showMenuForEmptyList = value; }
+    get { return _showMenuForEmptyListReadOnlyMode; }
+    set { _showMenuForEmptyListReadOnlyMode = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets a flag that determines wheter an empty list will still render its option and list menus
+  ///   (edit mode only).
+  /// </summary>
+  /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
+  [Category ("Behavior")]
+  [Description ("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
+  [DefaultValue (true)]
+  public bool ShowMenuForEmptyListEditMode
+  {
+    get { return _showMenuForEmptyListEditMode; }
+    set { _showMenuForEmptyListEditMode = value; }
   }
 
   /// <summary>
