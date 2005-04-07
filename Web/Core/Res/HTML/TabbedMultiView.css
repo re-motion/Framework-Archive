@@ -1,3 +1,4 @@
+/*  A template for the TabbedMultiView's CssClass. Not included automatically. */
 table.tabbedMultiView
 {
   width:100%;
@@ -18,12 +19,14 @@ div.tabbedMultiViewActiveView
 	padding: 2pt;
 }
 
-td.tabbedMultiViewTopControls
+/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewTopControls
 {
   padding-bottom: 10pt;
 }
 
-td.tabbedMultiViewBottomControls
+/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewBottomControls
 {
   padding-top: 10pt;
 }

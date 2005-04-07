@@ -41,7 +41,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> String inserted before the date pciker button during design mode. </summary>
   private const string c_designModeDatePickerImageSpacer = " ";
 
-  private const string c_defaultControlWidth = "120pt";
+  private const string c_defaultControlWidth = "150pt";
   private const int c_defaultDatePickerLengthInPoints = 150;
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
@@ -353,10 +353,26 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
                            && (   _enableClientScript && IsDesignMode 
                                || _hasClientScript);
 
+      string dateTextBoxSize = string.Empty;
+      string timeTextBoxSize = string.Empty;
+      if (hasDateField && hasTimeField && ShowSeconds)
+      {
+        dateTextBoxSize = "50%";
+        timeTextBoxSize = "40%";
+      }
+      else if (hasDateField && hasTimeField)
+      {
+        dateTextBoxSize = "60%";
+        timeTextBoxSize = "30%";
+      }
+      else if (hasDateField)
+      {
+        dateTextBoxSize = "90%";
+      }
       if (hasDateField)
       {
         if (_dateTextBoxStyle.Width.IsEmpty)
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "60%");
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, dateTextBoxSize);
         else
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _dateTextBoxStyle.Width.ToString());
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
@@ -396,7 +412,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (hasTimeField)
       {
         if (_timeTextBoxStyle.Width.IsEmpty)
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "40%");
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, timeTextBoxSize);
         else
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _timeTextBoxStyle.Width.ToString());
         if (hasDateField)

@@ -272,13 +272,16 @@ public class TabbedMultiView: WebControl, IControl
     
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+
     _topControlsStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_topControlsStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopControls);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
 
     _topControl.RenderControl (writer);
 
+    writer.RenderEndTag(); // end div
     writer.RenderEndTag(); // end td
     writer.RenderEndTag(); // end tr
   }
@@ -290,12 +293,16 @@ public class TabbedMultiView: WebControl, IControl
     
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+
     _bottomControlsStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_bottomControlsStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBottomControls);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
 
     _bottomControl.RenderControl (writer);
+
+    writer.RenderEndTag(); // end div
 
     writer.RenderEndTag(); // end td
     writer.RenderEndTag(); // end tr
@@ -407,7 +414,7 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   [Category ("Style")]
-  [Description ("The style that you want to the top section.")]
+  [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -417,7 +424,7 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   [Category ("Style")]
-  [Description ("The style that you want to apply to the bottom section.")]
+  [Description ("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
