@@ -372,6 +372,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Doc\Business Object Controls Features.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\ReadMe.txt"
                     SubType = "Form"
                     BuildAction = "Content"
