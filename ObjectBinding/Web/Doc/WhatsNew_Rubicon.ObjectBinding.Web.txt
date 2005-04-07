@@ -27,6 +27,9 @@
   * ShowListMenu:
     Neue Property
     Kontrolliert die Ausblendung des List-Menüs.
+  * CustomColumnClick umbenannt zu CustomCellClick
+  * BocCustomColumnClickEventHandler umbenannt zu BocCustomCellClickEventHandler.
+  * BocCustomColumnClickEventArgs umbenannt zu BocCustomCellClickEventArgs.
   
 - BocEnumValue
   * BugFix: Listentyp (Radio-Buttons, Liste, Drop-Down) wurde nicht angewandt. Aufgetreten mit 1.1.40.0.
