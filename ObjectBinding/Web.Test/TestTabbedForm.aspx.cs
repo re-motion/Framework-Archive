@@ -24,15 +24,12 @@ namespace OBWTest
 public class TestTabbedForm : TestWxeBasePage
 {
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected System.Web.UI.WebControls.LinkButton SaveButton;
-  protected System.Web.UI.WebControls.LinkButton CancelButton;
   private IDataEditControl[] _dataEditControls;
   protected Rubicon.Web.UI.Controls.MultiPage PagesMultiPage;
   protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected System.Web.UI.WebControls.Button PostBackButton;
-  protected System.Web.UI.WebControls.Button ValidateButton;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
+  private PlaceHolder _wxeControlsPlaceHolder;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function
@@ -61,6 +58,7 @@ public class TestTabbedForm : TestWxeBasePage
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
+
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -103,17 +101,47 @@ public class TestTabbedForm : TestWxeBasePage
     return null;
   }
 
-	#region Web Form Designer generated code
-
 	override protected void OnInit(EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
 		InitializeComponent();
-		base.OnInit(e);
 
+    WebButton saveButton = new WebButton ();
+    saveButton.ID = "SaveButton";
+    saveButton.Text = "Save";
+    saveButton.Style["margin-right"] = "10pt";
+    saveButton.Click += new EventHandler(SaveButton_Click);
+    MultiView.TopControls.Add (saveButton);
+
+    WebButton cancelButton = new WebButton ();
+    cancelButton.ID = "CancelButton";
+    cancelButton.Text = "Cancel";
+    cancelButton.Style["margin-right"] = "10pt";
+    cancelButton.Click += new EventHandler(CancelButton_Click);
+    MultiView.TopControls.Add (cancelButton);
+
+    WebButton postBackButton = new WebButton();
+    postBackButton.ID = "PostBackButton";
+    postBackButton.Text = "Postback";
+    postBackButton.Style["margin-right"] = "10pt";
+    MultiView.BottomControls.Add (postBackButton);
+
+    WebButton validateButton = new WebButton();
+    validateButton.ID = "ValidateButton";
+    validateButton.Text = "Validate";
+    validateButton.Style["margin-right"] = "10pt";
+    validateButton.Click += new EventHandler(ValidateButton_Click);
+    MultiView.BottomControls.Add (validateButton);
+
+    _wxeControlsPlaceHolder = new PlaceHolder();
+    MultiView.BottomControls.Add (_wxeControlsPlaceHolder);
+		
+    base.OnInit(e);
 	}
+	#region Web Form Designer generated code
+
 	
 	/// <summary>
 	/// Required method for Designer support - do not modify
@@ -121,8 +149,6 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -170,6 +196,12 @@ public class TestTabbedForm : TestWxeBasePage
         formGridManager.Validate();
     }
   }
+
+  protected override ControlCollection WxeControls
+  {
+    get { return _wxeControlsPlaceHolder.Controls; }
+  }
+
 }
 
 }
