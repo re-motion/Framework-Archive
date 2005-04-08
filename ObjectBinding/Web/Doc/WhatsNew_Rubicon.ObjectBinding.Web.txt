@@ -34,6 +34,10 @@
 - BocEnumValue
   * BugFix: Listentyp (Radio-Buttons, Liste, Drop-Down) wurde nicht angewandt. Aufgetreten mit 1.1.40.0.
   
+- BusinessObjectBoundControls
+  * Bug-Fix: Im Designer, bei der Auswahl der Property, wurde die DataSource nicht gefunden, 
+    wenn die DataSource und das Control im selben Refresh-Zyklus platziert wurden.
+    
 1.2.14.0
 ========
 
