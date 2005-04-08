@@ -695,7 +695,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "1");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
     writer.AddStyleAttribute ("display", "inline");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
