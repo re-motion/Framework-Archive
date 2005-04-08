@@ -77,6 +77,8 @@ public class SmartLabel: WebControl
   }
 
   private string _forControl = null;
+  private string _text = null;
+
   //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
   //private string _text = string.Empty;
   //private string _accessKey = string.Empty
@@ -90,10 +92,19 @@ public class SmartLabel: WebControl
   ///   The ID of the control to display a label for.
   /// </summary>
   [TypeConverter (typeof (SmartControlToStringConverter))]
+  [Category ("Behavior")]
   public string ForControl
   {
     get { return _forControl; }
     set { _forControl = value; }
+  }
+
+  [Category ("Appearance")]
+  [DefaultValue (null)]
+  public string Text
+  {
+    get { return _text; }
+    set { _text = value; }
   }
 
   protected override void Render(HtmlTextWriter writer)
@@ -105,13 +116,16 @@ public class SmartLabel: WebControl
 
   public string GetText()
   {
+    if (_text != null && _text.Length > 0)
+      return _text;
+
     string forControlBackUp = ForControl;
     ForControl = StringUtility.NullToEmpty (ForControl);
     string text = string.Empty;
 
     if (ForControl == string.Empty)
     {
-      text = "[Label for Undefined Control]";
+      text = "[Label]";
     }
     else
     {
