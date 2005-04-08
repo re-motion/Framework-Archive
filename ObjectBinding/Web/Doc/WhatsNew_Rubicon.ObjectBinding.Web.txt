@@ -1,3 +1,10 @@
+1.2.16.0
+========
+
+- BocEnumValue
+  * Rubicon.ObjectBinding.Web.Controls.BocEnumValue.NullItemDisplayName umbenannt zu
+    Rubicon.ObjectBinding.Web.Controls.BocEnumValue.NullDisplayName
+    
 1.2.15.0
 ========
 

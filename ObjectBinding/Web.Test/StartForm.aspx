@@ -8,16 +8,23 @@
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
-<script language="javascript">
-function OpenWindow (url)
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<script language=javascript>
+function OpenClientWindow (url)
 {
-  window.open (url, 'ClientWindow', 'menubar=no,toolbar=no,status=yes');
+  var clientWindow = window.open (url, 'ClientWindow', 'menubar=no,toolbar=no,status=yes');
+}
+function OnUnloadWindow()
+{
+  //debugger;
+}
+function OnBeforeUnloadWindow()
+{
+  //debugger;
 }
 </script>
-  </head>
-<body MS_POSITIONING="FlowLayout">
+</head>
+<body onbeforeunload=OnBeforeUnloadWindow(); onunload=OnUnloadWindow(); MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
 <p>Wxe-Enabled Tests for individual Business Object 
 Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</A></p>
@@ -25,6 +32,7 @@ Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWx
 Controls in a single Form or User Control<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</A></p>
 <p>Wxe-Enabled Test for a Tabbed Form<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false" >WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false</A></p>
 <p>Test Tree View<br><A href="SingleTestTreeView.aspx" >SingleTestTreeView.aspx</A></p>
-<p><a href="javascript:OpenWindow ('WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest');">Open Window ("WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest")</a></p></form>
+<p><A href="javascript:OpenClientWindow ('WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest');" >OpenClientWindow 
+('WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest')</A></p></form>
   </body>
 </html>
