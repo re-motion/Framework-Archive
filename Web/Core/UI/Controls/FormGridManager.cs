@@ -1862,7 +1862,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     IResourceManager localResourceManager = 
         MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), true);
     IResourceManager namingContainerResourceManager = 
-        ResourceManagerUtility.GetResourceManager (NamingContainer);
+        ResourceManagerUtility.GetResourceManager (NamingContainer, true);
     _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
 
     return _cachedResourceManager;

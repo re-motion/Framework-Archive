@@ -414,6 +414,19 @@ public abstract class WxeFunction: WxeStepList
     if (type == typeof (string))
       return value;
 
+    if (type.IsArray)
+    {
+      Type elementType = type.GetElementType();
+      string[] values = value.Split(',');
+      Array results = Array.CreateInstance (elementType, values.Length);
+      for (int i = 0; i < values.Length; ++i)
+      {
+        string parName = parameterName + "[" + i.ToString() + "]";
+        results.SetValue (Parse (elementType, values[i], parName, format), i);
+      }
+      return results;
+    }
+
     try
     {
       MethodInfo parseMethod = null;
