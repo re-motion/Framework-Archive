@@ -1,7 +1,7 @@
 1.2.16.0
 ========
 
-- "GOLDEN VERSION" von RPF und RPA
+- "GOLDEN VERSION" von Rubicon.Data.DomainObjects und Rubicon.Data.DomainObjects.ObjectBinding
 
 
 1.2.15.0
