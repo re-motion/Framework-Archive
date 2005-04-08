@@ -944,22 +944,25 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           ||  ActualValueType == BocDateTimeValueType.Date
           || ActualValueType == BocDateTimeValueType.Undefined)
       {
-        if (InternalDateValue == null)
+        if (   InternalDateValue == null
+            && ActualValueType != BocDateTimeValueType.Undefined)
         {
-          throw new FormatException ("The date component of the DateTime value is null.");
+          //throw new FormatException ("The date component of the DateTime value is null.");
+          return null;
         }
 
         try
         {
-          if (   ! ControlHelper.IsDesignMode (this, Context)
-              || InternalDateValue != string.Empty)
+          if (   ! IsDesignMode
+              || ! StringUtility.IsNullOrEmpty (InternalDateValue))
           {
             dateTimeValue = DateTime.Parse (InternalDateValue).Date;
           }
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
-          throw new FormatException ("Error while parsing the date component (value: '" + InternalDateValue+ "') of the DateTime value. " + ex.Message);
+          //throw new FormatException ("Error while parsing the date component (value: '" + InternalDateValue+ "') of the DateTime value. " + ex.Message);
+          return null;
         }
       }
 
@@ -972,15 +975,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {        
         try
         {
-          if (   ! ControlHelper.IsDesignMode (this, Context)
-              || InternalDateValue != string.Empty)
+          if (   ! IsDesignMode
+              || ! StringUtility.IsNullOrEmpty (InternalTimeValue))
           {
             dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
           }
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
-          throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
+          //throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
+          return null;
         }
 
           //  Restore the seconds if the control does not display them.
@@ -1049,36 +1053,36 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary>
-  ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
-  ///   <see cref="FormatException"/>) to read the contents of <see cref="Value"/>.
-  /// </summary>
-  /// <remarks> Valid values include valid combinations of date/time values and <see langword="null"/>. </remarks>
-  [Browsable(false)]
-  public bool IsValidValue
-  {
-    get
-    {
-      if (_savedDateTimeValue.IsNull)
-      {
-        return    StringUtility.IsNullOrEmpty (_internalDateValue) 
-               && StringUtility.IsNullOrEmpty (_internalTimeValue);
-      }
-      
-      try
-      {
-        //  Force the evaluation of Value
-        if (Value != null)
-          return true;
-      }
-      catch (FormatException)
-      {
-        return false;
-      }
-
-      return true;
-    }
-  }
+//  /// <summary>
+//  ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
+//  ///   <see cref="FormatException"/>) to read the contents of <see cref="Value"/>.
+//  /// </summary>
+//  /// <remarks> Valid values include valid combinations of date/time values and <see langword="null"/>. </remarks>
+//  [Browsable(false)]
+//  public bool IsValidValue
+//  {
+//    get
+//    {
+//      if (_savedDateTimeValue.IsNull)
+//      {
+//        return    StringUtility.IsNullOrEmpty (_internalDateValue) 
+//               && StringUtility.IsNullOrEmpty (_internalTimeValue);
+//      }
+//      
+//      try
+//      {
+//        //  Force the evaluation of Value
+//        if (Value != null)
+//          return true;
+//      }
+//      catch (FormatException)
+//      {
+//        return false;
+//      }
+//
+//      return true;
+//    }
+//  }
 
   protected override object ValueImplementation
   {

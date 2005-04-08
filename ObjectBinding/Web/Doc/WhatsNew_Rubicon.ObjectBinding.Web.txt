@@ -5,6 +5,9 @@
   * Rubicon.ObjectBinding.Web.Controls.BocEnumValue.NullItemDisplayName umbenannt zu
     Rubicon.ObjectBinding.Web.Controls.BocEnumValue.NullDisplayName
     
+- BocDateTimeValue
+  * IsValidValue gibt es nicht mehr. Value gibt null zurück wenn Daten ungültig oder Felder leer.
+    
 1.2.15.0
 ========
 
