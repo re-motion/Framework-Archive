@@ -1474,13 +1474,7 @@ public class BocList:
       if (! IsEmptyList)
       {
         bool isOddRow = true;
-
-        ArrayList rows = new ArrayList (Value.Count);
-        for (int idxRows = 0; idxRows < Value.Count; idxRows++)
-          rows.Add (new Pair (idxRows, Value[idxRows]));
-
-        if (EnableSorting)
-          rows.Sort (this);
+        Pair[] rows = GetIndexedRows (true);
 
         for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
             idxAbsoluteRows < rowCountWithOffset; 
@@ -2774,6 +2768,63 @@ public class BocList:
   protected virtual BocMenuItem[] GetListMenuItems (BocMenuItem[] menuItems)
   {
     return menuItems;
+  }
+
+  
+  /// <summary>
+  ///   Gets a flag set <see langword="true"/> if the <see cref="Value"/> is sorted before it is displayed.
+  /// </summary>
+  public bool HasSortingKeys
+  {
+    get 
+    { 
+      if (! EnableSorting)
+        return false;
+
+      foreach (SortingOrderEntry sortingOrderEntry in _sortingOrder)
+      {
+        if (! sortingOrderEntry.IsEmpty)
+          return true;
+      }
+      return false;
+    }
+  }
+
+  /// <summary>
+  ///   Sorts the <see cref="Value"/>'s <see cref="IBusinessObject"/> instances using the sorting keys
+  ///   and returns the sorted <see cref="IBusinessObject"/> instances as a new array. The original values remain
+  ///   untouched.
+  /// </summary>
+  /// <returns> 
+  ///   An <see cref="IBusinessObject"/> array sorted by the sorting keys or <see langword="null"/> if sorting is
+  ///   disabled.
+  /// </returns>
+  public IBusinessObject[] GetSortedRows()
+  {
+    if (! EnableSorting)
+      return null;
+
+    Pair[] sortedRows = GetIndexedRows (true);
+
+    IBusinessObject[] sortedBusinessObjects = new IBusinessObject[sortedRows.Length];
+    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+      sortedBusinessObjects[idxRows] = (IBusinessObject)((Pair) sortedRows[idxRows]).Second;
+
+    return sortedBusinessObjects;
+  }
+
+  /// <summary> Creates an array of indexed <see cref="IBusinessObject"/> instances, optionally sorted. </summary>
+  /// <param name="sorted"> <see langword="true"/> to sort the rows before returning them. </param>
+  /// <returns> Pair &lt;original index, IBusinessObject&gt; </returns>
+  protected Pair[] GetIndexedRows (bool sorted)
+  {
+    ArrayList rows = new ArrayList (Value.Count);
+    for (int idxRows = 0; idxRows < Value.Count; idxRows++)
+      rows.Add (new Pair (idxRows, Value[idxRows]));
+
+    if (sorted)
+      rows.Sort (this);
+    return (Pair[]) rows.ToArray (typeof (Pair));
   }
 
   /// <summary>
