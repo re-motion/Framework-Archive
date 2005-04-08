@@ -20,10 +20,6 @@
         <includes asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
-    <copy todir="${project.builddir}" file="mapping.xsd" overwrite="true"/>
-    <copy todir="${project.builddir}" file="storageProviders.xsd" overwrite="true"/>
-    <copy todir="${project.builddir}" file="types.xsd" overwrite="true"/>
-    <copy todir="${project.builddir}" file="queries.xsd" overwrite="true"/>    
   </target>
   
 </project>
