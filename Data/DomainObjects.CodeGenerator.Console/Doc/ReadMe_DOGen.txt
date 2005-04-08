@@ -1,5 +1,5 @@
 Verwendung des Generators
------------------------------
+-------------------------
 
 1. Generieren der stub-Klassen
    Aufruf mit /stubs erzeugt aus der mapping.xml ein C# codefile mit Klassenrümpfen für alle im mapping angegebenen Klassen.
