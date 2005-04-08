@@ -37,7 +37,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
-  private const string c_designModeEmptyLabelContents = "#";
+  private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultControlWidth = "150pt";
 
   private const string c_bocReferenceValueScriptUrl = "BocReferenceValue.js";
@@ -51,7 +51,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   protected enum ResourceIdentifier
   {
     OptionsTitle,
-    NullDisplayName,
     NullItemValidationMessage
   }
 
@@ -323,17 +322,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
-  protected override void AddAttributesToRender (HtmlTextWriter writer)
-  {
-    Unit width = Width;
-    Width = Unit.Empty;
-    Unit height = Height;
-    Height = Unit.Empty;
-    base.AddAttributesToRender (writer);
-    Width = width;
-    Height = height;
-  }
-
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
@@ -587,6 +575,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _label.Text = text;
 
     _label.Enabled = Enabled;
+    _label.Height = Unit.Empty;
+    _label.Width = Unit.Empty;
     _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
   }
@@ -625,9 +615,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
 
     _dropDownList.Enabled = Enabled;
+    _dropDownList.Height = Unit.Empty;
+    _dropDownList.Width = Unit.Empty;
     _dropDownList.ApplyStyle (_commonStyle);
-    _dropDownList.Width = Unit.Percentage (100);
-    _dropDownList.Height = Height;
     _dropDownListStyle.ApplyStyle (_dropDownList);
   }
 
@@ -675,18 +665,37 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       _optionsMenu.TitleText = _optionsTitle;
   }
 
-  protected override void RenderContents (HtmlTextWriter writer)
+  protected override void RenderChildren (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
 
-    if (Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+    bool isDropDownListHeightEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["height"]);
+    bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+    bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
+    bool isDropDownListWidthEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["width"]);
+    if (isReadOnly)
+    {
+      if (isLabelWidthEmpty && ! isControlWidthEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    }
     else
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    {
+      if (! isControlHeightEmpty && isDropDownListHeightEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+    
+      if (isDropDownListWidthEmpty)
+      {
+        if (isControlWidthEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      }
+    }
 
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "1");
     writer.AddStyleAttribute ("display", "inline");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
@@ -733,7 +742,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
     if (isReadOnly)
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -749,16 +758,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
     else
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      if (isCommandEnabled)
-        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
+      if (! isControlHeightEmpty && isDropDownListHeightEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+      if (isDropDownListWidthEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       _dropDownList.RenderControl (writer);
-      if (isCommandEnabled)
-        Command.RenderEnd (writer);
       
       writer.RenderEndTag();
       writer.RenderEndTag();
@@ -768,6 +777,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     {
       writer.AddStyleAttribute ("padding-left", "3pt");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+      //writer.AddAttribute ("align", "right");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       _optionsMenu.Width = _optionsMenuWidth;
       _optionsMenu.RenderControl (writer);
@@ -1175,6 +1185,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("Flag that determines whether to show the icon in front of the value.")]
+  [DefaultValue (true)]
   public bool EnableIcon
   {
     get { return _enableIcon; }

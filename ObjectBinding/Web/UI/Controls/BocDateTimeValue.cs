@@ -28,10 +28,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 {
   //  constants
 
-  /// <summary> 
-  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
-  /// </summary>
-  private const string c_designModeEmptyLabelContents = "#";
+  /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>
+  private const string c_designModeEmptyLabelContents = "##";
 
   private const string c_defaultControlWidth = "150pt";
   private const int c_defaultDatePickerLengthInPoints = 150;
@@ -284,13 +282,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
-    Unit width = Width;
-    Width = Unit.Empty;
-    Unit height = Height;
-    Height = Unit.Empty;
     base.AddAttributesToRender (writer);
-    Width = width;
-    Height = height;
   
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
     //  and remove AddAttributesToRender.
@@ -309,33 +301,38 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   }
 
-  protected override void RenderContents(HtmlTextWriter writer)
+  protected override void RenderChildren(HtmlTextWriter writer)
   {
-    bool isReadOnly = IsReadOnly;
-
-    if (Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
-    else
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
-    writer.AddStyleAttribute ("display", "inline");
-    writer.RenderBeginTag (HtmlTextWriterTag.Table);
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-
-    if (isReadOnly)
+    if (IsReadOnly)
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
-
       _label.RenderControl (writer);
-      
-      writer.RenderEndTag();
     }
     else
     {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isDateTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_dateTextBox.Style["height"]);
+      bool isTimeTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_timeTextBox.Style["height"]);
+      if (! isControlHeightEmpty && isDateTextBoxHeightEmpty && isTimeTextBoxHeightEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isDateTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_dateTextBox.Style["width"]);
+      bool isTimeTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_timeTextBox.Style["width"]);
+      if (isDateTextBoxWidthEmpty && isTimeTextBoxWidthEmpty)
+      {
+        if (isControlWidthEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      }
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+      writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+      writer.AddStyleAttribute ("display", "inline");
+      writer.RenderBeginTag (HtmlTextWriterTag.Table);
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
       bool hasDateField =    ActualValueType == BocDateTimeValueType.DateTime
                           || ActualValueType == BocDateTimeValueType.Date
                           || ActualValueType == BocDateTimeValueType.Undefined;
@@ -349,13 +346,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       string timeTextBoxSize = string.Empty;
       if (hasDateField && hasTimeField && ShowSeconds)
       {
-        dateTextBoxSize = "50%";
-        timeTextBoxSize = "40%";
+        dateTextBoxSize = "55%";
+        timeTextBoxSize = "45%";
       }
       else if (hasDateField && hasTimeField)
       {
         dateTextBoxSize = "60%";
-        timeTextBoxSize = "30%";
+        timeTextBoxSize = "40%";
       }
       else if (hasDateField)
       {
@@ -369,6 +366,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _dateTextBoxStyle.Width.ToString());
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
+        if (! isControlHeightEmpty && isDateTextBoxHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+        if (! StringUtility.IsNullOrEmpty (dateTextBoxSize))
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         _dateTextBox.RenderControl (writer);  
       
         writer.RenderEndTag();
@@ -410,14 +411,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           writer.AddStyleAttribute ("padding-left", "3pt");
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
+        if (! isControlHeightEmpty && isTimeTextBoxHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+        if (! StringUtility.IsNullOrEmpty (timeTextBoxSize))
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         _timeTextBox.RenderControl (writer);  
       
         writer.RenderEndTag();
       }
-    }
 
     writer.RenderEndTag();
     writer.RenderEndTag();
+    }
   }
 
   /// <summary>
@@ -605,14 +610,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         else if (ActualValueType == BocDateTimeValueType.Date)
           _label.Text = FormatDateValue (dateTime, true);
         else
-          _label.Text = string.Empty;
+          _label.Text = "&nbsp;";
       }
       else
       {
-        _label.Text = string.Empty;
+        _label.Text = "&nbsp;";
       }
     }
 
+    _label.Height = Unit.Empty;
+    _label.Width = Unit.Empty;
     _label.ApplyStyle (_commonStyle);
     _label.ApplyStyle (_labelStyle);
   }
@@ -623,8 +630,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       _dateTextBox.MaxLength = GetDateMaxLength();
     _dateTextBox.Text = InternalDateValue;
     _dateTextBox.ReadOnly = ! Enabled;
-    _dateTextBox.Width = Unit.Percentage (100);
-    _dateTextBox.Height = Height;
+    _dateTextBox.Width = Unit.Empty;
+    _dateTextBox.Height = Unit.Empty;
     _dateTextBox.ApplyStyle (_commonStyle);
     _dateTimeTextBoxStyle.ApplyStyle (_dateTextBox);
     _dateTextBoxStyle.ApplyStyle (_dateTextBox);
@@ -636,8 +643,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       _timeTextBox.MaxLength = GetTimeMaxLength();
     _timeTextBox.Text = InternalTimeValue;
     _timeTextBox.ReadOnly = ! Enabled;
-    _timeTextBox.Width = Unit.Percentage (100);
-    _timeTextBox.Height = Height;
+    _timeTextBox.Height = Unit.Empty;
+    _timeTextBox.Width = Unit.Empty;
     _timeTextBox.ApplyStyle (_commonStyle);
     _dateTimeTextBoxStyle.ApplyStyle (_timeTextBox);
     _timeTextBoxStyle.ApplyStyle (_timeTextBox);
@@ -1320,6 +1327,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> The <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
   [Description("Gets or sets a fixed value type.")]
   [Category ("Data")]
+  [DefaultValue (BocDateTimeValueType.Undefined)]
   public BocDateTimeValueType ValueType
   {
     get 

@@ -73,6 +73,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       typeof (IBusinessObjectBooleanProperty) };
 
   private static readonly object s_checkedChangedEvent = new object();
+  private const string c_defaultControlWidth = "100pt";
 
 	// member fields
   /// <summary>
@@ -188,6 +189,19 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     EventHandler eventHandler = (EventHandler) Events[s_checkedChangedEvent];
     if (eventHandler != null)
       eventHandler (this, e);
+  }
+
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    writer.AddStyleAttribute ("white-space", "nowrap");
+    if (! IsReadOnly)
+    {
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
+      if (isLabelWidthEmpty && isControlWidthEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    }
   }
 
   /// <summary>
@@ -442,7 +456,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     if (_showDescription)
       _label.Text = description;
 
-    _label.Height = Height;
+    _label.Width = Unit.Empty;
+    _label.Height = Unit.Empty;
     _label.ApplyStyle (_labelStyle);
   }
 

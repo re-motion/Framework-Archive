@@ -29,9 +29,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
-  private const string c_designModeEmptyLabelContents = "#";
+  private const string c_designModeEmptyLabelContents = "##";
 
-  private const int c_defaultListControlWidthInPoints = 150;
+  private const string c_defaultListControlWidth = "150pt";
 
   // types
 
@@ -211,17 +211,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       Page.RegisterRequiresPostBack (this);
   }
 
-  protected override void AddAttributesToRender (HtmlTextWriter writer)
-  {
-    Unit width = Width;
-    Width = Unit.Empty;
-    Unit height = Height;
-    Height = Unit.Empty;
-    base.AddAttributesToRender (writer);
-    Width = width;
-    Height = height;
-  }
-
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
@@ -236,6 +225,33 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     EnsureChildControlsPreRendered ();
 
     base.Render (writer);
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    if (IsReadOnly)
+    {
+      _label.RenderControl (writer);
+    }
+    else
+    {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isListControlHeightEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["height"]);
+      if (! isControlHeightEmpty && isListControlHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isListControlWidthEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["width"]);
+      if (isListControlWidthEmpty)
+      {
+        if (isControlWidthEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultListControlWidth);
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      }
+
+      _listControl.RenderControl (writer);
+    }
   }
 
   /// <summary>
@@ -393,39 +409,36 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Prerenders the child controls. </summary>
   protected override void PreRenderChildControls()
   {
-    bool isReadOnly = IsReadOnly;
-
-    _listControl.Visible = ! isReadOnly;
-    _label.Visible = isReadOnly;
-
-    if (isReadOnly)
+    if (IsReadOnly)
     {
-      _label.Width = Width;
-      _label.Height = Height;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
-
+      string text = null;
       if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
       {
-        _label.Text = c_designModeEmptyLabelContents;
+        text = c_designModeEmptyLabelContents;
         //  Too long, can't resize in designer to less than the content's width
         //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
       else if (! IsDesignMode && EnumerationValueInfo != null)
       {
-        _label.Text = EnumerationValueInfo.DisplayName;
+        text = EnumerationValueInfo.DisplayName;
       }
+
+      if (StringUtility.IsNullOrEmpty (text))
+        _label.Text = "&nbsp;";
+      else
+        _label.Text = text;
+
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
     }
     else
     {
       _listControl.Enabled = Enabled;
 
-      //  Prevent a collapsed control
-      _listControl.Width = Unit.Point (c_defaultListControlWidthInPoints);
-
-      if (! Width.IsEmpty)
-        _listControl.Width = Width;
-      _listControl.Height = Height;
+      _listControl.Width = Unit.Empty;
+      _listControl.Height = Unit.Empty;
       _listControl.ApplyStyle (_commonStyle);
       _listControlStyle.ApplyStyle (_listControl);
     }

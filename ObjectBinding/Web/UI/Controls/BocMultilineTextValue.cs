@@ -36,9 +36,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> 
   ///   Text displayed when control is displayed in desinger and is read-only has no contents.
   /// </summary>
-  private const string c_designModeEmptyLabelContents = "#";
-
-  private const int c_defaultTextBoxWidthInPoints = 150;
+  private const string c_designModeEmptyLabelContents = "##";
+  private const string c_defaultTextBoxWidth = "150pt";
 
   // types
   /// <summary> A list of control wide resources. </summary>
@@ -165,17 +164,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       Page.RegisterRequiresPostBack (this);
   }
 
-  protected override void AddAttributesToRender (HtmlTextWriter writer)
-  {
-    Unit width = Width;
-    Width = Unit.Empty;
-    Unit height = Height;
-    Height = Unit.Empty;
-    base.AddAttributesToRender (writer);
-    Width = width;
-    Height = height;
-  }
-
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
@@ -190,6 +178,33 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     EnsureChildControlsPreRendered ();
 
     base.Render (writer);
+  }
+
+  protected override void RenderChildren(HtmlTextWriter writer)
+  {
+    if (IsReadOnly)
+    {
+      _label.RenderControl (writer);
+    }
+    else
+    {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_textBox.Style["height"]);
+      if (! isControlHeightEmpty && isTextBoxHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
+      if (isTextBoxWidthEmpty)
+      {
+        if (isControlWidthEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultTextBoxWidth);
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      }
+
+      _textBox.RenderControl (writer);
+    }
   }
 
   /// <summary>
@@ -309,12 +324,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Prerenders the child controls. </summary>
   protected override void PreRenderChildControls()
   {
-    bool isReadOnly = IsReadOnly;
-
-    _textBox.Visible = ! isReadOnly;
-    _label.Visible = isReadOnly;
-
-    if (isReadOnly)
+    if (IsReadOnly)
     {
       string[] lines = Value;
       string text = null;
@@ -339,7 +349,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       }
       _label.Text = text;
 
-      _label.Height = Height;
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
       _label.ApplyStyle (_commonStyle);
       _label.ApplyStyle (_labelStyle);
     }
@@ -347,13 +358,9 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     {
       _textBox.Text = Text;
 
-      //  Provide a default width
-      _textBox.Width = Unit.Point (c_defaultTextBoxWidthInPoints);
-
       _textBox.ReadOnly = ! Enabled;
-      if (Width != Unit.Empty)
-        _textBox.Width = Width;
-      _textBox.Height = Height;
+      _textBox.Width = Unit.Empty;
+      _textBox.Height = Unit.Empty;
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
     }
