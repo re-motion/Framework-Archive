@@ -151,6 +151,8 @@ Global
 		{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
+		References\nunit.framework.dll = References\nunit.framework.dll
+		References\nunit.framework.xml = References\nunit.framework.xml
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
