@@ -378,7 +378,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     IResourceManager localResourceManager = 
         MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
     IResourceManager namingContainerResourceManager = 
-        ResourceManagerUtility.GetResourceManager (NamingContainer);
+        ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
     if (namingContainerResourceManager == null)
       _cachedResourceManager = new ResourceManagerSet (localResourceManager);
