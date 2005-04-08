@@ -382,22 +382,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
         _datePickerButton.RenderControl (writer);  
-        //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-        //  and remove RenderContents.
-        string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
-        writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
-        writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
-        writer.AddAttribute("marginheight", "0", false);
-        writer.AddAttribute("marginwidth", "0", false);
-        writer.AddAttribute("frameborder", "0", false);
-        writer.AddAttribute("scrolling", "no", false);
-        writer.AddStyleAttribute("position", "absolute");
-        writer.AddStyleAttribute("z-index", "100");
-        writer.AddStyleAttribute("display", "none");
-        writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
-        writer.RenderEndTag();
-      
+        if (! IsDesignMode)
+        {
+          //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
+          //  and remove RenderContents.
+          string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
+              this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
+          writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
+          writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
+          writer.AddAttribute("marginheight", "0", false);
+          writer.AddAttribute("marginwidth", "0", false);
+          writer.AddAttribute("frameborder", "0", false);
+          writer.AddAttribute("scrolling", "no", false);
+          writer.AddStyleAttribute("position", "absolute");
+          writer.AddStyleAttribute("z-index", "100");
+          writer.AddStyleAttribute("display", "none");
+          writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
+          writer.RenderEndTag();
+        }      
         writer.RenderEndTag();
       }
 
@@ -677,7 +679,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         _datePickerButton.ImageUrl = imageUrl; 
 
       string script;
-      if (Enabled && _hasClientScript)
+      if (_hasClientScript && Enabled)
       {
         string pickerActionButton = "this";
         string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
@@ -885,7 +887,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     _hasClientScript = false;
 
-    if (! ControlHelper.IsDesignMode (this, Context))
+    if (! IsDesignMode)
     {
       if (EnableClientScript) 
       {
