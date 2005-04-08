@@ -8,7 +8,7 @@ Wenn sie an ein Business Object Model gebunden sind:
   der Daten signifikant niedriger verglichen mit herkömmlichen ASP.net Architekturen.
   
 In Verbindung mit Data Domain Objects
-- *** Vorteile bitte selber ausfüllen ***
+- *** Markus: Vorteile bitte selber ausfüllen ***
 
 In Verbindung mit dem FormGridManager:
 - Automatische Erstellung von den benötigten Validatoren für Required und den Datentyp.
@@ -51,6 +51,26 @@ Vorhandene Business Object Controls
 - BocTreeView
   Zur Darstellung von hierarchischen IBusinessObjectWithIdentity Listen
   
+IBusinessObjectDataSource
+- BusinessObjectDataSourceControl
+  Um ein IBusinessObject auf ein Business Object Control zu binden.
+- BusinessObjectReferenceDataSourceControl
+  Um ein Business Object Control auf den Wert einer IBusinessObjectReferenceProperty zu binden
+    und so Business Objects zu kaskadieren.  
+
+IDataEditUserControl
+- Eine Basisklasse für Data Bound User Controls.
+- Die Seite implementiert das Laden und Speichern des IBusinessObjects und enthält eine Liste
+    von IDataEditUserControls and welche sie das IBusinessObject sowie Load und Save weiter gibt.
+- Basis-Implementierung DataEditUserControl
+- In Verbindung mit TabbedMultiView:
+  Die Page enthält den TabbedMultiView als seitenfüllendes Control.
+  Ein IDataEditUserControl pro Tab wird eingehängt.
+  Die UserControls benötigen keine oder kaum Code-Behind Logik.
+  Die Page selbst enthält den notwendigen Code zur Datenhaltung.
+  Markus: In Verbindung mit Data Domain Objects reduziert weitere Vereinfachung der Datenhaltung?
+  
+
 Als Beispiel:
 - <table> erstellen als Basis für das FormGrid
 - Drag and Drop FormGridManager

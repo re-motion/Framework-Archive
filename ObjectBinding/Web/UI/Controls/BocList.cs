@@ -1297,6 +1297,8 @@ public class BocList:
     for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
     {
       WebMenuItem currentItem = groupedListMenuItems[idxItems];
+      // HACK: Required since ListManuItems are not added to a ListMenu's WebMenuItemCollection.
+      currentItem.OwnerControl = this;
 
       bool isFirstItem = idxItems == 0;
       bool isLastItem = idxItems == groupedListMenuItems.Length - 1;
