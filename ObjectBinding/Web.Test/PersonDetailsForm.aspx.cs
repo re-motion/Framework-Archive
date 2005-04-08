@@ -37,6 +37,8 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue DeceasedField;
   protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue CVField;
   protected Rubicon.ObjectBinding.Web.Controls.BocList JobList;
+  protected Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue ParterFirstNameField;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -81,6 +83,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -99,6 +102,12 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
         person.Partner.SaveObject();
     }
     Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+  }
+
+  private void PartnerField_SelectionChanged(object sender, System.EventArgs e)
+  {
+    PartnerField.SaveValue (false);
+    PartnerDataSource.LoadValue (false);
   }
 }
 
