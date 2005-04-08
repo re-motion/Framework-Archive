@@ -38,7 +38,7 @@ public class SeparatedStringBuilder
 
   private void AppendSeparator()
   {
-    if (_stringBuilder.Length == 0)
+    if (_stringBuilder.Length > 0)
       _stringBuilder.Append (_separator);
   }
 
