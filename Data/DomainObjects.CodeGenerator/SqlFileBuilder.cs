@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class SqlFileBuilder : BaseBuilder
+public class SqlFileBuilder : FileBuilder
 {
   // types
 

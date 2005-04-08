@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class BaseBuilder : IBuilder
+public abstract class FileBuilder : IBuilder
 {
   // types
 
@@ -19,14 +19,14 @@ public abstract class BaseBuilder : IBuilder
 
   // construction and disposing
 
-  protected BaseBuilder (string fileName)
+  protected FileBuilder (string fileName)
   {
     ArgumentUtility.CheckNotNull ("fileName", fileName);
 
     _fileName = fileName;
   }
 
-  ~BaseBuilder ()      
+  ~FileBuilder ()      
   {
     Dispose (false);
   }

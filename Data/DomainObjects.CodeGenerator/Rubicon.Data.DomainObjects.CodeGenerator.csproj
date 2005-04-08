@@ -108,11 +108,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "BaseBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "CodeBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -139,6 +134,11 @@
                 />
                 <File
                     RelPath = "DomainObjectCollectionBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "FileBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

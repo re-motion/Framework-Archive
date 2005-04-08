@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class CodeBuilder : BaseBuilder
+public abstract class CodeBuilder : FileBuilder
 {
   // types
 
