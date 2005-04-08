@@ -12,4 +12,4 @@ Verwendung des Generators
    Aufruf mit /sql erzeugt aus der mapping.xml ein sql script zum Aufbau der Datenbank.
    
 4. Generieren des Domain Models
-   Aufruf mit /dom erzeugt aus der mapping.xml das DomainModel.
+   Aufruf mit /classes erzeugt aus der mapping.xml das DomainModel.

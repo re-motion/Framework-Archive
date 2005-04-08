@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class StubsBuilder : CodeBuilder
+public class StubsBuilder : CodeFileBuilder
 {
   // types
 

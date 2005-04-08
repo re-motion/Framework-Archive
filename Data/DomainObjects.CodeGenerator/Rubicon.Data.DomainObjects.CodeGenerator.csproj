@@ -108,7 +108,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "CodeBuilder.cs"
+                    RelPath = "CodeFileBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

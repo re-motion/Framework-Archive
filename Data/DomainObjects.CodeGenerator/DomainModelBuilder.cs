@@ -26,9 +26,10 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
       string outputFolder,
       string xmlFilePath,
       string xmlSchemaFilePath,
+      string assemblyPath,
       string domainObjectBaseClass, 
       string domainObjectCollectionBaseClass)
-    : base (xmlFilePath, xmlSchemaFilePath)
+    : base (xmlFilePath, xmlSchemaFilePath, assemblyPath)
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
 

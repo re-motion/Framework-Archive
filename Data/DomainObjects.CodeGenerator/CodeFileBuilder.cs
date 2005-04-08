@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class CodeBuilder : FileBuilder
+public abstract class CodeFileBuilder : FileBuilder
 {
   // types
 
@@ -18,7 +18,7 @@ public abstract class CodeBuilder : FileBuilder
 
   private static Hashtable s_TypeToCSharpType;
 
-  static CodeBuilder ()
+  static CodeFileBuilder ()
   {
     s_TypeToCSharpType = new Hashtable ();
     s_TypeToCSharpType.Add (typeof(bool), "bool");
@@ -134,7 +134,7 @@ public abstract class CodeBuilder : FileBuilder
 
   // construction and disposing
 
-  protected CodeBuilder (string filename) : base (filename)
+  protected CodeFileBuilder (string filename) : base (filename)
 	{
   }
   

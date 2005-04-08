@@ -21,7 +21,7 @@ public class SqlBuilder : ConfigurationBasedBuilder
 
   // construction and disposing
 
-	public SqlBuilder (string outputFile, string xmlFilePath, string xmlSchemaFilePath) : base (xmlFilePath, xmlSchemaFilePath)
+	public SqlBuilder (string outputFile, string xmlFilePath, string xmlSchemaFilePath, string assemblyPath) : base (xmlFilePath, xmlSchemaFilePath, assemblyPath)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("outputFile", outputFile);
     
