@@ -322,7 +322,7 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
-  [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Browsable (false)]
   public TabViewCollection Views
