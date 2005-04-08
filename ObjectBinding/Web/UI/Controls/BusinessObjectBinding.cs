@@ -97,12 +97,22 @@ public class BusinessObjectBinding
         {
           if (isDesignMode)
           {
-            // HACK: Find a way to restart the page's lifecycle.
-            // On the first round-trip, only the controls up to the current control exist. 
-            // The DataSourceControl is usually one of the last controls.
-            SetDataSource (null);
-            _dataSourceChanged = true;
-            return;
+            foreach (IComponent component in namingContainer.Site.Container.Components)
+            {
+              if (   component is IBusinessObjectDataSourceControl 
+                  && component is Control
+                  && ((Control) component).ID == _dataSourceControl)
+              {
+                control = (Control) component;
+                break;
+              }
+            }
+            if (control == null)
+            {
+              SetDataSource (null);
+              _dataSourceChanged = true;
+              return;
+            }
           }
           else
           {
