@@ -39,9 +39,18 @@
 </obc:BocMenuItem>
 </OptionsMenuItems>
 
+<dropdownliststyle autopostback="True">
+</DropDownListStyle>
+
 <persistedcommand>
 <obc:BocCommand Type="None"></obc:BocCommand>
 </PersistedCommand></obc:bocreferencevalue></td></tr>
+  <tr>
+    <td></td>
+    <td><obc:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle>
+</obc:BocTextValue></td></tr>
         <tr>
           <td></td>
           <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth"></obc:bocdatetimevalue></td></tr>
@@ -65,7 +74,7 @@
 </OptionsMenuItems></obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p></form>
+      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol><obc:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="ReflectionBusinessObjectDataSourceControl"></obc:BusinessObjectReferenceDataSourceControl></p></form>
 
   </body>
 </html>
