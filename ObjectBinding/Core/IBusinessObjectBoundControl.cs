@@ -11,6 +11,7 @@ public interface IBusinessObjectBoundControl: IComponent
   IBusinessObjectProperty Property { get; set; }
   object Value { get; set; }
 
+  /// <summary> See <see cref="IBusinessObjectDataSource.LoadValues"/> for a description. </summary>
   void LoadValue (bool interim);
 
   bool SupportsProperty (IBusinessObjectProperty property);
@@ -27,6 +28,7 @@ public interface IBusinessObjectBoundControl: IComponent
 
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
 {
+  /// <summary> See <see cref="IBusinessObjectDataSource.SaveValues"/> for a description. </summary>
   void SaveValue (bool interim);
 }
 
