@@ -984,9 +984,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="FormGridManager"/>. </summary>
   private ResourceManagerSet _cachedResourceManager;
 
-  /// <summary> <see langword="true"/> if PostBack and ViewState was loaded. </summary>
-  private bool _hasViewState = false;
-
   private bool _formGridListPopulated = false;
 
   // construction and disposing
@@ -1184,12 +1181,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   private void NamingContainer_Load (object sender, EventArgs e)
   {
     EnsureFormGridListPopulated();
-    if (    ! ControlHelper.IsDesignMode (this, Context)
-        &&  Page.IsPostBack
-        &&  ! _hasViewState)
-    {
-      throw new InvalidOperationException ("FormGrid '" + ID + "' did not receive a view state.");
-    }
   }
 
   private void NamingContainer_PreRender (object sender, EventArgs e)
@@ -1251,8 +1242,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
     if (savedState != null)
     {
-      _hasViewState = true;
-
       base.LoadViewState (savedState);
   
       object labelsColumn = ViewState[c_viewStateIDLabelsColumn];
