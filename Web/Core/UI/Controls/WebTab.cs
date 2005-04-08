@@ -249,6 +249,8 @@ public class WebTab: IControlItem
         writer.Write ("&nbsp;");
       if (hasText)
         writer.Write (_text);
+      if (!hasIcon && !hasText)
+        writer.Write ("&nbsp;");
 
       writer.RenderEndTag(); // End achnor
     }

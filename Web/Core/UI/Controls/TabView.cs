@@ -43,7 +43,6 @@ public class TabView : Rubicon.Web.UI.Controls.PageView
   }
 
   /// <summary> Gets or sets the title displayed in the tab for this view. </summary>
-  /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("The title displayed in this view's tab.")]
@@ -51,11 +50,7 @@ public class TabView : Rubicon.Web.UI.Controls.PageView
   public virtual string Title
   {
     get { return _title; }
-    set
-    { 
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      _title = value; 
-    }
+    set { _title = value; }
   }
 
   /// <summary> Gets or sets the icon displayed in the tab for this view. </summary>
