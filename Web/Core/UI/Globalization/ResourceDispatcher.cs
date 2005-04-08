@@ -63,7 +63,7 @@ public sealed class ResourceDispatcher
   ///   define a resource manager, an InvalidOperationException is thrown. </param>
   public static void Dispatch (Control control, bool throwExceptionIfNoResources)
   {
-    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (control);
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (control, false);
     if (resourceManager == null)
     {
       if (throwExceptionIfNoResources)
