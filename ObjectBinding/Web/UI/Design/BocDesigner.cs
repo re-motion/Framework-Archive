@@ -14,6 +14,7 @@ public class BocDesigner: ControlDesigner
   {
     get { return true; }
   }
+
 }
 
 }
