@@ -128,7 +128,7 @@ public class TabbedMultiView: WebControl, IControl
     {
       TabbedMultiView multiView = ((TabbedMultiView) OwnerControl);
       TabView view = (TabView) multiView.MultiViewInternal.FindControl (_target);
-      multiView.ActivateView (view);
+      multiView.SetActiveView (view);
     }
   }
 
@@ -186,16 +186,20 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip.Tabs.Add (tab);
   }
 
-  public void ActivateView (int index)
-  {
-    ActivateView (Views[index]);
-  }
-
-  //TODO: .net2.0 complier switch. TabView is CLS-complient in .net 2.0
+#if ! net20
   [CLSCompliant (false)]
-  public void ActivateView (TabView view)
+#endif
+  public void SetActiveView (TabView view)
   {
     MultiViewInternal.SetActiveView (view);
+  }
+
+#if ! net20
+  [CLSCompliant (false)]
+#endif
+  public TabView GetActiveView()
+  {
+    return MultiViewInternal.GetActiveView();
   }
 
   protected override HtmlTextWriterTag TagKey
