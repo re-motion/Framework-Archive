@@ -24,22 +24,20 @@ public class TabbedMultiView: WebControl, IControl
 
   // types
 
-  //TODO: .net2.0 complier switch. Inherit from System.Web.UI.WebControls.MultiView
+#if ! net20
   [CLSCompliant (false)]
   protected internal class MultiView: Rubicon.Web.UI.Controls.MultiPage
+#else
+  protected internal class MultiView: System.Web.UI.WebControls.MultiView
+#endif
   {
+#if ! net20
     bool _isLoadViewStateComplete = false;
+#endif
 
     protected internal MultiView ()
     {
     }
-
-    protected override void LoadViewState(object savedState)
-    {
-      base.LoadViewState (savedState);
-      _isLoadViewStateComplete = true;
-    }
-
 
     protected override ControlCollection CreateControlCollection()
     {
@@ -56,7 +54,13 @@ public class TabbedMultiView: WebControl, IControl
       get { return (TabbedMultiView) base.Parent; }
     }
 
-    //TODO: .net 2.0 compiler switch. Method already exists in MultiView
+#if ! net20
+    protected override void LoadViewState(object savedState)
+    {
+      base.LoadViewState (savedState);
+      _isLoadViewStateComplete = true;
+    }
+
     public TabView GetActiveView()
     {
       int selectedView = SelectedIndex;
@@ -65,7 +69,6 @@ public class TabbedMultiView: WebControl, IControl
       return null;
     }
 
-    //TODO: .net 2.0 compiler switch. Method already exists in MultiView
     public void SetActiveView (TabView view)
     {
       int index = Controls.IndexOf (view);
@@ -79,12 +82,12 @@ public class TabbedMultiView: WebControl, IControl
       }
     }
 
-    //TODO: .net 2.0 compiler switch. Event already exists in MultiView
     public event EventHandler ActiveViewChanged
     {
       add { SelectedIndexChange += value; }
       remove { SelectedIndexChange -= value; }
     }
+#endif
   }
 
   protected internal class MultiViewTab: WebTab
@@ -345,6 +348,9 @@ public class TabbedMultiView: WebControl, IControl
     get { return (TabViewCollection) MultiViewInternal.Controls; }
   }
 
+  /// <summary>
+  ///   Fired everytime the active view is changed after during a postback and after the <c>LoavViewState</c> phase.
+  /// </summary>
   public event EventHandler ActiveViewChanged
   {
     add { MultiViewInternal.ActiveViewChanged += value; }
@@ -360,8 +366,9 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
-  //TODO: .net2.0 complier switch. TabbedMultiView is CLS-complient in .net 2.0
+#if ! net20
   [CLSCompliant (false)]
+#endif
   protected TabbedMultiView.MultiView MultiViewInternal
   {
     get
