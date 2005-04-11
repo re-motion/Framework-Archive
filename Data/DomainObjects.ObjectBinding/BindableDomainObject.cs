@@ -61,12 +61,6 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   // methods and properties
 
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public new ObjectID ID
-  {
-    get { return base.ID; }
-  }
-
   public IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
   {
     return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
