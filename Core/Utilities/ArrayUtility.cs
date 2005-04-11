@@ -77,6 +77,24 @@ public sealed class ArrayUtility
     return result;
   }
 
+  public static Array Insert (Array original, int index, object value)
+  {
+    if (original.Rank != 1)
+      throw new ArgumentException ("Array rank must be 1.", "original");
+
+    Array result = Array.CreateInstance (original.GetType().GetElementType(), original.Length + 1);
+
+    for (int i = 0; i < index; ++i)
+      result.SetValue (original.GetValue(i), i);
+
+    result.SetValue (value, index);
+
+    for (int i = index; i < original.Length; ++i)
+      result.SetValue (original.GetValue(i), i + 1);
+
+    return result;
+  }
+
 	private ArrayUtility()
 	{
 	}
