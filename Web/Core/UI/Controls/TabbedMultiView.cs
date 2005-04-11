@@ -15,6 +15,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\" cssclass=\"tabbedMultiView\"></{0}:TabbedMultiView>")]
+[DefaultEvent ("ActiveViewChanged")]
 public class TabbedMultiView: WebControl, IControl
 {
   // constants
@@ -27,9 +28,18 @@ public class TabbedMultiView: WebControl, IControl
   [CLSCompliant (false)]
   protected internal class MultiView: Rubicon.Web.UI.Controls.MultiPage
   {
+    bool _isLoadViewStateComplete = false;
+
     protected internal MultiView ()
     {
     }
+
+    protected override void LoadViewState(object savedState)
+    {
+      base.LoadViewState (savedState);
+      _isLoadViewStateComplete = true;
+    }
+
 
     protected override ControlCollection CreateControlCollection()
     {
@@ -61,7 +71,12 @@ public class TabbedMultiView: WebControl, IControl
       int index = Controls.IndexOf (view);
       if (index < 0)
         throw new HttpException (string.Format ("The view {0} cannot be found inside {1}, the ActiveView must be a View control directly inside a MultiView.", (view == null) ? "null" : view.ID, ID));
-      SelectedIndex = index;
+      if (SelectedIndex != index)
+      {
+        SelectedIndex = index;
+        if (_isLoadViewStateComplete || (Page != null && ! Page.IsPostBack))
+          OnSelectedIndexChange (EventArgs.Empty);
+      }
     }
 
     //TODO: .net 2.0 compiler switch. Event already exists in MultiView
