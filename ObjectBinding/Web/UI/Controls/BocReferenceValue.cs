@@ -758,7 +758,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
     else
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
