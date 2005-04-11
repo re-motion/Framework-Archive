@@ -30,6 +30,7 @@ public class ClientForm : TestWxeBasePage
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BocDateTimeValue1;
   protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BocBooleanValue1;
   private PlaceHolder _wxeControlsPlaceHolder;
+  private IDataEditControl[] _dataEditControls;
 
   protected ClientFormWxeFunction Function
   {
@@ -38,9 +39,52 @@ public class ClientForm : TestWxeBasePage
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
+    // load editor pages
+    IDataEditControl dataEditControl;
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    if (dataEditControl != null)
+      dataEditControls.Add (dataEditControl);
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    if (dataEditControl != null)
+      dataEditControls.Add (dataEditControl);
+    _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
+
+    Response.Cache.SetAllowResponseInBrowserHistory (false);
+    Response.Cache.SetMaxAge (TimeSpan.Zero);
+    Response.Cache.SetCacheability (HttpCacheability.Server);
   }
 
-	override protected void OnInit(EventArgs e)
+  private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
+  {
+    TabView view = new TabView();
+    view.ID = id+ "_View";
+    view.Title = title;
+    view.Icon = icon;
+    MultiView.Views.Add (view);
+
+    UserControl control = (UserControl) this.LoadControl (path);
+    control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+
+    //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
+    //if (formPageControl != null)
+    //  formPageControl.FormPageObject = formPage;
+
+    view.Controls.Add (control);
+
+    IDataEditControl dataEditControl = control as IDataEditControl;
+    if (dataEditControl != null)
+    {
+      dataEditControl.BusinessObject = Function.Object;
+      dataEditControl.LoadValues (IsPostBack);
+      dataEditControl.EditMode = ! Function.ReadOnly;
+      return dataEditControl;
+    }
+
+    return null;
+  }
+
+  override protected void OnInit(EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
