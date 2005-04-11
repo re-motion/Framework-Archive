@@ -353,7 +353,7 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   /// <summary>
-  ///   Fired everytime the active view is changed after during a postback and after the <c>LoavViewState</c> phase.
+  ///   Fired everytime the active view is changed after the <c>LoavViewState</c> phase or if it is not a post back.
   /// </summary>
   public event EventHandler ActiveViewChanged
   {
