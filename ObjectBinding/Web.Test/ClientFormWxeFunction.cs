@@ -50,8 +50,6 @@ public class ClientFormClosingWxeFunction: WxeFunction
   void Step1()
   {
   }
-  WxeStep Step2 = new WxePageStep ("ClientFormExpired.aspx");
-
 }
 
 public class ClientFormKeepAliveWxeFunction: WxeFunction

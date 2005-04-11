@@ -185,6 +185,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "ClientFormFrameset.htm"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "ClientFormWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
