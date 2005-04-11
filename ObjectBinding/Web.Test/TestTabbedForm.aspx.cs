@@ -148,6 +148,7 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.MultiView.ActiveViewChanged += new System.EventHandler(this.MultiView_ActiveViewChanged);
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -194,6 +195,11 @@ public class TestTabbedForm : TestWxeBasePage
       if (formGridManager != null)
         formGridManager.Validate();
     }
+  }
+
+  private void MultiView_ActiveViewChanged(object sender, System.EventArgs e)
+  {
+  
   }
 
   protected override ControlCollection WxeControls
