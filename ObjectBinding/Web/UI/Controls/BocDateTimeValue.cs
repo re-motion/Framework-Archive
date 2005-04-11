@@ -940,30 +940,25 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
       //  Parse Date
 
-      if (    ActualValueType == BocDateTimeValueType.DateTime
-          ||  ActualValueType == BocDateTimeValueType.Date
-          || ActualValueType == BocDateTimeValueType.Undefined)
+      if (   InternalDateValue == null
+          && ActualValueType != BocDateTimeValueType.Undefined)
       {
-        if (   InternalDateValue == null
-            && ActualValueType != BocDateTimeValueType.Undefined)
-        {
-          //throw new FormatException ("The date component of the DateTime value is null.");
-          return null;
-        }
+        //throw new FormatException ("The date component of the DateTime value is null.");
+        return null;
+      }
 
-        try
+      try
+      {
+        if (   ! IsDesignMode
+            || ! StringUtility.IsNullOrEmpty (InternalDateValue))
         {
-          if (   ! IsDesignMode
-              || ! StringUtility.IsNullOrEmpty (InternalDateValue))
-          {
-            dateTimeValue = DateTime.Parse (InternalDateValue).Date;
-          }
+          dateTimeValue = DateTime.Parse (InternalDateValue).Date;
         }
-        catch (FormatException)
-        {
-          //throw new FormatException ("Error while parsing the date component (value: '" + InternalDateValue+ "') of the DateTime value. " + ex.Message);
-          return null;
-        }
+      }
+      catch (FormatException)
+      {
+        //throw new FormatException ("Error while parsing the date component (value: '" + InternalDateValue+ "') of the DateTime value. " + ex.Message);
+        return null;
       }
 
 
@@ -1016,22 +1011,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       DateTime dateTimeValue = (DateTime) value;
       _savedDateTimeValue = new NaDateTime (dateTimeValue);
 
-      if (   ActualValueType == BocDateTimeValueType.DateTime
-          || ActualValueType == BocDateTimeValueType.Date
-          || ActualValueType == BocDateTimeValueType.Undefined)
+      try
       {
-        try
-        {
-          InternalDateValue = FormatDateValue (dateTimeValue);
-        }
-        catch  (InvalidCastException e)
-        {
-          throw new ArgumentException ("Expected type '" + _actualValueType.ToString() + "', but was '" + value.GetType().FullName + "'.", "value", e);
-        }
+        InternalDateValue = FormatDateValue (dateTimeValue);
       }
-      else
+      catch  (InvalidCastException e)
       {
-        InternalDateValue = null;
+        throw new ArgumentException ("Expected type '" + _actualValueType.ToString() + "', but was '" + value.GetType().FullName + "'.", "value", e);
       }
 
       if (   ActualValueType == BocDateTimeValueType.DateTime
@@ -1052,37 +1038,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       }
     }
   }
-
-//  /// <summary>
-//  ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
-//  ///   <see cref="FormatException"/>) to read the contents of <see cref="Value"/>.
-//  /// </summary>
-//  /// <remarks> Valid values include valid combinations of date/time values and <see langword="null"/>. </remarks>
-//  [Browsable(false)]
-//  public bool IsValidValue
-//  {
-//    get
-//    {
-//      if (_savedDateTimeValue.IsNull)
-//      {
-//        return    StringUtility.IsNullOrEmpty (_internalDateValue) 
-//               && StringUtility.IsNullOrEmpty (_internalTimeValue);
-//      }
-//      
-//      try
-//      {
-//        //  Force the evaluation of Value
-//        if (Value != null)
-//          return true;
-//      }
-//      catch (FormatException)
-//      {
-//        return false;
-//      }
-//
-//      return true;
-//    }
-//  }
 
   protected override object ValueImplementation
   {
