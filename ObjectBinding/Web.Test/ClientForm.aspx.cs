@@ -108,6 +108,7 @@ public class ClientForm : TestWxeBasePage
     cancelButton.Text = "Cancel";
     cancelButton.Style["margin-right"] = "10pt";
     cancelButton.Click += new EventHandler(CancelButton_Click);
+    cancelButton.UseSubmitBehavior = false;
     MultiView.TopControls.Add (cancelButton);
 
     _wxeControlsPlaceHolder = new PlaceHolder();
