@@ -1755,7 +1755,8 @@ public class BocList:
   {
     if (IsRowEditMode && column is BocSimpleColumnDefinition)
     {
-      if (_rowEditModeControls[columnIndex].IsRequired)
+      if (   _rowEditModeControls[columnIndex] != null
+          && _rowEditModeControls[columnIndex].IsRequired)
       {
         Image requriedFieldMarker = GetRequiredMarker();
         requriedFieldMarker.RenderControl (writer);
