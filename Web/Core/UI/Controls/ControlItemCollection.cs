@@ -122,6 +122,11 @@ public class ControlItemCollection: CollectionBase
     EndEdit();
   }
 
+  public void Insert (int index, IControlItem value)
+  {
+    List.Insert (index, value);
+  }
+
   /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
   public IControlItem[] ToArray()
   {
