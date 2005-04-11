@@ -14,23 +14,27 @@
   </head>
   <body>
     <form id=Form method=post runat="server"><h1>PersonDetails Form</h1>
-      <table id=FormGrid runat="server">
+      <table id=FormGrid runat="server" width="100%">
         <tr>
           <td colSpan=2>Persondetails</td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True"></obc:boctextvalue></td></tr>
+          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="100%" required="True">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="200px" required="True"></obc:boctextvalue></td></tr>
+          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="100%" required="True">
+<textboxstyle textmode="SingleLine">
+</TextBoxStyle></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:bocenumvalue id="GenderField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Gender">
-              <listcontrolstyle radiobuttonlisttextalign="Right" radionbuttonlistrepeatlayout="Table" controltype="DropDownList" radiobuttonlistrepeatdirection="Vertical">
-              </listcontrolstyle></obc:bocenumvalue></td></tr>
+          <td><obc:bocenumvalue id="GenderField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Gender" width="100%">
+<listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+</ListControlStyle></obc:bocenumvalue></td></tr>
         <tr>
           <td style="HEIGHT: 14px"></td>
-          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner">
+          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner" width="100%">
 <optionsmenuitems>
 <obc:BocMenuItem Text="Copy" ItemID="Copy" RequiredSelection="ExactlyOne">
 <persistedcommand>
@@ -47,19 +51,19 @@
 </PersistedCommand></obc:bocreferencevalue></td></tr>
   <tr>
     <td></td>
-    <td><obc:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName">
+    <td><obc:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName" width="100%">
 <textboxstyle textmode="SingleLine">
 </TextBoxStyle>
 </obc:BocTextValue></td></tr>
         <tr>
           <td></td>
-          <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth"></obc:bocdatetimevalue></td></tr>
+          <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth" width="100%"></obc:bocdatetimevalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obc:BocBooleanValue></td></tr>
+          <td><obc:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" width="100%"></obc:BocBooleanValue></td></tr>
         <tr>
           <td></td>
-          <td><obc:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+          <td><obc:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" width="100%">
 <textboxstyle textmode="MultiLine">
 </TextBoxStyle></obc:BocMultilineTextValue></td></tr>
         <tr>
