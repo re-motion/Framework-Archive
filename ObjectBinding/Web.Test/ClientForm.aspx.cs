@@ -50,10 +50,15 @@ public class ClientForm : TestWxeBasePage
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
 
-    Response.Cache.SetAllowResponseInBrowserHistory (false);
     Response.Cache.SetMaxAge (TimeSpan.Zero);
-    Response.Cache.SetCacheability (HttpCacheability.Server);
+    Response.Cache.SetCacheability (HttpCacheability.NoCache);
   }
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+  }
+
 
   private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
   {

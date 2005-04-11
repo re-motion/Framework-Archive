@@ -13,14 +13,14 @@
 
 <script language="javascript">
   var _keepAliveLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormKeepAliveWxeFunction,OBWTest';
-  var aktiv = window.setInterval('KeepAlive()', 5000);
+  var active = window.setInterval('KeepAlive()', 180000);
   
   function KeepAlive()
   {
     try 
     {
-      var keepAliveImage = new Image();
-      keepAliveImage.src = _keepAliveLocation;
+      var image = new Image();
+      image.src = _keepAliveLocation;
     }
     catch (e)
     {
@@ -29,39 +29,45 @@
 </script>
   
 <script language="javascript">
-  var _expiredLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormClosingWxeFunction,OBWTest';
+  var _wxe_expiredLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormClosingWxeFunction,OBWTest';
+  var _wxe_isSubmit = false;
+  var _wxe_aspnetDoPostBack = null;
   
-  function OnUnload()
-  {
-    window.document.location = _expiredLocation;
-  }
   function OnBeforeUnload()
   {
-    var isOutsideClientLeft = event.clientX < 0;
-    var isOutsideClientTop = event.clientY < 0;
-    var isOutsideClientRight = event.clientX > (window.document.body.clientLeft + window.document.body.clientWidth);
-    var isOutsideClientBottom = event.clientY > (window.document.body.clientTop + window.document.body.clientHeight);
-    var isOutsideClient = isOutsideClientLeft || isOutsideClientTop || isOutsideClientRight || isOutsideClientBottom;
-    
-    if (isOutsideClient)
+    if (! _wxe_isSubmit)
     {
-      //debugger;
-      // Catches menubar clicks, location clicks, close-button clicks.
-      //event.returnValue = 'Are you sure you want to leave the page?';
-      window.document.body.onunload = OnUnload;
+      try 
+      {
+        var image = new Image();
+        image.src = _wxe_expiredLocation;
+      }
+      catch (e)
+      {
+      }
     }
   }
 
-  function OnKeyDown()
+  function OnLoad()
   {
-    if (event.keyCode == 116)
-    {
-      location.replace (_expiredLocation);
-    }
+    var theform;
+		if (window.navigator.appName.toLowerCase().indexOf("microsoft") > -1)
+			theform = document.Form;
+		else 
+			theform = document.forms["Form"];
+	  theform.onsubmit = function() { _wxe_isSubmit = true; };
+	  
+	  _wxe_aspnetDoPostBack = __doPostBack;
+	  __doPostBack = function (eventTarget, eventArgument)
+	  {
+	    _wxe_isSubmit = true;
+	    _wxe_aspnetDoPostBack (eventTarget, eventArgument);
+	  }
   }
+  
 </script>
   </head>
-<body MS_POSITIONING="FlowLayout" onBeforeUnload="OnBeforeUnload();" onkeydown="OnKeyDown();">
+<body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" >
     <form id=Form method=post runat="server">
       <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
       </rubicon:tabbedmultiview>
