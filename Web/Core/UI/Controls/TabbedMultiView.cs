@@ -19,7 +19,7 @@ namespace Rubicon.Web.UI.Controls
 public class TabbedMultiView: WebControl, IControl
 {
   // constants
-
+  private const string c_tabIDSuffix = "_Tab";
   // statics
 
   // types
@@ -179,7 +179,7 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip.Tabs.Add (WebTab.GetSeparator());
 
     MultiViewTab tab = new MultiViewTab ();
-    tab.TabID = view.ID + "_Tab";
+    tab.TabID = view.ID + c_tabIDSuffix;
     tab.Text = view.Title;
     tab.Icon = view.Icon;
     tab.Target = view.ID;
@@ -192,6 +192,9 @@ public class TabbedMultiView: WebControl, IControl
   public void SetActiveView (TabView view)
   {
     MultiViewInternal.SetActiveView (view);
+    TabView activeView = GetActiveView();
+    WebTab nextAcitveTab = _tabStrip.Tabs.Find (activeView.ID + c_tabIDSuffix);
+    _tabStrip.SetSelectedTab (nextAcitveTab);
   }
 
 #if ! net20
