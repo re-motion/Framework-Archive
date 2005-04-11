@@ -10,15 +10,55 @@ public class ClientFormWxeFunction: WxeFunction
 {
   public ClientFormWxeFunction ()
   {
+    Object = Person.GetObject (new Guid (0,0,0,0,0,0,0,0,0,0,1));
     ReturnUrl = "javascript:window.close();";
   }
 
   // parameters
+  public ReflectionBusinessObject Object 
+  {
+    get { return (ReflectionBusinessObject) Variables["Object"]; }
+    set { Variables["Object"] = value; }
+  }
+
+  [WxeParameter (1, true)]
+  public bool ReadOnly
+  {
+    get { return (bool) Variables["ReadOnly"]; }
+    set { Variables["ReadOnly"] = value; }
+  }
 
   // steps
 
-  WxeStep Step1 = new WxePageStep ("ClientForm.aspx");
-  WxeStep Step2 = new WxePageStep ("ClientForm.aspx");
+  class Step1: WxeStepList
+  {
+    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
+
+    WxeStep Step1_ = new WxePageStep ("ClientForm.aspx");
+  }
+
+  class Step2: WxeStepList
+  {
+    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
+
+    WxeStep Step1_ = new WxePageStep ("ClientForm.aspx");
+  }
+}
+
+public class ClientFormClosingWxeFunction: WxeFunction
+{
+  void Step1()
+  {
+  }
+  WxeStep Step2 = new WxePageStep ("ClientFormExpired.aspx");
+
+}
+
+public class ClientFormKeepAliveWxeFunction: WxeFunction
+{
+  void Step1()
+  {
+  }
 }
 
 }

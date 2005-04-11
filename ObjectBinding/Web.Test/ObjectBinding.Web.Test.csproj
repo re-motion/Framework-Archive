@@ -169,6 +169,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "ClientFormExpired.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ClientFormExpired.aspx.cs"
+                    DependentUpon = "ClientFormExpired.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ClientFormExpired.aspx.resx"
+                    DependentUpon = "ClientFormExpired.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "ClientFormWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
