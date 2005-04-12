@@ -35,6 +35,10 @@
   
   function OnBeforeUnload()
   {
+  }
+
+  function OnUnload()
+  {
     if (! _wxe_isSubmit)
     {
       try 
@@ -47,7 +51,7 @@
       }
     }
   }
-
+  
   function OnLoad()
   {
     var theform;
@@ -67,7 +71,7 @@
   
 </script>
   </head>
-<body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" >
+<body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" onUnload="OnUnload();" >
     <form id=Form method=post runat="server">
       <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
       </rubicon:tabbedmultiview>
