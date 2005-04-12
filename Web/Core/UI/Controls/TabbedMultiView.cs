@@ -194,7 +194,8 @@ public class TabbedMultiView: WebControl, IControl
     MultiViewInternal.SetActiveView (view);
     TabView activeView = GetActiveView();
     WebTab nextAcitveTab = _tabStrip.Tabs.Find (activeView.ID + c_tabIDSuffix);
-    _tabStrip.SetSelectedTab (nextAcitveTab);
+    //_tabStrip.SetSelectedTab (nextAcitveTab);
+    nextAcitveTab.SetSelected = true;
   }
 
 #if ! net20
@@ -277,6 +278,7 @@ public class TabbedMultiView: WebControl, IControl
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
     writer.AddStyleAttribute ("overflow", "auto");
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_ActiveView");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
     
     Control view = _multiViewInternal.GetActiveView();
