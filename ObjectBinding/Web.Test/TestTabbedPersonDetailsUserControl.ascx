@@ -34,10 +34,15 @@
 <rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
 </PersistedCommand>
 </rubicon:BocMenuItem>
+<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
 </OptionsMenuItems>
 
 <persistedcommand>
-<rubicon:BocCommand Type="None"></rubicon:BocCommand>
+<rubicon:BocCommand Type="Event"></rubicon:BocCommand>
 </PersistedCommand></rubicon:bocreferencevalue></td></tr>
 </table>
 <p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
