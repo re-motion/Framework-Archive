@@ -1006,9 +1006,14 @@ public class BocList:
     base.OnPreRender (e);
   }
 
-  /// <summary> Overrides the parent's <c>Render</c> method. </summary>
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Div; }
+  }
+
+  /// <summary> Overrides the parent's <c>RenderChontents</c> method. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
-  protected override void Render (HtmlTextWriter writer)
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
@@ -1024,13 +1029,6 @@ public class BocList:
         _pageCount = 1;
     }
  
-    //  Render control opening tag
-    writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
-    if (! Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClass);
-    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Control-Tag
-
     bool isInternetExplorer501AndHigher = true;
     bool isCss21Compatible = false;
     if (! IsDesignMode)
@@ -1050,23 +1048,18 @@ public class BocList:
       isCss21Compatible = isOperaGreaterOrEqual7 || isNetscapeCompatibleGreaterOrEqual5;
     }
 
+    bool hasNavigator = _alwaysShowPageInfo || _pageCount > 1;
     if (isInternetExplorer501AndHigher)
-      RenderTableAndMenuInternetExplorer501Compatible (writer);
+      RenderContentsInternetExplorer501Compatible (writer, hasNavigator);
     else if (isCss21Compatible && ! (writer is Html32TextWriter))
-      RenderTableAndMenuCss21Compatible (writer);
+      RenderContentsCss21Compatible (writer, hasNavigator);
     else
-      RenderTableAndMenuLegacyBrowser (writer);
-
-    //  The navigation block
-    if (_alwaysShowPageInfo || _pageCount > 1)
-      RenderNavigator (writer);
-
-    writer.RenderEndTag(); // End control-tag
+      RenderContentsLegacyBrowser (writer, hasNavigator);
   }
 
-  private void RenderTableAndMenuInternetExplorer501Compatible (HtmlTextWriter writer)
+  private void RenderContentsInternetExplorer501Compatible (HtmlTextWriter writer, bool hasNavigator)
   {
-    RenderTableAndMenuLegacyBrowser (writer);
+    RenderContentsLegacyBrowser (writer, hasNavigator);
     return;
     //if (HasMenuBlock)
     //{
@@ -1090,11 +1083,12 @@ public class BocList:
     //writer.RenderEndTag();
   }
 
-  private void RenderTableAndMenuCss21Compatible (HtmlTextWriter writer)
+  private void RenderContentsCss21Compatible (HtmlTextWriter writer, bool hasNavigator)
   {
     writer.AddStyleAttribute ("display", "table");
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table
+    
     writer.AddStyleAttribute ("display", "table-row");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
 
@@ -1107,6 +1101,9 @@ public class BocList:
 
     if (HasMenuBlock)
     {
+      writer.AddStyleAttribute ("display", "table-row");
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+
       writer.AddStyleAttribute ("display", "table-cell");
       writer.AddStyleAttribute ("vertical-align", "top");
       string menuBlockWidth = c_defaultMenuBlockWidth;
@@ -1121,13 +1118,27 @@ public class BocList:
       RenderMenuBlock (writer);
       writer.RenderEndTag();  //  End table-cell
     }
-
     writer.RenderEndTag();  //  End table-row
+
+    if (hasNavigator)
+    {
+      writer.AddStyleAttribute ("display", "table-row");
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+      RenderNavigator (writer);
+      writer.RenderEndTag();  //  End table-cell
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+      writer.RenderEndTag();  //  End table-cell
+
+      writer.RenderEndTag();  //  End table-row
+    }
+
     writer.RenderEndTag();  //  End table
   }
 
   /// <remarks> Use display:table, display:table-row, ... for opera and mozilla/firefox </remarks>
-  private void RenderTableAndMenuLegacyBrowser (HtmlTextWriter writer)
+  private void RenderContentsLegacyBrowser (HtmlTextWriter writer, bool hasNavigator)
   {
     //  Render list block / menu block
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
@@ -1162,6 +1173,8 @@ public class BocList:
     writer.AddStyleAttribute ("vertical-align", "top");
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
     RenderTableBlock (writer);
+    if (hasNavigator)
+      RenderNavigator (writer);
     writer.RenderEndTag();
 
     if (HasMenuBlock)
