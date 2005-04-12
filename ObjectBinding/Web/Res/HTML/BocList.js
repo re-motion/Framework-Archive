@@ -349,9 +349,19 @@ function BocList_UpdateListMenu (bocList)
   	  item.className = _contentMenu_itemClassName;
   	  if (itemInfo.Href != null)
       {
-        anchor.href = itemInfo.Href;
-        if (itemInfo.Target != null)
-      	  anchor.target = itemInfo.Target;
+        if (itemInfo.Href.toLowerCase().indexOf ('javascript:') >= 0)
+        {
+          anchor.href = '#';
+          anchor.removeAttribute ('target');
+          anchor.onclick = function () { eval (itemInfo.Href); };
+        }
+        else
+        {
+          anchor.href = itemInfo.Href;
+          if (itemInfo.Target != null)
+      	    anchor.target = itemInfo.Target;
+          anchor.removeAttribute ('onclick');
+        }
       }
     }
     else
@@ -361,6 +371,7 @@ function BocList_UpdateListMenu (bocList)
       item.className = _contentMenu_itemDisabledClassName;
       anchor.removeAttribute ('href');
       anchor.removeAttribute ('target');
+      anchor.removeAttribute ('onclick');
     }
   }
 }
