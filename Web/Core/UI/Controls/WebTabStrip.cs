@@ -274,8 +274,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
           postBackEvent = page.GetPostBackClientEvent (this, tab.TabID);
         if (! StringUtility.IsNullOrEmpty (postBackEvent))
         {
+          postBackEvent += "; return false;";
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
-          postBackLink = "javascript:" + postBackEvent;
         }
       }
       writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
