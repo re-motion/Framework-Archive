@@ -706,7 +706,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       bool isActive =    Command.Show == CommandShow.Always
                       || isReadOnly && Command.Show == CommandShow.ReadOnly
                       || ! isReadOnly && Command.Show == CommandShow.EditMode;
-      bool isCommandLinkPossible = IsReadOnly || _icon.Visible;
+      bool isCommandLinkPossible = (IsReadOnly || _icon.Visible) && InternalValue != null;
       if (   isActive
           && Command.Type != CommandType.None
           && isCommandLinkPossible)
@@ -716,7 +716,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
 
     string argument = string.Empty;
-    string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+    string postBackEvent = Page.GetPostBackClientEvent (this, argument);
     string objectID = string.Empty;
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
@@ -731,7 +731,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
-        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
+        Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
       _icon.RenderControl (writer);
       if (isCommandEnabled)
         Command.RenderEnd (writer);
@@ -748,7 +748,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
-        Command.RenderBegin (writer, postBackLink, string.Empty, objectID);
+        Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
       _label.RenderControl (writer);
       if (isCommandEnabled)
         Command.RenderEnd (writer);
@@ -982,10 +982,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
       bool isOldInternalValueNull = _internalValue == null;
 
-      if (StringUtility.IsNullOrEmpty (value))
-        _internalValue = null;
-      else
-        _internalValue = value;
+      _internalValue = StringUtility.EmptyToNull (value);
 
       bool removeNullItem =    IsRequired 
                             && isOldInternalValueNull
