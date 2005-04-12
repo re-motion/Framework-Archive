@@ -223,7 +223,7 @@ public class WebTab: IControlItem
     }
   }
 
-  public virtual void RenderContents (HtmlTextWriter writer, string postBackLink)
+  public virtual void RenderContents (HtmlTextWriter writer, string postBackEvent)
   {
 
     if (IsSeparator)
@@ -234,8 +234,11 @@ public class WebTab: IControlItem
     {
       bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
       bool hasText = ! StringUtility.IsNullOrEmpty (_text);
-      if (! StringUtility.IsNullOrEmpty (postBackLink))
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+      if (! StringUtility.IsNullOrEmpty (postBackEvent))
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+      }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       if (hasIcon)
       {
