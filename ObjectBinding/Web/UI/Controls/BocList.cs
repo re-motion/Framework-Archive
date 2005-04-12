@@ -137,62 +137,6 @@ public class BocList:
     Cancel
   }
 
-  /// <summary> Represents the sorting direction for an individual column. </summary>
-  /// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
-  [Serializable]
-  private struct SortingOrderEntry
-  {
-    /// <summary> Gets or sets the index of the column for which the <see cref="Direction"/> is entered. </summary>
-    public int ColumnIndex;
-    /// <summary> Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>. </summary>
-    public SortingDirection Direction;
-
-    /// <summary> Represents a null <see cref="SortingOrderEntry"/>. </summary>
-    public static readonly SortingOrderEntry Empty = new SortingOrderEntry (Int32.MinValue, SortingDirection.None);
-
-    /// <summary> Initializes a new instance. </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Constructor/*' />
-    public SortingOrderEntry (int columnIndex, SortingDirection direction)
-    {
-      ColumnIndex = columnIndex;
-      Direction = direction;
-    }
-
-    public bool IsEmpty
-    {
-      get 
-      {
-        return    this.ColumnIndex == SortingOrderEntry.Empty.ColumnIndex 
-               && this.Direction == SortingOrderEntry.Empty.Direction;
-      }
-    }
-
-    /// <summary>
-    ///   Tests whether the specified object is a <see cref="SortingOrderEntry"/> structure 
-    ///   and is equivalent to this <see cref="SortingOrderEntry"/> structure.
-    /// </summary>
-    /// <remarks> Required for identifying the <see cref="SortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/Equals/*' />
-    public override bool Equals (object obj)
-    {
-      if (obj is SortingOrderEntry)
-      {
-        SortingOrderEntry entry = (SortingOrderEntry) obj;
-        return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
-      }
-      return false;
-    }
-
-    /// <summary>
-    ///   Returns a hash code for this <see cref="SortingOrderEntry"/> structure.
-    /// </summary>
-    /// <include file='doc\include\Controls\BocList.xml' path='BocList/SortingOrderEntry/GetHashCode/*' />
-    public override int GetHashCode()
-    {
-      return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
-    }
-  }
-
   public class EditDetailsValidator: CustomValidator
   {
     BocList _owner;
@@ -326,7 +270,7 @@ public class BocList:
   /// <summary> Determines whether to show the sorting order after the sorting button. </summary>
   private bool _showSortingOrder = false;
   /// <summary> 
-  ///   Contains <see cref="SortingOrderEntry"/> objects in the order of the buttons pressed.
+  ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
   private ArrayList _sortingOrder = new ArrayList();
 
@@ -652,8 +596,8 @@ public class BocList:
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or sortable custom column at index" + columnIndex + ".");
     }
 
-    SortingOrderEntry sortingOrderEntry = SortingOrderEntry.Empty;
-    foreach (SortingOrderEntry currentEntry in _sortingOrder)
+    BocListSortingOrderEntry sortingOrderEntry = BocListSortingOrderEntry.Empty;
+    foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
     {
       if (currentEntry.ColumnIndex == columnIndex)
       {
@@ -675,7 +619,7 @@ public class BocList:
         }
         case SortingDirection.Descending:
         {
-          sortingOrderEntry = SortingOrderEntry.Empty;
+          sortingOrderEntry = BocListSortingOrderEntry.Empty;
           break;
         }
         case SortingDirection.None:
@@ -687,7 +631,7 @@ public class BocList:
     }
     else
     {
-      sortingOrderEntry = new SortingOrderEntry (columnIndex, SortingDirection.Ascending);
+      sortingOrderEntry = new BocListSortingOrderEntry (columnIndex, SortingDirection.Ascending);
     }
 
     if (! sortingOrderEntry.IsEmpty)
@@ -1002,6 +946,10 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
 
+    BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
+    EnsureOptionsMenuItemsGot (true);
+    EnsureListMenuItemsGot (true);
+
     EnsureRowEditModeValidatorsRestored();
     base.OnPreRender (e);
   }
@@ -1018,10 +966,8 @@ public class BocList:
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
-    EnsureOptionsMenuItemsGot (true);
-    EnsureListMenuItemsGot (true);
-    
+    BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
+
     if (IsDesignMode)
     {
       //  Normally set in OnPreRender, which is omitted during design-time
@@ -1718,7 +1664,7 @@ public class BocList:
     ArrayList sortingOrder = new ArrayList();
     if (EnableSorting)
     {
-      foreach (SortingOrderEntry currentEntry in _sortingOrder)
+      foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
       {
         sortingDirections[currentEntry.ColumnIndex] = currentEntry.Direction;
         if (currentEntry.Direction != SortingDirection.None)
@@ -2611,9 +2557,42 @@ public class BocList:
       selectedColumns);
 
     if (isPostBackEventPhase)
-      return GetColumnsForPreviousLifeCycle (columnDefinitions);
+    {
+      columnDefinitions = GetColumnsForPreviousLifeCycle (columnDefinitions);
+      
+      for (int i = 0; i < _sortingOrder.Count; i++)
+      {
+        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+        if (entry.IsEmpty)
+          continue;
+        if (entry.ColumnIndex != Int32.MinValue)
+          entry.Column = columnDefinitions[entry.ColumnIndex];
+      }
+    }
     else
-      return GetColumns (columnDefinitions);
+    {
+      columnDefinitions = GetColumns (columnDefinitions);
+      ArrayList columnDefinitionList = new ArrayList (columnDefinitions);
+   
+      for (int i = 0; i < _sortingOrder.Count; i++)
+      {
+        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+        if (entry.IsEmpty)
+          continue;
+        if (entry.Column == null)
+        {
+          entry.Column = columnDefinitions[entry.ColumnIndex];
+        }
+        else
+        {
+          entry.ColumnIndex = columnDefinitionList.IndexOf (entry.Column);
+          if (entry.ColumnIndex < 0)
+            _sortingOrder[i] = BocListSortingOrderEntry.Empty;
+        }
+      }
+    }
+
+    return columnDefinitions;
   }
 
   /// <summary>
@@ -2797,13 +2776,28 @@ public class BocList:
       if (! EnableSorting)
         return false;
 
-      foreach (SortingOrderEntry sortingOrderEntry in _sortingOrder)
+      foreach (BocListSortingOrderEntry sortingOrderEntry in _sortingOrder)
       {
         if (! sortingOrderEntry.IsEmpty)
           return true;
       }
       return false;
     }
+  }
+
+  /// <summary>
+  ///   Sets the sorting order for the <see cref="BocList"/>. Overwrites the current sorting order.
+  /// </summary>
+  /// <remarks>
+  ///   It is recommended to only set the sorting order when the <see cref="BocList"/> is initialized for the first 
+  ///   time. During subsequent postbacks, setting the sorting order before the post back events of the 
+  ///   <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
+  /// </remarks>
+  /// <param name="sortingOrder"></param>
+  public void  SetSortingOrder (BocListSortingOrderEntry[] sortingOrder)
+  {
+    _sortingOrder.Clear();
+    _sortingOrder.AddRange (sortingOrder);
   }
 
   /// <summary>
@@ -2857,11 +2851,11 @@ public class BocList:
       ArrayList entriesToBeRemoved = new ArrayList();
       for (int idxSortingKeys = 0; idxSortingKeys < _sortingOrder.Count; idxSortingKeys++)
       {
-        SortingOrderEntry currentEntry = (SortingOrderEntry) _sortingOrder[idxSortingKeys];
+        BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[idxSortingKeys];
         if (currentEntry.ColumnIndex >= fixedColumnCount)
           entriesToBeRemoved.Add (currentEntry);
       }
-      foreach (SortingOrderEntry currentEntry in entriesToBeRemoved)
+      foreach (BocListSortingOrderEntry currentEntry in entriesToBeRemoved)
         _sortingOrder.Remove (currentEntry);
     }
   }
@@ -2911,19 +2905,11 @@ public class BocList:
     IBusinessObject businessObjectA = (IBusinessObject) pairA.Second;
     IBusinessObject businessObjectB = (IBusinessObject) pairB.Second;
 
-    BocColumnDefinition[] renderColumns = EnsureColumnsGot();
-    foreach (SortingOrderEntry currentEntry in _sortingOrder)
+    foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
     {
       if (currentEntry.Direction != SortingDirection.None)
       {
-        BocColumnDefinition column = renderColumns[currentEntry.ColumnIndex];
-        if (   ! (column is BocValueColumnDefinition) 
-            && ! (   column is BocCustomColumnDefinition
-                  && ((BocCustomColumnDefinition) column).IsSortable))
-        {
-          throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value column at index" + currentEntry.ColumnIndex + ".");
-        }
-
+        BocColumnDefinition column = currentEntry.Column;
         BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
         BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
         BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
@@ -4279,6 +4265,112 @@ public class BocList:
   private bool IsPostBack
   {
     get { return !IsDesignMode && Page != null && Page.IsPostBack; }
+  }
+}
+
+/// <summary> Represents the sorting direction for an individual column. </summary>
+/// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
+[Serializable]
+public class BocListSortingOrderEntry
+{
+  /// <summary> Gets or sets the index of the column for which the <see cref="Direction"/> is entered. </summary>
+  private int _columnIndex;
+  [NonSerialized]
+  private BocColumnDefinition _column;
+  /// <summary> Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>. </summary>
+  private SortingDirection _direction;
+  [NonSerialized]
+  private bool _isEmpty = false;
+
+  /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
+  public static readonly BocListSortingOrderEntry Empty = new BocListSortingOrderEntry ();
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListSortingOrderEntry (BocColumnDefinition column, SortingDirection direction)
+  {
+    ArgumentUtility.CheckNotNull ("column", column);
+    _columnIndex = Int32.MinValue;
+    Column = column;
+    _direction = direction;
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  internal BocListSortingOrderEntry (int columnIndex, SortingDirection direction)
+  {
+    _columnIndex = columnIndex;
+    _column = null;
+    _direction = direction;
+  }
+
+  /// <summary> Initializes the empty instance. </summary>
+  private BocListSortingOrderEntry ()
+  {
+    _isEmpty = true;
+  }
+
+  public bool IsEmpty
+  {
+    get { return _isEmpty; }
+  }
+
+  internal int ColumnIndex
+  {
+    get { return _columnIndex; }
+    set { _columnIndex = value; }
+  }
+
+  /// <summary> The the column to sort by. </summary>
+  /// <remarks>
+  ///   Must not be <see langword="null"/>. 
+  ///   Must be of type <see cref="BocValueColumnDefinition"/> 
+  ///   or <see cref="BocCustomColumnDefinition"/> with <see cref="BocCustomColumnDefinition.IsSortable"/> set
+  ///   <see langword="true"/>.
+  /// </remarks>
+  public BocColumnDefinition Column
+  {
+    get { return _column; }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      if (   ! (value is BocValueColumnDefinition) 
+          && ! (   value is BocCustomColumnDefinition
+                && ((BocCustomColumnDefinition) value).IsSortable))
+      {
+        throw new ArgumentException ("BocListSortingOrderEntry can only use columns of type BocValueColumnDefinition or BocCustomColumnDefinition with BocCustomColumnDefinition.IsSortable set true.", "value");
+      }
+      _column = value; 
+    }
+  }
+
+  public SortingDirection Direction
+  {
+    get { return _direction; }
+    set { _direction = value; }
+  }
+
+  /// <summary>
+  ///   Tests whether the specified object is a <see cref="BocListSortingOrderEntry"/> structure 
+  ///   and is equivalent to this <see cref="BocListSortingOrderEntry"/> structure.
+  /// </summary>
+  /// <remarks> Required for identifying the <see cref="BocListSortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/BocListSortingOrderEntry/Equals/*' />
+  public override bool Equals (object obj)
+  {
+    if (obj is BocListSortingOrderEntry)
+    {
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) obj;
+      return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
+    }
+    return false;
+  }
+
+  /// <summary>
+  ///   Returns a hash code for this <see cref="BocListSortingOrderEntry"/> structure.
+  /// </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/BocListSortingOrderEntry/GetHashCode/*' />
+  public override int GetHashCode()
+  {
+    return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
   }
 }
 
