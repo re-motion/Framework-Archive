@@ -20,8 +20,6 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   {
     get { return _currentFunction; }
   }
-  // IHttpHandler Members
-
 
   public void ProcessRequest (HttpContext context)
   {
