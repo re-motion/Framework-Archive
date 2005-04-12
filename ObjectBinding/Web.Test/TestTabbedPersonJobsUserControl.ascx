@@ -14,12 +14,56 @@
     <td></td>
   </tr>
   <tr>
-    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True">
+    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" pagesize="1">
+<listmenuitems>
+<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+</ListMenuItems>
+
 <fixedcolumns>
-<rubicon:bocsimplecolumndefinition PropertyPathIdentifier="Title"></rubicon:bocsimplecolumndefinition>
-<rubicon:bocsimplecolumndefinition PropertyPathIdentifier="StartDate"></rubicon:bocsimplecolumndefinition>
-<rubicon:bocsimplecolumndefinition PropertyPathIdentifier="EndDate"></rubicon:bocsimplecolumndefinition>
-</FixedColumns></rubicon:boclist></td>
+<rubicon:BocEditDetailsColumnDefinition ColumnID="EditDetails"></rubicon:BocEditDetailsColumnDefinition>
+<rubicon:BocCommandColumnDefinition Text="Event" ColumnID="Event">
+<persistedcommand>
+<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
+</PersistedCommand>
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+<persistedcommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+</PersistedCommand>
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+<persistedcommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+</PersistedCommand>
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="EndDate">
+<persistedcommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+</PersistedCommand>
+</rubicon:BocSimpleColumnDefinition>
+</FixedColumns>
+
+<optionsmenuitems>
+<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+</OptionsMenuItems></rubicon:boclist></td>
 </tr>
 </table>
 <p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
