@@ -41,13 +41,18 @@
 <obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
 </PersistedCommand>
 </obc:BocMenuItem>
+<obc:BocMenuItem Text="Paste" ItemID="Paste">
+<persistedcommand>
+<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
+</PersistedCommand>
+</obc:BocMenuItem>
 </OptionsMenuItems>
 
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
 
 <persistedcommand>
-<obc:BocCommand Type="None"></obc:BocCommand>
+<obc:BocCommand Type="Event"></obc:BocCommand>
 </PersistedCommand></obc:bocreferencevalue></td></tr>
   <tr>
     <td></td>
