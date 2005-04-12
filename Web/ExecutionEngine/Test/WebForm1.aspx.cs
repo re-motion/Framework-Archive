@@ -40,6 +40,7 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Button SubNoReturnButton;
     protected System.Web.UI.WebControls.TextBox SubNoReturnField;
     protected System.Web.UI.WebControls.Button ThrowText;
+    protected System.Web.UI.WebControls.Calendar Calendar1;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
           new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
@@ -62,6 +63,11 @@ namespace Rubicon.PageTransition
 			Var1Label.Text = Function.Var1;
       Var2Label.Text = Function.Var2;
       IsPostBackCheck.Checked = IsPostBack;
+
+      if (! IsPostBack)
+      {
+        Calendar1.SelectedDate = DateTime.Now.Date;
+      }
 		}
 
 		#region Web Form Designer generated code
@@ -80,6 +86,7 @@ namespace Rubicon.PageTransition
 		/// </summary>
 		private void InitializeComponent()
 		{    
+      this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
       this.SubNoReturnField.TextChanged += new System.EventHandler(this.SubNoReturnField_TextChanged);
@@ -87,7 +94,7 @@ namespace Rubicon.PageTransition
       this.SubExtButton.Click += new System.EventHandler(this.SubExtButton_Click);
       this.Throw.Click += new System.EventHandler(this.Throw_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);
-      this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
+      this.Calendar1.SelectionChanged += new System.EventHandler(this.Calendar1_SelectionChanged);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
@@ -152,6 +159,18 @@ namespace Rubicon.PageTransition
     private void SubNoReturnField_TextChanged (object sender, System.EventArgs e)
     {
       ExecuteFunctionNoRepost (new SubFunction ("v1", "textbox"), (Control) sender);    
+    }
+
+    private void Calendar1_SelectionChanged(object sender, System.EventArgs e)
+    {
+      if (! IsReturningPostBack)
+      {
+        ExecuteFunction (new SubFunction ("v1", "calendar"), "_blank", (Control) sender, true);
+      }
+      else
+      {
+        Calendar1.SelectedDate = Calendar1.SelectedDate.AddDays (1);
+      }
     }
 
     public class SubFunction: WxeFunction, ISampleFunctionVariables
