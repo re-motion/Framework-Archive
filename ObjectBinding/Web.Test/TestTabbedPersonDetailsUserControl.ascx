@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
-<table id="FormGrid" runat="server">
+<table id="FormGrid" runat="server" style="margin-top: 60%">
   <tr>
     <td></td>
     <td><rubicon:boctextvalue id="LastNameField" required="true" runat="server" propertyidentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></rubicon:boctextvalue></td></tr>

@@ -54,9 +54,10 @@
       catch (e)
       {
       }
+      SmartNavigation (null);
     }
   }
-  
+
   function OnLoad()
   {
     var theform;
@@ -68,16 +69,70 @@
 	  
 	  _wxe_aspnetDoPostBack = __doPostBack;
 	  __doPostBack = function (eventTarget, eventArgument)
-	  {
-	    _wxe_isSubmit = true;
-	    _wxe_aspnetDoPostBack (eventTarget, eventArgument);
-	  }
+	      {
+	        _wxe_isSubmit = true;
+	        SmartNavigation (event.srcElement);
+	        _wxe_aspnetDoPostBack (eventTarget, eventArgument);
+	      };
+	  SmartNavigationRestore();
+  }
+
+  function SmartNavigationRestore()
+  {
+    var scrollParent = document.getElementById ('MultiView_ActiveView');
+    var scrollTop = 169;
+    var scrollLeft = 0;
+    if (scrollParent != null)
+    {
+      scrollParent.scrollTop = scrollTop;
+      scrollParent.scrollLeft = scrollLeft;
+    }
+    
+    var focusElement = document.getElementById ('TestTabbedPersonJobsUserControl_MultilineTextField_Boc_TextBox');
+    var offsetLeft = 417;
+    var offsetTop = 605;  
+    if (focusElement != null)
+    {
+      focusElement.focus();
+    }
   }
   
+  function SmartNavigation (srcElement)
+  {
+    var scrollParent = null;
+    for (var currentNode = srcElement; currentNode != null; currentNode = currentNode.offsetParent)
+    {
+      if (   currentNode.style.overflow.toLowerCase() == 'auto' 
+          || currentNode.style.overflow.toLowerCase() == 'scroll')
+      {
+        scrollParent = currentNode;
+        break;
+      }
+    }
+    if (scrollParent != null)
+    {
+      var scrollElement = document.getElementById ('smartNavigationScrollElement');
+      var scrollTop = document.getElementById ('smartNavigationScrollTop');
+      var scrollLeft = document.getElementById ('smartNavigationScrollLeft');
+      scrollElement.value = scrollParent.id;
+      scrollTop.value = scrollParent.scrollTop;
+      scrollLeft.value = scrollParent.scrollLeft;
+    }
+    if (srcElement != null)
+    {
+      var focus = document.getElementById ('smartNavigationFocus');
+      focus.value = srcElement.id;
+    }
+  }
 </script>
+
   </head>
 <body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" onUnload="OnUnload();" >
     <form id=Form method=post runat="server">
+    <input type="hidden" id="smartNavigationScrollLeft">
+    <input type="hidden" id="smartNavigationScrollTop">
+    <input type="hidden" id="smartNavigationScrollElement">
+    <input type="hidden" id="smartNavigationFocus">
       <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
       </rubicon:tabbedmultiview>
     </form>

@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
-<table id="FormGrid" runat="server">
+<table id="FormGrid" runat="server" style="margin-top: 80%">
   <tr>
     <td></td>
     <td><rubicon:bocmultilinetextvalue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></rubicon:bocmultilinetextvalue></td>
