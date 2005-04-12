@@ -247,7 +247,7 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
     item.className = _dropDownMenu_itemDisabledClassName;
     
 	if (itemInfo.Href != null && isEnabled)
-  	item.onclick = function () { window.location = itemInfo.Href; };
+  	item.onclick = function () { eval (itemInfo.Href); };
 
 	var iconPane = popUpDocument.createElement ('span');
 	iconPane.className = _dropDownMenu_itemIconPaneClassName;

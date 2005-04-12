@@ -223,21 +223,21 @@ public class Command: IControlItem
 
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
-  /// <param name="postBackLink">
-  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
+  /// <param name="postBackEvent">
+  ///   The string executed upon the click on a command of types
   ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
   ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
   /// </param>
   /// <param name="onClick"> 
-  ///   The string rendered in the <c>onClick</c> tag of the anchor element. 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
   /// <param name="parameters">
   ///   The strings inserted into the href attribute using <c>string.Formar</c>.
   /// </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
-      string postBackLink,
+      string postBackEvent,
       string onClick,
       params string[] parameters)
   {
@@ -245,23 +245,25 @@ public class Command: IControlItem
     {
       case CommandType.Href:
       {
-        ArgumentUtility.CheckNotNull ("parameters", postBackLink);        
+        ArgumentUtility.CheckNotNull ("parameters", postBackEvent);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, HrefCommand.FormatHref (parameters));
         if (HrefCommand.Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
         break;
       }
       case CommandType.Event:
       {
-        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
         break;
       }
       case CommandType.WxeFunction:
       {
-        ArgumentUtility.CheckNotNull ("postBackLink", postBackLink);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
         break;
       }
       default:
@@ -269,7 +271,6 @@ public class Command: IControlItem
         break;
       }
     }
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
   }
 
