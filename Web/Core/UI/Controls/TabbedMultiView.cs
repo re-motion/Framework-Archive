@@ -195,7 +195,7 @@ public class TabbedMultiView: WebControl, IControl
     TabView activeView = GetActiveView();
     WebTab nextAcitveTab = _tabStrip.Tabs.Find (activeView.ID + c_tabIDSuffix);
     //_tabStrip.SetSelectedTab (nextAcitveTab);
-    nextAcitveTab.SetSelected = true;
+    nextAcitveTab.SetSelected (true);
   }
 
 #if ! net20
