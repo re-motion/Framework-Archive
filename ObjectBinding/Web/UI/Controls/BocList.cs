@@ -1329,7 +1329,7 @@ public class BocList:
         if (isPostBackCommand)
         {
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
-          href = Page.GetPostBackClientHyperlink (this, argument);
+          href = Page.GetPostBackClientHyperlink (this, argument) + ";";
           //  HACK: EscapeJavaScript will be moved to extra class 
           href = DropDownMenu.EscapeJavaScript (href);
           href = "'" + href + "'";
@@ -1822,8 +1822,10 @@ public class BocList:
         string argument = c_sortCommandPrefix + columnIndex.ToString();
         if (_hasClientScript)
         {
-          string postBackScript = Page.GetPostBackClientHyperlink (this, argument);
-          writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackScript);
+          string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+          postBackEvent += "; return false;";
+          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+          writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         }
         writer.RenderBeginTag (HtmlTextWriterTag.A);
       }
@@ -2255,9 +2257,9 @@ public class BocList:
         objectID = businessObjectWithIdentity.UniqueIdentifier;
 
       string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
-      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
       string onClick = c_onCommandClickScript;
-      command.RenderBegin (writer, postBackLink, onClick, originalRowIndex, objectID);
+      command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID);
     }
 
     return isCommandEnabled;
@@ -2305,29 +2307,7 @@ public class BocList:
     if (IsRowEditMode)
       return "return false;";
     string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
-    return Page.GetPostBackClientEvent (this, postBackArgument);
-  }
-
-  /// <summary>
-  ///   Obtains a hyperlink reference that causes, when invoked, a server postback to the form.
-  /// </summary>
-  /// <remarks> 
-  ///   If the <see cref="BocList"/> is in row edit mode, <c>javascript: function() { return false; }</c> will be 
-  ///   returned to prevent actions on this list.
-  /// </remarks>
-  /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
-  /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
-  /// <param name="customCellArgument"> 
-  ///   The argument to be passed to the <see cref="IBocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
-  ///   Can be <see langword="null"/>.
-  /// </param>
-  /// <returns></returns>
-  public string GetCustomCellPostBackClientHyperlink (int columnIndex, int listIndex, string customCellArgument)
-  {
-    if (IsRowEditMode)
-      return "javascript: function() { return false; }";
-    string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
-    return Page.GetPostBackClientHyperlink (this, postBackArgument);
+    return Page.GetPostBackClientEvent (this, postBackArgument) + ";";
   }
 
   /// <summary> Formats the arguments into a post back argument to be used by the client side post back event. </summary>
