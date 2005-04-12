@@ -76,6 +76,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "  theForm.returningToken.value = pageToken; \n"
         + "  document.getElementById(button).click(); \n"
         + "}");
+    PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeDoPostBack",
+        "function wxeDoPostBack (control, argument, returningToken) { \n"
+        + "  var theForm = document." + _form.ClientID + "; \n"
+        + "  theForm.returningToken.value = returningToken; \n"
+        + "  __doPostBack (control, argument); \n"
+        + "}");
 
     NameValueCollection postBackCollection = _page.GetPostBackCollection();
     if (postBackCollection != null)
@@ -163,12 +169,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       string eventtarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
       string eventargument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
       returnScript = string.Format (
-            "if (window.opener && window.opener.__doPostBack && window.opener.document.getElementById(\"wxePageToken\") && window.opener.document.getElementById(\"wxePageToken\").value == \"{0}\") \n"
-          + "  window.opener.__doPostBack(\"{1}\", \"{2}\"); \n"
+            "if (window.opener && window.opener.wxeDoPostBack && window.opener.document.getElementById(\"wxePageToken\") && window.opener.document.getElementById(\"wxePageToken\").value == \"{0}\") \n"
+          + "  window.opener.wxeDoPostBack(\"{1}\", \"{2}\", \"{3}\"); \n"
           + "window.close();", 
           _page.CurrentStep.PageToken,
           eventtarget, 
-          eventargument);
+          eventargument, 
+          functionState.FunctionToken);
     }
     else
     {
