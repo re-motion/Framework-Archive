@@ -35,6 +35,11 @@
   
   function OnBeforeUnload()
   {
+    if (! _wxe_isSubmit)
+    {
+      event.returnValue = "If you leave now, forever lost your session will be.";
+      event.cancelBubble = true;
+    }
   }
 
   function OnUnload()

@@ -2073,16 +2073,16 @@ public class BocList:
   {
     bool isReadOnly = IsReadOnly;
     string argument = null;
-    string postBackLink = null;
+    string postBackEvent = null;
 
     if (isEditedRow)
     {
       if (! isReadOnly)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Save;
-        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
       }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
@@ -2101,9 +2101,9 @@ public class BocList:
       if (! isReadOnly)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Cancel;
-        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
       }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
@@ -2124,9 +2124,9 @@ public class BocList:
       if (! isReadOnly)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
-        postBackLink = Page.GetPostBackClientHyperlink (this, argument);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
       }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
@@ -2749,6 +2749,7 @@ public class BocList:
   /// <summary>
   ///   Gets a flag set <see langword="true"/> if the <see cref="Value"/> is sorted before it is displayed.
   /// </summary>
+  [Browsable (false)]
   public bool HasSortingKeys
   {
     get 
@@ -3502,6 +3503,7 @@ public class BocList:
         BocReferenceValue.GetSupportedPropertyInterfaces());
   }
 
+  [Browsable (false)]
   public NaInt32 EditableRowIndex
   {
     get { return _editableRowIndex; }
@@ -3511,6 +3513,7 @@ public class BocList:
   ///   Queried where the rendering depends on whether the list is in edit mode. 
   ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
   /// </remarks>
+  [Browsable (false)]
   public bool IsRowEditMode
   {
     get { return ! _editableRowIndex.IsNull; } 

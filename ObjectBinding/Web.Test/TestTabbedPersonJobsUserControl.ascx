@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonJobsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonJobsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
 <table id="FormGrid" runat="server">
@@ -29,7 +29,7 @@
 </ListMenuItems>
 
 <fixedcolumns>
-<rubicon:BocEditDetailsColumnDefinition ColumnID="EditDetails"></rubicon:BocEditDetailsColumnDefinition>
+<rubicon:BocEditDetailsColumnDefinition SaveText="Save" CancelText="Cancel" ColumnID="EditDetails" EditText="Edit"></rubicon:BocEditDetailsColumnDefinition>
 <rubicon:BocCommandColumnDefinition Text="Event" ColumnID="Event">
 <persistedcommand>
 <rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
