@@ -26,7 +26,3 @@ function TextBoxStyle_OnKeyDown (textBox, length)
     
   return true;
 }
-
-function TextBoxStyle_OnPaste (textBox, length)
-{
-}
