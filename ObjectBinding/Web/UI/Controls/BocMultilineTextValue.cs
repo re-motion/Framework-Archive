@@ -12,6 +12,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
+using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.Globalization;
 
@@ -46,7 +47,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
   protected enum ResourceIdentifier
   {
-    RequiredValidationMessage
+    RequiredValidationMessage,
+    MaxLengthValidationMessage
   }
 
   // static members
@@ -301,7 +303,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     if (IsReadOnly || ! IsRequired)
       return new BaseValidator[0];
 
-    BaseValidator[] validators = new BaseValidator[1];
+    ArrayList validators = new ArrayList (2);
 
     RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
     requiredValidator.ID = ID + "_ValidatorRequired";
@@ -315,10 +317,28 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     {
       requiredValidator.ErrorMessage = _errorMessage;
     }      
-    validators[0] = requiredValidator;
+    validators.Add (requiredValidator);
+
+    if (! _textBoxStyle.MaxLength.IsNull)
+    {
+      LengthValidator lengthValidator = new LengthValidator();
+      lengthValidator.ID = ID + "_ValidatorMaxLength";
+      lengthValidator.ControlToValidate = TargetControl.ID;
+      lengthValidator.MaximumLength = _textBoxStyle.MaxLength.Value;
+      if (StringUtility.IsNullOrEmpty (_errorMessage))
+      {
+        string maxLengthMessage = GetResourceManager().GetString (ResourceIdentifier.MaxLengthValidationMessage);
+        lengthValidator.ErrorMessage = string.Format (maxLengthMessage, _textBoxStyle.MaxLength.Value);            
+      }
+      else
+      {
+        lengthValidator.ErrorMessage = _errorMessage;
+      }      
+      validators.Add (lengthValidator);
+    }
 
     _validators.AddRange (validators);
-    return validators;
+    return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
   }
   
   /// <summary> Prerenders the child controls. </summary>

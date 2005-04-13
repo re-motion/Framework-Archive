@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.Globalization;
 
@@ -56,6 +57,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   protected enum ResourceIdentifier
   {
     RequiredErrorMessage,
+    MaxLengthValidationMessage,
     InvalidDateAndTimeErrorMessage,
     InvalidDateErrorMessage,
     InvalidIntegerErrorMessage,
@@ -311,7 +313,27 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
 
     BocTextValueType valueType = ActualValueType;
-    if (valueType == BocTextValueType.DateTime)
+    if (valueType == BocTextValueType.String)
+    {
+      if (! _textBoxStyle.MaxLength.IsNull)
+      {
+        LengthValidator lengthValidator = new LengthValidator();
+        lengthValidator.ID = ID + "_ValidatorMaxLength";
+        lengthValidator.ControlToValidate = TargetControl.ID;
+        lengthValidator.MaximumLength = _textBoxStyle.MaxLength.Value;
+        if (StringUtility.IsNullOrEmpty (_errorMessage))
+        {
+          string maxLengthMessage = GetResourceManager().GetString (ResourceIdentifier.MaxLengthValidationMessage);
+          lengthValidator.ErrorMessage = string.Format (maxLengthMessage, _textBoxStyle.MaxLength.Value);            
+        }
+        else
+        {
+          lengthValidator.ErrorMessage = _errorMessage;
+        }      
+        validators.Add (lengthValidator);
+      }
+    }
+    else if (valueType == BocTextValueType.DateTime)
     {
       DateTimeValidator typeValidator = new DateTimeValidator();
       typeValidator.ID = baseID + "Type";
@@ -322,7 +344,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
         typeValidator.ErrorMessage = _errorMessage;
       validators.Add (typeValidator);
     }
-    else if (valueType != BocTextValueType.Undefined && valueType != BocTextValueType.String)
+    else if (valueType != BocTextValueType.Undefined)
     {
       CompareValidator typeValidator = new CompareValidator();
       typeValidator.ID = baseID + "Type";
