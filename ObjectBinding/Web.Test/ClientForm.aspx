@@ -37,8 +37,20 @@
   {
     if (! _wxe_isSubmit)
     {
-      event.returnValue = "If you leave now, forever lost your session will be.";
-      event.cancelBubble = true;
+      var activeElement = window.document.activeElement;
+      var isJavaScriptAnchor = false;
+      if (  activeElement != null
+          && activeElement.tagName.toLowerCase() == 'a'
+          && activeElement.href != null
+          && activeElement.href.toLowerCase().indexOf ('javascript:') >= 0)
+      {
+        isJavaScriptAnchor = true;
+      }
+      if (! isJavaScriptAnchor)
+      {
+        event.returnValue = "If you leave now, forever lost your session will be.";
+        event.cancelBubble = true;
+      }
     }
   }
 
@@ -128,7 +140,6 @@
 </head>
 <body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" onUnload="OnUnload();" >
     <form id=Form method=post runat="server">
-<a href="javascript:__doPostBack ('target', 'argument')">dopostback</a>
 <p>
     <input type="hidden" id="smartNavigationScrollLeft">
     <input type="hidden" id="smartNavigationScrollTop">

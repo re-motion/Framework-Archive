@@ -4,6 +4,7 @@
 - BocList
   * GetCustomCellPostBackClientHyperlink gibt es nicht mehr.
     Stattdessen nur noch GetCustomCellPostBackClientEvent verwenden.
+    
 1.2.18.0
 ========
 
