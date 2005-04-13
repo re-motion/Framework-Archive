@@ -816,7 +816,8 @@ public class BocList:
       IBusinessObject businessObject,
       string argument)
   {
-    column.CustomCell.OnClick (this, businessObject, column, argument);
+    BocCustomCellArguments args = new BocCustomCellArguments (this, businessObject, column);
+    column.CustomCell.OnClick (args, argument);
     BocCustomCellClickEventHandler clickHandler = 
         (BocCustomCellClickEventHandler) Events[s_customCellClickEvent];
     if (clickHandler != null)
@@ -1987,8 +1988,9 @@ public class BocList:
     else if (customColumn != null)
     {
       string onClick = c_onCommandClickScript;
-      customColumn.CustomCell.Render (
-          writer, this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
+      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
+          this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
+      customColumn.CustomCell.Render (writer, arguments);
     }
 
     writer.RenderEndTag();
