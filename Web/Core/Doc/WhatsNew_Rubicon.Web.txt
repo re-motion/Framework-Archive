@@ -1,3 +1,10 @@
+1.2.20.0
+========
+
+- LengthValidator
+  * Überarbeitet. Altes Verhalten (-1 für nicht validieren) beibehalten.
+  * Check für nur TextBox entfernt.
+  
 1.2.13.0
 ========
 
