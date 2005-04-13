@@ -42,4 +42,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue.RequiredValidationMessage">
         <value>Bitte geben Sie einen Wert ein.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue.MaxLengthValidationMessage">
+        <value>Bitte geben Sie nicht mehr als {0} Zeichen ein.</value>
+    </data>
 </root>
