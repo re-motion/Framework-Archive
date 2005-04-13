@@ -5,6 +5,12 @@
   * GetCustomCellPostBackClientHyperlink gibt es nicht mehr.
     Stattdessen nur noch GetCustomCellPostBackClientEvent verwenden.
     
+- BocTextValue
+  * Length Validation für Single und Multiline
+
+- BocMultilineTextValue
+  * Length Validation
+    
 1.2.18.0
 ========
 
