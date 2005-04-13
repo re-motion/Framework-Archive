@@ -353,7 +353,8 @@ function BocList_UpdateListMenu (bocList)
         {
           anchor.href = '#';
           anchor.removeAttribute ('target');
-          anchor.onclick = function () { eval (itemInfo.Href); };
+          anchor.setAttribute ('javascript', itemInfo.Href);
+          anchor.onclick = function () { eval (this.getAttribute ('javascript')); };
         }
         else
         {
@@ -361,6 +362,7 @@ function BocList_UpdateListMenu (bocList)
           if (itemInfo.Target != null)
       	    anchor.target = itemInfo.Target;
           anchor.removeAttribute ('onclick');
+          anchor.removeAttribute ('javascript');
         }
       }
     }
@@ -372,10 +374,11 @@ function BocList_UpdateListMenu (bocList)
       anchor.removeAttribute ('href');
       anchor.removeAttribute ('target');
       anchor.removeAttribute ('onclick');
+      anchor.removeAttribute ('javascript');
     }
   }
 }
-  
+
 function ContentMenu_GoTo (menuItem)
 {
   window.location = menuItem.href;
