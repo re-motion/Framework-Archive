@@ -1,12 +1,15 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI.WebControls;
+
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Web.UI.Controls
 {
 public class LengthValidator : BaseValidator
 {
-  private int _minimumLength = -1;
-  private int _maximumLength = -1;
+  private NaInt32 _minimumLength = NaInt32.Null;
+  private NaInt32 _maximumLength = NaInt32.Null;
 
   // static members and constants
 
@@ -23,29 +26,57 @@ public class LengthValidator : BaseValidator
 
   protected override bool EvaluateIsValid ()
   {
-    TextBox textBox = FindControl (ControlToValidate) as TextBox;
-    if (textBox == null)
-      throw new InvalidOperationException ("LengthValidator can only be applied to TextBox controls.");
+    string text = base.GetControlValidationValue (base.ControlToValidate);
 
-    if (_minimumLength >= 0 && textBox.Text.Length < _minimumLength)
+    if (! _minimumLength.IsNull && text.Length < _minimumLength.Value)
       return false;
 
-    if (_maximumLength >= 0 && textBox.Text.Length > _maximumLength)
+    if (! _maximumLength.IsNull && text.Length > _maximumLength.Value)
       return false;
 
     return true;
   }
   
-  public int MinimumLength
+  /// <summary> The minimum number of characters allowed. </summary>
+  /// <value> 
+  ///  The minimum length of the validated string 
+  ///  or less than zero, or <see cref="NaInt32.Null"/> to disable the validation of the minimum length.
+  /// </value>
+  [Category ("Behavior")]
+  [Description ("The maximum number of characters allowed in the validated property. Set MinimumLength to -1 or emtpy  to not validate the minimum length.")]
+  [DefaultValue (typeof(NaInt32), "null")]
+  public NaInt32 MinimumLength
   {
     get { return _minimumLength; }
-    set { _minimumLength = value; }
+    set
+    {
+      if (value.IsNull || value.Value < 0)
+        _minimumLength = NaInt32.Null;
+      else
+        _minimumLength = value; 
+      _minimumLength = value; 
+    }
   }
 
-  public int MaximumLength
+  /// <summary> The maximum number of characters allowed. </summary>
+  /// <value> 
+  ///  The maximum length of the validated string
+  ///  or less than zero, or <see cref="NaInt32.Null"/> to disable the validation of the maximum length.
+  /// </value>
+  [Category ("Behavior")]
+  [Description ("The maximum number of characters allowed in the validated property. Set MaximumLength to -1 or emtpy to not validate the maximum length.")]
+  [DefaultValue (typeof(NaInt32), "null")]
+  public NaInt32 MaximumLength
   {
     get { return _maximumLength; }
-    set { _maximumLength = value; }
+    set
+    {
+      if (value.IsNull || value.Value < 0)
+        _maximumLength = NaInt32.Null;
+      else
+        _maximumLength = value; 
+      _maximumLength = value; 
+    }
   }
 
 }
