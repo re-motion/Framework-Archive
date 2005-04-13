@@ -214,18 +214,22 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   private void EnsureHtmlFormFieldInitialized()
   {
-    if (! _htmlFormFieldInitialized && ! ControlHelper.IsDesignMode (_page))
+    if (! _htmlFormFieldInitialized)
     {
+      bool isDesignMode = ControlHelper.IsDesignMode (_page);
       MemberInfo[] fields = _page.GetType().FindMembers (
             MemberTypes.Field, 
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
             new MemberFilter (FindHtmlFormControlFilter), null);
-      if (fields.Length < 1)
+      if (fields.Length < 1 && ! isDesignMode)
         throw new ApplicationException ("Page class " + _page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
       else if (fields.Length > 1)
         throw new ApplicationException ("Page class " + _page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
-      _htmlFormField = (FieldInfo) fields[0];
-      _htmlFormFieldInitialized = true;
+      if (fields.Length > 0) // Can only be null without an exception during design mode
+      {
+        _htmlFormField = (FieldInfo) fields[0];
+        _htmlFormFieldInitialized = true;
+      }
     }
   }
 
@@ -239,12 +243,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     get
     {
       EnsureHtmlFormFieldInitialized();
-      return (HtmlForm) _htmlFormField.GetValue (_page);
+      if (_htmlFormField != null) // Can only be null without an exception during design mode
+        return (HtmlForm) _htmlFormField.GetValue (_page);
+      else
+        return null;
     }
     set 
     {
       EnsureHtmlFormFieldInitialized();
-      _htmlFormField.SetValue (_page, value);
+      if (_htmlFormField != null) // Can only be null without an exception during design mode
+        _htmlFormField.SetValue (_page, value);
     }
   }
 }
