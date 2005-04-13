@@ -1,8 +1,11 @@
 using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.NullableValueTypes;
-
+using Rubicon.Web.Utilities;
+using Rubicon.Web.UI;
+using Rubicon.Web;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 public enum ListControlType
@@ -216,12 +219,13 @@ public class SingleRowTextBoxStyle: Style
   private NaInt32 _maxLength = NaInt32.Null;
   private NaBoolean _readOnly = NaBoolean.Null;
   private NaBoolean _autoPostback = NaBoolean.Null;
+  private NaBoolean _checkClientSideMaxLength = NaBoolean.Null;
 
   public virtual void ApplyStyle (TextBox textBox)
   {
     textBox.ApplyStyle (this);
     
-    if (! _maxLength.IsNull)
+    if (! _maxLength.IsNull && ! _checkClientSideMaxLength.IsFalse)
       textBox.MaxLength = _maxLength.Value;
     
     if (! _columns.IsNull)
@@ -240,9 +244,10 @@ public class SingleRowTextBoxStyle: Style
     SingleRowTextBoxStyle ts = s as SingleRowTextBoxStyle;
     if (ts != null)
     {
-      this.MaxLength = ts.MaxLength;
-      this.Columns = ts.Columns;
-      this.ReadOnly = ts.ReadOnly;
+      if (! _checkClientSideMaxLength.IsFalse)
+        _maxLength = ts.MaxLength;
+      _columns = ts.Columns;
+      _readOnly = ts.ReadOnly;
     }
   }
 
@@ -285,6 +290,17 @@ public class SingleRowTextBoxStyle: Style
     get { return _autoPostback; }
     set { _autoPostback = value; }
   }
+
+  [Description("Whether the text in the control can exceed it's max length during input. If true, MaxLength is only used for validation after the input is completed.")]
+  [Category("Behavior")]
+  [DefaultValue (typeof(NaBoolean), "null")]
+  [NotifyParentProperty (true)]
+  public NaBoolean CheckClientSideMaxLength
+  {
+    get { return _checkClientSideMaxLength; }
+    set { _checkClientSideMaxLength = value; }
+  }
+
 }
 
 /// <summary>
@@ -292,6 +308,8 @@ public class SingleRowTextBoxStyle: Style
 /// </summary>
 public class TextBoxStyle: SingleRowTextBoxStyle
 {
+  private const string c_textBoxStyleScriptUrl = "TextBoxStyle.js";
+
   private NaInt32 _rows = NaInt32.Null;
   private TextBoxMode _textMode;
   private TextBoxMode _defaultTextMode = TextBoxMode.SingleLine;
@@ -317,6 +335,21 @@ public class TextBoxStyle: SingleRowTextBoxStyle
 
     if (! _wrap.IsNull)
       textBox.Wrap = _wrap.Value;
+
+    if (   _textMode == TextBoxMode.MultiLine 
+        && ! MaxLength.IsNull 
+        && ! CheckClientSideMaxLength.IsFalse
+        && ! ControlHelper.IsDesignMode ((Control) textBox)) 
+    {
+      string key = typeof (BocReferenceValue).FullName + "_Script";
+      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+            textBox, null, typeof (TextBoxStyle), ResourceType.Html, c_textBoxStyleScriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+      }
+      textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
+    }
 
     textBox.TextMode = _textMode;
   }
