@@ -1,6 +1,6 @@
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Page language="c#" Codebehind="ClientForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.ClientForm" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="ClientForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.ClientForm" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -71,7 +71,7 @@
 	  __doPostBack = function (eventTarget, eventArgument)
 	      {
 	        _wxe_isSubmit = true;
-	        SmartNavigation (event.srcElement);
+	        SmartNavigation (document.getElementById ('eventTarget'));
 	        _wxe_aspnetDoPostBack (eventTarget, eventArgument);
 	      };
 	  SmartNavigationRestore();
@@ -125,16 +125,18 @@
     }
   }
 </script>
-
-  </head>
+</head>
 <body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" onUnload="OnUnload();" >
     <form id=Form method=post runat="server">
+<a href="javascript:__doPostBack ('target', 'argument')">dopostback</a>
+<p>
     <input type="hidden" id="smartNavigationScrollLeft">
     <input type="hidden" id="smartNavigationScrollTop">
     <input type="hidden" id="smartNavigationScrollElement">
     <input type="hidden" id="smartNavigationFocus">
       <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
-      </rubicon:tabbedmultiview>
+      </rubicon:tabbedmultiview></p>
+<p>&nbsp;</p>
     </form>
   </body>
 </html>

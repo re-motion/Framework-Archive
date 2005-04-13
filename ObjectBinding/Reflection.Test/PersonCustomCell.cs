@@ -30,16 +30,14 @@ public class PersonCustomCell: IBocCustomColumnDefinitionCell
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     string onClickEvent = list.GetCustomCellPostBackClientEvent (columnIndex, listIndex, "1");
-    onClickEvent += onClick;
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent);
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick + onClickEvent);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("1 <br>");
     writer.RenderEndTag();
 
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     onClickEvent = list.GetCustomCellPostBackClientEvent (columnIndex, listIndex, "2");
-    onClickEvent += onClick;
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent);
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick + onClickEvent);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("2 <br>");
     writer.RenderEndTag();
