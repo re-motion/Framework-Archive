@@ -6,6 +6,10 @@
     Stattdessen nur noch GetCustomCellPostBackClientEvent verwenden.
   * Bug-Fix ListMenu, OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
     
+- BocCustomColumnDefinitionCell
+  * Ersetzt IBocCustomColumnDefinitionCell
+  * DoRender und OnCLick überschreiben. Siehe Dokumentation für zusätzliche Infos.
+  
 - BocReferenceValue
   * Bug-Fix OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
 

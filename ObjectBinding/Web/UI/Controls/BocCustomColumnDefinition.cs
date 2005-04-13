@@ -203,11 +203,9 @@ public abstract class BocCustomColumnDefinitionCell
 {
   private BocCustomCellRenderArguments _arguments = null;
 
-  /// <summary>
-  ///   Get the javascript code that invokes OnClick when called. The 
-  /// </summary>
-  /// <param name="argument"></param>
-  /// <returns></returns>
+  /// <summary> Get the javascript code that invokes <see cref="OnClick"/> when called. </summary>
+  /// <param name="argument"> The event argument to be passed to <see cref="OnClick"/>. </param>
+  /// <returns> The script invoking <see cref="OnClick"/> when called. </returns>
   protected string GetPostBackClientEvent (string eventArgument)
   {
     if (_arguments == null)
@@ -221,23 +219,16 @@ public abstract class BocCustomColumnDefinitionCell
     DoRender (writer, arguments);
   }
 
-  /// <summary>
-  ///   Override this method to render a custom cell.
-  /// </summary>
-  /// <remarks>
-  ///   Use <see cref="GetPostBackClientEvent"/> to render the code that invokes <see cref="OnClick"/>.
-  /// </remarks>
+  /// <summary> Override this method to render a custom cell. </summary>
+  /// <remarks> Use <see cref="GetPostBackClientEvent"/> to render the code that invokes <see cref="OnClick"/>. </remarks>
   protected abstract void DoRender (HtmlTextWriter writer, BocCustomCellRenderArguments arguments);
 
-  /// <summary>
-  ///   This method is called when a script created by <see cref="GetPostBackClientEvent"/> is executed.
-  /// </summary>
+  /// <summary> This method is called when a script created by <see cref="GetPostBackClientEvent"/> is executed. </summary>
   /// <param name="arguments"> The event arguments. </param>
   /// <param name="eventArgument"> The parameter passed to <see cref="GetPostBackClientEvent"/>. </param>
   public virtual void OnClick (BocCustomCellArguments arguments, string eventArgument)
   {
   }
-
 }
 
 public class BocCustomCellArguments
@@ -256,25 +247,19 @@ public class BocCustomCellArguments
     _columnDefinition = columnDefiniton;
   }
 
-  /// <summary>
-  ///   The <see cref="BocList"/> containing the column.
-  /// </summary>
+  /// <summary> The <see cref="BocList"/> containing the column. </summary>
   public BocList List
   {
     get { return _list; }
   }
 
-  /// <summary>
-  ///   The <see cref="IBusinessObject"/> that should be rendered or that was clicked.
-  /// </summary>
+  /// <summary> The <see cref="IBusinessObject"/> that should be rendered or that was clicked. </summary>
   public IBusinessObject BusinessObject
   {
     get { return _businessObject; }
   }
 
-  /// <summary>
-  ///   The column definition of the column that should be rendered or that was clicked.
-  /// </summary>
+  /// <summary> The column definition of the column that should be rendered or that was clicked. </summary>
   public BocCustomColumnDefinition ColumnDefinition
   {
     get { return _columnDefinition; }
@@ -301,25 +286,19 @@ public class BocCustomCellRenderArguments: BocCustomCellArguments
     _onClick = onClick;
   }
 
-  /// <summary>
-  ///   The index of the rendered column.
-  /// </summary>
+  /// <summary> The index of the rendered column. </summary>
   public int ColumnIndex
   {
     get { return _columnIndex; }
   }
 
-  /// <summary>
-  ///   The list index of the current business object.
-  /// </summary>
+  /// <summary> The list index of the current business object. </summary>
   public int ListIndex
   {
     get { return _listIndex; }
   }
 
-  /// <summary>
-  ///  Client script code that prevents row selection. For internal use.
-  /// </summary>
+  /// <summary> Client script code that prevents row selection. For internal use. </summary>
   /// <remarks>
   ///   A function to be appended to the client side <c>OnClick</c> event handler. The function tasked with
   ///   preventing the row from being selected/highlighted when clicking on the link itself instead of the row.

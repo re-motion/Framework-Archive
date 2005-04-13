@@ -5,42 +5,34 @@ using Rubicon.ObjectBinding.Web.Controls;
 
 namespace OBRTest
 {
-public class PersonCustomCell: IBocCustomColumnDefinitionCell
+public class PersonCustomCell: BocCustomColumnDefinitionCell
 {
   public PersonCustomCell ()
   {
   }
 
-  public void OnClick(
-      BocList list, 
-      IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton, 
-      string argument)
+  public override void OnClick(BocCustomCellArguments arguments, string eventArgument)
   {
+    base.OnClick (arguments, eventArgument);
   }
 
-  public void Render(
-      HtmlTextWriter writer, 
-      BocList list, 
-      IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton, 
-      int columnIndex, 
-      int listIndex,
-      string onClick)
+  protected override void DoRender (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-    string onClickEvent = list.GetCustomCellPostBackClientEvent (columnIndex, listIndex, "1");
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick + onClickEvent);
+    string onClickEvent = GetPostBackClientEvent ("1");
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent + arguments.OnClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
-    writer.Write ("1 <br>");
+    writer.Write ("1");
     writer.RenderEndTag();
+    writer.Write ("<br>");
 
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-    onClickEvent = list.GetCustomCellPostBackClientEvent (columnIndex, listIndex, "2");
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick + onClickEvent);
+    onClickEvent = GetPostBackClientEvent ("2");
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent + arguments.OnClick);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
-    writer.Write ("2 <br>");
+    writer.Write ("2");
     writer.RenderEndTag();
+    writer.Write ("<br>");
   }
 
 }

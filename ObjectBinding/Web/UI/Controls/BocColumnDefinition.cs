@@ -289,17 +289,9 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjectClassSource
 {
-  /// <summary>
-  ///   A format string describing how the value accessed through the 
-  ///   <see cref="BusinessObjectPropertyPath"/> object is formatted.
-  /// </summary>
   private string _formatString;
-
-  /// <summary>
-  ///   The <see cref="PropertyPathBinding"/> used to store the <see cref="PropertyPath"/> 
-  ///   internally.
-  /// </summary>
   private PropertyPathBinding _propertyPathBinding;
+  private string _editDetailsControlType;
 
   /// <summary> Initializes a new instance of the <see cref="BocSimpleColumnDefinition"/> class. </summary>
   public BocSimpleColumnDefinition()
@@ -383,6 +375,38 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     get { return _propertyPathBinding.PropertyPathIdentifier; }
     set { _propertyPathBinding.PropertyPathIdentifier = value; }
   }
+
+  /// <summary> 
+  ///   Returns the <see cref="IBusinessObjectBoundModifiableWebControl"/> to be used for editing this column in 
+  ///   edit details mode.
+  /// </summary>
+  public IBusinessObjectBoundModifiableWebControl CreateEditDetailsControl()
+  {
+    if (StringUtility.IsNullOrEmpty (_editDetailsControlType))
+      return null;
+    
+    Type type = TypeUtility.GetType (_editDetailsControlType, true, false);
+    return (IBusinessObjectBoundModifiableWebControl) Activator.CreateInstance (type);
+  }
+
+  /// <summary>
+  ///   Gets or sets the type of the <see cref="IBusinessObjectBoundModifiableWebControl"/> to be instantiated 
+  ///   for editing the value of this column in edit details mode.
+  /// </summary>
+  /// <remarks>
+  ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
+  /// </remarks>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("The IBusinessObjectBoundModifiableWebControl to be used for editing the value of this column in edit details mode.")]
+  //  No default value
+  [NotifyParentProperty (true)]
+  public string EditDetailsControlType
+  {
+    get { return _editDetailsControlType; }
+    set { _editDetailsControlType = value; }
+  }
+
 
   /// <summary> Gets the displayed value of the column title. </summary>
   /// <remarks> 
