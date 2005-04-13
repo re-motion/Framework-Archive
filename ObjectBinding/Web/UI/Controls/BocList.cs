@@ -2292,8 +2292,12 @@ public class BocList:
   ///   Obtains a reference to a client-side script function that causes, when invoked, a server postback to the form.
   /// </summary>
   /// <remarks> 
-  ///   If the <see cref="BocList"/> is in row edit mode, <c>return false;</c> will be returned to prevent actions on 
-  ///   this list.
+  ///   <para>
+  ///     If the <see cref="BocList"/> is in row edit mode, <c>return false;</c> will be returned to prevent actions on 
+  ///     this list.
+  ///   </para><para>
+  ///     Insert the return value in the rendered onClick event.
+  ///   </para>
   /// </remarks>
   /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
   /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
