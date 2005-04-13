@@ -614,6 +614,14 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Doc\Detecting Browser unload events, SmartNavigation.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\Sending Keep Alive requests.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\RMTest.de-at.resx"
                     BuildAction = "EmbeddedResource"
                 />
