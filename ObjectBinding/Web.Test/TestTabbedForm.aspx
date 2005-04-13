@@ -22,6 +22,9 @@
 </tr>
 <tr>
 <td style="border: solid 1px red; padding:10px;"><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+<Views>  <rwc:tabview id="first" title="First" icon="Images/First.gif">
+  </rwc:tabview>
+</views>
 </rwc:tabbedmultiview></td>
 </tr>
 </table></form>
