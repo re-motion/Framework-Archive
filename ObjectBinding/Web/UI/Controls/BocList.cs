@@ -3423,24 +3423,27 @@ public class BocList:
     BocSimpleColumnDefinition column,
     int columnIndex)
   {
-    IBusinessObjectBoundModifiableWebControl control;
+    IBusinessObjectBoundModifiableWebControl control = column.CreateEditDetailsControl();
     IBusinessObjectProperty property = column.PropertyPath.LastProperty;
 
-    if (IsBocReferenceValueSupported (property))
-      control = new BocReferenceValue();
-    else if (IsBocDateTimeValueSupported (property))
-      control = new BocDateTimeValue();
-    else if (IsBocBooleanValueSupported (property))
-      control = new BocBooleanValue();
-    else if (IsBocEnumValueSupported (property))
-      control = new BocEnumValue();
-    else if (IsBocMultilineTextValueSupported (property))
-      control = new BocMultilineTextValue();
-    else if (IsBocTextValueSupported (property))
-      control = new BocTextValue();
-    else
-      return null;
-    
+    if (control == null)
+    {
+      if (IsBocReferenceValueSupported (property))
+        control = new BocReferenceValue();
+      else if (IsBocDateTimeValueSupported (property))
+        control = new BocDateTimeValue();
+      else if (IsBocBooleanValueSupported (property))
+        control = new BocBooleanValue();
+      else if (IsBocEnumValueSupported (property))
+        control = new BocEnumValue();
+      else if (IsBocMultilineTextValueSupported (property))
+        control = new BocMultilineTextValue();
+      else if (IsBocTextValueSupported (property))
+        control = new BocTextValue();
+      else
+        return null;
+    }
+
     control.ID = ID + "_RowEditControl_" + columnIndex.ToString();
     control.Property = property;
     if (control is WebControl)

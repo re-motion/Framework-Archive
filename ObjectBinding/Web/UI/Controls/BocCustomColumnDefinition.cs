@@ -32,7 +32,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     base.OnOwnerControlChanged();
   }
 
-  /// <summary> The <see cref="IBocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
+  /// <summary> Gets or sets the <see cref="IBocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public BocCustomColumnDefinitionCell CustomCell
