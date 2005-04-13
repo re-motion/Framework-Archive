@@ -826,17 +826,16 @@ public interface IBocCustomColumnDefinitionCell
   /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
   /// <param name="columnIndex"> 
   ///   The index of the rendered column. Pass this value to the <paramref name="list"/>'s 
-  ///   <see cref="BocList.GetCustomCellPostBackClientHyperlink"/> or 
   ///   <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
   /// </param>
   /// <param name="listIndex"> 
   ///   The index of the <see cref="IBusinessObject"/> in the values collection of the <see cref="BocList"/>.
-  ///    Pass this value to the <paramref name="list"/>'s <see cref="BocList.GetCustomCellPostBackClientHyperlink"/> 
-  ///    or <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
+  ///    Pass this value to the <paramref name="list"/>'s <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
   /// </param>
   /// <param name="onClick"> 
   ///   A function to be appended to the client side <c>OnClick</c> event handler. The function tasked with
   ///   preventing the row from being selected/highlighted when clicking on the link itself instead of the row.
+  ///   insert this string after the return value of <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
   /// </param>
   void Render (
       HtmlTextWriter writer, 
