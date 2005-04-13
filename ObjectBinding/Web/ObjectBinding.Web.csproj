@@ -482,6 +482,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\TextBoxStyle.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\CheckBoxFalse.gif"
                     BuildAction = "Content"
                 />
