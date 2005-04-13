@@ -54,4 +54,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocTextValue.InvalidDoubleErrorMessage">
         <value>Bitte geben Sie eine Zahl ein.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocTextValue.MaxLengthValidationMessage">
+        <value>Bitte geben Sie nicht mehr als {0} Zeichen ein.</value>
+    </data>
 </root>
