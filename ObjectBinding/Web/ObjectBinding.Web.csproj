@@ -186,6 +186,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocCustomColumnDefinition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocDateTimeValue.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
