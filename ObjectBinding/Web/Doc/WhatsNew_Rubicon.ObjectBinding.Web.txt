@@ -4,7 +4,11 @@
 - BocList
   * GetCustomCellPostBackClientHyperlink gibt es nicht mehr.
     Stattdessen nur noch GetCustomCellPostBackClientEvent verwenden.
+  * Bug-Fix ListMenu, OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
     
+- BocReferenceValue
+  * Bug-Fix OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
+
 - BocTextValue
   * Length Validation für Single und Multiline
 
