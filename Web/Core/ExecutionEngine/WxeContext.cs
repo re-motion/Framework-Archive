@@ -78,6 +78,21 @@ public class WxeContext
     get { return _returningFunction; }
     set { _returningFunction = value; }
   }
+
+  /// <summary>
+  ///   Gets the URL that resumes the current function.
+  /// </summary>
+  /// <remarks>
+  ///   If a WXE application branches to an external web site, the external site can
+  ///   link back to this URL to resume the current function at the point where 
+  ///   it was interrupted. Note that if the user stays on the external site longer
+  ///   that the session or function timeout, resuming will fail with a timeout
+  ///   exception.
+  /// </remarks>
+  public string GetResumeUrl ()
+  {
+    return HttpContext.Request.Url.GetLeftPart (UriPartial.Path) + "?WxeFunctionToken=" + FunctionToken;
+  }
 }
 
 }
