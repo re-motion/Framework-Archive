@@ -16,8 +16,6 @@ namespace Rubicon.Web.UI.Controls
 
 [ToolboxData("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\" cssclass=\"tabbedMultiView\"></{0}:TabbedMultiView>")]
 [DefaultEvent ("ActiveViewChanged")]
-[ParseChildren (false)]
-[PersistChildren (true)]
 public class TabbedMultiView: WebControl, IControl
 {
   // constants

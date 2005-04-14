@@ -369,7 +369,12 @@ function BocList_UpdateListMenu (bocList)
     else
     {
       if (icon != null)
-        icon.src = itemInfo.IconDisabled;
+      {
+        if (itemInfo.IconDisabled != null)
+          icon.src = itemInfo.IconDisabled;
+        else
+          icon.src = itemInfo.Icon;
+      }
       item.className = _contentMenu_itemDisabledClassName;
       anchor.removeAttribute ('href');
       anchor.removeAttribute ('target');

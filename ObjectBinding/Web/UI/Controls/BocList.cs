@@ -874,7 +874,7 @@ public class BocList:
     else
     {
       _currentPage = _currentRow / _pageSize.Value;
-      _pageCount = (int) Math.Round ((double)Value.Count / _pageSize.Value + 0.5, 0);
+      _pageCount = (int) Math.Ceiling ((double)Value.Count / _pageSize.Value);
 
       switch (_move)
       {
@@ -2633,7 +2633,7 @@ public class BocList:
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsGot(bool forceRefresh)
+  private BocMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
   {
     if (_optionsMenuItemsRenderPhase == null || forceRefresh)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
@@ -2666,7 +2666,7 @@ public class BocList:
   private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
     //  return menuItems;
-    return EnsureOptionsMenuItemsGot();
+    return EnsureOptionsMenuItemsGot (true);
   }
 
   /// <summary>
