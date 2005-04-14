@@ -1,12 +1,16 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
-//TODO: .net2.0 complier switch. Inherit from System.Web.UI.ViewCollection
-public class TabViewCollection : ControlCollection
+#if ! net20
+public class TabViewCollection: ControlCollection
+#else
+public class TabViewCollection: System.Web.UI.ViewCollection
+#endif
 {
   public TabViewCollection (Control owner)
     : this ((TabbedMultiView.MultiView) owner)
@@ -36,15 +40,18 @@ public class TabViewCollection : ControlCollection
     Owner.OnTabViewInserted ((TabView) view);
   }
 
-  //TODO: .net2.0 complier switch. TabView is CLS-complient in .net 2.0
+#if net20
   [CLSCompliant (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new TabView this[int index]
   {
     get { return (TabView) base[index]; }
   }
+#endif
 
-  //TODO: .net2.0 complier switch. TabView is CLS-complient in .net 2.0
+#if ! net20
   [CLSCompliant (false)]
+#endif
   private new TabbedMultiView.MultiView Owner
   {
     get { return (TabbedMultiView.MultiView) base.Owner; }
