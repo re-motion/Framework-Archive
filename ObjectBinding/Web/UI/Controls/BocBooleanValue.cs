@@ -443,6 +443,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
       _imageButton.Attributes.Add ("onKeyDown", "BocBooleanValue_OnKeyDown (this);");
+      _imageButton.Style["padding"] = "0px";
+      _imageButton.Style["border"] = "none";
+      _imageButton.Style["background-color"] = "transparent";
       _imageButton.NavigateUrl = "#";
     }
 
