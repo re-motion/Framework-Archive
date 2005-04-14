@@ -18,12 +18,12 @@ var _datePicker_isEventAfterDatePickerButtonClick = false;
 //  button: The button that opened the date picker frame.
 //  container: The page element containing the properties to be passed to the picker.
 //  target: The input element receiving the value returned by the date picker.
-//  frame: The IFrame containing the date picker that will be shown.
-function DatePicker_ShowDatePicker (button, container, target, frame)
+function DatePicker_ShowDatePicker (button, container, target, src, width, height)
 {
+  var datePickerID = container.id + '_DatePicker';
   //  Tried to open the already open date picker?
   //  Close it and return.
-  if (DatePicker_CloseVisibleDatePickerFrame (frame))
+  if (DatePicker_CloseVisibleDatePickerFrame (datePickerID))
     return;
     
   if (target.disabled || target.readOnly)
@@ -35,13 +35,10 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
   
   //  Calculate the offset of the frame in respect to the left top corner of the page.
   var frameParent = null;
-  for (var currentNode = button; 
-         currentNode != null
-      && currentNode.tagName.toLowerCase() != 'body'; 
-      currentNode = currentNode.offsetParent)
+  for (var currentNode = button; currentNode != null; currentNode = currentNode.offsetParent)
   {
     left += currentNode.offsetLeft + currentNode.clientLeft;
-    top += currentNode.offsetTop - currentNode.clientTop;
+    top += currentNode.offsetTop + currentNode.clientTop;
     if (   currentNode.style.overflow.toLowerCase() == 'auto' 
         || currentNode.style.overflow.toLowerCase() == 'scroll')
     {
@@ -49,33 +46,35 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
       top -= currentNode.scrollTop;
     }
   }
-  frame.parentElement.removeChild (frame);
-  window.document.body.insertBefore (frame, window.document.body.children[0]);
   
-  //  Position at the top bottom corner of the button
-  frame.style.left = left;
-  frame.style.top = top;
-  if (container.dp_width != null)
-      frame.style.width = container.dp_width;
-  if (container.dp_height != null)
-      frame.style.height = container.dp_height;
+  var datePicker = window.document.createElement ('div');
+  datePicker.style.width = width;
+  datePicker.style.height = height;
+  datePicker.style.position = 'absolute';
+  datePicker.id = datePickerID;
   
+  var frame = window.document.createElement ("iframe");
+  datePicker.appendChild (frame);
+  frame.src = src + '?TargetIDField=' + target.id + '&DatePickerIDField=' + datePicker.id + '&DateValueField=' + target.value;
+  frame.frameBorder = 'no';
+  frame.scrolling = 'no';
+  frame.style.zIndex = 100;
+  frame.style.width = '100%';
+  frame.style.height = '100%';
+  frame.marginWidth = 0;
+  frame.marginHeight = 0;
+  
+  window.document.body.insertBefore (datePicker, window.document.body.children[0]);
   //  Adjust position so the date picker is shown below 
   //  and aligned with the right border of the button.
-  frame.style.display = '';
-  frame.style.left = frame.offsetLeft - frame.clientWidth + button.offsetWidth;
-  frame.style.top = frame.offsetTop + container.offsetHeight + button.offsetTop;
-  frame.style.display = 'none';
-
-  if (window.frames[frame.id].DatePicker_InitializeCalendarFrame != null)
-  {
-    window.frames[frame.id].DatePicker_InitializeCalendarFrame(target, frame);
+  datePicker.style.left = left - frame.offsetWidth + button.offsetWidth;
+  datePicker.style.top = top + button.offsetHeight
+  datePicker.style.display = 'none';
   
-    _datePicker_currentDatePicker = frame;
-    _datePicker_isEventAfterDatePickerButtonClick = true;
-    target.document.onclick = DatePicker_OnDocumentClick;
-  }
-  frame.style.display = '';
+  _datePicker_currentDatePicker = datePicker;
+  _datePicker_isEventAfterDatePickerButtonClick = true;
+  target.document.onclick = DatePicker_OnDocumentClick;
+  datePicker.style.display = '';
 }
 
 //  Closes the currently visible date picker frame.
@@ -83,37 +82,23 @@ function DatePicker_ShowDatePicker (button, container, target, frame)
 //  newDatePicker: The newly selected date picker frame, used to test whether the current frame 
 //      is identical to the new frame.
 //  returns true if the newDatePicker is equal to the visible date picker.
-function DatePicker_CloseVisibleDatePickerFrame (newDatePicker)
+function DatePicker_CloseVisibleDatePickerFrame (newDatePickerID)
 {
-  if (   newDatePicker == _datePicker_currentDatePicker
+  var newDatePicker = document.getElementById (newDatePickerID);
+  if (   newDatePicker != null
+      && newDatePicker == _datePicker_currentDatePicker
       && newDatePicker.style.display != 'none')
   {
     return true;
   }        
   if (_datePicker_currentDatePicker != null)
   {
-    window.frames[_datePicker_currentDatePicker.id].DatePicker_CloseDatePicker();
+    var currentDatePicker = window.document.getElementById (_datePicker_currentDatePicker.id);
+    var frameContent = currentDatePicker.children[0].contentWindow;
+    frameContent.DatePicker_CloseDatePicker();
     _datePicker_currentDatePicker = null;
   }
   return false;
-}
-
-//  Initializes the date picker. 
-//  Belongs to the date picker frame.
-//  Persists the target and frame ids inside the picker frame to support post back.
-//  Sets the currently selected date and calls a post back.
-//  target: The input element receiving the value returned by the date picker.
-//  frame: The IFrame containing the date picker that will be shown.
-function DatePicker_InitializeCalendarFrame (target, frame)
-{
-  document.getElementById ('TargetIDField').value = target.id;
-  document.getElementById ('FrameIDField').value = frame.id;
-  
-  if (document.getElementById ('DateValueField').value == '' && target.value != '')
-  {
-    document.getElementById ('DateValueField').value = target.value;
-    __doPostBack('','');
-  }
 }
 
 //  Called by the date picker when a new date is selected in the calendar. 
@@ -130,12 +115,12 @@ function DatePicker_Calendar_SelectionChanged (value)
 //  Belongs to the date picker frame.
 function DatePicker_CloseDatePicker() 
 {
-  document.getElementById ('DateValueField').value = '';
-  target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
-  frame = window.parent.document.getElementById (document.getElementById ('FrameIDField').value);
+  var target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
   target.document.onclick = null;
   target.focus();
-  frame.style.display = 'none';
+  window.parent._datePicker_currentDatePicker = null;
+  var datePicker = window.parent.document.getElementById (document.getElementById ('DatePickerIDField').value);
+  datePicker.parentElement.removeChild (datePicker);
 }
 
 //  Called by th event handler for the onclick event of the parent pages's document.
@@ -150,7 +135,9 @@ function DatePicker_OnDocumentClick()
   }
   else if (_datePicker_currentDatePicker != null)
   {
-    window.frames[_datePicker_currentDatePicker.id].DatePicker_CloseDatePicker();
+    var currentDatePicker = window.document.getElementById (_datePicker_currentDatePicker.id);
+    var frameContent = currentDatePicker.children[0].contentWindow;
+    frameContent.DatePicker_CloseDatePicker();
     _datePicker_currentDatePicker = null;
   }  
 }
