@@ -1,3 +1,15 @@
+1.2.20.0
+========
+
+- BocReferenceValue
+  * BugFix: GetOptionsMenuItem wurde nur im OnLoad aufgerufen und damit unter Umständen vor LoadValue().
+  
+- BocList
+  * BugFix: GetOptionsMenuItem wurde nur im OnLoad aufgerufen und damit unter Umständen vor LoadValue().
+  * BugFix: War die PageSize ein ganzzahliger Teiler der Zeilenzahl, so wurde eine Page zu viel angeboten.
+  * BugFix: War kein DisabledIcon aber ein Icon angegeben, wurden Disabled MenuItems mit einem ungültigen Imagepfad 
+    gerendert.
+  
 1.2.19.0
 ========
 
