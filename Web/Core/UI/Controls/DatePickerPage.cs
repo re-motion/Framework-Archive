@@ -43,7 +43,7 @@ public class DatePickerPage : Page
   /// <summary> Preserves the target control's ID during post backs. </summary>
   private HtmlInputHidden TargetIDField;
   /// <summary> Preserves the frame's ID in the parent page during post backs. </summary>
-  private HtmlInputHidden FrameIDField;
+  private HtmlInputHidden DatePickerIDField;
   /// <summary> Contains the date to be selected in the calendar. </summary>
   private HtmlInputHidden DateValueField;
 
@@ -63,10 +63,10 @@ public class DatePickerPage : Page
     TargetIDField.EnableViewState = false;
     Form.Controls.Add (TargetIDField);
 
-    FrameIDField = new HtmlInputHidden();
-    FrameIDField.ID = "FrameIDField";
-    FrameIDField.EnableViewState = false;
-    Form.Controls.Add (FrameIDField);
+    DatePickerIDField = new HtmlInputHidden();
+    DatePickerIDField.ID = "DatePickerIDField";
+    DatePickerIDField.EnableViewState = false;
+    Form.Controls.Add (DatePickerIDField);
 
     DateValueField = new HtmlInputHidden();
     DateValueField.ID = "DateValueField";
@@ -81,23 +81,32 @@ public class DatePickerPage : Page
 
   protected override void OnLoad(EventArgs e)
   {
+    string dateValue = null;
     if (IsPostBack)
     {
-      //  Initalize the calendar
-      try
-      {
-        if (! StringUtility.IsNullOrEmpty (DateValueField.Value))
-        {
-          Calendar.SelectedDate = DateTime.Parse (DateValueField.Value);
-          Calendar.VisibleDate = Calendar.SelectedDate;
-        }
-      }
-      catch (FormatException)
-      {
-        //  Do nothing since user wishes to pick a valid date using the calendar
-      }
-      DateValueField.Value = string.Empty;
+      dateValue = DateValueField.Value;
     }
+    else
+    {
+      dateValue = Request.Params["DateValueField"];
+      TargetIDField.Value = Request.Params["TargetIDField"];
+      DatePickerIDField.Value = Request.Params["DatePickerIDField"];
+    }
+
+    //  Initalize the calendar
+    try
+    {
+      if (! StringUtility.IsNullOrEmpty (dateValue))
+      {
+        Calendar.SelectedDate = DateTime.Parse (dateValue);
+        Calendar.VisibleDate = Calendar.SelectedDate;
+      }
+    }
+    catch (FormatException)
+    {
+      //  Do nothing since user wishes to pick a valid date using the calendar
+    }
+    DateValueField.Value = string.Empty;
 
     base.OnLoad (e);
   }
