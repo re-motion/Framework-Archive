@@ -14,9 +14,12 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:TabView runat=server></{0}:TabView>")]
-//TODO: .net2.0 complier switch. Inherit from System.Web.UI.WebControls.View
+#if ! net20
 [CLSCompliant (false)]
 public class TabView : Rubicon.Web.UI.Controls.PageView
+#else
+public class TabView : System.Web.UI.WebControls.View
+#endif
 {
   //  constants
 
@@ -29,12 +32,17 @@ public class TabView : Rubicon.Web.UI.Controls.PageView
   private IconInfo _icon;
 
   // construction and destruction
+  public TabView()
+  {
+    _icon = new IconInfo();
+  }
 
   // methods and properties
   internal void OnInsert (TabbedMultiView.MultiView multiView)
   {
-    //TODO: .net2.0 complier switch. Not needed in .net2.0
+#if ! net20
     base.ParentMultiPage = multiView;
+#endif
   }
 
   protected void OnInsert (Control multiView)
