@@ -280,27 +280,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     base.Render (writer);
   }
 
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    base.AddAttributesToRender (writer);
-  
-    //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-    //  and remove AddAttributesToRender.
-    if (_datePickerButton.Visible && _hasClientScript)
-    {
-      Unit popUpWidth = _datePickerPopupWidth;
-      if (popUpWidth.IsEmpty)
-        popUpWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
-      writer.AddAttribute("dp_width", popUpWidth.ToString());
-
-      Unit popUpHeight = _datePickerPopupHeight;
-      if (popUpHeight.IsEmpty)
-        popUpHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
-      writer.AddAttribute("dp_height", popUpHeight.ToString());
-    }
-
-  }
-
   protected override void RenderChildren(HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -380,26 +359,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
         writer.AddStyleAttribute ("padding-left", "3pt");
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
-
         _datePickerButton.RenderControl (writer);  
-        if (! IsDesignMode)
-        {
-          //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
-          //  and remove RenderContents.
-          string calendarFrameUrl = ResourceUrlResolver.GetResourceUrl (
-              this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm);
-          writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_frame");
-          writer.AddAttribute(HtmlTextWriterAttribute.Src, calendarFrameUrl);
-          writer.AddAttribute("marginheight", "0", false);
-          writer.AddAttribute("marginwidth", "0", false);
-          writer.AddAttribute("frameborder", "0", false);
-          writer.AddAttribute("scrolling", "no", false);
-          writer.AddStyleAttribute("position", "absolute");
-          writer.AddStyleAttribute("z-index", "100");
-          writer.AddStyleAttribute("display", "none");
-          writer.RenderBeginTag(HtmlTextWriterTag.Iframe);
-          writer.RenderEndTag();
-        }      
         writer.RenderEndTag();
       }
 
@@ -684,14 +644,29 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         string pickerActionButton = "this";
         string pickerActionContainer = "document.getElementById ('" + ClientID + "')";
         string pickerActionTarget = "document.getElementById ('" + _dateTextBox.ClientID + "')";
-        string pickerActionFrame = "document.getElementById ('" + ClientID + "_frame')";
+        
+        string pickerUrl = "'" + ResourceUrlResolver.GetResourceUrl (
+            this, Context, typeof (DatePickerPage), ResourceType.UI, c_datePickerPopupForm) + "'";
+        
+        Unit popUpWidth = _datePickerPopupWidth;
+        if (popUpWidth.IsEmpty)
+          popUpWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
+        string pickerWidth = "'" + popUpWidth.ToString() + "'";
+        
+        Unit popUpHeight = _datePickerPopupHeight;
+        if (popUpHeight.IsEmpty)
+          popUpHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
+        string pickerHeight = "'" + popUpHeight.ToString() + "'";
+
         script = "DatePicker_ShowDatePicker("
             + pickerActionButton + ", "
             + pickerActionContainer + ", "
             + pickerActionTarget + ", "
-            + pickerActionFrame + ");"
+            + pickerUrl + ", "
+            + pickerWidth + ", "
+            + pickerHeight + ");"
             + "return false;";
-      }
+       }
       else
       {
         script = "return false;";
@@ -700,6 +675,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
     }
 
+    _datePickerButton.Style["padding"] = "0px";
+    _datePickerButton.Style["border"] = "none";
+    _datePickerButton.Style["background-color"] = "transparent";
     _datePickerButton.ApplyStyle (_datePickerButtonStyle);
   }
 
