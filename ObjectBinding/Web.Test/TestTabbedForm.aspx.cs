@@ -58,6 +58,10 @@ public class TestTabbedForm : TestWxeBasePage
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
 
+    int activeViewIndex = 0;
+    TabView activeView = (TabView) MultiView.Views[activeViewIndex];
+    if (activeViewIndex > 0)
+      MultiView.SetActiveView (activeView);
   }
 
   private void AddTab (string id, string text, IconInfo icon)
