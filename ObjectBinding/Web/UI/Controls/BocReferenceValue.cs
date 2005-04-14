@@ -812,11 +812,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  private BocMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
   {
-    if (_optionsMenuItemsRenderPhase == null)
+    if (_optionsMenuItemsRenderPhase == null || forceRefresh)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
     return _optionsMenuItemsRenderPhase;
+  }
+
+  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  {
+    return EnsureOptionsMenuItemsGot (false);
   }
 
   /// <summary>
@@ -840,7 +845,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
     //  return menuItems;
-    return EnsureOptionsMenuItemsGot();
+    return EnsureOptionsMenuItemsGot (true);
   }
 
   /// <summary>
