@@ -403,7 +403,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     }
     writer.AddAttribute (HtmlTextWriterAttribute.Src, nodeIcon);
     writer.AddStyleAttribute ("vertical-align", "middle");
-    writer.AddStyleAttribute ("border", "0");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
     if (hasExpansionLink)
@@ -428,7 +428,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, node.Icon.Url);
       writer.AddStyleAttribute ("vertical-align", "middle");
-      writer.AddStyleAttribute ("border", "0");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
       writer.Write ("&nbsp;");
