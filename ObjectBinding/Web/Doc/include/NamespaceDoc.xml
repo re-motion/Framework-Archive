@@ -1,10 +1,10 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding.Web">
-    For the list of available business object controls see the <see cref="T:Rubicon.ObjectBinding.Web.Controls"/> 
-    namespace.
+    For the list of available business object controls see the 
+    <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace.
   </namespace>
   <namespace name="Rubicon.ObjectBinding.Web.Controls">
-    The <see cref="T:Rubicon.ObjectBinding.Web.Controls"/> namespace provides object bindable controls implementing 
+    The <c>Rubicon.ObjectBinding.Web.Controls</c> namespace provides object bindable controls implementing 
     <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/>. If the control provides edit 
     functionality, it also implements <see cref="T:Rubicon.Web.UI.ISmartControl"/>. When used together with a 
     <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the bound web controls provide a maximum of usability 
