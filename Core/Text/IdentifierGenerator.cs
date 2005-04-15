@@ -46,7 +46,7 @@ public class IdentifierGenerator: ICloneable
         idgen.DefaultFirstCharacterReplaceString = "_";
 
         idgen.IsCaseSensitive = true;
-        idgen.UniqueSeperator = "_";
+        idgen.UniqueSeparator = "_";
 
         s_cStyle = idgen;
       }
@@ -83,7 +83,7 @@ public class IdentifierGenerator: ICloneable
         idgen.DefaultFirstCharacterReplaceString = "";
 
         idgen.IsCaseSensitive = false;
-        idgen.UniqueSeperator = "_";
+        idgen.UniqueSeparator = "_";
         
         s_htmlStyle = idgen;
       }
@@ -121,7 +121,7 @@ public class IdentifierGenerator: ICloneable
         idgen.DefaultFirstCharacterReplaceString = "_";
 
         idgen.IsCaseSensitive = false; // TODO: is this correct??
-        idgen.UniqueSeperator = "_";
+        idgen.UniqueSeparator = "_";
 
         s_xmlStyle = idgen;
       }
@@ -136,7 +136,7 @@ public class IdentifierGenerator: ICloneable
   /// <summary> Specifies that the IdentifierGenerator must be cloned and cannot be used directly. </summary>
   private bool _isTemplate = false;
 
-  private string _uniqueSeperator = null;
+  private string _uniqueSeparator = null;
 
   private bool _allowEnglishLetters = false;
   private bool _allowLanguageSpecificLetters = false;
@@ -270,7 +270,7 @@ public class IdentifierGenerator: ICloneable
     {
       for (int uniqueNum = 1; ; ++uniqueNum)
       {
-        string numberedIdentifier = identifier + _uniqueSeperator + uniqueNum.ToString();
+        string numberedIdentifier = identifier + _uniqueSeparator + uniqueNum.ToString();
         if (! _uniqueIdentifiers.Contains (numberedIdentifier))
         {
           identifier = numberedIdentifier;
@@ -290,17 +290,17 @@ public class IdentifierGenerator: ICloneable
   }
 
   /// <summary>
-  ///   If a unique number is appended to string, <c>UniqueSeperator</c> is inserted between the identifier 
+  ///   If a unique number is appended to string, <c>UniqueSeparator</c> is inserted between the identifier 
   ///   and the number.
   /// </summary>
   /// <example>
-  ///   If <c>UniqueSeperator</c> is an underscore ("_"), an identifier "id" is generated and has to be 
+  ///   If <c>UniqueSeparator</c> is an underscore ("_"), an identifier "id" is generated and has to be 
   ///   appended with the number 2 to be unique, the resulting unique identifier is "id_2".
   /// </example>
-  public string UniqueSeperator
+  public string UniqueSeparator
   {
-    get { return _uniqueSeperator; }
-    set { _uniqueSeperator = value; }
+    get { return _uniqueSeparator; }
+    set { _uniqueSeparator = value; }
   }
 
   /// <summary>
@@ -482,7 +482,7 @@ public class IdentifierGenerator: ICloneable
   {
     IdentifierGenerator clone = new IdentifierGenerator ();
 
-    clone._uniqueSeperator = this._uniqueSeperator;
+    clone._uniqueSeparator = this._uniqueSeparator;
 
     clone._allowEnglishLetters = this._allowEnglishLetters;
     clone._allowLanguageSpecificLetters = this._allowLanguageSpecificLetters;
