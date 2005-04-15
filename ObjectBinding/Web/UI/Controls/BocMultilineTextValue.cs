@@ -352,7 +352,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       {
         for (int i = 0; i < lines.Length; i++)
           lines[i] = HttpUtility.HtmlEncode (lines[i]);
-        text = StringUtility.ConcatWithSeperator (lines, "<br />");
+        text = StringUtility.ConcatWithSeparator (lines, "<br />");
       }
       if (StringUtility.IsNullOrEmpty (text))
       {
@@ -435,7 +435,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       if (value == null)
         _internalValue = null;
       else
-        _internalValue = StringUtility.ConcatWithSeperator (value, "\r\n");
+        _internalValue = StringUtility.ConcatWithSeparator (value, "\r\n");
     }
   }
 

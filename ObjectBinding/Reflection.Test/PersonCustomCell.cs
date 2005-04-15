@@ -7,15 +7,6 @@ namespace OBRTest
 {
 public class PersonCustomCell: BocCustomColumnDefinitionCell
 {
-  public PersonCustomCell ()
-  {
-  }
-
-  public override void OnClick(BocCustomCellArguments arguments, string eventArgument)
-  {
-    base.OnClick (arguments, eventArgument);
-  }
-
   protected override void DoRender (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -34,6 +25,6 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
     writer.RenderEndTag();
     writer.Write ("<br>");
   }
-
 }
+
 }
