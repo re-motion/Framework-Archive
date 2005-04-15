@@ -10,7 +10,7 @@ namespace Rubicon.Core.UnitTests.Text
 public class MonospaceTextFormatTest
 {
   [Test]
-  public void TestSplitTextOnSeperator ()
+  public void TestSplitTextOnSeparator ()
   {
     AssertTextSplit ("12345 abcde",         10, "12345",        "abcde");
     AssertTextSplit ("1234567890 abcde",    10, "1234567890",   "abcde");
@@ -26,7 +26,7 @@ public class MonospaceTextFormatTest
   {
     string before;
     string after;
-    MonospaceTextFormat.SplitTextOnSeperator (text, out before, out after, splitAt, new char[] {' '});
+    MonospaceTextFormat.SplitTextOnSeparator (text, out before, out after, splitAt, new char[] {' '});
     Assertion.AssertEquals (expectedBefore, before);
     Assertion.AssertEquals (expectedAfter, after);
   }
