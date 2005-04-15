@@ -1971,7 +1971,7 @@ public class BocList:
 
       //  Render the command
       bool isCommandEnabled = false;
-      if (! StringUtility.IsNullOrEmpty (valueColumnText))
+      if (commandColumn != null || ! StringUtility.IsNullOrEmpty (valueColumnText))
       {
         isCommandEnabled = RenderBeginTagDataCellCommand (
             writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
