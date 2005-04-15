@@ -1245,6 +1245,9 @@ public class BocList:
   //  TODO: Move ListMenu the extra control "ContentMenu"
   private void RenderListMenu (HtmlTextWriter writer, string menuID)
   {
+    if (! _hasClientScript)
+      return;
+
     ArrayList listMenuItems = new ArrayList (EnsureListMenuItemsGot());
     WebMenuItem[] groupedListMenuItems = WebMenuItemCollection.GroupMenuItems (
         (WebMenuItem[]) listMenuItems.ToArray (typeof (WebMenuItem)), 
@@ -1378,8 +1381,8 @@ public class BocList:
     if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
-      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.AddStyleAttribute ("vertical-align", "middle");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
       if (showText)
@@ -1920,8 +1923,7 @@ public class BocList:
       if ( (!firstValueColumnRendered) && column is BocValueColumnDefinition)
       {
         firstValueColumnRendered = true;
-        if (EditableRowIndex.IsNull || EditableRowIndex.Value != originalRowIndex)
-          showIcon = EnableIcon;
+        showIcon = EnableIcon;
       }
       RenderDataCell (writer, idxColumns, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
     }
@@ -1963,21 +1965,38 @@ public class BocList:
       BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
+      string valueColumnText = null;
+      if (valueColumn != null && ! hasEditModeControl)
+        valueColumnText = valueColumn.GetStringValue (businessObject);
+
       //  Render the command
-      bool isCommandEnabled = RenderBeginTagDataCellCommand (
-          writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
+      bool isCommandEnabled = false;
+      if (! StringUtility.IsNullOrEmpty (valueColumnText))
+      {
+        isCommandEnabled = RenderBeginTagDataCellCommand (
+            writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
+      }
 
       //  Render the icon
-      if (showIcon)
+      if (showIcon && ! hasEditModeControl)
         RenderDataCellIcon (writer, businessObject);
 
       //  Render the text
       if (commandColumn != null)
+      {
         RenderCommandColumnCell (writer, commandColumn);
-      else if (compoundColumn != null)
-        RenderCompoundColumnCellText (writer, compoundColumn, businessObject);
+      }
       else if (simpleColumn != null)
-        RenderSimpleColumnCellText (writer, simpleColumn, businessObject, hasEditModeControl, columnIndex);
+      {
+        if (hasEditModeControl)
+          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex);
+        else
+          RenderValueColumnCellText (writer, valueColumnText);
+      }
+      else if (compoundColumn != null)
+      {
+        RenderValueColumnCellText (writer, valueColumnText);
+      }
 
       RenderEndTagDataCellCommand (writer, commandEnabledColumn, isCommandEnabled);
     }
@@ -2151,6 +2170,8 @@ public class BocList:
     if (column.IconPath != null)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, column.IconPath);
+      writer.AddStyleAttribute ("vertical-align", "middle");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
@@ -2159,71 +2180,55 @@ public class BocList:
       writer.Write (column.Text);
   }
 
-  private void RenderSimpleColumnCellText (
-      HtmlTextWriter writer, 
-      BocSimpleColumnDefinition column,
-      IBusinessObject businessObject,
-      bool hasEditModeControl,
-      int columnIndex) 
+  private void RenderValueColumnCellText (HtmlTextWriter writer, string contents) 
   {
-    if (hasEditModeControl)
-    {
-      EditDetailsValidator editDetailsValidator = null;
-      foreach (BaseValidator validator in _validators)
-      {
-        if (validator is EditDetailsValidator)
-          editDetailsValidator = (EditDetailsValidator) validator;
-      }
-      _rowEditModeControls[columnIndex].RenderControl (writer);
-      BaseValidator[] validators = _rowEditModeValidators[columnIndex];
-      foreach (BaseValidator validator in validators)
-      {
-        if (editDetailsValidator != null)
-        {
-          validator.Display = editDetailsValidator.Display;
-          validator.EnableClientScript = editDetailsValidator.EnableClientScript;
-        }
-        else
-        {
-          validator.Display = ValidatorDisplay.None;
-          validator.EnableClientScript = false;
-        }
-        writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        validator.RenderControl (writer);
-        writer.RenderEndTag();
-
-        if (! validator.IsValid && validator.Display == ValidatorDisplay.None)
-        {
-          if (! StringUtility.IsNullOrEmpty (validator.CssClass))
-            writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
-          else
-            writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
-          writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          writer.Write (validator.ErrorMessage);
-          writer.RenderEndTag();
-        }
-      }
-    }
-    else
-    {
-      string contents = column.GetStringValue (businessObject);
-      contents = HttpUtility.HtmlEncode (contents);
-      if (StringUtility.IsNullOrEmpty (contents))
-        contents = c_whiteSpace;
-      writer.Write (contents);
-    }
-  }
- 
-   private void RenderCompoundColumnCellText (
-      HtmlTextWriter writer, 
-      BocCompoundColumnDefinition column,
-      IBusinessObject businessObject)
-  {
-    string contents = column.GetStringValue (businessObject);
     contents = HttpUtility.HtmlEncode (contents);
     if (StringUtility.IsNullOrEmpty (contents))
       contents = c_whiteSpace;
     writer.Write (contents);
+  }
+ 
+  private void RenderSimpleColumnCellEditModeControl (
+      HtmlTextWriter writer, 
+      BocSimpleColumnDefinition column,
+      IBusinessObject businessObject,
+      int columnIndex) 
+  {
+    EditDetailsValidator editDetailsValidator = null;
+    foreach (BaseValidator validator in _validators)
+    {
+      if (validator is EditDetailsValidator)
+        editDetailsValidator = (EditDetailsValidator) validator;
+    }
+    _rowEditModeControls[columnIndex].RenderControl (writer);
+    BaseValidator[] validators = _rowEditModeValidators[columnIndex];
+    foreach (BaseValidator validator in validators)
+    {
+      if (editDetailsValidator != null)
+      {
+        validator.Display = editDetailsValidator.Display;
+        validator.EnableClientScript = editDetailsValidator.EnableClientScript;
+      }
+      else
+      {
+        validator.Display = ValidatorDisplay.None;
+        validator.EnableClientScript = false;
+      }
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      validator.RenderControl (writer);
+      writer.RenderEndTag();
+
+      if (! validator.IsValid && validator.Display == ValidatorDisplay.None)
+      {
+        if (! StringUtility.IsNullOrEmpty (validator.CssClass))
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
+        else
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
+        writer.RenderBeginTag (HtmlTextWriterTag.Div);
+        writer.Write (validator.ErrorMessage);
+        writer.RenderEndTag();
+      }
+    }
   }
 
   private bool RenderBeginTagDataCellCommand (
@@ -2284,8 +2289,8 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
       writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
     }
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
     writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
