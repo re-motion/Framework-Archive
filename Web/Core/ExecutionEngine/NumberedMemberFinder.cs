@@ -9,7 +9,7 @@ namespace Rubicon.Web.ExecutionEngine
 /// </summary>
 /// <remarks>
 ///   This class is used by WxeStep subclasses that use numbered elements, like Step1, Step2, ... or Catch1, Catch2 etc.
-///   Underlines may be appended to seperate member names from class names in case the class itself is called Step&lt;n;gt;
+///   Underlines may be appended to separate member names from class names in case the class itself is called Step&lt;n;gt;
 /// </remarks>
 internal class NumberedMemberFinder
 {
