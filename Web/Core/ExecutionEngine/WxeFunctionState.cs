@@ -8,7 +8,7 @@ namespace Rubicon.Web.ExecutionEngine
 {
 
 // TODO: ASP.NET 2.0 deserializes session state items only as they are requested. therefore, store each window
-// state, each lifetime and each access time  in a seperate session state key, e.g.:
+// state, each lifetime and each access time  in a separate session state key, e.g.:
 // WxeFunction-<token>, WxeFunctionLifetime-<token>, WxeFunctionLastAccess-<token>
 [Serializable]
 public class WxeFunctionStateCollection
