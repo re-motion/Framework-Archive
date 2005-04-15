@@ -67,7 +67,7 @@ public class ResourceManagerWrapper: IResourceManager
 
   /// <summary>
   ///   Gets the root names of the resource files that the <c>IResourceManager</c>
-  ///   searches for resources. Multiple roots are seperated by a comma.
+  ///   searches for resources. Multiple roots are separated by a comma.
   /// </summary>
   string IResourceManager.Name
   {
