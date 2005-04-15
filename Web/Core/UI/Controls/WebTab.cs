@@ -244,7 +244,7 @@ public class WebTab: IControlItem
       {
         writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
         writer.AddStyleAttribute ("vertical-align", "middle");
-        writer.AddStyleAttribute ("border", "0");
+        writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
         writer.RenderBeginTag (HtmlTextWriterTag.Img);
         writer.RenderEndTag();
       }
