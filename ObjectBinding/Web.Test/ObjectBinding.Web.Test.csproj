@@ -414,6 +414,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SingleColumnFormGridsForm.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleColumnFormGridsForm.aspx.cs"
+                    DependentUpon = "SingleColumnFormGridsForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleColumnFormGridsForm.aspx.resx"
+                    DependentUpon = "SingleColumnFormGridsForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "SingleTestTreeView.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
