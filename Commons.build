@@ -527,6 +527,13 @@
           <property name="CopyrightHref" value="${text.companyurl}" />
         </documenter>
       </documenters>
+      <summaries>
+        <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
+      </summaries>
     </ndoc>
     <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
   </target>
@@ -576,6 +583,13 @@
           <property name="CopyrightHref" value="${text.companyurl}" />
         </documenter>
       </documenters>
+      <summaries>
+        <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
+      </summaries>
     </ndoc>
     <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
   </target>
