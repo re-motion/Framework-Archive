@@ -185,6 +185,10 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
+                <File
+                    RelPath = "Doc\include\NamespaceDoc.xml"
+                    BuildAction = "Content"
+                />
             </Include>
         </Files>
     </CSHARP>
