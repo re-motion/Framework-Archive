@@ -171,9 +171,20 @@ public abstract class WxeFunction: WxeStepList
       WxeParameterDeclaration paramDeclaration = parameterDeclarations[i];
       string strval = parameters[paramDeclaration.Name];
       if (strval != null)
-        _variables[paramDeclaration.Name] = Parse (paramDeclaration.Type, strval, paramDeclaration.Name, CultureInfo.InvariantCulture);
+      {
+        try 
+        {
+          _variables[paramDeclaration.Name] = StringUtility.Parse (paramDeclaration.Type, strval, CultureInfo.InvariantCulture);
+        }
+        catch (ParseException e)
+        {
+          throw new ApplicationException ("Parameter " + paramDeclaration.Name + ": " + e.Message, e);
+        }
+      }
       else if (paramDeclaration.Required)
+      {
         throw new ApplicationException ("Parameter '" + paramDeclaration.Name + "' is missing.");
+      }
     }
 
     _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
@@ -228,134 +239,42 @@ public abstract class WxeFunction: WxeStepList
 
   private static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, IFormatProvider format)
   {
-    StringBuilder current = new StringBuilder();
-    ArrayList argsArray = new ArrayList();
+    StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
 
-    bool isQuoted = false;
-    ArrayList isQuotedArray = new ArrayList();
-
-    int len = actualParameters.Length;
-    int state = 0; // 0 ... between arguments, 1 ... within argument, 2 ... within quotes
-    for (int i = 0; i < len; ++i)
-    {
-      char c = actualParameters[i];
-      if (state == 0)
-      {
-        switch (c)
-        {
-          case '\"':
-            state = 2;
-            isQuoted = true;
-            break;
-          case ' ':
-            break;
-          case ',':
-            break;
-          default:
-            state = 1;
-            current.Append (c);
-            break;
-        }
-      }
-      else if (state == 1)
-      {
-        switch (c)
-        {
-          case '\"':
-            throw new ApplicationException ("Error at " + i + " while parsing " + actualParameters);
-          case ',':
-            state = 0;
-            if (current.Length > 0)
-            {
-              argsArray.Add (current.ToString());
-              current.Length = 0;
-              isQuotedArray.Add (isQuoted);
-              isQuoted = false;
-            }
-            break;
-          default:
-            current.Append (c);
-            break;
-        }
-      }
-      else if (state == 2)
-      {
-        switch (c)
-        {
-          case '\"':
-            if ((i + 1) < len && actualParameters[i+1] != ',')
-              throw new ApplicationException ("Error at " + i + " while parsing " + actualParameters);
-            state = 1;
-            break;
-          case '\\':
-            if ((i + 1) < len)
-            {
-              switch (actualParameters[i+1])
-              {
-                case '\\':
-                  current.Append ('\\');
-                  ++i;
-                  break;
-                case '\"':
-                  current.Append ('\"');
-                  ++i;
-                  break;
-                case '\'':
-                  current.Append ('\'');
-                  ++i;
-                  break;
-                case '\r':
-                  current.Append ('\r');
-                  ++i;
-                  break;
-                case '\n':
-                  current.Append ('\n');
-                  ++i;
-                  break;
-                default:
-                  current.Append ('\\');
-                  break;
-              }
-            }
-            else
-            {
-              state = 1;
-            }
-            break;
-
-          default:
-            current.Append (c);
-            break;
-        }
-      }
-    }
-    if (current.Length > 0)
-    {
-      argsArray.Add (current.ToString());
-      isQuotedArray.Add (isQuoted);
-    }
-
-    if (argsArray.Count > parameterDeclarations.Length)
+    if (parsedItems.Length > parameterDeclarations.Length)
       throw new ApplicationException ("Number of actual parameters exceeds number of formal paramteres.");
 
     ArrayList arguments = new ArrayList();
-    for (int i = 0; i < argsArray.Count; ++i)
+    for (int i = 0; i < parsedItems.Length; ++i)
     {
-      string arg = (string) argsArray[i];
+      StringUtility.ParsedItem item = parsedItems[i];
       WxeParameterDeclaration paramDecl = parameterDeclarations[i];
 
-      if (string.CompareOrdinal (arg, "true") == 0)         // true
-        arguments.Add (true);
-      else if (string.CompareOrdinal (arg, "false") == 0)   // false
-        arguments.Add (false);
-      else if (arg.Length > 0 && char.IsDigit (arg[0]))     // starts with digit -> parse constant
-        arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
-      else if (! (bool) isQuotedArray[i])                   // unquoted -> variable name
-        arguments.Add (new WxeVariableReference (arg));
-      else if (paramDecl.Type == typeof (string))           // string constant
-        arguments.Add (arg);
-      else                                                  // parse constant
-        arguments.Add (Parse (paramDecl.Type, arg, paramDecl.Name, format));
+      try
+      {
+        if (item.IsQuoted)
+        {
+          if (paramDecl.Type == typeof (string))                              // string constant
+            arguments.Add (item.Value);
+          else                                                                // parse constant
+            arguments.Add (StringUtility.Parse (paramDecl.Type, item.Value, format));
+        }
+        else
+        {
+          if (string.CompareOrdinal (item.Value, "true") == 0)                // true
+            arguments.Add (true);
+          else if (string.CompareOrdinal (item.Value, "false") == 0)          // false
+            arguments.Add (false);
+          else if (item.Value.Length > 0 && char.IsDigit (item.Value[0]))     // starts with digit -> parse constant
+            arguments.Add (StringUtility.Parse (paramDecl.Type, item.Value, format));
+          else                                                                // variable name
+            arguments.Add (new WxeVariableReference (item.Value));
+        }
+      }
+      catch (ParseException e)
+      {
+        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+      }
     }
 
     return arguments.ToArray ();
@@ -406,59 +325,6 @@ public abstract class WxeFunction: WxeStepList
         if (varRef != null)
           parameterDeclarations[i].CopyToCaller (varRef.Name, _variables, callerVariables);
       }
-    }
-  }
-
-  private static object Parse (Type type, string value, string parameterName, IFormatProvider format)
-  {
-    if (type == typeof (string))
-      return value;
-
-    if (type.IsArray)
-    {
-      Type elementType = type.GetElementType();
-      string[] values = value.Split(',');
-      Array results = Array.CreateInstance (elementType, values.Length);
-      for (int i = 0; i < values.Length; ++i)
-      {
-        string parName = parameterName + "[" + i.ToString() + "]";
-        results.SetValue (Parse (elementType, values[i], parName, format), i);
-      }
-      return results;
-    }
-
-    try
-    {
-      MethodInfo parseMethod = null;
-      MethodInfo parseFormatMethod  = type.GetMethod (
-          "Parse", 
-          BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
-          null, 
-          new Type[] {typeof (string), typeof (IFormatProvider)}, 
-          null);
-
-      if (parseFormatMethod != null && type.IsAssignableFrom (parseFormatMethod.ReturnType))
-      {
-        return parseFormatMethod.Invoke (null, new object[] { value, format } );
-      }
-      else
-      {
-        parseMethod  = type.GetMethod (
-            "Parse", 
-            BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
-            null, 
-            new Type[] {typeof (string)}, 
-            null);
-
-        if (parseMethod == null || ! type.IsAssignableFrom (parseMethod.ReturnType))
-          throw new ApplicationException ("Cannot convert parameter '" + parameterName + "' to type " + type.Name + ". Type does not have method 'public static " + type.Name + " Parse (string s)'.");
-
-        return parseMethod.Invoke (null, new object[] { value } );
-      }
-    }
-    catch (TargetInvocationException e)
-    {
-      throw new ApplicationException ("Cannot convert parameter '" + parameterName + "' to type " + type.Name + ". Method 'Parse' failed.", e);
     }
   }
 
