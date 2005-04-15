@@ -108,7 +108,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     {
       sb.Append ("/");
       sb.Append (Name);
-      sb.Append (Parser.Seperator);
+      sb.Append (Parser.Separator);
     }
     sb.Append (this.Placeholder);
     sb.Append ("{");

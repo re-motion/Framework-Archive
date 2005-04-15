@@ -25,7 +25,7 @@ public abstract class CommandLineValueArgument: CommandLineArgument
       sb.Append ("/");
       sb.Append (Name);
       if (this.Placeholder != null)
-        sb.Append (Parser.Seperator);
+        sb.Append (Parser.Separator);
     }
     sb.Append (this.Placeholder);
   }

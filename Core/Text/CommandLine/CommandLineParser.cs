@@ -16,7 +16,7 @@ public class CommandLineParser
 
   public readonly CommandLineArgumentCollection Arguments;
 
-  private char _seperator = ':';
+  private char _separator = ':';
   private bool _incrementalNameValidation = true;
   private bool _isCaseSensitive = false;
   
@@ -30,16 +30,16 @@ public class CommandLineParser
 
   // properties and methods
 
-  public char Seperator
+  public char Separator
   {
     get 
     { 
-      return _seperator; 
+      return _separator; 
     }
     set 
     { 
-      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException ("value", value, "Whitespace is not supported as seperator.");
-      _seperator = value; 
+      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException ("value", value, "Whitespace is not supported as separator.");
+      _separator = value; 
     }
   }
 
@@ -176,7 +176,7 @@ public class CommandLineParser
         string value = null;
 
         arg = arg.Substring (1);
-        int pos = arg.IndexOf (_seperator);
+        int pos = arg.IndexOf (_separator);
         if (pos >= 0)
         {
           name = arg.Substring (0, pos);
