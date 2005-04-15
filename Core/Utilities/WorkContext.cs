@@ -43,7 +43,7 @@ public class WorkContext: IDisposable
     ///   Returns a string representation of the context stack.
     /// </summary>
     /// <returns>
-    ///   An string with the description of each context on the stack on a seperate line. Top-level contexts appear first.
+    ///   An string with the description of each context on the stack on a separate line. Top-level contexts appear first.
     ///   Contexts that are already left, but not done, are marked with a question mark. See <see cref="Leave"/> and 
     ///   <see cref="Done"/>.
     /// </returns>
