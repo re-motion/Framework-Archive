@@ -202,7 +202,7 @@ public class EntryFormGrid: Control
         writer.WriteLine ("  <col>");
       }
 
-      // seperator columns
+      // separator columns
       writer.WriteLine ("  <col style=\"width: 7\">");
       writer.WriteLine ("  <col style=\"width: 3\">");
 
