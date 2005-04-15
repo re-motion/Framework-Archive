@@ -152,6 +152,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "doc\include\NamespaceDoc.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "doc\include\ResourceManagerWrapper.xml"
                     BuildAction = "Content"
                 />
