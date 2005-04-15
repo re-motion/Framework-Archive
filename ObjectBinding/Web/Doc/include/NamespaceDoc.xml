@@ -1,21 +1,152 @@
 <namespaces>
-<!--
   <namespace name="Rubicon.ObjectBinding.Web">
-Rubicon.ObjectBinding.Web summary
-<table class="dtTABLE" style="width: 94%" cellspacing="0">
-<thead>
-<tr valign="top">
-<th width="25%">tag</th>
-<th width="75%">description</th></tr></thead>
-<tbody>
-<tr>
-<td>1</td><td>2</td>
-</tr>
-<tr>
-<td>3</td><td>4</td>
-</tr>
-</tbody>
-</table>
+    For the list of available business object controls see the <see cref="T:Rubicon.ObjectBinding.Web.Controls"/> 
+    namespace.
   </namespace>
--->  
+  <namespace name="Rubicon.ObjectBinding.Web.Controls">
+    The <see cref="T:Rubicon.ObjectBinding.Web.Controls"/> namespace provides object bindable controls implementing 
+    <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/>. If the control provides edit 
+    functionality, it also implements <see cref="T:Rubicon.Web.UI.ISmartControl"/>. When used together with a 
+    <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the bound web controls provide a maximum of usability 
+    with a minimum of coding effort.
+  <h3 class="dtH3">Business Object Bound Controls</h3>
+  <table class="dtTABLE" style="width: 94%" cellspacing="0">
+    <thead>
+      <tr valign="top">
+        <th width="25%">Type</th>
+        <th width="75%">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+        <td>
+           Use this control for displaying and editing the value of an 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
+          a <see cref="T:System.Boolean"/> or <see cref="T:Rubicon.NullableValueTypes.NaBoolean"/> value and 
+          <see langword="null"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+        <td>
+           Use this control for displaying and editing the value of an 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty"/>, 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty"/>, a <see cref="T:System.DateTime"/>
+          or <see cref="T:Rubicon.NullableValueTypes.NaDateTime"/> value and <see langword="null"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+        <td>
+           Use this control for displaying and editing the value of an 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty"/>, 
+          an <see cref="T:System.Enum"/> value and <see langword="null"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+        <td>
+          <para>
+             Use this control for displaying the value of an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty"/> 
+            having <see cref="P:Rubicon.ObjectBinding.IBusinessObjectProperty.IsList"/> set <see langword="true"/> 
+            or an <see cref="T:System.Collections.IList"/> of <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> 
+            objects and <see langword="null"/>.
+          </para><para>
+            The <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/> supports editing the the values the 
+            individual rows, attatching hyperlinks, events, or an 
+            <see cref="T:Rubicon.Web.ExecutionEngine.WxeFunction"/> to the cells or the entire list.
+          </para> 
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+        <td>
+           Use this control for displaying and editing the value of an 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty"/> 
+          having <see cref="P:Rubicon.ObjectBinding.IBusinessObjectProperty.IsList"/> set <see langword="true"/> 
+          or a <see cref="T:System.String"/> array and <see langword="null"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+        <td>
+          <para>
+             Use this control for displaying and editing the value of an 
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty"/> 
+            populated with an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/>, 
+            or <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> and <see langword="null"/> if used 
+            without data binding.
+          </para><para>
+            The <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/> supports attatching hyperlinks, 
+            events, or an <see cref="T:Rubicon.Web.ExecutionEngine.WxeFunction"/> to the currently selected value
+            or the control itself.
+          </para> 
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+        <td>
+           Use this control for displaying and editing the value of an 
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty"/>,
+          an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectNumericProperty"/>, 
+          an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty"/>,
+          or an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty"/> when used with data binding.
+          It can also be assigned a <see cref="T:System.String"/>, an <see cref="T:System.Int32"/>, 
+          a <see cref="T:System.Double"/>, or a <see cref="T:System.DateTime"/> and <see langword="null"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+        <td>
+          Use this control for displaying a hierarchy of <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> 
+          and <see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty"/> objects.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 class="dtH3">Business Object Data Source Controls</h3>
+  <table class="dtTABLE" style="width: 94%" cellspacing="0">
+    <thead>
+      <tr valign="top">
+        <th width="25%">Type</th>
+        <th width="75%">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/></td>
+        <td>
+          <para>
+            Use this control for binding an <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> 
+            to an <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/> on your page.
+          </para><para>
+            Each business object implementation, consisting of implementations for 
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/> and 
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/> must also provide a matching implementation of
+            <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/>. The abstract class 
+            <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> provides a default 
+            implementation from which to inherit from.
+          </para>
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl"/></td>
+        <td>
+          Use this control for cascading business objects on a web page, i.e. displaying or editing the property value
+          of an <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> pointed to by the primary business object's
+          <see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty"/>.
+        </td>
+      </tr>
+      <tr>
+        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceSearchDataSourceControl"/></td>
+        <td>
+          Use this control to provide an otherwise unbound <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/> 
+          with an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </namespace>
 </namespaces>
