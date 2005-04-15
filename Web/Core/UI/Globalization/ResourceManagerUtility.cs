@@ -10,6 +10,11 @@ namespace Rubicon.Web.UI.Globalization
 /// </summary>
 public class ResourceManagerUtility
 {
+  public static IResourceManager GetResourceManager (Control control)
+  {
+    return GetResourceManager (control, true);
+  }
+
   /// <summary>
   ///   Get resource managers of all controls impementing <see cref="IObjectWithResources"/> in the 
   ///   current control's hierarchy (parents last).
@@ -19,7 +24,7 @@ public class ResourceManagerUtility
   /// </param>
   /// <param name="alwaysIncludeParents">
   ///   If true, parent controls' resource managers are included even if a resource manager has already 
-  ///   been found in a child control.
+  ///   been found in a child control. Default is true.
   /// </param>
   /// <returns>
   ///   An <see cref="IResourceManager"/> or <see langname="null"/> if not implemented. If more than
