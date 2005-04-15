@@ -1,0 +1,27 @@
+<namespaces>
+<!--
+  <namespace name="Rubicon.Web">
+summary
+  </namespace>
+-->  
+<!--
+  <namespace name="Rubicon.Web.ExecutionEngine">
+summary
+  </namespace>
+-->  
+<!--
+  <namespace name="Rubicon.Web.UI">
+summary
+  </namespace>
+-->  
+<!--
+  <namespace name="Rubicon.Web.UI.Controls">
+summary
+  </namespace>
+-->  
+<!--
+  <namespace name="Rubicon.Web.UI.Globalization">
+summary
+  </namespace>
+-->  
+</namespaces>
