@@ -333,6 +333,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Text\SimpleParser.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Text\CommandLine\CommandLineArgument.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
