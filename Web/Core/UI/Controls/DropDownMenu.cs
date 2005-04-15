@@ -374,6 +374,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
     writer.AddAttribute(HtmlTextWriterAttribute.Type, "image");
     writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, "return false;");
     writer.RenderBeginTag (HtmlTextWriterTag.Input);
     writer.RenderEndTag();

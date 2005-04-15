@@ -121,6 +121,7 @@ public class WebButton :
         if (! _icon.Width.IsEmpty)
           writer.AddAttribute (HtmlTextWriterAttribute.Width, _icon.Width.ToString());
         writer.AddStyleAttribute ("vertical-align", "middle");
+        writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
         writer.RenderBeginTag (HtmlTextWriterTag.Img);
         writer.RenderEndTag();
       }
