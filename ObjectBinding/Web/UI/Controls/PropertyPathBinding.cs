@@ -43,7 +43,6 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
   /// </param>
   public PropertyPathBinding (BusinessObjectPropertyPath propertyPath)
   {
-    ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
     PropertyPath = propertyPath;
   }
 
@@ -58,7 +57,6 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
   /// </param>
   public PropertyPathBinding (string propertyPathIdentifier)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
     PropertyPathIdentifier = propertyPathIdentifier;
   }
 
@@ -101,7 +99,6 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
   /// <value>
   ///   A <see cref="BusinessObjectPropertyPath"/> or <see langword="null"/> if the 
   ///   <see cref="PropertyPathIdentifier"/> has not been evaluated.
-  ///   Must not be assigned <see langword="null"/>.
   /// </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -138,7 +135,6 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
     }
     set 
     {
-      ArgumentUtility.CheckNotNull ("PropertyPath", value);
       _propertyPath = value; 
       _propertyPathIdentifier = (value == null) ? string.Empty : value.ToString();
     }
@@ -150,7 +146,6 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
   /// </summary>
   /// <value> 
   ///   A <see cref="string"/> formatted as a valid property path. 
-  ///   Must not be assigned <see langword="null"/> or emtpy.
   /// </value>
   [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.Attribute)]
