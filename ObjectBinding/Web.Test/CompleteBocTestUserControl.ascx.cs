@@ -35,6 +35,7 @@ public class CompleteBocUserControl :
   protected Rubicon.ObjectBinding.Web.Controls.BocList ListField;
   protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BooleanField;
   protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
+  protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
   private void Page_Load(object sender, System.EventArgs e)
