@@ -63,7 +63,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     //  Is PostBack caused by this tab strip ?
-    if (postCollection[ControlHelper.PostEventSourceID] == ClientID)
+    if (postCollection[ControlHelper.PostEventSourceID] == UniqueID)
     {
       _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID ];
       ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected);
@@ -105,9 +105,10 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       return;
 
     if (_tabsViewState != null)
+    {
       LoadTabsViewStateRecursive (_tabsViewState, Tabs);
-
-    _hasTabsRestored = true;
+      _hasTabsRestored = true;
+    }
   }
 
   protected override void LoadViewState(object savedState)
