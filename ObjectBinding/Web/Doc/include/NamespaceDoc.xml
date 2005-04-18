@@ -172,10 +172,9 @@
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.DataEditUserControl"/></td>
           <td>
-            <see cref="T:Rubicon.ObjectBinding.Web.Controls.DataEditUserControl"/> is an abstract default 
-            implementation for user controls. Use this control if you want to have central page and only switch 
-            between user controls. The page can than implement the business object management, binding the current 
-            object to the respective user control's data source.
+            Use this control if you want to have central page and only switch between user controls. The page can than 
+            implement the business object management, binding the current object to the respective user control's 
+            data source.
           </td>
         </tr>
       </tbody>
