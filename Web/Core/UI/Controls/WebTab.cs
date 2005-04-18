@@ -14,7 +14,7 @@ public class WebTab: IControlItem
 
   public static WebTab GetSeparator()
   {
-    return new WebTab (null, "-");
+    return new WebTab (null, c_separator);
   }
 
   /// <summary> The control to which this object belongs. </summary>
