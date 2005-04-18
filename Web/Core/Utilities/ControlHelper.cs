@@ -31,6 +31,8 @@ public class ControlHelper
   {
     ArrayList controlList = new ArrayList ();
     GetControlsRecursiveInternal (parentControl, type, controlList);
+    if (type.IsInterface)
+      type = typeof (Control);
     return (Control[]) controlList.ToArray (type);
   }
 
@@ -38,6 +40,8 @@ public class ControlHelper
   {
     ArrayList controlList = new ArrayList ();
     GetControlsRecursiveInternal (parentControl, type, new ArrayList (stopList), controlList);
+    if (type.IsInterface)
+      type = typeof (Control);
     return (Control[]) controlList.ToArray (type);
   }
 
