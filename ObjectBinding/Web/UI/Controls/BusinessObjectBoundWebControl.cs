@@ -307,8 +307,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     if (SupportedPropertyInterfaces == null)
       return true;
-    if (! SupportsPropertyMultiplicity (property.IsList))
+
+    bool searchMode = DataSource != null && DataSource.Mode == DataSourceMode.Search;
+    if (! searchMode && ! SupportsPropertyMultiplicity (property.IsList))
+    {
       return false;
+    }
 
     return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (property, SupportedPropertyInterfaces);
   }
@@ -346,6 +350,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <remarks>
   ///   Used by <see cref="SupportsProperty"/>.
   /// </remarks>
+  /// <param name="isList"> True if the property is a list property. </param>
+  /// <param name="searchMode"> True if the control is connected to a data source in search mode. </param>
   /// <returns>
   ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
   ///   supported.
@@ -487,11 +493,13 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       if (_readOnly != NaBooleanEnum.Undefined)
         return _readOnly == NaBooleanEnum.True;
       //Binding.EvaluateBinding();
+      if (DataSource.Mode == DataSourceMode.Search)
+        return false;
       if (Property == null || DataSource == null)
         return false;
       if (! IsDesignMode && DataSource.BusinessObject == null)
         return true;
-      if (! DataSource.EditMode)
+      if (DataSource.Mode == DataSourceMode.Read)
         return true;
       return Property.IsReadOnly (DataSource.BusinessObject);
     }
