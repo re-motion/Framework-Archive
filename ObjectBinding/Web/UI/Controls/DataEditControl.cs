@@ -47,12 +47,12 @@ public interface IDataEditControl: IControl
   void CancelEdit ();
 
   /// <summary>
-  ///   Gets or sets a value indicating whether this control is in edit mode or read-only mode.
+  ///   Gets or sets a value indicating whether this control is in read, edit or search mode.
   /// </summary>
   /// <remarks>
   ///   If the control uses multiple data sources, all data sources will be modified by this property.
   /// </remarks>
-  bool EditMode { get; set; }
+  DataSourceMode Mode { get; set; }
 
   /// <summary>
   ///   Validates all bound controls and displays error hints if the validation failed.
@@ -91,10 +91,10 @@ public class DataEditUserControl: UserControl, IDataEditControl
   {
   }
 
-  public virtual bool EditMode
+  public virtual DataSourceMode Mode
   {
-    get { return DataSource.EditMode; } 
-    set { DataSource.EditMode = value; }
+    get { return DataSource.Mode; } 
+    set { DataSource.Mode = value; }
   }
 
   public virtual bool Validate()
