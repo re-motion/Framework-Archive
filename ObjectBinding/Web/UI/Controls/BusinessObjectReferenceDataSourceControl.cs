@@ -20,9 +20,18 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
   {
     throw new NotSupportedException ("Use BusinessObjectReferenceDataSourceControl for actual data.");
   }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public override DataSourceMode Mode
+  {
+    get { return DataSourceMode.Search; }
+    set { if (value != DataSourceMode.Search) throw new NotSupportedException ("BusinessObjectReferenceSearchDataSourceControl supports only DataSourceMode.Search."); }
+  }
 }
 
-public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
+public class BusinessObjectReferenceDataSourceControl
+    : BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
 {
   private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
   {
@@ -56,11 +65,6 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
-  }
-
-  protected override bool SupportsPropertyMultiplicity (bool isList)
-  {
-    return isList == false;
   }
 
   public BusinessObjectReferenceDataSourceControl ()
@@ -153,10 +157,10 @@ public class BusinessObjectReferenceDataSourceControl: BusinessObjectBoundModifi
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public bool EditMode
+  public virtual DataSourceMode Mode
   {
-    get { return ! IsReadOnly; }
-    set { ReadOnly = (NaBoolean) value; }
+    get { return IsReadOnly ? DataSourceMode.Read : DataSourceMode.Edit; }
+    set { ReadOnly = (NaBoolean) (value == DataSourceMode.Read); } // "search" needs edit mode
   }
 
   // TODO: redesign IsDirty semantics!
