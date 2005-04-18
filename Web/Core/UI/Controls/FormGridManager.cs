@@ -634,8 +634,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary>
-    ///   Test's whether this <see cref="FormGridRow"/> contains visible controls or if 
-    ///   its own <see cref="Visible"/> property is set to false.
+    ///   Checks whether the row should be rendered.
     /// </summary>
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
     public virtual bool CheckVisibility()
@@ -643,19 +642,19 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       if (!_visible)
         return false;
 
-      foreach (HtmlTableRow row in _htmlTableRows)
+      bool nonLabelControlFound = false;
+      foreach (Control control in _controls.Values)
       {
-        foreach (HtmlTableCell cell in row.Cells)
+        if (! (control is Label) && ! (control is SmartLabel) && ! (control is FormGridLabel))
         {
-          foreach (Control control in cell.Controls)
-          {
-            if (control.Visible)
-              return true;
-          }
+          if (control.Visible) 
+            return true;
+          else
+            nonLabelControlFound = true;
         }
       }
 
-      return false;
+      return ! nonLabelControlFound;
     }
 
     /// <summary>
@@ -2056,8 +2055,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     if (HasValidationMessageColumn)
       cell.ColSpan++;
 
-    if (!row.CheckVisibility())
-      row.Hide();
+    // don't hide rows for unknown cells
+    //    if (!row.CheckVisibility())
+    //      row.Hide();
 
     AddShowEmptyCellsHack (row);
   }
@@ -2072,6 +2072,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     AssignCssClassesToCells (dataRow, isTopDataRow);
     AssignCssClassesToInputControls (dataRow);
     AssignCssClassesToValidators (dataRow);
+
+    if (! dataRow.CheckVisibility())
+      dataRow.Hide();
 
     AddShowEmptyCellsHack (dataRow);
 
