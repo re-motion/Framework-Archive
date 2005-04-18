@@ -82,7 +82,7 @@ public class ClientForm : TestWxeBasePage
     {
       dataEditControl.BusinessObject = Function.Object;
       dataEditControl.LoadValues (IsPostBack);
-      dataEditControl.EditMode = ! Function.ReadOnly;
+      dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
       return dataEditControl;
     }
 
