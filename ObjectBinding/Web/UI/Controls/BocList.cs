@@ -3438,19 +3438,9 @@ public class BocList:
 
     if (control == null)
     {
-      if (IsBocReferenceValueSupported (property))
-        control = new BocReferenceValue();
-      else if (IsBocDateTimeValueSupported (property))
-        control = new BocDateTimeValue();
-      else if (IsBocBooleanValueSupported (property))
-        control = new BocBooleanValue();
-      else if (IsBocEnumValueSupported (property))
-        control = new BocEnumValue();
-      else if (IsBocMultilineTextValueSupported (property))
-        control = new BocMultilineTextValue();
-      else if (IsBocTextValueSupported (property))
-        control = new BocTextValue();
-      else
+      control = (IBusinessObjectBoundModifiableWebControl) ControlFactory.CreateControl (
+          property, ControlFactory.EditMode.InlineEdit);
+      if (control == null)
         return null;
     }
 
@@ -3468,59 +3458,59 @@ public class BocList:
     _rowEditModeControlCollection.Clear();
   }
 
-  protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocTextValue.GetSupportedPropertyInterfaces());
-  }
-
-  protected bool IsBocMultilineTextValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocMultilineTextValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocMultilineTextValue.GetSupportedPropertyInterfaces());
-  }
-
-  protected bool IsBocBooleanValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocBooleanValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocBooleanValue.GetSupportedPropertyInterfaces());
-  }
-
-  protected bool IsBocEnumValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocEnumValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocEnumValue.GetSupportedPropertyInterfaces());
-  }
-
-  protected bool IsBocDateTimeValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocDateTimeValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocDateTimeValue.GetSupportedPropertyInterfaces());
-  }
-
-  protected bool IsBocReferenceValueSupported (IBusinessObjectProperty property)
-  {
-    if (! BocReferenceValue.IsPropertyMultiplicitySupported (property.IsList))
-      return false;
-    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-        property, 
-        BocReferenceValue.GetSupportedPropertyInterfaces());
-  }
+//  protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocTextValue.GetSupportedPropertyInterfaces());
+//  }
+//
+//  protected bool IsBocMultilineTextValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocMultilineTextValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocMultilineTextValue.GetSupportedPropertyInterfaces());
+//  }
+//
+//  protected bool IsBocBooleanValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocBooleanValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocBooleanValue.GetSupportedPropertyInterfaces());
+//  }
+//
+//  protected bool IsBocEnumValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocEnumValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocEnumValue.GetSupportedPropertyInterfaces());
+//  }
+//
+//  protected bool IsBocDateTimeValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocDateTimeValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocDateTimeValue.GetSupportedPropertyInterfaces());
+//  }
+//
+//  protected bool IsBocReferenceValueSupported (IBusinessObjectProperty property)
+//  {
+//    if (! BocReferenceValue.IsPropertyMultiplicitySupported (property.IsList))
+//      return false;
+//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
+//        property, 
+//        BocReferenceValue.GetSupportedPropertyInterfaces());
+//  }
 
   [Browsable (false)]
   public NaInt32 EditableRowIndex
