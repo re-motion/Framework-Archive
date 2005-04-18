@@ -8,6 +8,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
 using OBRTest;
 
@@ -62,7 +63,7 @@ namespace OBWTest
       // reflectionBusinessObjectDataSource1
       // 
       this.reflectionBusinessObjectDataSource1.BusinessObject = null;
-      this.reflectionBusinessObjectDataSource1.EditMode = true;
+      this.reflectionBusinessObjectDataSource1.Mode = DataSourceMode.Edit;
       this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
       this.Load += new System.EventHandler(this.Page_Load);
 
