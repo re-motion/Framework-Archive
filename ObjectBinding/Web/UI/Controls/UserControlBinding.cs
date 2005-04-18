@@ -47,12 +47,12 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
           _referenceDataSource = new BusinessObjectReferenceDataSourceControl ();
           _referenceDataSource.DataSource = this.DataSource;
           _referenceDataSource.Property = this.Property;
-          _referenceDataSource.EditMode = this.DataSource.EditMode;
+          _referenceDataSource.Mode = this.DataSource.Mode;
           dataSourceControl = _referenceDataSource;
           Controls.Add (_referenceDataSource);
         }
 
-        _userControl.EditMode = dataSourceControl.EditMode;
+        _userControl.Mode = dataSourceControl.Mode;
         _userControl.BusinessObject = dataSourceControl.BusinessObject;
       }
     }
@@ -63,9 +63,9 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
     base.OnLoad (e);
     if (_referenceDataSource != null)
     {
-      _referenceDataSource.EditMode = this.DataSource.EditMode;
+      _referenceDataSource.Mode = this.DataSource.Mode;
     }
-    _userControl.EditMode = this.DataSource.EditMode;
+    _userControl.Mode = this.DataSource.Mode;
   }
 
 
@@ -159,13 +159,6 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
   {
     get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
   }
-
-  protected override bool SupportsPropertyMultiplicity (bool isList)
-  {
-    return !isList;
-  }
-
-
 }
 
 }

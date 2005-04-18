@@ -80,11 +80,11 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
-  [DefaultValue(true)]
-  public virtual bool EditMode
+  [DefaultValue(DataSourceMode.Edit)]
+  public virtual DataSourceMode Mode
   {
-    get { return GetDataSource().EditMode; }
-    set { GetDataSource().EditMode = value; }
+    get { return GetDataSource().Mode; }
+    set { GetDataSource().Mode = value; }
   }
 
   /// <summary>
