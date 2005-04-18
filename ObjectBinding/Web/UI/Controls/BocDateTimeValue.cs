@@ -1065,22 +1065,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return BocDateTimeValue.GetSupportedPropertyInterfaces(); }
-  }
-
-  protected override bool SupportsPropertyMultiplicity (bool isList)
-  {
-    return BocDateTimeValue.IsPropertyMultiplicitySupported (isList);
-  }
-
-  public static Type[] GetSupportedPropertyInterfaces()
-  { 
-    return s_supportedPropertyInterfaces;
-  }
-
-  public static bool IsPropertyMultiplicitySupported (bool isList)
-  {
-    return ! isList;
+    get { return s_supportedPropertyInterfaces; }
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>

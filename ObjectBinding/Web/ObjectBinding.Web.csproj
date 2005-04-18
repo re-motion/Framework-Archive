@@ -137,6 +137,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "ControlFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataSourcePage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
@@ -256,6 +261,7 @@
                 />
                 <File
                     RelPath = "Controls\BocTreeView.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
