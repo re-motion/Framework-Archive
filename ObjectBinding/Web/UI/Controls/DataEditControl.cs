@@ -66,6 +66,9 @@ public interface IDataEditControl: IControl
   IBusinessObjectDataSourceControl DataSource { get; }
 }
 
+/// <remarks>
+///   This class must be inherited from, overwriting <see cref="DataSource"/>.
+/// </remarks>
 public class DataEditUserControl: UserControl, IDataEditControl
 {
   public IBusinessObject BusinessObject
