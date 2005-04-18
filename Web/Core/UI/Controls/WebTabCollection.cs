@@ -106,7 +106,7 @@ public class WebTabCollection: ControlItemCollection
   private void InitalizeSelectedTab()
   {
     if (   _tabStrip != null 
-        && _tabStrip.Page != null && ! _tabStrip.Page.IsPostBack 
+        && (_tabStrip.Page == null || ! _tabStrip.Page.IsPostBack)
         && _tabStrip.SelectedTab == null 
         && InnerList.Count > 0)
     {
