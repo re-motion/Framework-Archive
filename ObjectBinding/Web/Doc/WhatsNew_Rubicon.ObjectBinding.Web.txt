@@ -9,6 +9,9 @@
   * BugFix: War die PageSize ein ganzzahliger Teiler der Zeilenzahl, so wurde eine Page zu viel angeboten.
   * BugFix: War kein DisabledIcon aber ein Icon angegeben, wurden Disabled MenuItems mit einem ungültigen Imagepfad 
     gerendert.
+
+- BocCustomColumnDefinitionCell
+  * Statt OnClick DoOnClick überschreiben.
   
 1.2.19.0
 ========

@@ -23,8 +23,8 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
 {
   private string _columnID;
   private string _columnTitle;
-  /// <summary> The width of the column. </summary>
   private Unit _width; 
+  private string _cssClass;
 
   /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
@@ -97,6 +97,20 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
     get { return _width; } 
     set { _width = value; }
   }
+
+  /// <summary> Gets or sets the CSS-class of the column definition. </summary>
+  /// <value> A <see cref="string"/> providing the CSS-class added to the class attribute when this column is rendered. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Layout")]
+  [Description ("The CSS-class of the rendered column's cells.")]
+  [DefaultValue((string) null)]
+  [NotifyParentProperty (true)]
+  public string CssClass
+  {
+    get { return _cssClass; }
+    set { _cssClass = value; }
+  }
+
 
   /// <summary> Gets the human readable name of this type. </summary>
   protected virtual string DisplayedTypeName
@@ -187,9 +201,7 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
 /// <summary> A column definition containing no data, only the <see cref="BocListItemCommand"/>. </summary>
 public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 {
-  /// <summary> The text representing the command on the rendered page. </summary>
   private string _text;
-  /// <summary> The image representing the command on the rendered page. </summary>
   private string _iconPath;
 
   /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>

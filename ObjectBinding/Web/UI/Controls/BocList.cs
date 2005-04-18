@@ -1688,7 +1688,10 @@ public class BocList:
         continue;
       }
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
+      string cssClassTitleCell = CssClassTitleCell;
+      if (! StringUtility.IsNullOrEmpty (column.CssClass))
+        cssClassTitleCell += " " + column.CssClass;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
       RenderTitleCellMarkers (writer, column, idxColumns);
@@ -1955,6 +1958,8 @@ public class BocList:
       return;
     }
 
+    if (! StringUtility.IsNullOrEmpty (column.CssClass))
+      cssClassTableCell += " " + column.CssClass;
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
