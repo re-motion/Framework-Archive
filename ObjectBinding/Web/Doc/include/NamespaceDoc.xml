@@ -9,11 +9,16 @@
       <b>Rubicon.ObjectBinding.Web</b> namespace.
     </para>
     <h3 class="dtH3">Business Object Bound Controls</h3>
-    <table class="dtTABLE" style="width: 94%" cellspacing="0">
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%"/>
+        <col width="75%"/>
+      </colgroup>
       <thead>
         <tr valign="top">
-          <th width="25%">Type</th>
-          <th width="75%">Description</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -104,12 +109,19 @@
         </tr>
       </tbody>
     </table>
+    </div>
+    
     <h3 class="dtH3">Business Object Data Source Controls</h3>
-    <table class="dtTABLE" style="width: 94%" cellspacing="0">
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%"/>
+        <col width="75%"/>
+      </colgroup>
       <thead>
         <tr valign="top">
-          <th width="25%">Type</th>
-          <th width="75%">Description</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -154,12 +166,19 @@
         </tr>
       </tbody>
     </table>
+    </div>
+    
     <h3 class="dtH3">Miscellaneos Classes and Controls</h3>
-    <table class="dtTABLE" style="width: 94%" cellspacing="0">
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%"/>
+        <col width="75%"/>
+      </colgroup>
       <thead>
         <tr valign="top">
-          <th width="25%">Type</th>
-          <th width="75%">Description</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -180,6 +199,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
     For information on the browser compatibility of the controls, see the 
     <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace.
   </namespace>
@@ -190,149 +210,164 @@
     If the control provides edit functionality, it also implements <see cref="T:Rubicon.Web.UI.ISmartControl"/>. 
     When used together with a <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the bound web controls provide 
     a maximum of usability with a minimum of coding effort.
-  <h3 class="dtH3">Browser Compatibility Chart: Transitional Mode</h3>
-  <table class="dtTABLE" style="width: 94%" cellspacing="0">
-    <thead>
-      <tr valign="top">
-        <th width="28%" rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
-        <th width="24%" colspan="3" style="text-align:center;">Internet Explorer</th>
-        <th width="8%" style="text-align:center;">Firefox</th>
-        <th width="16%" colspan="2" style="text-align:center;">Mozilla</th>
-        <th width="16%" colspan="2" style="text-align:center;">Netscape</th>
-        <th width="8%" style="text-align:center;">Opera</th>
-      </tr>
-      <tr valign="top">
-        <th width="8%" style="text-align:center;">5.0.1</th><!-- Internet Explorer 5.0.1 -->
-        <th width="8%" style="text-align:center;">5.5</th><!-- Internet Explorer 5.5 -->
-        <th width="8%" style="text-align:center;">6.0 SP1</th><!-- Internet Explorer 6.0 SP1 -->
-        <th width="8%" style="text-align:center;">1.0</th><!-- Firefox 1.0 -->
-        <th width="8%" style="text-align:center;">1.0</th><!-- Mozilla 1.0 -->
-        <th width="8%" style="text-align:center;">1.7.5</th><!-- Mozilla 1.7.5. -->
-        <th width="8%" style="text-align:center;">6.0</th><!-- Netscape 6.0 -->
-        <th width="8%" style="text-align:center;">7.2</th><!-- Netscape 7.2 -->
-        <th width="8%" style="text-align:center;">7.5.4</th><!-- Opera 7.5.4 -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">2)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">2)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">2)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">2) 4)</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
-        <td style="text-align:center;">1)</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">1) 3)</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">1) 3)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">1) 3)</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
-        <td style="text-align:center;">- 1)</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">1) 3)</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">1) 3)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">1) 4)</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
-      </tr>
-      <tr>
-        <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
-        <td style="text-align:center;">- 3)</td><!-- Internet Explorer 5.0.1 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
-        <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-        <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
-        <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
-        <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
-        <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
-        <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
-        <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="10">
-          X Fully compatible.<br/>
-          ? Compatibility not testet.<br/>
-          1) Drop Down Menu not supported.<br/>
-          2) Date Picker not supported.<br/>
-          3) Layout damaged but usable.<br/>
-          4) Layout unuseable.<br/>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-  <para>
-    Apply the following modification to the <c>browserCaps</c> section in the <c>machine.config</c>, 
-    or its copy in the <c>web.config</c>: Add <c>tagwriter=System.Web.UI.HtmlTextWriter</c> to the Opera and
-    Mozilla <c>filter</c> sections. Otherwise, those broswers would be detected as HTML 3.2 browsers
-    and the more advanced tags, such as <c>div</c>, would get changed to HTML 3.2 compatible tags.
-  </para>
-  <para>
-    Firefox 1.0, Mozilla 1.0, Mozilla 1.7.5 all use Mozilla 5.0 as base and differ only in the build number of the 
-    Gecko rendering engine.
-  </para>
+    
+    <h3 class="dtH3">Browser Compatibility Chart: Transitional Mode</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+        <col width="8%"/>
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th colspan="3" style="text-align:center;">Internet Explorer</th>
+          <th style="text-align:center;">Firefox</th>
+          <th colspan="2" style="text-align:center;">Mozilla</th>
+          <th colspan="2" style="text-align:center;">Netscape</th>
+          <th style="text-align:center;">Opera</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">5.0.1</th><!-- Internet Explorer 5.0.1 -->
+          <th style="text-align:center;">5.5</th><!-- Internet Explorer 5.5 -->
+          <th style="text-align:center;">6.0 SP1</th><!-- Internet Explorer 6.0 SP1 -->
+          <th style="text-align:center;">1.0</th><!-- Firefox 1.0 -->
+          <th style="text-align:center;">1.0</th><!-- Mozilla 1.0 -->
+          <th style="text-align:center;">1.7.5</th><!-- Mozilla 1.7.5. -->
+          <th style="text-align:center;">6.0</th><!-- Netscape 6.0 -->
+          <th style="text-align:center;">7.2</th><!-- Netscape 7.2 -->
+          <th style="text-align:center;">7.5.4</th><!-- Opera 7.5.4 -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">2)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">2)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">2)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">2) 4)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+          <td style="text-align:center;">1)</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">1) 3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">1) 3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">1) 3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+          <td style="text-align:center;">- 1)</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">1) 3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">1) 3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">1) 3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">1) 4)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+          <td style="text-align:center;">- 3)</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully compatible.<br/>
+            ? Compatibility not testet.<br/>
+            1) Drop Down Menu not supported.<br/>
+            2) Date Picker not supported.<br/>
+            3) Layout damaged but usable.<br/>
+            4) Layout unuseable.<br/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      Apply the following modification to the <c>browserCaps</c> section in the <c>machine.config</c>, 
+      or its copy in the <c>web.config</c>: Add <c>tagwriter=System.Web.UI.HtmlTextWriter</c> to the Opera and
+      Mozilla <c>filter</c> sections. Otherwise, those broswers would be detected as HTML 3.2 browsers
+      and the more advanced tags, such as <c>div</c>, would get changed to HTML 3.2 compatible tags.
+    </para>
+    <para>
+      Firefox 1.0, Mozilla 1.0, Mozilla 1.7.5 all use Mozilla 5.0 as base and differ only in the build number of the 
+      Gecko rendering engine.
+    </para>
   </namespace>
 </namespaces>
