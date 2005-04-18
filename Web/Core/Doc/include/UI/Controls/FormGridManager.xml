@@ -1011,8 +1011,8 @@
     </ContainsControlWithID>
     <CheckVisibility>
       <returns>
-        <see langword="true"/> if the <see cref="FormGridRow"/> is set to visible and
-        contains at least one visible control.
+        <see langword="false"/> if <see cref="Visible"/> is false or the row contains only 
+        invisible controls (labels, validators and controls without ID are not considered).
       </returns>
     </CheckVisibility>
     <ValidationErrors>
