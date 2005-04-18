@@ -48,3 +48,11 @@
 </FixedColumns></obw:BocList></td></tr></table>
 <p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
 <p><asp:button id="SaveButton" runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
+<rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" width="100%" height="10%">
+<views> 
+ <rwc:tabview id="first" title="First">
+ </rwc:tabview>
+ <rwc:tabview id="second" title="Second">
+ </rwc:tabview>
+</Views>
+</rwc:tabbedmultiview>
