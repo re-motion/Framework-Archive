@@ -9,9 +9,16 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding
 {
 
+public enum DataSourceMode
+{
+  Read,
+  Edit,
+  Search
+}
+
 public interface IBusinessObjectDataSource
 {
-  bool EditMode { get; set; }
+  DataSourceMode Mode { get; set; }
 
   void Register (IBusinessObjectBoundControl control);
   void Unregister (IBusinessObjectBoundControl control);
@@ -49,13 +56,13 @@ public interface IBusinessObjectDataSource
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
   private TypedArrayList _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
-  private bool _editMode = true;
+  private DataSourceMode _mode = DataSourceMode.Edit;
 
   [Category ("Data")]
-  public bool EditMode
+  public DataSourceMode Mode
   {
-    get { return _editMode; }
-    set { _editMode = value; }
+    get { return _mode; }
+    set { _mode = value; }
   }
 
   public void Register (IBusinessObjectBoundControl control)
