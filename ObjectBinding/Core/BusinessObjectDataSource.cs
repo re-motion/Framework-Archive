@@ -18,8 +18,22 @@ public enum DataSourceMode
 
 /// <summary>
 ///   This interface provides funtionality for binding an <see cref="IBusinessObject"/> to an 
-///   <see cref="IBusinessObjectBoundControl"/>
+///   <see cref="IBusinessObjectBoundControl"/>. Each business object model requires a specialized 
+///   implementation of this interface.
 /// </summary>
+/// <remarks>
+///   <para>
+///     For most situations, the default implementation provided by <see cref="BusinessObjectDataSource"/> can be
+///     used as a base for the implementation.
+///   </para><para>
+///     The data source usually provides a way of specifying a type identifier string. This identifier is then used to
+///     get or instantiate the matching <see cref="IBusinessObjectClass"/> from the object model.
+///     <note type="implementnotes">
+///       It is important to use a string or similar value type as the identifier. Otherwise it would not be possible
+///       to specify the <see cref="IBusinessObjectClass"/> in the Visual Studio .net Designer, preventing any
+///       further design time features from working.
+///     </note>
+/// </remarks>
 public interface IBusinessObjectDataSource
 {
   DataSourceMode Mode { get; set; }
@@ -86,19 +100,6 @@ public interface IBusinessObjectDataSource
 /// <summary>
 ///   The abstract default implementation of the <see cref="IBusinessObjectDataSource"/>.
 /// </summary>
-/// <remarks>
-///   <para>
-///     Override this class when creating a new business object model.
-///   </para><para>
-///     The data source usually provides a way of specifying a type identifier string. This identifier is then used to
-///     get or instantiate the matching <see cref="IBusinessObjectClass"/> from the object model.
-///     <note>
-///       It is important to use a string or simpilar value type as the identifier. Otherwise it would not be possible
-///       to specify the <see cref="IBusinessObjectClass"/> in the Visual Studio .net Designer, preventing any
-///       further design time features from working.
-///     </note>
-///   </para>
-/// </remarks>
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
   private TypedArrayList _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
