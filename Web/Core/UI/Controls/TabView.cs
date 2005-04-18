@@ -26,6 +26,10 @@ public class TabView : System.Web.UI.WebControls.View
   // statics
 
   // types
+  protected override void AddedControl(Control control, int index)
+  {
+    base.AddedControl (control, index);
+  }
 
   // fields
   private string _title;

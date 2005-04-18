@@ -205,6 +205,11 @@ public class TabbedMultiView: WebControl, IControl
     return MultiViewInternal.GetActiveView();
   }
 
+  protected override void LoadViewState(object savedState)
+  {
+    base.LoadViewState (savedState);
+  }
+
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Table; }
