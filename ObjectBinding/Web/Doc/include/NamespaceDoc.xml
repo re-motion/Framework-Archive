@@ -133,7 +133,7 @@
               <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> 
               to an <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/> on your page.
             </para><para>
-              Each business object implementation, consisting of implementations for 
+              Each business object model, consisting of implementations for 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/> and 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/> must also provide a matching implementation of
@@ -185,7 +185,7 @@
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService"/></td>
           <td>
-            This interface provides a way of querying the business object implementation for an icon to be used
+            This interface provides a way of querying the business object model for an icon to be used
             when displaying the current business object.
           </td>
         </tr>
