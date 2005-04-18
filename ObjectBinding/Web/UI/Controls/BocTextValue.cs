@@ -642,22 +642,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return BocTextValue.GetSupportedPropertyInterfaces(); }
-  }
-
-  protected override bool SupportsPropertyMultiplicity (bool isList)
-  {
-    return BocTextValue.IsPropertyMultiplicitySupported (isList);
-  }
-
-  public static Type[] GetSupportedPropertyInterfaces()
-  { 
-    return s_supportedPropertyInterfaces;
-  }
-
-  public static bool IsPropertyMultiplicitySupported (bool isList)
-  {
-    return ! isList;
+    get { return s_supportedPropertyInterfaces; }
   }
 
   [Browsable (false)]
