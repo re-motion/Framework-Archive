@@ -6,6 +6,7 @@ namespace OBWTest
 	using System.Web;
 	using System.Web.UI.WebControls;
 	using System.Web.UI.HtmlControls;
+  using Rubicon.ObjectBinding;
   using Rubicon.ObjectBinding.Web;
 
 	/// <summary>
@@ -53,7 +54,7 @@ namespace OBWTest
       // CurrentObject
       // 
       this.CurrentObject.BusinessObject = null;
-      this.CurrentObject.EditMode = true;
+      this.CurrentObject.Mode = DataSourceMode.Edit;
       this.CurrentObject.TypeName = null;
       this.Load += new System.EventHandler(this.Page_Load);
 
