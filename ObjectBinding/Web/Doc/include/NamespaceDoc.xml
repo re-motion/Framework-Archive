@@ -1,7 +1,7 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding.Web">
     <para>
-      The <see cref="T:Rubicon.ObjectBinding.Web"/> namespace and it's sub namespaces contain interfaces and
+      The <see cref="T:Rubicon.ObjectBinding.Web"/> namespace and its sub namespaces contain interfaces and
       generic or abstract classes and controls to be used for displaying and editing business objects in an ASP.net 
       environment.
     </para><para>
@@ -317,6 +317,9 @@
     <tfoot>
       <tr>
         <td colspan="10">
+          X Fully compatible.<br/>
+          - Not (completly) compatible.<br/>
+          ? Compatibility not testet.<br/>
           1) Drop Down Menu not supported.<br/>
           2) Date Picker not supported.<br/>
           3) Layout damaged but usable.<br/>
@@ -327,7 +330,7 @@
   </table>
   <para>
     Apply the following modification to the <c>browserCaps</c> section in the <c>machine.config</c>, 
-    or it's copy in the <c>web.config</c>: Add <c>tagwriter=System.Web.UI.HtmlTextWriter</c> to the <c>Opera</c> and
+    or its copy in the <c>web.config</c>: Add <c>tagwriter=System.Web.UI.HtmlTextWriter</c> to the <c>Opera</c> and
     <c>Mozilla</c> <c>filter</c> sections. Otherwise, those broswers would be detected as <c>HTML 3.2</c> browsers
     and the more advanced tags, such as <c>div</c>, would get changed to HTML 3.2 compatible tags.
   </para>
