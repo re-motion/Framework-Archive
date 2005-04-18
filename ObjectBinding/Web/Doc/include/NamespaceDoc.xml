@@ -1,12 +1,12 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding.Web">
     <para>
-      The <see cref="Rubicon.ObjectBinding.Web">Rubicon.ObjectBinding.Web</see> namespace and its sub namespaces contain interfaces and
+      The <b>Rubicon.ObjectBinding.Web</b> namespace and its sub namespaces contain interfaces and
       generic or abstract classes and controls to be used for displaying and editing business objects in an ASP.net 
       environment.
     </para><para>
       In the following, an overview is provided on the starting points for working with the 
-      <see cref="Rubicon.ObjectBinding.Web">Rubicon.ObjectBinding.Web</see> namespace.
+      <b>Rubicon.ObjectBinding.Web</b> namespace.
     </para>
     <h3 class="dtH3">Business Object Bound Controls</h3>
     <table class="dtTABLE" style="width: 94%" cellspacing="0">
