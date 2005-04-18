@@ -53,10 +53,10 @@ public class DataSourceUserControl: UserControl, IBusinessObjectDataSource, IGet
     get { return DataSource.BusinessObjectProvider; }
   }
 
-  bool IBusinessObjectDataSource.EditMode
+  DataSourceMode IBusinessObjectDataSource.Mode
   {
-    get { return DataSource.EditMode; }
-    set { DataSource.EditMode = value; }
+    get { return DataSource.Mode; }
+    set { DataSource.Mode = value; }
   }
 
   void IBusinessObjectDataSource.Unregister (IBusinessObjectBoundControl control)
