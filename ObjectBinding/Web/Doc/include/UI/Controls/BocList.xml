@@ -80,21 +80,4 @@
     </param>
   </OnMenuItemWxeFunctionCommandClick>
 </BocList>
-<SortingOrderEntry>
-  <Equals>
-    <param name="obj">
-      The object to test. 
-    </param>
-    <returns>
-      This method returns <see langword="true"/> if <paramref name="obj"/> 
-      is a <see cref="SortingOrderEntry"/> structure equivalent to this 
-      <see cref="SortingOrderEntry"/> structure; otherwise, <see langword="false"/>.
-    </returns>
-  </Equals>
-  <GetHashCode>
-    <returns> 
-      An integer value that specifies the hash code for this  <see cref="SortingOrderEntry"/> 
-      structure. 
-    </returns>
-  </GetHashCode>
-</SortingOrderEntry>
+
