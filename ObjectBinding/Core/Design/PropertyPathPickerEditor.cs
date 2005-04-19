@@ -9,6 +9,10 @@ using System.ComponentModel;
 namespace Rubicon.ObjectBinding.Design
 {
 
+/// <summary>
+///   Editor applied to an 
+///   <see cref="IBusinessObjectBoundControl.PropertyIdentifier">IBusinessObjectBoundControl.PropertyIdentifier</see>.
+/// </summary>
 public class PropertyPathPickerEditor: UITypeEditor
 {
   private IWindowsFormsEditorService _editorService = null;
