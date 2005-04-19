@@ -1,7 +1,24 @@
 <namespaces>
-<!-- 
   <namespace name="Rubicon.ObjectBinding">
-    Rubicon.ObjectBinding summary
+    <preliminary/>
+    <h3 class="dtH3">Implementing a new Business Object Model</h3>
+    <para>
+      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/>,
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/>, and any property type interface required
+      by your object model. 
+    </para><para>
+      If your business objects have an identity (e.g. GUID) by wich they can be retrieved
+      it is recommended to implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> and
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/>,
+    </para><para>
+      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource"/> and
+      <see cref="T:Rubicon.ObjectBinding.Web.UI.IBusinessObjectDataSourceControl"/> to provide the 
+      business object controls with a data source custom fit to your object model.      
+    </para><para>
+      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProvider"/> and optionally 
+      <see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService"/> if you are able to provide 
+      icons for the business objects to the web application. 
+    </para>
   </namespace>
--->  
 </namespaces>
