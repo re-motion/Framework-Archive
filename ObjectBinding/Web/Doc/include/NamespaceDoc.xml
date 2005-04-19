@@ -1,9 +1,8 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding.Web">
     <para>
-      The <b>Rubicon.ObjectBinding.Web</b> namespace and its sub namespaces contain interfaces and
-      generic or abstract classes and controls to be used for displaying and editing business objects in an ASP.net 
-      environment.
+      The <b>Rubicon.ObjectBinding.Web</b> namespace and its sub namespaces contain interfaces, classes,
+      and web controls to be used for displaying and editing business objects in an ASP.NET environment.
     </para><para>
       In the following, an overview is provided on the starting points for working with the 
       <b>Rubicon.ObjectBinding.Web</b> namespace.
