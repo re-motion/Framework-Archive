@@ -351,7 +351,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Used by <see cref="SupportsProperty"/>.
   /// </remarks>
   /// <param name="isList"> True if the property is a list property. </param>
-  /// <param name="searchMode"> True if the control is connected to a data source in search mode. </param>
   /// <returns>
   ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
   ///   supported.
