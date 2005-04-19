@@ -493,7 +493,7 @@ public abstract class BusinessObjectBoundModifiableWebControl: BusinessObjectBou
       if (_readOnly != NaBooleanEnum.Undefined)
         return _readOnly == NaBooleanEnum.True;
       //Binding.EvaluateBinding();
-      if (DataSource.Mode == DataSourceMode.Search)
+      if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
         return false;
       if (Property == null || DataSource == null)
         return false;
