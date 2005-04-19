@@ -12,7 +12,7 @@ namespace Rubicon.ObjectBinding.Design
 
 /// <summary>
 ///   Editor applied to an 
-///   <see cref="IBusinessObjectBoundControl.PropertyIdentifier">IBusinessObjectBoundControl.PropertyIdentifier</see>.
+///   <see cref="P:IBusinessObjectBoundControl.PropertyIdentifier">IBusinessObjectBoundControl.PropertyIdentifier</see>.
 /// </summary>
 public class PropertyPickerEditor: UITypeEditor
 {
