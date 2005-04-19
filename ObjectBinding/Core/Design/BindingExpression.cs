@@ -13,6 +13,7 @@ namespace Rubicon.ObjectBinding.Design
 ///   and user controls. These items can implement this interface to return a different binding.
 ///   Note that the template control containing must be able to resolve these expressions using <see cref="IResolveComponentBindingExpression"/>.
 /// </remarks>
+[Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
 public interface IGetComponentBindingExpression
 {
   string BindingExpression { get; }
@@ -21,6 +22,7 @@ public interface IGetComponentBindingExpression
 /// <summary>
 ///   This interface allows template controls to resolve special expression created by <see cref="IGetComponentBindingExpression"/>.
 /// </summary>
+[Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
 public interface IResolveComponentBindingExpression
 {
   IComponent Resolve (string expression);
