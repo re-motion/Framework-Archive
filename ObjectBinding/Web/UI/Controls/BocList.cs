@@ -2314,7 +2314,7 @@ public class BocList:
   /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
   /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
   /// <param name="customCellArgument"> 
-  ///   The argument to be passed to the <see cref="IBocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
+  ///   The argument to be passed to the <see cref="BocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
   ///   Can be <see langword="null"/>.
   /// </param>
   /// <returns></returns>
@@ -4341,11 +4341,18 @@ public class BocListSortingOrderEntry
   }
 
   /// <summary>
-  ///   Tests whether the specified object is a <see cref="BocListSortingOrderEntry"/> structure 
-  ///   and is equivalent to this <see cref="BocListSortingOrderEntry"/> structure.
+  ///   Tests whether the specified object is of type <see cref="BocListSortingOrderEntry"/> 
+  ///   and is equivalent to this <see cref="BocListSortingOrderEntry"/>.
   /// </summary>
   /// <remarks> Required for identifying the <see cref="BocListSortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/BocListSortingOrderEntry/Equals/*' />
+  /// <param name="obj">
+  ///   The object to test. 
+  /// </param>
+  /// <returns>
+  ///   This method returns <see langword="true"/> if <paramref name="obj"/> 
+  ///   is of type <see cref="BocListSortingOrderEntry"/> and equivalent to this 
+  ///   <see cref="BocListSortingOrderEntry"/>; otherwise, <see langword="false"/>.
+  /// </returns>
   public override bool Equals (object obj)
   {
     if (obj is BocListSortingOrderEntry)
@@ -4356,10 +4363,8 @@ public class BocListSortingOrderEntry
     return false;
   }
 
-  /// <summary>
-  ///   Returns a hash code for this <see cref="BocListSortingOrderEntry"/> structure.
-  /// </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/BocListSortingOrderEntry/GetHashCode/*' />
+  /// <summary> Returns a hash code for this <see cref="BocListSortingOrderEntry"/>. </summary>
+  /// <returns> An integer value that specifies the hash code for this  <see cref="BocListSortingOrderEntry"/>. </returns>
   public override int GetHashCode()
   {
     return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
