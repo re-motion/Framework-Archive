@@ -9,6 +9,7 @@ using Rubicon.ObjectBinding.Design;
 namespace Rubicon.ObjectBinding.Web.Design
 {
 
+[Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
 public class ComponentBindingExpressionUtility
 {
   public static IComponent ResolveExpression (IControl control, string expression)
