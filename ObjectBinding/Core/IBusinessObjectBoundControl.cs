@@ -11,13 +11,14 @@ namespace Rubicon.ObjectBinding
 /// <remarks>
 ///   See <see cref="LoadValue"/> for a description of the data binding process.
 /// </remarks>
+/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
 public interface IBusinessObjectBoundControl: IComponent
 {
   /// <summary>
   ///   Gets or sets the <see cref="DataSource"/> providing the <see cref="IBusinessObject"/> to which this
   ///   <see cref="IBusinessObjectBoundControl"/> is bound.
   /// </summary>
-  /// <value> An <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/>. </value>
+  /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
   IBusinessObjectDataSource DataSource { get; set; }
 
   /// <summary>
@@ -56,7 +57,7 @@ public interface IBusinessObjectBoundControl: IComponent
   ///     <see cref="DataSource"/>. This object is then used to populate <see cref="Value"/>.
   ///   </para><para>
   ///     This method is usually called by 
-  ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</seealso>.
+  ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
   ///   </para>
   /// </remarks>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
@@ -79,13 +80,13 @@ public interface IBusinessObjectBoundControl: IComponent
   ///   The configuration is considered invalid if data binding is configured for a property 
   ///   that is not available for the bound class or object.
   /// </remarks>
-  /// <value> <see cref="true"/> if the configuration is valid. </value>
+  /// <value> <see langword="true"/> if the configuration is valid. </value>
   bool IsValid { get; }
 }
 
 /// <summary>
 ///   Extends an <see cref="IBusinessObjectBoundControl"/> with the option of writing the 
-///   <see cref="Value"/> back into the bound <see cref="IBusinessObject"/>.
+///   <see cref="IBusinessObjectBoundControl.Value"/> back into the bound <see cref="IBusinessObject"/>.
 /// </summary>
 /// <remarks>
 ///   See <see cref="SaveValue"/> for a description of the data binding process.
@@ -93,7 +94,7 @@ public interface IBusinessObjectBoundControl: IComponent
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
 {
   /// <summary>
-  ///   Saves the <see cref="Value"/> back into the bound <see cref="IBusinessObject"/>.
+  ///   Saves the <see cref="IBusinessObjectBoundControl.Value"/> back into the bound <see cref="IBusinessObject"/>.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -102,7 +103,7 @@ public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundCont
   ///     <see cref="IBusinessObjectBoundControl.DataSource"/>.
   ///   </para><para>
   ///     This method is usually called by 
-  ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.SaveValues</seealso>.
+  ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.SaveValues</see>.
   ///   </para>
   /// </remarks>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
