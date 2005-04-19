@@ -144,7 +144,15 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "doc\include\GettingStarted.html"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "doc\include\include.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "doc\include\MSDN.css"
                     BuildAction = "Content"
                 />
                 <File

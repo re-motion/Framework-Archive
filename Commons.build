@@ -525,6 +525,9 @@
           <property name="IncludeAssemblyVersion" value="False" />
           <property name="CopyrightText" value="${text.companyname}" />
           <property name="CopyrightHref" value="${text.companyurl}" />
+          <property name="RootPageTOCName" value="Getting Started" />
+          <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
+          <property name="RootPageContainsNamespaces" value="False" />
         </documenter>
       </documenters>
       <summaries>
@@ -581,6 +584,9 @@
           <property name="IncludeAssemblyVersion" value="True" />
           <property name="CopyrightText" value="${text.companyname}" />
           <property name="CopyrightHref" value="${text.companyurl}" />
+          <property name="RootPageTOCName" value="Getting Started" />
+          <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
+          <property name="RootPageContainsNamespaces" value="False" />
         </documenter>
       </documenters>
       <summaries>
