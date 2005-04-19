@@ -11,6 +11,7 @@ namespace Rubicon.ObjectBinding.Design
 /// <summary>
 /// Converts the name of an IBusinessObjectDataSource to an object reference. Used by the GUI designer.
 /// </summary>
+[Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
 public class BusinessObjectDataSourceObjectConverter: StringObjectConverter
 {
   public override bool IsConvertibleObject (IComponent objectToConvert)
@@ -22,6 +23,7 @@ public class BusinessObjectDataSourceObjectConverter: StringObjectConverter
 /// <summary>
 /// Converts the name of an object to an object reference. Used by the GUI designer.
 /// </summary>
+[Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
 public abstract class StringObjectConverter: TypeConverter
 {
   public abstract bool IsConvertibleObject (IComponent objectToConvert);
