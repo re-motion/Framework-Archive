@@ -41,8 +41,12 @@ public interface IDataEditControl: IControl
   ///   Notifies the control that editing is cancelled. 
   /// </summary>
   /// <remarks>
-  ///   This method can be used to release locks. If the control is not in <see cref="EditMode"/>, this will usually be ignored.
-  ///   If the control uses multiple data sources, all data sources will be affected by this method.
+  ///   <para>
+  ///     This method can be used to release locks. If the control's <see cref="Mode"/> is not set to 
+  ///     <see cref="DataSourceMode.Edit"/>, this will usually be ignored.
+  ///   </para><para>
+  ///     If the control uses multiple data sources, all data sources will be affected by this method.
+  ///   </para>
   /// </remarks>
   void CancelEdit ();
 
