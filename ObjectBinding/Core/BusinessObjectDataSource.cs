@@ -26,15 +26,17 @@ public enum DataSourceMode
 ///     For most situations, the default implementation provided by <see cref="BusinessObjectDataSource"/> can be
 ///     used as a base for the implementation.
 ///   </para><para>
-///     The data source usually provides a way of specifying a type identifier string. This identifier is then used to
+///     The data source usually provides a way of specifying a type identifier. This identifier is used to
 ///     get or instantiate the matching <see cref="IBusinessObjectClass"/> from the object model.
 ///     <note type="implementnotes">
-///       It is important to use a string or similar value type as the identifier. Otherwise it would not be possible
-///       to specify the <see cref="IBusinessObjectClass"/> in the Visual Studio .net Designer, preventing any
-///       further design time features from working.
+///       It is important to use a identifier that can be persisted as a string. Otherwise it would not be possible to 
+///       specify and later persist the <see cref="IBusinessObjectClass"/> in the Visual Studio .NET Designer, 
+///       preventing any further design time features from working.
 ///     </note>
 ///   </para>
 /// </remarks>
+/// <seealso cref="IBusinessObjectBoundControl"/>
+/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
 public interface IBusinessObjectDataSource
 {
   /// <summary> Gets or sets the current <see cref="DataSourceMode"/>. </summary>
@@ -74,12 +76,12 @@ public interface IBusinessObjectDataSource
   void Unregister (IBusinessObjectBoundControl control);
 
   /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
+  /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   /// <remarks>
   ///   On initial loads, all values must be loaded. On interim loads, each control decides whether it keeps its own 
   ///   value (e.g., using view state) or whether it reloads the value (useful for complex structures that need no 
   ///   validation).
   /// </remarks>
-  /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   /// <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   void LoadValues (bool interim);
 
@@ -87,18 +89,21 @@ public interface IBusinessObjectDataSource
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
   ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
   /// </summary>
+  /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
   ///   On final saves, all values must be saved. (It is assumed that invalid values were already identified using 
   ///   validators.) On interim saves, each control decides whether it saves its values into the business object or
   ///   using an alternate mechanism (e.g. view state).
   /// </remarks>
-  /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
   void SaveValues (bool interim);
 
-  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of the bound <see cref="IBusinessObject"/>. </summary>
-  /// <remarks> Usually available whether or not <see cref="BusinessObject"/> is set. </remarks>
-  /// <value> The <see cref="IBusinessObjectClass"/> of the bound <see cref="IBusinessObject"/>. </value>
+  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </summary>
+  /// <value> The <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </value>
+  /// <remarks>
+  ///   Usually set before the an <see cref="IBusinessObject"/> is connected to the 
+  ///   <see cref="IBusinessObjectDataSource"/>. 
+  /// </remarks>
   IBusinessObjectClass BusinessObjectClass { get; }
 
   /// <summary>
@@ -112,7 +117,7 @@ public interface IBusinessObjectDataSource
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObject"/> who's properties will be loaded into the bound controls.
+  ///   Gets or sets the <see cref="IBusinessObject"/> connected to this <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
   /// <value>
   ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
@@ -124,9 +129,7 @@ public interface IBusinessObjectDataSource
   ///   Gets an array of <see cref="IBusinessObjectBoundControl"/> objects bound to this 
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
-  /// <value> 
-  ///   An array or <see cref="IBusinessObjectBoundControl"/> objects.
-  /// </value>
+  /// <value> An array or <see cref="IBusinessObjectBoundControl"/> objects. </value>
   IBusinessObjectBoundControl[] BoundControls { get; }
 }
 
@@ -174,6 +177,10 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+  /// <remarks>
+  ///   For details on <b>LoadValue</b>, 
+  ///   see <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
+  /// </remarks>
   public void LoadValues (bool interim)
   {
     if (_boundControls != null)
@@ -191,7 +198,11 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
   ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
   /// </summary>
-  /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
+  /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
+  /// <remarks>
+  ///   For details on <b>SaveValue</b>, 
+  ///   see <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
+  /// </remarks>
   public void SaveValues (bool interim)
   {
     if (_boundControls != null)
@@ -208,13 +219,18 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
     }
   }
 
-  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of the bound <see cref="IBusinessObject"/>. </summary>
+  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </summary>
+  /// <value> The <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </value>
+  /// <remarks>
+  ///   Usually set before the an <see cref="IBusinessObject"/> is connected to the 
+  ///   <see cref="IBusinessObjectDataSource"/>. 
+  /// </remarks>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public abstract IBusinessObjectClass BusinessObjectClass { get; }
 
   /// <summary>
-  ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the bound
+  ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the connected
   ///   <see cref="IBusinessObject"/>.
   /// </summary>
   [Browsable (false)]
@@ -225,8 +241,12 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObject"/> who's properties will be loaded into the bound controls.
+  ///   Gets or sets the <see cref="IBusinessObject"/> connected to this <see cref="IBusinessObjectDataSource"/>
   /// </summary>
+  /// <value>
+  ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
+  ///   <see cref="BusinessObjectClass"/>.
+  /// </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public abstract IBusinessObject BusinessObject { get; set; }
@@ -235,6 +255,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   ///   Gets an array of <see cref="IBusinessObjectBoundControl"/> objects bound to this 
   ///   <see cref="BusinessObjectDataSource"/>.
   /// </summary>
+  /// <value> An array or <see cref="IBusinessObjectBoundControl"/> objects. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls

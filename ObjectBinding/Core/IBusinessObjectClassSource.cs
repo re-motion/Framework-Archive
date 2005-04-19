@@ -10,7 +10,7 @@ namespace Rubicon.ObjectBinding
 /// </summary>
 /// <remarks>
 ///   <para>
-///     The <see cref="T:Rubicon.ObjectBinding.Design.PropertyPathPicker"/> control uses this interface 
+///     The <see cref="Rubicon.ObjectBinding.Design.PropertyPathPickerControl"/> uses this interface 
 ///     to query the <see cref="IBusinessObjectClass"/> of an <see cref="IBusinessObjectReferenceProperty"/>
 ///     or an <see cref="IBusinessObjectDataSource"/>, respectively.
 ///   </para><para>
@@ -26,7 +26,7 @@ public interface IBusinessObjectClassSource
   /// </summary>
   /// <value> 
   ///   The <see cref="IBusinessObjectClass"/> to be queried for the properties offered by the 
-  ///   <see cref="T:Rubicon.ObjectBinding.Design.PropertyPathPicker"/> control.
+  ///   <see cref="Rubicon.ObjectBinding.Design.PropertyPathPickerControl"/>.
   /// </value>
   IBusinessObjectClass BusinessObjectClass { get; }
 }

@@ -12,6 +12,7 @@ namespace Rubicon.ObjectBinding
 ///   See <see cref="LoadValue"/> for a description of the data binding process.
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundModifiableControl"/>
+/// <seealso cref="IBusinessObjectDataSource"/>
 public interface IBusinessObjectBoundControl: IComponent
 {
   /// <summary>
@@ -59,6 +60,10 @@ public interface IBusinessObjectBoundControl: IComponent
   ///     This method is usually called by 
   ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
   ///   </para>
+  ///   <para>
+  ///     For details on <b>LoadValue</b>, 
+  ///     see <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
+  ///   </para>
   /// </remarks>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   void LoadValue (bool interim);
@@ -91,6 +96,7 @@ public interface IBusinessObjectBoundControl: IComponent
 /// <remarks>
 ///   See <see cref="SaveValue"/> for a description of the data binding process.
 /// </remarks>
+/// <seealso cref="IBusinessObjectDataSource"/>
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
 {
   /// <summary>
@@ -103,10 +109,14 @@ public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundCont
   ///     <see cref="IBusinessObjectBoundControl.DataSource"/>.
   ///   </para><para>
   ///     This method is usually called by 
-  ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.SaveValues</see>.
+  ///     <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
+  ///   </para>
+  ///   <para>
+  ///     For details on <b>SaveValue</b>, 
+  ///     see <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
   ///   </para>
   /// </remarks>
-  /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
+  /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   void SaveValue (bool interim);
 }
 

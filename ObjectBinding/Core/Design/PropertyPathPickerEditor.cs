@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding.Design
 
 /// <summary>
 ///   Editor applied to the string property used to set the 
-///   <see cref="P:BusinessObjectPropertyPath.Identifier">BusinessObjectPropertyPath.Identifier</see>.
+///   <see cref="BusinessObjectPropertyPath.Identifier">BusinessObjectPropertyPath.Identifier</see>.
 /// </summary>
 public class PropertyPathPickerEditor: UITypeEditor
 {

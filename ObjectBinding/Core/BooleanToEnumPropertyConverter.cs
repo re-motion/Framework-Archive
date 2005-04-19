@@ -27,7 +27,7 @@ public sealed class BooleanToEnumPropertyConverter
   ///   <see langword="false"/> and <see langword="null"/> if <paramref name="value"/> is <see langword="null"/>.
   /// </summary>
   /// <param name="value">
-  ///   Can be any object taht equals to <see langword="true"/> or <see langword="false"/> and <see langword="null"/>.
+  ///   Can be any object that equals to <see langword="true"/> or <see langword="false"/> and <see langword="null"/>.
   /// </param>
   /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
   public static IEnumerationValueInfo GetValueInfoByValue (object value)

@@ -35,21 +35,21 @@ public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
   ///   <see cref="IBusinessObject"/> provided by this <see cref="IBusinessObjectReferenceDataSource"/>'s
   ///   <see cref="BusinessObject"/>.
   /// </summary>
-  /// <remarks>
-  ///   Usually identical to <see cref="IBusinessObjectBoundControl.Property"/>.
-  /// </remarks>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
   ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
   /// </value>
+  /// <remarks>
+  ///   Usually identical to <see cref="IBusinessObjectBoundControl.Property"/>.
+  /// </remarks>
   IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
 
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
   ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> is bound.
   /// </summary>
-  /// <remarks> Usually identical to <see cref="IBusinessObjectBoundControl.DataSource"/>. </remarks>
   /// <value> The <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
+  /// <remarks> Usually identical to <see cref="IBusinessObjectBoundControl.DataSource"/>. </remarks>
   IBusinessObjectDataSource ReferencedDataSource { get; }
 }
 
@@ -84,15 +84,12 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   <see cref="ReferenceProperty"/> and populates the bound controls using 
   ///   <see cref="BusinessObjectDataSource.LoadValues"/>.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Implementation of <see cref="IBusinessObjectBoundControl.LoadValue"/>.
-  ///   </para>
-  ///   <para>
-  ///     For details on <paramref name="interim"/>, see <see cref="IBusinessObjectDataSource.LoadValues"/>.
-  ///   </para>
-  /// </remarks>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+  /// <remarks>
+  ///   For details on <b>LoadValue</b>, 
+  ///   see <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
+  /// </remarks>
+  /// <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   public void LoadValue (bool interim)
   {
     // load value from "parent" data source
@@ -111,15 +108,12 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   and writes the <see cref="BusinessObject"/> back into the <see cref="ReferencedDataSource"/> using 
   ///   <see cref="ReferenceProperty"/>.
   /// </summary>
+  /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
-  ///   <para>
-  ///     Implementation of <see cref="IBusinessObjectBoundModifiableControl.SaveValue"/>.
-  ///   </para>
-  ///   <para>
-  ///     For details on <paramref name="interim"/>, see <see cref="IBusinessObjectDataSource.SaveValues"/>.
-  ///   </para>
+  ///   For details on <b>SaveValue</b>, 
+  ///   see <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
   /// </remarks>
-  /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
+  /// <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
   public void SaveValue (bool interim)
   {
     // save values from "child" controls
@@ -136,23 +130,25 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   }
 
   /// <summary>
-  ///   Implementation of <see cref="IBusinessObjectBoundControl.SupportsProperty"/>.
+  ///   Tests whether the <see cref="IBusinessObjectReferenceDataSource"/> can be bound to the 
+  ///   <paramref name="property"/>.
   /// </summary>
   /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
-  /// <value>
+  /// <returns>
   ///   <see langword="true"/> if the <paremref name="property"/> is of type 
   ///   <see cref="IBusinessObjectReferenceProperty"/>.
-  /// </value>
+  /// </returns>
+  /// <seealso cref="IBusinessObjectBoundControl.SupportsProperty">IBusinessObjectBoundControl.SupportsProperty</seealso>
   public bool SupportsProperty (IBusinessObjectProperty property)
   {
     return property is IBusinessObjectReferenceProperty;
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObject"/> who's properties will be loaded into the bound controls.
+  ///   Gets or sets the <see cref="IBusinessObject"/> returned accessed through the <see cref="ReferenceProperty"/>.
   /// </summary>
+  /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
   /// <remarks> Setting the <b>BusinessObject</b> does not set the <see cref="_businessObjectChanged"/> flag. </remarks>
-  /// <value> The <see cref="IBusinessObjectClass"/> of the bound <see cref="IBusinessObject"/>. </value>
   public override IBusinessObject BusinessObject
   {
     get { return _businessObject; }
@@ -189,14 +185,14 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   }
 
   /// <summary>
-  ///   See <see cref="IBusinessObjectReferenceDataSource.ReferenceProperty"/> for information on how to implement 
-  ///   this abstract property.
+  ///   See <see cref="IBusinessObjectReferenceDataSource.ReferenceProperty">IBusinessObjectReferenceDataSource.ReferenceProperty</see>
+  ///   for information on how to implement this abstract property.
   /// </summary>
   public abstract IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
 
   /// <summary>
-  ///   See <see cref="IBusinessObjectReferenceDataSource.ReferencedDataSource"/> for information on how to implement 
-  ///   this abstract property.
+  ///   See <see cref="IBusinessObjectReferenceDataSource.ReferencedDataSource">IBusinessObjectReferenceDataSource.ReferencedDataSource</see>
+  ///   for information on how to implement this abstract property.
   /// </summary>
   public abstract IBusinessObjectDataSource ReferencedDataSource { get; }
 }
@@ -243,8 +239,8 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
   ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> is bound.
   /// </summary>
-  /// <remarks> Identical to <see cref="DataSource"/>. </remarks>
   /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
+  /// <remarks> Identical to <see cref="DataSource"/>. </remarks>
   public override IBusinessObjectDataSource ReferencedDataSource
   {
     get { return _dataSource; }
@@ -274,11 +270,11 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   ///   <see cref="IBusinessObject"/> provided by this <see cref="IBusinessObjectReferenceDataSource"/>'s
   ///   <see cref="BusinessObject"/>.
   /// </summary>
-  /// <remarks> Identical to <see cref="ReferenceProperty"/>. </remarks>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
   ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
   /// </value>
+  /// <remarks> Identical to <see cref="ReferenceProperty"/>. </remarks>
   [Browsable(false)]
   IBusinessObjectProperty IBusinessObjectBoundControl.Property
   {
@@ -336,8 +332,8 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   ///   Gets a flag specifying whether the <see cref="BusinessObjectReferenceDataSource"/> has a valid configuration.
   /// </summary>
   /// <value> 
-  ///   <see langword="false"/> the <see cref="ReferenceProperty"/> is not accessible for the current 
-  ///   <see cref="DataSource"/>'s current <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>
+  ///   <see langword="false"/> if the <see cref="ReferenceProperty"/> is not accessible for the 
+  ///   <see cref="DataSource"/>'s <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>
   ///   and <see cref="IBusinessObjectDataSource.BusinessObject"/>.
   /// </value>
   [Browsable (false)]
