@@ -1646,11 +1646,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       if (formGridRow.IsGenerated)
         UpdateGeneratedRowsVisibility (formGridRow);
 
-      if (!formGridRow.CheckVisibility())
-      {
-        formGridRow.Hide();
-      }
-      else
+//      if (!formGridRow.CheckVisibility())
+//      {
+//        formGridRow.Hide();
+//      }
+//      else
+      if (formGridRow.CheckVisibility())
       {
         if (formGridRow.Type == FormGridRowType.DataRow)
         {
