@@ -1,7 +1,7 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding">
-    <preliminary/>
     <h3 class="dtH3">Implementing a new Business Object Model</h3>
+    preliminary
     <para>
       Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/>,
@@ -13,7 +13,7 @@
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/>,
     </para><para>
       Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource"/> and
-      <see cref="T:Rubicon.ObjectBinding.Web.UI.IBusinessObjectDataSourceControl"/> to provide the 
+      <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/> to provide the 
       business object controls with a data source custom fit to your object model.      
     </para><para>
       Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProvider"/> and optionally 
