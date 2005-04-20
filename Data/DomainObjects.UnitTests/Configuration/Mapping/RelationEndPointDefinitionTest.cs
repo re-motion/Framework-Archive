@@ -40,6 +40,13 @@ public class RelationEndPointDefinitionTest
   }
 
   [Test]
+  public void IsNull ()
+  {
+    Assert.IsNotNull (_orderEndPoint as INullableObject);
+    Assert.IsFalse (_orderEndPoint.IsNull);
+  }
+
+  [Test]
   public void CorrespondsToForVirtualEndPoint ()
   {
     Assert.IsTrue (_customerEndPoint.CorrespondsTo ("Customer", "Orders"));
