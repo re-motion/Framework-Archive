@@ -180,6 +180,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithOppositeClassAndCardinalityMany.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "mappingWithOppositeClassReferringToItself.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithPropertyDefinedInBaseAndDerivedClass.xml"
                     BuildAction = "Content"
                 />

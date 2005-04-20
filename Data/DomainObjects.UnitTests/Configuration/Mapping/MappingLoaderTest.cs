@@ -244,7 +244,7 @@ public class LoaderTest
 
   [Test]
   [ExpectedException (typeof (MappingException), 
-      "The relation 'CustomerToOrder' is not correctly defined. For relations with only one end point the end point must define the opposite class.")]
+      "The relation 'CustomerToOrder' is not correctly defined. For relations with only one relation property the relation property must define the opposite class.")]
   public void MappingWithOnlyOneEndPoint ()
   {
     MappingLoader loader = new MappingLoader (
@@ -296,12 +296,24 @@ public class LoaderTest
 
   [Test]
   [ExpectedException (typeof (MappingException), 
-      "The relation 'CustomerToCustomer' is not correctly defined. A relation must either have exactly two end points or the relation property must"
+      "The relation 'CustomerToCustomer' is not correctly defined. A relation must either have exactly two relation properties or the relation property must"
       + " have an opposite class defined.")]
   public void MappingWithMoreThanTwoEndPoints ()
   {
     MappingLoader loader = new MappingLoader (
         @"mappingWithMoreThanTwoEndPoints.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
+
+  [Test]
+  [ExpectedException (typeof (MappingException), 
+      "The relation 'CustomerToOrder' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.")]
+  public void MappingWithOppositeClassAndCardinalityMany ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithOppositeClassAndCardinalityMany.xml", 
         @"mapping.xsd");
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
