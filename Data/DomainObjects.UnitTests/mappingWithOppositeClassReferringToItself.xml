@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+  <classes>
+		<class id="Customer">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Company" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+			  <relationProperty name="Orders" relationID="CustomerToOrder" isMandatory="false" cardinality="many">
+			  	  <column>InvalidColumn</column>	
+			    <oppositeClass>Order</oppositeClass>
+			  </relationProperty>			  
+			</properties>
+		</class>
+  </classes>
+</mapping>  
