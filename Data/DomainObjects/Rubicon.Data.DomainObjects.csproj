@@ -153,6 +153,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "INullable.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "InvalidEnumDefinitionException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -298,11 +303,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DataManagement\INullable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "DataManagement\MandatoryRelationNotSetException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -396,6 +396,11 @@
                 />
                 <File
                     RelPath = "Mapping\MappingException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Mapping\NullRelationEndPointDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
