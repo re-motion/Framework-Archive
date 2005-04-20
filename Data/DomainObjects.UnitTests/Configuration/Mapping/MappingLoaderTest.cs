@@ -232,7 +232,7 @@ public class LoaderTest
   }
 
   [Test]
-  [ExpectedException (typeof (MappingException), "Class 'Order' defines the column 'CustomerID' more than once.")]
+  [ExpectedException (typeof (MappingException))]
   public void MappingWithDuplicateColumnNameAndRelationProperty ()
   {
     MappingLoader loader = new MappingLoader (
@@ -243,7 +243,8 @@ public class LoaderTest
   }
 
   [Test]
-  [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' does not have exactly two end points.")]
+  [ExpectedException (typeof (MappingException), 
+      "The relation 'CustomerToOrder' is not correctly defined. For relations with only one end point the end point must define the opposite class.")]
   public void MappingWithOnlyOneEndPoint ()
   {
     MappingLoader loader = new MappingLoader (
@@ -292,5 +293,18 @@ public class LoaderTest
     MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd");
     Assert.AreEqual ("UnitTests", loader.GetApplicationName ());
   }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), 
+      "The relation 'CustomerToCustomer' is not correctly defined. A relation must either have exactly two end points or the relation property must"
+      + " have an opposite class defined.")]
+  public void MappingWithMoreThanTwoEndPoints ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithMoreThanTwoEndPoints.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
 }
 }
