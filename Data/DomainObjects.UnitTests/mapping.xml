@@ -231,7 +231,12 @@
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="Client"></entity>
 			<storageProviderID>TestDomain</storageProviderID>
-			<properties />
+			<properties>
+			  <relationProperty name="ParentClient" relationID="ParentClientToChildClient" cardinality="one" isMandatory="false">
+			    <column>ParentClientID</column>
+			    <oppositeClass>Client</oppositeClass>
+			  </relationProperty>
+			</properties>
 		</class>
 		<class id="Location">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location, Rubicon.Data.DomainObjects.UnitTests</type>

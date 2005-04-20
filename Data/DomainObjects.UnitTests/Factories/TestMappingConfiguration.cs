@@ -240,8 +240,12 @@ public class TestMappingConfiguration
 
   private ClassDefinition CreateClientDefinition ()
   {
-    return new ClassDefinition (
+    ClassDefinition clientClass = new ClassDefinition (
         "Client", "Client", typeof (Client), DatabaseTest.c_testDomainProviderID);
+
+    clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", "objectID"));
+
+    return clientClass;
   }
 
   private ClassDefinition CreateLocationDefinition ()
@@ -457,7 +461,8 @@ public class TestMappingConfiguration
     relationDefinitions.Add (CreateCompanyToCeoRelationDefinition ());    
     relationDefinitions.Add (CreatePartnerToPersonRelationDefinition ());    
     relationDefinitions.Add (CreateClientToLocationRelationDefinition ());    
-
+    relationDefinitions.Add (CreateParentClientToChildClientRelationDefinition ());    
+    
     relationDefinitions.Add (CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ());
     relationDefinitions.Add (CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsOptional ());
@@ -587,6 +592,19 @@ public class TestMappingConfiguration
 
     personClass.MyRelationDefinitions.Add (relation);
     partnerClass.MyRelationDefinitions.Add (relation);
+
+    return relation;
+  }
+
+  private RelationDefinition CreateParentClientToChildClientRelationDefinition ()
+  {
+    ClassDefinition clientClass = _classDefinitions["Client"];
+    
+    NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
+    RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (clientClass, "ParentClient", false);
+    RelationDefinition relation = new RelationDefinition ("ParentClientToChildClient", endPoint1, endPoint2);
+
+    clientClass.MyRelationDefinitions.Add (relation);
 
     return relation;
   }
