@@ -149,13 +149,13 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   }
 
   /// <summary>
-  ///   Gets the <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>
+  ///   Gets the <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/>
   ///   connected to this <see cref="BusinessObjectDataSourceControl"/>.
   /// </summary>
   /// <value> The <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </value>
   /// <remarks>
   ///   <para>
-  ///     Usually set before the an <see cref="IBusinessObject"/> is connected to the 
+  ///     Usually set before the <see cref="IBusinessObject"/> is connected to the 
   ///     <see cref="IBusinessObjectDataSource"/> by utilizing Visual Studio .NET Designer. 
   ///   </para><para>
   ///     Gets the <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> property of the encapsulated 
@@ -191,7 +191,7 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///   Gets an array of <see cref="IBusinessObjectBoundControl"/> objects bound to this 
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
-  /// <value> An array or <see cref="IBusinessObjectBoundControl"/> objects. </value>
+  /// <value> An array of <see cref="IBusinessObjectBoundControl"/> objects. </value>
   /// <remarks> 
   ///   Gets the <see cref="IBusinessObjectDataSource.BoundControls"/> property of the encapsulated data source.
   /// </remarks>
