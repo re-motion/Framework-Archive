@@ -265,6 +265,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Mapping\ClassDefinitionWithNullEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Mapping\ConstructionOfRelationDefinitionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

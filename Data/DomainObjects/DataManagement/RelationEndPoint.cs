@@ -43,7 +43,6 @@ public abstract class RelationEndPoint : INullableObject
   {
   }
 
-
   protected RelationEndPoint (
       ClientTransaction clientTransaction,
       DomainObject domainObject, 
