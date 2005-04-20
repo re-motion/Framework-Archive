@@ -163,17 +163,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return;
 
     if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
-    {
-      SetRelatedObjectForOneToOneRelation (
-          (ObjectEndPoint) endPoint, 
-          (ObjectEndPoint) newRelatedEndPoint, 
-          (ObjectEndPoint) oldRelatedEndPoint);
-    }
+      SetRelatedObjectForOneToOneRelation ((ObjectEndPoint) endPoint, (ObjectEndPoint) newRelatedEndPoint, (ObjectEndPoint) oldRelatedEndPoint);
     else
-      SetRelatedObjectForOneToManyRelation (
-          (ObjectEndPoint) endPoint, 
-          newRelatedEndPoint, 
-          oldRelatedEndPoint);
+      SetRelatedObjectForOneToManyRelation ((ObjectEndPoint) endPoint, newRelatedEndPoint, oldRelatedEndPoint);
   }
 
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)

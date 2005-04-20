@@ -84,6 +84,10 @@ public class TestMappingConfiguration
 
     classDefinitions.Add (CreateCeoDefinition ());
     classDefinitions.Add (CreatePersonDefinition ());
+
+    classDefinitions.Add (CreateClientDefinition ());
+    classDefinitions.Add (CreateLocationDefinition ());
+
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ());
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition ());
     classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
@@ -232,6 +236,22 @@ public class TestMappingConfiguration
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     return order;
+  }
+
+  private ClassDefinition CreateClientDefinition ()
+  {
+    return new ClassDefinition (
+        "Client", "Client", typeof (Client), DatabaseTest.c_testDomainProviderID);
+  }
+
+  private ClassDefinition CreateLocationDefinition ()
+  {
+    ClassDefinition location = new ClassDefinition (
+        "Location", "Location", typeof (Location), DatabaseTest.c_testDomainProviderID);
+    
+    location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID"));
+
+    return location;
   }
 
   private ClassDefinition CreateClassWithAllDataTypesDefinition ()
@@ -436,6 +456,8 @@ public class TestMappingConfiguration
     relationDefinitions.Add (CreateOrderToOfficialRelationDefinition ());    
     relationDefinitions.Add (CreateCompanyToCeoRelationDefinition ());    
     relationDefinitions.Add (CreatePartnerToPersonRelationDefinition ());    
+    relationDefinitions.Add (CreateClientToLocationRelationDefinition ());    
+
     relationDefinitions.Add (CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ());
     relationDefinitions.Add (CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ());
     relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsOptional ());
@@ -565,6 +587,25 @@ public class TestMappingConfiguration
 
     personClass.MyRelationDefinitions.Add (relation);
     partnerClass.MyRelationDefinitions.Add (relation);
+
+    return relation;
+  }
+
+  private RelationDefinition CreateClientToLocationRelationDefinition ()
+  {
+    ClassDefinition clientClass = _classDefinitions["Client"];
+    ClassDefinition locationClass = _classDefinitions["Location"];
+    
+    VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
+        clientClass, "Locations", false, CardinalityType.Many, typeof (DomainObjectCollection));
+
+    RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
+        locationClass, "Client", true);
+
+    RelationDefinition relation = new RelationDefinition ("ClientToLocation", endPoint1, endPoint2);
+
+    clientClass.MyRelationDefinitions.Add (relation);
+    locationClass.MyRelationDefinitions.Add (relation);
 
     return relation;
   }
