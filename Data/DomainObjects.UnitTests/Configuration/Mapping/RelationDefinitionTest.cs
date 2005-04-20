@@ -109,5 +109,13 @@ public class RelationDefinitionTest
 
     orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefinition);
   }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Relation 'InvalidRelation' cannot have two null end points.")]
+  public void InitializeWithTwoNullRelationEndPointDefinitions ()
+  {
+    NullRelationEndPointDefinition nullEndPointDefinition = new NullRelationEndPointDefinition (_customerClass);
+    RelationDefinition definition = new RelationDefinition ("InvalidRelation", nullEndPointDefinition, nullEndPointDefinition);
+  }
 }
 }
