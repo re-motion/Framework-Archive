@@ -8,15 +8,15 @@ namespace Rubicon.ObjectBinding
 {
 
 /// <summary>
-///   This interface provides functionality to access to the objects returned by other data sources 
-///   using the specified property.
+///   This interface provides functionality to access to the <see cref="IBusinessObject"/> returned by other 
+///   data sources using the specified <see cref="IBusinessObjectReferenceProperty"/>.
 /// </summary>
 /// <remarks>
 ///   <para>
-///     Through the use of an <b>IBusinessObjectReferenceDataSource</b> it is possible to get the 
+///     Through the use of an <b>IBusinessObjectReferenceDataSource</b> it is possible to access a referenced 
 ///     <see cref="IBusinessObject"/> identified by the <see cref="IBusinessObjectReferenceProperty"/> from the 
-///     <see cref="ReferencedDataSource"/>. This object is then used as the 
-///     <see cref="IBusinessObjectReferenceDataSource"/>'s <see cref="BusinessObject"/>, 
+///     primary <see cref="IBusinessObject"/> connected to the <see cref="ReferencedDataSource"/>. The referenced
+///     object is then used as this <see cref="IBusinessObjectReferenceDataSource"/>'s <see cref="BusinessObject"/>, 
 ///     allowing the cascading of <see cref="IBusinessObject"/> objects.
 ///     <note type="implementnotes">
 ///       The <b>IBusinessObjectReferenceDataSource</b> is usually implemented as a cross between the
@@ -25,31 +25,40 @@ namespace Rubicon.ObjectBinding
 ///     </note>
 ///   </para>
 ///   <para>
-///     <see cref="BusinessObjectReferenceDataSource"/> provides an implementation of this interface.
+///     <see cref="BusinessObjectReferenceDataSource"/> provides an implementation of this interface. Since the
+///     <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> is determined by the selected 
+///     <see cref="ReferenceProperty"/>, the generic <see cref="BusinessObjectReferenceDataSource"/> will be sufficient
+///     for most (or possibly all) specialized business object models.
 ///   </para>
 /// </remarks>
 public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
 {
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectReferenceProperty"/> used to access the 
-  ///   <see cref="IBusinessObject"/> provided by this <see cref="IBusinessObjectReferenceDataSource"/>'s
-  ///   <see cref="BusinessObject"/>.
+  ///   <see cref="IBusinessObject"/> to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
   /// </summary>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
   ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
   /// </value>
   /// <remarks>
-  ///   Usually identical to <see cref="IBusinessObjectBoundControl.Property"/>.
+  ///   Usually identical to <see cref="IBusinessObjectBoundControl.Property"/>, i.e. <b>ReferenceProperty</b>
+  ///   gets or sets the current value of <see cref="IBusinessObjectBoundControl.Property"/>.
   /// </remarks>
   IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
 
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
-  ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> is bound.
+  ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
   /// </summary>
-  /// <value> The <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
-  /// <remarks> Usually identical to <see cref="IBusinessObjectBoundControl.DataSource"/>. </remarks>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
+  ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
+  ///  </value>
+  /// <remarks>
+  ///   Usually identical to <see cref="IBusinessObjectBoundControl.DataSource"/>, i.e. <b>ReferencedDataSource</b>
+  ///   gets the current value of <see cref="IBusinessObjectBoundControl.DataSource"/>.
+  /// </remarks>
   IBusinessObjectDataSource ReferencedDataSource { get; }
 }
 
@@ -145,7 +154,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   }
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObject"/> returned accessed through the <see cref="ReferenceProperty"/>.
+  ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
   /// </summary>
   /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
   /// <remarks> Setting the <b>BusinessObject</b> does not set the <see cref="_businessObjectChanged"/> flag. </remarks>
@@ -201,14 +210,17 @@ public abstract class BusinessObjectReferenceDataSourceBase:
 ///   This data source provides access to the objects returned by other data sources using the specified property.
 /// </summary>
 /// <remarks>
-///   This class acts as both a source (<see cref="IBusinessObjectDataSource"/>) and consumer 
+///   This class acts as both source (<see cref="IBusinessObjectDataSource"/>) and consumer 
 ///   (<see cref="IBusinessObjectBoundControl"/>) of business objects. 
 ///   <note>
 ///     <see cref="IBusinessObjectDataSource.BusinessObject"/> and <see cref="IBusinessObjectBoundControl.Value"/>
 ///     are always identical.
 ///   </note>
 /// </remarks>
-public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase, IBusinessObjectBoundModifiableControl
+/// <seealso cref="IBusinessObjectReferenceDataSource"/>
+public class BusinessObjectReferenceDataSource: 
+    BusinessObjectReferenceDataSourceBase, 
+    IBusinessObjectBoundModifiableControl
 {
   private IBusinessObjectDataSource _dataSource;
   private string _propertyIdentifier;
@@ -216,10 +228,13 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   private bool _propertyDirty = true;
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
-  ///   to which this <see cref="BusinessObjectReferenceDataSource"/> is bound.
+  ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
+  ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
   /// </summary>
-  /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
+  ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
+  ///  </value>
   [Category ("Data")]
   public IBusinessObjectDataSource DataSource
   {
@@ -237,9 +252,12 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
 
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
-  ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> is bound.
+  ///   to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
   /// </summary>
-  /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
+  ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
+  ///  </value>
   /// <remarks> Identical to <see cref="DataSource"/>. </remarks>
   public override IBusinessObjectDataSource ReferencedDataSource
   {
@@ -251,7 +269,7 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
   /// </summary>
   /// <value> 
   ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
-  ///   the <see cref="IBusinessObjectReferenceProperty"/>. 
+  ///   the <see cref="IBusinessObjectReferenceProperty"/> returned by <see cref="ReferenceProperty"/>. 
   /// </value>
   [Category ("Data")]
   [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
@@ -265,17 +283,17 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
     }
   }
 
+  // Ndoc is unable to understand the explicit interface implemtation of a property
+  // Ndoc 1.3 has a workaround for this: DocumentExplicitInterfaceImplementations=false, which is the default
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectReferenceProperty"/> used to access the 
-  ///   <see cref="IBusinessObject"/> provided by this <see cref="IBusinessObjectReferenceDataSource"/>'s
-  ///   <see cref="BusinessObject"/>.
+  ///   <see cref="IBusinessObject"/> to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
   /// </summary>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
   ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
   /// </value>
   /// <remarks> Identical to <see cref="ReferenceProperty"/>. </remarks>
-  [Browsable(false)]
   IBusinessObjectProperty IBusinessObjectBoundControl.Property
   {
     get { return ReferenceProperty; }
@@ -287,8 +305,7 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
 
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectReferenceProperty"/> used to access the 
-  ///   <see cref="IBusinessObject"/> provided by this <see cref="IBusinessObjectReferenceDataSource"/>'s
-  ///   <see cref="BusinessObject"/>.
+  ///   <see cref="IBusinessObject"/> to which this <see cref="BusinessObjectReferenceDataSource"/> connects.
   /// </summary>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
@@ -315,9 +332,10 @@ public class BusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourc
     }
   }
 
+  // Ndoc seems unable to understand the explicit interface implemtation of a property
+  // Ndoc 1.3 has a workaround for this: DocumentExplicitInterfaceImplementations=false, which is the default
   /// <summary> Gets or sets the value provided by the <see cref="BusinessObjectReferenceDataSource"/>. </summary>
   /// <value> The <see cref="IBusinessObject"/> accessed using <see cref="P:IBusinessObjectBoundControl.Property"/>. </value>
-  [Browsable (false)]
   object IBusinessObjectBoundControl.Value
   {
     get { return _businessObject; }
