@@ -46,10 +46,20 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
 
   // methods and properties
 
+  #region INullableObject Members
+  
+  public bool IsNull
+  {
+    get { return false; }
+  }
+  
+  #endregion
+
+  #region IRelationEndPointDefinition Members
+
   public bool CorrespondsTo (string classID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     return (_classDefinition.ID == classID && PropertyName == propertyName);
   }
@@ -83,6 +93,8 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
   {
     get { return false; }
   }
+  
+  #endregion
 
   public PropertyDefinition PropertyDefinition
   {
