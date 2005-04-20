@@ -1,23 +1,187 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding">
-    <h3 class="dtH3">Implementing a new Business Object Model</h3>
-    preliminary
+    <div style="padding-left: 3pt; padding-top: 3pt; color: red">[This page contains preliminary documentation and is subject to change]</div>
     <para>
-      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/>,
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/>, and any property type interface required
-      by your object model. 
+      The <B>Rubicon.ObjectBinding</B> namespace contains interfaces for implementing a business object model with a 
+      generic data definition and data access layer.
     </para><para>
-      If your business objects have an identity (e.g. GUID) by wich they can be retrieved
-      it is recommended to implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> and
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/>,
+      The data definiton layer consists of the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />
+      and the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface. These interfaces are used to 
+      determine which the fields are exposed by an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> instance.
     </para><para>
-      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource"/> and
-      <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/> to provide the 
-      business object controls with a data source custom fit to your object model.      
+      While it is possible to simply program read and write access against the business objects get and set method,
+      business object data binding is the true advantage gained by providing an object model with these interfaces.
     </para><para>
-      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProvider"/> and optionally 
-      <see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService"/> if you are able to provide 
+      The business object data binding connects an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> with an
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundControl" />. If the control also implements
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundModifiableControl" />, this connection is two way, 
+      allowing both read and write access to the bound object.
+    </para>
+    
+    <h3 class="dtH3">The Business Object Model</h3>
+    <div style="padding-left: 3pt; padding-top: 3pt; color: red">[A description of how the business object interfaces work together]</div>
+    
+    <h3 class="dtH3">The Data Binding Process</h3>
+    <h4 class="dtH4">Setting Up the Data Binding</h4>
+    <para>
+      In order to bind a business object to a control, an 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource" /> is required. When configuring the data binding 
+      during design-time, the data source must be provided with an 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" /> using a property custom to the individual 
+      implementation of the data source. With the help of the business object class, it is possible to configure 
+      the control's data binding inside the Visual Studio .NET Designer.
+    </para><para>
+      After the data source has been configured, each <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundControl" />
+      must be provided with this data source. This is done by setting the control's
+      <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.DataSource" /> property. 
+    </para><para>      
+      Once the control's data source has been defined, the 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> can be configured for each control. The 
+      <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> member is used to determine which 
+      field of the business object will be displayed and possibly edited with this control.
+    </para>
+    
+    <h4 class="dtH4">Setting the Business Object</h4>
+    <para>
+      During run-time, the data source's 
+      <see cref="P:Rubicon.ObjectBinding.IBusinessObjectDataSource.BusinessObject" /> 
+      property is assigned an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />. 
+    </para>
+    
+    <h4 class="dtH4">Loading the Business Object's Values</h4>
+    <para>
+      In the next step, the controls are loaded with the business object's values by calling the data source's 
+      <see cref="M:Rubicon.ObjectBinding.IBusinessObjectDataSource.LoadValues(System.Boolean)" /> method with the 
+      <b>interim</b> parameter set <see langword="false" />. 
+      <note>
+        See the remarks section of the 
+        <see cref="M:Rubicon.ObjectBinding.IBusinessObjectDataSource.LoadValues(System.Boolean)" /> documentation for 
+        further details on <b>interim</b>.        
+      </note>
+      <note type="caution">
+        For a web application's subsequent page loads, the <b>interim</b> parameter must be set <see langword="true" />. 
+      </note>
+      When the data source's <b>LoadValues</b> method is exeucted, it loops through all controls bound to this 
+      data source, calling each individual control's
+      <see cref="M:Rubicon.ObjectBinding.IBusinessObjectBoundControl.LoadValue(System.Boolean)" /> method in the process.
+      <b>LoadValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
+      configured earlier to get the value to be displayed from the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> 
+      connected to it's data source.
+      <note type="caution">
+        The actual loading behavior depends on the value of the <b>interim</b> parameter passed during the 
+        call of <b>LoadValues</b> and passed through to the <b>LoadValue</b> method.
+      </note>
+    </para>
+    
+    <h4 class="dtH4">Saving the Business Object's Values</h4>
+    <para>
+      To save the values back into the business object connected to the data source, call it's 
+      <see cref="M:Rubicon.ObjectBinding.IBusinessObjectDataSource.SaveValues(System.Boolean)" /> method with the 
+      <b>interim</b> parameter set <see langword="false" />.
+      <note>
+        See the remarks section of the 
+        <see cref="M:Rubicon.ObjectBinding.IBusinessObjectDataSource.SaveValues(System.Boolean)" /> documentation for 
+        further details on <b>interim</b>.        
+      </note>
+      When the data source's <b>SaveValues</b> method is exeucted, it loops through all controls bound to this 
+      data source, calling the <b>SaveValue</b> method for each
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundModifiableControl" /> found in the collection.
+      <b>SaveValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
+      configured earlier to write the control's current value back into the 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> connected to it's data source. 
+      <note>
+        It is important to ensure that all the controls' values are valid before executing <b>SaveValues</b>. 
+        The reason for this is that an attempt to write invalid data back into the business object could result in 
+        any number of invalid data exceptions thown by the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />
+        implementation
+      </note>
+    </para>
+    
+    <h3 class="dtH3">Implementing a New Business Object Model</h3>
+    <h4 class="dtH4">Implementing the Object Model</h4>
+    <para>
+      To extend your object model with the business object interfaces, you have to create an implementation of the
+      following interfaces: 
+    </para><para>      
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />, which provides a way of getting and setting the
+      values of the object's fields. The business object is also capable of returning it's type, the 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />. If your object model provides an identity 
+      (e.g. a GUID) for the business objects, it is recommended to extend your business object implementation with 
+      the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity" /> interface. 
+    </para><para>      
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />, which provides a list of the properties 
+      exposed by a business object. If you implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity" />
+      you must also implement the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity" /> interface, 
+      which allows you to retrieve a business object by using it's 
+      <see cref="P:Rubicon.ObjectBinding.IBusinessObjectWithIdentity.UniqueIdentifier" />.
+    </para><para>
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" />, which acts as a base for all data type specific
+      property implementations. The following table contains a list of the business object property interfaces 
+      available for exposing fields in your business object.
+    </para>
+    <div class="tablediv">
+      <table class="dtTABLE" cellspacing="0">
+        <colgroup>
+          <col width="25%" />
+          <col width="75%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Property Interface</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDoubleProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectInt32Property" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectNumericProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty" /></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 class="dtH4">Implementing the Data Source</h4>
+    <para>
+      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource" /> to provide the 
+      business object controls with a data source custom fit to your object model. Also implement
+      <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl" /> if you intend to
+      use your business objects inside a web application.
+    </para>
+    <h4 class="dtH4">Implementing the Supporting Interfaces</h4>
+    <para>
+      Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProvider" /> and optionally 
+      <see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService" /> if you are able to provide 
       icons for the business objects to the web application. 
     </para>
   </namespace>

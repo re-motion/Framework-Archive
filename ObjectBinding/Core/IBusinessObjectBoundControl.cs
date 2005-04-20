@@ -9,7 +9,10 @@ namespace Rubicon.ObjectBinding
 ///   an <see cref="IBusinessObjectDataSource"/>. 
 /// </summary>
 /// <remarks>
-///   See <see cref="LoadValue"/> for a description of the data binding process.
+///   <para>
+///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
+///     information on the data binding process.
+///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundModifiableControl"/>
 /// <seealso cref="IBusinessObjectDataSource"/>
@@ -60,10 +63,6 @@ public interface IBusinessObjectBoundControl: IComponent
   ///     This method is usually called by 
   ///     <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
   ///   </para>
-  ///   <para>
-  ///     For details on <b>LoadValue</b>, 
-  ///     see <see cref="IBusinessObjectDataSource.LoadValues">IBusinessObjectDataSource.LoadValues</see>.
-  ///   </para>
   /// </remarks>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   void LoadValue (bool interim);
@@ -110,10 +109,6 @@ public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundCont
   ///   </para><para>
   ///     This method is usually called by 
   ///     <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
-  ///   </para>
-  ///   <para>
-  ///     For details on <b>SaveValue</b>, 
-  ///     see <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
   ///   </para>
   /// </remarks>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
