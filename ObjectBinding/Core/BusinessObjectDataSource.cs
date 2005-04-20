@@ -28,7 +28,7 @@ public enum DataSourceMode
 ///   </para><para>
 ///     The data source usually provides a way of specifying a type identifier. This identifier is used to
 ///     get or instantiate the matching <see cref="IBusinessObjectClass"/> from the object model.
-///     <note type="implementnotes">
+///     <note type="inheritinfo">
 ///       It is important to use an identifier that can be persisted as a string. Otherwise it would not be possible to 
 ///       specify and later persist the <see cref="IBusinessObjectClass"/> in the Visual Studio .NET Designer, 
 ///       preventing any further design time features from working.
@@ -53,10 +53,8 @@ public interface IBusinessObjectDataSource
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
   /// <remarks>
-  ///   <note type="implementnotes">
-  ///     <b>Register</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
-  ///     <see cref="IBusinessObjectBoundControl.DataSource"/> is set.
-  ///   </note>
+  ///   <b>Register</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
+  ///   <see cref="IBusinessObjectBoundControl.DataSource"/> is set.
   /// </remarks>
   /// <param name="control"> 
   ///   The <see cref="IBusinessObjectBoundControl"/> to be added to <see cref="BoundControls"/>. 
@@ -68,11 +66,9 @@ public interface IBusinessObjectDataSource
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
   /// <remarks>
-  ///   <note type="implementnotes">
-  ///     <b>Unregister</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
-  ///     <see cref="IBusinessObjectBoundControl.DataSource"/> is set to a new <see cref="IBusinessObjectDataSource"/>
-  ///     or <see langword="null"/>.
-  ///   </note>
+  ///   <b>Unregister</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
+  ///   <see cref="IBusinessObjectBoundControl.DataSource"/> is set to a new <see cref="IBusinessObjectDataSource"/>
+  ///   or <see langword="null"/>.
   /// </remarks>
   /// <param name="control">
   ///   The <see cref="IBusinessObjectBoundControl"/> to be removed from <see cref="BoundControls"/>. 
@@ -144,7 +140,7 @@ public interface IBusinessObjectDataSource
 /// <remarks>
 ///   Any specialized version of the <b>BusinessObjectDataSource</b> requires an override for the
 ///   <see cref="BusinessObjectClass"/> property. It is also necessary to provide a way for specifying which 
-///   <see cref="IBusinessOjbectClass"/> will be returned by this property. See the remarks section of the
+///   <see cref="IBusinessObjectClass"/> will be returned by this property. See the remarks section of the
 ///   <see cref="IBusinessObjectDataSource"/> interface documentation for details on how to implement this feature.
 /// </remarks>
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource

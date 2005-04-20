@@ -18,7 +18,7 @@ namespace Rubicon.ObjectBinding
 ///     primary <see cref="IBusinessObject"/> connected to the <see cref="ReferencedDataSource"/>. The referenced
 ///     object is then used as this <see cref="IBusinessObjectReferenceDataSource"/>'s <see cref="BusinessObject"/>, 
 ///     allowing the cascading of <see cref="IBusinessObject"/> objects.
-///     <note type="implementnotes">
+///     <note type="inheritinfo">
 ///       The <b>IBusinessObjectReferenceDataSource</b> is usually implemented as a cross between the
 ///       <see cref="IBusinessObjectDataSource"/> from which this interface is inherited and an 
 ///       <see cref="IBusinessObjectBoundControl"/> or <see cref="IBusinessObjectBoundModifiableControl"/>.
