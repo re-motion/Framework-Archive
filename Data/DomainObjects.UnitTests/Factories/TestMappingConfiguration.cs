@@ -596,15 +596,13 @@ public class TestMappingConfiguration
     ClassDefinition clientClass = _classDefinitions["Client"];
     ClassDefinition locationClass = _classDefinitions["Location"];
     
-    VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-        clientClass, "Locations", false, CardinalityType.Many, typeof (DomainObjectCollection));
+    NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
 
     RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
         locationClass, "Client", true);
 
     RelationDefinition relation = new RelationDefinition ("ClientToLocation", endPoint1, endPoint2);
 
-    clientClass.MyRelationDefinitions.Add (relation);
     locationClass.MyRelationDefinitions.Add (relation);
 
     return relation;
