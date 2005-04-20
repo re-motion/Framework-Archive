@@ -11,7 +11,7 @@ public enum CardinalityType
   Many = 1
 }
 
-public interface IRelationEndPointDefinition
+public interface IRelationEndPointDefinition : INullableObject
 {
   ClassDefinition ClassDefinition { get; }
   string PropertyName { get; }
