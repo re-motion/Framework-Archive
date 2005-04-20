@@ -320,6 +320,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Mapping\RelationEndPointDefinitionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

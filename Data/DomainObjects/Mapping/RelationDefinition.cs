@@ -39,6 +39,9 @@ public class RelationDefinition
       IRelationEndPointDefinition endPointDefinition1, 
       IRelationEndPointDefinition endPointDefinition2)
   {
+    if (endPointDefinition1.IsNull && endPointDefinition2.IsNull)
+      throw CreateMappingException ("Relation '{0}' cannot have two null end points.", id);
+
     if (endPointDefinition1.IsVirtual && endPointDefinition2.IsVirtual)
       throw CreateMappingException ("Relation '{0}' cannot have two virtual end points.", id);
 
@@ -95,7 +98,6 @@ public class RelationDefinition
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string classID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     if (_endPointDefinitions[0].CorrespondsTo (classID, propertyName)) 
       return _endPointDefinitions[1];
@@ -115,7 +117,6 @@ public class RelationDefinition
   public ClassDefinition GetOppositeClassDefinition (string classID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     IRelationEndPointDefinition oppositeEndPointDefinition = GetOppositeEndPointDefinition (classID, propertyName);
     if (oppositeEndPointDefinition == null)
@@ -133,7 +134,6 @@ public class RelationDefinition
   public bool IsEndPoint (string classID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     foreach (IRelationEndPointDefinition endPointDefinition in _endPointDefinitions)
     {
