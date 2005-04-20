@@ -1,8 +1,9 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Rubicon.Data.DomainObjects
 {
-internal interface INullable
+// TODO: Rename and document this
+public interface INullableObject
 {
   bool IsNull {get;}
 }
