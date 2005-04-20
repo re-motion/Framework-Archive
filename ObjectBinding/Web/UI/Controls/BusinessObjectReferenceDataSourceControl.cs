@@ -132,7 +132,7 @@ public class BusinessObjectReferenceDataSourceControl
   public virtual void SaveValues (bool interim) // inherited data source interface
   {
     if (! IsReadOnly)
-      _internalDataSource.SaveValue (interim);
+      _internalDataSource.SaveValues (interim);
   }
 
   /// <summary>
