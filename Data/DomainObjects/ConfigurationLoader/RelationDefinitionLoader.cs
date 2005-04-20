@@ -44,7 +44,7 @@ public class RelationDefinitionLoader
 
   public RelationDefinitionCollection GetRelationDefinitions ()
   {
-    CheckNumberOfEndPoints ();
+    CheckEndPoints ();
 
     RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection ();
     foreach (XmlNode distinctRelationPropertyNode in GetDistinctRelationPropertyNodes ())
@@ -56,7 +56,7 @@ public class RelationDefinitionLoader
     return relationDefinitions;
   }
 
-  private void CheckNumberOfEndPoints ()
+  private void CheckEndPoints ()
   {
     foreach (string relationDefinitionID in GetAllRelationDefinitionIDs ())
     {
@@ -67,7 +67,7 @@ public class RelationDefinitionLoader
       if (relationPropertyNodes.Count > 2)
       {
         throw CreateMappingException (
-            "The relation '{0}' is not correctly defined. A relation must either have exactly two end points or the relation property must"
+            "The relation '{0}' is not correctly defined. A relation must either have exactly two relation properties or the relation property must"
             + " have an opposite class defined.", relationDefinitionID);  
       }
 
@@ -76,7 +76,14 @@ public class RelationDefinitionLoader
         if (relationPropertyNodes[0].SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager) == null)
         {
           throw CreateMappingException (
-              "The relation '{0}' is not correctly defined. For relations with only one end point the end point must define the opposite class.", 
+              "The relation '{0}' is not correctly defined. For relations with only one relation property the relation property must define the opposite class.", 
+              relationDefinitionID);
+        }
+
+        if (GetCardinality (relationPropertyNodes[0]) == CardinalityType.Many)
+        {
+          throw CreateMappingException (
+              "The relation '{0}' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.", 
               relationDefinitionID);
         }
       }
