@@ -76,7 +76,6 @@ public class RelationDefinition
   public IRelationEndPointDefinition GetEndPointDefinition (string classID, string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     if (_endPointDefinitions[0].CorrespondsTo (classID, propertyName))
       return _endPointDefinitions[0];
