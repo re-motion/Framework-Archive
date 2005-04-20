@@ -253,6 +253,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { ValueImplementation = value; }
   }
 
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
   [Browsable (false)]
   protected abstract object ValueImplementation { get; set; }
 
