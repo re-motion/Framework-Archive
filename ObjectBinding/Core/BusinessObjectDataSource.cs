@@ -226,7 +226,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   /// </summary>
   /// <value> The <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </value>
   /// <remarks>
-  ///   Usually set before the an <see cref="IBusinessObject"/> is connected to the 
+  ///   Usually set before the <see cref="IBusinessObject"/> is connected to the 
   ///   <see cref="BusinessObjectDataSource"/>. 
   /// </remarks>
   [Browsable (false)]

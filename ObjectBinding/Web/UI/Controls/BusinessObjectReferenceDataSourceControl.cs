@@ -39,7 +39,9 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 [NonVisualControl]
 #endif
 public class BusinessObjectReferenceDataSourceControl
-    : BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
+  : BusinessObjectBoundModifiableWebControl, 
+    IBusinessObjectDataSourceControl, 
+    IBusinessObjectReferenceDataSource
 {
   private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
   {
@@ -70,23 +72,29 @@ public class BusinessObjectReferenceDataSourceControl
 
   private InternalBusinessObjectReferenceDataSource _internalDataSource;
 
+  /// <summary>
+  ///   <see cref="BusinessObjectReferenceDataSourceControl"/> supports properties of type
+  ///   <see cref="IBusinessObjectReferenceProperty"/>.
+  /// </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
   }
 
+  // Default summary will be created.
   public BusinessObjectReferenceDataSourceControl ()
   {
     _internalDataSource = new InternalBusinessObjectReferenceDataSource (this);
   }
 
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
   protected override object ValueImplementation
   {
     get { return _internalDataSource.BusinessObject; }
     set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
   }
 
-  // TODO: redesign IsDirty semantics!
+  /// <summary> Initializes a new instance of the BusinessObjectReferenceDataSourceControl class. </summary>
   public override bool IsDirty
   {
     get { return _internalDataSource.IsDirty; }
@@ -116,7 +124,10 @@ public class BusinessObjectReferenceDataSourceControl
   ///   <see cref="ReferenceProperty"/>.
   /// </summary>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
-  /// <remarks> Actual saving only occurs if <see cref="IsReadOnly"/> evaluates <see langword="false"/>. </remarks>
+  /// <remarks> 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
+  ///   <see langword="false"/>. 
+  /// </remarks>
   public override void SaveValue (bool interim) // inherited from control interface
   {
     if (! IsReadOnly)
@@ -128,7 +139,10 @@ public class BusinessObjectReferenceDataSourceControl
   ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
-  /// <remarks> Actual saving only occurs if <see cref="IsReadOnly"/> evaluates <see langword="false"/>. </remarks>
+  /// <remarks>
+  ///  Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
+  ///  <see langword="false"/>. 
+  /// </remarks>
   public virtual void SaveValues (bool interim) // inherited data source interface
   {
     if (! IsReadOnly)
@@ -153,13 +167,13 @@ public class BusinessObjectReferenceDataSourceControl
 
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
-  ///   to which this <see cref="IBusinessObjectReferenceDataSourceControl"/> connects.
+  ///   to which this <see cref="BusinessObjectReferenceDataSourceControl"/> connects.
   /// </summary>
   /// <value> 
   ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
-  ///   <see cref="IBusinessObjectReferenceDataSourceControl"/> connects.
+  ///   <see cref="BusinessObjectReferenceDataSourceControl"/> connects.
   ///  </value>
-  /// <remarks> Identical to <see cref="DataSource"/>. </remarks>
+  /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.DataSource"/>. </remarks>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectDataSource ReferencedDataSource 
@@ -169,13 +183,9 @@ public class BusinessObjectReferenceDataSourceControl
 
 
   /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObject"/> connected to this 
-  ///   <see cref="BusinessObjectReferenceDataSourceControl"/>.
+  ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
   /// </summary>
-  /// <value>
-  ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
-  ///   <see cref="BusinessObjectClass"/>.
-  /// </value>
+  /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObject BusinessObject
@@ -184,11 +194,13 @@ public class BusinessObjectReferenceDataSourceControl
     set { _internalDataSource.BusinessObject = value; }
   }
 
-  /// <summary>
-  ///   Gets the <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>
-  ///   connected to this <see cref="BusinessObjectReferenceDataSourceControl"/>.
+  /// <summary> 
+  ///   Gets the <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> of the <see cref="ReferenceProperty"/>.
   /// </summary>
-  /// <value> The <see cref="IBusinessObjectClass"/> of the connected <see cref="IBusinessObject"/>. </value>
+  /// <value> 
+  ///   The <see cref="IBusinessObjectClass"/> of the <see cref="ReferenceProperty"/> or <see langword="null"/>
+  ///   if no <see cref="ReferenceProperty"/> is set.
+  /// </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectClass BusinessObjectClass
@@ -254,7 +266,7 @@ public class BusinessObjectReferenceDataSourceControl
   ///   Gets an array of <see cref="IBusinessObjectBoundControl"/> objects bound to this 
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
-  /// <value> An array or <see cref="IBusinessObjectBoundControl"/> objects. </value>
+  /// <value> An array of <see cref="IBusinessObjectBoundControl"/> objects. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectBoundControl[] BoundControls
