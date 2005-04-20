@@ -56,7 +56,7 @@ public class ClassDefinition
     _propertyDefinitions = new PropertyDefinitionCollection ();
     _relationDefinitions = new RelationDefinitionCollection ();
 
-    _propertyDefinitions.Adding += new PropertyDefinitionAddingEventHandler(PropertyDefinitions_Adding); ;
+    _propertyDefinitions.Adding += new PropertyDefinitionAddingEventHandler(PropertyDefinitions_Adding);
   }
 
   private void CheckClassType (string classID, Type classType)
