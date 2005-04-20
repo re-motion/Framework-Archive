@@ -83,8 +83,6 @@ public class ClassDefinitionLoader
   {
     string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
 
-    CheckClassNode (classNode, id);
-
     string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
     Type classType = LoaderUtility.GetType (classNode, FormatXPath ("{0}:type"), _namespaceManager);
 
@@ -95,21 +93,6 @@ public class ClassDefinitionLoader
     FillPropertyDefinitions (classDefinition, classNode);
 
     return classDefinition;
-  }
-
-  private void CheckClassNode (XmlNode classNode, string classID)
-  {
-    XmlNodeList allColumnNodes = classNode.SelectNodes (
-        FormatXPath ("{0}:properties/{0}:property/{0}:column | {0}:properties/{0}:relationProperty/{0}:column"), _namespaceManager);
-
-    ArrayList allColumnNames = new ArrayList (allColumnNodes.Count);
-    foreach (XmlNode columnNode in allColumnNodes)
-    {
-      if (allColumnNames.Contains (columnNode.InnerText))
-        throw CreateMappingException ("Class '{0}' defines the column '{1}' more than once.", classID, columnNode.InnerText);
-
-      allColumnNames.Add (columnNode.InnerText);
-    }
   }
 
   private void FillPropertyDefinitions (ClassDefinition classDefinition, XmlNode classNode)

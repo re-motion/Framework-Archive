@@ -63,8 +63,23 @@ public class RelationDefinitionLoader
       string xPath = FormatXPath ("/{0}:mapping/{0}:classes/{0}:class/{0}:properties/{0}:relationProperty[@relationID = '{relationDefinitionID}']");
       xPath = xPath.Replace ("{relationDefinitionID}", relationDefinitionID);
 
-      if (_document.SelectNodes(xPath, _namespaceManager).Count != 2)
-        throw CreateMappingException ("Relation '{0}' does not have exactly two end points.", relationDefinitionID);  
+      XmlNodeList relationPropertyNodes = _document.SelectNodes(xPath, _namespaceManager);
+      if (relationPropertyNodes.Count > 2)
+      {
+        throw CreateMappingException (
+            "The relation '{0}' is not correctly defined. A relation must either have exactly two end points or the relation property must"
+            + " have an opposite class defined.", relationDefinitionID);  
+      }
+
+      if (relationPropertyNodes.Count == 1)
+      {
+        if (relationPropertyNodes[0].SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager) == null)
+        {
+          throw CreateMappingException (
+              "The relation '{0}' is not correctly defined. For relations with only one end point the end point must define the opposite class.", 
+              relationDefinitionID);
+        }
+      }
     }
   }
 
@@ -93,14 +108,10 @@ public class RelationDefinitionLoader
     string relationDefinitionID = relationPropertyNode.SelectSingleNode ("@relationID", _namespaceManager).InnerText;
     string propertyName = GetPropertyName (relationPropertyNode);
 
-    XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
-    string oppositePropertyName = GetPropertyName (oppositeRelationPropertyNode);
-
-
     RelationDefinition newRelationDefinition = new RelationDefinition (
         relationDefinitionID,
         GetEndPointDefinition (relationDefinitionID, propertyName, relationPropertyNode),
-        GetEndPointDefinition (relationDefinitionID, oppositePropertyName, oppositeRelationPropertyNode));
+        GetOppositeEndPointDefinition (relationDefinitionID, propertyName, relationPropertyNode));
 
     AddRelationDefinitionToClassDefinitions (newRelationDefinition);
     return newRelationDefinition;
@@ -111,16 +122,28 @@ public class RelationDefinitionLoader
     IRelationEndPointDefinition endPoint1 = relationDefinition.EndPointDefinitions[0];
     IRelationEndPointDefinition endPoint2 = relationDefinition.EndPointDefinitions[1];
 
-    endPoint1.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
+    if (!endPoint1.IsNull)
+      endPoint1.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
 
-    if (endPoint1.ClassDefinition != endPoint2.ClassDefinition)
+    if (endPoint1.ClassDefinition != endPoint2.ClassDefinition && !endPoint2.IsNull)
       endPoint2.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
+  }
+
+  private IRelationEndPointDefinition GetOppositeEndPointDefinition (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode)
+  {
+    XmlNode oppositeClassNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager);
+    if (oppositeClassNode != null)
+      return new NullRelationEndPointDefinition (_classDefinitions.GetMandatory (oppositeClassNode.InnerText));
+
+    XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
+    string oppositePropertyName = GetPropertyName (oppositeRelationPropertyNode);
+    return GetEndPointDefinition (relationDefinitionID, oppositePropertyName, oppositeRelationPropertyNode);
   }
 
   private IRelationEndPointDefinition GetEndPointDefinition (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode)
   {
     string classAsString = relationPropertyNode.SelectSingleNode ("../../@id", _namespaceManager).InnerText;
-    ClassDefinition classDefinition = _classDefinitions[classAsString];
+    ClassDefinition classDefinition = _classDefinitions.GetMandatory (classAsString);
 
     bool isMandatory = bool.Parse (relationPropertyNode.SelectSingleNode ("@isMandatory", _namespaceManager).InnerText);
 
