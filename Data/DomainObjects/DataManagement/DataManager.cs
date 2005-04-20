@@ -118,7 +118,7 @@ public class DataManager
       return;
 
     RelationEndPointCollection allAffectedRelationEndPoints = 
-      _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
+        _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
 
     BeginDelete (domainObject, allAffectedRelationEndPoints);
 
