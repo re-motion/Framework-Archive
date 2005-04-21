@@ -19,7 +19,9 @@ public class WebButton :
   IPostBackDataHandler
 {
   private IconInfo _icon;
+#if ! net20
   private bool _useSubmitBehavior = true;
+#endif
 
   public WebButton()
   {
@@ -46,15 +48,18 @@ public class WebButton :
       writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, accessKey);
     string tempText = Text;
     Text = text;
-    //TODO: .net 2.0 compiler switch
+#if ! net20
     AddAttributesToRender_net11 (writer);
-    //AddAttributesToRender_net20 (writer);
+#else
+    AddAttributesToRender_net20 (writer);
+#endif
     Text = tempText;
   }
 
   /// <summary> Method to be executed when compiled for .net 1.1. Compiler switch not yet implented. </summary>
   private void AddAttributesToRender_net11 (HtmlTextWriter writer)
   {
+#if ! net20
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
@@ -87,6 +92,7 @@ public class WebButton :
     CausesValidation = false;
     base.AddAttributesToRender (writer);
     CausesValidation = causesValidationTemp;
+#endif
   }
 
   /// <summary> Method to be executed when compiled for .net 2.0. Compiler switch not yet implented. </summary>
@@ -144,7 +150,7 @@ public class WebButton :
     set { _icon = value; }
   }
 
-  //TODO: .net2.0 complier switch. Property already exists in .net 2.0
+#if ! net20
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category("Behavior")]
   [DefaultValue(true)]
@@ -154,6 +160,7 @@ public class WebButton :
     get { return _useSubmitBehavior; }
     set { _useSubmitBehavior = value; }
   } 
+#endif
 }
 
 }
