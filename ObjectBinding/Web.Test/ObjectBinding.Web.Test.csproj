@@ -260,6 +260,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "MainWindow.htm"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "OBWTest.dll.log4net"
                     BuildAction = "None"
                 />
@@ -474,6 +478,10 @@
                     RelPath = "TestForm.aspx.resx"
                     DependentUpon = "TestForm.aspx.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestPage.htm"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "TestTabbedForm.aspx"
