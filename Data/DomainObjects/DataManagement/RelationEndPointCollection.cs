@@ -78,6 +78,10 @@ public class RelationEndPointCollection : CommonCollection
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
     RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
+
+    if (endPoint.OppositeEndPointDefinition.IsNull)
+      return oppositeEndPoints;
+
     if (endPoint.Definition.Cardinality == CardinalityType.One)
     {
       ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
