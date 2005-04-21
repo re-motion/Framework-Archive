@@ -46,7 +46,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionStates.Add (functionState);
 
       _currentFunction.InitializeParameters (context.Request.Params);
-      _currentFunction.ReturnUrl = context.Request.Params["ReturnUrl"];
+      string returnUrlArg = context.Request.Params["ReturnUrl"];
+      if (returnUrlArg != null)
+        _currentFunction.ReturnUrl = returnUrlArg;
     }
     else if (functionToken != null)
     {
