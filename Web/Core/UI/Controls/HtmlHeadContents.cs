@@ -14,7 +14,8 @@ public class HtmlHeadContents : Control
 {
   protected override void Render(HtmlTextWriter writer)
   {
-    HtmlHeadAppender.Current.EnsureAppended (Controls);
+
+    HtmlHeadAppender.Current.EnsureAppended (this);
     //  Don't render tags for this control.
     RenderChildren (writer);
   }
