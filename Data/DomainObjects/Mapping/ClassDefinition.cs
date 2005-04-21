@@ -70,7 +70,6 @@ public class ClassDefinition
 
   // methods and properties
  
-  // TODO: Check for problem with NullRelationEndPointDefinition
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -80,7 +79,6 @@ public class ClassDefinition
     return relationDefinition.GetMandatoryOppositeRelationEndPointDefinition (relationEndPointDefinition);
   }
 
-  // TODO: Check for problem with NullRelationEndPointDefinition
   public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -154,7 +152,6 @@ public class ClassDefinition
     return (IRelationEndPointDefinition[]) relationEndPointDefinitions.ToArray (typeof (IRelationEndPointDefinition));
   }
 
-  // TODO: Check for problem with NullRelationEndPointDefinition
   public RelationDefinition GetRelationDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -171,7 +168,6 @@ public class ClassDefinition
     return null;
   }
 
-  // TODO: Check for problem with NullRelationEndPointDefinition
   public ClassDefinition GetOppositeClassDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -191,7 +187,6 @@ public class ClassDefinition
     return null;
   }
 
-  // TODO: Check for problem with NullRelationEndPointDefinition
   public IRelationEndPointDefinition GetRelationEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -213,7 +208,7 @@ public class ClassDefinition
   {
     ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
 
-    if (relationEndPointDefinition.ClassDefinition == this)
+    if (relationEndPointDefinition.ClassDefinition == this && !relationEndPointDefinition.IsNull)
       return true;
 
     if (_baseClass != null)

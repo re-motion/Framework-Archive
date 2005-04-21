@@ -152,20 +152,11 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
  
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
     CheckDeleted (endPoint);
-
-    RelationEndPoint newRelatedEndPoint = GetRelationEndPoint (
-        newRelatedObject, endPoint.OppositeEndPointDefinition);
-
-    RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (
-        GetRelatedObject (endPointID), newRelatedEndPoint.Definition);
-
-    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
-      return;
-
-    if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
-      SetRelatedObjectForOneToOneRelation ((ObjectEndPoint) endPoint, (ObjectEndPoint) newRelatedEndPoint, (ObjectEndPoint) oldRelatedEndPoint);
+    
+    if (endPoint.OppositeEndPointDefinition.IsNull)
+      SetRelatedObjectForUnidirectionalRelation (endPoint, newRelatedObject);
     else
-      SetRelatedObjectForOneToManyRelation ((ObjectEndPoint) endPoint, newRelatedEndPoint, oldRelatedEndPoint);
+      SetRelatedObjectForBidirectionalRelation (endPoint, newRelatedObject);
   }
 
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
@@ -199,10 +190,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           if (classDefinition.IsRelationEndPoint (endPointDefinition))
           {
             ObjectID oppositeObjectID = dataContainer.GetObjectID (endPointDefinition.PropertyName);
-            
-            ObjectEndPoint endPoint = new ObjectEndPoint (
-                _clientTransaction, dataContainer, endPointDefinition, oppositeObjectID);
-            
+            ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer, endPointDefinition, oppositeObjectID);
             Add (endPoint);
 
             if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.One && endPoint.OppositeObjectID != null)
@@ -251,7 +239,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     {
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
       
-      if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.Many)
+      if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.Many && !endPoint.OppositeEndPointDefinition.IsNull)
       {
         ObjectEndPoint objectEndPoint = (ObjectEndPoint) endPoint;
         if (objectEndPoint.OppositeObjectID != null)
@@ -264,6 +252,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       }
 
       allRelationEndPoints.Add (endPoint);
+
       allRelationEndPoints.Combine (_relationEndPoints.GetOppositeRelationEndPoints (endPoint));
     }
 
@@ -297,6 +286,33 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
 
     return false;
+  }
+
+  private void SetRelatedObjectForUnidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
+  {
+    AnonymousEndPoint newRelatedEndPoint = GetAnonymousEndPoint (newRelatedObject, endPoint.RelationDefinition);
+    AnonymousEndPoint oldRelatedEndPoint = GetAnonymousEndPoint (GetRelatedObject (endPoint.ID), endPoint.RelationDefinition);
+ 
+    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
+      return;
+
+    endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
+    endPoint.PerformRelationChange ();
+    endPoint.EndRelationChange ();
+  }
+
+  private void SetRelatedObjectForBidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
+  {
+    RelationEndPoint newRelatedEndPoint = GetRelationEndPoint (newRelatedObject, endPoint.OppositeEndPointDefinition);
+    RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (GetRelatedObject (endPoint.ID), newRelatedEndPoint.Definition);
+
+    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
+      return;
+
+    if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
+      SetRelatedObjectForOneToOneRelation ((ObjectEndPoint) endPoint, (ObjectEndPoint) newRelatedEndPoint, (ObjectEndPoint) oldRelatedEndPoint);
+    else
+      SetRelatedObjectForOneToManyRelation ((ObjectEndPoint) endPoint, newRelatedEndPoint, oldRelatedEndPoint);
   }
 
   private void CheckDeleted (RelationEndPoint endPoint)
@@ -355,6 +371,14 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       DomainObjectCollection collection = GetRelatedObjects (oldRelatedEndPoint.ID);
       collection.Remove (endPoint.GetDomainObject ());
     }
+  }
+
+  private AnonymousEndPoint GetAnonymousEndPoint (DomainObject domainObject, RelationDefinition relationDefinition)
+  {
+    if (domainObject != null)
+      return new AnonymousEndPoint (domainObject, relationDefinition);
+    else
+      return new NullAnonymousEndPoint (relationDefinition);
   }
 
   private RelationEndPoint GetRelationEndPoint (DomainObject domainObject, IRelationEndPointDefinition definition)
