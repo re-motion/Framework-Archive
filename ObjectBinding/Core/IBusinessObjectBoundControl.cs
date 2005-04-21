@@ -44,9 +44,7 @@ public interface IBusinessObjectBoundControl: IComponent
   /// </value>
   IBusinessObjectProperty Property { get; set; }
 
-  /// <summary>
-  ///   Gets or sets the value provided by the <see cref="IBusinessObjectBoundControl"/>.
-  /// </summary>
+  /// <summary> Gets or sets the value provided by the <see cref="IBusinessObjectBoundControl"/>. </summary>
   /// <value> An object or boxed value. </value>
   object Value { get; set; }
 
@@ -78,13 +76,13 @@ public interface IBusinessObjectBoundControl: IComponent
   bool SupportsProperty (IBusinessObjectProperty property);
 
   /// <summary>
-  ///   Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid configuration.
+  ///   Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.
   /// </summary>
   /// <remarks>
   ///   The configuration is considered invalid if data binding is configured for a property 
   ///   that is not available for the bound class or object.
   /// </remarks>
-  /// <value> <see langword="true"/> if the configuration is valid. </value>
+  /// <value> <see langword="true"/> if the binding configuration is valid. </value>
   bool HasValidBinding { get; }
 }
 
