@@ -123,7 +123,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     }
   }
 
-  public override void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -143,10 +143,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     BeginRelationChange ();
   }
 
-  public virtual void BeginInsert (
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint,
-      int index)
+  public virtual void BeginInsert (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -156,7 +153,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     BeginRelationChange ();
   }
 
-  public virtual void BeginReplace (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public virtual void BeginReplace (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
