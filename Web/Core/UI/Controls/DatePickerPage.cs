@@ -40,7 +40,7 @@ public class DatePickerPage : Page
 #if ! net20
   protected HtmlForm Form;
 #endif
-  protected HtmlGenericControl HtmlHead;
+  protected HtmlHeadContents HtmlHeadContents;
   protected Calendar Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
   private HtmlInputHidden TargetIDField;
@@ -53,8 +53,8 @@ public class DatePickerPage : Page
 	{
     if (Form == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");
-    if (HtmlHead == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHead'.");
+    if (HtmlHeadContents == null)
+      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHeadContents'.");
     if (Calendar == null)
       throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
 
@@ -124,12 +124,6 @@ public class DatePickerPage : Page
     }
 
     base.OnPreRender (e);
-  }
-
-  protected override void RenderChildren(HtmlTextWriter writer)
-  {
-    HtmlHeadAppender.Current.EnsureAppended (HtmlHead.Controls);
-    base.RenderChildren (writer);
   }
 
   private void Calendar_SelectionChanged(object sender, EventArgs e)
