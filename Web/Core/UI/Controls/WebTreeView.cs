@@ -188,7 +188,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   //    Nodes.SetExpansion (true);
   //  }
 
-  private void EnsureTreeNodesCreated()
+  public void EnsureTreeNodesCreated()
   {
     if (_hasTreeNodesCreated)
       return;
@@ -737,7 +737,11 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   [Browsable (false)]
   public WebTreeNode SelectedNode
   {
-    get { return _selectedNode; }
+    get 
+    { 
+      EnsureTreeNodesCreated();
+      return _selectedNode; 
+    }
   }
  
   #region protected virtual string CssClass...
