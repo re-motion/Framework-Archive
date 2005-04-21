@@ -38,7 +38,7 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
       string propertyName,
       ObjectID oppositeObjectID)
   {
-    return new ObjectEndPoint (ClientTransactionMock, domainObject, propertyName, oppositeObjectID);
+    return new ObjectEndPoint (domainObject, propertyName, oppositeObjectID);
   }
 
   protected ObjectEndPoint CreateObjectEndPoint (
@@ -46,7 +46,7 @@ public class RelationEndPointBaseTest : ClientTransactionBaseTest
       string propertyName,
       ObjectID oppositeObjectID)
   {
-    return new ObjectEndPoint (ClientTransactionMock, dataContainer, propertyName, oppositeObjectID);
+    return new ObjectEndPoint (dataContainer, propertyName, oppositeObjectID);
   }
 
   protected ObjectEndPoint CreateObjectEndPoint (
