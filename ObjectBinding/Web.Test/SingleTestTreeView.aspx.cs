@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.Controls;
 using OBRTest;
 
 namespace OBWTest
@@ -23,6 +24,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected OBRTest.PersonTreeView PersonTreeView;
   protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
   protected System.Web.UI.WebControls.Button Button1;
+  protected Rubicon.Web.UI.Controls.WebButton WebButton1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
@@ -41,6 +43,14 @@ public class SingleTestTreeView : SingleBocTestBasePage
       Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
     }
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    PersonTreeView.EnsureTreeNodesCreated();
+    BocTreeNode node = PersonTreeView.SelectedNode;
+  }
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    BocTreeNode node = PersonTreeView.SelectedNode;
+    base.OnPreRender (e);
   }
 
 	override protected void OnInit(EventArgs e)
@@ -115,6 +125,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
 	{    
     this.PersonTreeView.Click += new Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventHandler(this.PersonTreeView_Click);
     this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
+    this.WebButton1.Click += new System.EventHandler(this.WebButton1_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -132,6 +143,24 @@ public class SingleTestTreeView : SingleBocTestBasePage
   private void RefreshPesonTreeViewButton_Click(object sender, System.EventArgs e)
   {
     PersonTreeView.InvalidateTreeNodes();
+  }
+
+  private void WebButton1_Click(object sender, System.EventArgs e)
+  {
+    PersonTreeView.EnsureTreeNodesCreated();
+    WebTreeNode node0 = (WebTreeNode)PersonTreeView.Nodes[0];
+    if (! node0.IsEvaluated)
+      node0.Evaluate();
+    node0.IsExpanded = true;
+    WebTreeNode node01 = (WebTreeNode)node0.Children[1];
+    if (! node01.IsEvaluated)
+      node01.Evaluate();
+    node01.IsExpanded = true;
+    WebTreeNode node010 = (WebTreeNode)node01.Children[0];
+    if (! node010.IsEvaluated)
+      node010.Evaluate();
+    node010.IsExpanded = true;
+    node010.IsSelected = true;
   }
 }
 
