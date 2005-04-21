@@ -20,13 +20,13 @@ public class AnonymousEndPoint : IEndPoint
 
   // construction and disposing
 
-  public AnonymousEndPoint (ClientTransaction clientTransaction, DomainObject domainObject, RelationDefinition relationDefinition)
-      : this (clientTransaction, domainObject.ID, relationDefinition)
+  public AnonymousEndPoint (DomainObject domainObject, RelationDefinition relationDefinition)
+      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, relationDefinition)
   {
   }
 
-  public AnonymousEndPoint (ClientTransaction clientTransaction, DataContainer dataContainer, RelationDefinition relationDefinition) 
-      : this (clientTransaction, dataContainer.ID, relationDefinition)
+  public AnonymousEndPoint (DataContainer dataContainer, RelationDefinition relationDefinition) 
+      : this (dataContainer.ClientTransaction, dataContainer.ID, relationDefinition)
   {
   }
 
@@ -40,6 +40,14 @@ public class AnonymousEndPoint : IEndPoint
     _relationDefinition = relationDefinition;
     _clientTransaction = clientTransaction;
     _objectID = objectID;
+  }
+
+  protected AnonymousEndPoint (RelationDefinition relationDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+    
+    _definition = GetNullRelationEndPointDefinition (relationDefinition);
+    _relationDefinition = relationDefinition;
   }
 
   private NullRelationEndPointDefinition GetNullRelationEndPointDefinition (RelationDefinition relationDefinition)
@@ -57,23 +65,23 @@ public class AnonymousEndPoint : IEndPoint
 
   #region IEndPoint Members
 
-  public ClientTransaction ClientTransaction
+  public virtual ClientTransaction ClientTransaction
   {
     get { return _clientTransaction; }
   }
 
-  public DomainObject GetDomainObject ()
+  public virtual DomainObject GetDomainObject ()
   {
     return _clientTransaction.GetObject (ObjectID, true); 
   }
 
-  public DataContainer GetDataContainer ()
+  public virtual DataContainer GetDataContainer ()
   {
     DomainObject domainObject = GetDomainObject ();
     return domainObject.DataContainer;
   }
 
-  public ObjectID ObjectID
+  public virtual ObjectID ObjectID
   {
     get { return _objectID; }
   }
@@ -97,7 +105,7 @@ public class AnonymousEndPoint : IEndPoint
 
   #region INullableObject Members
 
-  public bool IsNull
+  public virtual bool IsNull
   {
     get { return false; }
   }

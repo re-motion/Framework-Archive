@@ -427,6 +427,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\NullAnonymousEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\ObjectDeletedExceptionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -478,6 +483,11 @@
                 />
                 <File
                     RelPath = "DomainObjects\AddToOneToManyRelationWithLazyLoadTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -563,6 +573,11 @@
                 />
                 <File
                     RelPath = "DomainObjects\RollbackDomainObjectTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DomainObjects\UnidirectionalRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
