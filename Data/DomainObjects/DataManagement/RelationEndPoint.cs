@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public abstract class RelationEndPoint : INullableObject
+public abstract class RelationEndPoint : IEndPoint
 {
   // types
 
@@ -102,12 +102,12 @@ public abstract class RelationEndPoint : INullableObject
 
   // methods and properties
 
-  public void BeginRelationChange (RelationEndPoint oldEndPoint)
+  public void BeginRelationChange (IEndPoint oldEndPoint)
   {
     BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    
   }
 
-  public virtual void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public virtual void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -187,7 +187,7 @@ public abstract class RelationEndPoint : INullableObject
     return new MandatoryRelationNotSetException (string.Format (formatString, args));
   }
 
-  #region INullable Members
+  #region INullableObject Members
 
   public virtual bool IsNull
   {

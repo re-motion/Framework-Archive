@@ -397,6 +397,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\AnonymousEndPointTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\CollectionEndPointTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

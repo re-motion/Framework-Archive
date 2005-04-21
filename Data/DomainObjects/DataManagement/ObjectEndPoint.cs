@@ -15,7 +15,7 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
 
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
-  private RelationEndPoint _newEndPoint;
+  private IEndPoint _newEndPoint;
 
   // construction and disposing
 
@@ -124,7 +124,7 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
     }    
   }
 
-  public override void BeginRelationChange (RelationEndPoint oldEndPoint, RelationEndPoint newEndPoint)
+  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
@@ -141,7 +141,7 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
     PerformRelationChange (_newEndPoint);
   }
 
-  public virtual void PerformRelationChange (RelationEndPoint endPoint)
+  public virtual void PerformRelationChange (IEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 

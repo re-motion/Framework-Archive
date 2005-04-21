@@ -263,6 +263,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DataManagement\AnonymousEndPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DataManagement\CollectionEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -299,6 +304,11 @@
                 />
                 <File
                     RelPath = "DataManagement\ICollectionEndPointChangeDelegate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataManagement\IEndPoint.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
