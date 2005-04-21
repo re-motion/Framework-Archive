@@ -675,8 +675,15 @@ internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
 {
   private static readonly object s_eventValueChanged = new object();
 
+#if ! net20 
   protected virtual void RaisePostDataChangedEvent()
+#else
+  protected override void RaisePostDataChangedEvent()
+#endif
   {
+#if net20 
+    base.RaisePostDataChangedEvent();
+#endif
     OnValueChanged (EventArgs.Empty);
   }
 
@@ -684,8 +691,12 @@ internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
   {
     this.RaisePostDataChangedEvent();
   }
- 
+
+#if ! net20 
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
+#else
+  protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
+#endif
   {
     string oldValue = Value;
     string newValue = postCollection[postDataKey];
