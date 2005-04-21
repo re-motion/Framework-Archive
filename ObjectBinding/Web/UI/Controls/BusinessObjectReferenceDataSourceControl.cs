@@ -57,13 +57,13 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 ///   to controls of type <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> or 
 ///   <b>ASCX User Control</b>.
 /// </summary>
+/// <seealso cref="IBusinessObjectReferenceDataSource"/>
+/// <seealso cref="IBusinessObjectDataSourceControl"/>
 #if net20
 [System.Web.UI.NonVisualControl]
 #endif
-public class BusinessObjectReferenceDataSourceControl
-  : BusinessObjectBoundModifiableWebControl, 
-    IBusinessObjectDataSourceControl, 
-    IBusinessObjectReferenceDataSource
+public class BusinessObjectReferenceDataSourceControl: 
+    BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
 {
   private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
   {
