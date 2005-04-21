@@ -860,10 +860,33 @@ public class BocList:
     return validators;
   }
 
-  /// <summary> Overrides the parent's <c>OnPreRender</c> method. </summary>
-  /// <remarks> Calculates the page count depending on an optional move command, and registeres the client scripts. </remarks>
-  /// <param name="e"> The <see cref="EventArgs"/>. </param>
-  protected override void OnPreRender(EventArgs e)
+  /// <summary>
+  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
+  /// </summary>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+    
+    //  First call
+    EnsureChildControlsPreRendered();
+  }
+
+  /// <summary>
+  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are properly initialized.
+  /// </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
+  protected override void Render (HtmlTextWriter writer)
+  {
+    //  Second call has practically no overhead
+    //  Required to get optimum designer support.
+    EnsureChildControlsPreRendered ();
+
+    base.Render (writer);
+  }
+
+  /// <summary> Prerenders the contents. </summary>
+  protected override void PreRenderChildControls()
   {
     DetermineClientScriptLevel();
 
@@ -952,7 +975,6 @@ public class BocList:
     EnsureListMenuItemsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
-    base.OnPreRender (e);
   }
 
   protected override HtmlTextWriterTag TagKey
