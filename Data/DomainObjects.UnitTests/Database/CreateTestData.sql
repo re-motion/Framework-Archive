@@ -280,6 +280,7 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
 insert into [Client] (ID, ClassID, [ParentClientID]) values ('{1627ADE8-125F-4819-8E33-CE567C42B00C}', 'Client', null)
 insert into [Client] (ID, ClassID, [ParentClientID]) values ('{090D54F2-738C-48ac-9C78-F40365A72305}', 'Client', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
 insert into [Client] (ID, ClassID, [ParentClientID]) values ('{01349595-88A3-4583-A7BA-CB08795C97F6}', 'Client', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
+insert into [Client] (ID, ClassID, [ParentClientID]) values ('{015E25B1-ACFA-4364-87F5-D28A45384D11}', 'Client', null)
 
 
 -- Location

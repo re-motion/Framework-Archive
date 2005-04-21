@@ -324,19 +324,24 @@ public sealed class DomainObjectIDs
   // ParentClient: Client1
   // Location: -
   public static readonly ObjectID Client3 = new ObjectID ("Client", new Guid ("{01349595-88A3-4583-A7BA-CB08795C97F6}"));
-
+  
+  // ChildClients: -
+  // ParentClient: -
+  // Location: -
+  public static readonly ObjectID Client4 = new ObjectID ("Client", new Guid ("{015E25B1-ACFA-4364-87F5-D28A45384D11}"));
+  
   #endregion
 
   #region Location
 
   // Client: Client1
-  public static readonly ObjectID Location1 = new ObjectID ("Client", new Guid ("{1627ADE8-125F-4819-8E33-CE567C42B00C}"));
+  public static readonly ObjectID Location1 = new ObjectID ("Location", new Guid ("{D527B630-B0AC-4572-A614-EAC9F486148D}"));
 
   // Client: Client1
-  public static readonly ObjectID Location2 = new ObjectID ("Client", new Guid ("{090D54F2-738C-48ac-9C78-F40365A72305}"));
+  public static readonly ObjectID Location2 = new ObjectID ("Location", new Guid ("{20380C9D-B70F-4d9a-880E-EAE5D6E3919C}"));
   
   // Client: Client2
-  public static readonly ObjectID Location3 = new ObjectID ("Client", new Guid ("{01349595-88A3-4583-A7BA-CB08795C97F6}"));
+  public static readonly ObjectID Location3 = new ObjectID ("Location", new Guid ("{903E7EE5-CBB8-44c0-BEB6-ACAFFA5ADA7F}"));
 
   #endregion
 
