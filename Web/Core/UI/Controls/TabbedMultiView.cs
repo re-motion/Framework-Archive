@@ -202,7 +202,7 @@ public class TabbedMultiView: WebControl, IControl
 #endif
   public TabView GetActiveView()
   {
-    return MultiViewInternal.GetActiveView();
+    return (TabView) MultiViewInternal.GetActiveView();
   }
 
   protected override void LoadViewState(object savedState)
