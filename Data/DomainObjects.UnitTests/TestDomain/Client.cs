@@ -31,5 +31,10 @@ public class Client : TestDomainBase
 
   // methods and properties
 
+  public Client ParentClient
+  {
+    get { return (Client) GetRelatedObject ("ParentClient"); }
+    set { SetRelatedObject ("ParentClient", value); }
+  }
 }
 }
