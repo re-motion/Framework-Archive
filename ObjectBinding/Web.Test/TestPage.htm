@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title></title>
+<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+<meta name=ProgId content=VisualStudio.HTML>
+<meta name=Originator content="Microsoft Visual Studio .NET 7.1">
+<script language="javascript">
+function GetFrame (frameName)
+{
+  if (window.parent == null)
+    return null;
+  else
+    return window.parent[frameName];
+}
+function Test()
+{
+  var frame = GetFrame('left');
+  if (frame != null)
+    frame.__doPostBack('PersonTreeView_Boc_TreeView','Expand=00000000-0000-0000-0000-000000000001\tChildren');
+}
+</script>
+</head>
+<body>
+
+<button onclick="Test()">Test</button>
+
+
+
+</body>
+</html>
