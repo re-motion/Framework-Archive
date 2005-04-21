@@ -20,8 +20,8 @@ public class CollectionEndPointChangeAgent
 
   public static CollectionEndPointChangeAgent CreateForAdd (
       DomainObjectCollection oppositeDomainObjects,
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint)
+      IEndPoint oldEndPoint, 
+      IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
@@ -33,8 +33,8 @@ public class CollectionEndPointChangeAgent
 
   public static CollectionEndPointChangeAgent CreateForRemove (
       DomainObjectCollection oppositeDomainObjects,
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint)
+      IEndPoint oldEndPoint, 
+      IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
@@ -47,8 +47,8 @@ public class CollectionEndPointChangeAgent
 
   public static CollectionEndPointChangeAgent CreateForInsert (
       DomainObjectCollection oppositeDomainObjects,
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint, 
+      IEndPoint oldEndPoint, 
+      IEndPoint newEndPoint, 
       int insertIndex)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
@@ -61,8 +61,8 @@ public class CollectionEndPointChangeAgent
 
   public static CollectionEndPointChangeAgent CreateForReplace (
       DomainObjectCollection oppositeDomainObjects,
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint, 
+      IEndPoint oldEndPoint, 
+      IEndPoint newEndPoint, 
       int replaceIndex)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
@@ -77,17 +77,17 @@ public class CollectionEndPointChangeAgent
 
   private DomainObjectCollection _oppositeDomainObjects;
   private OperationType _operation;
-  private RelationEndPoint _oldEndPoint;
+  private IEndPoint _oldEndPoint;
   private DomainObject _oldRelatedObject;
-  private RelationEndPoint _newEndPoint;
+  private IEndPoint _newEndPoint;
   private int _collectionIndex;
 
   // construction and disposing
 
   protected CollectionEndPointChangeAgent (
       DomainObjectCollection oppositeDomainObjects,
-      RelationEndPoint oldEndPoint, 
-      RelationEndPoint newEndPoint,
+      IEndPoint oldEndPoint, 
+      IEndPoint newEndPoint,
       OperationType operation,
       int collectionIndex)
   {
@@ -171,12 +171,12 @@ public class CollectionEndPointChangeAgent
     get { return _operation; }
   }
 
-  public RelationEndPoint OldEndPoint
+  public IEndPoint OldEndPoint
   {
     get { return _oldEndPoint; }
   }
 
-  public RelationEndPoint NewEndPoint
+  public IEndPoint NewEndPoint
   {
     get { return _newEndPoint; }
   }
