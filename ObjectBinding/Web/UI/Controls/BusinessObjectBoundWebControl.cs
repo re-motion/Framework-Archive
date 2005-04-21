@@ -26,6 +26,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///   <para>
 ///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
 ///     information on the data binding process.
+///   </para><para>
+///     See <see cref="BusinessObjectBoundWebControl"/> for the abstract default implementation.
 ///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundControl"/>
@@ -38,34 +40,6 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 }
 
 /// <summary>
-///   Extends an <see cref="IBusinessObjectBoundWebControl"/> with functionality for validating the control's 
-///   <see cref="IBusinessObjectBoundControl.Value"/> and writing it back into the bound <see cref="IBusinessObject"/>.
-/// </summary>
-/// <remarks>
-///   See <see cref="IBusinessObjectBoundControl.SaveValue"/> for a description of the data binding process.
-/// </remarks>
-/// <seealso cref="IBusinessObjectBoundWebControl"/>
-/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
-/// <seealso cref="IValidatableControl"/>
-/// <seealso cref="IBusinessObjectDataSourceControl"/>
-public interface IBusinessObjectBoundModifiableWebControl:
-  IBusinessObjectBoundWebControl, 
-  IBusinessObjectBoundModifiableControl, 
-  IValidatableControl
-{
-  /// <summary>
-  ///   <preliminary/>
-  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
-  /// </remarks>
-  // TODO: redesign IsDirty semantics!
-  bool IsDirty { get; set; }
-}
-
-/// <summary>
 ///   <b>BusinessObjectBoundWebControl</b> is the abstract default implementation of 
 ///   <see cref="IBusinessObjectBoundWebControl"/>.
 /// </summary>
@@ -73,12 +47,6 @@ public interface IBusinessObjectBoundModifiableWebControl:
 [Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
-  private BusinessObjectBinding _binding;
-  private bool _childControlsPreRendered = false;
-  bool _hasVisibleBinding = true;
-  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
-  private ResourceManagerSet _cachedResourceManager;
-
   #region BusinessObjectBinding implementation
 
   /// <summary>
@@ -135,7 +103,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return _binding.Property; }
     set { _binding.Property = value; }
   }
-  #endregion
 
   /// <summary>
   ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
@@ -158,6 +125,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return _binding.DataSourceControl; }
     set { _binding.DataSourceControl = value; }
   }
+  #endregion
 
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectService"/> from the <paramref name="businessObjectProvider"/> 
@@ -186,6 +154,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return iconInfo;
   }
 
+  private BusinessObjectBinding _binding;
+  private bool _childControlsPreRendered = false;
+  bool _hasVisibleBinding = true;
+  /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
+  private ResourceManagerSet _cachedResourceManager;
+
   /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
   public BusinessObjectBoundWebControl ()
   {
@@ -213,6 +187,38 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
       _hasVisibleBinding = HasValidBinding;
   }
 
+  /// <summary>
+  ///   Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.
+  /// </summary>
+  /// <remarks>
+  ///   The configuration is considered invalid if data binding is configured for a property 
+  ///   that is not available for the bound class or object.
+  /// </remarks>
+  /// <value> 
+  ///   <list type="bullet">
+  ///     <item>
+  ///       <see langword="true"/> if <see cref="DataSource"/> or <see cref="Property"/> is <see langword="null"/>. 
+  ///     </item>
+  ///     <item>
+  ///       The result of the 
+  ///       <see cref="IBusinessObjectProperty.IsAccessible">IBusinessObjectProperty.IsAccessible</see> method.
+  ///     </item>
+  ///     <item>Otherwise, <see langword="false"/> is returned.</item>
+  ///   </list>
+  /// </value>
+  [Browsable (false)]
+  public bool HasValidBinding
+  {
+    get 
+    { 
+      IBusinessObjectDataSource dataSource = _binding.DataSource;
+      IBusinessObjectProperty property = _binding.Property;
+      if (dataSource == null || property == null)
+        return true;
+      return property.IsAccessible (dataSource.BusinessObjectClass, dataSource.BusinessObject);
+    } 
+  }
+
   /// <summary> Overrides <see cref="WebControl.Visible"/>. </summary>
   /// <value> 
   ///   <para>
@@ -232,18 +238,19 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { base.Visible = value; }
   }
 
-  /// <exclude/>
-  bool ISmartControl.IsRequired 
-  {
-    get { return false; }
-  }
-
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+  /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   public abstract void LoadValue (bool interim);
   
+  /// <summary> Gets or sets the value provided by the <see cref="IBusinessObjectBoundControl"/>. </summary>
+  /// <value> An object or boxed value. </value>
   /// <remarks>
-  ///   Override <see cref="ValueImplementation"/> to define the behaviour of <c>Value</c>. 
-  ///   Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) 
-  ///   to provide a typesafe implementation in derived classes.
+  ///   <para>
+  ///     Override <see cref="ValueImplementation"/> to define the behaviour of <c>Value</c>. 
+  ///   </para><para>
+  ///     Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) 
+  ///     to provide a typesafe implementation in derived classes.
+  ///   </para>
   /// </remarks>
   [Browsable (false)]
   public object Value 
@@ -256,6 +263,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   protected abstract object ValueImplementation { get; set; }
 
+  /// <summary> Overrides <see cref="Control.Visible"/>. </summary>
+  /// <remarks>
+  ///   <note type="inheritinfo">
+  ///     Override this method and execute <see cref="EnsureChildControlsPreRendered"/>.
+  ///   </note>
+  /// </remarks>
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
@@ -263,21 +276,16 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     // EnsureChildControlsPreRendered();
   }
 
-  public override ControlCollection Controls
-  {
-    get
-    {
-      EnsureChildControls();
-      return base.Controls;
-    }
-  }
-
-  /// <summary>
-  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation.
+  /// <summary> 
+  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation or
+  ///   on every invocation while the control is in <b>DesignMode</b>.
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     In some situations, this method gets invoked more than once in the VS.NET designer.
+  ///     In <b>DesignMode</b>, <see cref="OnPreRender"/> is not executed. The <see cref="Control.Render"/> method
+  ///     on the other hand is called every time the control must be redrawn. This includes changing a property,
+  ///     switching from <b>HTML</b> view to <b>Design</b> view and of course, a complete <b>Refresh</b> of
+  ///     the page being designed.
   ///   </para><para>
   ///     Best practice: call once in <c>OnPreRender</c> method and once in <c>Render</c> method.
   ///   </para>
@@ -292,15 +300,22 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
-  /// <summary>
-  ///   Override this method to Prerenders child controls.
-  /// </summary>
+  /// <summary> Override this method to pre-render child controls. </summary>
   /// <remarks>
   ///   Child controls that do not need to be created before handling post data can be created
   ///   in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
   /// </remarks>
   protected virtual void PreRenderChildControls ()
   {
+  }
+
+  public override ControlCollection Controls
+  {
+    get
+    {
+      EnsureChildControls();
+      return base.Controls;
+    }
   }
 
   public virtual bool SupportsProperty (IBusinessObjectProperty property)
@@ -430,17 +445,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
-  [Browsable (false)]
-  public bool HasValidBinding
+  /// <exclude/>
+  bool ISmartControl.IsRequired 
   {
-    get 
-    { 
-      IBusinessObjectDataSource dataSource = _binding.DataSource;
-      IBusinessObjectProperty property = _binding.Property;
-      if (dataSource == null || property == null)
-        return true;
-      return property.IsAccessible (dataSource.BusinessObjectClass, dataSource.BusinessObject);
-    } 
+    get { return false; }
   }
 
 //  /// <summary>
@@ -475,167 +483,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 //    if (BindingChanged != null)
 //      BindingChanged (this, new BindingChangedEventArgs (previousProperty, previousDataSource));
 //  }
-}
-
-/// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
-public abstract class BusinessObjectBoundModifiableWebControl:
-    BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl
-{
-  private NaBooleanEnum _required = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
-  private TypedArrayList _validators;
-
-  /// <summary>
-  ///   Explicitly specifies whether the control is required.
-  /// </summary>
-  /// <remarks>
-  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsRequired"/>).
-  /// </remarks>
-  [Description("Explicitly specifies whether the control is required.")]
-  [Category ("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
-  public NaBooleanEnum Required
-  {
-    get { return _required; }
-    set { _required = value; }
-  }
-
-  /// <summary>
-  ///   Explicitly specifies whether the control should be displayed in read-only mode.
-  /// </summary>
-  /// <remarks>
-  ///   Set this property to <c>Unspecified</c> in order to use the default value (see <see cref="IsReadOnly"/>).
-  /// </remarks>
-  [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
-  [Category ("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
-  public NaBooleanEnum ReadOnly
-  {
-    get { return _readOnly; }
-    set { _readOnly = value; }
-  }
-
-  /// <summary>
-  ///   <preliminary/>
-  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
-  /// </remarks>
-  // TODO: redesign IsDirty semantics!
-  [Browsable(false)]
-  public abstract bool IsDirty { get; set; }
-
-  public abstract void SaveValue (bool interim);
-
-  /// <summary>
-  ///   Determines whether the control is to be displayed in read-only mode.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     In read-only mode, a <see cref="System.Web.UI.WebControls.Label"/> control is used to display the value.
-  ///     Otherwise, a <see cref="System.Web.UI.WebControls.TextBox"/> control is used to display and edit the value.
-  ///   </para><para>
-  ///     The following rules are used to determine the value of this property:
-  ///     <list type="bullets">
-  ///       <item>
-  ///         If the value of the <see cref="ReadOnly"/> property is not <see cref="NaBooleanEnum.Undefined"/>,
-  ///         the value of <see cref="ReadOnly"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the control is bound to an <c>FscObject</c> component and a <see cref="BusinessObjectPropertyPath"/>, 
-  ///         and the bound <c>FscObject</c> component's <c>EditMode</c> property is <see langword="false"/>, 
-  ///         <see langword="false"/> is returned.
-  ///         </item>
-  ///       <item>
-  ///         If the control is bound, the attributes of the property and the current object's ACL determine which
-  ///         value is returned
-  ///       </item>
-  ///       <item>Otherwise, <see langword="false"/> is returned.</item>
-  ///     </list>
-  ///   </para>
-  /// </remarks>
-  [Browsable(false)]
-  public virtual bool IsReadOnly
-  {
-    get
-    {
-      if (_readOnly != NaBooleanEnum.Undefined)
-        return _readOnly == NaBooleanEnum.True;
-      //Binding.EvaluateBinding();
-      if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
-        return false;
-      if (Property == null || DataSource == null)
-        return false;
-      if (! IsDesignMode && DataSource.BusinessObject == null)
-        return true;
-      if (DataSource.Mode == DataSourceMode.Read)
-        return true;
-      return Property.IsReadOnly (DataSource.BusinessObject);
-    }
-  }
-
-  /// <summary>
-  ///   Determines whether the control is to be treated as a required value.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The value of this property is used to decide whether <see cref="BocTextValueValidator"/> controls should 
-  ///     create a <see cref="RequiredFieldValidator"/> for this control.
-  ///   </para><para>
-  ///     The following rules are used to determine the value of this property:
-  ///     <list type="bullets">
-  ///       <item>If the control is read-only, <see langword="false"/> is returned.</item>
-  ///       <item>
-  ///         If the <see cref="Required"/> property is not <see cref="NaBooleanEnum.Undefined"/>, 
-  ///         the value of <see cref="Required"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the <see cref="Property"/> contains a property defintion with the
-  ///         <see cref="IBusinessObjectProperty.Required"/> flag set, <see langword="true"/> is returned. 
-  ///       </item>
-  ///       <item>Otherwise, <see langword="false"/> is returned.</item>
-  ///     </list>
-  ///   </para>
-  /// </remarks>
-  [Browsable(false)]
-  public virtual bool IsRequired 
-  {
-    get 
-    {
-      if (IsReadOnly)
-        return false;
-      if (_required != NaBooleanEnum.Undefined)
-        return _required == NaBooleanEnum.True;
-      //Binding.EvaluateBinding();
-      if (Property != null)
-        return (bool) Property.IsRequired;
-      return false;
-    }
-  }
- 
-  public virtual void RegisterValidator (BaseValidator validator)
-  {
-    if (_validators == null)
-      _validators = new TypedArrayList (typeof (BaseValidator));
-
-    _validators.Add (validator);
-  }
-
-  public virtual bool Validate ()
-  {
-    if (_validators == null)
-      return true;
-
-    bool isValid = true;
-    foreach (BaseValidator validator in _validators)
-    {
-      validator.Validate();
-      isValid &= validator.IsValid;
-    }
-    return isValid;
-  }
 }
 
 ///// <summary>
