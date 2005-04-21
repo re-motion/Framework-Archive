@@ -113,10 +113,7 @@ public interface IBusinessObjectDataSource
   ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the connected
   ///   <see cref="IBusinessObject"/> and assigned <see cref="IBusinessObjectClass"/>.
   /// </summary>
-  /// <value>
-  ///   The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>.
-  ///   Must not return <see langword="null"/>.
-  /// </value>
+  /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   /// <summary>
@@ -237,10 +234,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the connected
   ///   <see cref="IBusinessObject"/> and assigned <see cref="IBusinessObjectClass"/>.
   /// </summary>
-  /// <value>
-  ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
-  ///   the <see cref="BusinessObjectClass"/> assigned to this <see cref="BusinessObjectDataSource"/>.
-  /// </value>
+  /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual IBusinessObjectProvider BusinessObjectProvider 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using Rubicon.ObjectBinding.Design;
@@ -168,8 +167,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   Gets the <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> of the <see cref="ReferenceProperty"/>.
   /// </summary>
   /// <value> 
-  ///   The <see cref="IBusinessObjectClass"/> of the <see cref="ReferenceProperty"/> or <see langword="null"/>
-  ///   if no <see cref="ReferenceProperty"/> is set.
+  ///   An <see cref="IBusinessObjectClass"/> or <see langword="null"/> if no <see cref="ReferenceProperty"/> is set.
   /// </value>
   public override IBusinessObjectClass BusinessObjectClass
   {
@@ -184,10 +182,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the bound
   ///   <see cref="IBusinessObject"/>.
   /// </summary>
-  /// <value>
-  ///   The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>.
-  ///   Must not return <see langword="null"/>.
-  /// </value>
+  /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   public override IBusinessObjectProvider BusinessObjectProvider
   {
     get { return (ReferencedDataSource == null) ? null : ReferencedDataSource.BusinessObjectProvider; }
