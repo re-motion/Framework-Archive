@@ -257,6 +257,7 @@
                 />
                 <File
                     RelPath = "Controls\BocTreeNode.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -266,6 +267,11 @@
                 />
                 <File
                     RelPath = "Controls\BusinessObjectBinding.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BusinessObjectBoundModifiableWebControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
