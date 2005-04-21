@@ -111,8 +111,9 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
 
       bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
       bool isDataSourceNull = DataSource == null;
+      bool isBusinessObjectClassNull = BusinessObjectClass == null;
 
-      if (isDesignMode && isDataSourceNull)
+      if (isDesignMode && isBusinessObjectClassNull)
           return null;
 
       if (! _isPopertyPathEvaluated)
