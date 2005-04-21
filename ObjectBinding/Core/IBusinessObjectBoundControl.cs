@@ -85,7 +85,7 @@ public interface IBusinessObjectBoundControl: IComponent
   ///   that is not available for the bound class or object.
   /// </remarks>
   /// <value> <see langword="true"/> if the configuration is valid. </value>
-  bool IsValid { get; }
+  bool HasValidBinding { get; }
 }
 
 /// <summary>
@@ -95,6 +95,7 @@ public interface IBusinessObjectBoundControl: IComponent
 /// <remarks>
 ///   See <see cref="SaveValue"/> for a description of the data binding process.
 /// </remarks>
+/// <seealso cref="IBusinessObjectBoundControl"/>
 /// <seealso cref="IBusinessObjectDataSource"/>
 public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
 {
