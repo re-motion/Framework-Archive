@@ -73,7 +73,7 @@ public abstract class WxeFunction: WxeStepList
 
   public WxeFunction (params object[] actualParameters)
   {
-    _variables = new NameObjectCollection(); // TODO: use a case sensitive collection
+    _variables = new NameObjectCollection();
     _returnUrl = null;
     _actualParameters = actualParameters;
   }
