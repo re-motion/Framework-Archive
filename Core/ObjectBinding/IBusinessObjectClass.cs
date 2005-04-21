@@ -8,6 +8,11 @@ public interface IBusinessObjectClass
   IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier);
   IBusinessObjectProperty[] GetPropertyDefinitions ();
 
+  /// <remarks>
+  ///   <note type="inheritinfo">
+  ///     Must not return <see langword="null"/>.
+  ///   </note>
+  /// </remarks>
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   /// <summary>
