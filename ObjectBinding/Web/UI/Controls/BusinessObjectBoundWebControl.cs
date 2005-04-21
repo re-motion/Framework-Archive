@@ -1,12 +1,7 @@
 using System;
-using System.CodeDom;
-using System.Collections;
-using System.Globalization;
 using System.ComponentModel;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.Web.UI;
@@ -23,17 +18,41 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary>
+///   Provides functionality for binding an <see cref="ISmartControl"/> to an <see cref="IBusinessObject"/> using
+///   an <see cref="IBusinessObjectDataSourceControl"/>. 
+/// </summary>
+/// <remarks>
+///   <para>
+///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
+///     information on the data binding process.
+///   </para>
+/// </remarks>
+/// <seealso cref="IBusinessObjectBoundControl"/>
+/// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
+/// <seealso cref="IBusinessObjectDataSourceControl"/>
 public interface IBusinessObjectBoundWebControl: 
   IBusinessObjectBoundControl, 
-  ISmartControl,
-  IControl
+  ISmartControl
 {
   string DataSourceControl { get; set; }
 }
 
-public interface IBusinessObjectBoundModifiableWebControl: IBusinessObjectBoundWebControl, IBusinessObjectBoundModifiableControl, IValidatableControl
+/// <summary>
+///   Extends an <see cref="IBusinessObjectBoundWebControl"/> with functionality for validating the control's 
+///   <see cref="IBusinessObjectBoundControl.Value"/> and writing it back into the bound <see cref="IBusinessObject"/>.
+/// </summary>
+/// <remarks>
+///   See <see cref="IBusinessObjectBoundControl.SaveValue"/> for a description of the data binding process.
+/// </remarks>
+/// <seealso cref="IBusinessObjectDataSource"/>
+public interface IBusinessObjectBoundModifiableWebControl:
+  IBusinessObjectBoundWebControl, 
+  IBusinessObjectBoundModifiableControl, 
+  IValidatableControl
 {
   /// <summary>
+  ///   <preliminary/>
   ///   Specifies whether the value of the control has been changed in the UI since the last load/save operation.
   /// </summary>
   /// <remarks>
@@ -419,7 +438,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable(false)]
   public virtual bool UseLabel
   {
-    get { return ! (TargetControl is DropDownList || TargetControl is HtmlSelect); }
+    get { return ! (TargetControl is DropDownList || TargetControl is System.Web.UI.HtmlControls.HtmlSelect); }
   }
 
   [Browsable (false)]

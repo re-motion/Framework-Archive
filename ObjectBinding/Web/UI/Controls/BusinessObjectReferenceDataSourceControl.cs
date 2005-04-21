@@ -9,20 +9,42 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary>
+///   <b>BusinessObjectReferenceSearchDataSourceControl</b> is used to supply an <see cref="IBusinessObjectClass"/>
+///   to an <see cref="IBusinessObjectBoundWebControl"/> used for displaying a search result.
+/// </summary>
+/// <remarks>
+///   Since a search result is usually an <see cref="IBusinessObject"/> list without an actual parent object
+///   to connect to the data source, normal data binding is not possible. By using the 
+///   <b>BusinessObjectReferenceSearchDataSourceControl</b> it is possible to provide the meta data to the bound
+///   controls dispite the lack of a parent object.
+/// </remarks>
 public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectReferenceDataSourceControl
 {
-  protected override bool SupportsPropertyMultiplicity(bool isList)
+  /// <summary> Multiplicity is always supported. </summary>
+  /// <param name="isList"> Not evaluated. </param>
+  /// <returns> Always <see langword="true"/>. </returns>
+  protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return true;
   }
 
+  /// <summary> Not supported by <see cref="BusinessObjectReferenceSearchDataSourceControl"/>. </summary>
+  /// <param name="interim"> Not evaluated. </param>
   public override void LoadValues (bool interim)
   {
     throw new NotSupportedException ("Use BusinessObjectReferenceDataSourceControl for actual data.");
   }
 
+  /// <summary>
+  ///   Gets or sets the current <see cref="DataSourceMode"/> of this 
+  ///   <see cref="BusinessObjectReferenceSearchDataSourceControl"/>.
+  /// </summary>
+  /// <value> <see cref="DataSourceMode.Search"/>. </value>
+  /// <exception cref="NotSupportedException"> Thrown upon an attempt to set a value other than <see cref="DataSourceMode.Search"/>. </exception>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [DefaultValue (DataSourceMode.Search)]
   public override DataSourceMode Mode
   {
     get { return DataSourceMode.Search; }
@@ -31,12 +53,12 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 }
 
 /// <summary>
-///   <see cref="BusinessObjectReferenceDataSourceControl"/> provides an 
-///   <see cref="IBusinessObjectReferenceDataSource"/> to controls of type 
-///   <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> or <b>ASCX User Control</b>.
+///   <b>BusinessObjectReferenceDataSourceControl</b> provides an <see cref="IBusinessObjectReferenceDataSource"/>
+///   to controls of type <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> or 
+///   <b>ASCX User Control</b>.
 /// </summary>
 #if net20
-[NonVisualControl]
+[System.Web.UI.NonVisualControl]
 #endif
 public class BusinessObjectReferenceDataSourceControl
   : BusinessObjectBoundModifiableWebControl, 
@@ -140,7 +162,7 @@ public class BusinessObjectReferenceDataSourceControl
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
-  ///  Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
   ///  <see langword="false"/>. 
   /// </remarks>
   public virtual void SaveValues (bool interim) // inherited data source interface
@@ -198,8 +220,7 @@ public class BusinessObjectReferenceDataSourceControl
   ///   Gets the <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> of the <see cref="ReferenceProperty"/>.
   /// </summary>
   /// <value> 
-  ///   The <see cref="IBusinessObjectClass"/> of the <see cref="ReferenceProperty"/> or <see langword="null"/>
-  ///   if no <see cref="ReferenceProperty"/> is set.
+  ///   An <see cref="IBusinessObjectClass"/> or <see langword="null"/> if no <see cref="ReferenceProperty"/> is set.
   /// </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -212,10 +233,7 @@ public class BusinessObjectReferenceDataSourceControl
   ///   Gets the <see cref="IBusinessObjectProvider"/> of this 
   ///   <see cref="BusinessObjectReferenceDataSourceControl"/>.
   /// </summary>
-  /// <value>
-  ///   The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>.
-  ///   Must not return <see langword="null"/>.
-  /// </value>
+  /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectProvider BusinessObjectProvider

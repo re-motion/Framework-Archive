@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <summary>
-///  The <see cref="IBusinessObjectDataSourceControl"/> interface defines the methods and 
+///  The <b>IBusinessObjectDataSourceControl</b> interface defines the methods and 
 ///  properties required to implement a control that provides an <see cref="IBusinessObjectDataSource"/>
 ///  to controls of type <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> 
 ///  or <b>ASCX User Control</b>.
@@ -27,7 +27,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 }
 
 /// <summary>
-///   <see cref="BusinessObjectDataSourceControl"/> is the default implementation of
+///   <b>BusinessObjectDataSourceControl</b> is the default implementation of
 ///   the <see cref="IBusinessObjectDataSourceControl"/> interface. Derive from this class
 ///   if you want to create an invisible control only providing an object of type
 ///   <see cref="IBusinessObjectDataSource"/>.
@@ -44,7 +44,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 ///   </para>
 /// </remarks>
 #if net20
-[NonVisualControl]
+[System.Web.UI.NonVisualControl]
 #endif
 public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectDataSourceControl
 {
@@ -61,7 +61,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
   /// <remarks> 
-  ///   Executes the <see cref="IBusinessObjectDataSource.LoadValues"/> method of the encapsulated data source.
+  ///   Executes the <see cref="IBusinessObjectDataSource.LoadValues"/> method of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   public virtual void LoadValues(bool interim)
   {
@@ -74,7 +75,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <remarks> 
-  ///   Executes the <see cref="IBusinessObjectDataSource.SaveValues"/> method of the encapsulated data source.
+  ///   Executes the <see cref="IBusinessObjectDataSource.SaveValues"/> method of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   public virtual void SaveValues (bool interim)
   {
@@ -90,7 +92,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///   <see cref="BusinessObjectDataSourceControl"/>.
   /// </param>
   /// <remarks> 
-  ///   Executes the <see cref="IBusinessObjectDataSource.Register"/> method of the encapsulated data source.
+  ///   Executes the <see cref="IBusinessObjectDataSource.Register"/> method of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   public virtual void Register (IBusinessObjectBoundControl control)
   {
@@ -106,7 +109,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///   <see cref="BusinessObjectDataSourceControl"/>.
   /// </param>
   /// <remarks> 
-  ///   Executes the <see cref="IBusinessObjectDataSource.Unregister"/> method of the encapsulated data source.
+  ///   Executes the <see cref="IBusinessObjectDataSource.Unregister"/> method of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   public virtual void Unregister (IBusinessObjectBoundControl control)
   {
@@ -118,7 +122,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// </summary>
   /// <value> A value of the <see cref="DataSourceMode"/> enumeration. </value>
   /// <remarks> 
-  ///   Gets or sets the <see cref="IBusinessObjectDataSource.Mode"/> property of the encapsulated data source.
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource.Mode"/> property of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
@@ -137,8 +142,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///   <see cref="BusinessObjectClass"/>.
   /// </value>
   /// <remarks> 
-  ///   Gets or sets the <see cref="IBusinessObjectDataSource.BusinessObject"/> property of the encapsulated data 
-  ///   source.
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource.BusinessObject"/> property of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -159,7 +164,7 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   ///     <see cref="IBusinessObjectDataSource"/> by utilizing Visual Studio .NET Designer. 
   ///   </para><para>
   ///     Gets the <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> property of the encapsulated 
-  ///     data source.
+  ///     <see cref="IBusinessObjectDataSource"/>.
   ///   </para>
   /// </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -172,13 +177,10 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// <summary>
   ///   Gets the <see cref="IBusinessObjectProvider"/> of this <see cref="BusinessObjectDataSourceControl"/>.
   /// </summary>
-  /// <value>
-  ///   The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>.
-  ///   Must not return <see langword="null"/>.
-  /// </value>
+  /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   /// <remarks> 
   ///   Gets the <see cref="IBusinessObjectDataSource.BusinessObjectProvider"/> property of the encapsulated
-  ///   data source.
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -193,7 +195,8 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// </summary>
   /// <value> An array of <see cref="IBusinessObjectBoundControl"/> objects. </value>
   /// <remarks> 
-  ///   Gets the <see cref="IBusinessObjectDataSource.BoundControls"/> property of the encapsulated data source.
+  ///   Gets the <see cref="IBusinessObjectDataSource.BoundControls"/> property of the encapsulated 
+  ///   <see cref="IBusinessObjectDataSource"/>.
   /// </remarks>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
