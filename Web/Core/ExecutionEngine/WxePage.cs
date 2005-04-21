@@ -397,7 +397,7 @@ public class WxePage: Page, IWxePage
 
   /// <summary>
   ///   Call this method before validating when using <see cref="Rubicon.Web.UI.Controls.FormGridManager"/> 
-  ///   and <see cref="Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate"/>.
+  ///   and <see cref="M:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
   /// </summary>
   public void PrepareValidation()
   {
