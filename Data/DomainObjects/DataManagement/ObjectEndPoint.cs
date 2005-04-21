@@ -20,38 +20,34 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
   // construction and disposing
 
   public ObjectEndPoint (
-      ClientTransaction clientTransaction,
       DomainObject domainObject, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (clientTransaction, domainObject.ID, definition, oppositeObjectID)
+      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, definition, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
-      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (clientTransaction, dataContainer.ID, definition, oppositeObjectID)
+      : this (dataContainer.ClientTransaction, dataContainer.ID, definition, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint ( 
-      ClientTransaction clientTransaction,
       DomainObject domainObject, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (clientTransaction, domainObject.ID, propertyName, oppositeObjectID)
+      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, propertyName, oppositeObjectID)
   {
   }
 
   public ObjectEndPoint (
-      ClientTransaction clientTransaction,
       DataContainer dataContainer, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (clientTransaction, dataContainer.ID, propertyName, oppositeObjectID)
+      : this (dataContainer.ClientTransaction, dataContainer.ID, propertyName, oppositeObjectID)
   {
   }
 
