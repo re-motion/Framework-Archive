@@ -9,7 +9,7 @@ namespace Rubicon.Web.UI.Controls
 #if ! net20
 public class TabViewCollection: ControlCollection
 #else
-public class TabViewCollection: System.Web.UI.ViewCollection
+public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
 #endif
 {
   public TabViewCollection (Control owner)

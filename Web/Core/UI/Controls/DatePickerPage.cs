@@ -37,7 +37,9 @@ public class DatePickerPage : Page
 {
   private const string c_datePickerScriptUrl = "DatePicker.js";
   
+#if ! net20
   protected HtmlForm Form;
+#endif
   protected HtmlGenericControl HtmlHead;
   protected Calendar Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
