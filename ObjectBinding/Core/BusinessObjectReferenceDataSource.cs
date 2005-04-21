@@ -30,6 +30,7 @@ namespace Rubicon.ObjectBinding
 ///     for most (or possibly all) specialized business object models.
 ///   </para>
 /// </remarks>
+/// <seealso cref="IBusinessObjectDataSource"/>
 public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
 {
   /// <summary>
@@ -70,6 +71,7 @@ public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
 ///   have been implemented. The actual implementation of the <see cref="IBusinessObjectBoundModifiableControl"/> 
 ///   interface is left to the child class. 
 /// </remarks>
+/// <seealso cref="IBusinessObjectReferenceDataSource"/>
 public abstract class BusinessObjectReferenceDataSourceBase: 
     BusinessObjectDataSource, IBusinessObjectReferenceDataSource
 {
@@ -213,6 +215,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
 ///   </note>
 /// </remarks>
 /// <seealso cref="IBusinessObjectReferenceDataSource"/>
+/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
 public class BusinessObjectReferenceDataSource: 
     BusinessObjectReferenceDataSourceBase, 
     IBusinessObjectBoundModifiableControl
@@ -350,7 +353,7 @@ public class BusinessObjectReferenceDataSource:
   ///   and <see cref="IBusinessObjectDataSource.BusinessObject"/>.
   /// </value>
   [Browsable (false)]
-  public bool IsValid
+  public bool HasValidBinding
   {
     get 
     { 

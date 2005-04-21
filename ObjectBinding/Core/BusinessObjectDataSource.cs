@@ -114,6 +114,11 @@ public interface IBusinessObjectDataSource
   ///   <see cref="IBusinessObject"/> and assigned <see cref="IBusinessObjectClass"/>.
   /// </summary>
   /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
+  /// <remarks>
+  ///   <note type="inheritinfo">
+  ///     Must not return <see langword="null"/> if the <see cref="BusinessObjectClass"/> is set.
+  ///   </note>
+  /// </remarks>
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   /// <summary>
@@ -133,13 +138,14 @@ public interface IBusinessObjectDataSource
   IBusinessObjectBoundControl[] BoundControls { get; }
 }
 
-/// <summary> The abstract default implementation of the <see cref="IBusinessObjectDataSource"/>. </summary>
+/// <summary> The abstract default implementation of the <see cref="IBusinessObjectDataSource"/> interface. </summary>
 /// <remarks>
 ///   Any specialized version of the <b>BusinessObjectDataSource</b> requires an override for the
 ///   <see cref="BusinessObjectClass"/> property. It is also necessary to provide a way for specifying which 
 ///   <see cref="IBusinessObjectClass"/> will be returned by this property. See the remarks section of the
 ///   <see cref="IBusinessObjectDataSource"/> interface documentation for details on how to implement this feature.
 /// </remarks>
+/// <seealso cref="IBusinessObjectDataSource"/>
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
   private TypedArrayList _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
@@ -190,7 +196,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
       for (int i = 0; i < _boundControls.Count; i++)
       {
         IBusinessObjectBoundControl control = (IBusinessObjectBoundControl) _boundControls[i];
-        if (control.IsValid)
+        if (control.HasValidBinding)
           control.LoadValue (interim);
       }
     }
@@ -210,7 +216,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
         IBusinessObjectBoundModifiableControl writeableControl = _boundControls[i] as IBusinessObjectBoundModifiableControl;
         if (writeableControl != null)
         {
-          if (writeableControl.IsValid)
+          if (writeableControl.HasValidBinding)
             writeableControl.SaveValue (interim);
         }
       }
@@ -235,6 +241,11 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
   ///   <see cref="IBusinessObject"/> and assigned <see cref="IBusinessObjectClass"/>.
   /// </summary>
   /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
+  /// <remarks>
+  ///   <note type="inheritinfo">
+  ///     Must not return <see langword="null"/> if the <see cref="BusinessObjectClass"/> is set.
+  ///   </note>
+  /// </remarks>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual IBusinessObjectProvider BusinessObjectProvider 
@@ -268,7 +279,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
       for (int i = 0; i < _boundControls.Count; ++i)
       {
         IBusinessObjectBoundControl control = (IBusinessObjectBoundControl) _boundControls[i];
-        if (control.IsValid)
+        if (control.HasValidBinding)
           bindableControls.Add (control);
       }
       return (IBusinessObjectBoundControl[]) bindableControls.ToArray (typeof(IBusinessObjectBoundControl)); 
