@@ -43,7 +43,7 @@ public class AnonymousEndPointTest : ClientTransactionBaseTest
   [Test]
   public void InitializeWithDomainObject ()
   {
-    AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client, _clientToLocationDefinition);
+    AnonymousEndPoint endPoint = new AnonymousEndPoint (_client, _clientToLocationDefinition);
 
     Assert.IsNotNull (endPoint as INullableObject);
     Assert.IsNotNull (endPoint as IEndPoint);
@@ -62,7 +62,7 @@ public class AnonymousEndPointTest : ClientTransactionBaseTest
   [Test]
   public void InitializeWithDataContainer ()
   {
-    AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client.DataContainer, _clientToLocationDefinition);
+    AnonymousEndPoint endPoint = new AnonymousEndPoint (_client.DataContainer, _clientToLocationDefinition);
 
     Assert.AreSame (_client.DataContainer, endPoint.GetDataContainer ());
   }
