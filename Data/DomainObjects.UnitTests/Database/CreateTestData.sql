@@ -1,5 +1,7 @@
 use TestDomain
 
+delete from [Location]
+delete from [Client]
 delete from [Computer]
 delete from [Employee]
 delete from [TableWithoutRelatedClassIDColumnAndDerivation]
@@ -272,6 +274,18 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
     values ('{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Ceo', 'Ceo with invalid CompanyIDClassID', 
     '{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Customer')
+
+
+-- Client
+insert into [Client] (ID, ClassID, [ParentClientID]) values ('{1627ADE8-125F-4819-8E33-CE567C42B00C}', 'Client', null)
+insert into [Client] (ID, ClassID, [ParentClientID]) values ('{090D54F2-738C-48ac-9C78-F40365A72305}', 'Client', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
+insert into [Client] (ID, ClassID, [ParentClientID]) values ('{01349595-88A3-4583-A7BA-CB08795C97F6}', 'Client', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
+
+
+-- Location
+insert into [Location] (ID, ClassID, [ClientID]) values ('{D527B630-B0AC-4572-A614-EAC9F486148D}', 'Location', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
+insert into [Location] (ID, ClassID, [ClientID]) values ('{20380C9D-B70F-4d9a-880E-EAE5D6E3919C}', 'Location', '{1627ADE8-125F-4819-8E33-CE567C42B00C}')
+insert into [Location] (ID, ClassID, [ClientID]) values ('{903E7EE5-CBB8-44c0-BEB6-ACAFFA5ADA7F}', 'Location', '{090D54F2-738C-48ac-9C78-F40365A72305}')
 
 
 -- ClassWithoutRelatedClassIDColumn

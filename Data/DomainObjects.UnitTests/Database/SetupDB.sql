@@ -1,6 +1,14 @@
 USE TestDomain
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Location') 
+DROP TABLE [Location]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Client') 
+DROP TABLE [Client]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Computer') 
 DROP TABLE [Computer]
 GO
@@ -215,6 +223,30 @@ CREATE TABLE [Ceo] (
   
   CONSTRAINT [PK_Ceo] PRIMARY KEY CLUSTERED ([ID]),
   CONSTRAINT [FK_Ceo_Company] FOREIGN KEY ([CompanyID]) REFERENCES [Company] ([ID])
+) 
+GO
+
+CREATE TABLE [Client] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ParentClientID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_ParentClient_ChildClient] FOREIGN KEY ([ParentClientID]) REFERENCES [Client] ([ID])
+) 
+GO
+
+CREATE TABLE [Location] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ClientID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_Client_Location] FOREIGN KEY ([ClientID]) REFERENCES [Client] ([ID])
 ) 
 GO
 
