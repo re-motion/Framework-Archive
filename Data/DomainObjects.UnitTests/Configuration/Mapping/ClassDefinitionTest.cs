@@ -340,5 +340,49 @@ public class ClassDefinitionTest
     Assert.IsTrue (_distributorClass.IsPartOfInheritanceHierarchy);
     Assert.IsFalse (_orderClass.IsPartOfInheritanceHierarchy);
   }
+
+  [Test]
+  public void GetRelationDefinitions ()
+  {
+    ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+
+    RelationDefinitionCollection clientRelations = clientDefinition.GetRelationDefinitions ();
+
+    Assert.AreEqual (1, clientRelations.Count);
+    Assert.AreEqual ("ParentClientToChildClient", clientRelations[0].ID);
+  }
+
+  [Test]
+  public void IsRelationEndPointWithNullRelationEndPointDefinition ()
+  {
+    ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+
+    NullRelationEndPointDefinition clientNullEndPointDefinition = (NullRelationEndPointDefinition)
+        MappingConfiguration.Current.RelationDefinitions["ParentClientToChildClient"].GetEndPointDefinition ("Client", null);
+
+    Assert.IsFalse (clientDefinition.IsRelationEndPoint (clientNullEndPointDefinition));
+  }
+
+  [Test]
+  public void GetMyRelationEndPointDefinitions ()
+  {
+    ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+
+    IRelationEndPointDefinition[] endPointDefinitions = clientDefinition.GetMyRelationEndPointDefinitions ();
+
+    Assert.AreEqual (1, endPointDefinitions.Length);
+    Assert.IsTrue (Contains (endPointDefinitions, "ParentClient"));
+  }
+
+  private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
+  {
+    foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
+    {
+      if (endPointDefinition.PropertyName == propertyName)
+        return true;
+    }
+
+    return false;
+  }
 }
 }
