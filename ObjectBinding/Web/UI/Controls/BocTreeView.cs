@@ -592,6 +592,11 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     get { return (BocTreeNode) _treeView.SelectedNode; }
   }
+
+  public void EnsureTreeNodesCreated()
+  {
+    _treeView.EnsureTreeNodesCreated();
+  }
 }
 
 public class BusinessObjectPropertyTreeNodeInfo
