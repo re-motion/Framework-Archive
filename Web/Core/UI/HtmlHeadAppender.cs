@@ -4,6 +4,8 @@ using System.Web;
 using System.Web.UI;
 using System.Runtime.Remoting.Messaging;
 using System.Web.UI.HtmlControls;
+using Rubicon.Web.Utilities;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI
 {
@@ -61,23 +63,32 @@ public class HtmlHeadAppender
 
   /// <summary>
   ///   Appends the <c>HTML head elements</c> registered with the <see cref="Current"/>
-  ///   <see cref="HtmlHeadAppender"/> to the <paramref name="headerCollection"/>.
+  ///   <see cref="HtmlHeadAppender"/> to the <paramref name="htmlHeadContents"/>' <b>Controls</b> collection.
   /// </summary>
   /// <remarks>
   ///   Call this method during the rendering of the web form's <c>head element</c>.
   /// </remarks>
-  /// <param name="headCollection">
-  ///   <see cref="ControlCollection"/> to which the headers will be appended.
+  /// <param name="htmlHeadContents">
+  ///   <see cref="HtmlHeadContents"/> to whose <b>Controls</b> collection the headers will be appended.
   /// </param>
-  public void EnsureAppended (ControlCollection headCollection)
+  public void EnsureAppended (HtmlHeadContents htmlHeadContents)
   {
     if (_hasAppendExecuted)
       return;
 
-    foreach (Control headElement in _registeredHeadElements.Values)
-      headCollection.Add (headElement);
+    bool isDesignMode = ControlHelper.IsDesignMode (htmlHeadContents);
 
-    _hasAppendExecuted = true;
+    foreach (Control headElement in _registeredHeadElements.Values)
+    {
+      if (   ! isDesignMode
+          || ! htmlHeadContents.Controls.Contains (headElement))
+      {
+        htmlHeadContents.Controls.Add (headElement);
+      }
+    }
+
+    if (! isDesignMode)
+      _hasAppendExecuted = true;
   }
 
   /// <summary>
