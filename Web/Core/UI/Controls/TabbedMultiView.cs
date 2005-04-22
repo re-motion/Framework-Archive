@@ -146,14 +146,19 @@ public class TabbedMultiView: WebControl, IControl
   // construction and destruction
   public TabbedMultiView()
   {
-    _tabStrip = new WebTabStrip (this);
-    _multiViewInternal = new TabbedMultiView.MultiView ();
-    _topControl = new PlaceHolder();
-    _bottomControl = new PlaceHolder();
+    CreateControls();
     _tabStripStyle = new Style();
     _activeViewStyle = new Style();
     _topControlsStyle = new Style();
     _bottomControlsStyle = new Style();
+  }
+
+  private void CreateControls()
+  {
+    _tabStrip = new WebTabStrip (this);
+    _multiViewInternal = new TabbedMultiView.MultiView ();
+    _topControl = new PlaceHolder();
+    _bottomControl = new PlaceHolder();
   }
 
   // methods and properties
@@ -488,6 +493,21 @@ public class TabbedMultiView: WebControl, IControl
   }
 
 
+  /// <summary>
+  ///   Clears all items.
+  /// </summary>
+  /// <remarks>
+  ///   Note that clearing <see cref="Views"/> is not sufficient, as other controls are created implicitly.
+  /// </remarks>
+  public void Clear()
+  {
+    CreateControls();
+    Controls.Clear();
+    CreateChildControls();
+    //  Views.Clear();
+    //  TabStrip.Tabs.Clear();
+    //  MultiViewInternal.Controls.Clear();
+  }
 
 //  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
 //  /// <value> 

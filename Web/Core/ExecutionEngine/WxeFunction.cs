@@ -70,6 +70,9 @@ public abstract class WxeFunction: WxeStepList
   private string _returnUrl;
   private object[] _actualParameters;
   private bool _parametersInitialized = false;
+  private bool _catchExceptions = false;
+  private Type[] _catchExceptionTypes = null;
+  private Exception _exception = null;
 
   public WxeFunction (params object[] actualParameters)
   {
@@ -78,8 +81,35 @@ public abstract class WxeFunction: WxeStepList
     _actualParameters = actualParameters;
   }
 
-  /// <summary> Take the actual parameters without any conversion. </summary>
+  /// <summary> 
+  ///   If this is <c>true</c>, exceptions are caught and returned in the <see cref="Exception"/> property.
+  /// </summary>
+  public bool CatchExceptions
+  {
+    get { return _catchExceptions; } 
+    set { _catchExceptions = value; }
+  }
 
+  /// <summary>
+  ///   Sets <see cref="CatchExceptions"/> to <c>true</c> and limits the types of exceptions that are caught.
+  /// </summary>
+  /// <param name="exceptionTypes"> Exceptions of these types or sub classes will be caught, all other
+  ///     exceptions will be rethrown. </param>
+  public void SetCatchExceptionTypes (params Type[] exceptionTypes)
+  {
+    _catchExceptions = true;
+    _catchExceptionTypes = exceptionTypes;
+  }
+
+  /// <summary>
+  ///   Contains any exception that occured during execution (only if <see cref="CatchExceptions"/> is <c>true</c>).
+  /// </summary>
+  public Exception Exception
+  {
+    get { return _exception; } 
+  }
+
+  /// <summary> Take the actual parameters without any conversion. </summary>
   public override void Execute (WxeContext context)
   {
     if (! ExecutionStarted)
@@ -89,10 +119,41 @@ public abstract class WxeFunction: WxeStepList
       EnsureParametersInitialized (null);
     }
 
-    base.Execute (context);
+    try
+    {
+      base.Execute (context);
+    }
+    catch (Exception e)
+    {
+      if (! _catchExceptions)
+        throw;
 
-    if (ParentStep != null)
+      if (e is HttpException && e.InnerException != null)
+        e = e.InnerException;
+      if (e is HttpUnhandledException && e.InnerException != null)
+        e = e.InnerException;
+
+      if (_catchExceptionTypes != null)
+      {
+        bool match = false;
+        foreach (Type exceptionType in _catchExceptionTypes)
+        {
+          if (exceptionType.IsAssignableFrom (e.GetType()))
+          {
+            match = true;
+            break;
+          }
+        }
+        if (! match)
+          throw;
+      }
+
+      _exception = e;
+    }
+
+    if (_exception != null &&  ParentStep != null)
       ReturnParametersToCaller();
+
     s_log.Debug ("Ending Execution of " + this.GetType().FullName + ".");
   }
 
