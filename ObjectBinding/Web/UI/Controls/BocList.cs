@@ -2146,6 +2146,8 @@ public class BocList:
 
       writer.RenderEndTag();
 
+      writer.Write (" ");
+
       if (! isReadOnly)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Cancel;
