@@ -184,6 +184,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithOppositeClassAndTwoRelationProperties.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithOppositeClassReferringToItself.xml"
                     BuildAction = "Content"
                 />
