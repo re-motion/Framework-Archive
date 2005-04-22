@@ -201,6 +201,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     if (_nodesViewState != null)
       LoadNodesViewStateRecursive (_nodesViewState, _nodes);
 
+    if (_nodes.Count == 0)
+      _hasTreeNodesCreated = false;
   }
 
   /// <summary>
