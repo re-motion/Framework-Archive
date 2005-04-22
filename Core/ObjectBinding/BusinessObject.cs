@@ -30,21 +30,26 @@ public abstract class BusinessObject: IBusinessObject
     if (value == null)
       return string.Empty;
 
-    string strValue = null;
+    string strValue;
     IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
     if (businessObject != null)
     {
       strValue = businessObject.DisplayName;
     }
-    else if (format != null)
+    else if (property is IBusinessObjectEnumerationProperty)
     {
-      IFormattable formattable = value as IFormattable;
-      if (formattable != null)
-        strValue = formattable.ToString (format, null);
+      IBusinessObjectEnumerationProperty enumProperty = (IBusinessObjectEnumerationProperty) property;
+      IEnumerationValueInfo enumValueInfo = enumProperty.GetValueInfoByValue (value);
+      strValue = enumValueInfo.DisplayName;
     }
-
-    if (strValue == null)
-       strValue = value.ToString();
+    else if (format != null && value is IFormattable)
+    {
+      strValue = ((IFormattable) value).ToString (format, null);
+    }
+    else
+    {
+      strValue = value.ToString();
+    }
 
     if (count > 1)
       strValue += " ... [" + count.ToString() + "]";
