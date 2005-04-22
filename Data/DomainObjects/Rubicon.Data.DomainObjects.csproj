@@ -380,6 +380,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\NamespaceDoc.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Mapping\ClassDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
