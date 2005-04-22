@@ -157,12 +157,17 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     _hiddenField.ValueChanged += new EventHandler(HiddenField_ValueChanged);
   }
 
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    //  The data control's changed event is sufficient.
+    return LoadPostData (postDataKey, postCollection);
   }
 
-  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    RaisePostDataChangedEvent();
+  }
+
+  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
     NaBoolean newNaValue = NaBoolean.Null;
@@ -177,13 +182,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return isDataChanged;
   }
 
-  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-  {
-    return false;
-  }
-
   protected virtual void RaisePostDataChangedEvent()
   {
+    //  The data control's changed event is sufficient.
   }
 
   private void HiddenField_ValueChanged(object sender, EventArgs e)
