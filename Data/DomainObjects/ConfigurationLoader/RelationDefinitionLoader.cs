@@ -73,7 +73,7 @@ public class RelationDefinitionLoader
 
       if (relationPropertyNodes.Count == 1)
       {
-        if (relationPropertyNodes[0].SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager) == null)
+        if (!HasOppositeClassDefined (relationPropertyNodes[0]))
         {
           throw CreateMappingException (
               "The relation '{0}' is not correctly defined. For relations with only one relation property the relation property must define the opposite class.", 
@@ -87,7 +87,30 @@ public class RelationDefinitionLoader
               relationDefinitionID);
         }
       }
+
+      if (relationPropertyNodes.Count == 2)
+      {
+        CheckOppositeClass (relationDefinitionID, relationPropertyNodes[0]);
+        CheckOppositeClass (relationDefinitionID, relationPropertyNodes[1]);
+      }
     }
+  }
+
+  private void CheckOppositeClass (string relationDefinitionID, XmlNode relationPropertyNode)
+  {
+    if (HasOppositeClassDefined (relationPropertyNode))
+    {
+      throw CreateMappingException (
+          "The relation '{0}' is not correctly defined. Because the relation is bidirectional the"
+          + " relation property '{1}' must not define its opposite class.",
+          relationDefinitionID,
+          relationPropertyNode.SelectSingleNode ("@name").InnerText);
+    }
+  }
+
+  private bool HasOppositeClassDefined (XmlNode relationPropertyNode)
+  {
+    return (relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager) != null);
   }
 
   private XmlNodeList GetDistinctRelationPropertyNodes ()
