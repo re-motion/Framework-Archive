@@ -210,6 +210,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
 
+    if (node.IsEvaluated)
+      return;
+
     BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
     BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
   

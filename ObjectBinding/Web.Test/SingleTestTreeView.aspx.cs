@@ -149,16 +149,13 @@ public class SingleTestTreeView : SingleBocTestBasePage
   {
     PersonTreeView.EnsureTreeNodesCreated();
     WebTreeNode node0 = (WebTreeNode)PersonTreeView.Nodes[0];
-    if (! node0.IsEvaluated)
-      node0.Evaluate();
+    node0.Evaluate();
     node0.IsExpanded = true;
     WebTreeNode node01 = (WebTreeNode)node0.Children[1];
-    if (! node01.IsEvaluated)
-      node01.Evaluate();
+    node01.Evaluate();
     node01.IsExpanded = true;
     WebTreeNode node010 = (WebTreeNode)node01.Children[0];
-    if (! node010.IsEvaluated)
-      node010.Evaluate();
+    node010.Evaluate();
     node010.IsExpanded = true;
     node010.IsSelected = true;
   }
