@@ -72,7 +72,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> The nodes in this tree view. </summary>
   private WebTreeNodeCollection _nodes;
   private Triplet[] _nodesViewState;
-
+  private bool _isLoadViewStateCompleted = false;
   private bool _enableTopLevelExpander = true;
   private bool _enableScrollBars = false;
   private bool _enableWordWrap = false;
@@ -94,7 +94,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   public WebTreeView (Control ownerControl)
   {
     _nodes = new WebTreeNodeCollection (ownerControl);
-    Nodes.SetParent (this, null);
+    _nodes.SetParent (this, null);
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -179,27 +179,28 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   //  /// <summary> Collapses all nodes of this tree view. Only the root nodes will remain visible. </summary>
   //  public void CollapseAll()
   //  {
-  //    Nodes.SetExpansion (false);
+  //    _nodes.SetExpansion (false);
   //  }
   //    
   //  /// <summary> Expands all nodes of this tree view.</summary>
   //  public void ExpandAll()
   //  {
-  //    Nodes.SetExpansion (true);
+  //    _nodes.SetExpansion (true);
   //  }
 
-  public void EnsureTreeNodesCreated()
+  protected void EnsureTreeNodesCreated()
   {
     if (_hasTreeNodesCreated)
       return;
+
+    _hasTreeNodesCreated = true;
 
     if (_initializeRootTreeNodes != null) 
       _initializeRootTreeNodes();
 
     if (_nodesViewState != null)
-      LoadNodesViewStateRecursive (_nodesViewState, Nodes);
+      LoadNodesViewStateRecursive (_nodesViewState, _nodes);
 
-    _hasTreeNodesCreated = true;
   }
 
   /// <summary>
@@ -221,6 +222,14 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.NodeID + "' but did not evaluate the tree node.");
   }
 
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    if (Page != null && ! Page.IsPostBack)
+      _isLoadViewStateCompleted = true;
+  }
+
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
   /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
@@ -232,6 +241,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       _nodesViewState = (Triplet[]) values[1];
     else
       _nodesViewState = null;
+
+    _isLoadViewStateCompleted = true;
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
@@ -242,7 +253,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
     values[0] = base.SaveViewState();
     if (_enableTreeNodeViewState)
-      values[1] = SaveNodesViewStateRecursive (Nodes);
+      values[1] = SaveNodesViewStateRecursive (_nodes);
 
     return values;
   }
@@ -326,8 +337,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   protected override void RenderContents (HtmlTextWriter writer)
   {
     ResolveNodeIcons();
-    RenderNodes (writer, Nodes, true);
-    if (ControlHelper.IsDesignMode (this, Context) && Nodes.Count == 0)
+    RenderNodes (writer, _nodes, true);
+    if (ControlHelper.IsDesignMode (this, Context) && _nodes.Count == 0)
       RenderDesignModeContents (writer);
   }
 
@@ -493,7 +504,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   {
     pathSegments = path.Split (c_pathSeparator);
     WebTreeNode currentNode = null;
-    WebTreeNodeCollection currentNodes = Nodes;
+    WebTreeNodeCollection currentNodes = _nodes;
     foreach (string nodeID in pathSegments)
     {
       WebTreeNode node = currentNodes.Find (nodeID);
@@ -656,7 +667,12 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   [DefaultValue ((string) null)]
   public virtual WebTreeNodeCollection Nodes
   {
-    get { return _nodes; }
+    get
+    {
+      if (_isLoadViewStateCompleted)
+        EnsureTreeNodesCreated();
+      return _nodes; 
+    }
   }
 
   /// <summary> 
@@ -739,7 +755,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   {
     get 
     { 
-      EnsureTreeNodesCreated();
+      if (_isLoadViewStateCompleted)
+        EnsureTreeNodesCreated();
       return _selectedNode; 
     }
   }
