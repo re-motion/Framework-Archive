@@ -177,6 +177,14 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return isDataChanged;
   }
 
+  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+  {
+  }
+
+  protected virtual void RaisePostDataChangedEvent()
+  {
+  }
+
   private void HiddenField_ValueChanged(object sender, EventArgs e)
   {
     OnCheckedChanged (EventArgs.Empty);
