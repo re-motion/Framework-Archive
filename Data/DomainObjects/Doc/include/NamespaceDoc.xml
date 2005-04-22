@@ -1,0 +1,93 @@
+<namespaces>
+  <namespace name="Rubicon.Data.DomainObjects.ConfigurationLoader">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.ConfigurationLoader</B> namespace contains classes to be used for loading the configuration of the DomainObjects framework.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.DataManagement">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.DataManagement</B> namespace contains interfaces and classes for managing relations between <b>DomainObject</b>s in the DomainObjects framework.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Mapping">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Mapping</B> namespace contains interfaces and classes to describe the domain model of the DomainObjects framework.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Persistence">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Persistence</B> namespace contains interfaces and classes to persist <b>DomainObject</b>s.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Persistence.Configuration">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Persistence.Configuration</B> namespace contains classes to describe the storage providers used for 
+      persisting <b>DomainObject</b>s.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Persistence.Rdbms">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Persistence.Rdbms</B> namespace contains classes to persist <b>DomainObject</b>s to relational databases.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Queries">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Queries</B> namespace contains classes to execute queries against the <b>StorageProvider</b>s.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.Queries.Configuration">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.Queries.Configuration</B> namespace contains classes to describe the pre-defined queries from the configuration file.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects">
+    <para>
+      The <B>Rubicon.Data.DomainObjects</B> namespace and its sub namespaces contain interfaces and classes to be used 
+      for building domain models that are persisted by the DomainObjects framework.
+    </para>
+
+    <para>
+      In the following, an overview is provided on the starting points for working with the <b>Rubicon.Data.DomainObjects</b> namespace.
+    </para>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%"/>
+        <col width="75%"/>
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Rubicon.Data.DomainObjects.ClientTransaction"/></td>
+          <td>
+            Represents an in-memory transaction.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Data.DomainObjects.DomainObject"/></td>
+          <td>
+            Base class for all objects that are persisted by the framework.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Data.DomainObjects.DomainObjectCollection"/></td>
+          <td>
+            Represents a collection of DomainObjects.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Data.DomainObjects.Queries.QueryManager"/></td>
+          <td>
+            The <b>QueryManager</b> provides methods to execute queries within a ClientTransaction.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </namespace>
+</namespaces>
