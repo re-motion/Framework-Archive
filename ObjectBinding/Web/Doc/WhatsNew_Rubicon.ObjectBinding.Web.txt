@@ -1,3 +1,9 @@
+1.2.25.0
+========
+
+- BocList
+  * Bug-Fix: Inline Editing hat nicht funktioniert seit 1.2.21.0.
+  
 1.2.21.0
 ========
 
