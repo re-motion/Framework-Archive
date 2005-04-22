@@ -175,12 +175,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _timeTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
   }
 
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    //  The data control's changed event is sufficient.
+    return LoadPostData (postDataKey, postCollection);
   }
 
-  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    RaisePostDataChangedEvent();
+  }
+
+  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     //  Date input field
 
@@ -220,6 +225,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
 
     return isDateChanged || isTimeChanged;
+  }
+
+  protected virtual void RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
   }
 
   /// <summary>
