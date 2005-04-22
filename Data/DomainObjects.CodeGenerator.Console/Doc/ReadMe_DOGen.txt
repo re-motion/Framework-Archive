@@ -1,5 +1,6 @@
-Verwendung des Generators
--------------------------
+DOGen.exe verwenden
+-------------------
+
 
 1. Stub-Klassen generieren:
    Aufruf mit /stubs erzeugt aus der mapping.xml ein C#-File mit Klassenrümpfen für alle im Mapping angegebenen Klassen.
