@@ -33,7 +33,7 @@ public sealed class ControlFactory
   /// </returns>
   public static IBusinessObjectBoundWebControl CreateControl (IBusinessObjectProperty property, EditMode editMode)
   {
-    if (property.IsList)
+    if (! property.IsList)
     {
       if (property is IBusinessObjectStringProperty || property is IBusinessObjectNumericProperty)
         return new BocTextValue();
