@@ -43,7 +43,6 @@ public class SingleTestTreeView : SingleBocTestBasePage
       Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
     }
     ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
-    PersonTreeView.EnsureTreeNodesCreated();
     BocTreeNode node = PersonTreeView.SelectedNode;
   }
 
@@ -147,16 +146,12 @@ public class SingleTestTreeView : SingleBocTestBasePage
 
   private void WebButton1_Click(object sender, System.EventArgs e)
   {
-    PersonTreeView.EnsureTreeNodesCreated();
     WebTreeNode node0 = (WebTreeNode)PersonTreeView.Nodes[0];
-    node0.Evaluate();
-    node0.IsExpanded = true;
+    node0.EvaluateExpand();
     WebTreeNode node01 = (WebTreeNode)node0.Children[1];
-    node01.Evaluate();
-    node01.IsExpanded = true;
+    node01.EvaluateExpand();
     WebTreeNode node010 = (WebTreeNode)node01.Children[0];
-    node010.Evaluate();
-    node010.IsExpanded = true;
+    node010.EvaluateExpand();
     node010.IsSelected = true;
   }
 }
