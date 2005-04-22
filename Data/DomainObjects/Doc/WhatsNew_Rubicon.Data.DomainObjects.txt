@@ -2,7 +2,7 @@
 ========
 
 - Unterstützung für unidirektionale Beziehungen in mapping.xml:
-  Element relationProperty nur auf einer Beziehungsseite definieren und Childelement oppositeClass angeben =>
+  Element "relationProperty" nur auf einer Beziehungsseite definieren und Child-Element "oppositeClass" angeben =>
   Rubicon.Data.DomainObjects verwendet automatisch unidirektionale Beziehung => 
   Bei Änderungen werden auf dem gegenüberliegenden Objekt/Collection keine Events ausgelöst und kein State-Tracking durchgeführt.
 
