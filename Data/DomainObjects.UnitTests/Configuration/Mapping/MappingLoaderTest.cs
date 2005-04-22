@@ -318,5 +318,17 @@ public class LoaderTest
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
+
+  [Test]
+  [ExpectedException (typeof (MappingException), 
+      "The relation 'CustomerToOrder' is not correctly defined. Because the relation is bidirectional the relation property 'Customer' must not define its opposite class.")]
+  public void MappingWithOppositeClassAndTwoRelationProperties ()
+  {
+    MappingLoader loader = new MappingLoader (
+        @"mappingWithOppositeClassAndTwoRelationProperties.xml", 
+        @"mapping.xsd");
+  
+    loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+  } 
 }
 }
