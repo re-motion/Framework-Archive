@@ -179,6 +179,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
+    return false;
   }
 
   protected virtual void RaisePostDataChangedEvent()
