@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+  <classes>
+		<class id="Customer">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Company" />
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+			  <relationProperty name="Orders" relationID="CustomerToOrder" isMandatory="false" cardinality="many" />
+			</properties>
+		</class>
+		<class id="Order">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
+			<entity name="Order"/>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+			  <relationProperty name="Customer" relationID="CustomerToOrder" isMandatory="true" cardinality="one">
+			  	<column>CustomerID</column>	
+  			  <!-- Because Customer already defines a relationProperty it is considered bidirectional => Element oppositeClass must not be defined. -->
+			    <oppositeClass>Customer</oppositeClass>
+			  </relationProperty>			  			
+			</properties>
+		</class>		
+  </classes>
+</mapping>  
