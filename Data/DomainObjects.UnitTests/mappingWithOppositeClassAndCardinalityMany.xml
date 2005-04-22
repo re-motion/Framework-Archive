@@ -11,7 +11,7 @@
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
 			  <relationProperty name="Orders" relationID="CustomerToOrder" isMandatory="false" cardinality="many">
-			  	  <column>InvalidColumn</column>	
+			  	<column>InvalidColumn</column>	
 			    <oppositeClass>Order</oppositeClass>
 			  </relationProperty>			  
 			</properties>
