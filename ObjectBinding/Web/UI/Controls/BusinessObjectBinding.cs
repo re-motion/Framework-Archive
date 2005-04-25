@@ -11,6 +11,10 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary>
+///   Encapsulates the functionality required for configuring business object binding in an
+///   <see cref="IBusinessObjectBoundWebControl"/>.
+/// </summary>
 public class BusinessObjectBinding
 {
   private readonly IBusinessObjectBoundWebControl _control;
@@ -19,9 +23,9 @@ public class BusinessObjectBinding
   private string _dataSourceControl;  
   private bool _dataSourceChanged = false;
 
-  private bool _bindingChanged = false;
   private IBusinessObjectProperty _property;
   private string _propertyIdentifier;
+  private bool _bindingChanged = false;
   /// <summary>
   ///   Set after the <see cref="DataSource"/> returned a value for the first time
   ///   in the <c>get accessor</c> of <see cref="Property"/>.
@@ -33,16 +37,22 @@ public class BusinessObjectBinding
   /// </summary>
   private bool _hasDesignModePropertyChanged = false;
 
+  /// <summary> Initializes a new instance of the <b>BusinessObjectBinding</b> class. </summary>
   public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
   {
     _control = control;
   }
 
+  /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> whose binding this instance encapsulates. </summary>
   public IBusinessObjectBoundWebControl Control
   {
     get { return _control; }
   }
 
+  /// <summary> Gets or sets the <see cref="IBusinessObjectDataSource"/> for this <see cref="BusinessOBjectBinding"/>. </summary>
+  /// <remarks>
+  ///   Unless an <b>DataSource</b> is set, <see cref="DataSourceControl"/> is used to identify the data source.
+  /// </remarks>
   public virtual IBusinessObjectDataSource DataSource
   {
     get 
@@ -50,7 +60,6 @@ public class BusinessObjectBinding
       EnsureDataSource();
       return _dataSource; 
     }
-
     set
     {
       SetDataSource (value);
@@ -63,6 +72,15 @@ public class BusinessObjectBinding
     }
   }
 
+  /// <summary> Uses the value of <see cref="DataSourceControl"/> to set <see cref="DataSource"/>. </summary>
+  /// <remarks> 
+  ///   Due to <b>Design Mode</b> behavior of Visual Studio .NET the <see cref="IComponent.Site"/> property is
+  ///   utilized for finding the data source during <b>Design Mode</b>.
+  /// </remarks>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if the <see cref="DataSourceControl"/> is not <see langword="null "/> and could not be evaluated 
+  ///   to a valid <see cref="IBusinessObjectDataSourceControl"/> during <b>Run Time</b>.
+  /// </exception>
   public void EnsureDataSource()
   {
     if (_dataSourceChanged)
@@ -79,50 +97,45 @@ public class BusinessObjectBinding
         Control namingContainer = _control.NamingContainer;
         if (namingContainer == null)
         {
-          if (isDesignMode)
-          {
-            //  HACK: Designmode Naming container
-            //  Not completely sure that Components[0] will always be the naming container.
-            if (_control.Site.Container.Components.Count > 0)
-              namingContainer = (_control.Site.Container.Components[0]) as Control;
-            else
-              return;
-          }
-          else
+          if (! isDesignMode)
             throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
+
+          //  HACK: Designmode Naming container
+          //  Not completely sure that Components[0] will always be the naming container.
+          if (_control.Site.Container.Components.Count > 0)
+            namingContainer = (_control.Site.Container.Components[0]) as Control;
+          else
+            return;
         }
 
         Control control = ControlHelper.FindControl (namingContainer, _dataSourceControl);
         if (control == null)
         {
-          if (isDesignMode)
+          if (! isDesignMode)
+            throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+
+          foreach (IComponent component in namingContainer.Site.Container.Components)
           {
-            foreach (IComponent component in namingContainer.Site.Container.Components)
+            if (   component is IBusinessObjectDataSourceControl 
+                && component is Control
+                && ((Control) component).ID == _dataSourceControl)
             {
-              if (   component is IBusinessObjectDataSourceControl 
-                  && component is Control
-                  && ((Control) component).ID == _dataSourceControl)
-              {
-                control = (Control) component;
-                break;
-              }
-            }
-            if (control == null)
-            {
-              SetDataSource (null);
-              _dataSourceChanged = true;
-              return;
+              control = (Control) component;
+              break;
             }
           }
-          else
+
+          if (control == null)
           {
-            throw new HttpException(string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+            SetDataSource (null);
+            _dataSourceChanged = true;
+            return;
           }
         }
 
         IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
         if (dataSource == null)
-          throw new HttpException(string.Format ("The value '{0}' of the DataSource property of '{1}' cannot be converted to type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
+          throw new HttpException(string.Format ("The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
 
         SetDataSource (dataSource);
       }
@@ -131,6 +144,8 @@ public class BusinessObjectBinding
     }
   }
 
+  /// <summary> Sets the new value of the <see cref="DataSource"/> property. </summary>
+  /// <param name="dataSource"> The new <see cref="IBusinessObjectDataSource"/>. Can be <see langword="null"/>. </param>
   private void SetDataSource (IBusinessObjectDataSource dataSource)
   {
     if (_dataSource == dataSource)
@@ -146,6 +161,8 @@ public class BusinessObjectBinding
     _bindingChanged = true;
   }
 
+  /// <summary> The <b>ID</b> of the <see cref="DataSource"/>. </summary>
+  /// <value> A string or <see langword="null"/> if no <see cref="DataSource"/> is set. </value>
   public string DataSourceControl
   {
     get { return _dataSourceControl; }
@@ -160,6 +177,12 @@ public class BusinessObjectBinding
     }
   }
 
+  /// <summary> Gets or sets the <see cref="IBusinessObjectProperty"/> used in the business object binding. </summary>
+  /// <remarks>
+  ///   Unless an <b>Property</b> is set, <see cref="PropertyIdentifier"/> and <see cref="DataSource"/> are used to 
+  ///   identify the property.
+  /// </remarks>
+  /// <exception cref="ArgumentException"> Thrown if the <see cref="Control"/> does not support the <b>Property</b>. </exception>
   public IBusinessObjectProperty Property
   {
     get 
@@ -174,7 +197,10 @@ public class BusinessObjectBinding
       // evaluate binding
       if (_bindingChanged || _hasDesignModePropertyChanged && _isDesignModePropertyInitalized)
       {
-        if (_property == null && DataSource != null && DataSource.BusinessObjectClass != null && _propertyIdentifier != null && _propertyIdentifier.Length != 0)
+        if (   _property == null 
+            && DataSource != null 
+            && DataSource.BusinessObjectClass != null 
+            && ! StringUtility.IsNullOrEmpty (_propertyIdentifier))
         {
           IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
           if (! Control.SupportsProperty (property))
@@ -186,7 +212,7 @@ public class BusinessObjectBinding
         if (_isDesignModePropertyInitalized)
           _hasDesignModePropertyChanged = false;
 
-        this.OnBindingChanged();
+        OnBindingChanged();
       }
 
       return _property; 
@@ -203,6 +229,11 @@ public class BusinessObjectBinding
     }
   }
 
+  /// <summary> Gets or sets the string representation of the <see cref="Property"/>. </summary>
+  /// <value> 
+  ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
+  ///   the <see cref="IBusinessObjectProperty"/>. 
+  /// </value>
   public string PropertyIdentifier
   {
     get { return _propertyIdentifier; }
@@ -215,19 +246,23 @@ public class BusinessObjectBinding
     }
   }
 
-  [Obsolete]
-  public void EvaluateBinding()
-  {
-  }
-
+  /// <summary> Executed when the <see cref="Property"/> is assigned a new value. </summary>
   protected void OnBindingChanged()
   {
     if (BindingChanged != null)
       BindingChanged (this, EventArgs.Empty);
-
   }
 
+  /// <summary> Raised when the <see cref="Property"/> is assigned a new value. </summary>
+  /// <remarks> 
+  ///   Register for this event to execute code updating the <see cref="Control"/>'s state for the new binding.
+  /// </remarks>
   public event EventHandler BindingChanged;
+
+  [Obsolete]
+  public void EvaluateBinding()
+  {
+  }
 }
 
 }
