@@ -28,7 +28,7 @@ public class NullableProperty : BaseProperty
 
   public override bool IsRequired
   {
-    get { return ! _isNullableType; }
+    get { return base.IsRequired; }
   }
 
   protected internal override object FromInternalType (object internalValue)
