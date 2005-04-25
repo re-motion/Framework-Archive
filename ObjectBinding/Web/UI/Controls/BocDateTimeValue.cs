@@ -460,7 +460,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -482,7 +481,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
@@ -1289,9 +1287,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     get 
     {
-      //Binding.EvaluateBinding();
       RefreshPropertiesFromObjectModel();
-
       return _actualValueType; 
     }
   }
