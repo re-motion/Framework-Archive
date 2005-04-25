@@ -35,16 +35,19 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   // types
 
-  /// <summary> A list of control wide resources. </summary>
+  /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:IResourceManager.GetString(System.Enum)">IResourceManager.GetString (Enum)</see>. 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocEnumValue")]
   protected enum ResourceIdentifier
   {
+    /// <summary> The text rendered for the null item in the list. </summary>
     NullDisplayName,
+    /// <summary> The validation error message displayed when the null item is selected. </summary>
     NullItemValidationMessage
   }
 
