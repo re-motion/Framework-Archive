@@ -57,9 +57,7 @@ public interface ISmartControl: IControl
 //  /// </remarks>
 //  bool UseInputControlCSS { get; }
 
-  /// <summary>
-  ///   Gets the label name of the control that should be presented to the user.
-  /// </summary>
+  /// <summary> Gets the text to be written into the label for this control. </summary>
   string DisplayName { get; }
 }
 
