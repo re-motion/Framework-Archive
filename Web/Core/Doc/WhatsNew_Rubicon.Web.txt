@@ -1,3 +1,105 @@
+1.2.25.0
+========
+
+Exception Handling in WxeFunctions (neu)
+----------------------------------
+
+  Exceptions können abgefangen werden.
+  Grund: try/catch funktioniert nicht, wenn man WxeFunctions aus ASP.NET Event Handlern startet
+
+  Beispiel: (funkt nicht)
+
+  void Button1_Click (...)
+  {
+    try
+    {
+      if (! IsReturningPostBack)
+      {
+        MyFunction f = new MyFunction (...);
+        ExecuteFunction (f);
+      }
+      else
+      {
+        MyFunction f = ReturningFunction;
+        ...
+      }
+    }
+    catch (Exception e)
+    {
+      // catch code
+      ... 
+    }
+  }
+
+  (Grund: MyFunction wird großteils nicht im Kontext von Button1_Click ausgeführt, d.h. Button1_Click ist nicht am Call Stack)
+
+  Folgendes funktioniert ab sofort:
+
+  void Button1_Click (...)
+  {
+    if (! IsReturningPostBack)
+    {
+      MyFunction f = new MyFunction (...);
+      f.CatchExceptions = true; 
+		  // Alternative für bestimmte Exception-Types: 
+		  // f.SetCatchExceptionTypes (typeof (ArgumentException), ...);
+      ExecuteFunction (f);
+    }
+    else
+    {
+      MyFunction f = ReturningFunction;
+      if (f.Exception != null)
+      {
+        // catch code
+        ...
+
+        // beispiel: rethrow 
+        throw f.Exception;
+        // beispiel: neue exception
+        throw new InvalidOperationException ("So gehts nicht!", f.Exception);
+      }
+    }
+  }
+
+
+Konstruktoren für WxeFunctions (Konvention)
+------------------------------
+
+  Jede WXE Function benötigt folgende Konstruktoren:
+
+  Default Konstruktor - wird z.B. verwendet, um eine Funktion via URL oder aus einer BocList zu starten:
+
+    public MyFunction ()
+    {
+    }
+
+  Untypisierter Konstruktor - wird verwendet, um eine Funktion via "new MyFunction(...)" zu starten
+
+    public MyFunction(params object[] args)
+      : base (args)
+    {
+    }
+
+  Typisierter Konstruktor - ist nur für IntelliSense notwendig. 
+  Konvention: Die Parameter im Konstruktor heissen GENAU SO wie die [WxeParameter] Properties. (inkl. Groß/Kleinschreibung)
+
+  Hier sind 2 Fälle zu unterscheiden:
+  a) Nur In-Parameter: Dieser Konstruktor wird tatsächlich aufgerufen, wenn keine varref() Argumente verwendet werden.
+
+    public MyFunction (CnObject Object, CnObject Action, CnObject AttributeDefinition)
+      : base (Object, Action, AttributeDefinition)
+    {
+    }
+
+  b) Mindestens ein Out- oder InOut-Parameter: Wenn dieser Konstruktor aufgerufen wird, dann hat jemand einen Fehler gemacht. 
+    Also wirklich NUR für IntelliSense.
+
+    public MyFunction (CnObject Object, CnObject Action, out CnObject Form)
+    {
+      throw new WxeOutParameterNotSupportedException();
+    }
+
+
 1.2.19.0
 ========
 
