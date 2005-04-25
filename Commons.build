@@ -391,9 +391,9 @@
           <includes name="**/WhatsNew*" />
         </fileset>
       </copy>
-      <copy todir="${build.basedir}">
+      <copy todir="${project.builddir}">
         <fileset basedir="${project.dir}/">
-          <includes name="**/Readme*" />
+          <includes name="**/*Readme*" />
         </fileset>
       </copy>
       <!-- else -->
