@@ -104,17 +104,15 @@ public class ResourceManagerWrapper: IResourceManager
     CultureInfo[] cultureHierarchy = GetCultureHierarchy (CultureInfo.CurrentUICulture);
 
     // Loop from most neutral to current UICulture
-    foreach (CultureInfo culture in cultureHierarchy)
+    for (int i = 0; i < cultureHierarchy.Length; i++)
     {
-      ResourceSet resourceSet = null;
-
-      resourceSet = _resourceManager.GetResourceSet (culture, true, false);
+      CultureInfo culture = (CultureInfo) cultureHierarchy[i];
+      ResourceSet resourceSet = _resourceManager.GetResourceSet (culture, true, false);
       if (resourceSet != null)
       {
         foreach (DictionaryEntry entry in resourceSet)
         {
           string key = (string)entry.Key;
-
           if (key.StartsWith (prefix))
             result[key] = (string)entry.Value;
         }
