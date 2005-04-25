@@ -45,8 +45,10 @@ public class WebMenuItemCollection: ControlItemCollection
     NameObjectCollection groupedMenuItems = new NameObjectCollection();
     ArrayList categories = new ArrayList();
     
-    foreach (WebMenuItem menuItem in menuItems)
+    for (int i = 0; i < menuItems.Length; i++)
     {
+      WebMenuItem menuItem = (WebMenuItem) menuItems[i];
+
       string category = StringUtility.NullToEmpty (menuItem.Category);
       ArrayList menuItemsForCategory;
       if (groupedMenuItems.Contains (category))
@@ -64,8 +66,9 @@ public class WebMenuItemCollection: ControlItemCollection
       
     ArrayList arrayList = new ArrayList();
     bool isFirst = true;
-    foreach (string category in categories)
+    for (int i = 0; i < categories.Count; i++)
     {
+      string category = (string) categories[i];
       if (generateSeparators)
       {
         if (isFirst)
