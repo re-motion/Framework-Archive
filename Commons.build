@@ -393,7 +393,7 @@
       </copy>
       <copy todir="${build.basedir}" flatten="true">
         <fileset basedir="${project.dir}/">
-          <includes name="**/Readme*" />
+          <includes name="Doc/Readme*" />
         </fileset>
       </copy>
       <!-- else -->
