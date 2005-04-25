@@ -82,8 +82,11 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     _treeView = treeView; 
     _parentNode = parentNode; 
-    foreach (WebTreeNode node in List)
+    for (int i = 0; i < InnerList.Count; i++)
+    {
+      WebTreeNode node = (WebTreeNode) InnerList[i];
       node.SetParent (_treeView, parentNode);
+    }
   }
 
   /// <summary>
@@ -93,8 +96,9 @@ public class WebTreeNodeCollection: ControlItemCollection
   /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
   public WebTreeNode Find (string id)
   {
-    foreach (WebTreeNode node in InnerList)
+    for (int i = 0; i < InnerList.Count; i++)
     {
+      WebTreeNode node = (WebTreeNode) InnerList[i];
       if (node.NodeID == id)
         return node;
     }
@@ -107,8 +111,9 @@ public class WebTreeNodeCollection: ControlItemCollection
   //  /// <param name="expand"> <see langword="true"/> to expand all nodes, <see langword="false"/> to collapse them. </param>
   //  public void SetExpansion (bool expand)
   //  {
-  //    foreach (WebTreeNode node in InnerList)
+  //    for (int i = 0; i < InnerList.Count; i++)
   //    {
+  //      WebTreeNode node = (WebTreeNode) InnerList[i];
   //      node.IsExpanded = expand;
   //      if (expand)
   //        node.ExpandAll();
