@@ -539,6 +539,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\HiddenField.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\HtmlHeadContents.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
