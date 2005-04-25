@@ -135,8 +135,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private void LoadTabsViewStateRecursive (Triplet[] tabsViewState, WebTabCollection tabs)
   {
     // Not the most efficient method, but be once the tab strip is more advanced.
-    foreach (Triplet tabViewState in tabsViewState)
+    for (int i = 0; i < tabsViewState.Length; i++)
     {
+      Triplet tabViewState = (Triplet) tabsViewState[i];
       string tabID = (string) tabViewState.First;
       WebTab tab = Tabs.Find (tabID);
       if (tab != null)
@@ -437,8 +438,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       string tabID = (string) entry.Key;
       
       bool isValidID = false;
-      foreach (WebTab tab in tabs)
+      for (int idxTabs = 0; idxTabs < tabs.Count; idxTabs++)
       {
+        WebTab tab = (WebTab) tabs[idxTabs];
         if (tab.TabID == tabID)
         {
           ResourceDispatcher.DispatchGeneric (tab, (IDictionary) entry.Value);
