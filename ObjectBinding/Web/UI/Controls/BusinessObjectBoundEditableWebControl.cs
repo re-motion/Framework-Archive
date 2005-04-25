@@ -221,7 +221,6 @@ public abstract class BusinessObjectBoundModifiableWebControl:
 
   /// <summary> Calls <see cref="BaseValidator.Validate"/> on all registered validators. </summary>
   /// <returns> <see langword="true"/>, if all validators validated. </returns>
-  bool Validate ();
   public virtual bool Validate()
   {
     if (_validators == null)
