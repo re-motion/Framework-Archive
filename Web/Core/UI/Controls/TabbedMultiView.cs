@@ -293,8 +293,11 @@ public class TabbedMultiView: WebControl, IControl
     Control view = _multiViewInternal.GetActiveView();
     if (view != null)
     {
-      foreach (Control control in view.Controls)
+      for (int i = 0; i < view.Controls.Count; i++)
+      {
+        Control control = (Control) view.Controls[i];
         control.RenderControl (writer);
+      }
     }
     
     writer.RenderEndTag(); // end div
