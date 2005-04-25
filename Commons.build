@@ -388,7 +388,12 @@
       </copy>
       <copy todir="${build.basedir}" flatten="true">
         <fileset basedir="${project.dir}/">
-        <includes name="**/WhatsNew*" />
+          <includes name="**/WhatsNew*" />
+        </fileset>
+      </copy>
+      <copy todir="${build.basedir}">
+        <fileset basedir="${project.dir}/">
+          <includes name="**/Readme*" />
         </fileset>
       </copy>
       <!-- else -->
@@ -497,6 +502,8 @@
         <includes name="Rubicon.Data.DomainObjects.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
+        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.Console.exe" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
@@ -556,6 +563,8 @@
         <includes name="Rubicon.Data.DomainObjects.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
+        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.Console.exe" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
