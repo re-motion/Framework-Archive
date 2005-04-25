@@ -439,6 +439,12 @@ public class BocList:
   /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
   void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
+    RaisePostBackEvent (eventArgument);
+  }
+
+  /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
+  protected virtual void RaisePostBackEvent (string eventArgument)
+  {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
     eventArgument = eventArgument.Trim();
