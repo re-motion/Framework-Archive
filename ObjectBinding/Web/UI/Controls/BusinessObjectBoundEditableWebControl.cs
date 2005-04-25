@@ -50,6 +50,10 @@ public interface IBusinessObjectBoundModifiableWebControl:
   bool IsDirty { get; set; }
 }
 
+/// <summary>
+///   <b>BusinessObjectBoundModifiableWebControl</b> is the abstract default implementation of 
+///   <see cref="IBusinessObjectBoundModifiableWebControl"/>.
+/// </summary>
 /// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
 public abstract class BusinessObjectBoundModifiableWebControl:
     BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl
@@ -119,19 +123,24 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///         the value of <see cref="ReadOnly"/> is returned.
   ///       </item>
   ///       <item>
-  ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and <see cref="Mode"/>
-  ///         is set to <see cref="DataSourceMode.Search"/>
-  ///       </item>
-  ///       <item>
-  ///         If the control is bound to an <c>FscObject</c> component and a <see cref="BusinessObjectPropertyPath"/>, 
-  ///         and the bound <c>FscObject</c> component's <c>EditMode</c> property is <see langword="false"/>, 
+  ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
+  ///         <see cref="DataSource.Mode">DataSource.Mode</see> is set to <see cref="DataSourceMode.Search"/>, 
   ///         <see langword="false"/> is returned.
   ///       </item>
   ///       <item>
-  ///         If the control is bound, the attributes of the property and the current object's ACL determine which
-  ///         value is returned
+  ///         If the <see cref="DataSource"/> or the <see cref="Property"/> is <see langword="null"/>,
+  ///         <see langword="false"/> is returned.
   ///       </item>
-  ///       <item>Otherwise, <see langword="false"/> is returned.</item>
+  ///       <item>
+  ///         If the <see cref="DataSource.BusinessObject">DataSource.BusinessObject</see> is <see langword="null"/>
+  ///         and the control is not in <b>Design Mode</b>, <see langword="true"/> is returned.
+  ///       </item>
+  ///       <item>
+  ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
+  ///         <see cref="DataSource.Mode">DataSource.Mode</see> is set to <see cref="DataSourceMode.Read"/>, 
+  ///         <see langword="true"/> is returned.
+  ///       </item>
+  ///       <item>Otherwise, <see langword="Property.IsReadOnly"/> is evaluated and returned.</item>
   ///     </list>
   ///   </para>
   /// </remarks>
@@ -160,8 +169,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     The value of this property is used to decide whether <see cref="BocTextValueValidator"/> controls should 
-  ///     create a <see cref="RequiredFieldValidator"/> for this control.
+  ///     The value of this property is used to decide whether <see cref="CreateValidators"/> should 
+  ///     include a <see cref="RequiredFieldValidator"/> for this control.
   ///   </para><para>
   ///     The following rules are used to determine the value of this property:
   ///     <list type="bullet">
@@ -194,6 +203,14 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     }
   }
  
+  /// <summary> Registers a validator that references this control. </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     The control may choose to ignore this call. 
+  ///   </para><para>
+  ///     The registered validators are evaluated when <see cref="Validate"/> is called.
+  ///   </para>
+  /// </remarks>
   public virtual void RegisterValidator (BaseValidator validator)
   {
     if (_validators == null)
@@ -202,7 +219,10 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     _validators.Add (validator);
   }
 
-  public virtual bool Validate ()
+  /// <summary> Calls <see cref="BaseValidator.Validate"/> on all registered validators. </summary>
+  /// <returns> <see langword="true"/>, if all validators validated. </returns>
+  bool Validate ();
+  public virtual bool Validate()
   {
     if (_validators == null)
       return true;
