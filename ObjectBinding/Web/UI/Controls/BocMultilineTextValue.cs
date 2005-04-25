@@ -120,12 +120,17 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
   
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    //  The data control's changed event is sufficient.
+    return LoadPostData (postDataKey, postCollection);
   }
 
-  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    RaisePostDataChangedEvent();
+  }
+
+  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
     bool isDataChanged = newValue != null && StringUtility.NullToEmpty (_internalValue) != newValue;
@@ -135,6 +140,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       _isDirty = true;
     }
     return isDataChanged;
+  }
+
+  protected virtual void RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
   }
 
   private void TextBox_TextChanged(object sender, EventArgs e)
