@@ -14,6 +14,7 @@ using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
 using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
@@ -22,20 +23,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   This control can be used to display or edit a tri-state value (true, false, and undefined).
 /// </summary>
-/// <remarks>
-///   <para>
-///     The control's <see cref="Value"/> can be assigned <c>Boolean</c> or <see cref="NaBoolean"/> values
-///     and <see langword="null"/>. 
-///     The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
-///   </para><para>
-///     The control is displayed using an <see cref="HyperLink"/> (edit mode only) 
-///     or an <see cref="Image"/> (read-only mode only) to simulate a check box. It also offers 
-///     a <see cref="Label"/> containing the string representation of the current value, rendered 
-///     next to the image. Use the <see cref="HyperLink"/>, <see cref="Image"/>, and 
-///     <see cref="Label"/> properties to access these controls directly.
-///   </para>
-/// </remarks>
-// TODO: see "Doc\Bugs and ToDos.txt"
+/// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -51,8 +39,12 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   // types
 
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <summary> A list of control specific resources. </summary>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocBooleanValue")]
   protected enum ResourceIdentifier
@@ -63,7 +55,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     FalseDescription,
     /// <summary> The descripton rendered next the check box when its state is undefined.  </summary>
     NullDescription,
-    /// <summary> Validation error message displayed when the null item is selected. </summary>
+    /// <summary> The validation error message displayed when the null item is selected. </summary>
     NullItemValidationMessage
   }
 
@@ -76,50 +68,33 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   private const string c_defaultControlWidth = "100pt";
 
 	// member fields
-  /// <summary>
-  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
-  ///   <see cref="SaveValue"/>.
-  /// </summary>
   private bool _isDirty = true;
-
-  /// <summary> The <see cref="HyperLink"/> used in edit mode. </summary>
-  private HyperLink _imageButton;
-  /// <summary> The <see cref="Image"/> used in read-only mode. </summary>
-  private Image _image;
-  /// <summary> The <see cref="Label"/> used to provide textual representation of the check state. </summary>
-  private Label _label;
-  /// <summary> The <see cref="BocInputHidden"/> used to hold the check state. </summary>
-  private BocInputHidden _hiddenField;
-
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
-  private Style _labelStyle;
-
-  /// <summary> The tristate value of the checkbox. </summary>
   private NaBoolean _value = NaBoolean.Null;
 
-  /// <summary> Flag that determines whether the client script will be rendered. </summary>
-  private bool _hasClientScript = false;
+  private HyperLink _hyperLink;
+  private Image _image;
+  private Label _label;
+  private HiddenField _hiddenField;
+  private Style _labelStyle;
 
-  /// <summary> Flag that determines whether to show the description. </summary>
   private bool _showDescription = true;
-
-  /// <summary> The description displayed when the checkbox is set to <c>True</c>. </summary>
   private string _trueDescription = string.Empty;
-  /// <summary> The description displayed when the checkbox is set to <c>False</c>. </summary>
   private string _falseDescription = string.Empty;
-  /// <summary> The description displayed when the checkbox is set to <c>null</c>. </summary>
   private string _nullDescription = string.Empty;
 
   private string _errorMessage;
   private ArrayList _validators;
+  /// <summary> Flag that determines whether the client script will be rendered. </summary>
+  private bool _hasClientScript = false;
 
   // construction and disposing
 
+  /// <summary> Initializes a new instance of the <b>BocBooleanValue</b> type. </summary>
 	public BocBooleanValue()
 	{
     _labelStyle = new Style();
-    _hiddenField = new BocInputHidden();
-    _imageButton = new HyperLink();
+    _hiddenField = new HiddenField();
+    _hyperLink = new HyperLink();
     _image = new Image();
     _label = new Label();
     _validators = new ArrayList();
@@ -127,47 +102,44 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   // methods and properties
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _hiddenField.ID = ID + "_Boc_HiddenField";
     _hiddenField.EnableViewState = false;
     Controls.Add (_hiddenField);
 
-    _imageButton.ID = ID + "_Boc_HyperLink";
-    _imageButton.EnableViewState = false;
-    Controls.Add (_imageButton);
+    _hyperLink.ID = ID + "_Boc_HyperLink";
+    _hyperLink.EnableViewState = false;
+    Controls.Add (_hyperLink);
 
     _image.ID = ID + "_Boc_Image";
     _image.EnableViewState = false;
-    _imageButton.Controls.Add (_image);
+    _hyperLink.Controls.Add (_image);
 
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
     Controls.Add (_label);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-
-    _hiddenField.ValueChanged += new EventHandler(HiddenField_ValueChanged);
-  }
-
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
   }
 
-  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+  /// <summary>
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
+  ///   between post backs.
+  /// </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
+  protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
     NaBoolean newNaValue = NaBoolean.Null;
@@ -182,12 +154,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return isDataChanged;
   }
 
+  /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
-  {
-    //  The data control's changed event is sufficient.
-  }
-
-  private void HiddenField_ValueChanged(object sender, EventArgs e)
   {
     OnCheckedChanged (EventArgs.Empty);
   }
@@ -201,6 +169,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       eventHandler (this, e);
   }
 
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
@@ -214,11 +183,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
+  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
+  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -229,13 +198,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       Page.RegisterRequiresPostBack (this);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
-  /// </param>
+  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
+  /// </remarks>
   protected override void Render (HtmlTextWriter writer)
   {
     //  Second call has practically no overhead
@@ -245,12 +211,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     base.Render (writer);
   }
 
-  /// <summary>
-  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
     object[] values = (object[]) savedState;
@@ -262,12 +223,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     _hiddenField.Value = _value.ToString();
   }
 
-  /// <summary>
-  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
-  /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[3];
@@ -279,15 +235,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return values;
   }
 
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -300,15 +249,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
-  /// <summary>
-  ///   Writes the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -318,19 +260,14 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary>
-  ///   Generates the validators depending on the control's configuration.
-  /// </summary>
-  /// <remarks>
-  ///   Generates a validator that checks that the selected item is not the null item if the 
-  ///   control is in edit-mode and input is required.
-  /// </remarks>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)
@@ -353,7 +290,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return validators;
   }
   
-  /// <summary> Prerenders the child controls. </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
   protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
@@ -449,12 +386,12 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
         script = "return false;";
       }
       _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
-      _imageButton.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
-      _imageButton.Attributes.Add ("onKeyDown", "BocBooleanValue_OnKeyDown (this);");
-      _imageButton.Style["padding"] = "0px";
-      _imageButton.Style["border"] = "none";
-      _imageButton.Style["background-color"] = "transparent";
-      _imageButton.NavigateUrl = "#";
+      _hyperLink.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
+      _hyperLink.Attributes.Add ("onKeyDown", "BocBooleanValue_OnKeyDown (this);");
+      _hyperLink.Style["padding"] = "0px";
+      _hyperLink.Style["border"] = "none";
+      _hyperLink.Style["background-color"] = "transparent";
+      _hyperLink.NavigateUrl = "#";
     }
 
     if (!isReadOnly)
@@ -489,10 +426,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
-  /// <summary>
-  ///   The <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to.
-  /// </summary>
-  /// <value>An <see cref="IBusinessObjectBooleanProperty"/> object.</value>
+  /// <summary> The <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to. </summary>
+  /// <value> An instance of type <see cref="IBusinessObjectBooleanProperty"/>. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectBooleanProperty Property
@@ -506,13 +441,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
   
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
-  /// <value> 
-  ///   The boolean value currently displayed 
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
+  /// <summary> Gets or sets the current value. </summary>
+  /// <value> The boolean value currently displayed or <see langword="null"/> if no item / the null item is selected. </value>
   [Browsable(false)]
   public new object Value
   {
@@ -536,56 +466,55 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
     set { Value = value; }
   }
 
-  /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using its ClientID.
-  /// </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
+  /// <remarks> Returns the <see cref="HyperLink"/> if the control is in edit-mode, otherwise the control itself. </remarks>
   public override Control TargetControl 
   {
-    get { return IsReadOnly ? (Control) this : _imageButton; }
+    get { return IsReadOnly ? (Control) this : _hyperLink; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
   public override bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
   }
 
-  /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
-  /// </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
-    get { return BocBooleanValue.GetSupportedPropertyInterfaces(); }
-  }
-
-  public static Type[] GetSupportedPropertyInterfaces()
-  { 
-    return s_supportedPropertyInterfaces;
+    get { return s_supportedPropertyInterfaces; }
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
   }
 
-  /// <summary> The string representation of the the tristate value of the checkbox. </summary>
-  /// <remarks> Values can be "True", "False", and "null". </remarks>
+  /// <summary> Gets the string representation of this control's <see cref="Value"/>. </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     Values can be <c>True</c>, <c>False</c>, and <c>null</c>. 
+  ///   </para><para>
+  ///     This property is used for validation.
+  ///   </para>
+  /// </remarks>
   [Browsable (false)]
   public string ValidationValue
   {
     get { return _hiddenField.Value; }
   }
 
-  /// <summary> Occurs when the <see cref="Value"/> property changes between posts to the server. </summary>
+  /// <summary> Occurs when the <see cref="Value"/> property changes between post backs. </summary>
   [Category ("Action")]
   [Description ("Fires when the checked state of the control changes.")]
   public event EventHandler CheckedChanged
@@ -595,8 +524,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary>
-  ///   The style that you want to apply to the <see cref="Label"/> 
-  ///   used for displaying the description
+  ///   Gets the <see cref="Style"/> that you want to apply to the <see cref="Label"/> used for displaying the 
+  ///   description. 
   /// </summary>
   [Category("Style")]
   [Description("The style that you want to apply to the label used for displaying the description.")]
@@ -608,11 +537,32 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     get { return _labelStyle; }
   }
 
-  /// <summary> Gets the <see cref="Label"/> used for displaying the description. </summary>
+  /// <summary> Gets the <see cref="System.Web.UI.WebControls.Label"/> used for displaying the description. </summary>
   [Browsable (false)]
   public Label Label
   {
     get { return _label; }
+  }
+
+  /// <summary> Gets the <see cref="System.Web.UI.WebControls.HyperLink"/> used for provding click functionality. </summary>
+  [Browsable (false)]
+  public HyperLink HyperLink
+  {
+    get { return _hyperLink; }
+  }
+
+  /// <summary> Gets the <see cref="System.Web.UI.WebControls.Image"/> used for displaying the checkbox icon. </summary>
+  [Browsable (false)]
+  public Image Image
+  {
+    get { return _image; }
+  }
+
+  /// <summary> Gets the <see cref="HiddenField"/> used for posting the value back to the server.  </summary>
+  [Browsable (false)]
+  public HiddenField HiddenField
+  {
+    get { return _hiddenField; }
   }
 
   /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
@@ -626,7 +576,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     set { _showDescription = value; }
   }
 
-  /// <summary> Gets or sets the description displayed when the checkbox is set to <c>True</c>. </summary>
+  /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
   [Description("The description displayed when the checkbox is set to True.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -636,7 +586,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     set { _trueDescription = value; }
   }
 
-  /// <summary> Gets or sets the description displayed when the checkbox is set to <c>False</c>. </summary>
+  /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
   [Description("The description displayed when the checkbox is set to False.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -646,7 +596,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     set { _falseDescription = value; }
   }
 
-  /// <summary> Gets or sets the description displayed when the checkbox is set to <c>null</c>. </summary>
+  /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
   [Description("The description displayed when the checkbox is set to null.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -670,72 +620,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
         validator.ErrorMessage = _errorMessage;
     }
   }
-}
-
-/// <summary>
-///   A special version of the <see cref="HtmlInputHidden"/> control that can raise a data changed
-///   event when its contents has been modified.
-/// </summary>
-/// <remarks>
-///   .net 2.0 will provide such a control in its class library.
-/// </remarks>
-internal class BocInputHidden: HtmlInputHidden, IPostBackDataHandler
-{
-  private static readonly object s_eventValueChanged = new object();
-
-#if ! net20 
-  protected virtual void RaisePostDataChangedEvent()
-#else
-  protected override void RaisePostDataChangedEvent()
-#endif
-  {
-#if net20 
-    base.RaisePostDataChangedEvent();
-#endif
-    OnValueChanged (EventArgs.Empty);
-  }
-
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
-  {
-    this.RaisePostDataChangedEvent();
-  }
-
-#if ! net20 
-  protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
-#else
-  protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
-#endif
-  {
-    string oldValue = Value;
-    string newValue = postCollection[postDataKey];
-    if (oldValue != newValue)
-    {
-      Value = newValue;
-      return true;
-    }
-    return false;
-  }
-
-  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
-  {
-    return this.LoadPostData (postDataKey, postCollection);
-  }
- 
-  protected virtual void OnValueChanged (EventArgs e)
-  {
-    EventHandler eventHandler = (EventHandler) Events[s_eventValueChanged];
-    if (eventHandler != null)
-      eventHandler (this, e);
-  }
- 
-  [Category ("Action")]
-  [Description ("Fires when the value of the control changes.")]
-  public event EventHandler ValueChanged
-  {
-    add { Events.AddHandler (s_eventValueChanged, value); }
-    remove { Events.RemoveHandler (s_eventValueChanged, value); }
-  }
-
 }
 
 }

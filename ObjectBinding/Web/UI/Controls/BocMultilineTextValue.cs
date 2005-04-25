@@ -42,7 +42,10 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   // types
   /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
   protected enum ResourceIdentifier
@@ -109,27 +112,39 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     Controls.Add (_label);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-
-    _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
-  }
-  
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
   }
 
+  /// <summary>
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
+  ///   post backs.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
+  ///   </para><para>
+  ///     Evaluates the value of the <see cref="TextBox"/>.
+  ///   </para>
+  ///   <note type="inheritinfo">
+  ///     Overrive this method to change the way a data change is detected of the value is read from the 
+  ///     <paramref name="postCollection"/>.
+  ///   </note>
+  /// </remarks>
+  /// <param name="postDataKey"> The key identifier for this control. </param>
+  /// <param name="postCollection"> The collection of all incoming name values.  </param>
+  /// <returns>
+  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
+  ///   otherwise <see langword="false"/>.
+  /// </returns>
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -142,12 +157,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     return isDataChanged;
   }
 
+  /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
-  {
-    //  The data control's changed event is sufficient.
-  }
-
-  private void TextBox_TextChanged(object sender, EventArgs e)
   {
     OnTextChanged (EventArgs.Empty);
   }
@@ -162,8 +173,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
+  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
   /// </summary>
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnPreRender (EventArgs e)

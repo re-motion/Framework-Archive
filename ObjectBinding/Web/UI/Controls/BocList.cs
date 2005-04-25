@@ -100,7 +100,10 @@ public class BocList:
   // types
   
   /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
   protected enum ResourceIdentifier

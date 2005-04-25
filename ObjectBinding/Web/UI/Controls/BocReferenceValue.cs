@@ -45,7 +45,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   // types
 
   /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocReferenceValue")]
   protected enum ResourceIdentifier
@@ -154,17 +157,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     
     _optionsMenu.ID = ID + "_Boc_OptionsMenu";
     Controls.Add (_optionsMenu);
-  }
-
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-
-    _dropDownList.SelectedIndexChanged += new EventHandler(DropDownList_SelectedIndexChanged);
     _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
   }
@@ -172,7 +164,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary>
   ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
   /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
@@ -184,16 +175,39 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
   }
 
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
   }
 
+  /// <summary>
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
+  ///   post backs.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
+  ///   </para><para>
+  ///     Evaluates the value of the <see cref="DropDownList"/>.
+  ///   </para>
+  ///   <note type="inheritinfo">
+  ///     Overrive this method to change the way a data change is detected of the value is read from the 
+  ///     <paramref name="postCollection"/>.
+  ///   </note>
+  /// </remarks>
+  /// <param name="postDataKey"> The key identifier for this control. </param>
+  /// <param name="postCollection"> The collection of all incoming name values.  </param>
+  /// <returns>
+  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
+  ///   otherwise <see langword="false"/>.
+  /// </returns>
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
@@ -217,25 +231,20 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return isDataChanged;
   }
 
+  /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
-  {
-    //  The data control's changed event is sufficient.
-  }
-
-  /// <summary>
-  ///   Raises this control's <see cref="SelectionChanged"/> event if the value was changed 
-  ///   through the <see cref="DropDownList"/>.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void DropDownList_SelectedIndexChanged (object sender, EventArgs e)
   {
     OnSelectionChanged (EventArgs.Empty);
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
-  /// <param name="eventArgument"> empty </param>
   void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
+  {
+    RaisePostBackEvent (eventArgument);
+  }
+
+  /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
+  protected virtual void RaisePostBackEvent (string eventArgument)
   {
     HandleCommand();
   }

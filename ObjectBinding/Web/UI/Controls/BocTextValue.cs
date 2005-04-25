@@ -51,7 +51,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   // types
 
   /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocTextValue")]
   protected enum ResourceIdentifier
@@ -104,19 +107,41 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    _textBox.TextChanged += new EventHandler(TextBox_TextChanged);
   }
 
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
   }
 
+  /// <summary>
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
+  ///   post backs.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
+  ///   </para><para>
+  ///     Evaluates the value of the <see cref="TextBox"/>.
+  ///   </para>
+  ///   <note type="inheritinfo">
+  ///     Overrive this method to change the way a data change is detected of the value is read from the 
+  ///     <paramref name="postCollection"/>.
+  ///   </note>
+  /// </remarks>
+  /// <param name="postDataKey"> The key identifier for this control. </param>
+  /// <param name="postCollection"> The collection of all incoming name values.  </param>
+  /// <returns>
+  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
+  ///   otherwise <see langword="false"/>.
+  /// </returns>
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -129,19 +154,13 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return isDataChanged;
   }
 
+  /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
-  {
-    //  The data control's changed event is sufficient.
-  }
-
-  private void TextBox_TextChanged (object sender, EventArgs e)
   {
     OnTextChanged (EventArgs.Empty);
   }
 
-  /// <summary>
-  /// Fires the <see cref="TextChanged"/> event.
-  /// </summary>
+  /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
   /// <param name="e"> Empty. </param>
   protected virtual void OnTextChanged (EventArgs e)
   {

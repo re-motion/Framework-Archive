@@ -39,16 +39,25 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   // types
 
-  /// <summary> A list of control wide resources. </summary>
-  /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
+  /// <summary> A list of control specific resources. </summary>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
+  /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocDateTimeValue")]
   protected enum ResourceIdentifier
   {
+    /// <summary> The validation error message displayed when no input is provided. </summary>
     RequiredErrorMessage,
+    /// <summary> The validation error message displayed when the input is incomplete. </summary>
     IncompleteErrorMessage,
+    /// <summary> The validation error message displayed when both the date and the time component invalid. </summary>
     InvalidDateAndTimeErrorMessage,
+    /// <summary> The validation error message displayed when the date component is invalid. </summary>
     InvalidDateErrorMessage,
+    /// <summary> The validation error message displayed when the time component is invalid. </summary>
     InvalidTimeErrorMessage,
   }
 
@@ -61,71 +70,44 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
 	// member fields
 
-  /// <summary>
-  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
-  ///   <see cref="SaveValue"/>.
-  /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The <see cref="TextBox"/> used in edit mode for the date component. </summary>
   private TextBox _dateTextBox;
-  /// <summary> The <see cref="TextBox"/> used in edit mode for the time component. </summary>
   private TextBox _timeTextBox;
-  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
-  /// <summary> The <see cref="Image"/> used in edit mode to enter the date using a date picker. </summary>
   private HyperLink _datePickerButton;
 
-  /// <summary> The <see cref="Style"/> applied the textboxes and the label. </summary>
   private Style _commonStyle;
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to both text boxes. </summary>
   private SingleRowTextBoxStyle _dateTimeTextBoxStyle;
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="DateTextBox"/>. </summary>
   private SingleRowTextBoxStyle _dateTextBoxStyle;
-  /// <summary> The <see cref="SingleRowTextBoxStyle"/> applied to the <see cref="TimeTextBox"/>. </summary>
   private SingleRowTextBoxStyle _timeTextBoxStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DatePickerButton"/>. </summary>
   private Style _datePickerButtonStyle;
 
-  /// <summary> The string displayed in the date text box. </summary>
   private string _internalDateValue = null;
-  /// <summary>  The string displayed in the time text box. </summary>
   private string _internalTimeValue = null;
   /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
   private NaDateTime _savedDateTimeValue = NaDateTime.Null;
 
-  /// <summary> The externally set <see cref="BocDateTimeValueType"/>. </summary>
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
-  /// <summary> The <see cref="BocDateTimeValueType"/> this control is actually displaying. </summary>
   private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
 
-  /// <summary> The width of the IFrame used to display the date picker. </summary>
   private Unit _datePickerPopupWidth = Unit.Point (c_defaultDatePickerLengthInPoints);
-  /// <summary> The height of the IFrame used to display the date picker. </summary>
   private Unit _datePickerPopupHeight = Unit.Point (c_defaultDatePickerLengthInPoints);
 
-  /// <summary> Flag that determines  whether to show the seconds.</summary>
   private bool _showSeconds = false;
-
-  /// <summary> 
-  ///   Flag that determines whether to provide an automatic maximun length for the text boxes.
-  /// </summary>
   private bool _provideMaxLength = true;
-
-  /// <summary> Flag that determines whether the client script is enabled. </summary>
   private bool _enableClientScript = true;
-
-  /// <summary> Flag that determines whether the client script will be rendered. </summary>
-  private bool _hasClientScript = false;
 
   private string _errorMessage;
   private ArrayList _validators;
 
+  /// <summary> Flag that determines whether the client script will be rendered. </summary>
+  private bool _hasClientScript = false;
+
   // construction and disposing
 
-  /// <summary> Simple constructor. </summary>
+  /// <summary> Initializes a new instance of the <see cref="BocDateTimeValue"/> class. </summary>
 	public BocDateTimeValue()
 	{
     _commonStyle = new Style();
@@ -143,6 +125,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
 	// methods and properties
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _dateTextBox.ID = ID + "_Boc_DateTextBox";
@@ -162,29 +145,30 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     Controls.Add (_label);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    _dateTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
-    _timeTextBox.TextChanged += new EventHandler (DateTimeTextBoxes_TextChanged);
   }
 
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
   }
 
+  /// <summary>
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
+  ///   post backs.
+  /// </summary>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     //  Date input field
@@ -227,31 +211,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return isDateChanged || isTimeChanged;
   }
 
+  /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    //  The data control's changed event is sufficient.
+    OnDateTimeChanged (EventArgs.Empty);
   }
 
-  /// <summary>
-  ///   Raises this control's <see cref="DateTimeChanged"/> event if the value was changed 
-  ///   through the text boxes.
-  /// </summary>
-  /// <param name="sender"> The source of the event. </param>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-  private void DateTimeTextBoxes_TextChanged (object sender, EventArgs e)
-  {
-    if (! _isDateTimeChangedRaised)
-    {
-      OnDateTimeChanged (EventArgs.Empty);
-      _isDateTimeChangedRaised = true;
-    }
-  }
-  bool _isDateTimeChangedRaised = false;
-
-  /// <summary>
-  /// Fires the <see cref="DateTimeChanged"/> event.
-  /// </summary>
-  /// <param name="e"> Empty. </param>
+  /// <summary> Fires the <see cref="DateTimeChanged"/> event. </summary>
+  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnDateTimeChanged (EventArgs e)
   {
     EventHandler eventHandler = (EventHandler) Events[s_dateTimeChangedEvent];
@@ -259,11 +226,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       eventHandler (this, e);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
+  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
+  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -274,13 +241,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       Page.RegisterRequiresPostBack (this);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
-  /// </param>
+  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
+  /// </remarks>
   protected override void Render (HtmlTextWriter writer)
   {
     //  Second call has practically no overhead
@@ -290,7 +254,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     base.Render (writer);
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
+  /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>
+  protected override void RenderChildren (HtmlTextWriter writer)
   {
     if (IsReadOnly)
     {
@@ -319,8 +284,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
       writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
       writer.AddStyleAttribute ("display", "inline");
-      writer.RenderBeginTag (HtmlTextWriterTag.Table);
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+      writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin table
+
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);  // Begin tr
 
       bool hasDateField =    ActualValueType == BocDateTimeValueType.DateTime
                           || ActualValueType == BocDateTimeValueType.Date
@@ -347,13 +313,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {
         dateTextBoxSize = "90%";
       }
+
       if (hasDateField)
       {
         if (_dateTextBoxStyle.Width.IsEmpty)
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, dateTextBoxSize);
         else
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _dateTextBoxStyle.Width.ToString());
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
 
         if (! isControlHeightEmpty && isDateTextBoxHeightEmpty)
           writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
@@ -361,16 +328,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         _dateTextBox.RenderControl (writer);  
       
-        writer.RenderEndTag();
+        writer.RenderEndTag(); // End td
       }
 
       if (hasDatePicker)
       {
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
         writer.AddStyleAttribute ("padding-left", "3pt");
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
         _datePickerButton.RenderControl (writer);  
-        writer.RenderEndTag();
+        writer.RenderEndTag(); // End td
       }
 
       if (hasTimeField)
@@ -381,7 +348,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _timeTextBoxStyle.Width.ToString());
         if (hasDateField)
           writer.AddStyleAttribute ("padding-left", "3pt");
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
 
         if (! isControlHeightEmpty && isTimeTextBoxHeightEmpty)
           writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
@@ -389,20 +356,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
         _timeTextBox.RenderControl (writer);  
       
-        writer.RenderEndTag();
+        writer.RenderEndTag(); // End td
       }
 
-    writer.RenderEndTag();
-    writer.RenderEndTag();
+      writer.RenderEndTag(); // End tr
+      writer.RenderEndTag(); // End table
     }
   }
 
-  /// <summary>
-  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -424,12 +386,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _timeTextBox.Text = _internalTimeValue;
   }
 
-  /// <summary>
-  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
-  /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[9];
@@ -447,15 +404,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return values;
   }
 
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -468,15 +418,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary>
-  ///   Writes the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -492,16 +435,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary>
-  ///   Generates a <see cref="BocDateTimeValueValidator"/>.
-  /// </summary>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly)
@@ -539,7 +480,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return validators;
   }
 
-  /// <summary> Prerenders the child controls. </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
   protected override void PreRenderChildControls()
   {
     bool isReadOnly = IsReadOnly;
@@ -556,9 +497,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
   
-  /// <summary>
-  ///   Prerenders the <see cref="Label"/>.
-  /// </summary>
+  /// <summary> Prerenders the <see cref="Label"/>. </summary>
   private void PreRenderReadOnlyValue()
   {
     if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
@@ -594,6 +533,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _label.ApplyStyle (_labelStyle);
   }
 
+  /// <summary> Prerenders the <see cref="DateTextBox"/>. </summary>
   private void PreRenderEditModeValueDate()
   {
     if (ProvideMaxLength)
@@ -607,6 +547,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _dateTextBoxStyle.ApplyStyle (_dateTextBox);
   }
 
+  /// <summary> Prerenders the <see cref="TimeTextBox"/>. </summary>
   private void PreRenderEditModeValueTime()
   {
     if (ProvideMaxLength)
@@ -620,6 +561,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _timeTextBoxStyle.ApplyStyle (_timeTextBox);
   }
 
+  /// <summary> Prerenders the date picker. </summary>
   private void PreRenderEditModeValueDatePicker()
   {
     DetermineClientScriptLevel();
@@ -734,14 +676,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return FormatDateTimeValue (dateValue, false);
   }
 
-  /// <summary> 
-  ///   Formats the <see cref="DateTime"/> value's date component according to the current culture.
-  /// </summary>
+  /// <summary> Formats the <see cref="DateTime"/> value's date component according to the current culture. </summary>
   /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
   /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
-  /// <returns> 
-  ///   A formatted string representing the <see cref="DateTime"/> value's date component. 
-  /// </returns>
+  /// <returns> A formatted string representing the <see cref="DateTime"/> value's date component. </returns>
   protected virtual string FormatDateValue (DateTime dateValue, bool isReadOnly)
   {
     isReadOnly = false;
@@ -758,26 +696,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> 
-  ///   Formats the <see cref="DateTime"/> value's date component according to the current culture.
-  /// </summary>
+  /// <summary> Formats the <see cref="DateTime"/> value's date component according to the current culture. </summary>
   /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
-  /// <returns> 
-  ///   A formatted string representing the <see cref="DateTime"/> value's date component. 
-  /// </returns>
+  /// <returns> A formatted string representing the <see cref="DateTime"/> value's date component. </returns>
   protected virtual string FormatDateValue (DateTime dateValue)
   {
     return FormatDateValue (dateValue, false);
   }
 
-  /// <summary> 
-  ///   Formats the <see cref="DateTime"/> value's time component according to the current culture.
-  /// </summary>
+  /// <summary> Formats the <see cref="DateTime"/> value's time component according to the current culture. </summary>
   /// <param name="timeValue"> The <see cref="DateTime"/> value to be formatted. </param>
   /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
-  /// <returns> 
-  ///   A formatted string representing the <see cref="DateTime"/> value's time component. 
-  /// </returns>
+  /// <returns>  A formatted string representing the <see cref="DateTime"/> value's time component. </returns>
   protected virtual string FormatTimeValue (DateTime timeValue, bool isReadOnly)
   {
     //  ignore Read-Only
@@ -794,13 +724,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> 
-  ///   Formats the <see cref="DateTime"/> value's time component according to the current culture.
-  /// </summary>
+  /// <summary> Formats the <see cref="DateTime"/> value's time component according to the current culture. </summary>
   /// <param name="timeValue"> The <see cref="DateTime"/> value to be formatted. </param>
-  /// <returns> 
-  ///   A formatted string representing the <see cref="DateTime"/> value's time component. 
-  /// </returns>
+  /// <returns> A formatted string representing the <see cref="DateTime"/> value's time component.  </returns>
   protected virtual string FormatTimeValue (DateTime timeValue)
   {
     return FormatTimeValue (timeValue, false);
@@ -811,7 +737,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   protected virtual int GetDateMaxLength()
   {
     string maxDate = new DateTime (2000, 12, 31).ToString ("d");
-    
     return maxDate.Length;
   }
 
@@ -904,16 +829,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
+  /// <summary> Gets or sets the current value. </summary>
   /// <value> 
-  ///   The value has the type specified in the <see cref="ActualValueType"/> property.
+  ///   The value has the type specified in the <see cref="ActualValueType"/> property. If the parsing fails,
+  ///   <see langword="null"/> is returned.
   /// </value>
-  /// <exception cref="FormatException">
-  ///   The value of the <see cref="InternalDateValue"/> and <see cref="InternalTimeValue"/> 
-  ///   properties cannot be converted to the specified <see cref="ActualValueType"/>.
-  /// </exception>
   [Browsable(false)]
   public new object Value
   {
@@ -1025,12 +945,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
     set { Value = value; }
   }
-  /// <summary> The string displayed in the date text box. </summary>
+
+  /// <summary> Gets or sets the string displayed in the <see cref="DateTextBox"/>. </summary>
   protected virtual string InternalDateValue
   {
     get{ return _internalDateValue; }
@@ -1043,7 +965,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> The string displayed in the time text box. </summary>
+  /// <summary> Gets or sets the string displayed in the <see cref="TimeTextBox"/>. </summary>
   protected virtual string InternalTimeValue
   {
     get{ return _internalTimeValue; }
@@ -1056,21 +978,21 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
+  /// <remarks> Returns the <see cref="DateTextBox"/> if the control is in edit-mode, otherwise the control itself. </remarks>
   public override Control TargetControl
   {
     get { return IsReadOnly ? (Control) this : _dateTextBox; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
   public override bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
   }
 
-  /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
-  /// </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
@@ -1083,28 +1005,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) and the Label 
-  ///   (read-only mode).
+  ///   Gets the style that you want to apply to the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/> 
+  ///   (edit mode) and the <see cref="Label"/> (read-only mode).
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Use the <see cref="DateTimeTextBoxStyle"/>, <see cref="DateTextBoxStyle"/>, 
-  ///     <see cref="TimeTextBoxStyle"/>, and <see cref="LabelStyle"/> to assign individual 
-  ///     style settings for the respective modes. 
-  ///   </para><para>
-  ///     Note that if you set one of the <c>Font</c> 
-  ///     attributes (Bold, Italic etc.) to <see langword="true"/>, this cannot be overridden 
-  ///     using <see cref="DateTimeTextBoxStyle"/>, <see cref="DateTextBoxStyle"/>, 
-  ///     <see cref="TimeTextBoxStyle"/>, and <see cref="LabelStyle"/> properties.
-  ///   </para><para>
-  ///     Note that if you set one of the <c>Width</c> attribute, that it will be applied to
-  ///     both the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/> as well as the 
-  ///     <see cref="Label"/> as is. If the control is bound to an
-  ///     <see cref="IBusinessObjectDateTimeProperty"/>, it will therefor show different 
-  ///     widths depending on whether it is in read-only mode or not. It is recommended to set 
-  ///     the width in the styles of the individual sub-controls instead.
-  ///   </para>
-  /// </remarks>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
   [Category("Style")]
   [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
   [NotifyParentProperty(true)]
@@ -1116,18 +1020,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary>
-  ///   The style that you want to apply to both the date and the time TextBoxes 
+  ///   Gets the style that you want to apply to both the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>
   ///   (edit mode) only.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     These style settings override the styles defined in <see cref="CommonStyle"/>.
-  ///   </para><para>
-  ///     Note that if you set one of the <c>Font</c> 
-  ///     attributes (Bold, Italic etc.) to <c>true</c>, this cannot be overridden using 
-  ///     <see cref="DateTimeTextBoxStyle"/> and <see cref="DateTextBoxStyle"/> properties.
-  ///   </para>
-  /// </remarks>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
   [Category("Style")]
   [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
   [NotifyParentProperty(true)]
@@ -1138,12 +1034,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _dateTimeTextBoxStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the date TextBox (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="DateTextBox"/> (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to only the date TextBox (edit mode) only.")]
   [NotifyParentProperty(true)]
@@ -1154,12 +1046,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _dateTextBoxStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the time TextBox (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="TimeTextBox"/> (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to only the time TextBox (edit mode) only.")]
   [NotifyParentProperty(true)]
@@ -1170,13 +1058,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _timeTextBoxStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the Label
-  ///   (read-only mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to the Label (read-only mode) only.")]
   [NotifyParentProperty(true)]
@@ -1187,12 +1070,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _labelStyle; }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the Button (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="DatePickerButton"/> (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to the Button (edit mode) only.")]
   [NotifyParentProperty(true)]
@@ -1203,7 +1082,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return _datePickerButtonStyle; }
   }
 
-  /// <summary> The width of the IFrame used to display the date picker. </summary>
+  /// <summary> Gets or sets the width of the IFrame used to display the date picker. </summary>
   [Category ("Appearance")]
   [Description("The width of the IFrame used to display the date picker.")]
   [DefaultValue (typeof (Unit), "150pt")]
@@ -1213,7 +1092,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _datePickerPopupWidth = value; }
   }
 
-  /// <summary> The height of the IFrame used to display the date picker. </summary>
+  /// <summary> Gets or sets the height of the IFrame used to display the date picker. </summary>
   [Category ("Appearance")]
   [Description("The height of the IFrame used to display the date picker.")]
   [DefaultValue (typeof (Unit), "150pt")]
@@ -1223,7 +1102,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _datePickerPopupHeight = value; }
   }
 
-  /// <summary> Flag that determines whether to display the seconds. </summary>
+  /// <summary> Gets or sets a flag that determines whether to display the seconds. </summary>
   /// <value> <see langword="true"/> to enable the seconds. </value>
   [Category ("Appearance")]
   [Description ("True to display the seconds. ")]
@@ -1234,7 +1113,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _showSeconds = value; }
   }
 
-  /// <summary> Flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
+  /// <summary> Gets or sets a flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
   /// <value> <see langword="true"/> to enable the maximum length. </value>
   [Category ("Behavior")]
   [Description (" True to automatically limit the maxmimum length of the date and time input fields. ")]
@@ -1245,8 +1124,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _provideMaxLength = value; }
   }
 
-  /// <summary> Flag that determines whether the client script is enabled. </summary>
-  /// <value> <see langref="true"/> to enable the client script. </value>
+  /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
+  /// <value> <see langword="true"/> to enable the client script. </value>
   [Category ("Behavior")]
   [Description (" True to enable the client script for the pop-up calendar. ")]
   [DefaultValue (true)]
@@ -1256,7 +1135,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _enableClientScript = value; }
   }
 
-  /// <summary> The <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
+  /// <summary> Gets or sets the <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
   [Description("Gets or sets a fixed value type.")]
   [Category ("Data")]
   [DefaultValue (BocDateTimeValueType.Undefined)]
@@ -1281,7 +1160,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> The <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
+  /// <summary> Gets the <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
   [Browsable (false)]
   public BocDateTimeValueType ActualValueType
   {
@@ -1328,9 +1207,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary>
-  ///   The contents of the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>, 
+  ///   Gets the contents of the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>, 
   ///   seperated by a newline character.
   /// </summary>
+  /// <remarks> This property is used for validation. </remarks>
   [Browsable (false)]
   public string ValidationValue
   {
@@ -1371,10 +1251,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 }
 
+/// <summary>
+///   A list possible data types for the <see cref="BocDateTimeValue"/>
+/// </summary>
 public enum BocDateTimeValueType
 {
+  /// <summary> No formatting applied. </summary>
   Undefined,
+  /// <summary> The value is displayed as a date and time value. </summary>
   DateTime,
+  /// <summary> Only the date component is displayed. </summary>
   Date
 }
 
