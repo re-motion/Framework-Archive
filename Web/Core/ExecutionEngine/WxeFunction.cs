@@ -151,7 +151,7 @@ public abstract class WxeFunction: WxeStepList
       _exception = e;
     }
 
-    if (_exception != null &&  ParentStep != null)
+    if (_exception == null &&  ParentStep != null)
       ReturnParametersToCaller();
 
     s_log.Debug ("Ending Execution of " + this.GetType().FullName + ".");
