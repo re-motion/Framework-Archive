@@ -147,7 +147,7 @@ public class BusinessObjectReferenceDataSourceControl:
   /// </summary>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   /// <remarks> 
-  ///   Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> evaluates 
   ///   <see langword="false"/>. 
   /// </remarks>
   public override void SaveValue (bool interim) // inherited from control interface
@@ -162,7 +162,7 @@ public class BusinessObjectReferenceDataSourceControl:
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
-  ///   Actual saving only occurs if <see cref="BusinessObjectBoundWebControl.IsReadOnly"/> evaluates 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> evaluates 
   ///  <see langword="false"/>. 
   /// </remarks>
   public virtual void SaveValues (bool interim) // inherited data source interface
