@@ -77,8 +77,9 @@ public class ValidationStateViewer : WebControl, IControl
     ArgumentUtility.CheckNotNull ("parent", parent);
 
     //  Add all FormGridManager instances
-    foreach (Control childControl in parent.Controls)
+    for (int i = 0; i < parent.Controls.Count; i++)
     {
+      Control childControl = (Control) parent.Controls[i];
       FormGridManager formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
@@ -129,8 +130,9 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
     bool isPageValid = true;
-    foreach (IValidator validator in Page.Validators)
+    for (int i = 0; i < Page.Validators.Count; i++)
     {
+      IValidator validator = (IValidator) Page.Validators[i];
       if (! validator.IsValid)
       {
         isPageValid = false;
@@ -164,12 +166,14 @@ public class ValidationStateViewer : WebControl, IControl
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
-    foreach (FormGridManager formGridManager in _formGridManagers)
+    for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
+      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers];
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
       //  Get validation messages
-      foreach (ValidationError validationError in validationErrors)
+      for (int idxErrors = 0; idxErrors < validationErrors.Length; idxErrors++)
       {
+        ValidationError validationError = (ValidationError) validationErrors[idxErrors];
         if (validationError == null)
           continue;
 
@@ -179,8 +183,9 @@ public class ValidationStateViewer : WebControl, IControl
         {
           writer.AddStyleAttribute ("padding-right", "3pt");
           writer.RenderBeginTag (HtmlTextWriterTag.Td);
-          foreach (Control control in validationError.Labels)
+          for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
+            Control control = (Control) validationError.Labels[idxErrorLabels];
             if (control is SmartLabel)
               writer.Write (((SmartLabel) control).GetText());
             else if (control is FormGridLabel)
