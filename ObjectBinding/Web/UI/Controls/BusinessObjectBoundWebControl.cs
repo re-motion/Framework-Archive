@@ -238,7 +238,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     } 
   }
 
-  /// <summary> Overrides <see cref="WebControl.Visible"/>. </summary>
+  /// <summary> Overrides <see cref="Control.Visible"/>. </summary>
   /// <value> 
   ///   <para>
   ///     The <b>set accessor</b> passes the value to the base class's <b>Visible</b> property.
@@ -417,13 +417,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return ! isList;
   }
 
-  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
-  /// <returns> An (empty) array of <see cref="BaseValidator"/> controls. </returns>
-  public virtual BaseValidator[] CreateValidators()
-  {
-    return new BaseValidator[0];
-  }
-
   /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
   /// <param name="localResourcesType"> 
   ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
@@ -457,11 +450,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable(false)]
   public virtual string DisplayName 
   {
-    get 
-    {
-      //Binding.EvaluateBinding();
-      return (Property != null) ? Property.DisplayName : null;
-    }
+    get { return (Property != null) ? Property.DisplayName : null; }
   }
 
   /// <summary> Specifies the relative URL to the help text for this control. </summary>
@@ -486,7 +475,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   <see cref="TargetControl"/>.
   /// </summary>
   /// <value>
-  ///   <see langword="true"/> unsless the <see cref="TargetContorl"/> is a <see cref="DropDownList"/> or an 
+  ///   <see langword="true"/> unsless the <see cref="TargetControl"/> is a <see cref="DropDownList"/> or an 
   ///   <see cref="System.Web.UI.HtmlControls.HtmlSelect"/> control.
   /// </value>
   [Browsable(false)]
@@ -506,6 +495,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   bool ISmartControl.IsRequired 
   {
     get { return false; }
+  }
+
+  /// <exclude/>
+  BaseValidator[] ISmartControl.CreateValidators()
+  {
+    return new BaseValidator[0];
   }
 
 //  /// <summary>

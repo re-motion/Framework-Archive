@@ -180,7 +180,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         Value = DataSource.BusinessObject.GetProperty (Property);
@@ -209,7 +208,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }

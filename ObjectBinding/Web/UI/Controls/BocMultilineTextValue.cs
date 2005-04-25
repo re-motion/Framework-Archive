@@ -266,7 +266,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -288,7 +287,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
         DataSource.BusinessObject.SetProperty (Property, Value);
     }

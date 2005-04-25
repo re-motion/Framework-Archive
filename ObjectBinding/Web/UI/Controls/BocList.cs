@@ -2397,7 +2397,6 @@ public class BocList:
 
   public override void LoadValue (bool interim)
   {
-    //Binding.EvaluateBinding();
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
       ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
@@ -2418,7 +2417,7 @@ public class BocList:
   {
     if (! interim)
       EndRowEditMode (true);
-    //Binding.EvaluateBinding();
+
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       DataSource.BusinessObject.SetProperty (Property, Value);
   }

@@ -49,7 +49,9 @@ public class BusinessObjectBinding
     get { return _control; }
   }
 
-  /// <summary> Gets or sets the <see cref="IBusinessObjectDataSource"/> for this <see cref="BusinessOBjectBinding"/>. </summary>
+  /// <summary> 
+  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> for this <see cref="BusinessObjectBinding"/>.
+  /// </summary>
   /// <remarks>
   ///   Unless an <b>DataSource</b> is set, <see cref="DataSourceControl"/> is used to identify the data source.
   /// </remarks>
@@ -258,11 +260,6 @@ public class BusinessObjectBinding
   ///   Register for this event to execute code updating the <see cref="Control"/>'s state for the new binding.
   /// </remarks>
   public event EventHandler BindingChanged;
-
-  [Obsolete]
-  public void EvaluateBinding()
-  {
-  }
 }
 
 }

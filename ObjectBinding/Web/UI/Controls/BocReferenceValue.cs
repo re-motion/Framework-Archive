@@ -396,12 +396,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   {
     if (! interim)
     {
-      //Binding.EvaluateBinding();
-      
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        
         _isDirty = false;
       }
     }

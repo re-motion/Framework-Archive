@@ -24,7 +24,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See <see cref="IBusinessObjectBoundControl.SaveValue"/> for a description of the data binding process.
+///     See <see cref="IBusinessObjectBoundModifiableControl.SaveValue"/> for a description of the data binding 
+///     process.
 ///   </para><para>
 ///     See <see cref="BusinessObjectBoundModifiableWebControl"/> for the abstract default implementation.
 ///   </para>
@@ -124,21 +125,22 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///       </item>
   ///       <item>
   ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
-  ///         <see cref="DataSource.Mode">DataSource.Mode</see> is set to <see cref="DataSourceMode.Search"/>, 
-  ///         <see langword="false"/> is returned.
+  ///         <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> is set to 
+  ///         <see cref="DataSourceMode.Search"/>, <see langword="false"/> is returned.
   ///       </item>
   ///       <item>
-  ///         If the <see cref="DataSource"/> or the <see cref="Property"/> is <see langword="null"/>,
-  ///         <see langword="false"/> is returned.
+  ///         If the <see cref="BusinessObjectBoundWebControl.DataSource"/> or the 
+  ///         <see cref="BusinessObjectBoundWebControl.Property"/> is <see langword="null"/>, <see langword="false"/> 
+  ///         is returned.
   ///       </item>
   ///       <item>
-  ///         If the <see cref="DataSource.BusinessObject">DataSource.BusinessObject</see> is <see langword="null"/>
-  ///         and the control is not in <b>Design Mode</b>, <see langword="true"/> is returned.
+  ///         If the <see cref="IBusinessObjectDataSource.BusinessObject">DataSource.BusinessObject</see> is 
+  ///         <see langword="null"/> and the control is not in <b>Design Mode</b>, <see langword="true"/> is returned.
   ///       </item>
   ///       <item>
   ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
-  ///         <see cref="DataSource.Mode">DataSource.Mode</see> is set to <see cref="DataSourceMode.Read"/>, 
-  ///         <see langword="true"/> is returned.
+  ///         <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> is set to 
+  ///         <see cref="DataSourceMode.Read"/>, <see langword="true"/> is returned.
   ///       </item>
   ///       <item>Otherwise, <see langword="Property.IsReadOnly"/> is evaluated and returned.</item>
   ///     </list>
@@ -151,7 +153,6 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     {
       if (_readOnly != NaBooleanEnum.Undefined)
         return _readOnly == NaBooleanEnum.True;
-      //Binding.EvaluateBinding();
       if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
         return false;
       if (Property == null || DataSource == null)
@@ -180,8 +181,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///         the value of <see cref="Required"/> is returned.
   ///       </item>
   ///       <item>
-  ///         If the <see cref="Property"/> contains a property defintion with the
-  ///         <see cref="IBusinessObjectProperty.Required"/> flag set, <see langword="true"/> is returned. 
+  ///         If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property defintion with the
+  ///         <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
   ///       </item>
   ///       <item>Otherwise, <see langword="false"/> is returned.</item>
   ///     </list>
@@ -196,13 +197,19 @@ public abstract class BusinessObjectBoundModifiableWebControl:
         return false;
       if (_required != NaBooleanEnum.Undefined)
         return _required == NaBooleanEnum.True;
-      //Binding.EvaluateBinding();
       if (Property != null)
         return (bool) Property.IsRequired;
       return false;
     }
   }
  
+  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
+  /// <returns> An (empty) array of <see cref="BaseValidator"/> controls. </returns>
+  public virtual BaseValidator[] CreateValidators()
+  {
+    return new BaseValidator[0];
+  }
+
   /// <summary> Registers a validator that references this control. </summary>
   /// <remarks> 
   ///   <para>
