@@ -263,8 +263,9 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodesViewState"/>. </summary>
   private void LoadNodesViewStateRecursive (Triplet[] nodesViewState, WebTreeNodeCollection nodes)
   {
-    foreach (Triplet nodeViewState in nodesViewState)
+    for (int i = 0; i < nodesViewState.Length; i++)
     {
+      Triplet nodeViewState = (Triplet) nodesViewState[i];
       string nodeID = (string) nodeViewState.First;
       WebTreeNode node = nodes.Find (nodeID);
       if (node != null)
@@ -507,8 +508,9 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     pathSegments = path.Split (c_pathSeparator);
     WebTreeNode currentNode = null;
     WebTreeNodeCollection currentNodes = _nodes;
-    foreach (string nodeID in pathSegments)
+    for (int i = 0; i < pathSegments.Length; i++)
     {
+      string nodeID = pathSegments[i];
       WebTreeNode node = currentNodes.Find (nodeID);
       if (node == null)
         return currentNode;
