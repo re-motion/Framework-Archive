@@ -136,6 +136,9 @@ public class ReflectionPropertyFactory
     if (NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType) || propertyInfo.PropertyType == typeof (string))
       return false;
 
+    if (!propertyInfo.PropertyType.IsValueType)
+      return false;
+
     return true;
   }
 
