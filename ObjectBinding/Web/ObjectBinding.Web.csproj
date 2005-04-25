@@ -393,16 +393,15 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\ReadMe.txt"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "Doc\include\NamespaceDoc.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Controls\BocBooleanValue.xml"
                     BuildAction = "Content"
                 />
                 <File
