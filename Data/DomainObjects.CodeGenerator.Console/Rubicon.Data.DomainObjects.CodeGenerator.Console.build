@@ -5,6 +5,7 @@
     <csc  target="exe"
           output="${project.builddir}/${project.output}.${project.extension}"
           nowarn="1591"
+          doc="${project.doc}"
           debug="${build.debug}"
           define="${build.csc.define}">
       <sources failonempty="true">
