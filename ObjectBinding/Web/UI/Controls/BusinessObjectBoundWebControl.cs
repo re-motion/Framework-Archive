@@ -36,6 +36,21 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
 public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl
 {
+  /// <summary>
+  ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
+  ///   <see cref="IBusinessObjectDataSource"/> this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
+  /// </summary>
+  /// <value> 
+  ///   A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current
+  ///   naming container.
+  /// </value>
+  /// <remarks>
+  ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls
+  ///   collection.
+  ///   <note type="inheritinfo">
+  ///     Apply an <see cref="BusinessObjectDataSourceControlConverter"/> when implementing the property. 
+  ///   </note>
+  /// </remarks>
   string DataSourceControl { get; set; }
 }
 
@@ -43,6 +58,9 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 ///   <b>BusinessObjectBoundWebControl</b> is the abstract default implementation of 
 ///   <see cref="IBusinessObjectBoundWebControl"/>.
 /// </summary>
+/// <remarks>
+///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
+/// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
 [Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
@@ -53,6 +71,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this
   ///   <see cref="BusinessObjectBoundWebControl"/>.
   /// </summary>
+  /// <value> The <see cref="BusinessObjectBinding"/> instance used to manage this control's binding. </value>
   [Browsable(false)]
   public BusinessObjectBinding Binding
   {
@@ -112,9 +131,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current
   ///   naming container.
   /// </value>
-  /// <remarks>
-  ///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
-  /// </remarks>
   [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
@@ -155,7 +171,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   private BusinessObjectBinding _binding;
+  /// <summary> Used by the <see cref="EnsureChildControlsPreRendered"/> method. </summary>
   private bool _childControlsPreRendered = false;
+  /// <summary> Set or cleared depending on <see cref="HasValidBinding"/> during <see cref="OnLoad"/>. </summary>
   bool _hasVisibleBinding = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
@@ -197,7 +215,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <value> 
   ///   <list type="bullet">
   ///     <item>
-  ///       <see langword="true"/> if <see cref="DataSource"/> or <see cref="Property"/> is <see langword="null"/>. 
+  ///       <see langword="true"/> if the <see cref="DataSource"/> or the <see cref="Property"/> is 
+  ///       <see langword="null"/>. 
   ///     </item>
   ///     <item>
   ///       The result of the 
@@ -225,7 +244,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///     The <b>set accessor</b> passes the value to the base class's <b>Visible</b> property.
   ///   </para><para>
   ///     The <b>get accessor</b> ANDs the base class's <b>Visible</b> setting with the value of the 
-  ///     <see cref="HasValidBinding"/> property during <see cref="OnLoad"/>.
+  ///     <see cref="HasValidBinding"/> property cached during <see cref="OnLoad"/>.
   ///   </para>
   /// </value>
   /// <remarks>
@@ -263,7 +282,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   protected abstract object ValueImplementation { get; set; }
 
-  /// <summary> Overrides <see cref="Control.Visible"/>. </summary>
+  /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
   /// <remarks>
   ///   <note type="inheritinfo">
   ///     Override this method and execute <see cref="EnsureChildControlsPreRendered"/>.
@@ -277,8 +296,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary> 
-  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation or
-  ///   on every invocation while the control is in <b>DesignMode</b>.
+  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation during <c>Run Time</c> or
+  ///   on every invocation while the control is in <b>Design Mode</b>.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -304,11 +323,15 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <remarks>
   ///   Child controls that do not need to be created before handling post data can be created
   ///   in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
+  ///   <note>
+  ///     This method will be executed multiple times during the control's lifecycle while it is in <c>Design Mode</c>.
+  ///   </note>
   /// </remarks>
-  protected virtual void PreRenderChildControls ()
+  protected virtual void PreRenderChildControls()
   {
   }
 
+  /// <summary> Overrides <see cref="Control.Controls"/> and calls <see cref="Control.EnsureChildControls"/>. </summary>
   public override ControlCollection Controls
   {
     get
@@ -318,13 +341,28 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
+  /// <summary>
+  ///   Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.
+  /// </summary>
+  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
+  /// <returns>
+  ///   <list type="bullet">
+  ///     <item>
+  ///       <see langword="true"/> is <see cref="SupportedPropertyInterfaces"/> is null.
+  ///     </item>
+  ///     <item>
+  ///       <see langword="false"/> if the <see cref="DataSource"/> is in <see cref="DataSourceMode.Search"/> mode.
+  ///     </item>
+  ///     <item>Otherwise, <see langword="IsPropertyInterfaceSupported"/> is evaluated and returned as result.</item>
+  ///   </list>
+  /// </returns>
   public virtual bool SupportsProperty (IBusinessObjectProperty property)
   {
     if (SupportedPropertyInterfaces == null)
       return true;
 
-    bool searchMode = DataSource != null && DataSource.Mode == DataSourceMode.Search;
-    if (! searchMode && ! SupportsPropertyMultiplicity (property.IsList))
+    bool isSearchMode = DataSource != null && DataSource.Mode == DataSourceMode.Search;
+    if (! isSearchMode && ! SupportsPropertyMultiplicity (property.IsList))
     {
       return false;
     }
@@ -332,6 +370,18 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (property, SupportedPropertyInterfaces);
   }
 
+  /// <summary>
+  ///   Tests whether the <paramref name="property"/>'s type is part of the 
+  ///   <paramref name="supportedPropertyInterfaces"/> array.
+  /// </summary>
+  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
+  /// <param name="supportedPropertyInterfaces"> 
+  ///   The list of interfaces to test the <paramref name="property"/> against. 
+  /// </param>
+  /// <returns> 
+  ///   <see langword="true"/> if the <paramref name="property"/>'s type is found in the 
+  ///   <paramref name="supportedPropertyInterfaces"/> array. 
+  /// </returns>
   public static bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
   {
     bool isSupportedPropertyInterface = false;
@@ -347,34 +397,28 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   Gets the interfaces derived from IBusinessObjectProperty that this control supports, 
+  ///   Gets the interfaces derived from <see cref="IBusinessObjectProperty"/> supported by this control, 
   ///   or <see langword="null"/> if no restrictions are made.
   /// </summary>
-  /// <remarks>
-  ///   Used by <see cref="SupportsProperty"/>.
-  /// </remarks>
+  /// <value> <see langword="null"/> in the default implementation. </value>
+  /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
   [Browsable(false)]
   protected virtual Type[] SupportedPropertyInterfaces 
   { 
     get { return null; }
   }
 
-  /// <summary>
-  ///   Indicates whether properties with the specified multiplicity are supported.
-  /// </summary>
-  /// <remarks>
-  ///   Used by <see cref="SupportsProperty"/>.
-  /// </remarks>
+  /// <summary> Indicates whether properties with the specified multiplicity are supported. </summary>
+  /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
   /// <param name="isList"> True if the property is a list property. </param>
-  /// <returns>
-  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
-  ///   supported.
-  /// </returns>
+  /// <returns> <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is supported. </returns>
   protected virtual bool SupportsPropertyMultiplicity (bool isList)
   {
     return ! isList;
   }
 
+  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
+  /// <returns> An (empty) array of <see cref="BaseValidator"/> controls. </returns>
   public virtual BaseValidator[] CreateValidators()
   {
     return new BaseValidator[0];
@@ -383,7 +427,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
   /// <param name="localResourcesType"> 
   ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
-  ///   Typically the an enum or the derived class it self.
+  ///   Typically an <b>enum</b> or the derived class itself.
   /// </param>
   protected IResourceManager GetResourceManager (Type localResourcesType)
   {
@@ -408,6 +452,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return _cachedResourceManager;
   }
 
+  /// <summary> Gets the text to be written into the label for this control. </summary>
+  /// <value> <see langword="null"/> for the default implementation. </value>
   [Browsable(false)]
   public virtual string DisplayName 
   {
@@ -418,31 +464,42 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
+  /// <summary> Specifies the relative URL to the help text for this control. </summary>
   [Browsable(false)]
   public virtual string HelpUrl
   {
     get { return null; }
   }
 
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
+  /// </summary>
+  /// <value> This instance for the default implementation. </value>
   [Browsable(false)]
   public virtual Control TargetControl
   {
     get { return this; }
   }
 
+  /// <summary>
+  ///   If <b>UseLabel</b> is <see langword="true"/>, it is valid to generate HTML &lt;label&gt; tags referencing 
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
+  /// <value>
+  ///   <see langword="true"/> unsless the <see cref="TargetContorl"/> is a <see cref="DropDownList"/> or an 
+  ///   <see cref="System.Web.UI.HtmlControls.HtmlSelect"/> control.
+  /// </value>
   [Browsable(false)]
   public virtual bool UseLabel
   {
     get { return ! (TargetControl is DropDownList || TargetControl is System.Web.UI.HtmlControls.HtmlSelect); }
   }
 
+  /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
   [Browsable (false)]
   protected bool IsDesignMode
   {
-    get
-    { 
-      return ControlHelper.IsDesignMode (this, Context);
-    }
+    get { return ControlHelper.IsDesignMode (this, Context); }
   }
 
   /// <exclude/>
