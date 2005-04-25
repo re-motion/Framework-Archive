@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<BocBooleanValue>
+  <Class>
+    <remarks>
+      
+      <h4 class="dtH4">Supported Data Types</h4>
+      <para>
+        The control's <see cref="Value"/> can be assigned <see cref="Boolean"/> or <see cref="NaBoolean"/> values
+        and <see langword="null"/>. 
+      </para><para>
+        The control's <see cref="Property"/> supports the <see cref="IBusinessObjectBooleanProperty"/>.
+      </para>
+      
+      <h4 class="dtH4">Usage Notes</h4>      
+      <para>
+        Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
+        <b>BocBooleanValue</b>.
+      </para><para>
+        The resources required by this control are defined by the <see cref="ResourceIdentifier"/> enum.
+      </para><para>
+        See the <see cref="CreateValidators"/> method for the validators provided by this control.        
+      </para><para>
+        If <see cref="IBusinessObjectBoundControl.DataSource"/> and 
+        <see cref="IBusinessObjectBoundControl.PropertyIdentifier"/> properties are not set, the 
+        control is unbound. The <see cref="Value"/> property must be accessed programmatically to display the 
+        current value.
+      </para>
+      
+      <h4 class="dtH4">Inner Workings</h4>
+      <para>
+        The control is displayed using a <see cref="System.Web.UI.WebControls.HyperLink"/> encapsulating an 
+        <see cref="System.Web.UI.WebControls.Image"/> to simulate a check box. In read-only mode the <b>Href</b>
+        property is set to emtpy, disabling the hyperlink. It also offers a 
+        <see cref="System.Web.UI.WebControls.Label"/> containing the string representation of the current value,
+        rendered next to the image. A <see cref="T:HiddenField"/> control is used for 
+        posting the value back to the server. 
+      </para><para>
+        Use the <see cref="HyperLink"/>, <see cref="Image"/>, <see cref="Label"/>, and <see cref="HiddenField"/> 
+        properties to access these controls directly.
+      </para><para>
+        The control uses the view state to cache the value between post backs. If the control is data bound,
+        a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
+        value back into the data source.
+      </para>
+      
+    </remarks>
+  </Class>
+  <LoadPostData>
+    <remarks>
+      <para>
+        Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
+      </para><para>
+        Evaluates the value of the <see cref="HiddenField"/>.
+      </para>
+      <note type="inheritinfo">
+        Overrive this method to change the way a data change is detected when the value is read from the 
+        <paramref name="postCollection"/>.
+      </note>
+    </remarks>
+    <param name="postDataKey"> The key identifier for this control. </param>
+    <param name="postCollection"> The collection of all incoming name values.  </param>
+    <returns>
+      <see langword="true"/> if the server control's state changes as a result of the post back; 
+      otherwise <see langword="false"/>.
+    </returns>
+  </LoadPostData>
+  <LoadValue>
+    <remarks>
+      <para>
+        Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para>
+    </remarks>
+  </LoadValue>
+  <SaveValue>
+    <remarks>
+      <para>
+        Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/> and the control's 
+        <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para>
+    </remarks>
+  </SaveValue>
+  <CreateValidators>
+    <remarks>
+      Generates a <see cref="CompareValidator"/> checking that the selected item is not the null-item if the 
+      control is in edit-mode and input is required.
+    </remarks>
+  </CreateValidators>
+</BocBooleanValue>
