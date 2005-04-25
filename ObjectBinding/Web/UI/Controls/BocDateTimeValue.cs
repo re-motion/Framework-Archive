@@ -573,14 +573,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
       if (internalValue != null)
       {
-        DateTime dateTime = (DateTime)internalValue;
+        DateTime dateTime = (DateTime) internalValue;
 
         if (ActualValueType == BocDateTimeValueType.DateTime)
           _label.Text = FormatDateTimeValue (dateTime, true);
         else if (ActualValueType == BocDateTimeValueType.Date)
           _label.Text = FormatDateValue (dateTime, true);
         else
-          _label.Text = "&nbsp;";
+          _label.Text = dateTime.ToString();
       }
       else
       {

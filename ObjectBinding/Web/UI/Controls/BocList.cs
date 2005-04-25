@@ -3780,8 +3780,9 @@ public class BocList:
   public int[] GetSelectedRows()
   {
     ArrayList selectedRows = new ArrayList();
-    foreach (DictionaryEntry entry in _selectorControlCheckedState)
+    for (int i = 0; i < _selectorControlCheckedState.Count; i++)
     {
+      DictionaryEntry entry = (DictionaryEntry) _selectorControlCheckedState[i];
       int rowIndex = (int) entry.Key;
       if (rowIndex == c_titleRowIndex)
         continue;
