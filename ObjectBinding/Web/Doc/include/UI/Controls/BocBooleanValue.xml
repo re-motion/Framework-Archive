@@ -42,6 +42,31 @@
         a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
         value back into the data source.
       </para>
+      <list type="table">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only
+          </term>
+          <description>
+            Renders the image and the optional description according to the <see cref="Value"/>'s 
+            <see langword="true"/>, <see langword="false"/>, or <b>null</b> value.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode
+          </term>
+          <description>
+            Renders the image and the optional description according to the <see cref="Value"/>'s current
+            <see langword="true"/>, <see langword="false"/>, or <b>null</b> value. Also activates the
+            client-side script for switching between the values on the client side.
+          </description>
+        </item>
+      </list>
       
     </remarks>
   </Class>

@@ -20,9 +20,7 @@ using Rubicon.Globalization;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   This control can be used to display or edit a tri-state value (true, false, and undefined).
-/// </summary>
+/// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
 /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
