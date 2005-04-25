@@ -148,12 +148,17 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     base.OnLoad (e);
   }
 
-  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    //  The data control's changed event is sufficient.
+    return LoadPostData (postDataKey, postCollection);
   }
 
-  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    RaisePostDataChangedEvent();
+  }
+
+  protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID);
     bool isDataChanged = false;
@@ -174,6 +179,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       _isDirty = true;
     }
     return isDataChanged;
+  }
+
+  protected virtual void RaisePostDataChangedEvent()
+  {
+    //  The data control's changed event is sufficient.
   }
 
   /// <summary>
