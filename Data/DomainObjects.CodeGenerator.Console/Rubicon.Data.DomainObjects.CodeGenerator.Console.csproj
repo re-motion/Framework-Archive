@@ -131,11 +131,11 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "Doc\DOGen_ReadMe.txt"
+                    RelPath = "Doc\howToPerformATest.txt"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\howToPerformATest.txt"
+                    RelPath = "Doc\ReadMe_DOGen.txt"
                     BuildAction = "Content"
                 />
             </Include>
