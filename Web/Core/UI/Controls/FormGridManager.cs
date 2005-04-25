@@ -121,8 +121,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       ArrayList validationErrorList = new ArrayList();
 
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (row.Type == FormGridRowType.DataRow)
           validationErrorList.AddRange(row.ValidationErrors);
       }
@@ -136,8 +137,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
     public virtual bool HasValidationErrors()
     {
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.ValidationErrors.Length > 0)
         {
@@ -154,8 +156,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
     public virtual bool HasValidationMarkers()
     {
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (    row.Type == FormGridRowType.DataRow 
             &&  row.ValidationMarker != null)
         {
@@ -172,8 +175,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
     public virtual bool HasRequiredMarkers()
     {
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.RequiredMarker != null)
         {
@@ -188,8 +192,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
     public virtual bool HasHelpProviders()
     {
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.HelpProvider != null)
         {
@@ -203,8 +208,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary> Build the ID collection for this form grid. </summary>
     public virtual void BuildIDCollection()
     {
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
+      {
+        FormGridRow row = (FormGridRow)_rows[i];
         row.BuildIDCollection();
+      }
     }
 
     /// <summary>
@@ -216,8 +224,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       if (id == null || id == string.Empty)
         return null;
 
-      foreach (FormGridRow row in _rows)
+      for (int i = 0; i < _rows.Count; i++)
       {
+        FormGridRow row = (FormGridRow)_rows[i];
         if (row.ContainsControlWithID (id))
           return row;
       }
@@ -245,9 +254,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().FullName + "' on page '" + _table.Page.ToString() + "'.");
 
         //  append html table rows
-        foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
+        for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
+        {
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
           _table.Rows.Add (newHtmlTableRow);
-        
+        }
         //  append form grid row
         Rows.Add (newFormGridRow);
       }
@@ -273,8 +284,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         }
 
         //  Insert the new html table rows
-        foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
+        for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
         {
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
           _table.Rows.Insert (idxHtmlTableRow, newHtmlTableRow);
           idxHtmlTableRow++;
         }
@@ -303,8 +315,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         }
 
         //  Insert the new html table rows
-        foreach (HtmlTableRow newHtmlTableRow in newFormGridRow.HtmlTableRows)
+        for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
         {
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
           _table.Rows.Insert (idxHtmlTableRow, newHtmlTableRow);
           idxHtmlTableRow++;
         }
@@ -364,11 +377,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
       _ownerFormGrid = ownerFormGrid;
 
-      for (int index = 0; index < formGridRows.Length; index++)
+      for (int i = 0; i < formGridRows.Length; i++)
       {
-        if (formGridRows[index] == null)
-          throw new ArgumentNullException ("formGridRows[" + index + "]");
-        formGridRows[index]._formGrid = _ownerFormGrid;
+        if (formGridRows[i] == null)
+          throw new ArgumentNullException ("formGridRows[" + i + "]");
+        formGridRows[i]._formGrid = _ownerFormGrid;
       }
 
       InnerList.AddRange (formGridRows);
@@ -602,12 +615,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       //  Assume an average of 2 controls per cell
       _controls = new Hashtable (2 * _htmlTableRows.Count * _htmlTableRows[0].Cells.Count);
 
-      foreach (HtmlTableRow row in _htmlTableRows)
+      for (int idxRows = 0; idxRows < _htmlTableRows.Count; idxRows++)
       {
-        foreach (HtmlTableCell cell in row.Cells)
+        HtmlTableRow row = (HtmlTableRow) _htmlTableRows[idxRows];
+        for (int idxCells = 0; idxCells < row.Cells.Count; idxCells++)
         {
-          foreach (Control control in cell.Controls)
+          HtmlTableCell cell = (HtmlTableCell) row.Cells[idxCells];
+          for (int idxControls = 0; idxControls < cell.Controls.Count; idxControls++)
           {
+            Control control = (Control) cell.Controls[idxControls];
             if (control.ID != null && control.ID != string.Empty)
               _controls[control.ID] = control;
           }
@@ -665,8 +681,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       _visible = false;
 
-      foreach (HtmlTableRow row in _htmlTableRows)
+      for (int i = 0; i < _htmlTableRows.Count; i++)
+      {
+        HtmlTableRow row = (HtmlTableRow) _htmlTableRows[i];
         row.Visible = false;
+      }
     }
 
     /// <summary>
@@ -677,8 +696,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       _visible = true;
 
-      foreach (HtmlTableRow row in _htmlTableRows)
+      for (int i = 0; i < _htmlTableRows.Count; i++)
+      {
+        HtmlTableRow row = (HtmlTableRow) _htmlTableRows[i];
         row.Visible = true;
+      }
     }
 
     /// <summary>
@@ -1012,7 +1034,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     bool isValid = true;
     foreach (FormGrid formGrid in _formGrids.Values)
       isValid &= ValidateFormGrid (formGrid);
-
     return isValid;
   }
 
@@ -1025,8 +1046,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ArrayList validationErrorList = new ArrayList();
 
     foreach (FormGrid formGrid in _formGrids.Values)
-        validationErrorList.AddRange(formGrid.GetValidationErrors());
-
+      validationErrorList.AddRange (formGrid.GetValidationErrors());
+    
     return (ValidationError[])validationErrorList.ToArray (typeof (ValidationError));
   }
 
@@ -1286,7 +1307,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       foreach (FormGrid formGrid in _formGrids.Values)
       {
         object viewState = formGridViewStates[formGrid.Table.UniqueID];
-
         LoadFormGridViewState (formGrid, viewState);
       }
     }
@@ -1475,8 +1495,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   private bool ValidateFormGrid (FormGrid formGrid)
   {
     bool isValid = true;
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       if (formGridRow.Type != FormGridRowType.DataRow)
         continue;
 
@@ -1505,8 +1526,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     //  Create the validationIcon
 
     bool isValid = true;
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       IValidator validator = control as IValidator;
 
       //  Only for validators
@@ -1542,8 +1564,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     //  Create a ValidationError object for each error
     //  Create the validationIcon
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       IValidator validator = control as IValidator;
       if (validator == null || validator.IsValid)
         continue;
@@ -1625,8 +1648,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
   private TransformationStep TransformIntoFormGridPostLoad (FormGrid formGrid)
   {
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       if (formGridRow.Type == FormGridRowType.DataRow)
       {
         CreateValidators (formGridRow);
@@ -1641,8 +1665,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
   private TransformationStep TransformIntoFormGridPostValidation (FormGrid formGrid)
   {
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       if (formGridRow.IsGenerated)
         UpdateGeneratedRowsVisibility (formGridRow);
 
@@ -1681,8 +1706,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     bool isTopDataRow = true;
 
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       switch (formGridRow.Type)
       {
         case FormGridRowType.TitleRow:
@@ -1796,8 +1822,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     if (strings == null)
       return; 
 
-    foreach (string id in strings)
+    for (int i = 0; i < strings.Count; i++)
     {
+      string id = strings[i];
       FormGridRow row = formGrid.GetRowForID (id);
 
       if (row != null)
@@ -1866,8 +1893,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     if (formGrid == null) throw new ArgumentNullException ("formGrid");
 
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       if (formGridRow.Type != FormGridRowType.DataRow)
         continue;
   
@@ -1892,8 +1920,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   private void ConfigureFormGrid (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
-    foreach (FormGridRow formGridRow in formGrid.Rows)
+    for (int i = 0; i < formGrid.Rows.Count; i++)
     {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
       switch (formGridRow.Type)
       {
         case FormGridRowType.TitleRow:
@@ -2155,8 +2184,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     if (ShowValidationMarkers && dataRow.ValidationMarker != null)
     {
       string toolTip = string.Empty;
-      foreach (ValidationError validationError in dataRow.ValidationErrors)
+      for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
       {
+        ValidationError validationError = (ValidationError) dataRow.ValidationErrors[i];
         //  Get validation message
         string validationMessage = validationError.ValidationMessage;
         //  Get tool tip, tool tip is validation message
@@ -2201,8 +2231,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       BaseValidator baseValidator = control as BaseValidator;
       IBaseValidator iBaseValidator = control as IBaseValidator;
 
@@ -2243,8 +2274,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     if (dataRow.LabelsCell.Controls.Count > 0)
       return;
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       if (! control.Visible)
         continue;
 
@@ -2319,16 +2351,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     //ArrayList validators = new ArrayList();
 
     //  Split into smart controls and validators
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       if (control is ISmartControl)
         smartControls.Add (control);
       //else if (control is BaseValidator || control is IBaseValidator)
       //  validators.Add (control);
     }
     
-    foreach (ISmartControl smartControl in smartControls)
+    for (int i = 0; i < smartControls.Count; i++)
     {
+      ISmartControl smartControl = (ISmartControl) smartControls[i];
       if (!smartControl.Visible)
         continue;
 
@@ -2351,8 +2385,11 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
       BaseValidator[] newValidators = smartControl.CreateValidators();
 
-      foreach (BaseValidator validator in newValidators)
+      for (int idxValidators = 0; idxValidators < newValidators.Length; idxValidators++)
+      {
+        BaseValidator validator = (BaseValidator) newValidators[idxValidators];
         dataRow.ControlsCell.Controls.Add (validator);
+      }
     }
   }
 
@@ -2368,8 +2405,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
-    foreach (Control control in dataRow.LabelsCell.Controls)
+    for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.LabelsCell.Controls[i];
       if (!control.Visible)
         continue;
 
@@ -2386,8 +2424,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       }
     }
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       if (!control.Visible)
         continue;
 
@@ -2417,8 +2456,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
-    foreach (Control control in dataRow.LabelsCell.Controls)
+    for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.LabelsCell.Controls[i];
       if (!control.Visible)
         continue;
 
@@ -2437,8 +2477,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       }
     }
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       if (!control.Visible)
         continue;
 
@@ -2471,8 +2512,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     else
     {
       bool isControlVisible = false;
-      foreach (Control control in dataRow.ControlsCell.Controls)
+      for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
+        Control control = (Control) dataRow.ControlsCell.Controls[i];
         if (control.Visible)
         {
           isControlVisible = true;
@@ -2481,8 +2523,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       }
       if (! isControlVisible)
       {
-        foreach (Control label in dataRow.LabelsCell.Controls)
+        for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
         {
+          Control label = (Control) dataRow.LabelsCell.Controls[i];
           label.Visible = false;
         }
       }
@@ -2575,8 +2618,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     if (dataRow.ValidationErrors != null)
     {
       //  Get validation messages
-      foreach (ValidationError validationError in dataRow.ValidationErrors)
+      for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
       {
+        ValidationError validationError = (ValidationError) dataRow.ValidationErrors[i];
         if (validationError == null)
           continue;
 
@@ -2707,8 +2751,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
-    foreach (Control control in dataRow.ControlsCell.Controls)
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
     {
+      Control control = (Control) dataRow.ControlsCell.Controls[i];
       BaseValidator validator = control as BaseValidator;
       if (   validator != null
           && ! StringUtility.IsNullOrEmpty (validator.CssClass))
@@ -2857,8 +2902,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   private void PopulateFormGridList (Control control)
   {
     //  Add all table having the suffix
-    foreach (Control childControl in control.Controls)
+    for (int i = 0; i < control.Controls.Count; i++)
     {
+      Control childControl = (Control) control.Controls[i];
       HtmlTable htmlTable = childControl as HtmlTable;
       if (htmlTable != null && htmlTable.ID != null && htmlTable.ID.EndsWith (_formGridSuffix))
         Add (htmlTable);
