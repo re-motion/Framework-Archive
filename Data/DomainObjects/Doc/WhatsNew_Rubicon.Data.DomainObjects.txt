@@ -1,3 +1,12 @@
+1.2.26.0
+========
+
+- NullableProperty
+  * Liefert bei IsRequired nicht mehr _isNullable sonder base.IsRequired
+  
+- ReflectionPropertyFactory
+  * Liefert bei IsPropertyRequired falls sonst nichts angegeben bei ReferenceTypes default false.
+
 1.2.25.0
 ========
 
