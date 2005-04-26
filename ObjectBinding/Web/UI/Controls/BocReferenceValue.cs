@@ -341,7 +341,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
-  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);

@@ -2310,14 +2310,17 @@ public class BocList:
       foreach (BaseValidator validator in validators)
       {
         isCellValid &= validator.IsValid;
-        if (StringUtility.IsNullOrEmpty (validationErrorMarker.ToolTip))
+        if (! validator.IsValid)
         {
-          validationErrorMarker.ToolTip = validator.ErrorMessage;
-        }
-        else
-        {
-          validationErrorMarker.ToolTip += "\r\n";
-          validationErrorMarker.ToolTip += validator.ErrorMessage;
+          if (StringUtility.IsNullOrEmpty (validationErrorMarker.ToolTip))
+          {
+            validationErrorMarker.ToolTip = validator.ErrorMessage;
+          }
+          else
+          {
+            validationErrorMarker.ToolTip += "\r\n";
+            validationErrorMarker.ToolTip += validator.ErrorMessage;
+          }
         }
       }
       if (! isCellValid)

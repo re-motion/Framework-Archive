@@ -172,7 +172,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     EnsureChildControlsPreRendered();
   }
 
-  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Web.UI;
@@ -463,7 +464,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       writer.Write ("&nbsp;");
     }
     if (! StringUtility.IsNullOrEmpty (node.Text))
-      writer.Write (node.Text);
+      writer.Write (HttpUtility.HtmlEncode (node.Text));
     writer.RenderEndTag();
 
     writer.RenderEndTag();

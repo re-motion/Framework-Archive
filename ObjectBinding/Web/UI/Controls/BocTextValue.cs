@@ -16,20 +16,8 @@ using Rubicon.Globalization;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   This control can be used to display or edit values that can be edited in a text box.
-/// </summary>
-/// <remarks>
-///   <para>
-///     The <see cref="BocTextValueType"/> enumeration defines the types that can be handled by <c>BocTextValue</c>.
-///     The control can act as a data bound control or as a disconnected control. Use the <see cref="Value"/>
-///     property to get or set values in their native data type, or the <see cref="Text"/> property to get or
-///     set the string representation.
-///   </para><para>
-///     The control is displayed using a text box in edit mode, and using a label in read-only mode. Use the
-///     <see cref="TextBox"/> and <c>Label</c> properties to access these controls directly.
-///   </para>
-/// </remarks>
+/// <summary> This control can be used to display or edit values that can be edited in a text box. </summary>
+/// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/Class/*' />
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -246,7 +234,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       Page.RegisterRequiresPostBack (this);
   }
 
-  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);

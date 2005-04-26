@@ -19,9 +19,7 @@ using Rubicon.Globalization;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary>
-///   This control can be used to display or edit a list of strings.
-/// </summary>
+/// <summary> This control can be used to display or edit a list of strings. </summary>
 /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
@@ -30,23 +28,25 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 {
 	// constants
 
-  /// <summary> 
-  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
-  /// </summary>
+  /// <summary> Text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultTextBoxWidth = "150pt";
 
   // types
-  /// <summary> A list of control wide resources. </summary>
+
+  /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
   protected enum ResourceIdentifier
   {
+    /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
     RequiredValidationMessage,
+    /// <summary> The validation error message displayed when entered text exceeds the maximum length. </summary>
     MaxLengthValidationMessage
   }
 
@@ -58,26 +58,16 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   private static readonly object s_textChangedEvent = new object();
 
 	// member fields
-  /// <summary>
-  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
-  ///   <see cref="SaveValue"/>.
-  /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The <see cref="TextBox"/> used in edit mode. </summary>
   private TextBox _textBox;
-  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
 
-  /// <summary> The <see cref="Style"/> applied the <see cref="TextBox"/> and the <see cref="Label"/>. </summary>
   private Style _commonStyle;
-  /// <summary> The <see cref="TextBoxStyle"/> applied to the <see cref="TextBox"/>. </summary>
   private TextBoxStyle _textBoxStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
 
-  /// <summary>  The concatenated string build from the string array. </summary>
-  /// <remarks> Uses <c>\r\n</c> as separation characters. </remarks>
+  /// <summary> The concatenated string built from the string array. Uses <c>\r\n</c> as delimiter. </summary>
   private string _internalValue = null;
 
   private string _errorMessage;
@@ -85,6 +75,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   // construction and disposing
 
+  /// <summary> Initializes a new instance of the <b>BocMultilineTextValue</b> type. </summary>
 	public BocMultilineTextValue()
 	{
     _commonStyle = new Style();
@@ -97,6 +88,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   // methods and properties
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _textBox.ID = ID + "_Boc_TextBox";
@@ -124,23 +116,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
   ///   post backs.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
-  ///   </para><para>
-  ///     Evaluates the value of the <see cref="TextBox"/>.
-  ///   </para>
-  ///   <note type="inheritinfo">
-  ///     Overrive this method to change the way a data change is detected of the value is read from the 
-  ///     <paramref name="postCollection"/>.
-  ///   </note>
-  /// </remarks>
-  /// <param name="postDataKey"> The key identifier for this control. </param>
-  /// <param name="postCollection"> The collection of all incoming name values.  </param>
-  /// <returns>
-  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
-  ///   otherwise <see langword="false"/>.
-  /// </returns>
+  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -153,7 +129,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     return isDataChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     OnTextChanged (EventArgs.Empty);
@@ -168,10 +144,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       eventHandler (this, e);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
-  /// </summary>
-  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
+  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
+  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -182,13 +159,18 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       Page.RegisterRequiresPostBack (this);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
-  /// </param>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
+  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
+  /// </remarks>
   protected override void Render (HtmlTextWriter writer)
   {
     //  Second call has practically no overhead
@@ -198,7 +180,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     base.Render (writer);
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
+  /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>
+  protected override void RenderChildren (HtmlTextWriter writer)
   {
     if (IsReadOnly)
     {
@@ -225,12 +208,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
-  /// <summary>
-  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
     object[] values = (object[]) savedState;
@@ -242,12 +220,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     _textBox.Text = Text;
   }
 
-  /// <summary>
-  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
-  /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[3];
@@ -259,15 +232,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     return values;
   }
 
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -280,15 +246,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
-  /// <summary>
-  ///   Writes the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -298,20 +257,14 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
-  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary>
-  ///   Generates the validators depending on the control's configuration.
-  /// </summary>
-  /// <remarks>
-  ///   Generates a validator that checks that the selected item is not the null item if the 
-  ///   control is in edit-mode and input is required.
-  /// </remarks>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)
@@ -355,7 +308,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
   }
   
-  /// <summary> Prerenders the child controls. </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
   protected override void PreRenderChildControls()
   {
     if (IsReadOnly)
@@ -400,11 +353,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectStringProperty"/> object 
-  ///   this control is bound to.
-  /// </summary>
-  /// <value>An <see cref="IBusinessObjectStringProperty"/> object.</value>
+  /// <summary> Gets or sets the <see cref="IBusinessObjectStringProperty"/> object this control is bound to. </summary>
+  /// <value> An <see cref="IBusinessObjectStringProperty"/> object. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectStringProperty Property
@@ -417,13 +367,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
   
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
-  /// <value> 
-  ///   The boolean value currently displayed 
-  ///   or <see langword="null"/> if no item / the null item is selected.
-  /// </value>
+  /// <summary> Gets or sets the current value. </summary>
+  /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
   [Browsable(false)]
   public new string[] Value
   {
@@ -453,6 +398,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -466,47 +412,31 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   [DefaultValue ("")]
   public string Text
   {
-    get 
-    { 
-      return StringUtility.NullToEmpty (_internalValue);
-    }
-    set 
-    {
-      _internalValue = value;
-    }
+    get { return StringUtility.NullToEmpty (_internalValue); }
+    set { _internalValue = value; }
   }
 
-  /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using its ClientID.
-  /// </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
+  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit-mode, otherwise the control itself. </remarks>
   public override Control TargetControl 
   {
     get { return IsReadOnly ? (Control) this : _textBox; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
   public override bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
   }
 
-  /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
-  /// </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary>
-  ///   Indicates whether properties with the specified multiplicity are supported.
-  /// </summary>
-  /// <returns>
-  ///   <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is 
-  ///   supported.
-  /// </returns>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/> property. </summary>
   protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return isList;
@@ -518,7 +448,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     get { return true; }
   }
 
-  /// <summary> Occurs when the <see cref="Value"/> property changes between posts to the server. </summary>
+  /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
   [Category ("Action")]
   [Description ("Fires when the checked state of the control changes.")]
   public event EventHandler TextChanged
@@ -528,12 +458,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
+  ///   The style that you want to apply to the <see cref="TextBox"/> (edit mode) 
+  ///   and the <see cref="Label"/> (read-only mode).
   /// </summary>
   /// <remarks>
   ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual 
-  ///   style settings for the respective modes. Note that if you set one of the <c>Font</c> 
-  ///   attributes (Bold, Italic etc.) to <c>true</c>, this cannot be overridden using 
+  ///   style settings for the respective modes. Note that if you set one of the <b>Font</b> 
+  ///   attributes (Bold, Italic etc.) to <see langword="true"/>, this cannot be overridden using 
   ///   <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> properties.
   /// </remarks>
   [Category("Style")]
@@ -546,12 +477,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     get { return _commonStyle; }
   }
 
-  /// <summary>
-  ///   Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category ("Style")]
   [Description ("The style that you want to apply to the TextBox (edit mode) only.")]
   [NotifyParentProperty (true)]
@@ -562,12 +489,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     get { return _textBoxStyle; }
   }
 
-  /// <summary>
-  ///   Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
+  /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category ("Style")]
   [Description ("The style that you want to apply to the Label (read-only mode) only.")]
   [NotifyParentProperty (true)]
@@ -585,15 +508,15 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     get { return _textBox; }
   }
 
-  /// <summary> Gets the <see cref="Label"/> used for in readonly mode. </summary>
+  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
   [Browsable (false)]
   public Label Label
   {
     get { return _label; }
   }
 
-  /// <summary> Gets or sets the validation message if no input is provided but the control requries input. </summary>
-  [Description("Validation message if no input is provided but the control requires input.")]
+  /// <summary> Gets or sets the validation error message. </summary>
+  [Description("Validation message if invalid input is required.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage
@@ -606,5 +529,15 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
         validator.ErrorMessage = _errorMessage;
     }
   }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocMultilineTextValue"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocMultilineTextValue</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  { get { return "bocMultilineTextValue"; } }
+  #endregion
 }
 }

@@ -167,6 +167,21 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       eventHandler (this, e);
   }
 
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
+  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
+  /// </remarks>
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+    
+    //  First call
+    EnsureChildControlsPreRendered();
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
+      Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
@@ -181,21 +196,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
-  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
-  /// </remarks>
-  protected override void OnPreRender (EventArgs e)
-  {
-    base.OnPreRender (e);
-    
-    //  First call
-    EnsureChildControlsPreRendered();
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
@@ -426,7 +426,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
   }
 
-  /// <summary> The <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to. </summary>
+  /// <summary> Gets or sets the <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to. </summary>
   /// <value> An instance of type <see cref="IBusinessObjectBooleanProperty"/>. </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

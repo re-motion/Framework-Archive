@@ -429,6 +429,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocTextValue.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\BocBooleanValue.de.resx"
                     BuildAction = "EmbeddedResource"
                 />

@@ -6,7 +6,7 @@
       <h4 class="dtH4">Supported Data Types</h4>
       <para>
         The control's <see cref="Value"/> can be assigned <see cref="Boolean"/> or <see cref="NaBoolean"/> values
-        and <see langword="null"/>. 
+        as well as <see langword="null"/>. 
       </para><para>
         The control's <see cref="Property"/> supports the <see cref="IBusinessObjectBooleanProperty"/>.
       </para>
@@ -21,12 +21,12 @@
       </para><para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
-        If <see cref="IBusinessObjectBoundWebControl.DataSource"/> and 
-        <see cref="IBusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the 
+        If <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the 
         control is unbound. The <see cref="Value"/> property must be accessed programmatically to display the 
         current value.
       </para><para>
-        The control provides a default <b>CSS class</b>, applied to the top level element: <c>bocBooleanValue</c>.
+        The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocBooleanValue</c>.
       </para>
       
       <h4 class="dtH4">Inner Workings</h4>
