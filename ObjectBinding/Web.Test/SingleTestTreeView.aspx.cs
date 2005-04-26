@@ -126,7 +126,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
     this.WebButton1.Click += new System.EventHandler(this.WebButton1_Click);
     this.Load += new System.EventHandler(this.Page_Load);
-
+    this.RefreshPesonTreeViewButton.Click += new EventHandler(RefreshPesonTreeViewButton_Click);
   }
 
   private void TreeView_Click(object sender, Rubicon.Web.UI.Controls.WebTreeNodeClickEventArgs e)
@@ -141,7 +141,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
 
   private void RefreshPesonTreeViewButton_Click(object sender, System.EventArgs e)
   {
-    PersonTreeView.InvalidateTreeNodes();
+    PersonTreeView.RefreshTreeNodes();
   }
 
   private void WebButton1_Click(object sender, System.EventArgs e)
