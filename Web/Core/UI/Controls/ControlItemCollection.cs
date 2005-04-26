@@ -106,6 +106,13 @@ public class ControlItemCollection: CollectionBase
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, newValue));
   }
 
+  protected override void OnRemoveComplete(int index, object value)
+  {
+    base.OnRemoveComplete (index, value);
+    _isChanged |= _isEditing;
+    OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
+  }
+
   public int Add (IControlItem value)
   {
     int count = List.Add (value);
