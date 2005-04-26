@@ -1509,7 +1509,7 @@ public class BocList:
     {
       //  Render the init script for the client side selection handling
       int count = 0;
-      if (! _pageSize.IsNull && _pageSize.Value != null)
+      if (! _pageSize.IsNull && _pageSize.Value != 0)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
@@ -2111,7 +2111,7 @@ public class BocList:
     if (isSelectAllSelectorControl)
     {
       int count = 0;
-      if (! _pageSize.IsNull && _pageSize.Value != null)
+      if (! _pageSize.IsNull && _pageSize.Value != 0)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
