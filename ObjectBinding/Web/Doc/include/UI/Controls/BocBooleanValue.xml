@@ -16,7 +16,8 @@
         Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
         <b>BocBooleanValue</b>.
       </para><para>
-        The resources required by this control are defined by the <see cref="ResourceIdentifier"/> enum.
+        The resources required by this control are defined by the <see cref="BocBooleanValue.ResourceIdentifier"/> 
+        enum.
       </para><para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
@@ -24,6 +25,8 @@
         <see cref="IBusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the 
         control is unbound. The <see cref="Value"/> property must be accessed programmatically to display the 
         current value.
+      </para><para>
+        The control provides a default <b>CSS class</b>, applied to the top level element: <c>bocBooleanValue</c>.
       </para>
       
       <h4 class="dtH4">Inner Workings</h4>
