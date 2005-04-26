@@ -485,8 +485,11 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
   /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
   /// <remarks> ...&lt;node.Parent.Parent.NodeID&gt;|&lt;node.Parent.NodeID&gt;|&lt;NodeID&gt; </remarks>
-  private string FormatNodePath (WebTreeNode node)
+  public string FormatNodePath (WebTreeNode node)
   {    
+    if (node == null)
+      return string.Empty;
+
     string parentPath = string.Empty;
     if (node.ParentNode != null)
     {
@@ -503,7 +506,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <param name="path"> The path to be parsed. </param>
   /// <param name="pathSegments"> Returns the IDs that comprised the path. </param>
   /// <returns> The <see cref="WebTreeNode"/> to which <paramref name="path"/> pointed. </returns>
-  private WebTreeNode ParseNodePath (string path, out string[] pathSegments)
+  public WebTreeNode ParseNodePath (string path, out string[] pathSegments)
   {
     pathSegments = path.Split (c_pathSeparator);
     WebTreeNode currentNode = null;
