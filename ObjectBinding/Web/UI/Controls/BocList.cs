@@ -337,6 +337,8 @@ public class BocList:
   private string _errorMessage;
   private ArrayList _validators;
 
+  private Pair[] _indexedRowsSorted = null;
+
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
@@ -913,51 +915,6 @@ public class BocList:
   {
     DetermineClientScriptLevel();
 
-    if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)
-    {
-      _pageCount = 1;
-    }
-    else
-    {
-      _currentPage = _currentRow / _pageSize.Value;
-      _pageCount = (int) Math.Ceiling ((double)Value.Count / _pageSize.Value);
-
-      switch (_move)
-      {
-        case MoveOption.First:
-        {
-          _currentPage = 0;
-          _currentRow = 0;
-          break;
-        }
-        case MoveOption.Last:
-        {
-          _currentPage = _pageCount - 1;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        case MoveOption.Previous:
-        {
-          _currentPage--;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        case MoveOption.Next:
-        {
-          _currentPage++;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        default:
-        {
-          break;
-        }
-      }
-
-      if (_move != MoveOption.Undefined)
-        _selectorControlCheckedState.Clear();
-    }
-
     string key;
 
     if (_hasClientScript)
@@ -1005,6 +962,54 @@ public class BocList:
     get { return HtmlTextWriterTag.Div; }
   }
 
+  protected void CalculateCurrentPage()
+  {
+    if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)
+    {
+      _pageCount = 1;
+    }
+    else
+    {
+      _currentPage = _currentRow / _pageSize.Value;
+      _pageCount = (int) Math.Ceiling ((double)Value.Count / _pageSize.Value);
+
+      switch (_move)
+      {
+        case MoveOption.First:
+        {
+          _currentPage = 0;
+          _currentRow = 0;
+          break;
+        }
+        case MoveOption.Last:
+        {
+          _currentPage = _pageCount - 1;
+          _currentRow = _currentPage * _pageSize.Value;
+          break;
+        }
+        case MoveOption.Previous:
+        {
+          _currentPage--;
+          _currentRow = _currentPage * _pageSize.Value;
+          break;
+        }
+        case MoveOption.Next:
+        {
+          _currentPage++;
+          _currentRow = _currentPage * _pageSize.Value;
+          break;
+        }
+        default:
+        {
+          break;
+        }
+      }
+
+      if (_move != MoveOption.Undefined)
+        _selectorControlCheckedState.Clear();
+    }
+  }
+
   /// <summary> Overrides the parent's <c>RenderChontents</c> method. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   protected override void RenderContents (HtmlTextWriter writer)
@@ -1013,6 +1018,21 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
+    
+    if (IsRowEditMode)
+    {
+      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+      {
+        int originalRowIndex = (int) sortedRows[idxRows].First;
+        if (_editableRowIndex.Value == originalRowIndex)
+        {
+          _currentRow = idxRows;
+          break;
+        }
+      }
+    }
+    CalculateCurrentPage();
 
     if (IsDesignMode)
     {
@@ -1484,7 +1504,7 @@ public class BocList:
       if (! IsEmptyList)
       {
         bool isOddRow = true;
-        Pair[] rows = GetIndexedRows (true);
+        Pair[] rows = EnsureGotIndexedRowsSorted();
 
         for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
             idxAbsoluteRows < rowCountWithOffset; 
@@ -2942,6 +2962,13 @@ public class BocList:
     return (Pair[]) rows.ToArray (typeof (Pair));
   }
 
+  protected Pair[] EnsureGotIndexedRowsSorted()
+  {
+    if (_indexedRowsSorted == null)
+      _indexedRowsSorted = GetIndexedRows (true);
+    return _indexedRowsSorted;
+  }
+
   /// <summary>
   ///   Removes the columns provided by <see cref="SelectedColumnDefinitionSet"/> from the 
   ///   <see cref="_sortingOrder"/> list.
@@ -3937,7 +3964,7 @@ public class BocList:
     }
   }
 
-  /// <summary> Sets indeces for the rows selected in the <see cref="BocList"/>. </summary>
+  /// <summary> Sets indices for the rows selected in the <see cref="BocList"/>. </summary>
   /// <param name="selectedRows"> An array of <see cref="int"/> values. </param>
   /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
   public void SetSelectedRows (int[] selectedRows)
@@ -3954,6 +3981,7 @@ public class BocList:
       throw new InvalidOperationException ("Cannot select more than one row if the BocList is set to RowSelection.Single.");
     }
 
+    _selectorControlCheckedState.Clear();
     foreach (int rowIndex in selectedRows)
       _selectorControlCheckedState[rowIndex] = true;
   }
