@@ -179,6 +179,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       if (isLabelWidthEmpty && isControlWidthEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
     }
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
@@ -618,6 +620,16 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
         validator.ErrorMessage = _errorMessage;
     }
   }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocBooleanValue"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocBooleanValue</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  { get { return "bocBooleanValue"; } }
+  #endregion
 }
 
 }
