@@ -1,3 +1,9 @@
+1.2.26.0
+========
+
+- BocList
+  * Bug: GetSelectedRows() ist defekt. Gefixt mit 1.2.28.0.
+  
 1.2.25.0
 ========
 
