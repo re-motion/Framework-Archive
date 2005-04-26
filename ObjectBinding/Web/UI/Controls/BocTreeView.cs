@@ -115,8 +115,19 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   public void RefreshTreeNodes()
   {
+    WebTreeNode selectedNode = _treeView.SelectedNode;
+    string selectedNodePath = selectedNodePath = _treeView.FormatNodePath (selectedNode);
+
     InvalidateTreeNodes();
     InitializeRootWebTreeNodes();
+
+    if (! StringUtility.IsNullOrEmpty (selectedNodePath))
+    {
+      string[] pathSegments;
+      selectedNode = _treeView.ParseNodePath (selectedNodePath, out pathSegments);
+      if (selectedNode != null)
+        selectedNode.IsSelected = true;
+    }
   }
 
   /// <summary>

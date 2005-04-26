@@ -55,6 +55,7 @@ public class BocList:
 
   private const string c_eventEditDetailsPrefix = "EditDetails=";
   private const string c_editDetailsRequiredFieldIcon = "RequiredField.gif";
+  private const string c_editDetailsValidationErrorIcon = "ValidationError.gif";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -116,6 +117,8 @@ public class BocList:
     RequiredFieldAlternateText,
     /// <summary>The tool tip text for the required icon.</summary>
     RequiredFieldTitle,
+    /// <summary>The alternate text for the validation error icon.</summary>
+    ValidationErrorInfoAlternateText
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
@@ -327,6 +330,9 @@ public class BocList:
   /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
   private BaseValidator[][] _rowEditModeValidators;
   private bool _enableEditDetailsValidator = true;
+  private bool _showEditDetailsRequiredMarkers = true;
+  private bool _showEditDetailsValidationMarkers = false;
+  private bool _disableEditDetailsValidationMessages = false;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -1753,6 +1759,7 @@ public class BocList:
     if (IsRowEditMode && column is BocSimpleColumnDefinition)
     {
       if (   _rowEditModeControls[columnIndex] != null
+          && _showEditDetailsRequiredMarkers
           && _rowEditModeControls[columnIndex].IsRequired)
       {
         Image requriedFieldMarker = GetRequiredMarker();
@@ -1775,6 +1782,20 @@ public class BocList:
     
     requiredIcon.Style["vertical-align"] = "middle";
     return requiredIcon;
+  }
+
+  /// <summary> Builds the validation error marker. </summary>
+  protected virtual Image GetValidationErrorMarker()
+  {
+    Image validationErrorIcon = new Image();
+    validationErrorIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
+        this, Context, typeof (BocList), ResourceType.Image, c_editDetailsValidationErrorIcon);
+
+    IResourceManager resourceManager = GetResourceManager();
+    validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
+    
+    validationErrorIcon.Style["vertical-align"] = "middle";
+    return validationErrorIcon;
   }
 
   private void RenderTitleCellText (HtmlTextWriter writer, BocColumnDefinition column)
@@ -2238,25 +2259,72 @@ public class BocList:
       if (validator is EditDetailsValidator)
         editDetailsValidator = (EditDetailsValidator) validator;
     }
-    _rowEditModeControls[columnIndex].RenderControl (writer);
     BaseValidator[] validators = _rowEditModeValidators[columnIndex];
+
+    IBusinessObjectBoundModifiableWebControl editModeControl = _rowEditModeControls[columnIndex];
+    
+    CssStyleCollection editModeControlStyle = null;
+    if (editModeControl is WebControl)
+      editModeControlStyle = ((WebControl) editModeControl).Style;
+    else if (editModeControl is System.Web.UI.HtmlControls.HtmlControl)
+      editModeControlStyle = ((System.Web.UI.HtmlControls.HtmlControl) editModeControl).Style;
+    if (editModeControlStyle != null)
+    {
+      editModeControlStyle["width"] = "100%";
+      editModeControlStyle["vertical-align"] = "middle";
+    }
+    
+    if (_showEditDetailsValidationMarkers)
+    {
+      bool isCellValid = true;
+      Image validationErrorMarker = GetValidationErrorMarker();
+      
+      foreach (BaseValidator validator in validators)
+      {
+        isCellValid &= validator.IsValid;
+        if (StringUtility.IsNullOrEmpty (validationErrorMarker.ToolTip))
+        {
+          validationErrorMarker.ToolTip = validator.ErrorMessage;
+        }
+        else
+        {
+          validationErrorMarker.ToolTip += "\r\n";
+          validationErrorMarker.ToolTip += validator.ErrorMessage;
+        }
+      }
+      if (! isCellValid)
+      {
+        validationErrorMarker.RenderControl (writer);
+        writer.Write (c_whiteSpace);
+
+        if (editModeControlStyle != null)
+          editModeControlStyle["width"] = "80%";
+      }
+    }
+
+    editModeControl.RenderControl (writer);
+
     foreach (BaseValidator validator in validators)
     {
-      if (editDetailsValidator != null)
-      {
-        validator.Display = editDetailsValidator.Display;
-        validator.EnableClientScript = editDetailsValidator.EnableClientScript;
-      }
-      else
+      if (   editDetailsValidator == null 
+          || _disableEditDetailsValidationMessages)
       {
         validator.Display = ValidatorDisplay.None;
         validator.EnableClientScript = false;
       }
+      else
+      {
+        validator.Display = editDetailsValidator.Display;
+        validator.EnableClientScript = editDetailsValidator.EnableClientScript;
+      }
+
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       validator.RenderControl (writer);
       writer.RenderEndTag();
 
-      if (! validator.IsValid && validator.Display == ValidatorDisplay.None)
+      if (   ! validator.IsValid 
+          && validator.Display == ValidatorDisplay.None
+          && ! _disableEditDetailsValidationMessages)
       {
         if (! StringUtility.IsNullOrEmpty (validator.CssClass))
           writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
@@ -3478,10 +3546,6 @@ public class BocList:
 
     control.ID = ID + "_RowEditControl_" + columnIndex.ToString();
     control.Property = property;
-    if (control is WebControl)
-      ((WebControl) control).Width = Unit.Percentage (100);
-    else if (control is System.Web.UI.HtmlControls.HtmlControl)
-      ((System.Web.UI.HtmlControls.HtmlControl) control).Attributes["Width"] = "100%";
     return control;
   }
 
@@ -3558,6 +3622,47 @@ public class BocList:
   public bool IsRowEditMode
   {
     get { return ! _editableRowIndex.IsNull; } 
+  }
+
+  [Description ("Set false to hide the asterisks in the title row for columns having edit details control.")]
+  [Category ("Edit Details")]
+  [DefaultValue (true)]
+  public bool ShowEditDetailsRequiredMarkers
+  {
+    get { return _showEditDetailsRequiredMarkers; }
+    set { _showEditDetailsRequiredMarkers = value; }
+  }
+
+  [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
+  [Category ("Edit Details")]
+  [DefaultValue (false)]
+  public bool ShowEditDetailsValidationMarkers
+  {
+    get { return _showEditDetailsValidationMarkers; }
+    set { _showEditDetailsValidationMarkers = value; }
+  }
+
+  [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")]
+  [Category ("Edit Details")]
+  [DefaultValue (false)]
+  public bool DisableEditDetailsValidationMessages
+  {
+    get { return _disableEditDetailsValidationMessages; }
+    set { _disableEditDetailsValidationMessages = value; }
+  }
+
+  /// <summary> Gets or sets a flag that enables the <see cref="EditDetailsValidator"/>. </summary>
+  /// <remarks> 
+  ///   <see langword="false"/> to prevent the <see cref="EditDetailsValidator"/> from being created by
+  ///   <see cref="CreateValidators"/>.
+  /// </remarks>
+  [Description("Enables the EditDetailsValidator.")]
+  [Category ("Edit Details")]
+  [DefaultValue(true)]
+  public bool EnableEditDetailsValidator
+  {
+    get { return _enableEditDetailsValidator; }
+    set { _enableEditDetailsValidator = value; }
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
@@ -4191,21 +4296,6 @@ public class BocList:
     get { return _listMenuLineBreaks; }
     set { _listMenuLineBreaks = value; }
   }
-
-  /// <summary> Gets or sets a flag that enables the <see cref="EditDetailsValidator"/>. </summary>
-  /// <remarks> 
-  ///   <see langword="false"/> to prevent the <see cref="EditDetailsValidator"/> from being created by
-  ///   <see cref="CreateValidators"/>.
-  /// </remarks>
-  [Description("Enables the EditDetailsValidator.")]
-  [Category ("Behavior")]
-  [DefaultValue(true)]
-  public bool EnableEditDetailsValidator
-  {
-    get { return _enableEditDetailsValidator; }
-    set { _enableEditDetailsValidator = value; }
-  }
-
 
   /// <summary> Gets or sets the validation error message. </summary>
   [Description("Validation message displayed if there is an error.")]
