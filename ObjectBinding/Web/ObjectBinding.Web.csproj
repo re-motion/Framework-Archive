@@ -569,6 +569,10 @@
                     RelPath = "Res\Image\SortDescending.gif"
                     BuildAction = "Content"
                 />
+                <File
+                    RelPath = "Res\Image\ValidationError.gif"
+                    BuildAction = "Content"
+                />
             </Include>
         </Files>
     </CSHARP>
