@@ -345,8 +345,19 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
+    string cssClass;
     if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+      cssClass = CssClassBase;
+    else
+      cssClass = CssClass;  
+    //    cssClass += " " + CssClassOnMouseOut;
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+    
+    //    string script = "BocReferenceValue_OnMouseOver (this, '" + CssClassOnMouseOver + "');";
+    //    writer.AddAttribute ("onMouseOver", script);
+    //    
+    //    script = "BocReferenceValue_OnMouseOut (this, '" + CssClassOnMouseOut + "');";
+    //    writer.AddAttribute ("onMouseOut", script);
   }
 
   /// <summary>
@@ -721,8 +732,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
     writer.AddStyleAttribute ("display", "inline");
-    writer.RenderBeginTag (HtmlTextWriterTag.Table);
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+    writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin table
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); //  Begin tr
 
     bool isCommandEnabled = false;
     if (Command != null)
@@ -750,9 +761,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       writer.AddStyleAttribute ("padding-right", "3pt");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
 
       if (isCommandEnabled)
         Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
@@ -760,16 +771,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       if (isCommandEnabled)
         Command.RenderEnd (writer);
 
-      writer.RenderEndTag();
-      writer.RenderEndTag();
+      writer.RenderEndTag();  //  End span
+      writer.RenderEndTag();  //  End td
     }   
 
     if (isReadOnly)
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
 
       if (isCommandEnabled)
         Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
@@ -777,15 +788,15 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       if (isCommandEnabled)
         Command.RenderEnd (writer);
       
-      writer.RenderEndTag();
-      writer.RenderEndTag();
+      writer.RenderEndTag();  //  End span
+      writer.RenderEndTag();  //  End td
     }
     else
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
 
       if (! isControlHeightEmpty && isDropDownListHeightEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
@@ -793,8 +804,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       _dropDownList.RenderControl (writer);
       
-      writer.RenderEndTag();
-      writer.RenderEndTag();
+      writer.RenderEndTag();  //  End span
+      writer.RenderEndTag();  //  End td
     }
 
     if (HasOptionsMenu)
@@ -802,10 +813,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.AddStyleAttribute ("padding-left", "3pt");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       //writer.AddAttribute ("align", "right");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
       _optionsMenu.Width = _optionsMenuWidth;
       _optionsMenu.RenderControl (writer);
-      writer.RenderEndTag();
+      writer.RenderEndTag();  //  End td
     }
 
     writer.RenderEndTag();
@@ -1286,6 +1297,16 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <remarks> Class: <c>bocReferenceValueContent</c> </remarks>
   protected virtual string CssClassContent
   { get { return "bocReferenceValueContent"; } }
+
+  // <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s inner table on mouse over. </summary>
+  // <remarks> Class: <c>bocReferenceValueOnMouseOver</c> </remarks>
+  //protected virtual string CssClassOnMouseOver
+  //{ get { return "bocReferenceValueOnMouseOver"; } }
+  
+  // <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s inner table on mouse out. </summary>
+  // <remarks> Class: <c>bocReferenceValueOnMouseOut</c> </remarks>
+  //protected virtual string CssClassOnMouseOut
+  //{ get { return "bocReferenceValueOnMouseOut"; } }  
   #endregion
 }
 

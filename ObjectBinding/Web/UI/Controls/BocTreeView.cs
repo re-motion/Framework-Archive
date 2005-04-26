@@ -50,6 +50,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       typeof (IBusinessObjectReferenceProperty) };
 
   private static readonly object s_clickEvent = new object();
+  private static readonly object s_selectionChangedEvent = new object();
 
   // member fields
   private WebTreeView _treeView;
@@ -72,6 +73,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     _treeView.ID = ID + "_Boc_TreeView";
     _treeView.Click += new WebTreeNodeClickEventHandler(TreeView_Click);
+    _treeView.SelectionChanged += new WebTreeNodeEventHandler(TreeView_SelectionChanged);
     _treeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
     _treeView.SetInitializeRootTreeNodesDelegate (new InitializeRootWebTreeNodes (InitializeRootWebTreeNodes));
     _treeView.EnableTreeNodeViewState = ! _enableTreeNodeCaching;
@@ -104,6 +106,32 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
 
+  /// <summary> Handles the tree view's <see cref="WebTreeView.SelectionChanged"/> event. </summary>
+  private void TreeView_SelectionChanged (object sender, WebTreeNodeEventArgs e)
+  {
+    OnSelectionChanged (e.Node);
+  }
+
+  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
+  protected virtual void OnSelectionChanged (WebTreeNode node)
+  {
+    BocTreeNodeEventHandler handler = (BocTreeNodeEventHandler) Events[s_selectionChangedEvent];
+    if (handler != null)
+    {
+      ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+      BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
+      BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
+    
+      BocTreeNodeEventArgs e = null;
+      if (businessObjectNode != null)
+        e = new BocTreeNodeEventArgs (businessObjectNode);
+      else if (propertyNode != null)
+        e = new BocTreeNodeEventArgs (propertyNode);
+      
+      handler (this, e);
+    }
+  }
+
   /// <summary>
   ///   Sets the tree view to be rebuilded with the current business objects. 
   ///   Must be called before or during the <c>PostBackEvent</c> to affect the tree view.
@@ -115,7 +143,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   public void RefreshTreeNodes()
   {
-    WebTreeNode selectedNode = _treeView.SelectedNode;
+    BocTreeNode selectedNode = (BocTreeNode) _treeView.SelectedNode;
     string selectedNodePath = selectedNodePath = _treeView.FormatNodePath (selectedNode);
 
     InvalidateTreeNodes();
@@ -124,10 +152,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
     if (! StringUtility.IsNullOrEmpty (selectedNodePath))
     {
       string[] pathSegments;
-      selectedNode = _treeView.ParseNodePath (selectedNodePath, out pathSegments);
+      selectedNode = (BocTreeNode) _treeView.ParseNodePath (selectedNodePath, out pathSegments);
       if (selectedNode != null)
         selectedNode.IsSelected = true;
     }
+
+    if (selectedNodePath != _treeView.FormatNodePath (selectedNode))
+      OnSelectionChanged (selectedNode);
   }
 
   /// <summary>
@@ -613,6 +644,18 @@ public class BocTreeView: BusinessObjectBoundWebControl
     remove { Events.RemoveHandler (s_clickEvent, value); }
   }
 
+  /// <summary> 
+  ///   Occurs when the selected node is changed. Fires for both client side changes or change by the 
+  ///   <see cref="RefreshTreeNodes"/> method.
+  /// </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the selected node is changed. Fires for both client side changes and a change by the RefreshTreeNodes method.")]
+  public event BocTreeNodeEventHandler SelectionChanged
+  {
+    add { Events.AddHandler (s_selectionChangedEvent, value); }
+    remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
+  }
+
   /// <summary> Gets the currently selected tree node. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -681,17 +724,45 @@ public class BusinessObjectPropertyTreeNodeInfo
 public delegate void BocTreeNodeClickEventHandler (object sender, BocTreeNodeClickEventArgs e);
 
 /// <summary> Provides data for the <c>Click</c> event. </summary>
-public class BocTreeNodeClickEventArgs: WebTreeNodeClickEventArgs
+public class BocTreeNodeClickEventArgs: BocTreeNodeEventArgs
 {
+  private string[] _path;
+
   /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeClickEventArgs (BusinessObjectTreeNode node, string[] path)
-    : base (node, path)
+    : base (node)
   {
+    _path = path;
   }
 
   /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeClickEventArgs (BusinessObjectPropertyTreeNode node, string[] path)
-    : base (node, path)
+    : base (node)
+  {
+  }
+
+  /// <summary> The ID path for the clicked node. </summary>
+  public string[] Path
+  {
+    get { return _path; }
+  }
+}
+
+/// <summary> Represents the method that handles events raised by a <see cref="BocTreeNode"/>. </summary>
+public delegate void BocTreeNodeEventHandler (object sender, BocTreeNodeEventArgs e);
+
+/// <summary> Provides data for the events raised by a <see cref="BocTreeNode"/>. </summary>
+public class BocTreeNodeEventArgs: WebTreeNodeEventArgs
+{
+  /// <summary> Initializes a new instance. </summary>
+  public BocTreeNodeEventArgs (BusinessObjectTreeNode node)
+    : base (node)
+  {
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocTreeNodeEventArgs (BusinessObjectPropertyTreeNode node)
+    : base (node)
   {
   }
 
