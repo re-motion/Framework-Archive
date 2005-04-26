@@ -301,7 +301,7 @@ public class BocList:
   /// </summary>
   private bool _alwaysShowPageInfo = false; 
   /// <summary> The text providing the current page information to the user. </summary>
-  private string _pageInfo;
+  private string _pageInfo = null;
   /// <summary> 
   ///   The navigation bar command that caused the post back. 
   ///   <see cref="MoveOption.Undefined"/> unless the navigation bar caused a post back.
@@ -3997,7 +3997,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")]
   [DefaultValue (false)]
-  public bool ShowEmptyListReadOnlyMode
+  public virtual bool ShowEmptyListReadOnlyMode
   {
     get { return _showEmptyListReadOnlyMode; }
     set { _showEmptyListReadOnlyMode = value; }
@@ -4011,7 +4011,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
   [DefaultValue (true)]
-  public bool ShowEmptyListEditMode
+  public virtual bool ShowEmptyListEditMode
   {
     get { return _showEmptyListEditMode; }
     set { _showEmptyListEditMode = value; }
@@ -4025,7 +4025,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
   [DefaultValue (false)]
-  public bool ShowMenuForEmptyListReadOnlyMode
+  public virtual bool ShowMenuForEmptyListReadOnlyMode
   {
     get { return _showMenuForEmptyListReadOnlyMode; }
     set { _showMenuForEmptyListReadOnlyMode = value; }
@@ -4039,7 +4039,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
   [DefaultValue (true)]
-  public bool ShowMenuForEmptyListEditMode
+  public virtual bool ShowMenuForEmptyListEditMode
   {
     get { return _showMenuForEmptyListEditMode; }
     set { _showMenuForEmptyListEditMode = value; }
@@ -4067,7 +4067,7 @@ public class BocList:
   [Category ("Appearance")]
   [Description ("Enables the icon in front of the first value column.")]
   [DefaultValue (true)]
-  public bool EnableIcon
+  public virtual bool EnableIcon
   {
     get { return _enableIcon; }
     set
@@ -4082,7 +4082,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Enables the sorting button in front of each value column's header.")]
   [DefaultValue (true)]
-  public bool EnableSorting
+  public virtual bool EnableSorting
   {
     get { return _enableSorting; }
     set { _enableSorting = value; }
@@ -4099,7 +4099,7 @@ public class BocList:
   [Category ("Appearance")]
   [Description ("Enables the sorting order display in front of each sorting button.")]
   [DefaultValue (false)]
-  public bool ShowSortingOrder
+  public virtual bool ShowSortingOrder
   {
     get { return _showSortingOrder; }
     set { _showSortingOrder = value; }
@@ -4112,7 +4112,7 @@ public class BocList:
   [Category ("Menu")]
   [Description ("Enables the options menu.")]
   [DefaultValue (true)]
-  public bool ShowOptionsMenu
+  public virtual bool ShowOptionsMenu
   {
     get { return _showOptionsMenu; }
     set { _showOptionsMenu = value; }
@@ -4125,7 +4125,7 @@ public class BocList:
   [Category ("Menu")]
   [Description ("Enables the list menu.")]
   [DefaultValue (true)]
-  public bool ShowListMenu
+  public virtual bool ShowListMenu
   {
     get { return _showListMenu; }
     set { _showListMenu = value; }
@@ -4141,7 +4141,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Indicates whether row selection is enabled.")]
   [DefaultValue (RowSelection.Disabled)]
-  public RowSelection Selection
+  public virtual RowSelection Selection
   {
     get { return _selection; }
     set { _selection = value; }
@@ -4160,7 +4160,7 @@ public class BocList:
   [Category ("Appearance")]
   [Description ("The number of rows displayed per page. Set PageSize to 0 to show all rows.")]
   [DefaultValue (typeof(NaInt32), "null")]
-  public NaInt32 PageSize
+  public virtual NaInt32 PageSize
   {
     get { return _pageSize; }
     set
@@ -4183,7 +4183,7 @@ public class BocList:
   [Category ("Behavior")]
   [Description ("Indicates whether to the show the page count even when there is just one page.")]
   [DefaultValue (false)]
-  public bool AlwaysShowPageInfo
+  public virtual bool AlwaysShowPageInfo
   {
     get { return _alwaysShowPageInfo; }
     set { _alwaysShowPageInfo = value; }
@@ -4193,7 +4193,7 @@ public class BocList:
   /// <remarks> Use {0} for the current page and {1} for the total page count. </remarks>
   [Category ("Appearance")]
   [Description ("The text providing the current page information to the user. Use {0} for the current page and {1} for the total page count.")]
-  [DefaultValue ("Page {0} of {1}")]
+  [DefaultValue (null)]
   public string PageInfo
   {
     get { return _pageInfo; }
