@@ -46,12 +46,12 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
     get { return true; }
   }
   //fix to make build begin
-  bool CreateIfNull 
+  public bool CreateIfNull 
   { 
     get { return false; } 
   }
   
-  IBusinessObject Create (IBusinessObject referencingObject)
+  public IBusinessObject Create (IBusinessObject referencingObject)
   {
     return new BindableDomainObject();
   }
