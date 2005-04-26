@@ -412,6 +412,16 @@ public class ReflectionBusinessObjectReferenceProperty: ReflectionBusinessObject
       return true;
     }
   }
+
+  public bool CreateIfNull 
+  { 
+    get { return false; }
+  }
+
+  IBusinessObject IBusinessObjectReferenceProperty.Create (IBusinessObject referencingObject)
+  {
+    throw new NotSupportedException ();
+  }
 }
 
 [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
