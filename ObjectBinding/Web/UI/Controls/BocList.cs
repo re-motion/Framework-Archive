@@ -913,7 +913,7 @@ public class BocList:
   {
     DetermineClientScriptLevel();
 
-    if (_pageSize.IsNull || Value == null)
+    if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)
     {
       _pageCount = 1;
     }
@@ -1473,7 +1473,7 @@ public class BocList:
       int totalRowCount = (Value != null) ? Value.Count : 0;
       int rowCountWithOffset = totalRowCount;
 
-      if (!_pageSize.IsNull && Value != null)
+      if (!_pageSize.IsNull && _pageSize.Value != 0 && Value != null)
       {      
         firstRow = _currentPage * _pageSize.Value;
         rowCountWithOffset = firstRow + _pageSize.Value;
@@ -1509,7 +1509,7 @@ public class BocList:
     {
       //  Render the init script for the client side selection handling
       int count = 0;
-      if (! _pageSize.IsNull)
+      if (! _pageSize.IsNull && _pageSize.Value != null)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
@@ -2111,7 +2111,7 @@ public class BocList:
     if (isSelectAllSelectorControl)
     {
       int count = 0;
-      if (! _pageSize.IsNull)
+      if (! _pageSize.IsNull && _pageSize.Value != null)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
@@ -4134,7 +4134,7 @@ public class BocList:
     get { return _pageSize; }
     set
     {
-      if (value.IsNull || value.Value <= 0)
+      if (value.IsNull || value.Value < 0)
         _pageSize = NaInt32.Null;
       else
         _pageSize = value; 
