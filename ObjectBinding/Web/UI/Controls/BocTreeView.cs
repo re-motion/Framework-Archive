@@ -113,6 +113,12 @@ public class BocTreeView: BusinessObjectBoundWebControl
     _isRebuildRequired = true;
   }
 
+  public void RefreshTreeNodes()
+  {
+    InvalidateTreeNodes();
+    InitializeRootWebTreeNodes();
+  }
+
   /// <summary>
   ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
   /// </summary>
