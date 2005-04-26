@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.ObjectBinding;
@@ -44,5 +45,17 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
   {
     get { return true; }
   }
+  //fix to make build begin
+  bool CreateIfNull 
+  { 
+    get { return false; } 
+  }
+  
+  IBusinessObject Create (IBusinessObject referencingObject)
+  {
+    return new BindableDomainObject();
+  }
+  //fix to make build end
+
 }
 }
