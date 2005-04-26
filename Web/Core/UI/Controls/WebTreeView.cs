@@ -45,6 +45,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
 
   // statics
   private static readonly object s_clickEvent = new object();
+  private static readonly object s_selectionChangedEvent = new object();
 
   // types
 
@@ -151,8 +152,11 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   {
     string[] pathSegments;
     WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
+    bool isSelectionChanged = _selectedNode != clickedNode;
     SetSelectedNode (clickedNode);
     OnClick (clickedNode, pathSegments);
+    if (isSelectionChanged)
+      OnSelectionChanged (clickedNode);
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
@@ -162,6 +166,17 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     if (handler != null)
     {
       WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs (node, path);
+      handler (this, e);
+    }
+  }
+
+  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
+  protected virtual void OnSelectionChanged (WebTreeNode node)
+  {
+    WebTreeNodeEventHandler handler = (WebTreeNodeEventHandler) Events[s_selectionChangedEvent];
+    if (handler != null)
+    {
+      WebTreeNodeEventArgs e = new WebTreeNodeEventArgs (node);
       handler (this, e);
     }
   }
@@ -755,6 +770,15 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     remove { Events.RemoveHandler (s_clickEvent, value); }
   }
 
+  /// <summary> Occurs when the selected node is changed. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the selected node is changed.")]
+  public event WebTreeNodeEventHandler SelectionChanged
+  {
+    add { Events.AddHandler (s_selectionChangedEvent, value); }
+    remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
+  }
+
   /// <summary> Gets the currently selected tree node. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -827,23 +851,37 @@ public delegate void InitializeRootWebTreeNodes();
 /// <summary> Represents the method that handles the <c>Click</c> event raised when clicking on a tree node. </summary>
 public delegate void WebTreeNodeClickEventHandler (object sender, WebTreeNodeClickEventArgs e);
 
-/// <summary> Provides data for the <c>Click</c> event. </summary>
-public class WebTreeNodeClickEventArgs: EventArgs
+/// <summary> Represents the method that handles an event raised by a <see cref="WebTreeNode"/>. </summary>
+public delegate void WebTreeNodeEventHandler (object sender, WebTreeNodeEventArgs e);
+
+/// <summary> Provides data for event raised by a <see cref="WebTreeNode"/>. </summary>
+public class WebTreeNodeEventArgs: EventArgs
 {
   private WebTreeNode _node;
-  private string[] _path;
 
   /// <summary> Initializes an instance. </summary>
-  public WebTreeNodeClickEventArgs (WebTreeNode node, string[] path)
+  public WebTreeNodeEventArgs (WebTreeNode node)
   {
     _node = node;
-    _path = path;
   }
 
   /// <summary> The <see cref="WebTreeNode"/> that was clicked. </summary>
   public WebTreeNode Node
   {
     get { return _node; }
+  }
+}
+
+/// <summary> Provides data for the <c>Click</c> event. </summary>
+public class WebTreeNodeClickEventArgs: WebTreeNodeEventArgs
+{
+  private string[] _path;
+
+  /// <summary> Initializes an instance. </summary>
+  public WebTreeNodeClickEventArgs (WebTreeNode node, string[] path)
+    : base (node)
+  {
+    _path = path;
   }
 
   /// <summary> The ID path for the clicked node. </summary>
