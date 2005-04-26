@@ -123,7 +123,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (row.Type == FormGridRowType.DataRow)
           validationErrorList.AddRange(row.ValidationErrors);
       }
@@ -139,7 +139,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.ValidationErrors.Length > 0)
         {
@@ -158,7 +158,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (    row.Type == FormGridRowType.DataRow 
             &&  row.ValidationMarker != null)
         {
@@ -177,7 +177,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.RequiredMarker != null)
         {
@@ -194,7 +194,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (    row.Type == FormGridRowType.DataRow
             &&  row.HelpProvider != null)
         {
@@ -210,7 +210,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         row.BuildIDCollection();
       }
     }
@@ -226,7 +226,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
       for (int i = 0; i < _rows.Count; i++)
       {
-        FormGridRow row = (FormGridRow)_rows[i];
+        FormGridRow row = (FormGridRow) _rows[i];
         if (row.ContainsControlWithID (id))
           return row;
       }
@@ -256,7 +256,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         //  append html table rows
         for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
         {
-          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
           _table.Rows.Add (newHtmlTableRow);
         }
         //  append form grid row
@@ -286,7 +286,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         //  Insert the new html table rows
         for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
         {
-          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
           _table.Rows.Insert (idxHtmlTableRow, newHtmlTableRow);
           idxHtmlTableRow++;
         }
@@ -317,7 +317,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         //  Insert the new html table rows
         for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
         {
-          HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
+          HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
           _table.Rows.Insert (idxHtmlTableRow, newHtmlTableRow);
           idxHtmlTableRow++;
         }
