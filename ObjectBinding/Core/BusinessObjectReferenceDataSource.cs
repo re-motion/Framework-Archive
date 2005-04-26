@@ -106,6 +106,8 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null)
     {
       _businessObject = (IBusinessObject) ReferencedDataSource.BusinessObject[ReferenceProperty];
+      if (_businessObject == null && Mode == DataSourceMode.Edit && ReferenceProperty.CreateIfNull)
+        _businessObject = ReferenceProperty.Create (ReferencedDataSource.BusinessObject);     
       _businessObjectChanged = false;
     }
 
