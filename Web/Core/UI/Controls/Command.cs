@@ -196,6 +196,7 @@ public class Command: IControlItem
     }
   }
 
+  private string _toolTip;
   private CommandType _type;
   private CommandType _defaultType = CommandType.None;
   private CommandShow _show = CommandShow.Always;
@@ -250,6 +251,7 @@ public class Command: IControlItem
         if (HrefCommand.Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       case CommandType.Event:
@@ -257,6 +259,7 @@ public class Command: IControlItem
         ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
+        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       case CommandType.WxeFunction:
@@ -264,6 +267,7 @@ public class Command: IControlItem
         ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
+        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       default:
@@ -369,6 +373,16 @@ public class Command: IControlItem
   {
     get { return _type; }
     set { _type = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The ToolTip/Title rendered in the anchor tag.")]
+  [NotifyParentProperty (true)]
+  public string ToolTip
+  {
+    get { return _toolTip; }
+    set { _toolTip = value; }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
