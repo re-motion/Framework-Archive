@@ -17,3 +17,17 @@ function BocReferenceValue_GetSelectionCount (referenceValueDropDownListID)
     return 0;
   return 1;
 }
+
+//function BocReferenceValue_OnMouseOver (context, cssClass) 
+//{
+//  var className = context.className;
+//  className = className.substr (0, className.lastIndexOf (' '));
+//  context.className = className + ' ' + cssClass;
+//}
+
+//function BocReferenceValue_OnMouseOut (context, cssClass) 
+//{
+//  var className = context.className;
+//  className = className.substr (0, className.lastIndexOf (' '));
+//  context.className = className + ' ' + cssClass;
+//}
