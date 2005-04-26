@@ -64,6 +64,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   private object _value = null;
   private string _internalValue = null;
+  private string _oldInternalValue = null;
   private IEnumerationValueInfo _enumerationValueInfo = null;
  
   private Style _commonStyle;
@@ -71,7 +72,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private Style _labelStyle;
 
   /// <summary> State field for special behaviour during load view state. </summary>
-  /// <remarks> Used by <see cref="InternalLoadValue"/>. </remarks>
+  /// <remarks> Used by <see cref="RefreshEnumListSelectedValue"/>. </remarks>
   private bool _isExecutingLoadViewState;
 
   private string _errorMessage;
@@ -115,7 +116,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
@@ -164,6 +165,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Called when the state of the control has changed between post backs. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
+    RefreshEnumListSelectedValue();
     OnSelectionChanged (EventArgs.Empty);
   }
 
@@ -326,7 +328,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary>
   ///   Populates the <see cref="ListControl"/> from the <see cref="Property"/>'s 
-  ///   list of enabled enum values before calling <see cref="InternalLoadValue"/>.
+  ///   list of enabled enum values before calling <see cref="RefreshEnumListSelectedValue"/>.
   /// </summary>
   protected virtual void RefreshEnumList()
   {
@@ -347,14 +349,68 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
           _listControl.Items.Add (item);
         }
       }
+      RefreshEnumListSelectedValue();
     }
+  }
 
-    InternalLoadValue();
+  /// <summary> Refreshes the <see cref="ListControl"/> with the new value. </summary>
+  protected void RefreshEnumListSelectedValue()
+  {
+    if (! IsReadOnly)
+    {
+      bool hasPropertyAfterInitializion = ! _isExecutingLoadViewState && Property != null;
+
+      string itemWithIdentifierToRemove = null;
+      if (_oldInternalValue == null && IsRequired)
+      {
+        itemWithIdentifierToRemove = c_nullIdentifier;
+      }
+      else if (_oldInternalValue != null && Property != null)
+      {
+        IEnumerationValueInfo oldEnumerationValueInfo = Property.GetValueInfoByIdentifier (_oldInternalValue);        
+        if (oldEnumerationValueInfo != null && ! oldEnumerationValueInfo.IsEnabled)
+          itemWithIdentifierToRemove = _oldInternalValue;
+        _oldInternalValue = null;
+      }
+
+      bool isNullItem =    InternalValue == null
+                        || ! hasPropertyAfterInitializion;
+
+      //  Prevent unnecessary removal
+      if (itemWithIdentifierToRemove != null && ! isNullItem)
+      {
+        ListItem itemToRemove = _listControl.Items.FindByValue (itemWithIdentifierToRemove);
+        _listControl.Items.Remove (itemToRemove);
+      }
+
+      //  Check if null item is to be selected
+      if (isNullItem)
+      {
+        //  No null item in the list
+        if (_listControl.Items.FindByValue (c_nullIdentifier) == null)
+          _listControl.Items.Insert (0, CreateNullItem());
+
+        _listControl.SelectedValue = c_nullIdentifier;
+      }
+      else
+      {
+          //  Item currently not in the list
+        if (_listControl.Items.FindByValue (InternalValue) == null)
+        {
+          ListItem item = new ListItem (EnumerationValueInfo.DisplayName, EnumerationValueInfo.Identifier);
+          _listControl.Items.Add (item);
+        }
+
+        _listControl.SelectedValue = InternalValue;
+      }
+    }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
   protected override void PreRenderChildControls()
   {
+    RefreshEnumListSelectedValue();
+
     if (IsReadOnly)
     {
       string text = null;
@@ -388,61 +444,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       _listControl.ApplyStyle (_commonStyle);
       _listControlStyle.ApplyStyle (_listControl);
     }
-  }
-
-  /// <overloads>Overloaded.</overloads>
-  /// <summary> Refreshes the <see cref="ListControl"/> with the new value. </summary>
-  /// <param name="removeItemWithIdentifier">
-  ///   If not <see langword="null"/>, the method removes the item with the matching identifier 
-  ///   from the <see cref="ListControl"/>. Used after the value is set to an item different from the null item if the
-  ///   control's value is required, or after a disabled value gets deselected.
-  /// </param>
-  private void InternalLoadValue (string removeItemWithIdentifier)
-  {
-    bool hasPropertyAfterInitializion = ! _isExecutingLoadViewState && Property != null;
-
-    if (! IsReadOnly)
-    {
-      bool isNullItem =    InternalValue == null
-                        || ! hasPropertyAfterInitializion;
-
-      //  Prevent unnecessary removal
-      if (removeItemWithIdentifier != null && ! isNullItem)
-      {
-        ListItem itemToRemove = _listControl.Items.FindByValue (removeItemWithIdentifier);
-        _listControl.Items.Remove (itemToRemove);
-      }
-
-      //  Check if null item is to be selected
-      if (isNullItem)
-      {
-        //  No null item in the list
-        if (_listControl.Items.FindByValue (c_nullIdentifier) == null)
-          _listControl.Items.Insert (0, CreateNullItem());
-
-        _listControl.SelectedValue = c_nullIdentifier;
-      }
-      else
-      {
-          //  Item currently not in the list
-        if (_listControl.Items.FindByValue (InternalValue) == null)
-        {
-          ListItem item = new ListItem (
-            EnumerationValueInfo.DisplayName, 
-            EnumerationValueInfo.Identifier);
-
-          _listControl.Items.Add (item);
-        }
-
-        _listControl.SelectedValue = InternalValue;
-      }
-    }
-  }
-
-  /// <summary> Refreshes the <see cref="ListControl"/> with the new value. </summary>
-  private void InternalLoadValue()
-  {
-    InternalLoadValue (null);
   }
 
   /// <summary> Handles refreshing the bound control. </summary>
@@ -490,7 +491,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [Browsable(false)]
   public new object Value
   {
-    get { return _value; }
+    get 
+    {
+      EnsureValue();
+      return _value; 
+    }
     set
     {
       _value = value;
@@ -548,44 +553,33 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (_internalValue == value)
         return;
 
-      string oldInternalValue = _internalValue;
-
+      _oldInternalValue = _internalValue;
       _internalValue = value;
       
-        //  Still chached in _enumerationValueInfo
-      if (   _enumerationValueInfo != null 
-          && _enumerationValueInfo.Identifier == _internalValue)
-      {
-        _value = _enumerationValueInfo.Value;
-      }
-      //  Can get a new EnumerationValueInfo
-      else if (_internalValue != null && Property != null)
-      {
-        _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue);
-        _value = _enumerationValueInfo.Value;
-      }
-      else
-      {
-        _value = null;
-        _enumerationValueInfo = null;
-      }
+      EnsureValue();
+      RefreshEnumListSelectedValue();
+    }
+  }
 
-      string removeItemWithIdentifier = null;
-
-      if (oldInternalValue == null && IsRequired)
-      {
-        removeItemWithIdentifier = c_nullIdentifier;
-      }
-      else if (oldInternalValue != null && Property != null)
-      {
-        IEnumerationValueInfo oldEnumerationValueInfo =
-            Property.GetValueInfoByIdentifier (oldInternalValue);
-        
-        if (oldEnumerationValueInfo != null && ! oldEnumerationValueInfo.IsEnabled)
-          removeItemWithIdentifier = oldInternalValue;
-      }
-      
-      InternalLoadValue (removeItemWithIdentifier);
+  /// <summary> Ensures that the <see cref="Value"/> is set to the enum-value of the <see cref="InternalValue"/>. </summary>
+  protected void EnsureValue()
+  {
+    //  Still chached in _enumerationValueInfo
+    if (   _enumerationValueInfo != null 
+        && _enumerationValueInfo.Identifier == _internalValue)
+    {
+      _value = _enumerationValueInfo.Value;
+    }
+    //  Can get a new EnumerationValueInfo
+    else if (_internalValue != null && Property != null)
+    {
+      _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue);
+      _value = _enumerationValueInfo.Value;
+    }
+    else
+    {
+      _value = null;
+      _enumerationValueInfo = null;
     }
   }
 
