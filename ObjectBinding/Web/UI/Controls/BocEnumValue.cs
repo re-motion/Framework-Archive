@@ -376,8 +376,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       bool isNullItem =    InternalValue == null
                         || ! hasPropertyAfterInitializion;
 
-      //  Prevent unnecessary removal
-      if (itemWithIdentifierToRemove != null && ! isNullItem)
+      if (   (itemWithIdentifierToRemove == c_nullIdentifier && ! isNullItem)
+          || (itemWithIdentifierToRemove != c_nullIdentifier && itemWithIdentifierToRemove != null))
       {
         ListItem itemToRemove = _listControl.Items.FindByValue (itemWithIdentifierToRemove);
         _listControl.Items.Remove (itemToRemove);
@@ -538,7 +538,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/InternalValue/*' />
+  /// <remarks> Used to identify the currently selected item. </remarks>
+  /// <value> 
+  ///   The <see cref="IEnumerationValueInfo.Identifier"/> object
+  ///   or <see langword="null"/> if no item / the null item is selected.
+  /// </value>
   protected virtual string InternalValue
   {
     get 
@@ -562,7 +566,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Ensures that the <see cref="Value"/> is set to the enum-value of the <see cref="InternalValue"/>. </summary>
-  /// <remarks> Clears <see cref="Value"/> if <see cref="InternalValue"/> cannot be parsed. </remarks>
   protected void EnsureValue()
   {
     if (   _enumerationValueInfo != null 
@@ -577,7 +580,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue);
       _value = _enumerationValueInfo.Value;
     }
-    else
+    else if (_internalValue == null)
     {
       _value = null;
       _enumerationValueInfo = null;
