@@ -54,7 +54,10 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldTitle">
         <value>Input required in the row currently being edited</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldIcon">
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldAlternateText">
         <value>*</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.ValidationErrorInfoAlternateText">
+        <value>!</value>
     </data>
 </root>
