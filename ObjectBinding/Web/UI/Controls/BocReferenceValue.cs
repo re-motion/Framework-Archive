@@ -693,7 +693,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   {
     _optionsMenu.Enabled = Enabled;
     _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
     if (StringUtility.IsNullOrEmpty (_optionsTitle))
       _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
     else

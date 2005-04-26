@@ -951,7 +951,8 @@ public class BocList:
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
-    EnsureOptionsMenuItemsGot (true);
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
     EnsureListMenuItemsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
