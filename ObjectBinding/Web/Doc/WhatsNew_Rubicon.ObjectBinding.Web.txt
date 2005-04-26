@@ -1,3 +1,11 @@
+1.2.28.0
+========
+- BocList
+  * Edit Details konfigurierbar:
+    ShowEditDetailsRequiredMarkers
+    ShowEditDetailsValidationMarkers
+    DisableEditDetailsValidationMessages
+  
 1.2.26.0
 ========
 
