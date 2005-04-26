@@ -242,7 +242,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
-    Value = values[1];
+    _value = values[1];
     if (values[2] != null)
       _internalValue = (string) values[2];
     _isDirty = (bool)  values[3];
@@ -256,7 +256,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     object[] values = new object[4];
 
     values[0] = base.SaveViewState();
-    values[1] = Value;
+    values[1] = _value;
     values[2] = _internalValue;
     values[3] = _isDirty;
 
@@ -562,17 +562,18 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Ensures that the <see cref="Value"/> is set to the enum-value of the <see cref="InternalValue"/>. </summary>
+  /// <remarks> Clears <see cref="Value"/> if <see cref="InternalValue"/> cannot be parsed. </remarks>
   protected void EnsureValue()
   {
-    //  Still chached in _enumerationValueInfo
     if (   _enumerationValueInfo != null 
         && _enumerationValueInfo.Identifier == _internalValue)
     {
+      //  Still chached in _enumerationValueInfo
       _value = _enumerationValueInfo.Value;
     }
-    //  Can get a new EnumerationValueInfo
     else if (_internalValue != null && Property != null)
     {
+      //  Can get a new EnumerationValueInfo
       _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue);
       _value = _enumerationValueInfo.Value;
     }
