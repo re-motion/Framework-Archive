@@ -133,6 +133,18 @@ public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
 
   bool SupportsSearchAvailableObjects { get; }
   IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string searchStatement); 
+
+  /// <summary>
+  ///   If true, <see cref="Create"/> can be called to implicitly create a new object for editing if the object is null.
+  /// </summary>
+  bool CreateIfNull { get; }
+
+  /// <summary>
+  ///   If <see cref="CreateIfNull"/> is true, this method can be used to create a new object.
+  /// </summary>
+  /// <exception cref="NotSupportedException"> Thrown if this method is 
+  ///   called although <c>CreateIfNull</c> is false. </exception>
+  IBusinessObject Create (IBusinessObject referencingObject);
 }
 
 public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
