@@ -3909,7 +3909,7 @@ public class BocList:
   [Category ("Appearance")]
   [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
   [DefaultValue (false)]
-  public bool ShowAllProperties
+  public virtual bool ShowAllProperties
   {
     get { return _showAllProperties; }
     set { _showAllProperties = value; }
