@@ -341,6 +341,14 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
+  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
   ///   properly initialized.
@@ -743,7 +751,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       writer.AddStyleAttribute ("padding-right", "3pt");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
@@ -760,7 +768,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (isCommandEnabled)
@@ -776,7 +784,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValue);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (! isControlHeightEmpty && isDropDownListHeightEmpty)
@@ -1265,10 +1273,20 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
   }
 
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocReferenceValue</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+{ get { return "bocReferenceValue"; } }
+
   /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s value. </summary>
-  /// <remarks> Class: <c>bocReferenceValue</c> </remarks>
-  protected virtual string CssClassValue
-  { get { return "bocReferenceValue"; } }
+  /// <remarks> Class: <c>bocReferenceValueContent</c> </remarks>
+  protected virtual string CssClassContent
+  { get { return "bocReferenceValueContent"; } }
+  #endregion
 }
 
 }

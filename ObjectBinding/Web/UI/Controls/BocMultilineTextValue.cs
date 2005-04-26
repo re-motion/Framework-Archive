@@ -22,11 +22,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary>
 ///   This control can be used to display or edit a list of strings.
 /// </summary>
-/// <remarks>
-///   The control is displayed using a <see cref="TextBox"/> in edit mode, 
-///   and using a <see cref="Label"/> in read-only mode. Use the
-///   <see cref="TextBox"/> and <see cref="Label"/> properties to access these controls directly.
-/// </remarks>
+/// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]

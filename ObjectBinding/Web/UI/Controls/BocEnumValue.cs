@@ -193,6 +193,14 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       Page.RegisterRequiresPostBack (this);
   }
 
+  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
   /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
   /// <remarks> 
   ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
@@ -704,6 +712,16 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
         validator.ErrorMessage = _errorMessage;
     }
   }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocEnumValue"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocEnumValue</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  { get { return "bocEnumValue"; } }
+  #endregion
 }
 
 }

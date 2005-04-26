@@ -887,6 +887,14 @@ public class BocList:
     EnsureChildControlsPreRendered();
   }
 
+  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
   /// <summary>
   ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are properly initialized.
   /// </summary>
@@ -4313,6 +4321,14 @@ public class BocList:
   }
 
   #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocList</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  { get { return "bocList"; } }
+
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
   /// <remarks> Class: <c>bocListTable</c> </remarks>
   protected virtual string CssClassTable
