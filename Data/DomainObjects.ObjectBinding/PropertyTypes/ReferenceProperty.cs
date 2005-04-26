@@ -53,7 +53,7 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
   
   public IBusinessObject Create (IBusinessObject referencingObject)
   {
-    return new BindableDomainObject();
+    return BindableDomainObject.GetObject (ObjectID.Parse ("dummy"));
   }
   //fix to make build end
 
