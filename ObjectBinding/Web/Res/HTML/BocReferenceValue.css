@@ -1,16 +1,26 @@
 /* Style applied to the BocReferenceValue's value. */
-span.bocReferenceValue
+span.bocReferenceValueContent
 {
 }
 
-span.bocReferenceValue a
+span.bocReferenceValueContent a
 {
   color: Blue;
   cursor: hand;
 }
 
-span.bocReferenceValue a:hover
+span.bocReferenceValueContent a:hover
 {
   color: Blue;
 	cursor: hand;
 }
+
+//span.bocReferenceValueOnMouseOver
+//{
+//  border: solid 1px red;
+//}
+
+//span.bocReferenceValueOnMouseOut
+//{
+//  padding: 1px;
+//}
