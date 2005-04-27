@@ -80,4 +80,52 @@
       </para>
     </remarks>
   </Class>
+  <LoadPostData>
+    <remarks>
+      <para>
+        Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
+      </para><para>
+        Evaluates the value of the <see cref="DropDownList"/>.
+      </para>
+      <note type="inheritinfo">
+        Overrive this method to change the way a data change is detected of the value is read from the 
+        <paramref name="postCollection"/>.
+      </note>
+    </remarks>
+    <param name="postDataKey"> The key identifier for this control. </param>
+    <param name="postCollection"> The collection of all incoming name values.  </param>
+    <returns>
+      <see langword="true"/> if the server control's state changes as a result of the post back; 
+      otherwise <see langword="false"/>.
+    </returns>
+  </LoadPostData>
+  <LoadValue>
+    <remarks>
+      <para>
+        Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para>
+    </remarks>
+  </LoadValue>
+  <SaveValue>
+    <remarks>
+      <para>
+        Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
+        if <paramref name="interim"/> is <see langword="false"/> and the control's 
+        <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para>
+    </remarks>
+  </SaveValue>
+  <CreateValidators>
+    <remarks>
+      Generates a <see cref="CompareValidator"/> checking that the selected item is not the null-item if the 
+      control is in edit mode and input is required.
+    </remarks>
+  </CreateValidators>
 </BocReferenceValue>
