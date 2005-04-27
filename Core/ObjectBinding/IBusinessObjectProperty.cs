@@ -149,6 +149,7 @@ public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
 
 public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
 {
+  string GetDisplayName (bool value);
 }
 
 public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
