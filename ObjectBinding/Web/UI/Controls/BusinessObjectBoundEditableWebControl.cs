@@ -80,7 +80,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   /// <summary> Explicitly specifies whether the control should be displayed in read-only mode. </summary>
   /// <remarks>
   ///   Set this property to <see cref="NaBooleanEnum.Undefined"/> in order to use the default value 
-  ///   (see <see cref="IsReadOnly"/>).
+  ///   (see <see cref="IsReadOnly"/>). Note that if the data source is in read-only mode, the
+  ///   control is read-only too, even if this property is set to <c>false</c>.
   /// </remarks>
   [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
   [Category ("Data")]
@@ -151,9 +152,11 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   {
     get
     {
-      if (_readOnly != NaBooleanEnum.Undefined)
-        return _readOnly == NaBooleanEnum.True;
+      if (_readOnly == NaBooleanEnum.True)
+        return true;
       if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
+        return false;
+      if (_readOnly == NaBooleanEnum.False)
         return false;
       if (Property == null || DataSource == null)
         return false;
