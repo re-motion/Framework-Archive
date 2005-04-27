@@ -166,8 +166,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
-  /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>
-  protected override void RenderChildren(HtmlTextWriter writer)
+  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     if (IsReadOnly)
     {

@@ -3558,9 +3558,14 @@ public class BocList:
         return null;
     }
 
-    control.ID = ID + "_RowEditControl_" + columnIndex.ToString();
+    control.ID = GetEditDetailsControlID (columnIndex);
     control.Property = property;
     return control;
+  }
+
+  protected string GetEditDetailsControlID (int columnIndex)
+  {
+    return ID + "_RowEditControl_" + columnIndex.ToString();
   }
 
   private void RemoveEditModeControls()

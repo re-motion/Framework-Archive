@@ -128,4 +128,45 @@
       control is in edit mode and input is required.
     </remarks>
   </CreateValidators>
+  <GetOptionsMenuItemsForPreviousLifeCycle>
+    <remarks>
+      <para>
+        The method is called with the original list of menu items, which can then be modified by an overridden
+        version. The base method does not have to be called by the override. This approach was chosen because
+        the base method is not necessarily able to get the original list of menu items on its own.
+      </para><para>
+        The <see cref="BocMenuItem"/> objects displayed during the last page life cycle are required 
+        to correctly handle the events raised on the <see cref="BocReferenceValue"/>'s <b>OptionsMenu</b>.
+      </para>
+      <note>
+        Make the method <c>protected virtual</c> should this feature be ever required and change the 
+        method's body to return the passed <c>menuItems</c>.
+      </note>
+      <note type="inheritinfo">
+        Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s
+        <b>OptionsMenu</b> during the previous page life cycle.
+      </note>
+    </remarks>
+    <param name="menuItems"> 
+      The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
+    </param>
+    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or it's override. </returns>
+  </GetOptionsMenuItemsForPreviousLifeCycle>
+  <GetOptionsMenuItems>
+    <remarks>
+      <para>
+        The method is called with the original list of menu items, which can then be modified by an overridden
+        version. The base method does not have to be called by the override. This approach was chosen because
+        the base method is not necessarily able to get the original list of menu items on its own.
+      </para>
+      <note type="inheritinfo">
+        Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s
+        <b>OptionsMenu</b> during the current page life cycle.
+      </note>
+    </remarks>
+    <param name="menuItems"> 
+      The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
+    </param>
+    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or it's override. </returns>
+  </GetOptionsMenuItems>
 </BocReferenceValue>

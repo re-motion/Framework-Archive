@@ -298,366 +298,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     //    writer.AddAttribute ("onMouseOut", script);
   }
 
-  /// <summary>
-  ///   Calls the parents <c>LoadViewState</c> method and restores this control's specific data.
-  /// </summary>
-  /// <param name="savedState">
-  ///   An <see cref="Object"/> that represents the control state to be restored.
-  /// </param>
-  protected override void LoadViewState (object savedState)
-  {
-    object[] values = (object[]) savedState;
-
-    base.LoadViewState (values[0]);
-    if (values[1] != null)    
-      InternalValue = (string) values[1];  
-    _isDirty = (bool) values[2];
-
-    //  Drop down list has enabled view state, selected value must not be restored
-  }
-
-  /// <summary>
-  ///   Calls the parents <c>SaveViewState</c> method and saves this control's specific data.
-  /// </summary>
-  /// <returns>
-  ///   Returns the server control's current view state.
-  /// </returns>
-  protected override object SaveViewState()
-  {
-    object[] values = new object[3];
-
-    values[0] = base.SaveViewState();
-    values[1] = _internalValue;
-    values[2] = _isDirty;
-
-    return values;
-  }
-
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
-  public override void LoadValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
-      }
-    }
-  }
-
-  /// <summary>
-  ///   Writes the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
-  public override void SaveValue (bool interim)
-  {
-    if (! interim)
-    {
-      //Binding.EvaluateBinding();
-
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
-        DataSource.BusinessObject.SetProperty (Property, Value);
-    }
-  }
-
-  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
-
-  /// <summary>
-  ///   Generates the validators depending on the control's configuration.
-  /// </summary>
-  /// <remarks>
-  ///   Generates a validator that checks that the selected item is not the null item if the 
-  ///   control is in edit mode and input is required.
-  /// </remarks>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
-  public override BaseValidator[] CreateValidators()
-  {
-    if (IsReadOnly || ! IsRequired)
-      return new BaseValidator[0];
-
-    BaseValidator[] validators = new BaseValidator[1];
-    
-    CompareValidator notNullItemValidator = new CompareValidator();
-    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-    notNullItemValidator.ControlToValidate = TargetControl.ID;
-    notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_errorMessage))
-    {
-      notNullItemValidator.ErrorMessage = 
-          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-    }
-    else
-    {
-      notNullItemValidator.ErrorMessage = _errorMessage;
-    }      
-    validators[0] = notNullItemValidator;
-
-    _validators.AddRange (validators);
-    return validators;
-  }
-
-  /// <summary>
-  ///   Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
-  /// </summary>
-  /// <remarks>
-  ///   Use this method to set the listed items, e.g. from the parent control if no <see cref="Select"/>
-  ///   statement was provided.
-  /// </remarks>
-  /// <param name="businessObjects">Must not be <see langword="null"/>.</param>
-  public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
-  {
-    ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-    RefreshBusinessObjectList (businessObjects);
-  }
-
-  /// <summary>
-  ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
-  ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
-  /// </summary>
-  /// <remarks> 
-  ///   Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
-  ///   <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
-  /// </remarks>
-  protected void RefreshBusinessObjectList()
-  {
-    if (Property == null)
-      return;
-
-    IBusinessObjectWithIdentity[] businessObjects = null;
-
-    //  Get all matching business objects
-    if (DataSource != null && DataSource.BusinessObject != null)
-      businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, _select);
-
-    RefreshBusinessObjectList (businessObjects);
-  }
-
-  /// <summary>
-  ///   Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>.
-  /// </summary>
-  /// <remarks>
-  ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
-  /// </remarks>
-  /// <param name="businessObjects">
-  ///   The <see cref="IBusinessObjectWithIdentity"/> objects to place in the 
-  ///   <see cref="DropDownList"/>.
-  /// </param>
-  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
-  {
-    if (! IsReadOnly)
-    {
-      _dropDownList.Items.Clear();
-
-      if (businessObjects != null)
-      {      
-        //  Add Undefined item
-        if (! IsRequired)
-          _dropDownList.Items.Add (CreateNullItem());
-
-        if (businessObjects != null)
-        {
-          //  Populate _dropDownList
-          foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
-          {
-            ListItem item = new ListItem (
-              businessObject.DisplayName,
-              businessObject.UniqueIdentifier);
-
-            _dropDownList.Items.Add (item);
-          }
-        }
-      }
-    }
-  }
-
-  /// <summary>
-  ///   Prerenders the child controls.
-  /// </summary>
-  protected override void PreRenderChildControls()
-  {
-    string key = typeof (BocReferenceValue).FullName + "_Script";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
-    }
-
-    key = typeof (BocReferenceValue).FullName+ "_Startup";
-    if (! Page.IsStartupScriptRegistered (key))
-    {
-      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
-      PageUtility.RegisterStartupScriptBlock (Page, key, script);
-    }
-
-    key = typeof (BocReferenceValue).FullName + "_Style";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
-    }
-
-    PreRenderIcon();
-
-    if (HasOptionsMenu)
-      PreRenderOptionsMenu();
-
-    if (IsReadOnly)
-      PreRenderReadOnlyValue();
-    else
-      PreRenderEditModeValue();
-  }
-
-  /// <summary>
-  ///   Prerenders the <see cref="Label"/>.
-  /// </summary>
-  private void PreRenderReadOnlyValue()
-  {
-    string text;
-    if (Value != null)
-      text = HttpUtility.HtmlEncode (Value.DisplayName);
-    else
-      text = String.Empty;
-    if (StringUtility.IsNullOrEmpty (text))
-    {
-      if (IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-      else
-      {
-        text = "&nbsp;";
-      }
-    }
-    _label.Text = text;
-
-    _label.Enabled = Enabled;
-    _label.Height = Unit.Empty;
-    _label.Width = Unit.Empty;
-    _label.ApplyStyle (_commonStyle);
-    _label.ApplyStyle (_labelStyle);
-  }
-
-  /// <summary>
-  ///   Prerenders the <see cref="DropDownList"/>.
-  /// </summary>
-  private void PreRenderEditModeValue()
-  {
-    bool isNullItem = InternalValue == null;
-
-    //  Check if null item is to be selected
-    if (isNullItem)
-    {
-      //  No null item in the list
-      if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
-        _dropDownList.Items.Insert (0, CreateNullItem());
-      _dropDownList.SelectedValue = c_nullIdentifier;
-    }
-    else
-    {
-      if (_dropDownList.Items.FindByValue (InternalValue) != null)
-      {
-        _dropDownList.SelectedValue = InternalValue;
-      }
-        //  Item not yet in the list but is a valid item.
-      else if (Value != null)
-      {
-        IBusinessObjectWithIdentity businessObject = Value;
-
-        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
-        _dropDownList.Items.Add (item);
-
-        _dropDownList.SelectedValue = InternalValue;
-      }
-    }
-
-    _dropDownList.Enabled = Enabled;
-    _dropDownList.Height = Unit.Empty;
-    _dropDownList.Width = Unit.Empty;
-    _dropDownList.ApplyStyle (_commonStyle);
-    _dropDownListStyle.ApplyStyle (_dropDownList);
-  }
-
-  /// <summary>
-  ///   Prerenders the <see cref="Icon"/>.
-  /// </summary>
-  private void PreRenderIcon()
-  {
-    //  Get icon
-    if (_enableIcon && Property != null)
-    {
-      IconInfo iconInfo = BusinessObjectBoundWebControl.GetIcon (Value, Property.ReferenceClass.BusinessObjectProvider);
-
-      if (iconInfo != null)
-      {
-        _icon.ImageUrl = iconInfo.Url;
-        _icon.Width = iconInfo.Width;
-        _icon.Height = iconInfo.Height;
-
-        _icon.Enabled = Enabled;
-        _icon.Visible = _enableIcon;
-      }
-      else
-      {
-        _icon.Visible = false;
-      }
-    }
-    else
-    {
-      _icon.Visible = false;
-    }
-  }
-
-  /// <summary>
-  ///   Prerenders the <see cref="_optionsMenu"/>.
-  /// </summary>
-  private void PreRenderOptionsMenu()
-  {
-    _optionsMenu.Enabled = Enabled;
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
-    if (StringUtility.IsNullOrEmpty (_optionsTitle))
-      _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
-    else
-      _optionsMenu.TitleText = _optionsTitle;
-
-    string getSelectionCount;
-    if (IsReadOnly)
-    {
-      if (InternalValue != null)
-        getSelectionCount = "function() { return 1; }";
-      else 
-        getSelectionCount = "function() { return 0; }";
-    }
-    else
-      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
-    _optionsMenu.GetSelectionCount = getSelectionCount;
-  }
-
-  protected override void RenderChildren (HtmlTextWriter writer)
+  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
 
@@ -780,7 +422,312 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     writer.RenderEndTag();
   }
 
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
+  protected override void LoadViewState (object savedState)
+  {
+    object[] values = (object[]) savedState;
 
+    base.LoadViewState (values[0]);
+    if (values[1] != null)    
+      InternalValue = (string) values[1];  
+    _isDirty = (bool) values[2];
+
+    //  Drop down list has enabled view state, selected value must not be restored
+  }
+
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[3];
+
+    values[0] = base.SaveViewState();
+    values[1] = _internalValue;
+    values[2] = _isDirty;
+
+    return values;
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
+  public override void LoadValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+        _isDirty = false;
+      }
+    }
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
+  public override void SaveValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+        DataSource.BusinessObject.SetProperty (Property, Value);
+    }
+  }
+
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/CreateValidators/*' />
+  public override BaseValidator[] CreateValidators()
+  {
+    if (IsReadOnly || ! IsRequired)
+      return new BaseValidator[0];
+
+    BaseValidator[] validators = new BaseValidator[1];
+    
+    CompareValidator notNullItemValidator = new CompareValidator();
+    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
+    notNullItemValidator.ControlToValidate = TargetControl.ID;
+    notNullItemValidator.ValueToCompare = c_nullIdentifier;
+    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
+    {
+      notNullItemValidator.ErrorMessage = 
+          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+    }
+    else
+    {
+      notNullItemValidator.ErrorMessage = _errorMessage;
+    }      
+    validators[0] = notNullItemValidator;
+
+    _validators.AddRange (validators);
+    return validators;
+  }
+
+  /// <summary> Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
+  /// <remarks>
+  ///   Use this method to set the listed items, e.g. from the parent control, if no <see cref="Select"/>
+  ///   statement was provided.
+  /// </remarks>
+  /// <param name="businessObjects">
+  ///   An array of <see cref="IBusinessObjectWithIdentity"/> objects to be used as list of possible values.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
+    RefreshBusinessObjectList (businessObjects);
+  }
+
+  /// <summary>
+  ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
+  ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
+  /// </summary>
+  /// <remarks> 
+  ///   Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
+  ///   <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
+  /// </remarks>
+  protected void RefreshBusinessObjectList()
+  {
+    if (Property == null)
+      return;
+
+    IBusinessObjectWithIdentity[] businessObjects = null;
+
+    //  Get all matching business objects
+    if (DataSource != null && DataSource.BusinessObject != null)
+      businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, _select);
+
+    RefreshBusinessObjectList (businessObjects);
+  }
+
+  /// <summary>
+  ///   Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>.
+  /// </summary>
+  /// <remarks>
+  ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
+  /// </remarks>
+  /// <param name="businessObjects">
+  ///   The array of <see cref="IBusinessObjectWithIdentity"/> objects to populate the <see cref="DropDownList"/>.
+  /// </param>
+  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
+  {
+    if (! IsReadOnly)
+    {
+      _dropDownList.Items.Clear();
+
+      //  Add Undefined item
+      if (! IsRequired)
+        _dropDownList.Items.Add (CreateNullItem());
+
+      if (businessObjects != null)
+      {
+        //  Populate _dropDownList
+        foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
+        {
+          ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+          _dropDownList.Items.Add (item);
+        }
+      }
+    }
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
+  protected override void PreRenderChildControls()
+  {
+    string key = typeof (BocReferenceValue).FullName + "_Script";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+    }
+
+    key = typeof (BocReferenceValue).FullName+ "_Startup";
+    if (! Page.IsStartupScriptRegistered (key))
+    {
+      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
+      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+    }
+
+    key = typeof (BocReferenceValue).FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+    }
+
+    PreRenderIcon();
+
+    if (HasOptionsMenu)
+      PreRenderOptionsMenu();
+
+    if (IsReadOnly)
+      PreRenderReadOnlyValue();
+    else
+      PreRenderEditModeValue();
+  }
+
+  /// <summary> Prerenders the <see cref="Label"/>. </summary>
+  private void PreRenderReadOnlyValue()
+  {
+    string text;
+    if (Value != null)
+      text = HttpUtility.HtmlEncode (Value.DisplayName);
+    else
+      text = String.Empty;
+    if (StringUtility.IsNullOrEmpty (text))
+    {
+      if (IsDesignMode)
+      {
+        text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
+      else
+      {
+        text = "&nbsp;";
+      }
+    }
+    _label.Text = text;
+
+    _label.Enabled = Enabled;
+    _label.Height = Unit.Empty;
+    _label.Width = Unit.Empty;
+    _label.ApplyStyle (_commonStyle);
+    _label.ApplyStyle (_labelStyle);
+  }
+
+  /// <summary> Prerenders the <see cref="DropDownList"/>. </summary>
+  private void PreRenderEditModeValue()
+  {
+    bool isNullItem = InternalValue == null;
+
+    //  Check if null item is to be selected
+    if (isNullItem)
+    {
+      //  No null item in the list
+      if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
+        _dropDownList.Items.Insert (0, CreateNullItem());
+      _dropDownList.SelectedValue = c_nullIdentifier;
+    }
+    else
+    {
+      if (_dropDownList.Items.FindByValue (InternalValue) != null)
+      {
+        _dropDownList.SelectedValue = InternalValue;
+      }
+      else if (Value != null)
+      {
+        //  Item not yet in the list but is a valid item.
+        IBusinessObjectWithIdentity businessObject = Value;
+
+        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+        _dropDownList.Items.Add (item);
+
+        _dropDownList.SelectedValue = InternalValue;
+      }
+    }
+
+    _dropDownList.Enabled = Enabled;
+    _dropDownList.Height = Unit.Empty;
+    _dropDownList.Width = Unit.Empty;
+    _dropDownList.ApplyStyle (_commonStyle);
+    _dropDownListStyle.ApplyStyle (_dropDownList);
+  }
+
+  /// <summary> Prerenders the <see cref="Icon"/>. </summary>
+  private void PreRenderIcon()
+  {
+    _icon.Visible = false;
+
+    //  Get icon
+    if (_enableIcon && Property != null)
+    {
+      IconInfo iconInfo = BusinessObjectBoundWebControl.GetIcon (Value, Property.ReferenceClass.BusinessObjectProvider);
+
+      if (iconInfo != null)
+      {
+        _icon.ImageUrl = iconInfo.Url;
+        _icon.Width = iconInfo.Width;
+        _icon.Height = iconInfo.Height;
+
+        _icon.Enabled = Enabled;
+        _icon.Visible = _enableIcon;
+      }
+    }
+  }
+
+  /// <summary> Prerenders the <see cref="_optionsMenu"/>. </summary>
+  private void PreRenderOptionsMenu()
+  {
+    _optionsMenu.Enabled = Enabled;
+    _optionsMenu.MenuItems.Clear();
+    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
+    if (StringUtility.IsNullOrEmpty (_optionsTitle))
+      _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+    else
+      _optionsMenu.TitleText = _optionsTitle;
+
+    string getSelectionCount;
+    if (IsReadOnly)
+    {
+      if (InternalValue != null)
+        getSelectionCount = "function() { return 1; }";
+      else 
+        getSelectionCount = "function() { return 0; }";
+    }
+    else
+      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
+    _optionsMenu.GetSelectionCount = getSelectionCount;
+  }
+
+  /// <summary> Gets a flag describing whether the <b>OptionsMenu</b> is visible. </summary>
   private bool HasOptionsMenu
   {
     get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
@@ -794,7 +741,12 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return emptyItem;
   }
 
-    private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
+  /// <summary> 
+  ///   Ensures that the menu items for the <b>OptionsMenu</b> from the previous page life cycle have been loaded.
+  /// </summary>
+  /// <param name="forceRefresh"> <see langword="true"/> to override the ensure pattern. </param>
+  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <b>OptionsMenu</b>. </returns>
+  private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
   {
     if (_optionsMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -804,6 +756,9 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
+  /// <summary> Ensures that the menu items for the <b>OptionsMenu</b> have been loaded. </summary>
+  /// <param name="forceRefresh"> <see langword="true"/> to override the ensure pattern. </param>
+  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <b>OptionsMenu</b>. </returns>
   private BocMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
   {
     if (_optionsMenuItemsRenderPhase == null || forceRefresh)
@@ -811,58 +766,42 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return _optionsMenuItemsRenderPhase;
   }
 
+  /// <summary> Ensures that the menu items for the <b>OptionsMenu</b> have been loaded. </summary>
+  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <b>OptionsMenu</b>. </returns>
   private BocMenuItem[] EnsureOptionsMenuItemsGot()
   {
     return EnsureOptionsMenuItemsGot (false);
   }
 
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s options menu
-  ///   during the previous page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
-  ///     or a data changed event.
-  ///   </para><para>
-  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
-  ///     method's body to return the passed <c>menuItems</c>.
-  ///   </para>
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the previous life cycle. </summary>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItemsForPreviousLifeCycle/*' />
   private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
   {
     //  return menuItems;
     return EnsureOptionsMenuItemsGot (true);
   }
 
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s options menu
-  ///   in the current page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   This call can happen more than once in the control's life cycle, passing different 
-  ///   arrays in <paramref name="menuItems" />. It is therefor important to not cache the return value
-  ///   in the override of <see cref="GetOptionsMenuItems"/>.
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the current life cycle. </summary>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItems/*' />
   protected virtual BocMenuItem[] GetOptionsMenuItems (BocMenuItem[] menuItems)
   {
     return menuItems;
   }
 
-  private void OptionsMenu_EventCommandClick(object sender, WebMenuItemClickEventArgs e)
+  /// <summary> Handles the <see cref="OptionsMenu.EventCommandClick"/> event of the <b>OptionsMenu</b>. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
+  private void OptionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
   }
 
+  /// <summary> 
+  ///   Calls the <see cref="BocMenuItemCommand.OnClick"/> method of the <paramref name="menuItem"/>'s 
+  ///   <see cref="BocMenuItem.Command"/> and raises <see cref="MenuItemClick"/> event. 
+  /// </summary>
+  /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
+  /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
   {
     WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
@@ -884,11 +823,21 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
   }
 
-  private void OptionsMenu_WxeFunctionCommandClick(object sender, WebMenuItemClickEventArgs e)
+  /// <summary> Handles the <see cref="OptionsMenu.WxeFunctionCommandClick"/> event of the <b>OptionsMenu</b>. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
+  /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
+  private void OptionsMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
     OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
   }
 
+  /// <summary> 
+  ///   Calls the <see cref="BocMenuItemCommand.ExecuteWxeFunction"/> method of the <paramref name="menuItem"/>'s 
+  ///   <see cref="BocMenuItem.Command"/>.
+  /// </summary>
+  /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
+  /// <remarks> Only called for commands of type <see cref="CommandType.WxeFunction"/>. </remarks>
   protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
