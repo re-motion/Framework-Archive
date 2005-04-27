@@ -113,8 +113,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary>
-  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   post backs.
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
+  ///   between postbacks.
   /// </summary>
   /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -417,7 +417,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit-mode, otherwise the control itself. </remarks>
+  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl 
   {
     get { return IsReadOnly ? (Control) this : _textBox; }
@@ -450,7 +450,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
   [Category ("Action")]
-  [Description ("Fires when the checked state of the control changes.")]
+  [Description ("Fires when the value of the control has changed.")]
   public event EventHandler TextChanged
   {
     add { Events.AddHandler (s_textChangedEvent, value); }
@@ -501,7 +501,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     get { return _labelStyle; }
   }
 
-  /// <summary> Gets the <see cref="TextBox"/> used in edit-mode. </summary>
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode. </summary>
   [Browsable (false)]
   public TextBox TextBox
   {

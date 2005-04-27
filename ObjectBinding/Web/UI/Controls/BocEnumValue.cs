@@ -162,7 +162,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return isDataChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     RefreshEnumListSelectedValue();
@@ -596,7 +596,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="ListControl"/> if the control is in edit-mode, otherwise the control itself. </remarks>
+  /// <remarks> Returns the <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl 
   {
     get { return (_listControl == null) ? (Control) this : _listControl; }
@@ -629,7 +629,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> This event is fired when the selection is changed between postbacks. </summary>
   [Category ("Action")]
-  [Description ("Fires when the selection changes.")]
+  [Description ("Fires when the value of the control has changed.")]
   public event EventHandler SelectionChanged
   {
     add { Events.AddHandler (s_selectionChangedEvent, value); }

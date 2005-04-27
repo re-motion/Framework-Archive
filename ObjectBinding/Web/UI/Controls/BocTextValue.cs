@@ -25,7 +25,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 {
   //  constants
 
-  /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>
+  /// <summary> Text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultTextBoxWidth = "150pt";
 
@@ -38,20 +38,27 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   // types
 
-  /// <summary> A list of control wide resources. </summary>
+  /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocTextValue")]
   protected enum ResourceIdentifier
   {
+    /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
     RequiredErrorMessage,
+    /// <summary> The validation error message displayed when the text exceeds the maximum length. </summary>
     MaxLengthValidationMessage,
+    /// <summary> The validation error message displayed when the text is no valid date/time value. </summary>
     InvalidDateAndTimeErrorMessage,
+    /// <summary> The validation error message displayed when the text is no valid date value. </summary>
     InvalidDateErrorMessage,
+    /// <summary> The validation error message displayed when the text is no valid integer. </summary>
     InvalidIntegerErrorMessage,
+    /// <summary> The validation error message displayed when the text is no valid integer. </summary>
     InvalidDoubleErrorMessage
   }
 
@@ -73,6 +80,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private string _errorMessage;
   private ArrayList _validators;
 
+  /// <summary> Initializes a new instance of the <b>BocTextValue</b> type. </summary>
 	public BocTextValue()
 	{
     _textBox = new TextBox();
@@ -80,6 +88,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _validators = new ArrayList();
 	}
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _textBox.ID = ID + "_Boc_TextBox";
@@ -91,6 +100,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     Controls.Add (_label);
   }
 
+  /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
@@ -110,26 +120,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary>
-  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   post backs.
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
+  ///   between postbacks.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
-  ///   </para><para>
-  ///     Evaluates the value of the <see cref="TextBox"/>.
-  ///   </para>
-  ///   <note type="inheritinfo">
-  ///     Overrive this method to change the way a data change is detected of the value is read from the 
-  ///     <paramref name="postCollection"/>.
-  ///   </note>
-  /// </remarks>
-  /// <param name="postDataKey"> The key identifier for this control. </param>
-  /// <param name="postCollection"> The collection of all incoming name values.  </param>
-  /// <returns>
-  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
-  ///   otherwise <see langword="false"/>.
-  /// </returns>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -142,14 +136,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return isDataChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     OnTextChanged (EventArgs.Empty);
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
-  /// <param name="e"> Empty. </param>
+  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
   protected virtual void OnTextChanged (EventArgs e)
   {
     EventHandler eventHandler = (EventHandler) Events[s_textChangedEvent];
@@ -157,75 +151,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       eventHandler (this, e);
   }
 
-  private void Binding_BindingChanged (object sender, EventArgs e)
-  {
-    RefreshPropertiesFromObjectModel();
-  }
-
-  /// <summary>
-  ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
-  ///   <see cref="IBusinessObjectBoundControl.Property"/>.
-  /// </summary>
-  private void RefreshPropertiesFromObjectModel()
-  {
-    if (Property != null)
-    {
-      if (_valueType == BocTextValueType.Undefined)
-        _actualValueType = GetBocTextValueType (Property);
-      
-      IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
-      if (stringProperty != null)
-      {
-        NaInt32 length = stringProperty.MaxLength;
-        if (! length.IsNull)
-          _textBox.MaxLength = length.Value;
-      }
-    }
-  }
-
-  public override void LoadValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        Value = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
-      }
-    }
-  }
-
-  private BocTextValueType GetBocTextValueType (IBusinessObjectProperty property)
-  {
-    if (property is IBusinessObjectStringProperty)
-      return BocTextValueType.String;
-    else if (property is IBusinessObjectInt32Property)
-      return BocTextValueType.Integer;
-    else if (property is IBusinessObjectDoubleProperty)
-      return BocTextValueType.Double;
-    else if (property is IBusinessObjectDateProperty)
-      return BocTextValueType.Date;
-    else if (property is IBusinessObjectDateTimeProperty)
-      return BocTextValueType.DateTime;
-    else
-      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
-  }
-
-  public override void SaveValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
-        DataSource.BusinessObject.SetProperty (Property, Value);
-    }
-  }
-
-  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
-
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
+  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
+  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
@@ -242,6 +172,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
+  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
+  /// </remarks>
   protected override void Render (HtmlTextWriter writer)
   {
     EnsureChildControlsPreRendered ();
@@ -249,6 +183,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     base.Render (writer);
   }
 
+  /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>
   protected override void RenderChildren(HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -276,42 +211,64 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  protected override void PreRenderChildControls()
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
+  protected override void LoadViewState(object savedState)
   {
-    if (IsReadOnly)
-    {
-      string text = HttpUtility.HtmlEncode (_text);
-      if (StringUtility.IsNullOrEmpty (text))
-      {
-        if (IsDesignMode)
-        {
-          text = c_designModeEmptyLabelContents;
-          //  Too long, can't resize in designer to less than the content's width
-          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-        }
-        else
-        {
-          text = "&nbsp;";
-        }
-      }
-      _label.Text = text;
-      _label.Width = Unit.Empty;
-      _label.Height = Unit.Empty;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
-    }
-    else
-    {
-      _textBox.Text = _text;
+    object[] values = (object[]) savedState;
+    base.LoadViewState (values[0]);
+    _text = (string) values[1];
+    _valueType = (BocTextValueType) values[2];
+    _actualValueType = (BocTextValueType) values[3];
+    _isDirty = (bool)  values[4];
 
-      _textBox.ReadOnly = ! Enabled;
-      _textBox.Width = Unit.Empty;
-      _textBox.Height = Unit.Empty;
-      _textBox.ApplyStyle (_commonStyle);
-      _textBoxStyle.ApplyStyle (_textBox);
+    _textBox.Text = _text;
+  }
+
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[5];
+    values[0] = base.SaveViewState();
+    values[1] = _text;
+    values[2] = _valueType;
+    values[3] = _actualValueType;
+    values[4] = _isDirty;
+    return values;
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadValue/*' />
+  public override void LoadValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        Value = DataSource.BusinessObject.GetProperty (Property);
+        _isDirty = false;
+      }
     }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/SaveValue/*' />
+  public override void SaveValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+        DataSource.BusinessObject.SetProperty (Property, Value);
+    }
+  }
+
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly)
@@ -414,97 +371,100 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
   }
 
-  /// <summary> This event is fired when the text is changed between postbacks. </summary>
-  [Category ("Action")]
-  [Description ("Fires when the selection changes.")]
-  public event EventHandler TextChanged
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
+  protected override void PreRenderChildControls()
   {
-    add { Events.AddHandler (s_textChangedEvent, value); }
-    remove { Events.RemoveHandler (s_textChangedEvent, value); }
+    if (IsReadOnly)
+    {
+      string text = HttpUtility.HtmlEncode (_text);
+      if (StringUtility.IsNullOrEmpty (text))
+      {
+        if (IsDesignMode)
+        {
+          text = c_designModeEmptyLabelContents;
+          //  Too long, can't resize in designer to less than the content's width
+          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        }
+        else
+        {
+          text = "&nbsp;";
+        }
+      }
+      _label.Text = text;
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
+    }
+    else
+    {
+      _textBox.Text = _text;
+
+      _textBox.ReadOnly = ! Enabled;
+      _textBox.Width = Unit.Empty;
+      _textBox.Height = Unit.Empty;
+      _textBox.ApplyStyle (_commonStyle);
+      _textBoxStyle.ApplyStyle (_textBox);
+    }
+  }
+
+  /// <summary> Handles refreshing the bound control. </summary>
+  /// <param name="sender"> The source of the event. </param>
+  /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
+  private void Binding_BindingChanged (object sender, EventArgs e)
+  {
+    RefreshPropertiesFromObjectModel();
   }
 
   /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).
+  ///   Refreshes all properties of <see cref="BocTextValue"/> that depend on the current value of 
+  ///   <see cref="BusinessObjectBoundWebControl.Property"/>.
   /// </summary>
-  /// <remarks>
-  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
-  ///   the respective modes. Note that if you set one of the <c>Font</c> attributes (Bold, Italic etc.) to 
-  ///   <c>true</c>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
-  ///   properties.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style CommonStyle
+  private void RefreshPropertiesFromObjectModel()
   {
-    get { return _commonStyle; }
+    if (Property != null)
+    {
+      if (_valueType == BocTextValueType.Undefined)
+        _actualValueType = GetBocTextValueType (Property);
+      
+      IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
+      if (stringProperty != null)
+      {
+        NaInt32 length = stringProperty.MaxLength;
+        if (! length.IsNull)
+          _textBox.MaxLength = length.Value;
+      }
+    }
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the TextBox (edit mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) only.")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public TextBoxStyle TextBoxStyle
+  /// <summary> Returns the proper <see cref="BocTextValueType"/> for the passed <see cref="IBusinessObjectProperty"/>. </summary>
+  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to analyze. </param>
+  /// <exception cref="NotSupportedException"> The specialized type of the <paremref name="property"/> is not supported. </exception>
+  private BocTextValueType GetBocTextValueType (IBusinessObjectProperty property)
   {
-    get { return _textBoxStyle; }
+    if (property is IBusinessObjectStringProperty)
+      return BocTextValueType.String;
+    else if (property is IBusinessObjectInt32Property)
+      return BocTextValueType.Integer;
+    else if (property is IBusinessObjectDoubleProperty)
+      return BocTextValueType.Double;
+    else if (property is IBusinessObjectDateProperty)
+      return BocTextValueType.Date;
+    else if (property is IBusinessObjectDateTimeProperty)
+      return BocTextValueType.DateTime;
+    else
+      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
   }
 
-  /// <summary>
-  ///   The style that you want to apply to the Label (read-only mode) only.
-  /// </summary>
-  /// <remarks>
-  ///   These style settings override the styles defined in <see cref="CommonStyle"/>.
-  /// </remarks>
-  [Category("Style")]
-  [Description("The style that you want to apply to the Label (read-only mode) only.")]
-  [NotifyParentProperty(true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style LabelStyle
-  {
-    get { return _labelStyle; }
-  }
-
-  protected override void LoadViewState(object savedState)
-  {
-    object[] values = (object[]) savedState;
-    base.LoadViewState (values[0]);
-    _text = (string) values[1];
-    _valueType = (BocTextValueType) values[2];
-    _actualValueType = (BocTextValueType) values[3];
-    _isDirty = (bool)  values[4];
-
-    _textBox.Text = _text;
-  }
-
-  protected override object SaveViewState()
-  {
-    object[] values = new object[5];
-    values[0] = base.SaveViewState();
-    values[1] = _text;
-    values[2] = _valueType;
-    values[3] = _actualValueType;
-    values[4] = _isDirty;
-    return values;
-  }
-
-  /// <summary>
-  ///   Gets or sets the current value.
-  /// </summary>
+  /// <summary> Gets or sets the current value. </summary>
   /// <value> 
-  ///   The value has the type specified in the <see cref="ValueType"/> property (<see cref="String"/>, <see cref="Int32"/>, 
-  ///   <see cref="Double"/> or <see cref="DateTime"/>).
+  ///   The value has the type specified in the <see cref="ValueType"/> property (<see cref="String"/>, 
+  ///   <see cref="Int32"/>, <see cref="Double"/> or <see cref="DateTime"/>). If <see cref="ValueType"/> is not
+  ///   set, the type is determined by the bound <see cref="BusinessObjectBoundWebControl.Property"/>.
   /// </value>
-  /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.</exception>
+  /// <exception cref="FormatException"> 
+  ///   The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.
+  /// </exception>
   [Description("Gets or sets the current value.")]
   [Browsable (false)]
   public new object Value
@@ -587,28 +547,25 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  protected override object ValueImplementation
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+ protected override object ValueImplementation
   {
     get { return Value; }
     set { Value = value; }
   }
 
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <value> The default value is <see cref="String.Empty"/>. </value>
+  /// <summary> Gets or sets the string representation of the current value. </summary>
+  /// <value> A string. The default value is <see cref="String.Empty"/>. </value>
   [Description("Gets or sets the string representation of the current value.")]
   [Category("Data")]
   [DefaultValue ("")]
   public string Text
   {
-    get 
-    {
-      return StringUtility.NullToEmpty (_text);
-    }
+    get { return StringUtility.NullToEmpty (_text); }
     set { _text = value; }
   }
 
+  /// <summary> Gets or sets the <see cref="BocTextValueType"/> assigned from an external source. </summary>
   /// <value> 
   ///   The externally set <see cref="BocTextValueType"/>. The default value is 
   ///   <see cref="BocTextValueType.Undefined"/>. 
@@ -632,14 +589,31 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary>
-  ///   Gets or sets the format string used to create the string value. 
+  ///   Gets the controls fixed <see cref="ValueType"/> or, if <see cref="BocTextValueType.Undefined"/>, 
+  ///   the <see cref="BusinessObjectBoundWebControl.Property"/>'s value type.
   /// </summary>
-  /// <value> The default value is <see cref="String.Empty"/>. </value>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public BocTextValueType ActualValueType
+  {
+    get 
+    {
+      if (_valueType == BocTextValueType.Undefined && Property != null)
+        _actualValueType = GetBocTextValueType (Property);
+      return _actualValueType;
+    }
+  }
+
+  /// <summary> Gets or sets the format string used to create the string value.  </summary>
+  /// <value> 
+  ///   A string passed to the <b>ToString</b> method of the object returned by <see cref="Value"/>.
+  ///   The default value is <see cref="String.Empty"/>. 
+  /// </value>
   /// <remarks>
   ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
   ///   values and "g" for date/time values (use "G" to display seconds too). 
   /// </remarks>
-  [Description ("Gets or sets the format string used to create the string value. Format must be parsable by the value's type if the control is in edit-mode.")]
+  [Description ("Gets or sets the format string used to create the string value. Format must be parsable by the value's type if the control is in edit mode.")]
   [Category ("Style")]
   [DefaultValue ("")]
   public string Format
@@ -648,34 +622,30 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { _format = value; }
   }
 
-  /// <summary>
-  /// Gets the controls fixed value type or, if undefined, the property's value type.
-  /// </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public BocTextValueType ActualValueType
-  {
-    get 
-    {
-      RefreshPropertiesFromObjectModel();
-      return _actualValueType;
-    }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
+  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl
   {
-    get { return (_textBox != null) ? _textBox : (Control) this; }
+    get { return (_textBox == null) ? (Control) this : _textBox; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
   public override bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
+  }
+
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  public override bool UseLabel
+  {
+    get { return true; }
   }
 
   [Browsable (false)]
@@ -689,6 +659,60 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     get { return _label; }
   }
+
+  /// <summary> This event is fired when the text is changed between postbacks. </summary>
+  [Category ("Action")]
+  [Description ("Fires when the value of the control has changed.")]
+  public event EventHandler TextChanged
+  {
+    add { Events.AddHandler (s_textChangedEvent, value); }
+    remove { Events.RemoveHandler (s_textChangedEvent, value); }
+  }
+
+  /// <summary>
+  ///   The style that you want to apply to the <see cref="TextBox"/> (edit mode) 
+  ///   and the <see cref="Label"/> (read-only mode).
+  /// </summary>
+  /// <remarks>
+  ///   Use the <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> to assign individual style settings for
+  ///   the respective modes. Note that if you set one of the <b>Font</b> attributes (Bold, Italic etc.) to 
+  ///   <see langword="true"/>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
+  ///   properties.
+  /// </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style CommonStyle
+  {
+    get { return _commonStyle; }
+  }
+
+  /// <summary> The style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the TextBox (edit mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public TextBoxStyle TextBoxStyle
+  {
+    get { return _textBoxStyle; }
+  }
+
+  /// <summary> The style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
+  /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
+  [Category("Style")]
+  [Description("The style that you want to apply to the Label (read-only mode) only.")]
+  [NotifyParentProperty(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style LabelStyle
+  {
+    get { return _labelStyle; }
+  }
+
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
@@ -720,13 +744,23 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   #endregion
 }
 
+/// <summary> A list possible data types for the <see cref="BocTextValue"/> </summary>
 public enum BocTextValueType
 {
+  /// <summary> 
+  ///   Format the value as it's default string representation. 
+  ///   No parsing is possible, <see cref="P:BoxTextValue.Value"/> will return a string. 
+  /// </summary>
   Undefined,
+  /// <summary> Interpret the value as a <see cref="String"/>. </summary>
   String,
+  /// <summary> Interpret the value as an <see cref="Int32"/>. </summary>
   Integer,
+  /// <summary> Interpret the value as a <see cref="DateTime"/> with the time component set to zero. </summary>
   Date,
+  /// <summary> Interpret the value as a <see cref="DateTime"/>. </summary>
   DateTime,
+  /// <summary> Interpret the value as a <see cref="Double"/>. </summary>
   Double
 }
 

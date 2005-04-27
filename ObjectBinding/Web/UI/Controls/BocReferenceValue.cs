@@ -189,7 +189,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   /// <summary>
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   post backs.
+  ///   postbacks.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -231,7 +231,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     return isDataChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     OnSelectionChanged (EventArgs.Empty);
@@ -463,7 +463,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   /// <remarks>
   ///   Generates a validator that checks that the selected item is not the null item if the 
-  ///   control is in edit-mode and input is required.
+  ///   control is in edit mode and input is required.
   /// </remarks>
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
@@ -1067,7 +1067,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   /// <summary> This event is fired when the selection is changed between postbacks. </summary>
   [Category ("Action")]
-  [Description ("Fires when the selection changes.")]
+  [Description ("Fires when the value of the control has changed.")]
   public event EventHandler SelectionChanged
   {
     add { Events.AddHandler (s_selectionChangedEvent, value); }

@@ -166,7 +166,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary>
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   post backs.
+  ///   postbacks.
   /// </summary>
   /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -211,7 +211,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return isDateChanged || isTimeChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     OnDateTimeChanged (EventArgs.Empty);
@@ -642,7 +642,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Formats the <see cref="DateTime"/> value according to the current culture. </summary>
   /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
-  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read-only mode. </param>
   /// <returns> A formatted string representing the <see cref="DateTime"/> value. </returns>
   protected virtual string FormatDateTimeValue (DateTime dateValue, bool isReadOnly)
   {
@@ -686,7 +686,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Formats the <see cref="DateTime"/> value's date component according to the current culture. </summary>
   /// <param name="dateValue"> The <see cref="DateTime"/> value to be formatted. </param>
-  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read-only mode. </param>
   /// <returns> A formatted string representing the <see cref="DateTime"/> value's date component. </returns>
   protected virtual string FormatDateValue (DateTime dateValue, bool isReadOnly)
   {
@@ -714,7 +714,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Formats the <see cref="DateTime"/> value's time component according to the current culture. </summary>
   /// <param name="timeValue"> The <see cref="DateTime"/> value to be formatted. </param>
-  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read only mode. </param>
+  /// <param name="isReadOnly"> <see langword="true"/> if the control is in read-only mode. </param>
   /// <returns>  A formatted string representing the <see cref="DateTime"/> value's time component. </returns>
   protected virtual string FormatTimeValue (DateTime timeValue, bool isReadOnly)
   {
@@ -987,7 +987,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="DateTextBox"/> if the control is in edit-mode, otherwise the control itself. </remarks>
+  /// <remarks> Returns the <see cref="DateTextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl
   {
     get { return IsReadOnly ? (Control) this : _dateTextBox; }
@@ -1242,7 +1242,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> This event is fired when the date or time is changed between postbacks. </summary>
   [Category ("Action")]
-  [Description ("Fires when the value of the control changes.")]
+  [Description ("Fires when the value of the control has changed.")]
   public event EventHandler DateTimeChanged
   {
     add { Events.AddHandler (s_dateTimeChangedEvent, value); }
@@ -1279,9 +1279,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   #endregion
 }
 
-/// <summary>
-///   A list possible data types for the <see cref="BocDateTimeValue"/>
-/// </summary>
+/// <summary> A list possible data types for the <see cref="BocDateTimeValue"/> </summary>
 public enum BocDateTimeValueType
 {
   /// <summary> No formatting applied. </summary>
