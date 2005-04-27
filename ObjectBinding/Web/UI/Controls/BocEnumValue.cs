@@ -699,7 +699,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
-  [Description("Validation error message if the selection is invalid.")]
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

@@ -566,7 +566,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
-  /// <value> <see langword="true"/> to enable the description. </value>
+  /// <value> <see langword="true"/> to enable the description. The default value is <see langword="true"/>. </value>
   [Description("The flag that determines whether to show the description next to the checkbox")]
   [Category ("Appearance")]
   [DefaultValue(true)]
@@ -577,6 +577,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
+  /// <value> 
+  ///   The text displayed for <see langword="true"/>. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
   [Description("The description displayed when the checkbox is set to True.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -587,6 +591,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
+  /// <value> 
+  ///   The text displayed for <see langword="false"/>. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
   [Description("The description displayed when the checkbox is set to False.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -597,6 +605,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
+  /// <value> 
+  ///   The text displayed for <see langword="null"/>. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
   [Description("The description displayed when the checkbox is set to null.")]
   [Category ("Behavior")]
   [DefaultValue("")]
@@ -607,7 +619,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
-  [Description("Validation error message displayed if the selcted value is invalid.")]
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

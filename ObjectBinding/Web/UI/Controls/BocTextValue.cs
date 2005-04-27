@@ -506,6 +506,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// </value>
   /// <exception cref="FormatException">The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.</exception>
   [Description("Gets or sets the current value.")]
+  [Browsable (false)]
   public new object Value
   {
     get 
@@ -592,9 +593,13 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { Value = value; }
   }
 
-
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <value> The default value is <see cref="String.Empty"/>. </value>
   [Description("Gets or sets the string representation of the current value.")]
   [Category("Data")]
+  [DefaultValue ("")]
   public string Text
   {
     get 
@@ -604,6 +609,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { _text = value; }
   }
 
+  /// <value> 
+  ///   The externally set <see cref="BocTextValueType"/>. The default value is 
+  ///   <see cref="BocTextValueType.Undefined"/>. 
+  /// </value>
   [Description("Gets or sets a fixed value type.")]
   [Category("Data")]
   [DefaultValue (BocTextValueType.Undefined)]
@@ -625,13 +634,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary>
   ///   Gets or sets the format string used to create the string value. 
   /// </summary>
+  /// <value> The default value is <see cref="String.Empty"/>. </value>
   /// <remarks>
   ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
-  ///   values and "g" for date/time values (use "G" to display seconds too).
+  ///   values and "g" for date/time values (use "G" to display seconds too). 
   /// </remarks>
   [Description ("Gets or sets the format string used to create the string value. Format must be parsable by the value's type if the control is in edit-mode.")]
   [Category ("Style")]
-  [DefaultValue (null)]
+  [DefaultValue ("")]
   public string Format
   {
     get { return StringUtility.EmptyToNull (_format); }
@@ -681,7 +691,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
-  [Description("Validation message if the control is not filled correctly.")]
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

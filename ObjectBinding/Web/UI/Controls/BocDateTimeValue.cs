@@ -1091,6 +1091,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets the width of the IFrame used to display the date picker. </summary>
+  /// <value> The <see cref="Unit"/> value used for the width. The default value is <b>150pt</b>. </value>
   [Category ("Appearance")]
   [Description("The width of the IFrame used to display the date picker.")]
   [DefaultValue (typeof (Unit), "150pt")]
@@ -1101,6 +1102,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets the height of the IFrame used to display the date picker. </summary>
+  /// <value> The <see cref="Unit"/> value used for the height. The default value is <b>150pt</b>. </value>
   [Category ("Appearance")]
   [Description("The height of the IFrame used to display the date picker.")]
   [DefaultValue (typeof (Unit), "150pt")]
@@ -1111,7 +1113,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets a flag that determines whether to display the seconds. </summary>
-  /// <value> <see langword="true"/> to enable the seconds. </value>
+  /// <value> <see langword="true"/> to enable the seconds. The default value is <see langword="false"/>. </value>
   [Category ("Appearance")]
   [Description ("True to display the seconds. ")]
   [DefaultValue (false)]
@@ -1122,7 +1124,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets a flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
-  /// <value> <see langword="true"/> to enable the maximum length. </value>
+  /// <value> <see langword="true"/> to enable the maximum length. The default value is <see langword="true"/>. </value>
   [Category ("Behavior")]
   [Description (" True to automatically limit the maxmimum length of the date and time input fields. ")]
   [DefaultValue (true)]
@@ -1133,7 +1135,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
-  /// <value> <see langword="true"/> to enable the client script. </value>
+  /// <value> <see langword="true"/> to enable the client script. The default value is <see langword="true"/>. </value>
   [Category ("Behavior")]
   [Description (" True to enable the client script for the pop-up calendar. ")]
   [DefaultValue (true)]
@@ -1144,6 +1146,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets the <see cref="BocDateTimeValueType"/> assigned from an external source. </summary>
+  /// <value> 
+  ///   The externally set <see cref="BocDateTimeValueType"/>. The default value is 
+  ///   <see cref="BocDateTimeValueType.Undefined"/>. 
+  /// </value>
   [Description("Gets or sets a fixed value type.")]
   [Category ("Data")]
   [DefaultValue (BocDateTimeValueType.Undefined)]
@@ -1244,7 +1250,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
-  [Description("Validation message displayed if the control is not filled correctly.")]
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

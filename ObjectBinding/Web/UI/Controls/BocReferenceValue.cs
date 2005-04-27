@@ -1215,7 +1215,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   }
 
   /// <summary> The search expression used to populate the selection list in edit mode. </summary>
-  /// <value> A <see cref="String"/> with a valid search expression. </value>
+  /// <value> A <see cref="String"/> with a valid search expression. The default value is <see cref="String.Empty"/>. </value>
   [Category ("Data")]
   [Description ("Set the search expression for populating the selection list.")]
   [DefaultValue ("")]
@@ -1225,7 +1225,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     set { _select = value; }
   }
 
-  /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <c>options menu</c>. </summary>
+  /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <b>OptionsMenu</b>. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Menu")]
@@ -1236,7 +1236,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     get { return _optionsMenuItems; }
   }
 
-  /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
+  /// <summary> Gets or sets the text that is rendered as a label for the <b>OptionsMenu</b>. </summary>
+  /// <value> The text rendered as the <b>OptionsMenu</b>'s label. The default value is <see cref="String.Empty"/>. </value>
   [Category ("Menu")]
   [Description ("The text that is rendered as a label for the options menu.")]
   [DefaultValue ("")]
@@ -1249,7 +1250,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary>
   ///   Gets or sets a flag that determines whether to display the options menu.
   /// </summary>
-  /// <value> <see langword="true"/> to show the options menu. </value>
+  /// <value> <see langword="true"/> to show the options menu. The default value is <see langword="true"/>. </value>
   [Category ("Menu")]
   [Description ("Enables the options menu.")]
   [DefaultValue (true)]
@@ -1260,6 +1261,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   }
 
   /// <summary> Gets or sets the width of the options menu. </summary>
+  /// <value> The <see cref="Unit"/> value used for the option menu's width. The default value is <b>undefined</b>. </value>
   [Category ("Menu")]
   [Description ("The width of the options menu.")]
   [DefaultValue (typeof (Unit), "")]
@@ -1270,7 +1272,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
-  [Description("Validation error message if the selection is invalid.")]
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
   public string ErrorMessage

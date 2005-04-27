@@ -889,7 +889,7 @@ public class BocList:
     EnsureChildControlsPreRendered();
   }
 
-  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
@@ -4338,6 +4338,10 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
+  /// <value> 
+  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
   [Description("Validation message displayed if there is an error.")]
   [Category ("Validator")]
   [DefaultValue("")]
