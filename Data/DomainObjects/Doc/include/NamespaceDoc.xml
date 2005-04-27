@@ -1,4 +1,9 @@
 <namespaces>
+  <namespace name="Rubicon.Data.DomainObjects.ObjectBinding">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.ObjectBindingr</B> namespace contains classes and interfaces for 2-way data binding of user controls to domain objects.
+    </para>
+  </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.ConfigurationLoader">
     <para>
       The <B>Rubicon.Data.DomainObjects.ConfigurationLoader</B> namespace contains classes to be used for loading the configuration of the DomainObjects framework.
@@ -16,7 +21,7 @@
   </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.Persistence">
     <para>
-      The <B>Rubicon.Data.DomainObjects.Persistence</B> namespace contains interfaces and classes to persist <b>DomainObject</b>s.
+      The <B>Rubicon.Data.DomainObjects.Persistence</B> namespace contains interfaces and classes to persist domain objects.
     </para>
   </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.Persistence.Configuration">
@@ -27,7 +32,7 @@
   </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.Persistence.Rdbms">
     <para>
-      The <B>Rubicon.Data.DomainObjects.Persistence.Rdbms</B> namespace contains classes to persist <b>DomainObject</b>s to relational databases.
+      The <B>Rubicon.Data.DomainObjects.Persistence.Rdbms</B> namespace contains classes to persist domain objects to relational databases.
     </para>
   </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.Queries">
@@ -83,7 +88,7 @@
         <tr>
           <td><see cref="T:Rubicon.Data.DomainObjects.Queries.QueryManager"/></td>
           <td>
-            The <b>QueryManager</b> provides methods to execute queries within a ClientTransaction.
+            Provides methods to execute queries within a ClientTransaction.
           </td>
         </tr>
       </tbody>
