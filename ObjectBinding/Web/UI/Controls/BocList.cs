@@ -3471,21 +3471,23 @@ public class BocList:
     _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
     _rowEditModeValidators = new BaseValidator[columns.Length][];
 
-    for (int i = 0; i < columns.Length; i++)
+    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
     {
-      BocSimpleColumnDefinition simpleColumn = columns[i] as BocSimpleColumnDefinition;
+      BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
       if (simpleColumn == null)
         continue;
       if (simpleColumn.PropertyPath.Properties.Length > 1)
         continue;
 
-      IBusinessObjectBoundModifiableWebControl control = CreateRowEditModeControl (simpleColumn, i);
+      IBusinessObjectBoundModifiableWebControl control = CreateRowEditModeControl (simpleColumn, idxColumns);
       control.DataSource = _rowEditModeDataSource;
-      _rowEditModeControls[i] = control;
+      _rowEditModeControls[idxColumns] = control;
       if (control != null)
       {
+        control.ID = GetRowEditModeControlID (idxColumns);
+        control.Property = simpleColumn.PropertyPath.LastProperty;
         _rowEditModeControlCollection.Add ((Control) control);
-        _rowEditModeValidators[i] = control.CreateValidators();
+        _rowEditModeValidators[idxColumns] = control.CreateValidators();
       }
     }    
   }
@@ -3557,9 +3559,6 @@ public class BocList:
       if (control == null)
         return null;
     }
-
-    control.ID = GetRowEditModeControlID (columnIndex);
-    control.Property = property;
     return control;
   }
 
