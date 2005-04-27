@@ -134,7 +134,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary>
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
-  ///   between post backs.
+  ///   between postbacks.
   /// </summary>
   /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
@@ -152,7 +152,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return isDataChanged;
   }
 
-  /// <summary> Called when the state of the control has changed between post backs. </summary>
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
     OnCheckedChanged (EventArgs.Empty);
@@ -474,7 +474,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="HyperLink"/> if the control is in edit-mode, otherwise the control itself. </remarks>
+  /// <remarks> Returns the <see cref="HyperLink"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl 
   {
     get { return IsReadOnly ? (Control) this : _hyperLink; }
@@ -514,9 +514,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     get { return _hiddenField.Value; }
   }
 
-  /// <summary> Occurs when the <see cref="Value"/> property changes between post backs. </summary>
+  /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
   [Category ("Action")]
-  [Description ("Fires when the checked state of the control changes.")]
+  [Description ("Fires when the value of the control has changed.")]
   public event EventHandler CheckedChanged
   {
     add { Events.AddHandler (s_checkedChangedEvent, value); }
