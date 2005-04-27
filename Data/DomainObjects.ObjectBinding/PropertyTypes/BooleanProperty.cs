@@ -8,6 +8,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
 {
+  private BooleanToEnumPropertyConverter _booleanToEnumConverter;
+
   public BooleanProperty (      
       PropertyInfo propertyInfo, 
       bool isRequired,
@@ -16,6 +18,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
       bool isNullableType)
       : base (propertyInfo, isRequired, itemType, isList, isNullableType)
   {
+    _booleanToEnumConverter = new BooleanToEnumPropertyConverter (this);
   }
 
   public string GetDisplayName (bool value)
@@ -48,22 +51,22 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
 
   public IEnumerationValueInfo[] GetEnabledValues()
   {
-    return BooleanToEnumPropertyConverter.GetValues ();
+    return _booleanToEnumConverter.GetValues ();
   }
 
   public IEnumerationValueInfo[] GetAllValues()
   {
-    return BooleanToEnumPropertyConverter.GetValues ();
+    return _booleanToEnumConverter.GetValues ();
   }
 
   public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
-    return BooleanToEnumPropertyConverter.GetValueInfoByValue (value);
+    return _booleanToEnumConverter.GetValueInfoByValue (value);
   }
 
   public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
   {
-    return BooleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
+    return _booleanToEnumConverter.GetValueInfoByIdentifier (identifier);
   }
 }
 }
