@@ -27,6 +27,8 @@
         current value.
       </para><para>
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocBooleanValue</c>.
+      </para><para>
+        The control does not support auto-postback.
       </para>
       
       <h4 class="dtH4">Inner Workings</h4>
@@ -41,7 +43,7 @@
         Use the <see cref="HyperLink"/>, <see cref="Image"/>, <see cref="Label"/>, and <see cref="HiddenField"/> 
         properties to access these controls directly.
       </para><para>
-        The control uses the view state to cache the value between post backs. If the control is data bound,
+        The control uses the view state to cache the value between postbacks. If the control is data bound,
         a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
         value back into the data source.
       </para>
@@ -118,7 +120,7 @@
   <CreateValidators>
     <remarks>
       Generates a <see cref="CompareValidator"/> checking that the selected item is not the null-item if the 
-      control is in edit-mode and input is required.
+      control is in edit mode and input is required.
     </remarks>
   </CreateValidators>
 </BocBooleanValue>
