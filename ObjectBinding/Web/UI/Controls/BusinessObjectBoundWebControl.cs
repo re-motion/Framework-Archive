@@ -283,46 +283,48 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected abstract object ValueImplementation { get; set; }
 
   /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
-  /// <remarks>
-  ///   <note type="inheritinfo">
-  ///     Override this method and execute <see cref="EnsureChildControlsPreRendered"/>.
-  ///   </note>
+  /// <remarks> 
+  ///   <para>
+  ///     Calls <see cref="EnsureChildControlsPreRendered"/>. 
+  ///   </para><para>
+  ///     Use <see cref="PreRenderChildControls"/> for any pre-rendering.
+  ///   </para>    
   /// </remarks>
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
-    //  Best left to specializations
-    // EnsureChildControlsPreRendered();
+    EnsureChildControlsPreRendered();
   }
 
-  /// <summary> 
-  ///   Calls <see cref="PreRenderChildControls"/> on the first invocation during <c>Run Time</c> or
-  ///   on every invocation while the control is in <b>Design Mode</b>.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     In <b>DesignMode</b>, <see cref="OnPreRender"/> is not executed. The <see cref="Control.Render"/> method
-  ///     on the other hand is called every time the control must be redrawn. This includes changing a property,
-  ///     switching from <b>HTML</b> view to <b>Design</b> view and of course, a complete <b>Refresh</b> of
-  ///     the page being designed.
-  ///   </para><para>
-  ///     Best practice: call once in <c>OnPreRender</c> method and once in <c>Render</c> method.
-  ///   </para>
-  /// </remarks>
+  /// <summary> Calls <see cref="PreRenderChildControls"/> on the first invocation. </summary>
   protected void EnsureChildControlsPreRendered()
   {
     EnsureChildControls();
-    if (! _childControlsPreRendered || IsDesignMode)
+    if (! _childControlsPreRendered)
     {
       PreRenderChildControls();
       _childControlsPreRendered = true;
     }
   }
 
+  /// <summary> Calls <see cref="PreRenderChildControls"/> on every invocation. </summary>
+  /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
+  internal void PreRenderChildControlsForDesignMode()
+  {
+    if (! IsDesignMode)
+      throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
+    EnsureChildControls();
+    PreRenderChildControls();
+  }
+
   /// <summary> Override this method to pre-render child controls. </summary>
   /// <remarks>
-  ///   Child controls that do not need to be created before handling post data can be created
-  ///   in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
+  ///   <para>
+  ///     Child controls that do not need to be created before handling post data can be created
+  ///     in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
+  ///   </para><para>
+  ///     Automatically called by <see cref="OnPreRender"/>.
+  ///   </para>
   ///   <note>
   ///     This method will be executed multiple times during the control's lifecycle while it is in <c>Design Mode</c>.
   ///   </note>
