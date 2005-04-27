@@ -18,7 +18,7 @@ public enum ListControlType
 public class ListControlStyle: Style
 {
   private ListControlType _controlType = ListControlType.DropDownList;
-  private NaBoolean _autoPostback = NaBoolean.Null;
+  private NaBoolean _autoPostBack = NaBoolean.Null;
   private NaInt32 _listBoxRows = NaInt32.Null;
   private NaInt32 _radioButtonListCellPadding = NaInt32.Null;
   private NaInt32 _radioButtonListCellSpacing = NaInt32.Null;
@@ -41,10 +41,10 @@ public class ListControlStyle: Style
   [Category("Behavior")]
   [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
-  public NaBoolean AutoPostback
+  public NaBoolean AutoPostBack
   {
-    get { return _autoPostback; }
-    set { _autoPostback = value; }
+    get { return _autoPostBack; }
+    set { _autoPostBack = value; }
   }
 
   [Description("The number of visible rows to display.")]
@@ -141,8 +141,8 @@ public class ListControlStyle: Style
 
   public void ApplyCommonStyle (ListControl listControl)
   {
-    if (! _autoPostback.IsNull)
-      listControl.AutoPostBack = _autoPostback.Value;
+    if (! _autoPostBack.IsNull)
+      listControl.AutoPostBack = _autoPostBack.Value;
   }
 
   public void ApplyStyle (ListControl listControl)
@@ -191,22 +191,22 @@ public class ListControlStyle: Style
 
 public class DropDownListStyle: Style
 {
-  private NaBoolean _autoPostback = NaBoolean.Null;
+  private NaBoolean _autoPostBack = NaBoolean.Null;
 
   [Description("Automatically postback to the server after the text is modified.")]
   [Category("Behavior")]
   [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
-  public NaBoolean AutoPostback
+  public NaBoolean AutoPostBack
   {
-    get { return _autoPostback; }
-    set { _autoPostback = value; }
+    get { return _autoPostBack; }
+    set { _autoPostBack = value; }
   }
 
   public void ApplyStyle (DropDownList dropDownList)
   {
-    if (! _autoPostback.IsNull)
-      dropDownList.AutoPostBack = _autoPostback.Value;
+    if (! _autoPostBack.IsNull)
+      dropDownList.AutoPostBack = _autoPostBack.Value;
   }
 }
 
@@ -218,7 +218,7 @@ public class SingleRowTextBoxStyle: Style
   private NaInt32 _columns = NaInt32.Null;
   private NaInt32 _maxLength = NaInt32.Null;
   private NaBoolean _readOnly = NaBoolean.Null;
-  private NaBoolean _autoPostback = NaBoolean.Null;
+  private NaBoolean _autoPostBack = NaBoolean.Null;
   private NaBoolean _checkClientSideMaxLength = NaBoolean.Null;
 
   public virtual void ApplyStyle (TextBox textBox)
@@ -231,8 +231,8 @@ public class SingleRowTextBoxStyle: Style
     if (! _columns.IsNull)
       textBox.Columns = _columns.Value;
     
-    if (! _autoPostback.IsNull)
-      textBox.AutoPostBack = _autoPostback.Value;
+    if (! _autoPostBack.IsNull)
+      textBox.AutoPostBack = _autoPostBack.Value;
     
     if (! _readOnly.IsNull)
       textBox.ReadOnly = _readOnly.Value;
@@ -287,8 +287,8 @@ public class SingleRowTextBoxStyle: Style
   [NotifyParentProperty (true)]
   public NaBoolean AutoPostBack
   {
-    get { return _autoPostback; }
-    set { _autoPostback = value; }
+    get { return _autoPostBack; }
+    set { _autoPostBack = value; }
   }
 
   [Description("Whether the text in the control can exceed it's max length during input. If true, MaxLength is only used for validation after the input is completed.")]
