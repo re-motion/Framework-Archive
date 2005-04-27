@@ -15,6 +15,13 @@ public class BocDesigner: ControlDesigner
     get { return true; }
   }
 
+  public override string GetDesignTimeHtml()
+  {
+    BusinessObjectBoundWebControl control = (BusinessObjectBoundWebControl)Component;
+    control.PreRenderChildControlsForDesignMode();
+    return base.GetDesignTimeHtml ();
+  }
+
 }
 
 }
