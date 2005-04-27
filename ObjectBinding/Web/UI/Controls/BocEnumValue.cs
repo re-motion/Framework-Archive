@@ -80,7 +80,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   // construction and disposing
 
-  /// <summary> Simple constructor. </summary>
+  /// <summary> Initializes a new instance of the <b>BocEnumValue</b> class. </summary>
 	public BocEnumValue()
 	{
     _commonStyle = new Style ();
@@ -166,29 +166,22 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   protected virtual void RaisePostDataChangedEvent()
   {
     RefreshEnumListSelectedValue();
-    OnSelectionChanged (EventArgs.Empty);
+    OnSelectionChanged();
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
-  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
-  protected virtual void OnSelectionChanged (EventArgs e)
+  protected virtual void OnSelectionChanged()
   {
     EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
     if (eventHandler != null)
-      eventHandler (this, e);
+      eventHandler (this, EventArgs.Empty);
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
-  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
-  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
 
-    //  First call
-    EnsureChildControlsPreRendered();
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
@@ -199,19 +192,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
-  /// </remarks>
-  protected override void Render (HtmlTextWriter writer)
-  {
-    //  Second call has practically no overhead
-    //  Required to get optimum designer support.
-    EnsureChildControlsPreRendered ();
-
-    base.Render (writer);
   }
 
   /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>

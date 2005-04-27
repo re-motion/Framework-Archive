@@ -155,29 +155,22 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnCheckedChanged (EventArgs.Empty);
+    OnCheckedChanged();
   }
 
   /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
-  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
-  protected virtual void OnCheckedChanged (EventArgs e)
+  protected virtual void OnCheckedChanged()
   {
     EventHandler eventHandler = (EventHandler) Events[s_checkedChangedEvent];
     if (eventHandler != null)
-      eventHandler (this, e);
+      eventHandler (this, EventArgs.Empty);
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
-  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
-  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
     
-    //  First call
-    EnsureChildControlsPreRendered();
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
@@ -196,19 +189,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
-  /// </remarks>
-  protected override void Render (HtmlTextWriter writer)
-  {
-    //  Second call has practically no overhead
-    //  Required to get optimum designer support.
-    EnsureChildControlsPreRendered ();
-
-    base.Render (writer);
   }
 
   /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>

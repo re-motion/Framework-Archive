@@ -34,9 +34,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 	
   private const string c_nullIdentifier = "--null--";
 
-  /// <summary> 
-  ///   Text displayed when control is displayed in desinger and is read-only has no contents.
-  /// </summary>
+  /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultControlWidth = "150pt";
 
@@ -44,16 +42,19 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   // types
 
-  /// <summary> A list of control wide resources. </summary>
+  /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocReferenceValue")]
   protected enum ResourceIdentifier
   {
+    /// <summary> Label displayed in the OptionsMenu. </summary>
     OptionsTitle,
+    /// <summary> The validation error message displayed when the null item is selected. </summary>
     NullItemValidationMessage
   }
 
@@ -68,54 +69,38 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
 	// member fields
 
-  /// <summary>
-  ///   <see langword="true"/> if <see cref="BocReferenceValue"/> has been changed since last call to
-  ///   <see cref="SaveValue"/>.
-  /// </summary>
   private bool _isDirty = true;
 
-  /// <summary> The <see cref="DropDownList"/> used in edit mode. </summary>
   private DropDownList _dropDownList;
-  /// <summary> The <see cref="Label"/> used in read-only mode. </summary>
   private Label _label;
-  /// <summary> The <see cref="Image"/> optionally displayed in front of the value. </summary>
   private Image _icon ;
 
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/> and the <see cref="Label"/>. </summary>
   private Style _commonStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="DropDownList"/>. </summary>
   private DropDownListStyle _dropDownListStyle;
-  /// <summary> The <see cref="Style"/> applied to the <see cref="Label"/>. </summary>
   private Style _labelStyle;
 
-  /// <summary> The object returned by <see cref="BocReferenceValue"/>. </summary>
-  /// <remarks> Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. </remarks>
+  /// <summary> 
+  ///   The object returned by <see cref="BocReferenceValue"/>. 
+  ///   Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. 
+  /// </summary>
   private IBusinessObjectWithIdentity _value = null;
 
-  /// <summary> 
-  ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
-  /// </summary>
+  /// <summary> The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object. </summary>
   private string _internalValue = null;
 
-  /// <summary> <see langword="true"/> to show the value's icon. </summary>
   private bool _enableIcon = true;
-
-  /// <summary> 
-  ///   The <see cref="string"/> with the search expression for populating the <see cref="DropDownList"/>.
-  /// </summary>
   private string _select = String.Empty;
 
   private DropDownMenu _optionsMenu;
   private string _optionsTitle;
-  /// <summary> Determines whether the options menu is shown. </summary>
   private bool _showOptionsMenu = true;
-  /// <summary> The width applied to the <c>menu block</c>. </summary>
   private Unit _optionsMenuWidth = Unit.Empty;
   private BocMenuItemCollection _optionsMenuItems;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
   private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _optionsMenuItemsRenderPhase;
+  
   /// <summary> The command rendered for this reference value. </summary>
   private SingleControlItemCollection _command = null;
 
@@ -124,7 +109,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   // construction and disposing
 
-  /// <summary> Simple constructor. </summary>
+  /// <summary> Initializes a new instance of the <b>BocReferenceValue</b> class. </summary>
 	public BocReferenceValue()
 	{
     _optionsMenuItems = new BocMenuItemCollection (this);
@@ -141,6 +126,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
 	// methods and properties
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
+  /// <remarks>
+  ///   If the <see cref="ListControl"/> could not be created from <see cref="ListControlStyle"/>,
+  ///   the control is set to read-only.
+  /// </remarks>
   protected override void CreateChildControls()
   {
     _icon.ID = ID + "_Boc_Icon";
@@ -161,9 +151,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
   }
 
-  /// <summary>
-  ///   Calls the parent's <c>OnLoad</c> method and prepares the binding information.
-  /// </summary>
+  /// <summary> Overrides the <see cref="Control.OnLoad"/> method. </summary>
+  /// <remarks> Populates the list. </remarks>
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
@@ -188,26 +177,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   }
 
   /// <summary>
-  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   postbacks.
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
+  ///   between postbacks.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Sets the new value and the <see cref="IsDirty"/> flag if the value has changed.
-  ///   </para><para>
-  ///     Evaluates the value of the <see cref="DropDownList"/>.
-  ///   </para>
-  ///   <note type="inheritinfo">
-  ///     Overrive this method to change the way a data change is detected of the value is read from the 
-  ///     <paramref name="postCollection"/>.
-  ///   </note>
-  /// </remarks>
-  /// <param name="postDataKey"> The key identifier for this control. </param>
-  /// <param name="postCollection"> The collection of all incoming name values.  </param>
-  /// <returns>
-  ///   <see langword="true"/> if the server control's state changes as a result of the post back; 
-  ///   otherwise <see langword="false"/>.
-  /// </returns>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
@@ -234,22 +207,31 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnSelectionChanged (EventArgs.Empty);
+    OnSelectionChanged();
   }
 
-  /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
+  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
+  protected virtual void OnSelectionChanged ()
+  {
+    EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
+    if (eventHandler != null)
+      eventHandler (this, EventArgs.Empty);
+  }
+
+  /// <summary> Calls the <see cref="RaisePostBackEvent"/> method. </summary>
   void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
     RaisePostBackEvent (eventArgument);
   }
 
-  /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
+  /// <summary> Called when the contorl caused a post back. </summary>
+  /// <param name="eventArgument"> <see cref="String.Empty"/>. </param>
   protected virtual void RaisePostBackEvent (string eventArgument)
   {
     HandleCommand();
   }
 
-  /// <summary> Handles post back events raised by the value's command. </summary>
+  /// <summary> Handles post back events raised by the value's <see cref="Command"/>. </summary>
   private void HandleCommand()
   {
     switch (Command.Type)
@@ -271,6 +253,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
   }
 
+  /// <summary> Fires the <see cref="CommandClick"/> event. </summary>
+  /// <param name="businessObject"> 
+  ///   The current <see cref="Value"/>, which corresponds to the clicked <see cref="IBusinessObjectWithIdentity"/>,
+  ///   unless somebody changed the <see cref="Value"/> in the code behind before the event fired.
+  /// </param>
   protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
   {
     BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[s_commandClickEvent];
@@ -283,62 +270,13 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     }
   }
 
-  /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
-  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
-  protected virtual void OnSelectionChanged (EventArgs e)
-  {
-    EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
-    if (eventHandler != null)
-      eventHandler (this, e);
-  }
-
-  /// <summary>
-  ///   Calls the parent's <c>OnPreRender</c> method and ensures that the sub-controls are properly initialized.
-  /// </summary>
-  /// <param name="e">An <see cref="EventArgs"/> object that contains the event data. </param>
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
 
-    //  First call
-    EnsureChildControlsPreRendered();
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
-
-    string key = typeof (BocReferenceValue).FullName + "_Script";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
-    }
-
-    key = typeof (BocReferenceValue).FullName+ "_Startup";
-    if (! Page.IsStartupScriptRegistered (key))
-    {
-      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
-      PageUtility.RegisterStartupScriptBlock (Page, key, script);
-    }
-
-    key = typeof (BocReferenceValue).FullName + "_Style";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
-    }
-
-    string getSelectionCount;
-    if (IsReadOnly)
-    {
-      if (InternalValue != null)
-        getSelectionCount = "function() { return 1; }";
-      else 
-        getSelectionCount = "function() { return 0; }";
-    }
-    else
-      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
-    _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -358,22 +296,6 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     //    
     //    script = "BocReferenceValue_OnMouseOut (this, '" + CssClassOnMouseOut + "');";
     //    writer.AddAttribute ("onMouseOut", script);
-  }
-
-  /// <summary>
-  ///   Calls the parent's <c>Render</c> method and ensures that the sub-controls are 
-  ///   properly initialized.
-  /// </summary>
-  /// <param name="writer"> 
-  ///   The <see cref="HtmlTextWriter"/> object that receives the server control content. 
-  /// </param>
-  protected override void Render (HtmlTextWriter writer)
-  {
-    //  Second call has practically no overhead
-    //  Required to get optimum designer support.
-    EnsureChildControlsPreRendered();
-
-    base.Render (writer);
   }
 
   /// <summary>
@@ -573,6 +495,29 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// </summary>
   protected override void PreRenderChildControls()
   {
+    string key = typeof (BocReferenceValue).FullName + "_Script";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+    }
+
+    key = typeof (BocReferenceValue).FullName+ "_Startup";
+    if (! Page.IsStartupScriptRegistered (key))
+    {
+      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
+      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+    }
+
+    key = typeof (BocReferenceValue).FullName + "_Style";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+    }
+
     PreRenderIcon();
 
     if (HasOptionsMenu)
@@ -698,6 +643,18 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
       _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
     else
       _optionsMenu.TitleText = _optionsTitle;
+
+    string getSelectionCount;
+    if (IsReadOnly)
+    {
+      if (InternalValue != null)
+        getSelectionCount = "function() { return 1; }";
+      else 
+        getSelectionCount = "function() { return 0; }";
+    }
+    else
+      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
+    _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
   protected override void RenderChildren (HtmlTextWriter writer)

@@ -80,7 +80,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private string _errorMessage;
   private ArrayList _validators;
 
-  /// <summary> Initializes a new instance of the <b>BocTextValue</b> type. </summary>
+  /// <summary> Initializes a new instance of the <b>BocTextValue</b> class. </summary>
 	public BocTextValue()
 	{
     _textBox = new TextBox();
@@ -139,27 +139,21 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnTextChanged (EventArgs.Empty);
+    OnTextChanged();
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
-  /// <param name="e"> <see cref="EventArgs.Empty"/>. </param>
-  protected virtual void OnTextChanged (EventArgs e)
+  protected virtual void OnTextChanged ()
   {
     EventHandler eventHandler = (EventHandler) Events[s_textChangedEvent];
     if (eventHandler != null)
-      eventHandler (this, e);
+      eventHandler (this, EventArgs.Empty);
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>
-  ///   and <see cref="Page.RegisterRequiresPostBack"/>.
-  /// </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
-    EnsureChildControlsPreRendered ();
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
   }
@@ -170,17 +164,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the <see cref="Control.Render"/> method. </summary>
-  /// <remarks> 
-  ///   Calls <see cref="BusinessObjectBoundWebControl.EnsureChildControlsPreRendered"/>.
-  /// </remarks>
-  protected override void Render (HtmlTextWriter writer)
-  {
-    EnsureChildControlsPreRendered ();
-
-    base.Render (writer);
   }
 
   /// <summary> Overrides the <see cref="Control.RenderChildren"/> method. </summary>
@@ -458,9 +441,13 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Gets or sets the current value. </summary>
   /// <value> 
-  ///   The value has the type specified in the <see cref="ValueType"/> property (<see cref="String"/>, 
-  ///   <see cref="Int32"/>, <see cref="Double"/> or <see cref="DateTime"/>). If <see cref="ValueType"/> is not
-  ///   set, the type is determined by the bound <see cref="BusinessObjectBoundWebControl.Property"/>.
+  ///   <para>
+  ///     The value has the type specified in the <see cref="ValueType"/> property (<see cref="String"/>, 
+  ///     <see cref="Int32"/>, <see cref="Double"/> or <see cref="DateTime"/>). If <see cref="ValueType"/> is not
+  ///     set, the type is determined by the bound <see cref="BusinessObjectBoundWebControl.Property"/>.
+  ///   </para><para>
+  ///     Returns <see langword="null"/> if <see cref="Text"/> is <see cref="String.Empty"/>.
+  ///   </para>
   /// </value>
   /// <exception cref="FormatException"> 
   ///   The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.
@@ -555,7 +542,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the string representation of the current value. </summary>
-  /// <value> A string. The default value is <see cref="String.Empty"/>. </value>
+  /// <value> 
+  ///   <see cref="String.Empty"/> if the control's value is <see langword="null"/> or empty. 
+  ///   The default value is <see cref="String.Empty"/>. 
+  /// </value>
   [Description("Gets or sets the string representation of the current value.")]
   [Category("Data")]
   [DefaultValue ("")]
@@ -648,12 +638,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return true; }
   }
 
+  /// <summary> Gets the <see cref="TextBox"/> used in edit mode. </summary>
   [Browsable (false)]
   public TextBox TextBox
   {
     get { return _textBox; }
   }
 
+  /// <summary> Gets the <see cref="Label"/> used in read-only mode. </summary>
   [Browsable (false)]
   public Label Label
   {
