@@ -4,22 +4,60 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding
 {
 
+public class BooleanEnumerationValueInfo: IEnumerationValueInfo
+{
+  bool _value;
+  IBusinessObjectBooleanProperty _property;
+  
+  public BooleanEnumerationValueInfo (bool value, IBusinessObjectBooleanProperty property)
+  {
+    _value = value;
+    _property = property;
+  }
+
+  public string DisplayName
+  {
+    get { return _property.GetDisplayName (_value); }
+  }
+
+  public string Identifier
+  {
+    get { return _value.ToString(); }
+  }
+
+  public object Value
+  {
+    get { return _value; }
+  }
+
+  public bool IsEnabled
+  {
+    get { return true; }
+  }
+}
+
 /// <summary>
 ///   Provides implementations for <see cref="IBusinessObjectEnumerationProperty"/> methods that can be used by 
 ///   implementations of <see cref="IBusinessObjectBooleanProperty"/>.
 /// </summary>
-public sealed class BooleanToEnumPropertyConverter
+public class BooleanToEnumPropertyConverter
 {
-  private static readonly IEnumerationValueInfo s_enumInfoTrue = new EnumerationValueInfo (true, "true", "true", true);
-  private static readonly IEnumerationValueInfo s_enumInfoFalse = new EnumerationValueInfo (false, "false", "false", true);
+  private IEnumerationValueInfo _enumInfoTrue;
+  private IEnumerationValueInfo _enumInfoFalse;
+
+  public BooleanToEnumPropertyConverter (IBusinessObjectBooleanProperty property)
+  {
+    _enumInfoTrue = new BooleanEnumerationValueInfo (true, property);
+    _enumInfoFalse = new BooleanEnumerationValueInfo (false, property);
+  }
 
   /// <summary>
   ///   Returns the <see cref="IEnumerationValueInfo"/> objects for <see langword="true"/> and <see langword="false"/>.
   /// </summary>
   /// <returns> An array of <see cref="IEnumerationValueInfo"/> objects. </returns>
-  public static IEnumerationValueInfo[] GetValues()
+  public IEnumerationValueInfo[] GetValues()
   {
-    return new IEnumerationValueInfo[] { s_enumInfoTrue, s_enumInfoFalse };
+    return new IEnumerationValueInfo[] { _enumInfoTrue, _enumInfoFalse };
   }
 
   /// <summary>
@@ -30,14 +68,14 @@ public sealed class BooleanToEnumPropertyConverter
   ///   Can be any object that equals to <see langword="true"/> or <see langword="false"/> and <see langword="null"/>.
   /// </param>
   /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
-  public static IEnumerationValueInfo GetValueInfoByValue (object value)
+  public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
     if (value == null)
       return null;
     else if (value.Equals (true))
-      return s_enumInfoTrue;
+      return _enumInfoTrue;
     else if (value.Equals (false))
-      return s_enumInfoFalse;
+      return _enumInfoFalse;
     else 
       throw new ArgumentOutOfRangeException ("value");
   }
@@ -48,14 +86,14 @@ public sealed class BooleanToEnumPropertyConverter
   /// </summary>
   /// <param name="identifier"> Can be <c>true</c>, <c>false</c>, or an empty or null string. </param>
   /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
-  public static IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
   {
     if (StringUtility.IsNullOrEmpty (identifier))
       return null;
     else if (identifier == "true")
-      return s_enumInfoTrue;
+      return _enumInfoTrue;
     else if (identifier == "false")
-      return s_enumInfoFalse;
+      return _enumInfoFalse;
     else 
       throw new ArgumentOutOfRangeException ("value");
   }
