@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -14,8 +15,16 @@ public class HtmlHeadContents : Control
 {
   protected override void Render(HtmlTextWriter writer)
   {
+    try
+    {
+      HtmlHeadAppender.Current.EnsureAppended (this);
+    }
+    catch
+    {
+      if (! ControlHelper.IsDesignMode (this))
+        throw;
+    }
 
-    HtmlHeadAppender.Current.EnsureAppended (this);
     //  Don't render tags for this control.
     RenderChildren (writer);
   }
