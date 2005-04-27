@@ -1,5 +1,25 @@
+1.2.30.0
+========
+
+- BocTextValue
+  TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+
+- BocMultilineTextValue
+  TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+  
+- BocDateTimeValue
+  DateTimeTextBoxStyle, DateTextBoxStyle, TimeTextBoxStyle: 
+    AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+
+- BocEnumValue
+  ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+
+- BocReferenceValue
+  ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+
 1.2.28.0
 ========
+
 - BocList
   * Edit Details konfigurierbar:
     ShowEditDetailsRequiredMarkers
