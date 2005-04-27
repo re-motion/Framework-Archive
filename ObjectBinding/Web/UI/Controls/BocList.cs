@@ -3558,12 +3558,12 @@ public class BocList:
         return null;
     }
 
-    control.ID = GetEditDetailsControlID (columnIndex);
+    control.ID = GetRowEditModeControlID (columnIndex);
     control.Property = property;
     return control;
   }
 
-  protected string GetEditDetailsControlID (int columnIndex)
+  protected string GetRowEditModeControlID (int columnIndex)
   {
     return ID + "_RowEditControl_" + columnIndex.ToString();
   }
