@@ -551,7 +551,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   }
 }
 
-/// <summary> A column definition used for switching between edit-mode and returning from it via save and cancel. </summary>
+/// <summary> A column definition used for switching between edit mode and returning from it via save and cancel. </summary>
 public class BocEditDetailsColumnDefinition: BocColumnDefinition
 {
   private string _editText;
@@ -710,7 +710,7 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
 /// <summary> Defines when the <see cref="BocEditDetailsColumnDefinition"/> will be shown in the <see cref="BocList"/>. </summary>
 public enum BocEditDetailsColumnDefintionShow
 {
-  /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read only. </summary>
+  /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read-only. </summary>
   Always,
   /// <summary> The column is only shown if the <see cref="BocList"/> is in eidt-mode. </summary>
   EditMode
