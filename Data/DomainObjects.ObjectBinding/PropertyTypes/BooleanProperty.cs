@@ -18,6 +18,12 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
   {
   }
 
+  public string GetDisplayName (bool value)
+  {
+    // default implementation that makes build work
+    return value.ToString();
+  }
+
   protected internal override object FromInternalType (object internalValue)
   {
     if (IsList)
