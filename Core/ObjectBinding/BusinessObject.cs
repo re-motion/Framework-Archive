@@ -36,6 +36,13 @@ public abstract class BusinessObject: IBusinessObject
     {
       strValue = businessObject.DisplayName;
     }
+    else if (property is IBusinessObjectBooleanProperty)
+    {
+      if (value is bool)
+        strValue = ((IBusinessObjectBooleanProperty)property).GetDisplayName ((bool)value);
+      else
+        strValue = string.Empty;
+    }
     else if (property is IBusinessObjectEnumerationProperty)
     {
       IBusinessObjectEnumerationProperty enumProperty = (IBusinessObjectEnumerationProperty) property;
