@@ -2587,7 +2587,9 @@ public class BocList:
         _selectedColumnDefinitionSetIndex = 0;
       }
 
+      bool tempIsSelectedColumnDefinitionIndexSet = _isSelectedColumnDefinitionIndexSet;
       SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+      _isSelectedColumnDefinitionIndexSet = tempIsSelectedColumnDefinitionIndexSet;
     }
   }
 
