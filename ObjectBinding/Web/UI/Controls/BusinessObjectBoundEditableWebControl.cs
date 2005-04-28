@@ -63,7 +63,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
   private TypedArrayList _validators;
 
-  /// <summary> Explicitly specifies whether the value of the control is required. </summary>
+  /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
   /// <remarks>
   ///   Set this property to <see cref="NaBooleanEnum.Undefined"/> in order to use the default value 
   ///   (see <see cref="IsRequired"/>).
@@ -77,7 +77,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     set { _required = value; }
   }
 
-  /// <summary> Explicitly specifies whether the control should be displayed in read-only mode. </summary>
+  /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
   /// <remarks>
   ///   Set this property to <see cref="NaBooleanEnum.Undefined"/> in order to use the default value 
   ///   (see <see cref="IsReadOnly"/>). Note that if the data source is in read-only mode, the
@@ -111,86 +111,98 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   public abstract void SaveValue (bool interim);
 
   /// <summary>
-  ///   Determines whether the control is to be displayed in read-only mode.
+  ///   Gets a flag that determines whether the control is to be displayed in read-only mode.
   /// </summary>
   /// <remarks>
-  ///   <para>
   ///     In read-only mode, a <see cref="System.Web.UI.WebControls.Label"/> control is used to display the value.
   ///     Otherwise, a <see cref="System.Web.UI.WebControls.TextBox"/> control is used to display and edit the value.
-  ///   </para><para>
-  ///     The following rules are used to determine the value of this property:
-  ///     <list type="bullet">
-  ///       <item>
-  ///         If the value of the <see cref="ReadOnly"/> property is not <see cref="NaBooleanEnum.Undefined"/>,
-  ///         the value of <see cref="ReadOnly"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
-  ///         <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> is set to 
-  ///         <see cref="DataSourceMode.Search"/>, <see langword="false"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the <see cref="BusinessObjectBoundWebControl.DataSource"/> or the 
-  ///         <see cref="BusinessObjectBoundWebControl.Property"/> is <see langword="null"/>, <see langword="false"/> 
-  ///         is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the <see cref="IBusinessObjectDataSource.BusinessObject">DataSource.BusinessObject</see> is 
-  ///         <see langword="null"/> and the control is not in <b>Design Mode</b>, <see langword="true"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
-  ///         <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> is set to 
-  ///         <see cref="DataSourceMode.Read"/>, <see langword="true"/> is returned.
-  ///       </item>
-  ///       <item>Otherwise, <see langword="Property.IsReadOnly"/> is evaluated and returned.</item>
-  ///     </list>
-  ///   </para>
   /// </remarks>
+  /// <value>
+  ///   <list type="bullet">
+  ///     <item>
+  ///       Whether the control is bound or unbound, if the value of the <see cref="ReadOnly"/> property is 
+  ///       <see cref="NaBooleanEnum.True"/>, <see langword="true"/> is returned.
+  ///     </item>
+  ///     <item>
+  ///       If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
+  ///       <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> is set to 
+  ///       <see cref="DataSourceMode.Search"/>, <see langword="false"/> is returned.
+  ///     </item>
+  ///     <item>
+  ///       If the control is unbound (<see cref="BusinessObjectBoundWebControl.DataSource"/> or 
+  ///       <see cref="BusinessObjectBoundWebControl.Property"/> is <see langword="null"/>) and the
+  ///       <see cref="ReadOnly"/> property is not <see cref="NaBooleanEnum.True"/>, 
+  ///       <see langword="false"/> is returned.
+  ///     </item>
+  ///     <item>
+  ///       If the control is bound (<see cref="BusinessObjectBoundWebControl.DataSource"/> and  
+  ///       <see cref="BusinessObjectBoundWebControl.Property"/> are not <see langword="null"/>), 
+  ///       the following rules are used to determine the value of this property:
+  ///       <list type="bullet">
+  ///         <item>
+  ///           If the <see cref="IBusinessObjectDataSource.Mode">DataSource.Mode</see> of the control's
+  ///           <see cref="BusinessObjectBoundWebControl.DataSource"/> is set to <see cref="DataSourceMode.Read"/>, 
+  ///           <see langword="true"/> is returned.
+  ///         </item>
+  ///         <item>
+  ///           If the <see cref="IBusinessObjectDataSource.BusinessObject">DataSource.BusinessObject</see> is 
+  ///           <see langword="null"/> and the control is not in <b>Design Mode</b>, 
+  ///           <see langword="true"/> is returned.
+  ///         </item>
+  ///         <item>
+  ///           If the control's <see cref="ReadOnly"/> property is <see cref="NaBooleanEnum.False"/>, 
+  ///           <see langword="false"/> is returned.
+  ///         </item>
+  ///         <item>
+  ///           Otherwise, <see langword="Property.IsReadOnly"/> is evaluated and returned.
+  ///         </item>
+  ///       </list>
+  ///     </item>
+  ///   </list>
+  /// </value>
   [Browsable(false)]
   public virtual bool IsReadOnly
   {
     get
     {
-      if (_readOnly == NaBooleanEnum.True)
+      if (_readOnly == NaBooleanEnum.True) // (Bound Control || Unbound Control) && ReadOnly==true
         return true;
-      if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
+      if (DataSource != null && DataSource.Mode == DataSourceMode.Search) // Search DataSource 
         return false;
-      if (_readOnly == NaBooleanEnum.False)
+      if (Property == null || DataSource == null) // Unbound Control && (ReadOnly==false || ReadOnly==undefined)
         return false;
-      if (Property == null || DataSource == null)
-        return false;
-      if (! IsDesignMode && DataSource.BusinessObject == null)
+      if (DataSource.Mode == DataSourceMode.Read) // Bound Control && Reader DataSource
         return true;
-      if (DataSource.Mode == DataSourceMode.Read)
+      if (! IsDesignMode && DataSource.BusinessObject == null) // Bound Control but no BusinessObject
         return true;
-      return Property.IsReadOnly (DataSource.BusinessObject);
+      if (_readOnly == NaBooleanEnum.False) // Bound Control && ReadOnly==false
+        return false;
+      return Property.IsReadOnly (DataSource.BusinessObject); // ReadOnly==undefined: ObjectModel pulls
     }
   }
 
   /// <summary>
-  ///   Determines whether the control is to be treated as a required value.
+  ///   Gets a flag that determines whether the control is to be treated as a required value.
   /// </summary>
   /// <remarks>
-  ///   <para>
   ///     The value of this property is used to decide whether <see cref="CreateValidators"/> should 
   ///     include a <see cref="RequiredFieldValidator"/> for this control.
-  ///   </para><para>
-  ///     The following rules are used to determine the value of this property:
-  ///     <list type="bullet">
-  ///       <item>If the control is read-only, <see langword="false"/> is returned.</item>
-  ///       <item>
-  ///         If the <see cref="Required"/> property is not <see cref="NaBooleanEnum.Undefined"/>, 
-  ///         the value of <see cref="Required"/> is returned.
-  ///       </item>
-  ///       <item>
-  ///         If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property defintion with the
-  ///         <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
-  ///       </item>
-  ///       <item>Otherwise, <see langword="false"/> is returned.</item>
-  ///     </list>
-  ///   </para>
   /// </remarks>
+  /// <value>
+  ///   The following rules are used to determine the value of this property:
+  ///   <list type="bullet">
+  ///     <item>If the control is read-only, <see langword="false"/> is returned.</item>
+  ///     <item>
+  ///       If the <see cref="Required"/> property is not <see cref="NaBooleanEnum.Undefined"/>, 
+  ///       the value of <see cref="Required"/> is returned.
+  ///     </item>
+  ///     <item>
+  ///       If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property defintion with the
+  ///       <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
+  ///     </item>
+  ///     <item>Otherwise, <see langword="false"/> is returned.</item>
+  ///   </list>
+  /// </value>
   [Browsable(false)]
   public virtual bool IsRequired 
   {
