@@ -47,8 +47,6 @@ public class TestTabbedPersonJobsUserControl :
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
-	#region Web Form Designer generated code
-
 	override protected void OnInit(EventArgs e)
 	{
 		//
@@ -71,8 +69,34 @@ public class TestTabbedPersonJobsUserControl :
         FormGridRowInfo.RowType.ControlInRowWithLabel, 
         MultilineTextField.ID, 
         FormGridRowInfo.RowPosition.AfterRowWithID));
+
+    IBusinessObjectProperty endDate = 
+      ListField.Property.ReferenceClass.GetPropertyDefinition ("EndDate");
+
+
+    //  Additional columns, in-code generated
+
+    BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
+    endDateColumnDefinition.ColumnTitle = "EndDate";
+    endDateColumnDefinition.PropertyPath = endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate});
+
+    BocColumnDefinitionSet emptyColumnDefintionSet = new BocColumnDefinitionSet();
+    emptyColumnDefintionSet.Title = "Empty";
+    emptyColumnDefintionSet.ColumnDefinitions.AddRange (
+        new BocColumnDefinition[] {});
+
+    BocColumnDefinitionSet datesColumnDefintionSet = new BocColumnDefinitionSet();
+    datesColumnDefintionSet.Title = "Dates";
+    datesColumnDefintionSet.ColumnDefinitions.AddRange (
+          new BocColumnDefinition[] {endDateColumnDefinition});
+
+    ListField.AvailableColumnDefinitionSets.AddRange (new BocColumnDefinitionSet[] {
+      emptyColumnDefintionSet, 
+      datesColumnDefintionSet});
   }
 	
+	#region Web Form Designer generated code
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
