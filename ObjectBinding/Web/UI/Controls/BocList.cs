@@ -2587,9 +2587,9 @@ public class BocList:
         _selectedColumnDefinitionSetIndex = 0;
       }
 
-      bool tempIsSelectedColumnDefinitionIndexSet = _isSelectedColumnDefinitionIndexSet;
+      //bool tempIsSelectedColumnDefinitionIndexSet = _isSelectedColumnDefinitionIndexSet;
       SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-      _isSelectedColumnDefinitionIndexSet = tempIsSelectedColumnDefinitionIndexSet;
+      //_isSelectedColumnDefinitionIndexSet = tempIsSelectedColumnDefinitionIndexSet;
     }
   }
 
@@ -3846,13 +3846,14 @@ public class BocList:
     if (_isSelectedColumnDefinitionIndexSet)
       return;
     SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+    _isSelectedColumnDefinitionIndexSet = true;
   }
 
   /// <summary>
   ///   Gets or sets the index of the selected <see cref="BocColumnDefinitionSet"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
-  protected NaInt32 SelectedColumnDefinitionSetIndex
+  private NaInt32 SelectedColumnDefinitionSetIndex
   {
     get { return _selectedColumnDefinitionSetIndex; }
     set 
@@ -3872,7 +3873,7 @@ public class BocList:
 
       bool hasIndexChanged = _selectedColumnDefinitionSetIndex != value; 
       _selectedColumnDefinitionSetIndex = value; 
-      _isSelectedColumnDefinitionIndexSet = true;
+      //_isSelectedColumnDefinitionIndexSet = true;
 
       if (! _selectedColumnDefinitionSetIndex.IsNull)
       {
