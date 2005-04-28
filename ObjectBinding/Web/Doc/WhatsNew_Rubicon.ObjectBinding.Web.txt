@@ -1,3 +1,12 @@
+1.2.31.0
+========
+
+- BocList
+  Bugfix: Paging hat seit 1.2.29.0 nur eingeschränkt funktioniert.
+    Go To First, Go To last funktionieren. 
+    Go To Next funktioniert eingeschränkt (immer die 2. Seite).
+    Go To Previous wirft eine Exception.
+    
 1.2.30.0
 ========
 

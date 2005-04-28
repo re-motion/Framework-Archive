@@ -931,6 +931,21 @@ public class BocList:
     EnsureListMenuItemsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
+    
+    if (IsRowEditMode)
+    {
+      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+      {
+        int originalRowIndex = (int) sortedRows[idxRows].First;
+        if (_editableRowIndex.Value == originalRowIndex)
+        {
+          _currentRow = idxRows;
+          break;
+        }
+      }
+    }
+    CalculateCurrentPage();
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -981,6 +996,17 @@ public class BocList:
         }
       }
 
+      if (_currentPage >= _pageCount || _currentRow >= Value.Count)
+      {
+        _currentPage = _pageCount - 1;
+        _currentRow = Value.Count - 1;
+      }
+      if (_currentPage < 0 || _currentRow < 0)
+      {
+        _currentPage = 0;
+        _currentRow = 0;
+      }
+
       if (_move != MoveOption.Undefined)
         _selectorControlCheckedState.Clear();
     }
@@ -994,21 +1020,6 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
-    
-    if (IsRowEditMode)
-    {
-      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
-      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-      {
-        int originalRowIndex = (int) sortedRows[idxRows].First;
-        if (_editableRowIndex.Value == originalRowIndex)
-        {
-          _currentRow = idxRows;
-          break;
-        }
-      }
-    }
-    CalculateCurrentPage();
 
     if (IsDesignMode)
     {
