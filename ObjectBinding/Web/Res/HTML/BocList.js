@@ -17,6 +17,7 @@ var _bocList_isSelectorControlClick = false;
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
 
+var _bocList_rowSelectionUndefined = -1;
 var _bocList_rowSelectionDisabled = 0;
 var _bocList_rowSelectionSingleCheckBox = 1;
 var _bocList_rowSelectionSingleRadioButton = 2;
@@ -75,7 +76,8 @@ function BocList_InitializeGlobals (
 function BocList_InitializeList (bocList, selectorControlPrefix, count, selection)
 {
   var selectedRows = new BocList_SelectedRows (selection);
-  if (selectedRows.Selection != _bocList_rowSelectionDisabled)
+  if (   selectedRows.Selection != _bocList_rowSelectionUndefined
+      && selectedRows.Selection != _bocList_rowSelectionDisabled)
   {
     for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
     {
@@ -122,8 +124,11 @@ function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
   var className; //  The css-class
   var isCtrlKeyPress = window.event.ctrlKey;
     
-  if (selectedRows.Selection == _bocList_rowSelectionDisabled)
+  if (   selectedRows.Selection == _bocList_rowSelectionUndefined
+      || selectedRows.Selection == _bocList_rowSelectionDisabled)
+  {
     return;
+  }
     
   if (isCtrlKeyPress || _bocList_isSelectorControlClick)
   {
