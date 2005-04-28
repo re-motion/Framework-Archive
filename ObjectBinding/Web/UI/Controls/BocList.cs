@@ -286,7 +286,7 @@ public class BocList:
   private bool _showListMenu = true;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
-  private RowSelection _selection = RowSelection.Disabled;
+  private RowSelection _selection = RowSelection.Undefined;
   /// <summary> 
   ///   Contains the checked state for each of the selector controls in the <see cref="BocList"/>.
   ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
@@ -3965,8 +3965,11 @@ public class BocList:
   {
     ClearSelectedRows();
 
-    if (_selection == RowSelection.Disabled && selectedRows.Length > 0)
+    if (   (_selection == RowSelection.Undefined || _selection == RowSelection.Disabled)
+        && selectedRows.Length > 0)
+    {
       throw new InvalidOperationException ("Cannot select rows if the BocList is set to RowSelection.Disabled.");
+    }
 
     if (   (   _selection == RowSelection.SingleCheckBox 
             || _selection == RowSelection.SingleRadioButton)
@@ -4131,7 +4134,7 @@ public class BocList:
   /// </remarks>
   [Category ("Behavior")]
   [Description ("Indicates whether row selection is enabled.")]
-  [DefaultValue (RowSelection.Disabled)]
+  [DefaultValue (RowSelection.Undefined)]
   public virtual RowSelection Selection
   {
     get { return _selection; }
@@ -4140,7 +4143,7 @@ public class BocList:
 
   protected bool IsSelectionEnabled
   {
-    get { return _selection != RowSelection.Disabled; }
+    get { return _selection != RowSelection.Undefined && _selection != RowSelection.Disabled; }
   }
 
   /// <summary> The number of rows displayed per page. </summary>
@@ -4548,6 +4551,7 @@ public enum SortingDirection
 
 public enum RowSelection
 { 
+  Undefined = -1,
   Disabled = 0,
   SingleCheckBox = 1,
   SingleRadioButton = 2,
