@@ -367,12 +367,19 @@ public class BocList:
     Controls.Add (_optionsMenu);
 
     _moveFirstButton.ID = ID + "_MoveFirstButton";
+    _moveFirstButton.EnableViewState = false;
     Controls.Add (_moveFirstButton);
+
     _moveLastButton.ID = ID + "_MoveLastButton";
+    _moveLastButton.EnableViewState = false;
     Controls.Add (_moveLastButton);
+
     _movePreviousButton.ID = ID + "_MovePreviousButton";
+    _movePreviousButton.EnableViewState = false;
     Controls.Add (_movePreviousButton);
+
     _moveNextButton.ID = ID + "_MoveNextButton";
+    _moveNextButton.EnableViewState = false;
     Controls.Add (_moveNextButton);
 
     _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
