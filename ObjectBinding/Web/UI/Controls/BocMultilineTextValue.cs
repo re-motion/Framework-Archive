@@ -160,7 +160,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
-  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -379,6 +379,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+  /// <value> The value must be of type <b>string[]</b>. </value>
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -397,7 +398,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
+  /// <value> The <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
     get { return IsReadOnly ? (Control) this : _textBox; }
@@ -423,6 +424,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
@@ -438,7 +440,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary>
-  ///   The style that you want to apply to the <see cref="TextBox"/> (edit mode) 
+  ///   Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) 
   ///   and the <see cref="Label"/> (read-only mode).
   /// </summary>
   /// <remarks>
