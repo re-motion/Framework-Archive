@@ -23,7 +23,7 @@
           </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
-            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:ColumnTitle </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyColumn:ColumnTitle </para>
             <para> Applies to all columns. </para>
           </description>
         </item>
@@ -33,7 +33,7 @@
           </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:FixedColumns:FirstColumn:Text </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyColumn:Text </para>
             <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
           </description>
         </item>
@@ -43,7 +43,7 @@
           </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:OptionsMenuItems:FirstItem:Text </para>
+            <para> e.g. auto:MyBocList:OptionsMenuItems:MyItem:Text </para>
           </description>
         </item>
         <item>
@@ -52,7 +52,7 @@
           </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:ListMenuItems:FirstItem:Text </para>
+            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
           </description>
         </item>
       </list>
