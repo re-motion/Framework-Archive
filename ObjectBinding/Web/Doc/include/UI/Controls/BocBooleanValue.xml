@@ -16,9 +16,6 @@
         Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
         <b>BocBooleanValue</b>.
       </para><para>
-        The resources required by this control are defined by the <see cref="BocBooleanValue.ResourceIdentifier"/> 
-        enum.
-      </para><para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
         If <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
@@ -31,6 +28,49 @@
         The control does not support auto-postback.
       </para>
       
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by this control are defined by the <see cref="BocBooleanValue.ResourceIdentifier"/> 
+        enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
+      </para><para>
+        The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <b>BocBooleanValue</b>.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term> <see cref="ErrorMessage"/> </term>
+          <description>
+            <para> &lt;BocBooleanValue Resource ID&gt;:ErrorMessage </para>
+            <para> e.g. auto:MyBocBooleanValue:ErrorMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="TrueDescription"/> </term>
+          <description>
+            <para> &lt;BocBooleanValue Resource ID&gt;:TrueDescription </para>
+            <para> e.g. auto:MyBocBooleanValue:TrueDescription </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FalseDescription"/> </term>
+          <description>
+            <para> &lt;BocBooleanValue Resource ID&gt;:FalseDescription </para>
+            <para> e.g. auto:MyBocBooleanValue:FalseDescription </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="NullDescription"/> </term>
+          <description>
+            <para> &lt;BocBooleanValue Resource ID&gt;:NullDescription </para>
+            <para> e.g. auto:MyBocBooleanValue:NullDescription </para>
+          </description>
+        </item>
+      </list>
+
       <h4 class="dtH4">Inner Workings</h4>
       <para>
         The control is displayed using a <see cref="System.Web.UI.WebControls.HyperLink"/> encapsulating an 
