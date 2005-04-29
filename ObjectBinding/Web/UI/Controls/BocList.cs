@@ -2933,7 +2933,7 @@ public class BocList:
   ///   <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
   /// </remarks>
   /// <param name="sortingOrder"></param>
-  /// <exception cref="InvalidOperationException">EnableMultipleSorting == False && sortingOrder.Length > 1</exception>
+  /// <exception cref="InvalidOperationException">EnableMultipleSorting == False &amp;&amp; sortingOrder.Length > 1</exception>
   public void  SetSortingOrder (BocListSortingOrderEntry[] sortingOrder)
   {
     _sortingOrder.Clear();
@@ -4121,7 +4121,7 @@ public class BocList:
   /// </remarks>
   /// <value> 
   ///   <see langword="NaBoolean.True"/> to show the sorting order index after the button. 
-  ///   Defaults to <see cref="NaBoolean.Undefined"/>, which is interpreted as <see langword="true"/>.
+  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   [Category ("Appearance")]
   [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
