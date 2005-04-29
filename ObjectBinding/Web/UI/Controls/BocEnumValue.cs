@@ -194,7 +194,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
-  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -508,12 +508,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <remarks> Only used to simplify access to the <see cref="IEnumerationValueInfo"/>. </remarks>
   /// <value> 
   ///   The <see cref="EnumerationValueInfo"/> object
   ///   or <see langword="null"/> if no item / the null item is selected 
   ///   or the <see cref="Property"/> is <see langword="null"/>.
   /// </value>
+  /// <remarks> Only used to simplify access to the <see cref="IEnumerationValueInfo"/>. </remarks>
   protected IEnumerationValueInfo EnumerationValueInfo
   {
     get 
@@ -526,11 +526,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <remarks> Used to identify the currently selected item. </remarks>
   /// <value> 
   ///   The <see cref="IEnumerationValueInfo.Identifier"/> object
   ///   or <see langword="null"/> if no item / the null item is selected.
   /// </value>
+  /// <remarks> Used to identify the currently selected item. </remarks>
   protected virtual string InternalValue
   {
     get 
@@ -576,7 +576,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </remarks>
+  /// <value> The <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
     get { return (_listControl == null) ? (Control) this : _listControl; }
@@ -596,6 +596,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> 
+  ///   <see langword="false"/> if the <see cref="ListControlStyle"/>'s 
+  ///   <see cref="Rubicon.ObjectBinding.Web.Controls.ListControlStyle.ControlType"/> is set to 
+  ///   <see cref="ListControlType.DropDownList"/> or <see cref="ListControlType.ListBox"/>. 
+  /// </value>
   public override bool UseLabel
   {
     get 
@@ -627,7 +632,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/>  properties.
   /// </remarks>
   [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
+  [Description("The style that you want to apply to the ListControl (edit mode) and the Label (read-only mode).")]
   [NotifyParentProperty(true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -636,10 +641,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return _commonStyle; }
   }
 
-  /// <summary> Gets the style that you want to apply to the <see cref="ListBox"/> (edit mode) only. </summary>
+  /// <summary> Gets the style that you want to apply to the <see cref="ListControl"/> (edit mode) only. </summary>
   /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) only.")]
+  [Description("The style that you want to apply to the ListControl (edit mode) only.")]
   [NotifyParentProperty(true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
