@@ -662,6 +662,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\SingleBocTestReferenceValueForm.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\TestBasePage.resx"
                     BuildAction = "EmbeddedResource"
                 />
