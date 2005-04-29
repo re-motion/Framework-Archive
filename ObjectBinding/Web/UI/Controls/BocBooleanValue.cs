@@ -456,7 +456,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="HyperLink"/> if the control is in edit mode, otherwise the control itself. </remarks>
+  /// <value> The <see cref="HyperLink"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
     get { return IsReadOnly ? (Control) this : _hyperLink; }
@@ -476,7 +476,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
-  /// <value> Returns always <see langword="true"/>. </value>
+  /// <value> Always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }

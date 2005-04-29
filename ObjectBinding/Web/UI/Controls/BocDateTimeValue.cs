@@ -243,7 +243,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
-  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -987,6 +987,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
@@ -998,7 +999,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// </summary>
   /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
   [Category("Style")]
-  [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
+  [Description("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
   [NotifyParentProperty(true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
