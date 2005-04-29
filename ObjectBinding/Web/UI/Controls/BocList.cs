@@ -3729,6 +3729,7 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
+  /// <value> The value must be of type <see cref="IList"/>. </value>
   protected override object ValueImplementation
   {
     get { return Value; }
