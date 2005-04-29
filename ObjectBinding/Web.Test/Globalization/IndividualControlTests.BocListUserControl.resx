@@ -50,7 +50,7 @@
     <data name="auto:ChildrenList:FixedColumns:LastName:ColumnTitle">
     </data>
     <data name="auto:ChildrenList:FixedColumns:Name:ColumnTitle">
-        <value>Name</value>
+        <value>Voller Name</value>
     </data>
     <data name="auto:ChildrenList:OptionsMenuItems:Copy:Text">
         <value>Kopieren</value>
