@@ -2933,11 +2933,12 @@ public class BocList:
   ///   <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
   /// </remarks>
   /// <param name="sortingOrder"></param>
+  /// <exception cref="InvalidOperationException">EnableMultipleSorting == False && sortingOrder.Length > 1</exception>
   public void  SetSortingOrder (BocListSortingOrderEntry[] sortingOrder)
   {
     _sortingOrder.Clear();
-    if (! IsMultipleSortingEnabled && sortingOrder.Length > 0)
-      _sortingOrder.Add (sortingOrder[0]);
+    if (! IsMultipleSortingEnabled && sortingOrder.Length > 1)
+      throw new InvalidOperationException ("Attempted to set multiple sorting keys but EnableMultipleSorting is False.");
     else
       _sortingOrder.AddRange (sortingOrder);
   }
