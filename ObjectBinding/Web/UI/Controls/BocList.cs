@@ -73,8 +73,9 @@ public class BocList:
   private const string c_moveNextInactiveIcon = "MoveNextInactive.gif";
   #endregion
 
-  private const string c_bocListScriptUrl = "BocList.js";
+  private const string c_scriptFileUrl = "BocList.js";
   private const string c_onCommandClickScript = "BocList_OnCommandClick();";
+  private const string c_styleFileUrl = "BocList.css";
 
   private const string c_whiteSpace = "&nbsp;";
 
@@ -184,6 +185,10 @@ public class BocList:
   private static readonly object s_listItemCommandClickEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();
   private static readonly object s_customCellClickEvent = new object();
+
+  private static readonly string s_scriptFileKey = typeof (BocList).FullName + "_Script";
+  private static readonly string s_startUpScriptKey = typeof (BocList).FullName+ "_Startup";
+  private static readonly string s_styleFileKey = typeof (BocList).FullName + "_Style";
 
 	// member fields
 
@@ -897,22 +902,18 @@ public class BocList:
   {
     DetermineClientScriptLevel();
 
-    string key;
-
     if (_hasClientScript)
     {
       //  Include script file
-      key = typeof (BocList).FullName + "_Script";
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (BocList), ResourceType.Html, c_bocListScriptUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+            this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
       }
 
       //  Startup script initalizing the global values of the script.
-      key = typeof (BocList).FullName+ "_Startup";
-      if (! Page.IsStartupScriptRegistered (key))
+      if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
       {
         string script = string.Format (
             "BocList_InitializeGlobals ('{0}', '{1}', '{2}', '{3}');",
@@ -920,16 +921,15 @@ public class BocList:
             CssClassDataCellEven,
             CssClassDataCellOddSelected,
             CssClassDataCellEvenSelected);
-        PageUtility.RegisterStartupScriptBlock (Page, key, script);
+        PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
       }
     }
 
-    key = typeof (BocList).FullName + "_Style";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
       string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocList), ResourceType.Html, "BocList.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+          this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
