@@ -6,6 +6,11 @@
     BocReferenceValue platziert ist, kommt es zu JavaScript Fehlern.
     Abhilfe bevor 1.2.32.0: TextBoxStyle.CheckClientSideMaxLength auf false setzen.
     Aufgetreten mit 1.2.19.0
+    
+- BocList
+  ShowSortingOrder: Von bool auf NaBoolean geändert. Defaultwert ist nun Undefined, wird als True interpretiert.
+    Sollte keine Änderungen an bestehenden ASPX-Seite erforderlich machen. Ausnahme: ShowSortingOrder soll False sein.
+  EnableMultipleSorting: Neue Property. Beschränkt das Sortieren auf eine Spalte gleichzeitig.    
 
 1.2.31.0
 ========

@@ -278,8 +278,10 @@ public class BocList:
   
   /// <summary> Determines whether to show the sort buttons. </summary>
   private bool _enableSorting = true;
-  /// <summary> Determines whether to show the sorting order after the sorting button. </summary>
-  private bool _showSortingOrder = false;
+  /// <summary> Determines whether to show the sorting order after the sorting button. Undefined interpreted as True. </summary>
+  private NaBoolean _showSortingOrder = NaBoolean.Null;
+  /// <summary> Undefined interpreted as True. </summary>
+  private NaBoolean _enableMultipleSorting = NaBoolean.Null;
   /// <summary> 
   ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
@@ -663,8 +665,21 @@ public class BocList:
       sortingOrderEntry = new BocListSortingOrderEntry (columnIndex, SortingDirection.Ascending);
     }
 
-    if (! sortingOrderEntry.IsEmpty)
+    if (sortingOrderEntry.IsEmpty)
+    {
+      if (_sortingOrder.Count > 1 && ! IsMultipleSortingEnabled)
+      {
+        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[0];
+        _sortingOrder.Clear();
+        _sortingOrder.Add (entry);
+      }
+    }
+    else
+    {
+      if (! IsMultipleSortingEnabled)
+        _sortingOrder.Clear();
       _sortingOrder.Add (sortingOrderEntry);
+    }
   }
 
   /// <summary> Handles post back events raised by a custom cell event. </summary>
@@ -1877,7 +1892,7 @@ public class BocList:
 
       RenderIcon (writer, new IconInfo (imageUrl));
 
-      if (_showSortingOrder && sortingOrder.Count > 1)
+      if (IsShowSortingOrderEnabled && sortingOrder.Count > 1)
       {
         int orderIndex = sortingOrder.IndexOf (columnIndex);
         writer.Write (c_whiteSpace + (orderIndex + 1).ToString());
@@ -2921,7 +2936,10 @@ public class BocList:
   public void  SetSortingOrder (BocListSortingOrderEntry[] sortingOrder)
   {
     _sortingOrder.Clear();
-    _sortingOrder.AddRange (sortingOrder);
+    if (! IsMultipleSortingEnabled && sortingOrder.Length > 0)
+      _sortingOrder.Add (sortingOrder[0]);
+    else
+      _sortingOrder.AddRange (sortingOrder);
   }
 
   /// <summary>
@@ -4095,19 +4113,50 @@ public class BocList:
 
   /// <summary>
   ///   Gets or sets a flag that determines whether to display the sorting order index 
-  ///   in front of each sorting button.
+  ///   after each sorting button.
   /// </summary>
   /// <remarks> 
   ///   Only displays the index if more than one column is included in the sorting.
   /// </remarks>
-  /// <value> <see langword="true"/> to show the sorting order index after the button. </value>
+  /// <value> 
+  ///   <see langword="NaBoolean.True"/> to show the sorting order index after the button. 
+  ///   Defaults to <see cref="NaBoolean.Undefined"/>, which is interpreted as <see langword="true"/>.
+  /// </value>
   [Category ("Appearance")]
-  [Description ("Enables the sorting order display in front of each sorting button.")]
-  [DefaultValue (false)]
-  public virtual bool ShowSortingOrder
+  [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
+  [DefaultValue (typeof (NaBoolean), "")]
+  public virtual NaBoolean ShowSortingOrder
   {
     get { return _showSortingOrder; }
     set { _showSortingOrder = value; }
+  }
+
+  protected virtual bool IsShowSortingOrderEnabled
+  {
+    get { return ! _showSortingOrder.IsFalse; }
+  }
+
+  [Category ("Behavior")]
+  [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
+  [DefaultValue (typeof (NaBoolean), "")]
+  public virtual NaBoolean EnableMultipleSorting
+  {
+    get { return _enableMultipleSorting; }
+    set 
+    {
+      _enableMultipleSorting = value; 
+      if (_sortingOrder.Count > 1 && ! IsMultipleSortingEnabled)
+      {
+        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[0];
+        _sortingOrder.Clear();
+        _sortingOrder.Add (entry);
+      }
+    }
+  }
+
+  protected virtual bool IsMultipleSortingEnabled
+  {
+    get { return ! _enableMultipleSorting.IsFalse; }
   }
 
   /// <summary>
