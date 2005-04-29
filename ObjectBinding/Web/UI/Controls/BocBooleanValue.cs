@@ -29,11 +29,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 {
 	// constants
 
-  private const string c_bocBooleanValueScriptUrl = "BocBooleanValue.js";
+  private const string c_scriptFileUrl = "BocBooleanValue.js";
 
   private const string c_trueIcon = "CheckBoxTrue.gif";
   private const string c_falseIcon = "CheckBoxFalse.gif";
   private const string c_nullIcon = "CheckBoxNull.gif";
+
+  private const string c_defaultControlWidth = "100pt";
 
   // types
 
@@ -63,7 +65,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       typeof (IBusinessObjectBooleanProperty) };
 
   private static readonly object s_checkedChangedEvent = new object();
-  private const string c_defaultControlWidth = "100pt";
+
+  private static readonly string s_scriptFileKey = typeof (BocBooleanValue).FullName + "_Script";
+  private static readonly string s_startUpScriptKey = typeof (BocBooleanValue).FullName+ "_Startup";
 
 	// member fields
   private bool _isDirty = true;
@@ -319,18 +323,16 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     {
       string script;
 
-      string key = typeof (BocBooleanValue).FullName + "_Script";
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (BocBooleanValue), ResourceType.Html, c_bocBooleanValueScriptUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+            this, Context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
       }
 
       if (Enabled)
       {
-        key = typeof (BocBooleanValue).FullName+ "_Startup";
-        if (! Page.IsStartupScriptRegistered (key))
+        if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
         {
           string trueValue = NaBoolean.True.ToString();
           string falseValue = NaBoolean.False.ToString();
@@ -341,7 +343,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
               trueValue, falseValue, nullValue, 
               defaultTrueDescription, defaultFalseDescription, defaultNullDescription, 
               trueIconUrl, falseIconUrl, nullIconUrl);
-          PageUtility.RegisterStartupScriptBlock (Page, key, script);
+          PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
         }
       }
 

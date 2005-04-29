@@ -35,7 +35,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   private const int c_defaultDatePickerLengthInPoints = 150;
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
-  private const string c_datePickerScriptUrl = "DatePicker.js";
+  private const string c_datePickerScriptFileUrl = "DatePicker.js";
 
   // types
 
@@ -66,6 +66,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
+  private static readonly string s_datePickerScriptFileKey = typeof (BocDateTimeValue).FullName + "_DatePickerScript";
   private static readonly object s_dateTimeChangedEvent = new object();
 
 	// member fields
@@ -555,12 +556,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     DetermineClientScriptLevel();
     if (_hasClientScript && Enabled)
     {
-      string key = typeof (BocDateTimeValue).FullName;
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (s_datePickerScriptFileKey))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+            this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_datePickerScriptFileKey, scriptUrl);
       }
     }
 
