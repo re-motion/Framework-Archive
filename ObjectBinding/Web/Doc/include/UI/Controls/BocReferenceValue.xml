@@ -40,7 +40,7 @@
         <see cref="BocReferenceValue.ResourceIdentifier"/> enum. See the <b>ResourceIdentifier</b>'s documentation
         for details on localization.
       </para><para>
-        The control supports resource dispatching to its properties using the <see cref="ResourceDispatcher"/>.
+        The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
         Use the following resource identifiers for dispatching strings to the <b>BocReferenceValue</b>.
       </para>
       <list type="table">
@@ -63,18 +63,14 @@
           </description>
         </item>
         <item>
-          <term>
-            <see cref="OptionsMenuItems"/>[x].Text
-          </term>
+          <term> <see cref="OptionsMenuItems"/>[x].Text </term>
           <description>
             <para> &lt;BocReferenceValue Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
             <para> e.g. auto:MyBocReferenceValue:OptionsMenuItems:MyItem:Text </para>
           </description>
         </item>
         <item>
-          <term>
-            <see cref="Command"/>.ToolTip
-          </term>
+          <term> <see cref="Command"/>.ToolTip </term>
           <description>
             <para> &lt;BocReferenceValue Resource ID&gt;:Command:ToolTip </para>
             <para> e.g. auto:MyBocReferenceValue:Command:ToolTip </para>
