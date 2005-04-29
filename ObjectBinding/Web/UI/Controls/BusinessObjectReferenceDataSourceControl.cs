@@ -110,6 +110,7 @@ public class BusinessObjectReferenceDataSourceControl:
   }
 
   /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
+  /// <value> The value must be of type <see cref="IBusinessObject"/>. </value>
   protected override object ValueImplementation
   {
     get { return _internalDataSource.BusinessObject; }
