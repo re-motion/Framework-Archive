@@ -15,6 +15,8 @@
     Go To First, Go To last funktionieren. 
     Go To Next funktioniert eingeschränkt (immer die 2. Seite).
     Go To Previous wirft eine Exception.
+  Bugfix: Umschalten des aktiven ColumnSets hat nur funktioniert wenn die verfügbaren Sets nach dem
+    LoadPostData eingehängt wurden. Dh nicht bei dynamisch erzeugten UserControls mit BocListen.
 
 - Sämtliche Modifiable Controls
   Bugfix: ReadOnly=false hat vor DataSource.Mode=Read gezogen. Für komplettes Verhalten von ReadOnly, siehe Doku.
