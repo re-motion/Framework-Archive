@@ -101,6 +101,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Category ("Data")]
   [Description ("The string representation of the Property.")]
   [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
+  [DefaultValue ("")]
   public string PropertyIdentifier
   {
     get { return _binding.PropertyIdentifier; }
