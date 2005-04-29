@@ -38,7 +38,8 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultControlWidth = "150pt";
 
-  private const string c_bocReferenceValueScriptUrl = "BocReferenceValue.js";
+  private const string c_scriptFileUrl = "BocReferenceValue.js";
+  private const string c_styleFileUrl = "BocReferenceValue.css";
 
   // types
 
@@ -66,6 +67,10 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   private static readonly object s_selectionChangedEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();
   private static readonly object s_commandClickEvent = new object();
+
+  private static readonly string s_scriptFileKey = typeof (BocReferenceValue).FullName + "_Script";
+  private static readonly string s_startUpScriptKey = typeof (BocReferenceValue).FullName+ "_Startup";
+  private static readonly string s_styleFileKey = typeof (BocReferenceValue).FullName + "_Style";
 
 	// member fields
 
@@ -128,7 +133,7 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
 
   /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   /// <remarks>
-  ///   If the <see cref="ListControl"/> could not be created from <see cref="ListControlStyle"/>,
+  ///   If the <see cref="DropDownList"/> could not be created from <see cref="DropDownListStyle"/>,
   ///   the control is set to read-only.
   /// </remarks>
   protected override void CreateChildControls()
@@ -545,15 +550,11 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
     RefreshBusinessObjectList (businessObjects);
   }
 
-  /// <summary>
-  ///   Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>.
-  /// </summary>
-  /// <remarks>
-  ///   This method controls the actual refilling of the <see cref="DropDownList"/>.
-  /// </remarks>
+  /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
   /// <param name="businessObjects">
   ///   The array of <see cref="IBusinessObjectWithIdentity"/> objects to populate the <see cref="DropDownList"/>.
   /// </param>
+  /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
   protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
     if (! IsReadOnly)
@@ -579,27 +580,24 @@ public class BocReferenceValue: BusinessObjectBoundModifiableWebControl, IPostBa
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
   protected override void PreRenderChildControls()
   {
-    string key = typeof (BocReferenceValue).FullName + "_Script";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_bocReferenceValueScriptUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
 
-    key = typeof (BocReferenceValue).FullName+ "_Startup";
-    if (! Page.IsStartupScriptRegistered (key))
+    if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
     {
-      string script = string.Format ("BocReferenceValue_InitializeGlobals ('{0}');", c_nullIdentifier);
-      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+      const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
+      PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
     }
 
-    key = typeof (BocReferenceValue).FullName + "_Style";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
       string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, "BocReferenceValue.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
     }
 
     PreRenderIcon();

@@ -308,7 +308,8 @@ public class SingleRowTextBoxStyle: Style
 /// </summary>
 public class TextBoxStyle: SingleRowTextBoxStyle
 {
-  private const string c_textBoxStyleScriptUrl = "TextBoxStyle.js";
+  private const string c_scriptFileUrl = "TextBoxStyle.js";
+  private static readonly string s_scriptFileKey = typeof (TextBoxStyle).FullName + "_Script";
 
   private NaInt32 _rows = NaInt32.Null;
   private TextBoxMode _textMode;
@@ -341,12 +342,11 @@ public class TextBoxStyle: SingleRowTextBoxStyle
         && ! CheckClientSideMaxLength.IsFalse
         && ! ControlHelper.IsDesignMode ((Control) textBox)) 
     {
-      string key = typeof (BocReferenceValue).FullName + "_Script";
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            textBox, null, typeof (TextBoxStyle), ResourceType.Html, c_textBoxStyleScriptUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+            textBox, null, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
       }
       textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
     }
