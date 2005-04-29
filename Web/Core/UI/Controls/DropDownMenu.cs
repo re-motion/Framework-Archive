@@ -347,6 +347,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddStyleAttribute ("display", "inline");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin Drop Down Button Div
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
     
