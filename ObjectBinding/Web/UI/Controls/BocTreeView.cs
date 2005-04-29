@@ -479,6 +479,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
@@ -524,6 +525,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
+  /// <value> The value must be of type <see cref="IList"/> or <see cref="IBusinessObjectWithIdentity"/>. </value>
   protected override object ValueImplementation
   {
     get { return Value; }

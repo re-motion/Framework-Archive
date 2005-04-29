@@ -166,7 +166,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
-  /// <summary> Overrides the <see cref="Control.RenderContents"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (IsReadOnly)
@@ -633,6 +633,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
@@ -662,7 +663,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary>
-  ///   The style that you want to apply to the <see cref="TextBox"/> (edit mode) 
+  ///   Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) 
   ///   and the <see cref="Label"/> (read-only mode).
   /// </summary>
   /// <remarks>
@@ -681,7 +682,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return _commonStyle; }
   }
 
-  /// <summary> The style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
+  /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
   /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to the TextBox (edit mode) only.")]
@@ -693,7 +694,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return _textBoxStyle; }
   }
 
-  /// <summary> The style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
+  /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
   /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
   [Category("Style")]
   [Description("The style that you want to apply to the Label (read-only mode) only.")]
