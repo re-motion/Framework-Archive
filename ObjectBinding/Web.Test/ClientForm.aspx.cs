@@ -31,6 +31,7 @@ public class ClientForm : TestWxeBasePage
   protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BocBooleanValue1;
   private PlaceHolder _wxeControlsPlaceHolder;
   private IDataEditControl[] _dataEditControls;
+  private DropDownMenu _ddm = new DropDownMenu();
 
   protected ClientFormWxeFunction Function
   {
@@ -114,6 +115,10 @@ public class ClientForm : TestWxeBasePage
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add (_wxeControlsPlaceHolder);
 		
+    _ddm.Height = new Unit("0%");
+    _ddm.Width = new Unit("0%");
+    MultiView.TopControls.AddAt (0, _ddm);
+
     base.OnInit(e);
 	}
 	#region Web Form Designer generated code
