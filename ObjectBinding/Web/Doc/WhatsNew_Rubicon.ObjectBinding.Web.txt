@@ -6,6 +6,9 @@
     Go To First, Go To last funktionieren. 
     Go To Next funktioniert eingeschränkt (immer die 2. Seite).
     Go To Previous wirft eine Exception.
+
+- Sämtliche Modifiable Controls
+  Bugfix: ReadOnly=false hat vor DataSource.Mode=Read gezogen. Für komplettes Verhalten von ReadOnly, siehe Doku.
     
 1.2.30.0
 ========
