@@ -146,7 +146,7 @@
         </item>
         <item>
           <term>
-            Modifiable / <see cref="Value"/> is set to an item not in the list.
+            Edit Mode / <see cref="Value"/> is set to an item not in the list.
           </term>
           <description>
             <para>
