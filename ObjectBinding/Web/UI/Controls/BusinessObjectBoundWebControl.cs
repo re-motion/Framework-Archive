@@ -172,8 +172,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   private BusinessObjectBinding _binding;
-  /// <summary> Used by the <see cref="EnsureChildControlsPreRendered"/> method. </summary>
-  private bool _childControlsPreRendered = false;
   /// <summary> Set or cleared depending on <see cref="HasValidBinding"/> during <see cref="OnLoad"/>. </summary>
   bool _hasVisibleBinding = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
