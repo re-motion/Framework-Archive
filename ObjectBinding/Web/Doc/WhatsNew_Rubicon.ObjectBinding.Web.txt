@@ -1,49 +1,63 @@
+1.2.33.0
+========
+
+- BocList
+  * AddAndEditRow: 
+    Neue Methode. Fügt ein IBusinessObject als neue Zeile am Ende von (IList) Value ein 
+    und schaltet diese Zeile in den Edit Details Mode.
+  * AddRow:
+    Neue Methode. Fügt ein IBusinessObject als neue Zeile am Ende von (IList) Value ein 
+  * RemoveRow:
+    Neue Methode. Entfernt eine Zeile aus (IList) Value.
+  * SavingEditedRow, EditedRowSaved, CancelingEditDetailsMode, EditDetailsCanceled
+    Eventhandler für Vor/Nach Save/Cancel des Edit Details Mode.
+      
 1.2.32.0
 ========
 
 - BocTextValue, BocMultilineTextValue und BocRefereneValue
-  Bugfix: Falls bei einer mehrzeiligen Textbox eine Maximallänge angegeben war und auf der gleichen Seite ein
+  * Bugfix: Falls bei einer mehrzeiligen Textbox eine Maximallänge angegeben war und auf der gleichen Seite ein
     BocReferenceValue platziert ist, kommt es zu JavaScript Fehlern.
     Abhilfe bevor 1.2.32.0: TextBoxStyle.CheckClientSideMaxLength auf false setzen.
     Aufgetreten mit 1.2.19.0
     
 - BocList
-  ShowSortingOrder: Von bool auf NaBoolean geändert. Defaultwert ist nun Undefined, wird als True interpretiert.
+  * ShowSortingOrder: Von bool auf NaBoolean geändert. Defaultwert ist nun Undefined, wird als True interpretiert.
     Sollte keine Änderungen an bestehenden ASPX-Seite erforderlich machen. Ausnahme: ShowSortingOrder soll False sein.
-  EnableMultipleSorting: Neue Property. Beschränkt das Sortieren auf eine Spalte gleichzeitig.    
+  * EnableMultipleSorting: Neue Property. Beschränkt das Sortieren auf eine Spalte gleichzeitig.    
 
 1.2.31.0
 ========
 
 - BocList
-  Bugfix: Paging hat seit 1.2.29.0 nur eingeschränkt funktioniert.
+  * Bugfix: Paging hat seit 1.2.29.0 nur eingeschränkt funktioniert.
     Go To First, Go To last funktionieren. 
     Go To Next funktioniert eingeschränkt (immer die 2. Seite).
     Go To Previous wirft eine Exception.
-  Bugfix: Umschalten des aktiven ColumnSets hat nur funktioniert wenn die verfügbaren Sets nach dem
+  * Bugfix: Umschalten des aktiven ColumnSets hat nur funktioniert wenn die verfügbaren Sets nach dem
     LoadPostData eingehängt wurden. Dh nicht bei dynamisch erzeugten UserControls mit BocListen.
 
 - Sämtliche Modifiable Controls
-  Bugfix: ReadOnly=false hat vor DataSource.Mode=Read gezogen. Für komplettes Verhalten von ReadOnly, siehe Doku.
+  * Bugfix: ReadOnly=false hat vor DataSource.Mode=Read gezogen. Für komplettes Verhalten von ReadOnly, siehe Doku.
     
 1.2.30.0
 ========
 
 - BocTextValue
-  TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+  * TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
 - BocMultilineTextValue
-  TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+  * TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
   
 - BocDateTimeValue
-  DateTimeTextBoxStyle, DateTextBoxStyle, TimeTextBoxStyle: 
+  * DateTimeTextBoxStyle, DateTextBoxStyle, TimeTextBoxStyle: 
     AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
 - BocEnumValue
-  ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+  * ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
 - BocReferenceValue
-  ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
+  * ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
 1.2.28.0
 ========

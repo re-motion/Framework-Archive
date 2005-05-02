@@ -340,6 +340,7 @@ public class BocList:
   private bool _showEditDetailsRequiredMarkers = true;
   private bool _showEditDetailsValidationMarkers = false;
   private bool _disableEditDetailsValidationMessages = false;
+  private bool _isEditNewRow = false;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -2487,21 +2488,23 @@ public class BocList:
     _currentRow = (int) values[2];
     _sortingOrder = (ArrayList) values[3];
     _editableRowIndex = (NaInt32) values[4];
-    _isDirty = (bool) values[5];
+    _isEditNewRow = (bool) values[5];
+    _isDirty = (bool) values[6];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[6];
+    object[] values = new object[7];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedColumnDefinitionSetIndex;
     values[2] = _currentRow;
     values[3] = _sortingOrder;
     values[4] = _editableRowIndex;
-    values[5] = _isDirty;
+    values[5] = _isEditNewRow;
+    values[6] = _isDirty;
 
     return values;
   }
@@ -3423,6 +3426,39 @@ public class BocList:
     }
   }
 
+  public int AddRow (IBusinessObject businessObject)
+  {
+    Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
+    if (Value == null)
+      return -1;
+    else
+      return Value.Count - 1;
+  }
+
+  public void RemoveRow (IBusinessObject businessObject)
+  {
+    if (Value == null)
+      return;
+
+    if (   _isEditNewRow 
+        && IsRowEditMode
+        && businessObject == Value[EditableRowIndex.Value])
+    {
+      _isEditNewRow = false;
+    }
+
+    Value = ListUtility.Remove (Value, businessObject, Property, false);
+  }
+
+  public void RemoveRow (int index)
+  {
+    if (Value == null)
+      return;
+    if (index > Value.Count) throw new ArgumentOutOfRangeException ("index");
+
+    RemoveRow ((IBusinessObject) Value[index]);
+  }
+
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
   /// </summary>
@@ -3439,6 +3475,8 @@ public class BocList:
   /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index)
   {
+    if (index < 0) throw new ArgumentOutOfRangeException ("index");
+
     EnsureRowEditModeRestored();
 
     if (IsRowEditMode)
@@ -3466,7 +3504,11 @@ public class BocList:
     {
       bool isValid = ValiadateModifiableRow();
       if (!isValid)
+      {
+        if (_isEditNewRow)
+          RemoveRow (EditableRowIndex.Value);
         return;
+      }
 
       if (! _isDirty)
       {
@@ -3478,9 +3520,45 @@ public class BocList:
       }
       _rowEditModeDataSource.SaveValues (false);
     }
+    else if (! saveChanges && _isEditNewRow)
+    {
+      RemoveRow (EditableRowIndex.Value);
+    }
+
+    Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+    {
+      int originalRowIndex = (int) sortedRows[idxRows].First;
+      if (_editableRowIndex.Value == originalRowIndex)
+      {
+        _currentRow = idxRows;
+        break;
+      }
+    }
 
     RemoveEditModeControls();
     _editableRowIndex = NaInt32.Null;
+    _isEditNewRow = false;
+  }
+
+  public void AddAndEditRow (IBusinessObject businessObject)
+  {
+    EnsureRowEditModeRestored();
+
+    if (IsRowEditMode)
+      EndRowEditMode (true);
+    if (IsReadOnly || IsRowEditMode)
+      return;
+
+    int index = AddRow (businessObject);
+    if (index < 0)
+      return;
+
+    SwitchRowIntoEditMode (index);
+    if (IsRowEditMode)
+      _isEditNewRow = true;
+    else
+      RemoveRow (businessObject);
   }
 
   private void EnsureRowEditModeRestored()

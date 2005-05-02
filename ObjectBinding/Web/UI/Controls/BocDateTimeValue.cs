@@ -854,6 +854,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         //throw new FormatException ("Error while parsing the date component (value: '" + InternalDateValue+ "') of the DateTime value. " + ex.Message);
         return null;
       }
+      catch (IndexOutOfRangeException)
+      {
+        return null;
+      }
 
 
       //  Parse Time
@@ -873,6 +877,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         catch (FormatException)
         {
           //throw new FormatException ("Error while parsing the time component (value: '" + InternalTimeValue+ "')of the DateTime value. " + ex.Message);
+          return null;
+        }
+        catch (IndexOutOfRangeException)
+        {
           return null;
         }
 
