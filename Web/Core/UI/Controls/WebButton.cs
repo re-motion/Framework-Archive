@@ -11,12 +11,12 @@ namespace Rubicon.Web.UI.Controls
 /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
-    Button, 
+    Button
 #if ! net20
     // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
     // .net 2.0 resolves this issue for controls using a javascript induced postback event.
-    IPostBackDataHandler
+    , IPostBackDataHandler
 #endif
 {
   private IconInfo _icon;
