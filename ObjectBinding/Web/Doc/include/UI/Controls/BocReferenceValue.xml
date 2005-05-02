@@ -21,7 +21,7 @@
         read.
       </para><para>
         The <see cref="Property"/> must be set in order to get the <see cref="Value"/> after a postback. 
-        In this means before a call to <see cref="SaveValue"/>.
+        This means the latest time to set the <b>Property</b> is before a call to <see cref="SaveValue"/>.
       </para><para>
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocReferenceValue</c>.
       </para><para>
@@ -169,7 +169,7 @@
         Evaluates the value of the <see cref="DropDownList"/>.
       </para>
       <note type="inheritinfo">
-        Overrive this method to change the way a data change is detected of the value is read from the 
+        Overrive this method to change the way of detecting a changed value when read from the 
         <paramref name="postCollection"/>.
       </note>
     </remarks>
@@ -220,8 +220,8 @@
         to correctly handle the events raised on the <see cref="BocReferenceValue"/>'s <see cref="OptionsMenu"/>.
       </para>
       <note>
-        Make the method <c>protected virtual</c> should this feature be ever required and change the 
-        method's body to return the passed <c>menuItems</c>.
+        Make the method <b>protected virtual</b> should this feature be ever required and change the 
+        method's body to return the passed <paramref name="menuItems"/>.
       </note>
       <note type="inheritinfo">
         Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s
