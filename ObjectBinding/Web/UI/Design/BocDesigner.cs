@@ -20,7 +20,7 @@ public class BocDesigner: ControlDesigner
     BusinessObjectBoundWebControl control = (BusinessObjectBoundWebControl)Component;
     try
     {
-      control.PreRenderChildControlsForDesignMode();
+      control.PreRenderForDesignMode();
     }
     catch (Exception e)
     {
