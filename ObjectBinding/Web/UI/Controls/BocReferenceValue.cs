@@ -424,10 +424,41 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
 
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
+    
+    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
+
+    if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
+    {
+      const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
+      PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
+    }
+
+    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
+    }
+
+    PreRenderIcon();
+
+    if (HasOptionsMenu)
+      PreRenderOptionsMenu();
+
+    if (IsReadOnly)
+      PreRenderReadOnlyValue();
+    else
+      PreRenderEditModeValue();
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -727,40 +758,6 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-    {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-    }
-
-    if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
-    {
-      const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
-      PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
-    }
-
-    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
-    }
-
-    PreRenderIcon();
-
-    if (HasOptionsMenu)
-      PreRenderOptionsMenu();
-
-    if (IsReadOnly)
-      PreRenderReadOnlyValue();
-    else
-      PreRenderEditModeValue();
-  }
-
   /// <summary> Prerenders the <see cref="Label"/>. </summary>
   private void PreRenderReadOnlyValue()
   {
@@ -870,17 +867,20 @@ public class BocReferenceValue:
     else
       _optionsMenu.TitleText = _optionsTitle;
 
-    string getSelectionCount;
-    if (IsReadOnly)
+    if (! IsDesignMode)
     {
-      if (InternalValue != null)
-        getSelectionCount = "function() { return 1; }";
-      else 
-        getSelectionCount = "function() { return 0; }";
+      string getSelectionCount;
+      if (IsReadOnly)
+      {
+        if (InternalValue != null)
+          getSelectionCount = "function() { return 1; }";
+        else 
+          getSelectionCount = "function() { return 0; }";
+      }
+      else
+        getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
+      _optionsMenu.GetSelectionCount = getSelectionCount;
     }
-    else
-      getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
-    _optionsMenu.GetSelectionCount = getSelectionCount;
   }
 
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
