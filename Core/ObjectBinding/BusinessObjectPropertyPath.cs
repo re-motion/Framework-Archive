@@ -6,13 +6,23 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding
 {
 
-/// <summary>
-///   A collection of business object properties that result in each other.
-/// </summary>
+/// <summary> A collection of business object properties that result in each other. </summary>
+/// <remarks>
+///   <para>
+///     A property path is comprised of zero or more <see cref="IBusinessObjectReferenceProperty"/> instances and 
+///     a final <see cref="IBusinessObjectProperty"/>.
+///   </para><para>
+///     In its string representation, the property path uses the <see cref="char"/> returned by the 
+///     <see cref="IBusinessObjectProvider.GetPropertyPathSeparator"/> method as the separator. The 
+///     <see cref="IBusinessObjectClass"/> of the next property is used to get the
+///     <see cref="IBusinessObjectProvider"/>.
+///   </para>
+/// </remarks>
 public class BusinessObjectPropertyPath
 {
   /// <summary>
-  ///   Property path formatters can be passed to <see cref="String.Format"/> for full <see cref="IFormattable"/> support.
+  ///   Property path formatters can be passed to <see cref="String.Format"/> for full 
+  ///   <see cref="IFormattable"/> support.
   /// </summary>
   public class Formatter: IFormattable
   {
@@ -36,9 +46,18 @@ public class BusinessObjectPropertyPath
     }
   }
 
-
   private IBusinessObjectProperty[] _properties; 
  
+  /// <summary> Parses the string representation of a property path into a list of properties. </summary>
+  /// <param name="objectClass"> 
+  ///   The <see cref="IBusinessObjectClass"/> containing the first property in the path. 
+  ///   Must no be <see langword="null"/>.
+  /// </param>
+  /// <param name="propertyPathIdentifier"> 
+  ///   A string with a valid property path syntax. 
+  ///   Must no be <see langword="null"/> or empty.
+  /// </param>
+  /// <returns> A <see cref="BusinessObjectPropertyPath"/>. </returns>
   public static BusinessObjectPropertyPath Parse (
       IBusinessObjectClass objectClass, 
       string propertyPathIdentifier)
@@ -73,9 +92,15 @@ public class BusinessObjectPropertyPath
     return objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
   }
 
+  /// <summary> Initializes a new instance of the <b>BusinessObjectPropertyPath</b> class. </summary>
+  /// <param name="properties">
+  ///   The properties comprising the property path. 
+  ///   Must no be <see langword="null"/> or empty or contain items that are <see langword="null"/>.
+  ///   All but the last item must be of type <see cref="IBusinessObjectReferenceProperty"/>.
+  /// </param>
   protected internal BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
+    ArgumentUtility.CheckNotNullOrEmpty ("properties", properties); // ItemsNull checked later
     for (int i = 0; i < properties.Length - 1; ++i)
     {
       if (! (properties[i] is IBusinessObjectReferenceProperty))
@@ -88,29 +113,36 @@ public class BusinessObjectPropertyPath
     _properties = properties;
   }
 
+  /// <summary> Gets the list of properties in this path. </summary>
   public IBusinessObjectProperty[] Properties 
   { 
     get { return _properties; }
   }
 
+  /// <summary> Gets the last property in this property path. </summary>
   public IBusinessObjectProperty LastProperty 
   { 
     get { return _properties[_properties.Length - 1]; }
   }
 
-  /// <summary>
-  ///   Gets the value of this property path for the specified object. 
-  /// </summary>
-  /// <param name="obj"> The object that has the first property in the path. </param>
+  /// <summary> Gets the value of this property path for the specified object. </summary>
+  /// <param name="obj">
+  ///   The object that has the first property in the path. Must not be <see langword="null"/>. 
+  /// </param>
   /// <param name="throwExceptionIfNotReachable"> 
-  ///   If <c>true</c>, an InvalidOperationException is thrown if any but the last property in the path is null. If <c>false</c>,
-  ///   <see langword="null"/> is returned instead. </param>
+  ///   If <see langword="true"/>, an <see cref="InvalidOperationException"/> is thrown if any but the last property 
+  ///   in the path is <see langword="null"/>. If <see langword="false"/>, <see langword="null"/> is returned instead. 
+  /// </param>
   /// <param name="getFirstListEntry">
-  ///   If <c>true</c>, the first value of each list property is processed. If <c>false</c>, evaluation of list properties 
-  ///   causes an InvalidOperationException.
-  ///   (This does not apply to the last property in the path. If the last property is a list property, the return value is always a list.) </param>
+  ///   If <see langword="true"/>, the first value of each list property is processed.
+  ///   If <see langword="false"/>, evaluation of list properties causes an <see cref="InvalidOperationException"/>.
+  ///   (This does not apply to the last property in the path. If the last property is a list property, 
+  ///   the return value is always a list.)
+  /// </param>
   /// <exception cref="InvalidOperationException"> 
-  ///   Thrown if any but the last property in the path is <see langword="null"/>, or is not a single-value reference property. </exception>
+  ///   Thrown if any but the last property in the path is <see langword="null"/>, 
+  ///   or is not a single-value reference property. 
+  /// </exception>
   public virtual object GetValue (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
   {
     IBusinessObject obj2 = GetValueWithoutLast (obj, throwExceptionIfNotReachable, getFirstListEntry);
@@ -120,6 +152,12 @@ public class BusinessObjectPropertyPath
     return obj2.GetProperty (LastProperty);
   }
   
+  /// <summary> Gets the string representation of the value of this property path for the specified object. </summary>
+  /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>
+  /// <param name="format"> 
+  ///   The format string passed to 
+  ///   <see cref="IBusinessObject.GetPropertyString">IBusinessObject.GetPropertyString</see>.
+  /// </param>
   public virtual string GetString (IBusinessObject obj, string format)
   {
     IBusinessObject obj2 = GetValueWithoutLast (obj, false, true);
@@ -129,13 +167,17 @@ public class BusinessObjectPropertyPath
     return obj2.GetPropertyString (LastProperty, format);
   }
   
-  private IBusinessObject GetValueWithoutLast (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
+  /// <summary> Gets value of this property path minus the penultimate property for the specified object. </summary>
+  private IBusinessObject GetValueWithoutLast (
+      IBusinessObject obj, 
+      bool throwExceptionIfNotReachable, 
+      bool getFirstListEntry)
   {
     for (int i = 0; i < (_properties.Length - 1); ++i)
     {
       IBusinessObjectProperty property = _properties[i];
       if (! (property is IBusinessObjectReferenceProperty))
-        throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is not reference property.", i, this));
+        throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is not a reference property.", i, this));
       if (property.IsList)
       {
         if (getFirstListEntry)
@@ -167,12 +209,14 @@ public class BusinessObjectPropertyPath
     return obj;
   }
 
+  /// <exception cref="NotImplementedException"></exception>
   public virtual object SetValue (IBusinessObject obj)
   {
     // TODO: implement
     throw new NotImplementedException();
   }
 
+  /// <summary> Gets the string representation of this property path. </summary>
   public string Identifier
   {
     get
