@@ -158,6 +158,10 @@ public class BocDateTimeValueValidator: BaseValidator
     {
       return false;
     }
+    catch (IndexOutOfRangeException)
+    {
+      return false;
+    }
 
     try
     {
@@ -183,6 +187,10 @@ public class BocDateTimeValueValidator: BaseValidator
     {
       //  This exception will most likely never happen. If it does, the value is still a valid date 
       //  or the execution would not have reached this point.
+    }
+    catch (IndexOutOfRangeException)
+    {
+      return false;
     }
 
     return true;
