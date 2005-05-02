@@ -9,7 +9,7 @@
       and the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface. These interfaces are used to 
       determine which the fields are exposed by an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> instance.
     </para><para>
-      While it is possible to simply program read and write access against the business objects get and set method,
+      While it is possible to simply program read and write access against the business object's get and set method,
       business object data binding is the true advantage gained by providing an object model with these interfaces.
     </para><para>
       The business object data binding connects an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> with an
@@ -20,6 +20,9 @@
     
     <h3 class="dtH3">The Business Object Model</h3>
     <div style="padding-left: 3pt; padding-top: 3pt; color: red">[A description of how the business object interfaces work together]</div>
+    When implementing an object model using the CLS types the object model is defined at compile time. This approach is
+    perfect if the object model is known before compiling the code, an advantage often missing when it comes to
+    representing a business object model.
     
     <h3 class="dtH3">The Data Binding Process</h3>
     <h4 class="dtH4">Setting Up the Data Binding</h4>
