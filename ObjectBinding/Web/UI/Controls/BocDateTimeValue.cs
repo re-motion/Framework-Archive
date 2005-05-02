@@ -229,10 +229,24 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
 
     if (! IsDesignMode && ! IsReadOnly)
       Page.RegisterRequiresPostBack (this);
+    
+    bool isReadOnly = IsReadOnly;
+
+    if (IsReadOnly)
+    {
+      PreRenderReadOnlyValue();
+    }
+    else
+    {
+      PreRenderEditModeValueDate();
+      PreRenderEditModeValueTime();
+      PreRenderEditModeValueDatePicker();
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -469,23 +483,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return validators;
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    bool isReadOnly = IsReadOnly;
-
-    if (IsReadOnly)
-    {
-      PreRenderReadOnlyValue();
-    }
-    else
-    {
-      PreRenderEditModeValueDate();
-      PreRenderEditModeValueTime();
-      PreRenderEditModeValueDatePicker();
-    }
-  }
-  
   /// <summary> Prerenders the <see cref="Label"/>. </summary>
   private void PreRenderReadOnlyValue()
   {
