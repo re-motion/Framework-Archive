@@ -186,6 +186,11 @@ public class BocList:
   private static readonly object s_menuItemClickEvent = new object();
   private static readonly object s_customCellClickEvent = new object();
 
+  private static readonly object s_rowEditModeSavingEvent = new object();
+  private static readonly object s_rowEditModeSavedEvent = new object();
+  private static readonly object s_rowEditModeCancelingEvent = new object();
+  private static readonly object s_rowEditModeCanceledEvent = new object();
+
   private static readonly string s_scriptFileKey = typeof (BocList).FullName + "_Script";
   private static readonly string s_startUpScriptKey = typeof (BocList).FullName+ "_Startup";
   private static readonly string s_styleFileKey = typeof (BocList).FullName + "_Style";
@@ -3500,39 +3505,64 @@ public class BocList:
     if (! IsRowEditMode)
       return;
 
-    if (saveChanges && ! IsReadOnly)
+    if (! IsReadOnly)
     {
-      bool isValid = ValiadateModifiableRow();
-      if (!isValid)
+      if (saveChanges)
       {
+        OnRowEditModeSaving (
+            EditableRowIndex.Value, 
+            (IBusinessObject) Value[EditableRowIndex.Value],
+            _rowEditModeDataSource,
+            _rowEditModeControls);
+        
+        bool isValid = ValiadateModifiableRow();
+        if (! isValid)
+        {
+          if (_isEditNewRow)
+            RemoveRow (EditableRowIndex.Value);
+          return;
+        }
+
+        if (! _isDirty)
+        {
+          foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
+          {
+            if (control != null)
+              _isDirty |= control.IsDirty;
+          }
+        }
+
+        _rowEditModeDataSource.SaveValues (false);
+
+        OnRowEditModeSaved (
+            EditableRowIndex.Value, 
+            (IBusinessObject) Value[EditableRowIndex.Value]);
+      }
+      else
+      {
+        OnRowEditModeCanceling (
+            EditableRowIndex.Value, 
+            (IBusinessObject) Value[EditableRowIndex.Value], 
+            _rowEditModeDataSource, 
+            _rowEditModeControls);
+        
         if (_isEditNewRow)
           RemoveRow (EditableRowIndex.Value);
-        return;
+        
+        OnRowEditModeCanceled (
+            EditableRowIndex.Value, 
+            (IBusinessObject) Value[EditableRowIndex.Value]);
       }
 
-      if (! _isDirty)
+      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
-        foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
+        int originalRowIndex = (int) sortedRows[idxRows].First;
+        if (_editableRowIndex.Value == originalRowIndex)
         {
-          if (control != null)
-            _isDirty |= control.IsDirty;
+          _currentRow = idxRows;
+          break;
         }
-      }
-      _rowEditModeDataSource.SaveValues (false);
-    }
-    else if (! saveChanges && _isEditNewRow)
-    {
-      RemoveRow (EditableRowIndex.Value);
-    }
-
-    Pair[] sortedRows = EnsureGotIndexedRowsSorted();
-    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-    {
-      int originalRowIndex = (int) sortedRows[idxRows].First;
-      if (_editableRowIndex.Value == originalRowIndex)
-      {
-        _currentRow = idxRows;
-        break;
       }
     }
 
@@ -3559,6 +3589,54 @@ public class BocList:
       _isEditNewRow = true;
     else
       RemoveRow (businessObject);
+  }
+
+  protected virtual void OnRowEditModeSaving (
+    int index,
+    IBusinessObject businessObject,
+    IBusinessObjectDataSource dataSource,
+    IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    BocListRowEditModeEventHandler handler = (BocListRowEditModeEventHandler) Events[s_rowEditModeSavingEvent];
+    if (handler != null)
+    {
+      BocListRowEditModeEventArgs e = new BocListRowEditModeEventArgs (index, businessObject, dataSource, controls);
+      handler (this, e);
+    }
+  }
+
+  protected virtual void OnRowEditModeSaved (int index, IBusinessObject businessObject)
+  {
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_rowEditModeSavedEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (this, e);
+    }
+  }
+
+  protected virtual void OnRowEditModeCanceling (
+    int index,
+    IBusinessObject businessObject,
+    IBusinessObjectDataSource dataSource,
+    IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    BocListRowEditModeEventHandler handler = (BocListRowEditModeEventHandler) Events[s_rowEditModeCancelingEvent];
+    if (handler != null)
+    {
+      BocListRowEditModeEventArgs e = new BocListRowEditModeEventArgs (index, businessObject, dataSource, controls);
+      handler (this, e);
+    }
+  }
+
+  protected virtual void OnRowEditModeCanceled (int index, IBusinessObject businessObject)
+  {
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_rowEditModeCanceledEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (this, e);
+    }
   }
 
   private void EnsureRowEditModeRestored()
@@ -3798,6 +3876,42 @@ public class BocList:
   {
     get { return _enableEditDetailsValidator; }
     set { _enableEditDetailsValidator = value; }
+  }
+
+  /// <summary> Is raised when the currently edited row is being saved. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the currently edited row is being saved.")]
+  public event BocListRowEditModeEventHandler SavingEditedRow
+  {
+    add { Events.AddHandler (s_rowEditModeSavingEvent, value); }
+    remove { Events.RemoveHandler (s_rowEditModeSavingEvent, value); }
+  }
+
+  /// <summary> Is raised when the previously edited row has been saved. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the previously edited row has been saved.")]
+  public event BocListItemEventHandler EditedRowSaved
+  {
+    add { Events.AddHandler (s_rowEditModeSavedEvent, value); }
+    remove { Events.RemoveHandler (s_rowEditModeSavedEvent, value); }
+  }
+
+  /// <summary> Is raised when the currently edited row's edit mode is being canceled. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the currently edited row's edit mode is being canceled.")]
+  public event BocListRowEditModeEventHandler CancelingEditDetailsMode
+  {
+    add { Events.AddHandler (s_rowEditModeCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_rowEditModeCancelingEvent, value); }
+  }
+
+  /// <summary> Is raised when the saving of the previously edited row has been canceled. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when the saving of the previously edited row has been canceled.")]
+  public event BocListItemEventHandler EditDetailsCanceled
+  {
+    add { Events.AddHandler (s_rowEditModeCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_rowEditModeCanceledEvent, value); }
   }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
@@ -4702,6 +4816,67 @@ public enum ListMenuLineBreaks
   All,
   None,
   BetweenGroups
+}
+
+public delegate void BocListItemEventHandler (object sender, BocListItemEventArgs e);
+
+public class BocListItemEventArgs: EventArgs
+{
+  private int _listIndex;
+  private IBusinessObject _businessObject;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListItemEventArgs (
+      int listIndex, 
+      IBusinessObject businessObject)
+  {
+    _listIndex = listIndex;
+    _businessObject = businessObject;
+  }
+
+  /// <summary> An index that identifies the <see cref="IBusinessObject"/> that has been edited. </summary>
+  public int ListIndex
+  {
+    get { return _listIndex; }
+  }
+
+  /// <summary>
+  ///   The <see cref="IBusinessObject"/> that has been edited.
+  /// </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+}
+
+public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
+
+public class BocListRowEditModeEventArgs: BocListItemEventArgs
+{
+  private IBusinessObjectBoundModifiableControl[] _controls;
+  private IBusinessObjectDataSource _dataSource;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListRowEditModeEventArgs (
+      int listIndex, 
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
+    : base (listIndex, businessObject)
+  {
+    _dataSource = dataSource;
+    _controls = controls;
+  }
+
+  public IBusinessObjectDataSource DataSource
+  {
+    get { return _dataSource; }
+  }
+
+  public IBusinessObjectBoundModifiableControl[] Controls
+  {
+    get { return _controls; }
+  }
 }
 
 }
