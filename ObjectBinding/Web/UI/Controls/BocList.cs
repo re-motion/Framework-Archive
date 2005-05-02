@@ -910,17 +910,11 @@ public class BocList:
     return validators;
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
-  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  protected override void OnPreRender(EventArgs e)
   {
-    base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
+    EnsureChildControls();
+    base.OnPreRender (e);
 
-  /// <summary> Prerenders the contents. </summary>
-  protected override void PreRenderChildControls()
-  {
     DetermineClientScriptLevel();
 
     if (_hasClientScript)
@@ -946,7 +940,7 @@ public class BocList:
       }
     }
 
-    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
@@ -974,6 +968,14 @@ public class BocList:
       }
     }
     CalculateCurrentPage();
+  }
+
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
   protected override HtmlTextWriterTag TagKey
