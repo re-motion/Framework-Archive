@@ -173,110 +173,12 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
     
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
-  }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    base.AddAttributesToRender (writer);
-    writer.AddStyleAttribute ("white-space", "nowrap");
-    if (! IsReadOnly)
-    {
-      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
-      if (isLabelWidthEmpty && isControlWidthEmpty)
-        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
-    }
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
-  protected override void LoadViewState (object savedState)
-  {
-    object[] values = (object[]) savedState;
-
-    base.LoadViewState (values[0]);
-    _value = (NaBoolean) values[1];
-    _isDirty = (bool)  values[2];
-
-    _hiddenField.Value = _value.ToString();
-  }
-
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
-  protected override object SaveViewState()
-  {
-    object[] values = new object[3];
-
-    values[0] = base.SaveViewState();
-    values[1] = _value;
-    values[2] = _isDirty;
-
-    return values;
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
-  public override void LoadValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
-      }
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
-  public override void SaveValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
-        DataSource.BusinessObject.SetProperty (Property, Value);
-    }
-  }
-
-  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
-  protected virtual IResourceManager GetResourceManager()
-  {
-    return GetResourceManager (typeof (ResourceIdentifier));
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
-  public override BaseValidator[] CreateValidators()
-  {
-    if (IsReadOnly || ! IsRequired)
-      return new BaseValidator[0];
-
-    BaseValidator[] validators = new BaseValidator[1];
-
-    CompareValidator notNullItemValidator = new CompareValidator();
-    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-    notNullItemValidator.ControlToValidate = ID;
-    notNullItemValidator.ValueToCompare = NaBoolean.NullString;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_errorMessage))
-      notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
-    else
-      notNullItemValidator.ErrorMessage = _errorMessage;
-    validators[0] = notNullItemValidator;
-
-    _validators.AddRange (validators);
-    return validators;
-  }
-  
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
     bool isReadOnly = IsReadOnly;
 
     string trueIconUrl = ResourceUrlResolver.GetResourceUrl (
@@ -389,6 +291,101 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     _label.Width = Unit.Empty;
     _label.Height = Unit.Empty;
     _label.ApplyStyle (_labelStyle);
+  }
+
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    writer.AddStyleAttribute ("white-space", "nowrap");
+    if (! IsReadOnly)
+    {
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
+      if (isLabelWidthEmpty && isControlWidthEmpty)
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    }
+    if (StringUtility.IsNullOrEmpty (CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+  }
+
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
+  protected override void LoadViewState (object savedState)
+  {
+    object[] values = (object[]) savedState;
+
+    base.LoadViewState (values[0]);
+    _value = (NaBoolean) values[1];
+    _isDirty = (bool)  values[2];
+
+    _hiddenField.Value = _value.ToString();
+  }
+
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[3];
+
+    values[0] = base.SaveViewState();
+    values[1] = _value;
+    values[2] = _isDirty;
+
+    return values;
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
+  public override void LoadValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+        _isDirty = false;
+      }
+    }
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
+  public override void SaveValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+        DataSource.BusinessObject.SetProperty (Property, Value);
+    }
+  }
+
+  /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
+  public override BaseValidator[] CreateValidators()
+  {
+    if (IsReadOnly || ! IsRequired)
+      return new BaseValidator[0];
+
+    BaseValidator[] validators = new BaseValidator[1];
+
+    CompareValidator notNullItemValidator = new CompareValidator();
+    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
+    notNullItemValidator.ControlToValidate = ID;
+    notNullItemValidator.ValueToCompare = NaBoolean.NullString;
+    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+    if (StringUtility.IsNullOrEmpty (_errorMessage))
+      notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+    else
+      notNullItemValidator.ErrorMessage = _errorMessage;
+    validators[0] = notNullItemValidator;
+
+    _validators.AddRange (validators);
+    return validators;
   }
 
   private void DetermineClientScriptLevel() 
