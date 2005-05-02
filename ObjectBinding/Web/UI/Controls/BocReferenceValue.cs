@@ -242,7 +242,7 @@ public class BocReferenceValue:
     RaisePostBackEvent (eventArgument);
   }
 
-  /// <summary> Called when the contorl caused a post back. </summary>
+  /// <summary> Called when the control caused a post back. </summary>
   /// <param name="eventArgument"> <see cref="String.Empty"/>. </param>
   protected virtual void RaisePostBackEvent (string eventArgument)
   {
@@ -859,7 +859,7 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Prerenders the <see cref="_optionsMenu"/>. </summary>
+  /// <summary> Prerenders the <see cref="OptionsMenu"/>. </summary>
   private void PreRenderOptionsMenu()
   {
     _optionsMenu.Enabled = Enabled;
@@ -1214,7 +1214,7 @@ public class BocReferenceValue:
 
   /// <summary> Gets or sets the <see cref="BocCommand"/> for this control's <see cref="Value"/>. </summary>
   /// <value> A <see cref="BocCommand"/>. </value>
-  /// <remarks> This property is used for Designer support. </remarks>
+  /// <remarks> This property is used for accessing the <see cref="BocCommand"/> at run time and for Designer support. </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Category ("Menu")]
   [Description ("The command rendered for this control's Value.")]
@@ -1232,8 +1232,8 @@ public class BocReferenceValue:
   /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
   /// <remarks> 
   ///   <para>
-  ///     Does not persist <see cref="BocCommand"/> objects with a <c>Command.Type</c> set to 
-  ///     <see cref="CommandType.None"/>.
+  ///     Does not persist <see cref="BocCommand"/> objects with a <see cref="Rubicon.Web.UI.Controls.Command.Type"/> 
+  ///     set to <see cref="CommandType.None"/>.
   ///   </para><para>
   ///     Used by <see cref="ShouldSerializePersistedCommand"/>.
   ///   </para>
@@ -1251,8 +1251,8 @@ public class BocReferenceValue:
 
   /// <summary> Sets the <see cref="Command"/> to its default value. </summary>
   /// <remarks> 
-  ///   The default value is a <see cref="BocCommand"/> object with a <c>Command.Type</c> set to 
-  ///   <see cref="CommandType.None"/>.
+  ///   The default value is a <see cref="BocCommand"/> object with a 
+  ///   <see cref="Rubicon.Web.UI.Controls.Command.Type"/> set to <see cref="CommandType.None"/>.
   /// </remarks>
   private void ResetCommand()
   {
@@ -1291,8 +1291,8 @@ public class BocReferenceValue:
   /// <remarks> 
   ///   An icon is only shown if the <see cref="Property"/>'s 
   ///   <see cref="IBusinessObjectClass.BusinessObjectProvider">ReferenceClass.BusinessObjectProvider</see>
-  ///   provides an isntance of type <see cref="IBusinessObjectWebUIService"/> and 
-  ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> returns an icon.
+  ///   provides an instance of type <see cref="IBusinessObjectWebUIService"/> and 
+  ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> returns not <see langword="null"/>.
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
@@ -1341,7 +1341,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets or sets a flag that determines whether to display the <see cref="OptionsMenu"/>. </summary>
-  /// <value> <see langword="true"/> to show the options menu. The default value is <see langword="true"/>. </value>
+  /// <value> <see langword="true"/> to show the <see cref="OptionsMenu"/>. The default value is <see langword="true"/>. </value>
   [Category ("Menu")]
   [Description ("Enables the options menu.")]
   [DefaultValue (true)]
