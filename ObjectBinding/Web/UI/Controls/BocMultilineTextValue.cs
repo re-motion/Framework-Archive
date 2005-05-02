@@ -146,10 +146,52 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
     
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
+    
+    if (IsReadOnly)
+    {
+      string[] lines = Value;
+      string text = null;
+      if (lines != null)
+      {
+        for (int i = 0; i < lines.Length; i++)
+          lines[i] = HttpUtility.HtmlEncode (lines[i]);
+        text = StringUtility.ConcatWithSeparator (lines, "<br />");
+      }
+      if (StringUtility.IsNullOrEmpty (text))
+      {
+        if (IsDesignMode)
+        {
+          text = c_designModeEmptyLabelContents;
+          //  Too long, can't resize in designer to less than the content's width
+          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        }
+        else
+        {
+          text = "&nbsp;";
+        }
+      }
+      _label.Text = text;
+
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
+    }
+    else
+    {
+      _textBox.Text = Text;
+
+      _textBox.ReadOnly = ! Enabled;
+      _textBox.Width = Unit.Empty;
+      _textBox.Height = Unit.Empty;
+      _textBox.ApplyStyle (_commonStyle);
+      _textBoxStyle.ApplyStyle (_textBox);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -286,51 +328,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
     _validators.AddRange (validators);
     return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
-  }
-  
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    if (IsReadOnly)
-    {
-      string[] lines = Value;
-      string text = null;
-      if (lines != null)
-      {
-        for (int i = 0; i < lines.Length; i++)
-          lines[i] = HttpUtility.HtmlEncode (lines[i]);
-        text = StringUtility.ConcatWithSeparator (lines, "<br />");
-      }
-      if (StringUtility.IsNullOrEmpty (text))
-      {
-        if (IsDesignMode)
-        {
-          text = c_designModeEmptyLabelContents;
-          //  Too long, can't resize in designer to less than the content's width
-          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-        }
-        else
-        {
-          text = "&nbsp;";
-        }
-      }
-      _label.Text = text;
-
-      _label.Width = Unit.Empty;
-      _label.Height = Unit.Empty;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
-    }
-    else
-    {
-      _textBox.Text = Text;
-
-      _textBox.ReadOnly = ! Enabled;
-      _textBox.Width = Unit.Empty;
-      _textBox.Height = Unit.Empty;
-      _textBox.ApplyStyle (_commonStyle);
-      _textBoxStyle.ApplyStyle (_textBox);
-    }
   }
 
   /// <summary> Gets or sets the <see cref="IBusinessObjectStringProperty"/> object this control is bound to. </summary>
