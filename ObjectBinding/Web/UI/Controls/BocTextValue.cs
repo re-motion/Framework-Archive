@@ -153,9 +153,44 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
+
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
+
+    if (IsReadOnly)
+    {
+      string text = HttpUtility.HtmlEncode (_text);
+      if (StringUtility.IsNullOrEmpty (text))
+      {
+        if (IsDesignMode)
+        {
+          text = c_designModeEmptyLabelContents;
+          //  Too long, can't resize in designer to less than the content's width
+          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+        }
+        else
+        {
+          text = "&nbsp;";
+        }
+      }
+      _label.Text = text;
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
+    }
+    else
+    {
+      _textBox.Text = _text;
+
+      _textBox.ReadOnly = ! Enabled;
+      _textBox.Width = Unit.Empty;
+      _textBox.Height = Unit.Empty;
+      _textBox.ApplyStyle (_commonStyle);
+      _textBoxStyle.ApplyStyle (_textBox);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -352,43 +387,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
     
     return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    if (IsReadOnly)
-    {
-      string text = HttpUtility.HtmlEncode (_text);
-      if (StringUtility.IsNullOrEmpty (text))
-      {
-        if (IsDesignMode)
-        {
-          text = c_designModeEmptyLabelContents;
-          //  Too long, can't resize in designer to less than the content's width
-          //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-        }
-        else
-        {
-          text = "&nbsp;";
-        }
-      }
-      _label.Text = text;
-      _label.Width = Unit.Empty;
-      _label.Height = Unit.Empty;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
-    }
-    else
-    {
-      _textBox.Text = _text;
-
-      _textBox.ReadOnly = ! Enabled;
-      _textBox.Width = Unit.Empty;
-      _textBox.Height = Unit.Empty;
-      _textBox.ApplyStyle (_commonStyle);
-      _textBoxStyle.ApplyStyle (_textBox);
-    }
   }
 
   /// <summary> Handles refreshing the bound control. </summary>

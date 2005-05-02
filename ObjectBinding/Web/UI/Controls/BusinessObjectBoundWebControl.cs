@@ -283,55 +283,14 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   protected abstract object ValueImplementation { get; set; }
 
-  /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
-  /// <remarks> 
-  ///   <para>
-  ///     Calls <see cref="EnsureChildControlsPreRendered"/>. 
-  ///   </para><para>
-  ///     Use <see cref="PreRenderChildControls"/> for any pre-rendering.
-  ///   </para>    
-  /// </remarks>
-  protected override void OnPreRender(EventArgs e)
-  {
-    base.OnPreRender (e);
-    EnsureChildControlsPreRendered();
-  }
-
-  /// <summary> Calls <see cref="PreRenderChildControls"/> on the first invocation. </summary>
-  protected void EnsureChildControlsPreRendered()
-  {
-    EnsureChildControls();
-    if (! _childControlsPreRendered)
-    {
-      PreRenderChildControls();
-      _childControlsPreRendered = true;
-    }
-  }
-
   /// <summary> Calls <see cref="PreRenderChildControls"/> on every invocation. </summary>
   /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-  internal void PreRenderChildControlsForDesignMode()
+  internal void PreRenderForDesignMode()
   {
     if (! IsDesignMode)
       throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
     EnsureChildControls();
-    PreRenderChildControls();
-  }
-
-  /// <summary> Override this method to pre-render child controls. </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Child controls that do not need to be created before handling post data can be created
-  ///     in this method. Use <see cref="EnsureChildControlsPreRendered"/> to call this method.
-  ///   </para><para>
-  ///     Automatically called by <see cref="OnPreRender"/>.
-  ///   </para>
-  ///   <note>
-  ///     This method will be executed multiple times during the control's lifecycle while it is in <c>Design Mode</c>.
-  ///   </note>
-  /// </remarks>
-  protected virtual void PreRenderChildControls()
-  {
+    OnPreRender (EventArgs.Empty);
   }
 
   /// <summary> Overrides <see cref="Control.Controls"/> and calls <see cref="Control.EnsureChildControls"/>. </summary>

@@ -132,6 +132,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
 
+  protected override void OnPreRender(EventArgs e)
+  {
+    EnsureChildControls();
+    base.OnPreRender (e);
+    _treeView.Width = Width;
+    _treeView.Height = Height;
+  }
+
   /// <summary>
   ///   Sets the tree view to be rebuilded with the current business objects. 
   ///   Must be called before or during the <c>PostBackEvent</c> to affect the tree view.
@@ -167,13 +175,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-  }
-
-  /// <summary> Overrides the parent control's <c>PreRenderChildControls</c> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    _treeView.Width = Width;
-    _treeView.Height = Height;
   }
 
   private void InitializeRootWebTreeNodes()
