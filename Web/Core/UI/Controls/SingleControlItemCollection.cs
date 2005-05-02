@@ -45,7 +45,7 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
   }
 }
 
-public class SingleControlItemCollection: ICollection
+public class SingleControlItemCollection: IList
 {
   private Type[] _supportedTypes;
   private IControlItem _controlItem;
@@ -80,6 +80,20 @@ public class SingleControlItemCollection: ICollection
     return 1;
   }
 
+  /// <summary>Tests whether the specified control item's type is supported by the collection. </summary>
+  private bool IsSupportedType (IControlItem controlItem)
+  {
+    Type controlItemType = controlItem.GetType();
+
+    foreach (Type type in _supportedTypes)
+    {
+      if (type.IsAssignableFrom (controlItemType))
+        return true;
+    }
+    
+    return false;
+  }
+
   void ICollection.CopyTo(Array array, int index)
   {
     throw new NotSupportedException();
@@ -105,18 +119,69 @@ public class SingleControlItemCollection: ICollection
      return new SingleControlItemCollectionEnumerator (_controlItem);
   }
 
-  /// <summary>Tests whether the specified control item's type is supported by the collection. </summary>
-  private bool IsSupportedType (IControlItem controlItem)
+  int IList.Add (object value)
   {
-    Type controlItemType = controlItem.GetType();
+    return Add ((IControlItem) value);
+  }
 
-    foreach (Type type in _supportedTypes)
-    {
-      if (type.IsAssignableFrom (controlItemType))
-        return true;
-    }
-    
-    return false;
+  void IList.Clear()
+  {
+	  Item = null;
+  }
+
+  bool IList.Contains (object value)
+  {
+	  return Item == value;
+  }
+
+  int IList.IndexOf (object value)
+  {
+	  if (Item == value)
+      return 0;
+    else
+      return -1;
+  }
+
+  void IList.Insert (int index, object value)
+  {
+    if (index > 0) throw new NotSupportedException ("Inserting an element above index 0 is not supported.");
+    Item = (IControlItem) value;
+  }
+
+  bool IList.IsFixedSize
+  {
+	  get { return true; }
+  }
+
+  bool IList.IsReadOnly
+  {
+	  get { return false; }
+  }
+
+  void IList.Remove (object value)
+  {
+    if (Item == value)
+      Item = null;
+  }
+
+  void IList.RemoveAt (int index)
+  {
+    if (index > 0) throw new NotSupportedException ("Removing an element above index 0 is not supported.");
+    Item = null;
+  }
+
+  object IList.this[int index]
+  {
+	  get
+	  {
+      if (index > 0) throw new Exception("The method or operation is not implemented.");
+      return Item;
+	  }
+	  set
+	  {
+      if (index > 0) throw new Exception("The method or operation is not implemented.");
+      Item = (IControlItem) value;
+	  }
   }
 }
 
