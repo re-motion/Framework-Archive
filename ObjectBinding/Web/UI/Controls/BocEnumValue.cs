@@ -180,10 +180,46 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
+    EnsureChildControls();
     base.OnPreRender (e);
 
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
+    RefreshEnumListSelectedValue();
+
+    if (IsReadOnly)
+    {
+      string text = null;
+      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
+      {
+        text = c_designModeEmptyLabelContents;
+        //  Too long, can't resize in designer to less than the content's width
+        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
+      }
+      else if (! IsDesignMode && EnumerationValueInfo != null)
+      {
+        text = EnumerationValueInfo.DisplayName;
+      }
+
+      if (StringUtility.IsNullOrEmpty (text))
+        _label.Text = "&nbsp;";
+      else
+        _label.Text = text;
+
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_commonStyle);
+      _label.ApplyStyle (_labelStyle);
+    }
+    else
+    {
+      _listControl.Enabled = Enabled;
+
+      _listControl.Width = Unit.Empty;
+      _listControl.Height = Unit.Empty;
+      _listControl.ApplyStyle (_commonStyle);
+      _listControlStyle.ApplyStyle (_listControl);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -391,46 +427,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
         _listControl.SelectedValue = InternalValue;
       }
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.PreRenderChildControls"/> method. </summary>
-  protected override void PreRenderChildControls()
-  {
-    RefreshEnumListSelectedValue();
-
-    if (IsReadOnly)
-    {
-      string text = null;
-      if (IsDesignMode && StringUtility.IsNullOrEmpty (_label.Text))
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-      else if (! IsDesignMode && EnumerationValueInfo != null)
-      {
-        text = EnumerationValueInfo.DisplayName;
-      }
-
-      if (StringUtility.IsNullOrEmpty (text))
-        _label.Text = "&nbsp;";
-      else
-        _label.Text = text;
-
-      _label.Width = Unit.Empty;
-      _label.Height = Unit.Empty;
-      _label.ApplyStyle (_commonStyle);
-      _label.ApplyStyle (_labelStyle);
-    }
-    else
-    {
-      _listControl.Enabled = Enabled;
-
-      _listControl.Width = Unit.Empty;
-      _listControl.Height = Unit.Empty;
-      _listControl.ApplyStyle (_commonStyle);
-      _listControlStyle.ApplyStyle (_listControl);
     }
   }
 
