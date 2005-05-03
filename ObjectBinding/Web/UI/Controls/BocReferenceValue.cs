@@ -118,7 +118,8 @@ public class BocReferenceValue:
   private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private BocMenuItem[] _optionsMenuItemsRenderPhase;
-  
+  private bool _hasValueEmbeddedInsideOptionsMenu = true;
+
   /// <summary> The command rendered for this reference value. </summary>
   private SingleControlItemCollection _command = null;
 
@@ -483,7 +484,7 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (_embeddedValue && HasOptionsMenu)
+    if (_hasValueEmbeddedInsideOptionsMenu && HasOptionsMenu)
       RenderContentsWithIntegratedOptionsMenu (writer);
     else
       RenderContentsWithSeparateOptionsMenu (writer);
@@ -609,11 +610,11 @@ public class BocReferenceValue:
       objectID = InternalValue;
 
     if (_icon.Visible)
-      RenderIcon (writer, isCommandEnabled, postBackEvent, _optionsMenu.OnHeadTitleClickScript, objectID);
+      RenderIcon (writer, isCommandEnabled, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
 
     if (isReadOnly)
     {
-      RenderReadOnlyValue (writer, isCommandEnabled, postBackEvent, _optionsMenu.OnHeadTitleClickScript, objectID);
+      RenderReadOnlyValue (writer, isCommandEnabled, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
       if (! isControlWidthEmpty)
       {
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
@@ -623,7 +624,7 @@ public class BocReferenceValue:
     }
     else
     {
-      _dropDownList.Attributes.Add ("onClick", _optionsMenu.OnHeadTitleClickScript);
+      _dropDownList.Attributes.Add ("onClick", DropDownMenu.OnHeadTitleClickScript);
       RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
     }
   }
@@ -964,16 +965,6 @@ public class BocReferenceValue:
       }
     }
   }
-
-  private bool _embeddedValue = true;
-
-
-  public bool EmbeddedValue
-  {
-    get { return _embeddedValue; }
-    set { _embeddedValue = value; }
-  }
-
 
   /// <summary> Prerenders the <see cref="OptionsMenu"/>. </summary>
   private void PreRenderOptionsMenu()
@@ -1479,6 +1470,21 @@ public class BocReferenceValue:
     get { return _optionsMenuWidth; }
     set { _optionsMenuWidth = value; }
   }
+
+  /// <summary> Gets or sets flag that determines whether to use the value as the <see cref="OptionsMenu"/>'s head. </summary>
+  /// <value> 
+  ///   <see langword="true"/> to embed the value inside the options menu's head. 
+  ///   The default value is <see langword="true"/>. 
+  /// </value>
+  [Category ("Menu")]
+  [Description ("Determines whether to use the value as the options menu's head.")]
+  [DefaultValue (true)]
+  public bool HasValueEmbeddedInsideOptionsMenu
+  {
+    get { return _hasValueEmbeddedInsideOptionsMenu; }
+    set { _hasValueEmbeddedInsideOptionsMenu = value; }
+  }
+
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 

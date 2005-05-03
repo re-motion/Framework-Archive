@@ -79,6 +79,9 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private const string c_dropDownIcon = "DropDownMenuArrow.gif";
 
+  /// <summary> Only used by control developers. </summary>
+  public static readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
+
   private string _titleText = "";
   private string _titleIcon = "";
   private bool _isReadOnly = false;
@@ -86,6 +89,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   private string _getSelectionCount = "";
 
   private WebMenuItemCollection _menuItems;
+  private RenderMethod _renderHeadTitleMethod;
 
 	public DropDownMenu (Control ownerControl, Type[] supportedMenuItemTypes)
 	{
@@ -366,13 +370,11 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.RenderEndTag();  // End Drop Down Head-Div
   }
 
-  private RenderMethod _renderHeadTitleMethod;
+  /// <summary> Only used by control developers. </summary>
   public void SetRenderHeadTitleMethodDelegate (RenderMethod renderHeadTitleMethod)
   {
     _renderHeadTitleMethod = renderHeadTitleMethod;
   }
-
-  public readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
 
   private void RenderHeadTitle (HtmlTextWriter writer)
   {
