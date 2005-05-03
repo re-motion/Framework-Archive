@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Drawing.Design;
 using System.Collections;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
@@ -53,8 +54,15 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     if (projectPath == null)
       return;
 
-    MappingLoader mappingLoader = new MappingLoader (GetMappingFilePath (projectPath), GetMappingSchemaPath (projectPath));
-    MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
+    try
+    {
+      MappingLoader mappingLoader = new MappingLoader (GetMappingFilePath (projectPath), GetMappingSchemaPath (projectPath));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
+    }
+    catch (Exception e)
+    {
+      MessageBox.Show (e.Message, "Error while reading mapping configuration");
+    }
   }
 
   private string GetMappingFilePath (string projectPath)
