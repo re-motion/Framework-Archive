@@ -258,7 +258,11 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
 	if (itemInfo.Href != null && isEnabled)
   {
     item.setAttribute ('javascript', itemInfo.Href);
-    item.onclick = function () { eval (this.getAttribute ('javascript')); };
+    item.onclick = function ()
+        { 
+          DropDownMenu_ClosePopUp();
+          eval (this.getAttribute ('javascript')); 
+        };
   }
 	
 	var iconPane = popUpDocument.createElement ('span');
