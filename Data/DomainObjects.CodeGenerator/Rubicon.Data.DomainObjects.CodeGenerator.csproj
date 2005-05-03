@@ -138,6 +138,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "EnumBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "FileBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
