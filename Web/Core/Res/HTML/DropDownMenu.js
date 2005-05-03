@@ -21,6 +21,8 @@ var _dropDownMenu_requiredSelectionAny = 0;
 var _dropDownMenu_requiredSelectionExactlyOne = 1;
 var _dropDownMenu_requiredSelectionOneOrMore = 2;
 
+var _dropDownMenu_isHeadControlClick = false;
+
 function DropDownMenu_InitializeGlobals (styleSheetLink)
 {
   _dropDownMenu_styleSheetLink = styleSheetLink;
@@ -55,8 +57,15 @@ function DropDownMenu_OnClick (context, menuID, getSelectionCount)
   var id = context.id + '_PopUp';
   if (context != _dropDownMenu_currentMenu)
     DropDownMenu_ClosePopUp ();
-  _dropDownMenu_currentPopUp = DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount);
-	_dropDownMenu_currentMenu = context;
+  if (_dropDownMenu_isHeadControlClick)
+  {
+    _dropDownMenu_isHeadControlClick = false;
+  }
+  else
+  {
+    _dropDownMenu_currentPopUp = DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount);
+	  _dropDownMenu_currentMenu = context;
+  }
 }
 
 function DropDownMenu_SetSelectionCount (count)
@@ -319,6 +328,13 @@ function DropDownMenu_OnHeadMouseOut (head)
 {
   if (_dropDownMenu_currentPopUp == null)
   	head.className = _dropDownMenu_headClassName;
+}
+
+//  Event handler for the click on the head control.
+//  Sets the _dropDownMenu_isHeadControlClick flag.
+function DropDownMenu_OnHeadControlClick()
+{
+  _dropDownMenu_isHeadControlClick = true;
 }
 
 /* copy and pasted, contains stuff for the popUpBody event handlers. */
