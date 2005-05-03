@@ -1,11 +1,13 @@
 using System;
 using System.Reflection;
 
+using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
+[MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Globalization.BooleanProperty")]
 public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
 {
   private BooleanToEnumPropertyConverter _booleanToEnumConverter;
@@ -23,8 +25,8 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
 
   public string GetDisplayName (bool value)
   {
-    // default implementation that makes build work
-    return value.ToString();
+    string resourceName = value ? "True" : "False";
+    return MultiLingualResourcesAttribute.GetResourceText (this, resourceName);
   }
 
   protected internal override object FromInternalType (object internalValue)

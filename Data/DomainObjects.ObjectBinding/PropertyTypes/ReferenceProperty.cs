@@ -45,7 +45,7 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
   {
     get { return true; }
   }
-  //fix to make build begin
+ 
   public bool CreateIfNull 
   { 
     get { return false; } 
@@ -53,9 +53,7 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
   
   public IBusinessObject Create (IBusinessObject referencingObject)
   {
-    return BindableDomainObject.GetObject (ObjectID.Parse ("dummy"));
+    throw new NotSupportedException ("Create method is not supported by Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.ReferenceProperty.");
   }
-  //fix to make build end
-
 }
 }
