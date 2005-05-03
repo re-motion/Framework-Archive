@@ -123,10 +123,10 @@ public class DomainObjectBuilder : CodeFileBuilder
     foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetMyRelationEndPointDefinitions ())
     {
       if (endPointDefinition.Cardinality == CardinalityType.One)
-        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, _classDefinition.GetOppositeClassDefinition(endPointDefinition.PropertyName).ID);
+        WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, _classDefinition.GetOppositeClassDefinition(endPointDefinition.PropertyName).ClassType);
 
       if (endPointDefinition.Cardinality == CardinalityType.Many)
-        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType.Name);
+        WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType);
     }
 
     EndClass ();
@@ -213,49 +213,49 @@ public class DomainObjectBuilder : CodeFileBuilder
     EndConstructor ();
   }
 
-
-  protected void WriteValueProperty (string propertyName, string propertyType)
+  protected void WriteValueProperty (string propertyName, string propertyTypeName)
   {
-    BeginProperty (propertyName, propertyType);
+    WriteProperty (propertyName, propertyTypeName, s_valuePropertyGetStatement, s_valuePropertySetStatement);
+  }
+  
+  protected void WriteRelationPropertyCardinalityOne (string propertyName, Type propertyType)
+  {
+    WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityOneGetStatement, s_relationPropertyCardinalityOneSetStatement);
+  }
+  
+  protected void WriteRelationPropertyCardinalityMany (string propertyName, Type propertyType)
+  {
+    WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityManyGetStatement, null);
+  }
 
-    string getStatement = s_valuePropertyGetStatement;
-    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    Write (getStatement);
+  protected void WriteProperty (string propertyName, string propertyTypeName, string getTemplate, string setTemplate)
+  {
+    BeginProperty (propertyName, propertyTypeName);
 
-    string setStatement = s_valuePropertySetStatement;
-    setStatement = ReplaceTag (setStatement, s_propertynameTag, propertyName);
-    Write (setStatement);
+    if (getTemplate != null)
+    {
+      string getStatement = getTemplate;
+      getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyTypeName);
+      getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
+      Write (getStatement);
+    }
+
+    if (setTemplate != null)
+    {
+      string setStatement = setTemplate;
+      setStatement = ReplaceTag (setStatement, s_propertynameTag, propertyName);
+      Write (setStatement);
+    }
 
     EndProperty ();
   }
-  
-  protected void WriteRelationPropertyCardinalityOne (string propertyName, string propertyType)
+
+  private string GetTypeName (Type type)
   {
-    BeginProperty (propertyName, propertyType);
-
-    string getStatement = s_relationPropertyCardinalityOneGetStatement;
-    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    Write (getStatement);
-
-    string setStatement = s_relationPropertyCardinalityOneSetStatement;
-    setStatement = ReplaceTag (setStatement, s_propertynameTag, propertyName);
-    Write (setStatement);
-
-    EndProperty ();
-  }
-  
-  protected void WriteRelationPropertyCardinalityMany (string propertyName, string propertyType)
-  {
-    BeginProperty (propertyName, propertyType);
-
-    string getStatement = s_relationPropertyCardinalityManyGetStatement;
-    getStatement = ReplaceTag (getStatement, s_propertytypeTag, propertyType);
-    getStatement = ReplaceTag (getStatement, s_propertynameTag, propertyName);
-    Write (getStatement);
-
-    EndProperty ();
+    if (_classDefinition.ClassType.Namespace == type.Namespace || _classDefinition.ClassType.Namespace.StartsWith (type.Namespace))
+      return type.Name;
+    else
+      return type.FullName;
   }
 }
 }

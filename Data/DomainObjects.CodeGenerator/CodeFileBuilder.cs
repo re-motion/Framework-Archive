@@ -59,6 +59,7 @@ public abstract class CodeFileBuilder : FileBuilder
       "using System;" + Environment.NewLine
       + "" + Environment.NewLine 
       + "using Rubicon.Data.DomainObjects;" + Environment.NewLine 
+      + "using Rubicon.Data.DomainObjects.ObjectBinding;" + Environment.NewLine 
       + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
       + Environment.NewLine;
 

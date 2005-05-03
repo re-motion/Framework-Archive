@@ -17,6 +17,7 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
 
   // member fields
 
+  private IBuilder[] _enumBuilders;
   private IBuilder[] _domainObjectBuilders;
   private IBuilder[] _domainObjectCollectionBuilders;
 
@@ -33,13 +34,14 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
 
+    ArrayList enumBuilders = new ArrayList ();
     ArrayList domainObjectBuilders = new ArrayList ();
     ArrayList domainObjectCollectionBuilders = new ArrayList ();
 
     foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
     {
       domainObjectBuilders.Add (new DomainObjectBuilder (
-          Path.Combine (outputFolder, classDefinition.ClassType.Name + s_fileExtention), 
+          GetFileName (outputFolder, classDefinition.ClassType), 
           classDefinition, domainObjectBaseClass));
 
       foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
@@ -53,14 +55,29 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
         Type requiredItemType = classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassType;
 
         domainObjectCollectionBuilders.Add (new DomainObjectCollectionBuilder (
-            Path.Combine (outputFolder, endPointDefinition.PropertyType.Name + s_fileExtention), 
+            GetFileName (outputFolder, endPointDefinition.PropertyType), 
             endPointDefinition.PropertyType, 
             requiredItemType.Name,
             domainObjectCollectionBaseClass));
       }
+
+      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+      {
+        if (propertyDefinition.PropertyType.IsEnum && propertyDefinition.PropertyType.DeclaringType == null)
+        {
+          enumBuilders.Add (new EnumBuilder (
+              GetFileName (outputFolder, propertyDefinition.PropertyType), propertyDefinition.PropertyType));
+        }
+      }
     }
+    _enumBuilders = (IBuilder[]) enumBuilders.ToArray (typeof (IBuilder));
     _domainObjectBuilders = (IBuilder[]) domainObjectBuilders.ToArray (typeof (IBuilder));
     _domainObjectCollectionBuilders = (IBuilder[]) domainObjectCollectionBuilders.ToArray (typeof (IBuilder));
+  }
+
+  private string GetFileName (string outputFolder, Type type)
+  {
+    return Path.Combine (outputFolder, type.Name + s_fileExtention);
   }
 
   protected override void Dispose (bool disposing)
@@ -85,6 +102,8 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
 
   public override void Build ()
   {
+    foreach (IBuilder builder in _enumBuilders)
+      builder.Build ();
     foreach (IBuilder builder in _domainObjectBuilders)
       builder.Build ();
     foreach (IBuilder builder in _domainObjectCollectionBuilders)
