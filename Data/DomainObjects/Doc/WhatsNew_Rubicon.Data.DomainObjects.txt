@@ -1,3 +1,12 @@
+1.2.33.0
+========
+
+- Bugfixes DOGen:
+  * Es werden jetzt auch Enums (die nicht als nested Types deklariert sind) erstellt.
+  * Wenn der Typ einer Property in einem anderen Namespace liegt, wird der Typ vollqualifiziert angegeben.
+  * Ein "using Rubicon.Data.DomainObjects.ObjectBinding" ist jetzt im Fileheader eingefügt.
+
+
 1.2.26.0
 ========
 
