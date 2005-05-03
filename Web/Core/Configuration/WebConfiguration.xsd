@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.rubicon-it.com/commons/web/configuration" 
+  elementFormDefault="qualified" targetNamespace="http://www.rubicon-it.com/commons/web/configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="rubicon.web">
+    <xs:complexType>
+      <xs:sequence>
+      
+        <xs:element name="executionEngine">
+          <xs:complexType>
+            <xs:attribute name="functionTimeout" type="xs:int" default="20" />            
+          </xs:complexType>
+        </xs:element>
+               
+      </xs:sequence>
+      
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
