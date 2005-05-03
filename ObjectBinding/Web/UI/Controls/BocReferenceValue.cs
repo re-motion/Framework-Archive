@@ -483,6 +483,14 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
+    if (_embeddedValue && HasOptionsMenu)
+      RenderContentsWithIntegratedOptionsMenu (writer);
+    else
+      RenderContentsWithSeparateOptionsMenu (writer);
+  }
+
+  private void RenderContentsWithSeparateOptionsMenu (HtmlTextWriter writer)
+  {
     bool isReadOnly = IsReadOnly;
 
     bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
@@ -516,82 +524,21 @@ public class BocReferenceValue:
     writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin table
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); //  Begin tr
 
-    bool isCommandEnabled = false;
-    if (Command != null)
-    {
-      bool isActive =    Command.Show == CommandShow.Always
-                      || isReadOnly && Command.Show == CommandShow.ReadOnly
-                      || ! isReadOnly && Command.Show == CommandShow.EditMode;
-      bool isCommandLinkPossible = (IsReadOnly || _icon.Visible) && InternalValue != null;
-      if (   isActive
-          && Command.Type != CommandType.None
-          && isCommandLinkPossible)
-      {
-          isCommandEnabled = Enabled;
-      }
-    }
+    bool isCommandEnabled = IsCommandEnabled (isReadOnly);
 
     string argument = string.Empty;
-    string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+    string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
     string objectID = string.Empty;
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
 
-
     if (_icon.Visible)
-    {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-      writer.AddStyleAttribute ("padding-right", "3pt");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
-
-      if (isCommandEnabled)
-      {
-        Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
-        if (! StringUtility.IsNullOrEmpty (Command.ToolTip))
-          _icon.ToolTip = Command.ToolTip;
-      }
-      _icon.RenderControl (writer);
-      if (isCommandEnabled)
-        Command.RenderEnd (writer);
-
-      writer.RenderEndTag();  //  End span
-      writer.RenderEndTag();  //  End td
-    }   
+      RenderIcon (writer, isCommandEnabled, postBackEvent, string.Empty, objectID);
 
     if (isReadOnly)
-    {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
-
-      if (isCommandEnabled)
-        Command.RenderBegin (writer, postBackEvent, string.Empty, objectID);
-      _label.RenderControl (writer);
-      if (isCommandEnabled)
-        Command.RenderEnd (writer);
-      
-      writer.RenderEndTag();  //  End span
-      writer.RenderEndTag();  //  End td
-    }
+      RenderReadOnlyValue (writer, isCommandEnabled, postBackEvent, string.Empty, objectID);
     else
-    {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
-
-      if (! isControlHeightEmpty && isDropDownListHeightEmpty)
-        writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-      if (isDropDownListWidthEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      _dropDownList.RenderControl (writer);
-      
-      writer.RenderEndTag();  //  End span
-      writer.RenderEndTag();  //  End td
-    }
+      RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
 
     if (HasOptionsMenu)
     {
@@ -608,6 +555,168 @@ public class BocReferenceValue:
     writer.RenderEndTag();
   }
 
+  private void RenderContentsWithIntegratedOptionsMenu (HtmlTextWriter writer)
+  {
+    bool isReadOnly = IsReadOnly;
+
+    bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+    bool isDropDownListHeightEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["height"]);
+    bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+    bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
+    bool isDropDownListWidthEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["width"]);
+
+    if (isReadOnly)
+    {
+      if (isLabelWidthEmpty && ! isControlWidthEmpty)
+        _optionsMenu.Style["width"] = "100%";
+      else
+        _optionsMenu.Style["width"] = "0%";
+    }
+    else
+    {
+      if (! isControlHeightEmpty && isDropDownListHeightEmpty)
+        _optionsMenu.Style["height"] = "100%";
+    
+      if (isDropDownListWidthEmpty)
+      {
+        if (isControlWidthEmpty)
+          _optionsMenu.Style["width"] = c_defaultControlWidth;
+        else
+          _optionsMenu.Style["width"] = "100%";
+      }
+    }
+
+    _optionsMenu.SetRenderHeadTitleMethodDelegate (new RenderMethod (RenderOptionsMenuTitle));
+    _optionsMenu.RenderControl (writer);
+  }
+
+  private void RenderOptionsMenuTitle (HtmlTextWriter writer, Control control)
+  {
+    bool isReadOnly = IsReadOnly;
+
+    bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+    bool isDropDownListHeightEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["height"]);
+    bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+    bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
+    bool isDropDownListWidthEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["width"]);
+
+    bool isCommandEnabled = IsCommandEnabled (isReadOnly);
+
+    string argument = string.Empty;
+    string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+    string objectID = string.Empty;
+    if (InternalValue != c_nullIdentifier)
+      objectID = InternalValue;
+
+    if (_icon.Visible)
+      RenderIcon (writer, isCommandEnabled, postBackEvent, _optionsMenu.OnHeadTitleClickScript, objectID);
+
+    if (isReadOnly)
+    {
+      RenderReadOnlyValue (writer, isCommandEnabled, postBackEvent, _optionsMenu.OnHeadTitleClickScript, objectID);
+      if (! isControlWidthEmpty)
+      {
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+        writer.RenderEndTag();
+      }
+    }
+    else
+    {
+      _dropDownList.Attributes.Add ("onClick", _optionsMenu.OnHeadTitleClickScript);
+      RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
+    }
+  }
+
+  private void RenderIcon (
+      HtmlTextWriter writer, 
+      bool isCommandEnabled, 
+      string postBackEvent, 
+      string onClick,
+      string objectID)
+  {
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+    writer.AddStyleAttribute ("padding-right", "3pt");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+
+    if (isCommandEnabled)
+    {
+      Command.RenderBegin (writer, postBackEvent, onClick, objectID);
+      if (! StringUtility.IsNullOrEmpty (Command.ToolTip))
+        _icon.ToolTip = Command.ToolTip;
+    }
+    _icon.RenderControl (writer);
+    if (isCommandEnabled)
+      Command.RenderEnd (writer);
+
+    writer.RenderEndTag();  //  End span
+    writer.RenderEndTag();  //  End td
+  }
+
+  private void RenderReadOnlyValue (
+      HtmlTextWriter writer, 
+      bool isCommandEnabled, 
+      string postBackEvent, 
+      string onClick,
+      string objectID)
+  {
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+
+    if (isCommandEnabled)
+      Command.RenderBegin (writer, postBackEvent, onClick, objectID);
+    _label.RenderControl (writer);
+    if (isCommandEnabled)
+      Command.RenderEnd (writer);
+    
+    writer.RenderEndTag();  //  End span
+    writer.RenderEndTag();  //  End td
+  }
+
+  private void RenderEditModeValue (
+      HtmlTextWriter writer, 
+      bool isControlHeightEmpty, 
+      bool isDropDownListHeightEmpty,
+      bool isDropDownListWidthEmpty)
+  {
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+
+    if (! isControlHeightEmpty && isDropDownListHeightEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+    if (isDropDownListWidthEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    _dropDownList.RenderControl (writer);
+    
+    writer.RenderEndTag();  //  End span
+    writer.RenderEndTag();  //  End td
+  }
+
+  private bool IsCommandEnabled (bool isReadOnly)
+  {
+    bool isCommandEnabled = false;
+    if (Command != null)
+    {
+      bool isActive =    Command.Show == CommandShow.Always
+                      || isReadOnly && Command.Show == CommandShow.ReadOnly
+                      || ! isReadOnly && Command.Show == CommandShow.EditMode;
+      bool isCommandLinkPossible = (IsReadOnly || _icon.Visible) && InternalValue != null;
+      if (   isActive
+          && Command.Type != CommandType.None
+          && isCommandLinkPossible)
+      {
+          isCommandEnabled = Enabled;
+      }
+    }
+    return isCommandEnabled;
+  }
+  
   /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
@@ -855,6 +964,16 @@ public class BocReferenceValue:
       }
     }
   }
+
+  private bool _embeddedValue = true;
+
+
+  public bool EmbeddedValue
+  {
+    get { return _embeddedValue; }
+    set { _embeddedValue = value; }
+  }
+
 
   /// <summary> Prerenders the <see cref="OptionsMenu"/>. </summary>
   private void PreRenderOptionsMenu()
@@ -1206,8 +1325,7 @@ public class BocReferenceValue:
   /// <remarks> 
   ///   <note type="caution"> Use the <see cref="OptionsMenuItems"/> property for setting the available menu items. </note>
   /// </remarks>
-  [Browsable (false)]
-  public DropDownMenu OptionsMenu
+  protected DropDownMenu OptionsMenu
   {
     get { return _optionsMenu; }
   }
