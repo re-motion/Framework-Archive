@@ -266,6 +266,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Classes\BasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Database\CreateDB.sql"
                     BuildAction = "Content"
                 />

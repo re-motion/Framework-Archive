@@ -65,33 +65,44 @@
         </TR>
       </TABLE>
       <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><obw:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
-        <FixedColumns>
-          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">
-            <PersistedCommand>
-              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
-            </PersistedCommand>
-          </obw:BocSimpleColumnDefinition>
-          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="ByteProperty">
-            <PersistedCommand>
-              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
-            </PersistedCommand>
-          </obw:BocSimpleColumnDefinition>
-          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
-            <PersistedCommand>
-              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
-            </PersistedCommand>
-          </obw:BocSimpleColumnDefinition>
-          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateProperty">
-            <PersistedCommand>
-              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
-            </PersistedCommand>
-          </obw:BocSimpleColumnDefinition>
-          <obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateTimeProperty">
-            <PersistedCommand>
-              <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
-            </PersistedCommand>
-          </obw:BocSimpleColumnDefinition>
-        </FixedColumns>
+<FixedColumns>
+<obw:BocEditDetailsColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></obw:BocEditDetailsColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="ByteProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="DateTimeProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="BooleanProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="NaBooleanProperty">
+<PersistedCommand>
+<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+</PersistedCommand>
+</obw:BocSimpleColumnDefinition>
+</FixedColumns>
       </obw:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><cc1:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:domainobjectdatasourcecontrol>
       <cc1:SearchObjectDataSourceControl id="CurrentSearchObject" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypesSearch, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></cc1:SearchObjectDataSourceControl></form>
   </body>

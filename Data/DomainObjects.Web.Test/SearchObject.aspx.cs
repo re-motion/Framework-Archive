@@ -9,11 +9,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Classes;
 using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
 {
-public class SearchObjectPage : System.Web.UI.Page
+public class SearchObjectPage : BasePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue StringPropertyValue;
@@ -35,6 +36,8 @@ public class SearchObjectPage : System.Web.UI.Page
 	{
     if (!IsPostBack)
       Session["SearchObject"] = new ClassWithAllDataTypesSearch ();
+    else
+      ResultList.Value = (IList) Session["Result"];
 
     CurrentSearchObject.BusinessObject = (ClassWithAllDataTypesSearch) Session["SearchObject"];;
     CurrentSearchObject.LoadValues (IsPostBack);
@@ -57,6 +60,7 @@ public class SearchObjectPage : System.Web.UI.Page
 	private void InitializeComponent()
 	{    
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
+    this.ResultList.EditedRowSaved += new Rubicon.ObjectBinding.Web.Controls.BocListItemEventHandler(this.ResultList_EditedRowSaved);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -68,9 +72,17 @@ public class SearchObjectPage : System.Web.UI.Page
     {
       CurrentSearchObject.SaveValues (false);
       ClassWithAllDataTypesSearch searchObject = (ClassWithAllDataTypesSearch) CurrentSearchObject.BusinessObject;
-      ResultList.Value = ClientTransaction.Current.QueryManager.GetCollection (searchObject.CreateQuery ());
+      
+      Session["Result"] = ClientTransaction.Current.QueryManager.GetCollection (searchObject.CreateQuery ());
+      ResultList.Value = (IList) Session["Result"];
+
       ResultList.LoadValue (false);
     }
+  }
+
+  private void ResultList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.Controls.BocListItemEventArgs e)
+  {
+    ClientTransaction.Current.Commit ();
   }
 }
 }
