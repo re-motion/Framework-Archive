@@ -146,6 +146,20 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Configuration\WebConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\WebConfiguration.xsd"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Configuration\WebConfiguration.xsx"
+                    DependentUpon = "WebConfiguration.xsd"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "Doc\Bugs and ToDos.xls"
                     BuildAction = "None"
                 />
