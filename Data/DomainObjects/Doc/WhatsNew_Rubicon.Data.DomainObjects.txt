@@ -6,6 +6,14 @@
   * Wenn der Typ einer Property in einem anderen Namespace liegt, wird der Typ vollqualifiziert angegeben.
   * Ein "using Rubicon.Data.DomainObjects.ObjectBinding" ist jetzt im Fileheader eingefügt.
 
+- DomainObjectDataSourceControl:
+  * Wird mapping.xml zur Design Time ausgelesen und enthält sie einen Fehler, wurde die Exception durch Visual Studio verschkluckt => 
+    Lösung: Fehler abfangen und eigene MessageBox anzeigen.
+
+- BooleanProperty:
+  * GetDisplayName zeigt jetzt zusätzlich zu den englischen Texten auch lokalisierte deutsche Texte (Ja/Nein) an. 
+    Hierfür gibt es eine sprachspezifische Satellite Assembly Rubicon.Data.DomainObjects.ObjectBinding.resources.dll
+
 
 1.2.26.0
 ========
