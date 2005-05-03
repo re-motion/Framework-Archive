@@ -151,7 +151,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    WxeFunctionState functionState = new WxeFunctionState (function, 20);
+    WxeFunctionState functionState = new WxeFunctionState (function);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 

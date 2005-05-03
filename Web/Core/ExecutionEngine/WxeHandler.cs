@@ -40,9 +40,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       }
 
       if (functionToken != null)
-        functionState = new WxeFunctionState (_currentFunction, functionToken, 20); // TODO: make lifetime configurable
+        functionState = new WxeFunctionState (_currentFunction, functionToken);
       else
-        functionState = new WxeFunctionState (_currentFunction, 20);
+        functionState = new WxeFunctionState (_currentFunction);
       functionStates.Add (functionState);
 
       _currentFunction.InitializeParameters (context.Request.Params);
