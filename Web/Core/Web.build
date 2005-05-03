@@ -13,6 +13,7 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs" />
+        <includes name="Configuration/**/*.cs" />
         <includes name="UI/**/*.cs" />
         <includes name="Utilities/**/*.cs" />
         <includes name="ExecutionEngine/**/*.cs" />
