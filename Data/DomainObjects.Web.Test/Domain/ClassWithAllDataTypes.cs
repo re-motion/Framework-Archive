@@ -46,6 +46,11 @@ public class ClassWithAllDataTypes : BindableDomainObject
 
   // methods and properties
 
+  public new DataContainer DataContainer
+  {
+    get { return base.DataContainer; }
+  }
+
   public ObjectID ObjectID
   {
     get { return base.ID; }
