@@ -9,16 +9,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Classes;
+using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
 
-using Rubicon.Data.DomainObjects;
-
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
-
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
 {
-	public class NewObjectPage : System.Web.UI.Page
+	public class NewObjectPage : BasePage
 	{
     protected Rubicon.Web.UI.Controls.HtmlHeadContents Htmlheadcontents1;
 
