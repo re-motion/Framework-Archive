@@ -25,7 +25,7 @@
       is perfect if the object model is known before compiling the code. This advantage is often missing when it comes to
       representing a business object model.
     </para><para>
-      When the application utilizes an existing framework for it's data access layer, the business object model's design
+      When the application utilizes an existing framework for its data access layer, the business object model's design
       is known to the database and possibly the application itself, but not to the data access framework. The framework
       must therfor provide a way of constructing the object model at runtime.
     </para><para>
@@ -41,12 +41,13 @@
       <b>Property</b>, and an <b>Object</b>.
     </para><para>
       The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" /> interface provides the properties available for this 
-      class. In addition it provides services for accessing class specific meta data.
+      class. It also provides services for accessing class specific meta data.
     </para><para>
       The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface and its specializtions for
       individual data types provide meta data about the fields contained in a <b>IBusinessObjectClass</b>. This meta 
       data includes information on whether the field is read-only, accessible, and contains a scalar value or a list of 
-      values. For a complete description please refer to the documentation for the <b>IBusinessObjectProperty</b> type.
+      values. For a complete description please refer to the documentation for the 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> type.
     </para><para>
       The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" /> interface ...
     </para>
