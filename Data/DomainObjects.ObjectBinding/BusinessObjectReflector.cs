@@ -32,7 +32,7 @@ public class BusinessObjectReflector
       else 
         value = null;
     }
-    else if (property.GetType () == typeof(EnumerationProperty))
+    else if (property.GetType () == typeof (EnumerationProperty))
     {
       object internalValue = _bindableObject.GetProperty (property);
 
@@ -54,6 +54,13 @@ public class BusinessObjectReflector
     {
       strValue = businessObject.DisplayName;
     }
+    else if (property is IBusinessObjectBooleanProperty)
+    {
+      if (value is bool)
+        strValue = ((IBusinessObjectBooleanProperty)property).GetDisplayName ((bool)value);
+      else
+        strValue = string.Empty;
+    }
     else if (format != null)
     {
       IFormattable formattable = value as IFormattable;
@@ -66,6 +73,7 @@ public class BusinessObjectReflector
 
     if (count > 1)
       strValue += " ... [" + count.ToString() + "]";
+
     return strValue;
   }
 
