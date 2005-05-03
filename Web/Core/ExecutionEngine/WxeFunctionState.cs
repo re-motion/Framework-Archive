@@ -3,6 +3,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 using System.Web;
 using Rubicon.Utilities;
+using Rubicon.Web.Configuration;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -67,6 +68,21 @@ public class WxeFunctionState: ISerializable, IDisposable
   private int _lifetime;
   private string _functionToken;
 
+  public WxeFunctionState (WxeFunction function, int lifetime)
+    : this (function, Guid.NewGuid().ToString(), lifetime)
+  {
+  }
+
+  public WxeFunctionState (WxeFunction function, string functionToken)
+    : this (function, functionToken, WebConfiguration.Current.ExecutionEngine.FunctionTimeout)
+  {
+  }
+  
+  public WxeFunctionState (WxeFunction function)
+    : this (function, Guid.NewGuid().ToString(), WebConfiguration.Current.ExecutionEngine.FunctionTimeout)
+  {
+  }
+
   public WxeFunctionState (WxeFunction function, string functionToken, int lifetime)
   {
     ArgumentUtility.CheckNotNull ("function", function);
@@ -75,11 +91,6 @@ public class WxeFunctionState: ISerializable, IDisposable
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = functionToken;
-  }
-
-  public WxeFunctionState (WxeFunction function, int lifetime)
-    : this (function, Guid.NewGuid().ToString(), lifetime)
-  {
   }
 
   protected WxeFunctionState (SerializationInfo info, StreamingContext context)
