@@ -227,6 +227,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\BooleanProperty.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BooleanProperty.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "PropertyTypes\BooleanProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
