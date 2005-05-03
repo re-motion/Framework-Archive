@@ -24,6 +24,9 @@
         <includes asis="true" name="System.Windows.Forms.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.ObjectBinding">
+        <includes name="Globalization/*.resx" />
+      </resources>
     </csc>
   </target>
   
