@@ -10,16 +10,23 @@ public abstract class BusinessObject: IBusinessObject
   public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
   {
     object value;
-    int count;
+    int count = 0;
 
     if (property.IsList)
     {
       IList list = (IList) obj.GetProperty (property);
-      count = list.Count;
-      if (count > 0)
-        value = list[0];
-      else 
+      if (list == null)
+      {
         value = null;
+      }
+      else
+      {
+        count = list.Count;
+        if (count > 0)
+          value = list[0];
+        else 
+          value = null;
+      }
     }
     else
     {
