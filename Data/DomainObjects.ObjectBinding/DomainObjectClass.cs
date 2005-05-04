@@ -14,7 +14,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   {
     ArgumentUtility.CheckNotNull ("type", type);
 
-    DomainObjectPropertyFactory propertyFactory = new DomainObjectPropertyFactory (MappingConfiguration.Current.ClassDefinitions.GetMandatory [type]);
+    DomainObjectPropertyFactory propertyFactory = new DomainObjectPropertyFactory (MappingConfiguration.Current.ClassDefinitions.GetMandatory (type));
     _classReflector = new BusinessObjectClassReflector (type, propertyFactory);
   }
 
