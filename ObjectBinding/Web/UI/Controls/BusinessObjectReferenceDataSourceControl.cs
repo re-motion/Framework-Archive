@@ -2,8 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.ObjectBinding.Web;
+using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.ObjectBinding.Web.Controls
@@ -62,6 +63,7 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 #if net20
 [System.Web.UI.NonVisualControl]
 #endif
+[Designer (typeof (BocDataSourceDesigner))]
 public class BusinessObjectReferenceDataSourceControl: 
     BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
 {
