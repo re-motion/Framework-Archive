@@ -12,7 +12,7 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
   {
   }
 
-  private object[] GetDataSourceControls (IContainer container)
+  private object[] GetDataSourceControls (IBusinessObjectBoundWebControl control, IContainer container)
   {
     ComponentCollection components = container.Components;
     ArrayList dataSources = new ArrayList();
@@ -21,7 +21,8 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
     {
       IBusinessObjectDataSourceControl dataSource = component as IBusinessObjectDataSourceControl;
       if (   dataSource != null 
-          && ! StringUtility.IsNullOrEmpty (dataSource.ID))
+          && ! StringUtility.IsNullOrEmpty (dataSource.ID)
+          && dataSource != control)
       {
         dataSources.Add (dataSource.ID);
       }
@@ -35,7 +36,9 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
   {
     if ((context != null) && (context.Container != null))
     {
-      object[] dataSources = this.GetDataSourceControls (context.Container);
+      object[] dataSources = GetDataSourceControls (
+          (IBusinessObjectBoundWebControl) context.Instance, 
+          context.Container);
       if (dataSources != null)
         return new TypeConverter.StandardValuesCollection (dataSources);
     }
