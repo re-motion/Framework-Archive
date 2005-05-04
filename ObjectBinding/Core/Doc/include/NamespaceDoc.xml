@@ -24,7 +24,7 @@
       When implementing an object model using the CLS types, the object model is defined at compile time. 
       This is an advantage that is missing when interfacing with a highly dynamic system such as Fabasoft Components.
       The <b>Rubicon.Coonet</b> framework provides the funcitonality required to access a Fabasoft Components domain 
-      using <b>business object binding</b>.
+      using <b>Business Object Binding</b>.
     </para><para>
       If the object model is defined at compile time but has to be accessed by a generic data access layer, this is 
       also a use case for <b>Business Object Binding</b>. Generic data access is required when data binding is involved, 
@@ -45,7 +45,7 @@
       The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" /> interface provides the properties available by
       an object of this class's type. It also provides services for accessing class specific meta data.
     </para><para>
-      The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface and its specializtions for
+      The <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface and its specializations for
       individual data types provide meta data about the fields contained in an <b>IBusinessObjectClass</b>. This meta 
       data includes information on whether the field is read-only, accessible, and contains a scalar value or a list of 
       values. For a complete description please refer to the documentation for the 

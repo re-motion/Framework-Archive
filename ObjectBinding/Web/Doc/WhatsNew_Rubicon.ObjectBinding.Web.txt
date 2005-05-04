@@ -2,14 +2,18 @@
 ========
 
 - BusinessObjectReferenceDataSourceControl
-  Bugfix: Selbstreferenz konnte gesetzt werden und führte zu Stackoverflow-Meldung im Designer.
+  * Bugfix: Selbstreferenz konnte gesetzt werden und führte zu Stackoverflow-Meldung im Designer.
 
 - Alle BusinessObjectBoundModifiableWebControls
-  Bugfix: DataSourceControl auf leeren String setzen führte zu Stackoverflow-Meldung im Designer.
+  * Bugfix: DataSourceControl auf leeren String setzen führte zu Stackoverflow-Meldung im Designer.
 
 - BusinessObjectDataSourceControl, BusinessObjectReferenceDataSourceControl
-  Designerdarstellung nach Art .net2.0 für non-visual Controls
+  * Designerdarstellung nach Art .net2.0 für non-visual Controls
   
+- BocList
+  * Bugfix: Sortingorder händisch setzen für eine nicht angezeigte BocList, führte zu einer Exception sobald die 
+    BocList sichtbar wird.
+    
 1.2.33.0
 ========
 

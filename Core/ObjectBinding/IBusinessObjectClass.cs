@@ -3,18 +3,21 @@ using System;
 namespace Rubicon.ObjectBinding
 {
 
-/// <summary> The <b>Class</b> of an <see cref="IBusinessObject"/>. </summary>
+/// <summary>
+///   The <b>IBusinessObjectClassWithIdentity</b> interface provides functionality for defining the <b>Class</b> of an 
+///   <see cref="IBusinessObject"/>. 
+/// </summary>
 /// <remarks>
 ///   <para>
 ///     The <b>IBusinessObjectClass</b> interface provides the list of <see cref="IBusinessObjectProperty"/> instances
-///     available by an <see cref="IBusinessObject"/> of this <b>IBusinessObjectClass</b>'s type. 
+///     available by an <see cref="IBusinessObject"/> of this <b>Class</b>'s type. 
 ///   </para><para>
 ///     It also provides services for accessing class specific meta data.
 ///   </para>
 /// </remarks>
 public interface IBusinessObjectClass
 {
-  /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passes <paramref name="propertyIdentifier"/>. </summary>
+  /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passed <paramref name="propertyIdentifier"/>. </summary>
   /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> uniquely identifying an <see cref="IBusinessObjectProperty"/> in this
   ///   <see cref="IBusinessObjectClass"/>.
@@ -57,12 +60,18 @@ public interface IBusinessObjectClass
   /// </example>
   bool RequiresWriteBack { get; }
 
-  /// <summary> Gets the identifier (i.e. the type name) for this <see cref="IBusinessObjectClass"/>. </summary>
-  /// <value> A string that uniquely identifies the <see cref="IBusinessObjectClass"/>. </value>
+  /// <summary> Gets the identifier (i.e. the type name) for this <see cref="IBusinessObjectClass"/> instance. </summary>
+  /// <value> 
+  ///   A string that uniquely identifies the <see cref="IBusinessObjectClass"/> instance within the business object 
+  ///   model. 
+  /// </value>
   string Identifier { get; }
 }
 
-/// <summary> The <b>Class</b> of an <see cref="IBusinessObjectWithIdentity"/>. </summary>
+/// <summary>
+///   The <b>IBusinessObjectClassWithIdentity</b> interface provides functionality for defining the <b>Class</b> of an 
+///   <see cref="IBusinessObjectWithIdentity"/>. 
+/// </summary>
 /// <remarks>
 ///   The <b>IBusinessObjectClassWithIdentity</b> interface provides additional funcitonality utilizing the
 ///  <see cref="IBusinessObjectWithIdentity"/>' <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>.
