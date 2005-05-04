@@ -108,8 +108,8 @@ public class ReflectionPropertyFactory
       itemType = ((ItemTypeAttribute) itemTypeAttributes[0]).ItemType;
       if (itemType != typeof (BindableDomainObject) && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
       {
-        throw new InvalidOperationException ("The ItemType defined for a property of type "
-          + "DomainObjectCollection or subclass of must be a DomainObject or a subclass of.");
+        throw new InvalidOperationException (string.Format ("The ItemType defined for the collection property '{0}' "
+            + "must be a BindableDomainObject or a subclass of it.", propertyInfo.Name));
       }
     }
 
