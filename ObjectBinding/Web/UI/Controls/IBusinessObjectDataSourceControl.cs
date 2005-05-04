@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Web.Design;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -46,6 +47,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 #if net20
 [System.Web.UI.NonVisualControl]
 #endif
+[Designer (typeof (BocDataSourceDesigner))]
 public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectDataSourceControl
 {
   /// <summary>
