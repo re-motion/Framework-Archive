@@ -2707,7 +2707,19 @@ public class BocList:
     if (isPostBackEventPhase)
     {
       columnDefinitions = GetColumnsForPreviousLifeCycle (columnDefinitions);
-      
+      RestoreSortingOrderColumns (columnDefinitions);
+    }
+    else
+    {
+      columnDefinitions = GetColumns (columnDefinitions);
+      SynchronizeSortingOrderColumns (columnDefinitions);
+    }
+
+    return columnDefinitions;
+  }
+
+  private void RestoreSortingOrderColumns (BocColumnDefinition[] columnDefinitions)
+  {
       for (int i = 0; i < _sortingOrder.Count; i++)
       {
         BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
@@ -2716,31 +2728,28 @@ public class BocList:
         if (entry.ColumnIndex != Int32.MinValue)
           entry.Column = columnDefinitions[entry.ColumnIndex];
       }
-    }
-    else
+  }
+
+  private void SynchronizeSortingOrderColumns (BocColumnDefinition[] columnDefinitions)
+  {
+    ArrayList columnDefinitionList = new ArrayList (columnDefinitions);
+  
+    for (int i = 0; i < _sortingOrder.Count; i++)
     {
-      columnDefinitions = GetColumns (columnDefinitions);
-      ArrayList columnDefinitionList = new ArrayList (columnDefinitions);
-   
-      for (int i = 0; i < _sortingOrder.Count; i++)
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+      if (entry.IsEmpty)
+        continue;
+      if (entry.Column == null)
       {
-        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
-        if (entry.IsEmpty)
-          continue;
-        if (entry.Column == null)
-        {
-          entry.Column = columnDefinitions[entry.ColumnIndex];
-        }
-        else
-        {
-          entry.ColumnIndex = columnDefinitionList.IndexOf (entry.Column);
-          if (entry.ColumnIndex < 0)
-            _sortingOrder[i] = BocListSortingOrderEntry.Empty;
-        }
+        entry.Column = columnDefinitions[entry.ColumnIndex];
+      }
+      else
+      {
+        entry.ColumnIndex = columnDefinitionList.IndexOf (entry.Column);
+        if (entry.ColumnIndex < 0)
+          _sortingOrder[i] = BocListSortingOrderEntry.Empty;
       }
     }
-
-    return columnDefinitions;
   }
 
   /// <summary>
@@ -2951,6 +2960,7 @@ public class BocList:
       throw new InvalidOperationException ("Attempted to set multiple sorting keys but EnableMultipleSorting is False.");
     else
       _sortingOrder.AddRange (sortingOrder);
+    SynchronizeSortingOrderColumns (EnsureColumnsGot());
   }
 
   /// <summary>
