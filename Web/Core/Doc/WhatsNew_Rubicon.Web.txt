@@ -1,3 +1,9 @@
+1.2.33.0
+========
+
+- FormGridManager
+  Designerdarstellung nach Art .net2.0 für non-visual Controls
+
 1.2.25.0
 ========
 
