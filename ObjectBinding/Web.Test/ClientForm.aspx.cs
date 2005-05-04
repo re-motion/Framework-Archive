@@ -96,6 +96,12 @@ public class ClientForm : TestWxeBasePage
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
 		InitializeComponent();
+		
+    _ddm.ID = "ddm";
+    _ddm.Height = new Unit("1%");
+    _ddm.Width = new Unit("1%");
+    _ddm.TitleText = "Options Menu";
+    MultiView.TopControls.Add (_ddm);
 
     WebButton saveButton = new WebButton ();
     saveButton.ID = "SaveButton";
@@ -114,10 +120,6 @@ public class ClientForm : TestWxeBasePage
 
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add (_wxeControlsPlaceHolder);
-		
-    _ddm.Height = new Unit("0%");
-    _ddm.Width = new Unit("0%");
-    MultiView.TopControls.AddAt (0, _ddm);
 
     base.OnInit(e);
 	}
