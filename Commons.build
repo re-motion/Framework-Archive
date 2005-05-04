@@ -112,18 +112,19 @@
     <call target="SSCommandline" />
   </target>
 
+  <!--======================= CheckZip =======================-->
+  <target name="checkzip" depends="zipfilename">
+    <property name="ToDir" value="\\at-vie-dc-02\Development\build\libraries\Commons\build\"/>
+    <available type="File" resource="${ToDir}${zipfile.filename}" property="zipfile.present" />
+    <available type="File" resource="${ToDir}${sourcezipfile.filename}" property="zipfile.present" unless="${zipfile.present}"/>
+    <fail message="ZipFile existiert bereits" if="${zipfile.present}" />
+  </target>
+
+
   <!--======================= AddZip =======================-->
-  <target name="addzip" depends="zipfilename">
-    <property name="SS.command" value="Cp $/libraries/Commons/build" />
-    <call target="SSCommandline" />
-    <echo message="Add ${zipfile.name}"/>
-    <property name="SS.command" value="Add ${zipfile.name}" />
-    <call target="SSCommandline" />
-    <echo message="Add ${sourcezipfile.name}"/>
-    <property name="SS.command" value="Add ${sourcezipfile.name}" />
-    <call target="SSCommandline" />
-    <copy file="${zipfile.name}" todir="\\at-vie-dc-02\Development\build\libraries\Commons\build\" />  
-    <copy file="${sourcezipfile.name}" todir="\\at-vie-dc-02\Development\build\libraries\Commons\build\" />  
+  <target name="addzip" depends="checkzip">
+    <copy file="${zipfile.name}" todir="${ToDir}" />  
+    <copy file="${sourcezipfile.name}" todir="${ToDir}" />  
   </target>
 
   <!--======================= GetAll =======================-->
@@ -632,8 +633,10 @@
   </target>
 
   <target name="zipfilename" depends="setdocumentation">
-    <property name="zipfile.name" value="${build.basedir}/RubiconCommons_${build.version.noconfig}.zip" />
-    <property name="sourcezipfile.name" value="${build.basedir}/RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
+    <property name="zipfile.filename" value="RubiconCommons_${build.version.noconfig}.zip" />
+    <property name="zipfile.name" value="${build.basedir}/${zipfile.filename}" />
+    <property name="sourcezipfile.filename" value="RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
+    <property name="sourcezipfile.name" value="${build.basedir}/${sourcezipfile.filename}" />
     <echo message="Zipfile is ${zipfile.name}"/>
     <echo message="SourceZipfile is ${sourcezipfile.name}"/>
   </target>
