@@ -15,6 +15,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Globalization;
+using Rubicon.Web.UI.Design;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -23,6 +24,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Class/*' />
 //  TODO: HTMLEncode
 [ToolboxItemFilter("System.Web.UI")]
+[Designer (typeof (FormGridManagerDesigner))]
 public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupportsPostLoadControl
 {
   // types
