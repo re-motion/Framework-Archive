@@ -88,7 +88,7 @@ public class BusinessObjectBinding
     if (_dataSourceChanged)
     {
       // set _dataSource from ID in _dataSourceControl
-      if (_dataSourceControl == null)
+      if (StringUtility.IsNullOrEmpty (_dataSourceControl))
       {
         SetDataSource (null);
       }
@@ -150,6 +150,9 @@ public class BusinessObjectBinding
   /// <param name="dataSource"> The new <see cref="IBusinessObjectDataSource"/>. Can be <see langword="null"/>. </param>
   private void SetDataSource (IBusinessObjectDataSource dataSource)
   {
+    if (_control == dataSource && _control is IBusinessObjectReferenceDataSource)
+      throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
+
     if (_dataSource == dataSource)
       return;
 
@@ -171,6 +174,8 @@ public class BusinessObjectBinding
 
     set 
     { 
+      if (_control.ID != null && _control.ID == value && _control is IBusinessObjectReferenceDataSource)
+          throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
       if (_dataSourceControl != value)
       {
         _dataSourceControl = value;
