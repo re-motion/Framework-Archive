@@ -380,7 +380,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   {
     if (_renderHeadTitleMethod == null)
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");//"100%");
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
       writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
 
