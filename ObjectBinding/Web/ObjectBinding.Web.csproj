@@ -336,6 +336,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Design\BocDataSourceDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Design\BocDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
