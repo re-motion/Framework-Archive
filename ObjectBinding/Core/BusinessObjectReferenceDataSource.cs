@@ -241,6 +241,7 @@ public class BusinessObjectReferenceDataSource:
     get { return _dataSource; }
     set
     {
+      if (value == this) throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
       if (_dataSource != null)
         _dataSource.Unregister (this);
       _dataSource = value; 
