@@ -55,6 +55,7 @@ public class BusinessObjectBinding
   /// <remarks>
   ///   Unless an <b>DataSource</b> is set, <see cref="DataSourceControl"/> is used to identify the data source.
   /// </remarks>
+  /// <exception cref="ArgumentException"> Thrown if an attempt is made to set a self reference. </exception>
   public virtual IBusinessObjectDataSource DataSource
   {
     get 
@@ -168,6 +169,7 @@ public class BusinessObjectBinding
 
   /// <summary> The <b>ID</b> of the <see cref="DataSource"/>. </summary>
   /// <value> A string or <see langword="null"/> if no <see cref="DataSource"/> is set. </value>
+  /// <exception cref="ArgumentException"> Thrown if an attempt is made to set a self reference. </exception>
   public string DataSourceControl
   {
     get { return _dataSourceControl; }
