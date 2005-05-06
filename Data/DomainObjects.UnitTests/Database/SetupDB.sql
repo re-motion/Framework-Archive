@@ -57,6 +57,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Person')
 DROP TABLE [Person]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'FileSystemItem')
+DROP TABLE [FileSystemItem]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithValidRelations') 
 DROP TABLE [TableWithValidRelations]
 GO
@@ -260,6 +264,25 @@ CREATE TABLE [TableWithoutRelatedClassIDColumn] (
   CONSTRAINT [PK_TableWithoutRelatedClassIDColumn] PRIMARY KEY CLUSTERED ([ID]),
   CONSTRAINT [FK_TableWithoutRelatedClassIDColumn_Distributor] FOREIGN KEY ([DistributorID]) REFERENCES [Company] ([ID])
 ) 
+GO
+
+CREATE TABLE [FileSystemItem]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- FileSystemItem columns
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL,
+
+  -- Folder columns
+
+  -- File columns
+
+  CONSTRAINT [PK_FileSystemItem] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_FolderToFileSystemItem] FOREIGN KEY ([ParentFolderID]) REFERENCES [FileSystemItem] ([ID])
+)
 GO
 
 CREATE TABLE [TableWithoutRelatedClassIDColumnAndDerivation] (

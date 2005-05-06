@@ -257,9 +257,9 @@ public class ClassDefinitionTest
   }
 
   [Test]
-  public void GetOppositeEndPointDefinition ()
+  public void GetMandatoryOppositeEndPointDefinition ()
   {
-    IRelationEndPointDefinition oppositeEndPointDefinition = _orderClass.GetOppositeEndPointDefinition ("OrderTicket");
+    IRelationEndPointDefinition oppositeEndPointDefinition = _orderClass.GetMandatoryOppositeEndPointDefinition ("OrderTicket");
     Assert.IsNotNull (oppositeEndPointDefinition);
     Assert.AreEqual ("Order", oppositeEndPointDefinition.PropertyName);
   }
@@ -372,6 +372,225 @@ public class ClassDefinitionTest
 
     Assert.AreEqual (1, endPointDefinitions.Length);
     Assert.IsTrue (Contains (endPointDefinitions, "ParentClient"));
+  }
+
+  [Test]
+  public void GetMyRelationEndPointDefinitionsCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetMyRelationEndPointDefinitions ();
+
+    Assert.AreEqual (1, endPointDefinitions.Length);
+    Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+  }
+
+  [Test]
+  public void IsMyRelationEndPoint ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    IRelationEndPointDefinition folderEndPoint = folderDefinition.GetRelationEndPointDefinition ("FileSystemItems");
+    IRelationEndPointDefinition fileSystemItemEndPoint = folderDefinition.GetRelationEndPointDefinition ("ParentFolder");
+
+    Assert.IsTrue (folderDefinition.IsMyRelationEndPoint (folderEndPoint));
+    Assert.IsFalse (folderDefinition.IsMyRelationEndPoint (fileSystemItemEndPoint));
+  }
+
+  [Test]
+  public void GetMyRelationEndPointDefinitionsCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetMyRelationEndPointDefinitions ();
+
+    Assert.AreEqual (1, endPointDefinitions.Length);
+    Assert.IsTrue (Contains (endPointDefinitions, "FileSystemItems"));
+  }
+
+  [Test]
+  public void GetRelationEndPointDefinitionsCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetRelationEndPointDefinitions ();
+
+    Assert.AreEqual (1, endPointDefinitions.Length);
+    Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+  }
+
+  [Test]
+  public void GetRelationEndPointDefinitionsCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetRelationEndPointDefinitions ();
+
+    Assert.AreEqual (2, endPointDefinitions.Length);
+    Assert.IsTrue (Contains (endPointDefinitions, "FileSystemItems"));
+    Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+  }
+
+  [Test]
+  public void GetRelationDefinitionsCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    RelationDefinitionCollection relations = fileSystemItemDefinition.GetRelationDefinitions ();
+ 
+    Assert.IsNotNull (relations);
+    Assert.AreEqual (1, relations.Count);
+    Assert.IsNotNull (relations["FolderToFileSystemItem"]);
+  }
+
+  [Test]
+  public void GetRelationDefinitionsCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    RelationDefinitionCollection relations = folderDefinition.GetRelationDefinitions ();
+ 
+    Assert.IsNotNull (relations);
+    Assert.AreEqual (1, relations.Count);
+    Assert.IsNotNull (relations["FolderToFileSystemItem"]);
+  }
+
+  [Test]
+  public void GetRelationEndPointDefinitionCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.IsNotNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("ParentFolder"));
+    Assert.IsNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetRelationEndPointDefinitionCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("ParentFolder"));
+    Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetRelationDefinitionCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.IsNotNull (fileSystemItemDefinition.GetRelationDefinition ("ParentFolder"));
+    Assert.IsNull (fileSystemItemDefinition.GetRelationDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetRelationDefinitionCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    Assert.IsNotNull (folderDefinition.GetRelationDefinition ("ParentFolder"));
+    Assert.IsNotNull (folderDefinition.GetRelationDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetOppositeClassDefinitionCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetOppositeClassDefinition ("ParentFolder"));
+    Assert.IsNull (fileSystemItemDefinition.GetOppositeClassDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetOppositeClassDefinitionCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.AreSame (folderDefinition, folderDefinition.GetOppositeClassDefinition ("ParentFolder"));
+    Assert.AreSame (fileSystemItemDefinition, folderDefinition.GetOppositeClassDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetMandatoryOppositeEndPointDefinitionCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.IsNotNull (fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition ("ParentFolder"));
+  }
+
+  [Test]
+  public void GetOppositeEndPointDefinitionCompositeBaseClass ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.IsNotNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("ParentFolder"));
+    Assert.IsNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  public void GetMandatoryOppositeEndPointDefinitionCompositeDerivedClass ()
+  {
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("ParentFolder"));
+    Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("FileSystemItems"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
+  public void GetMandatoryOppositeEndPointDefinitionWithInvalidPropertyName ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    Assert.IsNotNull (fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition ("InvalidProperty"));
+  }
+
+  [Test]
+  public void GetMandatoryOppositeClassDefinition ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+    ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+
+    Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetMandatoryOppositeClassDefinition ("ParentFolder"));
+  }
+
+  [Test]
+  [ExpectedException(typeof (MappingException), "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
+  public void GetMandatoryOppositeClassDefinitionWithInvalidPropertyName ()
+  {
+    ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+
+    fileSystemItemDefinition.GetMandatoryOppositeClassDefinition ("InvalidProperty");
+  }
+
+  [Test]
+  public void GetMandatoryRelationDefinition ()
+  {
+    RelationDefinition relation = _orderClass.GetMandatoryRelationDefinition ("Customer");
+
+    Assert.IsNotNull (relation);
+    Assert.AreEqual ("CustomerToOrder", relation.ID);
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "No relation found for class 'Order' and property 'InvalidProperty'.")]
+  public void GetMandatoryRelationDefinitionWithInvalidPropertyName ()
+  {
+    _orderClass.GetMandatoryRelationDefinition ("InvalidProperty");
+  }
+
+  [Test]
+  public void GetMandatoryPropertyDefinition ()
+  {
+    Assert.IsNotNull (_orderClass.GetMandatoryPropertyDefinition ("OrderNumber"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException), "Class 'Order' does not contain the property 'InvalidProperty'.")]
+  public void GetMandatoryPropertyDefinitionWithInvalidPropertName ()
+  {
+    _orderClass.GetMandatoryPropertyDefinition ("InvalidProperty");
   }
 
   private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
