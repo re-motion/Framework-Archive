@@ -298,6 +298,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Domain\ClassWithoutProperties.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Globalization\ClassForRelationTest.resx"
                     BuildAction = "EmbeddedResource"
                 />
