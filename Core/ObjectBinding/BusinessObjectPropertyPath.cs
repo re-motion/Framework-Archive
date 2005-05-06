@@ -209,8 +209,14 @@ public class BusinessObjectPropertyPath
     return obj;
   }
 
-  /// <exception cref="NotImplementedException"></exception>
-  public virtual object SetValue (IBusinessObject obj)
+  /// <summary> Sets the value of this property path for the specified object. </summary>
+  /// <param name="obj">
+  ///   The object that has the first property in the path. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="value"> The value to be assiged to the property. </param>
+  /// <remarks> <b>SetValue</b> is not implemented in the current version. </remarks>
+  /// <exception cref="NotImplementedException"> This method is not implemented. </exception>
+  public virtual void SetValue (IBusinessObject obj, object value)
   {
     // TODO: implement
     throw new NotImplementedException();
@@ -235,6 +241,7 @@ public class BusinessObjectPropertyPath
     }
   }
 
+  /// <summary> Returns the <see cref="Identifier"/> for this property path. </summary>
   public override string ToString()
   {
     return Identifier;
