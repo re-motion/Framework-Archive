@@ -291,7 +291,7 @@ public class SingleRowTextBoxStyle: Style
     set { _autoPostBack = value; }
   }
 
-  [Description("Whether the text in the control can exceed it's max length during input. If true, MaxLength is only used for validation after the input is completed.")]
+  [Description("Whether the text in the control can exceed its max length during input. If true, MaxLength is only used for validation after the input is completed.")]
   [Category("Behavior")]
   [DefaultValue (typeof(NaBoolean), "null")]
   [NotifyParentProperty (true)]
