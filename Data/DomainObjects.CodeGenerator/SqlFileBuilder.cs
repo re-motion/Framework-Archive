@@ -182,11 +182,6 @@ public class SqlFileBuilder : FileBuilder
     return (RelationEndPointDefinition[]) relationEndPoints.ToArray (typeof (RelationEndPointDefinition));
   }
 
-  private ClassDefinition GetOppositeClass (ClassDefinition classDefinition, string propertyName)
-  {
-    return classDefinition.GetOppositeEndPointDefinition (propertyName).ClassDefinition;;
-  }
-
   private ArrayList GetBaseClassDefinitions (string storageProviderID)
   {
     ArrayList baseClasses = new ArrayList ();
@@ -259,7 +254,7 @@ public class SqlFileBuilder : FileBuilder
   {
     string constraintText = s_foreignKey;
     constraintText = ReplaceTag (constraintText, s_columnnameTag, endPoint.PropertyDefinition.ColumnName);
-    constraintText = ReplaceTag (constraintText, s_refTablenameTag, GetOppositeClass (endPoint.ClassDefinition, endPoint.PropertyName).EntityName);
+    constraintText = ReplaceTag (constraintText, s_refTablenameTag, endPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (endPoint.PropertyName).EntityName);
     constraintText = ReplaceTag (constraintText, s_refColumnnameTag, "ID");
     constraintText = ReplaceTag (constraintText, s_constraintnameTag, endPoint.ClassDefinition.GetRelationDefinition(endPoint.PropertyName).ID);
     Write (constraintText);
@@ -324,7 +319,7 @@ public class SqlFileBuilder : FileBuilder
       WriteColumn (propertyDefinition.ColumnName, dataType, allColumnsNullable || propertyDefinition.IsNullable);
 
       if (propertyDefinition.PropertyType == typeof (ObjectID) 
-          && GetOppositeClass (classDefinition, propertyDefinition.PropertyName).IsPartOfInheritanceHierarchy
+          && classDefinition.GetMandatoryOppositeClassDefinition (propertyDefinition.PropertyName).IsPartOfInheritanceHierarchy
           && HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
       {
         WriteColumn (propertyDefinition.ColumnName + "ClassID", s_classIdDatabaseType, allColumnsNullable || propertyDefinition.IsNullable);
@@ -349,7 +344,7 @@ public class SqlFileBuilder : FileBuilder
 
   private bool HasOppositeClassSameStorageProviderID (ClassDefinition classDefinition, string propertyName)
   {
-    return GetOppositeClass (classDefinition, propertyName).StorageProviderID == classDefinition.StorageProviderID;
+    return classDefinition.GetMandatoryOppositeClassDefinition (propertyName).StorageProviderID == classDefinition.StorageProviderID;
   }
 
   private void BeginFile (string databasename)
