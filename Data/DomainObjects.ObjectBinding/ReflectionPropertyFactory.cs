@@ -109,7 +109,7 @@ public class ReflectionPropertyFactory
       if (itemType != typeof (BindableDomainObject) && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
       {
         throw new InvalidOperationException (string.Format ("The ItemType defined for the collection property '{0}' "
-            + "must be a BindableDomainObject or a subclass of it.", propertyInfo.Name));
+            + "must be 'Rubicon.Data.DomainObjects.ObjectBinding.BindableDomainObject' or a subclass of it.", propertyInfo.Name));
       }
     }
 
