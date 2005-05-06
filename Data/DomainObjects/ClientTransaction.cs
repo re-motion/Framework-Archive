@@ -540,7 +540,9 @@ public class ClientTransaction
         foreach (DomainObject domainObject in domainObjectCommittingEventNotRaised)
         {
           domainObject.BeginCommit ();
-          domainObjectComittingEventRaised.Add (domainObject);
+
+          if (!domainObject.IsDiscarded)
+            domainObjectComittingEventRaised.Add (domainObject);
         }
 
         changedDomainObjects = _dataManager.GetChangedDomainObjects ();
@@ -549,8 +551,12 @@ public class ClientTransaction
 
       clientTransactionCommittingEventNotRaised = clientTransactionCommittingEventRaised.GetItemsNotInCollection (changedDomainObjects);
       
-      OnCommitting (new ClientTransactionEventArgs (clientTransactionCommittingEventNotRaised.Clone (true)  ));
-      clientTransactionCommittingEventRaised.Combine (clientTransactionCommittingEventNotRaised);
+      OnCommitting (new ClientTransactionEventArgs (clientTransactionCommittingEventNotRaised.Clone (true)));
+      foreach (DomainObject domainObject in clientTransactionCommittingEventNotRaised)
+      {
+        if (!domainObject.IsDiscarded)
+          clientTransactionCommittingEventRaised.Add (domainObject);
+      }
 
       changedDomainObjects = _dataManager.GetChangedDomainObjects ();
       clientTransactionCommittingEventNotRaised = clientTransactionCommittingEventRaised.GetItemsNotInCollection (changedDomainObjects);
