@@ -339,6 +339,17 @@ public class DataContainer
     }
   }
 
+  /// <summary>
+  /// Gets a value indicating the discarded status of the <see cref="DataContainer"/>.
+  /// </summary>
+  /// <remarks>
+  /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscarded
+  {
+    get { return _isDiscarded; }
+  }
+
   internal RelationEndPointID[] RelationEndPointIDs
   {
     get
@@ -433,11 +444,6 @@ public class DataContainer
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     
     _domainObject = domainObject;
-  }
-
-  internal bool IsDiscarded
-  {
-    get { return _isDiscarded; }
   }
 
   private StateType GetStateForPropertyValues ()
