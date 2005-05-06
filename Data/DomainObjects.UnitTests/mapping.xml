@@ -249,6 +249,30 @@
 				</relationProperty>
 			</properties>
 		</class>
+		<class id="FileSystemItem">
+		  <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem, Rubicon.Data.DomainObjects.UnitTests</type>
+		  <entity name="FileSystemItem"/>
+		  <storageProviderID>TestDomain</storageProviderID>
+		  <properties>
+		    <relationProperty name="ParentFolder" relationID="FolderToFileSystemItem" isMandatory="false" cardinality="one">
+		      <column>ParentFolderID</column>
+		    </relationProperty>
+		  </properties>
+		</class>
+		<class id="Folder" baseClass="FileSystemItem">
+		  <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder, Rubicon.Data.DomainObjects.UnitTests</type>
+		  <entity name="FileSystemItem"/>
+		  <storageProviderID>TestDomain</storageProviderID>
+		  <properties>
+		    <relationProperty name="FileSystemItems" relationID="FolderToFileSystemItem" isMandatory="false" cardinality="many"/>
+		  </properties>
+		</class>
+		<class id="File" baseClass="FileSystemItem">
+		  <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.File, Rubicon.Data.DomainObjects.UnitTests</type>
+		  <entity name="FileSystemItem"/>
+		  <storageProviderID>TestDomain</storageProviderID>
+		  <properties/>
+		</class>
 		<class id="ClassWithAllDataTypes">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="TableWithAllDataTypes"/>
