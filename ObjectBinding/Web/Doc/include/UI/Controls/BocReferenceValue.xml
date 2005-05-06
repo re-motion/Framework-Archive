@@ -231,7 +231,7 @@
     <param name="menuItems"> 
       The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
     </param>
-    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or it's override. </returns>
+    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or its override. </returns>
   </GetOptionsMenuItemsForPreviousLifeCycle>
   <GetOptionsMenuItems>
     <remarks>
@@ -248,7 +248,7 @@
     <param name="menuItems"> 
       The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
     </param>
-    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or it's override. </returns>
+    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or its override. </returns>
   </GetOptionsMenuItems>
   <Value>
     <value> 
