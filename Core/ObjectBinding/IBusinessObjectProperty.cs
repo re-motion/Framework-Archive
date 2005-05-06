@@ -7,31 +7,20 @@ namespace Rubicon.ObjectBinding
 
 public interface IBusinessObjectProperty
 {
-  /// <summary>
-  ///   Indicates whether this property contains multiple values.
-  /// </summary>
-  /// <remarks>
-  ///   Multiple values are provided via any type implementing IList.
-  /// </remarks>
+  /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
+  /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/>. </remarks>
   bool IsList { get; }
 
-  /// <summary>
-  ///   Creates a list.
-  /// </summary>
+  /// <summary> Creates a list. </summary>
+  /// <returns> A new list with the specified number of empty elements. </returns>
   /// <remarks>
   ///   Use this method to create a new list in order to ensure that the correct list type is used
-  ///   (Array, ArrayList, etc.)
+  ///   (<see cref="Array"/>, <see cref="ArrayList"/>, etc.)
   /// </remarks>
-  /// <returns> 
-  ///   A new list with the specified number of empty elements.
-  /// </returns>
   IList CreateList (int count);
 
-  /// <summary>
-  ///   The type of a single value item.
-  /// </summary>
-  /// <remarks>
-  ///   If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as 
+  /// <summary> Gets the type of a single value item. </summary>
+  /// <remarks> If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as 
   ///   <see cref="PropertyType"/>. 
   ///   Otherwise, the item type is the type of a list item.
   /// </remarks>
