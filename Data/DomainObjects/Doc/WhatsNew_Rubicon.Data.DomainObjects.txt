@@ -15,17 +15,16 @@
   * Neue Methode GetMandatoryPropertyDefinition, die Exception liefert, wenn Eigenschaft nicht gefunden wird.
 
 - DomainObjectDataSourceControl:
-  * Beim Instanzieren des Controls wird zur Design Time das Mapping eingelesen. Führt dies zu einer Exception, wird diese von Visual Studio
-    verschluckt => DomainObjectDataSourceControl fängt jetzt eine evtl. auftretende Exception ab und zeigt sie in einer MessageBox an.
   * Wird eine BocList auf ein DomainObjectDataSourceControl gebunden und zur Design Time eine Property über das GUI ausgewählt, wird eine 
     "Value cannot be null, Parameter name: classDefinition"-Exception geworfen, wenn die Objektklasse Collection-Properties beinhaltet, die
     nicht im Mapping vorkommen und das Attribut "ItemType" nicht gesetzt haben. Hier kommt jetzt eine sprechende Meldung. 
     Hinweis: In einem späteren Build wird das "ItemType"-Attribut optional sein und als ItemType "BindableDomainObject" angenommen.
     
-- BOC-Erweiterung:
-  * Boolean Properties haben jetzt auch einen DisplayName => BooleanProperty für deutsch (Ja/Nein) und englisch (Yes/No) erweitert.     
-
-
+- DomainObject und ClientTransaction Committing Events:
+  Wurde im DomainObject.Committing oder im ClientTransaction.Committing Event ein neu erzeugtes Objekt wieder gelöscht, wurde eine
+  ObjectDiscardedException ausgelöst => Behoben.
+  
+  
 1.2.33.0
 ========
 
