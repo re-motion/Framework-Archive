@@ -53,7 +53,7 @@ public interface IBusinessObjectDataSource
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
   /// <remarks>
-  ///   <b>Register</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
+  ///   <b>Register</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when its 
   ///   <see cref="IBusinessObjectBoundControl.DataSource"/> is set.
   /// </remarks>
   /// <param name="control"> 
@@ -66,7 +66,7 @@ public interface IBusinessObjectDataSource
   ///   <see cref="IBusinessObjectDataSource"/>.
   /// </summary>
   /// <remarks>
-  ///   <b>Unregister</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when it's 
+  ///   <b>Unregister</b> is usually called by the <see cref="IBusinessObjectBoundControl"/> when its 
   ///   <see cref="IBusinessObjectBoundControl.DataSource"/> is set to a new <see cref="IBusinessObjectDataSource"/>
   ///   or <see langword="null"/>.
   /// </remarks>
