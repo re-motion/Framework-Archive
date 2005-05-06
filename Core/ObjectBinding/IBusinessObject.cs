@@ -13,14 +13,18 @@ namespace Rubicon.ObjectBinding
 ///   </para><para>
 ///     Its state can be accessed through a number of get and set methods as well as indexers.
 ///   </para>
+///   <note type="inheritinfo">
+///     Unless you must extend an existing class with the business object functionality, you can use the 
+///     <see cref="BusinessObject"/> class as a base implementation.
+///   </note>
 /// </remarks>
 public interface IBusinessObject
 {
   /// <overloads> Gets the value accessed through the specified property. </overloads>
   /// <summary> Gets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
   /// <param name="property"> The <see cref="IBusinessObjectProperty"/> used to access the value. </param>
-  /// <returns> An <see cref="Object"/> containing the value. </returns>
-  /// <exception type="Exception">
+  /// <returns> The property value for the <paramref name="property"/> parameter. </returns>
+  /// <exception cref="Exception">
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   object GetProperty (IBusinessObjectProperty property);
@@ -32,8 +36,8 @@ public interface IBusinessObject
   /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> identifing the <see cref="IBusinessObjectProperty"/> used to access the value. 
   /// </param>
-  /// <returns> An <see cref="Object"/> containing the value. </returns>
-  /// <exception type="Exception"> 
+  /// <returns> The property value for the <paramref name="propertyIdentifier"/> parameter. </returns>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <see cref="IBusinessObjectProperty"/> identified through the <paramref name="propertyIdentifier"/>
   ///   is not part of this business object's class. 
   /// </exception>
@@ -44,8 +48,8 @@ public interface IBusinessObject
   /// <param name="property"> 
   ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
   /// </param>
-  /// <param name="value"> The <see cref="Object"/> containing the value to be set. </param>
-  /// <exception type="Exception"> 
+  /// <param name="value"> The new value for the <paramref name="property"/> parameter. </param>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   void SetProperty (IBusinessObjectProperty property, object value);
@@ -57,19 +61,23 @@ public interface IBusinessObject
   /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> identifing the <see cref="IBusinessObjectProperty"/> used to access the value. 
   /// </param>
-  /// <param name="value"> The <see cref="Object"/> containing the value to be set. </param>
-  /// <exception type="Exception"> 
+  /// <param name="value"> 
+  ///   The new value for the <see cref="IBusinessObjectProperty"/> identified by the 
+  ///   <paramref name="propertyIdentifier"/> parameter. 
+  /// </param>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <see cref="IBusinessObjectProperty"/> identified by the <paramref name="propertyIdentifier"/>
   ///   is not part of this business object's class. 
   /// </exception>
   void SetProperty (string propertyIdentifier, object value);
 
+  /// <overloads> Gets or sets the value accessed through the specified property. </overloads>
   /// <summary> Gets or sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
   /// <param name="property"> 
   ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
   /// </param>
-  /// <value> The <see cref="Object"/> containing the value to be accessed. </value>
-  /// <exception type="Exception"> 
+  /// <value> The property value for the <paramref name="property"/> parameter. </value>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   object this [IBusinessObjectProperty property] { get; set; }
@@ -81,8 +89,11 @@ public interface IBusinessObject
   /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> identifing the <see cref="IBusinessObjectProperty"/> used to access the value. 
   /// </param>
-  /// <value> The <see cref="Object"/> containing the value to be accessed. </value>
-  /// <exception type="Exception"> 
+  /// <value> 
+  ///   The property value for the <see cref="IBusinessObjectProperty"/> identified by the 
+  ///   <paramref name="propertyIdentifier"/> parameter. 
+  /// </value>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   object this [string propertyIdentifier] { get; set; }
@@ -95,8 +106,8 @@ public interface IBusinessObject
   /// <param name="property"> 
   ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
   /// </param>
-  /// <returns> The string representation of the value. </returns>
-  /// <exception type="Exception"> 
+  /// <returns> The string representation of the property value for the <paramref name="property"/> parameter. </returns>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   string GetPropertyString (IBusinessObjectProperty property);
@@ -108,9 +119,9 @@ public interface IBusinessObject
   /// <param name="property"> 
   ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
   /// </param>
-  /// <param name="format"> The format string applyed by the <b>ToString</b> method. </param>
-  /// <returns> The string representation of the value. </returns>
-  /// <exception type="Exception"> 
+  /// <param name="format"> The format string applied by the <b>ToString</b> method. </param>
+  /// <returns> The string representation of the property value for the <paramref name="property"/> parameter.  </returns>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   string GetPropertyString (IBusinessObjectProperty property, string format);
@@ -119,19 +130,20 @@ public interface IBusinessObject
   ///   Gets the string representation of the value accessed through the <see cref="IBusinessObjectProperty"/> 
   ///   identified by the passed <paramref name="propertyIdentifier"/>.
   /// </summary>
-  /// <param name="property"> 
+  /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> identifing the <see cref="IBusinessObjectProperty"/> used to access the value. 
   /// </param>
-  /// <returns> The string representation of the value. </returns>
-  /// <exception type="Exception"> 
+  /// <returns> 
+  ///   The string representation of the property value for the <see cref="IBusinessObjectProperty"/> identified by the 
+  ///   <paramref name="propertyIdentifier"/> parameter. 
+  /// </returns>
+  /// <exception cref="Exception"> 
   ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
   /// </exception>
   string GetPropertyString (string propertyIdentifier);
 
-  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this <see cref="IBusinessObject"/>. </summary>
-  /// <value>
-  ///   An <see cref="IBusinessObjectClass"/> instance acting as the <see cref="IBusinessObject"/> instance's type.
-  /// </value>
+  /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
+  /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>
   IBusinessObjectClass BusinessObjectClass { get; }
 }
 
@@ -139,6 +151,10 @@ public interface IBusinessObject
 ///   The <b>IBusinessObjectWithIdentity</b> interface provides functionality to uniquely identify a business object 
 ///   within its business object domain.
 /// </summary>
+/// <remarks>
+///   With the help of the <b>IBusinessObjectWithIdentity</b> interface it is possible to persist and later restore 
+///   a reference to the business object. 
+/// </remarks>
 public interface IBusinessObjectWithIdentity : IBusinessObject
 {
   /// <summary> Gets the human readable <b>ID</b> of this <see cref="IBusinessObjectWithIdentity"/>. </summary>

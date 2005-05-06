@@ -20,7 +20,7 @@ public interface IBusinessObjectClass
   /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passed <paramref name="propertyIdentifier"/>. </summary>
   /// <param name="propertyIdentifier"> 
   ///   A <see cref="String"/> uniquely identifying an <see cref="IBusinessObjectProperty"/> in this
-  ///   <see cref="IBusinessObjectClass"/>.
+  ///   business object class.
   /// </param>
   /// <returns> Returns the <see cref="IBusinessObjectProperty"/> or <see langword="null"/>. </returns>
   /// <remarks> 
@@ -30,12 +30,12 @@ public interface IBusinessObjectClass
   IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier);
 
   /// <summary> 
-  ///   Returns the <see cref="IBusinessObjectProperty"/> instances defined for this <see cref="IBusinessObjectClass"/>.
+  ///   Returns the <see cref="IBusinessObjectProperty"/> instances defined for this business object class.
   /// </summary>
   /// <returns> An array of <see cref="IBusinessObjectProperty"/> instances. Must not be <see langword="null"/>. </returns>
   IBusinessObjectProperty[] GetPropertyDefinitions ();
 
-  /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this <see cref="IBusinessObjectClass"/>. </summary>
+  /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this business object class. </summary>
   /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type.
   ///   <note type="inheritinfo">
   ///     Must not return <see langword="null"/>.
@@ -44,7 +44,7 @@ public interface IBusinessObjectClass
   IBusinessObjectProvider BusinessObjectProvider { get; }
 
   /// <summary>
-  ///   Gets a flag that specifies whether a referenced object of this <see cref="IBusinessObjectClass"/> needs to be 
+  ///   Gets a flag that specifies whether a referenced object of this business object class needs to be 
   ///   written back to its container if some of its values have changed.
   /// </summary>
   /// <value> <see langword="true"/> if the <see cref="IBusinessObject"/> must be reassigned to its container. </value>
@@ -60,10 +60,9 @@ public interface IBusinessObjectClass
   /// </example>
   bool RequiresWriteBack { get; }
 
-  /// <summary> Gets the identifier (i.e. the type name) for this <see cref="IBusinessObjectClass"/> instance. </summary>
+  /// <summary> Gets the identifier (i.e. the type name) for this business object class. </summary>
   /// <value> 
-  ///   A string that uniquely identifies the <see cref="IBusinessObjectClass"/> instance within the business object 
-  ///   model. 
+  ///   A string that uniquely identifies the business object class within the business object model. 
   /// </value>
   string Identifier { get; }
 }
