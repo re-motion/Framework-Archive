@@ -233,6 +233,17 @@ public class PropertyValue
   }
 
   /// <summary>
+  /// Gets a value indicating the discarded status of the <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <remarks>
+  /// For more information why and when a <see cref="PropertyValue"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscarded
+  {
+    get { return _isDiscarded; }
+  }
+
+  /// <summary>
   /// Raises the <see cref="Changing"/> event.
   /// </summary>
   /// <param name="args">A <see cref="ValueChangingEventArgs"/> object that contains the event data.</param>

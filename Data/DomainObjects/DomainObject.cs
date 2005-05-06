@@ -336,7 +336,10 @@ public class DomainObject
   /// <summary>
   /// Gets a value indicating the discarded status of the object.
   /// </summary>
-  protected bool IsDiscarded 
+  /// <remarks>
+  /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscarded 
   {
     get { return _dataContainer.IsDiscarded; }
   }
