@@ -69,28 +69,27 @@ public class ClassDefinition
   }
 
   // methods and properties
- 
+
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition (propertyName);
+    RelationDefinition relationDefinition = GetRelationDefinition (propertyName);
+
+    if (relationDefinition != null && relationEndPointDefinition != null)
+      return relationDefinition.GetOppositeEndPointDefinition (relationEndPointDefinition);
+
+    return null;
+  }
+
+  public IRelationEndPointDefinition GetMandatoryOppositeEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
     IRelationEndPointDefinition relationEndPointDefinition = GetMandatoryRelationEndPointDefinition (propertyName);
     RelationDefinition relationDefinition = GetRelationDefinition (propertyName);
     return relationDefinition.GetMandatoryOppositeRelationEndPointDefinition (relationEndPointDefinition);
-  }
-
-  public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-    IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition (propertyName);
-    if (relationEndPointDefinition == null)
-    {
-      throw CreateMappingException (
-          "No relation found for class '{0}' and property '{1}'.", ID, propertyName);
-    }
-
-    return relationEndPointDefinition;
   }
 
   public PropertyDefinitionCollection GetPropertyDefinitions ()
@@ -114,7 +113,10 @@ public class ClassDefinition
     if (_baseClass != null)
     {
       foreach (RelationDefinition baseRelation in _baseClass.GetRelationDefinitions ())
-        relations.Add (baseRelation);
+      {
+        if (!relations.Contains (baseRelation))
+          relations.Add (baseRelation);
+      }
     }
 
     return relations;
@@ -144,7 +146,7 @@ public class ClassDefinition
     {
       foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        if (IsRelationEndPoint (endPointDefinition))
+        if (IsMyRelationEndPoint (endPointDefinition))
           relationEndPointDefinitions.Add (endPointDefinition);
       }
     }
@@ -168,6 +170,15 @@ public class ClassDefinition
     return null;
   }
 
+  public RelationDefinition GetMandatoryRelationDefinition (string propertyName)
+  {
+    RelationDefinition relationDefinition = GetRelationDefinition (propertyName);
+    if (relationDefinition == null)
+      throw CreateMappingException ("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
+
+    return relationDefinition;
+  }
+
   public ClassDefinition GetOppositeClassDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -187,6 +198,16 @@ public class ClassDefinition
     return null;
   }
 
+  public ClassDefinition GetMandatoryOppositeClassDefinition (string propertyName)
+  {
+    ClassDefinition oppositeClassDefinition = GetOppositeClassDefinition (propertyName);
+
+    if (oppositeClassDefinition == null)
+      throw CreateMappingException ("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
+
+    return oppositeClassDefinition;
+  }
+
   public IRelationEndPointDefinition GetRelationEndPointDefinition (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -204,11 +225,30 @@ public class ClassDefinition
     return null;
   }
 
+  public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition (propertyName);
+
+    if (relationEndPointDefinition == null)
+      throw CreateMappingException ("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
+
+    return relationEndPointDefinition;
+  }
+
+  public bool IsMyRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+
+    return (relationEndPointDefinition.ClassDefinition == this && !relationEndPointDefinition.IsNull);
+  }
+
   public bool IsRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
 
-    if (relationEndPointDefinition.ClassDefinition == this && !relationEndPointDefinition.IsNull)
+    if (IsMyRelationEndPoint (relationEndPointDefinition))
       return true;
 
     if (_baseClass != null)
@@ -225,6 +265,16 @@ public class ClassDefinition
 
     if (propertyDefinition == null && _baseClass != null)
       return _baseClass.GetPropertyDefinition (propertyName);
+
+    return propertyDefinition;
+  }
+
+  public PropertyDefinition GetMandatoryPropertyDefinition (string propertyName)
+  {
+    PropertyDefinition propertyDefinition = GetPropertyDefinition (propertyName);
+
+    if (propertyDefinition == null)
+      throw CreateMappingException ("Class '{0}' does not contain the property '{1}'.", ID, propertyName);
 
     return propertyDefinition;
   }
