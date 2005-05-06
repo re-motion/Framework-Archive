@@ -88,6 +88,11 @@ public class TestMappingConfiguration
     classDefinitions.Add (CreateClientDefinition ());
     classDefinitions.Add (CreateLocationDefinition ());
 
+    ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
+    classDefinitions.Add (fileSystemItemDefinition);
+    classDefinitions.Add (CreateFolderDefinition (fileSystemItemDefinition));
+    classDefinitions.Add (CreateFileDefinition (fileSystemItemDefinition));
+
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ());
     classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition ());
     classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
@@ -256,6 +261,32 @@ public class TestMappingConfiguration
     location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID"));
 
     return location;
+  }
+
+  private ClassDefinition CreateFileSystemItemDefinition ()
+  {
+    ClassDefinition fileSystemItem = new ClassDefinition (
+        "FileSystemItem", "FileSystemItem", typeof (FileSystemItem), DatabaseTest.c_testDomainProviderID);
+    
+    fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", "objectID"));
+
+    return fileSystemItem;
+  }
+
+  private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
+  {
+    ClassDefinition folder = new ClassDefinition (
+        "Folder", "FileSystemItem", typeof (Folder), DatabaseTest.c_testDomainProviderID, baseClass);
+    
+    return folder;
+  }
+
+  private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
+  {
+    ClassDefinition file = new ClassDefinition (
+        "File", "FileSystemItem", typeof (File), DatabaseTest.c_testDomainProviderID, baseClass);
+    
+    return file;
   }
 
   private ClassDefinition CreateClassWithAllDataTypesDefinition ()
@@ -462,6 +493,7 @@ public class TestMappingConfiguration
     relationDefinitions.Add (CreatePartnerToPersonRelationDefinition ());    
     relationDefinitions.Add (CreateClientToLocationRelationDefinition ());    
     relationDefinitions.Add (CreateParentClientToChildClientRelationDefinition ());    
+    relationDefinitions.Add (CreateFolderToFileSystemItemRelationDefinition ());
     
     relationDefinitions.Add (CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ());
     relationDefinitions.Add (CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ());
@@ -622,6 +654,25 @@ public class TestMappingConfiguration
     RelationDefinition relation = new RelationDefinition ("ClientToLocation", endPoint1, endPoint2);
 
     locationClass.MyRelationDefinitions.Add (relation);
+
+    return relation;
+  }
+
+  private RelationDefinition CreateFolderToFileSystemItemRelationDefinition  ()
+  {
+    ClassDefinition folderClass = _classDefinitions["Folder"];
+    ClassDefinition fileSystemItemClass = _classDefinitions["FileSystemItem"];
+    
+    RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition (
+        fileSystemItemClass, "ParentFolder", false);
+
+    VirtualRelationEndPointDefinition endPoint2 = new VirtualRelationEndPointDefinition (
+        folderClass, "FileSystemItems", false, CardinalityType.Many, typeof (DomainObjectCollection));
+
+    RelationDefinition relation = new RelationDefinition ("FolderToFileSystemItem", endPoint1, endPoint2);
+
+    folderClass.MyRelationDefinitions.Add (relation);
+    fileSystemItemClass.MyRelationDefinitions.Add (relation);
 
     return relation;
   }
