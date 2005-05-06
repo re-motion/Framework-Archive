@@ -101,7 +101,7 @@
       <see cref="M:Rubicon.ObjectBinding.IBusinessObjectBoundControl.LoadValue(System.Boolean)" /> method in the process.
       <b>LoadValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
       configured earlier to get the value to be displayed from the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> 
-      connected to it's data source.
+      connected to its data source.
       <note type="caution">
         The actual loading behavior depends on the value of the <b>interim</b> parameter passed during the 
         call of <b>LoadValues</b> and passed through to the <b>LoadValue</b> method.
@@ -110,7 +110,7 @@
     
     <h4 class="dtH4">Saving the Business Object's Values</h4>
     <para>
-      To save the values back into the business object connected to the data source, call it's 
+      To save the values back into the business object connected to the data source, call its 
       <see cref="M:Rubicon.ObjectBinding.IBusinessObjectDataSource.SaveValues(System.Boolean)" /> method with the 
       <b>interim</b> parameter set <see langword="false" />.
       <note>
@@ -123,7 +123,7 @@
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundModifiableControl" /> found in the collection.
       <b>SaveValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
       configured earlier to write the control's current value back into the 
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> connected to it's data source. 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> connected to its data source. 
       <note>
         It is important to ensure that all the controls' values are valid before executing <b>SaveValues</b>. 
         The reason for this is that an attempt to write invalid data back into the business object could result in 
@@ -139,7 +139,7 @@
       following interfaces: 
     </para><para>      
       <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />, which provides a way of getting and setting the
-      values of the object's fields. The business object is also capable of returning it's type, the 
+      values of the object's fields. The business object is also capable of returning its type, the 
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />. If your object model provides an identity 
       (e.g. a GUID) for the business objects, it is recommended to extend your business object implementation with 
       the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity" /> interface. 
@@ -147,7 +147,7 @@
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />, which provides a list of the properties 
       exposed by a business object. If you implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity" />
       you must also implement the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity" /> interface, 
-      which allows you to retrieve a business object by using it's 
+      which allows you to retrieve a business object by using its 
       <see cref="P:Rubicon.ObjectBinding.IBusinessObjectWithIdentity.UniqueIdentifier" />.
     </para><para>
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" />, which acts as a base for all data type specific
