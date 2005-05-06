@@ -28,7 +28,7 @@ public class DomainObjectPropertyFactory : ReflectionPropertyFactory
 
       if (relationEndPointDefinition != null)
       {
-        IRelationEndPointDefinition oppositeRelationEndPointDefinition = _classDefinition.GetOppositeEndPointDefinition (propertyInfo.Name);
+        IRelationEndPointDefinition oppositeRelationEndPointDefinition = _classDefinition.GetMandatoryOppositeEndPointDefinition (propertyInfo.Name);
         itemType = oppositeRelationEndPointDefinition.ClassDefinition.ClassType;
       }
     }
