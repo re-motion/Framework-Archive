@@ -62,63 +62,6 @@ public class PropertyValueCollection : CommonCollection
 
   // methods and properties
 
-  /// <summary>
-  /// Raises the <see cref="PropertyChanging"/> event.
-  /// </summary>
-  /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
-  {
-    if (PropertyChanging != null)
-      PropertyChanging (this, args);
-  }
-
-  /// <summary>
-  /// Raises the <see cref="PropertyChanged"/> event.
-  /// </summary>
-  /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
-  {
-    if (PropertyChanged != null)
-      PropertyChanged (this, args);
-  }
-
-  internal void Discard ()
-  {
-    foreach (PropertyValue propertyValue in this)
-    {
-      propertyValue.Changing -= new ValueChangingEventHandler (PropertyValue_Changing);
-      propertyValue.Changed -= new EventHandler (PropertyValue_Changed);
-
-      propertyValue.Discard ();
-    }
-
-    _isDiscarded = true;
-  }
-
-  private void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
-  {
-    PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs (
-        (PropertyValue) sender, e.OldValue, e.NewValue);
-
-    OnPropertyChanging (eventArgs);
-  }
-
-  private void PropertyValue_Changed (object sender, EventArgs e)
-  {
-    OnPropertyChanged (new PropertyChangedEventArgs ((PropertyValue) sender));
-  }
-
-  private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
-  {
-    return new ArgumentException (string.Format (message, args), parameterName);
-  }
-
-  private void CheckDiscarded ()
-  {
-    if (_isDiscarded)
-      throw new ObjectDiscardedException ();
-  }
-
   #region Standard implementation for "add-only" collections
 
   /// <summary>
@@ -290,6 +233,74 @@ public class PropertyValueCollection : CommonCollection
       CheckDiscarded ();
       return base.SyncRoot;
     }
+  }
+
+  /// <summary>
+  /// Gets a value indicating the discarded status of the <see cref="PropertyValueCollection"/>.
+  /// </summary>
+  /// <remarks>
+  /// For more information why and when a <see cref="PropertyValueCollection"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscarded
+  {
+    get { return _isDiscarded; }
+  }
+
+  /// <summary>
+  /// Raises the <see cref="PropertyChanging"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
+  {
+    if (PropertyChanging != null)
+      PropertyChanging (this, args);
+  }
+
+  /// <summary>
+  /// Raises the <see cref="PropertyChanged"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
+  {
+    if (PropertyChanged != null)
+      PropertyChanged (this, args);
+  }
+
+  internal void Discard ()
+  {
+    foreach (PropertyValue propertyValue in this)
+    {
+      propertyValue.Changing -= new ValueChangingEventHandler (PropertyValue_Changing);
+      propertyValue.Changed -= new EventHandler (PropertyValue_Changed);
+
+      propertyValue.Discard ();
+    }
+
+    _isDiscarded = true;
+  }
+
+  private void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
+  {
+    PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs (
+        (PropertyValue) sender, e.OldValue, e.NewValue);
+
+    OnPropertyChanging (eventArgs);
+  }
+
+  private void PropertyValue_Changed (object sender, EventArgs e)
+  {
+    OnPropertyChanged (new PropertyChangedEventArgs ((PropertyValue) sender));
+  }
+
+  private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
+  {
+    return new ArgumentException (string.Format (message, args), parameterName);
+  }
+
+  private void CheckDiscarded ()
+  {
+    if (_isDiscarded)
+      throw new ObjectDiscardedException ();
   }
 }
 }
