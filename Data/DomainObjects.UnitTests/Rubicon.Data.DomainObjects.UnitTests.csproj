@@ -901,6 +901,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestDomain\File.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\FileSystemItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\Folder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\IndustrialSector.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
