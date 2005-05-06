@@ -983,6 +983,7 @@ public class BocList:
     get { return HtmlTextWriterTag.Div; }
   }
 
+
   protected void CalculateCurrentPage()
   {
     if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)
@@ -2484,6 +2485,7 @@ public class BocList:
       return c_customCellEventPrefix + columnIndex + "," + listIndex + "," + customCellArgument;
   }
 
+
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
   /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
@@ -3254,6 +3256,7 @@ public class BocList:
     //return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
   }
 
+
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocList"/>'s properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
   public void Dispatch (IDictionary values)
@@ -3408,6 +3411,7 @@ public class BocList:
   ///   <see cref="EnableClientScript"/> is <see langword="true"/> and the browser is an
   ///   <c>Internet Explorer 5.5</c> or later.
   /// </summary>
+  
   private void DetermineClientScriptLevel() 
   {
     _hasClientScript = false;
@@ -3443,6 +3447,7 @@ public class BocList:
     }
   }
 
+  
   public int AddRow (IBusinessObject businessObject)
   {
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
@@ -3475,6 +3480,7 @@ public class BocList:
 
     RemoveRow ((IBusinessObject) Value[index]);
   }
+
 
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
@@ -3925,6 +3931,7 @@ public class BocList:
     add { Events.AddHandler (s_rowEditModeCanceledEvent, value); }
     remove { Events.RemoveHandler (s_rowEditModeCanceledEvent, value); }
   }
+
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
