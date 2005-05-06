@@ -229,7 +229,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
 
     VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition = 
-        (VirtualRelationEndPointDefinition) classDefinition.GetOppositeEndPointDefinition (property.PropertyName);
+        (VirtualRelationEndPointDefinition) classDefinition.GetMandatoryOppositeEndPointDefinition (property.PropertyName);
 
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
         this, classDefinition, property, relatedID, oppositeRelationEndPointDefinition.SortExpression);
