@@ -73,3 +73,12 @@ CREATE TABLE [TableForRelationTest] (
   CONSTRAINT [PK_TableForRelationTest] PRIMARY KEY CLUSTERED ([ID])
 ) 
 GO
+
+CREATE TABLE [TableWithoutColumns] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  CONSTRAINT [PK_TableWithoutColumns] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
