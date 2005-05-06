@@ -94,25 +94,25 @@ public abstract class BusinessObject: IBusinessObject
     return GetPropertyString (this, property, format);
   }
   
-  public object GetProperty (string property)
+  public object GetProperty (string propertyIdentifier)
   {
-    return GetProperty (GetBusinessObjectProperty (property));
+    return GetProperty (GetBusinessObjectProperty (propertyIdentifier));
   }
 
-  public void SetProperty (string property, object value)
+  public void SetProperty (string propertyIdentifier, object value)
   {
-    SetProperty (GetBusinessObjectProperty (property), value);
+    SetProperty (GetBusinessObjectProperty (propertyIdentifier), value);
   }
 
-  public object this [string property]
+  public object this [string propertyIdentifier]
   {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
+    get { return GetProperty (propertyIdentifier); }
+    set { SetProperty (propertyIdentifier, value); }
   }
 
-  public string GetPropertyString (string property)
+  public string GetPropertyString (string propertyIdentifier)
   {
-    return GetPropertyString (GetBusinessObjectProperty (property));
+    return GetPropertyString (GetBusinessObjectProperty (propertyIdentifier));
   }
 
   [XmlIgnore]
