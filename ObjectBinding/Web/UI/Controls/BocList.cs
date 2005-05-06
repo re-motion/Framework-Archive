@@ -4676,7 +4676,7 @@ public class BocList:
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
   /// <remarks>
   ///   <para> Class: <c>bocListEditDetailsValidationMessage</c> </para>
-  ///   <para> Only applied if the <see cref="EditDetailsValidator"/> has no CSS-class of it's own. </para>
+  ///   <para> Only applied if the <see cref="EditDetailsValidator"/> has no CSS-class of its own. </para>
   ///   </remarks>
   protected virtual string CssClassEditDetailsValidationMessage
   { get { return "bocListEditDetailsValidationMessage"; } }
