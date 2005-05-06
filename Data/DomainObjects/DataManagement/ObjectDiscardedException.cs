@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 /// The exception that is thrown when properties or methods of a discarded object are accessed.
 /// </summary>
 /// <remarks>
-/// An object is discarded in one of the following situations:
+/// A <see cref="DomainObject"/> is discarded in one of the following situations:
 /// <list type="buttons">
 ///   <description>
 ///     A new <see cref="DomainObject"/> is created and the <see cref="ClientTransaction"/> has been rolled back.
@@ -19,6 +19,18 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 ///   </description>
 ///   <description>
 ///     An existing <see cref="DomainObject"/> is deleted and the <see cref="ClientTransaction"/> has been committed.
+///   </description>
+/// </list>
+/// All objects that are associated with the discarded <see cref="DomainObject"/> are discarded too. These objects are:
+/// <list type="buttons">
+///   <description>
+///     The <see cref="DataContainer"/> associated with the <see cref="DomainObject"/>.
+///   </description>
+///   <description>
+///     The <see cref="PropertyValueCollection"/> holding the properties of of the <see cref="DomainObject"/>.
+///   </description>
+///   <description>
+///     Each <see cref="PropertyValue"/> of the <see cref="DomainObject"/>.
 ///   </description>
 /// </list>
 /// </remarks>
