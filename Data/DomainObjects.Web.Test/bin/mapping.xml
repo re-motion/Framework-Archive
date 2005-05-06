@@ -210,6 +210,13 @@
 				</relationProperty>			
 			</properties>
 		</class>
-					
+
+    <class id="ClassWithoutProperties">
+      <type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithoutProperties, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>    
+      <entity name="TableWithoutColumns"></entity>
+      <storageProviderID>RpaTest</storageProviderID>
+      <properties />
+    </class>
+    
 	</classes>
 </mapping>
