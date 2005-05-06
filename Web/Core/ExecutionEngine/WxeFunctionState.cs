@@ -14,10 +14,11 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public class WxeFunctionStateCollection
 {
+  private static readonly string s_sessionKey = typeof (WxeFunctionStateCollection).FullName;
   public static WxeFunctionStateCollection Instance
   {
-    get { return (WxeFunctionStateCollection) HttpContext.Current.Session["WxeFunctionStates"]; }
-    set { HttpContext.Current.Session["WxeFunctionStates"] = value; }
+    get { return (WxeFunctionStateCollection) HttpContext.Current.Session[s_sessionKey]; }
+    set { HttpContext.Current.Session[s_sessionKey] = value; }
   }
 
   private ArrayList _functionStates = new ArrayList();
