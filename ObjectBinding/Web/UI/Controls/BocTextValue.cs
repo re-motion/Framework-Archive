@@ -739,7 +739,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 public enum BocTextValueType
 {
   /// <summary> 
-  ///   Format the value as it's default string representation. 
+  ///   Format the value as its default string representation. 
   ///   No parsing is possible, <see cref="P:BoxTextValue.Value"/> will return a string. 
   /// </summary>
   Undefined,

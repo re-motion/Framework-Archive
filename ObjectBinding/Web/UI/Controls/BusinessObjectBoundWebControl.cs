@@ -248,7 +248,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </value>
   /// <remarks>
   ///   The control only saves the set value of <b>Visible</b> into the view state. Therefor the control can change
-  ///   it's visibilty during during subsequent postbacks.
+  ///   its visibilty during during subsequent postbacks.
   /// </remarks>
   public override bool Visible
   {

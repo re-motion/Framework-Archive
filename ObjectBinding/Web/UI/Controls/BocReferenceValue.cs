@@ -1374,7 +1374,7 @@ public class BocReferenceValue:
 
   /// <summary> Gets or sets the encapsulated <see cref="BocCommand"/> for this control's <see cref="Value"/>. </summary>
   /// <value> 
-  ///   A <see cref="SingleControlItemCollection"/> containing a <see cref="BocCommand"/> in it's 
+  ///   A <see cref="SingleControlItemCollection"/> containing a <see cref="BocCommand"/> in its 
   ///   <see cref="SingleControlItemCollection.Item"/> property.
   /// </value>
   /// <remarks> This property is used for persisting the <see cref="Command"/> into the <b>ASPX</b> source code. </remarks>
