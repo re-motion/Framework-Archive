@@ -21,8 +21,9 @@
     Hinweis: In einem späteren Build wird das "ItemType"-Attribut optional sein und als ItemType "BindableDomainObject" angenommen.
     
 - DomainObject und ClientTransaction Committing Events:
-  Wurde im DomainObject.Committing oder im ClientTransaction.Committing Event ein neu erzeugtes Objekt wieder gelöscht, wurde eine
-  ObjectDiscardedException ausgelöst => Behoben.
+  * Wurde im DomainObject.Committing oder im ClientTransaction.Committing Event ein neu erzeugtes Objekt wieder gelöscht, wurde eine
+    ObjectDiscardedException ausgelöst => Behoben.
+  * DomainObject, DataContainer, PropertyValueCollection und PropertyValue haben neue Eigenschaft IsDiscarded.  
   
   
 1.2.33.0
