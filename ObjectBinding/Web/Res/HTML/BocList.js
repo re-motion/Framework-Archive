@@ -104,7 +104,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
 }
 
 //  Event handler for a table row in the BocList. 
-//  Selects/unselects a row/all rows depending on it's selection state,
+//  Selects/unselects a row/all rows depending on its selection state,
 //      whether CTRL has been pressed and if _bocList_isSelectorControlClick is true.
 //  Aborts the execution if _bocList_isCommandClick is true.
 //  bocList: The BocList to which the row belongs.
