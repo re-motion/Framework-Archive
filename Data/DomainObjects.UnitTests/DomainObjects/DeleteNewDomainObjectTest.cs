@@ -134,6 +134,16 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void DomainObjectIsDiscarded ()
+  {
+    Assert.IsFalse (_newOrder.IsDiscarded);
+
+    _newOrder.Delete ();
+    
+    Assert.IsTrue (_newOrder.IsDiscarded);
+  }
+
+  [Test]
   [ExpectedException (typeof (ObjectDiscardedException))]
   public void DataContainerGetIndexer ()
   {
@@ -227,6 +237,17 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
   {
     _newOrder.Delete ();
     ClientTransaction clientTransaction = _newOrderContainer.ClientTransaction;
+  }
+
+  [Test]
+  public void DataContainerIsDiscarded ()
+  {
+    DataContainer newDataContainer = _newOrder.DataContainer;
+    Assert.IsFalse (newDataContainer.IsDiscarded);
+
+    _newOrder.Delete ();
+    
+    Assert.IsTrue (newDataContainer.IsDiscarded);
   }
 
   [Test]
@@ -330,6 +351,17 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void PropertyValueCollectionIsDiscarded ()
+  {
+    PropertyValueCollection propertyValueCollection = _newOrder.DataContainer.PropertyValues;
+    Assert.IsFalse (propertyValueCollection.IsDiscarded);
+
+    _newOrder.Delete ();
+    
+    Assert.IsTrue (propertyValueCollection.IsDiscarded);
+  }
+
+  [Test]
   [ExpectedException (typeof (ObjectDiscardedException))]
   public void PropertyValueDefinition ()
   {
@@ -429,6 +461,17 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void PropertyValueIsDiscarded ()
+  {
+    PropertyValue propertyValue = _newOrder.DataContainer.PropertyValues[0];
+    Assert.IsFalse (propertyValue.IsDiscarded);
+
+    _newOrder.Delete ();
+    
+    Assert.IsTrue (propertyValue.IsDiscarded);
+  }
+
+  [Test]
   public void Events ()
   {
     SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
@@ -474,6 +517,32 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
     newCustomer.Delete ();
 
     Assert.IsNull (_newOrder.Customer);
+  }
+
+  [Test]
+  public void DeleteNewObjectsInDomainObjectsCommittingEvent ()
+  {
+    _newOrder.Committing += new EventHandler (NewOrder_Committing);
+    ClientTransactionMock.Commit ();
+  }
+
+  [Test]
+  public void DeleteNewObjectsInClientTransactionsCommittingEvent ()
+  {
+    ClientTransactionMock.Committing += new ClientTransactionEventHandler (ClientTransactionMock_Committing);
+    ClientTransactionMock.Commit ();
+  }
+
+  private void NewOrder_Committing (object sender, EventArgs e)
+  {
+    ((Order) sender).Delete ();
+    _newOrderTicket.Delete ();
+  }
+
+  private void ClientTransactionMock_Committing (object sender, ClientTransactionEventArgs args)
+  {
+    _newOrder.Delete ();
+    _newOrderTicket.Delete ();
   }
 }
 }
