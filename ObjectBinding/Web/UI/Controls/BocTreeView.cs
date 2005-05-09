@@ -196,8 +196,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     if (Value != null)
     {
-      foreach (IBusinessObjectWithIdentity businessObject in Value)
+      for (int i = 0; i < Value.Count; i++)
       {
+        IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) Value[i];
         BusinessObjectTreeNode node = CreateBusinessObjectNode (null, businessObject);
         _treeView.Nodes.Add (node);
         if (EnableTopLevelExpander)
@@ -220,8 +221,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void ApplyNodesViewStateRecursive (Pair[] nodesViewState, WebTreeNodeCollection nodes)
   {
-    foreach (Pair nodeViewState in nodesViewState)
+    for (int i = 0; i < nodesViewState.Length; i++)
     {
+      Pair nodeViewState = nodesViewState[i];
       object[] values = (object[]) nodeViewState.First;
       string nodeID = (string) values[0];
       WebTreeNode node = nodes.Find (nodeID);
@@ -288,8 +290,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
       IBusinessObjectReferenceProperty property)
   {
     IList children = GetBusinessObjects (parentBusinessObject, property);
-    foreach (IBusinessObjectWithIdentity childBusinessObject in children)
+    for (int i = 0; i < children.Count; i++)
     {
+      IBusinessObjectWithIdentity childBusinessObject = (IBusinessObjectWithIdentity) children[i];
       BusinessObjectTreeNode childNode = CreateBusinessObjectNode (property, childBusinessObject);
       businessObjectNodes.Add (childNode);
     }
@@ -300,8 +303,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
       IBusinessObjectWithIdentity parentBusinessObject,
       BusinessObjectPropertyTreeNodeInfo[] propertyNodeInfos)
   {
-    foreach (BusinessObjectPropertyTreeNodeInfo propertyNodeInfo in propertyNodeInfos)
+    for (int i = 0; i < propertyNodeInfos.Length; i++)
     {
+      BusinessObjectPropertyTreeNodeInfo propertyNodeInfo = propertyNodeInfos[i];
       BusinessObjectPropertyTreeNode propertyNode = new BusinessObjectPropertyTreeNode (
           propertyNodeInfo.Property.Identifier, 
           propertyNodeInfo.Text, 
@@ -340,9 +344,10 @@ public class BocTreeView: BusinessObjectBoundWebControl
     if (Property == null)
     {
       ArrayList referenceListPropertyInfos = new ArrayList();
-      foreach (IBusinessObjectProperty property in businessObject.BusinessObjectClass.GetPropertyDefinitions ())
+      IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions();
+      for (int i = 0; i < properties.Length; i++)
       {
-        IBusinessObjectReferenceProperty referenceProperty = property as IBusinessObjectReferenceProperty;
+        IBusinessObjectReferenceProperty referenceProperty = properties[i] as IBusinessObjectReferenceProperty;
         if (   referenceProperty != null
             && referenceProperty.IsList 
             && referenceProperty.ReferenceClass is IBusinessObjectClassWithIdentity
@@ -399,8 +404,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
   /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="viewState"/>. </summary>
   private void LoadNodesViewStateRecursive (Pair[] nodesViewState, WebTreeNodeCollection nodes)
   {
-    foreach (Pair nodeViewState in nodesViewState)
+    for (int i = 0; i < nodesViewState.Length; i++)
     {
+      Pair nodeViewState = nodesViewState[i];
       object[] values = (object[]) nodeViewState.First;
       string nodeID = (string) values[0];
       bool isExpanded = (bool) values[1];
