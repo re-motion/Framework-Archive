@@ -1,3 +1,13 @@
+1.2.35.0
+========
+
+- Rubicon.Data.DomainObjects.ObjectBinding:
+  * Wenn die Klasse, die bei einem ItemType-Attribut einer Collection-Property angegeben ist, nicht im Mapping vorkommt, wird
+    jetzt eine MappingException statt einer ArgumentNullException geworfen.
+  * Für Collection-Properties, die nicht im Mapping beschrieben sind, wird keine MappingException mehr ausgelöst, wenn das
+    ItemType-Attribut fehlt. Per Default wird BindableDomainObject als Item-Type der Collection angenommen.
+  
+  
 1.2.34.0
 ========
   
