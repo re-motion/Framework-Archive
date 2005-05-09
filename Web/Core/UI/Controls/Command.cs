@@ -477,6 +477,11 @@ public class Command: IControlItem
         _ownerControl = value;
     }
   }
+
+  string IControlItem.ID
+  {
+    get { return null; }
+  }
 }
 
 /// <summary> The possible command types of a <see cref="Command"/>. </summary>

@@ -2,7 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Collections;
 using System.Web.UI;
+using log4net;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -10,10 +12,14 @@ namespace Rubicon.Web.UI.Controls
 public interface IControlItem
 {
   Control OwnerControl { get; set; }
+  string ID { get; }
 }
 
 public class ControlItemCollection: CollectionBase
 {
+  /// <summary> The log4net logger. </summary>
+  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
   private Control _ownerControl;
   private Type[] _supportedTypes;
   /// <summary> true if BeginEdit was called. </summary>
@@ -124,8 +130,8 @@ public class ControlItemCollection: CollectionBase
     ArgumentUtility.CheckNotNull ("values", values);
 
     BeginEdit();
-    foreach (IControlItem controlItem in values)
-      Add (controlItem);
+    for (int i = 0; i < values.Length; i++)
+      Add (values[i]);
     EndEdit();
   }
 
@@ -162,6 +168,20 @@ public class ControlItemCollection: CollectionBase
     return InnerList.IndexOf (item);
   }
 
+  /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ID"/> of <paramref name="id"/>. </summary>
+  /// <param name="id"> The ID to look for. </param>
+  /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
+  public IControlItem Find (string id)
+  {
+    for (int i = 0; i < InnerList.Count; i++)
+    {
+      IControlItem item = (IControlItem) InnerList[i];
+      if (item.ID == id)
+        return item;
+    }
+    return null;
+  }
+
   /// <remarks> 
   ///   Do not redefine the indexer as a public member in any derived class if you intend to use it in a peristed
   ///   property. Otherwise ASP.net will not know which property to use, this one or the new one.
@@ -178,8 +198,9 @@ public class ControlItemCollection: CollectionBase
   {
     Type controlItemType = controlItem.GetType();
 
-    foreach (Type type in _supportedTypes)
+    for (int i = 0; i < _supportedTypes.Length; i++)
     {
+      Type type = _supportedTypes[i];
       if (type.IsAssignableFrom (controlItemType))
         return true;
     }
@@ -196,8 +217,42 @@ public class ControlItemCollection: CollectionBase
     set 
     {
       _ownerControl = value; 
-      foreach (IControlItem controlItem in List)
+      for (int i = 0; i < InnerList.Count; i++)
+      {
+        IControlItem controlItem = (IControlItem) InnerList[i];
         controlItem.OwnerControl = _ownerControl;
+      }
+    }
+  }
+
+  public void Dispatch (IDictionary values, Control parent, string collectionName)
+  {
+    string parentID = string.Empty;
+    string page = string.Empty;
+    if (parent != null)
+    {
+      parentID = parent.UniqueID;
+      page = parent.Page.ToString();
+    }
+
+    foreach (DictionaryEntry entry in values)
+    {
+      string id = (string) entry.Key;
+      
+      bool isValidID = false;
+      IControlItem item = Find (id);
+      if (item != null)
+      {
+        ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value);
+        isValidID = true;
+        break;
+      }
+
+      if (! isValidID)
+      {
+        //  Invalid collection element
+        s_log.Debug ("'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName + "'.");
+      }
     }
   }
 }
