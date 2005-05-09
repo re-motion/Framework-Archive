@@ -1245,12 +1245,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _errorMessage; }
+    get 
+    { 
+      return _errorMessage;
+    }
     set 
     {
       _errorMessage = value; 
-      foreach (BaseValidator validator in _validators)
+      for (int i = 0; i < _validators.Count; i++)
+      {
+        BaseValidator validator = (BaseValidator) _validators[i];
         validator.ErrorMessage = _errorMessage;
+      }
     }
   }
 

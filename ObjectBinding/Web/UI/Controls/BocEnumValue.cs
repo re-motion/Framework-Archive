@@ -367,8 +367,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
         IEnumerationValueInfo[] valueInfos = Property.GetEnabledValues();
 
-        foreach (IEnumerationValueInfo valueInfo in valueInfos)
+        for (int i = 0; i < valueInfos.Length; i++)
         {
+          IEnumerationValueInfo valueInfo = valueInfos[i];
           ListItem item = new ListItem (valueInfo.DisplayName, valueInfo.Identifier);
           _listControl.Items.Add (item);
         }
@@ -689,12 +690,18 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _errorMessage; }
+    get
+    { 
+      return _errorMessage; 
+    }
     set 
     {
       _errorMessage = value; 
-      foreach (BaseValidator validator in _validators)
+      for (int i = 0; i < _validators.Count; i++)
+      {
+        BaseValidator validator = (BaseValidator) _validators[i];
         validator.ErrorMessage = _errorMessage;
+      }
     }
   }
 
