@@ -2,60 +2,198 @@
 <BocList>
   <Class>
     <remarks>
-      Use the following resource identifiers for dispatching strings to the boc list.
+    
+      <h4 class="dtH4">Supported Data Types</h4>
+      <para>
+        The control's <see cref="Value"/> can be assigned an <see cref="IList"/> of 
+        <see cref="IBusinessObject"/> instances as well as <see langword="null"/>. 
+      </para><para>
+        The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
+      </para>
+
+      <h4 class="dtH4">Usage Notes</h4>      
+      <para>
+        Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
+        <b>BocBooleanValue</b>.
+      </para><para>
+        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
+        See the <see cref="CreateValidators"/> method for the validators provided by this control.        
+      </para><para>
+        If the <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> property is not set, the 
+        control is unbound. The <see cref="Value"/> property must be accessed programmatically to display the 
+        current value.
+      </para><para>
+        The <see cref="BusinessObjectBoundWebControl.DataSource"/> must be set in order to evaluate the
+        <see cref="BusinessObjectPropertyPath"/> of a column. If you do not wish to use databinding 
+        (e.g. for a page with a search result), use the <see cref="BusinessObjectReferenceSearchDataSourceControl"/> 
+        as the control's <see cref="DataSource"/>.
+      </para><para>
+        The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocList</c>.
+      </para><para>
+        The control does not support auto-postback for the selected value. Auto-postback is only used for commands
+        and the drop down list displaying the <see cref="AvailableColumnDefinitionSets"/>.
+      </para>
+
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by this control are defined by the <see cref="BocList.ResourceIdentifier"/> 
+        enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
+      </para><para>
+        The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <b>BocList</b>.
+      </para>
       <list type="table">
         <listheader>
           <term>Property</term>
           <description>Resource Identifier</description>
         </listheader>
         <item>
-          <term>
-            PageInfo
-          </term>
+          <term> <see cref="AdditionalColumnsTitle"/> </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:PageInfo </para>
-            <para> e.g. auto:MyBocList:PageInfo </para>
+            <para> &lt;BocList Resource ID&gt;:AdditionalColumnsTitle </para>
+            <para> e.g. auto:MyBocList:AdditionalColumnsTitle </para>
           </description>
         </item>
         <item>
-          <term>
-            FixedColumns[x].ColumnTitle
-          </term>
+          <term> <see cref="ErrorMessage"/> </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
-            <para> e.g. auto:MyBocList:FixedColumns:MyColumn:ColumnTitle </para>
-            <para> Applies to all columns. </para>
+            <para> &lt;BocList Resource ID&gt;:ErrorMessage </para>
+            <para> e.g. auto:MyBocList:ErrorMessage </para>
           </description>
         </item>
         <item>
-          <term>
-            FixedColumns[x].Text
-          </term>
+          <term> <see cref="ListMenuItems"/>[x].Text </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:FixedColumns:MyColumn:Text </para>
-            <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
+            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
           </description>
         </item>
         <item>
-          <term>
-            OptionsMenuItems[x].Text
-          </term>
+          <term> <see cref="OptionsTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsTitle </para>
+            <para> e.g. auto:MyBocList:OptionsTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="OptionsMenuItems"/>[x].Text </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
             <para> e.g. auto:MyBocList:OptionsMenuItems:MyItem:Text </para>
           </description>
         </item>
         <item>
-          <term>
-            ListMenuItems[x].Text
-          </term>
+          <term> <ee cref="PageInfo"/> </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
+            <para> &lt;BocList Resource ID&gt;:PageInfo </para>
+            <para> e.g. auto:MyBocList:PageInfo </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].ColumnTitle </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:ColumnTitle </para>
+            <para> Applies to all columns. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:Text </para>
+            <para> Applies to columns of type <see cref="BocCommandColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].CancelText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:CancelText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:CancelText </para>
+            <para> Applies to columns of type <see cref="BocEditDetailsColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].EditText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:EditText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:EditText </para>
+            <para> Applies to columns of type <see cref="BocEditDetailsColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="FixedColumns"/>[x].SaveText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:SaveText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:SaveText </para>
+            <para> Applies to columns of type <see cref="BocEditDetailsColumnDefinition"/>. </para>
           </description>
         </item>
       </list>
+ 
+      <h4 class="dtH4">Defining the Columns</h4>  
+      <para>
+        Using the <see cref="FixedColumns"/> property it is possible to define the columns displayed by the 
+        <b>BocList</b>. In case you wish to display all properties as provided by the class, you can use
+        the <see cref="ShowAllProperties"/> flag to automatically render a column for each property.
+      </para><para>
+        The following table lists the available columns.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Column Type</term>
+          <description>Description</description>
+        </listheader>
+        <item>
+          <term> <see cref="BocSimpleColumnDefinition"/> </term>
+          <description>
+            Used to display a single value accessed through a <see cref="BusinessObjectPropertyPath"/>. 
+            This column supports inline editing of the value as well as a <see cref="BocListItemCommand"/> 
+            accessible through the rendered value.
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocCompoundColumnDefinition"/> </term>
+          <description>
+            Used to display a list of values concatenated by using a format string. Each value is accessed through 
+            its own <see cref="BusinessObjectPropertyPath"/>. This column supports a <see cref="BocListItemCommand"/> 
+            accessible through the rendered value string.
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocCommandColumnDefinition"/> </term>
+          <description>
+            Used to display <see cref="BocListItemCommand"/> accessible through a static text and/or icon.
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocEditDetailsColumnDefinition"/> </term>
+          <description>
+            Used to display predefined commands for switching a row into editing mode and back to read-only mode.
+          </description>
+        </item>
+        <item>
+          <term> <see cref="BocCustomColumnDefinition"/> </term>
+          <description>
+            Used to provide a custom rendering and event handling method for the cell. This column can be used
+            to display a number of commands, a command that depends on the state of the <see cref="IBusinessObject"/>
+            rendered in this row or to format the value in a way not supported by the simple or compound columns.
+          </description>
+        </item>
+      </list>
+      
+      <h4 class="dtH4">Additional Column Sets (Views)</h4>      
+      <para>
+        Using the <see cref="AdditionalColumnDefinitionSets"/> property it is possible to provide different views 
+        for the <b>BocList</b>. Each view (<see cref="BocColumnDefinitionSet"/>) consists of zero or more columns.
+      </para>      
+      <h4 class="dtH4">Options Menu and List Menu</h4>      
+      <h4 class="dtH4">Sorting</h4>      
+      <h4 class="dtH4">Row Selection</h4>      
+      <h4 class="dtH4">Inline Editing</h4>      
+
     </remarks>
   </Class>
   <OnListItemCommandClick>
