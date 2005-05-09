@@ -54,6 +54,11 @@ public abstract class BusinessObjectControlItem: IControlItem
     get { return (Control) _ownerControl; }
     set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
+
+  string IControlItem.ID
+  {
+    get { throw new NotSupportedException("Implement IControlItem.ID in a specialized class, if the class supports IDs."); }
+  }
 }
 
 }
