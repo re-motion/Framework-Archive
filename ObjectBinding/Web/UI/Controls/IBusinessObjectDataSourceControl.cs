@@ -212,8 +212,9 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   public bool Validate()
   {
     bool isValid = true;
-    foreach (IBusinessObjectBoundControl control in BoundControls)
+    for (int i = 0; i < BoundControls.Length; i++)
     {
+      IBusinessObjectBoundControl control = BoundControls[i];
       IValidatableControl validateableControl = control as IValidatableControl;
       if (validateableControl != null)
         isValid &= validateableControl.Validate();

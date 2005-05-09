@@ -345,8 +345,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   public static bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
   {
     bool isSupportedPropertyInterface = false;
-    foreach (Type supportedInterface in supportedPropertyInterfaces)
+    for (int i = 0; i < supportedPropertyInterfaces.Length; i++)
     {
+      Type supportedInterface = supportedPropertyInterfaces[i];
       if (supportedInterface.IsAssignableFrom (property.GetType()))
       {
         isSupportedPropertyInterface = true;
