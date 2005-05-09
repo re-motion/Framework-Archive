@@ -3343,75 +3343,17 @@ public class BocList:
     ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch to collections
-    DispatchToColumns (_fixedColumns, fixedColumnValues, "FixedColumns");
-    DispatchToMenuItems (_optionsMenuItems, optionsMenuItemValues, "OptionsMenuItems");
-    DispatchToMenuItems (_listMenuItems, listMenuItemValues, "ListMenuItems");
+    _fixedColumns.Dispatch (fixedColumnValues, this, "FixedColumns");
+    _optionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+    _listMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
   }
 
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
-  ///   <see cref="BocColumnDefinition"/> objects in the collection <paramref name="columns"/>.
-  /// </summary>
-  private void DispatchToColumns (BocColumnDefinitionCollection columns, IDictionary values, string collectionName)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string columnID = (string) entry.Key;
-      
-      bool isValidID = false;
-      foreach (BocColumnDefinition columnDefinition in columns)
-      {
-        if (columnDefinition.ColumnID == columnID)
-        {
-          ResourceDispatcher.DispatchGeneric (columnDefinition, (IDictionary) entry.Value);
-          isValidID = true;
-          break;
-        }
-      }
-
-      if (! isValidID)
-      {
-        //  Invalid collection element
-        s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + columnID + "' inside the collection '" + collectionName + "'.");
-      }
-    }
-  }
-
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
-  ///   <see cref="BocMenuItem"/> objects in the collection <paramref name="menuItems"/>.
-  /// </summary>
-  private void DispatchToMenuItems (BocMenuItemCollection menuItems, IDictionary values, string collectionName)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string itemID = (string) entry.Key;
-      
-      bool isValidID = false;
-      foreach (BocMenuItem menuItem in menuItems)
-      {
-        if (menuItem.ItemID == itemID)
-        {
-          ResourceDispatcher.DispatchGeneric (menuItem, (IDictionary) entry.Value);
-          isValidID = true;
-          break;
-        }
-      }
-
-      if (! isValidID)
-      {
-        //  Invalid collection element
-        s_log.Debug ("BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + itemID + "' inside the collection '" + collectionName + "'.");
-      }
-    }
-  }
 
   /// <summary>
   ///   Sets <see cref="_hasClientScript"/>  to <see langword="true"/> if 
   ///   <see cref="EnableClientScript"/> is <see langword="true"/> and the browser is an
   ///   <c>Internet Explorer 5.5</c> or later.
   /// </summary>
-  
   private void DetermineClientScriptLevel() 
   {
     _hasClientScript = false;

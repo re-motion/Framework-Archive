@@ -390,36 +390,7 @@ public class BocReferenceValue:
     ResourceDispatcher.DispatchGeneric (Command, commandValues);
 
     //  Dispatch to collections
-    DispatchToMenuItems (_optionsMenuItems, optionsMenuItemValues, "OptionsMenuItems");
-  }
-
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
-  ///   <see cref="BocMenuItem"/> objects in the collection <paramref name="menuItems"/>.
-  /// </summary>
-  private void DispatchToMenuItems (BocMenuItemCollection menuItems, IDictionary values, string collectionName)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string itemID = (string) entry.Key;
-      
-      bool isValidID = false;
-      foreach (BocMenuItem menuItem in menuItems)
-      {
-        if (menuItem.ItemID == itemID)
-        {
-          ResourceDispatcher.DispatchGeneric (menuItem, (IDictionary) entry.Value);
-          isValidID = true;
-          break;
-        }
-      }
-
-      if (! isValidID)
-      {
-        //  Invalid collection element
-        s_log.Debug ("BocReferenceValue '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + itemID + "' inside the collection '" + collectionName + "'.");
-      }
-    }
+    _optionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
