@@ -169,6 +169,11 @@ public class WebTreeNode: IControlItem
     return true;
   }
 
+  string IControlItem.ID
+  {
+    get { return NodeID; }
+  }
+
   /// <summary> Gets or sets the text displayed in this node. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
