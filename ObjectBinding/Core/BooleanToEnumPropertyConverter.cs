@@ -81,18 +81,18 @@ public class BooleanToEnumPropertyConverter
   }
 
   /// <summary>
-  ///   Returns an <see cref="IEnumerationValueInfo"/> matching the <c>true</c> or <c>false</c> strings or 
+  ///   Returns an <see cref="IEnumerationValueInfo"/> matching the <c>True</c> or <c>False</c> strings or 
   ///   <see langword="null"/> for an empty or null string.
   /// </summary>
-  /// <param name="identifier"> Can be <c>true</c>, <c>false</c>, or an empty or null string. </param>
+  /// <param name="identifier"> Can be <c>True</c>, <c>False</c>, or an empty or null string. </param>
   /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
   public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
   {
     if (StringUtility.IsNullOrEmpty (identifier))
       return null;
-    else if (identifier == "true")
+    else if (identifier == _enumInfoTrue.Identifier)
       return _enumInfoTrue;
-    else if (identifier == "false")
+    else if (identifier == _enumInfoFalse.Identifier)
       return _enumInfoFalse;
     else 
       throw new ArgumentOutOfRangeException ("value");
