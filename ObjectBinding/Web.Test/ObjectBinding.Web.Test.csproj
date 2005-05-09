@@ -129,11 +129,6 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Web"
-                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "Microsoft.Web.UI.WebControls"
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
@@ -141,6 +136,11 @@
                 <Reference
                     Name = "ObjectBinding.Reflection.Test"
                     Project = "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
