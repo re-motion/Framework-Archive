@@ -106,8 +106,9 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
   {
     get
     {
-      foreach (IBusinessObjectBoundControl control in _userControl.DataSource.BoundControls)
+      for (int i = 0; i < _userControl.DataSource.BoundControls.Length; i++)
       {
+        IBusinessObjectBoundControl control = _userControl.DataSource.BoundControls[i];
         BusinessObjectBoundModifiableWebControl modifiableControl = control as BusinessObjectBoundModifiableWebControl;
         if (modifiableControl != null && modifiableControl.IsDirty)
           return true;
