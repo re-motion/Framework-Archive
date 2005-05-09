@@ -252,12 +252,13 @@ public abstract class BocCustomColumnDefinitionCell
   {
     _arguments = arguments;
     string customArg = arguments.ColumnDefinition.CustomCellArgument;
-    if (customArg != null && customArg.Length > 0)
+    if (! StringUtility.IsNullOrEmpty (customArg))
     {
       NameValueCollection values = new NameValueCollection();
-      foreach (StringUtility.ParsedItem item in StringUtility.ParseSeparatedList (customArg, ','))
+      StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList (customArg, ',');
+      for (int i = 0; i < items.Length; i++)
       {
-        string[] pair = item.Value.Split (new char[] {'='}, 2);
+        string[] pair = items[i].Value.Split (new char[] {'='}, 2);
         if (pair.Length == 2)
         {
           string key = pair[0].Trim();
@@ -265,8 +266,10 @@ public abstract class BocCustomColumnDefinitionCell
           values.Add (key, value);
         }
       }
-      foreach (PropertyInfo property in this.GetType().GetProperties (BindingFlags.Public | BindingFlags.Instance))
+      PropertyInfo[] properties = this.GetType().GetProperties (BindingFlags.Public | BindingFlags.Instance);
+      for (int i = 0; i < properties.Length; i++)
       {
+        PropertyInfo property = properties[i];
         string strval = values[property.Name];
         if (strval != null)
         {
