@@ -94,15 +94,9 @@ public class WebTreeNodeCollection: ControlItemCollection
   /// </summary>
   /// <param name="id"> The ID to look for. </param>
   /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
-  public WebTreeNode Find (string id)
+  public new WebTreeNode Find (string id)
   {
-    for (int i = 0; i < InnerList.Count; i++)
-    {
-      WebTreeNode node = (WebTreeNode) InnerList[i];
-      if (node.NodeID == id)
-        return node;
-    }
-    return null;
+    return (WebTreeNode) base.Find (id);
   }
 
   //  /// <summary>
