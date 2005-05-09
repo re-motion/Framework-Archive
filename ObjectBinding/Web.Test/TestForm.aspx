@@ -19,10 +19,10 @@
     <td></td>
     <td></td></tr></table>
 <p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
-<p><rwc:FormGridManager id="FormGridManager" runat="server"></rwc:FormGridManager><obw:BusinessObjectReferenceDataSourceControl id="BusinessObjectReferenceDataSourceControl1" runat="server"></obw:BusinessObjectReferenceDataSourceControl><obw:BocTextValue id="BocTextValue1" runat="server" DataSourceControl="BocTextValue1">
+<p><obw:BusinessObjectReferenceDataSourceControl id="BusinessObjectReferenceDataSourceControl1" runat="server"></obw:BusinessObjectReferenceDataSourceControl><obw:BocTextValue id="BocTextValue1" runat="server" DataSourceControl="BocTextValue1">
 <textboxstyle textmode="SingleLine">
 </TextBoxStyle>
-</obw:BocTextValue></p></form>
+</obw:BocTextValue><rwc:FormGridManager id="FormGridManager1" runat="server"></rwc:FormGridManager></p></form>
 
   </body>
 </html>

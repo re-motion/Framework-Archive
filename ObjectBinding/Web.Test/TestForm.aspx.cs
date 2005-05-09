@@ -27,10 +27,10 @@ namespace OBWTest
 public class TestForm : Page
 {
   protected System.Web.UI.WebControls.Button PostBackButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl BusinessObjectReferenceDataSourceControl1;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
+  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager1;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	#region Web Form Designer generated code
