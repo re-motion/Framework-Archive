@@ -1,7 +1,7 @@
 <namespaces>
   <namespace name="Rubicon.Data.DomainObjects.ObjectBinding">
     <para>
-      The <B>Rubicon.Data.DomainObjects.ObjectBindingr</B> namespace contains classes and interfaces for 2-way data binding of user controls to domain objects.
+      The <B>Rubicon.Data.DomainObjects.ObjectBinding</B> namespace contains classes and interfaces for 2-way data binding of user controls to domain objects.
     </para>
   </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.ConfigurationLoader">
