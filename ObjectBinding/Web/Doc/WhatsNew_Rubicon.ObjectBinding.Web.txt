@@ -1,3 +1,11 @@
+1.2.35.0
+========
+
+- BocList
+  * Bugfix: Selected Rows wurden bei Tab-Wechsel gelöscht.
+  * Bugfix: Auswahl eines Views mit weniger Spalten als der vorherige warf eine Exception wenn
+    nach einer nun nicht mehr vorhandenen Spalte sortiert wurde.
+    
 1.2.34.0
 ========
 
