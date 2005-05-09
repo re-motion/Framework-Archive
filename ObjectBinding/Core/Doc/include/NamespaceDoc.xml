@@ -169,39 +169,61 @@
         <tbody>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectBooleanProperty</b> interface is used for accessing <see cref="Boolean"/> values.
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectDateProperty</b> interface is used for accessing <see cref="DateTime"/> values 
+              whose time component will be ignored and potentially not persisted.             
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime"/> values.
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectDoubleProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectDoubleProperty</b> interface is used for accessing <see cref="Double"/> values.
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectEnumerationProperty</b> interface is used for accessing the values of an 
+              enumeration. 
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectInt32Property" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectInt32Property</b> interface is used for accessing <see cref="Int32"/> values.
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectNumericProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectNumericProperty</b> interface provides additional meta data for numeric values.
+              It is used as a base for the specific numeric data type interfaces (integer, double).
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
+              <see cref="IBusinessObject"/> instances.
+            </td>
           </tr>
           <tr>
             <td><see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty" /></td>
-            <td></td>
+            <td>
+              The <b>IBusinessObjectStringProperty</b> provides additional meta data for <see cref="String"/> values.
+            </td>
           </tr>
         </tbody>
       </table>

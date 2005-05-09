@@ -107,6 +107,10 @@ public interface IBusinessObjectStringProperty: IBusinessObjectProperty
 /// <summary> 
 ///   The <b>IBusinessObjectNumericProperty</b> interface provides additional meta data for numeric values.
 /// </summary>
+/// <remarks>
+///   This interface is used as a base for the specific numeric data type interfaces 
+///   (e.g. <see cref="IBusinessObjectInt32Property"/>, <see cref="IBusinessObjectDoubleProperty"/>).
+/// </remarks>
 public interface IBusinessObjectNumericProperty: IBusinessObjectProperty
 {
   /// <summary> Gets a flag specifying whether negative numbers are valid for the property. </summary>
