@@ -35,6 +35,7 @@ public class BocList:
     BusinessObjectBoundModifiableWebControl, 
     IResourceDispatchTarget, 
     IPostBackEventHandler, 
+    IPostBackDataHandler, 
     IComparer
 {
   //  constants
@@ -220,7 +221,7 @@ public class BocList:
   ///   <see cref="AvailableColumnDefinitionSets"/>.
   /// </summary>
   private NaInt32 _selectedColumnDefinitionSetIndex = NaInt32.Null;
-  bool _isSelectedColumnDefinitionIndexSet = false;
+  bool _isSelectedColumnDefinitionSetIndexSet = false;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton;
@@ -395,10 +396,9 @@ public class BocList:
     _moveNextButton.EnableViewState = false;
     Controls.Add (_moveNextButton);
 
-    _additionalColumnsList.ID = this.ID + c_additionalColumnsListIDSuffix;
-    _additionalColumnsList.EnableViewState = true;
+    _additionalColumnsList.ID = ID + c_additionalColumnsListIDSuffix;
+    _additionalColumnsList.EnableViewState = false;
     _additionalColumnsList.AutoPostBack = true;
-    _additionalColumnsList.SelectedIndexChanged += new EventHandler(AdditionalColumnsList_SelectedIndexChanged);
     Controls.Add (_additionalColumnsList);
 
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
@@ -420,40 +420,6 @@ public class BocList:
     _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
 
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-
-    if (! IsPostBack)
-      PopulateAdditionalColumnsList();
-    _availableColumnDefinitionSets.CollectionChanged += new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
-    
-    if (IsPostBack && Page != null)
-    {
-      string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
-      string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
-
-      NameValueCollection formVariables = PageUtility.GetRequestCollection(Page);
-      if (formVariables != null)
-      {
-        for (int i = 0; i < formVariables.Count; i++)
-        {
-          string key = formVariables.Keys[i];
-
-          bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
-          bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
-          if (isDataRowSelectorControl || isTitleRowSelectorControl)
-          {
-            if (   (   _selection == RowSelection.SingleCheckBox
-                    || _selection == RowSelection.SingleRadioButton)
-                && (   _selectorControlCheckedState.Count > 1 
-                    || isTitleRowSelectorControl))
-            {
-              continue;
-            }
-            int rowIndex = int.Parse (formVariables[i]);
-            _selectorControlCheckedState[rowIndex] = true; 
-          }
-        }
-      }
-    }
   }
 
   protected override void OnLoad(EventArgs e)
@@ -479,7 +445,6 @@ public class BocList:
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
     eventArgument = eventArgument.Trim();
-
     if (eventArgument.StartsWith (c_eventListItemCommandPrefix))
       HandleListItemCommandEvent (eventArgument.Substring (c_eventListItemCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_eventMenuItemPrefix))
@@ -492,6 +457,62 @@ public class BocList:
       HandleEditDetailsEvent (eventArgument.Substring (c_eventEditDetailsPrefix.Length));
     else
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
+  }
+
+    /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    return LoadPostData (postDataKey, postCollection);
+  }
+
+  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
+  {
+    RaisePostDataChangedEvent();
+  }
+
+  /// <summary>
+  ///   Returns always <see langword="true"/>. 
+  ///   Used to raise the post data changed event for getting the selected column definition set.
+  /// </summary>
+  protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
+  {
+    string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
+    string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
+
+    _selectorControlCheckedState.Clear();
+    for (int i = 0; i < postCollection.Count; i++)
+    {
+      string key = postCollection.Keys[i];
+
+      bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
+      bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
+      if (isDataRowSelectorControl || isTitleRowSelectorControl)
+      {
+        if (   (   _selection == RowSelection.SingleCheckBox
+                || _selection == RowSelection.SingleRadioButton)
+            && (   _selectorControlCheckedState.Count > 1 
+                || isTitleRowSelectorControl))
+        {
+          continue;
+        }
+        int rowIndex = int.Parse (postCollection[i]);
+        _selectorControlCheckedState[rowIndex] = true; 
+      }
+    }    
+
+    if (! StringUtility.IsNullOrEmpty (postCollection[_additionalColumnsList.UniqueID]))
+      return true;
+    else
+      return false;
+  }
+
+  /// <summary> Called when the state of the control has changed between postbacks. </summary>
+  protected virtual void RaisePostDataChangedEvent()
+  {
+    string selectedColumnDefinitionSetIndex = 
+        PageUtility.GetRequestCollectionItem (Page, _additionalColumnsList.UniqueID);
+    SelectedColumnDefinitionSetIndex = int.Parse (selectedColumnDefinitionSetIndex);
   }
 
   /// <summary> Handles post back events raised by a list item event. </summary>
@@ -915,6 +936,8 @@ public class BocList:
   {
     EnsureChildControls();
     base.OnPreRender (e);
+    if (! IsDesignMode && ! IsReadOnly && Enabled)
+      Page.RegisterRequiresPostBack (this);
 
     DetermineClientScriptLevel();
 
@@ -1231,7 +1254,7 @@ public class BocList:
     get
     {
       bool showAdditionalColumnsList =   _showAdditionalColumnsList 
-                                      && _additionalColumnsList.Items.Count > 1;
+                                      && _availableColumnDefinitionSets.Count > 1;
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showEmptyListReadOnlyMode
                              || ! isReadOnly && _showEmptyListEditMode;
@@ -1283,6 +1306,7 @@ public class BocList:
 
     if (HasAdditionalColumnsList)
     {
+      PopulateAdditionalColumnsList();
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -1323,6 +1347,27 @@ public class BocList:
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       RenderListMenu (writer, ClientID + "_Boc_ListMenu");
       writer.RenderEndTag();
+    }
+  }
+
+  private void PopulateAdditionalColumnsList()
+  {
+    _additionalColumnsList.Items.Clear();
+
+    if (_availableColumnDefinitionSets != null)
+    {
+      for (int i = 0; i < _availableColumnDefinitionSets.Count; i++)
+      {
+        BocColumnDefinitionSet columnDefinitionCollection = _availableColumnDefinitionSets[i];
+
+        ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
+        _additionalColumnsList.Items.Add (item);
+        if (   ! _selectedColumnDefinitionSetIndex.IsNull 
+            && _selectedColumnDefinitionSetIndex == i)
+        {
+          item.Selected = true;
+        }
+      }
     }
   }
 
@@ -2504,14 +2549,15 @@ public class BocList:
     _sortingOrder = (ArrayList) values[3];
     _editableRowIndex = (NaInt32) values[4];
     _isEditNewRow = (bool) values[5];
-    _isDirty = (bool) values[6];
+    _selectorControlCheckedState = (Hashtable) values[6];
+    _isDirty = (bool) values[7];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[7];
+    object[] values = new object[8];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedColumnDefinitionSetIndex;
@@ -2519,7 +2565,8 @@ public class BocList:
     values[3] = _sortingOrder;
     values[4] = _editableRowIndex;
     values[5] = _isEditNewRow;
-    values[6] = _isDirty;
+    values[6] = _selectorControlCheckedState;
+    values[7] = _isDirty;
 
     return values;
   }
@@ -2588,61 +2635,6 @@ public class BocList:
     return _allPropertyColumns;
   }
 
-  /// <summary> Refreshes the <see cref="_additionalColumnsList"/>. </summary>
-  private void PopulateAdditionalColumnsList()
-  {
-    _selectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
-    if (_selectedColumnDefinitionSetIndex < 0)
-      _selectedColumnDefinitionSetIndex = NaInt32.Null;
-
-    _additionalColumnsList.Items.Clear();
-
-    if (_availableColumnDefinitionSets != null)
-    {
-      for (int i = 0; i < _availableColumnDefinitionSets.Count; i++)
-      {
-        BocColumnDefinitionSet columnDefinitionCollection = _availableColumnDefinitionSets[i];
-
-        ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
-        _additionalColumnsList.Items.Add (item);
-      }
-
-      if (_selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
-      {
-        if (_availableColumnDefinitionSets.Count > 0)
-          _selectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
-        else
-          _selectedColumnDefinitionSetIndex = NaInt32.Null;
-      }
-      else if (   _selectedColumnDefinitionSetIndex.IsNull
-               && _availableColumnDefinitionSets.Count > 0)
-      {
-        _selectedColumnDefinitionSetIndex = 0;
-      }
-
-      //bool tempIsSelectedColumnDefinitionIndexSet = _isSelectedColumnDefinitionIndexSet;
-      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-      //_isSelectedColumnDefinitionIndexSet = tempIsSelectedColumnDefinitionIndexSet;
-    }
-  }
-
-  /// <summary>
-  ///   Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="_additionalColumnsList"/>.
-  /// </summary>
-  private void AdditionalColumnsList_SelectedIndexChanged (object sender, EventArgs e)
-  {
-    _selectedColumnDefinitionSetIndex = _additionalColumnsList.SelectedIndex;
-    EnsureSelectedColumnDefinitionIndexSet();
-  }
-
-  /// <summary>
-  ///   Handles the <c>CollectionChanged</c> event of the <see cref="AvailableColumnDefinitionSets"/> collection.
-  /// </summary>
-  private void AvailableColumnDefinitionSets_CollectionChanged(object sender, CollectionChangeEventArgs e)
-  {
-    PopulateAdditionalColumnsList();
-  }
-
   /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveFirstButton"/>. </summary>
   private void MoveFirstButton_Click(object sender, ImageClickEventArgs e)
   {
@@ -2701,7 +2693,7 @@ public class BocList:
       allPropertyColumns = new BocColumnDefinition[0];
 
     BocColumnDefinition[] selectedColumns = null;
-    EnsureSelectedColumnDefinitionIndexSet();
+    EnsureSelectedColumnDefinitionSetIndexSet();
     if (_selectedColumnDefinitionSet != null)
       selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitions.ToArray();
     else
@@ -3996,7 +3988,7 @@ public class BocList:
   {
     get 
     {
-      EnsureSelectedColumnDefinitionIndexSet();
+      EnsureSelectedColumnDefinitionSetIndexSet();
       return _selectedColumnDefinitionSet; 
     }
     set
@@ -4018,21 +4010,20 @@ public class BocList:
         }
 
         if (_selectedColumnDefinitionSetIndex.IsNull) 
-          throw new IndexOutOfRangeException ("The specified ColumnDefinitionSet could not be found in AvailableColumnDefinitionSets");
+          throw new ArgumentOutOfRangeException ("value");
       }
 
-      _additionalColumnsList.SelectedIndex = _selectedColumnDefinitionSetIndex.Value;
       if (hasChanged)
         RemoveDynamicColumnsFromSortingOrder();
     }
   }
 
-  private void EnsureSelectedColumnDefinitionIndexSet()
+  private void EnsureSelectedColumnDefinitionSetIndexSet()
   {
-    if (_isSelectedColumnDefinitionIndexSet)
+    if (_isSelectedColumnDefinitionSetIndexSet)
       return;
     SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-    _isSelectedColumnDefinitionIndexSet = true;
+    _isSelectedColumnDefinitionSetIndexSet = true;
   }
 
   /// <summary>
@@ -4047,11 +4038,11 @@ public class BocList:
       if (   ! value.IsNull 
           && (value.Value < 0 || value.Value >= _availableColumnDefinitionSets.Count))
       {
-        throw new ArgumentOutOfRangeException ("value", value, "SelectedColumnDefinitionSetIndex is outside the bounds of AvailableColumnDefinitionSets");
+        throw new ArgumentOutOfRangeException ("value");
       }
 
       if (   IsRowEditMode
-          && _isSelectedColumnDefinitionIndexSet
+          && _isSelectedColumnDefinitionSetIndexSet
           && _selectedColumnDefinitionSetIndex != value)
       {
         throw new InvalidOperationException ("The selected column defintion set cannot be changed while the BocList is in row edit mode.");
@@ -4059,28 +4050,15 @@ public class BocList:
 
       bool hasIndexChanged = _selectedColumnDefinitionSetIndex != value; 
       _selectedColumnDefinitionSetIndex = value; 
-      //_isSelectedColumnDefinitionIndexSet = true;
 
+      _selectedColumnDefinitionSet = null;
       if (! _selectedColumnDefinitionSetIndex.IsNull)
       {
         int selectedIndex = _selectedColumnDefinitionSetIndex.Value;
-
         if (selectedIndex < _availableColumnDefinitionSets.Count)
-        {
           _selectedColumnDefinitionSet = (BocColumnDefinitionSet) _availableColumnDefinitionSets[selectedIndex];
-          _additionalColumnsList.SelectedIndex = selectedIndex;
-        }
-        else
-        {
-          _selectedColumnDefinitionSet = null;
-          _additionalColumnsList.SelectedIndex = -1;
-        }
       }
-      else
-      {
-        _selectedColumnDefinitionSet = null;
-        _additionalColumnsList.SelectedIndex = -1;
-      }
+
       if (hasIndexChanged)
         RemoveDynamicColumnsFromSortingOrder();
     }
