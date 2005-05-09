@@ -634,8 +634,9 @@ public class BocList:
     }
 
     BocListSortingOrderEntry sortingOrderEntry = BocListSortingOrderEntry.Empty;
-    foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
+    for (int i = 0; i < _sortingOrder.Count; i++)
     {
+      BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[i];
       if (currentEntry.ColumnIndex == columnIndex)
       {
         sortingOrderEntry = currentEntry;
@@ -1698,8 +1699,9 @@ public class BocList:
     }
 
     //bool isFirstColumnUndefinedWidth = true;
-    foreach (BocColumnDefinition column in renderColumns)
+    for (int i = 0; i < renderColumns.Length; i++)
     {
+      BocColumnDefinition column = renderColumns[i];
       if (! column.Width.IsEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
 
@@ -1751,8 +1753,9 @@ public class BocList:
     ArrayList sortingOrder = new ArrayList();
     if (EnableSorting)
     {
-      foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
+      for (int i = 0; i < _sortingOrder.Count; i++)
       {
+        BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[i];
         sortingDirections[currentEntry.ColumnIndex] = currentEntry.Direction;
         if (currentEntry.Direction != SortingDirection.None)
           sortingOrder.Add (currentEntry.ColumnIndex);
@@ -2300,8 +2303,9 @@ public class BocList:
       int columnIndex) 
   {
     EditDetailsValidator editDetailsValidator = null;
-    foreach (BaseValidator validator in _validators)
+    for (int i = 0; i < _validators.Count; i++)
     {
+      BaseValidator validator = (BaseValidator) _validators[i];
       if (validator is EditDetailsValidator)
         editDetailsValidator = (EditDetailsValidator) validator;
     }
@@ -2325,8 +2329,9 @@ public class BocList:
       bool isCellValid = true;
       Image validationErrorMarker = GetValidationErrorMarker();
       
-      foreach (BaseValidator validator in validators)
+      for (int i = 0; i < validators.Length; i++)
       {
+        BaseValidator validator = (BaseValidator) validators[i];
         isCellValid &= validator.IsValid;
         if (! validator.IsValid)
         {
@@ -2353,8 +2358,9 @@ public class BocList:
 
     editModeControl.RenderControl (writer);
 
-    foreach (BaseValidator validator in validators)
+    for (int i = 0; i < validators.Length; i++)
     {
+      BaseValidator validator = (BaseValidator) validators[i];
       if (   editDetailsValidator == null 
           || _disableEditDetailsValidationMessages)
       {
@@ -2936,8 +2942,9 @@ public class BocList:
       if (! EnableSorting)
         return false;
 
-      foreach (BocListSortingOrderEntry sortingOrderEntry in _sortingOrder)
+      for (int i = 0; i < _sortingOrder.Count; i++)
       {
+        BocListSortingOrderEntry sortingOrderEntry = (BocListSortingOrderEntry) _sortingOrder[i];
         if (! sortingOrderEntry.IsEmpty)
           return true;
       }
@@ -3027,8 +3034,8 @@ public class BocList:
         if (currentEntry.ColumnIndex >= fixedColumnCount)
           entriesToBeRemoved.Add (currentEntry);
       }
-      foreach (BocListSortingOrderEntry currentEntry in entriesToBeRemoved)
-        _sortingOrder.Remove (currentEntry);
+      for (int i = 0; i < entriesToBeRemoved.Count; i++)
+        _sortingOrder.Remove (entriesToBeRemoved[i]);
     }
   }
 
@@ -3077,8 +3084,9 @@ public class BocList:
     IBusinessObject businessObjectA = (IBusinessObject) pairA.Second;
     IBusinessObject businessObjectB = (IBusinessObject) pairB.Second;
 
-    foreach (BocListSortingOrderEntry currentEntry in _sortingOrder)
+    for (int i = 0; i < _sortingOrder.Count; i++)
     {
+      BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[i];
       if (currentEntry.Direction != SortingDirection.None)
       {
         BocColumnDefinition column = currentEntry.Column;
@@ -3141,8 +3149,9 @@ public class BocList:
         {
           int compareResult = 0;
           //  Compund column, list of values.
-          foreach (PropertyPathBinding propertyPathBinding in compoundColumn.PropertyPathBindings)
+          for (int idxBindings = 0; idxBindings < compoundColumn.PropertyPathBindings.Count; idxBindings++)
           {
+            PropertyPathBinding propertyPathBinding = compoundColumn.PropertyPathBindings[idxBindings];
             if (currentEntry.Direction == SortingDirection.Ascending)
               compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectA, businessObjectB);
             else
@@ -3485,8 +3494,9 @@ public class BocList:
 
         if (! _isDirty)
         {
-          foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
+          for (int i = 0; i < _rowEditModeControls.Length; i++)
           {
+            IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
             if (control != null)
               _isDirty |= control.IsDirty;
           }
@@ -3664,12 +3674,13 @@ public class BocList:
     if (_rowEditModeValidators == null)
       return;
 
-    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
+    for (int idxColumns = 0; idxColumns < _rowEditModeValidators.Length; idxColumns++)
     {
+      BaseValidator[] columnValidators = _rowEditModeValidators[idxColumns];
       if (columnValidators == null)
         continue;
-      foreach (BaseValidator validator in columnValidators)
-        _rowEditModeControlCollection.Add (validator);
+      for (int idxValidators = 0; idxValidators < columnValidators.Length; idxValidators++)
+        _rowEditModeControlCollection.Add (columnValidators[idxValidators]);
     }
   }
 
@@ -3680,12 +3691,14 @@ public class BocList:
     bool isValid = true;
     if (_rowEditModeValidators == null)
       return isValid;
-    foreach (BaseValidator[] columnValidators in _rowEditModeValidators)
+    for (int idxColumns = 0; idxColumns < _rowEditModeValidators.Length; idxColumns++)
     {
+      BaseValidator[] columnValidators = _rowEditModeValidators[idxColumns];
       if (columnValidators == null)
         continue;
-      foreach (BaseValidator validator in columnValidators)
+      for (int idxValidators = 0; idxValidators < columnValidators.Length; idxValidators++)
       {
+        BaseValidator validator = columnValidators[idxValidators];
         validator.Validate();
         isValid &= validator.IsValid;
       }
@@ -4128,8 +4141,9 @@ public class BocList:
     try
     {
       ArrayList selectedRows = new ArrayList (selectedObjects.Count);
-      foreach (IBusinessObject selectedObject in selectedObjects)
+      for (int i = 0; i < selectedObjects.Count; i++)
       {
+        IBusinessObject selectedObject = (IBusinessObject) selectedObjects[i];
         int index = value.IndexOf (selectedObject);
         if (index != -1)
           selectedRows.Add (index);
@@ -4162,8 +4176,11 @@ public class BocList:
     }
 
     _selectorControlCheckedState.Clear();
-    foreach (int rowIndex in selectedRows)
+    for (int i = 0; i < selectedRows.Length; i++)
+    {
+      int rowIndex = (int) selectedRows[i];
       _selectorControlCheckedState[rowIndex] = true;
+    }
   }
 
   /// <summary> 
@@ -4554,12 +4571,18 @@ public class BocList:
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _errorMessage; }
+    get
+    { 
+      return _errorMessage; 
+    }
     set 
     {
       _errorMessage = value; 
-      foreach (BaseValidator validator in _validators)
+      for (int i = 0; i < _validators.Count; i++)
+      {
+        BaseValidator validator = (BaseValidator) _validators[i];
         validator.ErrorMessage = _errorMessage;
+      }
     }
   }
 
