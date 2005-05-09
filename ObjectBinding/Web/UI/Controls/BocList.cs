@@ -26,6 +26,10 @@ using Rubicon.Globalization;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <summary> 
+///   This control can be used to display and edit a list of <see cref="IBusinessObject"/> instances.
+///   The properties of the business objects are displayed in individual columns. 
+/// </summary>
 /// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
 [Designer (typeof (BocListDesigner))]
