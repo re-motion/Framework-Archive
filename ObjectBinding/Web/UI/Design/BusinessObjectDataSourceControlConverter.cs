@@ -17,8 +17,9 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
     ComponentCollection components = container.Components;
     ArrayList dataSources = new ArrayList();
 
-    foreach (IComponent component in components)
+    for (int i = 0; i < components.Count; i++)
     {
+      IComponent component = (IComponent) components[i];
       IBusinessObjectDataSourceControl dataSource = component as IBusinessObjectDataSourceControl;
       if (   dataSource != null 
           && ! StringUtility.IsNullOrEmpty (dataSource.ID)
