@@ -424,37 +424,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch to collections
-    DispatchToTabs (Tabs, tabValues, "Tabs");
-  }
-
-  /// <summary>
-  ///   Dispatches the resources passed in <paramref name="values"/> to the properties of the 
-  ///   <see cref="WebTab"/> objects in the collection <paramref name="tabs"/>.
-  /// </summary>
-  private void DispatchToTabs (WebTabCollection tabs, IDictionary values, string collectionName)
-  {
-    foreach (DictionaryEntry entry in values)
-    {
-      string tabID = (string) entry.Key;
-      
-      bool isValidID = false;
-      for (int idxTabs = 0; idxTabs < tabs.Count; idxTabs++)
-      {
-        WebTab tab = (WebTab) tabs[idxTabs];
-        if (tab.TabID == tabID)
-        {
-          ResourceDispatcher.DispatchGeneric (tab, (IDictionary) entry.Value);
-          isValidID = true;
-          break;
-        }
-      }
-
-      if (! isValidID)
-      {
-        //  Invalid collection element
-        s_log.Debug ("WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain an item with an ID of '" + tabID + "' inside the collection '" + collectionName + "'.");
-      }
-    }
+    Tabs.Dispatch (tabValues, this, "Tabs");
   }
 
   /// <summary> Sets the selected tab. </summary>
