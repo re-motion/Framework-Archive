@@ -4,6 +4,21 @@
       The <B>Rubicon.Data.DomainObjects.ObjectBinding</B> namespace contains classes and interfaces for 2-way data binding of user controls to domain objects.
     </para>
   </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.ObjectBinding.Design">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.ObjectBinding.Design</B> namespace contains classes for design time support for 2-way data binding of user controls to domain objects.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes</B> namespace contains classes that provide meta information about properties needed for 2-way data binding of user controls to domain objects.
+    </para>
+  </namespace>  
+  <namespace name="Rubicon.Data.DomainObjects.ObjectBinding.Web">
+    <para>
+      The <B>Rubicon.Data.DomainObjects.ObjectBinding.Web</B> namespace contains web controls to be used for binding user controls to domain objects in an ASP.NET environment.
+    </para>
+  </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.ConfigurationLoader">
     <para>
       The <B>Rubicon.Data.DomainObjects.ConfigurationLoader</B> namespace contains classes to be used for loading the configuration of the DomainObjects framework.
