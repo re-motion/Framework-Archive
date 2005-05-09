@@ -830,8 +830,9 @@ public class BocReferenceValue:
       if (businessObjects != null)
       {
         //  Populate _dropDownList
-        foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
+        for (int i = 0; i < businessObjects.Length; i++)
         {
+          IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) businessObjects[i];
           ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
           _dropDownList.Items.Add (item);
         }
@@ -1467,12 +1468,18 @@ public class BocReferenceValue:
   [DefaultValue("")]
   public string ErrorMessage
   {
-    get { return _errorMessage; }
+    get
+    { 
+      return _errorMessage; 
+    }
     set 
     {
       _errorMessage = value; 
-      foreach (BaseValidator validator in _validators)
+      for (int i = 0; i < _validators.Count; i++)
+      {
+        BaseValidator validator = (BaseValidator) _validators[i];
         validator.ErrorMessage = _errorMessage;
+      }
     }
   }
 
