@@ -249,8 +249,9 @@ public abstract class BusinessObjectBoundModifiableWebControl:
       return true;
 
     bool isValid = true;
-    foreach (BaseValidator validator in _validators)
+    for (int i = 0; i < _validators.Count; i++)
     {
+      BaseValidator validator = (BaseValidator) _validators[i];
       validator.Validate();
       isValid &= validator.IsValid;
     }
