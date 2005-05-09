@@ -123,8 +123,9 @@ public class BusinessObjectTreeNode: BocTreeNode
       if (BocTreeView.Value == null)
         throw new InvalidOperationException ("Cannot evaluate the tree node hierarchy because the value collection is null.");
 
-      foreach (IBusinessObjectWithIdentity businessObject in BocTreeView.Value)
+      for (int i = 0; i < BocTreeView.Value.Count; i++)
       {
+        IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) BocTreeView.Value[i];
         if (NodeID == businessObject.UniqueIdentifier)
         {
           BusinessObject = businessObject;
