@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
-<table id="FormGrid" runat="server" style="margin-top: 80%">
+<table id="FormGrid" runat="server">
   <tr>
     <td></td>
     <td><rubicon:bocmultilinetextvalue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></rubicon:bocmultilinetextvalue></td>
@@ -14,7 +14,7 @@
     <td></td>
   </tr>
   <tr>
-    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" pagesize="1">
+    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" pagesize="1" selection="Multiple">
 <listmenuitems>
 <rubicon:BocMenuItem Text="Copy" ItemID="Copy">
 <persistedcommand>
@@ -27,6 +27,19 @@
 </PersistedCommand>
 </rubicon:BocMenuItem>
 </ListMenuItems>
+
+<optionsmenuitems>
+<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
+<persistedcommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+</PersistedCommand>
+</rubicon:BocMenuItem>
+</OptionsMenuItems>
 
 <fixedcolumns>
 <rubicon:BocEditDetailsColumnDefinition SaveText="Save" CancelText="Cancel" ColumnID="EditDetails" EditText="Edit"></rubicon:BocEditDetailsColumnDefinition>
@@ -50,20 +63,7 @@
 <rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
-</FixedColumns>
-
-<optionsmenuitems>
-<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-</OptionsMenuItems></rubicon:boclist></td>
+</FixedColumns></rubicon:boclist></td>
 </tr>
 </table>
 <p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:ReflectionBusinessObjectDataSourceControl></p>
