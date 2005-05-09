@@ -96,6 +96,11 @@ public class WebMenuItem: IControlItem
     set { _itemID = value; }
   }
 
+  string IControlItem.ID
+  {
+    get { return ItemID; }
+  }
+
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
