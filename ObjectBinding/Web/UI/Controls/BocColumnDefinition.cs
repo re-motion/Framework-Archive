@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
-public abstract class BocColumnDefinition: BusinessObjectControlItem
+public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlItem
 {
   private string _columnID;
   private string _columnTitle;
@@ -56,6 +56,11 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem
   {
     get { return _columnID; }
     set { _columnID = value; }
+  }
+
+  string IControlItem.ID
+  {
+    get { return ColumnID; }
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
