@@ -16,6 +16,9 @@
         Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
         <b>BocBooleanValue</b>.
       </para><para>
+        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
         If <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
