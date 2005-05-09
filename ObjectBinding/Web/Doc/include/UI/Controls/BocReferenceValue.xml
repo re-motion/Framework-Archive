@@ -14,6 +14,9 @@
       <para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
+        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        for details on this subject.
+      </para><para>
         If the <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
         the <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> properties are not set, the 
         control is unbound. In that case, the <see cref="Property"/> and the <see cref="Value"/> properties must be 
