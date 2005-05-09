@@ -123,6 +123,11 @@ public class WebTab: IControlItem
     }
   }
 
+  string IControlItem.ID
+  {
+    get { return TabID; }
+  }
+
   /// <summary> Gets or sets the text displayed in this tab. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]

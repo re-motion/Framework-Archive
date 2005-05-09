@@ -83,8 +83,8 @@ public class WebTabCollection: ControlItemCollection
   protected internal void SetParent (WebTabStrip tabStrip)
   {
     _tabStrip = tabStrip; 
-    foreach (WebTab tab in List)
-      tab.SetParent (_tabStrip);
+    for (int i = 0; i < InnerList.Count; i++)
+      ((WebTab) InnerList[i]).SetParent (_tabStrip);
     InitalizeSelectedTab();
   }
 
@@ -93,14 +93,9 @@ public class WebTabCollection: ControlItemCollection
   /// </summary>
   /// <param name="id"> The ID to look for. </param>
   /// <returns> A <see cref="WebTab"/> or <see langword="null"/> if no matching tab was found. </returns>
-  public WebTab Find (string id)
+  public new WebTab Find (string id)
   {
-    foreach (WebTab tab in InnerList)
-    {
-      if (tab.TabID == id)
-        return tab;
-    }
-    return null;
+    return (WebTab) base.Find (id);
   }
 
   private void InitalizeSelectedTab()
