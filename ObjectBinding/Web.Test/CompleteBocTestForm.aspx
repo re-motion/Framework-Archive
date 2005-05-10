@@ -22,20 +22,22 @@
   <tr>
     <td></td>
     <td><obw:boctextvalue id=TextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="FirstName" errormessage="Fehler">
-<textboxstyle textmode="SingleLine">
+<textboxstyle textmode="SingleLine" autopostback="True">
 </TextBoxStyle></obw:boctextvalue></td></tr>
   <tr>
     <td></td>
     <td><obw:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
-<textboxstyle textmode="MultiLine">
+<textboxstyle textmode="MultiLine" autopostback="True">
 </TextBoxStyle></obw:bocmultilinetextvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth" errormessage="Fehler"></obw:bocdatetimevalue></td></tr>
+    <td><obw:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth" errormessage="Fehler">
+<datetextboxstyle autopostback="True">
+</DateTextBoxStyle></obw:bocdatetimevalue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><obw:bocenumvalue id=EnumField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="MarriageStatus" errormessage="Fehler">
-<listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
 </ListControlStyle></obw:bocenumvalue></td></tr>
   <tr>
     <td></td>
@@ -48,7 +50,7 @@
 </PersistedCommand></obw:bocreferencevalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Deceased" errormessage="Fehler"></obw:bocbooleanvalue></td></tr>
+    <td><obw:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Deceased" errormessage="Fehler" autopostback="True"></obw:bocbooleanvalue></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
