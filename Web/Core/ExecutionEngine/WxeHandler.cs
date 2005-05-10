@@ -21,17 +21,24 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     get { return _currentFunction; }
   }
 
-  public void ProcessRequest (HttpContext context)
+  protected virtual void Execute (WxeFunction function, WxeContext context, bool isNew)
+  {
+    function.Execute (context);
+  }
+
+  public virtual void ProcessRequest (HttpContext context)
   {
     WxeFunctionState functionState = null;
     string functionToken = context.Request.Params["WxeFunctionToken"];
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
 
+    bool isNewFunction;
     string typeName = context.Request.Params["WxeFunctionType"];
     if (typeName != null)
     {
       Type type = TypeUtility.GetType (typeName, true, false);
       _currentFunction = (WxeFunction) Activator.CreateInstance (type);
+      isNewFunction = true;
 
       if (functionStates == null)
       {
@@ -63,6 +70,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionStates.DisposeExpired();
 
       _currentFunction = functionState.Function;
+      isNewFunction = false;
       if (_currentFunction == null)
         throw new ApplicationException ("Function missing in WxeFunctionState {0}." + functionState.FunctionToken);
       string action = context.Request["WxeAction"];
@@ -81,7 +89,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     wxeContext.FunctionToken = functionState.FunctionToken;
     WxeContext.SetCurrent (wxeContext);
 
-    _currentFunction.Execute (wxeContext);
+    Execute (_currentFunction, wxeContext, isNewFunction);
 
     string returnUrl = _currentFunction.ReturnUrl;
     if (returnUrl != null)
@@ -100,7 +108,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
   }
 
-  public bool IsReusable
+  bool IHttpHandler.IsReusable
   {
     get { return false; }
   }
