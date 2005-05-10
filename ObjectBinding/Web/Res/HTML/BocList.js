@@ -161,7 +161,13 @@ function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
     //  Add currentRow to list and select it
     BocList_SelectRow (bocList, currentRowBlock);
   }
-  selectorControl.focus();
+  try
+  {
+    selectorControl.focus();
+  }
+  catch (e)
+  {
+  }  
   _bocList_isSelectorControlClick = false;
 
   BocList_UpdateListMenu (bocList);
