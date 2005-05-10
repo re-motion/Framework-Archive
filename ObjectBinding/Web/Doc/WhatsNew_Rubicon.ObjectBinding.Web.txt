@@ -9,6 +9,8 @@
 
 - BocList
   * Bugfix: SelectedRows gingen verloren bei ReadOnly Listen. Aufgetreten mit 1.2.35.0.
+  * Bugfix: View konnte per DropDownBox nur geändert werden, wenn das Control im Edit-Mode war.
+    Aufgetreten mit 1.2.35.0
   
 1.2.35.0
 ========
