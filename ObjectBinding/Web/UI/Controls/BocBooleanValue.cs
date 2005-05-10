@@ -79,6 +79,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   private HiddenField _hiddenField;
   private Style _labelStyle;
 
+  private NaBoolean _autoPostBack = NaBoolean.Null;
+
   private bool _showDescription = true;
   private string _trueDescription = string.Empty;
   private string _falseDescription = string.Empty;
@@ -262,8 +264,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
             + requiredFlag + ", "
             + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
             + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ", "
-            + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");"
-            + "return false;";
+            + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");";
+
+        if (_autoPostBack.IsTrue)
+          script += Page.GetPostBackEventReference (this) + ";";
+        script += "return false;";
       }
       else
       {
@@ -542,6 +547,21 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   public HiddenField HiddenField
   {
     get { return _hiddenField; }
+  }
+
+  /// <summary> Gets a flag that determines whether changing the checked state causes an automatic postback.</summary>
+  /// <value> 
+  ///   <see langword="NaBoolean.True"/> to enable automatic postbacks. 
+  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="false"/>.
+  /// </value>
+  [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
+  [Category("Behavior")]
+  [DefaultValue (typeof(NaBoolean), "null")]
+  [NotifyParentProperty (true)]
+  public NaBoolean AutoPostBack
+  {
+    get { return _autoPostBack; }
+    set { _autoPostBack = value; }
   }
 
   /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>

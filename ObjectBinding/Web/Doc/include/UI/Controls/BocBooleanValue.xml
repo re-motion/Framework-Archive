@@ -28,7 +28,7 @@
       </para><para>
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocBooleanValue</c>.
       </para><para>
-        The control does not support auto-postback.
+        The control supports auto-postback. Use the <see cref="AutoPostBack"/> property to enable this behavior.
       </para>
       
       <h4 class="dtH4">Localization Support</h4>
