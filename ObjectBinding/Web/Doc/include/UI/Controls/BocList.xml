@@ -149,37 +149,61 @@
         <item>
           <term> <see cref="BocSimpleColumnDefinition"/> </term>
           <description>
-            Used to display a single value accessed through a <see cref="BusinessObjectPropertyPath"/>. 
-            This column supports inline editing of the value as well as a <see cref="BocListItemCommand"/> 
-            accessible through the rendered value.
+            <para>
+              Used to display a single value accessed through a <see cref="BusinessObjectPropertyPath"/>. 
+              This column supports inline editing of the value as well as a <see cref="BocListItemCommand"/> 
+              accessible through the rendered value.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
           </description>
         </item>
         <item>
           <term> <see cref="BocCompoundColumnDefinition"/> </term>
           <description>
-            Used to display a list of values concatenated by using a format string. Each value is accessed through 
-            its own <see cref="BusinessObjectPropertyPath"/>. This column supports a <see cref="BocListItemCommand"/> 
-            accessible through the rendered value string.
+            <para>
+              Used to display a list of values concatenated by using a format string. Each value is accessed through 
+              its own <see cref="BusinessObjectPropertyPath"/>. This column supports a <see cref="BocListItemCommand"/> 
+              accessible through the rendered value string.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
           </description>
         </item>
         <item>
           <term> <see cref="BocCommandColumnDefinition"/> </term>
           <description>
-            Used to display <see cref="BocListItemCommand"/> accessible through a static text and/or icon.
+            <para>
+              Used to display <see cref="BocListItemCommand"/> accessible through a static text and/or icon.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
+              event source.
+            </para>
           </description>
         </item>
         <item>
           <term> <see cref="BocEditDetailsColumnDefinition"/> </term>
           <description>
-            Used to display predefined commands for switching a row into editing mode and back to read-only mode.
-          </description>
+            <para>
+              Used to display predefined commands for switching a row into editing mode and back to read-only mode.
+            </para><para>
+              See the <see href="#EditDetails">Inline Editing</see> section for details.
+            </para>
+            </description>
         </item>
         <item>
           <term> <see cref="BocCustomColumnDefinition"/> </term>
           <description>
-            Used to provide a custom rendering and event handling method for the cell. This column can be used
-            to display a number of commands, a command that depends on the state of the <see cref="IBusinessObject"/>
-            rendered in this row or to format the value in a way not supported by the simple or compound columns.
+            <para>
+              Used to provide a custom rendering and event handling method for the cell. This column can be used
+              to display a number of commands, a command that depends on the state of the <see cref="IBusinessObject"/>
+              rendered in this row or to format the value in a way not supported by the simple or compound columns.
+            </para><para>
+              You can register an event handler for the command click event with the <see cref="CustomCellClick"/> 
+              event source.
+            </para>
           </description>
         </item>
       </list>
@@ -188,11 +212,43 @@
       <para>
         Using the <see cref="AdditionalColumnDefinitionSets"/> property it is possible to provide different views 
         for the <b>BocList</b>. Each view (<see cref="BocColumnDefinitionSet"/>) consists of zero or more columns.
-      </para>      
-      <h4 class="dtH4">Options Menu and List Menu</h4>      
-      <h4 class="dtH4">Sorting</h4>      
+      </para><para>
+        The views can be switched by a drop down box displayed to the right of the list of values. The drop down box
+        can be hidden using the <see cref="ShowAdditionalColumnsList"/> flag. It is also hidden automatically if only 
+        a single view is available or the list is empty and the <see cref="ShowEmptyListReadOnlyMode"/> and
+        <see cref="ShowEmptyListEditMode"/> flags are set to <see langword="false"/>.
+      </para><para>
+        The currently selected view can be changed programmatically by using the 
+        <see cref="SelectedColumnDefinitionSet"/> property. If this property is assigned before the 
+        <b>Data Changed</b> phase of the page life cycle and the selected view is changed on the client, the view 
+        selected on the client side will take precendence. If the property is assigned during the <b>Postback Event</b>
+        or <b>PreRender</b> phase of the page life cycle, or the client side value is not changed, the programmatically
+        assigned value will be used.
+      </para> 
+      
+      <h4 class="dtH4">Options Menu and List Menu</h4>
+      <para>
+        The <b>BocList</b> supports both a drop down menu whose menu items are visible while the menu is opened,
+        and an in-place (list) menu whose menu items are always visible. Use the <see cref="OptionsMenuItems"/> and
+        the <see cref="ListMenuItems"/> properties to define the <see cref="BocMenuItem"/> objects available in the 
+        respective menus.
+      </para><para>
+        The menus are displayed to the right of the list of values. The can be hidden individually using the
+        <see cref="ShowOptionsMenu"/> and <see cref="ShowListMenu"/> respectively. The menus are also hidden 
+        automatically in case they do not provide a menu item or the list is empty and the 
+        <see cref="ShowMenuForEmptyListReadOnlyMode"/> and <see cref="ShowMenuForEmptyListEditMode"/> flags are set to
+        <see langword="false"/>.
+      </para><para>
+        You can register an event handler for the menu click event with the <see cref="MenuItemClick"/> event source.
+      </para><para>
+        See the <b>Menu</b> section in the <b>Properties</b> window of the Visual Studio .NET Designer for a complete 
+        list of the properties available for configuring the menus.
+      </para>
+      
+      <h4 class="dtH4">Sorting</h4>
+         
       <h4 class="dtH4">Row Selection</h4>      
-      <h4 class="dtH4">Inline Editing</h4>      
+      <h4 class="dtH4"><a name="EditDetails">Inline Editing</a></h4><!-- HTML Help requires separate anchor tag for target -->   
 
     </remarks>
   </Class>
