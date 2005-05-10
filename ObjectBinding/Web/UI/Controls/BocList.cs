@@ -4077,6 +4077,9 @@ public class BocList:
   /// <returns> An array of <see cref="IBusinessObject"/> objects. </returns>
   public IBusinessObject[] GetSelectedBusinessObjects()
   {
+    if (Value == null)
+      return new IBusinessObject[0];
+
     int[] selectedRows = GetSelectedRows();
     IBusinessObject[] selectedBusinessObjects = new IBusinessObject[selectedRows.Length];
 

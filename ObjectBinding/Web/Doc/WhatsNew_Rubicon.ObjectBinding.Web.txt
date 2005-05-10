@@ -1,3 +1,12 @@
+1.2.36.0
+========
+
+- BocBooleanValue
+  * Unterstützt jetzt auto-postback
+  
+- BocDateTimeValue
+  * Bugfix: Bei verwenden des Date-Pickers wurde auto-postback nicht ausgelöst.
+  
 1.2.35.0
 ========
 
