@@ -120,7 +120,13 @@ function DatePicker_CloseDatePicker()
 {
   var target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
   target.document.onclick = null;
-  target.focus();
+  try
+  {
+    target.focus();
+  }
+  catch (e)
+  {
+  }  
   window.parent._datePicker_currentDatePicker = null;
   var datePicker = window.parent.document.getElementById (document.getElementById ('DatePickerIDField').value);
   datePicker.parentElement.removeChild (datePicker);
