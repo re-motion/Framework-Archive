@@ -40,7 +40,6 @@ public interface IBusinessObjectBoundModifiableWebControl:
   IValidatableControl
 {
   /// <summary>
-  ///   <preliminary/>
   ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
   /// </summary>
   /// <remarks>
