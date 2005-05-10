@@ -505,10 +505,16 @@ public class BocList:
       }
     }    
 
-    if (! StringUtility.IsNullOrEmpty (postCollection[_additionalColumnsList.UniqueID]))
+    string selectedColumnDefinitionSetIndex = postCollection[_additionalColumnsList.UniqueID];
+    if (   ! StringUtility.IsNullOrEmpty (selectedColumnDefinitionSetIndex)
+        && _selectedColumnDefinitionSetIndex.ToString() != selectedColumnDefinitionSetIndex)
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
 
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
@@ -2578,10 +2584,10 @@ public class BocList:
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-    {
       ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+
+    if (! interim)
       _isDirty = false;
-    }
   }
 
   /// <summary>
@@ -3397,7 +3403,9 @@ public class BocList:
   
   public int AddRow (IBusinessObject businessObject)
   {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
+    _isDirty = true;
     if (Value == null)
       return -1;
     else
@@ -3406,6 +3414,7 @@ public class BocList:
 
   public void RemoveRow (IBusinessObject businessObject)
   {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     if (Value == null)
       return;
 
@@ -3417,6 +3426,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
+    _isDirty = true;
   }
 
   public void RemoveRow (int index)
@@ -4116,12 +4126,11 @@ public class BocList:
   /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
   public void SetSelectedBusinessObjects (IList selectedObjects)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("selectedObjects", selectedObjects);
+    ArgumentUtility.CheckNotNull ("selectedObjects", selectedObjects);
     ArgumentUtility.CheckItemsNotNullAndType ("selectedObjects", selectedObjects, typeof (IBusinessObject));
     
     if (Value == null)
       return;
-    IList value = (IList) Value;
 
     try
     {
@@ -4129,7 +4138,7 @@ public class BocList:
       for (int i = 0; i < selectedObjects.Count; i++)
       {
         IBusinessObject selectedObject = (IBusinessObject) selectedObjects[i];
-        int index = value.IndexOf (selectedObject);
+        int index = Value.IndexOf (selectedObject);
         if (index != -1)
           selectedRows.Add (index);
       }
@@ -4201,7 +4210,7 @@ public class BocList:
   ///   (read-only mode only).
   /// </summary>
   /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-  [Category ("Behavior")]
+  [Category ("Menu")]
   [Description ("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
   [DefaultValue (false)]
   public virtual bool ShowMenuForEmptyListReadOnlyMode
@@ -4215,7 +4224,7 @@ public class BocList:
   ///   (edit mode only).
   /// </summary>
   /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-  [Category ("Behavior")]
+  [Category ("Menu")]
   [Description ("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
   [DefaultValue (true)]
   public virtual bool ShowMenuForEmptyListEditMode
