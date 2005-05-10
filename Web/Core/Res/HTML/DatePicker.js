@@ -106,9 +106,12 @@ function DatePicker_CloseVisibleDatePickerFrame (newDatePickerID)
 function DatePicker_Calendar_SelectionChanged (value)
 {
   target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
+  var isValueChanged = target.value != value;
   target.value = value;
 
   DatePicker_CloseDatePicker();
+  if (isValueChanged && target.onchange != null)
+    target.onchange();
 }
 
 //  Closes the date picker frame
