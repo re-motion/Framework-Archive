@@ -6,6 +6,9 @@
   
 - BocDateTimeValue
   * Bugfix: Bei verwenden des Date-Pickers wurde auto-postback nicht ausgelöst.
+
+- BocList
+  * Bugfix: SelectedRows gingen verloren bei ReadOnly Listen. Aufgetreten mit 1.2.35.0.
   
 1.2.35.0
 ========
