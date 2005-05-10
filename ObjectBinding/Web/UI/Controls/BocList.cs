@@ -946,7 +946,7 @@ public class BocList:
   {
     EnsureChildControls();
     base.OnPreRender (e);
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
+    if (! IsDesignMode && Enabled)
       Page.RegisterRequiresPostBack (this);
 
     DetermineClientScriptLevel();
