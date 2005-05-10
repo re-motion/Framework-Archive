@@ -14,7 +14,7 @@
     <td></td>
   </tr>
   <tr>
-    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" pagesize="1" selection="Multiple">
+    <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple" >
 <listmenuitems>
 <rubicon:BocMenuItem Text="Copy" ItemID="Copy">
 <persistedcommand>
