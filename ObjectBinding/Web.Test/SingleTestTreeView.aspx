@@ -15,7 +15,7 @@
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
 <h1>SingleTest TreeView</h1>
-<p><cc1:persontreeview id=PersonTreeView runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" cssclass="TreeBlock" enabletoplevelexpander="False"></cc1:persontreeview><asp:Button id="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button></p>
+<p><cc1:persontreeview id=PersonTreeView runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" cssclass="TreeBlock" enabletoplevelexpander="False" ></cc1:persontreeview><asp:Button id="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button></p>
 <p>&nbsp;</p>
 <p><rubicon:webtreeview id=WebTreeView runat="server" cssclass="TreeBlock" showlines="False" width="150px" enablescrollbars="True"></rubicon:webtreeview></p>
 <p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></p><rubicon:formgridmanager 
@@ -24,7 +24,7 @@ runat="server"></rubicon:formgridmanager>
 <p><obr:reflectionbusinessobjectdatasourcecontrol 
 id=ReflectionBusinessObjectDataSourceControl runat="server" 
 typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p>
-<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label><rubicon:WebButton id="WebButton1" runat="server" Text="SelectNode010"></rubicon:WebButton></p></form>
+<p><asp:label id=TreeViewLabel runat="server" EnableViewState="False">#</asp:label><rubicon:WebButton id="WebButton1" runat="server" Text="Node010"></rubicon:WebButton></p></form>
 	
   </body>
 </html>
