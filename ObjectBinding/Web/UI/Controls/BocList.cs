@@ -1639,10 +1639,13 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
     //  Page info
+    string pageInfo = null;
     if (StringUtility.IsNullOrEmpty (_pageInfo))
-      _pageInfo = GetResourceManager().GetString (ResourceIdentifier.PageInfo);
+      pageInfo = GetResourceManager().GetString (ResourceIdentifier.PageInfo);
+    else
+      pageInfo = _pageInfo;
 
-    writer.Write (_pageInfo, _currentPage + 1, _pageCount);
+    writer.Write (pageInfo, _currentPage + 1, _pageCount);
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
     string imageUrl = null;
