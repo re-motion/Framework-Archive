@@ -1,3 +1,16 @@
+1.2.37.0
+========
+
+- BocList
+  * Bugfix: Canceling des RowEditModes für eine neu hinzugefügte Zeile warf eine Exception.
+
+1.2.37.0
+========
+
+- BocList
+  * Bugfix: Wurden die Views einer Boclist verändert, so kam es zu IndexOutOfRange Exceptions wenn der SelectedIndex
+    höher war als die aktuelle Anzahl an Views. Aufgetreten mit 1.2.35.0 (Folgefehler des Bugfixes).
+   
 1.2.36.0
 ========
 
