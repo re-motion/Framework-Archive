@@ -1,3 +1,9 @@
+1.2.39.0
+========
+
+- TabbedMultiView
+  Bugfix: Horizontales Scrollen wurde durch die Seite statt durch den MultiView durchgeführt.
+  
 1.2.33.0
 ========
 
