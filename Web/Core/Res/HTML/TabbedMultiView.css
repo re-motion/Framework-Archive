@@ -3,6 +3,7 @@ table.tabbedMultiView
 {
   width:100%;
   height:100%;
+  table-layout:fixed
 }
 
 /* Applied to the tabbed multi view's tab strip.*/
