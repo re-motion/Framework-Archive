@@ -34,6 +34,8 @@
       </para><para>
         The control does not support auto-postback for the selected value. Auto-postback is only used for commands
         and the drop down list displaying the <see cref="AvailableColumnDefinitionSets"/>.
+      </para><para>
+        The control's <b>Enabled</b> flag is not fully supported by the <b>BocList</b>.
       </para>
 
       <h4 class="dtH4">Localization Support</h4>
@@ -85,7 +87,7 @@
           </description>
         </item>
         <item>
-          <term> <ee cref="PageInfo"/> </term>
+          <term> <see cref="PageInfo"/> </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:PageInfo </para>
             <para> e.g. auto:MyBocList:PageInfo </para>
@@ -163,7 +165,7 @@
           <term> <see cref="BocCompoundColumnDefinition"/> </term>
           <description>
             <para>
-              Used to display a list of values concatenated by using a format string. Each value is accessed through 
+              Used to display a list of values concatenated by usie of a format string. Each value is accessed through 
               its own <see cref="BusinessObjectPropertyPath"/>. This column supports a <see cref="BocListItemCommand"/> 
               accessible through the rendered value string.
             </para><para>
@@ -176,7 +178,7 @@
           <term> <see cref="BocCommandColumnDefinition"/> </term>
           <description>
             <para>
-              Used to display <see cref="BocListItemCommand"/> accessible through a static text and/or icon.
+              Used to display a <see cref="BocListItemCommand"/> accessible through a static text and/or an icon.
             </para><para>
               You can register an event handler for the command click event with the <see cref="ListItemCommandClick"/> 
               event source.
@@ -207,49 +209,93 @@
           </description>
         </item>
       </list>
+      <para>
+        If the <see cref="EnableIcon"/> flag is <see langword="true"/>, the <b>BocList</b> displays an icon for each 
+        row's <see cref="IBusinessObject"/> in front of the first <see cref="BocSimpleColumnDefinition"/> or 
+        <see cref="BocCommandColumnDefinition"/>. This icon is gotten through the 
+        <see cref="IBusinessObjectWebUIService.GetIcon">IBusinessObjectWebUIService.GetIcon</see> method. The service
+        is accessed through the <see cref="IBusinessObjectClass"/> of the row's object.
+      </para>
       
       <h4 class="dtH4">Additional Column Sets (Views)</h4>      
       <para>
-        Using the <see cref="AdditionalColumnDefinitionSets"/> property it is possible to provide different views 
+        Using the <see cref="AvailableColumnDefinitionSets"/> property it is possible to provide different views 
         for the <b>BocList</b>. Each view (<see cref="BocColumnDefinitionSet"/>) consists of zero or more columns.
       </para><para>
         The views can be switched by a drop down box displayed to the right of the list of values. The drop down box
-        can be hidden using the <see cref="ShowAdditionalColumnsList"/> flag. It is also hidden automatically if only 
-        a single view is available or the list is empty and the <see cref="ShowEmptyListReadOnlyMode"/> and
-        <see cref="ShowEmptyListEditMode"/> flags are set to <see langword="false"/>.
+        can be hidden using the <see cref="ShowAdditionalColumnsList"/> flag. The drop down box is also hidden 
+        automatically if only a single view is available or the list is empty and the 
+        <see cref="ShowEmptyListReadOnlyMode"/> and <see cref="ShowEmptyListEditMode"/> flags are set to 
+        <see langword="false"/>.
       </para><para>
         The currently selected view can be changed programmatically by using the 
         <see cref="SelectedColumnDefinitionSet"/> property. If this property is assigned before the 
-        <b>Data Changed</b> phase of the page life cycle and the selected view is changed on the client, the view 
-        selected on the client side will take precendence. If the property is assigned during the <b>Postback Event</b>
-        or <b>PreRender</b> phase of the page life cycle, or the client side value is not changed, the programmatically
-        assigned value will be used.
+        <b>Process Postback Data</b> phase of the page life cycle and the selected view is also changed on the client, 
+        the view selected on the client side will take precendence. If the property is assigned during the 
+        <b>Postback Event Handling</b> or <b>PreRender</b> phase of the page life cycle, or if the client side value 
+        is not changed, the programmatically assigned value will be used.
       </para> 
       
+      <h4 class="dtH4">Paging</h4>
+      <para>
+        It is possible to provide each <b>BocList</b> with a maximum <see cref="PageSize"/>. If the number of rows 
+        exceeds the page size, it is possible to page through the values one page at a time or move to the first or 
+        last page.
+      </para><para>
+        The text rendered for the current page information can be set through the <see cref="PageInfo"/> property.
+        By setting the <see cref="AlwaysShowPageInfo"/> flag to <see langword="false"/>, the current page information
+        and the paging buttons are only rendered if more than one page is available.
+      </para>
+
       <h4 class="dtH4">Options Menu and List Menu</h4>
       <para>
-        The <b>BocList</b> supports both a drop down menu whose menu items are visible while the menu is opened,
+        The <b>BocList</b> supports both a drop down menu whose menu items are only visible while the menu is open,
         and an in-place (list) menu whose menu items are always visible. Use the <see cref="OptionsMenuItems"/> and
         the <see cref="ListMenuItems"/> properties to define the <see cref="BocMenuItem"/> objects available in the 
         respective menus.
       </para><para>
         The menus are displayed to the right of the list of values. The can be hidden individually using the
-        <see cref="ShowOptionsMenu"/> and <see cref="ShowListMenu"/> respectively. The menus are also hidden 
+        <see cref="ShowOptionsMenu"/> and <see cref="ShowListMenu"/> properties. The menus are also hidden 
         automatically in case they do not provide a menu item or the list is empty and the 
         <see cref="ShowMenuForEmptyListReadOnlyMode"/> and <see cref="ShowMenuForEmptyListEditMode"/> flags are set to
         <see langword="false"/>.
       </para><para>
-        You can register an event handler for the menu click event with the <see cref="MenuItemClick"/> event source.
+        You can register an event handler for the click event with the <see cref="MenuItemClick"/> event source.
       </para><para>
         See the <b>Menu</b> section in the <b>Properties</b> window of the Visual Studio .NET Designer for a complete 
         list of the properties available for configuring the menus.
       </para>
       
       <h4 class="dtH4">Sorting</h4>
+      <para>
+        The <b>BocList</b>'s rows can be sorted by one or more of its columns. Use the <see cref="EnableSorting"/> and
+        the <see cref="EnableMultipleSorting"/> flags to enable or disable the sorting functionality. If sorted by
+        multiple columns, the <b>BocList</b> displays the sorting order next to the sorting buttons of the individual
+        columns. You can hide this index by setting the <see cref="ShowSortingOrder"/> flag to <see langword="false"/>.
+      </para><para>
+        If the columns used for sorting include a column from the current view, changing the view will remove the 
+        column from the sorting keys.
+      </para><para>
+        The sorting order can also be defined programmatically using the <see cref="SetSortingOrder"/> method. If the 
+        sorting order is set before the <b>Process Postback Data</b> phase of a postback, the postback will override 
+        the programmatic settings.
+      </para>
          
-      <h4 class="dtH4">Row Selection</h4>      
+      <h4 class="dtH4">Row Selection</h4>
+      <para>
+        The <b>BocList</b> supports selecting a subset of the currently displayed rows. The selection mode can be set
+        by using the <see cref="Selection"/> property. You can use the mouse in combination with the control key to 
+        select multiple rows or deselect them individually.
+      </para><para>
+        The selected rows or objects can be queried using the <see cref="GetSelectedRows"/> and 
+        <see cref="GetSelectedBusinessObjects"/> methods. A new selection can be made through the 
+        <see cref="SetSelectedRows"/> and <see cref="SetSelectedBusinessObjects"/> methods. 
+      </para>
+      
       <h4 class="dtH4"><a name="EditDetails">Inline Editing</a></h4><!-- HTML Help requires separate anchor tag for target -->   
-
+      <para>
+      </para>
+      
     </remarks>
   </Class>
   <OnListItemCommandClick>
