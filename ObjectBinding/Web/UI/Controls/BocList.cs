@@ -424,6 +424,8 @@ public class BocList:
     _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
     _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
 
+    _availableColumnDefinitionSets.CollectionChanged +=
+        new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
   }
 
@@ -4090,6 +4092,22 @@ public class BocList:
 
       if (hasIndexChanged)
         RemoveDynamicColumnsFromSortingOrder();
+    }
+  }
+
+  private void AvailableColumnDefinitionSets_CollectionChanged (object sender, CollectionChangeEventArgs e)
+  {
+    if (   _selectedColumnDefinitionSetIndex.IsNull
+        && _availableColumnDefinitionSets.Count > 0)
+    {
+      _selectedColumnDefinitionSetIndex = 0;
+    }
+    else if (_selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
+    {
+      if (_availableColumnDefinitionSets.Count > 0)
+        _selectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
+      else
+        _selectedColumnDefinitionSetIndex = NaInt32.Null;
     }
   }
 

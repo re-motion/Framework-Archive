@@ -1,8 +1,9 @@
-1.2.37.0
+1.2.38.0
 ========
 
 - BocList
   * Bugfix: Canceling des RowEditModes für eine neu hinzugefügte Zeile warf eine Exception.
+  * Bugfix: Es wurde nicht der richtige View angezeigt.
 
 1.2.37.0
 ========
