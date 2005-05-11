@@ -139,7 +139,7 @@
           <description>
             <para>
               Text is automatically provided by the <see cref="DropDownList"/>.
-              Displays the icon returned <see cref="IBusinessObjectWebUIService.GetIcon"/> for
+              Displays the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/> for
               <see langword="null"/>, if <see cref="EnableIcon"/> is <see langword="true"/>.
             </para><para>
               If the control is required, the undefined item is removed once a valid item is
