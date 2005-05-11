@@ -225,6 +225,7 @@ public class BocList:
   ///   <see cref="AvailableColumnDefinitionSets"/>.
   /// </summary>
   private NaInt32 _selectedColumnDefinitionSetIndex = NaInt32.Null;
+  private string _additionalColumnsListSelectedValue = string.Empty;
   bool _isSelectedColumnDefinitionSetIndexSet = false;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
@@ -505,9 +506,9 @@ public class BocList:
       }
     }    
 
-    string selectedColumnDefinitionSetIndex = postCollection[_additionalColumnsList.UniqueID];
-    if (   ! StringUtility.IsNullOrEmpty (selectedColumnDefinitionSetIndex)
-        && _selectedColumnDefinitionSetIndex.ToString() != selectedColumnDefinitionSetIndex)
+    string newAdditionalColumnsListSelectedValue = postCollection[_additionalColumnsList.UniqueID];
+    if (   ! StringUtility.IsNullOrEmpty (newAdditionalColumnsListSelectedValue)
+        && _additionalColumnsListSelectedValue != newAdditionalColumnsListSelectedValue)
     {
       return true;
     }
@@ -520,9 +521,12 @@ public class BocList:
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    string selectedColumnDefinitionSetIndex = 
-        PageUtility.GetRequestCollectionItem (Page, _additionalColumnsList.UniqueID);
-    SelectedColumnDefinitionSetIndex = int.Parse (selectedColumnDefinitionSetIndex);
+    if (_availableColumnDefinitionSets.Count > 0)
+    {
+      string newAdditionalColumnsListSelectedValue = 
+          PageUtility.GetRequestCollectionItem (Page, _additionalColumnsList.UniqueID);
+      SelectedColumnDefinitionSetIndex = int.Parse (newAdditionalColumnsListSelectedValue);
+    }
   }
 
   /// <summary> Handles post back events raised by a list item event. </summary>
@@ -2555,28 +2559,30 @@ public class BocList:
     
     base.LoadViewState (values[0]);
     _selectedColumnDefinitionSetIndex = (NaInt32) values[1];
-    _currentRow = (int) values[2];
-    _sortingOrder = (ArrayList) values[3];
-    _editableRowIndex = (NaInt32) values[4];
-    _isEditNewRow = (bool) values[5];
-    _selectorControlCheckedState = (Hashtable) values[6];
-    _isDirty = (bool) values[7];
+    _additionalColumnsListSelectedValue = (string) values[2];
+    _currentRow = (int) values[3];
+    _sortingOrder = (ArrayList) values[4];
+    _editableRowIndex = (NaInt32) values[5];
+    _isEditNewRow = (bool) values[6];
+    _selectorControlCheckedState = (Hashtable) values[7];
+    _isDirty = (bool) values[8];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[8];
+    object[] values = new object[9];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedColumnDefinitionSetIndex;
-    values[2] = _currentRow;
-    values[3] = _sortingOrder;
-    values[4] = _editableRowIndex;
-    values[5] = _isEditNewRow;
-    values[6] = _selectorControlCheckedState;
-    values[7] = _isDirty;
+    values[2] = _additionalColumnsListSelectedValue;
+    values[3] = _currentRow;
+    values[4] = _sortingOrder;
+    values[5] = _editableRowIndex;
+    values[6] = _isEditNewRow;
+    values[7] = _selectorControlCheckedState;
+    values[8] = _isDirty;
 
     return values;
   }
@@ -4036,7 +4042,14 @@ public class BocList:
   {
     if (_isSelectedColumnDefinitionSetIndexSet)
       return;
-    SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+    if (_selectedColumnDefinitionSetIndex.IsNull)
+      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
+    else if (_availableColumnDefinitionSets.Count == 0)
+      SelectedColumnDefinitionSetIndex = NaInt32.Null;
+    else if (_selectedColumnDefinitionSetIndex.Value >= _availableColumnDefinitionSets.Count)
+      SelectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
+    else
+      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
     _isSelectedColumnDefinitionSetIndexSet = true;
   }
 
