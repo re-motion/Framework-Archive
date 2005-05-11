@@ -294,6 +294,8 @@
       
       <h4 class="dtH4"><a name="EditDetails">Inline Editing</a></h4><!-- HTML Help requires separate anchor tag for target -->   
       <para>
+        Through the use of inline editing it is possible to modify the business objects in the individual rows, 
+        one row at a time.
       </para>
       
     </remarks>
