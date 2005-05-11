@@ -3516,9 +3516,7 @@ public class BocList:
 
         _rowEditModeDataSource.SaveValues (false);
 
-        OnRowEditModeSaved (
-            EditableRowIndex.Value, 
-            (IBusinessObject) Value[EditableRowIndex.Value]);
+        OnRowEditModeSaved (EditableRowIndex.Value, (IBusinessObject) Value[EditableRowIndex.Value]);
       }
       else
       {
@@ -3529,11 +3527,15 @@ public class BocList:
             _rowEditModeControls);
         
         if (_isEditNewRow)
+        {
+          IBusinessObject editedBusinessObject = (IBusinessObject) Value[EditableRowIndex.Value];
           RemoveRow (EditableRowIndex.Value);
-        
-        OnRowEditModeCanceled (
-            EditableRowIndex.Value, 
-            (IBusinessObject) Value[EditableRowIndex.Value]);
+          OnRowEditModeCanceled (-1, editedBusinessObject);
+        }
+        else
+        {
+          OnRowEditModeCanceled (EditableRowIndex.Value, (IBusinessObject) Value[EditableRowIndex.Value]);
+        }
       }
 
       Pair[] sortedRows = EnsureGotIndexedRowsSorted();
