@@ -2,6 +2,8 @@
 ========
 
 - BocList
+  * Bugfix: Einfügen eines neuen Objektes zum Editieren: Wurden beim 1. Speichern bereits fehlerhafte Eingaben gefunden
+    so wurde die Zeile verworfen anstatt das Speichern abzubrechen.
   * EditableRowIndex zu ModifiableRowIndex umbenannt.
   * IsRowEditMode zu IsEditDetailsModeActive umbenannt.
   * EndRowEditMode zu EndEditDetailsMode umbenannt.

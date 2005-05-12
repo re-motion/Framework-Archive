@@ -281,7 +281,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   [Browsable (false)]
   protected abstract object ValueImplementation { get; set; }
 
-  /// <summary> Calls <see cref="OnPreRender"/> on every invocation. </summary>
+  /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
   /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
   internal void PreRenderForDesignMode()
   {
