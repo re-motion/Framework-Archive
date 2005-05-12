@@ -484,6 +484,9 @@ public class BocList:
   /// </summary>
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
+    if (IsEditDetailsModeActive)
+      return false;
+
     string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
     string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
 

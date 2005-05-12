@@ -1,3 +1,11 @@
+1.2.40.0
+========
+
+- BocList:
+  * Bugfix: Selected Rows gingen beim Details Editing verloren.
+  * Bugfix: Javascriptfehler wenn beim Details Editing mit Hilfe des DatePickers ein Datum ausgewählt wurde.
+    Aufgetreten mit 1.2.36.0.
+  
 1.2.39.0
 ========
 
