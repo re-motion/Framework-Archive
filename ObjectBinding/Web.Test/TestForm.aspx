@@ -16,6 +16,12 @@
 <form id=Form method=post runat="server">
 <table id=FormGrid runat="server">
   <tr>
+    <td><rwc:SmartLabel id="SmartLabel1" runat="server" forcontrol="BocTextValue1"></rwc:SmartLabel></td>
+    <td>
+      </td></tr>
+  <tr>
+    <td colspan="2"><obw:BocTextValue id="BocTextValue1" runat="server"></obw:BocTextValue></td></tr>
+  <tr>
     <td></td>
     <td></td></tr></table>
 <p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
