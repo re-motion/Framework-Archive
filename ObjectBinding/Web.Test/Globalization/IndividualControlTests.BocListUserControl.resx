@@ -58,4 +58,7 @@
     <data name="auto:ChildrenList:ListMenuItems:Paste:Text">
         <value>Einfügen</value>
     </data>
+    <data name="auto:ChildrenList:FixedColumns:LastName:ColumnTitle">
+        <value>Nachname</value>
+    </data>
 </root>
