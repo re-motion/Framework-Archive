@@ -239,20 +239,11 @@ public class ControlItemCollection: CollectionBase
     {
       string id = (string) entry.Key;
       
-      bool isValidID = false;
       IControlItem item = Find (id);
       if (item != null)
-      {
         ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value);
-        isValidID = true;
-        break;
-      }
-
-      if (! isValidID)
-      {
-        //  Invalid collection element
+      else  //  Invalid collection element
         s_log.Debug ("'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName + "'.");
-      }
     }
   }
 }
