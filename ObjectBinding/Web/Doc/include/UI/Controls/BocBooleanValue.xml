@@ -36,7 +36,8 @@
         The resources required by this control are defined by the <see cref="BocBooleanValue.ResourceIdentifier"/> 
         enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
       </para><para>
-        The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
+        The control supports resource dispatching to its properties through the 
+        <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
         Use the following resource identifiers for dispatching strings to the <b>BocBooleanValue</b>.
       </para>
       <list type="table">
