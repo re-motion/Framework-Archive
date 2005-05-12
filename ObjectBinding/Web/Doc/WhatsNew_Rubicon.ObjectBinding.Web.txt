@@ -1,3 +1,12 @@
+1.2.41.0
+========
+
+- BocList
+  * Bugfix: Resourcen wurden nur für die jeweils erste gefundene Spalte/MenuItem dispatched.
+
+- BocReferenceValue
+  * Bugfix: Resourcen wurden nur für das jeweils erste gefundene MenuItem dispatched.
+
 1.2.40.0
 ========
 
