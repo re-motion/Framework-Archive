@@ -9,12 +9,24 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <summary>
+///   Provides <see cref="IComponent"/>-like functionality for non-UI items of controls.
+/// </summary>
+/// <remarks>
+///   <b>IComponent</b> is not used because it involves CodeDOM designer serialization.
+/// </remarks>
 public interface IControlItem
 {
   Control OwnerControl { get; set; }
+  /// <summary>
+  ///   Do NOT make this property public if designer support is required. VS.NET designer uses special treatment for "ID" properties.
+  /// </summary>
   string ID { get; }
 }
 
+/// <summary>
+///   Colletion of <see cref="IControlItem"/>.
+/// </summary>
 public class ControlItemCollection: CollectionBase
 {
   /// <summary> The log4net logger. </summary>
