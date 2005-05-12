@@ -110,8 +110,8 @@ function DatePicker_Calendar_SelectionChanged (value)
   target.value = value;
 
   DatePicker_CloseDatePicker();
-  if (isValueChanged && target.onchange != null)
-    target.onchange();
+  //if (isValueChanged && target.onchange != null)
+  //  target.onchange();
 }
 
 //  Closes the date picker frame
