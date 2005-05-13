@@ -210,6 +210,9 @@ public class Command: IControlItem
   //private ScriptCommandInfo _scriptCommand = null;
 
   private Control _ownerControl = null;
+  
+  [Browsable (false)]
+  public EventHandler Click;
 
   public Command ()
     : this (CommandType.None)
@@ -220,6 +223,13 @@ public class Command: IControlItem
   {
     _defaultType = defaultType;
     _type = _defaultType;
+  }
+
+  /// <summary> Fires the <see cref="Click"/> event. </summary>
+  public virtual void OnClick ()
+  {
+    if (Click != null)
+      Click (this, EventArgs.Empty);
   }
 
   /// <summary> Renders the opening tag for the command. </summary>

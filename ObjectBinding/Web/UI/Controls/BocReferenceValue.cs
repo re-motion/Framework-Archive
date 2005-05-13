@@ -113,11 +113,11 @@ public class BocReferenceValue:
   private string _optionsTitle;
   private bool _showOptionsMenu = true;
   private Unit _optionsMenuWidth = Unit.Empty;
-  private BocMenuItemCollection _optionsMenuItems;
+  private WebMenuItemCollection _optionsMenuItems;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
+  private WebMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private BocMenuItem[] _optionsMenuItemsRenderPhase;
+  private WebMenuItem[] _optionsMenuItemsRenderPhase;
   private bool _hasValueEmbeddedInsideOptionsMenu = true;
 
   /// <summary> The command rendered for this reference value. </summary>
@@ -131,7 +131,7 @@ public class BocReferenceValue:
   /// <summary> Initializes a new instance of the <b>BocReferenceValue</b> class. </summary>
 	public BocReferenceValue()
 	{
-    _optionsMenuItems = new BocMenuItemCollection (this);
+    _optionsMenuItems = new WebMenuItemCollection (this);
     _commonStyle = new Style();
     _dropDownListStyle = new DropDownListStyle();
     _labelStyle = new Style();
@@ -980,7 +980,7 @@ public class BocReferenceValue:
   ///   Ensures that the menu items for the <see cref="OptionsMenu"/> from the previous page life cycle have been loaded.
   /// </summary>
   /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
+  private WebMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
   {
     if (_optionsMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -993,7 +993,7 @@ public class BocReferenceValue:
   /// <summary> Ensures that the menu items for the <see cref="OptionsMenu"/> have been loaded. </summary>
   /// <param name="forceRefresh"> <see langword="true"/> to override the ensure pattern. </param>
   /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private BocMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
+  private WebMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
   {
     if (_optionsMenuItemsRenderPhase == null || forceRefresh)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
@@ -1002,14 +1002,14 @@ public class BocReferenceValue:
 
   /// <summary> Ensures that the menu items for the <see cref="OptionsMenu"/> have been loaded. </summary>
   /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  private WebMenuItem[] EnsureOptionsMenuItemsGot()
   {
     return EnsureOptionsMenuItemsGot (false);
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the previous life cycle. </summary>
   /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItemsForPreviousLifeCycle/*' />
-  private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  private WebMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
   {
     //  return menuItems;
     return EnsureOptionsMenuItemsGot (true);
@@ -1017,7 +1017,7 @@ public class BocReferenceValue:
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the current life cycle. </summary>
   /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItems/*' />
-  protected virtual BocMenuItem[] GetOptionsMenuItems (BocMenuItem[] menuItems)
+  protected virtual WebMenuItem[] GetOptionsMenuItems (WebMenuItem[] menuItems)
   {
     return menuItems;
   }
@@ -1029,7 +1029,7 @@ public class BocReferenceValue:
   /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
   private void OptionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
+    OnMenuItemEventCommandClick (e.Item);
   }
 
   /// <summary> 
@@ -1038,11 +1038,16 @@ public class BocReferenceValue:
   /// </summary>
   /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
-  protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
     WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
-      ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
+    {
+      if (menuItem is BocMenuItem)
+        ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+      else
+        menuItem.Command.OnClick();
+    }
     if (menuItemClickHandler != null)
     {
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
@@ -1065,7 +1070,7 @@ public class BocReferenceValue:
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   private void OptionsMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
+    OnMenuItemWxeFunctionCommandClick (e.Item);
   }
 
   /// <summary> 
@@ -1074,19 +1079,26 @@ public class BocReferenceValue:
   /// </summary>
   /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
   /// <remarks> Only called for commands of type <see cref="CommandType.WxeFunction"/>. </remarks>
-  protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
     {
-      int[] indices = new int[0];
-      IBusinessObject[] businessObjects;
-      if (Value != null)
-        businessObjects = new IBusinessObject[] { Value };
+      if (menuItem is BocMenuItem)
+      {
+        int[] indices = new int[0];
+        IBusinessObject[] businessObjects;
+        if (Value != null)
+          businessObjects = new IBusinessObject[] { Value };
+        else
+          businessObjects = new IBusinessObject[0];
+   
+        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+      }
       else
-        businessObjects = new IBusinessObject[0];
- 
-      BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-      command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+      {
+        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+      }
     }
   }
 
@@ -1400,7 +1412,8 @@ public class BocReferenceValue:
   [Category ("Menu")]
   [Description ("The menu items displayed by options menu.")]
   [DefaultValue ((string) null)]
-  public BocMenuItemCollection OptionsMenuItems
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  public WebMenuItemCollection OptionsMenuItems
   {
     get { return _optionsMenuItems; }
   }
