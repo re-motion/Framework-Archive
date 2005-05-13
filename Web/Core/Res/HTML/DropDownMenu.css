@@ -30,6 +30,12 @@ div.dropDownMenuHeadFocus
   background-color: #d7e7fd;
 }
 
+.dropDownMenuHeadButton a,
+.dropDownMenuHeadButtonFocus a
+{
+  cursor: default;
+}
+
 /*  */
 div.dropDownMenuPopUp
 {
