@@ -263,17 +263,17 @@ public class BocList:
   private Unit _menuBlockWidth = Unit.Empty;
   /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
   private Unit _menuBlockOffset = Unit.Empty;
-  private BocMenuItemCollection _optionsMenuItems;
+  private WebMenuItemCollection _optionsMenuItems;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private BocMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
+  private WebMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private BocMenuItem[] _optionsMenuItemsRenderPhase;
+  private WebMenuItem[] _optionsMenuItemsRenderPhase;
 
-  private BocMenuItemCollection _listMenuItems;
+  private WebMenuItemCollection _listMenuItems;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private BocMenuItem[] _listMenuItemsPostBackEventHandlingPhase;
+  private WebMenuItem[] _listMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private BocMenuItem[] _listMenuItemsRenderPhase;
+  private WebMenuItem[] _listMenuItemsRenderPhase;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
  
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
@@ -372,8 +372,8 @@ public class BocList:
     _additionalColumnsList = new DropDownList();
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
-    _listMenuItems = new BocMenuItemCollection (this);
-    _optionsMenuItems = new BocMenuItemCollection (this);
+    _listMenuItems = new WebMenuItemCollection (this);
+    _optionsMenuItems = new WebMenuItemCollection (this);
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
     _validators = new ArrayList();
@@ -618,16 +618,15 @@ public class BocList:
       throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
     }
 
-    BocMenuItem[] menuItems = EnsureListMenuItemsForPreviousLifeCycleGot();
+    WebMenuItem[] menuItems = EnsureListMenuItemsForPreviousLifeCycleGot();
     if (index >= menuItems.Length)
       throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
 
-    BocMenuItem menuItem = menuItems[index];
+    WebMenuItem menuItem = menuItems[index];
     if (menuItem.Command == null)
       throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command associated with list menu item " + index + ".");
 
-    BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-    switch (command.Type)
+    switch (menuItem.Command.Type)
     {
       case CommandType.Event:
       {
@@ -868,15 +867,21 @@ public class BocList:
   /// </summary>
   private void OptionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemEventCommandClick ((BocMenuItem) e.Item);
+    OnMenuItemEventCommandClick (e.Item);
   }
 
   /// <summary> Fires the <see cref="MenuItemClick"/> event. </summary>
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
-  protected virtual void OnMenuItemEventCommandClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
-      ((BocMenuItemCommand) menuItem.Command).OnClick (menuItem);
+    {
+      if (menuItem is BocMenuItem)
+        ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+      else
+        menuItem.Command.OnClick();
+    }
+
     WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
     if (menuItemClickHandler != null)
     {
@@ -895,12 +900,19 @@ public class BocList:
 
   /// <summary> Handles the click to a WXE function command. </summary>
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
-  protected virtual void OnMenuItemWxeFunctionCommandClick (BocMenuItem menuItem)
+  protected virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
     {
-      BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-      command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+      if (menuItem is BocMenuItem)
+      {
+        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+      }
+      else
+      {
+        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+      }
     }
   }
 
@@ -2874,7 +2886,7 @@ public class BocList:
     return columnDefinitions;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
+  private WebMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
   {
     if (_optionsMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -2884,14 +2896,14 @@ public class BocList:
     return _optionsMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
+  private WebMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
   {
     if (_optionsMenuItemsRenderPhase == null || forceRefresh)
       _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
     return _optionsMenuItemsRenderPhase;
   }
 
-  private BocMenuItem[] EnsureOptionsMenuItemsGot()
+  private WebMenuItem[] EnsureOptionsMenuItemsGot()
   {
     return EnsureOptionsMenuItemsGot (false);
   }
@@ -2914,7 +2926,7 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  private BocMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  private WebMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
   {
     //  return menuItems;
     return EnsureOptionsMenuItemsGot (true);
@@ -2933,12 +2945,12 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual BocMenuItem[] GetOptionsMenuItems (BocMenuItem[] menuItems)
+  protected virtual WebMenuItem[] GetOptionsMenuItems (WebMenuItem[] menuItems)
   {
     return menuItems;
   }
 
-  private BocMenuItem[] EnsureListMenuItemsForPreviousLifeCycleGot()
+  private WebMenuItem[] EnsureListMenuItemsForPreviousLifeCycleGot()
   {
     if (_listMenuItemsPostBackEventHandlingPhase == null)
     {
@@ -2948,14 +2960,14 @@ public class BocList:
     return _listMenuItemsPostBackEventHandlingPhase;
   }
 
-  private BocMenuItem[] EnsureListMenuItemsGot (bool forceRefresh)
+  private WebMenuItem[] EnsureListMenuItemsGot (bool forceRefresh)
   {
     if (_listMenuItemsRenderPhase == null || forceRefresh)
       _listMenuItemsRenderPhase = GetListMenuItems (_listMenuItems.ToArray());
     return _listMenuItemsRenderPhase;
   }
 
-  private BocMenuItem[] EnsureListMenuItemsGot()
+  private WebMenuItem[] EnsureListMenuItemsGot()
   {
     return EnsureListMenuItemsGot (false);
   }
@@ -2978,7 +2990,7 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  private BocMenuItem[] GetListMenuItemsForPreviousLifeCycle (BocMenuItem[] menuItems)
+  private WebMenuItem[] GetListMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
   {
     //  return menuItems;
     return EnsureListMenuItemsGot();
@@ -2997,7 +3009,7 @@ public class BocList:
   ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
   /// </param>
   /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual BocMenuItem[] GetListMenuItems (BocMenuItem[] menuItems)
+  protected virtual WebMenuItem[] GetListMenuItems (WebMenuItem[] menuItems)
   {
     return menuItems;
   }
@@ -4586,7 +4598,8 @@ public class BocList:
   [Category ("Menu")]
   [Description ("The menu items displayed by options menu.")]
   [DefaultValue ((string) null)]
-  public BocMenuItemCollection OptionsMenuItems
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  public WebMenuItemCollection OptionsMenuItems
   {
     get { return _optionsMenuItems; }
   }
@@ -4597,7 +4610,8 @@ public class BocList:
   [Category ("Menu")]
   [Description ("The menu items displayed in the list's menu area.")]
   [DefaultValue ((string) null)]
-  public BocMenuItemCollection ListMenuItems
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  public WebMenuItemCollection ListMenuItems
   {
     get { return _listMenuItems; }
   }
