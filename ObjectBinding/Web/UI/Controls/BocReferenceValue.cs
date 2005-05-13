@@ -509,13 +509,16 @@ public class BocReferenceValue:
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
 
-    if (_icon.Visible)
-      RenderIcon (writer, isCommandEnabled, postBackEvent, string.Empty, objectID);
-
     if (isReadOnly)
+    {
       RenderReadOnlyValue (writer, isCommandEnabled, postBackEvent, string.Empty, objectID);
+    }
     else
+    {
+      if (_icon.Visible)
+        RenderSeparateIcon (writer, isCommandEnabled, postBackEvent, string.Empty, objectID);
       RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
+    }
 
     if (HasOptionsMenu)
     {
@@ -586,8 +589,6 @@ public class BocReferenceValue:
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
 
-    if (_icon.Visible)
-      RenderIcon (writer, isCommandEnabled, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
 
     if (isReadOnly)
     {
@@ -601,12 +602,14 @@ public class BocReferenceValue:
     }
     else
     {
+      if (_icon.Visible)
+        RenderSeparateIcon (writer, isCommandEnabled, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
       _dropDownList.Attributes.Add ("onClick", DropDownMenu.OnHeadTitleClickScript);
       RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
     }
   }
 
-  private void RenderIcon (
+  private void RenderSeparateIcon (
       HtmlTextWriter writer, 
       bool isCommandEnabled, 
       string postBackEvent, 
@@ -644,6 +647,11 @@ public class BocReferenceValue:
 
     if (isCommandEnabled)
       Command.RenderBegin (writer, postBackEvent, onClick, objectID);
+    if (_icon.Visible)
+    {
+      _icon.RenderControl (writer);
+      writer.Write ("&nbsp;");
+    }
     _label.RenderControl (writer);
     if (isCommandEnabled)
       Command.RenderEnd (writer);
@@ -950,6 +958,7 @@ public class BocReferenceValue:
       _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
     else
       _optionsMenu.TitleText = _optionsTitle;
+    _optionsMenu.Style["vertical-align"] = "middle";
 
     if (! IsDesignMode)
     {

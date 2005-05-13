@@ -13,6 +13,9 @@
   * Bugfix: Resourcen wurden nur für das jeweils erste gefundene MenuItem dispatched.
   * Stylesheet überarbeitet.
 
+- BocTextValue
+  * Bugfix: Multiline TextValues im Read-Only Mode hatten keine <br/> statt der Zeilenumbrüche eingefügt.
+  
 1.2.40.0
 ========
 
