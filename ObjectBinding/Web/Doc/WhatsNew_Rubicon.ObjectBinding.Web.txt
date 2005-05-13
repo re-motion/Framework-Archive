@@ -3,9 +3,15 @@
 
 - BocList
   * Bugfix: Resourcen wurden nur für die jeweils erste gefundene Spalte/MenuItem dispatched.
+  * Bugfix: Falls die Edit-Details Column auf Show=EditMode gesetzt hatte und die Liste Read-Only war
+    wurde trotzdem das col-Tag gerendert. Dadurch wurden angegebene Spaltenbreiten eine Spalte versetzt zugewiesen,
+    was unter Umständen Anzeigefehler verursacht hat.
+  * EmptyListMessage: Neue Property/Resource. Falls die List empty ist aber angezeigt wird, wird die EmptyListMessage
+    im Data-Bereich gerendert.
 
 - BocReferenceValue
   * Bugfix: Resourcen wurden nur für das jeweils erste gefundene MenuItem dispatched.
+  * Stylesheet überarbeitet.
 
 1.2.40.0
 ========
