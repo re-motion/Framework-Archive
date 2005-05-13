@@ -560,6 +560,7 @@ public class BocReferenceValue:
 
     _optionsMenu.SetRenderHeadTitleMethodDelegate (new RenderMethod (RenderOptionsMenuTitle));
     _optionsMenu.RenderControl (writer);
+    _optionsMenu.SetRenderHeadTitleMethodDelegate (null);
   }
 
   private void RenderOptionsMenuTitle (HtmlTextWriter writer, Control control)
@@ -609,9 +610,8 @@ public class BocReferenceValue:
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
     writer.AddStyleAttribute ("padding-right", "3pt");
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
 
     if (isCommandEnabled)
     {
@@ -623,7 +623,6 @@ public class BocReferenceValue:
     if (isCommandEnabled)
       Command.RenderEnd (writer);
 
-    writer.RenderEndTag();  //  End span
     writer.RenderEndTag();  //  End td
   }
 
@@ -635,9 +634,8 @@ public class BocReferenceValue:
       string objectID)
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
 
     if (isCommandEnabled)
       Command.RenderBegin (writer, postBackEvent, onClick, objectID);
@@ -645,7 +643,6 @@ public class BocReferenceValue:
     if (isCommandEnabled)
       Command.RenderEnd (writer);
     
-    writer.RenderEndTag();  //  End span
     writer.RenderEndTag();  //  End td
   }
 
@@ -656,9 +653,8 @@ public class BocReferenceValue:
       bool isDropDownListWidthEmpty)
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); //  Begin span
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
 
     if (! isControlHeightEmpty && isDropDownListHeightEmpty)
       writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
@@ -666,7 +662,6 @@ public class BocReferenceValue:
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     _dropDownList.RenderControl (writer);
     
-    writer.RenderEndTag();  //  End span
     writer.RenderEndTag();  //  End td
   }
 
@@ -926,6 +921,8 @@ public class BocReferenceValue:
 
         _icon.Enabled = Enabled;
         _icon.Visible = _enableIcon;
+        _icon.Style["vertical-align"] = "middle";
+        _icon.Style["border-style"] = "none";
 
 //        if (_enableIcon && ! IsReadOnly)
 //        {
