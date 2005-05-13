@@ -54,4 +54,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldTitle">
         <value>Eingabe benötigt in der gerade bearbeiteten Zeile.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage">
+        <value>Keine Daten vorhanden.</value>
+    </data>
 </root>
