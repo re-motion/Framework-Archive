@@ -118,7 +118,7 @@ public class BocReferenceValue:
   private WebMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
   /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
   private WebMenuItem[] _optionsMenuItemsRenderPhase;
-  private bool _hasValueEmbeddedInsideOptionsMenu = true;
+  private NaBoolean _hasValueEmbeddedInsideOptionsMenu = NaBoolean.Null;
 
   /// <summary> The command rendered for this reference value. </summary>
   private SingleControlItemCollection _command = null;
@@ -455,10 +455,15 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (_hasValueEmbeddedInsideOptionsMenu && HasOptionsMenu)
+    if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
+        || _hasValueEmbeddedInsideOptionsMenu.IsNull && IsReadOnly && HasOptionsMenu)
+    {
       RenderContentsWithIntegratedOptionsMenu (writer);
+    }
     else
+    {
       RenderContentsWithSeparateOptionsMenu (writer);
+    }
   }
 
   private void RenderContentsWithSeparateOptionsMenu (HtmlTextWriter writer)
@@ -1460,8 +1465,8 @@ public class BocReferenceValue:
   /// </value>
   [Category ("Menu")]
   [Description ("Determines whether to use the value as the options menu's head.")]
-  [DefaultValue (true)]
-  public bool HasValueEmbeddedInsideOptionsMenu
+  [DefaultValue (typeof (NaBoolean), "")]
+  public NaBoolean HasValueEmbeddedInsideOptionsMenu
   {
     get { return _hasValueEmbeddedInsideOptionsMenu; }
     set { _hasValueEmbeddedInsideOptionsMenu = value; }
