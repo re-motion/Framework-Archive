@@ -68,6 +68,7 @@ public class BocMenuItemCommand: BocCommand
   /// </summary>
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
 
+  [Browsable (false)]
   public new WebMenuItemClickEventHandler Click;
 
   /// <summary> Initializes an instance. </summary>
@@ -85,6 +86,7 @@ public class BocMenuItemCommand: BocCommand
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   public virtual void OnClick (BocMenuItem menuItem)
   {
+    base.OnClick (null);
     if (Click != null)
     {
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
