@@ -94,7 +94,8 @@ public class BocCommand: Command
   /// </summary>
   private BocWxeFunctionCommandInfo _wxeFunctionCommand = new BocWxeFunctionCommandInfo();
 
-  public BocCommandClickEventHandler Click;
+  [Browsable (false)]
+  public new BocCommandClickEventHandler Click;
 
   /// <summary> Initializes an instance. </summary>
   public BocCommand()
@@ -111,6 +112,7 @@ public class BocCommand: Command
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   public virtual void OnClick (IBusinessObject businessObject)
   {
+    base.OnClick();
     if (Click != null)
     {
       BocCommandClickEventArgs e = new BocCommandClickEventArgs (businessObject);
