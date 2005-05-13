@@ -251,7 +251,8 @@ public class Command: IControlItem
         if (HrefCommand.Target != null) 
           writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        if (! StringUtility.IsNullOrEmpty (_toolTip))
+          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       case CommandType.Event:
@@ -259,7 +260,8 @@ public class Command: IControlItem
         ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        if (! StringUtility.IsNullOrEmpty (_toolTip))
+          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       case CommandType.WxeFunction:
@@ -267,7 +269,8 @@ public class Command: IControlItem
         ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        if (! StringUtility.IsNullOrEmpty (_toolTip))
+          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
       default:
