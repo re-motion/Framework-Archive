@@ -1,26 +1,26 @@
 /* Style applied to the BocReferenceValue's value. */
-span.bocReferenceValueContent
+td.bocReferenceValueContent
 {
+  padding-top: 2px;
+  padding-left: 0px;
+  padding-bottom: 2px;
+  padding-right: 0px;
 }
 
-span.bocReferenceValueContent a
+td.bocReferenceValueContent a
 {
   color: Blue;
-  cursor: hand;
+	padding: 2px;
 }
 
-span.bocReferenceValueContent a:hover
+td.bocReferenceValueContent a:hover
 {
   color: Blue;
+	background-color: #fee197;	
 	cursor: hand;
+	padding: 1px;
+	border-width: 1px;
+	border-color: #2254b1;
+	border-style: solid;
+	background-color: #fee197;	
 }
-
-//span.bocReferenceValueOnMouseOver
-//{
-//  border: solid 1px red;
-//}
-
-//span.bocReferenceValueOnMouseOut
-//{
-//  padding: 1px;
-//}
