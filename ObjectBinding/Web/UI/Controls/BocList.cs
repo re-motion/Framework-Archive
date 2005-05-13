@@ -115,6 +115,7 @@ public class BocList:
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
   protected enum ResourceIdentifier
   {
+    EmptyListMessage,
     PageInfo,
     OptionsTitle,
     AdditionalColumnsTitle,
@@ -280,6 +281,7 @@ public class BocList:
   private bool _showMenuForEmptyListEditMode = true;
   private bool _showEmptyListReadOnlyMode = false;
   private bool _showMenuForEmptyListReadOnlyMode = false;
+  private string _emptyListMessage = null;
 
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
@@ -1314,6 +1316,19 @@ public class BocList:
   {
     get { return Value == null || Value.Count == 0; }
   }
+  private bool IsColumnVisible (BocColumnDefinition column)
+  {
+    bool isReadOnly = IsReadOnly;
+    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
+    if (   editDetailsColumn != null
+        && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
+        && isReadOnly)
+    {
+      return false;
+    }
+    return true;
+  }
+
   /// <summary> Renders the menu block of the control. </summary>
   /// <remarks> Contains the drop down list for selcting a column configuration and the options menu.  </remarks>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
@@ -1552,17 +1567,28 @@ public class BocList:
    
     if (IsEmptyList && ! showForEmptyList)
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-      writer.RenderBeginTag (HtmlTextWriterTag.Table);
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      writer.Write ("&nbsp;");
-      writer.RenderEndTag();
-      writer.RenderEndTag();
-      writer.RenderEndTag();
+      if (IsDesignMode)
+      {
+        //  The table non-data sections
+        RenderTableOpeningTag (writer);
+        RenderColGroup (writer);
+        RenderColumnTitlesRow (writer);
+        RenderTableClosingTag (writer);
+      }
+      else
+      {
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+        writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+        writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+        writer.RenderBeginTag (HtmlTextWriterTag.Table);
+        writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+        writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        writer.Write ("&nbsp;");
+        writer.RenderEndTag();
+        writer.RenderEndTag();
+        writer.RenderEndTag();
+      }
     }
     else
     {
@@ -1584,7 +1610,11 @@ public class BocList:
         rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
       }
 
-      if (! IsEmptyList)
+      if (IsEmptyList)
+      {
+        RenderEmptyListDataRow (writer);
+      }
+      else
       {
         bool isOddRow = true;
         Pair[] rows = EnsureGotIndexedRowsSorted();
@@ -1769,6 +1799,10 @@ public class BocList:
     for (int i = 0; i < renderColumns.Length; i++)
     {
       BocColumnDefinition column = renderColumns[i];
+
+      if (! IsColumnVisible (column))
+        continue;
+      
       if (! column.Width.IsEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
 
@@ -1834,12 +1868,8 @@ public class BocList:
       BocColumnDefinition column = renderColumns[idxColumns];
       BocEditDetailsColumnDefinition editDetailsColumn = renderColumns[idxColumns] as BocEditDetailsColumnDefinition;
 
-      if (   editDetailsColumn != null
-          && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
-          && isReadOnly)
-      {
+      if (! IsColumnVisible (column))
         continue;
-      }
 
       string cssClassTitleCell = CssClassTitleCell;
       if (! StringUtility.IsNullOrEmpty (column.CssClass))
@@ -2119,12 +2149,8 @@ public class BocList:
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
 
-    if (   editDetailsColumn != null
-        && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
-        && isReadOnly)
-    {
+    if (! IsColumnVisible (column))
       return;
-    }
 
     if (! StringUtility.IsNullOrEmpty (column.CssClass))
       cssClassTableCell += " " + column.CssClass;
@@ -2520,6 +2546,36 @@ public class BocList:
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
+    writer.RenderEndTag();
+  }
+
+  private void RenderEmptyListDataRow (HtmlTextWriter writer)
+  {
+    BocColumnDefinition[] renderColumns = EnsureColumnsGot();
+    int columnCount = 0;
+  
+    if (IsSelectionEnabled)
+      columnCount++;
+
+    for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
+    {
+      BocColumnDefinition column = renderColumns[idxColumns];
+      if (IsColumnVisible (column))
+        columnCount++;
+    }
+    
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+    writer.AddAttribute (HtmlTextWriterAttribute.Colspan, columnCount.ToString());
+    writer.RenderBeginTag (HtmlTextWriterTag.Td);
+
+    string emptyListMessage = null;
+    if (StringUtility.IsNullOrEmpty (_emptyListMessage))
+      emptyListMessage = GetResourceManager().GetString (ResourceIdentifier.EmptyListMessage);
+    else
+      emptyListMessage = _emptyListMessage;
+    writer.Write (emptyListMessage);
+
+    writer.RenderEndTag();
     writer.RenderEndTag();
   }
 
@@ -4462,6 +4518,16 @@ public class BocList:
   {
     get { return _pageInfo; }
     set { _pageInfo = value; }
+  }
+
+  /// <summary> Gets or sets the text rendered if the list is empty. </summary>
+  [Category ("Appearance")]
+  [Description ("The text if the list is empty.")]
+  [DefaultValue (null)]
+  public string EmptyListMessage
+  {
+    get { return _emptyListMessage; }
+    set { _emptyListMessage = value; }
   }
 
   /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
