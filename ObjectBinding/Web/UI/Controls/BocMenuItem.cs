@@ -8,6 +8,9 @@ using Rubicon.Web.UI;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+/// <remarks>
+///   May only be added to an <see cref="IBusinessObjectBoundWebControl"/>.
+/// </remarks>
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class BocMenuItem: WebMenuItem
 {
