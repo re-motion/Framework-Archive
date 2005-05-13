@@ -161,7 +161,21 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     if (IsReadOnly)
     {
-      string text = HttpUtility.HtmlEncode (_text);
+      string text = null;
+      if (TextBoxStyle.TextMode == TextBoxMode.MultiLine)
+      {
+        //  Allows for an optional \r
+        string temp = _text.Replace ("\r", "");
+        string[] lines = temp.Split ('\n');
+        for (int i = 0; i < lines.Length; i++)
+          lines[i] = HttpUtility.HtmlEncode (lines[i]);
+        text = StringUtility.ConcatWithSeparator (lines, "<br />");
+      }
+      else
+      {
+        text = HttpUtility.HtmlEncode (_text);
+      }
+
       if (StringUtility.IsNullOrEmpty (text))
       {
         if (IsDesignMode)
