@@ -1,14 +1,21 @@
+1.2.41.0
+========
+
+- TabbedMultiView
+  * Bugfix: Unter folgender Bedingung wurde der falsche Tabreiter aber der richtge View angezeigt:
+    Programmatisches Setzen des Views ohne das vorher der noch selektierte Tab abgefragt wurde.
+
 1.2.39.0
 ========
 
 - TabbedMultiView
-  Bugfix: Horizontales Scrollen wurde durch die Seite statt durch den MultiView durchgeführt.
+  * Bugfix: Horizontales Scrollen wurde durch die Seite statt durch den MultiView durchgeführt.
   
 1.2.33.0
 ========
 
 - FormGridManager
-  Designerdarstellung nach Art .net2.0 für non-visual Controls
+  * Designerdarstellung nach Art .net2.0 für non-visual Controls
 
 - Konfiguration des Function Timeouts im .config File: 
 
