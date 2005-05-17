@@ -34,6 +34,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private string _selectedTabID;
   private string _tabToBeSelected = null;
   private bool _hasTabsRestored;
+  private bool _isRestoringTabs;
   private Triplet[] _tabsViewState;
   private Style _tabsPaneStyle;
   private Style _separatorStyle;
@@ -103,12 +104,14 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
     if (_hasTabsRestored)
       return;
-
+ 
+    _isRestoringTabs = true;
     if (_tabsViewState != null)
     {
       LoadTabsViewStateRecursive (_tabsViewState, Tabs);
       _hasTabsRestored = true;
     }
+    _isRestoringTabs = false;
   }
 
   protected override void LoadViewState(object savedState)
@@ -430,6 +433,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   /// <summary> Sets the selected tab. </summary>
   internal void SetSelectedTab (WebTab tab)
   {
+    if (! _isRestoringTabs)
+      EnsureTabsRestored();
+
     if (tab != null && tab.TabStrip != this)
       throw new InvalidOperationException ("Only tabs that are part of this tab strip can be selected.");
     if (_selectedTab != tab)
