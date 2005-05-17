@@ -1,3 +1,10 @@
+1.2.41.0
+========
+
+- BocEnumValue
+  * Bugfix: Wurde das Binding ausgewertet bevor der Value geladen war, ist die Liste nicht mit den möglichen 
+    Enum-Werten befüllt worden.
+    
 1.2.40.0
 ========
 
