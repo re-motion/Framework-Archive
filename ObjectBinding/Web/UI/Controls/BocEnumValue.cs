@@ -74,6 +74,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> State field for special behaviour during load view state. </summary>
   /// <remarks> Used by <see cref="RefreshEnumListSelectedValue"/>. </remarks>
   private bool _isExecutingLoadViewState;
+  bool _isEnumListRefreshed = false;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -185,6 +186,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
+    EnsureEnumListRefreshed (false);
     RefreshEnumListSelectedValue();
 
     if (IsReadOnly)
@@ -350,10 +352,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return validators;
   }
 
-  /// <summary>
-  ///   Populates the <see cref="ListControl"/> from the <see cref="Property"/>'s 
-  ///   list of enabled enum values before calling <see cref="RefreshEnumListSelectedValue"/>.
-  /// </summary>
+  /// <summary> Populates the <see cref="ListControl"/> from the <see cref="Property"/>'s list of enabled enum values. </summary>
   protected virtual void RefreshEnumList()
   {
     if (! IsReadOnly)
@@ -374,7 +373,21 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
           _listControl.Items.Add (item);
         }
       }
-      RefreshEnumListSelectedValue();
+    }
+  }
+
+  /// <summary> Ensures that the list of enum values has been populated. </summary>
+  /// <param name="forceRefresh"> <see langword="true"/> to force a repopulation of the list. </param>
+  protected void EnsureEnumListRefreshed (bool forceRefresh)
+  {
+    if (forceRefresh)
+      _isEnumListRefreshed = false;
+    if (IsReadOnly)
+      return;
+    if (! _isEnumListRefreshed)
+    {
+      RefreshEnumList();
+      _isEnumListRefreshed = true;
     }
   }
 
@@ -436,7 +449,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
   private void Binding_BindingChanged (object sender, EventArgs e)
   {
-    RefreshEnumList();
+    EnsureEnumListRefreshed (true);
+    RefreshEnumListSelectedValue();
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
