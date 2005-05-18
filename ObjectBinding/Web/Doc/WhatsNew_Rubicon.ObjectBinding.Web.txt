@@ -2,8 +2,12 @@
 ========
 
 - BocReferenceValue
+  * Bugfix: Options-Menü hat beim Command Show==ReadOnly nicht ausgewertet.
   * SetBusinessObjectList unterstützt jetzt auch IList.
-  
+
+- BocList
+  * Bugfix: Options-Menü hat beim Command Show==ReadOnly nicht ausgewertet.
+    
 1.2.41.0
 ========
 
