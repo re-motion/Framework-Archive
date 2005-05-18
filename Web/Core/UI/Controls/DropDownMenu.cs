@@ -244,13 +244,14 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     string href = "null";
     string target = "null";
 
+    bool isCommandEnabled = true;
     if (menuItem.Command != null)
     {
       bool isActive =    menuItem.Command.Show == CommandShow.Always
                       || _isReadOnly && menuItem.Command.Show == CommandShow.ReadOnly
                       || ! _isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
 
-      bool isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
+      isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
       if (isCommandEnabled)
       {    
         bool isPostBackCommand =    menuItem.Command.Type == CommandType.Event 
@@ -281,6 +282,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       disabledIcon =  "'" + menuItem.DisabledIcon + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
     
+    bool isDisabled = menuItem.IsDisabled || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuItemIndex.ToString(), 
@@ -289,7 +291,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         icon, 
         disabledIcon, 
         (int) menuItem.RequiredSelection, 
-        menuItem.IsDisabled ? "true" : "false",
+        isDisabled ? "true" : "false",
         href, 
         target);
   }
