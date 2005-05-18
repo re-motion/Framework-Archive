@@ -794,7 +794,22 @@ public class BocReferenceValue:
   public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
   {
     ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+    RefreshBusinessObjectList (businessObjects);
+  }
 
+  /// <summary> Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
+  /// <remarks>
+  ///   Use this method to set the listed items, e.g. from the parent control, if no <see cref="Select"/>
+  ///   statement was provided.
+  /// </remarks>
+  /// <param name="businessObjects">
+  ///   An <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to be used as list of possible 
+  ///   values. Must not be <see langword="null"/>.
+  /// </param>
+  public void SetBusinessObjectList (IList businessObjects)
+  {
+    ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+    ArgumentUtility.CheckItemsNotNullAndType ("businessObjects", businessObjects, typeof (IBusinessObjectWithIdentity));
     RefreshBusinessObjectList (businessObjects);
   }
 
@@ -822,10 +837,11 @@ public class BocReferenceValue:
 
   /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
   /// <param name="businessObjects">
-  ///   The array of <see cref="IBusinessObjectWithIdentity"/> objects to populate the <see cref="DropDownList"/>.
+  ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the 
+  ///   <see cref="DropDownList"/>.
   /// </param>
   /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
-  protected virtual void RefreshBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
+  protected virtual void RefreshBusinessObjectList (IList businessObjects)
   {
     if (! IsReadOnly)
     {
@@ -838,7 +854,7 @@ public class BocReferenceValue:
       if (businessObjects != null)
       {
         //  Populate _dropDownList
-        for (int i = 0; i < businessObjects.Length; i++)
+        for (int i = 0; i < businessObjects.Count; i++)
         {
           IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) businessObjects[i];
           ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
