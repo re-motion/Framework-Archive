@@ -1,3 +1,9 @@
+1.2.42.0
+========
+
+- BocReferenceValue
+  * SetBusinessObjectList unterstützt jetzt auch IList.
+  
 1.2.41.0
 ========
 
