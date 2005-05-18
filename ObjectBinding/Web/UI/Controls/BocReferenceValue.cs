@@ -968,6 +968,7 @@ public class BocReferenceValue:
   private void PreRenderOptionsMenu()
   {
     _optionsMenu.Enabled = Enabled;
+    _optionsMenu.IsReadOnly = IsReadOnly;
     _optionsMenu.MenuItems.Clear();
     _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
     if (StringUtility.IsNullOrEmpty (_optionsTitle))
