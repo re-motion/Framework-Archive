@@ -1382,6 +1382,7 @@ public class BocList:
         _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       _optionsMenu.Enabled = ! IsEditDetailsModeActive;
+      _optionsMenu.IsReadOnly = IsReadOnly;
       _optionsMenu.RenderControl (writer);
     }
 
@@ -1494,13 +1495,14 @@ public class BocList:
     bool isReadOnly = IsReadOnly;
     string href = "null";
     string target = "null";
+    bool isCommandEnabled = true;
     if (menuItem.Command != null)
     {
       bool isActive =    menuItem.Command.Show == CommandShow.Always
                       || isReadOnly && menuItem.Command.Show == CommandShow.ReadOnly
                       || ! isReadOnly && menuItem.Command.Show == CommandShow.EditMode;
 
-      bool isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
+      isCommandEnabled = isActive && menuItem.Command.Type != CommandType.None;
       if (isCommandEnabled)
       {    
         bool isPostBackCommand =    menuItem.Command.Type == CommandType.Event 
@@ -1531,7 +1533,7 @@ public class BocList:
       disabledIcon =  "'" + menuItem.DisabledIcon + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
-    bool isDisabled = menuItem.IsDisabled || IsEditDetailsModeActive;
+    bool isDisabled = menuItem.IsDisabled || IsEditDetailsModeActive || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 
