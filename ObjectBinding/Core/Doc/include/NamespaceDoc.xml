@@ -1,6 +1,5 @@
 <namespaces>
   <namespace name="Rubicon.ObjectBinding">
-    <div style="padding-left: 3pt; padding-top: 3pt; color: red">[This page contains preliminary documentation and is subject to change]</div>
     <para>
       The <B>Rubicon.ObjectBinding</B> namespace contains interfaces for implementing a business object model with a 
       generic data definition and data access layer.
