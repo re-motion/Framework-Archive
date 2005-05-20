@@ -518,7 +518,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <value> An object implementing <see cref="IBusinessObject"/>. </value>
+  /// <value> An object implementing <see cref="IBusinessObjectWithIdentity"/>. </value>
   [Browsable (false)]
   public new IList Value
   {
