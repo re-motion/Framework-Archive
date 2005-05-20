@@ -1,6 +1,8 @@
 using System;
+using System.Text;
 using System.Collections;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace Rubicon.ObjectBinding
 {
@@ -118,31 +120,55 @@ public abstract class BusinessObject: IBusinessObject
   /// </exception>
   public static string GetPropertyString (IBusinessObject obj, IBusinessObjectProperty property, string format)
   {
-    object value;
     int count = 0;
 
     if (property.IsList)
     {
+      // parse "lines=<n>" from format string, where n = no. of lines (integer > 0) or "all" (-1 internally)
+      int lines = 1;
+      if (format != null && format.StartsWith ("lines="))
+      {
+        string strLines = format.Substring ("lines=".Length);
+        if (strLines == "all")
+        {
+          lines = -1;
+        }
+        else if (strLines.Length > 0)
+        {
+          double dblLines;
+          if (double.TryParse (strLines, NumberStyles.Integer, CultureInfo.InvariantCulture, out dblLines) && dblLines > 0)
+            lines = (int) dblLines;
+        }
+      }
+
       IList list = (IList) obj.GetProperty (property);
       if (list == null)
+        return string.Empty;
+
+      count = list.Count;
+      StringBuilder sb = new StringBuilder (count * 40);
+      for (int i = 0; 
+            i < count && (lines == -1 || i < lines); 
+            ++i)
       {
-        value = null;
+        if (i > 0)
+          sb.Append ("\r\n");
+        sb.Append (GetStringValue (list[i], property, format));
       }
-      else
-      {
-        count = list.Count;
-        if (count > 0)
-          value = list[0];
-        else 
-          value = null;
-      }
+
+      if (count > lines)
+        sb.Append (" ... [" + count.ToString() + "]");
+
+      return sb.ToString();
     }
     else
     {
-      value = obj.GetProperty (property);
-      count = 1;
+      return GetStringValue (obj.GetProperty (property), property, format);
     }
+  }
 
+  private static string GetStringValue (object value, IBusinessObjectProperty property, string format)
+  {
     if (value == null)
       return string.Empty;
 
@@ -174,8 +200,6 @@ public abstract class BusinessObject: IBusinessObject
       strValue = value.ToString();
     }
 
-    if (count > 1)
-      strValue += " ... [" + count.ToString() + "]";
     return strValue;
   }
 
