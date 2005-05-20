@@ -282,6 +282,7 @@ public class BocList:
   private bool _showEmptyListReadOnlyMode = false;
   private bool _showMenuForEmptyListReadOnlyMode = false;
   private string _emptyListMessage = null;
+  private bool _showEmptyListMessage = false;
 
   /// <summary> Determines whether to generate columns for all properties. </summary>
   private bool _showAllProperties;
@@ -1127,7 +1128,7 @@ public class BocList:
       isInternetExplorer501AndHigher = 
           Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual501;
       bool isOperaGreaterOrEqual7 = 
-             Context.Request.Browser.Browser == "Opera"
+        Context.Request.Browser.Browser == "Opera"
           && Context.Request.Browser.MajorVersion >= 7;
       bool isNetscapeCompatibleGreaterOrEqual5 = 
              Context.Request.Browser.Browser == "Netscape"
@@ -1136,6 +1137,12 @@ public class BocList:
     }
 
     bool hasNavigator = _alwaysShowPageInfo || _pageCount > 1;
+    bool isReadOnly = IsReadOnly;
+    bool showForEmptyList =  isReadOnly && _showEmptyListReadOnlyMode
+                        || ! isReadOnly && _showEmptyListEditMode;
+    if (! IsDesignMode && IsEmptyList && ! showForEmptyList)
+      hasNavigator = false;
+
     if (isInternetExplorer501AndHigher)
       RenderContentsInternetExplorer501Compatible (writer, hasNavigator);
     else if (isCss21Compatible && ! (writer is Html32TextWriter))
@@ -1626,7 +1633,8 @@ public class BocList:
 
       if (IsEmptyList)
       {
-        RenderEmptyListDataRow (writer);
+        if (ShowEmptyListMessage)
+          RenderEmptyListDataRow (writer);
       }
       else
       {
@@ -4297,7 +4305,7 @@ public class BocList:
   ///   and the additonal column sets  (read-only mode only). 
   /// </summary>
   /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")]
   [DefaultValue (false)]
   public virtual bool ShowEmptyListReadOnlyMode
@@ -4311,7 +4319,7 @@ public class BocList:
   ///   and the additonal column sets (edit mode only). 
   /// </summary>
   /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
   [DefaultValue (true)]
   public virtual bool ShowEmptyListEditMode
@@ -4542,6 +4550,16 @@ public class BocList:
   {
     get { return _emptyListMessage; }
     set { _emptyListMessage = value; }
+  }
+
+  /// <summary> Gets or sets a flag whether to render the <see cref="EmptyListMessage"/>. </summary>
+  [Category ("Appearance")]
+  [Description ("A flag that determines whether the EmpryListMessage is rendered.")]
+  [DefaultValue (false)]
+  public bool ShowEmptyListMessage
+  {
+    get { return _showEmptyListMessage; }
+    set { _showEmptyListMessage = value; }
   }
 
   /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
