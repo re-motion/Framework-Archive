@@ -1966,7 +1966,7 @@ public class BocList:
     }
     else
     {
-      string contents = HttpUtility.HtmlEncode (column.ColumnTitleDisplayValue);
+      string contents = HtmlUtility.HtmlEncode (column.ColumnTitleDisplayValue);
       if (StringUtility.IsNullOrEmpty (contents))
         contents = c_whiteSpace;
       writer.Write (contents);
@@ -2180,10 +2180,7 @@ public class BocList:
 
       string valueColumnText = null;
       if (valueColumn != null && ! hasEditModeControl)
-      {
         valueColumnText = valueColumn.GetStringValue (businessObject);
-        valueColumnText = valueColumnText.Replace ("\r\n", "<br>");
-      }
 
       //  Render the command
       bool isCommandEnabled = false;
@@ -2400,7 +2397,7 @@ public class BocList:
 
   private void RenderValueColumnCellText (HtmlTextWriter writer, string contents) 
   {
-    contents = HttpUtility.HtmlEncode (contents);
+    contents = HtmlUtility.HtmlEncode (contents);
     if (StringUtility.IsNullOrEmpty (contents))
       contents = c_whiteSpace;
     writer.Write (contents);
