@@ -156,7 +156,7 @@ public abstract class BusinessObject: IBusinessObject
         sb.Append (GetStringValue (list[i], property, format));
       }
 
-      if (count > lines)
+      if (lines != -1 && count > lines)
         sb.Append (" ... [" + count.ToString() + "]");
 
       return sb.ToString();

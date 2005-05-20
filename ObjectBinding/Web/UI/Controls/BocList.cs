@@ -2180,7 +2180,10 @@ public class BocList:
 
       string valueColumnText = null;
       if (valueColumn != null && ! hasEditModeControl)
+      {
         valueColumnText = valueColumn.GetStringValue (businessObject);
+        valueColumnText = valueColumnText.Replace ("\r\n", "<br>");
+      }
 
       //  Render the command
       bool isCommandEnabled = false;
