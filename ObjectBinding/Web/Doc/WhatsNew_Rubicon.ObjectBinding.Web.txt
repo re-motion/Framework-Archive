@@ -1,3 +1,11 @@
+1.2.43.0
+========
+
+- BocList
+  * Bugfix: Wird 2x hintereinander AddAndEditRow aufgerufen, kommt es zu einer Exception
+  * EmptyListMessage: Per Default jetzt deaktiviert.
+  * ShowEmptyListMessage: Aktiviert/Deaktiviert die EmptyListMessage.
+  
 1.2.42.0
 ========
 
