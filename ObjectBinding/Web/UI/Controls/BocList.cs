@@ -3497,6 +3497,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
+    _indexedRowsSorted = null;
     _isDirty = true;
     if (Value == null)
       return -1;
@@ -3518,6 +3519,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
+    _indexedRowsSorted = null;
     _isDirty = true;
   }
 

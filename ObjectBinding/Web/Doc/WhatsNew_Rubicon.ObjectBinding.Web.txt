@@ -2,7 +2,10 @@
 ========
 
 - BocList
-  * Bugfix: Wird 2x hintereinander AddAndEditRow aufgerufen, kommt es zu einer Exception
+  * Bugfix: Wird 2x hintereinander (ohne EndEditMode + Roundtrip) AddAndEditRow aufgerufen, 
+    kommt es zu einer Exception
+  * Bugfix: Der Seitennavigator wurde trotz leerer und nicht angezeigter Liste gerendert, falls
+    AlwaysShowPageInfo true ist.
   * EmptyListMessage: Per Default jetzt deaktiviert.
   * ShowEmptyListMessage: Aktiviert/Deaktiviert die EmptyListMessage.
   
