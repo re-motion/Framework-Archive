@@ -307,6 +307,10 @@ public sealed class StringUtility
       }
       return results;
     }
+    else if (type.IsEnum)
+    {
+      return Enum.Parse (type, value, false);
+    }
 
     try
     {
