@@ -59,3 +59,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
+[assembly: TagPrefix ("Rubicon.Data.DomainObjects.ObjectBinding.Web", "dow")]
