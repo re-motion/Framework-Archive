@@ -61,6 +61,8 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     }
     catch (Exception e)
     {
+      // MK: Exception.Message is shown when mapping in invalid. Please remove reference to System.Windows.Forms.dll when finished.
+      // Many thanks!
       MessageBox.Show (e.Message, "Error while reading mapping configuration");
     }
   }
