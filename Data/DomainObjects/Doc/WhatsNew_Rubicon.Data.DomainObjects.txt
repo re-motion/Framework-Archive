@@ -4,6 +4,10 @@
 - Rubicon.Data.DomainObjects.ObjectBinding.Web:
   Default TagPrefix "dow" vergeben, da ansonsten VS-Designer einen nichtssagenden Default-Präfix verwendet.
 
+- Rubicon.Data.DomainObjects:
+  Wird ein Objekt A, das in der aktuellen Transaktion neu angelegt wurde, im Committing-Event eines anderen Objektes B
+  gelöscht, wird jetzt für Objekt A kein Committing Event mehr ausgelöst.
+  
 
 1.2.35.0
 ========
