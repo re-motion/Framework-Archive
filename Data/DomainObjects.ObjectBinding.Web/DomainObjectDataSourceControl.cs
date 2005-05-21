@@ -14,12 +14,15 @@ using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;//MK
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
 {
+[Designer (typeof (DomainObjectDataSourceDesigner))]//MK
 public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
 {
   private DomainObjectDataSource _dataSource = new DomainObjectDataSource();
+  private ApplicationException _designTimeMappingException = null;//MK
 
   protected override void OnInit(EventArgs e)
   {
@@ -61,10 +64,18 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     }
     catch (Exception e)
     {
-      // MK: Exception.Message is shown when mapping in invalid. Please remove reference to System.Windows.Forms.dll when finished.
-      // Many thanks!
-      MessageBox.Show (e.Message, "Error while reading mapping configuration");
+      _designTimeMappingException = new ApplicationException ("Error while reading mapping configuration", e);//MK
     }
+  }
+
+  //MK
+  /// <summary>
+  ///   Returns any exceptions to be displayed in the designer.
+  /// </summary>
+  /// <returns> <see langword="null"/> if no exception has been thrown. </returns>
+  internal ApplicationException GetDesignTimeException()
+  {
+    return _designTimeMappingException;
   }
 
   private string GetMappingFilePath (string projectPath)
