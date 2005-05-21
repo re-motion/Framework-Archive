@@ -125,8 +125,13 @@
                 />
                 <Reference
                     Name = "system.windows.forms"
-                    AssemblyName = "system.windows.forms"
+                    AssemblyName = "System.Windows.Forms"
                     HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
+                />
+                <Reference
+                    Name = "system.design"
+                    AssemblyName = "system.design"
+                    HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
                 />
             </References>
         </Build>
@@ -153,6 +158,11 @@
                 />
                 <File
                     RelPath = "SearchObjectDataSourceControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DomainObjectDataSourceDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
