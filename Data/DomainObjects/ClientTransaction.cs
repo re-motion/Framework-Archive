@@ -539,10 +539,13 @@ public class ClientTransaction
       {
         foreach (DomainObject domainObject in domainObjectCommittingEventNotRaised)
         {
-          domainObject.BeginCommit ();
-
           if (!domainObject.IsDiscarded)
-            domainObjectComittingEventRaised.Add (domainObject);
+          {
+            domainObject.BeginCommit ();
+
+            if (!domainObject.IsDiscarded)
+              domainObjectComittingEventRaised.Add (domainObject);
+          }
         }
 
         changedDomainObjects = _dataManager.GetChangedDomainObjects ();

@@ -523,13 +523,16 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
   public void DeleteNewObjectsInDomainObjectsCommittingEvent ()
   {
     _newOrder.Committing += new EventHandler (NewOrder_Committing);
+    _newOrderTicket.Committing += new EventHandler (NewOrderTicket_Committing);
+    ClientTransactionMock.Committing += new ClientTransactionEventHandler (ClientTransactionMock_Committing_DeleteNewObjectsInDomainObjectsCommittingEvent);
+
     ClientTransactionMock.Commit ();
   }
 
   [Test]
   public void DeleteNewObjectsInClientTransactionsCommittingEvent ()
   {
-    ClientTransactionMock.Committing += new ClientTransactionEventHandler (ClientTransactionMock_Committing);
+    ClientTransactionMock.Committing += new ClientTransactionEventHandler (ClientTransactionMock_Committing_DeleteNewObjectsInClientTransactionsCommittingEvent);
     ClientTransactionMock.Commit ();
   }
 
@@ -539,10 +542,20 @@ public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
     _newOrderTicket.Delete ();
   }
 
-  private void ClientTransactionMock_Committing (object sender, ClientTransactionEventArgs args)
+  private void ClientTransactionMock_Committing_DeleteNewObjectsInClientTransactionsCommittingEvent (object sender, ClientTransactionEventArgs args)
   {
     _newOrder.Delete ();
     _newOrderTicket.Delete ();
+  }
+
+  private void ClientTransactionMock_Committing_DeleteNewObjectsInDomainObjectsCommittingEvent (object sender, ClientTransactionEventArgs args)
+  {
+    Assert.AreEqual (0, args.DomainObjects.Count);
+  }
+
+  private void NewOrderTicket_Committing(object sender, EventArgs e)
+  {
+    Assert.Fail ("NewOrderTicket_Committing event should not be raised.");
   }
 }
 }
