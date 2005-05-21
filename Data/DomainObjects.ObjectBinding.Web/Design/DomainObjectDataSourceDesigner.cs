@@ -16,8 +16,7 @@ public class DomainObjectDataSourceDesigner: BocDataSourceDesigner
     if (designTimeException != null)
       return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException, Component);
 
-    return CreatePlaceHolderDesignTimeHtml();
+    return CreatePlaceHolderDesignTimeHtml ();
   }
 }
-
 }

@@ -2,8 +2,10 @@
 ========
 
 - Rubicon.Data.DomainObjects.ObjectBinding.Web:
-  Default TagPrefix "dow" vergeben, da ansonsten VS-Designer einen nichtssagenden Default-Präfix verwendet.
-
+  * Attribut 'TagPrefix' ("dow") vergeben, da ansonsten VS-Designer eine nichtssagende Default-Präfix verwendet.
+  * DomainObjectDataSourceControl: Wenn beim Einlesen des Mappings eine Exception ausgelöst wird, 
+    wird jetzt keine MessageBox mehr angezeigt, sondern die Fehlermeldung in den Inhalt des Controls gerendert.
+    
 - Rubicon.Data.DomainObjects:
   Wird ein Objekt A, das in der aktuellen Transaktion neu angelegt wurde, im Committing-Event eines anderen Objektes B
   gelöscht, wird jetzt für Objekt A kein Committing Event mehr ausgelöst.

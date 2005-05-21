@@ -14,15 +14,15 @@ using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;//MK
+using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
 {
-[Designer (typeof (DomainObjectDataSourceDesigner))]//MK
+[Designer (typeof (DomainObjectDataSourceDesigner))]
 public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
 {
   private DomainObjectDataSource _dataSource = new DomainObjectDataSource();
-  private ApplicationException _designTimeMappingException = null;//MK
+  private ApplicationException _designTimeMappingException = null;
 
   protected override void OnInit(EventArgs e)
   {
@@ -57,23 +57,21 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     if (projectPath == null)
       return;
 
+    string mappingFile = string.Empty;
     try
     {
-      MappingLoader mappingLoader = new MappingLoader (GetMappingFilePath (projectPath), GetMappingSchemaPath (projectPath));
+      mappingFile = GetMappingFilePath (projectPath);
+      MappingLoader mappingLoader = new MappingLoader (mappingFile, GetMappingSchemaPath (projectPath));
       MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
     }
     catch (Exception e)
     {
-      _designTimeMappingException = new ApplicationException ("Error while reading mapping configuration", e);//MK
+      string message = string.Format ("Error while reading mapping configuration from file '{0}'.", mappingFile);
+      _designTimeMappingException = new ApplicationException (message, e);
     }
   }
 
-  //MK
-  /// <summary>
-  ///   Returns any exceptions to be displayed in the designer.
-  /// </summary>
-  /// <returns> <see langword="null"/> if no exception has been thrown. </returns>
-  internal ApplicationException GetDesignTimeException()
+  internal ApplicationException GetDesignTimeException ()
   {
     return _designTimeMappingException;
   }
