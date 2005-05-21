@@ -58,3 +58,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
+[assembly: TagPrefix ("Rubicon.Data.DomainObjects.ObjectBinding.Web", "dow")]
