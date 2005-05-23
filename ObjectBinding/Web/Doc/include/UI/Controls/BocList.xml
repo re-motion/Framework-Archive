@@ -225,7 +225,7 @@
       </para><para>
         Aside from provding a <see cref="BocEditDetailsColumnDefinition"/> for automatic management of the inline 
         editing, you can also use the <see cref="SwitchRowIntoEditMode"/> and <see cref="EndEditDetailsMode"/> methods
-        to start and end the details editing mode. 
+        to start and end the details editing mode.
       </para><para>
         You can query the row row currently being edited through the <see cref="ModifiableRowIndex"/> property. Use the
         <see cref="IsEditDetailsModeActive"/> flag to determine whether the <b>BocList</b> is currently in edit details
@@ -239,6 +239,12 @@
         You can register for the before and after save and change events using the <see cref="SavingEditedRow"/>,
         <see cref="EditedRowSaved"/>, <see cref="CancelingEditDetailsMode"/>, and <see cref="EditDetailsModeCanceled"/>
         event sources.
+      </para><para>
+        You can  add a new business object to the list of values, and start editing immediatly by calling
+        <see cref="AddAndEditRow"/>. When a business object is added in this way, canceling inline editing will once
+        again remove the business object from the list. It is the responsibility of the caller to handle the disposing
+        of the discarded business object, for instance by registering for the <see cref="EditDetailsModeCanceled"/>
+        event.
       </para><para>
         The following properties allow additonal customization of the details editing mode:
         <see cref="ShowEditDetailsRequiredMarkers"/>, <see cref="ShowEditDetailsValidationMarkers"/>,
@@ -275,6 +281,13 @@
           <description>
             <para> &lt;BocList Resource ID&gt;:ErrorMessage </para>
             <para> e.g. auto:MyBocList:ErrorMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="EmptyListMessage"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:EmptyListMessage </para>
+            <para> e.g. auto:MyBocList:EmptyListMessage </para>
           </description>
         </item>
         <item>
