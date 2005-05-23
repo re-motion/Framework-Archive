@@ -10,6 +10,7 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs"/>
+        <includes name="Design/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
