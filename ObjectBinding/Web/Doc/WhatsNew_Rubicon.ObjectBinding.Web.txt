@@ -8,7 +8,10 @@
     AlwaysShowPageInfo true ist.
   * EmptyListMessage: Per Default jetzt deaktiviert.
   * ShowEmptyListMessage: Aktiviert/Deaktiviert die EmptyListMessage.
-  
+
+- Business Object Controls
+  * Bugfix (Designer): Zuweisung der DataSource für mehrere Controls hat eine Exceptions geworfen.
+    
 1.2.42.0
 ========
 
