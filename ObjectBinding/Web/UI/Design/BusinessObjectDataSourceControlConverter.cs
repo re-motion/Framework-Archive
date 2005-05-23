@@ -12,20 +12,34 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
   {
   }
 
-  private object[] GetDataSourceControls (IBusinessObjectBoundWebControl control, IContainer container)
+  private object[] GetDataSourceControls (object instance, IContainer container)
   {
     ComponentCollection components = container.Components;
     ArrayList dataSources = new ArrayList();
 
-    for (int i = 0; i < components.Count; i++)
+    ICollection controls = null;
+    if (instance is Array)
+      controls = (Array) instance;
+    else
+      controls = new IBusinessObjectBoundWebControl[] {(IBusinessObjectBoundWebControl) instance};
+
+    for (int idxComponents = 0; idxComponents < components.Count; idxComponents++)
     {
-      IComponent component = (IComponent) components[i];
+      IComponent component = (IComponent) components[idxComponents];
       IBusinessObjectDataSourceControl dataSource = component as IBusinessObjectDataSourceControl;
-      if (   dataSource != null 
-          && ! StringUtility.IsNullOrEmpty (dataSource.ID)
-          && dataSource != control)
+      if (dataSource != null && ! StringUtility.IsNullOrEmpty (dataSource.ID))
       {
-        dataSources.Add (dataSource.ID);
+        bool hasSelfReference = false;
+        foreach (IBusinessObjectBoundWebControl control in controls)
+        {
+          if (dataSource == control)
+          {
+            hasSelfReference = true;
+            break;
+          }
+        }
+        if (! hasSelfReference)
+          dataSources.Add (dataSource.ID);
       }
     }
 
@@ -37,9 +51,7 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
   {
     if ((context != null) && (context.Container != null))
     {
-      object[] dataSources = GetDataSourceControls (
-          (IBusinessObjectBoundWebControl) context.Instance, 
-          context.Container);
+      object[] dataSources = GetDataSourceControls (context.Instance, context.Container);
       if (dataSources != null)
         return new TypeConverter.StandardValuesCollection (dataSources);
     }
