@@ -12,6 +12,9 @@
 - Business Object Controls
   * Bugfix (Designer): Zuweisung der DataSource für mehrere Controls hat eine Exceptions geworfen.
     
+- BocTextValue
+  * Bugfix: Invarient Culture / Englische Input Required Validation Message hat gefehlt.
+  
 1.2.42.0
 ========
 
