@@ -22,6 +22,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   NameValueCollection GetPostBackCollection ();
   void ExecuteNextStep ();
   void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback);
+  void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback);
   void ExecuteFunction (WxeFunction function);
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
@@ -151,12 +152,21 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
+    ExecuteFunction (function, target, null, sender, returningPostback);
+  }
+
+  public void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback)
+  {
     WxeFunctionState functionState = new WxeFunctionState (function);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
     string href = _page.Request.Path + "?WxeFunctionToken=" + functionState.FunctionToken;
-    string openScript = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
+    string openScript;
+    if (features != null)
+      openScript = string.Format (@"window.open(""{0}"", ""{1}"", ""{2}"");", href, target, features);
+    else
+      openScript = string.Format (@"window.open(""{0}"", ""{1}"");", href, target);
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
     string returnScript;
@@ -326,6 +336,11 @@ public class WxePage: Page, IWxePage
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
     _wxeInfo.ExecuteFunction (function, target, sender, returningPostback);
+  }
+
+  public void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback)
+  {
+    _wxeInfo.ExecuteFunction (function, target, features, sender, returningPostback);
   }
 
   public void ExecuteFunction (WxeFunction function)
