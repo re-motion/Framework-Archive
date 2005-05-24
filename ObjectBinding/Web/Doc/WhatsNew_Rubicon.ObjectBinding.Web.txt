@@ -1,3 +1,10 @@
+1.2.44.0
+========
+
+- BocTextValue
+  * Bugfix: TextMode = Multiline && ReadOnly = true && Text = null -> warf eine Exception
+    Aufgetreten mit Bugfix in Version 1.2.40.0
+
 1.2.43.0
 ========
 
