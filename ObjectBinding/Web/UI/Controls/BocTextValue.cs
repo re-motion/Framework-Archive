@@ -162,7 +162,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     if (IsReadOnly)
     {
       string text = null;
-      if (TextBoxStyle.TextMode == TextBoxMode.MultiLine)
+      if (   TextBoxStyle.TextMode == TextBoxMode.MultiLine 
+          && ! StringUtility.IsNullOrEmpty (_text))
       {
         //  Allows for an optional \r
         string temp = _text.Replace ("\r", "");
