@@ -23,7 +23,7 @@
     <td colspan="2"><obw:BocTextValue id="BocTextValue1" runat="server"></obw:BocTextValue></td></tr>
   <tr>
     <td></td>
-    <td></td></tr></table>
+    <td><asp:TextBox id="TextBox1" runat="server"></asp:TextBox></td></tr></table>
 <p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
 <p><rwc:FormGridManager id="FormGridManager1" runat="server"></rwc:FormGridManager></p></form>
 
