@@ -1,3 +1,9 @@
+1.2.47.0
+========
+- Der ViewState von WxePage wird in der Session abgelegt (genauer gesagt im WxePageStep).
+  Angenehmer Nebeneffekt: Änderungen des ViewState im gleichen Request wie ExecuteFunction
+  werden nicht mehr (wie bisher) verworfen.
+  
 1.2.45.0
 ========
 - neu: IWxePage.ExecuteFunction hat optionalen Parameter "features" (siehe javascript window.open, zB "location=no,toolbar=no")
