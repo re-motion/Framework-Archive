@@ -21,10 +21,30 @@ public interface IWxePage: IPage, IWxeTemplateControl
 {
   NameValueCollection GetPostBackCollection ();
   void ExecuteNextStep ();
+
+  /// <summary>
+  ///   Executes a WXE function in another window or frame.
+  /// </summary>
+  /// <include file='doc\include\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name!="sender"]' />
   void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback);
+  /// <summary>
+  ///   Executes a WXE function in another window or frame.
+  /// </summary>
+  /// <include file='doc\include\WxePage.xml' path='WxePage/ExecuteFunctionExternal/*' />
   void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback);
+
+  /// <summary>
+  ///   Executes a WXE function in the current window.
+  /// </summary>
   void ExecuteFunction (WxeFunction function);
+
+  /// <summary>
+  ///   Executes a WXE function in the current window without triggering the current post back event on returning.
+  /// </summary>
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
+  /// <summary>
+  ///   Executes a WXE function in the current window without triggering the current post back event on returning.
+  /// </summary>
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
   bool IsReturningPostBack { get; }
   WxeFunction ReturningFunction { get; }
@@ -301,6 +321,16 @@ public class WxePage: Page, IWxePage
 
   protected virtual void OnBeforeInit ()
   {
+  }
+
+  protected override void SavePageStateToPersistenceMedium (object viewState)
+  {
+    CurrentStep.SavePageStateToPersistenceMedium (viewState);
+  }
+
+  protected override object LoadPageStateFromPersistenceMedium()
+  {
+    return CurrentStep.LoadPageStateFromPersistenceMedium ();
   }
 
   public NameValueCollection GetPostBackCollection ()
