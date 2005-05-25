@@ -184,6 +184,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\WxePage.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "ExecutionEngine\NumberedMemberFinder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
