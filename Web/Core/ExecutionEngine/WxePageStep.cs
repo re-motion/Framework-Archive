@@ -43,6 +43,7 @@ public class WxePageStep: WxeStep
   private string _pageToken;
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
+  private object _viewState;
 
   public WxePageStep (string page)
   {
@@ -151,12 +152,14 @@ public class WxePageStep: WxeStep
   public void ExecuteFunction (IWxePage page, WxeFunction function)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
+    SaveTextBoxes (page);
     InternalExecuteFunction (function);
   }
 
   internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
+    SaveTextBoxes (page);
 
     if (usesEventTarget)
     {
@@ -182,6 +185,22 @@ public class WxePageStep: WxeStep
     Execute();
   }
 
+  private void SaveTextBoxes (IWxePage page)
+  {
+    foreach (Control child in page.Controls)
+    {
+      if (child is System.Web.UI.HtmlControls.HtmlForm)
+      {
+        System.Web.UI.WebControls.TextBox[] textBoxes = (System.Web.UI.WebControls.TextBox[]) 
+            ControlHelper.GetControlsRecursive (child, typeof (System.Web.UI.WebControls.TextBox));
+        foreach (System.Web.UI.WebControls.TextBox textBox in textBoxes)
+        {
+          string s = textBox.Text;
+        }
+      }
+    }
+  }
+
   public string PageToken
   {
     get { return _pageToken; }
@@ -191,6 +210,17 @@ public class WxePageStep: WxeStep
   {
     return Page;
   }
+
+  public void SavePageStateToPersistenceMedium (object viewState)
+  {
+    _viewState = viewState;
+  }
+
+  public object LoadPageStateFromPersistenceMedium()
+  {
+    return _viewState;
+  }
+
 }
 
 }
