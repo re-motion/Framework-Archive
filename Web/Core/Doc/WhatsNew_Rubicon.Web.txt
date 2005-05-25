@@ -1,3 +1,7 @@
+1.2.45.0
+========
+- neu: IWxePage.ExecuteFunction hat optionalen Parameter "features" (siehe javascript window.open, zB "location=no,toolbar=no")
+
 1.2.41.0
 ========
 
