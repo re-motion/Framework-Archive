@@ -73,6 +73,7 @@ public class WebConfiguration: IConfigurationSectionHandler
 public class ExecutionEngineConfiguration
 {
   private int _functionTimeout = 20;
+  private bool _viewStateInSession = true;
 
   /// <summary>
   /// Specifies the default timeout for individual functions within one session.
@@ -82,6 +83,16 @@ public class ExecutionEngineConfiguration
   {
     get { return _functionTimeout; }
     set { _functionTimeout = value; }
+  }
+
+  /// <summary>
+  ///   Specifies whether the page view state should be stored in the session.
+  /// </summary>
+  [XmlAttribute ("viewStateInSession")]
+  public bool ViewStateInSession
+  {
+    get { return _viewStateInSession; }
+    set { _viewStateInSession = value; }
   }
 }
 

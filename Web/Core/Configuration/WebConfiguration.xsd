@@ -9,6 +9,7 @@
         <xs:element name="executionEngine">
           <xs:complexType>
             <xs:attribute name="functionTimeout" type="xs:int" default="20" />            
+            <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
           </xs:complexType>
         </xs:element>
                
