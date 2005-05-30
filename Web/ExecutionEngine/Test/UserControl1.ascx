@@ -6,4 +6,6 @@
   <asp:Button id="Sub" style="Z-INDEX: 103; LEFT: 104px; POSITION: absolute; TOP: 88px" runat="server"
     Text="Sub"></asp:Button>
   <asp:Button id="Next" style="Z-INDEX: 104; LEFT: 168px; POSITION: absolute; TOP: 88px" runat="server"
-    Text="Next"></asp:Button></DIV>
+    Text="Next"></asp:Button>
+  <asp:Label id="Label1" style="Z-INDEX: 105; LEFT: 280px; POSITION: absolute; TOP: 48px" runat="server"
+    Width="112px">Label</asp:Label></DIV>
