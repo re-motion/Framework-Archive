@@ -1,3 +1,8 @@
+1.2.48
+======
+- Fix: ViewState wird nun auch vor ExecuteFunction() korrekt gespeichert.
+- Neu: Config-Eintrag um ViewState in Session abzuschalten (s. config-Schema)
+
 1.2.47.0
 ========
 - Der ViewState von WxePage wird in der Session abgelegt (genauer gesagt im WxePageStep).
