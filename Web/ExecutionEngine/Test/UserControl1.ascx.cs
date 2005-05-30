@@ -15,11 +15,19 @@ public class UserControl1 : WxeUserControl
   protected System.Web.UI.WebControls.TextBox TextBox1;
   protected System.Web.UI.WebControls.Button Stay;
   protected System.Web.UI.WebControls.Button Sub;
+  protected System.Web.UI.WebControls.Label Label1;
   protected System.Web.UI.WebControls.Button Next;
+
+  private static int s_counter = 0;
 
 	private void Page_Load (object sender, System.EventArgs e)
 	{
-		// Put user code to initialize the page here
+    if (! IsPostBack)
+    {
+      ++ s_counter;
+      ViewState["Counter"] = s_counter.ToString();
+    }
+    Label1.Text = (string) ViewState["Counter"];		
 	}
 
 	#region Web Form Designer generated code
@@ -53,6 +61,7 @@ public class UserControl1 : WxeUserControl
 
   private void Sub_Click (object sender, System.EventArgs e)
   {
+    ViewState["Counter"] += " Sub_Click";
     Page.ExecuteFunctionNoRepost (new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
   }
 
