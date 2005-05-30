@@ -12,6 +12,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -325,12 +326,18 @@ public class WxePage: Page, IWxePage
 
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
-    CurrentStep.SavePageStateToPersistenceMedium (viewState);
+    if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
+      CurrentStep.SavePageStateToPersistenceMedium (viewState);
+    else
+      base.SavePageStateToPersistenceMedium (viewState);
   }
 
   protected override object LoadPageStateFromPersistenceMedium()
   {
-    return CurrentStep.LoadPageStateFromPersistenceMedium ();
+    if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
+      return CurrentStep.LoadPageStateFromPersistenceMedium ();
+    else
+      return base.LoadPageStateFromPersistenceMedium ();
   }
 
   public NameValueCollection GetPostBackCollection ()

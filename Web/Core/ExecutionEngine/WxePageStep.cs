@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
+using System.Reflection;
+using System.IO;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
-using System.Reflection;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -43,7 +44,7 @@ public class WxePageStep: WxeStep
   private string _pageToken;
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
-  private object _viewState;
+  private string _viewState;
 
   public WxePageStep (string page)
   {
@@ -98,6 +99,7 @@ public class WxePageStep: WxeStep
       return name;
     }
   }
+
   public override void Execute (WxeContext context)
   {
     if (_function != null)
@@ -153,7 +155,7 @@ public class WxePageStep: WxeStep
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
     SaveTextBoxes (page);
-    InternalExecuteFunction (function);
+    InternalExecuteFunction (page, function);
   }
 
   internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
@@ -171,16 +173,20 @@ public class WxePageStep: WxeStep
       ArgumentUtility.CheckNotNull ("sender", sender);
       _postBackCollection.Remove (sender.UniqueID);
     }
-    InternalExecuteFunction (function);
+    InternalExecuteFunction (page, function);
   }
 
-  private void InternalExecuteFunction (WxeFunction function)
+  private void InternalExecuteFunction (IWxePage page, WxeFunction function)
   {
     if (_function != null)
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
 
     _function = function; 
-    _function.ParentStep = this;
+    _function.ParentStep = this;    
+
+    // page.SaveVieState()
+    MethodInfo saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
+    saveViewStateMethod.Invoke (page, new object[0]); 
 
     Execute();
   }
@@ -213,12 +219,16 @@ public class WxePageStep: WxeStep
 
   public void SavePageStateToPersistenceMedium (object viewState)
   {
-    _viewState = viewState;
+    LosFormatter formatter = new LosFormatter ();
+    StringWriter writer = new StringWriter ();
+    formatter.Serialize (writer, viewState);
+    _viewState = writer.ToString();
   }
 
   public object LoadPageStateFromPersistenceMedium()
   {
-    return _viewState;
+    LosFormatter formatter = new LosFormatter ();
+    return formatter.Deserialize (_viewState);
   }
 
 }
