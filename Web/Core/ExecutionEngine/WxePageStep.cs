@@ -154,14 +154,14 @@ public class WxePageStep: WxeStep
   public void ExecuteFunction (IWxePage page, WxeFunction function)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
-    SaveTextBoxes (page);
+    SaveFormValues (page);
     InternalExecuteFunction (page, function);
   }
 
   internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
-    SaveTextBoxes (page);
+    SaveFormValues (page);
 
     if (usesEventTarget)
     {
@@ -191,20 +191,22 @@ public class WxePageStep: WxeStep
     Execute();
   }
 
-  private void SaveTextBoxes (IWxePage page)
+  private void SaveFormValues (IWxePage page)
   {
-    foreach (Control child in page.Controls)
-    {
-      if (child is System.Web.UI.HtmlControls.HtmlForm)
-      {
-        System.Web.UI.WebControls.TextBox[] textBoxes = (System.Web.UI.WebControls.TextBox[]) 
-            ControlHelper.GetControlsRecursive (child, typeof (System.Web.UI.WebControls.TextBox));
-        foreach (System.Web.UI.WebControls.TextBox textBox in textBoxes)
-        {
-          string s = textBox.Text;
-        }
-      }
-    }
+    // TODO: save values of input controls
+
+    //  foreach (Control child in page.Controls)
+    //  {
+    //    if (child is System.Web.UI.HtmlControls.HtmlForm)
+    //    {
+    //      System.Web.UI.WebControls.TextBox[] textBoxes = (System.Web.UI.WebControls.TextBox[]) 
+    //          ControlHelper.GetControlsRecursive (child, typeof (System.Web.UI.WebControls.TextBox));
+    //      foreach (System.Web.UI.WebControls.TextBox textBox in textBoxes)
+    //      {
+    //        string s = textBox.Text;
+    //      }
+    //    }
+    //  }
   }
 
   public string PageToken
