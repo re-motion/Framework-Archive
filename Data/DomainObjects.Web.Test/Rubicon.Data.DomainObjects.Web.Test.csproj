@@ -94,18 +94,8 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Data.DomainObjects"
-                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Rubicon.Data.DomainObjects.ObjectBinding.Web"
-                    Project = "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Rubicon.Data.DomainObjects.ObjectBinding"
-                    Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+                    Name = "ObjectBinding.Web"
+                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
@@ -119,13 +109,23 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "ObjectBinding.Web"
-                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "Web"
-                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Name = "Rubicon.Data.DomainObjects"
+                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding"
+                    Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding.Web"
+                    Project = "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
