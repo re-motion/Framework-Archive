@@ -397,9 +397,12 @@
           <includes name="Doc/Readme*" />
         </fileset>
       </copy>
-      <!-- else -->
-    </if>
-    <if unless="${build.copyresources}" propertyexists="dummy">
+      <copy todir="${build.basedir}/schema" flatten="true">
+        <fileset basedir="${project.dir}/">
+          <includes name="**/*.xsd" />
+        </fileset>
+      </copy>
+    <!-- else --> </if> <if unless="${build.copyresources}" propertyexists="dummy">
       <echo message="building ${project.output}.${project.extension} ${build.version}"/>
 
       <if if="${build.createdoc}" propertyexists="dummy">
