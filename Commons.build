@@ -256,7 +256,7 @@
 
   <target name="Data.DomainObjects.CodeGenerator" depends="Data.DomainObjects,initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator" />
-    <property name="project.dir" value="Data/DomainObjects/CodeGenerator" />
+    <property name="project.dir" value="Data/DomainObjects.CodeGenerator" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -264,7 +264,7 @@
 
   <target name="Data.DomainObjects.CodeGenerator.Console" depends="Data.DomainObjects.CodeGenerator,initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.Console" />
-    <property name="project.dir" value="Data/DomainObjects/CodeGenerator/Console" />
+    <property name="project.dir" value="Data/DomainObjects.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
     <property name="project.extension" value="exe" />
     <call target="build" />
@@ -272,7 +272,7 @@
 
   <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects,initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding" />
-    <property name="project.dir" value="Data/DomainObjects/ObjectBinding" />
+    <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -280,7 +280,7 @@
 
   <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding,initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
-    <property name="project.dir" value="Data/DomainObjects/ObjectBinding/Web" />
+    <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
     <call target="build" />
@@ -346,7 +346,7 @@
 
   <target name="Data.DomainObjects.UnitTests" depends="Data.DomainObjects">
     <property name="project.name" value="Rubicon.Data.DomainObjects.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects/UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
