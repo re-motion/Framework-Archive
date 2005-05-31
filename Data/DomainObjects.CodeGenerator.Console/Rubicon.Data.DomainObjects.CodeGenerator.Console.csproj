@@ -21,7 +21,7 @@
                 DelaySign = "false"
                 OutputType = "Exe"
                 PreBuildEvent = ""
-                PostBuildEvent = "copy $(ProjectDir)..\..\*.xsd $(TargetDir)"
+                PostBuildEvent = "copy $(ProjectDir)..\DomainObjects\*.xsd $(TargetDir)"
                 RootNamespace = "Rubicon.Data.DomainObjects.CodeGenerator.Console"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
