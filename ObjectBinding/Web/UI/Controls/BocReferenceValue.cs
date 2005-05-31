@@ -1253,7 +1253,7 @@ public class BocReferenceValue:
   /// <summary> This event is fired when the value's command is clicked. </summary>
   [Category ("Action")]
   [Description ("Fires when the value's command is clicked.")]
-  public event EventHandler CommandClick
+  public event BocCommandClickEventHandler CommandClick
   {
     add { Events.AddHandler (s_commandClickEvent, value); }
     remove { Events.RemoveHandler (s_commandClickEvent, value); }
