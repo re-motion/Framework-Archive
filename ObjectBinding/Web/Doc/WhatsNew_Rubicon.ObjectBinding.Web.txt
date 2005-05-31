@@ -1,3 +1,9 @@
+1.2.50.0
+========
+
+- BocReferenceValue
+  * Bugfix: CommandClick war vom Typ EventHandler, sollte aber vom Typ BocCommandClickEventHandler sein.
+  
 1.2.44.0
 ========
 
