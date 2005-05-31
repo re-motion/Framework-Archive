@@ -1,3 +1,7 @@
+1.2.49
+======
+- Fix: Fehlende Resource WebConfiguration.xsd in Assembly hinzugefügt (build script fehler)
+
 1.2.48
 ======
 - Fix: ViewState wird nun auch vor ExecuteFunction() korrekt gespeichert.
