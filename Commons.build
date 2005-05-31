@@ -397,11 +397,13 @@
           <includes name="Doc/Readme*" />
         </fileset>
       </copy>
-      <copy todir="${build.basedir}/schema" flatten="true">
+      <!-- currently not working, wait for correct project directory structure in Data\DomainObjects
+      <copy todir="${build.basedir}/schema/${project.output}" flatten="true">
         <fileset basedir="${project.dir}/">
           <includes name="**/*.xsd" />
         </fileset>
       </copy>
+      -->
     <!-- else --> </if> <if unless="${build.copyresources}" propertyexists="dummy">
       <echo message="building ${project.output}.${project.extension} ${build.version}"/>
 
