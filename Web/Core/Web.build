@@ -33,6 +33,7 @@
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web">
         <includes name="UI/Globalization/*.resx" />
+        <includes name="Configuration/WebConfiguration.xsd" />
       </resources>
     </csc>
         
