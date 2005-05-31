@@ -442,6 +442,7 @@
       <fileset basedir="${project.builddir}">
         <includes name="*.dll" />
         <includes name="*.pdb" />
+        <includes name="*.xsd" /> <!-- TODO: warum ging das bisher auch ohne? entfernen sobald XSDs als resourcen gelinkt werden! -->
       </fileset>
     </copy>
 
