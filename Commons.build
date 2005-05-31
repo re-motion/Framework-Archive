@@ -350,11 +350,11 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects\UnitTests\Database\CreateDB.sql"
+          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects\UnitTests\Database\setupDB.sql"
+          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <copy todir="${tests.builddir}" >
