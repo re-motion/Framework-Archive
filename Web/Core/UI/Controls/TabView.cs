@@ -88,4 +88,21 @@ public class TabView : System.Web.UI.WebControls.View
   }
 }
 
+
+#if ! net20
+[CLSCompliant (false)]
+#endif
+public class EmptyTabView: TabView
+{
+  public EmptyTabView()
+  {
+    Title = "--";
+  }
+
+  protected override ControlCollection CreateControlCollection()
+  {
+    return new EmptyControlCollection (this);
+  }
+}
+
 }
