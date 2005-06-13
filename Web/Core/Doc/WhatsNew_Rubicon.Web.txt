@@ -2,7 +2,10 @@
 ======
 - TabbedMultiView
   * Tabs können nun mittels TabbedMultiView.Views.Remove (...) bzw TabbedMultiView.Viws.RemoveAt (...) entfernt werden.
-  
+
+- WebButton
+  * Button wird disabled sobald geklickt und eventuelle client-seitige Validierung erfolgreich.
+    
 1.2.49
 ======
 - Fix: Fehlende Resource WebConfiguration.xsd in Assembly hinzugefügt (build script fehler)
