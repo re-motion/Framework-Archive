@@ -197,6 +197,8 @@ public class BocList:
   private static readonly object s_editDetailsModeCancelingEvent = new object();
   private static readonly object s_editDetailsModeCanceledEvent = new object();
 
+  private static readonly object s_dataRowRenderEvent = new object();
+
   private static readonly string s_scriptFileKey = typeof (BocList).FullName + "_Script";
   private static readonly string s_startUpScriptKey = typeof (BocList).FullName+ "_Startup";
   private static readonly string s_styleFileKey = typeof (BocList).FullName + "_Style";
@@ -2138,6 +2140,10 @@ public class BocList:
       writer.RenderEndTag();
     }
 
+    BocListDataRowRenderEventArgs dataRowRenderEventArgs = 
+        new BocListDataRowRenderEventArgs (originalRowIndex, businessObject);
+    OnDataRowRendering (dataRowRenderEventArgs);
+
     bool firstValueColumnRendered = false;
     for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
     {
@@ -2148,17 +2154,33 @@ public class BocList:
         firstValueColumnRendered = true;
         showIcon = EnableIcon;
       }
-      RenderDataCell (writer, idxColumns, column, originalRowIndex, businessObject, showIcon, cssClassTableCell);
+      RenderDataCell (
+          writer, 
+          idxColumns, 
+          column, 
+          originalRowIndex, 
+          businessObject, 
+          showIcon, 
+          cssClassTableCell, 
+          dataRowRenderEventArgs);
     }
     
     writer.RenderEndTag();
+  }
+
+  protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)
+  {
+    BocListDataRowRenderEventHandler handler = (BocListDataRowRenderEventHandler) Events[s_dataRowRenderEvent];
+    if (handler != null)
+      handler (this, e);
   }
 
   private void RenderDataCell (
       HtmlTextWriter writer, 
       int columnIndex, BocColumnDefinition column, 
       int originalRowIndex, IBusinessObject businessObject,
-      bool showIcon, string cssClassTableCell)
+      bool showIcon, string cssClassTableCell,
+      BocListDataRowRenderEventArgs dataRowRenderEventArgs)
   {
     bool isReadOnly = IsReadOnly;
     bool isEditedRow = ! ModifiableRowIndex.IsNull && ModifiableRowIndex.Value == originalRowIndex;
@@ -2209,7 +2231,7 @@ public class BocList:
       }
       else if (simpleColumn != null)
       {
-        if (hasEditModeControl)
+        if (hasEditModeControl && ! simpleColumn.IsReadOnly)
           RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex);
         else
           RenderValueColumnCellText (writer, valueColumnText);
@@ -2223,7 +2245,12 @@ public class BocList:
     }
     else if (editDetailsColumn != null)
     {
-      RenderEditDetailsColumnCell (writer, editDetailsColumn, isEditedRow, originalRowIndex);
+      RenderEditDetailsColumnCell (
+          writer, 
+          editDetailsColumn, 
+          isEditedRow, 
+          dataRowRenderEventArgs.IsModifiableRow, 
+          originalRowIndex);
     }
     else if (customColumn != null)
     {
@@ -2311,6 +2338,7 @@ public class BocList:
       HtmlTextWriter writer, 
       BocEditDetailsColumnDefinition column,
       bool isEditedRow,
+      bool isModifiableRow,
       int originalRowIndex)
   {
     bool isReadOnly = IsReadOnly;
@@ -2365,26 +2393,33 @@ public class BocList:
     }
     else
     {
-      if (! isReadOnly)
+      if (isModifiableRow)
       {
-        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
-        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
+        if (! isReadOnly)
+        {
+          argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
+          postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+          writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
+        }
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+
+        bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
+        bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
+
+        if (hasEditIcon)
+          RenderIcon (writer, column.EditIcon);
+        if (hasEditIcon && hasEditText)
+          writer.Write (c_whiteSpace);
+        if (hasEditText)
+          writer.Write (column.EditText);
+
+        writer.RenderEndTag();
       }
-      writer.RenderBeginTag (HtmlTextWriterTag.A);
-
-      bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
-      bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
-
-      if (hasEditIcon)
-        RenderIcon (writer, column.EditIcon);
-      if (hasEditIcon && hasEditText)
+      else
+      {
         writer.Write (c_whiteSpace);
-      if (hasEditText)
-        writer.Write (column.EditText);
-
-      writer.RenderEndTag();
+      }
     }
   }
 
@@ -3110,6 +3145,7 @@ public class BocList:
     return _indexedRowsSorted;
   }
 
+
   /// <summary>
   ///   Removes the columns provided by <see cref="SelectedColumnDefinitionSet"/> from the 
   ///   <see cref="_sortingOrder"/> list.
@@ -3749,6 +3785,8 @@ public class BocList:
       BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
       if (simpleColumn == null)
         continue;
+      if (simpleColumn.IsReadOnly)
+        continue;
       if (simpleColumn.PropertyPath.Properties.Length > 1)
         continue;
 
@@ -3995,6 +4033,14 @@ public class BocList:
     remove { Events.RemoveHandler (s_editDetailsModeCanceledEvent, value); }
   }
 
+  /// <summary> Is raised when a data row is rendered. </summary>
+  [Category ("Action")]
+  [Description ("Occurs when a data row is rendered.")]
+  public event BocListDataRowRenderEventHandler DataRowRender
+  {
+    add { Events.AddHandler (s_dataRowRenderEvent, value); }
+    remove { Events.RemoveHandler (s_dataRowRenderEvent, value); }
+  }
 
   /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
   /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
@@ -5001,6 +5047,25 @@ public class BocListRowEditModeEventArgs: BocListItemEventArgs
   public IBusinessObjectBoundModifiableControl[] Controls
   {
     get { return _controls; }
+  }
+}
+
+public delegate void BocListDataRowRenderEventHandler (object sender, BocListDataRowRenderEventArgs e);
+
+public class BocListDataRowRenderEventArgs: BocListItemEventArgs
+{
+  private bool _isModifiableRow = true;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject)
+    : base (listIndex, businessObject)
+  {
+  }
+
+  public bool IsModifiableRow
+  {
+    get { return _isModifiableRow; }
+    set { _isModifiableRow = value; }
   }
 }
 
