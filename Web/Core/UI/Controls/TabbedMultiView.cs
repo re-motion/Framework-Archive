@@ -48,6 +48,16 @@ public class TabbedMultiView: WebControl, IControl
     {
       Parent.OnTabViewInserted (view);
     }
+
+    internal void OnTabViewRemove (TabView view)
+    {
+      Parent.OnTabViewRemove (view);
+    }
+ 
+    internal void OnTabViewRemoved (TabView view)
+    {
+      Parent.OnTabViewRemoved (view);
+    }
  
     protected new TabbedMultiView Parent
     {
@@ -132,6 +142,7 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
+
   // fields
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
@@ -142,6 +153,8 @@ public class TabbedMultiView: WebControl, IControl
   private Style _activeViewStyle;
   private Style _topControlsStyle;
   private Style _bottomControlsStyle;
+
+  private EmptyTabView _placeHolderTabView;
 
   // construction and destruction
   public TabbedMultiView()
@@ -156,9 +169,10 @@ public class TabbedMultiView: WebControl, IControl
   private void CreateControls()
   {
     _tabStrip = new WebTabStrip (this);
-    _multiViewInternal = new TabbedMultiView.MultiView ();
+    _multiViewInternal = new TabbedMultiView.MultiView();
     _topControl = new PlaceHolder();
     _bottomControl = new PlaceHolder();
+    _placeHolderTabView = new EmptyTabView();
   }
 
   // methods and properties
@@ -176,7 +190,7 @@ public class TabbedMultiView: WebControl, IControl
     _bottomControl.ID = ID + "_BottomControl";
     Controls.Add (_bottomControl);
   }
-  
+
   private void OnTabViewInserted (TabView view)
   {
     EnsureChildControls();
@@ -189,6 +203,57 @@ public class TabbedMultiView: WebControl, IControl
     tab.Icon = view.Icon;
     tab.Target = view.ID;
     _tabStrip.Tabs.Add (tab);
+
+    if (Views.Count == 2 && Views.IndexOf (_placeHolderTabView) > 0)
+      Views.Remove (_placeHolderTabView);
+  }
+
+  private TabView _newActiveTabAfterRemove;
+
+  private void OnTabViewRemove (TabView view)
+  {
+    EnsureChildControls();
+
+    TabView activeView = GetActiveView();
+    if (view != null && view == activeView)
+    {
+      int index = MultiViewInternal.Controls.IndexOf (view);
+      if (index == MultiViewInternal.Controls.Count - 1)
+      {
+        if (MultiViewInternal.Controls.Count > 1)
+          _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[MultiViewInternal.Controls.Count - 2];
+        else // No Tabs left after this tab
+          _newActiveTabAfterRemove = _placeHolderTabView;
+      }
+      else
+      {
+        _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[index + 1];
+      }
+    }
+    else
+    {
+      _newActiveTabAfterRemove = null;
+    }
+  }
+  
+  private void OnTabViewRemoved (TabView view)
+  {
+    EnsureChildControls();
+
+    WebTab tab = _tabStrip.Tabs.Find (view.ID + c_tabIDSuffix);
+    if (tab == null)
+      return;
+
+    int tabIndex = _tabStrip.Tabs.IndexOf (tab);
+    _tabStrip.Tabs.RemoveAt (tabIndex); //  Remove Tab
+    _tabStrip.Tabs.RemoveAt (tabIndex - 1); // Remove Separator
+
+    if (_newActiveTabAfterRemove != null)
+    {
+      if (_newActiveTabAfterRemove == _placeHolderTabView)
+        Views.Add (_placeHolderTabView);
+      SetActiveView (_newActiveTabAfterRemove);
+    }
   }
 
 #if ! net20
@@ -230,6 +295,9 @@ public class TabbedMultiView: WebControl, IControl
           this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
     }
+
+    if (Views.Count == 0)
+      Views.Add (_placeHolderTabView);
 
     base.OnPreRender (e);
   }
