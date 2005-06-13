@@ -35,7 +35,7 @@ public class WebButton :
   {
   }
 
-  public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+  public bool LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     return false;
   }
@@ -88,6 +88,7 @@ public class WebButton :
           }
         }
       }
+      onClick += "this.disabled=true; ";
       onClick += Page.GetPostBackEventReference (this) + "; ";
       onClick += "return false;";
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
