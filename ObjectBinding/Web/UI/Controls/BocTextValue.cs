@@ -326,25 +326,26 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
 
     BocTextValueType valueType = ActualValueType;
+    if (! _textBoxStyle.MaxLength.IsNull)
+    {
+      LengthValidator lengthValidator = new LengthValidator();
+      lengthValidator.ID = ID + "_ValidatorMaxLength";
+      lengthValidator.ControlToValidate = TargetControl.ID;
+      lengthValidator.MaximumLength = _textBoxStyle.MaxLength.Value;
+      if (StringUtility.IsNullOrEmpty (_errorMessage))
+      {
+        string maxLengthMessage = GetResourceManager().GetString (ResourceIdentifier.MaxLengthValidationMessage);
+        lengthValidator.ErrorMessage = string.Format (maxLengthMessage, _textBoxStyle.MaxLength.Value);            
+      }
+      else
+      {
+        lengthValidator.ErrorMessage = _errorMessage;
+      }      
+      validators.Add (lengthValidator);
+    }
     if (valueType == BocTextValueType.String)
     {
-      if (! _textBoxStyle.MaxLength.IsNull)
-      {
-        LengthValidator lengthValidator = new LengthValidator();
-        lengthValidator.ID = ID + "_ValidatorMaxLength";
-        lengthValidator.ControlToValidate = TargetControl.ID;
-        lengthValidator.MaximumLength = _textBoxStyle.MaxLength.Value;
-        if (StringUtility.IsNullOrEmpty (_errorMessage))
-        {
-          string maxLengthMessage = GetResourceManager().GetString (ResourceIdentifier.MaxLengthValidationMessage);
-          lengthValidator.ErrorMessage = string.Format (maxLengthMessage, _textBoxStyle.MaxLength.Value);            
-        }
-        else
-        {
-          lengthValidator.ErrorMessage = _errorMessage;
-        }      
-        validators.Add (lengthValidator);
-      }
+      // Empty case
     }
     else if (valueType == BocTextValueType.DateTime)
     {
@@ -426,9 +427,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
       if (stringProperty != null)
       {
-        NaInt32 length = stringProperty.MaxLength;
-        if (! length.IsNull)
-          _textBox.MaxLength = length.Value;
+        if (_textBoxStyle.MaxLength.IsNull)
+        {
+          NaInt32 length = stringProperty.MaxLength;
+          if (!length.IsNull)
+            _textBoxStyle.MaxLength = length.Value;
+        }
       }
     }
   }
