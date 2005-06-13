@@ -1,19 +1,26 @@
-1.2.50.0
-========
-
+1.2.50
+======
+- BocList
+  * DataRowRender: Neues Event. Verwendet um zeilenweise den Details Editing Mode zu deaktivieren.
+    Siehe Event Args (BocListDataRowRenderEventArgs).
+  * SimpleColumn: Neue Property: IsReadOnly. Verwendet um explizit den Details Editing Mode zu deaktiveren.
+  
+- BocTextValue
+  * MaxLength Validator wird nun immer erzeugt wenn eine MaxLength angegeben ist.
+    
+1.2.49
+======
 - BocReferenceValue
   * Bugfix: CommandClick war vom Typ EventHandler, sollte aber vom Typ BocCommandClickEventHandler sein.
   
-1.2.44.0
-========
-
+1.2.44
+======
 - BocTextValue
   * Bugfix: TextMode = Multiline && ReadOnly = true && Text = null -> warf eine Exception
-    Aufgetreten mit Bugfix in Version 1.2.40.0
+    Aufgetreten mit Bugfix in Version 1.2.40
 
-1.2.43.0
-========
-
+1.2.43
+======
 - BocList
   * Bugfix: Wird 2x hintereinander (ohne EndEditMode + Roundtrip) AddAndEditRow aufgerufen, 
     kommt es zu einer Exception
@@ -28,9 +35,8 @@
 - BocTextValue
   * Bugfix: Invarient Culture / Englische Input Required Validation Message hat gefehlt.
   
-1.2.42.0
-========
-
+1.2.42
+======
 - BocReferenceValue
   * Bugfix: Options-Menü hat beim Command Show==ReadOnly nicht ausgewertet.
   * SetBusinessObjectList unterstützt jetzt auch IList.
@@ -38,20 +44,18 @@
 - BocList
   * Bugfix: Options-Menü hat beim Command Show==ReadOnly nicht ausgewertet.
     
-1.2.41.0
-========
-
+1.2.41
+======
 - BocEnumValue
   * Bugfix: Wurde das Binding ausgewertet bevor der Value geladen war, ist die Liste nicht mit den möglichen 
     Enum-Werten befüllt worden.
     
-1.2.40.0
-========
-
+1.2.40
+======
 - BocList:
   * Bugfix: Selected Rows gingen beim Details Editing verloren.
   * Bugfix: Javascriptfehler wenn beim Details Editing mit Hilfe des DatePickers ein Datum ausgewählt wurde.
-    Aufgetreten mit 1.2.36.0.
+    Aufgetreten mit 1.2.36.
   * Bugfix: Resourcen wurden nur für die jeweils erste gefundene Spalte/MenuItem dispatched.
   * Bugfix: Falls die Edit-Details Column auf Show=EditMode gesetzt hatte und die Liste Read-Only war
     wurde trotzdem das col-Tag gerendert. Dadurch wurden angegebene Spaltenbreiten eine Spalte versetzt zugewiesen,
@@ -69,9 +73,8 @@
 - BocTextValue
   * Bugfix: Multiline TextValues im Read-Only Mode hatten keine <br/> statt der Zeilenumbrüche eingefügt.
   
-1.2.39.0
-========
-
+1.2.39
+======
 - BocList
   * Bugfix: Einfügen eines neuen Objektes zum Editieren: Wurden beim 1. Speichern bereits fehlerhafte Eingaben gefunden
     so wurde die Zeile verworfen anstatt das Speichern abzubrechen.
@@ -80,23 +83,20 @@
   * EndRowEditMode zu EndEditDetailsMode umbenannt.
   * EditDetailsCanceled zu EditDetailsModeCanceled umbenannt.
   
-1.2.38.0
-========
-
+1.2.38
+======
 - BocList
   * Bugfix: Canceling des RowEditModes für eine neu hinzugefügte Zeile warf eine Exception.
   * Bugfix: Es wurde nicht der richtige View angezeigt.
 
-1.2.37.0
-========
-
+1.2.37
+======
 - BocList
   * Bugfix: Wurden die Views einer Boclist verändert, so kam es zu IndexOutOfRange Exceptions wenn der SelectedIndex
-    höher war als die aktuelle Anzahl an Views. Aufgetreten mit 1.2.35.0 (Folgefehler des Bugfixes).
+    höher war als die aktuelle Anzahl an Views. Aufgetreten mit 1.2.35 (Folgefehler des Bugfixes).
    
-1.2.36.0
-========
-
+1.2.36
+======
 - BocBooleanValue
   * Unterstützt jetzt auto-postback
   
@@ -104,21 +104,19 @@
   * Bugfix: Bei verwenden des Date-Pickers wurde auto-postback nicht ausgelöst.
 
 - BocList
-  * Bugfix: SelectedRows gingen verloren bei ReadOnly Listen. Aufgetreten mit 1.2.35.0.
+  * Bugfix: SelectedRows gingen verloren bei ReadOnly Listen. Aufgetreten mit 1.2.35.
   * Bugfix: View konnte per DropDownBox nur geändert werden, wenn das Control im Edit-Mode war.
-    Aufgetreten mit 1.2.35.0
+    Aufgetreten mit 1.2.35
   
-1.2.35.0
-========
-
+1.2.35
+======
 - BocList
   * Bugfix: Selected Rows wurden bei Tab-Wechsel gelöscht.
   * Bugfix: Auswahl eines Views mit weniger Spalten als der vorherige warf eine Exception wenn
     nach einer nun nicht mehr vorhandenen Spalte sortiert wurde.
     
-1.2.34.0
-========
-
+1.2.34
+======
 - BusinessObjectReferenceDataSourceControl
   * Bugfix: Selbstreferenz konnte gesetzt werden und führte zu Stackoverflow-Meldung im Designer.
 
@@ -132,9 +130,8 @@
   * Bugfix: Sortingorder händisch setzen für eine nicht angezeigte BocList, führte zu einer Exception sobald die 
     BocList sichtbar wird.
     
-1.2.33.0
-========
-
+1.2.33
+======
 - BocList
   * AddAndEditRow: 
     Neue Methode. Fügt ein IBusinessObject als neue Zeile am Ende von (IList) Value ein 
@@ -146,25 +143,23 @@
   * SavingEditedRow, EditedRowSaved, CancelingEditDetailsMode, EditDetailsCanceled
     Eventhandler für Vor/Nach Save/Cancel des Edit Details Mode.
       
-1.2.32.0
-========
-
+1.2.32
+======
 - BocTextValue, BocMultilineTextValue und BocRefereneValue
   * Bugfix: Falls bei einer mehrzeiligen Textbox eine Maximallänge angegeben war und auf der gleichen Seite ein
     BocReferenceValue platziert ist, kommt es zu JavaScript Fehlern.
-    Abhilfe bevor 1.2.32.0: TextBoxStyle.CheckClientSideMaxLength auf false setzen.
-    Aufgetreten mit 1.2.19.0
+    Abhilfe bevor 1.2.32: TextBoxStyle.CheckClientSideMaxLength auf false setzen.
+    Aufgetreten mit 1.2.19
     
 - BocList
   * ShowSortingOrder: Von bool auf NaBoolean geändert. Defaultwert ist nun Undefined, wird als True interpretiert.
     Sollte keine Änderungen an bestehenden ASPX-Seite erforderlich machen. Ausnahme: ShowSortingOrder soll False sein.
   * EnableMultipleSorting: Neue Property. Beschränkt das Sortieren auf eine Spalte gleichzeitig.    
 
-1.2.31.0
-========
-
+1.2.31
+======
 - BocList
-  * Bugfix: Paging hat seit 1.2.29.0 nur eingeschränkt funktioniert.
+  * Bugfix: Paging hat seit 1.2.29 nur eingeschränkt funktioniert.
     Go To First, Go To last funktionieren. 
     Go To Next funktioniert eingeschränkt (immer die 2. Seite).
     Go To Previous wirft eine Exception.
@@ -174,9 +169,8 @@
 - Sämtliche Modifiable Controls
   * Bugfix: ReadOnly=false hat vor DataSource.Mode=Read gezogen. Für komplettes Verhalten von ReadOnly, siehe Doku.
     
-1.2.30.0
-========
-
+1.2.30
+======
 - BocTextValue
   * TextBoxStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
@@ -193,8 +187,8 @@
 - BocReferenceValue
   * ListControlStyle: AutoPostback auf AutoPostBack geändert. Muss im Designer nicht korrigiert werden.
 
-1.2.28.0
-========
+1.2.28
+======
 
 - BocList
   * Edit Details konfigurierbar:
@@ -202,20 +196,20 @@
     ShowEditDetailsValidationMarkers
     DisableEditDetailsValidationMessages
   
-1.2.26.0
-========
+1.2.26
+======
 
 - BocList
-  * Bug: GetSelectedRows() ist defekt. Gefixt mit 1.2.28.0.
+  * Bug: GetSelectedRows() ist defekt. Gefixt mit 1.2.28.
   
-1.2.25.0
-========
+1.2.25
+======
 
 - BocList
-  * Bug-Fix: Inline Editing hat nicht funktioniert seit 1.2.21.0.
+  * Bug-Fix: Inline Editing hat nicht funktioniert seit 1.2.21.
   
-1.2.21.0
-========
+1.2.21
+======
 
 - IBusinessObjectDataSourceControl
   * EditMode entfernt
@@ -223,8 +217,8 @@
     Search and Replace in den ASPX/ASCX Sourcen: 
     EditMode="false" durch Mode="Read" bzw EditMode="true" durch Mode="Edit" ersetzen.
   
-1.2.20.0
-========
+1.2.20
+======
 
 - BocReferenceValue
   * BugFix: GetOptionsMenuItem wurde nur im OnLoad aufgerufen und damit unter Umständen vor LoadValue().
@@ -238,20 +232,20 @@
 - BocCustomColumnDefinitionCell
   * Statt OnClick DoOnClick überschreiben.
   
-1.2.19.0
-========
+1.2.19
+======
 
 - BocList
   * GetCustomCellPostBackClientHyperlink gibt es nicht mehr.
     Stattdessen nur noch GetCustomCellPostBackClientEvent verwenden.
-  * Bug-Fix ListMenu, OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
+  * Bug-Fix ListMenu, OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19
     
 - BocCustomColumnDefinitionCell
   * Ersetzt IBocCustomColumnDefinitionCell
   * DoRender und OnCLick überschreiben. Siehe Dokumentation für zusätzliche Infos.
   
 - BocReferenceValue
-  * Bug-Fix OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19.0
+  * Bug-Fix OptionsMenu: Events für Einträge wurden nicht korrekt ausgelöst. Aufgetreten mit 1.2.19
 
 - BocTextValue
   * Length Validation für Single und Multiline
@@ -259,21 +253,21 @@
 - BocMultilineTextValue
   * Length Validation
     
-1.2.18.0
-========
+1.2.18
+======
 
 - BocList
   * SetSortingOrder:
     Neue Methode, erlaubt das festlegen der Sortierung.
     
-1.2.17.0
-========
+1.2.17
+======
 
 - BocReferenceValue
   * Bug-Fix: Darstellung im Edit-Mode war fehlerhaft: Die Drop-Down-Box wurde zu schmal dargestellt.
   
-1.2.16.0
-========
+1.2.16
+======
 
 - BocEnumValue
   * Rubicon.ObjectBinding.Web.Controls.BocEnumValue.NullItemDisplayName umbenannt zu
@@ -282,8 +276,8 @@
 - BocDateTimeValue
   * IsValidValue gibt es nicht mehr. Value gibt null zurück wenn Daten ungültig oder Felder leer.
    
-1.2.15.0
-========
+1.2.15
+======
 
 - BocList
   * BugFix: Selection-Mode Single: in der TitleRow wurde keine Zelle gerendert.
@@ -316,35 +310,35 @@
   * BocCustomColumnClickEventArgs umbenannt zu BocCustomCellClickEventArgs.
   
 - BocEnumValue
-  * BugFix: Listentyp (Radio-Buttons, Liste, Drop-Down) wurde nicht angewandt. Aufgetreten mit 1.1.40.0.
+  * BugFix: Listentyp (Radio-Buttons, Liste, Drop-Down) wurde nicht angewandt. Aufgetreten mit 1.1.40.
   
 - BusinessObjectBoundControls
   * Bug-Fix: Im Designer, bei der Auswahl der Property, wurde die DataSource nicht gefunden, 
     wenn die DataSource und das Control im selben Refresh-Zyklus platziert wurden.
     
-1.2.14.0
-========
+1.2.14
+======
 
 - BocReferenceValue
   * SetBusinessObjectReferenceList zu SetBusinessObjectList umbenannt.
   * RefreshBusinessObjectList(...) protected gestellt. Nur noch SetBusinessObjectList(...) verwenden um die 
     Liste zu befüllen.
   
-1.2.12.0
-========
+1.2.12
+======
 
 - BocList
   * Zusätzlicher Selection-Mode: Single
   
-1.2.11.0
-========
+1.2.11
+======
 
 - BocList
   * Die Commands für Spalten sind nun zusätzlich über die Property CommandState deaktivierbar.
   * Neuer EventHandler: CustomColumnClick
   
-1.2.10.0
-========
+1.2.10
+======
 
 - BocList
   * Sortieren: Bisher: Sortierung nach IBusinessObject.GetPropertyValue.ToString() falls 
@@ -352,21 +346,21 @@
     IBusinessObject.GetPropertyString().
     
 - BocList OptionsMenu, BocList ListMenu, BocReferenceValue OptionsMenu
-  * Bug (nur Version 1.2.10.0): Wird die BocList oder der BocReferenceValue mit Menueinträgen im Designer 
+  * Bug (nur Version 1.2.10): Wird die BocList oder der BocReferenceValue mit Menueinträgen im Designer 
     abgespeichert, so wird die Get-Property IsSeparator persistiert. Dies verhindert ein erneutes Parsen des Controls. 
-    Abhilfe: IsSeparator=false löschen und Version 1.2.11.0 einspielen.
+    Abhilfe: IsSeparator=false löschen und Version 1.2.11 einspielen.
     
 - BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue, BocList
   * Lokaliserung der Resourcen für Deutsch.
     
-1.2.9.0
-=======
+1.2.9
+=====
 
 - BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue
   * Bug in der Enabled-Funktionalität: Das Control hat beim Postback den Wert verloren, wenn es disabled war.
 
-1.2.8.0
-=======
+1.2.8
+=====
 
 - BocList
   * EnableSelection wurde zu Selection vom Typ RowSelection geändert.
@@ -375,8 +369,8 @@
     Können die AdditionalColumns erst nach dem LoadViewState wieder hergestellt werden, so muss bis zur erfolgten 
     Wiederherstellung ShowAdditionalColumns auf false gesetzt werden.
     
-1.2.7.0
-=======
+1.2.7
+=====
 
 - BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue
   * Verhalten der Value Property an die ASP.net Controls angeglichen:
@@ -387,14 +381,14 @@
   * Parallel kann für jedes Control eine ErrorMessage im Designer bzw über "auto:" angegeben werden.
     Die individuellen Messages ziehen vor den klassenspezifischen.
 
-1.2.6.0
-=======
+1.2.6
+=====
 
 - BocTextValue, BocMultilineTextValue, BocBooleanValue, BocEnumValue, BocDateTimeValue, BocReferenceValue
   * Unterstützung für Property "Enabled".
   
-1.1.49.0
-========
+1.1.49
+======
 
 - BocTreeView
   * Neue Klasse
@@ -405,17 +399,17 @@
 - BocValueColumnDefinition und BocCommandColumnDefinition
   * Ableitungshierachie geändert: statt von BocColumnDefinition nun von BocCommandEnabledColumnDefinition abgeleitet.
   
-1.1.46.0
-========
+1.1.46
+======
 
 - BocReferenceValue
   * Read-Only Mode: Der Text wurde nicht angezeigt wenn IsReadOnly abwechselnd true und false gesetzt wurde,
     während gleichzeitig Value zwischen einem gültigen Wert und null gewechselt hat.
-  * Bug: Null-Wert angegeben und Icon aktivert -> ArgumentException. Gefixed in 1.1.47.0
+  * Bug: Null-Wert angegeben und Icon aktivert -> ArgumentException. Gefixed in 1.1.47
 
   
-1.1.44.0
-========
+1.1.44
+======
 
 - BocList
   * MenuItemClick: Signatur geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
@@ -426,8 +420,8 @@
 - BocMenuItemCommand
   * Click: Signator geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
   
-1.1.40.0
-========
+1.1.40
+======
 
 - BocList
   * OptionsMenu und ListMenu unterstützen WxeCommands
@@ -444,16 +438,16 @@
 - Boc allgemein
   * Bugfix: Als Properties im Designer eingebene Validation Error Messages führten zu Fehlermeldungen.
   
-1.1.36.0
-========
+1.1.36
+======
 
 - Boclist
   * OptionsMenu und ListMenu: Layout (IE 5.5, 6.0) komplett, WxeCommand noch ohne Funktion.
   * Farbschema überarbeitet (1. Iteration).
   * Neue Methoden: ClearSelection(), SetSelectedRows(...), SetSelectedBusinessObjects(...).
   
-1.1.34.0
-========
+1.1.34
+======
 
 - BocList
   * BocCommandColumnDefinition: Property 'Label' auf 'Text' umbenannt. 
@@ -462,8 +456,8 @@
     die neue Property (Text) persistiert und die alte (Label) entfernt.
     
 
-1.1.33.0
-========
+1.1.33
+======
 
 - BocList
   * OptionsMenu, ListMenu: Commands lassen sich definieren, WxeCommand noch ohne Funktion.
@@ -475,8 +469,8 @@
     "<command " durch "<persistedcommand><Prefix:BocMenuItemCommand " ersetzen.
     "</command>" durch "</Prefix:BocMenuItemCommand></PersistedCommand>" ersetzen.
 
-1.1.32.0
-========
+1.1.32
+======
 
 - BocList
   * Direktes Setzen eines Wertes über Value, 
