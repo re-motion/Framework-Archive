@@ -42,16 +42,6 @@ public class StartForm : System.Web.UI.Page
 
   }
 	#endregion
-
-  private void WebButton1_Click(object sender, System.EventArgs e)
-  {
-  
-  }
-
-  private void WebButton2_Click(object sender, System.EventArgs e)
-  {
-  
-  }
 }
 
 }
