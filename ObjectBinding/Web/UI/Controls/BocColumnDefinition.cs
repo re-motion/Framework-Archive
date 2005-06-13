@@ -309,6 +309,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   private string _formatString;
   private PropertyPathBinding _propertyPathBinding;
   private string _editDetailsControlType;
+  private bool _isReadOnly;
 
   /// <summary> Initializes a new instance of the <see cref="BocSimpleColumnDefinition"/> class. </summary>
   public BocSimpleColumnDefinition()
@@ -424,6 +425,21 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     set { _editDetailsControlType = value; }
   }
 
+  /// <summary>
+  ///   Gets or sets a flag that determines whether the displayed value can be edited if the row is in details editing
+  ///   mode.
+  /// </summary>
+  /// <remarks> It is only possible to explicitly disable the editing of the value. </remarks>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("A flag that determines whether the displayed value can be edited if the row is in details editing mode.")]
+  [DefaultValue (false)]
+  [NotifyParentProperty (true)]
+  public bool IsReadOnly
+  {
+    get { return _isReadOnly; }
+    set { _isReadOnly = value; }
+  }
 
   /// <summary> Gets the displayed value of the column title. </summary>
   /// <remarks> 
