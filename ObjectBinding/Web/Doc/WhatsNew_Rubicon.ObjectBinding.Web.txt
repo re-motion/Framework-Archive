@@ -1,3 +1,18 @@
+1.2.51
+======
+- BocList
+  Durch Obsolete abgefangene Änderungen:
+  * SelectedColumnDefinitionSet zu SelectedView umbenannt.
+  * AvailableColumnDefinitionSets zu AvailableViews umbenannt.
+  * ShowAdditionalColumnsList zu ShowAvailableViewsList umbenannt (Designer-Property).
+  * AdditionalColumnsTitle zu AvailableViewsListTitle umbenannt (Designer-Property).
+  Nicht abgefangene Änderungen:
+  * Resource AdditionalColumnsTitle zu AvailableViewsListTitle umbenannt.
+  * CSS-Klasse bocListAdditionalColumnsListDropDownList zu bocListAvailableViewsListDropDownList umbenannt
+  * CSS-Klasse bocListAdditionalColumnsListLabel zu bocListAdditionalColumnsListLabel umbenannt
+  * Klasse BocColumnDefinitionSet zu BocListView umbenannt.
+  * Klasse BocColumnDefinitionSetCollection zu BocListViewCollection umbenannt.
+  
 1.2.50
 ======
 - BocList
