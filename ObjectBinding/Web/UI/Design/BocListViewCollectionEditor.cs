@@ -6,9 +6,9 @@ using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class BocColumnDefinitionSetCollectionEditor: AdvancedCollectionEditor
+public class BocListViewCollectionEditor: AdvancedCollectionEditor
 {
-  public BocColumnDefinitionSetCollectionEditor (Type type)
+  public BocListViewCollectionEditor (Type type)
     : base (type)
   {
   }
@@ -16,7 +16,7 @@ public class BocColumnDefinitionSetCollectionEditor: AdvancedCollectionEditor
   protected override Type[] CreateNewItemTypes()
   {
     return new Type[] {
-        typeof (BocColumnDefinitionSet)
+        typeof (BocListView)
     };
   }
 

@@ -9,26 +9,26 @@ using Rubicon.ObjectBinding.Web.Design;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
-/// <summary> A collection of <see cref="BocColumnDefinitionSet"/> objects. </summary>
-[Editor (typeof (BocColumnDefinitionSetCollectionEditor), typeof (UITypeEditor))]
-public class BocColumnDefinitionSetCollection: BusinessObjectControlItemCollection
+/// <summary> A collection of <see cref="BocListView"/> objects. </summary>
+[Editor (typeof (BocListViewCollectionEditor), typeof (UITypeEditor))]
+public class BocListViewCollection: BusinessObjectControlItemCollection
 {
   /// <summary> Initializes a new instance. </summary>
-  public BocColumnDefinitionSetCollection (IBusinessObjectBoundWebControl ownerControl)
-    : base (ownerControl, new Type[] {typeof (BocColumnDefinitionSet)})
+  public BocListViewCollection (IBusinessObjectBoundWebControl ownerControl)
+    : base (ownerControl, new Type[] {typeof (BocListView)})
   {
   }
 
-  public new BocColumnDefinitionSet[] ToArray()
+  public new BocListView[] ToArray()
   {
     ArrayList arrayList = new ArrayList (List);
-    return (BocColumnDefinitionSet[]) arrayList.ToArray (typeof (BocColumnDefinitionSet));
+    return (BocListView[]) arrayList.ToArray (typeof (BocListView));
   }
 
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
-  protected internal new BocColumnDefinitionSet this[int index]
+  protected internal new BocListView this[int index]
   {
-    get { return (BocColumnDefinitionSet) List[index]; }
+    get { return (BocListView) List[index]; }
     set { List[index] = value; }
   }
 }
