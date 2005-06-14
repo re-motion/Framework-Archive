@@ -46,7 +46,7 @@ public class BocList:
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectorControl_";
   private const string c_titleRowSelectorControlIDSuffix = "_Boc_SelectorControl_SelectAll";
-  private const string c_additionalColumnsListIDSuffix = "_Boc_ColumnConfigurationList";
+  private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
   private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
 
   private const int c_titleRowIndex = -1;
@@ -102,7 +102,7 @@ public class BocList:
   private const string c_designModeDummyColumnTitle = "Column Title {0}";
   private const int c_designModeDummyColumnCount = 3;
 
-  private const int c_designModeAdditionalColumnsListWidthInPoints = 40;
+  private const int c_designModeAvailableViewsListWidthInPoints = 40;
 
   // types
   
@@ -118,7 +118,7 @@ public class BocList:
     EmptyListMessage,
     PageInfo,
     OptionsTitle,
-    AdditionalColumnsTitle,
+    AvailableViewsListTitle,
     EditDetailsErrorMessage,
     /// <summary>The alternate text for the required icon.</summary>
     RequiredFieldAlternateText,
@@ -212,24 +212,24 @@ public class BocList:
   private bool _isDirty = true;
 
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
-  private DropDownList _additionalColumnsList;
-  /// <summary> The <see cref="string"/> that is rendered in front of the <see cref="_additionalColumnsList"/>. </summary>
-  private string _additionalColumnsTitle;
-  /// <summary> The width applied to the <see cref="_additionalColumnsList"/>. </summary>
-  private Unit _additionalColumnsListWidth = Unit.Empty;
+  private DropDownList _availableViewsList;
+  /// <summary> The <see cref="string"/> that is rendered in front of the <see cref="_availableViewsList"/>. </summary>
+  private string _availableViewsListTitle;
+  /// <summary> The width applied to the <see cref="_availableViewsList"/>. </summary>
+  private Unit _availableViewsListWidth = Unit.Empty;
   /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
-  private BocColumnDefinitionSetCollection _availableColumnDefinitionSets;
-  /// <summary> Determines whether to show the drop down list for selecting additional column definitions. </summary>
-  private bool _showAdditionalColumnsList = true;
-  /// <summary> The current <see cref="BocColumnDefinitionSet"/>. May be set at run time. </summary>
-  private BocColumnDefinitionSet _selectedColumnDefinitionSet;
+  private BocListViewCollection _availableViews;
+  /// <summary> Determines whether to show the drop down list for selecting a view. </summary>
+  private bool _showAvailableViewsList = true;
+  /// <summary> The current <see cref="BocListView"/>. May be set at run time. </summary>
+  private BocListView _selectedView;
   /// <summary> 
-  ///   The zero-based index of the <see cref="BocColumnDefinitionSet"/> selected from 
-  ///   <see cref="AvailableColumnDefinitionSets"/>.
+  ///   The zero-based index of the <see cref="BocListView"/> selected from 
+  ///   <see cref="AvailableViews"/>.
   /// </summary>
-  private NaInt32 _selectedColumnDefinitionSetIndex = NaInt32.Null;
-  private string _additionalColumnsListSelectedValue = string.Empty;
-  bool _isSelectedColumnDefinitionSetIndexSet = false;
+  private NaInt32 _selectedViewIndex = NaInt32.Null;
+  private string _availableViewsListSelectedValue = string.Empty;
+  bool _isSelectedViewIndexSet = false;
 
   /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
   private ImageButton _moveFirstButton;
@@ -372,13 +372,13 @@ public class BocList:
     _moveLastButton =  new ImageButton();
     _movePreviousButton = new ImageButton();
     _moveNextButton = new ImageButton();
-    _additionalColumnsList = new DropDownList();
+    _availableViewsList = new DropDownList();
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new WebMenuItemCollection (this);
     _optionsMenuItems = new WebMenuItemCollection (this);
     _fixedColumns = new BocColumnDefinitionCollection (this);
-    _availableColumnDefinitionSets = new BocColumnDefinitionSetCollection (this);
+    _availableViews = new BocListViewCollection (this);
     _validators = new ArrayList();
   }
 
@@ -406,10 +406,10 @@ public class BocList:
     _moveNextButton.EnableViewState = false;
     Controls.Add (_moveNextButton);
 
-    _additionalColumnsList.ID = ID + c_additionalColumnsListIDSuffix;
-    _additionalColumnsList.EnableViewState = false;
-    _additionalColumnsList.AutoPostBack = true;
-    Controls.Add (_additionalColumnsList);
+    _availableViewsList.ID = ID + c_availableViewsListIDSuffix;
+    _availableViewsList.EnableViewState = false;
+    _availableViewsList.AutoPostBack = true;
+    Controls.Add (_availableViewsList);
 
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     Controls.Add (_rowEditModeControlsPlaceHolder);
@@ -429,8 +429,8 @@ public class BocList:
     _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
     _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
 
-    _availableColumnDefinitionSets.CollectionChanged +=
-        new CollectionChangeEventHandler(AvailableColumnDefinitionSets_CollectionChanged);
+    _availableViews.CollectionChanged +=
+        new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
   }
 
@@ -516,9 +516,9 @@ public class BocList:
       }
     }    
 
-    string newAdditionalColumnsListSelectedValue = postCollection[_additionalColumnsList.UniqueID];
-    if (   ! StringUtility.IsNullOrEmpty (newAdditionalColumnsListSelectedValue)
-        && _additionalColumnsListSelectedValue != newAdditionalColumnsListSelectedValue)
+    string newAvailableViewsListSelectedValue = postCollection[_availableViewsList.UniqueID];
+    if (   ! StringUtility.IsNullOrEmpty (newAvailableViewsListSelectedValue)
+        && _availableViewsListSelectedValue != newAvailableViewsListSelectedValue)
     {
       return true;
     }
@@ -531,11 +531,11 @@ public class BocList:
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    if (_availableColumnDefinitionSets.Count > 0)
+    if (_availableViews.Count > 0)
     {
-      string newAdditionalColumnsListSelectedValue = 
-          PageUtility.GetRequestCollectionItem (Page, _additionalColumnsList.UniqueID);
-      SelectedColumnDefinitionSetIndex = int.Parse (newAdditionalColumnsListSelectedValue);
+      string newAvailableViewsListSelectedValue = 
+          PageUtility.GetRequestCollectionItem (Page, _availableViewsList.UniqueID);
+      SelectedViewIndex = int.Parse (newAvailableViewsListSelectedValue);
     }
   }
 
@@ -1288,19 +1288,19 @@ public class BocList:
 
   private bool HasMenuBlock
   {
-    get { return HasAdditionalColumnsList || HasOptionsMenu || HasListMenu; }
+    get { return HasAvailableViewsList || HasOptionsMenu || HasListMenu; }
   }
 
-  private bool HasAdditionalColumnsList
+  private bool HasAvailableViewsList
   {
     get
     {
-      bool showAdditionalColumnsList =   _showAdditionalColumnsList 
-                                      && _availableColumnDefinitionSets.Count > 1;
+      bool showAvailableViewsList =   _showAvailableViewsList 
+                                      && _availableViews.Count > 1;
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showEmptyListReadOnlyMode
                              || ! isReadOnly && _showEmptyListEditMode;
-      return   showAdditionalColumnsList
+      return   showAvailableViewsList
             && (! IsEmptyList || showForEmptyList);
     }
   }
@@ -1359,25 +1359,25 @@ public class BocList:
     if (! _menuBlockItemOffset.IsEmpty)
       menuBlockItemOffset = _menuBlockItemOffset.ToString();
 
-    if (HasAdditionalColumnsList)
+    if (HasAvailableViewsList)
     {
-      PopulateAdditionalColumnsList();
+      PopulateAvailableViewsList();
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAdditionalColumnsListLabel);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAvailableViewsListLabel);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      if (StringUtility.IsNullOrEmpty (_additionalColumnsTitle))
-        writer.Write (GetResourceManager().GetString (ResourceIdentifier.AdditionalColumnsTitle));
+      if (StringUtility.IsNullOrEmpty (_availableViewsListTitle))
+        writer.Write (GetResourceManager().GetString (ResourceIdentifier.AvailableViewsListTitle));
       else
-        writer.Write (_additionalColumnsTitle);
+        writer.Write (_availableViewsListTitle);
       writer.RenderEndTag();
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
-        _additionalColumnsList.Width = Unit.Point (c_designModeAdditionalColumnsListWidthInPoints);
-      _additionalColumnsList.Enabled = ! IsEditDetailsModeActive;
-      _additionalColumnsList.CssClass = CssClassAdditionalColumnsListDropDownList;
-      _additionalColumnsList.RenderControl (writer);
+        _availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
+      _availableViewsList.Enabled = ! IsEditDetailsModeActive;
+      _availableViewsList.CssClass = CssClassAvailableViewsListDropDownList;
+      _availableViewsList.RenderControl (writer);
       writer.RenderEndTag();
     }
 
@@ -1406,20 +1406,20 @@ public class BocList:
     }
   }
 
-  private void PopulateAdditionalColumnsList()
+  private void PopulateAvailableViewsList()
   {
-    _additionalColumnsList.Items.Clear();
+    _availableViewsList.Items.Clear();
 
-    if (_availableColumnDefinitionSets != null)
+    if (_availableViews != null)
     {
-      for (int i = 0; i < _availableColumnDefinitionSets.Count; i++)
+      for (int i = 0; i < _availableViews.Count; i++)
       {
-        BocColumnDefinitionSet columnDefinitionCollection = _availableColumnDefinitionSets[i];
+        BocListView columnDefinitionCollection = _availableViews[i];
 
         ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
-        _additionalColumnsList.Items.Add (item);
-        if (   ! _selectedColumnDefinitionSetIndex.IsNull 
-            && _selectedColumnDefinitionSetIndex == i)
+        _availableViewsList.Items.Add (item);
+        if (   ! _selectedViewIndex.IsNull 
+            && _selectedViewIndex == i)
         {
           item.Selected = true;
         }
@@ -2679,8 +2679,8 @@ public class BocList:
     object[] values = (object[]) savedState;
     
     base.LoadViewState (values[0]);
-    _selectedColumnDefinitionSetIndex = (NaInt32) values[1];
-    _additionalColumnsListSelectedValue = (string) values[2];
+    _selectedViewIndex = (NaInt32) values[1];
+    _availableViewsListSelectedValue = (string) values[2];
     _currentRow = (int) values[3];
     _sortingOrder = (ArrayList) values[4];
     _modifiableRowIndex = (NaInt32) values[5];
@@ -2696,8 +2696,8 @@ public class BocList:
     object[] values = new object[9];
 
     values[0] = base.SaveViewState();
-    values[1] = _selectedColumnDefinitionSetIndex;
-    values[2] = _additionalColumnsListSelectedValue;
+    values[1] = _selectedViewIndex;
+    values[2] = _availableViewsListSelectedValue;
     values[3] = _currentRow;
     values[4] = _sortingOrder;
     values[5] = _modifiableRowIndex;
@@ -2817,7 +2817,7 @@ public class BocList:
 
   /// <summary>
   ///   Compiles the <see cref="BocColumnDefinition"/> objects from the <see cref="FixedColumns"/>,
-  ///   the <see cref="_allPropertyColumns"/> and the <see cref="SelectedColumnDefinitionSet"/>
+  ///   the <see cref="_allPropertyColumns"/> and the <see cref="SelectedView"/>
   ///   into a single array.
   /// </summary>
   /// <returns> An array of <see cref="BocColumnDefinition"/> objects. </returns>
@@ -2830,9 +2830,9 @@ public class BocList:
       allPropertyColumns = new BocColumnDefinition[0];
 
     BocColumnDefinition[] selectedColumns = null;
-    EnsureSelectedColumnDefinitionSetIndexSet();
-    if (_selectedColumnDefinitionSet != null)
-      selectedColumns = _selectedColumnDefinitionSet.ColumnDefinitions.ToArray();
+    EnsureSelectedViewIndexSet();
+    if (_selectedView != null)
+      selectedColumns = _selectedView.ColumnDefinitions.ToArray();
     else
       selectedColumns = new BocColumnDefinition[0];
 
@@ -3145,9 +3145,8 @@ public class BocList:
     return _indexedRowsSorted;
   }
 
-
   /// <summary>
-  ///   Removes the columns provided by <see cref="SelectedColumnDefinitionSet"/> from the 
+  ///   Removes the columns provided by <see cref="SelectedView"/> from the 
   ///   <see cref="_sortingOrder"/> list.
   /// </summary>
   private void RemoveDynamicColumnsFromSortingOrder()
@@ -4136,42 +4135,55 @@ public class BocList:
   //  [DefaultValue ((string) null)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public BocColumnDefinitionSetCollection AvailableColumnDefinitionSets
+  public BocListViewCollection AvailableViews
   {
-    get { return _availableColumnDefinitionSets; }
+    get { return _availableViews; }
+  }
+
+  [Obsolete ("Use AvailableViews instead")]
+  public BocListViewCollection AvailableColumnDefinitionSets
+  {
+    get { return AvailableViews; }
+  }
+
+  [Obsolete ("Use SelectedView instead")]
+  public BocListView SelectedColumnDefinitionSet
+  {
+    get { return SelectedView; }
+    set { SelectedView = value; }
   }
 
   /// <summary>
-  ///   Gets or sets the selected <see cref="BocColumnDefinitionSet"/> used to
+  ///   Gets or sets the selected <see cref="BocListView"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
   [Browsable (false)]
-  public BocColumnDefinitionSet SelectedColumnDefinitionSet
+  public BocListView SelectedView
   {
     get 
     {
-      EnsureSelectedColumnDefinitionSetIndexSet();
-      return _selectedColumnDefinitionSet; 
+      EnsureSelectedViewIndexSet();
+      return _selectedView; 
     }
     set
     {
-      bool hasChanged = _selectedColumnDefinitionSet != value; 
-      _selectedColumnDefinitionSet = value; 
-      ArgumentUtility.CheckNotNullOrEmpty ("AvailableColumnDefinitionSets", _availableColumnDefinitionSets);
-      _selectedColumnDefinitionSetIndex = NaInt32.Null;
+      bool hasChanged = _selectedView != value; 
+      _selectedView = value; 
+      ArgumentUtility.CheckNotNullOrEmpty ("AvailableViews", _availableViews);
+      _selectedViewIndex = NaInt32.Null;
 
-      if (_selectedColumnDefinitionSet != null)
+      if (_selectedView != null)
       {
-        for (int i = 0; i < _availableColumnDefinitionSets.Count; i++)
+        for (int i = 0; i < _availableViews.Count; i++)
         {
-          if (_availableColumnDefinitionSets[i] == _selectedColumnDefinitionSet)
+          if (_availableViews[i] == _selectedView)
           {
-            _selectedColumnDefinitionSetIndex = i;
+            _selectedViewIndex = i;
             break;
           }
         }
 
-        if (_selectedColumnDefinitionSetIndex.IsNull) 
+        if (_selectedViewIndex.IsNull) 
           throw new ArgumentOutOfRangeException ("value");
       }
 
@@ -4180,52 +4192,52 @@ public class BocList:
     }
   }
 
-  private void EnsureSelectedColumnDefinitionSetIndexSet()
+  private void EnsureSelectedViewIndexSet()
   {
-    if (_isSelectedColumnDefinitionSetIndexSet)
+    if (_isSelectedViewIndexSet)
       return;
-    if (_selectedColumnDefinitionSetIndex.IsNull)
-      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-    else if (_availableColumnDefinitionSets.Count == 0)
-      SelectedColumnDefinitionSetIndex = NaInt32.Null;
-    else if (_selectedColumnDefinitionSetIndex.Value >= _availableColumnDefinitionSets.Count)
-      SelectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
+    if (_selectedViewIndex.IsNull)
+      SelectedViewIndex = _selectedViewIndex;
+    else if (_availableViews.Count == 0)
+      SelectedViewIndex = NaInt32.Null;
+    else if (_selectedViewIndex.Value >= _availableViews.Count)
+      SelectedViewIndex = _availableViews.Count - 1;
     else
-      SelectedColumnDefinitionSetIndex = _selectedColumnDefinitionSetIndex;
-    _isSelectedColumnDefinitionSetIndexSet = true;
+      SelectedViewIndex = _selectedViewIndex;
+    _isSelectedViewIndexSet = true;
   }
 
   /// <summary>
-  ///   Gets or sets the index of the selected <see cref="BocColumnDefinitionSet"/> used to
+  ///   Gets or sets the index of the selected <see cref="BocListView"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
-  private NaInt32 SelectedColumnDefinitionSetIndex
+  private NaInt32 SelectedViewIndex
   {
-    get { return _selectedColumnDefinitionSetIndex; }
+    get { return _selectedViewIndex; }
     set 
     {
       if (   ! value.IsNull 
-          && (value.Value < 0 || value.Value >= _availableColumnDefinitionSets.Count))
+          && (value.Value < 0 || value.Value >= _availableViews.Count))
       {
         throw new ArgumentOutOfRangeException ("value");
       }
 
       if (   IsEditDetailsModeActive
-          && _isSelectedColumnDefinitionSetIndexSet
-          && _selectedColumnDefinitionSetIndex != value)
+          && _isSelectedViewIndexSet
+          && _selectedViewIndex != value)
       {
         throw new InvalidOperationException ("The selected column defintion set cannot be changed while the BocList is in row edit mode.");
       }
 
-      bool hasIndexChanged = _selectedColumnDefinitionSetIndex != value; 
-      _selectedColumnDefinitionSetIndex = value; 
+      bool hasIndexChanged = _selectedViewIndex != value; 
+      _selectedViewIndex = value; 
 
-      _selectedColumnDefinitionSet = null;
-      if (! _selectedColumnDefinitionSetIndex.IsNull)
+      _selectedView = null;
+      if (! _selectedViewIndex.IsNull)
       {
-        int selectedIndex = _selectedColumnDefinitionSetIndex.Value;
-        if (selectedIndex < _availableColumnDefinitionSets.Count)
-          _selectedColumnDefinitionSet = (BocColumnDefinitionSet) _availableColumnDefinitionSets[selectedIndex];
+        int selectedIndex = _selectedViewIndex.Value;
+        if (selectedIndex < _availableViews.Count)
+          _selectedView = (BocListView) _availableViews[selectedIndex];
       }
 
       if (hasIndexChanged)
@@ -4233,19 +4245,19 @@ public class BocList:
     }
   }
 
-  private void AvailableColumnDefinitionSets_CollectionChanged (object sender, CollectionChangeEventArgs e)
+  private void AvailableViews_CollectionChanged (object sender, CollectionChangeEventArgs e)
   {
-    if (   _selectedColumnDefinitionSetIndex.IsNull
-        && _availableColumnDefinitionSets.Count > 0)
+    if (   _selectedViewIndex.IsNull
+        && _availableViews.Count > 0)
     {
-      _selectedColumnDefinitionSetIndex = 0;
+      _selectedViewIndex = 0;
     }
-    else if (_selectedColumnDefinitionSetIndex >= _availableColumnDefinitionSets.Count)
+    else if (_selectedViewIndex >= _availableViews.Count)
     {
-      if (_availableColumnDefinitionSets.Count > 0)
-        _selectedColumnDefinitionSetIndex = _availableColumnDefinitionSets.Count - 1;
+      if (_availableViews.Count > 0)
+        _selectedViewIndex = _availableViews.Count - 1;
       else
-        _selectedColumnDefinitionSetIndex = NaInt32.Null;
+        _selectedViewIndex = NaInt32.Null;
     }
   }
 
@@ -4710,22 +4722,38 @@ public class BocList:
   ///   containing the available column definition sets.
   /// </summary>
   [Category ("Menu")]
-  [Description ("Indicates whether the control displays a drop down list containing the available column definition sets.")]
+  [Description ("Indicates whether the control displays a drop down list containing the available views.")]
   [DefaultValue (true)]
+  public bool ShowAvailableViewsList
+  {
+    get { return _showAvailableViewsList; }
+    set { _showAvailableViewsList = value; }
+  }
+
+  [Browsable (false)]
+  [Obsolete ("Use ShowAvailableViewsList instead.")]
   public bool ShowAdditionalColumnsList
   {
-    get { return _showAdditionalColumnsList; }
-    set { _showAdditionalColumnsList = value; }
+    get { return ShowAvailableViewsList; }
+    set { ShowAvailableViewsList = value; }
+  }
+
+  [Browsable (false)]
+  [Obsolete ("Use AvailableViewsListTitle instead.")]
+  public string AdditionalColumnsTitle
+  {
+    get { return AvailableViewsListTitle; }
+    set { AvailableViewsListTitle = value; }
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
   [Category ("Menu")]
-  [Description ("The text that is rendered as a title for the list of additional columns.")]
+  [Description ("The text that is rendered as a title for the list of available views.")]
   [DefaultValue ("")]
-  public string AdditionalColumnsTitle
+  public string AvailableViewsListTitle
   {
-    get { return _additionalColumnsTitle; }
-    set { _additionalColumnsTitle = value; }
+    get { return _availableViewsListTitle; }
+    set { _availableViewsListTitle = value; }
   }
 
   /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
@@ -4823,14 +4851,14 @@ public class BocList:
   { get { return "bocListNavigator"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
-  /// <remarks> Class: <c>bocListAdditionalColumnsListDropDownList</c> </remarks>
-  protected virtual string CssClassAdditionalColumnsListDropDownList
-  { get { return "bocListAdditionalColumnsListDropDownList"; } }
+  /// <remarks> Class: <c>bocListAvailableViewsListDropDownList</c> </remarks>
+  protected virtual string CssClassAvailableViewsListDropDownList
+  { get { return "bocListAvailableViewsListDropDownList"; } }
   
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s label for the list of additional columns. </summary>
-  /// <remarks> Class: <c>bocListAdditionalColumnsListLabel</c> </remarks>
-  protected virtual string CssClassAdditionalColumnsListLabel
-  { get { return "bocListAdditionalColumnsListLabel"; } }
+  /// <remarks> Class: <c>bocListAvailableViewsListLabel</c> </remarks>
+  protected virtual string CssClassAvailableViewsListLabel
+  { get { return "bocListAvailableViewsListLabel"; } }
   
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
   /// <remarks>
