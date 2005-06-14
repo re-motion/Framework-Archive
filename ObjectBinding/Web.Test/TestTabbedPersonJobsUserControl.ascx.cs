@@ -80,19 +80,19 @@ public class TestTabbedPersonJobsUserControl :
     endDateColumnDefinition.ColumnTitle = "EndDate";
     endDateColumnDefinition.PropertyPath = endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate});
 
-    BocColumnDefinitionSet emptyColumnDefintionSet = new BocColumnDefinitionSet();
-    emptyColumnDefintionSet.Title = "Empty";
-    emptyColumnDefintionSet.ColumnDefinitions.AddRange (
+    BocListView emptyView = new BocListView();
+    emptyView.Title = "Empty";
+    emptyView.ColumnDefinitions.AddRange (
         new BocColumnDefinition[] {});
 
-    BocColumnDefinitionSet datesColumnDefintionSet = new BocColumnDefinitionSet();
-    datesColumnDefintionSet.Title = "Dates";
-    datesColumnDefintionSet.ColumnDefinitions.AddRange (
+    BocListView datesView = new BocListView();
+    datesView.Title = "Dates";
+    datesView.ColumnDefinitions.AddRange (
           new BocColumnDefinition[] {endDateColumnDefinition});
 
-    ListField.AvailableColumnDefinitionSets.AddRange (new BocColumnDefinitionSet[] {
-      emptyColumnDefintionSet, 
-      datesColumnDefintionSet});
+    ListField.AvailableViews.AddRange (new BocListView[] {
+      emptyView, 
+      datesView});
   }
 	
 	#region Web Form Designer generated code
