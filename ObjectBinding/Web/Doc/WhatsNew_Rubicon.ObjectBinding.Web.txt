@@ -1,7 +1,7 @@
 1.2.51
 ======
 - BocList
-  Durch Obsolete abgefangene Änderungen:
+  Durch Obsolete abgefangene Änderungen, alte Versionen werden in einigen Wochen entfernt:
   * SelectedColumnDefinitionSet zu SelectedView umbenannt.
   * AvailableColumnDefinitionSets zu AvailableViews umbenannt.
   * ShowAdditionalColumnsList zu ShowAvailableViewsList umbenannt (Designer-Property).

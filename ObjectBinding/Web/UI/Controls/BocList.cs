@@ -4738,12 +4738,22 @@ public class BocList:
     set { ShowAvailableViewsList = value; }
   }
 
+  private bool ShouldSearializeShowAdditionalColumnsList()
+  {
+    return false;
+  }
+
   [Browsable (false)]
   [Obsolete ("Use AvailableViewsListTitle instead.")]
   public string AdditionalColumnsTitle
   {
     get { return AvailableViewsListTitle; }
     set { AvailableViewsListTitle = value; }
+  }
+
+  private bool ShouldSearializeAdditionalColumnsTitle()
+  {
+    return false;
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
