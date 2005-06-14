@@ -45,7 +45,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.OptionsTitle">
         <value>Options</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.AdditionalColumnsTitle">
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.AvailableViewsListTitle">
         <value>View</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsErrorMessage">
