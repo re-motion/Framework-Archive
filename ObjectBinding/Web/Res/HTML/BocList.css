@@ -135,13 +135,13 @@ div.bocListNavigator
 {
 }
 
-/*  Style applied to the BocList's list of additional columns. */
-select.bocListAdditionalColumnsListDropDownList
+/*  Style applied to the BocList's list of available views. */
+select.bocListAvailableViewsListDropDownList
 {
 }
 
-/*  Style applied to the BocList's list of additional columns. */
-span.bocListAdditionalColumnsListLabel
+/*  Style applied to the BocList's list of available views. */
+span.bocListAvailableViewsListLabel
 {
 }
 
