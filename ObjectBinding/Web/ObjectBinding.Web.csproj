@@ -326,11 +326,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Design\BocColumnDefinitionSetCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Design\BocDataSourceDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -342,6 +337,11 @@
                 />
                 <File
                     RelPath = "Design\BocListDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\BocListViewCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
