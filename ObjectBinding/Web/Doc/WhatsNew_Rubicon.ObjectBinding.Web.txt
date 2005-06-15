@@ -1,4 +1,4 @@
-1.2.51
+1.2.52
 ======
 - BocList
   Durch Obsolete abgefangene Änderungen, alte Versionen werden in einigen Wochen entfernt:
@@ -6,12 +6,18 @@
   * AvailableColumnDefinitionSets zu AvailableViews umbenannt.
   * ShowAdditionalColumnsList zu ShowAvailableViewsList umbenannt (Designer-Property).
   * AdditionalColumnsTitle zu AvailableViewsListTitle umbenannt (Designer-Property).
+  * BocColumnDefinition.ColumnID zu BocColumnDefinition.ItemID umbennant (Designer-Property).
+  * BocListView.SetID zu BocListView.ItemID umbennant.
   Nicht abgefangene Änderungen:
   * Resource AdditionalColumnsTitle zu AvailableViewsListTitle umbenannt.
   * CSS-Klasse bocListAdditionalColumnsListDropDownList zu bocListAvailableViewsListDropDownList umbenannt
   * CSS-Klasse bocListAdditionalColumnsListLabel zu bocListAdditionalColumnsListLabel umbenannt
   * Klasse BocColumnDefinitionSet zu BocListView umbenannt.
   * Klasse BocColumnDefinitionSetCollection zu BocListViewCollection umbenannt.
+
+- BocTreeView
+  Durch Obsolete abgefangene Änderungen, alte Versionen werden in einigen Wochen entfernt:
+  * BocTreeNode.NodeID zu BocTreeNode.ItemID umbennant.
   
 1.2.50
 ======
