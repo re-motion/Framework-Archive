@@ -1,3 +1,19 @@
+1.2.52
+======
+- IControlItem
+  * ID zu ItemID umbenannt.
+  
+- WebTab
+  * TabID zu ItemID umbennant (Designer-Property).
+    Durch Obsolete abgefangene Änderung, alte Version wird in einigen Wochen entfernt.
+
+- WebTreeNode
+  * TabID zu ItemID umbennant (Designer-Property).
+    Durch Obsolete abgefangene Änderung, alte Version wird in einigen Wochen entfernt.
+  
+- WebMenuItem
+  * Explizite Interfaceimplentierung IControlItem.ID entfernt.  
+    
 1.2.50
 ======
 - TabbedMultiView
