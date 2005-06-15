@@ -12,8 +12,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 public abstract class BocTreeNode: WebTreeNode
 {
-  public BocTreeNode (string nodeID, string text, IconInfo icon)
-    : base (nodeID, text, icon)
+  public BocTreeNode (string itemID, string text, IconInfo icon)
+    : base (itemID, text, icon)
   {
   }
 
@@ -37,12 +37,12 @@ public class BusinessObjectTreeNode: BocTreeNode
   string _propertyIdentifier;
 
   public BusinessObjectTreeNode (
-      string nodeID, 
+      string itemID, 
       string text, 
       IconInfo icon, 
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : base (nodeID, text, icon)
+    : base (itemID, text, icon)
   {
     Property = property;
     if (_property != null)
@@ -51,11 +51,11 @@ public class BusinessObjectTreeNode: BocTreeNode
   }
 
   public BusinessObjectTreeNode (
-      string nodeID, 
+      string itemID, 
       string text, 
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : this (nodeID, text, null, property, businessObject)
+    : this (itemID, text, null, property, businessObject)
   {
   }
 
@@ -126,7 +126,7 @@ public class BusinessObjectTreeNode: BocTreeNode
       for (int i = 0; i < BocTreeView.Value.Count; i++)
       {
         IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) BocTreeView.Value[i];
-        if (NodeID == businessObject.UniqueIdentifier)
+        if (ItemID == businessObject.UniqueIdentifier)
         {
           BusinessObject = businessObject;
           break;
@@ -137,22 +137,22 @@ public class BusinessObjectTreeNode: BocTreeNode
       {
         //  Required business object has not been part of the values collection in this post back, get it from the class
         if (BocTreeView.DataSource == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSoure is null.");
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSoure is null.");
         if (BocTreeView.DataSource.BusinessObjectClass == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSource.BusinessObjectClass is null.");
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is null.");
         if (! (BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + NodeID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
+          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
         
         BusinessObject = 
-            ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject (NodeID);
+            ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject (ItemID);
         if (_businessObject == null) // This test could be omitted if graceful recovery is wanted.
-          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + NodeID + "' via the DataSource.");
+          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + ItemID + "' via the DataSource.");
       }
     }
     else
     {
       IBusinessObjectReferenceProperty property = Property;
-      string businessObjectID = NodeID;
+      string businessObjectID = ItemID;
       BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
     }
   }
@@ -187,20 +187,20 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   IBusinessObjectReferenceProperty _property;
 
   public BusinessObjectPropertyTreeNode (
-      string nodeID, 
+      string itemID, 
       string text, 
       IconInfo icon, 
       IBusinessObjectReferenceProperty property)
-    : base (nodeID, text, icon)
+    : base (itemID, text, icon)
   {
     Property = property;
   }
 
   public BusinessObjectPropertyTreeNode (
-      string nodeID, 
+      string itemID, 
       string text, 
       IBusinessObjectReferenceProperty property)
-    : this (nodeID, text, null, property)
+    : this (itemID, text, null, property)
   {
   }
 
@@ -233,9 +233,9 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
 
     BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) ParentNode;
     if (parentNode == null)
-      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with NodeID '" + NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
+      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with ItemID '" + ItemID + "' has no parent node but property nodes cannot be used as root nodes.");
 
-    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (NodeID);
+    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (ItemID);
     Property = (IBusinessObjectReferenceProperty) property;
   }
 }
