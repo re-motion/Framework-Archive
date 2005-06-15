@@ -33,7 +33,7 @@
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocList</c>.
       </para><para>
         The control does not support auto-postback for the selected value. Auto-postback is only used for commands
-        and the drop down list displaying the <see cref="AvailableColumnDefinitionSets"/>.
+        and the drop down list displaying the <see cref="AvailableViews"/>.
       </para><para>
         The control's <b>Enabled</b> flag is not fully supported by the <b>BocList</b>.
       </para><para>
@@ -129,20 +129,20 @@
         <see cref="ShowAllProperties"/> flag is set.
       </note>
       
-      <h4 class="dtH4">Additional Column Sets (Views)</h4>      
+      <h4 class="dtH4">Additional Views</h4>      
       <para>
-        Using the <see cref="AvailableColumnDefinitionSets"/> property it is possible to provide different views 
-        for the <b>BocList</b>. Each view (<see cref="BocColumnDefinitionSet"/>) consists of zero or more columns.
+        Using the <see cref="AvailableViews"/> property it is possible to provide different views 
+        for the <b>BocList</b>. Each <see cref="BocListView"/> consists of zero or more columns.
       </para><para>
         The views can be switched by a drop down box displayed to the right of the list of values. The drop down box
-        can be hidden using the <see cref="ShowAdditionalColumnsList"/> flag. The drop down box is also hidden 
+        can be hidden using the <see cref="ShowAvailableViewsList"/> flag. The drop down box is also hidden 
         automatically if only a single view is available or the list is empty and the 
         <see cref="ShowEmptyListReadOnlyMode"/> and <see cref="ShowEmptyListEditMode"/> flags are set to 
-        <see langword="false"/>. Use the <see cref="AdditionalColumnsTitle"/> property to provide a custom label for 
+        <see langword="false"/>. Use the <see cref="AvailableViewsListTitle"/> property to provide a custom label for 
         drop down box.        
       </para><para>
         The currently selected view can be changed programmatically by using the 
-        <see cref="SelectedColumnDefinitionSet"/> property. If this property is assigned before the 
+        <see cref="SelectedView"/> property. If this property is assigned before the 
         <b>Process Postback Data</b> phase of the page life cycle and the selected view is also changed on the client, 
         the view selected on the client side will take precendence. If the property is assigned during the 
         <b>Postback Event Handling</b> or <b>PreRender</b> phase of the page life cycle, or if the client side value 
