@@ -491,7 +491,7 @@ public class Command: IControlItem
     }
   }
 
-  string IControlItem.ID
+  string IControlItem.ItemID
   {
     get { return null; }
   }

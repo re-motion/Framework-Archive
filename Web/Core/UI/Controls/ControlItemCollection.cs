@@ -18,10 +18,7 @@ namespace Rubicon.Web.UI.Controls
 public interface IControlItem
 {
   Control OwnerControl { get; set; }
-  /// <summary>
-  ///   Do NOT make this property public if designer support is required. VS.NET designer uses special treatment for "ID" properties.
-  /// </summary>
-  string ID { get; }
+  string ItemID { get; }
 }
 
 /// <summary>
@@ -180,15 +177,18 @@ public class ControlItemCollection: CollectionBase
     return InnerList.IndexOf (item);
   }
 
-  /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ID"/> of <paramref name="id"/>. </summary>
+  /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/>. </summary>
   /// <param name="id"> The ID to look for. </param>
   /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
   public IControlItem Find (string id)
   {
+    if (id == null)
+      return null;
+
     for (int i = 0; i < InnerList.Count; i++)
     {
       IControlItem item = (IControlItem) InnerList[i];
-      if (item.ID == id)
+      if (item.ItemID == id)
         return item;
     }
     return null;
