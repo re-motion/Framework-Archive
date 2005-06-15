@@ -169,6 +169,7 @@ public class WebTreeNode: IControlItem
     return true;
   }
 
+  /// <exclude/>
   [Browsable (false)]
   [Obsolete ("Use ItemID instead.")]
   public string NodeID

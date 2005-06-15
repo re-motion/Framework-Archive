@@ -123,6 +123,7 @@ public class WebTab: IControlItem
     }
   }
 
+  /// <exclude/>
   [Browsable (false)]
   [Obsolete ("Use ItemID instead.")]
   public string TabID

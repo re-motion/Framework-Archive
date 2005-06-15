@@ -4140,12 +4140,14 @@ public class BocList:
     get { return _availableViews; }
   }
 
+  /// <exclude/>
   [Obsolete ("Use AvailableViews instead")]
   public BocListViewCollection AvailableColumnDefinitionSets
   {
     get { return AvailableViews; }
   }
 
+  /// <exclude/>
   [Obsolete ("Use SelectedView instead")]
   public BocListView SelectedColumnDefinitionSet
   {
@@ -4730,6 +4732,7 @@ public class BocList:
     set { _showAvailableViewsList = value; }
   }
 
+  /// <exclude/>
   [Browsable (false)]
   [Obsolete ("Use ShowAvailableViewsList instead.")]
   public bool ShowAdditionalColumnsList
@@ -4743,6 +4746,7 @@ public class BocList:
     return false;
   }
 
+  /// <exclude/>
   [Browsable (false)]
   [Obsolete ("Use AvailableViewsListTitle instead.")]
   public string AdditionalColumnsTitle

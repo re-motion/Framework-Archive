@@ -270,10 +270,10 @@
           <description>Resource Identifier</description>
         </listheader>
         <item>
-          <term> <see cref="AdditionalColumnsTitle"/> </term>
+          <term> <see cref="AvailableViewsListTitle"/> </term>
           <description>
-            <para> &lt;BocList Resource ID&gt;:AdditionalColumnsTitle </para>
-            <para> e.g. auto:MyBocList:AdditionalColumnsTitle </para>
+            <para> &lt;BocList Resource ID&gt;:AvailableViewsListTitle </para>
+            <para> e.g. auto:MyBocList:AvailableViewsListTitle </para>
           </description>
         </item>
         <item>

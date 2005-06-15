@@ -83,6 +83,7 @@ public class BocListView: BusinessObjectControlItem
     set { _itemID = value; }
   }
 
+  /// <exclude/>
   [Browsable (false)]
   [Obsolete ("Use ItemID instead.")]
   public string SetID
