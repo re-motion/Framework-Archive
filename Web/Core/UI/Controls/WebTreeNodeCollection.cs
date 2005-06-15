@@ -71,11 +71,11 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
     {
-      if (StringUtility.IsNullOrEmpty (node.NodeID))
-        throw new ArgumentException ("The node does not contain a 'NodeID' and can therfor not be inserted into the collection.", arguemntName);
+      if (StringUtility.IsNullOrEmpty (node.ItemID))
+        throw new ArgumentException ("The node does not contain a 'ItemID' and can therfor not be inserted into the collection.", arguemntName);
     }
-    if (Find (node.NodeID) != null)
-      throw new ArgumentException ("The collection already contains a node with NodeID '" + node.NodeID + "'.", arguemntName);
+    if (Find (node.ItemID) != null)
+      throw new ArgumentException ("The collection already contains a node with ItemID '" + node.ItemID + "'.", arguemntName);
   }
 
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
@@ -90,7 +90,7 @@ public class WebTreeNodeCollection: ControlItemCollection
   }
 
   /// <summary>
-  ///   Finds the <see cref="WebTreeNode"/> with a <see cref="WebTreeNode.NodeID"/> of <paramref name="id"/>.
+  ///   Finds the <see cref="WebTreeNode"/> with a <see cref="WebTreeNode.ItemID"/> of <paramref name="id"/>.
   /// </summary>
   /// <param name="id"> The ID to look for. </param>
   /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>

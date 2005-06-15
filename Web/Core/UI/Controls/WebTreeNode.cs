@@ -13,7 +13,7 @@ public class WebTreeNode: IControlItem
 {
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
-  private string _nodeID = "";
+  private string _itemID = "";
   private string _text = "";
   private IconInfo _icon;
   private WebTreeNodeCollection _children;
@@ -25,9 +25,9 @@ public class WebTreeNode: IControlItem
   int _selectDesired = 0;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTreeNode (string nodeID, string text, IconInfo icon)
+  public WebTreeNode (string itemID, string text, IconInfo icon)
   {
-    NodeID = nodeID;
+    ItemID = itemID;
     _text = text;
     _icon = icon;
     _children = new WebTreeNodeCollection (null);
@@ -35,14 +35,14 @@ public class WebTreeNode: IControlItem
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTreeNode (string nodeID, string text, string iconUrl)
-    : this (nodeID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
+  public WebTreeNode (string itemID, string text, string iconUrl)
+    : this (itemID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTreeNode (string nodeID, string text)
-    : this (nodeID, text, string.Empty)
+  public WebTreeNode (string itemID, string text)
+    : this (itemID, text, string.Empty)
   {
   }
 
@@ -125,7 +125,7 @@ public class WebTreeNode: IControlItem
 
   public override string ToString()
   {
-    string displayName = NodeID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = Text;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -140,9 +140,9 @@ public class WebTreeNode: IControlItem
   [Description ("The ID of this node.")]
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
-  public virtual string NodeID
+  public virtual string ItemID
   {
-    get { return _nodeID; }
+    get { return _itemID; }
     set
     {
       //  Could not be added to collection in designer with this check enabled.
@@ -157,21 +157,29 @@ public class WebTreeNode: IControlItem
         if (nodes != null)
         {
           if (nodes.Find (value) != null)
-            throw new ArgumentException ("The collection already contains a node with NodeID '" + value + "'.", "value");
+            throw new ArgumentException ("The collection already contains a node with ItemID '" + value + "'.", "value");
         }
       }
-      _nodeID = value; 
+      _itemID = value; 
     }
   }
 
-  private bool ShouldSerializeNodeID()
+  private bool ShouldSerializeItemID()
   {
     return true;
   }
 
-  string IControlItem.ID
+  [Browsable (false)]
+  [Obsolete ("Use ItemID instead.")]
+  public string NodeID
   {
-    get { return NodeID; }
+    get { return ItemID; }
+    set { ItemID = value; }
+  }
+
+  private bool ShouldSerializeNodeID()
+  {
+    return false;
   }
 
   /// <summary> Gets or sets the text displayed in this node. </summary>
