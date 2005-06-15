@@ -31,7 +31,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   // fields
   private WebTabCollection _tabs;
   private WebTab _selectedTab;
-  private string _selectedTabID;
+  private string _selectedItemID;
   private string _tabToBeSelected = null;
   private bool _hasTabsRestored;
   private bool _isRestoringTabs;
@@ -68,7 +68,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     {
       _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID ];
       ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected);
-      if (_tabToBeSelected != _selectedTabID)
+      if (_tabToBeSelected != _selectedItemID)
         return true;
     }
     return false;
@@ -81,11 +81,11 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   }
 
   /// <summary> Handles the click event for a tab. </summary>
-  /// <param name="tabID"> The id of the tab. </param>
-  private void HandleSelectionChangeEvent (string tabID)
+  /// <param name="itemID"> The id of the tab. </param>
+  private void HandleSelectionChangeEvent (string itemID)
   {
     WebTab currentTab = _selectedTab;
-    SetSelectedTab (tabID);
+    SetSelectedTab (itemID);
     if (currentTab != _selectedTab)
       OnSelectedIndexChanged();
   }
@@ -121,7 +121,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       object[] values = (object[]) savedState;
       base.LoadViewState(values[0]);
       _tabsViewState = (Triplet[]) values[1];
-      _selectedTabID = (string) values[2];
+      _selectedItemID = (string) values[2];
     }
   }
 
@@ -130,7 +130,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     object[] values = new object[3];
     values[0] = base.SaveViewState();
     values[1] = SaveNodesViewStateRecursive (Tabs);
-    values[2] = _selectedTabID;
+    values[2] = _selectedItemID;
     return values;
   }
 
@@ -141,8 +141,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     for (int i = 0; i < tabsViewState.Length; i++)
     {
       Triplet tabViewState = (Triplet) tabsViewState[i];
-      string tabID = (string) tabViewState.First;
-      WebTab tab = Tabs.Find (tabID);
+      string itemID = (string) tabViewState.First;
+      WebTab tab = Tabs.Find (itemID);
       if (tab != null)
       {
         object[] values = (object[]) tabViewState.Second;
@@ -163,7 +163,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     {
       WebTab tab = Tabs[i];    
       Triplet tabViewState = new Triplet();
-      tabViewState.First = tab.TabID;
+      tabViewState.First = tab.ItemID;
       object[] values = new object[1];
       values[0] = tab.IsSelected;
       tabViewState.Second = values;
@@ -276,7 +276,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
           page = _ownerControl.Page;
         string postBackEvent = null;
         if (page != null)
-          postBackEvent = page.GetPostBackClientEvent (this, tab.TabID);
+          postBackEvent = page.GetPostBackClientEvent (this, tab.ItemID);
         if (! StringUtility.IsNullOrEmpty (postBackEvent))
         {
           postBackEvent += "; return false;";
@@ -447,18 +447,18 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
         _selectedTab.SetSelected (true);
       
       if (_selectedTab == null)
-        _selectedTabID = null;
+        _selectedItemID = null;
       else
-        _selectedTabID = _selectedTab.TabID;
+        _selectedItemID = _selectedTab.ItemID;
     }
   }
 
-  private void SetSelectedTab (string tabID)
+  private void SetSelectedTab (string itemID)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("tabID", tabID);
-    if (_selectedTab == null || _selectedTab.TabID != tabID)
+    ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+    if (_selectedTab == null || _selectedTab.ItemID != itemID)
     {
-      WebTab tab = Tabs.Find (tabID);
+      WebTab tab = Tabs.Find (itemID);
       if (tab != _selectedTab)
         SetSelectedTab (tab);
     }
