@@ -19,7 +19,7 @@ namespace Rubicon.Web.UI.Controls
 public class TabbedMultiView: WebControl, IControl
 {
   // constants
-  private const string c_tabIDSuffix = "_Tab";
+  private const string c_itemIDSuffix = "_Tab";
   // statics
 
   // types
@@ -105,20 +105,20 @@ public class TabbedMultiView: WebControl, IControl
     string _target;
 
     /// <summary> Initalizes a new instance. </summary>
-    public MultiViewTab (string tabID, string text, IconInfo icon)
-      : base (tabID, text, icon)
+    public MultiViewTab (string itemID, string text, IconInfo icon)
+      : base (itemID, text, icon)
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
-    public MultiViewTab (string tabID, string text, string iconUrl)
-      : this (tabID, text, new IconInfo (iconUrl))
+    public MultiViewTab (string itemID, string text, string iconUrl)
+      : this (itemID, text, new IconInfo (iconUrl))
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
-    public MultiViewTab (string tabID, string text)
-      : this (tabID, text, string.Empty)
+    public MultiViewTab (string itemID, string text)
+      : this (itemID, text, string.Empty)
     {
     }
 
@@ -198,7 +198,7 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip.Tabs.Add (WebTab.GetSeparator());
 
     MultiViewTab tab = new MultiViewTab ();
-    tab.TabID = view.ID + c_tabIDSuffix;
+    tab.ItemID = view.ID + c_itemIDSuffix;
     tab.Text = view.Title;
     tab.Icon = view.Icon;
     tab.Target = view.ID;
@@ -240,7 +240,7 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
 
-    WebTab tab = _tabStrip.Tabs.Find (view.ID + c_tabIDSuffix);
+    WebTab tab = _tabStrip.Tabs.Find (view.ID + c_itemIDSuffix);
     if (tab == null)
       return;
 
@@ -263,7 +263,7 @@ public class TabbedMultiView: WebControl, IControl
   {
     MultiViewInternal.SetActiveView (view);
     TabView activeView = GetActiveView();
-    WebTab nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_tabIDSuffix);
+    WebTab nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix);
     nextActiveTab.IsSelected = true;
   }
 
