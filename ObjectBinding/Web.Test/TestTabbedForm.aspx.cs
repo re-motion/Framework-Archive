@@ -70,7 +70,7 @@ public class TestTabbedForm : TestWxeBasePage
     
     WebTab tab = new WebTab ();
     tab.Text = text;
-    tab.TabID = id ;
+    tab.ItemID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add (tab);
   }
