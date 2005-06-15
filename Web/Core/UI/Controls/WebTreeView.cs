@@ -240,7 +240,6 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.ItemID + "' but did not evaluate the tree node.");
   }
 
-
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
@@ -305,6 +304,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
   private Triplet[] SaveNodesViewStateRecursive (WebTreeNodeCollection nodes)
   {
+    EnsureTreeNodesCreated();
     Triplet[] nodesViewState = new Triplet[nodes.Count];
     for (int i = 0; i < nodes.Count; i++)
     {

@@ -108,7 +108,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     _isRestoringTabs = true;
     if (_tabsViewState != null)
     {
-      LoadTabsViewStateRecursive (_tabsViewState, Tabs);
+      LoadTabsViewStateRecursive (_tabsViewState, _tabs);
       _hasTabsRestored = true;
     }
     _isRestoringTabs = false;
@@ -129,7 +129,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
     object[] values = new object[3];
     values[0] = base.SaveViewState();
-    values[1] = SaveNodesViewStateRecursive (Tabs);
+    values[1] = SaveNodesViewStateRecursive (_tabs);
     values[2] = _selectedItemID;
     return values;
   }
@@ -142,7 +142,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     {
       Triplet tabViewState = (Triplet) tabsViewState[i];
       string itemID = (string) tabViewState.First;
-      WebTab tab = Tabs.Find (itemID);
+      WebTab tab = tabs.Find (itemID);
       if (tab != null)
       {
         object[] values = (object[]) tabViewState.Second;
@@ -157,11 +157,12 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
   private Triplet[] SaveNodesViewStateRecursive (WebTabCollection tabs)
   {
+    EnsureTabsRestored();
     // Not the most efficient method, but be once the tab strip is more advanced.
     Triplet[] tabsViewState = new Triplet[tabs.Count];
     for (int i = 0; i < tabs.Count; i++)
     {
-      WebTab tab = Tabs[i];    
+      WebTab tab = tabs[i];    
       Triplet tabViewState = new Triplet();
       tabViewState.First = tab.ItemID;
       object[] values = new object[1];
