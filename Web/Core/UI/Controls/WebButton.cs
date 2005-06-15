@@ -103,7 +103,46 @@ public class WebButton :
   /// <summary> Method to be executed when compiled for .net 2.0. </summary>
   private void AddAttributesToRender_net20 (HtmlTextWriter writer)
   {
+#if net20
+//    if (base.IsEnabled)
+//    {
+//      string tempOnClientClick = OnClientClick;
+//      OnClientClick = null;
+//      string onClick = EnsureEndWithSemiColon (tempOnClientClick);
+//      if (HasAttributes)
+//      {
+//        string onClickAttribute = Attributes["onclick"];
+//        if (onClickAttribute != null)
+//        {
+//          onClick = onClick + EnsureEndWithSemiColon (onClickAttribute);
+//          Attributes.Remove ("onclick");
+//        }
+//      }
+//      if (Page != null)
+//      {
+//        PostBackOptions options = GetPostBackOptions();
+//        bool tempClientSubmit = options.ClientSubmit;
+//        options.ClientSubmit = false;
+//        string postBackScript = Page.ClientScript.GetPostBackEventReference (options);
+//        options.ClientSubmit = tempClientSubmit;
+//        postBackScript = EnsureEndWithSemiColon (postBackScript);
+//        postBackScript += "this.disabled=true; ";
+//        postBackScript += Page.ClientScript.GetPostBackEventReference (this, null) + "; ";
+//        postBackScript += "return false;";
+//
+//        if (postBackScript != null)
+//          onClick = MergeScript(onClick, postBackScript);
+//      }
+//      if (! StringUtility.IsNullOrEmpty (onClick))
+//      {
+//        writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
+//        // if (base.EnableLegacyRendering)
+//        //    writer.AddAttribute("language", "javascript", false);
+//      }
+//      OnClientClick = tempOnClientClick;
+//    }
     base.AddAttributesToRender (writer);
+#endif
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -166,6 +205,28 @@ public class WebButton :
     set { _useSubmitBehavior = value; }
   } 
 #endif
+
+  private string EnsureEndWithSemiColon (string value)
+  {
+    if (! StringUtility.IsNullOrEmpty (value))
+    {
+      value = value.Trim ();
+
+      if (!value.EndsWith (";"))
+        value += ";";
+    }
+
+    return value;
+  }
+
+  private string MergeScript(string firstScript, string secondScript)
+  {
+    if (! StringUtility.IsNullOrEmpty (firstScript))
+      return (firstScript + secondScript);
+    if (secondScript.TrimStart(new char[0]).StartsWith("javascript:"))
+      return secondScript;
+    return ("javascript:" + secondScript);
+  }
 }
 
 }
