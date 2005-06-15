@@ -225,8 +225,8 @@ public class BocTreeView: BusinessObjectBoundWebControl
     {
       Pair nodeViewState = nodesViewState[i];
       object[] values = (object[]) nodeViewState.First;
-      string nodeID = (string) values[0];
-      WebTreeNode node = nodes.Find (nodeID);
+      string itemID = (string) values[0];
+      WebTreeNode node = nodes.Find (itemID);
       if (node != null)
       {
         if (! node.IsEvaluated)
@@ -277,7 +277,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   private void CreateAndAppendPropertyNodeChildren (BusinessObjectPropertyTreeNode propertyNode)
   {
     if (propertyNode.ParentNode == null)
-      throw new ArgumentException ("BusinessObjectPropertyTreeNode with NodeID '" + propertyNode.NodeID + "' has no parent node but property nodes cannot be used as root nodes.");
+      throw new ArgumentException ("BusinessObjectPropertyTreeNode with ItemID '" + propertyNode.ItemID + "' has no parent node but property nodes cannot be used as root nodes.");
 
     BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
     CreateAndAppendBusinessObjectNodes (propertyNode.Children, parentNode.BusinessObject, propertyNode.Property);
@@ -408,7 +408,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     {
       Pair nodeViewState = nodesViewState[i];
       object[] values = (object[]) nodeViewState.First;
-      string nodeID = (string) values[0];
+      string itemID = (string) values[0];
       bool isExpanded = (bool) values[1];
       bool isEvaluated = (bool) values[2];
       bool isSelected = (bool) values[3];
@@ -419,13 +419,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
       WebTreeNode node;
       if (isBusinessObjectTreeNode)
       {
-        node = new BusinessObjectTreeNode (nodeID, text, icon, null, null);
+        node = new BusinessObjectTreeNode (itemID, text, icon, null, null);
         string propertyIdentifier = (string) values[6];
         ((BusinessObjectTreeNode) node).PropertyIdentifier = propertyIdentifier;
       }
       else
       {
-        node = new BusinessObjectPropertyTreeNode (nodeID, text, icon, null);
+        node = new BusinessObjectPropertyTreeNode (itemID, text, icon, null);
       }
       node.IsExpanded = isExpanded;
       node.IsEvaluated = isEvaluated;
@@ -446,7 +446,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       WebTreeNode node = (WebTreeNode) nodes[i];    
       Pair nodeViewState = new Pair();
       object[] values = new object[8];
-      values[0] = node.NodeID;
+      values[0] = node.ItemID;
       values[1] = node.IsExpanded;
       values[2] = node.IsEvaluated;
       values[3] = node.IsSelected;
