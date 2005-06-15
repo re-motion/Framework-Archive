@@ -18,7 +18,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocListView: BusinessObjectControlItem
 {
-  private string _setID;
+  private string _itemID;
   private object _title;
   /// <summary> 
   ///   The <see cref="BocColumnDefinition"/> objects stored in the <see cref="BocListView"/>. 
@@ -59,7 +59,7 @@ public class BocListView: BusinessObjectControlItem
 
   public override string ToString()
   {
-    string displayName = SetID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = Title;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -71,14 +71,29 @@ public class BocListView: BusinessObjectControlItem
   /// <summary> Gets or sets the programmatic name of the <see cref="BocListView"/>. </summary>
   /// <value> A <see cref="string"/> providing an identifier for this <see cref="BocListView"/>. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this column definition set.")]
+  [Description ("The ID of this view.")]
   [Category ("Misc")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
+  [Browsable (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
+  public override string ItemID
+  {
+    get { return _itemID; }
+    set { _itemID = value; }
+  }
+
+  [Browsable (false)]
+  [Obsolete ("Use ItemID instead.")]
   public string SetID
   {
-    get { return _setID; }
-    set { _setID = value; }
+    get { return ItemID; }
+    set { ItemID = value; }
+  }
+
+  private bool ShouldSearializeSetID()
+  {
+    return false;
   }
 
   /// <summary> Gets or sets the displayed name of the <see cref="BocListView"/>. </summary>
