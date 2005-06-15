@@ -234,10 +234,10 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   protected internal void EvaluateTreeNodeInternal (WebTreeNode node)
   {
     if (_evaluateTreeNode == null) 
-      throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + node.NodeID + "' is not evaluated.");
+      throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + node.ItemID + "' is not evaluated.");
     _evaluateTreeNode (node);
     if (! node.IsEvaluated) 
-      throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.NodeID + "' but did not evaluate the tree node.");
+      throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.ItemID + "' but did not evaluate the tree node.");
   }
 
 
@@ -310,7 +310,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     {
       WebTreeNode node = nodes[i];    
       Triplet nodeViewState = new Triplet();
-      nodeViewState.First = node.NodeID;
+      nodeViewState.First = node.ItemID;
       object[] values = new object[3];
       values[0] = node.IsExpanded;
       values[1] = node.IsEvaluated;
@@ -500,7 +500,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   }
 
   /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
-  /// <remarks> ...&lt;node.Parent.Parent.NodeID&gt;|&lt;node.Parent.NodeID&gt;|&lt;NodeID&gt; </remarks>
+  /// <remarks> ...&lt;node.Parent.Parent.ItemID&gt;|&lt;node.Parent.ItemID&gt;|&lt;ItemID&gt; </remarks>
   public string FormatNodePath (WebTreeNode node)
   {    
     if (node == null)
@@ -512,7 +512,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       parentPath = FormatNodePath (node.ParentNode);
       parentPath += c_pathSeparator;
     }
-    return parentPath + node.NodeID;
+    return parentPath + node.ItemID;
   }
 
   /// <summary>
