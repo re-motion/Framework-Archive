@@ -72,10 +72,10 @@ public class WebTabCollection: ControlItemCollection
     {
       if (! tab.IsSeparator)
       {
-        if (StringUtility.IsNullOrEmpty (tab.TabID))
-          throw new ArgumentException ("The tab is no separator tab and does not contain a 'TabID'. It can therfor not be inserted into the collection.", arguemntName);
-        if (Find (tab.TabID) != null)
-          throw new ArgumentException ("The collection already contains a tab with TabID '" + tab.TabID + "'.", arguemntName);
+        if (StringUtility.IsNullOrEmpty (tab.ItemID))
+          throw new ArgumentException ("The tab is no separator tab and does not contain a 'ItemID'. It can therfor not be inserted into the collection.", arguemntName);
+        if (Find (tab.ItemID) != null)
+          throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", arguemntName);
       }
     }
   }
@@ -89,7 +89,7 @@ public class WebTabCollection: ControlItemCollection
   }
 
   /// <summary>
-  ///   Finds the <see cref="WebTab"/> with a <see cref="WebTab.TabID"/> of <paramref name="id"/>.
+  ///   Finds the <see cref="WebTab"/> with a <see cref="WebTab.ItemID"/> of <paramref name="id"/>.
   /// </summary>
   /// <param name="id"> The ID to look for. </param>
   /// <returns> A <see cref="WebTab"/> or <see langword="null"/> if no matching tab was found. </returns>

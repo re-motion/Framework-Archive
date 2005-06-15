@@ -19,7 +19,7 @@ public class WebTab: IControlItem
 
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
-  private string _tabID = "";
+  private string _itemID = "";
   private string _text = "";
   private IconInfo _icon;
   private WebTabStrip _tabStrip;
@@ -27,22 +27,22 @@ public class WebTab: IControlItem
   int _selectDesired = 0;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string tabID, string text, IconInfo icon)
+  public WebTab (string itemID, string text, IconInfo icon)
   {
-    TabID = tabID;
+    ItemID = itemID;
     _text = text;
     _icon = icon;
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string tabID, string text, string iconUrl)
-    : this (tabID, text, new IconInfo (iconUrl))
+  public WebTab (string itemID, string text, string iconUrl)
+    : this (itemID, text, new IconInfo (iconUrl))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string tabID, string text)
-    : this (tabID, text, string.Empty)
+  public WebTab (string itemID, string text)
+    : this (itemID, text, string.Empty)
   {
   }
 
@@ -83,7 +83,7 @@ public class WebTab: IControlItem
 
   public override string ToString()
   {
-    string displayName = TabID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = Text;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -99,9 +99,9 @@ public class WebTab: IControlItem
   //No Default value
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
-  public virtual string TabID
+  public virtual string ItemID
   {
-    get { return _tabID; }
+    get { return _itemID; }
     set
     {
 //      //  Could not be added to collection in designer with this check enabled.
@@ -119,13 +119,21 @@ public class WebTab: IControlItem
 //            throw new ArgumentException ("The collection already contains a node with NodeID '" + value + "'.", "value");
 //        }
 //      }
-      _tabID = value; 
+      _itemID = value; 
     }
   }
 
-  string IControlItem.ID
+  [Browsable (false)]
+  [Obsolete ("Use ItemID instead.")]
+  public string TabID
   {
-    get { return TabID; }
+    get { return ItemID; }
+    set { ItemID = value; }
+  }
+
+  private bool ShouldSearializeTabID()
+  {
+    return false;
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
