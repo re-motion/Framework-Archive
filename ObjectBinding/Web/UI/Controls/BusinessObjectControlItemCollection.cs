@@ -61,9 +61,13 @@ public abstract class BusinessObjectControlItem: IControlItem
     set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
   }
 
-  string IControlItem.ID
+  /// <summary> Not supported by base implementation. </summary>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public virtual string ItemID
   {
-    get { throw new NotSupportedException("Implement IControlItem.ID in a specialized class, if the class supports IDs."); }
+    get { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
+    set { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
   }
 }
 
