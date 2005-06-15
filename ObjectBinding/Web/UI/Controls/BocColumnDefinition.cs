@@ -21,7 +21,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlItem
 {
-  private string _columnID;
+  private string _itemID;
   private string _columnTitle;
   private Unit _width; 
   private string _cssClass;
@@ -35,7 +35,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
 
   public override string ToString()
   {
-    string displayName = ColumnID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = ColumnTitle;
     if (StringUtility.IsNullOrEmpty (displayName))
@@ -52,15 +52,25 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
-  public string ColumnID
+  [Browsable (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
+  public override string ItemID
   {
-    get { return _columnID; }
-    set { _columnID = value; }
+    get { return _itemID; }
+    set { _itemID = value; }
   }
 
-  string IControlItem.ID
+  [Browsable (false)]
+  [Obsolete ("Use ItemID instead.")]
+  public string ColumnID
   {
-    get { return ColumnID; }
+    get { return ItemID; }
+    set { ItemID = value; }
+  }
+
+  private bool ShouldSearializeColumnID()
+  {
+    return false;
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
@@ -218,7 +228,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
   public override string ToString()
   {
-    string displayName = ColumnID;
+    string displayName = ItemID;
     if (StringUtility.IsNullOrEmpty (displayName))
       displayName = ColumnTitle;
     if (StringUtility.IsNullOrEmpty (displayName))
