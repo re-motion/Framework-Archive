@@ -359,6 +359,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     {
       if (Property != null)
       {
+        EnsureChildControls();
+        
         _listControl.Items.Clear();
 
         if (! IsRequired)
@@ -396,6 +398,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     if (! IsReadOnly)
     {
+      EnsureChildControls();
+
       bool hasPropertyAfterInitializion = ! _isExecutingLoadViewState && Property != null;
 
       string itemWithIdentifierToRemove = null;
