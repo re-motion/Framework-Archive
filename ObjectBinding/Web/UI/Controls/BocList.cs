@@ -4142,6 +4142,8 @@ public class BocList:
 
   /// <exclude/>
   [Obsolete ("Use AvailableViews instead")]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public BocListViewCollection AvailableColumnDefinitionSets
   {
     get { return AvailableViews; }
@@ -4149,6 +4151,8 @@ public class BocList:
 
   /// <exclude/>
   [Obsolete ("Use SelectedView instead")]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public BocListView SelectedColumnDefinitionSet
   {
     get { return SelectedView; }
@@ -4159,6 +4163,7 @@ public class BocList:
   ///   Gets or sets the selected <see cref="BocListView"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public BocListView SelectedView
   {
@@ -4741,7 +4746,7 @@ public class BocList:
     set { ShowAvailableViewsList = value; }
   }
 
-  private bool ShouldSearializeShowAdditionalColumnsList()
+  private bool ShouldSerializeShowAdditionalColumnsList()
   {
     return false;
   }
@@ -4755,7 +4760,7 @@ public class BocList:
     set { AvailableViewsListTitle = value; }
   }
 
-  private bool ShouldSearializeAdditionalColumnsTitle()
+  private bool ShouldSerializeAdditionalColumnsTitle()
   {
     return false;
   }

@@ -92,7 +92,7 @@ public class BocListView: BusinessObjectControlItem
     set { ItemID = value; }
   }
 
-  private bool ShouldSearializeSetID()
+  private bool ShouldSerializeSetID()
   {
     return false;
   }

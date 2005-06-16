@@ -132,7 +132,7 @@ public class WebTab: IControlItem
     set { ItemID = value; }
   }
 
-  private bool ShouldSearializeTabID()
+  private bool ShouldSerializeTabID()
   {
     return false;
   }

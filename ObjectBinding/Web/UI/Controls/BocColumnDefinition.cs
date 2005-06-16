@@ -69,7 +69,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
     set { ItemID = value; }
   }
 
-  private bool ShouldSearializeColumnID()
+  private bool ShouldSerializeColumnID()
   {
     return false;
   }
