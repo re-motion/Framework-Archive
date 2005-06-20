@@ -587,6 +587,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\NumericValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\PostBackHandler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
