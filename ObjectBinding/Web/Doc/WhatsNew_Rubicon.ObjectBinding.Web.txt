@@ -3,6 +3,9 @@
 - BocEnumValue
   * Bugfix: Wurde der Wert gestetzt bevor der EnumValue in der Controls-Collection engehängt war,
     gab es eine Null-Reference-Exception.
+
+- BocTextValue
+  * Für ValuteType Integer und Double wird nun der NumericValidator verwendet statt des CompareVlaidators.    
     
 1.2.52
 ======
