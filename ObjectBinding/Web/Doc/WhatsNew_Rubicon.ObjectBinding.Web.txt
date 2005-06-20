@@ -20,7 +20,7 @@
   Nicht abgefangene Änderungen:
   * Resource AdditionalColumnsTitle zu AvailableViewsListTitle umbenannt.
   * CSS-Klasse bocListAdditionalColumnsListDropDownList zu bocListAvailableViewsListDropDownList umbenannt
-  * CSS-Klasse bocListAdditionalColumnsListLabel zu bocListAdditionalColumnsListLabel umbenannt
+  * CSS-Klasse bocListAdditionalColumnsListLabel zu bocListAvailableViewsListLabel umbenannt
   * Klasse BocColumnDefinitionSet zu BocListView umbenannt.
   * Klasse BocColumnDefinitionSetCollection zu BocListViewCollection umbenannt.
 
