@@ -1,3 +1,9 @@
+1.2.53
+======
+- NumericValidator
+  * Neue Klasse. Validator für Integer, Double und Decimal Werte. Verwendet im Gegensatz zu CompareValidator
+    die Parse Methode um die Gültigkeit zu testen.
+    
 1.2.52
 ======
 - IControlItem
