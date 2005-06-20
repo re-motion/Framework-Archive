@@ -308,7 +308,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       return new BaseValidator[0];
 
     string baseID = ID + "_ValidatorDateTime";
-    ArrayList validators = new ArrayList(2);
+    ArrayList validators = new ArrayList(3);
 
     IResourceManager resourceManager = GetResourceManager();
 
@@ -325,7 +325,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       validators.Add (requiredValidator);
     }
 
-    BocTextValueType valueType = ActualValueType;
     if (! _textBoxStyle.MaxLength.IsNull)
     {
       LengthValidator lengthValidator = new LengthValidator();
@@ -343,65 +342,76 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       }      
       validators.Add (lengthValidator);
     }
-    if (valueType == BocTextValueType.String)
+
+    BocTextValueType valueType = ActualValueType;
+    switch (valueType)
     {
-      // Empty case
-    }
-    else if (valueType == BocTextValueType.DateTime)
-    {
-      DateTimeValidator typeValidator = new DateTimeValidator();
-      typeValidator.ID = baseID + "Type";
-      typeValidator.ControlToValidate = TargetControl.ID;
-      if (StringUtility.IsNullOrEmpty (_errorMessage))
-        typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
-      else
-        typeValidator.ErrorMessage = _errorMessage;
-      validators.Add (typeValidator);
-    }
-    else if (valueType != BocTextValueType.Undefined)
-    {
-      CompareValidator typeValidator = new CompareValidator();
-      typeValidator.ID = baseID + "Type";
-      typeValidator.ControlToValidate = TargetControl.ID;
-      typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
-      switch (valueType)
+      case BocTextValueType.String:
       {
-        case BocTextValueType.Date:
-        {
-          typeValidator.Type = ValidationDataType.Date;
-          if (StringUtility.IsNullOrEmpty (_errorMessage))
-            typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
-          else
-            typeValidator.ErrorMessage = _errorMessage;
-          break;
-        }
-        case BocTextValueType.Integer:
-        {
-          typeValidator.Type = ValidationDataType.Integer;
-          if (StringUtility.IsNullOrEmpty (_errorMessage))
-            typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidIntegerErrorMessage);
-          else
-            typeValidator.ErrorMessage = _errorMessage;
-          break;
-        }
-        case BocTextValueType.Double:
-        {
-          typeValidator.Type = ValidationDataType.Double;
-          if (StringUtility.IsNullOrEmpty (_errorMessage))
-            typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDoubleErrorMessage);
-          else
-            typeValidator.ErrorMessage = _errorMessage;
-          break;
-        }
-        default:
-        {
-          throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
-        }
+        break;
       }
-      validators.Add (typeValidator);
-      _validators.AddRange (validators);
+      case BocTextValueType.DateTime:
+      {
+        DateTimeValidator typeValidator = new DateTimeValidator();
+        typeValidator.ID = baseID + "Type";
+        typeValidator.ControlToValidate = TargetControl.ID;
+        if (StringUtility.IsNullOrEmpty (_errorMessage))
+          typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateAndTimeErrorMessage);
+        else
+          typeValidator.ErrorMessage = _errorMessage;
+        validators.Add (typeValidator);
+        break;
+      }
+      case BocTextValueType.Date:
+      {
+        CompareValidator typeValidator = new CompareValidator();
+        typeValidator.ID = baseID + "Type";
+        typeValidator.ControlToValidate = TargetControl.ID;
+        typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
+        typeValidator.Type = ValidationDataType.Date;
+        if (StringUtility.IsNullOrEmpty (_errorMessage))
+          typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDateErrorMessage);
+        else
+          typeValidator.ErrorMessage = _errorMessage;
+        validators.Add (typeValidator);
+        break;
+      }
+      case BocTextValueType.Integer:
+      {
+        NumericValidator typeValidator = new NumericValidator();
+        typeValidator.ID = baseID + "Type";
+        typeValidator.ControlToValidate = TargetControl.ID;
+        if (Property != null)
+          typeValidator.AllowNegative = ((IBusinessObjectNumericProperty) Property).AllowNegative;
+        typeValidator.DataType = NumericValidationDataType.Integer;
+        if (StringUtility.IsNullOrEmpty (_errorMessage))
+          typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidIntegerErrorMessage);
+        else
+          typeValidator.ErrorMessage = _errorMessage;
+        validators.Add (typeValidator);
+        break;
+      }
+      case BocTextValueType.Double:
+      {
+        NumericValidator typeValidator = new NumericValidator();
+        typeValidator.ID = baseID + "Type";
+        typeValidator.ControlToValidate = TargetControl.ID;
+        if (Property != null)
+          typeValidator.AllowNegative = ((IBusinessObjectNumericProperty) Property).AllowNegative;
+        typeValidator.DataType = NumericValidationDataType.Double;
+        if (StringUtility.IsNullOrEmpty (_errorMessage))
+          typeValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.InvalidDoubleErrorMessage);
+        else
+          typeValidator.ErrorMessage = _errorMessage;
+        validators.Add (typeValidator);
+        break;
+      }
+      default:
+      {
+        throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
+      }
     }
-    
+    _validators.AddRange (validators);
     return (BaseValidator[]) validators.ToArray (typeof (BaseValidator));
   }
 
@@ -722,7 +732,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     get { return _labelStyle; }
   }
-
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
