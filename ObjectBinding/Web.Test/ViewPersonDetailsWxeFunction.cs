@@ -7,7 +7,7 @@ namespace OBWTest
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
   static readonly WxeParameterDeclaration[] s_parameters =  { 
-      new WxeParameterDeclaration ("id", true, WxeParameterDirection.In, typeof (string))};
+      new WxeParameterDeclaration ("id", false, WxeParameterDirection.In, typeof (string))};
 
   // parameters and local variables
   public override WxeParameterDeclaration[] ParameterDeclarations
@@ -15,7 +15,7 @@ public class ViewPersonDetailsWxeFunction: WxeFunction
     get { return s_parameters; }
   }
 
-  [WxeParameter (1, true, WxeParameterDirection.In)]
+  [WxeParameter (1, false, WxeParameterDirection.In)]
   public string ID
   {
     get { return (string) Variables["id"]; }
