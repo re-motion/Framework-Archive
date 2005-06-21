@@ -185,6 +185,8 @@ public class BocListItemCommand: BocCommand
       parameters["object"] = businessObject;
       if (businessObject is IBusinessObjectWithIdentity)
         parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+      else
+        parameters["id"] = null;
       if (OwnerControl != null)
       {
         if (OwnerControl.DataSource != null && OwnerControl.Value != null)
