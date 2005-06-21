@@ -589,12 +589,18 @@ public class BocList:
     {
       case CommandType.Event:
       {
-        OnListItemCommandClick (column, listIndex, (IBusinessObject) Value[listIndex]);
+        IBusinessObject businessObject = null;
+        if (listIndex < Value.Count)
+          businessObject = (IBusinessObject) Value[listIndex];
+        OnListItemCommandClick (column, listIndex, businessObject);
         break;
       }
       case CommandType.WxeFunction:
       {
-        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, (IBusinessObject) Value[listIndex]);
+        IBusinessObject businessObject = null;
+        if (listIndex < Value.Count)
+          businessObject = (IBusinessObject) Value[listIndex];
+        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, businessObject);
         break;
       }
       default:
@@ -4840,6 +4846,7 @@ public class BocList:
   { get { return "bocListTitleCell"; } }
 
   /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows. </summary>
+
   /// <remarks> Class: <c>bocListDataCellOdd</c> </remarks>
   protected virtual string CssClassDataCellOdd
   { get { return "bocListDataCellOdd"; } }
