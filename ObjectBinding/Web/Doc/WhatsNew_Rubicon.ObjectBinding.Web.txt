@@ -1,3 +1,17 @@
+1.2.54
+======
+- BocList
+  * Neues Verhalten beim List Item Command Handling:
+    Bisher: Click auf das letzte Element in der Liste warf eine IndexOutOfRangeException, wenn ein Element entfernt   
+      wurde bevor der ListItemCommandHanlder dran gekommen ist.
+    Neu: Ist der Index größer als die Anzahl der Objekte, wird null für das IBusinessObject übergeben.
+      Auswirkung Event Command: EventArgument.BusinessObject kann null sein.
+      Auswirkung Wxe Command: Parameter 'id' und 'object' können null sein. Bei der Parameterdefintion müssen 
+        sie daher als required=false angegeben werden, falls die Liste verkürzt werden könnte, bevor das 
+        ListItemCommand verarbeitet wird.
+      Grundsätzlich ist zu beachten, dass der Index und das mitgelieferte BusinessObject bei einer gleichzeitigen 
+        Modifikation der Einträge nicht notwendiger Weise korrekt sind.
+    
 1.2.53
 ======
 - BocEnumValue
