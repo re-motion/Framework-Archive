@@ -176,6 +176,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   bool _hasVisibleBinding = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
+  private bool _controlExistedInPreviousRequest = false; 
 
   /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
   public BusinessObjectBoundWebControl ()
@@ -463,6 +464,25 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   {
     return new BaseValidator[0];
   }
+
+  /// <summary> Gets a flag whether the control already existed in the previous page life cycle. </summary>
+  /// <remarks> 
+  ///   This property utilizes the <see cref="LoadViewState"/> method for determining a post back. It therefor 
+  ///   requires the control to use the view state. In addition, the property is only useful after the load view state
+  ///   phase of the page life cycle.
+  /// </remarks>
+  /// <value> <see langword="true"/> if the control has been on the page in the previous life cycle. </value>
+  protected bool ControlExistedInPreviousRequest 
+  { 
+    get { return _controlExistedInPreviousRequest; }
+  }
+
+  protected override void LoadViewState(object savedState)
+  {
+    base.LoadViewState (savedState);
+    _controlExistedInPreviousRequest = true;
+  }
+
 
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.
