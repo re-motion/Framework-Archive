@@ -2920,11 +2920,23 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     if (! _formGrids.Contains (table.UniqueID))
     {
+      if (IsParentControl (table))
+        throw new ArgumentException ("A FormGridManager must not be nested in an HtmlTable managed by it: FormGridManager '" + ID + "', HtmlTable '" + table.ID + "'");
       FormGridRow[] rows = CreateFormGridRows (table, _labelsColumn, _controlsColumn);
       _formGrids[table.UniqueID] = new FormGrid (table, rows, _labelsColumn, _controlsColumn);
       table.Load += new EventHandler (Table_Load);
       table.PreRender += new EventHandler (Table_PreRender);
     }
+  }
+
+  private bool IsParentControl (HtmlTable table)
+  {
+    for (Control current = Parent; current != null; current = current.Parent)
+    {
+      if (current == table)
+        return true;
+    }
+    return false;
   }
 
   [Browsable (false)]
