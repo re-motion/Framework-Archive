@@ -179,7 +179,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void InitializeRootWebTreeNodes()
   {
-    if (! _enableTreeNodeCaching || ! Page.IsPostBack)
+    if (! _enableTreeNodeCaching || ! ControlExistedInPreviousRequest)
     {
       CreateRootTreeNodes();
     }
