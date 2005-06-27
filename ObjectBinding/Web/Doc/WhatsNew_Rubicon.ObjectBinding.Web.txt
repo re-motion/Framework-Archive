@@ -11,6 +11,14 @@
         ListItemCommand verarbeitet wird.
       Grundsätzlich ist zu beachten, dass der Index und das mitgelieferte BusinessObject bei einer gleichzeitigen 
         Modifikation der Einträge nicht notwendiger Weise korrekt sind.
+  * GetSortingOrder: neue Methode zum auslesen der aktuellen SortingOrder.
+
+- BocReferenceValue
+  * Bugfix: Die Select-Property wurde nur ausgewertet wenn die Page noch keinen Postback durchgeführt hat.
+    Dieses Verhalten verursacht bei dynamisch erzeugten Controls Probleme (zB BocList Inline Editing).
+    
+- BusinessObjectBoundWebControl
+  * ControlExistedInPreviousRequest: Neue Property, welche Page.IsPostBack ersetzt.
     
 1.2.53
 ======

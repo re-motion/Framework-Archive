@@ -3108,6 +3108,20 @@ public class BocList:
   }
 
   /// <summary>
+  ///   Gets the sorting order for the <see cref="BocList"/>.
+  /// </summary>
+  /// <remarks>
+  ///   If the list also contains a collection of available views, then this method shoud only be called after the 
+  ///   <see cref="AvailableViews"/> have been set. Otherwise the result can vary from a wrong sorting order to an 
+  ///   <see cref="IndexOutOfRangeException"/>.
+  /// </remarks>
+  public BocListSortingOrderEntry[] GetSortingOrder()
+  {
+    EnsureColumnsGot();
+    return (BocListSortingOrderEntry[]) _sortingOrder.ToArray (typeof (BocListSortingOrderEntry));
+  }
+
+  /// <summary>
   ///   Sorts the <see cref="Value"/>'s <see cref="IBusinessObject"/> instances using the sorting keys
   ///   and returns the sorted <see cref="IBusinessObject"/> instances as a new array. The original values remain
   ///   untouched.
@@ -4846,7 +4860,6 @@ public class BocList:
   { get { return "bocListTitleCell"; } }
 
   /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows. </summary>
-
   /// <remarks> Class: <c>bocListDataCellOdd</c> </remarks>
   protected virtual string CssClassDataCellOdd
   { get { return "bocListDataCellOdd"; } }
@@ -4895,14 +4908,6 @@ public class BocList:
   { get { return "bocListEditDetailsValidationMessage"; } }
   
   #endregion
-
-  /// <summary>
-  ///   Gets a flag that indicated whether the page is in post back mode.
-  /// </summary>
-  private bool IsPostBack
-  {
-    get { return !IsDesignMode && Page != null && Page.IsPostBack; }
-  }
 }
 
 /// <summary> Represents the sorting direction for an individual column. </summary>
