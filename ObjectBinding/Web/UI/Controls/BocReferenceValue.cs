@@ -176,7 +176,7 @@ public class BocReferenceValue:
   {
     base.OnLoad (e);
 
-    if (! IsDesignMode && ! Page.IsPostBack)
+    if (! ControlExistedInPreviousRequest)
       RefreshBusinessObjectList();
 
     _optionsMenu.MenuItems.Clear();
