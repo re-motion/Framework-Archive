@@ -1,3 +1,9 @@
+1.2.54
+======
+- FormGridManager
+  * Bugfix: Wird der FormGridManager in eine htmlTable eingebettet die er selbst managed, geht der ViewState verloren.
+    Diese Konstellation wirft nun eine Exception.
+  
 1.2.53
 ======
 - NumericValidator
