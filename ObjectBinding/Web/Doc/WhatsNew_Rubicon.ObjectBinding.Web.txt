@@ -1,3 +1,20 @@
+1.2.55
+======
+- BocList
+  * OptionsMenuItems: Designerunterstützung entfernt
+  * ListMenuItems: Designerunterstützung entfernt
+  * EnsureOptionsMenuItemsGot und EnsureListMenuItemsGot entfernt. 
+    Zugriff direkt üer OptionsMenuItems und ListMenuItems
+    OnLoad überschreiben weitere MenuItems einzuhängen bzw zu entfernen
+    OnPreRender überschreiben um die Display-Properties der MenuItems zu setzen
+
+- BocReferenceValue
+  * OptionsMenuItems: Designerunterstützung entfernt
+  * EnsureOptionsMenuItemsGot entfernt. 
+    Zugriff direkt üer OptionsMenuItems
+    OnLoad überschreiben weitere MenuItems einzuhängen bzw zu entfernen
+    OnPreRender überschreiben um die Display-Properties der MenuItems zu setzen
+
 1.2.54
 ======
 - BocList

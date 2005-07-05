@@ -113,11 +113,6 @@ public class BocReferenceValue:
   private string _optionsTitle;
   private bool _showOptionsMenu = true;
   private Unit _optionsMenuWidth = Unit.Empty;
-  private WebMenuItemCollection _optionsMenuItems;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private WebMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private WebMenuItem[] _optionsMenuItemsRenderPhase;
   private NaBoolean _hasValueEmbeddedInsideOptionsMenu = NaBoolean.Null;
 
   /// <summary> The command rendered for this reference value. </summary>
@@ -131,7 +126,6 @@ public class BocReferenceValue:
   /// <summary> Initializes a new instance of the <b>BocReferenceValue</b> class. </summary>
 	public BocReferenceValue()
 	{
-    _optionsMenuItems = new WebMenuItemCollection (this);
     _commonStyle = new Style();
     _dropDownListStyle = new DropDownListStyle();
     _labelStyle = new Style();
@@ -178,9 +172,6 @@ public class BocReferenceValue:
 
     if (! ControlExistedInPreviousRequest)
       RefreshBusinessObjectList();
-
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
   }
 
   /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
@@ -390,7 +381,7 @@ public class BocReferenceValue:
     ResourceDispatcher.DispatchGeneric (Command, commandValues);
 
     //  Dispatch to collections
-    _optionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
@@ -969,8 +960,6 @@ public class BocReferenceValue:
   {
     _optionsMenu.Enabled = Enabled;
     _optionsMenu.IsReadOnly = IsReadOnly;
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
     if (StringUtility.IsNullOrEmpty (_optionsTitle))
       _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
     else
@@ -996,7 +985,7 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   private bool HasOptionsMenu
   {
-    get { return _showOptionsMenu && EnsureOptionsMenuItemsGot().Length > 0; }
+    get { return _showOptionsMenu && OptionsMenuItems.Count > 0; }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -1005,52 +994,6 @@ public class BocReferenceValue:
   {
     ListItem emptyItem = new ListItem (string.Empty, c_nullIdentifier);
     return emptyItem;
-  }
-
-  /// <summary> 
-  ///   Ensures that the menu items for the <see cref="OptionsMenu"/> from the previous page life cycle have been loaded.
-  /// </summary>
-  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private WebMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
-  {
-    if (_optionsMenuItemsPostBackEventHandlingPhase == null)
-    {
-      _optionsMenuItemsPostBackEventHandlingPhase = 
-          GetOptionsMenuItemsForPreviousLifeCycle (_optionsMenuItems.ToArray());
-    }
-    return _optionsMenuItemsPostBackEventHandlingPhase;
-  }
-
-  /// <summary> Ensures that the menu items for the <see cref="OptionsMenu"/> have been loaded. </summary>
-  /// <param name="forceRefresh"> <see langword="true"/> to override the ensure pattern. </param>
-  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private WebMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
-  {
-    if (_optionsMenuItemsRenderPhase == null || forceRefresh)
-      _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
-    return _optionsMenuItemsRenderPhase;
-  }
-
-  /// <summary> Ensures that the menu items for the <see cref="OptionsMenu"/> have been loaded. </summary>
-  /// <returns> An array of <see cref="BocMenuItem"/> objects to be used by the <see cref="OptionsMenu"/>. </returns>
-  private WebMenuItem[] EnsureOptionsMenuItemsGot()
-  {
-    return EnsureOptionsMenuItemsGot (false);
-  }
-
-  /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the previous life cycle. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItemsForPreviousLifeCycle/*' />
-  private WebMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
-  {
-    //  return menuItems;
-    return EnsureOptionsMenuItemsGot (true);
-  }
-
-  /// <summary> Gets the <see cref="BocMenuItem"/> objects used during the current life cycle. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/GetOptionsMenuItems/*' />
-  protected virtual WebMenuItem[] GetOptionsMenuItems (WebMenuItem[] menuItems)
-  {
-    return menuItems;
   }
 
   /// <summary> 
@@ -1438,15 +1381,11 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Menu")]
-  [Description ("The menu items displayed by options menu.")]
-  [DefaultValue ((string) null)]
-  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public WebMenuItemCollection OptionsMenuItems
   {
-    get { return _optionsMenuItems; }
+    get { return _optionsMenu.MenuItems; }
   }
 
   /// <summary> Gets or sets the text that is rendered as a label for the <see cref="OptionsMenu"/>. </summary>

@@ -265,17 +265,8 @@ public class BocList:
   private Unit _menuBlockWidth = Unit.Empty;
   /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
   private Unit _menuBlockOffset = Unit.Empty;
-  private WebMenuItemCollection _optionsMenuItems;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private WebMenuItem[] _optionsMenuItemsPostBackEventHandlingPhase;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private WebMenuItem[] _optionsMenuItemsRenderPhase;
 
   private WebMenuItemCollection _listMenuItems;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the handling of the post back events. </summary>
-  private WebMenuItem[] _listMenuItemsPostBackEventHandlingPhase;
-  /// <summary> Contains the <see cref="BocMenuItem"/> objects during the rendering phase. </summary>
-  private WebMenuItem[] _listMenuItemsRenderPhase;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
  
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
@@ -376,7 +367,6 @@ public class BocList:
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new WebMenuItemCollection (this);
-    _optionsMenuItems = new WebMenuItemCollection (this);
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableViews = new BocListViewCollection (this);
     _validators = new ArrayList();
@@ -438,9 +428,6 @@ public class BocList:
   {
     base.OnLoad (e);
     
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsForPreviousLifeCycleGot());
-
     EnsureRowEditModeRestored();
   }
 
@@ -627,13 +614,12 @@ public class BocList:
       throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
     }
 
-    WebMenuItem[] menuItems = EnsureListMenuItemsForPreviousLifeCycleGot();
-    if (index >= menuItems.Length)
-      throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
+    if (index >= _listMenuItems.Count)
+      throw new ArgumentOutOfRangeException ("eventargument");
 
-    WebMenuItem menuItem = menuItems[index];
+    WebMenuItem menuItem = (WebMenuItem) _listMenuItems[index];
     if (menuItem.Command == null)
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command associated with list menu item " + index + ".");
+      throw new ArgumentException ("The BocList '" + ID + "' does not have a command associated with list menu item " + index + ".");
 
     switch (menuItem.Command.Type)
     {
@@ -1014,9 +1000,6 @@ public class BocList:
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
-    _optionsMenu.MenuItems.Clear();
-    _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot (true));
-    EnsureListMenuItemsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
     
@@ -1316,7 +1299,7 @@ public class BocList:
     get
     {
       bool showOptionsMenu =   _showOptionsMenu 
-                            && EnsureOptionsMenuItemsGot().Length > 0;
+                            && OptionsMenuItems.Count > 0;
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
                              || ! isReadOnly && _showMenuForEmptyListEditMode;
@@ -1330,7 +1313,7 @@ public class BocList:
     get
     {
       bool showListMenu =   _showListMenu 
-                            && EnsureListMenuItemsGot().Length > 0;
+                         && ListMenuItems.Count > 0;
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
                              || ! isReadOnly && _showMenuForEmptyListEditMode;
@@ -1389,8 +1372,6 @@ public class BocList:
 
     if (HasOptionsMenu)
     {
-      _optionsMenu.MenuItems.Clear();
-      _optionsMenu.MenuItems.AddRange (EnsureOptionsMenuItemsGot());
       if (StringUtility.IsNullOrEmpty (_optionsTitle))
         _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
       else
@@ -1439,22 +1420,22 @@ public class BocList:
     if (! _hasClientScript)
       return;
 
-    ArrayList listMenuItems = new ArrayList (EnsureListMenuItemsGot());
-    WebMenuItem[] groupedListMenuItems = WebMenuItemCollection.GroupMenuItems (
-        (WebMenuItem[]) listMenuItems.ToArray (typeof (WebMenuItem)), 
-        false);
+    WebMenuItem[] groupedListMenuItems = _listMenuItems.GroupMenuItems (false);
 
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    bool isFirstItem = true;
     for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
     {
+
       WebMenuItem currentItem = groupedListMenuItems[idxItems];
+      if (! currentItem.IsVisible)
+        continue;
       // HACK: Required since ListManuItems are not added to a ListMenu's WebMenuItemCollection.
       currentItem.OwnerControl = this;
 
-      bool isFirstItem = idxItems == 0;
       bool isLastItem = idxItems == groupedListMenuItems.Length - 1;
       bool isFirstCategoryItem = isFirstItem || groupedListMenuItems[idxItems - 1].Category != currentItem.Category;
       bool isLastCategoryItem = isLastItem || groupedListMenuItems[idxItems + 1].Category != currentItem.Category;
@@ -1468,12 +1449,15 @@ public class BocList:
         writer.AddAttribute (HtmlTextWriterAttribute.Class, "contentMenuRow");
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
       }
-      RenderListMenuItem (writer, currentItem, menuID, listMenuItems.IndexOf (currentItem));
+      RenderListMenuItem (writer, currentItem, menuID, _listMenuItems.IndexOf (currentItem));
       if (hasAlwaysLineBreaks || isLastCategoryItem || (hasNoLineBreaks && isLastItem))
       {
         writer.RenderEndTag();
         writer.RenderEndTag();
       }
+
+      if (isFirstItem)
+        isFirstItem = false;
     }
     writer.RenderEndTag();
 
@@ -1483,16 +1467,19 @@ public class BocList:
       StringBuilder script = new StringBuilder();
       script.AppendFormat ("BocList_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", ClientID);
       script.AppendFormat ("new ContentMenu_MenuInfo ('{0}', new Array (\r\n", menuID);
-      bool isFirstItem = true;
+      bool isFirstItemInGroup = true;
 
       for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
       {
         WebMenuItem currentItem = groupedListMenuItems[idxItems];
-        if (isFirstItem)
-          isFirstItem = false;
+        if (! currentItem.IsVisible)
+          continue;
+
+        if (isFirstItemInGroup)
+          isFirstItemInGroup = false;
         else
           script.AppendFormat (",\r\n");
-        AppendListMenuItem (script, currentItem, menuID, listMenuItems.IndexOf (currentItem));
+        AppendListMenuItem (script, currentItem, menuID, _listMenuItems.IndexOf (currentItem));
       }
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
@@ -2937,135 +2924,6 @@ public class BocList:
     return columnDefinitions;
   }
 
-  private WebMenuItem[] EnsureOptionsMenuItemsForPreviousLifeCycleGot()
-  {
-    if (_optionsMenuItemsPostBackEventHandlingPhase == null)
-    {
-      _optionsMenuItemsPostBackEventHandlingPhase = 
-          GetOptionsMenuItemsForPreviousLifeCycle (_optionsMenuItems.ToArray());
-    }
-    return _optionsMenuItemsPostBackEventHandlingPhase;
-  }
-
-  private WebMenuItem[] EnsureOptionsMenuItemsGot (bool forceRefresh)
-  {
-    if (_optionsMenuItemsRenderPhase == null || forceRefresh)
-      _optionsMenuItemsRenderPhase = GetOptionsMenuItems (_optionsMenuItems.ToArray());
-    return _optionsMenuItemsRenderPhase;
-  }
-
-  private WebMenuItem[] EnsureOptionsMenuItemsGot()
-  {
-    return EnsureOptionsMenuItemsGot (false);
-  }
-
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s options menu
-  ///   during the previous page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
-  ///     or a data changed event.
-  ///   </para><para>
-  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
-  ///     method's body to return the passed <c>menuItems</c>.
-  ///   </para>
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  private WebMenuItem[] GetOptionsMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
-  {
-    //  return menuItems;
-    return EnsureOptionsMenuItemsGot (true);
-  }
-
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s options menu
-  ///   in the current page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   This call can happen more than once in the control's life cycle, passing different 
-  ///   arrays in <paramref name="menuItems" />. It is therefor important to not cache the return value
-  ///   in the override of <see cref="GetOptionsMenuItems"/>.
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual WebMenuItem[] GetOptionsMenuItems (WebMenuItem[] menuItems)
-  {
-    return menuItems;
-  }
-
-  private WebMenuItem[] EnsureListMenuItemsForPreviousLifeCycleGot()
-  {
-    if (_listMenuItemsPostBackEventHandlingPhase == null)
-    {
-      _listMenuItemsPostBackEventHandlingPhase = 
-          GetListMenuItemsForPreviousLifeCycle (_listMenuItems.ToArray());
-    }
-    return _listMenuItemsPostBackEventHandlingPhase;
-  }
-
-  private WebMenuItem[] EnsureListMenuItemsGot (bool forceRefresh)
-  {
-    if (_listMenuItemsRenderPhase == null || forceRefresh)
-      _listMenuItemsRenderPhase = GetListMenuItems (_listMenuItems.ToArray());
-    return _listMenuItemsRenderPhase;
-  }
-
-  private WebMenuItem[] EnsureListMenuItemsGot()
-  {
-    return EnsureListMenuItemsGot (false);
-  }
-
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s menu area
-  ///   during the previous page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     The <see cref="BocColumnDefinition"/> instances displayed during the last page life cycle are required 
-  ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
-  ///     or a data changed event.
-  ///   </para><para>
-  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
-  ///     method's body to return the passed <c>menuItems</c>.
-  ///   </para>
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  private WebMenuItem[] GetListMenuItemsForPreviousLifeCycle (WebMenuItem[] menuItems)
-  {
-    //  return menuItems;
-    return EnsureListMenuItemsGot();
-  }
-
-  /// <summary>
-  ///   Override this method to modify the menu items displayed in the <see cref="BocList"/>'s menu area
-  ///   in the current page life cycle.
-  /// </summary>
-  /// <remarks>
-  ///   This call can happen more than once in the control's life cycle, passing different 
-  ///   arrays in <paramref name="menuItems" />. It is therefor important to not cache the return value
-  ///   in the override of <see cref="GetListMenuItems"/>.
-  /// </remarks>
-  /// <param name="menuItems"> 
-  ///   The <see cref="BocMenuItem"/> array containing the menu item available in the options menu. 
-  /// </param>
-  /// <returns> The <see cref="BocMenuItem"/> array. </returns>
-  protected virtual WebMenuItem[] GetListMenuItems (WebMenuItem[] menuItems)
-  {
-    return menuItems;
-  }
-
-  
   /// <summary>
   ///   Gets a flag set <see langword="true"/> if the <see cref="Value"/> is sorted before it is displayed.
   /// </summary>
@@ -3502,8 +3360,8 @@ public class BocList:
 
     //  Dispatch to collections
     _fixedColumns.Dispatch (fixedColumnValues, this, "FixedColumns");
-    _optionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
-    _listMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
+    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+    ListMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
   }
 
 
@@ -4700,24 +4558,16 @@ public class BocList:
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Menu")]
-  [Description ("The menu items displayed by options menu.")]
-  [DefaultValue ((string) null)]
-  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public WebMenuItemCollection OptionsMenuItems
   {
-    get { return _optionsMenuItems; }
+    get { return _optionsMenu.MenuItems; }
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Menu")]
-  [Description ("The menu items displayed in the list's menu area.")]
-  [DefaultValue ((string) null)]
-  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public WebMenuItemCollection ListMenuItems
   {
     get { return _listMenuItems; }
