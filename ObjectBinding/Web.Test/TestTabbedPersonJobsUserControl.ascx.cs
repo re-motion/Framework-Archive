@@ -93,8 +93,93 @@ public class TestTabbedPersonJobsUserControl :
     ListField.AvailableViews.AddRange (new BocListView[] {
       emptyView, 
       datesView});
+
+    InitalizeListFieldMenuItems();
   }
 	
+  private void InitalizeListFieldMenuItems()
+  {
+    BocMenuItem menuItem = null;
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Paste";
+    menuItem.Text = "Paste";
+    menuItem.Category = "Edit";
+    menuItem.IsDisabled = true;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.ListMenuItems.Add (menuItem);
+  
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Delete";
+    menuItem.Text = "Delete";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Style = WebMenuItemStyle.Icon;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.ListMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Copy";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.ListMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Open";
+    menuItem.Text = "Open";
+    menuItem.Category = "Object";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.WxeFunction;
+    menuItem.Command.WxeFunctionCommand.Parameters = "objects";
+    menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
+    ListField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Copy";
+    menuItem.Text = "Copy";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Cut";
+    menuItem.Text = "Cut";
+    menuItem.Category = "Edit";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Paste";
+    menuItem.Text = "Paste";
+    menuItem.Category = "Edit";
+    menuItem.Command.Type = CommandType.Event;
+    ListField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Duplicate";
+    menuItem.Text = "Duplicate";
+    menuItem.Category = "Edit";
+    menuItem.Command.Type = CommandType.Event;
+    ListField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Delete";
+    menuItem.Text = "Delete";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Style = WebMenuItemStyle.Icon;
+    menuItem.Command.Type = CommandType.Event;
+    ListField.OptionsMenuItems.Add (menuItem);
+  }
 	#region Web Form Designer generated code
 
 	/// <summary>
