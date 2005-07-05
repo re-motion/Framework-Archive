@@ -35,18 +35,6 @@
         <tr>
           <td style="HEIGHT: 14px"></td>
           <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner" width="100%">
-<optionsmenuitems>
-<obc:BocMenuItem Text="Copy" ItemID="Copy" RequiredSelection="ExactlyOne">
-<persistedcommand>
-<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
-</PersistedCommand>
-</obc:BocMenuItem>
-<obc:BocMenuItem Text="Paste" ItemID="Paste">
-<persistedcommand>
-<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
-</PersistedCommand>
-</obc:BocMenuItem>
-</OptionsMenuItems>
 
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
@@ -74,13 +62,7 @@
         <tr>
           <td style="HEIGHT: 17px"></td>
           <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAdditionalColumnsList="False" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
-<optionsmenuitems>
-<obc:BocMenuItem Text="Copy" ItemID="Copy">
-<persistedcommand>
-<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
-</PersistedCommand>
-</obc:BocMenuItem>
-</OptionsMenuItems></obc:BocList></td></tr>
+</obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
       <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol><obc:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="ReflectionBusinessObjectDataSourceControl"></obc:BusinessObjectReferenceDataSourceControl></p></form>
