@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Drawing;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -96,7 +95,60 @@ public class CompleteBocUserControl :
         FormGridRowInfo.RowType.ControlInRowWithLabel, 
         BooleanField.ID, 
         FormGridRowInfo.RowPosition.AfterRowWithID));
+
+    InitalizeReferenceFieldMenuItems ();
   }
+
+  private void InitalizeReferenceFieldMenuItems()
+  {
+    BocMenuItem menuItem = null;
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Open";
+    menuItem.Text = "Open";
+    menuItem.Category = "Object";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.WxeFunction;
+    menuItem.Command.WxeFunctionCommand.Parameters = "objects";
+    menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
+    ReferenceField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Copy";
+    menuItem.Text = "Copy";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.Event;
+    ReferenceField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Cut";
+    menuItem.Text = "Cut";
+    menuItem.Category = "Edit";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Command.Type = CommandType.Event;
+    ReferenceField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Paste";
+    menuItem.Text = "Paste";
+    menuItem.Category = "Edit";
+    menuItem.Command.Type = CommandType.Event;
+    ReferenceField.OptionsMenuItems.Add (menuItem);
+
+    menuItem = new BocMenuItem();
+    menuItem.ItemID = "Delete";
+    menuItem.Text = "Delete";
+    menuItem.Category = "Edit";
+    menuItem.Icon = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.RequiredSelection = RequiredSelection.OneOrMore;
+    menuItem.Style = WebMenuItemStyle.Icon;
+    menuItem.Command.Type = CommandType.Event;
+    ReferenceField.OptionsMenuItems.Add (menuItem);
+  }
+
 
   private void SaveButton_Click(object sender, System.EventArgs e)
   {
