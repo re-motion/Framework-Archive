@@ -1,7 +1,7 @@
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonJobsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonJobsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonJobsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonJobsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 
 
 <table id="FormGrid" runat="server">
@@ -15,31 +15,6 @@
   </tr>
   <tr>
     <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple" >
-<listmenuitems>
-<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-</ListMenuItems>
-
-<optionsmenuitems>
-<rubicon:BocMenuItem Text="Copy" ItemID="Copy">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-<rubicon:BocMenuItem Text="Paste" ItemID="Paste">
-<persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
-</PersistedCommand>
-</rubicon:BocMenuItem>
-</OptionsMenuItems>
 
 <fixedcolumns>
 <rubicon:BocEditDetailsColumnDefinition SaveText="Save" CancelText="Cancel" ColumnID="EditDetails" EditText="Edit"></rubicon:BocEditDetailsColumnDefinition>
