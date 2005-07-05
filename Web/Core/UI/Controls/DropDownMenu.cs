@@ -224,6 +224,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       for (int i = 0; i < menuItems.Length; i++)
       {
         WebMenuItem menuItem = menuItems[i];
+        if (! menuItem.IsVisible)
+          continue;
         if (isFirstItem)
           isFirstItem = false;
         else
