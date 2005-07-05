@@ -26,6 +26,7 @@ public class WebMenuItem: IControlItem
   private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
   private bool _isDisabled = false;
+  private bool _isVisible = true;
 
   /// <summary> The command rendered for this menu item. </summary>
   private SingleControlItemCollection _command = null;
@@ -63,6 +64,11 @@ public class WebMenuItem: IControlItem
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
+  {
+  }
+
+  /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
+  protected virtual void OnPreRender()
   {
   }
 
@@ -167,6 +173,17 @@ public class WebMenuItem: IControlItem
   {
     get { return _isDisabled; }
     set { _isDisabled = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("False hide the menu item.")]
+  [NotifyParentProperty (true)]
+  [DefaultValue (true)]
+  public bool IsVisible
+  {
+    get { return _isVisible; }
+    set { _isVisible = value; }
   }
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
