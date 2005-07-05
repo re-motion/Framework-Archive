@@ -27,13 +27,7 @@
   <tr>
     <td></td>
     <td><obw:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
-<optionsmenuitems>
-<obc:BocMenuItem Text="Copy" RequiredSelection="OneOrMore">
-<persistedcommand>
-<obc:BocMenuItemCommand Type="Event"></obc:BocMenuItemCommand>
-</PersistedCommand>
-</obc:BocMenuItem>
-</OptionsMenuItems></obw:BocReferenceValue></td></tr>
+</obw:BocReferenceValue></td></tr>
   <tr>
     <td></td>
     <td><obw:BocBooleanValue id="BooleanField" runat="server" propertyidentifier="Deceased" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obw:BocBooleanValue></td></tr>
