@@ -176,7 +176,7 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
   _arrSelected[_nLevel] = null;
   _wzPrefixID = popUp.uniqueID;
   
-	return popUp;
+	return popUpWindow;
 }
 function DropDownMenu_OpenPopUpEvent()
 {
@@ -204,8 +204,8 @@ function DropDownMenu_RepositionPopUp()
 
 function DropDownMenu_ClosePopUp()
 {
-  if (_dropDownMenu_currentPopUp != null && _dropDownMenu_currentPopUp.document.window != null)
-    _dropDownMenu_currentPopUp.document.window.close();
+  if (_dropDownMenu_currentPopUp != null)
+    _dropDownMenu_currentPopUp.hide();
   _dropDownMenu_currentPopUp = null;
   if (_dropDownMenu_currentMenu != null)
     DropDownMenu_OnHeadMouseOut (_dropDownMenu_currentMenu.children[0]);
