@@ -33,7 +33,8 @@ public class BocReferenceValue:
     BusinessObjectBoundModifiableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler,
-    IResourceDispatchTarget
+    IResourceDispatchTarget,
+    IBocMenuItemContainer
 {
   // constants
 	
@@ -114,6 +115,7 @@ public class BocReferenceValue:
   private bool _showOptionsMenu = true;
   private Unit _optionsMenuWidth = Unit.Empty;
   private NaBoolean _hasValueEmbeddedInsideOptionsMenu = NaBoolean.Null;
+  private string[] _hiddenMenuItems = null;
 
   /// <summary> The command rendered for this reference value. </summary>
   private SingleControlItemCollection _command = null;
@@ -138,6 +140,16 @@ public class BocReferenceValue:
   }
 
 	// methods and properties
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+
+    if (!IsDesignMode)
+    {
+      InitializeMenusItems();
+    }
+  }
 
   /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   /// <remarks>
@@ -411,6 +423,11 @@ public class BocReferenceValue:
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
+    }
+
+    if (!IsDesignMode)
+    {
+      PreRenderMenuItems();
     }
 
     PreRenderIcon();
@@ -809,12 +826,19 @@ public class BocReferenceValue:
   ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
   /// </summary>
   /// <remarks> 
-  ///   Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
-  ///   <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
+  ///   <para>
+  ///     Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
+  ///     <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
+  ///   </para><para>
+  ///     An empty <see cref="Select"/> statement does not modify the list.
+  ///   </para>  
   /// </remarks>
   protected void RefreshBusinessObjectList()
   {
     if (Property == null)
+      return;
+
+    if (StringUtility.IsNullOrEmpty (_select))
       return;
 
     IBusinessObjectWithIdentity[] businessObjects = null;
@@ -834,25 +858,34 @@ public class BocReferenceValue:
   /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
   protected virtual void RefreshBusinessObjectList (IList businessObjects)
   {
-    if (! IsReadOnly)
+    _dropDownList.Items.Clear();
+
+    //  Add Undefined item
+    if (! IsRequired)
+      _dropDownList.Items.Add (CreateNullItem());
+
+    if (businessObjects != null)
     {
-      _dropDownList.Items.Clear();
-
-      //  Add Undefined item
-      if (! IsRequired)
-        _dropDownList.Items.Add (CreateNullItem());
-
-      if (businessObjects != null)
+      //  Populate _dropDownList
+      for (int i = 0; i < businessObjects.Count; i++)
       {
-        //  Populate _dropDownList
-        for (int i = 0; i < businessObjects.Count; i++)
-        {
-          IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) businessObjects[i];
-          ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
-          _dropDownList.Items.Add (item);
-        }
+        IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) businessObjects[i];
+        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+        _dropDownList.Items.Add (item);
       }
     }
+  }
+
+  protected virtual void InitializeMenusItems()
+  {
+  }
+
+  protected virtual void PreRenderMenuItems()
+  {
+    if (_hiddenMenuItems == null)
+      return;
+
+    BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
   }
 
   /// <summary> Prerenders the <see cref="Label"/>. </summary>
@@ -977,7 +1010,9 @@ public class BocReferenceValue:
           getSelectionCount = "function() { return 0; }";
       }
       else
+      {
         getSelectionCount = "function() { return BocReferenceValue_GetSelectionCount ('" + _dropDownList.ClientID + "'); }";
+      }
       _optionsMenu.GetSelectionCount = getSelectionCount;
     }
   }
@@ -985,7 +1020,7 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   private bool HasOptionsMenu
   {
-    get { return _showOptionsMenu && OptionsMenuItems.Count > 0; }
+    get { return _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -1157,6 +1192,49 @@ public class BocReferenceValue:
     }
   }
 
+  bool IBocMenuItemContainer.IsReadOnly
+  {
+    get { return IsReadOnly; }
+  }
+
+  bool IBocMenuItemContainer.IsSelectionEnabled
+  {
+    get { return true; }
+  }
+
+  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects()
+  {
+    return (Value == null) ? new IBusinessObject[0] : new IBusinessObject[] {Value};
+  }
+
+  void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    RemoveBusinessObjects (businessObjects);
+  }
+
+  void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    InsertBusinessObjects (businessObjects);
+  }
+
+  protected virtual void RemoveBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    if (Value == null)
+      return;
+
+    if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
+    {
+      if (((IBusinessObjectWithIdentity) businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
+        Value = null;
+    }
+  }
+
+  protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    if (businessObjects.Length > 0)
+      Value = (IBusinessObjectWithIdentity) businessObjects[0];
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
   /// <value> The <see cref="DropDownList"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
@@ -1268,9 +1346,6 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets the <see cref="DropDownMenu"/> offering additional commands for the current <see cref="Value"/>. </summary>
-  /// <remarks> 
-  ///   <note type="caution"> Use the <see cref="OptionsMenuItems"/> property for setting the available menu items. </note>
-  /// </remarks>
   protected DropDownMenu OptionsMenu
   {
     get { return _optionsMenu; }
@@ -1381,8 +1456,12 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Menu")]
+  [Description ("The menu items displayed by options menu.")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
   public WebMenuItemCollection OptionsMenuItems
   {
     get { return _optionsMenu.MenuItems; }
@@ -1437,6 +1516,23 @@ public class BocReferenceValue:
     set { _hasValueEmbeddedInsideOptionsMenu = value; }
   }
 
+  /// <summary> Gets or sets the list of menu items to be hidden. </summary>
+  /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
+  [Category ("Menu")]
+  [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
+  [DefaultValue ((string) null)]
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [TypeConverter (typeof (Rubicon.Web.UI.Design.StringArrayConverter))]
+  public string[] HiddenMenuItems 
+  {
+    get 
+    {
+      if (_hiddenMenuItems == null)
+        return new string[0];
+      return _hiddenMenuItems;
+    }
+    set {_hiddenMenuItems = value;}
+  }
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
