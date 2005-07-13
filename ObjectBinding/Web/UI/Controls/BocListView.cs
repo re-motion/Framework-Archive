@@ -83,20 +83,6 @@ public class BocListView: BusinessObjectControlItem
     set { _itemID = value; }
   }
 
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use ItemID instead.")]
-  public string SetID
-  {
-    get { return ItemID; }
-    set { ItemID = value; }
-  }
-
-  private bool ShouldSerializeSetID()
-  {
-    return false;
-  }
-
   /// <summary> Gets or sets the displayed name of the <see cref="BocListView"/>. </summary>
   /// <value> A <see cref="string"/> representing this <see cref="BocListView"/> on the rendered page. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
