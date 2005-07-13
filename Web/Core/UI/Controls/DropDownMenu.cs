@@ -83,7 +83,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   public static readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
 
   private string _titleText = "";
-  private string _titleIcon = "";
+  private IconInfo _titleIcon = null;
   private bool _isReadOnly = false;
   private bool _enableGrouping = true;
   private string _getSelectionCount = "";
@@ -93,6 +93,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
 	public DropDownMenu (Control ownerControl, Type[] supportedMenuItemTypes)
 	{
+    if (ownerControl == null)
+      ownerControl = this;
     _menuItems = new WebMenuItemCollection (ownerControl, supportedMenuItemTypes);
 	}
 
@@ -108,7 +110,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
   /// <param name="eventArgument"> &lt;index&gt; </param>
-  public void RaisePostBackEvent (string eventArgument)
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -155,6 +157,9 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
   protected virtual void OnEventCommandClick (WebMenuItem item)
   {
+    if (item != null && item.Command != null)
+      item.Command.OnClick();
+
     WebMenuItemClickEventHandler clickHandler = (WebMenuItemClickEventHandler) Events[s_eventCommandClickEvent];
     if (clickHandler != null)
     {
@@ -176,6 +181,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   protected override void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     string key = typeof (DropDownMenu).FullName + "_Style";
     string styleSheetUrl = null;
     if (! HtmlHeadAppender.Current.IsRegistered (key))
@@ -237,8 +244,6 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       script.Append (" );"); // Close AddMenuInfo
       PageUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
     }
-
-    base.OnPreRender (e);
   }
 
   private void AppendMenuItem (StringBuilder stringBuilder, WebMenuItem menuItem, int menuItemIndex)
@@ -397,6 +402,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         writer.AddStyleAttribute (HtmlTextWriterStyle.Color, "GrayText");
         writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin title tag
       }
+      if (_titleIcon != null)
+        RenderIcon (writer, _titleIcon);
       writer.Write (_titleText);
       writer.RenderEndTag(); // End title tag
 
@@ -409,6 +416,21 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
     writer.AddStyleAttribute ("padding-right", "3pt");
     writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+    writer.RenderEndTag();
+  }
+
+  private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
+  {
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
+    if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
+      writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
+    }
+    writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+    writer.AddStyleAttribute ("margin-right", "3pt");
+    writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
 
@@ -443,7 +465,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     set { _titleText = value; }
   }
 
-  public string TitleIcon
+  public IconInfo TitleIcon
   {
     get { return _titleIcon; }
     set { _titleIcon = value; }

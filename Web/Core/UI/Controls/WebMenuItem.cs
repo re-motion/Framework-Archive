@@ -68,7 +68,7 @@ public class WebMenuItem: IControlItem
   }
 
   /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
-  protected virtual void OnPreRender()
+  protected virtual void PreRender()
   {
   }
 
@@ -267,12 +267,21 @@ public class WebMenuItem: IControlItem
     { 
       if (_ownerControl != value)
       {
+        if (_ownerControl != null)
+          _ownerControl.PreRender -= new EventHandler(OwnerControl_PreRender);
         _ownerControl = value;
+        if (_ownerControl != null)
+          _ownerControl.PreRender += new EventHandler(OwnerControl_PreRender);
         if (Command != null)
           Command.OwnerControl = value;
         OnOwnerControlChanged();
       }
     }
+  }
+
+  private void OwnerControl_PreRender(object sender, EventArgs e)
+  {
+    PreRender();
   }
 }
 
