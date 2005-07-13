@@ -53,7 +53,6 @@ public class BocDesigner: ControlDesigner
 
     return base.GetDesignTimeHtml ();
   }
-
 }
 
 }
