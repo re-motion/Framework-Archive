@@ -410,7 +410,10 @@ public class ReflectionBusinessObjectReferenceProperty: ReflectionBusinessObject
 
   public IBusinessObjectWithIdentity[] SearchAvailableObjects(IBusinessObject obj, string searchStatement)
   {
-    return ReflectionBusinessObjectStorage.GetObjects (obj.GetType());
+    if (searchStatement == "*")
+      return ReflectionBusinessObjectStorage.GetObjects (obj.GetType());
+    else
+      return new IBusinessObjectWithIdentity[0];
   }
 
   public bool SupportsSearchAvailableObjects
