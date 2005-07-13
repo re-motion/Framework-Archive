@@ -93,6 +93,7 @@ public class BocCommand: Command
   ///   The <see cref="BocWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
   private BocWxeFunctionCommandInfo _wxeFunctionCommand = new BocWxeFunctionCommandInfo();
+  private bool _hasClickFired = false;
 
   [Browsable (false)]
   public new BocCommandClickEventHandler Click;
@@ -113,6 +114,9 @@ public class BocCommand: Command
   public virtual void OnClick (IBusinessObject businessObject)
   {
     base.OnClick();
+    if (_hasClickFired)
+      return;
+    _hasClickFired = true;
     if (Click != null)
     {
       BocCommandClickEventArgs e = new BocCommandClickEventArgs (businessObject);
