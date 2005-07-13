@@ -60,20 +60,6 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
     set { _itemID = value; }
   }
 
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use ItemID instead.")]
-  public string ColumnID
-  {
-    get { return ItemID; }
-    set { ItemID = value; }
-  }
-
-  private bool ShouldSerializeColumnID()
-  {
-    return false;
-  }
-
   /// <summary> Gets the displayed value of the column title. </summary>
   /// <remarks> Override this property to change the way the column title text is generated. </remarks>
   /// <value> A <see cref="string"/> representing this column's title row contents. </value>
