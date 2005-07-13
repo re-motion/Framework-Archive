@@ -92,6 +92,7 @@ public class ControlItemCollection: CollectionBase
     IControlItem controlItem = (IControlItem) value;
     if (! IsSupportedType (controlItem)) throw new ArgumentTypeException ("value", controlItem.GetType());
 
+    CheckItem ("value", controlItem);
     base.OnInsert (index, value);
     controlItem.OwnerControl = _ownerControl;
   }
@@ -109,6 +110,7 @@ public class ControlItemCollection: CollectionBase
     IControlItem controlItem = (IControlItem) newValue;
     if (! IsSupportedType (controlItem)) throw new ArgumentTypeException ("newValue", controlItem.GetType());
 
+    CheckItem ("value", controlItem);
     base.OnSet (index, oldValue, newValue);
     controlItem.OwnerControl = _ownerControl;
   }
@@ -126,6 +128,12 @@ public class ControlItemCollection: CollectionBase
     base.OnRemoveComplete (index, value);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
+  }
+
+  protected virtual void CheckItem (string argumentName, IControlItem item)
+  {
+    if (Find (item.ItemID) != null)
+      throw new ArgumentException ("The collection already contains an item with ItemID '" + item.ItemID + "'.", argumentName);
   }
 
   public int Add (IControlItem value)

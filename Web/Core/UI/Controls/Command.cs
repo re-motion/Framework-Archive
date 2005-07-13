@@ -201,6 +201,7 @@ public class Command: IControlItem
   private CommandType _defaultType = CommandType.None;
   private CommandShow _show = CommandShow.Always;
   private HrefCommandInfo _hrefCommand = new HrefCommandInfo();
+  private bool _hasClickFired = false;
 
   /// <summary>
   ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
@@ -228,6 +229,9 @@ public class Command: IControlItem
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   public virtual void OnClick ()
   {
+    if (_hasClickFired)
+      return;
+    _hasClickFired = true;
     if (Click != null)
       Click (this, EventArgs.Empty);
   }
