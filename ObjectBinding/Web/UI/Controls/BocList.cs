@@ -40,7 +40,8 @@ public class BocList:
     IResourceDispatchTarget, 
     IPostBackEventHandler, 
     IPostBackDataHandler, 
-    IComparer
+    IComparer,
+    IBocMenuItemContainer
 {
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
@@ -261,10 +262,9 @@ public class BocList:
 
   private DropDownMenu _optionsMenu;
   private string _optionsTitle;
-  /// <summary> The width applied to the <c>menu block</c>. </summary>
   private Unit _menuBlockWidth = Unit.Empty;
-  /// <summary> The offset between the  <c>list block</c> and the <c>menu block</c>. </summary>
   private Unit _menuBlockOffset = Unit.Empty;
+  private string[] _hiddenMenuItems;
 
   private WebMenuItemCollection _listMenuItems;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
@@ -422,6 +422,11 @@ public class BocList:
     _availableViews.CollectionChanged +=
         new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
+
+    if (!IsDesignMode)
+    {
+      InitializeMenusItems();
+    }
   }
 
   protected override void OnLoad(EventArgs e)
@@ -1000,6 +1005,10 @@ public class BocList:
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
+    if (!IsDesignMode)
+    {
+      PreRenderMenuItems();
+    }
 
     EnsureRowEditModeValidatorsRestored();
     
@@ -1284,8 +1293,9 @@ public class BocList:
   {
     get
     {
-      bool showAvailableViewsList =   _showAvailableViewsList 
-                                      && _availableViews.Count > 1;
+      bool showAvailableViewsList =    _showAvailableViewsList 
+                                    && (   _availableViews.Count > 1
+                                        || IsDesignMode);
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showEmptyListReadOnlyMode
                              || ! isReadOnly && _showEmptyListEditMode;
@@ -1299,7 +1309,8 @@ public class BocList:
     get
     {
       bool showOptionsMenu =   _showOptionsMenu 
-                            && OptionsMenuItems.Count > 0;
+                            && (   OptionsMenuItems.Count > 0
+                                || IsDesignMode);
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
                              || ! isReadOnly && _showMenuForEmptyListEditMode;
@@ -1313,7 +1324,8 @@ public class BocList:
     get
     {
       bool showListMenu =   _showListMenu 
-                         && ListMenuItems.Count > 0;
+                         && (   ListMenuItems.Count > 0
+                             || IsDesignMode);
       bool isReadOnly = IsReadOnly;
       bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
                              || ! isReadOnly && _showMenuForEmptyListEditMode;
@@ -2789,6 +2801,19 @@ public class BocList:
     _move = MoveOption.Next;
   }
 
+  protected virtual void InitializeMenusItems()
+  {
+  }
+
+  protected virtual void PreRenderMenuItems()
+  {
+    if (_hiddenMenuItems == null)
+      return;
+
+    BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
+    BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
+  }
+
   private BocColumnDefinition[] EnsureColumnsForPreviousLifeCycleGot()
   {
     if (_columnDefinitionsPostBackEventHandlingPhase == null)
@@ -3405,7 +3430,14 @@ public class BocList:
     }
   }
 
-  
+  public void AddRows (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+    Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
+    _indexedRowsSorted = null;
+    _isDirty = true;
+  }
+
   public int AddRow (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -3416,6 +3448,29 @@ public class BocList:
       return -1;
     else
       return Value.Count - 1;
+  }
+
+  public void RemoveRows (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+    if (Value == null)
+      return;
+
+    if (_isEditNewRow && IsEditDetailsModeActive)
+    {
+      foreach (IBusinessObject businessObject in businessObjects)
+      {
+        if (businessObject == Value[ModifiableRowIndex.Value])
+        {
+          _isEditNewRow = false;
+          break;
+        }
+      }
+    }
+
+    Value = ListUtility.Remove (Value, businessObjects, Property, false);
+    _indexedRowsSorted = null;
+    _isDirty = true;
   }
 
   public void RemoveRow (IBusinessObject businessObject)
@@ -4018,25 +4073,6 @@ public class BocList:
     get { return _availableViews; }
   }
 
-  /// <exclude/>
-  [Obsolete ("Use AvailableViews instead")]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public BocListViewCollection AvailableColumnDefinitionSets
-  {
-    get { return AvailableViews; }
-  }
-
-  /// <exclude/>
-  [Obsolete ("Use SelectedView instead")]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public BocListView SelectedColumnDefinitionSet
-  {
-    get { return SelectedView; }
-    set { SelectedView = value; }
-  }
-
   /// <summary>
   ///   Gets or sets the selected <see cref="BocListView"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
@@ -4243,6 +4279,42 @@ public class BocList:
       int rowIndex = (int) selectedRows[i];
       _selectorControlCheckedState[rowIndex] = true;
     }
+  }
+
+  protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    AddRows (businessObjects);
+  }
+ 
+  protected virtual void RemoveBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    ClearSelectedRows();
+    RemoveRows (businessObjects);
+  }
+
+  bool IBocMenuItemContainer.IsReadOnly
+  {
+    get { return IsReadOnly; }
+  }
+
+  bool IBocMenuItemContainer.IsSelectionEnabled
+  {
+    get { return IsSelectionEnabled; }
+  }
+  
+  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects()
+  {
+    return GetSelectedBusinessObjects();
+  }
+ 
+  void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    InsertBusinessObjects (businessObjects);
+  }
+
+  void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
+  {
+    RemoveBusinessObjects (businessObjects);
   }
 
   /// <summary> 
@@ -4558,16 +4630,24 @@ public class BocList:
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Menu")]
+  [Description ("The menu items displayed by options menu.")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
   public WebMenuItemCollection OptionsMenuItems
   {
     get { return _optionsMenu.MenuItems; }
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Menu")]
+  [Description ("The menu items displayed in the list's menu area.")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
   public WebMenuItemCollection ListMenuItems
   {
     get { return _listMenuItems; }
@@ -4594,6 +4674,23 @@ public class BocList:
     set { _menuBlockOffset = value; }
   }
 
+  /// <summary> Gets or sets the list of menu items to be hidden. </summary>
+  /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
+  [Category ("Menu")]
+  [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
+  [DefaultValue ((string) null)]
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [TypeConverter (typeof (Rubicon.Web.UI.Design.StringArrayConverter))]
+  public string[] HiddenMenuItems 
+  {
+    get 
+    {
+      if (_hiddenMenuItems == null)
+        return new string[0];
+      return _hiddenMenuItems;
+    }
+    set {_hiddenMenuItems = value;}
+  }
   /// <summary>
   ///   Gets or sets a value that indicates whether the control displays a drop down list 
   ///   containing the available column definition sets.
@@ -4605,34 +4702,6 @@ public class BocList:
   {
     get { return _showAvailableViewsList; }
     set { _showAvailableViewsList = value; }
-  }
-
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use ShowAvailableViewsList instead.")]
-  public bool ShowAdditionalColumnsList
-  {
-    get { return ShowAvailableViewsList; }
-    set { ShowAvailableViewsList = value; }
-  }
-
-  private bool ShouldSerializeShowAdditionalColumnsList()
-  {
-    return false;
-  }
-
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use AvailableViewsListTitle instead.")]
-  public string AdditionalColumnsTitle
-  {
-    get { return AvailableViewsListTitle; }
-    set { AvailableViewsListTitle = value; }
-  }
-
-  private bool ShouldSerializeAdditionalColumnsTitle()
-  {
-    return false;
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
