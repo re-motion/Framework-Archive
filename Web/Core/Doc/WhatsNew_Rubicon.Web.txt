@@ -1,3 +1,13 @@
+1.2.55
+======
+- WebTab
+  * Obsolete TabID entfernt. Muss durch Search auf die ASPX-Files manuell herausgelöscht werden.
+      ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
+
+- WebTreeNode
+  * Obsolete NodeID entfernt. Muss durch Search auf die ASPX-Files manuell herausgelöscht werden.
+      ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
+
 1.2.54
 ======
 - FormGridManager
@@ -20,7 +30,7 @@
     Durch Obsolete abgefangene Änderung, alte Version wird in einigen Wochen entfernt.
 
 - WebTreeNode
-  * TabID zu ItemID umbennant (Designer-Property).
+  * NodeID zu ItemID umbennant (Designer-Property).
     Durch Obsolete abgefangene Änderung, alte Version wird in einigen Wochen entfernt.
   
 - WebMenuItem
