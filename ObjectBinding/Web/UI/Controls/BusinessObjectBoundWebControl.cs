@@ -201,7 +201,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
-    if (! ControlHelper.IsDesignMode (this, Context))
+    if (! IsDesignMode)
       _hasVisibleBinding = HasValidBinding;
   }
 
