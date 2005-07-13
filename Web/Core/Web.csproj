@@ -732,12 +732,18 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\StringArrayToStringConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\WebMenuItemCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Design\WebTreeNodeCollectionEditor.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
