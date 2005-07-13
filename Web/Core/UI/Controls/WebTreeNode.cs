@@ -169,20 +169,6 @@ public class WebTreeNode: IControlItem
     return true;
   }
 
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use ItemID instead.")]
-  public string NodeID
-  {
-    get { return ItemID; }
-    set { ItemID = value; }
-  }
-
-  private bool ShouldSerializeNodeID()
-  {
-    return false;
-  }
-
   /// <summary> Gets or sets the text displayed in this node. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]

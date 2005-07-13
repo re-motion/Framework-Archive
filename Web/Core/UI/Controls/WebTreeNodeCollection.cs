@@ -41,7 +41,6 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) value;
-    CheckNode ("value", node);
     base.OnInsert (index, value);
   }
 
@@ -56,7 +55,6 @@ public class WebTreeNodeCollection: ControlItemCollection
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) newValue;
-    CheckNode ("newValue", node);
     base.OnSet (index, oldValue, newValue);
   }
 
@@ -67,15 +65,14 @@ public class WebTreeNodeCollection: ControlItemCollection
     node.SetParent (_treeView, _parentNode);
   }
 
-  private void CheckNode (string arguemntName, WebTreeNode node)
+  protected override void CheckItem (string argumentName, IControlItem item)
   {
     if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
     {
-      if (StringUtility.IsNullOrEmpty (node.ItemID))
-        throw new ArgumentException ("The node does not contain a 'ItemID' and can therfor not be inserted into the collection.", arguemntName);
+      if (StringUtility.IsNullOrEmpty (item.ItemID))
+        throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", argumentName);
     }
-    if (Find (node.ItemID) != null)
-      throw new ArgumentException ("The collection already contains a node with ItemID '" + node.ItemID + "'.", arguemntName);
+    base.CheckItem (argumentName, item);
   }
 
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
