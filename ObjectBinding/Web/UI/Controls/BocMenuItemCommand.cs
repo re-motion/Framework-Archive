@@ -67,6 +67,7 @@ public class BocMenuItemCommand: BocCommand
   ///   The <see cref="MenuItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
   /// </summary>
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
+  private bool _hasClickFired = false;
 
   [Browsable (false)]
   public new WebMenuItemClickEventHandler Click;
@@ -87,6 +88,9 @@ public class BocMenuItemCommand: BocCommand
   public virtual void OnClick (BocMenuItem menuItem)
   {
     base.OnClick (null);
+    if (_hasClickFired)
+      return;
+    _hasClickFired = true;
     if (Click != null)
     {
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);

@@ -8,6 +8,15 @@ using Rubicon.Web.UI;
 namespace Rubicon.ObjectBinding.Web.Controls
 {
 
+public interface IBocMenuItemContainer
+{
+  bool IsReadOnly { get; }
+  bool IsSelectionEnabled { get; }
+  IBusinessObject[] GetSelectedBusinessObjects();
+  void RemoveBusinessObjects (IBusinessObject[] businessObjects);
+  void InsertBusinessObjects (IBusinessObject[] businessObjects);
+}
+
 /// <remarks>
 ///   May only be added to an <see cref="IBusinessObjectBoundWebControl"/>.
 /// </remarks>
@@ -73,6 +82,53 @@ public class BocMenuItem: WebMenuItem
   {
     get { return (Control) OwnerControl; }
     set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged ();
+    ArgumentUtility.CheckNotNullAndType ("OwnerControl", OwnerControl, typeof (IBocMenuItemContainer));
+  }
+
+  protected IBocMenuItemContainer BocMenuItemContainer
+  {
+    get { return (IBocMenuItemContainer) OwnerControl; }
+  }
+
+  protected override void PreRender()
+  {
+    base.PreRender();
+
+    IsDisabled = EvaluateDisabled ();
+    IsVisible = EvaluateVisible ();
+  }
+
+  protected virtual bool EvaluateVisible ()
+  {
+    if (! IsVisible)
+      return false;
+
+    bool isReadOnly = BocMenuItemContainer.IsReadOnly;
+    bool isSelectionEnabled = BocMenuItemContainer.IsSelectionEnabled;
+
+    if (Command != null)
+    {
+      if (! isReadOnly && Command.Show == CommandShow.ReadOnly)
+        return false;
+      if (isReadOnly && Command.Show == CommandShow.EditMode)
+        return false;
+    }
+    bool isSelectionRequired =   RequiredSelection == RequiredSelection.ExactlyOne 
+                              || RequiredSelection == RequiredSelection.OneOrMore; 
+    if (!isSelectionEnabled && isSelectionRequired)
+      return false;
+
+    return true;
+  }
+
+  protected virtual bool EvaluateDisabled ()
+  {
+    return IsDisabled;
   }
 }
 
