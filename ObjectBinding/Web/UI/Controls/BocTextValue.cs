@@ -346,6 +346,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     BocTextValueType valueType = ActualValueType;
     switch (valueType)
     {
+      case BocTextValueType.Undefined:
+      {
+        break;
+      }
       case BocTextValueType.String:
       {
         break;
@@ -408,7 +412,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       }
       default:
       {
-        throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
+        throw new ArgumentException ("BocTextValue '" + ID + "': Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
       }
     }
     _validators.AddRange (validators);
