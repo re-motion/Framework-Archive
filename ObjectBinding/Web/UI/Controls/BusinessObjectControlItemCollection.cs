@@ -66,7 +66,7 @@ public abstract class BusinessObjectControlItem: IControlItem
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual string ItemID
   {
-    get { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
+    get { return null; }
     set { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
   }
 }
