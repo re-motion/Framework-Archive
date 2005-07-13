@@ -61,7 +61,7 @@
 </TextBoxStyle></obc:BocMultilineTextValue></td></tr>
         <tr>
           <td style="HEIGHT: 17px"></td>
-          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAdditionalColumnsList="False" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
+          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAvailableViewsList="false" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
 </obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>

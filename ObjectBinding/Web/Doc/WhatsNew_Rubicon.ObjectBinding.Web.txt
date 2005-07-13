@@ -1,20 +1,62 @@
 1.2.55
 ======
 - BocList
-  * OptionsMenuItems: Designerunterstützung entfernt
-  * ListMenuItems: Designerunterstützung entfernt
   * EnsureOptionsMenuItemsGot und EnsureListMenuItemsGot entfernt. 
-    Zugriff direkt üer OptionsMenuItems und ListMenuItems
-    OnLoad überschreiben weitere MenuItems einzuhängen bzw zu entfernen
-    OnPreRender überschreiben um die Display-Properties der MenuItems zu setzen
+    Zugriff direkt über OptionsMenuItems und ListMenuItems
+    InitializeMenuItems überschreiben um weitere MenuItems einzuhängen bzw zu entfernen.
+      Wichtig: Die Liste der MenuItems muss üer Postbacks hinweg stabil bleiben.
+    PreRenderMenuItems überschreiben um die Display-Properties der MenuItems zu setzen.
+  * HiddenMenuItems
+    Neue Property
+    Enthält die IDs der MenuItems die ausgeblendet werden sollen. 
+      Falls Typnamen als ID verwendet werden, so genügt die Angabe des Typnames ohne Namespace. 
+      Es wird in diesem Fall auf das Suffix (bestehend aus ".Typnamen") getestet.
+    Persistiert als komma-getrennte Liste
+  * Folgende obsolete Properties wurden nun entfernt (siehe auch 1.2.52)
+      SelectedColumnDefinitionSet
+      AvailableColumnDefinitionSets
+      ShowAdditionalColumnsList (Designer-Property)
+      AdditionalColumnsTitle (Designer-Property)
+      BocColumnDefinition.ColumnID (Designer-Property)
+      BocListView.SetID
+    Designer-Properties müssen durch Search auf die ASPX-Files manuell herausgelöscht werden.
+      ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
 
 - BocReferenceValue
-  * OptionsMenuItems: Designerunterstützung entfernt
   * EnsureOptionsMenuItemsGot entfernt. 
-    Zugriff direkt üer OptionsMenuItems
-    OnLoad überschreiben weitere MenuItems einzuhängen bzw zu entfernen
-    OnPreRender überschreiben um die Display-Properties der MenuItems zu setzen
+    Zugriff direkt über OptionsMenuItems
+    InitializeMenuItems überschreiben um weitere MenuItems einzuhängen bzw zu entfernen.
+      Wichtig: Die Liste der MenuItems muss üer Postbacks hinweg stabil bleiben.
+    PreRenderMenuItems überschreiben um die Display-Properties der MenuItems zu setzen.
+  * HiddenMenuItems
+    Neue Property
+    Enthält die IDs der MenuItems die ausgeblendet werden sollen. 
+      Falls Typnamen als ID verwendet werden, so genügt die Angabe des Typnames ohne Namespace. 
+      Es wird in diesem Fall auf das Suffix (bestehend aus ".Typnamen") getestet.
+    Persistiert als komma-getrennte Liste
+  * Select Statement
+    Neues Verhalten: Wird kein Select Statement angegeben, so wird das automatische Befüllen der Liste ausgesetzt.
+  
+- BocDropDownMenu
+  * Neue Klasse
+  * Object Bound Drop Down Menu
+  * Programmatische Modifikation der MenuItems
+    InitializeMenuItems überschreiben um weitere MenuItems einzuhängen bzw zu entfernen.
+      Wichtig: Die Liste der MenuItems muss üer Postbacks hinweg stabil bleiben.
+    PreRenderMenuItems überschreiben um die Display-Properties der MenuItems zu setzen.
+  * HiddenMenuItems
+    Enthält die IDs der MenuItems die ausgeblendet werden sollen. 
+      Falls Typnamen als ID verwendet werden, so genügt die Angabe des Typnames ohne Namespace. 
+      Es wird in diesem Fall auf das Suffix (bestehend aus ".Typnamen") getestet.
+    Persistiert als komma-getrennte Liste
 
+- BocTextValue
+  * Bugfix: ValueType.Undefined warf bei der Erstellung der Validatoren eine Exception. Aufgetreten mit Version 1.2.53
+
+- BocTreeView
+  * Obsolete BocTreeNode.NodeID entfernt. Muss durch Search auf die ASPX-Files manuell herausgelöscht werden.
+      ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
+     
 1.2.54
 ======
 - BocList
@@ -44,7 +86,7 @@
     gab es eine Null-Reference-Exception.
 
 - BocTextValue
-  * Für ValuteType Integer und Double wird nun der NumericValidator verwendet statt des CompareVlaidators.    
+  * Für ValuteType Integer und Double wird nun der NumericValidator verwendet statt des CompareValidators.    
     
 1.2.52
 ======
