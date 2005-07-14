@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Web.UI;
@@ -491,12 +492,79 @@ public class PageUtility
     }
   }  
 
+  /// <summary> Escapes special characters (e.g. <c>\n</c>) in the passed string. </summary>
+  /// <param name="input"> The unescaped string. </param>
+  /// <returns> The string with special characters escaped. </returns>
+  /// <remarks>
+  ///   This is required when adding client script to the page containing special characters. ASP.NET automatically 
+  ///   escapes client scripts created by <see cref="Page.GetPostBackEventReference">Page.GetPostBackEventReference</see>.
+  /// </remarks>
+  // TODO: Move to Script Utitility
+  public static string EscapeClientScript (string input)
+  {
+    StringBuilder output = new StringBuilder(input.Length + 5);
+    for (int idxChars = 0; idxChars < input.Length; idxChars++)
+    {
+      char c = input[idxChars];
+      switch (c)
+      {
+        case '\t':
+        {
+          output.Append (@"\t");
+          break;
+        }
+        case '\n':
+        {
+          output.Append (@"\n");
+          break;
+        }
+        case '\r':
+        {
+          output.Append (@"\r");
+          break;
+        }
+        case '"':
+        {
+          output.Append ("\\\"");
+          break;
+        }
+        case '\'':
+        {
+          output.Append (@"\'");
+          break;
+        }
+        case '\\':
+        {
+          output.Append (@"\\");
+          break;
+        }
+        case '\v':
+        {
+          output.Append (c);
+          break;
+        }
+        case '\f':
+        {
+          output.Append (c);
+          break;
+        }
+        default:
+        {
+          output.Append(c);
+          break;
+        }
+      }
+    }
+    return output.ToString();
+  }
+ 
   /// <summary> 
   ///   Used to register client scripts include directives.
   /// </summary>
   /// <param name="page"> The <see cref="Page"/> where the script file will be registered. </param>
   /// <param name="key"> The key identifying the registered script file. </param>
   /// <param name="scriptUrl"> The url of the script file. </param>
+  // TODO: Move to Script Utitility ?
   public static void RegisterClientScriptInclude (Page page, string key, string scriptUrl)
   {
     string script = 
@@ -507,6 +575,7 @@ public class PageUtility
     page.RegisterClientScriptBlock (key, script);
   }
 
+  // TODO: Move to Script Utitility ?
   public static void RegisterClientScriptBlock (Page page, string key, string javascript)
   {
     string script = 
@@ -524,6 +593,7 @@ public class PageUtility
   /// <param name="page"> The <see cref="Page"/> where the script will be registered. </param>
   /// <param name="key"> The key identifying the registered script file. </param>
   /// <param name="javascript"> The client script that will be registered. </param>
+  // TODO: Move to Script Utitility ?
   public static void RegisterStartupScriptBlock (Page page, string key, string javascript)
   {
     string script = 
@@ -534,6 +604,7 @@ public class PageUtility
     page.RegisterStartupScript (key, script);
   }
 
+  // TODO: Move to Script Utitility ?
   public static void RegisterWindowOpenJavascript (Page page)
   {
     string script = @"
@@ -562,6 +633,7 @@ public class PageUtility
     RegisterClientScriptBlock (page, c_windowOpenJavascriptKey, script);
   }
 
+  // TODO: Move to Script Utitility ?
   public static string GetWindowOpenJavascript (string url, bool useScrollbars)
   {
     return string.Format ("WindowOpen ('{0}', '{1}')", url, useScrollbars ? "yes" : "no");
@@ -570,6 +642,7 @@ public class PageUtility
   /// <remarks>Be aware that the refresh of the opener causes a form submit and thus
   /// the opener page will automatically perform server-side validation. If this is not the desired behavior
   /// the opener page must override <see cref="System.Web.UI.Page.Validate"/> with an empty method.</remarks>
+  // TODO: Move to Script Utitility ?
   public static void CloseBrowserWindow (Page page, bool refreshParent)
   {
     string refreshParentScript = string.Empty;
