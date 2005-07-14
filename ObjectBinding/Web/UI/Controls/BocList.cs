@@ -1525,8 +1525,7 @@ public class BocList:
         {
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument) + ";";
-          //  HACK: EscapeJavaScript will be moved to extra class 
-          href = DropDownMenu.EscapeJavaScript (href);
+          href = PageUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }
         else if (menuItem.Command.Type == CommandType.Href)

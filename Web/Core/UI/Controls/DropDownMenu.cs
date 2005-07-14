@@ -15,65 +15,6 @@ namespace Rubicon.Web.UI.Controls
 
 public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 {
-  //  HACK: EscapeJavaScript will be moved to extra class 
-  public static string EscapeJavaScript (string input)
-  {
-    StringBuilder output = new StringBuilder(input.Length + 5);
-    for (int idxChars = 0; idxChars < input.Length; idxChars++)
-    {
-      char c = input[idxChars];
-      switch (c)
-      {
-        case '\t':
-        {
-          output.Append (@"\t");
-          break;
-        }
-        case '\n':
-        {
-          output.Append (@"\n");
-          break;
-        }
-        case '\r':
-        {
-          output.Append (@"\r");
-          break;
-        }
-        case '"':
-        {
-          output.Append ("\\\"");
-          break;
-        }
-        case '\'':
-        {
-          output.Append (@"\'");
-          break;
-        }
-        case '\\':
-        {
-          output.Append (@"\\");
-          break;
-        }
-        case '\v':
-        {
-          output.Append (c);
-          break;
-        }
-        case '\f':
-        {
-          output.Append (c);
-          break;
-        }
-        default:
-        {
-          output.Append(c);
-          break;
-        }
-      }
-    }
-    return output.ToString();
-  }
- 
   private static readonly object s_eventCommandClickEvent = new object();
   private static readonly object s_wxeFunctionCommandClickEvent = new object();
 
@@ -267,8 +208,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         {
           string argument = menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument);
-          //  HACK: EscapeJavaScript will be moved to extra class 
-          href = DropDownMenu.EscapeJavaScript (href);
+          href = PageUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }
         else if (menuItem.Command.Type == CommandType.Href)
