@@ -1212,7 +1212,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url, HtmlHeadAppender.Prioritiy.Library);
     }
   }
 
