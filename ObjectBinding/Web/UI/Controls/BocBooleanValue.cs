@@ -231,7 +231,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (
+          s_scriptFileKey, 
+          scriptUrl, 
+          HtmlHeadAppender.Prioritiy.Library);
       }
 
       if (Enabled)
