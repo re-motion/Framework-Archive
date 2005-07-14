@@ -409,7 +409,10 @@ public class BocReferenceValue:
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (
+        s_scriptFileKey, 
+        scriptUrl, 
+        HtmlHeadAppender.Prioritiy.Library);
     }
 
     if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
@@ -422,7 +425,7 @@ public class BocReferenceValue:
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Prioritiy.Library);
     }
 
     if (!IsDesignMode)
