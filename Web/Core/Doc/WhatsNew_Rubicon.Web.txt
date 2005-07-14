@@ -8,6 +8,15 @@
   * Obsolete NodeID entfernt. Muss durch Search auf die ASPX-Files manuell herausgelöscht werden.
       ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
 
+- HtmlHeadAppender
+  * Bugfix: Die Sortierung der Einträge war nicht garantiert. Vielmehr sind nur durch Zufall die durch die
+      Page hinzigefügten Elemente am Ende der Liste gerendert worden. Für Stylesheets ist dieses Verhalten kritisch,
+      da diese in der Reihenfolge ihres auftretens auf der Seite ausgewertet werden.
+    Neuer Parameter für die RegisterXXX Methoden: Priority mit den Werten Library, UserControl und Page.
+    Wird kein Wert angegeben, so wird Page als Default genommen. Damit ist das korrekte Verhalten für bestehenden 
+      Lösungen sichergestellt, welche HeadElemente in der Page hinzufügen. 
+      Konkreter Fall: Das Überschreiben von StyleSheetwerten der Control-Libraries
+    
 1.2.54
 ======
 - FormGridManager
