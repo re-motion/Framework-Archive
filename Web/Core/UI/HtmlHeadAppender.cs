@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using System.Runtime.Remoting.Messaging;
@@ -9,6 +10,7 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI
 {
+
 /// <summary>
 ///   Provides a mechanism to register HTML header elements (e.g., stylesheet or script links).
 /// </summary>
@@ -25,16 +27,26 @@ namespace Rubicon.Web.UI
 /// </example>
 public class HtmlHeadAppender
 {
-  /// <summary> Hashtable&lt;string key, string headElement&gt; </summary>
-  private Hashtable _registeredHeadElements = new Hashtable();
+  public enum Prioritiy
+  {
+    Library = 0, // Absolute values to emphasize sorted nature of enum valies
+    UserControl = 1,
+    Page = 2
+  }
+
+  /// <summary> ListDictionary&lt;string key, Control headElement&gt; </summary>
+  private ListDictionary _registeredHeadElements = new ListDictionary();
+  /// <summary> SortedList&lt;HtmlHeadPrioritiy (int) priority + "." + string key, Control headElement&gt; </summary>
+  private SortedList _sortedHeadElements = new SortedList();
   /// <summary> <see langword="true"/> if <see cref="EnsureAppended"/> has already executed. </summary>
   private bool _hasAppendExecuted = false;
-
+  
   /// <remarks>
   ///   Factory pattern. No public construction.
   /// </remarks>
   private HtmlHeadAppender()
-  {}
+  {
+  }
 
   /// <summary>
   ///   Gets the <see cref="HtmlHeadAppender"/> instance.
@@ -86,19 +98,16 @@ public class HtmlHeadAppender
     if (_hasAppendExecuted)
       return;
 
-    bool isDesignMode = ControlHelper.IsDesignMode (htmlHeadContents);
+    if (ControlHelper.IsDesignMode (htmlHeadContents))
+      return;
 
-    foreach (Control headElement in _registeredHeadElements.Values)
+    IList headElements = _sortedHeadElements.GetValueList();
+    for (int i = 0; i < headElements.Count; i++)
     {
-      if (   ! isDesignMode
-          || ! htmlHeadContents.Controls.Contains (headElement))
-      {
+      Control headElement = (Control) headElements[i];
+      if (! htmlHeadContents.Controls.Contains (headElement))
         htmlHeadContents.Controls.Add (headElement);
-      }
     }
-
-    if (! isDesignMode)
-      _hasAppendExecuted = true;
   }
 
   /// <summary>
@@ -108,9 +117,10 @@ public class HtmlHeadAppender
   ///   <para>
   ///     All calls to <see cref="RegisterStylesheetLink"/> must be completed before
   ///     <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
-  ///   </para>
-  ///   <para>
+  ///   </para><para>
   ///     Remove the title tag from the aspx-source.
+  ///   </para><para>
+  ///     Registeres the title with a default priority of Page.
   ///   </para>
   /// </remarks>
   /// <param name="title"> The stirng to be isnerted as the title. </param>
@@ -118,7 +128,7 @@ public class HtmlHeadAppender
   {
     string key = "title";
 
-    if (_registeredHeadElements.Contains (key))
+    if (IsRegistered (key))
     {
       ((HtmlGenericControl) _registeredHeadElements[key]).InnerText = title;
     }
@@ -127,7 +137,7 @@ public class HtmlHeadAppender
       HtmlGenericControl headElement = new HtmlGenericControl ("title");
       headElement.EnableViewState = false;
       headElement.InnerText = title;
-      RegisterHeadElement ("title", headElement);
+      RegisterHeadElement ("title", headElement, Prioritiy.Page);
     }
   }
 
@@ -138,17 +148,40 @@ public class HtmlHeadAppender
   /// </remarks>
   /// <param name="key"> The unique key identifying the stylesheet file in the headers collection. </param>
   /// <param name="href"> The url of the stylesheet file. </param>
+  /// <param name="priority"> 
+  ///   The priority level of the head element. Elements are rendered in the following order:
+  ///   Library, UserControl, Page.
+  /// </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterStylesheetLink (string key, string href)
+  public void RegisterStylesheetLink (string key, string href, Prioritiy priority)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("link");
     headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/css");
     headElement.Attributes.Add ("rel", "stylesheet");
     headElement.Attributes.Add ("href", href);
-    RegisterHeadElement (key, headElement);
+    RegisterHeadElement (key, headElement, priority);
+  }
+
+  /// <summary> Registers a stylesheet file. </summary>
+  /// <remarks>
+  ///   <para>
+  ///     All calls to <see cref="RegisterStylesheetLink"/> must be completed before
+  ///     <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
+  ///   </para><para>
+  ///     Registeres the javascript file with a default priority of Page.
+  ///   </para>
+  /// </remarks>
+  /// <param name="key"> The unique key identifying the stylesheet file in the headers collection. </param>
+  /// <param name="href"> The url of the stylesheet file. </param>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
+  /// </exception>
+  public void RegisterStylesheetLink (string key, string href)
+  {
+    RegisterStylesheetLink (key, href, Prioritiy.Page);
   }
 
   /// <summary> Registers a javascript file. </summary>
@@ -158,16 +191,39 @@ public class HtmlHeadAppender
   /// </remarks>
   /// <param name="key"> The unique key identifying the javascript file in the headers collection. </param>
   /// <param name="src"> The url of the javascript file. </param>
+  /// <param name="priority"> 
+  ///   The priority level of the head element. Elements are rendered in the following order:
+  ///   Library, UserControl, Page.
+  /// </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterJavaScriptInclude (string key, string src)
+  public void RegisterJavaScriptInclude (string key, string src, Prioritiy priority)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("script");
     headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/javascript");
     headElement.Attributes.Add ("src", src);
-    RegisterHeadElement (key, headElement);
+    RegisterHeadElement (key, headElement, priority);
+  }
+
+  /// <summary> Registers a javascript file. </summary>
+  /// <remarks>
+  ///   <para>
+  ///     All calls to <see cref="RegisterJavaScriptInclude"/> must be completed before
+  ///     <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
+  ///   </para><para>
+  ///     Registeres the javascript file with a default priority of Page.
+  ///   </para>
+  /// </remarks>
+  /// <param name="key"> The unique key identifying the javascript file in the headers collection. </param>
+  /// <param name="src"> The url of the javascript file. </param>
+  /// <exception cref="HttpException"> 
+  ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
+  /// </exception>
+  public void RegisterJavaScriptInclude (string key, string src)
+  {
+    RegisterJavaScriptInclude (key, src, Prioritiy.Page);
   }
 
   /// <summary> Registers a <see cref="Control"/> containing an HTML head element. </summary>
@@ -177,15 +233,23 @@ public class HtmlHeadAppender
   /// </remarks>
   /// <param name="key"> The unique key identifying the header element in the collection. </param>
   /// <param name="headElement"> The <see cref="Control"/> representing the head element. </param>
+  /// <param name="priority"> 
+  ///   The priority level of the head element. Elements are rendered in the following order:
+  ///   Library, UserControl, Page.
+  /// </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterHeadElement (string key, Control headElement)
+  public void RegisterHeadElement (string key, Control headElement, Prioritiy priority)
   {
     if (_hasAppendExecuted)
       throw new HttpException ("RegisterHeadElement must not be called after EnsureAppended has executed.");
-    if (! _registeredHeadElements.Contains (key))
+    if (! IsRegistered (key))
+    {
       _registeredHeadElements.Add (key, headElement);
+      string priorityKey = ((int)priority).ToString() + "." + key;
+      _sortedHeadElements.Add (priorityKey, headElement);
+    }
   }
 
   /// <summary>
