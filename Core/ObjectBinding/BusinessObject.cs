@@ -189,6 +189,8 @@ public abstract class BusinessObject: IBusinessObject
     {
       IBusinessObjectEnumerationProperty enumProperty = (IBusinessObjectEnumerationProperty) property;
       IEnumerationValueInfo enumValueInfo = enumProperty.GetValueInfoByValue (value);
+      if (enumValueInfo == null)
+        return string.Empty;
       strValue = enumValueInfo.DisplayName;
     }
     else if (format != null && value is IFormattable)
