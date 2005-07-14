@@ -557,7 +557,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_datePickerScriptFileKey, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (
+          s_datePickerScriptFileKey, 
+          scriptUrl, 
+          HtmlHeadAppender.Prioritiy.Library);
       }
     }
 
