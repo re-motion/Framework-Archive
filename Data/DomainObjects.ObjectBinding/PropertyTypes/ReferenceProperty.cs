@@ -37,7 +37,10 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
 
     DomainObjectCollection result = ClientTransaction.Current.QueryManager.GetCollection (new Query (definition));
     IBusinessObjectWithIdentity[] availableObjects = new IBusinessObjectWithIdentity[result.Count];
-    result.CopyTo (availableObjects, 0);
+  
+    if (availableObjects.Length > 0)
+      result.CopyTo (availableObjects, 0);
+    
     return availableObjects;
   }
 
