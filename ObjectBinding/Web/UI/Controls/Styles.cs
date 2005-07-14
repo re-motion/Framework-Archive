@@ -346,7 +346,10 @@ public class TextBoxStyle: SingleRowTextBoxStyle
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             textBox, null, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (
+          s_scriptFileKey, 
+          scriptUrl, 
+          HtmlHeadAppender.Prioritiy.Library);
       }
       textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
     }
