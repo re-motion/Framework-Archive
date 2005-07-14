@@ -182,7 +182,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     {
       styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (WebTabStrip), ResourceType.Html, "TabStrip.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Prioritiy.Library);
     }
 
    if (! ControlHelper.IsDesignMode ((IControl)this, Context) && Enabled)
