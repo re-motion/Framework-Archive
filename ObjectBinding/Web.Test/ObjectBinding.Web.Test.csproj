@@ -318,6 +318,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "SingleBocTestCheckBoxForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestCheckBoxForm.aspx.cs"
+                    DependentUpon = "SingleBocTestCheckBoxForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestCheckBoxForm.aspx.resx"
+                    DependentUpon = "SingleBocTestCheckBoxForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "SingleBocTestDateTimeValueForm.aspx"
                     BuildAction = "Content"
                 />
