@@ -166,6 +166,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocCheckbox.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocColumnDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -446,6 +451,14 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Globalization\BocCheckBox.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\BocCheckBox.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\BocDateTimeValue.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -495,6 +508,10 @@
                 />
                 <File
                     RelPath = "Res\HTML\BocBooleanValue.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\BocCheckBox.js"
                     BuildAction = "Content"
                 />
                 <File
