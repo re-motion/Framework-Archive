@@ -1,3 +1,12 @@
+1.2.56
+======
+- BocCheckBox
+  * Neues Control. "Normale" object-bound Checkbox.
+  
+- BocTextBox, BoxReferenceValue
+  * Zusätzliche Css-Klasse bocTextBoxReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des Controls
+    gerendert wird, wenn dieses Read-Only ist.
+
 1.2.55
 ======
 - BocList
