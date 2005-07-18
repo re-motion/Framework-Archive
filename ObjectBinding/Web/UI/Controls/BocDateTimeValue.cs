@@ -59,6 +59,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     InvalidDateErrorMessage,
     /// <summary> The validation error message displayed when the time component is invalid. </summary>
     InvalidTimeErrorMessage,
+    /// <summary> The alternate text displayed for the date picker button. </summary>
+    DataPickerButtonAlternateText
   }
 
   // static members
@@ -575,6 +577,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         _datePickerButton.ImageUrl = DatePickerImageUrl;  
       else
         _datePickerButton.ImageUrl = imageUrl; 
+      _datePickerButton.Text = GetResourceManager().GetString (ResourceIdentifier.DataPickerButtonAlternateText);
 
       string script;
       if (_hasClientScript && Enabled)
