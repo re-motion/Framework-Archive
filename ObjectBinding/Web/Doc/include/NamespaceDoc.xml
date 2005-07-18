@@ -27,7 +27,16 @@
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
             a <see cref="T:System.Boolean"/> or <see cref="T:Rubicon.NullableValueTypes.NaBoolean"/> value and 
-            <see langword="null"/>.
+            <see langword="null"/> using a tri-state check-box.
+          </td>
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
+          <td>
+            Use this control for displaying and editing the value of an 
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
+            a <see cref="T:System.Boolean"/> or <see cref="T:Rubicon.NullableValueTypes.NaBoolean"/> value and 
+            <see langword="null"/> using a regular check-box.
           </td>
         </tr>
         <tr>
@@ -250,6 +259,18 @@
       <tbody>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">3)</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">3)</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">3)</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">?</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
