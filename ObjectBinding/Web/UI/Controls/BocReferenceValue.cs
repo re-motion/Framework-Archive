@@ -989,13 +989,13 @@ public class BocReferenceValue:
         _icon.Style["vertical-align"] = "middle";
         _icon.Style["border-style"] = "none";
 
-//        if (_enableIcon && ! IsReadOnly)
-//        {
-//          if (Value != null)
-//            _icon.AlternateText = HttpUtility.HtmlEncode (Value.DisplayName);
-//          else
-//            _icon.AlternateText = String.Empty;
-//        }
+        if (IsCommandEnabled (IsReadOnly))
+        {
+          if (Value == null)
+            _icon.AlternateText = String.Empty;
+          else
+            _icon.AlternateText = HttpUtility.HtmlEncode (Value.DisplayName);
+        }
       }
     }
   }
