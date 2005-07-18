@@ -54,4 +54,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue.InvalidTimeErrorMessage">
         <value>Unknown time format.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue.DataPickerButtonAlternateText">
+        <value>Open the Date-Picker</value>
+    </data>
 </root>
