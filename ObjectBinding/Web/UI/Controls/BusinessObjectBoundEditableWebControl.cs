@@ -69,7 +69,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   /// </remarks>
   [Description("Explicitly specifies whether the control is required.")]
   [Category ("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
   public NaBooleanEnum Required
   {
     get { return _required; }
@@ -84,7 +84,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   /// </remarks>
   [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
   [Category ("Data")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
   public NaBooleanEnum ReadOnly
   {
     get { return _readOnly; }
