@@ -415,6 +415,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocCheckBox.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
                     BuildAction = "Content"
                 />

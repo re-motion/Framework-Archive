@@ -18,10 +18,11 @@ function BocCheckBox_InitializeGlobals (trueDescription, falseDescription)
 function BocCheckBox_ToggleCheckboxValue (checkBox, label, trueDescription, falseDescription)
 {    
   checkBox.checked = !checkBox.checked;
-  BocCheckBox_UpdateValue (checkBox, label, trueDescription, falseDescription);
+  BocCheckBox_OnClick (checkBox, label, trueDescription, falseDescription);
 }
 
-function BocCheckBox_UpdateValue (checkBox, label, trueDescription, falseDescription)
+//  Update the text-represention of the check-box value.
+function BocCheckBox_OnClick (checkBox, label, trueDescription, falseDescription)
 {    
  // Update the controls
   var checkBoxToolTip;
@@ -44,20 +45,8 @@ function BocCheckBox_UpdateValue (checkBox, label, trueDescription, falseDescrip
       description = _bocCheckBox_falseDescription;
     else
       description = falseDescription;
-    checkBoxToolTip = description;
     labelText = description;
   }
-  checkBox.title = checkBoxToolTip;
   if (label != null)
     label.innerHTML = labelText;
-}
-
-function BocCheckBox_OnKeyDown (context)
-{
-  if (event.keyCode == 32)
-  {
-    context.click();
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
 }
