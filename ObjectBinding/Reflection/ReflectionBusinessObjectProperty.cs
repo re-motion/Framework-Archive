@@ -214,6 +214,11 @@ public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNu
     return value.ToString();
   }
 
+  public NaBoolean GetDefaultValue (IBusinessObjectClass objectClass, IBusinessObject obj)
+  {
+    return NaBoolean.Null;
+  }
+
 //  public bool AllowNegative
 //  {
 //    get { return false; }
