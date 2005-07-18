@@ -211,9 +211,29 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
+    bool isReadOnly = IsReadOnly;
+
+    string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass += " " + CssClassReadOnly;
+    string backUpAttributeCssClass = Attributes["class"];
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] += " " + CssClassReadOnly;
+    
     base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass = backUpCssClass;
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] = backUpAttributeCssClass;
+    
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase + " " + CssClassReadOnly);
+      else
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
@@ -770,6 +790,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// </remarks>
   protected virtual string CssClassBase
   { get { return "bocTextValue"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocTextValue"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocTextValueReadOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassReadOnly
+  { get { return "bocTextValueReadOnly"; } }
   #endregion
 }
 

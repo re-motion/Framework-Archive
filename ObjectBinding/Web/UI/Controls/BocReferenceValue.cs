@@ -447,20 +447,29 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
-    base.AddAttributesToRender (writer);
-    string cssClass;
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      cssClass = CssClassBase;
-    else
-      cssClass = CssClass;  
-    //    cssClass += " " + CssClassOnMouseOut;
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+    bool isReadOnly = IsReadOnly;
+
+    string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass += " " + CssClassReadOnly;
+    string backUpAttributeCssClass = Attributes["class"];
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] += " " + CssClassReadOnly;
     
-    //    string script = "BocReferenceValue_OnMouseOver (this, '" + CssClassOnMouseOver + "');";
-    //    writer.AddAttribute ("onMouseOver", script);
-    //    
-    //    script = "BocReferenceValue_OnMouseOut (this, '" + CssClassOnMouseOut + "');";
-    //    writer.AddAttribute ("onMouseOut", script);
+    base.AddAttributesToRender (writer);
+
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass = backUpCssClass;
+    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] = backUpAttributeCssClass;
+    
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase + " " + CssClassReadOnly);
+      else
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
@@ -1576,15 +1585,13 @@ public class BocReferenceValue:
   protected virtual string CssClassContent
   { get { return "bocReferenceValueContent"; } }
 
-  // <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s inner table on mouse over. </summary>
-  // <remarks> Class: <c>bocReferenceValueOnMouseOver</c> </remarks>
-  //protected virtual string CssClassOnMouseOver
-  //{ get { return "bocReferenceValueOnMouseOver"; } }
-  
-  // <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s inner table on mouse out. </summary>
-  // <remarks> Class: <c>bocReferenceValueOnMouseOut</c> </remarks>
-  //protected virtual string CssClassOnMouseOut
-  //{ get { return "bocReferenceValueOnMouseOut"; } }  
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocReferenceValueReadOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassReadOnly
+  { get { return "bocReferenceValueReadOnly"; } }
   #endregion
 }
 
