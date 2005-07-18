@@ -19,22 +19,17 @@ using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
-// readonly = deactivates checkbox
-// defaultvalue by property and if property==null defaultvalue from iBOproperty
-// label default = off
-// value set -> test for null, apply default, set isdirty
+
 /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
 /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-[Obsolete("Work in Progress")]
 public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
 {
 	// constants
 
   private const string c_scriptFileUrl = "BocCheckBox.js";
-
   private const string c_defaultControlWidth = "100pt";
 
   // types
@@ -67,23 +62,21 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
 	// member fields
   private bool _isDirty = true;
-  private NaBoolean _value = NaBoolean.Null;
-  private NaBoolean _defaultValue = NaBoolean.Null;
+  private bool _value = false;
+  private NaBooleanEnum _defaultValue = NaBooleanEnum.Undefined;
   private bool _isActive = true;
 
-  private HtmlInputCheckBox _checkBox;
+  private CheckBox _checkBox;
   private Label _label;
   private Style _labelStyle;
 
-  private NaBoolean _autoPostBack = NaBoolean.Null;
+  private NaBooleanEnum _autoPostBack = NaBooleanEnum.Undefined;
 
   private NaBooleanEnum _showDescription = NaBooleanEnum.Undefined;
   private string _trueDescription = string.Empty;
   private string _falseDescription = string.Empty;
   private string _nullDescription = string.Empty;
 
-  private string _errorMessage;
-  private ArrayList _validators;
   /// <summary> Flag that determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
@@ -93,9 +86,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 	public BocCheckBox()
 	{
     _labelStyle = new Style();
-    _checkBox = new HtmlInputCheckBox();
+    _checkBox = new CheckBox();
     _label = new Label();
-    _validators = new ArrayList();
 	}
 
   // methods and properties
@@ -185,7 +177,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
     string description;
 
-    if (_value.IsTrue)
+    if (_value)
       description = trueDescription;
     else
       description = falseDescription;
@@ -194,7 +186,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
     if (_hasClientScript && ! isReadOnly && IsDescriptionEnabled)
     {
-      string script;
       if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
@@ -209,40 +200,41 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       {
         if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
         {
-          script = string.Format (
+          string script = string.Format (
               "BocCheckBox_InitializeGlobals ('{0}', '{1}');",
               defaultTrueDescription, defaultFalseDescription);
           PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
         }
       }
 
+      string checkBoxScript;
+      string labelScript;
       if (Enabled)
       {
         string label = IsDescriptionEnabled ? "document.getElementById ('" + _label.ClientID + "')" : "null";
         string checkBox = "document.getElementById ('" + _checkBox.ClientID + "')";
-        script = "BocCheckBox_UpdateValue (" 
+        string script = " (" 
             + checkBox + ", "
             + label + ", " 
             + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
             + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ");";
 
-        if (_autoPostBack.IsTrue)
+        if (IsAutoPostBackEnabled)
           script += Page.GetPostBackEventReference (this) + ";";
-        script += "return false;";
+        checkBoxScript = "BocCheckBox_OnClick" + script;
+        labelScript = "BocCheckBox_ToggleCheckboxValue" + script;
       }
       else
       {
-        script = "return false;";
+        checkBoxScript = "return false;";
+        labelScript = "return false;";
       }
-      _checkBox.Attributes.Add (HtmlTextWriterAttribute.Onchange.ToString(), script);
-      _checkBox.Attributes["title"] = description;
+      _checkBox.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), checkBoxScript);
+      _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), labelScript);
     }
 
-    if (_value.IsNull)
-      _value = GetDefaultValue();
-
-    _checkBox.Checked = _value.IsTrue;
-    _checkBox.Disabled = isReadOnly;
+    _checkBox.Checked = _value;
+    _checkBox.Enabled = ! isReadOnly && Enabled;
     
     if (IsDescriptionEnabled)
     {
@@ -250,7 +242,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       _label.Width = Unit.Empty;
       _label.Height = Unit.Empty;
       _label.ApplyStyle (_labelStyle);
-      _label.Attributes["for"] = _checkBox.ClientID;
     }
 
     _isActive = ! isReadOnly && Enabled;
@@ -278,11 +269,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
-    _value = (NaBoolean) values[1];
+    _value = (bool) values[1];
     _isActive = (bool) values[2];
     _isDirty = (bool)  values[3];
 
-    _checkBox.Checked = _value.IsTrue;
+    _checkBox.Checked = _value;
   }
 
   /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
@@ -329,13 +320,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/CreateValidators/*' />
-  public override BaseValidator[] CreateValidators()
-  {
-    return new BaseValidator[0];
-  }
-
   private void DetermineClientScriptLevel() 
   {
     _hasClientScript = false;
@@ -343,13 +327,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (! ControlHelper.IsDesignMode (this, Context))
     {
       _hasClientScript = true;
-      //bool isVersionHigherThan55 = Context.Request.Browser.MajorVersion >= 6
-      //                        ||   Context.Request.Browser.MajorVersion == 5 
-      //                          && Context.Request.Browser.MinorVersion >= 0.5;
-      //bool isInternetExplorer55AndHigher = 
-      //    Context.Request.Browser.Browser == "IE" && isVersionHigherThan55;
-      //
-      //_hasClientScript = isInternetExplorer55AndHigher;
     }
   }
 
@@ -379,33 +356,34 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Gets a flag that determines whether the control is to be treated as a required value. </summary>
   /// <value> Always <see langword="false"/> since the checkbox has no undefined state in the user interface. </value>
   [Browsable(false)]
-  public virtual bool IsRequired 
+  public virtual new bool IsRequired 
   {
     get { return false; }
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <value> The boolean value currently displayed or <see langword="null"/> if no item / the null item is selected. </value>
+  /// <value> 
+  ///   The boolean value currently displayed. If <see langword="null"/> is assigned, <see cref="GetDefaultValue"/>
+  ///   is evaluated to get the value. The <see cref="IsDirty"/> flag is set in this case.
+  /// </value>
   [Browsable(false)]
   public new object Value
   {
     get
     {
-      if (_value.IsNull)
-        return null;
-      else if (_value.IsTrue)
-        return true;
-      else
-        return false;
+      return _value;
     }
     set
     {
       if (value == null)
-        _value = NaBoolean.Null;
-      else if ((bool) value)
-        _value = NaBoolean.True;
+      {
+        _value = GetDefaultValue();
+        _isDirty = true;
+      }
       else
-        _value = NaBoolean.False;
+      {
+        _value = (bool) value;
+      }
     }
   }
 
@@ -418,27 +396,58 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   /// <summary> The boolean value to which this control defaults if the assigned value is <see langword="null"/>. </summary>
   /// <value> 
-  ///   <see langword="true"/> or <see langword="false"/> to explicitly specify the default value or 
-  ///   <see langword="null"/> to leave the decision to the object model. If the control is unbound and no default
-  ///   value is specified, <see langword="false"/> is assumed as default value.
+  ///   <see cref="NaBooleanEnum.True"/> or <see cref="NaBooleanEnum.False"/> to explicitly specify the default value 
+  ///   or <see cref="NaBooleanEnum.Undefined"/> to leave the decision to the object model. If the control is unbound 
+  ///   and no default value is specified, <see cref="NaBooleanEnum.False"/> is assumed as default value.
   /// </value>
   [Category("Behavior")]
   [Description("The boolean value to which this control defaults if the assigned value is null.")]
   [NotifyParentProperty(true)]
-  public NaBoolean DefaultValue
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public NaBooleanEnum DefaultValue
   {
     get { return _defaultValue; }
     set { _defaultValue = value; }
   }
 
+  /// <summary>
+  ///   Evaluates the default value settings using the <see cref="DefaultValue"/> and the <see cref="Property"/>'s
+  ///   default value.
+  /// </summary>
+  /// <returns>
+  ///   <list type="bullet">
+  ///     <item> 
+  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.True"/> or 
+  ///       <see cref="NaBooleanEnum.False"/>, <see langword="true"/> or <see langword="false"/> is returned 
+  ///       respectivly.
+  ///     </item>
+  ///     <item>
+  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.Undefined"/> the <see cref="Property"/>
+  ///       is queried for its default value using the <see cref="IBusinessObjectBooleanProperty.GetDefaultValue"/>
+  ///       method.
+  ///       <list type="bullet">
+  ///         <item> 
+  ///           If <see cref="IBusinessObjectBooleanProperty.GetDefaultValue"/> returns 
+  ///           <see cref="NaBooleanEnum.True"/> or <see cref="NaBooleanEnum.False"/>, <see langword="true"/> or 
+  ///           <see langword="false"/> is returned respectivly.
+  ///         </item>
+  ///         <item>
+  ///           Otherwise <see langword="false"/> is returned.
+  ///         </item>
+  ///       </list>
+  ///     </item>
+  ///   </list>
+  /// </returns>
   protected bool GetDefaultValue()
   {
-    if (_defaultValue.IsNull)
+    if (_defaultValue == NaBooleanEnum.Undefined)
     {
-      if (DataSource != null && DataSource.BusinessObject != null && Property != null)
+      if (DataSource != null && DataSource.BusinessObjectClass != null && DataSource.BusinessObject != null && Property != null)
       {
-#warning Requires DefaultVlaue in IBooleanProperty
-        return false;
+        NaBoolean defaultValue = Property.GetDefaultValue (DataSource.BusinessObjectClass, DataSource.BusinessObject);
+        if (defaultValue.IsNull)
+          return false;
+        return defaultValue.Value;
       }
       else
       {
@@ -447,7 +456,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
     else
     {
-      return _defaultValue.Value;
+      return _defaultValue == NaBooleanEnum.True ? true : false;
     }
 
   }
@@ -523,21 +532,22 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.HtmlInputCheckBox"/> used for the value. </summary>
+  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.CheckBox"/> used for the value. </summary>
   [Browsable (false)]
-  public HtmlInputCheckBox CheckBox
+  public CheckBox CheckBox
   {
     get { return _checkBox; }
   }
 
   /// <summary> Gets a flag that determines whether changing the checked state causes an automatic postback.</summary>
   /// <value> 
-  ///   <see langword="NaBoolean.True"/> to enable automatic postbacks. 
-  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="false"/>.
+  ///   <see langword="NaBooleanEnum.True"/> to enable automatic postbacks. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as 
+  ///   <see langword="NaBooleanEnum.False"/>.
   /// </value>
   [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "null")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
   [NotifyParentProperty (true)]
   public NaBoolean AutoPostBack
   {
@@ -545,14 +555,19 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     set { _autoPostBack = value; }
   }
 
+  protected bool IsAutoPostBackEnabled
+  {
+    get { return _autoPostBack == NaBooleanEnum.True;}
+  }
+
   /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
   /// <value> 
-  ///   <see langword="true"/> to enable the description. 
-  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="false"/>.
+  ///   <see cref="NaBooleanEnum.True"/> to enable the description. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
   /// </value>
   [Description("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
   [Category ("Appearance")]
-  [DefaultValue (typeof(NaBooleanEnum), "Undefined")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
   public NaBooleanEnum ShowDescription
   {
     get { return _showDescription; }
@@ -590,31 +605,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   {
     get { return _falseDescription; }
     set { _falseDescription = value; }
-  }
-
-  /// <summary> Gets or sets the validation error message. </summary>
-  /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
-  ///   In case of the default value, the text is read from the resources for this control.
-  /// </value>
-  [Description("Validation message displayed if there is an error.")]
-  [Category ("Validator")]
-  [DefaultValue("")]
-  public string ErrorMessage
-  {
-    get
-    { 
-      return _errorMessage; 
-    }
-    set 
-    {
-      _errorMessage = value; 
-      for (int i = 0; i < _validators.Count; i++)
-      {
-        BaseValidator validator = (BaseValidator) _validators[i];
-        validator.ErrorMessage = _errorMessage;
-      }
-    }
   }
 
   #region protected virtual string CssClass...
