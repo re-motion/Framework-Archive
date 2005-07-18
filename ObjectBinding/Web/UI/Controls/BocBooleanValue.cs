@@ -430,7 +430,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
   
   /// <summary> Gets or sets the current value. </summary>
-  /// <value> The boolean value currently displayed or <see langword="null"/> if no item / the null item is selected. </value>
+  /// <value> The boolean value currently displayed or <see langword="null"/>. </value>
   [Browsable(false)]
   public new object Value
   {
