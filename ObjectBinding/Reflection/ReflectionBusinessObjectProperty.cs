@@ -214,7 +214,7 @@ public class ReflectionBusinessObjectBooleanProperty: ReflectionBusinessObjectNu
     return value.ToString();
   }
 
-  public NaBoolean GetDefaultValue (IBusinessObjectClass objectClass, IBusinessObject obj)
+  public NaBoolean GetDefaultValue (IBusinessObjectClass objectClass)
   {
     return NaBoolean.Null;
   }

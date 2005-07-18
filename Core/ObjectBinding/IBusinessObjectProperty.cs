@@ -221,11 +221,12 @@ public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
   string GetDisplayName (bool value);
 
   /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>
+  /// <param name="objectClass"> The <see cref="IBusinessObjectClass"/> for which to get the property's default value. </param>
   /// <remarks> 
   ///   If <see cref="NaBoolean.Null"/> is returned, the object model does not define a default value. In case the 
   ///   caller requires a default value, the selection of the appropriate value is left to the caller.
   /// </remarks>
-  NaBoolean GetDefaultValue(IBusinessObjectClass objectClass, IBusinessObject obj);
+  NaBoolean GetDefaultValue (IBusinessObjectClass objectClass);
 }
 
 /// <summary> 

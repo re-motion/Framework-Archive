@@ -444,7 +444,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     {
       if (DataSource != null && DataSource.BusinessObjectClass != null && DataSource.BusinessObject != null && Property != null)
       {
-        NaBoolean defaultValue = Property.GetDefaultValue (DataSource.BusinessObjectClass, DataSource.BusinessObject);
+        NaBoolean defaultValue = Property.GetDefaultValue (DataSource.BusinessObjectClass);
         if (defaultValue.IsNull)
           return false;
         return defaultValue.Value;
