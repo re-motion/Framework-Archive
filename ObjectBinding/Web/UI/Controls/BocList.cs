@@ -1055,7 +1055,6 @@ public class BocList:
     get { return HtmlTextWriterTag.Div; }
   }
 
-
   protected void CalculateCurrentPage()
   {
     if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)

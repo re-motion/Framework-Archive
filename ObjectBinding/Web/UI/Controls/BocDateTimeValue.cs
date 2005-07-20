@@ -251,12 +251,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Div; }
+  }
+
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    writer.AddStyleAttribute ("display", "inline");
   }
 
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
