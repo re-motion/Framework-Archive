@@ -102,7 +102,7 @@ public abstract class WxeFunction: WxeStepList
   }
 
   /// <summary>
-  ///   Joins the passed exceptions types with those, already assigned.
+  ///   Joins the passed exceptions types with those already assigned.
   /// </summary>
   /// <param name="exceptionTypes"> 
   ///   Exceptions of these types or sub classes will be caught, all other exceptions will be rethrown. 
@@ -110,7 +110,24 @@ public abstract class WxeFunction: WxeStepList
   public void AppendCatchExceptionTypes (params Type[] exceptionTypes)
   {
     if (_catchExceptionTypes != null)
-      exceptionTypes = (Type[]) ArrayUtility.Combine (typeof (Type), _catchExceptionTypes, exceptionTypes);
+    {
+      ArrayList exceptionTypeList = new ArrayList (_catchExceptionTypes);
+      for (int idxNewTypes = 0; idxNewTypes < exceptionTypes.Length; idxNewTypes++)
+      {
+        bool isRegistered = false;
+        for (int idxRegisteredTypes = 0; idxRegisteredTypes < _catchExceptionTypes.Length; idxRegisteredTypes++)
+        {
+          if (_catchExceptionTypes[idxRegisteredTypes] == exceptionTypes[idxNewTypes])
+          {
+            isRegistered = true;
+            break;
+          }
+        }
+        if (! isRegistered)
+          exceptionTypeList.Add (exceptionTypes[idxNewTypes]);
+      }
+      exceptionTypes = (Type[]) exceptionTypeList.ToArray (typeof (Type));
+    }
     SetCatchExceptionTypes (exceptionTypes);
   }
 

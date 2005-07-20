@@ -10,7 +10,20 @@
 - BocList
   * BocList verwendet nun TH statt TD in der Titelzeile. Auswirkung auf Stylesheets:
     td.bocListTitleCell muss durch th.bocListTitleCell ersetzt werden.
+  * Zusätzliche Resource Einträge
+    Rubicon.ObjectBinding.Web.Controls.BocList.SortDescendingAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsEditAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsSaveAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsCancelAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.GoToFirstAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.GoToLastAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.GoToNextAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText
 
+- BocDateTimeValue
+  * Neuer Resource Eintrag
+    Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue.DataPickerButtonAlternateText
+    
 1.2.55
 ======
 - BocList
