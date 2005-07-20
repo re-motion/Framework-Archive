@@ -7,6 +7,10 @@
   * Zusätzliche Css-Klasse bocTextBoxReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des Controls
     gerendert wird, wenn dieses Read-Only ist.
 
+- BocList
+  * BocList verwendet nun TH statt TD in der Titelzeile. Auswirkung auf Stylesheets:
+    td.bocListTitleCell muss durch th.bocListTitleCell ersetzt werden.
+
 1.2.55
 ======
 - BocList
