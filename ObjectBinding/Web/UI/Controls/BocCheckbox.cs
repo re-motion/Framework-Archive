@@ -356,7 +356,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Gets a flag that determines whether the control is to be treated as a required value. </summary>
   /// <value> Always <see langword="false"/> since the checkbox has no undefined state in the user interface. </value>
   [Browsable(false)]
-  public virtual new bool IsRequired 
+  public override bool IsRequired 
   {
     get { return false; }
   }
