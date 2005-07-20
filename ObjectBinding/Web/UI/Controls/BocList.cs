@@ -126,7 +126,18 @@ public class BocList:
     /// <summary>The tool tip text for the required icon.</summary>
     RequiredFieldTitle,
     /// <summary>The alternate text for the validation error icon.</summary>
-    ValidationErrorInfoAlternateText
+    ValidationErrorInfoAlternateText,
+    /// <summary> The alternate text for the sort ascending button. </summary>
+    SortAscendingAlternateText,
+    /// <summary> The alternate text for the sort descending button. </summary>
+    SortDescendingAlternateText,
+    EditDetailsEditAlternateText,
+    EditDetailsSaveAlternateText,
+    EditDetailsCancelAlternateText,
+    GoToFirstAlternateText,
+    GoToLastAlternateText,
+    GoToNextAlternateText,
+    GoToPreviousAlternateText
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
@@ -1602,7 +1613,9 @@ public class BocList:
         //  The table non-data sections
         RenderTableOpeningTag (writer);
         RenderColGroup (writer);
+        writer.RenderBeginTag (HtmlTextWriterTag.Thead);
         RenderColumnTitlesRow (writer);
+        writer.RenderEndTag();
         RenderTableClosingTag (writer);
       }
       else
@@ -1625,9 +1638,16 @@ public class BocList:
       //  The table non-data sections
       RenderTableOpeningTag (writer);
       RenderColGroup (writer);
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTableHead);
+      writer.RenderBeginTag (HtmlTextWriterTag.Thead);
       RenderColumnTitlesRow (writer);
+      writer.RenderEndTag();
 
       //  The tables data-section
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTableBody);
+      writer.RenderBeginTag (HtmlTextWriterTag.Tbody);
+
       int firstRow = 0;
       int totalRowCount = (Value != null) ? Value.Count : 0;
       int rowCountWithOffset = totalRowCount;
@@ -1665,6 +1685,9 @@ public class BocList:
           isOddRow = !isOddRow;
         }
       }
+
+      writer.RenderEndTag(); // end Tbody
+
       //  Close the table
       RenderTableClosingTag (writer);
     }
@@ -1713,22 +1736,25 @@ public class BocList:
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
     
     string imageUrl = null;
+    IResourceManager resourceManager = GetResourceManager();
 
     //  Move to first page button
     if (isFirstPage || IsEditDetailsModeActive)
       imageUrl = c_moveFirstInactiveIcon;
     else
-      imageUrl = c_moveFirstIcon;      
+      imageUrl = c_moveFirstIcon;
     imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
     if (isFirstPage || IsEditDetailsModeActive)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
     else
     {
       _moveFirstButton.ImageUrl = imageUrl;
+      _moveFirstButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToFirstAlternateText);
       _moveFirstButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1742,12 +1768,14 @@ public class BocList:
     if (isFirstPage || IsEditDetailsModeActive)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
     else
     {
       _movePreviousButton.ImageUrl = imageUrl;
+      _movePreviousButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToPreviousAlternateText);
       _movePreviousButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1761,12 +1789,14 @@ public class BocList:
     if (isLastPage || IsEditDetailsModeActive)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
     else
     {
       _moveNextButton.ImageUrl = imageUrl;
+      _moveNextButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToNextAlternateText);
       _moveNextButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1780,12 +1810,14 @@ public class BocList:
     if (isLastPage || IsEditDetailsModeActive)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
     else
     {
       _moveLastButton.ImageUrl = imageUrl;
+      _moveLastButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToLastAlternateText);
       _moveLastButton.RenderControl (writer);
     }
 
@@ -1867,7 +1899,7 @@ public class BocList:
     if (IsSelectionEnabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Th);
       if (_selection == RowSelection.Multiple)
       {
         string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
@@ -1906,7 +1938,7 @@ public class BocList:
       if (! StringUtility.IsNullOrEmpty (column.CssClass))
         cssClassTitleCell += " " + column.CssClass;
       writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTitleCell);
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      writer.RenderBeginTag (HtmlTextWriterTag.Th);
 
       RenderTitleCellMarkers (writer, column, idxColumns);
       bool hasSortingButton = RenderBeginTagTitleCellSortCommand (writer, column, idxColumns);
@@ -1915,7 +1947,7 @@ public class BocList:
         RenderTitleCellSortingButton (writer, idxColumns, sortingDirections, sortingOrder);
       RenderEndTagTitleCellSortCommand (writer);
       
-      writer.RenderEndTag();  //  td
+      writer.RenderEndTag();  //  th
     }
     
     if (IsDesignMode && renderColumns.Length == 0)
@@ -2030,7 +2062,12 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      RenderIcon (writer, new IconInfo (imageUrl));
+      string alternateText = null;
+      if (sortingDirection == SortingDirection.Ascending)
+        alternateText = GetResourceManager().GetString (ResourceIdentifier.SortAscendingAlternateText);
+      else
+        alternateText = GetResourceManager().GetString (ResourceIdentifier.SortDescendingAlternateText);
+      RenderIcon (writer, new IconInfo (imageUrl), alternateText);
 
       if (IsShowSortingOrderEnabled && sortingOrder.Count > 1)
       {
@@ -2336,7 +2373,7 @@ public class BocList:
 
     if (icon != null)
     {
-      RenderIcon (writer, icon);
+      RenderIcon (writer, icon, null);
       writer.Write (c_whiteSpace);
     }
   }
@@ -2351,6 +2388,7 @@ public class BocList:
     bool isReadOnly = IsReadOnly;
     string argument = null;
     string postBackEvent = null;
+    IResourceManager resourceManager = GetResourceManager();
 
     if (isEditedRow)
     {
@@ -2366,10 +2404,16 @@ public class BocList:
       bool hasSaveIcon = column.SaveIcon != null && ! StringUtility.IsNullOrEmpty (column.SaveIcon.Url);
       bool hasSaveText = ! StringUtility.IsNullOrEmpty (column.SaveText);
 
-      if (hasSaveIcon)
-        RenderIcon (writer, column.SaveIcon);
       if (hasSaveIcon && hasSaveText)
+      {
+        RenderIcon (writer, column.SaveIcon, null);
         writer.Write (c_whiteSpace);
+      }
+      else if (hasSaveIcon)
+      {
+        RenderIcon (
+          writer, column.SaveIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsSaveAlternateText));
+      }
       if (hasSaveText)
         writer.Write (column.SaveText);
 
@@ -2389,10 +2433,16 @@ public class BocList:
       bool hasCancelIcon = column.CancelIcon != null && ! StringUtility.IsNullOrEmpty (column.CancelIcon.Url);
       bool hasCancelText = ! StringUtility.IsNullOrEmpty (column.CancelText);
 
-      if (hasCancelIcon)
-        RenderIcon (writer, column.CancelIcon);
       if (hasCancelIcon && hasCancelText)
+      {
+        RenderIcon (writer, column.CancelIcon, null);
         writer.Write (c_whiteSpace);
+      }
+      else if (hasCancelIcon)
+      {
+        RenderIcon (
+          writer, column.CancelIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsCancelAlternateText));
+      }
       if (hasCancelText)
         writer.Write (column.CancelText);
 
@@ -2414,10 +2464,16 @@ public class BocList:
         bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
         bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
 
-        if (hasEditIcon)
-          RenderIcon (writer, column.EditIcon);
         if (hasEditIcon && hasEditText)
+        {
+          RenderIcon (writer, column.EditIcon, null);
           writer.Write (c_whiteSpace);
+        }
+        else if (hasEditIcon)
+        {
+          RenderIcon (
+            writer, column.EditIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsEditAlternateText));
+        }
         if (hasEditText)
           writer.Write (column.EditText);
 
@@ -2599,7 +2655,7 @@ public class BocList:
       column.Command.RenderEnd (writer);
   }
 
-  private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
+  private void RenderIcon (HtmlTextWriter writer, IconInfo icon, string alternateText)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
     if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
@@ -2609,6 +2665,7 @@ public class BocList:
     }
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+    writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (alternateText));
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
@@ -4017,6 +4074,13 @@ public class BocList:
     get { return (Control) this; }
   }
 
+  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <value> Always <see langword="true"/>. </value>
+  public override bool UseLabel
+  {
+    get { return true; }
+  }
+
   /// <summary>
   ///   Gets or sets the dirty flag.
   /// </summary>
@@ -4774,6 +4838,16 @@ public class BocList:
   /// <remarks> Class: <c>bocListTable</c> </remarks>
   protected virtual string CssClassTable
   { get { return "bocListTable"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>thead</c> tag. </summary>
+  /// <remarks> Class: <c>bocListTableHead</c> </remarks>
+  protected virtual string CssClassTableHead
+  { get { return "bocListTableHead"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>tbody</c> tag. </summary>
+  /// <remarks> Class: <c>bocListTableBody</c> </remarks>
+  protected virtual string CssClassTableBody
+  { get { return "bocListTableBody"; } }
 
   /// <summary> CSS-Class applied to the cells in the <see cref="BocList"/>'s title row. </summary>
   /// <remarks> Class: <c>bocListTitleCell</c> </remarks>
