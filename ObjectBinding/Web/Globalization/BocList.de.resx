@@ -57,4 +57,31 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage">
         <value>Keine Daten vorhanden.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage.SortAscendingAlternateText">
+        <value>Aufsteigend sortiert.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage.SortDescendingAlternateText">
+        <value>Absteigend sortiert.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsEditAlternateText">
+        <value>Zeile bearbeiten.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsSaveAlternateText">
+        <value>Änderungen an der Zeile übernehmen.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsCancelAlternateText">
+        <value>Änderungen an der Zeile verwerfen.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToFirstAlternateText">
+        <value>Zur ersten Seite gehen.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToLastAlternateText">
+        <value>Zur letzten Seite gehen.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToNextAlternateText">
+        <value>Zur nächsten Seite gehen</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText">
+        <value>Zur vorherigen Seite gehen.</value>
+    </data>
 </root>

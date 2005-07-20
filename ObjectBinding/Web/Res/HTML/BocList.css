@@ -5,8 +5,18 @@ table.bocListTable
   border-width: 0px;
 }
 
+/*  Style applied to the table head block of the BocList's table.  */
+thead.bocListTableHead
+{
+}
+
+/*  Style applied to the table head block of the BocList's table.  */
+tbody.bocListTableBody
+{
+}
+
 /*  Style applied to the cells in the BocList's title row.  */
-td.bocListTitleCell
+th.bocListTitleCell
 {
 	font-weight: bold;
 
@@ -21,18 +31,18 @@ td.bocListTitleCell
   white-space: nowrap;
 }
 
-td.bocListTitleCell span
+th.bocListTitleCell span
 {
 	padding: 2px;
 }
 
-td.bocListTitleCell a
+th.bocListTitleCell a
 {
   color: Blue;
 	padding: 2px;
 }
 
-td.bocListTitleCell a:hover
+th.bocListTitleCell a:hover
 {
   color: Blue;
 	padding: 1px;

@@ -63,4 +63,31 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage">
         <value>No data available.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SortAscendingAlternateText">
+        <value>Sorted Ascending</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SortDescendingAlternateText">
+        <value>Sorted Descending</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsEditAlternateText">
+        <value>Edit Row</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsSaveAlternateText">
+        <value>Save Changes to Row</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsCancelAlternateText">
+        <value>Discard Changes to Row</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToFirstAlternateText">
+        <value>Go to First Page.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToLastAlternateText">
+        <value>Go to Last Page.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToNextAlternateText">
+        <value>Go to Next Page.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText">
+        <value>Go To Previous Page.</value>
+    </data>
 </root>
