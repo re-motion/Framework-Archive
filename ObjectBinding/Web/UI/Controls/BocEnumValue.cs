@@ -594,7 +594,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <value> The <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
-    get { return (_listControl == null) ? (Control) this : _listControl; }
+    get { return (_listControl == null || IsReadOnly) ? (Control) this : _listControl; }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
