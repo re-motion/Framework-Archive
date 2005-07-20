@@ -23,6 +23,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   protected virtual void Execute (WxeFunction function, WxeContext context, bool isNew)
   {
+    function.AppendCatchExceptionTypes (typeof(WxeUserCancelException));
     function.Execute (context);
   }
 
