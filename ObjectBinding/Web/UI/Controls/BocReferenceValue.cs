@@ -1251,7 +1251,7 @@ public class BocReferenceValue:
   /// <value> The <see cref="DropDownList"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
-    get { return (! IsReadOnly) ? _dropDownList : (Control) this; }
+    get { return IsReadOnly ? (Control) this : _dropDownList; }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>

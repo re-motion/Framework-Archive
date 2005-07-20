@@ -667,7 +667,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
   public override Control TargetControl
   {
-    get { return (_textBox == null) ? (Control) this : _textBox; }
+    get { return IsReadOnly ? (Control) this : _textBox; }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
