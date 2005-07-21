@@ -1046,7 +1046,7 @@ public class BocList:
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
@@ -2061,12 +2061,12 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSortingOrder);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      string alternateText = null;
+      Enum alternateTextID = null;
       if (sortingDirection == SortingDirection.Ascending)
-        alternateText = GetResourceManager().GetString (ResourceIdentifier.SortAscendingAlternateText);
+        alternateTextID = ResourceIdentifier.SortAscendingAlternateText;
       else
-        alternateText = GetResourceManager().GetString (ResourceIdentifier.SortDescendingAlternateText);
-      RenderIcon (writer, new IconInfo (imageUrl), alternateText);
+        alternateTextID = ResourceIdentifier.SortDescendingAlternateText;
+      RenderIcon (writer, new IconInfo (imageUrl), alternateTextID);
 
       if (IsShowSortingOrderEnabled && sortingOrder.Count > 1)
       {
@@ -2170,6 +2170,7 @@ public class BocList:
             + isOddRowString 
             + ");";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+        //  Disallow selecting text in the row.
         writer.AddAttribute ("onSelectStart", "return false");
       }
     }
@@ -2387,7 +2388,6 @@ public class BocList:
     bool isReadOnly = IsReadOnly;
     string argument = null;
     string postBackEvent = null;
-    IResourceManager resourceManager = GetResourceManager();
 
     if (isEditedRow)
     {
@@ -2410,8 +2410,7 @@ public class BocList:
       }
       else if (hasSaveIcon)
       {
-        RenderIcon (
-          writer, column.SaveIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsSaveAlternateText));
+        RenderIcon (writer, column.SaveIcon, ResourceIdentifier.EditDetailsSaveAlternateText);
       }
       if (hasSaveText)
         writer.Write (column.SaveText);
@@ -2439,8 +2438,7 @@ public class BocList:
       }
       else if (hasCancelIcon)
       {
-        RenderIcon (
-          writer, column.CancelIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsCancelAlternateText));
+        RenderIcon (writer, column.CancelIcon, ResourceIdentifier.EditDetailsCancelAlternateText);
       }
       if (hasCancelText)
         writer.Write (column.CancelText);
@@ -2470,8 +2468,7 @@ public class BocList:
         }
         else if (hasEditIcon)
         {
-          RenderIcon (
-            writer, column.EditIcon, resourceManager.GetString (ResourceIdentifier.EditDetailsEditAlternateText));
+          RenderIcon (writer, column.EditIcon, ResourceIdentifier.EditDetailsEditAlternateText);
         }
         if (hasEditText)
           writer.Write (column.EditText);
@@ -2654,7 +2651,7 @@ public class BocList:
       column.Command.RenderEnd (writer);
   }
 
-  private void RenderIcon (HtmlTextWriter writer, IconInfo icon, string alternateText)
+  private void RenderIcon (HtmlTextWriter writer, IconInfo icon, Enum alternateTextID)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
     if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
@@ -2664,7 +2661,17 @@ public class BocList:
     }
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-    writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (alternateText));
+    if (StringUtility.IsNullOrEmpty (icon.AlternateText))
+    {
+      string alternateText = string.Empty;
+      if (alternateTextID != null)
+        alternateText = GetResourceManager().GetString (alternateTextID);
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
+    }
+    else 
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, icon.AlternateText);
+    }
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
