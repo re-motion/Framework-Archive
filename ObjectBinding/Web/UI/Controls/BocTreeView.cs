@@ -173,7 +173,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
