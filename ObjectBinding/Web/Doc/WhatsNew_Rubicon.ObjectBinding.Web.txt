@@ -1,3 +1,10 @@
+1.2.57
+======
+- BocReferenceValue
+  * Bugfix: Wenn der BocReferenceValue auf einem nicht angezeigten Tabreiter ist und required ist aber sein 
+    aktueller Wert null ist, konnte der Validator keinen Fehler feststellen.
+    Aufgetreten mit 1.1.46
+
 1.2.56
 ======
 - BocCheckBox
