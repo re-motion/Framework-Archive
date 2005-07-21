@@ -1,3 +1,8 @@
+1.2.57
+======
+- WebButton
+  * Default Class für den Web-Button von Button auf webButton geändert.
+  
 1.2.55
 ======
 - WebTab

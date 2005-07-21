@@ -18,3 +18,11 @@ a
   text-decoration: none;
   color: Blue;
 }
+
+.disabled,
+.disabled input,
+.disabled textarea,
+.disabled label
+{
+  color: Gray;
+}

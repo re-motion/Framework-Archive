@@ -292,6 +292,16 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     OnPreRender (EventArgs.Empty);
   }
 
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    bool tempEnabled = Enabled;
+    if (! tempEnabled)
+      Enabled = true;
+    base.AddAttributesToRender (writer);
+    if (! tempEnabled)
+      Enabled = false;
+  }
+
   /// <summary> Overrides <see cref="Control.Controls"/> and calls <see cref="Control.EnsureChildControls"/>. </summary>
   public override ControlCollection Controls
   {

@@ -2298,14 +2298,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
         //  auto:ControlUniqueID_Label:Text should also work
       else if (  control is TextBox 
               || control is ListControl
-              || control is Table
-              || control is HtmlInputControl
-              || control is HtmlSelect
-              || control is HtmlTextArea
-              || control is HtmlTable)
+              || control is Table)
+        //  Label does not support HtmlControls, only WebControls.
+        //    || control is HtmlInputControl
+        //    || control is HtmlSelect
+        //    || control is HtmlTextArea
+        //    || control is HtmlTable)
       {
         Label primitiveLabel = new Label();
-        if (! (control is DropDownList || control is HtmlSelect))
+        if (! (control is DropDownList))// || control is HtmlSelect))
           primitiveLabel.AssociatedControlID = control.ID;
         label = primitiveLabel;
       }
