@@ -4,6 +4,10 @@
   * Bugfix: Wenn der BocReferenceValue auf einem nicht angezeigten Tabreiter ist und required ist aber sein 
     aktueller Wert null ist, konnte der Validator keinen Fehler feststellen.
     Aufgetreten mit 1.1.46
+    
+- BocTextBox, BoxReferenceValue
+  * Css-Klassen bocTextValueReadOnly bzw bocReferenceValueReadOnly zu readOnly umbenannt.
+    Selektor ist nun: .bocTextValue.readOnly bzw .bocReferenceValue.readOnly
 
 1.2.56
 ======
@@ -11,7 +15,7 @@
   * Neues Control. "Normale" object-bound Checkbox.
   
 - BocTextBox, BoxReferenceValue
-  * Zusätzliche Css-Klasse bocTextBoxReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des Controls
+  * Zusätzliche Css-Klasse bocTextValueReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des Controls
     gerendert wird, wenn dieses Read-Only ist.
 
 - BocList

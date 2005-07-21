@@ -1316,11 +1316,11 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocDateTimeValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocDateTimeValueReadOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocDateTimeValue.readOnly</b> as a selector.</para>
   /// </remarks>
   protected virtual string CssClassReadOnly
-  { get { return "bocDateTimeValueReadOnly"; } }
+  { get { return "readOnly"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocDateTimeValue"/> when it is displayed disabled. </summary>
   /// <remarks> 

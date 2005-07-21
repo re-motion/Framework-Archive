@@ -808,11 +808,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocTextValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocTextValueReadOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocTextValue.readOnly</b> as a selector.</para>
   /// </remarks>
   protected virtual string CssClassReadOnly
-  { get { return "bocTextValueReadOnly"; } }
+  { get { return "readOnly"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocTextValue"/> when it is displayed disabled. </summary>
   /// <remarks> 

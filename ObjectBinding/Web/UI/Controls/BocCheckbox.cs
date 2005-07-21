@@ -652,11 +652,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocCheckBox"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocCheckBoxReadOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocCheckBox.readOnly</b> as a selector.</para>
   /// </remarks>
   protected virtual string CssClassReadOnly
-  { get { return "bocCheckBoxReadOnly"; } }
+  { get { return "readOnly"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocCheckBox"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 

@@ -691,11 +691,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocBooleanValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocBooleanValueReadOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocBooleanValue.readOnly</b> as a selector.</para>
   /// </remarks>
   protected virtual string CssClassReadOnly
-  { get { return "bocBooleanValueReadOnly"; } }
+  { get { return "readOnly"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocBooleanValue"/> when it is displayed in disabled. </summary>
   /// <remarks> 

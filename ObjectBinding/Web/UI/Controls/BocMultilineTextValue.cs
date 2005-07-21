@@ -565,11 +565,11 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocMultilineTextValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocMultilineTextValueReadOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocMultilineTextValue.readOnly</b> as a selector.</para>
   /// </remarks>
   protected virtual string CssClassReadOnly
-  { get { return "bocMultilineTextValueReadOnly"; } }
+  { get { return "readOnly"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocMultilineTextValue"/> when it is displayed disabled. </summary>
   /// <remarks> 
