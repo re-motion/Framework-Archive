@@ -19,6 +19,7 @@ tbody.bocListTableBody
 th.bocListTitleCell
 {
 	font-weight: bold;
+	text-align: left;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
@@ -56,6 +57,7 @@ th.bocListTitleCell a:hover
 td.bocListDataCellOdd
 {
 	background-color: White;
+	text-align: left;
 
   padding: 2px 2px 2px 5px;
   border-style: solid;
@@ -72,6 +74,7 @@ td.bocListDataCellOdd
 td.bocListDataCellEven
 {
 	background-color: #e1ecfc;
+	text-align: left;
 
   padding: 2px 2px 2px 5px;
   border-style: solid;
@@ -90,6 +93,7 @@ td.bocListDataCellEvenSelected
 {
 	background-color: Highlight;
   color: HighlightText;
+	text-align: left;
  
   padding: 2px 2px 2px 5px;
   border-style: solid;

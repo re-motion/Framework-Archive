@@ -66,7 +66,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private NaBooleanEnum _defaultValue = NaBooleanEnum.Undefined;
   private bool _isActive = true;
 
-  private CheckBox _checkBox;
+  private HtmlInputCheckBox _checkBox;
   private Label _label;
   private Style _labelStyle;
 
@@ -86,7 +86,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 	public BocCheckBox()
 	{
     _labelStyle = new Style();
-    _checkBox = new CheckBox();
+    _checkBox = new HtmlInputCheckBox();
     _label = new Label();
 	}
 
@@ -234,7 +234,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
 
     _checkBox.Checked = _value;
-    _checkBox.Enabled = ! isReadOnly && Enabled;
+    _checkBox.Disabled = isReadOnly || ! Enabled;
     
     if (IsDescriptionEnabled)
     {
@@ -250,7 +250,43 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
+    bool isReadOnly = IsReadOnly;
+    bool isDisabled = ! Enabled;
+
+    string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+    {
+      if (isReadOnly)
+        CssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        CssClass += " " + CssClassDisabled;
+    }
+    string backUpAttributeCssClass = Attributes["class"];
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        Attributes["class"] += " " + CssClassReadOnly;
+      else if (isDisabled)
+        Attributes["class"] += " " + CssClassDisabled;
+    }
+    
     base.AddAttributesToRender (writer);
+
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass = backUpCssClass;
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] = backUpAttributeCssClass;
+    
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      string cssClass = CssClassBase;
+      if (isReadOnly)
+        cssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        cssClass += " " + CssClassDisabled;
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+    }
+
     writer.AddStyleAttribute ("white-space", "nowrap");
     if (! IsReadOnly)
     {
@@ -259,8 +295,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       if (isLabelWidthEmpty && isControlWidthEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
     }
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
   /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
@@ -532,9 +566,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.CheckBox"/> used for the value. </summary>
+  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.HtmlInputCheckBox"/> used for the value. </summary>
   [Browsable (false)]
-  public CheckBox CheckBox
+  public HtmlInputCheckBox CheckBox
   {
     get { return _checkBox; }
   }
@@ -610,11 +644,27 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="BocCheckBox"/> itself. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>bocCheckBoxValue</c>. </para>
+  ///   <para> Class: <c>bocCheckBox</c>. </para>
   ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassBase
-  { get { return "bocCheckBoxValue"; } }
+  { get { return "bocCheckBox"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocCheckBox"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocCheckBoxReadOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassReadOnly
+  { get { return "bocCheckBoxReadOnly"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocCheckBox"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>disabled</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassDisabled
+  { get { return "disabled"; } }
   #endregion
 }
 
