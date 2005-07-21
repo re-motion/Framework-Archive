@@ -453,27 +453,40 @@ public class BocReferenceValue:
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
+    bool isDisabled = ! Enabled;
 
     string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
-    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
-      CssClass += " " + CssClassReadOnly;
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+    {
+      if (isReadOnly)
+        CssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        CssClass += " " + CssClassDisabled;
+    }
     string backUpAttributeCssClass = Attributes["class"];
-    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
-      Attributes["class"] += " " + CssClassReadOnly;
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        Attributes["class"] += " " + CssClassReadOnly;
+      else if (isDisabled)
+        Attributes["class"] += " " + CssClassDisabled;
+    }
     
     base.AddAttributesToRender (writer);
 
-    if (isReadOnly && ! StringUtility.IsNullOrEmpty (CssClass))
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
       CssClass = backUpCssClass;
-    if (isReadOnly && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
       Attributes["class"] = backUpAttributeCssClass;
     
     if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
     {
+      string cssClass = CssClassBase;
       if (isReadOnly)
-        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase + " " + CssClassReadOnly);
-      else
-        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+        cssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        cssClass += " " + CssClassDisabled;
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
 
     writer.AddStyleAttribute ("display", "inline");
@@ -930,7 +943,6 @@ public class BocReferenceValue:
     }
     _label.Text = text;
 
-    _label.Enabled = Enabled;
     _label.Height = Unit.Empty;
     _label.Width = Unit.Empty;
     _label.ApplyStyle (_commonStyle);
@@ -945,7 +957,7 @@ public class BocReferenceValue:
     //  Check if null item is to be selected
     if (isNullItem)
     {
-      //  No null item in the list
+      //  No null item in the list?
       if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
         _dropDownList.Items.Insert (0, CreateNullItem());
       _dropDownList.SelectedValue = c_nullIdentifier;
@@ -991,17 +1003,24 @@ public class BocReferenceValue:
         _icon.Width = iconInfo.Width;
         _icon.Height = iconInfo.Height;
 
-        _icon.Enabled = Enabled;
         _icon.Visible = _enableIcon;
         _icon.Style["vertical-align"] = "middle";
         _icon.Style["border-style"] = "none";
 
         if (IsCommandEnabled (IsReadOnly))
         {
-          if (Value == null)
-            _icon.AlternateText = String.Empty;
+          if (StringUtility.IsNullOrEmpty (iconInfo.AlternateText))
+          {
+            if (Value == null)
+              _icon.AlternateText = String.Empty;
+            else
+              _icon.AlternateText = HttpUtility.HtmlEncode (Value.DisplayName);
+          }
           else
-            _icon.AlternateText = HttpUtility.HtmlEncode (Value.DisplayName);
+          {
+            _icon.AlternateText = iconInfo.AlternateText;
+          }
+
         }
       }
     }
@@ -1207,6 +1226,13 @@ public class BocReferenceValue:
       {
         ListItem itemToRemove = _dropDownList.Items.FindByValue (c_nullIdentifier);
         _dropDownList.Items.Remove (itemToRemove);
+      }
+      else if (_internalValue == null)
+      {
+        //  No null item in the list ?
+        if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
+          _dropDownList.Items.Insert (0, CreateNullItem());
+        _dropDownList.SelectedValue = c_nullIdentifier;
       }
     }
   }
@@ -1471,7 +1497,13 @@ public class BocReferenceValue:
   public string Select
   {
     get { return _select; }
-    set { _select = value; }
+    set 
+    { 
+      if (value == null)
+        _select = null;
+      else
+        _select = value.Trim(); 
+    }
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
@@ -1585,7 +1617,7 @@ public class BocReferenceValue:
   ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassBase
-{ get { return "bocReferenceValue"; } }
+  { get { return "bocReferenceValue"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/>'s value. </summary>
   /// <remarks> Class: <c>bocReferenceValueContent</c> </remarks>
@@ -1599,6 +1631,14 @@ public class BocReferenceValue:
   /// </remarks>
   protected virtual string CssClassReadOnly
   { get { return "bocReferenceValueReadOnly"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>disabled</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassDisabled
+  { get { return "disabled"; } }
   #endregion
 }
 
