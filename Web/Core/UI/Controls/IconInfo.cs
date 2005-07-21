@@ -15,23 +15,35 @@ namespace Rubicon.Web.UI.Controls
 public sealed class IconInfo: ISerializable
 {
   private string _url;
+  private string _alternateText;
   private Unit _width;
   private Unit _height;
 
-  public IconInfo (string url, Unit width, Unit height)
+  public IconInfo (string url, string alternateText, Unit width, Unit height)
   {
     _url = url;
+    _alternateText = alternateText;
     _width = width;
     _height = height;
   }
 
+  public IconInfo (string url, Unit width, Unit height)
+    : this (url, null, width, height)
+  {
+  }
+
+  public IconInfo (string url, string alternateText, string width, string height)
+    : this (url, null, new Unit (width), new Unit (height))
+  {
+  }
+
   public IconInfo (string url, string width, string height)
-    : this (url, new Unit (width), new Unit (height))
+    : this (url, null, width, height)
   {
   }
 
   public IconInfo (string url)
-    : this (url, Unit.Empty, Unit.Empty)
+    : this (url, null, Unit.Empty, Unit.Empty)
   {
   }
 
@@ -46,8 +58,17 @@ public sealed class IconInfo: ISerializable
   [NotifyParentProperty (true)]
   public string Url
   {
-    get { return _url; }
+    get { return StringUtility.NullToEmpty (_url); }
     set { _url = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
+  [NotifyParentProperty (true)]
+  public string AlternateText
+  {
+    get { return  StringUtility.NullToEmpty (_alternateText); }
+    set { _alternateText = value; }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
