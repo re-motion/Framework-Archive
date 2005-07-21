@@ -191,15 +191,50 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       _textBox.Height = Unit.Empty;
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
+      if (_textBox.Columns < 1)
+        _textBox.Columns = 1;
     }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
+    bool isReadOnly = IsReadOnly;
+    bool isDisabled = ! Enabled;
+
+    string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+    {
+      if (isReadOnly)
+        CssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        CssClass += " " + CssClassDisabled;
+    }
+    string backUpAttributeCssClass = Attributes["class"];
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        Attributes["class"] += " " + CssClassReadOnly;
+      else if (isDisabled)
+        Attributes["class"] += " " + CssClassDisabled;
+    }
+    
     base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass = backUpCssClass;
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] = backUpAttributeCssClass;
+    
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      string cssClass = CssClassBase;
+      if (isReadOnly)
+        cssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        cssClass += " " + CssClassDisabled;
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
@@ -527,6 +562,22 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// </remarks>
   protected virtual string CssClassBase
   { get { return "bocMultilineTextValue"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocMultilineTextValue"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bocMultilineTextValueReadOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassReadOnly
+  { get { return "bocMultilineTextValueReadOnly"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocMultilineTextValue"/> when it is displayed disabled. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>disabled</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  /// </remarks>
+  protected virtual string CssClassDisabled
+  { get { return "disabled"; } }
   #endregion
 }
 }
