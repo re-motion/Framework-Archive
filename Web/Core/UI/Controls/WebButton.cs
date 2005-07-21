@@ -3,11 +3,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
+/// <remarks> 
+///   When using Internet Explorer with disabled client script, the click event of last <b>WebButton</b> on the page 
+///   is fired. 
+/// </remarks>
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
     Button
@@ -26,16 +31,22 @@ public class WebButton :
   public WebButton()
   {
     _icon = new IconInfo();
-    CssClass = "Button";
   }
 
 #if ! net20
-  public void RaisePostDataChangedEvent()
+  void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
   }
 
-  public bool LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+  bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
+    bool isScriptedPostBack = StringUtility.IsNullOrEmpty (postCollection[ControlHelper.PostEventSourceID]);
+    if (isScriptedPostBack)
+    {
+      bool isSuccessfulControl = ! StringUtility.IsNullOrEmpty (postCollection[postDataKey]);
+      if (isSuccessfulControl)
+        Page.RegisterRequiresRaiseEvent (this);
+    }
     return false;
   }
 #endif
@@ -58,6 +69,9 @@ public class WebButton :
 #endif
 
     Text = tempText;
+  
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
   /// <summary> Method to be executed when compiled for .net 1.1. </summary>
@@ -172,6 +186,7 @@ public class WebButton :
           writer.AddAttribute (HtmlTextWriterAttribute.Width, _icon.Width.ToString());
         writer.AddStyleAttribute ("vertical-align", "middle");
         writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+        writer.AddAttribute (HtmlTextWriterAttribute.Alt, _icon.AlternateText);
         writer.RenderBeginTag (HtmlTextWriterTag.Img);
         writer.RenderEndTag();
       }
@@ -227,6 +242,16 @@ public class WebButton :
       return secondScript;
     return ("javascript:" + secondScript);
   }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>webButton</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  { get { return "webButton"; } }
+  #endregion
 }
 
 }
