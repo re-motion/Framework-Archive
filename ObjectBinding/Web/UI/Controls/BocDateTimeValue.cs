@@ -652,7 +652,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         script = "return false;";
       }
       _datePickerButton.NavigateUrl = "#";
-      _datePickerButton.Attributes[HtmlTextWriterAttribute.Onclick.ToString()] = script;
+      _datePickerButton.Attributes["onclick"] = script;
     }
 
     _datePickerButton.Style["padding"] = "0px";

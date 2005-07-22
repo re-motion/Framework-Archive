@@ -229,8 +229,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
         checkBoxScript = "return false;";
         labelScript = "return false;";
       }
-      _checkBox.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), checkBoxScript);
-      _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), labelScript);
+      _checkBox.Attributes.Add ("onclick", checkBoxScript);
+      _label.Attributes.Add ("onclick", labelScript);
     }
 
     _checkBox.Checked = _value;

@@ -1754,6 +1754,7 @@ public class BocList:
     {
       _moveFirstButton.ImageUrl = imageUrl;
       _moveFirstButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToFirstAlternateText);
+      _moveFirstButton.CausesValidation = false;
       _moveFirstButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1775,6 +1776,7 @@ public class BocList:
     {
       _movePreviousButton.ImageUrl = imageUrl;
       _movePreviousButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToPreviousAlternateText);
+      _movePreviousButton.CausesValidation = false;
       _movePreviousButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1796,6 +1798,7 @@ public class BocList:
     {
       _moveNextButton.ImageUrl = imageUrl;
       _moveNextButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToNextAlternateText);
+      _moveNextButton.CausesValidation = false;
       _moveNextButton.RenderControl (writer);
     }
     writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
@@ -1817,6 +1820,7 @@ public class BocList:
     {
       _moveLastButton.ImageUrl = imageUrl;
       _moveLastButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToLastAlternateText);
+      _moveLastButton.CausesValidation = false;
       _moveLastButton.RenderControl (writer);
     }
 
@@ -2171,7 +2175,7 @@ public class BocList:
             + ");";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
         //  Disallow selecting text in the row.
-        writer.AddAttribute ("onSelectStart", "return false");
+        //  writer.AddAttribute ("onSelectStart", "return false");
       }
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);

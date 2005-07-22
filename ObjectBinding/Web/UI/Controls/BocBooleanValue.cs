@@ -277,9 +277,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       {
         script = "return false;";
       }
-      _label.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
-      _hyperLink.Attributes.Add (HtmlTextWriterAttribute.Onclick.ToString(), script);
-      _hyperLink.Attributes.Add ("onKeyDown", "BocBooleanValue_OnKeyDown (this);");
+      _label.Attributes.Add ("onclick", script);
+      _hyperLink.Attributes.Add ("onclick", script);
+      _hyperLink.Attributes.Add ("onkeydown", "BocBooleanValue_OnKeyDown (this);");
       _hyperLink.Style["padding"] = "0px";
       _hyperLink.Style["border"] = "none";
       _hyperLink.Style["background-color"] = "transparent";
