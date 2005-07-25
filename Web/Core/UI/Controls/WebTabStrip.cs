@@ -206,6 +206,12 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
+    if (   Configuration.WebConfiguration.Current.WaiConfiguration.Level == Configuration.WaiLevel.A
+        && Configuration.WebConfiguration.Current.WaiConfiguration.Debug)
+    {
+      throw new WaiException (1, this);
+    }
+
     int tabsOnPane = 0;
     bool isTabsPaneOpen = false;
     WebTabCollection tabs = Tabs;
