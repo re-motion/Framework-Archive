@@ -55,12 +55,25 @@ public class WebButton :
   {
     string accessKey;
     string text = StringUtility.NullToEmpty (Text);
-    text = SmartLabel.FormatLabelText (text, true, out accessKey);
+    text = SmartLabel.FormatLabelText (text, !IsWaiConformityRequired, out accessKey);
 
     if (StringUtility.IsNullOrEmpty (AccessKey))
       writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, accessKey);
+    
     string tempText = Text;
-    Text = text;
+    bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
+    bool hasText = ! StringUtility.IsNullOrEmpty (text);
+    if (IsWaiConformityRequired)
+    {
+      if (hasText)
+        Text = text;
+      else if (hasIcon)
+        Text = _icon.AlternateText;
+    }
+    else
+    {
+      Text = text;
+    }
 
 #if ! net20
     AddAttributesToRender_net11 (writer);
@@ -105,7 +118,6 @@ public class WebButton :
       onClick += Page.GetPostBackEventReference (this) + "; ";
       onClick += "return false;";
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-      writer.AddAttribute("language", "javascript");
     }
     bool causesValidationTemp = CausesValidation;
     CausesValidation = false;
@@ -150,8 +162,6 @@ public class WebButton :
 //      if (! StringUtility.IsNullOrEmpty (onClick))
 //      {
 //        writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-//        // if (base.EnableLegacyRendering)
-//        //    writer.AddAttribute("language", "javascript", false);
 //      }
 //      OnClientClick = tempOnClientClick;
 //    }
@@ -161,11 +171,20 @@ public class WebButton :
 
   protected override HtmlTextWriterTag TagKey
   {
-    get { return HtmlTextWriterTag.Button; }
+    get
+    {
+      if (IsWaiConformityRequired)
+        return HtmlTextWriterTag.Input;
+      else
+        return HtmlTextWriterTag.Button; 
+    }
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
+    if (IsWaiConformityRequired)
+      return;
+
     string text = StringUtility.NullToEmpty (Text);
     text = SmartLabel.FormatLabelText (text, true);
 
@@ -221,6 +240,11 @@ public class WebButton :
   } 
 #endif
 
+  protected bool IsWaiConformityRequired
+  {
+    get { return Configuration.WebConfiguration.Current.WaiConfiguration.Level == Configuration.WaiLevel.A; }
+  }
+
   private string EnsureEndWithSemiColon (string value)
   {
     if (! StringUtility.IsNullOrEmpty (value))
@@ -242,6 +266,7 @@ public class WebButton :
       return secondScript;
     return ("javascript:" + secondScript);
   }
+
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>
