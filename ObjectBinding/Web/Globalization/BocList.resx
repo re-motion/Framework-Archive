@@ -90,4 +90,10 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText">
         <value>Go To Previous Page.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectRowAlternateText">
+        <value>Select this row.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText">
+        <value>Select all rows.</value>
+    </data>
 </root>

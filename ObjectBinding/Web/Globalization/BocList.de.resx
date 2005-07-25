@@ -84,4 +84,10 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText">
         <value>Zur vorherigen Seite gehen.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectRowAlternateText">
+        <value>Diese Zeile markieren.</value>
+    </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText">
+        <value>Alle Zeilen markieren.</value>
+    </data>
 </root>
