@@ -61,6 +61,15 @@ public class WebConfiguration: IConfigurationSectionHandler
     set { _executionEngine = value; }
   }
 
+  WaiConfiguration _waiConfiguration = new WaiConfiguration();
+
+  [XmlElement ("waiConfiguration")]
+  public WaiConfiguration WaiConfiguration
+  {
+    get { return _waiConfiguration; }
+    set { _waiConfiguration = value; }
+  }
+
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)
   {
     // instead of the CooNetConfiguration instance, the xml node is returned. this prevents version 
@@ -93,6 +102,45 @@ public class ExecutionEngineConfiguration
   {
     get { return _viewStateInSession; }
     set { _viewStateInSession = value; }
+  }
+}
+
+[Flags]
+public enum WaiLevel
+{
+  Undefined = 0,
+  A = 1, 
+  /// <summary> WAI level AA includes all requirements of level A. </summary>
+  AA = 3,
+  /// <summary> WAI level AAA includes all requirements of levels A and AA. </summary>
+  AAA = 7
+}
+
+[XmlType (Namespace = WebConfiguration.SchemaUri)]
+public class WaiConfiguration
+{
+  private WaiLevel _level = WaiLevel.Undefined;
+  private bool _debug = false;
+
+  /// <summary>
+  ///   Specifies the WAI level required in this web-application.
+  /// </summary>
+  [XmlAttribute ("level")]
+  public WaiLevel Level
+  {
+    get { return _level; }
+    set { _level = value; }
+  }
+
+  /// <summary>
+  ///   Specifies whether the developer will be notified on WAI compliancy issues in the controls' configuration
+  ///   or if they will be corrected automatically.
+  /// </summary>
+  [XmlAttribute ("debug")]
+  public bool Debug
+  {
+    get { return _debug; }
+    set { _debug = value; }
   }
 }
 
