@@ -1,7 +1,15 @@
 1.2.57
 ======
+- WaiConfiguration
+  * Neuer Eintrag in der Rubicon.Web.Configuration.WebConfiguration Section.
+  * WaiConfiguration.Level definiert das gewüschte WAI-Level.
+  * WaiConfiguration.Debug aktiviert Exceptions (WaiException) wenn eine Einstellung auf der Seite 
+    nicht WAI-konform ist. Nur non-legacy Controls bieten diese Option.
+
 - WebButton
   * Default Class für den Web-Button von Button auf webButton geändert.
+  * Ist WAI-Level A definiert, rendert der WebButton ein "input" Element vom Typ "button" 
+    anstelle des "button" Elements. Icons und HTML-Tags innerhalb des Buttons sind dann deaktiviert.
   
 1.2.55
 ======
