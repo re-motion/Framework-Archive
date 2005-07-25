@@ -315,7 +315,13 @@ public class TabbedMultiView: WebControl, IControl
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EnsureChildControls();
-    
+   
+    if (   Configuration.WebConfiguration.Current.WaiConfiguration.Level == Configuration.WaiLevel.A
+        && Configuration.WebConfiguration.Current.WaiConfiguration.Debug)
+    {
+      throw new WaiException (1, this);
+    }
+
     RenderTopControls (writer);
     RenderTabStrip (writer);
     RenderActiveView (writer);
