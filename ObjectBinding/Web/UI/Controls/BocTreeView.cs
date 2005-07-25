@@ -140,6 +140,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     _treeView.Height = Height;
   }
 
+  protected override void Render(HtmlTextWriter writer)
+  {
+    if (IsWaiConformityRequired)
+      throw new Rubicon.Web.UI.WaiException (1, this);
+
+    base.Render (writer);
+  }
+
   /// <summary>
   ///   Sets the tree view to be rebuilded with the current business objects. 
   ///   Must be called before or during the <c>PostBackEvent</c> to affect the tree view.

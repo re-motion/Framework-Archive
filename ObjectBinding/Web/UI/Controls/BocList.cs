@@ -68,16 +68,17 @@ public class BocList:
   /// <summary> Prefix applied to the post back argument of the sort buttons. </summary>
   private const string c_sortCommandPrefix = "Sort=";
 
-  #region private const string c_move...Icon
-  private const string c_moveFirstIcon = "MoveFirst.gif";
-  private const string c_moveLastIcon = "MoveLast.gif";
-  private const string c_movePreviousIcon = "MovePrevious.gif";
-  private const string c_moveNextIcon = "MoveNext.gif";
-  private const string c_moveFirstInactiveIcon = "MoveFirstInactive.gif";
-  private const string c_moveLastInactiveIcon = "MoveLastInactive.gif";
-  private const string c_movePreviousInactiveIcon = "MovePreviousInactive.gif";
-  private const string c_moveNextInactiveIcon = "MoveNextInactive.gif";
+  #region private const string c_goTo...Icon
+  private const string c_goToFirstIcon = "MoveFirst.gif";
+  private const string c_goToLastIcon = "MoveLast.gif";
+  private const string c_goToPreviousIcon = "MovePrevious.gif";
+  private const string c_goToNextIcon = "MoveNext.gif";
+  private const string c_goToFirstInactiveIcon = "MoveFirstInactive.gif";
+  private const string c_goToLastInactiveIcon = "MoveLastInactive.gif";
+  private const string c_goToPreviousInactiveIcon = "MovePreviousInactive.gif";
+  private const string c_goToNextInactiveIcon = "MoveNextInactive.gif";
   #endregion
+  private const string c_goToCommandPrefix = "GoTo=";
 
   private const string c_scriptFileUrl = "BocList.js";
   private const string c_onCommandClickScript = "BocList_OnCommandClick();";
@@ -137,11 +138,13 @@ public class BocList:
     GoToFirstAlternateText,
     GoToLastAlternateText,
     GoToNextAlternateText,
-    GoToPreviousAlternateText
+    GoToPreviousAlternateText,
+    SelectAllRowsAlternateText,
+    SelectRowAlternateText
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
-  private enum MoveOption
+  private enum GoToOption
   {
     /// <summary> Don't page. </summary>
     Undefined,
@@ -243,15 +246,6 @@ public class BocList:
   private string _availableViewsListSelectedValue = string.Empty;
   bool _isSelectedViewIndexSet = false;
 
-  /// <summary> The <see cref="ImageButton"/> used to navigate to the first page. </summary>
-  private ImageButton _moveFirstButton;
-  /// <summary> The <see cref="ImageButton"/> used to navigate to the last page. </summary>
-  private ImageButton _moveLastButton;
-  /// <summary> The <see cref="ImageButton"/> used to navigate to the previous page. </summary>
-  private ImageButton _movePreviousButton;
-  /// <summary> The <see cref="ImageButton"/> used to navigate to the next page. </summary>
-  private ImageButton _moveNextButton;
-
   /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
   private IList _value = null;
 
@@ -329,9 +323,9 @@ public class BocList:
   private string _pageInfo = null;
   /// <summary> 
   ///   The navigation bar command that caused the post back. 
-  ///   <see cref="MoveOption.Undefined"/> unless the navigation bar caused a post back.
+  ///   <see cref="GoToOption.Undefined"/> unless the navigation bar caused a post back.
   /// </summary>
-  private MoveOption _move = MoveOption.Undefined;
+  private GoToOption _goTo = GoToOption.Undefined;
   /// <summary> 
   ///   The index of the current row in the <see cref="IBusinessObject"/> this control is bound to.
   /// </summary>
@@ -370,10 +364,6 @@ public class BocList:
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
 	public BocList()
 	{
-    _moveFirstButton = new ImageButton();
-    _moveLastButton =  new ImageButton();
-    _movePreviousButton = new ImageButton();
-    _moveNextButton = new ImageButton();
     _availableViewsList = new DropDownList();
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
@@ -390,22 +380,6 @@ public class BocList:
     _optionsMenu.ID = ID + c_optionsMenuIDSuffix;
     _optionsMenu.GetSelectionCount = "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     Controls.Add (_optionsMenu);
-
-    _moveFirstButton.ID = ID + "_MoveFirstButton";
-    _moveFirstButton.EnableViewState = false;
-    Controls.Add (_moveFirstButton);
-
-    _moveLastButton.ID = ID + "_MoveLastButton";
-    _moveLastButton.EnableViewState = false;
-    Controls.Add (_moveLastButton);
-
-    _movePreviousButton.ID = ID + "_MovePreviousButton";
-    _movePreviousButton.EnableViewState = false;
-    Controls.Add (_movePreviousButton);
-
-    _moveNextButton.ID = ID + "_MoveNextButton";
-    _moveNextButton.EnableViewState = false;
-    Controls.Add (_moveNextButton);
 
     _availableViewsList.ID = ID + c_availableViewsListIDSuffix;
     _availableViewsList.EnableViewState = false;
@@ -425,10 +399,6 @@ public class BocList:
 
     _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
-    _moveFirstButton.Click += new ImageClickEventHandler (MoveFirstButton_Click);
-    _moveLastButton.Click += new ImageClickEventHandler (MoveLastButton_Click);
-    _movePreviousButton.Click += new ImageClickEventHandler (MovePreviousButton_Click);
-    _moveNextButton.Click += new ImageClickEventHandler (MoveNextButton_Click);
 
     _availableViews.CollectionChanged +=
         new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
@@ -470,6 +440,8 @@ public class BocList:
       HandleCustomCellEvent (eventArgument.Substring (c_customCellEventPrefix.Length));
     else if (eventArgument.StartsWith (c_eventEditDetailsPrefix))
       HandleEditDetailsEvent (eventArgument.Substring (c_eventEditDetailsPrefix.Length));
+    else if (eventArgument.StartsWith (c_goToCommandPrefix))
+      HandleGoToEvent (eventArgument.Substring (c_goToCommandPrefix.Length));
     else
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
@@ -855,6 +827,22 @@ public class BocList:
     }
   }
 
+  /// <summary> Handles post back events raised by a go-to button. </summary>
+  /// <param name="eventArgument"> &lt;GoToOption&gt; </param>
+  private void HandleGoToEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    try 
+    {
+      _goTo = (GoToOption) Enum.Parse (typeof (GoToOption), eventArgument);
+    }
+    catch (ArgumentException)
+    {
+      throw new ArgumentException ("Argument 'eventArgument' must be a value of the GoToOption enum.");
+    }
+  }
+
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
   /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
   protected virtual void OnListItemCommandClick (
@@ -976,10 +964,47 @@ public class BocList:
     return validators;
   }
 
+  protected virtual void EvaluateWaiConformity (BocColumnDefinition[] columns)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
+
+    if (IsWaiDebuggingEnabled && GetWaiLevel() == Rubicon.Web.Configuration.WaiLevel.A)
+    {
+      if (_showOptionsMenu)
+        throw new WaiException (1, this, "ShowOptionsMenu");
+      if (_showListMenu)
+        throw new WaiException (1, this, "ShowListMenu");
+      if (_showAvailableViewsList)
+        throw new WaiException (1, this, "ShowAvailableViewsList");
+      bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
+      if (isPagingEnabled)
+        throw new WaiException (1, this, "PageSize");
+      if (EnableSorting)
+        throw new WaiException (1, this, "EnableSorting");
+
+      for (int i = 0; i < columns.Length; i++)
+      {
+        if (columns[i] is BocEditDetailsColumnDefinition)
+          throw new WaiException (1, this, String.Format ("Columns[{0}]", i));
+
+        BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
+        if (commandColumn != null)
+        {
+          bool hasPostBackColumnCommand =     commandColumn.Command != null
+                                          && (   commandColumn.Command.Type == CommandType.Event 
+                                              || commandColumn.Command.Type == CommandType.WxeFunction);
+          if (hasPostBackColumnCommand)
+            throw new WaiException (1, this, String.Format ("Columns[{0}]", i));
+        }
+      }
+    }
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     EnsureChildControls();
     base.OnPreRender (e);
+
     if (! IsDesignMode && Enabled)
       Page.RegisterRequiresPostBack (this);
 
@@ -1066,27 +1091,27 @@ public class BocList:
       _currentPage = _currentRow / _pageSize.Value;
       _pageCount = (int) Math.Ceiling ((double)Value.Count / _pageSize.Value);
 
-      switch (_move)
+      switch (_goTo)
       {
-        case MoveOption.First:
+        case GoToOption.First:
         {
           _currentPage = 0;
           _currentRow = 0;
           break;
         }
-        case MoveOption.Last:
+        case GoToOption.Last:
         {
           _currentPage = _pageCount - 1;
           _currentRow = _currentPage * _pageSize.Value;
           break;
         }
-        case MoveOption.Previous:
+        case GoToOption.Previous:
         {
           _currentPage--;
           _currentRow = _currentPage * _pageSize.Value;
           break;
         }
-        case MoveOption.Next:
+        case GoToOption.Next:
         {
           _currentPage++;
           _currentRow = _currentPage * _pageSize.Value;
@@ -1109,7 +1134,7 @@ public class BocList:
         _currentRow = 0;
       }
 
-      if (_move != MoveOption.Undefined)
+      if (_goTo != GoToOption.Undefined)
         _selectorControlCheckedState.Clear();
     }
   }
@@ -1118,10 +1143,13 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   protected override void RenderContents (HtmlTextWriter writer)
   {
+
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
+    if (IsWaiConformityRequired)
+      EvaluateWaiConformity (renderColumns);
 
     if (IsDesignMode)
     {
@@ -1257,20 +1285,22 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     //  Left: list block
-    writer.RenderBeginTag (HtmlTextWriterTag.Col);
-    writer.RenderEndTag();
+    writer.WriteBeginTag ("col"); //  Required because RenderBeginTag(); RenderEndTag();
+    writer.Write (">");           //  writes empty tags, which is not valid for col in HTML 4.01
 
     //  Right: menu block
+    writer.WriteBeginTag ("col");
+    writer.Write (" style=\"");
     string menuBlockWidth = c_defaultMenuBlockWidth;
     if (! _menuBlockWidth.IsEmpty)
       menuBlockWidth = _menuBlockWidth.ToString();
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);
+    writer.WriteStyleAttribute ("width", menuBlockWidth);
     string menuBlockOffset = c_defaultMenuBlockOffset;
     if (! _menuBlockOffset.IsEmpty)
       menuBlockOffset = _menuBlockOffset.ToString();
-    writer.AddStyleAttribute ("padding-left", menuBlockOffset);
-    writer.RenderBeginTag (HtmlTextWriterTag.Col);
-    writer.RenderEndTag();
+    writer.WriteStyleAttribute ("padding-left", menuBlockOffset);
+    writer.Write ("\"");
+    writer.Write (">");
 
     writer.RenderEndTag();  //  End ColGroup
 
@@ -1732,98 +1762,103 @@ public class BocList:
       pageInfo = _pageInfo;
 
     writer.Write (pageInfo, _currentPage + 1, _pageCount);
-    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
-    
-    string imageUrl = null;
-    IResourceManager resourceManager = GetResourceManager();
 
-    //  Move to first page button
-    if (isFirstPage || IsEditDetailsModeActive)
-      imageUrl = c_moveFirstInactiveIcon;
-    else
-      imageUrl = c_moveFirstIcon;
-    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isFirstPage || IsEditDetailsModeActive)
+    if (_hasClientScript)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
-    }
-    else
-    {
-      _moveFirstButton.ImageUrl = imageUrl;
-      _moveFirstButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToFirstAlternateText);
-      _moveFirstButton.CausesValidation = false;
-      _moveFirstButton.RenderControl (writer);
-    }
-    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+      writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+      
+      string imageUrl = null;
+      //  Move to first page button
+      if (isFirstPage || IsEditDetailsModeActive)
+        imageUrl = c_goToFirstInactiveIcon;
+      else
+        imageUrl = c_goToFirstIcon;
+      imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+      if (isFirstPage || IsEditDetailsModeActive)
+      {
+        RenderIcon (writer, new IconInfo (imageUrl), null);
+      }
+      else
+      {
+        string argument = c_goToCommandPrefix + GoToOption.First.ToString();
+        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        postBackEvent += "; return false;";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+        RenderIcon (writer, new IconInfo (imageUrl), ResourceIdentifier.GoToFirstAlternateText);
+        writer.RenderEndTag ();
+      }
+      writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
-    //  Move to previous page button
-    if (isFirstPage || IsEditDetailsModeActive)
-      imageUrl = c_movePreviousInactiveIcon;
-    else
-      imageUrl = c_movePreviousIcon;      
-    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isFirstPage || IsEditDetailsModeActive)
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
-    }
-    else
-    {
-      _movePreviousButton.ImageUrl = imageUrl;
-      _movePreviousButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToPreviousAlternateText);
-      _movePreviousButton.CausesValidation = false;
-      _movePreviousButton.RenderControl (writer);
-    }
-    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+      //  Move to previous page button
+      if (isFirstPage || IsEditDetailsModeActive)
+        imageUrl = c_goToPreviousInactiveIcon;
+      else
+        imageUrl = c_goToPreviousIcon;      
+      imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+      if (isFirstPage || IsEditDetailsModeActive)
+      {
+        RenderIcon (writer, new IconInfo (imageUrl), null);
+      }
+      else
+      {
+        string argument = c_goToCommandPrefix + GoToOption.Previous.ToString();
+        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        postBackEvent += "; return false;";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+        RenderIcon (writer, new IconInfo (imageUrl), ResourceIdentifier.GoToPreviousAlternateText);
+        writer.RenderEndTag ();
+      }
+      writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
-    //  Move to next page button
-    if (isLastPage || IsEditDetailsModeActive)
-      imageUrl = c_moveNextInactiveIcon;
-    else
-      imageUrl = c_moveNextIcon;      
-    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isLastPage || IsEditDetailsModeActive)
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
-    }
-    else
-    {
-      _moveNextButton.ImageUrl = imageUrl;
-      _moveNextButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToNextAlternateText);
-      _moveNextButton.CausesValidation = false;
-      _moveNextButton.RenderControl (writer);
-    }
-    writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+      //  Move to next page button
+      if (isLastPage || IsEditDetailsModeActive)
+        imageUrl = c_goToNextInactiveIcon;
+      else
+        imageUrl = c_goToNextIcon;      
+      imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+      if (isLastPage || IsEditDetailsModeActive)
+      {
+        RenderIcon (writer, new IconInfo (imageUrl), null);
+      }
+      else
+      {
+        string argument = c_goToCommandPrefix + GoToOption.Next.ToString();
+        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        postBackEvent += "; return false;";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+        RenderIcon (writer, new IconInfo (imageUrl), ResourceIdentifier.GoToNextAlternateText);
+        writer.RenderEndTag ();
+      }
+      writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
-    //  Move to last page button
-    if (isLastPage || IsEditDetailsModeActive)
-      imageUrl = c_moveLastInactiveIcon;
-    else
-      imageUrl = c_moveLastIcon;     
-    imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-    if (isLastPage || IsEditDetailsModeActive)
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
+      //  Move to last page button
+      if (isLastPage || IsEditDetailsModeActive)
+        imageUrl = c_goToLastInactiveIcon;
+      else
+        imageUrl = c_goToLastIcon;     
+      imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
+      if (isLastPage || IsEditDetailsModeActive)
+      {
+        RenderIcon (writer, new IconInfo (imageUrl), null);
+      }
+      else
+      {
+        string argument = c_goToCommandPrefix + GoToOption.Last.ToString();
+        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        postBackEvent += "; return false;";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        writer.RenderBeginTag (HtmlTextWriterTag.A);
+        RenderIcon (writer, new IconInfo (imageUrl), ResourceIdentifier.GoToLastAlternateText);
+        writer.RenderEndTag ();
+      }
     }
-    else
-    {
-      _moveLastButton.ImageUrl = imageUrl;
-      _moveLastButton.AlternateText = resourceManager.GetString (ResourceIdentifier.GoToLastAlternateText);
-      _moveLastButton.CausesValidation = false;
-      _moveLastButton.RenderControl (writer);
-    }
-
     writer.RenderEndTag();
   }
 
@@ -1855,10 +1890,12 @@ public class BocList:
 
     if (IsSelectionEnabled)
     {
+      writer.WriteBeginTag ("col");
+      writer.Write (" style=\"");
       //  1% would lead to automatic resizing if all widths don't add up to 100%
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Unit.Percentage(0).ToString());
-      writer.RenderBeginTag (HtmlTextWriterTag.Col);
-      writer.RenderEndTag();
+      writer.WriteStyleAttribute ("width", Unit.Percentage(0).ToString());
+      writer.Write ("\"");
+      writer.Write (">");
     }
 
     //bool isFirstColumnUndefinedWidth = true;
@@ -1869,11 +1906,14 @@ public class BocList:
       if (! IsColumnVisible (column))
         continue;
       
+      writer.WriteBeginTag ("col");
       if (! column.Width.IsEmpty)
-        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
-
-      writer.RenderBeginTag (HtmlTextWriterTag.Col);
-      writer.RenderEndTag();
+      {
+        writer.Write (" style=\"");
+        writer.WriteStyleAttribute ("width", column.Width.ToString());
+        writer.Write ("\"");
+      }
+      writer.Write (">");
     }
     
     //  Design-mode and empty table
@@ -1903,7 +1943,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Th);
-      if (_selection == RowSelection.Multiple)
+      if (_selection == RowSelection.Multiple && ! IsWaiConformityRequired)
       {
         string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
         bool isChecked = (_selectorControlCheckedState[c_titleRowIndex] != null);
@@ -2093,16 +2133,13 @@ public class BocList:
     
     if (hasSortingButton)
     {
-      if (! IsEditDetailsModeActive)
+      if (! IsEditDetailsModeActive && _hasClientScript)
       {
         string argument = c_sortCommandPrefix + columnIndex.ToString();
-        if (_hasClientScript)
-        {
-          string postBackEvent = Page.GetPostBackClientEvent (this, argument);
-          postBackEvent += "; return false;";
-          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
-          writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-        }
+        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        postBackEvent += "; return false;";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.RenderBeginTag (HtmlTextWriterTag.A);
       }
       else
@@ -2334,6 +2371,13 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
     writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
     writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
+    string alternateText;
+    if (isSelectAllSelectorControl)
+      alternateText = GetResourceManager().GetString (ResourceIdentifier.SelectAllRowsAlternateText);
+    else
+     alternateText = GetResourceManager().GetString (ResourceIdentifier.SelectRowAlternateText);
+    writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
+
     writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
     if (isChecked)
       writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");    
@@ -2844,30 +2888,6 @@ public class BocList:
       _allPropertyColumns[i] = column;
     }
     return _allPropertyColumns;
-  }
-
-  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveFirstButton"/>. </summary>
-  private void MoveFirstButton_Click(object sender, ImageClickEventArgs e)
-  {
-    _move = MoveOption.First;
-  }
-
-  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveLastButton"/>. </summary>
-  private void MoveLastButton_Click(object sender, ImageClickEventArgs e)
-  {
-    _move = MoveOption.Last;
-  }
-  
-  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_movePreviousButton"/>. </summary>
-  private void MovePreviousButton_Click(object sender, ImageClickEventArgs e)
-  {
-    _move = MoveOption.Previous;
-  }
-  
-  /// <summary> Handles the <see cref="ImageButton.Click"/> event of the <see cref="_moveNextButton"/>. </summary>
-  private void MoveNextButton_Click(object sender, ImageClickEventArgs e)
-  {
-    _move = MoveOption.Next;
   }
 
   protected virtual void InitializeMenusItems()

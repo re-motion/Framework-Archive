@@ -493,6 +493,20 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _controlExistedInPreviousRequest = true;
   }
 
+  protected bool IsWaiDebuggingEnabled
+  {
+    get { return Rubicon.Web.Configuration.WebConfiguration.Current.WaiConfiguration.Debug; }
+  }
+
+  protected virtual Rubicon.Web.Configuration.WaiLevel GetWaiLevel()
+  {
+    return Rubicon.Web.Configuration.WebConfiguration.Current.WaiConfiguration.Level;
+  }
+
+  protected bool IsWaiConformityRequired
+  {
+    get { return GetWaiLevel() == Rubicon.Web.Configuration.WaiLevel.A; }
+  }
 
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.

@@ -28,6 +28,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";
   private const string c_defaultTextBoxWidth = "150pt";
+  private const int c_defaultColumns = 60;
 
   //  statics
 
@@ -206,7 +207,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       _textBox.ApplyStyle (_commonStyle);
       _textBoxStyle.ApplyStyle (_textBox);
       if (_textBox.TextMode == TextBoxMode.MultiLine && _textBox.Columns < 1)
-        _textBox.Columns = 1;
+        _textBox.Columns = c_defaultColumns;
     }
   }
 
@@ -270,9 +271,14 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (isTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultTextBoxWidth);
+        {
+          if (_textBoxStyle.TextMode != TextBoxMode.MultiLine || _textBoxStyle.Columns.IsNull)
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultTextBoxWidth);
+        }
         else
+        {
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+        }
       }
 
       _textBox.RenderControl (writer);
