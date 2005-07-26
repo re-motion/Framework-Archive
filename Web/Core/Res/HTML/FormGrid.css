@@ -7,8 +7,8 @@ table.formGridTable
 }
 
 /*  Style applied to the title cell  */
-td.formGridTitleCell,
 /*  Style applied to the sub title cell  */
+td.formGridTitleCell,
 td.formGridSubTitleCell
 {
 	font-weight: bold;
@@ -90,12 +90,6 @@ td.formGridTopDataRow
   border-bottom-width: 0px;
   border-left-width: 0px;
   border-color: White;
-}
-
-/*  Class for overriding the TableCell's general settings for input controls */
-.formGridControl
-{
-	font-size: 100%;
 }
 
 /*  Style applied to the validation messages, additiv to formGridValidationMessagesCell  */
