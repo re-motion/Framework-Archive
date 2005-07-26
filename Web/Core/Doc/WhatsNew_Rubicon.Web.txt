@@ -1,11 +1,16 @@
 1.2.57
 ======
-- WaiConfiguration
-  * Neuer Eintrag in der Rubicon.Web.Configuration.WebConfiguration Section.
+- Wai Configuration
+  * Neuer Eintrag in der Rubicon.Web.Configuration.WebConfiguration Section: wai
   * WaiConfiguration.Level definiert das gewüschte WAI-Level.
   * WaiConfiguration.Debug aktiviert Exceptions (WaiException) wenn eine Einstellung auf der Seite 
     nicht WAI-konform ist. Nur non-legacy Controls bieten diese Option.
 
+- Resources Configuration
+  * Neuer Eintrag in der Rubicon.Web.Configuration.WebConfiguration Section: resources
+  * ResourcesConfiguration.Root definiert den Root-Folder für alle durch den ResourceUrlResolver aufgelösten Resourcen.
+  * ResourcesConfiguration.RelativeToApplicationRoot spezifiziert ob die Resource-Root mit dem App-Dir geprefixed wird.
+  
 - WebButton
   * Default Class für den Web-Button von Button auf webButton geändert.
   * Ist WAI-Level A definiert, rendert der WebButton ein "input" Element vom Typ "button" 
@@ -16,6 +21,10 @@
     Diese Änderung wird von allen Projekten welche Style.css einbindnen automatisch übernommen.
     Wird 100% gewünscht, so kann die 1. Zeile von Style.css (@import url("fontSize080Quirks.css");) entfernt werden.
     Alternativ kann fontSize100Quirks.css im anschluss an Style.css eingebunden werden.
+  
+- ResourceUrlResolver
+  * Bugfix: Es konnten keine Resource-Pfade aufgelöst werden für Applikationen die direkt im Rootverzeichnis der
+    WebSite deployed sind.
   
 1.2.55
 ======
