@@ -15,6 +15,7 @@ public sealed class ResourceUrlResolver
 
   private static bool s_resolverInitialized = false;
   private static IResourceUrlResolver s_resolver = null;
+
   /// <summary>
   ///   Returns the physical URL of a resource item.
   ///   <seealso cref="IResourceUrlResolver"/>.
@@ -23,10 +24,14 @@ public sealed class ResourceUrlResolver
   ///   <para>
   ///     If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application 
   ///     object creates the URL string. 
-  ///     Otherwise, the URL /&lt;AppDir&gt;/res/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
-  ///     is used. (e.g., WebApplication/res/Rubicon.Web/Image/Help.gif).
+  ///     Otherwise, the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
+  ///     is used.
   ///   </para><para>
-  ///     During design time, the root section <c>/&lt;AppDir&gt;/res</c> is mapped to the environment variable
+  ///     The <b>resource root</b> is loaded from the application configuration,
+  ///     <see cref="WebConfiguration.Resources">WebConfiguration.Resources</see>, and defaults to 
+  ///     /&lt;AppDir&gt;/res, e.g. /WebApplication/res/Rubicon.Web/Image/Help.gif.
+  ///   </para><para>
+  ///     During design time, the <b>resource root</b> is mapped to the environment variable
   ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
   ///   </para>
   /// </remarks>
@@ -65,20 +70,37 @@ public sealed class ResourceUrlResolver
       string assemblyName = definingType.Assembly.FullName.Split(',')[0];
       string root;
       if (context == null && Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
-         root = GetTheDesignTimeRoot() + "/";
+        root = GetDesignTimeRoot();
       else 
-        root = HttpRuntime.AppDomainAppVirtualPath + "/res/";
+        root = GetRunTimeRoot();
+      if (! root.EndsWith ("/"))
+        root += "/";
       return root + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
     }
   }
 
-  private static string GetTheDesignTimeRoot()
+  private static string GetRunTimeRoot()
+  {
+    string root = Configuration.WebConfiguration.Current.Resources.Root;
+    root = StringUtility.NullToEmpty (root);
+    root = root.Trim();
+
+    if (Configuration.WebConfiguration.Current.Resources.RelativeToApplicationRoot)
+    {
+      if (! root.StartsWith ("/"))
+        root = "/" + root;
+      if (HttpRuntime.AppDomainAppVirtualPath != "/")
+        root = HttpRuntime.AppDomainAppVirtualPath + root;
+    }
+    return root;
+  }
+
+  private static string GetDesignTimeRoot()
   { 
-    string designTimeRoot = System.Environment.GetEnvironmentVariable (c_designTimeRootEnvironmentVaribaleName);
-    if (StringUtility.IsNullOrEmpty (designTimeRoot))
-      return c_designTimeRootDefault;
-    else
-      return designTimeRoot;
+    string root = System.Environment.GetEnvironmentVariable (c_designTimeRootEnvironmentVaribaleName);
+    if (StringUtility.IsNullOrEmpty (root))
+      root = c_designTimeRootDefault;
+    return root;
 
     //EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
     //if(environment != null)
