@@ -285,6 +285,22 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\fontSize080.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\fontSize080Quirks.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\fontSize100.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\fontSize100Quirks.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\FormGrid.css"
                     BuildAction = "Content"
                 />
