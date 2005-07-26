@@ -349,7 +349,7 @@ public class TextBoxStyle: SingleRowTextBoxStyle
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
           s_scriptFileKey, 
           scriptUrl, 
-          HtmlHeadAppender.Prioritiy.Library);
+          HtmlHeadAppender.Priority.Library);
       }
       textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
     }
