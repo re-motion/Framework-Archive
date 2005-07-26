@@ -11,6 +11,12 @@
   * Ist WAI-Level A definiert, rendert der WebButton ein "input" Element vom Typ "button" 
     anstelle des "button" Elements. Icons und HTML-Tags innerhalb des Buttons sind dann deaktiviert.
   
+- Styles
+  * Die Standardschriftgröße wurde auf die Basisgröße 80% des Browser-Defaults abgeändert.
+    Diese Änderung wird von allen Projekten welche Style.css einbindnen automatisch übernommen.
+    Wird 100% gewünscht, so kann die 1. Zeile von Style.css (@import url("fontSize080Quirks.css");) entfernt werden.
+    Alternativ kann fontSize100Quirks.css im anschluss an Style.css eingebunden werden.
+  
 1.2.55
 ======
 - WebTab
