@@ -708,15 +708,6 @@
         </para>
       </remarks>
   </CssClassTopDataRow>
-  <CssClassInputControl>
-    <remarks>
-      <para>
-        Class: <c>formGridControl</c>
-      </para><para>
-        Use this to refine the look of the controls relative to the parent element's style.
-      </para>
-    </remarks>
-  </CssClassInputControl>
   <CssClassValidationMessage>
     <remarks>
       Class: <c>formGridValidationMessage</c>
