@@ -120,7 +120,7 @@ public class DatePickerPage : Page
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl, HtmlHeadAppender.Priority.Library);
     }
 
     base.OnPreRender (e);
