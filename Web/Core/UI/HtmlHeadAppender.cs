@@ -27,7 +27,7 @@ namespace Rubicon.Web.UI
 /// </example>
 public class HtmlHeadAppender
 {
-  public enum Prioritiy
+  public enum Priority
   {
     Library = 0, // Absolute values to emphasize sorted nature of enum valies
     UserControl = 1,
@@ -36,7 +36,7 @@ public class HtmlHeadAppender
 
   /// <summary> ListDictionary&lt;string key, Control headElement&gt; </summary>
   private ListDictionary _registeredHeadElements = new ListDictionary();
-  /// <summary> SortedList&lt;HtmlHeadPrioritiy (int) priority + "." + string key, Control headElement&gt; </summary>
+  /// <summary> SortedList&lt;Priority (int) priority, ArrayList headElements &gt; </summary>
   private SortedList _sortedHeadElements = new SortedList();
   /// <summary> <see langword="true"/> if <see cref="EnsureAppended"/> has already executed. </summary>
   private bool _hasAppendExecuted = false;
@@ -44,6 +44,7 @@ public class HtmlHeadAppender
   /// <remarks>
   ///   Factory pattern. No public construction.
   /// </remarks>
+  /// <exclude/>
   private HtmlHeadAppender()
   {
   }
@@ -101,12 +102,16 @@ public class HtmlHeadAppender
     if (ControlHelper.IsDesignMode (htmlHeadContents))
       return;
 
-    IList headElements = _sortedHeadElements.GetValueList();
-    for (int i = 0; i < headElements.Count; i++)
+    IList headElementLists = _sortedHeadElements.GetValueList();
+    for (int idxLists = 0; idxLists < headElementLists.Count; idxLists++)
     {
-      Control headElement = (Control) headElements[i];
-      if (! htmlHeadContents.Controls.Contains (headElement))
-        htmlHeadContents.Controls.Add (headElement);
+      ArrayList headElements = (ArrayList) headElementLists[idxLists];
+      for (int idxElements = 0; idxElements < headElements.Count; idxElements++)
+      {
+        Control headElement = (Control) headElements[idxElements];
+        if (! htmlHeadContents.Controls.Contains (headElement))
+          htmlHeadContents.Controls.Add (headElement);
+      }
     }
   }
 
@@ -137,7 +142,7 @@ public class HtmlHeadAppender
       HtmlGenericControl headElement = new HtmlGenericControl ("title");
       headElement.EnableViewState = false;
       headElement.InnerText = title;
-      RegisterHeadElement ("title", headElement, Prioritiy.Page);
+      RegisterHeadElement ("title", headElement, Priority.Page);
     }
   }
 
@@ -155,7 +160,7 @@ public class HtmlHeadAppender
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterStylesheetLink (string key, string href, Prioritiy priority)
+  public void RegisterStylesheetLink (string key, string href, Priority priority)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("link");
     headElement.EnableViewState = false;
@@ -181,7 +186,7 @@ public class HtmlHeadAppender
   /// </exception>
   public void RegisterStylesheetLink (string key, string href)
   {
-    RegisterStylesheetLink (key, href, Prioritiy.Page);
+    RegisterStylesheetLink (key, href, Priority.Page);
   }
 
   /// <summary> Registers a javascript file. </summary>
@@ -198,7 +203,7 @@ public class HtmlHeadAppender
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterJavaScriptInclude (string key, string src, Prioritiy priority)
+  public void RegisterJavaScriptInclude (string key, string src, Priority priority)
   {
     HtmlGenericControl headElement = new HtmlGenericControl ("script");
     headElement.EnableViewState = false;
@@ -223,7 +228,7 @@ public class HtmlHeadAppender
   /// </exception>
   public void RegisterJavaScriptInclude (string key, string src)
   {
-    RegisterJavaScriptInclude (key, src, Prioritiy.Page);
+    RegisterJavaScriptInclude (key, src, Priority.Page);
   }
 
   /// <summary> Registers a <see cref="Control"/> containing an HTML head element. </summary>
@@ -240,15 +245,14 @@ public class HtmlHeadAppender
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
-  public void RegisterHeadElement (string key, Control headElement, Prioritiy priority)
+  public void RegisterHeadElement (string key, Control headElement, Priority priority)
   {
     if (_hasAppendExecuted)
       throw new HttpException ("RegisterHeadElement must not be called after EnsureAppended has executed.");
     if (! IsRegistered (key))
     {
       _registeredHeadElements.Add (key, headElement);
-      string priorityKey = ((int)priority).ToString() + "." + key;
-      _sortedHeadElements.Add (priorityKey, headElement);
+      GetHeadElements (priority).Add (headElement);
     }
   }
 
@@ -263,6 +267,20 @@ public class HtmlHeadAppender
   public bool IsRegistered (string key)
   {
     return _registeredHeadElements.Contains (key);
+  }
+
+  /// <summary> Gets the list of head elements for the specified <see cref="Priority"/>. </summary>
+  /// <param name="priority"> The <see cref="Priority"/> level to get the head elements for. </param>
+  /// <returns> An <see cref="ArrayList"/> of the head elements for the specified <see cref="Priority"/>. </returns>
+  protected ArrayList GetHeadElements (Priority priority)
+  {
+    ArrayList headElements = (ArrayList) _sortedHeadElements[priority];
+    if (headElements == null)
+    {
+      headElements = new ArrayList();
+      _sortedHeadElements[priority] = headElements;
+    }
+    return headElements;
   }
 }
 
