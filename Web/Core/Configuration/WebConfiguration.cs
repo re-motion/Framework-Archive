@@ -53,6 +53,8 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
+  WaiConfiguration _wai = new WaiConfiguration();
+  ResourceConfiguration _resources = new ResourceConfiguration();
 
   [XmlElement ("executionEngine")]
   public ExecutionEngineConfiguration ExecutionEngine
@@ -61,13 +63,18 @@ public class WebConfiguration: IConfigurationSectionHandler
     set { _executionEngine = value; }
   }
 
-  WaiConfiguration _waiConfiguration = new WaiConfiguration();
-
-  [XmlElement ("waiConfiguration")]
-  public WaiConfiguration WaiConfiguration
+  [XmlElement ("wai")]
+  public WaiConfiguration Wai
   {
-    get { return _waiConfiguration; }
-    set { _waiConfiguration = value; }
+    get { return _wai; }
+    set { _wai = value; }
+  }
+
+  [XmlElement ("resources")]
+  public ResourceConfiguration Resources
+  {
+    get { return _resources; }
+    set { _resources = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)
@@ -141,6 +148,37 @@ public class WaiConfiguration
   {
     get { return _debug; }
     set { _debug = value; }
+  }
+}
+
+[XmlType (Namespace = WebConfiguration.SchemaUri)]
+public class ResourceConfiguration
+{
+  private string _root = "res";
+  private bool _relativeToApplicationRoot = true;
+
+  /// <summary>
+  /// Specifies the root folder for all resources.
+  /// </summary>
+  [XmlAttribute ("root")]
+  public string Root
+  {
+    get { return _root; }
+    set { _root = value; }
+  }
+
+  /// <summary>
+  ///   Specifies whether the <see cref="Root"/> folder is relative to the application root.
+  /// </summary>
+  /// <value> 
+  ///   If <see langword="true"/> the <see cref="Root"/> is prepended with the application root,
+  ///   thereby transforming the resource path into an absolute path.
+  /// </value>
+  [XmlAttribute ("relativeToApplicationRoot")]
+  public bool RelativeToApplicationRoot
+  {
+    get { return _relativeToApplicationRoot; }
+    set { _relativeToApplicationRoot = value; }
   }
 }
 

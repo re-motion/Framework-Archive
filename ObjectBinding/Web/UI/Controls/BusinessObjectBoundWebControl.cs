@@ -495,12 +495,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   protected bool IsWaiDebuggingEnabled
   {
-    get { return Rubicon.Web.Configuration.WebConfiguration.Current.WaiConfiguration.Debug; }
+    get { return Rubicon.Web.Configuration.WebConfiguration.Current.Wai.Debug; }
   }
 
   protected virtual Rubicon.Web.Configuration.WaiLevel GetWaiLevel()
   {
-    return Rubicon.Web.Configuration.WebConfiguration.Current.WaiConfiguration.Level;
+    return Rubicon.Web.Configuration.WebConfiguration.Current.Wai.Level;
   }
 
   protected bool IsWaiConformityRequired

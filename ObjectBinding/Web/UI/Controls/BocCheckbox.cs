@@ -32,6 +32,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private const string c_scriptFileUrl = "BocCheckBox.js";
   private const string c_defaultControlWidth = "100pt";
 
+  private const string c_trueIcon = "CheckBoxTrue.gif";
+  private const string c_falseIcon = "CheckBoxFalse.gif";
+
   // types
 
   /// <summary> A list of control specific resources. </summary>
@@ -67,6 +70,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private bool _isActive = true;
 
   private HtmlInputCheckBox _checkBox;
+  private Image _image;
   private Label _label;
   private Style _labelStyle;
 
@@ -87,6 +91,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 	{
     _labelStyle = new Style();
     _checkBox = new HtmlInputCheckBox();
+    _image = new Image();
     _label = new Label();
 	}
 
@@ -98,6 +103,10 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     _checkBox.ID = ID + "_Boc_CheckBox";
     _checkBox.EnableViewState = false;
     Controls.Add (_checkBox);
+
+    _image.ID = ID + "_Boc_Image";
+    _image.EnableViewState = false;
+    Controls.Add (_image);
 
     _label.ID = ID + "_Boc_Label";
     _label.EnableViewState = false;
@@ -156,11 +165,20 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   {
     EnsureChildControls();
     base.OnPreRender (e);
-    
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
 
     bool isReadOnly = IsReadOnly;
+    if (isReadOnly)
+      PreRenderReadOnlyMode();
+    else
+      PreRenderEditMode();
+
+    _isActive = ! isReadOnly && Enabled;
+  }
+
+  private void PreRenderEditMode()
+  {
+    if (! IsDesignMode && Enabled)
+      Page.RegisterRequiresPostBack (this);
 
     string trueDescription = null;
     string falseDescription = null;
@@ -184,7 +202,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
     DetermineClientScriptLevel();
 
-    if (_hasClientScript && ! isReadOnly && IsDescriptionEnabled)
+    if (_hasClientScript && IsDescriptionEnabled)
     {
       if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
       {
@@ -234,7 +252,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
 
     _checkBox.Checked = _value;
-    _checkBox.Disabled = isReadOnly || ! Enabled;
+    _checkBox.Disabled = ! Enabled;
     
     if (IsDescriptionEnabled)
     {
@@ -243,8 +261,49 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       _label.Height = Unit.Empty;
       _label.ApplyStyle (_labelStyle);
     }
+  }
 
-    _isActive = ! isReadOnly && Enabled;
+  private void PreRenderReadOnlyMode()
+  {
+    string imageUrl = null;
+    if (_value)
+    {
+      imageUrl = 
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocCheckBox), ResourceType.Image, c_trueIcon);
+    }
+    else
+    {
+      imageUrl = 
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocCheckBox), ResourceType.Image, c_falseIcon);
+    }
+
+
+    string description;
+    if (_value)
+    {
+      if (StringUtility.IsNullOrEmpty (_trueDescription))
+        description = GetResourceManager().GetString (ResourceIdentifier.TrueDescription);
+      else
+        description = _trueDescription;
+    }
+    else
+    {
+      if (StringUtility.IsNullOrEmpty (_falseDescription))
+        description = GetResourceManager().GetString (ResourceIdentifier.FalseDescription);
+      else
+        description = _falseDescription;
+    }
+    _image.ImageUrl = imageUrl;
+    _image.AlternateText = description;
+    _image.Style["vertical-align"] = "middle";
+
+    if (IsDescriptionEnabled)
+    {
+      _label.Text = description;
+      _label.Width = Unit.Empty;
+      _label.Height = Unit.Empty;
+      _label.ApplyStyle (_labelStyle);
+    }
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -294,6 +353,20 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
       if (isLabelWidthEmpty && isControlWidthEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+    }
+  }
+
+  protected override void RenderContents(HtmlTextWriter writer)
+  {
+    if (IsReadOnly)
+    {
+      _image.RenderControl (writer);
+      _label.RenderControl (writer);
+    }
+    else
+    {
+      _checkBox.RenderControl (writer);
+      _label.RenderControl (writer);
     }
   }
 
@@ -566,11 +639,18 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     get { return _label; }
   }
 
-  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.HtmlInputCheckBox"/> used for the value. </summary>
+  /// <summary> Gets the <see cref="System.Web.UI.HtmlControls.HtmlInputCheckBox"/> used for the value in edit mode. </summary>
   [Browsable (false)]
   public HtmlInputCheckBox CheckBox
   {
     get { return _checkBox; }
+  }
+
+  /// <summary> Gets the <see cref="System.Web.UI.WebControls.Image"/> used for the value in read-only mode. </summary>
+  [Browsable (false)]
+  public Image Image
+  {
+    get { return _image; }
   }
 
   /// <summary> Gets a flag that determines whether changing the checked state causes an automatic postback.</summary>
