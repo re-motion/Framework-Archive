@@ -234,7 +234,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
           s_scriptFileKey, 
           scriptUrl, 
-          HtmlHeadAppender.Prioritiy.Library);
+          HtmlHeadAppender.Priority.Library);
       }
 
       if (Enabled)
@@ -350,6 +350,14 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       if (isLabelWidthEmpty && isControlWidthEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
     }
+  }
+
+  protected override void Render(HtmlTextWriter writer)
+  {
+    if (IsWaiConformityRequired)
+      throw new Rubicon.Web.UI.WaiException (1, this);
+
+    base.Render (writer);
   }
 
   /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>

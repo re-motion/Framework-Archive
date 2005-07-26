@@ -193,7 +193,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
           s_scriptFileKey, 
           scriptUrl, 
-          HtmlHeadAppender.Prioritiy.Library);
+          HtmlHeadAppender.Priority.Library);
       }
 
       if (Enabled)

@@ -1020,7 +1020,7 @@ public class BocList:
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
           s_scriptFileKey, 
           scriptUrl, 
-          HtmlHeadAppender.Prioritiy.Library);
+          HtmlHeadAppender.Priority.Library);
       }
 
       //  Startup script initalizing the global values of the script.
@@ -1040,7 +1040,7 @@ public class BocList:
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);

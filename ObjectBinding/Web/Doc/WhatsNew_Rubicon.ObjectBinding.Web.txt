@@ -4,6 +4,7 @@
   * Bugfix: Wenn der BocReferenceValue auf einem nicht angezeigten Tabreiter ist und required ist aber sein 
     aktueller Wert null ist, konnte der Validator keinen Fehler feststellen.
     Aufgetreten mit 1.1.46
+  * GetDisplayName(): virtuelle Methode um den verwendeten DisplayName zu verändern.
     
 - BocTextBox, BoxReferenceValue
   * Css-Klassen bocTextValueReadOnly bzw bocReferenceValueReadOnly zu readOnly umbenannt.
@@ -13,6 +14,11 @@
   * Werten die Rubicon.Web.Configuration.WebConfiguration.WaiConfiguration Werte aus und werfen im WAI-Debug Modus
     eine entsprechende WaiException wenn die Einstellungen nicht WAI-konform sind.
   
+- BocList
+  * Zusätzliche Resource Einträge
+    Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText
+    Rubicon.ObjectBinding.Web.Controls.BocList.SelectRowAlternateText
+
 1.2.56
 ======
 - BocCheckBox

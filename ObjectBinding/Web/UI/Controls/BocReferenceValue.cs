@@ -426,7 +426,7 @@ public class BocReferenceValue:
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (
         s_scriptFileKey, 
         scriptUrl, 
-        HtmlHeadAppender.Prioritiy.Library);
+        HtmlHeadAppender.Priority.Library);
     }
 
     if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
@@ -439,7 +439,7 @@ public class BocReferenceValue:
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
     if (!IsDesignMode)
@@ -922,7 +922,7 @@ public class BocReferenceValue:
       for (int i = 0; i < businessObjects.Count; i++)
       {
         IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) businessObjects[i];
-        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+        ListItem item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
         _dropDownList.Items.Add (item);
       }
     }
@@ -945,7 +945,7 @@ public class BocReferenceValue:
   {
     string text;
     if (Value != null)
-      text = HttpUtility.HtmlEncode (Value.DisplayName);
+      text = HttpUtility.HtmlEncode (GetDisplayName (Value));
     else
       text = String.Empty;
     if (StringUtility.IsNullOrEmpty (text))
@@ -1298,6 +1298,25 @@ public class BocReferenceValue:
   {
     if (businessObjects.Length > 0)
       Value = (IBusinessObjectWithIdentity) businessObjects[0];
+  }
+
+  /// <summary>
+  ///   Returns the string to be used in the drop down list for the specified <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
+  /// <param name="obj"> The <see cref="IBusinessObjectWithIdentity"/> to get the display name for. </param>
+  /// <returns> The display name for the specified <see cref="IBusinessObjectWithIdentity"/>. </returns>
+  /// <remarks> 
+  ///   <para>
+  ///     Override this method to change the way the display name is composed. 
+  ///   </para><para>
+  ///     The default implementation used the <see cref="IBusinessObjectWithIdentity.DisplayName"/> property to get
+  ///     the display name.
+  ///   </para>
+  /// </remarks>
+  protected virtual string GetDisplayName (IBusinessObjectWithIdentity obj)
+  {
+    return obj.DisplayName;
+
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>

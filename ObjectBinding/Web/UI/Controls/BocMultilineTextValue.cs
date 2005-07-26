@@ -200,6 +200,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
+    string backUpStyleWidth = Style["width"];
+    if (! StringUtility.IsNullOrEmpty (Style["width"]))
+      Style["width"] = null;
+    Unit backUpWidth = Width; // base.Width and base.ControlStyle.Width
+    if (! Width.IsEmpty)
+      Width = Unit.Empty;
+
     bool isReadOnly = IsReadOnly;
     bool isDisabled = ! Enabled;
 
@@ -236,6 +243,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
         cssClass += " " + CssClassDisabled;
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
+
+    if (! StringUtility.IsNullOrEmpty (backUpStyleWidth))
+      Style["width"] = backUpStyleWidth;
+    if (! backUpWidth.IsEmpty)
+      Width = backUpWidth;
+
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
   }
 
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
@@ -263,7 +277,10 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
         }
         else
         {
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+          if (! Width.IsEmpty)
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+          else
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["Width"]);
         }
       }
 

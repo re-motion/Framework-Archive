@@ -259,6 +259,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
+    string backUpStyleWidth = Style["width"];
+    if (! StringUtility.IsNullOrEmpty (Style["width"]))
+      Style["width"] = null;
+    Unit backUpWidth = Width; // base.Width and base.ControlStyle.Width
+    if (! Width.IsEmpty)
+      Width = Unit.Empty;
+
     bool isReadOnly = IsReadOnly;
     bool isDisabled = ! Enabled;
 
@@ -295,6 +302,14 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         cssClass += " " + CssClassDisabled;
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
+
+    if (! StringUtility.IsNullOrEmpty (backUpStyleWidth))
+      Style["width"] = backUpStyleWidth;
+    if (! backUpWidth.IsEmpty)
+      Width = backUpWidth;
+
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+
     writer.AddStyleAttribute ("display", "inline");
   }
 
@@ -319,9 +334,16 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (isDateTextBoxWidthEmpty && isTimeTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
+        {
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultControlWidth);
+        }
         else
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+        {
+          if (! Width.IsEmpty)
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+          else
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["Width"]);
+        }
       }
 
       writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
@@ -601,7 +623,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
           s_datePickerScriptFileKey, 
           scriptUrl, 
-          HtmlHeadAppender.Prioritiy.Library);
+          HtmlHeadAppender.Priority.Library);
       }
     }
 
