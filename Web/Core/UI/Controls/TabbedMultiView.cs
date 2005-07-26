@@ -293,7 +293,7 @@ public class TabbedMultiView: WebControl, IControl
     {
       styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
     if (Views.Count == 0)

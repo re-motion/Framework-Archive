@@ -331,7 +331,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     {
       styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (WebTreeView), ResourceType.Html, "TreeView.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
     EnsureTreeNodesCreated();

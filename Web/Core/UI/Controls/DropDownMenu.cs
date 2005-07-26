@@ -130,7 +130,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     {
       styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
     key = typeof (DropDownMenu).FullName + "_Script";
@@ -138,7 +138,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.js");
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url, HtmlHeadAppender.Prioritiy.Library);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url, HtmlHeadAppender.Priority.Library);
     }
 
     //  Startup script initalizing the global values of the script.
