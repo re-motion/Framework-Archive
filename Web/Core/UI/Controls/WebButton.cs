@@ -242,7 +242,7 @@ public class WebButton :
 
   protected bool IsWaiConformityRequired
   {
-    get { return Configuration.WebConfiguration.Current.WaiConfiguration.Level == Configuration.WaiLevel.A; }
+    get { return Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A; }
   }
 
   private string EnsureEndWithSemiColon (string value)

@@ -316,8 +316,8 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
    
-    if (   Configuration.WebConfiguration.Current.WaiConfiguration.Level == Configuration.WaiLevel.A
-        && Configuration.WebConfiguration.Current.WaiConfiguration.Debug)
+    if (   Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A
+        && Configuration.WebConfiguration.Current.Wai.Debug)
     {
       throw new WaiException (1, this);
     }
