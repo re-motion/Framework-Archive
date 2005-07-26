@@ -1,26 +1,60 @@
-body,td
+/*  Changes the font-size to 80%. 
+    Font-size is compatible with all browsers for pages displayed in quirks mode. (The default for ASP.NET projekts) */
+@import url("fontSize080Quirks.css");
+
+body
 {
   overflow: auto;
 }
 
-/*  TD does not inherit from body */
-body, td
+body, input, select, textarea
 {
+  font-family: 'Arial', 'Helvetica', sans-serif;
 }
 
-body, input, textarea
+/*  The headings do not automatically scale with the body's font-size. Now they do. 
+    The font-size relation between headings and body is maintained with the used percentages. */
+h1
 {
-  font-family: 'Arial' , 'Helvetica', sans-serif;
+ font-size: 200%;
 }
 
+h2
+{
+ font-size: 150%;
+}
+
+h3
+{
+ font-size: 120%;
+}
+
+h4
+{
+ font-size: 100%;
+}
+
+h5
+{
+ font-size: 80%;
+}
+
+h6
+{
+ font-size: 60%;
+}
+
+/*  All anchor elements on the page. */
 a
 {
   text-decoration: none;
   color: Blue;
 }
 
+/*  All elements sporting the class "disabled". */
 .disabled,
 .disabled input,
+.disabled select,
 .disabled textarea,
 .disabled label
 {
