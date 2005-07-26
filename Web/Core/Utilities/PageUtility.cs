@@ -34,7 +34,7 @@ public class PageUtility
     UseDefault
   };
 
-	public PageUtility()
+	private PageUtility()
 	{
 	}
 
