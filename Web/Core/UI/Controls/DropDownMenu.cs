@@ -169,11 +169,22 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       else
         menuItems = _menuItems.ToArray();
       
+      string category = null;
+      bool isCategoryVisible = false;
       for (int i = 0; i < menuItems.Length; i++)
       {
         WebMenuItem menuItem = menuItems[i];
+        if (_enableGrouping && category != menuItem.Category)
+        {
+          category = menuItem.Category;
+          isCategoryVisible = false;
+        }
         if (! menuItem.IsVisible)
           continue;
+        if (_enableGrouping && menuItem.IsSeparator && ! isCategoryVisible)
+          continue;
+        if (_enableGrouping)
+          isCategoryVisible = true;
         if (isFirstItem)
           isFirstItem = false;
         else

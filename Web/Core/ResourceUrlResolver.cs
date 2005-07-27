@@ -82,8 +82,6 @@ public sealed class ResourceUrlResolver
   private static string GetRunTimeRoot()
   {
     string root = Configuration.WebConfiguration.Current.Resources.Root;
-    root = StringUtility.NullToEmpty (root);
-    root = root.Trim();
 
     if (Configuration.WebConfiguration.Current.Resources.RelativeToApplicationRoot)
     {
