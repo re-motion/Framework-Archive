@@ -79,7 +79,7 @@ public class WebConfiguration: IConfigurationSectionHandler
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)
   {
-    // instead of the CooNetConfiguration instance, the xml node is returned. this prevents version 
+    // instead of the WebConfiguration instance, the xml node is returned. this prevents version 
     // conflicts when multiple versions of this assembly are loaded within one AppDomain.
     return section;
   }
@@ -164,7 +164,7 @@ public class ResourceConfiguration
   public string Root
   {
     get { return _root; }
-    set { _root = value; }
+    set { _root = Rubicon.Utilities.StringUtility.NullToEmpty(value).TrimEnd ('/'); }
   }
 
   /// <summary>

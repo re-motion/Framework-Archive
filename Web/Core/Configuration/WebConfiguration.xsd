@@ -4,30 +4,30 @@
 
   <xs:element name="rubicon.web">
     <xs:complexType>
-      <xs:sequence>
+      <xs:all>
       
-        <xs:element name="executionEngine">
+        <xs:element name="executionEngine" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="functionTimeout" type="xs:int" default="20" />            
             <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
           </xs:complexType>
         </xs:element>
                
-        <xs:element name="wai" minOccurs="0" >
+        <xs:element name="wai" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="level" type="tns:WaiLevel" default="Undefined"/>            
             <xs:attribute name="debug" type="xs:boolean" default="false" />
           </xs:complexType>
         </xs:element>
 
-        <xs:element name="resources" minOccurs="0" >
+        <xs:element name="resources" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="root" type="xs:string" default="res" />            
             <xs:attribute name="relativeToApplicationRoot" type="xs:boolean" default="true" />
           </xs:complexType>
         </xs:element>
 
-      </xs:sequence>
+      </xs:all>
       
     </xs:complexType>
   </xs:element>
