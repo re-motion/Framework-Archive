@@ -165,7 +165,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
     {
       if (_showDescription == NaBooleanEnum.True)
-        throw new WaiException (2, this, "ShowDescription");
+        throw new WaiException (1, this, "ShowDescription");
     }
   }
 
