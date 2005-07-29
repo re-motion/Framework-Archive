@@ -9,8 +9,24 @@
         as well as <see langword="null"/>. 
       </para><para>
         The control's <see cref="Property"/> supports the <see cref="IBusinessObjectBooleanProperty"/>.
-      </para>
+      </para>      
       
+      <h4 class="dtH4">Standards Compliancy</h4>
+      <list type="definition">
+        <item>
+            <term>HTML 4.01</term>
+            <description>valid</description>
+        </item>
+        <item>
+            <term>XHTML 1.0</term>
+            <description>valid</description>
+        </item>
+        <item>
+            <term>WAI</term>
+            <description>not valid</description>
+        </item>        
+      </list>
+
       <h4 class="dtH4">Usage Notes</h4>      
       <para>
         Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
