@@ -10,6 +10,40 @@
         The control's <see cref="Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
       </para>
       
+      <h4 class="dtH4">Standards Compliancy</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Compliancy Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>WAI</term>
+          <description>
+            <para> 
+              Level A valid if advanced features are turned off. This can be enforced by the 
+              <see cref="Rubicon.Web.Configuration.WebConfiguration.Wai"/> configuration entry.
+            </para>
+            <para> WAI priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
+            <list type="bullet">
+              <item> An event or a WXE command is defined. </item>
+              <item> The drop down menu. </item>
+            </list>
+            <para> WAI priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
+            <para> 
+              WAI priority 2 checkpoint 13.1 is not met by the command. The value is used to decribe the link's target.
+            </para>
+          </description>
+        </item>        
+      </list>
+
       <h4 class="dtH4">Usage Notes</h4>      
       <para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
