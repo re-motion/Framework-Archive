@@ -23,21 +23,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 {
 
 /// <summary> Object bound tree view. </summary>
-/// <remarks>
-///   <para>
-///     Override <see cref="GetPropertyNodes"/> to set the properties for which to display business object child nodes.
-///     Otherwise <see cref="Property"/> is used for every level in the tree.
-///   </para><para>
-///     Call <see cref="InvalidateTreeNodes"/> to force a refresh of the tree view in case the cached nodes
-///     no longer represent he current object model.
-///   </para>
-/// </remarks>
-/// <exception cref="InvalidOperationException">
-///   Thrown during <see cref="WebTreeView"/>'s call to the <c>EvaluateWebTreeNode</c> delegate 
-///   if <see cref="EnableTreeNodeCaching"/> is <see langword="true"/> and a tree node's 
-///   <see cref="IBusinessObjectWithIdentity"/> or <see cref="IBusinessObjectReferenceProperty"/> could not restored
-///   from the underlying object model.
-/// </exception>
+/// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/Class/*' />
 [DefaultEvent ("Click")]
 public class BocTreeView: BusinessObjectBoundWebControl
 {
@@ -142,7 +128,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (IsWaiConformityRequired && IsWaiDebuggingEnabled)
+    if (IsWaiLevelAConformityRequired && IsWaiDebuggingEnabled)
       throw new Rubicon.Web.UI.WaiException (1, this);
 
     base.Render (writer);

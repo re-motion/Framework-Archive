@@ -398,7 +398,7 @@ public class BocReferenceValue:
 
   protected virtual void EvaluateWaiConformity()
   {
-    if (IsWaiDebuggingEnabled && GetWaiLevel() == Rubicon.Web.Configuration.WaiLevel.A)
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
     {
       if (_showOptionsMenu)
         throw new WaiException (1, this, "ShowOptionsMenu");
@@ -509,7 +509,7 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiConformityRequired)
+    if (IsWaiLevelAConformityRequired)
       EvaluateWaiConformity();
 
     if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
@@ -737,7 +737,7 @@ public class BocReferenceValue:
 
   private bool IsCommandEnabled (bool isReadOnly)
   {
-    if (IsWaiConformityRequired)
+    if (IsWaiLevelAConformityRequired)
       return false;
 
     bool isCommandEnabled = false;
@@ -1078,7 +1078,7 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   private bool HasOptionsMenu
   {
-    get { return ! IsWaiConformityRequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
+    get { return ! IsWaiLevelAConformityRequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>

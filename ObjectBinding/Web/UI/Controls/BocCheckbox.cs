@@ -160,6 +160,15 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       eventHandler (this, EventArgs.Empty);
   }
 
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
+    {
+      if (_showDescription == NaBooleanEnum.True)
+        throw new WaiException (2, this, "ShowDescription");
+    }
+  }
+
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
@@ -358,6 +367,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
+    if (IsWaiLevelAConformityRequired)
+      EvaluateWaiConformity ();
+
     if (IsReadOnly)
     {
       _image.RenderControl (writer);
@@ -690,7 +702,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   protected bool IsDescriptionEnabled
   {
-    get { return _showDescription == NaBooleanEnum.True;}
+    get { return ! IsWaiLevelAConformityRequired && _showDescription == NaBooleanEnum.True;}
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>

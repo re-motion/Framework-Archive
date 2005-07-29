@@ -354,7 +354,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (IsWaiConformityRequired && IsWaiDebuggingEnabled)
+    if (IsWaiLevelAConformityRequired && IsWaiDebuggingEnabled)
       throw new Rubicon.Web.UI.WaiException (1, this);
 
     base.Render (writer);

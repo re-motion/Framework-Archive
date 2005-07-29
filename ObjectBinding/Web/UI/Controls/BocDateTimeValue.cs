@@ -228,6 +228,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       eventHandler (this, EventArgs.Empty);
   }
 
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWaiDebuggingEnabled && IsWaiLevelAAConformityRequired)
+    {
+      if (ActualValueType == BocDateTimeValueType.DateTime)
+        throw new WaiException (2, this, "ActualValueType");
+    }
+  }
+
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
@@ -316,6 +325,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
+    if (IsWaiLevelAConformityRequired)
+      EvaluateWaiConformity ();
+
     if (IsReadOnly)
     {
       _label.RenderControl (writer);

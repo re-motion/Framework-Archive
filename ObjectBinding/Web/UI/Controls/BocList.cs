@@ -968,13 +968,13 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-    if (IsWaiDebuggingEnabled && GetWaiLevel() == Rubicon.Web.Configuration.WaiLevel.A)
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
     {
-      if (_showOptionsMenu)
+      if (ShowOptionsMenu)
         throw new WaiException (1, this, "ShowOptionsMenu");
-      if (_showListMenu)
+      if (ShowListMenu)
         throw new WaiException (1, this, "ShowListMenu");
-      if (_showAvailableViewsList)
+      if (ShowAvailableViewsList)
         throw new WaiException (1, this, "ShowAvailableViewsList");
       bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
       if (isPagingEnabled)
@@ -1082,7 +1082,7 @@ public class BocList:
 
   protected void CalculateCurrentPage()
   {
-    if (_pageSize.IsNull || _pageSize.Value == 0 || Value == null)
+    if (!IsPagingEnabled || Value == null)
     {
       _pageCount = 1;
     }
@@ -1143,12 +1143,11 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
-    if (IsWaiConformityRequired)
+    if (IsWaiLevelAConformityRequired)
       EvaluateWaiConformity (renderColumns);
 
     if (IsDesignMode)
@@ -1336,6 +1335,9 @@ public class BocList:
   {
     get
     {
+      if (IsWaiLevelAConformityRequired)
+        return false;
+
       bool showAvailableViewsList =    _showAvailableViewsList 
                                     && (   _availableViews.Count > 1
                                         || IsDesignMode);
@@ -1351,12 +1353,15 @@ public class BocList:
   {
     get
     {
-      bool showOptionsMenu =   _showOptionsMenu 
+      if (IsWaiLevelAConformityRequired)
+        return false;
+
+      bool showOptionsMenu =   ShowOptionsMenu 
                             && (   OptionsMenuItems.Count > 0
                                 || IsDesignMode);
       bool isReadOnly = IsReadOnly;
-      bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
-                             || ! isReadOnly && _showMenuForEmptyListEditMode;
+      bool showForEmptyList =   isReadOnly && ShowMenuForEmptyListReadOnlyMode
+                             || ! isReadOnly && ShowMenuForEmptyListEditMode;
       return   showOptionsMenu
             && (! IsEmptyList || showForEmptyList);
     }
@@ -1366,12 +1371,15 @@ public class BocList:
   {
     get
     {
-      bool showListMenu =   _showListMenu 
+      if (IsWaiLevelAConformityRequired)
+        return false;
+
+      bool showListMenu =   ShowListMenu 
                          && (   ListMenuItems.Count > 0
                              || IsDesignMode);
       bool isReadOnly = IsReadOnly;
-      bool showForEmptyList =   isReadOnly && _showMenuForEmptyListReadOnlyMode
-                             || ! isReadOnly && _showMenuForEmptyListEditMode;
+      bool showForEmptyList =   isReadOnly && ShowMenuForEmptyListReadOnlyMode
+                             || ! isReadOnly && ShowMenuForEmptyListEditMode;
       return   showListMenu
             && (! IsEmptyList || showForEmptyList);
     }
@@ -1385,11 +1393,26 @@ public class BocList:
   {
     bool isReadOnly = IsReadOnly;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
-    if (   editDetailsColumn != null
-        && editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
-        && isReadOnly)
+    BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
+    if (commandColumn != null && commandColumn.Command != null)
     {
-      return false;
+      if (   IsWaiLevelAConformityRequired
+          && (   commandColumn.Command.Type == CommandType.Event
+              || commandColumn.Command.Type == CommandType.WxeFunction))
+      {
+        return false;
+      }
+    }
+
+    if (editDetailsColumn != null)
+    {
+      if (IsWaiLevelAConformityRequired)
+        return false;
+      if (   editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
+          && isReadOnly)
+      {
+        return false;
+      }
     }
     return true;
   }
@@ -1681,7 +1704,7 @@ public class BocList:
       int totalRowCount = (Value != null) ? Value.Count : 0;
       int rowCountWithOffset = totalRowCount;
 
-      if (!_pageSize.IsNull && _pageSize.Value != 0 && Value != null)
+      if (IsPagingEnabled && Value != null)
       {      
         firstRow = _currentPage * _pageSize.Value;
         rowCountWithOffset = firstRow + _pageSize.Value;
@@ -1725,7 +1748,7 @@ public class BocList:
     {
       //  Render the init script for the client side selection handling
       int count = 0;
-      if (! _pageSize.IsNull && _pageSize.Value != 0)
+      if (IsPagingEnabled)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
@@ -1943,7 +1966,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Th);
-      if (_selection == RowSelection.Multiple && ! IsWaiConformityRequired)
+      if (_selection == RowSelection.Multiple)
       {
         string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
         bool isChecked = (_selectorControlCheckedState[c_titleRowIndex] != null);
@@ -1958,7 +1981,7 @@ public class BocList:
 
     HybridDictionary sortingDirections = new HybridDictionary();
     ArrayList sortingOrder = new ArrayList();
-    if (EnableSorting)
+    if (IsClientSideSortingEnabled || HasSortingKeys)
     {
       for (int i = 0; i < _sortingOrder.Count; i++)
       {
@@ -1984,9 +2007,9 @@ public class BocList:
       writer.RenderBeginTag (HtmlTextWriterTag.Th);
 
       RenderTitleCellMarkers (writer, column, idxColumns);
-      bool hasSortingButton = RenderBeginTagTitleCellSortCommand (writer, column, idxColumns);
+      RenderBeginTagTitleCellSortCommand (writer, column, idxColumns);
       RenderTitleCellText (writer, column);
-      if (hasSortingButton)
+      if (IsClientSideSortingEnabled || HasSortingKeys)
         RenderTitleCellSortingButton (writer, idxColumns, sortingDirections, sortingOrder);
       RenderEndTagTitleCellSortCommand (writer);
       
@@ -2121,17 +2144,17 @@ public class BocList:
     }
   }
 
-  private bool RenderBeginTagTitleCellSortCommand (
+  private void RenderBeginTagTitleCellSortCommand (
       HtmlTextWriter writer, 
       BocColumnDefinition column,
       int columnIndex)
   {
-    bool hasSortingButton =   EnableSorting 
+    bool hasSortingCommand =   IsClientSideSortingEnabled 
                            && (   column is BocValueColumnDefinition
                                || (   column is BocCustomColumnDefinition 
                                    && ((BocCustomColumnDefinition) column).IsSortable));
     
-    if (hasSortingButton)
+    if (hasSortingCommand)
     {
       if (! IsEditDetailsModeActive && _hasClientScript)
       {
@@ -2151,7 +2174,6 @@ public class BocList:
     {
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
     }
-    return hasSortingButton;
   }
 
   private void RenderEndTagTitleCellSortCommand (HtmlTextWriter writer)
@@ -2386,7 +2408,7 @@ public class BocList:
     if (isSelectAllSelectorControl)
     {
       int count = 0;
-      if (! _pageSize.IsNull && _pageSize.Value != 0)
+      if (IsPagingEnabled)
         count = _pageSize.Value;
       else if (Value != null)
         count = Value.Count;
@@ -2671,7 +2693,10 @@ public class BocList:
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
-      isCommandEnabled = true;
+      if (IsWaiLevelAConformityRequired && command.Type != CommandType.Href)
+        isCommandEnabled = false;
+      else
+        isCommandEnabled = true;
     }
 
     if (isCommandEnabled)
@@ -3046,9 +3071,6 @@ public class BocList:
   {
     get 
     { 
-      if (! EnableSorting)
-        return false;
-
       for (int i = 0; i < _sortingOrder.Count; i++)
       {
         BocListSortingOrderEntry sortingOrderEntry = (BocListSortingOrderEntry) _sortingOrder[i];
@@ -3099,12 +3121,12 @@ public class BocList:
   ///   untouched.
   /// </summary>
   /// <returns> 
-  ///   An <see cref="IBusinessObject"/> array sorted by the sorting keys or <see langword="null"/> if sorting is
-  ///   disabled.
+  ///   An <see cref="IBusinessObject"/> array sorted by the sorting keys or <see langword="null"/> if the list is
+  ///   not sorted.
   /// </returns>
   public IBusinessObject[] GetSortedRows()
   {
-    if (! EnableSorting)
+    if (! HasSortingKeys)
       return null;
 
     Pair[] sortedRows = GetIndexedRows (true);
@@ -3138,12 +3160,11 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Removes the columns provided by <see cref="SelectedView"/> from the 
-  ///   <see cref="_sortingOrder"/> list.
+  ///   Removes the columns provided by <see cref="SelectedView"/> from the <see cref="_sortingOrder"/> list.
   /// </summary>
   private void RemoveDynamicColumnsFromSortingOrder()
   {
-    if (EnableSorting)
+    if (HasSortingKeys)
     {
       int fixedColumnCount = _fixedColumns.Count;
       if (_showAllProperties)
@@ -4499,8 +4520,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets or sets a flag that determines whether to to display a sorting button 
-  ///   in front of each <see cref="BocValueColumnDefinition"/>'s header.
+  ///   Gets or sets a flag that determines whether to to enable cleint side sorting.
   /// </summary>
   /// <value> <see langword="true"/> to enable the sorting buttons. </value>
   [Category ("Behavior")]
@@ -4510,6 +4530,11 @@ public class BocList:
   {
     get { return _enableSorting; }
     set { _enableSorting = value; }
+  }
+
+  protected bool IsClientSideSortingEnabled
+  {
+    get { return ! IsWaiLevelAConformityRequired && EnableSorting; }
   }
 
   /// <summary>
@@ -4625,6 +4650,11 @@ public class BocList:
       else
         _pageSize = value; 
     }
+  }
+
+  protected bool IsPagingEnabled
+  {
+    get { return !IsWaiLevelAConformityRequired && !_pageSize.IsNull && _pageSize.Value != 0; }
   }
 
   /// <summary>

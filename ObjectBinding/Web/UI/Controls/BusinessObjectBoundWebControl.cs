@@ -503,9 +503,19 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return Rubicon.Web.Configuration.WebConfiguration.Current.Wai.Level;
   }
 
-  protected bool IsWaiConformityRequired
+  protected bool IsWaiLevelAConformityRequired
   {
-    get { return GetWaiLevel() == Rubicon.Web.Configuration.WaiLevel.A; }
+    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.A) == Rubicon.Web.Configuration.WaiLevel.A; }
+  }
+
+  protected bool IsWaiLevelAAConformityRequired
+  {
+    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.AA) == Rubicon.Web.Configuration.WaiLevel.AA; }
+  }
+
+  protected bool IsWaiLevelAAAConformityRequired
+  {
+    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.AA) == Rubicon.Web.Configuration.WaiLevel.AAA; }
   }
 
 //  /// <summary>
