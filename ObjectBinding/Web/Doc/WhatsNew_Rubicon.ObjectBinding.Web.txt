@@ -1,3 +1,13 @@
+1.2.59
+======
+- BocList
+  * Die Sortiericons (Up/Down) werden jetzt auch angezeigt, wenn interaktives Sortieren (EnableSorting) disabled ist, 
+    aber programmitisch eine Sortierreihenfolge vorgegeben wird.
+  
+- BOCs allgemein:
+  * Werten die Rubicon.Web.Configuration.WebConfiguration.WaiConfiguration Werte aus und deaktivieren 
+    nicht-WAI konforme Features.
+
 1.2.57
 ======
 - BocReferenceValue
