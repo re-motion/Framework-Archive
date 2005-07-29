@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<BocTreeView>
+  <Class>
+    <remarks>
+    
+      <para>
+        Override <see cref="GetPropertyNodes"/> to set the properties for which to display business object child nodes.
+        Otherwise <see cref="Property"/> is used for every level in the tree.
+      </para><para>
+        Call <see cref="InvalidateTreeNodes"/> to force a refresh of the tree view in case the cached nodes
+        no longer represent he current object model.
+      </para>
+      
+      <h4 class="dtH4">Standards Compliancy</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Compliancy Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>Valid.</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>Valid.</description>
+        </item>
+        <item>
+          <term>WAI</term>
+          <description>Not valid.</description>
+        </item>        
+      </list>
+    </remarks>
+    <exception cref="InvalidOperationException">
+      Thrown during <see cref="WebTreeView"/>'s call to the <c>EvaluateWebTreeNode</c> delegate 
+      if <see cref="EnableTreeNodeCaching"/> is <see langword="true"/> and a tree node's 
+      <see cref="IBusinessObjectWithIdentity"/> or <see cref="IBusinessObjectReferenceProperty"/> could not restored
+      from the underlying object model.
+    </exception>
+  </Class>
+</BocTreeView>
+
