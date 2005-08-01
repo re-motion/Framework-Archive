@@ -239,7 +239,6 @@ public class WebTab: IControlItem
 
   public virtual void RenderContents (HtmlTextWriter writer, string postBackEvent)
   {
-
     if (IsSeparator)
     {
       writer.Write ("&nbsp;");
