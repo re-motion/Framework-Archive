@@ -13,6 +13,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <include file='doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
 public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 {
   private static readonly object s_eventCommandClickEvent = new object();
@@ -262,11 +263,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (   Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A
-        && Configuration.WebConfiguration.Current.Wai.Debug)
-    {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
       throw new WaiException (1, this);
-    }
 
     //  Menu-Div filling the control's div is required to apply internal css attributes
     //  for position, width and height. This allows the Head and th popup-div to align themselves

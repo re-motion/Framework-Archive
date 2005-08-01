@@ -14,6 +14,7 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <include file='doc\include\UI\Controls\TabbedMultiView.xml' path='TabbedMultiView/Class/*' />
 [ToolboxData("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\" cssclass=\"tabbedMultiView\"></{0}:TabbedMultiView>")]
 [DefaultEvent ("ActiveViewChanged")]
 public class TabbedMultiView: WebControl, IControl
@@ -316,11 +317,8 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
    
-    if (   Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A
-        && Configuration.WebConfiguration.Current.Wai.Debug)
-    {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
       throw new WaiException (1, this);
-    }
 
     RenderTopControls (writer);
     RenderTabStrip (writer);

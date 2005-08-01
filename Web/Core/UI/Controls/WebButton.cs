@@ -4,15 +4,13 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
-/// <remarks> 
-///   When using Internet Explorer with disabled client script, the click event of last <b>WebButton</b> on the page 
-///   is fired. 
-/// </remarks>
+/// <include file='doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
     Button
@@ -27,6 +25,8 @@ public class WebButton :
 #if ! net20
   private bool _useSubmitBehavior = true;
 #endif
+
+  private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
 
   public WebButton()
   {
@@ -55,7 +55,7 @@ public class WebButton :
   {
     string accessKey;
     string text = StringUtility.NullToEmpty (Text);
-    text = SmartLabel.FormatLabelText (text, !IsWaiConformityRequired, out accessKey);
+    text = SmartLabel.FormatLabelText (text, !IsLegacyButtonEnabled, out accessKey);
 
     if (StringUtility.IsNullOrEmpty (AccessKey))
       writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, accessKey);
@@ -63,7 +63,7 @@ public class WebButton :
     string tempText = Text;
     bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
     bool hasText = ! StringUtility.IsNullOrEmpty (text);
-    if (IsWaiConformityRequired)
+    if (IsLegacyButtonEnabled)
     {
       if (hasText)
         Text = text;
@@ -173,16 +173,30 @@ public class WebButton :
   {
     get
     {
-      if (IsWaiConformityRequired)
+      if (IsLegacyButtonEnabled)
         return HtmlTextWriterTag.Input;
       else
         return HtmlTextWriterTag.Button; 
     }
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+    {
+      if (_useLegacyButton == NaBooleanEnum.True)
+        throw new WaiException (1, this, "UseLegacyButton");
+    }
+  }
+
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (IsWaiConformityRequired)
+    if (WaiUtility.IsWaiLevelAConformityRequired())
+      EvaluateWaiConformity ();
+
+    if (IsLegacyButtonEnabled)
       return;
 
     string text = StringUtility.NullToEmpty (Text);
@@ -240,9 +254,26 @@ public class WebButton :
   } 
 #endif
 
-  protected bool IsWaiConformityRequired
+  /// <summary> 
+  ///   Gets or sets the flag that determines whether to use a legacy (i.e. input) element for the button or the modern 
+  ///   form (i.e. button). 
+  /// </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to enable the legacy version. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  /// </value>
+  [Description("Determines whether to use a legacy (i.e. input) element for the button or the modern form (i.e. button).")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public NaBooleanEnum UseLegacyButton
   {
-    get { return Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A; }
+    get { return _useLegacyButton; }
+    set { _useLegacyButton = value; }
+  }
+
+  protected bool IsLegacyButtonEnabled
+  {
+    get { return ! WaiUtility.IsWaiLevelAConformityRequired() && _useLegacyButton == NaBooleanEnum.True;}
   }
 
   private string EnsureEndWithSemiColon (string value)
