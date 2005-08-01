@@ -13,6 +13,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A tree view. </summary>
+/// <include file='doc\include\UI\Controls\WebTreeView.xml' path='WebTreeView/Class/*' />
 [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
 [DefaultEvent ("Click")]
 public class WebTreeView: WebControl, IControl, IPostBackEventHandler
@@ -355,11 +356,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (   Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A
-        && Configuration.WebConfiguration.Current.Wai.Debug)
-    {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
       throw new WaiException (1, this);
-    }
 
     ResolveNodeIcons();
     RenderNodes (writer, _nodes, true);

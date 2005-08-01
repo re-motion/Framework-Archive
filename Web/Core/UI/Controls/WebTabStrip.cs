@@ -14,6 +14,7 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
+/// <include file='doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
 public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget
 {
@@ -206,11 +207,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (   Configuration.WebConfiguration.Current.Wai.Level == Configuration.WaiLevel.A
-        && Configuration.WebConfiguration.Current.Wai.Debug)
-    {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
       throw new WaiException (1, this);
-    }
 
     int tabsOnPane = 0;
     bool isTabsPaneOpen = false;
