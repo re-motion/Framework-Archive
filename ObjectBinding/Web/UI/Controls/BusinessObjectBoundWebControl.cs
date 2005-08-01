@@ -495,27 +495,27 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   protected bool IsWaiDebuggingEnabled
   {
-    get { return Rubicon.Web.Configuration.WebConfiguration.Current.Wai.Debug; }
+    get { return WaiUtility.IsWaiDebuggingEnabled(); }
   }
 
   protected virtual Rubicon.Web.Configuration.WaiLevel GetWaiLevel()
   {
-    return Rubicon.Web.Configuration.WebConfiguration.Current.Wai.Level;
+    return WaiUtility.GetWaiLevel();
   }
 
   protected bool IsWaiLevelAConformityRequired
   {
-    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.A) == Rubicon.Web.Configuration.WaiLevel.A; }
+    get { return WaiUtility.IsWaiLevelAConformityRequired (GetWaiLevel()); }
   }
 
   protected bool IsWaiLevelAAConformityRequired
   {
-    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.AA) == Rubicon.Web.Configuration.WaiLevel.AA; }
+    get { return WaiUtility.IsWaiLevelAAConformityRequired (GetWaiLevel()); }
   }
 
   protected bool IsWaiLevelAAAConformityRequired
   {
-    get { return (GetWaiLevel() & Rubicon.Web.Configuration.WaiLevel.AA) == Rubicon.Web.Configuration.WaiLevel.AAA; }
+    get { return WaiUtility.IsWaiLevelAAAConformityRequired (GetWaiLevel()); }
   }
 
 //  /// <summary>

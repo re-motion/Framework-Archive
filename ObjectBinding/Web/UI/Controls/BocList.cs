@@ -964,6 +964,8 @@ public class BocList:
     return validators;
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity (BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);

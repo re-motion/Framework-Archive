@@ -45,7 +45,7 @@
             </list>
             <para> WAI priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
             <para> 
-              WAI priority 2 checkpoint 13.1 is not for links placed into value columns. The column's value is used 
+              WAI priority 2 checkpoint 13.1 is not met for links placed into value columns. The column's value is used 
               to identify the link's target.
             </para>
           </description>

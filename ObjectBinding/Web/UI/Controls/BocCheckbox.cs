@@ -160,6 +160,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       eventHandler (this, EventArgs.Empty);
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
     if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
@@ -184,6 +186,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     _isActive = ! isReadOnly && Enabled;
   }
 
+  /// <summary> Pre-renders the child controls for edit mode. </summary>
   private void PreRenderEditMode()
   {
     if (! IsDesignMode && Enabled)
@@ -202,12 +205,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       trueDescription = (StringUtility.IsNullOrEmpty (_trueDescription) ? defaultTrueDescription : _trueDescription);
       falseDescription = (StringUtility.IsNullOrEmpty (_falseDescription) ? defaultFalseDescription : _falseDescription);
     }
-    string description;
-
-    if (_value)
-      description = trueDescription;
-    else
-      description = falseDescription;
+    string description = _value ? trueDescription : falseDescription;
 
     DetermineClientScriptLevel();
 
@@ -272,20 +270,15 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
+  /// <summary> Pre-renders the child controls for read-only mode. </summary>
   private void PreRenderReadOnlyMode()
   {
-    string imageUrl = null;
-    if (_value)
-    {
-      imageUrl = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocCheckBox), ResourceType.Image, c_trueIcon);
-    }
-    else
-    {
-      imageUrl = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocCheckBox), ResourceType.Image, c_falseIcon);
-    }
-
+    string imageUrl = ResourceUrlResolver.GetResourceUrl (
+      this,
+      Context, 
+      typeof (BocCheckBox), 
+      ResourceType.Image, 
+      _value ? c_trueIcon : c_falseIcon);
 
     string description;
     if (_value)
@@ -365,6 +358,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents(HtmlTextWriter writer)
   {
     if (IsWaiLevelAConformityRequired)
@@ -463,14 +457,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       base.Property = (IBusinessObjectBooleanProperty) value; 
     }
   }
-  
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public new NaBooleanEnum Required
-  {
-    get { return base.Required; }
-    set { base.Required = value; }
-  }
 
   /// <summary> Gets a flag that determines whether the control is to be treated as a required value. </summary>
   /// <value> Always <see langword="false"/> since the checkbox has no undefined state in the user interface. </value>
@@ -541,7 +527,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///       respectivly.
   ///     </item>
   ///     <item>
-  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.Undefined"/> the <see cref="Property"/>
+  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.Undefined"/>, the <see cref="Property"/>
   ///       is queried for its default value using the <see cref="IBusinessObjectBooleanProperty.GetDefaultValue"/>
   ///       method.
   ///       <list type="bullet">
@@ -675,12 +661,14 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   [Category("Behavior")]
   [DefaultValue (NaBooleanEnum.Undefined)]
   [NotifyParentProperty (true)]
-  public NaBoolean AutoPostBack
+  public NaBooleanEnum AutoPostBack
   {
     get { return _autoPostBack; }
     set { _autoPostBack = value; }
   }
 
+  /// <summary> Gets the evaluated value for the <see cref="AutoPostBack"/> property. </summary>
+  /// <value> <see langowrd="true"/> if <see cref="AutoPostBack"/> is <see cref="NaBooleanEnum.True"/>. </value>
   protected bool IsAutoPostBackEnabled
   {
     get { return _autoPostBack == NaBooleanEnum.True;}
@@ -700,6 +688,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     set { _showDescription = value; }
   }
 
+  /// <summary> Gets the evaluated value for the <see cref="ShowDescription"/> property. </summary>
+  /// <value>
+  ///   <see langowrd="true"/> if WAI conformity is not required 
+  ///   and <see cref="ShowDescription"/> is <see cref="NaBooleanEnum.True"/>. 
+  /// </value>
   protected bool IsDescriptionEnabled
   {
     get { return ! IsWaiLevelAConformityRequired && _showDescription == NaBooleanEnum.True;}

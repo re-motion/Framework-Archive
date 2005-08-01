@@ -228,6 +228,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       eventHandler (this, EventArgs.Empty);
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
     if (IsWaiDebuggingEnabled && IsWaiLevelAAConformityRequired)

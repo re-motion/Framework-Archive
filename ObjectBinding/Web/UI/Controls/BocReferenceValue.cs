@@ -396,6 +396,8 @@ public class BocReferenceValue:
     OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity()
   {
     if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
