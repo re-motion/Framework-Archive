@@ -3,11 +3,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary> A <c>LinkButton</c> using <c>&amp;</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
+/// <include file='doc\include\UI\Controls\WebLinkButton.xml' path='WebLinkButton/Class/*' />
 [ToolboxData("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
 public class WebLinkButton : LinkButton
 {
@@ -27,6 +29,9 @@ public class WebLinkButton : LinkButton
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+      throw new WaiException (1, this);
+
     if (HasControls())
       base.RenderContents (writer);
     else
