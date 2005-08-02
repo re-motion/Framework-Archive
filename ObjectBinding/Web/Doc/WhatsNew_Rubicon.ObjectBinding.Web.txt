@@ -1,3 +1,8 @@
+1.2.60
+======
+- BocReferenceValue
+  * Bugfix für Bugfix aus 1.2.57: Der 1. Bugfix hat noch nicht funktioniert.
+
 1.2.59
 ======
 - BocList

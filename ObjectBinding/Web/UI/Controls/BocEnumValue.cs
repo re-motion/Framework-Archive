@@ -24,7 +24,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 {
 	// constants
 
-  private const string c_nullIdentifier = "--null--";
+  private const string c_nullIdentifier = "==null==";
 
   /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";

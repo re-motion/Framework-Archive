@@ -38,7 +38,7 @@ public class BocReferenceValue:
 {
   // constants
 	
-  private const string c_nullIdentifier = "--null--";
+  private const string c_nullIdentifier = "==null==";
 
   /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
   private const string c_designModeEmptyLabelContents = "##";
@@ -738,6 +738,14 @@ public class BocReferenceValue:
     _dropDownList.RenderControl (writer);
     
     writer.RenderEndTag();  //  End td
+
+    RenderEditModeValueExtension (writer);
+  }
+
+  /// <summary> Called after the edit mode value's cell is rendered. </summary>
+  /// <remarks> Render a table cell: &lt;td style="width:0%"&gt;Your contents goes here&lt;/td&gt;</remarks>
+  protected virtual void RenderEditModeValueExtension (HtmlTextWriter writer)
+  {
   }
 
   private bool IsCommandEnabled (bool isReadOnly)
@@ -1236,7 +1244,8 @@ public class BocReferenceValue:
     get { return _internalValue; }
     set 
     {
-      if (_internalValue == value)
+      //  Don't update identical values, unless they are null
+      if (_internalValue == value && _internalValue != null)
         return;
 
       bool isOldInternalValueNull = _internalValue == null;
