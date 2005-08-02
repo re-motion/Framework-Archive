@@ -1,14 +1,10 @@
 /*  Style applied to the BocList's table's outer structure.  */
 table.bocListTable
 {
-  border-collapse: separate;
-  border-width: 0px;
+  border-collapse: collapse;
+  border-style: none;
 }
 
-/*  Style applied to the table head block of the BocList's table.  */
-thead.bocListTableHead
-{
-}
 
 /*  Style applied to the table head block of the BocList's table.  */
 tbody.bocListTableBody
@@ -59,7 +55,7 @@ td.bocListDataCellOdd
 	background-color: White;
 	text-align: left;
 
-  padding: 2px 2px 2px 5px;
+  padding: 2px 2px 2px 2px;
   border-style: solid;
   border-top-width: 1px;
   border-right-width: 0px;
@@ -76,7 +72,7 @@ td.bocListDataCellEven
 	background-color: #e1ecfc;
 	text-align: left;
 
-  padding: 2px 2px 2px 5px;
+  padding: 2px 2px 2px 2px;
   border-style: solid;
   border-top-width: 1px;
   border-right-width: 0px;
@@ -95,7 +91,7 @@ td.bocListDataCellEvenSelected
   color: HighlightText;
 	text-align: left;
  
-  padding: 2px 2px 2px 5px;
+  padding: 2px 2px 2px 2px;
   border-style: solid;
   border-top-width: 1px;
   border-right-width: 0px;
