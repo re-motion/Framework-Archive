@@ -267,7 +267,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
           writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
+      bool isTextBoxWidthEmpty = _textBox.Width.IsEmpty && StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
       if (isTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
