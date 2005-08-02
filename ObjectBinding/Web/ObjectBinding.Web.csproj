@@ -523,6 +523,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocDateTimeValue.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\BocList.css"
                     BuildAction = "Content"
                 />

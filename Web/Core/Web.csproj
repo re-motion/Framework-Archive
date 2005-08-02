@@ -172,10 +172,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\FormGridManager.xml"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Doc\include\NamespaceDoc.xml"
                     BuildAction = "Content"
                 />
@@ -192,7 +188,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\UI\Controls\FormGridManager.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\UI\Controls\TabbedMultiView.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\ValidationStateViewer.xml"
                     BuildAction = "Content"
                 />
                 <File
