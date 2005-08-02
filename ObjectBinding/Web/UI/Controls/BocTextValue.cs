@@ -276,12 +276,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     else
     {
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
-      bool isTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_textBox.Style["height"]);
+      bool isTextBoxHeightEmpty = _textBox.Height.IsEmpty && StringUtility.IsNullOrEmpty (_textBox.Style["height"]);
       if (! isControlHeightEmpty && isTextBoxHeightEmpty)
           writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
+      bool isTextBoxWidthEmpty = _textBox.Width.IsEmpty &&StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
       if (isTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
