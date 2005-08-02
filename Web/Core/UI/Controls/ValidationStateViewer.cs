@@ -19,7 +19,8 @@ namespace Rubicon.Web.UI.Controls
 ///   Collects the validation errors from all <see cref="FormGridManager"/> instances on the page
 ///   and displays the validation state.
 /// </summary>
-[ToolboxData("<{0}:ValidationStateViewer runat='server' visible='true'></{0}:ValidationStateViewer>")]
+/// <include file='doc\include\UI\Controls\ValidationStateViewer.xml' path='ValidationStateViewer/Class/*' />
+[ToolboxData("<{0}:ValidationStateViewer runat='server'></{0}:ValidationStateViewer>")]
 [ToolboxItemFilter("System.Web.UI")]
 public class ValidationStateViewer : WebControl, IControl
 {
@@ -90,13 +91,12 @@ public class ValidationStateViewer : WebControl, IControl
     }
   }
 
-  protected override void Render (HtmlTextWriter writer)
+  protected override HtmlTextWriterTag TagKey
   {
-    //  Don't render tags for this control.
-    RenderChildren (writer);
+    get { return HtmlTextWriterTag.Div; }
   }
 
-  protected override void RenderChildren(HtmlTextWriter writer)
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     if (!ControlHelper.IsDesignMode (this, this.Context))
     {
@@ -181,7 +181,7 @@ public class ValidationStateViewer : WebControl, IControl
 
         if (validationError.Labels  != null)
         {
-          writer.AddStyleAttribute ("padding-right", "3pt");
+          writer.AddStyleAttribute ("padding-right", "0.3em");
           writer.RenderBeginTag (HtmlTextWriterTag.Td);
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
@@ -204,11 +204,7 @@ public class ValidationStateViewer : WebControl, IControl
         }
       
         writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        //  Label resets the <select> element, ruining postback
-        if (! (validationError.ValidatedControl is DropDownList || validationError.ValidatedControl is HtmlSelect))
-          validationError.ToLabel(CssClassValidationMessage).RenderControl (writer);
-        else
-          validationError.ToSpan(CssClassValidationMessage).RenderControl (writer);
+        validationError.ToHyperLink (CssClassValidationMessage).RenderControl (writer);
         writer.RenderEndTag();
 
         writer.RenderEndTag();
@@ -225,7 +221,7 @@ public class ValidationStateViewer : WebControl, IControl
   {
     //  Provider has already been identified.
     if (_cachedResourceManager != null)
-        return _cachedResourceManager;
+      return _cachedResourceManager;
 
     //  Get the resource managers
 
