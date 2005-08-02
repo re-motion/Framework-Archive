@@ -530,10 +530,13 @@ public class BocReferenceValue:
     bool isReadOnly = IsReadOnly;
 
     bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
-    bool isDropDownListHeightEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["height"]);
+    bool isDropDownListHeightEmpty =   _dropDownList.Height.IsEmpty 
+                                    && StringUtility.IsNullOrEmpty (_dropDownList.Style["height"]);
     bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-    bool isLabelWidthEmpty = StringUtility.IsNullOrEmpty (_label.Style["width"]);
-    bool isDropDownListWidthEmpty = StringUtility.IsNullOrEmpty (_dropDownList.Style["width"]);
+    bool isLabelWidthEmpty =    _label.Width.IsEmpty 
+                             && StringUtility.IsNullOrEmpty (_label.Style["width"]);
+    bool isDropDownListWidthEmpty =    _dropDownList.Width.IsEmpty 
+                                    && StringUtility.IsNullOrEmpty (_dropDownList.Style["width"]);
     if (isReadOnly)
     {
       if (isLabelWidthEmpty && ! isControlWidthEmpty)
