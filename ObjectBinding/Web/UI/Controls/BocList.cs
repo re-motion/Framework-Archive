@@ -1020,9 +1020,9 @@ public class BocList:
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-          s_scriptFileKey, 
-          scriptUrl, 
-          HtmlHeadAppender.Priority.Library);
+            s_scriptFileKey, 
+            scriptUrl, 
+            HtmlHeadAppender.Priority.Library);
       }
 
       //  Startup script initalizing the global values of the script.
@@ -1170,7 +1170,7 @@ public class BocList:
       isInternetExplorer501AndHigher = 
           Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual501;
       bool isOperaGreaterOrEqual7 = 
-        Context.Request.Browser.Browser == "Opera"
+             Context.Request.Browser.Browser == "Opera"
           && Context.Request.Browser.MajorVersion >= 7;
       bool isNetscapeCompatibleGreaterOrEqual5 = 
              Context.Request.Browser.Browser == "Netscape"
@@ -1391,6 +1391,7 @@ public class BocList:
   {
     get { return Value == null || Value.Count == 0; }
   }
+
   private bool IsColumnVisible (BocColumnDefinition column)
   {
     bool isReadOnly = IsReadOnly;
@@ -2991,14 +2992,14 @@ public class BocList:
 
   private void RestoreSortingOrderColumns (BocColumnDefinition[] columnDefinitions)
   {
-      for (int i = 0; i < _sortingOrder.Count; i++)
-      {
-        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
-        if (entry.IsEmpty)
-          continue;
-        if (entry.ColumnIndex != Int32.MinValue)
-          entry.Column = columnDefinitions[entry.ColumnIndex];
-      }
+    for (int i = 0; i < _sortingOrder.Count; i++)
+    {
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+      if (entry.IsEmpty)
+        continue;
+      if (entry.ColumnIndex != Int32.MinValue)
+        entry.Column = columnDefinitions[entry.ColumnIndex];
+    }
   }
 
   private void SynchronizeSortingOrderColumns (BocColumnDefinition[] columnDefinitions)

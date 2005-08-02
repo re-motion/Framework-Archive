@@ -2,7 +2,28 @@
 <FormGridManager>
   <Class>
     <remarks>
-      Usage
+    
+      <h4 class="dtH4">Standards Compliancy</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Compliancy Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>WAI</term>
+          <description>Level AAA valid</description>
+        </item>        
+      </list>
+      
+      <h4 class="dtH4">Usage Notes</h4>
       <list type="number">
         <item>
           Place an instance of <c>FormGridManager</c> onto the aspx-page or ascx-control.

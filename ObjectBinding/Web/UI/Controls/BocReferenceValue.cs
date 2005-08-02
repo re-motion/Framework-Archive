@@ -426,9 +426,9 @@ public class BocReferenceValue:
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-        s_scriptFileKey, 
-        scriptUrl, 
-        HtmlHeadAppender.Priority.Library);
+          s_scriptFileKey, 
+          scriptUrl, 
+          HtmlHeadAppender.Priority.Library);
     }
 
     if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
@@ -581,7 +581,7 @@ public class BocReferenceValue:
 
     if (HasOptionsMenu)
     {
-      writer.AddStyleAttribute ("padding-left", "3pt");
+      writer.AddStyleAttribute ("padding-left", "0.3em");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       //writer.AddAttribute ("align", "right");
       writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
@@ -676,7 +676,7 @@ public class BocReferenceValue:
       string objectID)
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-    writer.AddStyleAttribute ("padding-right", "3pt");
+    writer.AddStyleAttribute ("padding-right", "0.3em");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
 
@@ -753,7 +753,7 @@ public class BocReferenceValue:
           && Command.Type != CommandType.None
           && isCommandLinkPossible)
       {
-          isCommandEnabled = Enabled;
+        isCommandEnabled = Enabled;
       }
     }
     return isCommandEnabled;
