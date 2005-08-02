@@ -369,7 +369,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
       _renderHeadTitleMethod (writer, this);
     }
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-    writer.AddStyleAttribute ("padding-right", "3pt");
+    writer.AddStyleAttribute ("padding-right", "0.3em");
     writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
     writer.RenderEndTag();
   }
@@ -384,7 +384,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     }
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-    writer.AddStyleAttribute ("margin-right", "3pt");
+    writer.AddStyleAttribute ("margin-right", "0.3em");
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
@@ -392,7 +392,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   private void RenderHeadButton (HtmlTextWriter writer)
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-    writer.AddStyleAttribute ("margin-left", "3pt");
+    writer.AddStyleAttribute ("margin-left", "0.3em");
     writer.AddStyleAttribute ("text-align", "center");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadButton);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
