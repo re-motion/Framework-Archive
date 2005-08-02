@@ -188,6 +188,30 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\UI\Controls\DropDownMenu.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\TabbedMultiView.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\WebButton.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\WebLinkButton.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\WebTabStrip.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\Controls\WebTreeView.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "ExecutionEngine\NumberedMemberFinder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -852,6 +876,11 @@
                 />
                 <File
                     RelPath = "Utilities\UrlUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\WaiUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
