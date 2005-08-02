@@ -170,14 +170,14 @@ public class BocDateTimeValueValidator: BaseValidator
 
       //  Empty date defaults to 01.01.0001
       DateTime dateTimeFirstDay = DateTime.Parse (
-        dateValue, 
-        Thread.CurrentThread.CurrentCulture);
+          dateValue, 
+          Thread.CurrentThread.CurrentCulture);
 
       //  Empty date defaults to today
       DateTime dateTimeToday = DateTime.Parse (
-        dateValue, 
-        Thread.CurrentThread.CurrentCulture,
-        DateTimeStyles.NoCurrentDateDefault);
+          dateValue, 
+          Thread.CurrentThread.CurrentCulture,
+          DateTimeStyles.NoCurrentDateDefault);
 
       //  That's actually a time instead of a date
       if (dateTimeToday.Date != dateTimeFirstDay.Date)
@@ -220,9 +220,9 @@ public class BocDateTimeValueValidator: BaseValidator
     {
       //  Is a valid time value? If not, FormatException will be thrown and caught
       DateTime dateTime = DateTime.Parse (
-        timeValue, 
-        Thread.CurrentThread.CurrentCulture,
-        DateTimeStyles.NoCurrentDateDefault);
+          timeValue, 
+          Thread.CurrentThread.CurrentCulture,
+          DateTimeStyles.NoCurrentDateDefault);
 
       //  If only a time was entered, the date will default to 01.01.0001
       if (dateTime.Year != 1 || dateTime.Month != 1 || dateTime.Day != 1)
