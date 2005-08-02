@@ -284,7 +284,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
       bool isListControlHeightEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["height"]);
       if (! isControlHeightEmpty && isListControlHeightEmpty)
-          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
       bool isListControlWidthEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["width"]);
