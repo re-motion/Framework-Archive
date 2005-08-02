@@ -36,6 +36,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   private const string c_datePickerPopupForm = "DatePickerForm.aspx";
   private const string c_datePickerScriptFileUrl = "DatePicker.js";
+  private const string c_styleFileUrl = "BocDateTimeValue.css";
 
   // types
 
@@ -69,6 +70,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
 
   private static readonly string s_datePickerScriptFileKey = typeof (BocDateTimeValue).FullName + "_DatePickerScript";
+  private static readonly string s_styleFileKey = typeof (BocDateTimeValue).FullName + "_Style";
   private static readonly object s_dateTimeChangedEvent = new object();
 
 	// member fields
@@ -250,6 +252,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     
     bool isReadOnly = IsReadOnly;
 
+    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocDateTimeValue), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    }
+
     if (IsReadOnly)
     {
       PreRenderReadOnlyValue();
@@ -337,14 +346,18 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     else
     {
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
-      bool isDateTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_dateTextBox.Style["height"]);
-      bool isTimeTextBoxHeightEmpty = StringUtility.IsNullOrEmpty (_timeTextBox.Style["height"]);
+      bool isDateTextBoxHeightEmpty = _dateTextBox.Height.IsEmpty 
+                                     && StringUtility.IsNullOrEmpty (_dateTextBox.Style["height"]);
+      bool isTimeTextBoxHeightEmpty = _timeTextBox.Height.IsEmpty 
+                                     && StringUtility.IsNullOrEmpty (_timeTextBox.Style["height"]);
       if (! isControlHeightEmpty && isDateTextBoxHeightEmpty && isTimeTextBoxHeightEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isDateTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_dateTextBox.Style["width"]);
-      bool isTimeTextBoxWidthEmpty = StringUtility.IsNullOrEmpty (_timeTextBox.Style["width"]);
+      bool isDateTextBoxWidthEmpty =    _dateTextBox.Width.IsEmpty 
+                                     && StringUtility.IsNullOrEmpty (_dateTextBox.Style["width"]);
+      bool isTimeTextBoxWidthEmpty =    _timeTextBox.Width.IsEmpty 
+                                     && StringUtility.IsNullOrEmpty (_timeTextBox.Style["width"]);
       if (isDateTextBoxWidthEmpty && isTimeTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
@@ -360,9 +373,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         }
       }
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
       writer.AddStyleAttribute ("display", "inline");
       writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin table
 
