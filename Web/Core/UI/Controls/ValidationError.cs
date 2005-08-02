@@ -134,7 +134,7 @@ public class ValidationError
     label.InnerText = ValidationMessage;
     label.Attributes["for"] = ValidatedControl.ClientID;
 
-    if (cssClass != null && cssClass != String.Empty)
+    if (! StringUtility.IsNullOrEmpty (cssClass))
       label.Attributes ["class"] = cssClass;
 
     return label;
@@ -153,52 +153,46 @@ public class ValidationError
     hyperLink.Text = ValidationMessage;
     hyperLink.NavigateUrl = "#" + ValidatedControl.ClientID;
 
-    if (cssClass != null && cssClass != String.Empty)
+    if (! StringUtility.IsNullOrEmpty (cssClass))
       hyperLink.CssClass = cssClass;
 
     return hyperLink;
   }
 
   /// <summary>
-  ///   Places the <c>ValidationError</c>'s message into a <c>div</c>
-  ///   and returns this construct as a <see cref="LiteralControl"/>.
+  ///   Places the <c>ValidationError</c>'s message into an <see cref="HtmlGenericControl"/> with <b>div</b> tags.
   /// </summary>
   /// <param name="cssClass"> The name of the CSS-class used to format the <c>div</c>-tag. </param>
-  /// <returns> A <see cref="LiteralControl"/>. </returns>
-  public LiteralControl ToDiv (string cssClass)
+  /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
+  public HtmlGenericControl ToDiv (string cssClass)
   {
-    return ToLiteralControl (cssClass, "div");
+    return ToGenericControl (cssClass, "div");
   }
 
   /// <summary>
-  ///   Places the <c>ValidationError</c>'s message into a <c>span</c>
-  ///   and returns this construct as a <see cref="LiteralControl"/>.
+  ///   Places the <c>ValidationError</c>'s message into an <see cref="HtmlGenericControl"/> with <b>span</b> tags.
   /// </summary>
   /// <param name="cssClass"> The name of the CSS-class used to format the <c>span</c>-tag. </param>
-  /// <returns> A <see cref="LiteralControl"/>. </returns>
-  public LiteralControl ToSpan (string cssClass)
+  /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
+  public HtmlGenericControl ToSpan (string cssClass)
   {
-    return ToLiteralControl (cssClass, "span");
+    return ToGenericControl (cssClass, "span");
   }
 
   /// <summary>
   ///   Places the <c>ValidationError</c>'s message into a which ever HTML tag is provided
-  ///   and returns this construct as a <see cref="LiteralControl"/>.
+  ///   and returns this construct as a <see cref="HtmlGenericControl"/>.
   /// </summary>
   /// <param name="cssClass"> The name of the CSS-class used to format the HTML tag. </param>
   /// <param name="tag"> The HTML tag to be used. </param>
-  /// <returns> A <see cref="LiteralControl"/>. </returns>
-  private LiteralControl ToLiteralControl (string cssClass, string tag)
+  /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
+  private HtmlGenericControl ToGenericControl (string cssClass, string tag)
   {
-    //  Opening tag for validation message
-    string validationMessage = "<" + tag + " class=\"" + cssClass + "\">";
-    //  Message
-    validationMessage += ValidationMessage;
-    //  Closing tag for validation message
-    validationMessage += "</" + tag + ">";
-
-    LiteralControl literalControl = new LiteralControl();
-    return new LiteralControl (validationMessage.ToString());
+    HtmlGenericControl genericControl = new HtmlGenericControl (tag);
+    if (! StringUtility.IsNullOrEmpty (cssClass))
+      genericControl.Attributes["class"] = cssClass;
+    genericControl.InnerText = ValidationMessage;
+    return genericControl;
   }
 }
 
