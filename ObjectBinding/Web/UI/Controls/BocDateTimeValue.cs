@@ -414,7 +414,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (hasDatePicker)
       {
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-        writer.AddStyleAttribute ("padding-left", "3pt");
+        writer.AddStyleAttribute ("padding-left", "0.3em");
         writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
         _datePickerButton.RenderControl (writer);  
         writer.RenderEndTag(); // End td
@@ -427,7 +427,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         else
           writer.AddStyleAttribute (HtmlTextWriterStyle.Width, _timeTextBoxStyle.Width.ToString());
         if (hasDateField)
-          writer.AddStyleAttribute ("padding-left", "3pt");
+          writer.AddStyleAttribute ("padding-left", "0.3em");
         writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
 
         if (! isControlHeightEmpty && isTimeTextBoxHeightEmpty)
@@ -635,9 +635,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-          s_datePickerScriptFileKey, 
-          scriptUrl, 
-          HtmlHeadAppender.Priority.Library);
+            s_datePickerScriptFileKey, 
+            scriptUrl, 
+            HtmlHeadAppender.Priority.Library);
       }
     }
 

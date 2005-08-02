@@ -216,9 +216,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (BocCheckBox), ResourceType.Html, c_scriptFileUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-          s_scriptFileKey, 
-          scriptUrl, 
-          HtmlHeadAppender.Priority.Library);
+            s_scriptFileKey, 
+            scriptUrl, 
+            HtmlHeadAppender.Priority.Library);
       }
 
       if (Enabled)
@@ -274,11 +274,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private void PreRenderReadOnlyMode()
   {
     string imageUrl = ResourceUrlResolver.GetResourceUrl (
-      this,
-      Context, 
-      typeof (BocCheckBox), 
-      ResourceType.Image, 
-      _value ? c_trueIcon : c_falseIcon);
+        this,
+        Context, 
+        typeof (BocCheckBox), 
+        ResourceType.Image, 
+        _value ? c_trueIcon : c_falseIcon);
 
     string description;
     if (_value)
