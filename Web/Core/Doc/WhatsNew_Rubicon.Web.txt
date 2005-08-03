@@ -1,3 +1,9 @@
+1.2.60
+======
+- Wai Configuration
+  * Property Level umbenannt zu ConformanceLevel.
+  * Enum WaiLevel umbenannt zu WaiConfigurationLevel 
+
 1.2.57
 ======
 - Wai Configuration

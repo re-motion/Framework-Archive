@@ -15,7 +15,7 @@
                
         <xs:element name="wai" minOccurs="0" maxOccurs="1">
           <xs:complexType>
-            <xs:attribute name="level" type="tns:WaiLevel" default="Undefined"/>            
+            <xs:attribute name="conformanceLevel" type="tns:WaiLevel" default="Undefined"/>            
             <xs:attribute name="debug" type="xs:boolean" default="false" />
           </xs:complexType>
         </xs:element>
