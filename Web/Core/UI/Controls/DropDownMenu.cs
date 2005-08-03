@@ -263,7 +263,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformanceRequired())
       throw new WaiException (1, this);
 
     //  Menu-Div filling the control's div is required to apply internal css attributes

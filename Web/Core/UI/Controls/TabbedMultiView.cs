@@ -317,7 +317,7 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
    
-    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformanceRequired())
       throw new WaiException (1, this);
 
     RenderTopControls (writer);

@@ -356,7 +356,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformanceRequired())
       throw new WaiException (1, this);
 
     ResolveNodeIcons();

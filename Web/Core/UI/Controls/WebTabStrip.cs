@@ -207,7 +207,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformityRequired())
+    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformanceRequired())
       throw new WaiException (1, this);
 
     int tabsOnPane = 0;

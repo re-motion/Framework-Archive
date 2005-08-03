@@ -6,34 +6,34 @@ namespace Rubicon.Web.Utilities
 
 public class WaiUtility
 {
-  public static bool IsWaiLevelAConformityRequired (WaiLevel level)
+  public static bool IsWaiLevelAConformanceRequired (WaiConformanceLevel conformanceLevel)
   {
-    return (level & WaiLevel.A) == WaiLevel.A;
+    return (conformanceLevel & WaiConformanceLevel.A) == WaiConformanceLevel.A;
   }
 
-  public static bool IsWaiLevelAConformityRequired ()
+  public static bool IsWaiLevelAConformanceRequired ()
   {
-    return IsWaiLevelAConformityRequired (GetWaiLevel());
+    return IsWaiLevelAConformanceRequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWaiLevelAAConformityRequired (WaiLevel level)
+  public static bool IsWaiLevelDoubleAConformanceRequired (WaiConformanceLevel conformanceLevel)
   {
-    return (level & WaiLevel.AA) == WaiLevel.AA;
+    return (conformanceLevel & WaiConformanceLevel.DoubleA) == WaiConformanceLevel.DoubleA;
   }
 
-  public static bool IsWaiLevelAAConformityRequired ()
+  public static bool IsWaiLevelDoubleAConformanceRequired ()
   {
-    return IsWaiLevelAAConformityRequired (GetWaiLevel());
+    return IsWaiLevelDoubleAConformanceRequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWaiLevelAAAConformityRequired (WaiLevel level)
+  public static bool IsWaiLevelTripleAConformanceRequired (WaiConformanceLevel conformanceLevel)
   {
-    return (level & WaiLevel.AAA) == WaiLevel.AAA;
+    return (conformanceLevel & WaiConformanceLevel.TripleA) == WaiConformanceLevel.TripleA;
   }
 
-  public static bool IsWaiLevelAAAConformityRequired ()
+  public static bool IsWaiLevelTripleAConformanceRequired ()
   {
-    return IsWaiLevelAAAConformityRequired (GetWaiLevel());
+    return IsWaiLevelTripleAConformanceRequired (GetWaiConformanceLevel());
   }
 
   public static bool IsWaiDebuggingEnabled()
@@ -41,9 +41,9 @@ public class WaiUtility
     return WebConfiguration.Current.Wai.Debug;
   }
 
-  public static Rubicon.Web.Configuration.WaiLevel GetWaiLevel()
+  public static Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
   {
-    return WebConfiguration.Current.Wai.Level;
+    return WebConfiguration.Current.Wai.ConformanceLevel;
   }
 
   /// <exclude />
