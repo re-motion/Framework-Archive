@@ -212,15 +212,15 @@
     For information on the browser compatibility of the controls, see the 
     <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace.
   </namespace>
+  
   <namespace name="Rubicon.ObjectBinding.Web.Controls">
-    The <see cref="Rubicon.ObjectBinding.Web.Controls">Rubicon.ObjectBinding.Web.Controls</see> namespace provides 
-    object bindable controls implementing 
+    The <b>Rubicon.ObjectBinding.Web.Controls</b> namespace provides object bindable controls implementing 
     <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/>. 
-    If the control provides edit functionality, it also implements <see cref="T:Rubicon.Web.UI.ISmartControl"/>. 
-    When used together with a <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the bound web controls provide 
-    a maximum of usability with a minimum of coding effort.
+    To allow integration with the <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the controls also implement 
+    <see cref="T:Rubicon.Web.UI.ISmartControl"/>. By provinding automation for both object binding and rendering, the 
+    bound web controls provide a maximum of usability with a minimum of coding effort.
     
-    <h3 class="dtH3">Browser Compatibility Chart: Transitional Mode</h3>
+    <h3 class="dtH3">Browser Compatibility Chart: Transitional Quirks Mode</h3>
     <div class="tablediv"> 
     <table class="dtTABLE" cellspacing="0">
       <colgroup>
@@ -286,7 +286,7 @@
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
-          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">2)</td><!-- Firefox 1.0 -->
           <td style="text-align:center;">2)</td><!-- Mozilla 1.0 -->
           <td style="text-align:center;">2)</td><!-- Mozilla 1.7.5 -->
           <td style="text-align:center;">2)</td><!-- Netscape 6.0 -->
@@ -370,11 +370,11 @@
         <tr>
           <td colspan="10">
             X Fully compatible.<br/>
-            ? Compatibility not testet.<br/>
+            ? Compatibility not tested.<br/>
             1) Drop Down Menu not supported.<br/>
             2) Date Picker not supported.<br/>
             3) Layout damaged but usable.<br/>
-            4) Layout unuseable.<br/>
+            4) Layout not usable.<br/>
           </td>
         </tr>
       </tfoot>
@@ -390,7 +390,109 @@
       Firefox 1.0, Mozilla 1.0, Mozilla 1.7.5 all use Mozilla 5.0 as base and differ only in the build number of the 
       Gecko rendering engine.
     </para>
+    <h3 class="dtH3">Standards Conformance Chart</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">HTML 4.01 Conformance</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">XHTML 1.0 Conformance</th>
+          <th colspan="2" style="text-align:center;">WAI Conformance</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">Default Settings</th>
+          <th style="text-align:center;">Possible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level AA</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level AA</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully conform.<br/>
+            - Not conform.<br/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      See the <see href="Rubicon.Web.UI.html">Rubicon.Web.UI</see> namespace documentation for details 
+      on enforcing WAI conformance.
+    </para>
   </namespace>
+  
   <namespace name="Rubicon.ObjectBinding.Web.Design">
     The <b>Rubicon.ObjectBinding.Web.Design</b> namespace provides classes required for Visual Studio .net Designer
     support.
