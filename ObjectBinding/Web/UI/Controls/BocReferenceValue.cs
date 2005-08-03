@@ -400,7 +400,7 @@ public class BocReferenceValue:
   /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity()
   {
-    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformanceRequired)
     {
       if (_showOptionsMenu)
         throw new WaiException (1, this, "ShowOptionsMenu");
@@ -511,7 +511,7 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformityRequired)
+    if (IsWaiLevelAConformanceRequired)
       EvaluateWaiConformity();
 
     if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
@@ -750,7 +750,7 @@ public class BocReferenceValue:
 
   private bool IsCommandEnabled (bool isReadOnly)
   {
-    if (IsWaiLevelAConformityRequired)
+    if (IsWaiLevelAConformanceRequired)
       return false;
 
     bool isCommandEnabled = false;
@@ -1091,7 +1091,7 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   private bool HasOptionsMenu
   {
-    get { return ! IsWaiLevelAConformityRequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
+    get { return ! IsWaiLevelAConformanceRequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -1650,6 +1650,7 @@ public class BocReferenceValue:
   {
     get
     { 
+
       return _errorMessage; 
     }
     set 

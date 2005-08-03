@@ -154,7 +154,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected override void Render (HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformityRequired && IsWaiDebuggingEnabled)
+    if (IsWaiLevelAConformanceRequired && IsWaiDebuggingEnabled)
       throw new Rubicon.Web.UI.WaiException (1, this);
     _dropDownMenu.RenderControl (writer);
   }

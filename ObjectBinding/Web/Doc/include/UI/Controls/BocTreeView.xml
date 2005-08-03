@@ -11,11 +11,11 @@
         no longer represent he current object model.
       </para>
       
-      <h4 class="dtH4">Standards Compliancy</h4>
+      <h4 class="dtH4">Standards Conformance</h4>
       <list type="table">
         <listheader>
           <term>Standard</term>
-          <description>Compliancy Information</description>
+          <description>Conformance Information</description>
         </listheader>
         <item>
           <term>HTML 4.01</term>

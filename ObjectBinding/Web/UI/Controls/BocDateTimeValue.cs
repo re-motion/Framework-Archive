@@ -234,7 +234,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWaiDebuggingEnabled && IsWaiLevelAAConformityRequired)
+    if (IsWaiDebuggingEnabled && IsWaiLevelDoubleAConformanceRequired)
     {
       if (ActualValueType == BocDateTimeValueType.DateTime)
         throw new WaiException (2, this, "ActualValueType");
@@ -336,7 +336,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformityRequired)
+    if (IsWaiLevelAConformanceRequired)
       EvaluateWaiConformity ();
 
     if (IsReadOnly)

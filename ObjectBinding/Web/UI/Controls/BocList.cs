@@ -970,7 +970,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformanceRequired)
     {
       if (ShowOptionsMenu)
         throw new WaiException (1, this, "ShowOptionsMenu");
@@ -1149,7 +1149,7 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
-    if (IsWaiLevelAConformityRequired)
+    if (IsWaiLevelAConformanceRequired)
       EvaluateWaiConformity (renderColumns);
 
     if (IsDesignMode)
@@ -1337,7 +1337,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformityRequired)
+      if (IsWaiLevelAConformanceRequired)
         return false;
 
       bool showAvailableViewsList =    _showAvailableViewsList 
@@ -1355,7 +1355,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformityRequired)
+      if (IsWaiLevelAConformanceRequired)
         return false;
 
       bool showOptionsMenu =   ShowOptionsMenu 
@@ -1373,7 +1373,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformityRequired)
+      if (IsWaiLevelAConformanceRequired)
         return false;
 
       bool showListMenu =   ShowListMenu 
@@ -1399,7 +1399,7 @@ public class BocList:
     BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
     if (commandColumn != null && commandColumn.Command != null)
     {
-      if (   IsWaiLevelAConformityRequired
+      if (   IsWaiLevelAConformanceRequired
           && (   commandColumn.Command.Type == CommandType.Event
               || commandColumn.Command.Type == CommandType.WxeFunction))
       {
@@ -1409,7 +1409,7 @@ public class BocList:
 
     if (editDetailsColumn != null)
     {
-      if (IsWaiLevelAConformityRequired)
+      if (IsWaiLevelAConformanceRequired)
         return false;
       if (   editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
           && isReadOnly)
@@ -2696,7 +2696,7 @@ public class BocList:
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
-      if (IsWaiLevelAConformityRequired && command.Type != CommandType.Href)
+      if (IsWaiLevelAConformanceRequired && command.Type != CommandType.Href)
         isCommandEnabled = false;
       else
         isCommandEnabled = true;
@@ -4537,7 +4537,7 @@ public class BocList:
 
   protected bool IsClientSideSortingEnabled
   {
-    get { return ! IsWaiLevelAConformityRequired && EnableSorting; }
+    get { return ! IsWaiLevelAConformanceRequired && EnableSorting; }
   }
 
   /// <summary>
@@ -4657,7 +4657,7 @@ public class BocList:
 
   protected bool IsPagingEnabled
   {
-    get { return !IsWaiLevelAConformityRequired && !_pageSize.IsNull && _pageSize.Value != 0; }
+    get { return !IsWaiLevelAConformanceRequired && !_pageSize.IsNull && _pageSize.Value != 0; }
   }
 
   /// <summary>

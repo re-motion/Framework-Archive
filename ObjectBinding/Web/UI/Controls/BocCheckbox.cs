@@ -164,7 +164,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWaiDebuggingEnabled && IsWaiLevelAConformityRequired)
+    if (IsWaiDebuggingEnabled && IsWaiLevelAConformanceRequired)
     {
       if (_showDescription == NaBooleanEnum.True)
         throw new WaiException (1, this, "ShowDescription");
@@ -361,7 +361,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformityRequired)
+    if (IsWaiLevelAConformanceRequired)
       EvaluateWaiConformity ();
 
     if (IsReadOnly)
@@ -695,7 +695,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// </value>
   protected bool IsDescriptionEnabled
   {
-    get { return ! IsWaiLevelAConformityRequired && _showDescription == NaBooleanEnum.True;}
+    get { return ! IsWaiLevelAConformanceRequired && _showDescription == NaBooleanEnum.True;}
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>

@@ -11,8 +11,12 @@
         The control's <see cref="Property"/> supports the <see cref="IBusinessObjectBooleanProperty"/>.
       </para>      
       
-      <h4 class="dtH4">Standards Compliancy</h4>
-      <list type="definition">
+      <h4 class="dtH4">Standards Conformance</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Conformance Information</description>
+        </listheader>
         <item>
             <term>HTML 4.01</term>
             <description>valid</description>
