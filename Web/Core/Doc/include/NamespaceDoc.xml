@@ -9,16 +9,160 @@ summary
 summary
   </namespace>
 -->  
-<!--
+
   <namespace name="Rubicon.Web.UI">
-summary
+    The <b>Rubicon.Web.UI</b> namespace provides classes related the <see cref="System.Web.UI.Page"/> and 
+    generic user interface features.
+    
+    <h3 class="dtH3">Web Accessibility Initiative (WAI)</h3>
+    <para>
+      The <a href="http://www.w3.org/WAI/intro/wcag.php" target="_blank">Web Content Accessibility Guidelines</a> 
+      defined by the <a href="http://www.w3.org/WAI" target="_blank">WAI</a> include a 
+      <a href="http://www.w3.org/TR/WCAG10/full-checklist.html" target="_blank">list of checkpoints</a> that must be 
+      met by a web page claiming WAI conformity. These checkpoints have on of three priority levels assigned. 
+    </para><para>
+      The WAI conformance of a web page is meassured by its conformence level:
+    </para>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="25%"/>
+        <col width="75%"/>
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th>Conformance Level</th>
+          <th>Requirement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conformance Level "A"</td>
+          <td>All Priority 1 checkpoints are satisfied.</td>
+        </tr>
+        <tr>
+          <td>Conformance Level "Double-A"</td>
+          <td>All Priority 1 and 2 checkpoints are satisfied.</td>
+        </tr>
+        <tr>
+          <td>Conformance Level "Triple-A"</td>
+          <td>All Priority 1, 2, and 3 checkpoints are satisfied.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <para>
+      A web application implemented with the use of the rubicon web controls can enforce WAI conformance.
+      This feature is activated by setting the 
+      <see cref="T:Rubicon.Web.Configuration.WebConfiguration.WAI">Rubicon.Web.Configuration.WebConfiguration.WAI</see>
+      entry in the configuration file.
+    </para>
+    <para>
+      A list of WAI conform controls can be found in the 
+      <see href="Rubicon.Web.UI.Controls.html">Rubicon.Web.UI.Controls</see> and
+      <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace 
+      documentation.
+    </para>
   </namespace>
--->  
-<!--
+
   <namespace name="Rubicon.Web.UI.Controls">
-summary
+    The <b>Rubicon.Web.UI.Controls</b> namespace provides web controls. 
+    
+    <h3 class="dtH3">Standards Conformance Chart</h3>
+    <div class="tablediv"> 
+    <table class="dtTABLE" cellspacing="0">
+      <colgroup>
+        <col width="28%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+        <col width="18%"/>
+      </colgroup>
+      <thead>
+        <tr valign="top">
+          <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">HTML 4.01 Conformance</th>
+          <th rowspan="2" style="vertical-align:top; text-align:center;">XHTML 1.0 Conformance</th>
+          <th colspan="2" style="text-align:center;">WAI Conformance</th>
+        </tr>
+        <tr valign="top">
+          <th style="text-align:center;">Default Settings</th>
+          <th style="text-align:center;">Possible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.DropDownMenu"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.TabbedMultiView"/></td>
+          <td style="text-align:center;">-</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">-</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.ValidationStateViewer"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.WebButton"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.WebLinkButton"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.WebTabStrip"/></td>
+          <td style="text-align:center;">-</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">-</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.Web.UI.Controls.WebTreeView"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10">
+            X Fully conform.<br/>
+            - Not conform.<br/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+    <para>
+      See the <see href="Rubicon.Web.UI.html">Rubicon.Web.UI</see> namespace documentation for details 
+      on enforcing WAI conformance.
+    </para>
   </namespace>
--->  
 <!--
   <namespace name="Rubicon.Web.UI.Globalization">
 summary
