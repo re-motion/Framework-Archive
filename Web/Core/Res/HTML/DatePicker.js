@@ -64,13 +64,41 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   frame.marginWidth = 0;
   frame.marginHeight = 0;
   
+  var datePickerLeft;
+  var datePickerTop;
+  var datePickerWidth;
+  var datePickerHeight;
   window.document.body.insertBefore (datePicker, window.document.body.children[0]);
   //  Adjust position so the date picker is shown below 
   //  and aligned with the right border of the button.
   datePicker.style.left = left - frame.offsetWidth + button.offsetWidth;
-  datePicker.style.top = top + button.offsetHeight
+  datePicker.style.top = top + button.offsetHeight;
+  datePickerLeft = datePicker.offsetLeft;
+  datePickerTop = datePicker.offsetTop;
+  datePickerWidth = datePicker.offsetWidth;
+  datePickerHeight = datePicker.offsetHeight;
   datePicker.style.display = 'none';
   
+  //  Re-adjust the button, in case available screen space is insufficient
+  var datePickerTopAdjusted = datePickerTop;
+  var bodyHeight = window.document.body.offsetHeight;
+  if (bodyHeight < datePickerTop + datePickerHeight)
+  {
+    var newTop = top - datePickerHeight - button.offsetTop - button.clientTop;
+    if (newTop >= 0)
+      datePickerTopAdjusted = newTop;
+  }
+  
+  var datePickerLeftAdjusted = datePickerLeft;
+  var bodyWidth = window.document.body.offsetWidth;
+  if (bodyWidth < datePickerLeft + datePickerWidth)
+    datePickerLeftAdjusted = 0;
+  
+  datePicker.style.display = '';
+  datePicker.style.left = datePickerLeftAdjusted;
+  datePicker.style.top = datePickerTopAdjusted;
+  datePicker.style.display = 'none';
+
   _datePicker_currentDatePicker = datePicker;
   _datePicker_isEventAfterDatePickerButtonClick = true;
   target.document.onclick = DatePicker_OnDocumentClick;
