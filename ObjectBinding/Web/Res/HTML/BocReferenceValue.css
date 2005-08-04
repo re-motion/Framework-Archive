@@ -5,6 +5,7 @@ td.bocReferenceValueContent
   padding-left: 0px;
   padding-bottom: 2px;
   padding-right: 0px;
+  cursor: default;
 }
 
 td.bocReferenceValueContent a
@@ -17,7 +18,6 @@ td.bocReferenceValueContent a:hover
 {
   color: Blue;
 	background-color: #fee197;	
-	cursor: hand;
 	padding: 1px;
 	border-width: 1px;
 	border-color: #2254b1;
