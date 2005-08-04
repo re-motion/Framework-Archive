@@ -18,11 +18,11 @@
           <description>valid</description>
         </item>
         <item>
-          <term>WAI</term>
+          <term>WAI WCAG 1.0</term>
           <description>
             <para>
-              WAI priority 1 checkpoint 6.3 is not met unless the <see cref="UseLegacyButton"/> flag is set. This can 
-              be enforced by the <see cref="Rubicon.Web.Configuration.WebConfiguration.Wai"/> configuration entry.
+              Priority 1 checkpoint 6.3 is not met unless the <see cref="UseLegacyButton"/> flag is set. This can 
+              be enforced by the <see cref="Rubicon.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
             </para>
           </description>
         </item>        

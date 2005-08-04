@@ -1,8 +1,9 @@
 1.2.60
 ======
 - Wai Configuration
+  * WAI zu WCAG korrigiert
   * Property Level umbenannt zu ConformanceLevel.
-  * Enum WaiLevel umbenannt zu WaiConfigurationLevel 
+  * Enum WaiLevel umbenannt zu WaiConformanceLevel 
 
 1.2.57
 ======
