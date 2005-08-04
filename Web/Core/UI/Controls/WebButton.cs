@@ -181,19 +181,19 @@ public class WebButton :
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (WaiUtility.IsWaiDebuggingEnabled() && WaiUtility.IsWaiLevelAConformanceRequired())
+    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
     {
       if (_useLegacyButton == NaBooleanEnum.True)
-        throw new WaiException (1, this, "UseLegacyButton");
+        throw new WcagException (1, this, "UseLegacyButton");
     }
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WaiUtility.IsWaiLevelAConformanceRequired())
+    if (WcagUtility.IsWaiConformanceLevelARequired())
       EvaluateWaiConformity ();
 
     if (IsLegacyButtonEnabled)
@@ -273,7 +273,7 @@ public class WebButton :
 
   protected bool IsLegacyButtonEnabled
   {
-    get { return ! WaiUtility.IsWaiLevelAConformanceRequired() && _useLegacyButton == NaBooleanEnum.True;}
+    get { return ! WcagUtility.IsWaiConformanceLevelARequired() && _useLegacyButton == NaBooleanEnum.True;}
   }
 
   private string EnsureEndWithSemiColon (string value)

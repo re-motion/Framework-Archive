@@ -6,34 +6,34 @@ namespace Rubicon.Web.Utilities
 
 public class WcagUtility
 {
-  public static bool IsWcagLevelAConformanceRequired (WcagConformanceLevel conformanceLevel)
+  public static bool IsWaiConformanceLevelARequired (WaiConformanceLevel conformanceLevel)
   {
-    return (conformanceLevel & WcagConformanceLevel.A) == WcagConformanceLevel.A;
+    return (conformanceLevel & WaiConformanceLevel.A) == WaiConformanceLevel.A;
   }
 
-  public static bool IsWcagLevelAConformanceRequired ()
+  public static bool IsWaiConformanceLevelARequired ()
   {
-    return IsWcagLevelAConformanceRequired (GetWcagConformanceLevel());
+    return IsWaiConformanceLevelARequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWcagLevelDoubleAConformanceRequired (WcagConformanceLevel conformanceLevel)
+  public static bool IsWaiConformanceLevelDoubleARequired (WaiConformanceLevel conformanceLevel)
   {
-    return (conformanceLevel & WcagConformanceLevel.DoubleA) == WcagConformanceLevel.DoubleA;
+    return (conformanceLevel & WaiConformanceLevel.DoubleA) == WaiConformanceLevel.DoubleA;
   }
 
-  public static bool IsWcagLevelDoubleAConformanceRequired ()
+  public static bool IsWaiConformanceLevelDoubleARequired ()
   {
-    return IsWcagLevelDoubleAConformanceRequired (GetWcagConformanceLevel());
+    return IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWcagLevelTripleAConformanceRequired (WcagConformanceLevel conformanceLevel)
+  public static bool IsWaiConformanceLevelTripleARequired (WaiConformanceLevel conformanceLevel)
   {
-    return (conformanceLevel & WcagConformanceLevel.TripleA) == WcagConformanceLevel.TripleA;
+    return (conformanceLevel & WaiConformanceLevel.TripleA) == WaiConformanceLevel.TripleA;
   }
 
-  public static bool IsWcagLevelTripleAConformanceRequired ()
+  public static bool IsWaiConformanceLevelTripleARequired ()
   {
-    return IsWcagLevelTripleAConformanceRequired (GetWcagConformanceLevel());
+    return IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel());
   }
 
   public static bool IsWcagDebuggingEnabled()
@@ -41,7 +41,7 @@ public class WcagUtility
     return WebConfiguration.Current.Wcag.Debug;
   }
 
-  public static Rubicon.Web.Configuration.WcagConformanceLevel GetWcagConformanceLevel()
+  public static Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
   {
     return WebConfiguration.Current.Wcag.ConformanceLevel;
   }
