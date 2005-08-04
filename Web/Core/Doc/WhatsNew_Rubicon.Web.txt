@@ -3,7 +3,11 @@
 - Wai Configuration
   * WAI zu WCAG korrigiert
   * Property Level umbenannt zu ConformanceLevel.
-  * Enum WaiLevel umbenannt zu WaiConformanceLevel 
+  * Enum WaiLevel umbenannt zu WaiConformanceLevel.
+
+- DatePicker
+  * Positionierung umgestellt: DatePicker erkennt nun, wenn zu wenig Platz ist und rendert sich vor statt 
+    nach dem Button
 
 1.2.57
 ======
