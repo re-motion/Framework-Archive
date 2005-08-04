@@ -231,13 +231,13 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWaiDebuggingEnabled && IsWaiLevelDoubleAConformanceRequired)
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
     {
       if (ActualValueType == BocDateTimeValueType.DateTime)
-        throw new WaiException (2, this, "ActualValueType");
+        throw new WcagException (2, this, "ActualValueType");
     }
   }
 
@@ -252,12 +252,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     
     bool isReadOnly = IsReadOnly;
 
-    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocDateTimeValue), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
-    }
+    //if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    //{
+    //  string url = ResourceUrlResolver.GetResourceUrl (
+    //      this, Context, typeof (BocDateTimeValue), ResourceType.Html, c_styleFileUrl);
+    //  HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    //}
 
     if (IsReadOnly)
     {
@@ -336,7 +336,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformanceRequired)
+    if (IsWaiConformanceLevelARequired)
       EvaluateWaiConformity ();
 
     if (IsReadOnly)
@@ -373,6 +373,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         }
       }
 
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+      writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
       writer.AddStyleAttribute ("display", "inline");
       writer.RenderBeginTag (HtmlTextWriterTag.Table);  // Begin table
 

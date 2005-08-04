@@ -965,29 +965,29 @@ public class BocList:
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity (BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-    if (IsWaiDebuggingEnabled && IsWaiLevelAConformanceRequired)
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (ShowOptionsMenu)
-        throw new WaiException (1, this, "ShowOptionsMenu");
+        throw new WcagException (1, this, "ShowOptionsMenu");
       if (ShowListMenu)
-        throw new WaiException (1, this, "ShowListMenu");
+        throw new WcagException (1, this, "ShowListMenu");
       if (ShowAvailableViewsList)
-        throw new WaiException (1, this, "ShowAvailableViewsList");
+        throw new WcagException (1, this, "ShowAvailableViewsList");
       bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
       if (isPagingEnabled)
-        throw new WaiException (1, this, "PageSize");
+        throw new WcagException (1, this, "PageSize");
       if (EnableSorting)
-        throw new WaiException (1, this, "EnableSorting");
+        throw new WcagException (1, this, "EnableSorting");
 
       for (int i = 0; i < columns.Length; i++)
       {
         if (columns[i] is BocEditDetailsColumnDefinition)
-          throw new WaiException (1, this, String.Format ("Columns[{0}]", i));
+          throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
         if (commandColumn != null)
@@ -996,7 +996,7 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            throw new WaiException (1, this, String.Format ("Columns[{0}]", i));
+            throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
         }
       }
     }
@@ -1149,7 +1149,7 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
-    if (IsWaiLevelAConformanceRequired)
+    if (IsWaiConformanceLevelARequired)
       EvaluateWaiConformity (renderColumns);
 
     if (IsDesignMode)
@@ -1337,7 +1337,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformanceRequired)
+      if (IsWaiConformanceLevelARequired)
         return false;
 
       bool showAvailableViewsList =    _showAvailableViewsList 
@@ -1355,7 +1355,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformanceRequired)
+      if (IsWaiConformanceLevelARequired)
         return false;
 
       bool showOptionsMenu =   ShowOptionsMenu 
@@ -1373,7 +1373,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiLevelAConformanceRequired)
+      if (IsWaiConformanceLevelARequired)
         return false;
 
       bool showListMenu =   ShowListMenu 
@@ -1399,7 +1399,7 @@ public class BocList:
     BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
     if (commandColumn != null && commandColumn.Command != null)
     {
-      if (   IsWaiLevelAConformanceRequired
+      if (   IsWaiConformanceLevelARequired
           && (   commandColumn.Command.Type == CommandType.Event
               || commandColumn.Command.Type == CommandType.WxeFunction))
       {
@@ -1409,7 +1409,7 @@ public class BocList:
 
     if (editDetailsColumn != null)
     {
-      if (IsWaiLevelAConformanceRequired)
+      if (IsWaiConformanceLevelARequired)
         return false;
       if (   editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
           && isReadOnly)
@@ -2696,7 +2696,7 @@ public class BocList:
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
-      if (IsWaiLevelAConformanceRequired && command.Type != CommandType.Href)
+      if (IsWaiConformanceLevelARequired && command.Type != CommandType.Href)
         isCommandEnabled = false;
       else
         isCommandEnabled = true;
@@ -4537,7 +4537,7 @@ public class BocList:
 
   protected bool IsClientSideSortingEnabled
   {
-    get { return ! IsWaiLevelAConformanceRequired && EnableSorting; }
+    get { return ! IsWaiConformanceLevelARequired && EnableSorting; }
   }
 
   /// <summary>
@@ -4657,7 +4657,7 @@ public class BocList:
 
   protected bool IsPagingEnabled
   {
-    get { return !IsWaiLevelAConformanceRequired && !_pageSize.IsNull && _pageSize.Value != 0; }
+    get { return !IsWaiConformanceLevelARequired && !_pageSize.IsNull && _pageSize.Value != 0; }
   }
 
   /// <summary>

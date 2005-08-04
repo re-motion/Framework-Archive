@@ -397,18 +397,18 @@ public class BocReferenceValue:
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="WaiException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity()
   {
-    if (IsWaiDebuggingEnabled && IsWaiLevelAConformanceRequired)
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (_showOptionsMenu)
-        throw new WaiException (1, this, "ShowOptionsMenu");
+        throw new WcagException (1, this, "ShowOptionsMenu");
       bool hasPostBackCommand =     Command != null
                                 && (   Command.Type == CommandType.Event 
                                     || Command.Type == CommandType.WxeFunction);
       if (hasPostBackCommand)
-        throw new WaiException (1, this, "Command");
+        throw new WcagException (1, this, "Command");
     }
   }
 
@@ -511,7 +511,7 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiLevelAConformanceRequired)
+    if (IsWaiConformanceLevelARequired)
       EvaluateWaiConformity();
 
     if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
@@ -750,7 +750,7 @@ public class BocReferenceValue:
 
   private bool IsCommandEnabled (bool isReadOnly)
   {
-    if (IsWaiLevelAConformanceRequired)
+    if (IsWaiConformanceLevelARequired)
       return false;
 
     bool isCommandEnabled = false;
@@ -1091,7 +1091,7 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   private bool HasOptionsMenu
   {
-    get { return ! IsWaiLevelAConformanceRequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
+    get { return ! IsWaiConformanceLevelARequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
@@ -1650,7 +1650,6 @@ public class BocReferenceValue:
   {
     get
     { 
-
       return _errorMessage; 
     }
     set 

@@ -493,29 +493,29 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _controlExistedInPreviousRequest = true;
   }
 
-  protected bool IsWaiDebuggingEnabled
+  protected bool IsWcagDebuggingEnabled
   {
-    get { return WaiUtility.IsWaiDebuggingEnabled(); }
+    get { return WcagUtility.IsWcagDebuggingEnabled(); }
   }
 
   protected virtual Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
   {
-    return WaiUtility.GetWaiConformanceLevel();
+    return WcagUtility.GetWaiConformanceLevel();
   }
 
-  protected bool IsWaiLevelAConformanceRequired
+  protected bool IsWaiConformanceLevelARequired
   {
-    get { return WaiUtility.IsWaiLevelAConformanceRequired (GetWaiConformanceLevel()); }
+    get { return WcagUtility.IsWaiConformanceLevelARequired (GetWaiConformanceLevel()); }
   }
 
-  protected bool IsWaiLevelDoubleAConformanceRequired
+  protected bool IsWaiConformanceLevelDoubleARequired
   {
-    get { return WaiUtility.IsWaiLevelDoubleAConformanceRequired (GetWaiConformanceLevel()); }
+    get { return WcagUtility.IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel()); }
   }
 
-  protected bool IsWaiLevelTripleAConformanceRequired
+  protected bool IsWaiConformanceLevelTripleARequired
   {
-    get { return WaiUtility.IsWaiLevelTripleAConformanceRequired (GetWaiConformanceLevel()); }
+    get { return WcagUtility.IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel()); }
   }
 
 //  /// <summary>

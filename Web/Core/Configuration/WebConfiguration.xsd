@@ -13,9 +13,9 @@
           </xs:complexType>
         </xs:element>
                
-        <xs:element name="wai" minOccurs="0" maxOccurs="1">
+        <xs:element name="wcag" minOccurs="0" maxOccurs="1">
           <xs:complexType>
-            <xs:attribute name="conformanceLevel" type="tns:WaiLevel" default="Undefined"/>            
+            <xs:attribute name="conformanceLevel" type="tns:WcagLevel" default="Undefined"/>            
             <xs:attribute name="debug" type="xs:boolean" default="false" />
           </xs:complexType>
         </xs:element>
@@ -31,7 +31,7 @@
       
     </xs:complexType>
   </xs:element>
-  <xs:simpleType name="WaiLevel">
+  <xs:simpleType name="WcagLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Undefined" />
       <xs:enumeration value="A" />

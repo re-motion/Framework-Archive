@@ -83,7 +83,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
-  WaiConfiguration _wai = new WaiConfiguration();
+  WcagConfiguration _wcag = new WcagConfiguration();
   ResourceConfiguration _resources = new ResourceConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
@@ -94,12 +94,12 @@ public class WebConfiguration: IConfigurationSectionHandler
     set { _executionEngine = value; }
   }
 
-  /// <summary> Gets or sets the <see cref="WaiConfiguration"/> entry. </summary>
-  [XmlElement ("wai")]
-  public WaiConfiguration Wai
+  /// <summary> Gets or sets the <see cref="WcagConfiguration"/> entry. </summary>
+  [XmlElement ("wcag")]
+  public WcagConfiguration Wcag
   {
-    get { return _wai; }
-    set { _wai = value; }
+    get { return _wcag; }
+    set { _wcag = value; }
   }
 
   /// <summary> Gets or sets the <see cref="ResourceConfiguration"/> entry. </summary>
@@ -145,29 +145,29 @@ public class ExecutionEngineConfiguration
 }
 
 /// <summary>
-///   Enumeration listing the possible WAI levels.
+///   Enumeration listing the possible WCAG conformance levels.
 /// </summary>
 [Flags]
 public enum WaiConformanceLevel
 {
-  /// <summary> The application is not required to follow the WAI guidelines. </summary>
+  /// <summary> The web application is not required to follow the WAI guidelines. </summary>
   Undefined = 0,
   /// <summary> WAI conformance level A, all Priority 1 checkpoints are satisfied. </summary>
   A = 1, 
-  /// <summary> WAI conformance level DoubleA, all Priority 1 and 2 checkpoints are satisfied. </summary>
+  /// <summary> WAI conformance level Double-A, all Priority 1 and 2 checkpoints are satisfied. </summary>
   DoubleA = 3,
-  /// <summary> WAI conformance level TripleA, all Priority 1, 2, and 3 checkpoints are satisfied. </summary>
+  /// <summary> WAI conformance level Triple-A, all Priority 1, 2, and 3 checkpoints are satisfied. </summary>
   TripleA = 7
 }
 
 /// <summary> Configuration section entry for specifying the application wide WAI level. </summary>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
-public class WaiConfiguration
+public class WcagConfiguration
 {
   private WaiConformanceLevel _conformanceLevel = WaiConformanceLevel.Undefined;
   private bool _debug = false;
 
-  /// <summary> Gets or sets the WAI conformance level required in this web-application. </summary>
+  /// <summary> Gets or sets the WCAG conformance level required in this web-application. </summary>
   /// <value> A value of the <see cref="WaiConformanceLevel"/> enumeration. Defaults to <see cref="WaiConformanceLevel.Undefined"/>. </value>
   [XmlAttribute ("conformancelevel")]
   public WaiConformanceLevel ConformanceLevel
@@ -182,7 +182,7 @@ public class WaiConfiguration
   /// </summary>
   /// <value> <see langword="true"/> to enable debug mode. Defaults to <see langword="false"/>. </value>
   /// <remarks> 
-  ///   Controls in violation of the required WAI level throw a <see cref="Rubicon.Web.UI.WaiException"/> in debug mode.
+  ///   Controls in violation of the required WAI level throw a <see cref="Rubicon.Web.UI.WcagException"/> in debug mode.
   /// </remarks>
   [XmlAttribute ("debug")]
   public bool Debug
