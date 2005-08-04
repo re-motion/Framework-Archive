@@ -19,15 +19,15 @@
         </listheader>
         <item>
           <term>HTML 4.01</term>
-          <description>Valid.</description>
+          <description>valid</description>
         </item>
         <item>
           <term>XHTML 1.0</term>
-          <description>Valid.</description>
+          <description>valid</description>
         </item>
         <item>
-          <term>WAI</term>
-          <description>Not valid.</description>
+          <term>WAI WCAG 1.0</term>
+          <description>not conform</description>
         </item>        
       </list>
     </remarks>

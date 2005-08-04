@@ -405,7 +405,7 @@
           <th rowspan="2" style="vertical-align:top; text-align:center;">Control</th>
           <th rowspan="2" style="vertical-align:top; text-align:center;">HTML 4.01 Conformance</th>
           <th rowspan="2" style="vertical-align:top; text-align:center;">XHTML 1.0 Conformance</th>
-          <th colspan="2" style="text-align:center;">WAI Conformance</th>
+          <th colspan="2" style="text-align:center;">WAI WCAG 1.0 Conformance Level</th>
         </tr>
         <tr valign="top">
           <th style="text-align:center;">Default Settings</th>
@@ -424,50 +424,50 @@
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
-          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
-          <td style="text-align:center;">Level A</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level AA</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
-          <td style="text-align:center;">Level A</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level A</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
-          <td style="text-align:center;">Level AA</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level A</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
-          <td style="text-align:center;">Level AA</td><!-- WAI Conformance default -->
-          <td style="text-align:center;">Level AAA</td><!-- WAI Conformance possible -->
+          <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
@@ -488,7 +488,7 @@
     </table>
     </div>
     <para>
-      See the <see href="Rubicon.Web.UI.html">Rubicon.Web.UI</see> namespace documentation for details 
+      See the <see href="Rubicon.Web.UI.html#wai">Rubicon.Web.UI</see> namespace documentation for details 
       on enforcing WAI conformance.
     </para>
   </namespace>

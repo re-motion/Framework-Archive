@@ -25,16 +25,16 @@
         </item>
         <item>
           <term>XHTML 1.0</term>
-          <description>Not valid.</description>
+          <description>Not valid</description>
         </item>
         <item>
-          <term>WAI</term>
+          <term>WAI WCAG 1.0</term>
           <description>
             <para> 
-              Level A valid if advanced features are turned off. This can be enforced by the 
+              Level A conform if advanced features are turned off. This can be enforced by the 
               <see cref="Rubicon.Web.Configuration.WebConfiguration.Wai"/> configuration entry.
             </para>
-            <para> WAI priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
+            <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
             <list type="bullet">
               <item> An event or a WXE command defined for a column. </item>
               <item> Paging </item>
@@ -43,9 +43,9 @@
               <item> The edit details column </item>
               <item> The drop down menu and the list menu </item>
             </list>
-            <para> WAI priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
+            <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
             <para> 
-              WAI priority 2 checkpoint 13.1 is not met for links placed into value columns. The column's value is used 
+              Priority 2 checkpoint 13.1 is not met for links placed into value columns. The column's value is used 
               to identify the link's target.
             </para>
           </description>
