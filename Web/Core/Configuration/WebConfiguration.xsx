@@ -6,5 +6,5 @@
         <wai_XmlElement left="317" top="3725" width="5292" height="2963" selected="0" zOrder="2" index="1" expanded="1" />
         <resources_XmlElement left="6243" top="3725" width="5292" height="2963" selected="0" zOrder="5" index="2" expanded="1" />
     </rubicon.web_XmlElement>
-    <WaiLevel_XmlSimpleType left="9206" top="1000" width="5292" height="2963" selected="0" zOrder="8" index="1" expanded="1" />
+    <WcagLevel_XmlSimpleType left="9206" top="1000" width="5292" height="2963" selected="0" zOrder="8" index="1" expanded="1" />
 </XSDDesignerLayout>
