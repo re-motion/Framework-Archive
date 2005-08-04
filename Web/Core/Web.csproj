@@ -516,7 +516,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\WaiException.cs"
+                    RelPath = "UI\WcagException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -884,7 +884,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Utilities\WaiUtility.cs"
+                    RelPath = "Utilities\WcagUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
