@@ -1006,7 +1006,7 @@ public class BocReferenceValue:
         //  Item not yet in the list but is a valid item.
         IBusinessObjectWithIdentity businessObject = Value;
 
-        ListItem item = new ListItem (businessObject.DisplayName, businessObject.UniqueIdentifier);
+        ListItem item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
         _dropDownList.Items.Add (item);
 
         _dropDownList.SelectedValue = InternalValue;
@@ -1047,7 +1047,7 @@ public class BocReferenceValue:
             if (Value == null)
               _icon.AlternateText = String.Empty;
             else
-              _icon.AlternateText = HttpUtility.HtmlEncode (Value.DisplayName);
+              _icon.AlternateText = HttpUtility.HtmlEncode (GetDisplayName (Value));
           }
           else
           {

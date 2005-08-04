@@ -1,3 +1,8 @@
+1.2.60
+======
+- BocReferenceValue
+  * Bugfix für GetDisplayName: Wurde nicht überall verwendet.
+  
 1.2.59
 ======
 - BocList
