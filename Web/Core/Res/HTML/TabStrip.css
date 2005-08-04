@@ -21,6 +21,7 @@ td.tabStripTab
   border-bottom: solid 1px #2254b1;	
   padding: 1pt 5pt 1pt 5pt;
 	background-color: #e1ecfc;
+	cursor: pointer;
 	cursor: hand;
 }
 
@@ -38,6 +39,7 @@ td.tabStripTabLeftBorderSelected
 {
   width: 1px;
   background-color: #2254b1;
+	cursor: pointer;
 	cursor: hand;
 }
 
@@ -46,6 +48,7 @@ td.tabStripTabRightBorderSelected
 {
   width: 1px;
   background-color: #2254b1;
+	cursor: pointer;
 	cursor: hand;
 }
 
