@@ -251,6 +251,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeLauncher.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeOutParameterNotSupportedException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -443,6 +448,10 @@
                 />
                 <File
                     RelPath = "Res\UI\WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Res\UI\WxeLauncher.ashx"
                     BuildAction = "None"
                 />
                 <File
