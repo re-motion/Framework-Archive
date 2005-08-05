@@ -1,3 +1,12 @@
+1.2.61
+======
+- Rubicon.Web.ExecutionEngine.WxeLauncher
+  * Neue Klasse
+  * Ermöglicht einen redirected Aufruf des WxeHandlers. Das ist notwendig, wenn der Link auf eine WxeFunction
+    zB aus MS Word aufgerufen wird. Ms Word schluckt die Sessioninformationen, wodurch nachfolgende Postbacks 
+    keine Sessioninformationen mehr haben, und somit ins Leere gehen.
+  * \Res\UI\WxeLauncher.ashx muss in das Application Root Direcotry kopiert werden.
+
 1.2.60
 ======
 - Wai Configuration
