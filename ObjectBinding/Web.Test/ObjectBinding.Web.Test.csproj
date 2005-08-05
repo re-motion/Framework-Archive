@@ -653,6 +653,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "WxeLauncher.ashx"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "Doc\Detecting Browser unload events, SmartNavigation.txt"
                     BuildAction = "Content"
                 />
