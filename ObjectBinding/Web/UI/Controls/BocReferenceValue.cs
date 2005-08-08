@@ -89,6 +89,7 @@ public class BocReferenceValue:
 	// member fields
 
   private bool _isDirty = true;
+  private bool _isBusinessObejectListPopulated = false;
 
   private DropDownList _dropDownList;
   private Label _label;
@@ -109,6 +110,7 @@ public class BocReferenceValue:
 
   private bool _enableIcon = true;
   private string _select = String.Empty;
+  private NaBooleanEnum _enableSelectStatement = NaBooleanEnum.Undefined;
 
   private DropDownMenu _optionsMenu;
   private string _optionsTitle;
@@ -183,7 +185,7 @@ public class BocReferenceValue:
     base.OnLoad (e);
 
     if (! ControlExistedInPreviousRequest)
-      RefreshBusinessObjectList();
+      EnsureBusinessObjectListPopulated();
   }
 
   /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
@@ -895,15 +897,19 @@ public class BocReferenceValue:
   ///     Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
   ///     <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
   ///   </para><para>
-  ///     An empty <see cref="Select"/> statement does not modify the list.
+  ///     Only populates the list, if it is not already populated and <see cref="EnableSelectStatement"/>
+  ///     is not <see cref="NaBooleanEnum.False"/>.
   ///   </para>  
   /// </remarks>
-  protected void RefreshBusinessObjectList()
+  protected void EnsureBusinessObjectListPopulated()
   {
-    if (Property == null)
+    if (_isBusinessObejectListPopulated)
       return;
 
-    if (StringUtility.IsNullOrEmpty (_select))
+    if (! IsSelectStatementEnabled)
+      return;
+
+    if (Property == null)
       return;
 
     IBusinessObjectWithIdentity[] businessObjects = null;
@@ -923,6 +929,7 @@ public class BocReferenceValue:
   /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
   protected virtual void RefreshBusinessObjectList (IList businessObjects)
   {
+    _isBusinessObejectListPopulated = true;
     _dropDownList.Items.Clear();
 
     //  Add Undefined item
@@ -1557,6 +1564,32 @@ public class BocReferenceValue:
       else
         _select = value.Trim(); 
     }
+  }
+
+  /// <summary> Gets or sets the flag that determines whether to evaluate the <see cref="Select"/> statement. </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to evaluate the select statement. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsSelectStatementEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public NaBooleanEnum EnableSelectStatement
+  {
+    get { return _enableSelectStatement; }
+    set { _enableSelectStatement = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableSelectStatement"/> property. </summary>
+  /// <value>
+  ///   <see langowrd="false"/> if <see cref="EnableSelectStatement"/> is <see cref="NaBooleanEnum.False"/>. 
+  /// </value>
+  protected bool IsSelectStatementEnabled
+  {
+    get { return _enableSelectStatement != NaBooleanEnum.False;}
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
