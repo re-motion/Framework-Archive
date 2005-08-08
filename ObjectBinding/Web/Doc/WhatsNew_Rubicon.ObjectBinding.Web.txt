@@ -1,3 +1,12 @@
+1.2.61
+======
+- BocReferenceValue
+  * Select Statement: Seit 1.2.55 wurden leere Select-Statements grundsätzlich nicht ausgewertet.
+    Neues Verhalten: Das Select-Statement (auch leer) wird nur ausgeführt wenn die folgenden beiden Bedingungen 
+    erfüllt sind: 
+    Die Liste wurde noch nicht programmatisch befüllt via SetBusinessObjectList.
+    Das Select-Statement ist enabled via IsSelectStatementEnabled, default: enabled
+
 1.2.60
 ======
 - BocReferenceValue

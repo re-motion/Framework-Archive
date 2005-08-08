@@ -318,19 +318,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\fontSize080.css"
+                    RelPath = "Res\HTML\FontSize080.css"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\fontSize080Quirks.css"
+                    RelPath = "Res\HTML\FontSize080Quirks.css"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\fontSize100.css"
+                    RelPath = "Res\HTML\FontSize100.css"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\fontSize100Quirks.css"
+                    RelPath = "Res\HTML\FontSize100Quirks.css"
                     BuildAction = "Content"
                 />
                 <File
