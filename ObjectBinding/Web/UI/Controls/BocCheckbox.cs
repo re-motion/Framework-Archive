@@ -657,6 +657,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as 
   ///   <see langword="NaBooleanEnum.False"/>.
   /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsAutoPostBackEnabled"/> to evaluate this property.
+  /// </remarks>
   [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
   [Category("Behavior")]
   [DefaultValue (NaBooleanEnum.Undefined)]
@@ -679,6 +682,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///   <see cref="NaBooleanEnum.True"/> to enable the description. 
   ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
   /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsDescriptionEnabled"/> to evaluate this property.
+  /// </remarks>
   [Description("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
   [Category ("Appearance")]
   [DefaultValue (NaBooleanEnum.Undefined)]

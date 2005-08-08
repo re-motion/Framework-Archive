@@ -66,9 +66,11 @@
         <see cref="Rubicon.ObjectBinding.Web.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
         behavior.
       </para><para>
-        If no <see cref="Select"/> statement is provided, use <see cref="SetBusinessObjectList"/>
-        to fill the list of <see cref="IBusinessObjectWithIdentity"/> objects. This call is only required during the
-        first page life cycle.
+        Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of 
+        <see cref="IBusinessObjectWithIdentity"/> objects. This call is only required during the first page life cycle. 
+        If the list has not been populated programmatically, the <see cref="Select"/> statement will be evaluated. 
+        This behavior can be deactivated by setting <see cref="IsSelectStatementEnabled"/> to 
+        <see cref="NaBooleanEnum.False"/>.
       </para>
 
       <h4 class="dtH4">Localization Support</h4>
