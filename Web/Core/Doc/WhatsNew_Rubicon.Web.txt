@@ -1,3 +1,8 @@
+1.2.62
+======
+- Rubicon.Web.UI.Globalization.ResourceManagerUtility.GetResoureManager
+  * Resource Manager werden nun gecached.
+  
 1.2.61
 ======
 - Rubicon.Web.ExecutionEngine.WxeLauncher
