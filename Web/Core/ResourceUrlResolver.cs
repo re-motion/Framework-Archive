@@ -13,9 +13,6 @@ public sealed class ResourceUrlResolver
   private const string c_designTimeRootDefault = "C:\\Rubicon.Resources";
   private const string c_designTimeRootEnvironmentVaribaleName = "RUBICONRESOURCES";
 
-  private static bool s_resolverInitialized = false;
-  private static IResourceUrlResolver s_resolver = null;
-
   /// <summary>
   ///   Returns the physical URL of a resource item.
   ///   <seealso cref="IResourceUrlResolver"/>.
@@ -24,18 +21,20 @@ public sealed class ResourceUrlResolver
   ///   <para>
   ///     If the current ASP.NET application object implements <see cref="IResourceUrlResolver"/>, the application 
   ///     object creates the URL string. 
-  ///     Otherwise, the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl 
-  ///     is used.
+  ///     Otherwise, or if <paramref name="context"/> is <see langword="null"/>, the URL 
+  ///     <c>&lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl</c> is used.
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration,
   ///     <see cref="WebConfiguration.Resources">WebConfiguration.Resources</see>, and defaults to 
-  ///     /&lt;AppDir&gt;/res, e.g. /WebApplication/res/Rubicon.Web/Image/Help.gif.
+  ///     <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
   ///   </para><para>
   ///     During design time, the <b>resource root</b> is mapped to the environment variable
   ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
   ///   </para>
   /// </remarks>
-  /// <param name="control"> The current <see cref="Control"/>. Currently, this parameter is ignored. </param>
+  /// <param name="control"> 
+  ///   The current <see cref="Control"/>. Currently, this parameter is only used to detect design time.
+  /// </param>
   /// <param name="context"> The current <see cref="HttpContext"/>. </param>
   /// <param name="definingType"> The type that this resource item is associated with. </param>
   /// <param name="resourceType"> The resource type (image, static html, etc.) </param>
@@ -47,36 +46,60 @@ public sealed class ResourceUrlResolver
       ResourceType resourceType, 
       string relativeUrl)
   {
+    IResourceUrlResolver resolver = null;
     if (context != null)
-    {
-      if (! s_resolverInitialized)
-      {
-        lock (typeof (ResourceUrlResolver))
-        {
-          if (! s_resolverInitialized)
-          {
-            s_resolver = context.ApplicationInstance as IResourceUrlResolver;
-            s_resolverInitialized = true;
-          }
-        }
-      }
-    }
-    if (s_resolver != null)
-    {
-      return s_resolver.GetResourceUrl (definingType, resourceType, relativeUrl);
-    }
+      resolver = context.ApplicationInstance as IResourceUrlResolver;
+    if (resolver != null)
+      return resolver.GetResourceUrl (control, definingType, resourceType, relativeUrl);
     else
-    {
-      string assemblyName = definingType.Assembly.FullName.Split(',')[0];
-      string root;
-      if (context == null && Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
-        root = GetDesignTimeRoot();
-      else 
-        root = GetRunTimeRoot();
-      if (! root.EndsWith ("/"))
-        root += "/";
-      return root + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
-    }
+      return GetResourceUrl (control, definingType, resourceType, relativeUrl);
+  }
+
+  /// <summary>
+  ///   Returns the physical URL of a resource item.
+  ///   <seealso cref="IResourceUrlResolver"/>.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     Uses the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
+  ///   </para><para>
+  ///     The <b>resource root</b> is loaded from the application configuration,
+  ///     <see cref="WebConfiguration.Resources">WebConfiguration.Resources</see>, and defaults to 
+  ///     /&lt;AppDir&gt;/res, e.g. /WebApplication/res/Rubicon.Web/Image/Help.gif.
+  ///   </para><para>
+  ///     During design time, the <b>resource root</b> is mapped to the environment variable
+  ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
+  ///   </para>
+  /// </remarks>
+  /// <param name="control"> 
+  ///   The current <see cref="Control"/>. Currently, this parameter is only used to detect design time.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="definingType"> 
+  ///   The type that this resource item is associated with. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="resourceType"> The resource type (image, static html, etc.) Must not be <see langword="null"/>. </param>
+  /// <param name="relativeUrl"> The relative URL of the item. Must not be <see langword="null"/> or empty.</param>
+  public static string GetResourceUrl (
+      Control control, 
+      Type definingType, 
+      ResourceType resourceType, 
+      string relativeUrl)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("definingType", definingType);
+    ArgumentUtility.CheckNotNull ("resourceType", resourceType);
+    ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
+
+    string assemblyName = definingType.Assembly.FullName.Split(',')[0];
+    string root;
+    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
+      root = GetDesignTimeRoot();
+    else 
+      root = GetRunTimeRoot();
+    if (! root.EndsWith ("/"))
+      root += "/";
+    return root + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
   }
 
   private static string GetRunTimeRoot()
