@@ -196,14 +196,14 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   The <see cref="Type"/> for which to get the resource.
   /// </param>
   /// <param name="name"> The ID of the resource. </param>
-  /// <returns> The found string resource or <see langword="null"/>. </returns>
+  /// <returns> The found string resource or an empty string. </returns>
   public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
   {
     IResourceManager rm = GetResourceManager (objectTypeToGetResourceFor);
 
     string text = rm.GetString (name);
 
-    if (text == null)
+    if (text == name)
       return String.Empty;
 
     return text;
@@ -216,7 +216,7 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   The object for whose <see cref="Type"/> to get the resource.
   /// </param>
   /// <param name="name"> The ID of the resource. </param>
-  /// <returns> The found string resource or <see langword="null"/>. </returns>
+  /// <returns> The found string resource or an empty string. </returns>
   public static string GetResourceText (object objectToGetResourceFor, string name)
   {
     ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -241,7 +241,7 @@ public class MultiLingualResourcesAttribute: Attribute
 
       string text = rm.GetString (name);
 
-      return (text != null);
+      return (text != name);
     }
     catch
     {
