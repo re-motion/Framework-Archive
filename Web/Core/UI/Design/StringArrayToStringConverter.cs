@@ -7,7 +7,7 @@ namespace Rubicon.Web.UI.Design
 
 public class StringArrayConverter : TypeConverter
 {
-  /// <summary> Test: Can convert from <paramref name="sourceType"/> to <see cref="String"/>? </summary>
+  /// <summary> Test: Can convert from the <paramref name="sourceType"/> to a <see cref="String"/> array? </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="sourceType"> 
   ///   The <see cref="Type"/> of the value to be converted into an <see cref="String"/>.
@@ -20,7 +20,7 @@ public class StringArrayConverter : TypeConverter
     return false;  
   }
 
-  /// <summary> Test: Can convert from <paramref name="destinationType"/> to a <see cref="String"/> Array? </summary>
+  /// <summary> Test: Can convert a <see cref="String"/> array to the <paramref name="destinationType"/>? </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="destinationType"> 
   ///   The <see cref="Type"/> of the value to be converted into a <see cref="String"/> Array.
@@ -33,7 +33,7 @@ public class StringArrayConverter : TypeConverter
     return false;  
   }
 
-  /// <summary> Converts <paramref name="value"/> into an <see cref="NaInt32"/>. </summary>
+  /// <summary> Converts <paramref name="value"/> into a <see cref="String"/> array. </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
   /// <param name="value">  The source value. </param>
