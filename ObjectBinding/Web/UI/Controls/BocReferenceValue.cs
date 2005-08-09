@@ -568,7 +568,9 @@ public class BocReferenceValue:
     bool isCommandEnabled = IsCommandEnabled (isReadOnly);
 
     string argument = string.Empty;
-    string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+    string postBackEvent = null; 
+    if (! IsDesignMode)
+      postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
     string objectID = string.Empty;
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
