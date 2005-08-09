@@ -1,3 +1,8 @@
+1.2.62
+======
+- Alle BocControls
+  * Bugfix: Wurde die Width via Style Property angegeben statt direkt mit Width, so wurde sie nicht gerendert.
+
 1.2.61
 ======
 - BocReferenceValue
