@@ -25,9 +25,6 @@ public class SingleBocTestBasePage:
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
 {
-  /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
-  private static Hashtable s_chachedResourceManagers = new Hashtable();
-
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
@@ -61,23 +58,16 @@ public class SingleBocTestBasePage:
     }
     
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
+    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
   }
 
   public virtual IResourceManager GetResourceManager()
   {
-    // cache the resource manager
-    Type type = this.GetType();
-    if (s_chachedResourceManagers[type] == null)
-    {
-      lock (typeof (SingleBocTestBasePage))
-      {
-        if (s_chachedResourceManagers[type] == null)
-          s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);
-      }  
-    }
-  
-    return (IResourceManager) s_chachedResourceManagers[type];
+    Type type = GetType();
+    if (MultiLingualResourcesAttribute.ExistsResource (type))
+      return MultiLingualResourcesAttribute.GetResourceManager (type, true);
+    else
+      return null;
   }
 
 //  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
