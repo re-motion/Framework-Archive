@@ -294,7 +294,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
           if (! Width.IsEmpty)
             writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
           else
-            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["Width"]);
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
         }
       }
 
