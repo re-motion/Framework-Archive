@@ -369,7 +369,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           if (! Width.IsEmpty)
             writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
           else
-            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["Width"]);
+            writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
         }
       }
 

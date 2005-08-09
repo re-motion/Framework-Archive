@@ -2596,14 +2596,22 @@ public class BocList:
     IBusinessObjectBoundModifiableWebControl editModeControl = _rowEditModeControls[columnIndex];
     
     CssStyleCollection editModeControlStyle = null;
+    bool isEditModeControlWidthEmpty = true;
     if (editModeControl is WebControl)
+    {
       editModeControlStyle = ((WebControl) editModeControl).Style;
+      isEditModeControlWidthEmpty = ((WebControl) editModeControl).Width.IsEmpty;
+    }
     else if (editModeControl is System.Web.UI.HtmlControls.HtmlControl)
+    {
       editModeControlStyle = ((System.Web.UI.HtmlControls.HtmlControl) editModeControl).Style;
+    }
     if (editModeControlStyle != null)
     {
-      editModeControlStyle["width"] = "100%";
-      editModeControlStyle["vertical-align"] = "middle";
+      if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
+        editModeControlStyle["width"] = "100%";
+      if (StringUtility.IsNullOrEmpty (editModeControlStyle["vertical-align"]))
+        editModeControlStyle["vertical-align"] = "middle";
     }
     
     if (_showEditDetailsValidationMarkers)
