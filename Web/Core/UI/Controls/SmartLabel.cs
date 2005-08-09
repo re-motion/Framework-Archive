@@ -99,7 +99,13 @@ public class SmartLabel: WebControl
     set { _forControl = value; }
   }
 
+  /// <summary>
+  ///   Gets or sets the text displayed if the <see cref="SmartLabel"/> is not bound to an 
+  ///   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
+  ///   <see cref="ISmartControl.DisplayName"/>.
+  /// </summary>
   [Category ("Appearance")]
+  [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
   [DefaultValue (null)]
   public string Text
   {
@@ -116,7 +122,7 @@ public class SmartLabel: WebControl
 
   public string GetText()
   {
-    if (_text != null && _text.Length > 0)
+    if (! StringUtility.IsNullOrEmpty (_text))
       return _text;
 
     string forControlBackUp = ForControl;
@@ -182,40 +188,28 @@ public class SmartLabel: WebControl
   {
     base.AddAttributesToRender (writer);
 
-    Control target = ControlHelper.FindControl (NamingContainer, ForControl);
-    ISmartControl smartControl = target as ISmartControl;
-    bool useLabel;
-    if (smartControl != null)
+    if (! ControlHelper.IsDesignMode (this))
     {
-      target = smartControl.TargetControl;
-      useLabel = smartControl.UseLabel;
-    }
-    else
-    {
-      useLabel = ! (target is DropDownList || target is HtmlSelect);
-    }
+      Control target = ControlHelper.FindControl (NamingContainer, ForControl);
+      ISmartControl smartControl = target as ISmartControl;
+      bool useLabel;
+      if (smartControl != null)
+      {
+        target = smartControl.TargetControl;
+        useLabel = smartControl.UseLabel;
+      }
+      else
+      {
+        useLabel = ! (target is DropDownList || target is HtmlSelect);
+      }
 
-    if (useLabel && target != null)
-      writer.AddAttribute (HtmlTextWriterAttribute.For, target.ClientID);
+      if (useLabel && target != null)
+        writer.AddAttribute (HtmlTextWriterAttribute.For, target.ClientID);
 
-    // TODO: add <a href="ToName(target.ClientID)"> ...
-    // ToName: '.' -> '_'
+      // TODO: add <a href="ToName(target.ClientID)"> ...
+      // ToName: '.' -> '_'
+    }
   }
-
-  //  Unfinished implementation of SmartLabel populated by ResourceDispatchter
-  ///// <summary>
-  /////   Gets or sets the text displayed if the <see cref="SmartLabel"/> is not bound to an 
-  /////   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
-  /////   <see cref="ISmartControl.DisplayName"/>.
-  ///// </summary>
-  //[Category ("Appearance")]
-  //[Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
-  //[DefaultValue ("")]
-  //public string Text
-  //{
-  //  get { return _text; }
-  //  set { _text = value; }
-  //}
 }
 
 }
