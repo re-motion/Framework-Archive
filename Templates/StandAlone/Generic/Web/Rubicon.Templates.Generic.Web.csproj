@@ -204,7 +204,11 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Image\rublogo.bmp"
+                    RelPath = "Image\DropDownMenuItemIconPane_Gray.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\rublogo.gif"
                     BuildAction = "Content"
                 />
                 <File
