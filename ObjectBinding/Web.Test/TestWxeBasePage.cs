@@ -23,10 +23,7 @@ public class TestWxeBasePage:
     WxePage, 
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
-{
-  /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
-  private static Hashtable s_chachedResourceManagers = new Hashtable();
-  
+{  
   private Button _nextButton = new Button();
 
   protected override void OnInit(EventArgs e)
@@ -68,7 +65,7 @@ public class TestWxeBasePage:
     }
 
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, this.GetResourceManager());
+    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
 
     LiteralControl stack = new LiteralControl();
 
@@ -83,20 +80,18 @@ public class TestWxeBasePage:
     WxeControls.Add (stack);
   }
 
-  public virtual IResourceManager GetResourceManager()
+  protected virtual IResourceManager GetResourceManager()
   {
-    // cache the resource manager
-    Type type = this.GetType();
-    if (s_chachedResourceManagers[type] == null)
-    {
-      lock (typeof (TestWxeBasePage))
-      {
-        if (s_chachedResourceManagers[type] == null)
-          s_chachedResourceManagers[type] = MultiLingualResourcesAttribute.GetResourceManager (type, true);
-      }  
-    }
-  
-    return (IResourceManager) s_chachedResourceManagers[type];
+    Type type = GetType();
+    if (MultiLingualResourcesAttribute.ExistsResource (type))
+      return MultiLingualResourcesAttribute.GetResourceManager (type, true);
+    else
+      return null;
+  }
+
+  IResourceManager IObjectWithResources.GetResourceManager()
+  {
+    return GetResourceManager();
   }
 
 //  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
