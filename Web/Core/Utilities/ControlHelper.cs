@@ -174,6 +174,8 @@ public class ControlHelper
   public static Control FindControl (Control namingContainer, string controlID)
   {
     ArgumentUtility.CheckNotNull ("namingContainer", namingContainer);
+    if (StringUtility.IsNullOrEmpty (controlID))
+      return null;
 
     try
     {
