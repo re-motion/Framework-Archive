@@ -2895,7 +2895,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     if (! _formGridListPopulated)
     {
-      PopulateFormGridList (NamingContainer);
+      if (! ControlHelper.IsDesignMode (this, Context))
+        PopulateFormGridList (NamingContainer);
       _formGridListPopulated = true;
     }
   }
