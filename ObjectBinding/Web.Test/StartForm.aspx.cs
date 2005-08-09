@@ -10,6 +10,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.ExecutionEngine;
 
+using System.Runtime.Serialization;
+
 namespace OBWTest
 {
 
@@ -19,7 +21,6 @@ public class StartForm : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    Session.Clear();
 	}
 
 	#region Web Form Designer generated code
