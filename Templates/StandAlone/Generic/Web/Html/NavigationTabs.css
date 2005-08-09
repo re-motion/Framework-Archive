@@ -1,0 +1,64 @@
+div#PageHeader
+{
+  margin-bottom: 1em;
+	width: 100%;
+}
+
+div#ApplicationInfo
+{
+  font-weight: bold;
+}
+
+div#NavigationTab
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+td.activeTab,
+td.inactiveTab
+{
+  font-weight: bold;
+  font-size: 90%;
+  white-space: nowrap;
+}
+
+td.activeTab
+{
+  background-color: #003399;
+}
+
+td.inactiveTab
+{	
+  background-color: #FF0000;
+}
+
+td.activeTab a,
+td.inactiveTab a
+{
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+a:hover.activeTab,
+a:hover.inactiveTab
+{
+  text-decoration: underline;
+}
+
+a.tabActiveSubLink
+{
+  color: #FFFFFF;
+  text-decoration: none;
+  background-color: #003399;
+  font-weight: normal;
+}
+
+tr.tabSubMenuBar td
+{
+  color: #ffffff;
+  background-color: #003399;
+  height: 1.5em;
+  padding: 0.5em;
+}

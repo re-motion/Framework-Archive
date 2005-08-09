@@ -1,0 +1,46 @@
+a
+{
+	color: #02537c;
+}
+
+/* FormGrid */
+td.formGridLabelsCell
+{
+  background-color: #E8E8E8;
+}
+
+/* TabbedMultiView */
+div.tabStripTabsPane
+{
+	border-bottom: solid 1px #2254b1;	
+}
+
+td.tabStripTab,
+td.tabStripTabSelected
+{
+  white-space: nowrap;
+}
+
+/* BocList*/
+td.bocListDataCellEven
+{
+  background-color: #E8E8E8;
+}
+
+/* DropDownMenuMenu */
+.dropDownMenuHeadButton,
+.dropDownMenuHeadButtonFocus
+{
+  background-color: #E8E8E8;
+}
+
+div.dropDownMenuPopUp
+{
+  background-image: url(../Image/DropDownMenuItemIconPane_Gray.gif);
+}
+
+/* TabbedMultiView, TabStrip */
+td.tabStripTab
+{
+	background-color: #E8E8E8;
+}

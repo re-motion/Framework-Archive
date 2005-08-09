@@ -1,0 +1,55 @@
+@import url("GrayStyle.css");
+
+body
+{
+  font-family: 'Verdana', 'Arial', 'Helvetica', sans-serif;  
+
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
+
+input.button,
+button.button
+{
+  width: 10em;
+}
+
+/* TabbedMultiView */
+
+td.tabStripTab,
+td.tabStripTabSelected
+{
+  white-space: nowrap;
+}
+
+/* General */
+h1
+{
+ font-size: 130%;
+}
+
+h2
+{
+ font-size: 115%;
+}
+
+h3
+{
+ font-size: 105%;
+}
+
+h4
+{
+ font-size: 100%;
+}
+
+h5
+{
+ font-size: 80%;
+}
+
+h6
+{
+ font-size: 60%;
+}

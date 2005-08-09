@@ -1,0 +1,289 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Web"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{C6B81EB1-582A-457D-A210-63214815F0C3}"
+        SccProjectName = "SAK"
+        SccLocalPath = "SAK"
+        SccAuxPath = "SAK"
+        SccProvider = "SAK"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "Rubicon.Templates.Generic.Web"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "Rubicon.Templates.Generic.Web"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Web"
+                    AssemblyName = "Rubicon.Web"
+                    HintPath = "..\..\..\References\Rubicon.Web.dll"
+                />
+                <Reference
+                    Name = "Rubicon.Core"
+                    AssemblyName = "Rubicon.Core"
+                    HintPath = "..\..\..\References\Rubicon.Core.dll"
+                />
+                <Reference
+                    Name = "rubicon.objectbinding.web"
+                    AssemblyName = "Rubicon.ObjectBinding.Web"
+                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\rubicon.objectbinding.web.dll"
+                />
+                <Reference
+                    Name = "Rubicon.ObjectBinding"
+                    AssemblyName = "Rubicon.ObjectBinding"
+                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\Rubicon.ObjectBinding.dll"
+                />
+                <Reference
+                    Name = "System.Design"
+                    AssemblyName = "System.Design"
+                    HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Design.dll"
+                />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\log4net.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Default.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Default.aspx.cs"
+                    DependentUpon = "Default.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Default.aspx.resx"
+                    DependentUpon = "Default.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Global.asax"
+                    SubType = "Component"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Global.asax.cs"
+                    DependentUpon = "Global.asax"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Global.asax.resx"
+                    DependentUpon = "Global.asax.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Classes\BasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\BaseWxePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\WxeTabControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Html\Global.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Html\GrayStyle.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Html\NavigationTabs.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\arrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\rublogo.bmp"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\tableft.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\tabright.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Image\ws.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx.cs"
+                    DependentUpon = "NavigationTabs.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx.resx"
+                    DependentUpon = "NavigationTabs.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\OtherTemplateForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\OtherTemplateForm.aspx.cs"
+                    DependentUpon = "OtherTemplateForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\OtherTemplateForm.aspx.resx"
+                    DependentUpon = "OtherTemplateForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\TemplateForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\TemplateForm.aspx.cs"
+                    DependentUpon = "TemplateForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\TemplateForm.aspx.resx"
+                    DependentUpon = "TemplateForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Globalization\TemplateForm.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Globalization\TemplateForm.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WxeFunctions\BaseFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\TemplateFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+

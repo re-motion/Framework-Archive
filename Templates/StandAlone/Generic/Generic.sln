@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Templates.Generic.Web", "http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Rubicon.Templates.Generic.Web.csproj", "{C6B81EB1-582A-457D-A210-63214815F0C3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {2107ABD0-6557-45E4-9305-F97BD83DE571}
+		SccProjectUniqueName1 = http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Rubicon.Templates.Generic.Web.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Templates/StandAlone/Generic/Web\u0022,\u0020ISJBAAAA
+		SccLocalPath1 = Web
+		CanCheckoutShared = false
+		SccProjectEnlistmentChoice1 = 2
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C6B81EB1-582A-457D-A210-63214815F0C3}.Debug.ActiveCfg = Debug|.NET
+		{C6B81EB1-582A-457D-A210-63214815F0C3}.Debug.Build.0 = Debug|.NET
+		{C6B81EB1-582A-457D-A210-63214815F0C3}.Release.ActiveCfg = Release|.NET
+		{C6B81EB1-582A-457D-A210-63214815F0C3}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
