@@ -38,7 +38,6 @@ Controls in a single Form or User Control<br><A href="WxeHandler.ashx?WxeFunctio
 ('WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormWxeFunction,OBWTest&amp;ReadOnly=true')</a></p>
 <p><a 
 href="javascript:OpenClientWindow ('ClientFormFrameset.htm');">OpenClientWindow 
-('ClientFormFrameset.htm')</a></p>
-<p>&nbsp;</p></form>
+('ClientFormFrameset.htm')</a></p></form>
   </body>
 </html>
