@@ -62,7 +62,7 @@ public class WxeFunctionStateCollection
 ///   Stores the session state for a single function token.
 /// </summary>
 [Serializable]
-public class WxeFunctionState: ISerializable, IDisposable
+public class WxeFunctionState: IDisposable
 {
   private WxeFunction _function;
   private DateTime _lastAccess;
@@ -92,22 +92,6 @@ public class WxeFunctionState: ISerializable, IDisposable
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = functionToken;
-  }
-
-  protected WxeFunctionState (SerializationInfo info, StreamingContext context)
-  {
-    _function = (WxeFunction) info.GetValue ("_function", typeof (WxeFunction));
-    _lastAccess = info.GetDateTime ("_lastAccess");
-    _lifetime = info.GetInt32 ("_lifetime");
-    _functionToken = info.GetString ("_functionToken");
-  }
-
-  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("_function", _function, typeof (WxeFunction));
-    info.AddValue ("_lastAccess", _lastAccess);
-    info.AddValue ("_lifetime", _lifetime);
-    info.AddValue ("_functionToken", _functionToken);
   }
 
   public WxeFunction Function
