@@ -12,7 +12,7 @@ namespace Rubicon.NullableValueTypes
 /// <include file='doc\include\include.xml' path='Comments/NaDouble/remarks' />
 [Serializable]
 [NaBasicType (typeof(Double))]
-public struct NaDouble: INaNullable, IComparable, ISerializable, IFormattable
+public struct NaDouble: INaNullable, IComparable, IFormattable//, ISerializable
 {
   #region member fields
 
@@ -35,7 +35,7 @@ public struct NaDouble: INaNullable, IComparable, ISerializable, IFormattable
 
   private NaDouble (bool isNull)
   {
-    _value = 0;
+    _value = 0d;
     _isNotNull = ! isNull;
   }
 
@@ -43,29 +43,29 @@ public struct NaDouble: INaNullable, IComparable, ISerializable, IFormattable
 
   #region serialization
 
-  /// <summary>
-  /// Serialization constructor. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  private NaDouble (SerializationInfo info, StreamingContext context)
-  {
-    _isNotNull = ! info.GetBoolean ("IsNull");
-    _value = info.GetInt32 ("Value");
-  }
-
-  /// <summary>
-  /// Serialization method. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  public void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("IsNull", IsNull);
-    info.AddValue ("Value", _value);
-  }
+//  /// <summary>
+//  /// Serialization constructor. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  private NaDouble (SerializationInfo info, StreamingContext context)
+//  {
+//    _isNotNull = info.GetBoolean ("_isNotNull");
+//    if (_isNotNull)
+//      _value = info.GetDouble ("_value");
+//    else
+//      _value = 0d;
+//  }
+//
+//  /// <summary>
+//  /// Serialization method. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  public void GetObjectData (SerializationInfo info, StreamingContext context)
+//  {
+//    info.AddValue ("_isNotNull", _isNotNull);
+//    if (_isNotNull)
+//      info.AddValue ("_value", _value);
+//  }
 
   #endregion
 
