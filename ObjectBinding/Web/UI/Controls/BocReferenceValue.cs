@@ -507,6 +507,7 @@ public class BocReferenceValue:
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
 
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
     writer.AddStyleAttribute ("display", "inline");
   }
 
