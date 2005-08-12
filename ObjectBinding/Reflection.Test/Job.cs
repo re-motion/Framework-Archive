@@ -10,6 +10,7 @@ namespace OBRTest
 {
 
 [XmlType]
+[Serializable]
 public class Job: ReflectionBusinessObject
 {
   public static Job GetObject (Guid id)
