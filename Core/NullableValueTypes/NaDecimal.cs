@@ -17,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Decimal))]
 [TypeConverter (typeof (NaDecimalConverter))]
-public struct NaDecimal: INaNullable, IComparable, ISerializable, IFormattable, IXmlSerializable
+public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializable//, ISerializable
 {
   #region member fields
 
@@ -40,7 +40,7 @@ public struct NaDecimal: INaNullable, IComparable, ISerializable, IFormattable, 
 
   private NaDecimal (bool isNull)
   {
-    _value = 0;
+    _value = 0m;
     _isNotNull = ! isNull;
   }
 
@@ -48,29 +48,29 @@ public struct NaDecimal: INaNullable, IComparable, ISerializable, IFormattable, 
 
   #region serialization
 
-  /// <summary>
-  /// Serialization constructor. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  private NaDecimal (SerializationInfo info, StreamingContext context)
-  {
-    _isNotNull = ! info.GetBoolean ("IsNull");
-    _value = info.GetDecimal ("Value");
-  }
-
-  /// <summary>
-  /// Serialization method. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  public void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("IsNull", IsNull);
-    info.AddValue ("Value", _value);
-  }
+//  /// <summary>
+//  /// Serialization constructor. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  private NaDecimal (SerializationInfo info, StreamingContext context)
+//  {
+//    _isNotNull = info.GetBoolean ("_isNotNull");
+//    if (_isNotNull)
+//      _value = info.GetDecimal ("_value");
+//    else
+//      _value = 0m;
+//  }
+//
+//  /// <summary>
+//  /// Serialization method. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  public void GetObjectData (SerializationInfo info, StreamingContext context)
+//  {
+//    info.AddValue ("_isNotNull", _isNotNull);
+//    if (_isNotNull)
+//      info.AddValue ("_value", _value);
+//  }
 
   static XmlSchema s_schema = null;
   
