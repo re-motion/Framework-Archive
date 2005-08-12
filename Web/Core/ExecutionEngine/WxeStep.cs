@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 
@@ -10,10 +11,15 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary>
 /// Performs a single operation in a web application as part of a <see cref="WxeFunction"/>.
 /// </summary>
+[Serializable]
 public abstract class WxeStep: IDisposable
 {
   private WxeStep _parentStep = null;
   private bool _disposed = false;
+
+  public WxeStep()
+  {
+  }
 
   public WxeStep ParentStep
   {
@@ -110,6 +116,7 @@ public abstract class WxeStep: IDisposable
 public delegate void WxeMethod ();
 public delegate void WxeMethodWithContext (WxeContext context);
 
+[Serializable]
 public class WxeMethodStep: WxeStep
 {
   private WxeMethod _method;
