@@ -77,7 +77,7 @@ namespace Rubicon.NullableValueTypes
 ///     </item>
 ///   </list>
 /// </remarks>
-public interface INaNullable: INullable, ISerializable
+public interface INaNullable: INullable
 {
   /// <summary>
   /// Gets the underlying value.
