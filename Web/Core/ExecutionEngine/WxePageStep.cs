@@ -5,12 +5,14 @@ using System.Web;
 using System.Web.UI;
 using System.Reflection;
 using System.IO;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
 
+[Serializable]
 public class WxeExecuteNextStepException: Exception
 {
   public WxeExecuteNextStepException()
@@ -19,6 +21,7 @@ public class WxeExecuteNextStepException: Exception
   }
 }
 
+[Serializable]
 public class WxeUserCancelException: Exception
 {
   public WxeUserCancelException()
@@ -35,10 +38,12 @@ public class WxeUserCancelException: Exception
   }
 }
 
+[Serializable]
 public class WxePageStep: WxeStep
 {
   private string _page = null;
   private string _pageref = null;
+  [NonSerialized]
   private Assembly _resourceAssembly = null;
   private string _resourceAssemblyName = null;
   private string _pageToken;
@@ -232,7 +237,6 @@ public class WxePageStep: WxeStep
     LosFormatter formatter = new LosFormatter ();
     return formatter.Deserialize (_viewState);
   }
-
 }
 
 }
