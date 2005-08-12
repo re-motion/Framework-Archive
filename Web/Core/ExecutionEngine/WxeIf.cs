@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using Rubicon.NullableValueTypes;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -8,6 +8,7 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary>
 /// If-Then-Else block.
 /// </summary>
+[Serializable]
 public abstract class WxeIf: WxeStep
 {
   WxeStepList _stepList = null; // represents Then or Else step list, depending on result of If()
@@ -73,7 +74,6 @@ public abstract class WxeIf: WxeStep
         _stepList.Dispose();
     }
   }
-
 }
 
 }
