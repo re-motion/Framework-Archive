@@ -144,6 +144,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "doc\WhatsNew_Rubicon.Core.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "doc\include\GettingStarted.html"
                     BuildAction = "Content"
                 />
