@@ -17,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Int32))]
 [TypeConverter (typeof (NaInt32Converter))]
-public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable, IXmlSerializable
+public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable//, ISerializable
 {
   #region member fields
 
@@ -48,29 +48,29 @@ public struct NaInt32: INaNullable, IComparable, ISerializable, IFormattable, IX
 
   #region serialization
 
-  /// <summary>
-  /// Serialization constructor. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  private NaInt32 (SerializationInfo info, StreamingContext context)
-  {
-    _isNotNull = ! info.GetBoolean ("IsNull");
-    _value = info.GetInt32 ("Value");
-  }
-
-  /// <summary>
-  /// Serialization method. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  public void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("IsNull", IsNull);
-    info.AddValue ("Value", _value);
-  }
+//  /// <summary>
+//  /// Serialization constructor. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  private NaInt32 (SerializationInfo info, StreamingContext context)
+//  {
+//    _isNotNull = info.GetBoolean ("_isNotNull");
+//    if (_isNotNull)
+//      _value = info.GetInt32 ("_value");
+//    else
+//      _value = 0;
+//  }
+//
+//  /// <summary>
+//  /// Serialization method. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  public void GetObjectData (SerializationInfo info, StreamingContext context)
+//  {
+//    info.AddValue ("_isNotNull", _isNotNull);
+//    if (_isNotNull)
+//      info.AddValue ("_value", _value);
+//  }
 
   static XmlSchema s_schema = null;
   
