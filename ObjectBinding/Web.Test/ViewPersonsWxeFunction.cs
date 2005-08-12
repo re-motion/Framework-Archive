@@ -1,14 +1,20 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.ObjectBinding;
 
 namespace OBWTest
 {
 
+[Serializable]
 public class ViewPersonsWxeFunction: WxeFunction
 {
   static readonly WxeParameterDeclaration[] s_parameters =  { 
       new WxeParameterDeclaration ("objects", true, WxeParameterDirection.In, typeof (IBusinessObject[]))};
+
+  public ViewPersonsWxeFunction()
+  {
+  }
 
   // parameters and local variables
   public override WxeParameterDeclaration[] ParameterDeclarations
