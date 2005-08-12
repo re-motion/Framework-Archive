@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
 using System.Globalization;
+using System.Runtime.Serialization;
 using Rubicon.Collections;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -31,6 +32,7 @@ public enum WxeParameterDirection
 /// <summary>
 /// Declares a WXE parameter.
 /// </summary>
+[Serializable]
 public class WxeParameterDeclaration
 {
   private string _name;
@@ -118,6 +120,7 @@ public class WxeParameterDeclaration
 
 }
 
+[Serializable]
 public class WxeVariableReference
 {
   private string _name;
@@ -145,7 +148,6 @@ public class WxeVariableReference
   {
     return _name.GetHashCode();
   }
-
 }
 
 }
