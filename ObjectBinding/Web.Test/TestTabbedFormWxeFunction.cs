@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.ExecutionEngine;
 using OBRTest;
@@ -6,6 +7,7 @@ using OBRTest;
 namespace OBWTest
 {
 
+[Serializable]
 public class TestTabbedFormWxeFunction: WxeFunction
 {
   public TestTabbedFormWxeFunction ()
