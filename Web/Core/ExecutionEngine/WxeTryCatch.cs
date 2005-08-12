@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -33,6 +34,7 @@ public class WxeExceptionAttribute: Attribute
 /// <summary>
 ///   Try-Catch block.
 /// </summary>
+[Serializable]
 public class WxeTryCatch: WxeStep
 {
   /// <summary>
@@ -210,14 +212,17 @@ public class WxeTryCatch: WxeStep
   }
 }
 
+[Serializable]
 public class WxeTryBlock: WxeStepList
 {
 }
 
+[Serializable]
 public class WxeFinallyBlock: WxeStepList
 {
 }
 
+[Serializable]
 public class WxeCatchBlock: WxeStepList
 {
   private Exception _exception = null;
