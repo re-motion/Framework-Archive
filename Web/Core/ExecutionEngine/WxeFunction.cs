@@ -5,6 +5,7 @@ using System.Web;
 using System.Reflection;
 using System.Text;
 using System.Globalization;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 using log4net;
@@ -15,6 +16,7 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary>
 ///   Performs a sequence of operations in a web application using named arguments.
 /// </summary>
+[Serializable]
 public abstract class WxeFunction: WxeStepList
 {
   public static WxeParameterDeclaration[] GetParamaterDeclarations (Type type)
@@ -424,6 +426,7 @@ public abstract class WxeFunction: WxeStepList
     if (_parametersInitialized) 
       throw new InvalidOperationException ("Parameters are already initialized.");
   }
+
 }
 
 [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
