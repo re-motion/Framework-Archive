@@ -12,7 +12,7 @@ namespace Rubicon.NullableValueTypes
 /// <include file='doc\include\include.xml' path='Comments/NaDateTime/remarks' />
 [Serializable]
 [NaBasicType (typeof(DateTime))]
-public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
+public struct NaDateTime: INaNullable, IComparable, IFormattable//, ISerializable
 {
   #region member fields
 
@@ -78,29 +78,29 @@ public struct NaDateTime: INaNullable, IComparable, ISerializable, IFormattable
 
   #region serialization
 
-  /// <summary>
-  /// Serialization constructor. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  private NaDateTime (SerializationInfo info, StreamingContext context)
-  {
-    _isNotNull = ! info.GetBoolean ("IsNull");
-    _value = info.GetDateTime ("Value");
-  }
-
-  /// <summary>
-  /// Serialization method. 
-  /// </summary>
-  /// <remarks>
-  /// See <c>ISerializable</c> interface.
-  /// </remarks>
-  public void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("IsNull", IsNull);
-    info.AddValue ("Value", _value);
-  }
+//  /// <summary>
+//  /// Serialization constructor. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  private NaDateTime (SerializationInfo info, StreamingContext context)
+//  {
+//    _isNotNull = info.GetBoolean ("_isNotNull");
+//    if (_isNotNull)
+//      _value = info.GetDateTime ("_value");
+//    else
+//      _value = new DateTime (0);
+//  }
+//
+//  /// <summary>
+//  /// Serialization method. 
+//  /// </summary>
+//  /// <seealso cref="ISerializable"/>
+//  public void GetObjectData (SerializationInfo info, StreamingContext context)
+//  {
+//    info.AddValue ("_isNotNull", _isNotNull);
+//    if (_isNotNull)
+//      info.AddValue ("_value", _value);
+//  }
 
   #endregion
 
