@@ -13,6 +13,7 @@ namespace Rubicon.ObjectBinding.Reflection
 /// <summary>
 ///   This class provides BusinessObject interfaces for simple .NET objects.
 /// </summary>
+[Serializable]
 public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectWithIdentity
 {
   internal Guid _id;
