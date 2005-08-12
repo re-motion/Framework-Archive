@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -10,6 +11,7 @@ namespace Rubicon.Web.ExecutionEngine
 /// <remarks>
 ///   The resource directory is <c>&lt;ApplicationRoot&gt;/res/&lt;AssemblyName&gt;/</c>.
 /// </remarks>
+[Serializable]
 public class WxeResourcePageStep: WxePageStep
 {
   /// <summary>
@@ -59,7 +61,6 @@ public class WxeResourcePageStep: WxePageStep
     : base (resourceAssembly, page)
   {
   }
-
 }
 
 }
