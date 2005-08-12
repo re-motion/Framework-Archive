@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Reflection;
 using System.Text;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 
@@ -13,6 +14,7 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary>
 ///   Performs a sequence of steps in a web application.
 /// </summary>
+[Serializable]
 public class WxeStepList: WxeStep
 {
   /// <summary> ArrayList&lt;WxeStep&gt; </summary>
