@@ -1,13 +1,19 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Web.ExecutionEngine;
 
 namespace OBWTest
 {
 
+[Serializable]
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
   static readonly WxeParameterDeclaration[] s_parameters =  { 
       new WxeParameterDeclaration ("id", false, WxeParameterDirection.In, typeof (string))};
+
+  public ViewPersonDetailsWxeFunction()
+  {
+  }
 
   // parameters and local variables
   public override WxeParameterDeclaration[] ParameterDeclarations
