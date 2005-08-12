@@ -4,6 +4,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace OBWTest
 {
 
+[Serializable]
 public class CompleteBocTestMainWxeFunction: WxeFunction
 {
   public CompleteBocTestMainWxeFunction ()
