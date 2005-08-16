@@ -12,7 +12,7 @@ namespace Rubicon.NullableValueTypes
 /// <include file='doc\include\include.xml' path='Comments/NaDouble/remarks' />
 [Serializable]
 [NaBasicType (typeof(Double))]
-public struct NaDouble: INaNullable, IComparable, IFormattable//, ISerializable
+public struct NaDouble: INaNullable, IComparable, IFormattable
 {
   #region member fields
 
@@ -38,34 +38,6 @@ public struct NaDouble: INaNullable, IComparable, IFormattable//, ISerializable
     _value = 0d;
     _isNotNull = ! isNull;
   }
-
-  #endregion
-
-  #region serialization
-
-//  /// <summary>
-//  /// Serialization constructor. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  private NaDouble (SerializationInfo info, StreamingContext context)
-//  {
-//    _isNotNull = info.GetBoolean ("_isNotNull");
-//    if (_isNotNull)
-//      _value = info.GetDouble ("_value");
-//    else
-//      _value = 0d;
-//  }
-//
-//  /// <summary>
-//  /// Serialization method. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  public void GetObjectData (SerializationInfo info, StreamingContext context)
-//  {
-//    info.AddValue ("_isNotNull", _isNotNull);
-//    if (_isNotNull)
-//      info.AddValue ("_value", _value);
-//  }
 
   #endregion
 

@@ -17,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Byte))]
 [TypeConverter (typeof (NaByteConverter))]
-public struct NaByte: INaNullable, IComparable, IFormattable, IXmlSerializable//, ISerializable
+public struct NaByte: INaNullable, IComparable, IFormattable, IXmlSerializable
 {
   #region member fields
 
@@ -47,30 +47,6 @@ public struct NaByte: INaNullable, IComparable, IFormattable, IXmlSerializable//
   #endregion
 
   #region serialization
-
-//  /// <summary>
-//  /// Serialization constructor. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  private NaByte (SerializationInfo info, StreamingContext context)
-//  {
-//    _isNotNull = info.GetBoolean ("_isNotNull");
-//    if (_isNotNull)
-//      _value = info.GetByte ("_value");
-//    else
-//      _value = 0;
-//  }
-//
-//  /// <summary>
-//  /// Serialization method. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  public void GetObjectData (SerializationInfo info, StreamingContext context)
-//  {
-//    info.AddValue ("_isNotNull", _isNotNull);
-//    if (_isNotNull)
-//      info.AddValue ("_value", _value);
-//  }
 
   static XmlSchema s_schema = null;
   

@@ -17,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Decimal))]
 [TypeConverter (typeof (NaDecimalConverter))]
-public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializable//, ISerializable
+public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializable
 {
   #region member fields
 
@@ -47,30 +47,6 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   #endregion
 
   #region serialization
-
-//  /// <summary>
-//  /// Serialization constructor. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  private NaDecimal (SerializationInfo info, StreamingContext context)
-//  {
-//    _isNotNull = info.GetBoolean ("_isNotNull");
-//    if (_isNotNull)
-//      _value = info.GetDecimal ("_value");
-//    else
-//      _value = 0m;
-//  }
-//
-//  /// <summary>
-//  /// Serialization method. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  public void GetObjectData (SerializationInfo info, StreamingContext context)
-//  {
-//    info.AddValue ("_isNotNull", _isNotNull);
-//    if (_isNotNull)
-//      info.AddValue ("_value", _value);
-//  }
 
   static XmlSchema s_schema = null;
   

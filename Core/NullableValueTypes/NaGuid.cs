@@ -17,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Guid))]
 [TypeConverter (typeof (NaGuidConverter))]
-public struct NaGuid: INaNullable, IFormattable, IXmlSerializable//, ISerializable
+public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
 {
   #region member fields
 
@@ -47,30 +47,6 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable//, ISerializab
   #endregion
 
   #region serialization
-
-//  /// <summary>
-//  /// Serialization constructor. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  private NaGuid (SerializationInfo info, StreamingContext context)
-//  {
-//    _isNotNull = info.GetBoolean ("_isNotNull");
-//    if (_isNotNull)
-//      _value = (Guid) info.GetValue ("_value", typeof (Guid));
-//    else
-//      _value = Guid.Empty;
-//  }
-//
-//  /// <summary>
-//  /// Serialization method. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  public void GetObjectData (SerializationInfo info, StreamingContext context)
-//  {
-//    info.AddValue ("_isNotNull", _isNotNull);
-//    if (_isNotNull)
-//      info.AddValue ("_value", _value);
-//  }
 
   static XmlSchema s_schema = null;
   

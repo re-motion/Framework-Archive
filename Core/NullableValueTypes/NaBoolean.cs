@@ -14,7 +14,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof (Boolean))]
 [TypeConverter (typeof (NaBooleanConverter))]
-public struct NaBoolean: INaNullable, IComparable, IFormattable//, ISerializable
+public struct NaBoolean: INaNullable, IComparable, IFormattable
 {
   #region constants
 
@@ -45,28 +45,6 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable//, ISerializable
   {
     _byteValue = byteValue;
   }
-
-  #endregion
-
-  #region serialization
-
-//  /// <summary>
-//  /// Serialization constructor. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  private NaBoolean (SerializationInfo info, StreamingContext context)
-//  {
-//    _byteValue = info.GetByte ("_byteValue");
-//  }
-//
-//  /// <summary>
-//  /// Serialization method. 
-//  /// </summary>
-//  /// <seealso cref="ISerializable"/>
-//  public void GetObjectData (SerializationInfo info, StreamingContext context)
-//  {
-//    info.AddValue ("_byteValue", _byteValue);
-//  }
 
   #endregion
 
