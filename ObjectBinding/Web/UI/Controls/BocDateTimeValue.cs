@@ -404,7 +404,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       }
       else if (hasDateField)
       {
-        dateTextBoxSize = "90%";
+        dateTextBoxSize = "100%";
       }
 
       if (hasDateField)
@@ -430,6 +430,15 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
         writer.AddStyleAttribute ("padding-left", "0.3em");
         writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
         _datePickerButton.RenderControl (writer);  
+        writer.RenderEndTag(); // End td
+      }
+
+      //HACK: Opera has problems with inline tables and may collapse contents unless a cell with width 0% is present
+      if (! hasDatePicker && Context.Request.Browser.Browser == "Opera")
+      {
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
+        writer.Write ("&nbsp;");
         writer.RenderEndTag(); // End td
       }
 
