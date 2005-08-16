@@ -35,6 +35,11 @@ public class NaNullValueException: Exception
   {
     return new NaNullValueException (string.Format (NaResources.NullValueMemberAccessMsg, memberName));
   }
+
+  protected NaNullValueException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
 }
 
 internal class NaResources
