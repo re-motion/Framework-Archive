@@ -56,6 +56,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
 
   // steps
 
+  [Serializable]
   class Step1: WxeStepList
   {
     TestTabbedFormWxeFunction Function { get { return (TestTabbedFormWxeFunction) ParentFunction; } }
