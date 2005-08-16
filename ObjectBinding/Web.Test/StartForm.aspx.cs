@@ -46,6 +46,11 @@ public class StartForm : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    BinaryFormatter formatter = new BinaryFormatter();
+    Stream stream = new MemoryStream();
+    formatter.Serialize(stream, new object[] {new SerializeTestFunction()});
+    stream.Position = 0;
+    object[] deserialized = (object[]) formatter.Deserialize(stream);
   }
 
   private void SerializeTestNaTypes()
@@ -171,6 +176,14 @@ public class StartForm : System.Web.UI.Page
     Debug.WriteLine (string.Format ("Deserializing Attribute version: {0}", end.Ticks - start.Ticks));
 
     Debug.WriteLine("");
+  }
+}
+
+[Serializable]
+public class SerializeTestFunction: WxeFunction
+{
+  private void Step1()
+  {
   }
 }
 

@@ -587,7 +587,8 @@ public class BocReferenceValue:
       RenderEditModeValue (writer, isControlHeightEmpty, isDropDownListHeightEmpty, isDropDownListWidthEmpty);
     }
 
-    if (HasOptionsMenu)
+    bool hasOptionsMenu = HasOptionsMenu;
+    if (hasOptionsMenu)
     {
       writer.AddStyleAttribute ("padding-left", "0.3em");
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
@@ -596,6 +597,15 @@ public class BocReferenceValue:
       _optionsMenu.Width = _optionsMenuWidth;
       _optionsMenu.RenderControl (writer);
       writer.RenderEndTag();  //  End td
+    }
+
+    //HACK: Opera has problems with inline tables and may collapse contents unless a cell with width 0% is present
+    if (! isReadOnly && ! hasOptionsMenu && ! _icon.Visible && Context.Request.Browser.Browser == "Opera")
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
+      writer.Write ("&nbsp;");
+      writer.RenderEndTag(); // End td
     }
 
     writer.RenderEndTag();
