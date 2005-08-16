@@ -19,6 +19,11 @@ public class WxeExecuteNextStepException: Exception
     : base ("This exception does not indicate an error. It is used to roll back the call stack. It is recommended to disable breaking on this exeption type while debugging.")
   {
   }
+
+  protected WxeExecuteNextStepException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
 }
 
 [Serializable]
@@ -34,6 +39,11 @@ public class WxeUserCancelException: Exception
   }
   public WxeUserCancelException(string message, Exception innerException)
     : base (message, innerException)
+  {
+  }
+
+  protected WxeUserCancelException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
   {
   }
 }
