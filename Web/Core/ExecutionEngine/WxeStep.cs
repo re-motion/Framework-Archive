@@ -14,11 +14,13 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public abstract class WxeStep: IDisposable
 {
-  private WxeStep _parentStep = null;
-  private bool _disposed = false;
+  private WxeStep _parentStep;
+  private bool _disposed;
 
   public WxeStep()
   {
+    WxeStep _parentStep = null;
+    bool _disposed = false;
   }
 
   public WxeStep ParentStep
@@ -119,27 +121,54 @@ public delegate void WxeMethodWithContext (WxeContext context);
 [Serializable]
 public class WxeMethodStep: WxeStep
 {
+  private WxeStepList _target;
+  private string _methodName;
+  private bool _hasContext;
+  [NonSerialized]
   private WxeMethod _method;
+  [NonSerialized]
   private WxeMethodWithContext _methodWithContext;
 
-  public WxeMethodStep (WxeMethod method)
+  public WxeMethodStep (WxeStepList target, string methodName, bool hasContext)
   {
-    ArgumentUtility.CheckNotNull ("method", method);
-    _method = method;
+    ArgumentUtility.CheckNotNull ("target", target);
+    ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+    _target = target;
+    _methodName = methodName;
+    _hasContext = hasContext;
   }
 
-  public WxeMethodStep (WxeMethodWithContext method)
-  {
-    ArgumentUtility.CheckNotNull ("method", method);
-    _methodWithContext = method;
-  }
+//  public WxeMethodStep (WxeMethod method)
+//    : this ((WxeStepList) method.Target, method.Method.Name, false)
+//  {
+//    ArgumentUtility.CheckNotNull ("method", method);
+//    _method = method;
+//  }
+//
+//  public WxeMethodStep (WxeMethodWithContext method)
+//    : this ((WxeStepList) method.Target, method.Method.Name, true)
+//  {
+//    ArgumentUtility.CheckNotNull ("method", method);
+//    _methodWithContext = method;
+//  }
 
   public override void Execute (WxeContext context)
   {
-    if (_method != null)
-      _method ();
-    else
+    if (_hasContext)
+    {
+      if (_methodWithContext == null)
+      {
+        _methodWithContext = 
+          (WxeMethodWithContext) Delegate.CreateDelegate (typeof (WxeMethodWithContext), _target, _methodName, false);
+      }
       _methodWithContext (context);
+    }
+    else
+    {
+      if (_method == null)
+        _method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), _target, _methodName, false);
+      _method ();
+    }
   }
 }
 

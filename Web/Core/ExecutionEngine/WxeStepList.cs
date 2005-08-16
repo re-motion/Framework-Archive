@@ -78,11 +78,6 @@ public class WxeStepList: WxeStep
     step.ParentStep = this;
   }
 
-  public void Add (WxeMethod method)
-  {
-    Add (new WxeMethodStep (method));
-  }
-
   public void AddStepList (WxeStepList steps)
   {
     for (int i = 0; i < steps.Count; i++)
@@ -91,9 +86,9 @@ public class WxeStepList: WxeStep
     }
   }
 
-  public void Add (WxeMethodWithContext method)
+  public void Add (WxeStepList target, string methodName, bool hasContext)
   {
-    Add (new WxeMethodStep (method));
+    Add (new WxeMethodStep (target, methodName, hasContext));
   }
 
   public override WxeStep ExecutingStep
@@ -142,16 +137,8 @@ public class WxeStepList: WxeStep
       else if (member is MethodInfo)
       {
         MethodInfo methodInfo = (MethodInfo) member;
-        if (methodInfo.GetParameters().Length == 0)
-        {
-          WxeMethod method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), this, member.Name, false);
-          Add (method);
-        }
-        else
-        {
-          WxeMethodWithContext method = (WxeMethodWithContext) Delegate.CreateDelegate (typeof (WxeMethodWithContext), this, member.Name, false);
-          Add (method);
-        }
+        bool hasContext = methodInfo.GetParameters().Length > 0;
+        Add (this, member.Name, hasContext);
       }
       else if (member is Type)
       {
