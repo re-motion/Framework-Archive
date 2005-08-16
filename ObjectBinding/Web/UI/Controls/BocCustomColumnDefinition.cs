@@ -58,7 +58,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
-  [Description ("The IBocCustomColumnDefinitionCell to be used for rendering.")]
+  [Description ("The BocCustomColumnDefinitionCell to be used for rendering.")]
   //  No default value
   [NotifyParentProperty (true)]
   public string CustomCellType
@@ -67,10 +67,12 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     set { _customCellType = value; }
   }
 
-  /// <summary> Gets or sets the argument to be passed to the constructor of the <see cref="CustomCellType"/>. </summary>
+  /// <summary> 
+  ///   Gets or sets the The name/value pairs to set the <see cref="BocCustomColumnDefinitionCell"/>'s properties. 
+  /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
-  [Description ("The argument to be passed to the constructor of the CustomCellType.")]
+  [Description ("The name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string CustomCellArgument
