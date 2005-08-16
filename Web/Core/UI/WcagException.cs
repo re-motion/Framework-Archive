@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Web.UI
 {
@@ -28,6 +29,11 @@ public class WcagException: Exception
 
   public WcagException (string message, Exception innerException)
     : base (message, innerException)
+  {
+  }
+
+  protected WcagException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
   {
   }
 }
