@@ -222,17 +222,19 @@
         <see cref="OptionsTitle"/>, and <see cref="ListMenuLineBreaks"/>.
       </para>
       <note type="inheritinfo">
-        You can access and modify the list of menu items for the options menu and the list menu before they are used 
-        by the <b>BocList</b> by overriding the <see cref="GetOptionsMenuItems"/> and <see cref="GetListMenuItems"/> 
-        methods.
+        Use the <see cref="InitializeMenusItems"/> method to modify the list of menu items and the 
+        <see cref="PreRenderMenusItems"/> methods to change the menu items' properties (such as their visibility).
+        It is required that the list of menu items remains constant accross the page's life cycles. Only the properties
+        may be modified.
       </note>
       
       <h4 class="dtH4">Sorting</h4>
       <para>
-        The <b>BocList</b>'s rows can be sorted by one or more of its columns. Use the <see cref="EnableSorting"/> and
-        the <see cref="EnableMultipleSorting"/> flags to enable or disable the sorting functionality. If sorted by
-        multiple columns, the <b>BocList</b> displays the sorting order next to the sorting buttons of the individual
-        columns. You can hide this index by setting the <see cref="ShowSortingOrder"/> flag to <see langword="false"/>.
+        The <b>BocList</b>'s rows can be sorted by one or more of its columns. Use the <see cref="EnableSorting"/> flag 
+        to enable interactive sorting and the <see cref="EnableMultipleSorting"/> flag to enable sorting by multiple columns.
+        If sorted by multiple columns, the <b>BocList</b> displays the sorting order next to the sorting buttons of the 
+        individual columns. You can hide this index by setting the <see cref="ShowSortingOrder"/> flag to 
+        <see langword="false"/>.
       </para><para>
         If the columns used for sorting include a column from the current view, changing the view will remove the 
         column from the sorting keys.
