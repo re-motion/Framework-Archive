@@ -134,6 +134,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SessionForm.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SessionForm.aspx.cs"
+                    DependentUpon = "SessionForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SessionForm.aspx.resx"
+                    DependentUpon = "SessionForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SessionWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Start.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
