@@ -248,47 +248,21 @@
       control is in edit mode and input is required.
     </remarks>
   </CreateValidators>
-  <GetOptionsMenuItemsForPreviousLifeCycle>
+  <InitializeMenusItems>
     <remarks>
-      <para>
-        The method is called with the original list of menu items, which can then be modified by an overridden
-        version. The base method does not have to be called by the override. This approach was chosen because
-        the base method is not necessarily able to get the original list of menu items on its own.
-      </para><para>
-        The <see cref="BocMenuItem"/> objects displayed during the last page life cycle are required 
-        to correctly handle the events raised on the <see cref="BocReferenceValue"/>'s <see cref="OptionsMenu"/>.
-      </para>
-      <note>
-        Make the method <b>protected virtual</b> should this feature be ever required and change the 
-        method's body to return the passed <paramref name="menuItems"/>.
-      </note>
+      <para> 
+        Use this method to modify the list of menu items.
       <note type="inheritinfo">
-        Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s
-        <see cref="OptionsMenu"/> during the previous page life cycle.
+        It is required that the list of menu items remains constant accross the page's life cycles. Only the properties
+        may be modified.
       </note>
     </remarks>
-    <param name="menuItems"> 
-      The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
-    </param>
-    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or its override. </returns>
-  </GetOptionsMenuItemsForPreviousLifeCycle>
-  <GetOptionsMenuItems>
+  </InitializeMenusItems>
+  <PreRenderMenusItems>
     <remarks>
-      <para>
-        The method is called with the original list of menu items, which can then be modified by an overridden
-        version. The base method does not have to be called by the override. This approach was chosen because
-        the base method is not necessarily able to get the original list of menu items on its own.
-      </para>
-      <note type="inheritinfo">
-        Override this method to modify the menu items displayed in the <see cref="BocReferenceValue"/>'s
-        <see cref="OptionsMenu"/> during the current page life cycle.
-      </note>
+      Use this method to change the menu items' properties (such as their visibility).
     </remarks>
-    <param name="menuItems"> 
-      The <see cref="BocMenuItem"/> array containing the menu items available in the options menu. 
-    </param>
-    <returns> The <see cref="BocMenuItem"/> array after it has been modified by this method or its override. </returns>
-  </GetOptionsMenuItems>
+  </PreRenderMenusItems>
   <Value>
     <value> 
       The <see cref="IBusinessObjectWithIdentity"/> currently displayed 
