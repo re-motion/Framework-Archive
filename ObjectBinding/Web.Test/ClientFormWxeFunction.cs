@@ -1,4 +1,6 @@
 using System;
+using System.Web;
+using System.Web.SessionState;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.ExecutionEngine;
 using OBRTest;
@@ -30,17 +32,20 @@ public class ClientFormWxeFunction: WxeFunction
 
   // steps
 
-  class Step1: WxeStepList
+  void Step1()
   {
-    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
-
-    WxeStep Step1_ = new WxePageStep ("ClientForm.aspx");
+    HttpContext.Current.Session["key"] = 123456789;
   }
 
   class Step2: WxeStepList
   {
     ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
+    WxeStep Step1_ = new WxePageStep ("ClientForm.aspx");
+  }
 
+  class Step3: WxeStepList
+  {
+    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
     WxeStep Step1_ = new WxePageStep ("ClientForm.aspx");
   }
 }
@@ -49,6 +54,11 @@ public class ClientFormClosingWxeFunction: WxeFunction
 {
   void Step1()
   {
+    object val = HttpContext.Current.Session["key"];
+    if (val != null)
+    {
+      int i = (int) val;
+    }
   }
 }
 
@@ -56,6 +66,11 @@ public class ClientFormKeepAliveWxeFunction: WxeFunction
 {
   void Step1()
   {
+    object val = HttpContext.Current.Session["key"];
+    if (val != null)
+    {
+      int i = (int) val;
+    }
   }
 }
 
