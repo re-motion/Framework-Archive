@@ -53,7 +53,6 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 
 	protected void Application_AuthenticateRequest(Object sender, EventArgs e)
 	{
-
 	}
 
 	protected void Application_Error(Object sender, EventArgs e)
