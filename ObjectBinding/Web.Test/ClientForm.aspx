@@ -13,7 +13,7 @@
 
 <script language="javascript">
   var _keepAliveLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormKeepAliveWxeFunction,OBWTest';
-  var active = window.setInterval('KeepAlive()', 180000);
+  var active = window.setInterval('KeepAlive()', 6000);
   
   function KeepAlive()
   {
