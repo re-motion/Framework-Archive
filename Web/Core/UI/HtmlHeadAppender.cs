@@ -113,6 +113,15 @@ public class HtmlHeadAppender
           htmlHeadContents.Controls.Add (headElement);
       }
     }
+    _hasAppendExecuted = true;
+  }
+
+  /// <summary> Gets a flag indicating wheter <see cref="EnsureAppended"/> has been executed. </summary>
+  /// <value> <see langword="true"/> if  <see cref="EnsureAppended"/> has been executed. </value>
+  /// <remarks> Use this property to ensure that an <see cref="HtmlHeadContents"/> is present on the page. </remarks>
+  public bool HasAppended
+  {
+    get { return _hasAppendExecuted; }
   }
 
   /// <summary>
