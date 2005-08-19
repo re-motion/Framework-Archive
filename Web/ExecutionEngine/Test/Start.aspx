@@ -8,12 +8,18 @@
     <meta name="vs_defaultClientScript" content="JavaScript">
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
   </HEAD>
-  <body MS_POSITIONING="GridLayout">
+  <body MS_POSITIONING="FlowLayout">
     <form id="Form1" method="post" runat="server">
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition">
-        WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition
-      </a>
-      <br><br>
+      <p>
+        <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition">
+          WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition
+        </a>
+      </p>
+      <p>
+        <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition&ReadOnly=True">
+          WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition&ReadOnly=True
+        </a>
+      </p>
       <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session"></asp:Button>
     </form>
   </body>
