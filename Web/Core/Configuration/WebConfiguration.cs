@@ -123,6 +123,8 @@ public class WebConfiguration: IConfigurationSectionHandler
 public class ExecutionEngineConfiguration
 {
   private int _functionTimeout = 20;
+  private bool _enableSessionManagement = true;
+  private int _refreshInterval = 10;
   private bool _viewStateInSession = true;
 
   /// <summary> Gets or sets the default timeout for individual functions within one session. </summary>
@@ -132,6 +134,32 @@ public class ExecutionEngineConfiguration
   {
     get { return _functionTimeout; }
     set { _functionTimeout = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether session management is employed. </summary>
+  /// <value> <see langword="true"/> to enable session management. Defaults to <see langword="true"/>. </value>
+  /// <remarks> 
+  ///   Session management relies on javascript and is not fully supported by browsers other than Internet Explorer.
+  ///   (No confirmation dialog is presented upon leaving the page.)
+  /// </remarks>
+  [XmlAttribute ("enableSessionManagement")]
+  public bool EnableSessionManagement
+  {
+    get { return _enableSessionManagement; }
+    set { _enableSessionManagement = value; }
+  }
+
+  /// <summary> Gets or sets the default refresh intervall for a function. </summary>
+  /// <value> The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. </value>
+  /// <remarks> 
+  ///   The value must be less than both the <see cref="FunctionTimeout"/> and the 
+  ///   <see cref="System.Web.SessionState.HttpSessionState.Timeout"/>.
+  /// </remarks>
+  [XmlAttribute ("refreshInterval")]
+  public int RefreshInterval
+  {
+    get { return _refreshInterval; }
+    set { _refreshInterval = value; }
   }
 
   /// <summary> Gets or sets a flag specifying whether the page view state should be stored in the session. </summary>

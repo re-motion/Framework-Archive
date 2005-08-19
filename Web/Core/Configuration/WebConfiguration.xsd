@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://www.rubicon-it.com/commons/web/configuration" 
-  elementFormDefault="qualified" targetNamespace="http://www.rubicon-it.com/commons/web/configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-  <xs:element name="rubicon.web">
-    <xs:complexType>
-      <xs:all>
-      
-        <xs:element name="executionEngine" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="functionTimeout" type="xs:int" default="20" />            
-            <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
-          </xs:complexType>
-        </xs:element>
-               
-        <xs:element name="wcag" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="conformanceLevel" type="tns:WcagLevel" default="Undefined"/>            
-            <xs:attribute name="debug" type="xs:boolean" default="false" />
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="resources" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="root" type="xs:string" default="res" />            
-            <xs:attribute name="relativeToApplicationRoot" type="xs:boolean" default="true" />
-          </xs:complexType>
-        </xs:element>
-
-      </xs:all>
-      
-    </xs:complexType>
-  </xs:element>
-  <xs:simpleType name="WcagLevel">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Undefined" />
-      <xs:enumeration value="A" />
-      <xs:enumeration value="AA" />
-      <xs:enumeration value="AAA" />
-    </xs:restriction>
-  </xs:simpleType>
-  
+<xs:schema xmlns:tns="http://www.rubicon-it.com/commons/web/configuration" elementFormDefault="qualified" targetNamespace="http://www.rubicon-it.com/commons/web/configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="rubicon.web">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="executionEngine" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="functionTimeout" type="xs:int" default="20" />
+                        <xs:attribute name="enableSessionManagement" type="xs:boolean" default="true" />
+                        <xs:attribute name="refreshInterval" type="xs:int" default="10" />
+                        <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="wcag" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="conformanceLevel" type="tns:WcagLevel" default="Undefined" />
+                        <xs:attribute name="debug" type="xs:boolean" default="false" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="resources" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="root" type="xs:string" default="res" />
+                        <xs:attribute name="relativeToApplicationRoot" type="xs:boolean" default="true" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="WcagLevel">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Undefined" />
+            <xs:enumeration value="A" />
+            <xs:enumeration value="AA" />
+            <xs:enumeration value="AAA" />
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
