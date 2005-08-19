@@ -86,9 +86,9 @@ public class WxeStepList: WxeStep
     }
   }
 
-  public void Add (WxeStepList target, string methodName, bool hasContext)
+  public void Add (WxeStepList target, MethodInfo method)
   {
-    Add (new WxeMethodStep (target, methodName, hasContext));
+    Add (new WxeMethodStep (target, method));
   }
 
   public override WxeStep ExecutingStep
@@ -137,8 +137,7 @@ public class WxeStepList: WxeStep
       else if (member is MethodInfo)
       {
         MethodInfo methodInfo = (MethodInfo) member;
-        bool hasContext = methodInfo.GetParameters().Length > 0;
-        Add (this, member.Name, hasContext);
+        Add (this, methodInfo);
       }
       else if (member is Type)
       {
@@ -149,13 +148,10 @@ public class WxeStepList: WxeStep
     }
   }
 
-  protected override void Dispose (bool disposing)
+  protected override void AbortRecursive()
   {
-    if (disposing)
-    {
-      foreach (WxeStep step in _steps)
-        step.Dispose ();
-    }
+    foreach (WxeStep step in _steps)
+      step.Abort ();
   }
 }
 
