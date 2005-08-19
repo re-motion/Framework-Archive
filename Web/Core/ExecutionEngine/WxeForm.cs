@@ -12,6 +12,8 @@ namespace Rubicon.Web.ExecutionEngine
 [DesignTimeVisible(false)]
 public class WxeForm: HtmlForm
 {
+  public static readonly string ReturningTokenID = "wxeReturningToken";
+
   HtmlInputHidden _returningTokenField;
 
   public static WxeForm Replace (HtmlForm htmlForm)
@@ -50,9 +52,9 @@ public class WxeForm: HtmlForm
 
   protected override void RenderAttributes (HtmlTextWriter writer)
   {
-    if (Context != null && WxeContext.Current != null)
+    if (WxeContext.Current != null)
     {
-      string action = Path.GetFileName (Context.Request.Path) + "?WxeFunctionToken=" + WxeContext.Current.FunctionToken;
+      string action = WxeContext.Current.GetResumePath (false);
       writer.WriteAttribute ("action", action);
       Attributes.Remove ("action");
     }
@@ -88,14 +90,22 @@ public class WxeForm: HtmlForm
     this.Attributes.Render(writer);
   }
 
+  protected override void Render(HtmlTextWriter writer)
+  {
+    if (WxeHandler.IsSessionManagementEnabled && ! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
+      throw new ApplicationException ("The Rubicon.Web.UI.Controls.HtmlHeadContents element is missing on the page.");
+    base.Render (writer);
+  }
+
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
     _returningTokenField = new HtmlInputHidden ();
-    _returningTokenField.ID = "returningToken";
+    _returningTokenField.ID = WxeForm.ReturningTokenID;
     this.Controls.Add (_returningTokenField);  
   }
 
+  /// <summary> The token of the <see cref="WxeFunction"/> to return to. </summary>
   public String ReturningToken
   {
     get { return _returningTokenField.Value; }
