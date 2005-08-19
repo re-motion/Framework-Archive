@@ -53,7 +53,8 @@ public class WxeContext
   }
 
   /// <summary>
-  /// During the execution of a page, specifies whether the current postback cycle was caused by returning from a WXE function.
+  ///   During the execution of a page, specifies whether the current postback cycle was caused by returning from a 
+  ///   <see cref="WxeFunction"/>.
   /// </summary>
   public bool IsReturningPostBack 
   {
@@ -67,6 +68,7 @@ public class WxeContext
     set { _postBackCollection = value; }
   }
 
+  //TODO: get accessor only? move set into constructor
   public string FunctionToken
   {
     get { return _functionToken; }
@@ -80,7 +82,7 @@ public class WxeContext
   }
 
   /// <summary>
-  ///   Gets the URL that resumes the current function.
+  ///   Gets the absolute URL that resumes the current function.
   /// </summary>
   /// <remarks>
   ///   If a WXE application branches to an external web site, the external site can
@@ -91,7 +93,38 @@ public class WxeContext
   /// </remarks>
   public string GetResumeUrl ()
   {
-    return HttpContext.Request.Url.GetLeftPart (UriPartial.Path) + "?WxeFunctionToken=" + FunctionToken;
+    return HttpContext.Request.Url.GetLeftPart (UriPartial.Path) 
+        + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + FunctionToken;
+  }
+
+  /// <summary>
+  ///   Gets the path that resumes the current function.
+  /// </summary>
+  /// <param name="absolute"> 
+  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
+  ///   are returned.
+  /// </param>
+  public string GetResumePath (bool absolute)
+  {
+    return WxeContext.GetResumePath (HttpContext.Request, FunctionToken, absolute);
+  }
+
+  /// <summary>
+  ///   Gets the path that resumes the function with specified token.
+  /// </summary>
+  /// <param name="functionToken"> The token of function to resume. </param>
+  /// <param name="absolute"> 
+  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
+  ///   are returned.
+  /// </param>
+  public static string GetResumePath (HttpRequest request, string functionToken, bool absolute)
+  {
+    string path;
+    if (absolute)
+      path = request.Url.AbsolutePath;
+    else
+      path = System.IO.Path.GetFileName (request.Url.AbsolutePath);
+    return path + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;
   }
 }
 
