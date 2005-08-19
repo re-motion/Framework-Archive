@@ -14,7 +14,7 @@ public class WxeUserControl: UserControl, IWxeTemplateControl
 
   protected override void OnLoad (EventArgs e)
   {
-    _wxeInfo.OnInit (this, Context);
+    _wxeInfo.Initialize (this, Context);
     base.OnLoad (e);
   }
 
