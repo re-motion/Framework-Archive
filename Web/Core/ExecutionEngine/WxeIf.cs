@@ -66,13 +66,10 @@ public abstract class WxeIf: WxeStep
     }
   }
 
-  protected override void Dispose (bool disposing)
+  protected override void AbortRecursive()
   {
-    if (disposing)
-    {
-      if (_stepList != null)
-        _stepList.Dispose();
-    }
+    if (_stepList != null)
+      _stepList.Abort();
   }
 }
 
