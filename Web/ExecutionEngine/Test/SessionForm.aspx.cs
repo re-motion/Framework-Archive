@@ -20,6 +20,8 @@ namespace Rubicon.PageTransition
 
 public class SessionForm : WxePage
 {
+  protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
+  protected Rubicon.Web.UI.Controls.WebButton WebButton1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -45,10 +47,17 @@ public class SessionForm : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.WebButton1.Click += new System.EventHandler(this.WebButton1_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
+
+  private void WebButton1_Click(object sender, System.EventArgs e)
+  {
+    if (!IsReturningPostBack)
+      ExecuteFunction (new SampleWxeFunction (), "_blank", WebButton1, true);
+  }
 
 }
 

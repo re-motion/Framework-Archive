@@ -24,7 +24,6 @@ public class SessionWxeFunction: WxeFunction
 
   void Step1()
   {
-    HttpContext.Current.Session["key"] = 123456789;
   }
 
   class Step2: WxeStepList
@@ -37,30 +36,6 @@ public class SessionWxeFunction: WxeFunction
   {
     SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
     WxeStep Step1_ = new WxePageStep ("SessionForm.aspx");
-  }
-}
-
-public class ClientFormClosingWxeFunction: WxeFunction
-{
-  void Step1()
-  {
-    object val = HttpContext.Current.Session["key"];
-    if (val != null)
-    {
-      int i = (int) val;
-    }
-  }
-}
-
-public class ClientFormKeepAliveWxeFunction: WxeFunction
-{
-  void Step1()
-  {
-    object val = HttpContext.Current.Session["key"];
-    if (val != null)
-    {
-      int i = (int) val;
-    }
   }
 }
 
