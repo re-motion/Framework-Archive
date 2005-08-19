@@ -197,18 +197,18 @@ public class WxeTryCatch: WxeStep
     get { return (WxeCatchBlock[]) _catchBlocks.ToArray (typeof (WxeCatchBlock)); }
   }
 
-  protected override void Dispose (bool disposing)
+  protected override void AbortRecursive()
   {
-    _trySteps.Dispose ();
+    _trySteps.Abort ();
 
     if (_catchBlocks != null)
     {
       foreach (WxeStepList catchBlock in _catchBlocks)
-        catchBlock.Dispose();
+        catchBlock.Abort();
     }
 
     if (_finallySteps != null)
-      _finallySteps.Dispose();
+      _finallySteps.Abort();
   }
 }
 
