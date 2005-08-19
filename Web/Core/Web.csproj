@@ -180,7 +180,11 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\WxePage.xml"
+                    RelPath = "Doc\include\ExecutionEngine\WxeHandler.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\ExecutionEngine\WxePage.xml"
                     BuildAction = "Content"
                 />
                 <File
@@ -306,6 +310,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\WxePageInfo.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\WxePageInfo.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Res\HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
@@ -315,6 +327,10 @@
                 />
                 <File
                     RelPath = "Res\HTML\DropDownMenu.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\ExecutionEngine.js"
                     BuildAction = "Content"
                 />
                 <File
