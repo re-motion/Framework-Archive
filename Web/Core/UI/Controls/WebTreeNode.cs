@@ -79,10 +79,17 @@ public class WebTreeNode: IControlItem
   //  }
 
   /// <summary> Evaluates the current node. </summary>
-  public void Evaluate()
+  public void Evaluate ()
   {
     if (_treeView != null)
       _treeView.EvaluateTreeNodeInternal (this);
+  }
+
+  /// <summary> Evaluates the current node's children. </summary>
+  public void EvaluateChildren()
+  {
+    for (int i = 0; i < Children.Count; i++)
+      ((WebTreeNode) Children[i]).Evaluate();
   }
 
   /// <summary> Evaluates and expands the current node. </summary>
