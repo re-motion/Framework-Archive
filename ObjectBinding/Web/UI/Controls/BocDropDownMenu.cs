@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -199,8 +200,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the bound 
   ///   <see cref="IBusinessObjectWithIdentity"/>'s <see cref="IBusinessObjectClass"/>. If no property is assigned, 
-  ///   the <see cref="DataSource"/>'s <see cref="IBusinessObjectWithIdentity"/> itself will be used as the control's 
-  ///   value.
+  ///   the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s <see cref="IBusinessObjectWithIdentity"/> 
+  ///   itself will be used as the control's value.
   /// </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -261,7 +262,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> 
-  ///   Handles the <see cref="DropDownMenu.EventCommandClick"/> event of the <see cref="DropDownMenu"/>.
+  ///   Handles the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.EventCommandClick"/> event of the 
+  ///   <see cref="DropDownMenu"/>.
   /// </summary>
   /// <param name="sender"> The source of the event. </param>
   /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
@@ -302,7 +304,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
   }
 
-  /// <summary> Handles the <see cref="DropDownMenu.WxeFunctionCommandClick"/> event of the <see cref="DropDownMenu"/>. </summary>
+  /// <summary> 
+  ///   Handles the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.WxeFunctionCommandClick"/> event of the 
+  ///   <see cref="DropDownMenu"/>. 
+  /// </summary>
   /// <param name="sender"> The source of the event. </param>
   /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
@@ -340,9 +345,13 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
   /// <summary> 
-  ///   Gets or sets a flag that determines whether the <see cref="Icon"/> is shown in front of the <see cref="Value"/>.
+  ///   Gets or sets a flag that determines whether the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.TitleIcon"/> 
+  ///   is shown in front of the <see cref="Value"/>.
   /// </summary>
-  /// <value> <see langword="true"/> to show the <see cref="Icon"/>. The default value is <see langword="true"/>. </value>
+  /// <value> 
+  ///   <see langword="true"/> to show the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.TitleIcon"/>. 
+  ///   The default value is <see langword="true"/>. 
+  /// </value>
   /// <remarks> 
   ///   An icon is only shown if the <see cref="Property"/>'s 
   ///   <see cref="IBusinessObjectClass.BusinessObjectProvider">ReferenceClass.BusinessObjectProvider</see>
