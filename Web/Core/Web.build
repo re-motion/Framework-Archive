@@ -32,6 +32,7 @@
         <includes asis="true" name="System.Xml.dll"/>
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web">
+        <includes name="Globalization/*.resx" />
         <includes name="UI/Globalization/*.resx" />
         <includes name="Configuration/WebConfiguration.xsd" />
       </resources>
