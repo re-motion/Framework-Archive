@@ -48,6 +48,7 @@ public class SessionForm : WxePage
 	private void InitializeComponent()
 	{    
     this.WebButton1.Click += new System.EventHandler(this.WebButton1_Click);
+    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
