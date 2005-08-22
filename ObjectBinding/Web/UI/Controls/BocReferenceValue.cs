@@ -1007,12 +1007,16 @@ public class BocReferenceValue:
   {
     bool isNullItem = InternalValue == null;
 
-    //  Check if null item is to be selected
-    if (isNullItem)
+    if (isNullItem || ! IsRequired)
     {
       //  No null item in the list?
       if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
         _dropDownList.Items.Insert (0, CreateNullItem());
+    }
+
+    //  Check if null item is to be selected
+    if (isNullItem)
+    {
       _dropDownList.SelectedValue = c_nullIdentifier;
     }
     else

@@ -1,3 +1,12 @@
+1.2.64
+======
+- BocTreeView
+  * Neue Property: EnableLookAheadEvaluation
+    Ist das Flag gesetzt, so wertet der Tree auch die ChildNodes aus -> Node-Expander (+) werden korrekt angezeigt
+
+- BocReferenceValue
+  * Bugfix: Kein Null-Wert unter folgender Bedingung: Value != null && Liste nicht vorbefüllt. 
+
 1.2.63
 ======
 - BocDateTimeValue, BocReferenceValue
@@ -34,6 +43,7 @@
 
 - BocReferenceValue
   * Bugfix für Bugfix aus 1.2.57: Der 1. Bugfix hat noch nicht funktioniert.
+  * Neue Methode: RenderEditModeValueExtension: Erlaubt das Rendern von Content nach dem Value und vor dem Menü.
   
 1.2.57
 ======
