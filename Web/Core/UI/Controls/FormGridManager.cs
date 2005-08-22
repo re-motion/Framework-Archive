@@ -98,7 +98,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ///   <see cref="HtmlTable"/> used as a form grid, the <see cref="FormGridRow"/> array 
     ///   and the indeces of the columns normally containing the labels and the controls.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
     public FormGrid (
         HtmlTable table, 
         FormGridRow[] rows,
@@ -118,7 +118,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ///   Returns all <see cref="ValidationError"/> objects defined in the 
     ///   <see cref="FormGridRow"/> objects collection.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/GetValidationErrors/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/GetValidationErrors/*' />
     public virtual ValidationError[] GetValidationErrors()
     {
       ArrayList validationErrorList = new ArrayList();
@@ -136,7 +136,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation error.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
     public virtual bool HasValidationErrors()
     {
       for (int i = 0; i < _rows.Count; i++)
@@ -155,7 +155,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation markers.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
     public virtual bool HasValidationMarkers()
     {
       for (int i = 0; i < _rows.Count; i++)
@@ -174,7 +174,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   Searches through the <see cref="FormGridRow"/> objects collection for a required markers.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
     public virtual bool HasRequiredMarkers()
     {
       for (int i = 0; i < _rows.Count; i++)
@@ -191,7 +191,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Searches through the <see cref="FormGridRow"/> objects collection for a help providers. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
     public virtual bool HasHelpProviders()
     {
       for (int i = 0; i < _rows.Count; i++)
@@ -220,7 +220,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   Searches for a <see cref="FormGridRow"/> containing the specified <paramref name="ID"/>.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/FormGridRow/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/FormGridRow/*' />
     public FormGridRow GetRowForID (string id)
     {
       if (id == null || id == string.Empty)
@@ -240,7 +240,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ///   Inserts a <see cref="FormGridRow"/> at the position specified by 
     ///   <paramref name="positionInFormGrid"/> and <paramref name="relatedRowID"/>.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGrid/InsertNewFormGridRow/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/InsertNewFormGridRow/*' />
     public void InsertNewFormGridRow (
         FormGridRow newFormGridRow,
         string relatedRowID,
@@ -371,7 +371,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     private FormGrid _ownerFormGrid;
 
     /// <summary> Simple constructor. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Constructor/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Constructor/*' />
     public FormGridRowCollection (FormGrid ownerFormGrid, FormGridRow[] formGridRows)
     {
       ArgumentUtility.CheckNotNull ("formGridRows", formGridRows);
@@ -390,7 +390,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> A read only indexer for the <see cref="FormGridRow"/> objects. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Indexer/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Indexer/*' />
     public FormGridRow this [int index]
     {
       get
@@ -402,7 +402,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Allows only the insertion of objects of type of <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
     protected override void OnInsert(int index, object value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
@@ -505,7 +505,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     private Hashtable _controls;
 
     /// <summary> Simple contructor. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/Constructor/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/Constructor/*' />
     public FormGridRow (
       HtmlTableRow[] htmlTableRows,
       FormGridRowType type, 
@@ -532,7 +532,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Set the labels cell for this <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetLabelsCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetLabelsCell/*' />
     public virtual HtmlTableCell SetLabelsCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -542,7 +542,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Set the controls cell for this <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCell/*' />
     public virtual HtmlTableCell SetControlsCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -552,7 +552,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Set the controls cell dummy for this <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCellDummy/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCellDummy/*' />
     public virtual HtmlTableCell SetControlsCellDummy (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -561,7 +561,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Set the markers cell for this <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetMarkersCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetMarkersCell/*' />
     public virtual HtmlTableCell SetMarkersCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -570,7 +570,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Set the validation messages cell for this <see cref="FormGridRow"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCell/*' />
     public virtual HtmlTableCell SetValidationMessagesCell (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -579,7 +579,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary>Set the labels validation messages cell dummy for this <see cref="FormGridRow"/>.</summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCellDummy/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCellDummy/*' />
     public virtual HtmlTableCell SetValidationMessagesCellDummy (int rowIndex, int cellIndex)
     {
       CheckCellRange (rowIndex, cellIndex);
@@ -588,7 +588,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Checks if the indices are inside the bounds. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
     private void CheckCellRange (int rowIndex, int cellIndex)
     {
       if (   rowIndex >= _htmlTableRows.Count
@@ -634,7 +634,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> Returns the control with the specified ID or <see langword="null"/>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/GetControlForID/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/GetControlForID/*' />
     public virtual Control GetControlForID (string id)
     {
       StringUtility.IsNullOrEmpty (id);
@@ -645,7 +645,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ///   Returns <see langword="true"/> if the control with the specified ID is contained 
     ///   in the <see cref="FormGridRow"/>.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ContainsControlWithID/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ContainsControlWithID/*' />
     public virtual bool ContainsControlWithID (string id)
     {
       return GetControlForID (id) != null;
@@ -654,7 +654,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   Checks whether the row should be rendered.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
     public virtual bool CheckVisibility()
     {
       if (!_visible)
@@ -742,7 +742,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The <c>ValidationError</c> objects for this <c>FormGridRow</c>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationErrors/remarks' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationErrors/remarks' />
     public ValidationError[] ValidationErrors
     {
       get
@@ -757,7 +757,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The validation marker for this <c>FormGridRow</c>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/whether/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/whether/*' />
     public Image ValidationMarker
     {
       get { return _validationMarker; }
@@ -765,7 +765,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The required marker for this <c>FormGridRow</c>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/RequiredMarker/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/RequiredMarker/*' />
     public Image RequiredMarker
     {
       get { return _requiredMarker; }
@@ -773,7 +773,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The help provider for this <c>FormGridRow</c>. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/HelpProvider/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/HelpProvider/*' />
     public Control HelpProvider
     {
       get { return _helpProvider; }
@@ -781,21 +781,21 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
    }
 
     /// <summary> The index of the row containing the labels cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRowIndex/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRowIndex/*' />
     public int LabelsRowIndex
     {
       get { return _labelsRowIndex; }
     }
 
     /// <summary> The index of the row containing the controls cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRowIndex/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRowIndex/*' />
     public int ControlsRowIndex
     {
       get { return _controlsRowIndex; }
     }
 
     /// <summary> The index of the column normally containing the labels cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsColumn/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsColumn/*' />
     public int LabelsColumn
     {
       get { return _labelsColumn; }
@@ -803,7 +803,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The index of the column normally containing the controls cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsColumn/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsColumn/*' />
     public int ControlsColumn
     {
       get { return _controlsColumn; }
@@ -811,28 +811,28 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> The <see cref="HtmlTableRow"/> containing the labels cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRow/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRow/*' />
     public HtmlTableRow LabelsRow
     {
       get { return _htmlTableRows[_labelsRowIndex]; }
     }
 
     /// <summary> The <see cref="HtmlTableRow"/> containing the controls cell. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRow/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRow/*' />
     public HtmlTableRow ControlsRow
     {
       get { return _htmlTableRows[_controlsRowIndex]; }
     }
 
     /// <summary> The cell containing the labels. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsCell/*' />
     public HtmlTableCell LabelsCell
     {
       get { return _labelsCell; }
     }
 
     /// <summary> The cell containing the controls. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCell/*' />
     public HtmlTableCell ControlsCell
     {
       get { return _controlsCell; }
@@ -841,21 +841,21 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     /// <summary>
     ///   The cell used as a place holder if the controls cell is not at the standard position.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCellDummy/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCellDummy/*' />
     public HtmlTableCell ControlsCellDummy
     {
       get { return _controlsCellDummy; }
     }
 
     /// <summary> The cell containing the markers. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/MarkersCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/MarkersCell/*' />
     public HtmlTableCell MarkersCell
     {
       get { return _markersCell; }
     }
 
     /// <summary> The cell containing the validation messages. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCell/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCell/*' />
     public HtmlTableCell ValidationMessagesCell
     {
       get { return _validationMessagesCell; }
@@ -865,7 +865,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ///   The cell used as a place holder if the validation message cell is not at the standard
     ///   position.
     /// </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCellDummy/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCellDummy/*' />
     public HtmlTableCell ValidationMessagesCellDummy
     {
       get { return _validationMessagesCellDummy; }
@@ -876,7 +876,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   protected sealed class ReadOnlyHtmlTableRowCollection : ReadOnlyCollectionBase
   {
     /// <summary> Simple constructor. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Constructor/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Constructor/*' />
     public ReadOnlyHtmlTableRowCollection (HtmlTableRow[] htmlTableRows)
     {
       ArgumentUtility.CheckNotNull ("htmlTableRows", htmlTableRows);
@@ -891,7 +891,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     /// <summary> A read only indexer for the <see cref="HtmlTableRow"/> onbjects. </summary>
-    /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Indexer/*' />
+    /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Indexer/*' />
     public HtmlTableRow this [int index]
     {
       get
@@ -919,7 +919,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   // constants
 
   /// <summary> Sufffix for identifying all tables to be used as form grids. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
   private const string c_formGridSuffix = "FormGrid";
 
   private const string c_generatedLabelSuffix = "_Label";
@@ -1028,7 +1028,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   // methods and properties
 
   /// <summary> Validates all <c>FormGrid</c> objects managed by this <c>FormGridManager</c>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Validate/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Validate/*' />
   public bool Validate()
   {
     EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
@@ -1042,7 +1042,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary>
   ///   Assembles all <see cref="ValidationError"/> objects in the managed <c>FormGrids</c>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetValidationErrors/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetValidationErrors/*' />
   public ValidationError[] GetValidationErrors()
   {
     ArrayList validationErrorList = new ArrayList();
@@ -1054,7 +1054,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Implementation of <see cref="IResourceDispatchTarget"/>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
   public virtual void Dispatch (IDictionary values)
   {
     EnsureTransformationStep (TransformationStep.PreLoadViewStateTransformationCompleted);
@@ -1339,7 +1339,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Restore the view state to the form grids. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
   private void LoadFormGridViewState (FormGrid formGrid, object savedState)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
@@ -1354,7 +1354,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Saves the view state of the form grids. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
   private object SaveFormGridViewState (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
@@ -1493,7 +1493,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Validates all <see cref="BaseValidator"/> objects in the <see cref="FormGrid"/>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
   private bool ValidateFormGrid (FormGrid formGrid)
   {
     bool isValid = true;
@@ -1509,7 +1509,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Validates the <see cref="BaseValidator"/> objects. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
   protected bool ValidateDataRow (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -1750,7 +1750,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Queries the parent hierarchy for an <see cref="IFormGridRowProvider"/> and inserts 
   ///   the provided new rows into the form grid.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
   private void LoadNewFormGridRows (FormGrid formGrid)
   {
     IFormGridRowProvider rowProvider = GetFormGridRowProvider (this);
@@ -1812,7 +1812,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Queries the parent hierarchy for an <see cref="IFormGridRowProvider"/> and hides  
   ///   the rows identified as invisible rows.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ApplyExternalHiddenSettings/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ApplyExternalHiddenSettings/*' />
   private void ApplyExternalHiddenSettings (FormGrid formGrid)
   {
     IFormGridRowProvider rowProvider = GetFormGridRowProvider (this);
@@ -1838,7 +1838,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Find the closest parent <see cref="Control"/> impementing
   ///   <see cref="IFormGridRowProvider"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetFormGridRowProvider/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetFormGridRowProvider/*' />
   private IFormGridRowProvider GetFormGridRowProvider (Control control)
   {
     //  Control hierarchy doesn't implent this interface
@@ -1890,7 +1890,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Composes all information required to transform the <see cref="HtmlTable"/> 
   ///   into a form grid.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
   private void ComposeFormGridContents (FormGrid formGrid)
   {
     if (formGrid == null) throw new ArgumentNullException ("formGrid");
@@ -1918,7 +1918,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Uses the information stored in <paramref name="formGrid"/> to configure the 
   ///   <see cref="HtmlTable"/> as a form grid.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
   private void ConfigureFormGrid (FormGrid formGrid)
   {
     ArgumentUtility.CheckNotNull ("formGrid", formGrid);
@@ -1959,7 +1959,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Configures the title row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
   private void ConfigureTitleRow (FormGridRow titleRow)
   {
     ArgumentUtility.CheckNotNull ("titleRow", titleRow);
@@ -1999,7 +1999,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Configures a data row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
   private void ConfigureDataRow (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2023,7 +2023,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Formats the title row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
   protected virtual void FormatTitleRow (FormGridRow titleRow)
   {
     ArgumentUtility.CheckNotNull ("titleRow", titleRow);
@@ -2095,7 +2095,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Formats a data row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
   protected virtual void FormatDataRow (FormGridRow dataRow, bool isTopDataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2140,7 +2140,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Creates the cell to be used for the markers. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
   protected void CreateMarkersCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2169,7 +2169,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Loads the markers or place holders into the <see cref="FormGridRow.MarkersCell"/> 
   ///   of the <paramref name="dataRow"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadMarkersIntoCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadMarkersIntoCell/*' />
   protected virtual void LoadMarkersIntoCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2264,7 +2264,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Creates the labels from the controls inside <paramref name="controlsCell"/>
   ///   if they do not already exist.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateLabels/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateLabels/*' />
   protected virtual void CreateLabels (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2343,7 +2343,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary>
   ///   Creates the validators from the controls inside <paramref name="dataRow"/> if they do not already exist.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
   protected virtual void CreateValidators (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2400,7 +2400,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Queries the controls in <paramref name="dataRow"/> for their mandatory setting 
   ///   and creates the required marker if necessary.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateRequiredMarker/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateRequiredMarker/*' />
   protected virtual void CreateRequiredMarker (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2451,7 +2451,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Queries the controls in <paramref name="dataRow"/> if they provide help
   ///   and creates a help provider.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CreateHelpProvider/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateHelpProvider/*' />
   protected virtual void CreateHelpProvider(FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2536,7 +2536,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Queries the control for its read-only setting and transforms it if necessary. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
   protected virtual void HandleReadOnlyControls (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2575,7 +2575,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary> 
   ///   Sets the cell to be used for the validation messages, creating a new cell if necessary.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
   protected void SetOrCreateValidationMessagesCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2611,7 +2611,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Outputs the validation messages into a <see cref="HtmlTableCell"/>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LoadValidationMessagesIntoCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadValidationMessagesIntoCell/*' />
   protected virtual void LoadValidationMessagesIntoCell (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2633,7 +2633,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Assign CSS classes for cells where none exist. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/AssignCssClassesToCells/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToCells/*' />
   protected virtual void AssignCssClassesToCells (FormGridRow dataRow, bool isTopDataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2711,7 +2711,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Assign CSS classes to input controls where none exist. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
   protected virtual void AssignCssClassesToInputControls (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2747,7 +2747,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Assign CSS classes to validators where none exist. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
   protected virtual void AssignCssClassesToValidators (FormGridRow dataRow)
   {
     ArgumentUtility.CheckNotNull ("dataRow", dataRow);
@@ -2793,7 +2793,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Returns the image URL for the images defined in the <c>FormGridManager</c>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
   protected string GetImageUrl (FormGridImage image)
   {
     string relativeUrl = image.ToString() + ImageExtension;
@@ -2807,7 +2807,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Builds the input required marker. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetRequiredMarker/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetRequiredMarker/*' />
   protected virtual Image GetRequiredMarker()
   {
     Image requiredIcon = new Image();
@@ -2822,7 +2822,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Builds the help provider. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetHelpProvider/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetHelpProvider/*' />
   protected virtual Control GetHelpProvider (string helpUrl)
   {
     Image helpIcon = new Image();
@@ -2842,7 +2842,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Builds a new marker for validation errors. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetValidationMarker/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetValidationMarker/*' />
   protected Image GetValidationMarker (string toolTip)
   {
     Image validationErrorIcon = new Image();
@@ -2859,7 +2859,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Returns a spacer to be used instead of a marker. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/GetBlankMarker/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetBlankMarker/*' />
   protected Control GetBlankMarker()
   {
     Image spacer = new Image();
@@ -2872,7 +2872,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Compares the <paramref name="formGridRow"/>'s <see cref="FormGridRowType"/> against the 
   ///   type passed in <paramref name="expectedFormGridRowType"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CheckFormGridRowType/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CheckFormGridRowType/*' />
   protected void CheckFormGridRowType (
     string argumentName,
     FormGridRow formGridRow,
@@ -2885,7 +2885,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary>
   ///   Tests the labels matches the controls row.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/HasSeperateControlsRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/HasSeperateControlsRow/*' />
   protected bool HasSeperateControlsRow (FormGridRow dataRow)
   {
     return dataRow.LabelsRowIndex != dataRow.ControlsRowIndex;
@@ -2902,7 +2902,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Registers all suffixed tables for this <c>FormGridManager</c>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/PopulateFormGridList/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/PopulateFormGridList/*' />
   private void PopulateFormGridList (Control control)
   {
     //  Add all table having the suffix
@@ -2954,7 +2954,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> The suffix identifying all tables managed by this <c>FormGridManager</c>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
   [CategoryAttribute("Behaviour")]
   [DefaultValue(c_formGridSuffix)]
   [Description("The suffix that must be appended to all tables to be used as a form grid.")]
@@ -2968,7 +2968,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Specifies which column in the table or tables contains the labels.
   ///   Must be less than the value of <see cref="ControlsColumn"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/LabelsColumn/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LabelsColumn/*' />
   [CategoryAttribute("Appearance")]
   [DefaultValue(0)]
   [Description("The index of the label column in the form grid tables. Must be less than the ControlsColumn's index")]
@@ -2991,7 +2991,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   Specifies which column in the table or tables contains the controls for single-line rows.
   ///   Must be higher than the value of <see cref="LabelsColumn"/>.
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ControlsColumn/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ControlsColumn/*' />
   [CategoryAttribute("Appearance")]
   [DefaultValue(1)]
   [Description("The index of the control column in the form grid tables. Must be higher than the LabelsColumn's index")]
@@ -3011,7 +3011,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Defines how the validation messages are displayed. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
   [CategoryAttribute("Behavior")]
   [DefaultValue(ValidatorVisibility.ValidationMessageInControlsColumn)]
   [Description("The position of the validation messages in the form grids.")]
@@ -3024,7 +3024,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Enables/Disables the validation markers. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
   [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the validation markers.")]
@@ -3035,7 +3035,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Enables/Disables the required markers. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
   [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the required markers.")]
@@ -3046,7 +3046,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Enables/Disables the help providers. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
   [CategoryAttribute("Behavior")]
   [DefaultValue(true)]
   [Description("Enables/Disables the help providers.")]
@@ -3077,29 +3077,29 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
 
   /// <summary> Extension of the images. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/ImageExtension/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ImageExtension/*' />
   protected virtual string ImageExtension
   { get { return ".gif"; } }
 
   #region protected virtual string CssClass...
 
   /// <summary> CSS-Class applied to the form grid tables' <c>table</c> tag. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
   protected virtual string CssClassTable
   { get { return "formGridTable"; } }
 
   /// <summary> CSS-Class applied to the cell containing the header. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTitleCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTitleCell/*' />
   protected virtual string CssClassTitleCell
   { get { return "formGridTitleCell"; } }
 
   /// <summary> CSS-Class applied to the cell containing a sub title. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassSubTitleCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassSubTitleCell/*' />
   protected virtual string CssClassSubTitleCell
   { get { return "formGridSubTitleCell"; } }
 
   /// <summary> CSS-Class applied to the cells containing the labels. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassLabelsCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassLabelsCell/*' />
   protected virtual string CssClassLabelsCell
   { get { return "formGridLabelsCell"; } }
 
@@ -3107,37 +3107,37 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   ///   CSS-Class applied to the cells containing the marker controls
   ///   (required, validation error, help).
   /// </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassMarkersCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassMarkersCell/*' />
   protected virtual string CssClassMarkersCell
   { get { return "formGridMarkersCell"; } }
 
   /// <summary> CSS-Class applied to the cells containing the input controls. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassInputControlsCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassInputControlsCell/*' />
   protected virtual string CssClassInputControlsCell
   { get { return "formGridControlsCell"; } }
 
   /// <summary> CSS-Class applied to the cells containing the validation messages. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassValidationMessagesCell/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidationMessagesCell/*' />
   protected virtual string CssClassValidationMessagesCell
   { get { return "formGridValidationMessagesCell"; } }
 
   /// <summary> CSS-Class additionally applied to the first row after the header row. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassTopDataRow/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTopDataRow/*' />
   protected virtual string CssClassTopDataRow
   { get { return "formGridTopDataRow"; } }
 
   /// <summary> CSS-Class applied to the input controls. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassInputControl/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassInputControl/*' />
   protected virtual string CssClassInputControl
   { get { return "formGridInputControl"; } }
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassValidationMessage/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidationMessage/*' />
   protected virtual string CssClassValidationMessage
   { get { return "formGridValidationMessage"; } }
 
   /// <summary> CSS-Class applied to the validators vreated by the <see cref="FormGridManager"/>. </summary>
-  /// <include file='doc\include\FormGridManager.xml' path='FormGridManager/CssClassValidator/*' />
+  /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidator/*' />
   protected virtual string CssClassValidator
   { get { return "formGridValidator"; } }
 

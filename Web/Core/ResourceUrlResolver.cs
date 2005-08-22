@@ -25,8 +25,8 @@ public sealed class ResourceUrlResolver
   ///     <c>&lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl</c> is used.
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration,
-  ///     <see cref="WebConfiguration.Resources">WebConfiguration.Resources</see>, and defaults to 
-  ///     <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
+  ///     <see cref="Rubicon.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
   ///   </para><para>
   ///     During design time, the <b>resource root</b> is mapped to the environment variable
   ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
@@ -64,8 +64,8 @@ public sealed class ResourceUrlResolver
   ///     Uses the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration,
-  ///     <see cref="WebConfiguration.Resources">WebConfiguration.Resources</see>, and defaults to 
-  ///     /&lt;AppDir&gt;/res, e.g. /WebApplication/res/Rubicon.Web/Image/Help.gif.
+  ///     <see cref="Rubicon.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
   ///   </para><para>
   ///     During design time, the <b>resource root</b> is mapped to the environment variable
   ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
