@@ -233,7 +233,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     //  This point is only reached, once the WxeFunction has completed execution.
     string returnUrl = functionState.Function.ReturnUrl;
     //  TODO: Determine a way to clean-up the function (-state) after it is no longer in use.
-    // Function still needed after this point (WxePageInfo.Page_Load
+    // Function still needed after this point (WxePageInfo.Page_Load)
     // CleanUpFunctionState (functionState);
     if (! StringUtility.IsNullOrEmpty (returnUrl))
       ProcessReturnUrl (context, returnUrl);

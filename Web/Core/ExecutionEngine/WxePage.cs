@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.ComponentModel;
 using System.Reflection;
+using Rubicon.NullableValueTypes;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
@@ -54,6 +55,18 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
+
+  /// <summary>
+  ///   Gets or sets the flag that determines whether to display a confirmation dialog before aborting the session. 
+  ///  </summary>
+  /// <value> <see langowrd="true"/> to display the confirmation dialog. </value>
+  bool IsAbortConfirmationEnabled { get; }
+
+  /// <summary>
+  ///   Gets or sets the flag that determines whether abort the session upon closing the window. 
+  ///  </summary>
+  /// <value> <see langowrd="true"/> to abort the session. </value>
+  bool IsAbortEnabled { get; }
 }
 
 public class WxePageInfo: WxeTemplateControlInfo, IDisposable
@@ -157,9 +170,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       //  Ensure the registration of "__doPostBack" on the page.
       string temp = _page.GetPostBackEventReference ((Page)_page);
 
-      //TODO: Optionally switch off abort warning
-      bool isAbortConfirmationEnabled = true;
-      bool isAbortEnabled = true;
+      bool isAbortConfirmationEnabled = _page.IsAbortConfirmationEnabled;
+      bool isAbortEnabled = _page.IsAbortEnabled;
 
       int refreshIntervall = WxeHandler.RefreshInterval * 60000;
       string resumePath = WxeContext.Current.GetResumePath (false);
@@ -237,7 +249,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
-    string href = WxeContext.GetResumePath (_page.Request, functionState.FunctionToken, true);
+    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken, true);
     string openScript;
     if (features != null)
       openScript = string.Format (@"window.open(""{0}"", ""{1}"", ""{2}"");", href, target, features);
@@ -365,6 +377,8 @@ public class WxePage: Page, IWxePage
   private WxePageInfo _wxeInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;
+  private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
+  private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
 
   // protected HtmlForm Form; - won't work in VS 2005
 
@@ -408,16 +422,19 @@ public class WxePage: Page, IWxePage
     return _wxeInfo.EnsurePostBackModeDetermined (Context);
   }
 
+  [Browsable (false)]
   public WxePageStep CurrentStep
   {
     get { return _wxeInfo.CurrentStep; }
   }
   
+  [Browsable (false)]
   public WxeFunction CurrentFunction
   {
     get { return _wxeInfo.CurrentFunction; }
   }
 
+  [Browsable (false)]
   public NameObjectCollection Variables 
   {
     get { return _wxeInfo.Variables; }
@@ -428,6 +445,7 @@ public class WxePage: Page, IWxePage
     _wxeInfo.ExecuteNextStep();
   }
 
+  [Browsable (false)]
   public bool IsReturningPostBack
   {
     get { return ((WxeContext.Current == null) ? false : WxeContext.Current.IsReturningPostBack); }
@@ -471,6 +489,7 @@ public class WxePage: Page, IWxePage
     CurrentStep.ExecuteFunctionNoRepost (this, function, sender, usesEventTarget);
   }
 
+  [Browsable (false)]
   public WxeFunction ReturningFunction
   {
     get { return ((WxeContext.Current == null) ? null : WxeContext.Current.ReturningFunction); }
@@ -488,6 +507,7 @@ public class WxePage: Page, IWxePage
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
+  [Browsable (false)]
   public virtual HtmlForm HtmlForm
   {
     get { return _wxeInfo.HtmlFormDefaultImplementation; }
@@ -518,6 +538,70 @@ public class WxePage: Page, IWxePage
   {
     EnsurePostLoadInvoked();
     EnsureValidatableControlsInitialized();
+  }
+
+  /// <summary> 
+  ///   Gets or sets the flag that determines whether to display a confirmation dialog before aborting the session. 
+  /// </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to display a confirmation dialog. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsAbortConfirmationEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to display a confirmation dialog before aborting the session. Undefined is interpreted as false.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableAbortConfirmation
+  {
+    get { return _enableAbortConfirmation; }
+    set { _enableAbortConfirmation = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
+  /// <value>
+  ///   <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> is <see cref="NaBooleanEnum.True"/>. 
+  /// </value>
+  protected virtual bool IsAbortConfirmationEnabled
+  {
+    get { return _enableAbortConfirmation == NaBooleanEnum.True; }
+  }
+
+  bool IWxePage.IsAbortConfirmationEnabled
+  {
+    get { return IsAbortConfirmationEnabled; }
+  }
+
+  /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to abort the session. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableAbort
+  {
+    get { return _enableAbort; }
+    set { _enableAbort = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableAbort"/> property. </summary>
+  /// <value>
+  ///   <see langowrd="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>. 
+  /// </value>
+  protected virtual bool IsAbortEnabled
+  {
+    get { return _enableAbort != NaBooleanEnum.False; }
+  }
+
+  bool IWxePage.IsAbortEnabled
+  {
+    get { return IsAbortEnabled; }
   }
 }
 
