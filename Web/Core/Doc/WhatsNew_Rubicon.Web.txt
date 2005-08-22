@@ -1,3 +1,17 @@
+1.2.64
+======
+- Rubicon.Web.ExecutionEngine.WxeHandler
+  * WxeAction Argument 'cancel' zu 'Abort' umbenannt.
+  * Neues WxeAction Argument 'Refresh'.
+
+- Execution Engine
+  * Unterstützt nun Session Management: 
+    automatisches Session-Refresh solange das Browser-Fenster offen ist
+    Session-Abort (Mit Sicherheitsabfrage) wenn das Browser-Fenster geschlossen wird oder der User wegnavigiert.  
+  
+- Execution Engine Configuration
+  * Neue Optionen: EnableSessionManagement und RefreshInterval
+  
 1.2.62
 ======
 - Rubicon.Web.UI.Globalization.ResourceManagerUtility.GetResoureManager
