@@ -28,7 +28,7 @@ public abstract class BusinessObjectControlItemCollection : ControlItemCollectio
 ///   Base class for non-UI items of business object controls. 
 /// </summary>
 /// <remarks>
-///   Derived classes: <see cref="BocColumnDefinition"/>, <see cref="BocColumnDefinitionSet"/>, <see cref="PropertyPathBinding"/>.
+///   Derived classes: <see cref="BocColumnDefinition"/>, <see cref="BocListView"/>, <see cref="PropertyPathBinding"/>.
 /// </remarks>
 public abstract class BusinessObjectControlItem: IControlItem
 {
