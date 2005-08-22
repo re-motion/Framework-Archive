@@ -196,9 +196,18 @@ public class BocTreeView: BusinessObjectBoundWebControl
         BusinessObjectTreeNode node = CreateBusinessObjectNode (null, businessObject);
         _treeView.Nodes.Add (node);
         if (EnableTopLevelExpander)
-          node.IsEvaluated = false;
-        else
+        {
+          if (EnableLookAheadEvaluation)
+            node.Evaluate();
+          else
+            node.IsEvaluated = false;
+        }
+        else // Top-Level nodes are expanded
+        {
           node.EvaluateExpand();
+          if (EnableLookAheadEvaluation)
+            node.EvaluateChildren();
+        }
       }
     }
   }
@@ -560,6 +569,17 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     get { return _treeView.EnableTopLevelExpander; }
     set { _treeView.EnableTopLevelExpander = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether to evaluate the child nodes when expanding a tree node. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("If set, the child nodes will be evaluated when a node is expanded.")]
+  [DefaultValue (false)]
+  public bool EnableLookAheadEvaluation
+  {
+    get { return _treeView.EnableLookAheadEvaluation; }
+    set { _treeView.EnableLookAheadEvaluation = value; }
   }
 
   /// <summary> 
