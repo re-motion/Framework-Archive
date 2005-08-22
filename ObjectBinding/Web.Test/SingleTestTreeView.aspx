@@ -1,8 +1,8 @@
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Page language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" %>
 <%@ Register TagPrefix="cc1" Namespace="OBRTest" Assembly="OBRTest" %>
+<%@ Page language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleTestTreeView" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -15,7 +15,7 @@
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
 <h1>SingleTest TreeView</h1>
-<p><cc1:persontreeview id=PersonTreeView runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" cssclass="TreeBlock" enabletoplevelexpander="False" ></cc1:persontreeview><asp:Button id="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button></p>
+<p><cc1:persontreeview id=PersonTreeView runat="server" DataSourceControl="ReflectionBusinessObjectDataSourceControl" cssclass="TreeBlock" enablelookaheadevaluation="True" enabletoplevelexpander="False"></cc1:persontreeview><asp:Button id="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button></p>
 <p>&nbsp;</p>
 <p><rubicon:webtreeview id=WebTreeView runat="server" cssclass="TreeBlock" showlines="False" width="150px" enablescrollbars="True"></rubicon:webtreeview></p>
 <p><asp:button id=PostBackButton runat="server" Text="PostBack"></asp:button></p><rubicon:formgridmanager 
