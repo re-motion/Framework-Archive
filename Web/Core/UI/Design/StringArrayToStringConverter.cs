@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Design
@@ -40,7 +41,7 @@ public class StringArrayConverter : TypeConverter
   /// <returns>
   ///    A <see cref="String"/> array or <see langword="null"/> if the conversion failed. 
   /// </returns>
-  public override object ConvertFrom (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+  public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
       return ((string)value).Split (new char[] {','});
