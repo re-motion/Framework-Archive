@@ -77,6 +77,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   private Triplet[] _nodesViewState;
   private bool _isLoadViewStateCompleted = false;
   private bool _enableTopLevelExpander = true;
+  private bool _enableLookAheadEvaluation = false;
+
   private bool _enableScrollBars = false;
   private bool _enableWordWrap = false;
   private bool _showLines = true;
@@ -142,9 +144,17 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     if (clickedNode != null)
     {
       if (clickedNode.IsEvaluated)
+      {
         clickedNode.IsExpanded = ! clickedNode.IsExpanded;
+        if (clickedNode.IsExpanded && EnableLookAheadEvaluation)
+          clickedNode.EvaluateChildren();
+      }
       else
+      {
         clickedNode.EvaluateExpand();
+        if (EnableLookAheadEvaluation)
+          clickedNode.EvaluateChildren();
+      }
     }
   }
 
@@ -714,6 +724,17 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
   {
     get { return _enableTopLevelExpander; }
     set { _enableTopLevelExpander = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether to evaluate the child nodes when expanding a tree node. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("If set, the child nodes will be evaluated when a node is expanded.")]
+  [DefaultValue (false)]
+  public bool EnableLookAheadEvaluation
+  {
+    get { return _enableLookAheadEvaluation; }
+    set { _enableLookAheadEvaluation = value; }
   }
 
   /// <summary> 
