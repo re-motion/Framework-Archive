@@ -109,17 +109,13 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (hasTypeName)
     {
       _currentFunctionState = CreateNewFunction (context, typeName, functionToken);
-      ExecuteFunctionState (context, _currentFunctionState, true);
-      ProcessReturnUrl (context, _currentFunctionState);
+      ProcessFunctionState (context, _currentFunctionState, true);
     }
     else if (hasFunctionToken)
     {
       _currentFunctionState = ResumeExistingFunction (context, functionToken);
       if (_currentFunctionState != null)
-      {
-        ExecuteFunctionState (context, _currentFunctionState, false);
-        ProcessReturnUrl (context, _currentFunctionState);
-      }
+        ProcessFunctionState (context, _currentFunctionState, false);
     }
     else
     {
@@ -226,6 +222,23 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
   }
 
+  /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
+  protected void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
+  {
+    ArgumentUtility.CheckNotNull ("context", context);
+    ArgumentUtility.CheckNotNull ("functionState", functionState);
+        
+    ExecuteFunctionState (context, functionState, isNewFunction);
+    //  This point is only reached, once the WxeFunction has completed execution.
+    string returnUrl = functionState.Function.ReturnUrl;
+    //  TODO: Determine a way to clean-up the function (-state) after it is no longer in use.
+    // Function still needed after this point (WxePageInfo.Page_Load
+    // CleanUpFunctionState (functionState);
+    if (! StringUtility.IsNullOrEmpty (returnUrl))
+      ProcessReturnUrl (context, returnUrl);
+  }
+
   /// <summary> 
   ///   Sets the current <see cref="WxeContext"/> and invokes <see cref="ExecuteFunction"/> on the
   ///   <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/>.
@@ -258,28 +271,32 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     function.Execute (context);
   }
 
+  /// <summary> Aborts the <paramref name="functionState"/> after it's function has executed. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CleanUpFunctionState/*' />
+  protected void CleanUpFunctionState (WxeFunctionState functionState)
+  {
+    ArgumentUtility.CheckNotNull ("functionState", functionState);
+    WxeFunctionStateCollection.Instance.Abort (_currentFunctionState);
+  }
+
   /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessReturnUrl/*' />
-  protected void ProcessReturnUrl (HttpContext context, WxeFunctionState functionState)
+  protected void ProcessReturnUrl (HttpContext context, string returnUrl)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-    ArgumentUtility.CheckNotNull ("functionState", functionState);
+    ArgumentUtility.CheckNotNullOrEmpty ("returnUrl", returnUrl);
 
-    string returnUrl = functionState.Function.ReturnUrl;
-    if (returnUrl != null)
+    // Variables.Clear();
+    if (returnUrl.StartsWith ("javascript:"))
     {
-      // Variables.Clear();
-      if (returnUrl.StartsWith ("javascript:"))
-      {
-        context.Response.Clear();
-        string script = returnUrl.Substring ("javascript:".Length);
-        context.Response.Write ("<html><script language=\"JavaScript\">" + script + "</script></html>");
-        context.Response.End();
-      }
-      else
-      {
-        context.Response.Redirect (returnUrl, true);
-      }
+      context.Response.Clear();
+      string script = returnUrl.Substring ("javascript:".Length);
+      context.Response.Write ("<html><script language=\"JavaScript\">" + script + "</script></html>");
+      context.Response.End();
+    }
+    else
+    {
+      context.Response.Redirect (returnUrl, true);
     }
   }
 

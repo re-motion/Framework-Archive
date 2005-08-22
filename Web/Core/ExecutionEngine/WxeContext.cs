@@ -93,8 +93,10 @@ public class WxeContext
   /// </remarks>
   public string GetResumeUrl ()
   {
-    return HttpContext.Request.Url.GetLeftPart (UriPartial.Path) 
-        + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + FunctionToken;
+    string pathPart = GetResumePath (true);
+    pathPart = HttpContext.Response.ApplyAppPathModifier (pathPart);
+    string serverPart = HttpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
+    return serverPart + pathPart;
   }
 
   /// <summary>
@@ -106,7 +108,7 @@ public class WxeContext
   /// </param>
   public string GetResumePath (bool absolute)
   {
-    return WxeContext.GetResumePath (HttpContext.Request, FunctionToken, absolute);
+    return WxeContext.GetResumePath (HttpContext.Request, HttpContext.Response, FunctionToken, absolute);
   }
 
   /// <summary>
@@ -117,11 +119,11 @@ public class WxeContext
   ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
   ///   are returned.
   /// </param>
-  public static string GetResumePath (HttpRequest request, string functionToken, bool absolute)
+  public static string GetResumePath (HttpRequest request, HttpResponse response, string functionToken, bool absolute)
   {
     string path;
     if (absolute)
-      path = request.Url.AbsolutePath;
+      path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
     else
       path = System.IO.Path.GetFileName (request.Url.AbsolutePath);
     return path + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;

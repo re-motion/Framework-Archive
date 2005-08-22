@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Runtime.Serialization;
 using System.Web;
+using log4net;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 
@@ -93,6 +94,8 @@ public class WxeFunctionStateCollection
 [Serializable]
 public class WxeFunctionState
 {
+  private static ILog s_log = LogManager.GetLogger (typeof (WxeFunctionState));
+
   private WxeFunction _function;
   private DateTime _lastAccess;
   private int _lifetime;
@@ -168,6 +171,7 @@ public class WxeFunctionState
   {
     if (! _isAborted)
     {
+      s_log.Debug ("Aborting Function State " + _functionToken + ".");
       AbortRecursive();
       _isAborted = true;
     }
