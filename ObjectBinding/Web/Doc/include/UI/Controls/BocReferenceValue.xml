@@ -29,7 +29,7 @@
           <description>
             <para> 
               Level A conform if advanced features are turned off. This can be enforced by the 
-              <see cref="Rubicon.Web.Configuration.WebConfiguration.Wai"/> configuration entry.
+              <see cref="Rubicon.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
             </para>
             <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
             <list type="bullet">
@@ -252,6 +252,7 @@
     <remarks>
       <para> 
         Use this method to modify the list of menu items.
+      </para>
       <note type="inheritinfo">
         It is required that the list of menu items remains constant accross the page's life cycles. Only the properties
         may be modified.

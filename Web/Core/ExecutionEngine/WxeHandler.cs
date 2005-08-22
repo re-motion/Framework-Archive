@@ -33,14 +33,6 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     /// <summary> Denotes the <b>ID</b> of the <see cref="WxeFunction"/> to resume or assigned during initialization. </summary>
     public const string WxeFunctionToken = "WxeFunctionToken";
     
-    /// <summary> Denotes a session refresh. </summary>
-    /// <remarks> The argument itself is not evaluated and may be empty, i.e. no value is present after the <c>=</c>. </remarks>remarks>
-    public const string WxeRefresh = "WxeRefresh";
-    
-    /// <summary> Denotes a session abort. </summary>
-    /// <remarks> The argument itself is not evaluated and may be empty, i.e. no value is present after the <c>=</c>. </remarks>remarks>
-    public const string WxeAbort = "WxeAbort";
-    
     /// <summary> Denotes the <b>URL</b> to return to after the function has completed. </summary>
     /// <remarks>   
     ///   Only evaluated during initialization. Replaces the <see cref="WxeFunciton.ReturnUrl"/> defined by the 
@@ -49,8 +41,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     public const string WxeReturnUrl = "ReturnUrl";
     
     /// <summary> Denotes a special action to be executed. </summary>
-    /// <remarks> Use <c>cancel</c> (not case-sensitive) to abort the function. </remarks>
+    /// <remarks> See the <see cref="Actions"/> type for a list of supported arguments. </remarks>
     public const string WxeAction = "WxeAction";
+  }
+
+  /// <summary> Denotes the arguments supported for the <see cref="Parameters.WxeAction"/> parameter. </summary>
+  /// <remarks> The string representations of the individual argument values are identical to the field names. </remarks>
+  public class Actions
+  {
+    /// <summary> Denotes a session refresh. </summary>
+    public const string Refresh = "Refresh";
+    
+    /// <summary> Denotes a session abort. </summary>
+    public const string Abort = "Abort";
   }
 
   /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and it's context. </summary>
@@ -192,35 +195,26 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState == null || functionState.IsExpired)
       throw new ApplicationException ("Page timeout."); // TODO: display error message
   
-    bool isRefresh = context.Request.Params[Parameters.WxeRefresh] != null;
-    bool isAbort = context.Request.Params[Parameters.WxeAbort] != null;
-    if (isAbort)
-    {
-      functionStates.Abort (functionState);
-      functionStates.CleanUpExpired();
-      // Background request, function state should be processed any further
-      return null;
-    }
-    else if (isRefresh)
+    string action = context.Request[Parameters.WxeAction];
+    bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
+    bool isAbort = StringUtility.AreEqual (action, Actions.Abort, true);
+    if (isRefresh)
     {
       functionState.Touch();
-      // Background request, function state should be processed any further
+      return null;
+    }
+    else if (isAbort)
+    {
+      functionStates.CleanUpExpired();
+      functionStates.Abort (functionState);
       return null;
     }
     else
     {
       functionState.Touch();
       functionStates.CleanUpExpired();
-
       if (functionState.Function == null)
         throw new ApplicationException ("Function missing in WxeFunctionState {0}." + functionState.FunctionToken);
-      string action = context.Request[Parameters.WxeAction];
-      if (StringUtility.AreEqual (action, "cancel", true))
-      {
-        functionStates.Abort (functionState);
-        return null;
-      }
-
       return functionState;
     }
   }
