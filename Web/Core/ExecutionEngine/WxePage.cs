@@ -28,12 +28,12 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <summary>
   ///   Executes a WXE function in another window or frame.
   /// </summary>
-  /// <include file='doc\include\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name!="sender"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name!="features"]' />
   void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback);
   /// <summary>
   ///   Executes a WXE function in another window or frame.
   /// </summary>
-  /// <include file='doc\include\WxePage.xml' path='WxePage/ExecuteFunctionExternal/*' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/*' />
   void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback);
 
   /// <summary>
@@ -464,7 +464,7 @@ public class WxePage: Page, IWxePage
   /// </summary>
   /// <remarks>
   ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
-  ///   When in doubt, use <see cref="ExecuteFunctionNoRepost (IWxePage, WxeFunction, Control)"/>.
+  ///   When in doubt, use <see cref="M:ExecuteFunctionNoRepost (IWxePage, WxeFunction, Control)"/>.
   /// </remarks>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {

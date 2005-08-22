@@ -70,7 +70,7 @@ public class WxeFunctionStateCollection
   /// <param name="functionState"> 
   ///   The <see cref="WxeFunctionState"/> to be removed. Must not be <see langword="null"/>.
   /// </param>
-  public void Remove (WxeFunctionState functionState)
+  protected void Remove (WxeFunctionState functionState)
   {
     ArgumentUtility.CheckNotNull ("functionState", functionState);
     _functionStates.Remove (functionState);

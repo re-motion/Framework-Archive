@@ -35,7 +35,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     
     /// <summary> Denotes the <b>URL</b> to return to after the function has completed. </summary>
     /// <remarks>   
-    ///   Only evaluated during initialization. Replaces the <see cref="WxeFunciton.ReturnUrl"/> defined by the 
+    ///   Only evaluated during initialization. Replaces the <see cref="WxeFunction.ReturnUrl"/> defined by the 
     ///   function it self. 
     /// </remarks>
     public const string WxeReturnUrl = "ReturnUrl";
@@ -54,6 +54,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     
     /// <summary> Denotes a session abort. </summary>
     public const string Abort = "Abort";
+
+    /// <summary> Denotes a session abort. (Obsolete) </summary>
+    public const string Cancel = "Cancel";
   }
 
   /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and it's context. </summary>
@@ -194,10 +197,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
       throw new ApplicationException ("Page timeout."); // TODO: display error message
+    if (functionState.IsAborted)
+      throw new ApplicationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
   
     string action = context.Request[Parameters.WxeAction];
     bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
-    bool isAbort = StringUtility.AreEqual (action, Actions.Abort, true);
+    bool isAbort =   StringUtility.AreEqual (action, Actions.Abort, true) 
+                  || StringUtility.AreEqual (action, Actions.Cancel, true);
+
     if (isRefresh)
     {
       functionState.Touch();
@@ -251,7 +258,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     function.Execute (context);
   }
 
-  /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnURL"/>. </summary>
+  /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessReturnUrl/*' />
   protected void ProcessReturnUrl (HttpContext context, WxeFunctionState functionState)
   {

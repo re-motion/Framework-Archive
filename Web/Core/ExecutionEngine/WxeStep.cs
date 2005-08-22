@@ -100,7 +100,7 @@ public abstract class WxeStep
   ///   a <see cref="WxeFunctionState"/> and subsequently the contained <see cref="WxeFunction"/>, which is derived
   ///   from <b>WxeStep</b>.
   /// </remarks>
-  protected internal void Abort()
+  public void Abort()
   {
     if (! _isAborted)
     {
