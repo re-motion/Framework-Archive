@@ -90,6 +90,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private WxeForm _form;
   private bool _postbackCollectionInitialized = false;
   private NameValueCollection _postbackCollection = null;
+  /// <summary> The <see cref="WxeFunctionState"/> designated by <b>WxeForm.ReturningToken</b>. </summary>
+  private WxeFunctionState _returningFunctionState = null;
 
   private bool _executeNextStep = false;
   private HttpResponse _response; // used for cleanup in Dispose
@@ -116,6 +118,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, _page.CurrentStep.PageToken);
 
     _page.Load += new EventHandler (Page_Load);
+    _page.Unload += new EventHandler(Page_Unload);
   }
 
   private void Page_Load (object sender, EventArgs e)
@@ -133,6 +136,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         {
           WxeContext.Current.ReturningFunction = functionState.Function;
           WxeContext.Current.IsReturningPostBack = true;
+          _returningFunctionState = functionState;
         }
       }
     }
@@ -161,6 +165,21 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
 
     RegisterSessionManagement();
+  }
+
+  /// <summary> Handles the <b>Unload</b> event of the page. </summary>
+  /// <remarks> 
+  ///   Aborts the <see cref="_returningFunctionState"/> if its <see cref="WxeFunctionState.Function"/> is the root 
+  ///   function.
+  /// </remarks>
+  private void Page_Unload(object sender, EventArgs e)
+  {
+    if (_returningFunctionState != null)
+    {
+      bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;
+      if (isRootFunction)
+        WxeFunctionStateCollection.Instance.Abort (_returningFunctionState);
+    }
   }
 
   protected void RegisterSessionManagement()
@@ -245,7 +264,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    WxeFunctionState functionState = new WxeFunctionState (function);
+    bool enableCleanUp = !returningPostback;
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
