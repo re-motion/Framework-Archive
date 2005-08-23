@@ -3,6 +3,8 @@
 - BocList
   * Neues Feature: Anzeige des Row Index, inkl Verwendung als Label für die Selection-Checkbox
     Aktiviert über Property Index
+- BocList, BocReferenceValue, BocDropDownMenu
+  * Bugfix: MenuItems haben auch zur DesignTime die PreRender-Werte ausgewertet.
   
 1.2.64
 ======
