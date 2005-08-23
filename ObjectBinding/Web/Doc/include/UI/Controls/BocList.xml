@@ -44,7 +44,9 @@
               <item> The drop down menu and the list menu </item>
             </list>
             <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
-            <para> 
+            <para>
+              Priority 2 checkpoint 12.4 is not met if <see cref="Selection"/> is enabled but <see cref="Index"/> is not.
+            </para><para> 
               Priority 2 checkpoint 13.1 is not met for links placed into value columns. The column's value is used 
               to identify the link's target.
             </para>
@@ -244,7 +246,7 @@
         the programmatic settings.
       </para>
          
-      <h4 class="dtH4">Row Selection</h4>
+      <h4 class="dtH4">Row Selection and Row Index</h4>
       <para>
         The <b>BocList</b> supports selecting a subset of the currently displayed rows. The selection mode can be set
         by using the <see cref="Selection"/> property. You can use the mouse in combination with the control key to 
@@ -253,6 +255,10 @@
         The selected rows or objects can be queried using the <see cref="GetSelectedRows"/> and 
         <see cref="GetSelectedBusinessObjects"/> methods. A new selection can be made through the 
         <see cref="SetSelectedRows"/> and <see cref="SetSelectedBusinessObjects"/> methods. 
+      </para><para>
+        By setting the <see cref="Index"/> property to <see cref="RowIndex.InitialOrder"/> or 
+        <see cref="RowIndex.SortedOrder"/>, an index is displayed as first column. If selection is also enabled, the index
+        acts as label for the selection check-boxes or radio-buttons.
       </para>
       
       <h4 class="dtH4"><a name="EditDetails">Details Editing Mode (Inline Editing)</a></h4><!-- HTML Help requires separate anchor tag for target -->   
@@ -331,6 +337,13 @@
           <description>
             <para> &lt;BocList Resource ID&gt;:EmptyListMessage </para>
             <para> e.g. auto:MyBocList:EmptyListMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="IndexColumnTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:IndexColumnTitle </para>
+            <para> e.g. auto:MyBocList:IndexColumnTitle </para>
           </description>
         </item>
         <item>

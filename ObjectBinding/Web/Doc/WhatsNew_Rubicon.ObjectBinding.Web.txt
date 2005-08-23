@@ -1,3 +1,9 @@
+1.2.66
+======
+- BocList
+  * Neues Feature: Anzeige des Row Index, inkl Verwendung als Label für die Selection-Checkbox
+    Aktiviert über Property Index
+  
 1.2.64
 ======
 - BocTreeView
