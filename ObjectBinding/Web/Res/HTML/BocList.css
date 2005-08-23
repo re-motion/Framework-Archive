@@ -102,6 +102,25 @@ td.bocListDataCellEvenSelected
   cursor: default;
 }
 
+/*  Style applied to the cell in the BocList's data row that contains the index. */
+th.bocListTitleCellIndex
+{
+  text-align: center;
+}
+
+/*  Style applied to the cell in the BocList's data row that contains the index. */
+td.bocListDataCellIndex
+{
+  text-align: center;
+}
+
+/*  Style applied to the non-anchor content in the data rows.  */
+span.bocListContent,
+label.bocListContent
+{
+	padding: 2px;
+}
+
 /*  Style applied to the anchor tags in BocList's unselected odd and even data rows.  */
 td.bocListDataCellOdd a,
 td.bocListDataCellEven a
