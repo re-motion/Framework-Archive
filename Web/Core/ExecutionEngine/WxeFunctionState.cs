@@ -101,23 +101,24 @@ public class WxeFunctionState
   private int _lifetime;
   private string _functionToken;
   private bool _isAborted;
+  private bool _isCleanUpEnabled;
 
-  public WxeFunctionState (WxeFunction function, int lifetime)
-    : this (function, Guid.NewGuid().ToString(), lifetime)
+  public WxeFunctionState (WxeFunction function, int lifetime, bool enableCleanUp)
+    : this (function, Guid.NewGuid().ToString(), lifetime, enableCleanUp)
   {
   }
 
-  public WxeFunctionState (WxeFunction function, string functionToken)
-    : this (function, functionToken, WebConfiguration.Current.ExecutionEngine.FunctionTimeout)
+  public WxeFunctionState (WxeFunction function, string functionToken, bool enableCleanUp)
+    : this (function, functionToken, WebConfiguration.Current.ExecutionEngine.FunctionTimeout, enableCleanUp)
   {
   }
   
-  public WxeFunctionState (WxeFunction function)
-    : this (function, Guid.NewGuid().ToString(), WebConfiguration.Current.ExecutionEngine.FunctionTimeout)
+  public WxeFunctionState (WxeFunction function, bool enableCleanUp)
+    : this (function, Guid.NewGuid().ToString(), WebConfiguration.Current.ExecutionEngine.FunctionTimeout, enableCleanUp)
   {
   }
 
-  public WxeFunctionState (WxeFunction function, string functionToken, int lifetime)
+  public WxeFunctionState (WxeFunction function, string functionToken, int lifetime, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -125,6 +126,7 @@ public class WxeFunctionState
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = functionToken;
+    _isCleanUpEnabled = enableCleanUp;
   }
 
   public WxeFunction Function
@@ -145,6 +147,15 @@ public class WxeFunctionState
   public string FunctionToken
   {
     get { return _functionToken; }
+  }
+
+  /// <summary> 
+  ///   Gets a flag that determines whether to automatically clean-up (i.e. abort) the function state after 
+  ///   its function has executed.
+  /// </summary>
+  public bool IsCleanUpEnabled
+  {
+    get { return _isCleanUpEnabled; }
   }
 
   public void Touch()

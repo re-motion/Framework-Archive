@@ -59,7 +59,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     public const string Cancel = "Cancel";
   }
 
-  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and it's context. </summary>
+  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
   WxeFunctionState _currentFunctionState;
 
   /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
@@ -166,9 +166,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     WxeFunctionState functionState;
     if (StringUtility.IsNullOrEmpty (functionToken))
-      functionState = new WxeFunctionState (function);
+      functionState = new WxeFunctionState (function, true);
     else
-      functionState = new WxeFunctionState (function, functionToken);
+      functionState = new WxeFunctionState (function, functionToken, true);
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.Params);
@@ -232,9 +232,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ExecuteFunctionState (context, functionState, isNewFunction);
     //  This point is only reached, once the WxeFunction has completed execution.
     string returnUrl = functionState.Function.ReturnUrl;
-    //  TODO: Determine a way to clean-up the function (-state) after it is no longer in use.
-    // Function still needed after this point (WxePageInfo.Page_Load)
-    // CleanUpFunctionState (functionState);
+    CleanUpFunctionState (functionState);
     if (! StringUtility.IsNullOrEmpty (returnUrl))
       ProcessReturnUrl (context, returnUrl);
   }
@@ -271,12 +269,15 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     function.Execute (context);
   }
 
-  /// <summary> Aborts the <paramref name="functionState"/> after it's function has executed. </summary>
+  /// <summary> Aborts the <paramref name="functionState"/> after its function has executed. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CleanUpFunctionState/*' />
   protected void CleanUpFunctionState (WxeFunctionState functionState)
   {
     ArgumentUtility.CheckNotNull ("functionState", functionState);
-    WxeFunctionStateCollection.Instance.Abort (_currentFunctionState);
+
+    bool isRootFunction = functionState.Function == functionState.Function.RootFunction;
+    if (functionState.IsCleanUpEnabled && isRootFunction)
+      WxeFunctionStateCollection.Instance.Abort (functionState);
   }
 
   /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>

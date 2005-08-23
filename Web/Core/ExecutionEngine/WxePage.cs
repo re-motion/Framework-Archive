@@ -568,6 +568,8 @@ public class WxePage: Page, IWxePage
     get { return _enableAbortConfirmation == NaBooleanEnum.True; }
   }
 
+  /// <summary> Implementation of <see cref="IWxePage.IsAbortConfirmationEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="IsAbortConfirmationEnabled"/>. </value>
   bool IWxePage.IsAbortConfirmationEnabled
   {
     get { return IsAbortConfirmationEnabled; }
@@ -599,6 +601,8 @@ public class WxePage: Page, IWxePage
     get { return _enableAbort != NaBooleanEnum.False; }
   }
 
+  /// <summary> Implementation of <see cref="IWxePage.IsAbortEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="IsAbortEnabled"/>. </value>
   bool IWxePage.IsAbortEnabled
   {
     get { return IsAbortEnabled; }

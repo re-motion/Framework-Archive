@@ -1,3 +1,13 @@
+1.2.65
+======
+- Execution Engine
+  * Function States werden nun automatisch aborted wenn sie zu Ende sind:
+    (Root-)Functions welche über FunctionType initialisiert wurden, werden am Ende des Execute-Cycles aborted.
+    Root-Functions welche durch WxePageInfo.Execute (ReturningPostback=true) gestartet wurden, 
+      werden im Page_Unload aborted, d.h. nachdem sie den Returning Postback Zweig durchlaufen haben.
+    Root-Functions welche durch WxePageInfo.Execute (ReturningPostback=false) gestartet wurden, 
+      werden am Ende des Execute-Cycles aborted.
+        
 1.2.64
 ======
 - Execution Engine
