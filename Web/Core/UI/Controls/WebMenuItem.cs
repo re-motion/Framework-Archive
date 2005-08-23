@@ -281,6 +281,8 @@ public class WebMenuItem: IControlItem
 
   private void OwnerControl_PreRender(object sender, EventArgs e)
   {
+    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
+      return;
     PreRender();
   }
 }
