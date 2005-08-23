@@ -90,4 +90,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText">
         <value>Alle Zeilen markieren.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.IndexColumnTitle">
+        <value>Nr.</value>
+    </data>
 </root>

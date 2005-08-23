@@ -96,4 +96,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText">
         <value>Select all rows.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.IndexColumnTitle">
+        <value>No.</value>
+    </data>
 </root>
