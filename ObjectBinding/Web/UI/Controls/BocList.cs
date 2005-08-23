@@ -140,7 +140,8 @@ public class BocList:
     GoToNextAlternateText,
     GoToPreviousAlternateText,
     SelectAllRowsAlternateText,
-    SelectRowAlternateText
+    SelectRowAlternateText,
+    IndexColumnTitle
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
@@ -291,9 +292,9 @@ public class BocList:
   /// <summary> Determines whether to show the sort buttons. </summary>
   private bool _enableSorting = true;
   /// <summary> Determines whether to show the sorting order after the sorting button. Undefined interpreted as True. </summary>
-  private NaBoolean _showSortingOrder = NaBoolean.Null;
+  private NaBooleanEnum _showSortingOrder = NaBooleanEnum.Undefined;
   /// <summary> Undefined interpreted as True. </summary>
-  private NaBoolean _enableMultipleSorting = NaBoolean.Null;
+  private NaBooleanEnum _enableMultipleSorting = NaBooleanEnum.Undefined;
   /// <summary> 
   ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
@@ -311,6 +312,8 @@ public class BocList:
   ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
   /// </summary>
   private Hashtable _selectorControlCheckedState = new Hashtable();
+  private RowIndex _index = RowIndex.Undefined;
+  private string _indexColumnTitle;
 
   /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
   private NaInt32 _pageSize = NaInt32.Null; 
@@ -999,6 +1002,11 @@ public class BocList:
             throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
         }
       }
+    }
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
+    {
+      if (IsSelectionEnabled && ! IsIndexEnabled)
+        throw new WcagException (2, this, "Selection");
     }
   }
 
@@ -1736,7 +1744,7 @@ public class BocList:
           IBusinessObject businessObject = rowPair.Second as IBusinessObject;
           if (businessObject == null)
             throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-          RenderDataRow (writer, businessObject, idxRelativeRows, originalRowIndex, isOddRow);
+          RenderDataRow (writer, businessObject, idxRelativeRows, idxAbsoluteRows, originalRowIndex, isOddRow);
           isOddRow = !isOddRow;
         }
       }
@@ -1914,6 +1922,16 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
+    if (IsIndexEnabled)
+    {
+      writer.WriteBeginTag ("col");
+      writer.Write (" style=\"");
+      //  1% would lead to automatic resizing if all widths don't add up to 100%
+      writer.WriteStyleAttribute ("width", Unit.Percentage(0).ToString());
+      writer.Write ("\"");
+      writer.Write (">");
+    }
+
     if (IsSelectionEnabled)
     {
       writer.WriteBeginTag ("col");
@@ -1964,6 +1982,22 @@ public class BocList:
     BocColumnDefinition[] renderColumns = EnsureColumnsGot();
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+    if (IsIndexEnabled)
+    {
+      string cssClass = CssClassTitleCell + " " + CssClassTitleCellIndex;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      writer.RenderBeginTag (HtmlTextWriterTag.Th);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      string indexColumnTitle;
+      if (StringUtility.IsNullOrEmpty (_indexColumnTitle))
+        indexColumnTitle = GetResourceManager().GetString (ResourceIdentifier.IndexColumnTitle);
+      else
+        indexColumnTitle = _indexColumnTitle;
+      writer.Write (indexColumnTitle);
+      writer.RenderEndTag();
+      writer.RenderEndTag();
+    }
 
     if (IsSelectionEnabled)
     {
@@ -2188,12 +2222,14 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> whose data will be rendered. </param>
   /// <param name="rowIndex"> The row number in the current view. </param>
+  /// <param name="absoluteRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
   /// <param name="originalRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
   /// <param name="isOddRow"> Whether the data row is rendered in an odd or an even table row. </param>
   private void RenderDataRow (
       HtmlTextWriter writer, 
       IBusinessObject businessObject,
       int rowIndex,
+      int absoluteRowIndex,
       int originalRowIndex,
       bool isOddRow)
   {
@@ -2241,6 +2277,18 @@ public class BocList:
       }
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+
+    if (IsIndexEnabled)
+    {
+      string cssClass = cssClassTableCell + " " + CssClassDataCellIndex;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      if (_index == RowIndex.InitialOrder)
+        RenderRowIndex (writer, originalRowIndex, selectorControlID);
+      else if (_index == RowIndex.SortedOrder)
+        RenderRowIndex (writer, absoluteRowIndex, selectorControlID);
+      writer.RenderEndTag();
+    }
 
     if (IsSelectionEnabled)
     {
@@ -2329,6 +2377,11 @@ public class BocList:
         isCommandEnabled = RenderBeginTagDataCellCommand (
             writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
       }
+      if (! isCommandEnabled)
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      }
 
       //  Render the icon
       if (showIcon && ! hasEditModeControl)
@@ -2351,7 +2404,10 @@ public class BocList:
         RenderValueColumnCellText (writer, valueColumnText);
       }
 
-      RenderEndTagDataCellCommand (writer, commandEnabledColumn, isCommandEnabled);
+      if (isCommandEnabled)
+        RenderEndTagDataCellCommand (writer, commandEnabledColumn);
+      else
+        writer.RenderEndTag();
     }
     else if (editDetailsColumn != null)
     {
@@ -2370,6 +2426,35 @@ public class BocList:
       customColumn.CustomCell.Render (writer, arguments);
     }
 
+    writer.RenderEndTag();
+  }
+
+
+  /// <summary> Renders the row index (Optionally as a label for the selector control). </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
+  /// <param name="index"> The zero-based index to be rendered. </param>
+  /// <param name="selectorControlID"> 
+  ///   The ID of the selector-control for this row, or <see langword="null"/> for no control.
+  /// </param>
+  private void RenderRowIndex (HtmlTextWriter writer, int index, string selectorControlID) 
+  {
+    bool hasSelectorControl = selectorControlID != null;
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+    if (hasSelectorControl)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.For, selectorControlID);
+      if (_hasClientScript)
+      {
+        string script = "BocList_OnSelectorControlLabelClick();";
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+      }
+      writer.RenderBeginTag (HtmlTextWriterTag.Label);
+    }
+    else
+    {
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    }
+    writer.Write (index + 1);
     writer.RenderEndTag();
   }
 
@@ -2726,13 +2811,9 @@ public class BocList:
     return isCommandEnabled;
   }
 
-  private void RenderEndTagDataCellCommand (
-      HtmlTextWriter writer, 
-      BocCommandEnabledColumnDefinition column, 
-      bool isCommandEnabled)
+  private void RenderEndTagDataCellCommand (HtmlTextWriter writer, BocCommandEnabledColumnDefinition column)
   {
-    if (isCommandEnabled)
-      column.Command.RenderEnd (writer);
+    column.Command.RenderEnd (writer);
   }
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon, Enum alternateTextID)
@@ -2764,6 +2845,9 @@ public class BocList:
   {
     BocColumnDefinition[] renderColumns = EnsureColumnsGot();
     int columnCount = 0;
+
+    if (IsIndexEnabled)
+      columnCount++;
   
     if (IsSelectionEnabled)
       columnCount++;
@@ -4556,13 +4640,13 @@ public class BocList:
   ///   Only displays the index if more than one column is included in the sorting.
   /// </remarks>
   /// <value> 
-  ///   <see langword="NaBoolean.True"/> to show the sorting order index after the button. 
-  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="true"/>.
+  ///   <see langword="NaBooleanEnum.True"/> to show the sorting order index after the button. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   [Category ("Appearance")]
   [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
-  [DefaultValue (typeof (NaBoolean), "")]
-  public virtual NaBoolean ShowSortingOrder
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum ShowSortingOrder
   {
     get { return _showSortingOrder; }
     set { _showSortingOrder = value; }
@@ -4570,13 +4654,13 @@ public class BocList:
 
   protected virtual bool IsShowSortingOrderEnabled
   {
-    get { return ! _showSortingOrder.IsFalse; }
+    get { return ShowSortingOrder != NaBooleanEnum.False; }
   }
 
   [Category ("Behavior")]
   [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
-  [DefaultValue (typeof (NaBoolean), "")]
-  public virtual NaBoolean EnableMultipleSorting
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableMultipleSorting
   {
     get { return _enableMultipleSorting; }
     set 
@@ -4593,7 +4677,7 @@ public class BocList:
 
   protected virtual bool IsMultipleSortingEnabled
   {
-    get { return ! _enableMultipleSorting.IsFalse; }
+    get { return EnableMultipleSorting != NaBooleanEnum.False; }
   }
 
   /// <summary>
@@ -4641,6 +4725,37 @@ public class BocList:
   protected bool IsSelectionEnabled
   {
     get { return _selection != RowSelection.Undefined && _selection != RowSelection.Disabled; }
+  }
+
+  /// <summary> Gets or sets a value that indicating the row index is enabled. </summary>
+  /// <value> 
+  ///   <see langword="RowIndex.InitialOrder"/> to show the of the initial (unsorted) list and
+  ///   <see langword="RowIndex.SortedOrder"/> to show the index based on the current sorting order. 
+  ///   Defaults to <see cref="RowIndex.Undefined"/>, is interpreted as <see langword="RowIndex.Disabled"/>.
+  /// </value>
+  /// <remarks> If row selection is enabled, the control displays an index in front of each row. </remarks>
+  [Category ("Appearance")]
+  [Description ("Indicates whether the row index is enabled. Undefined is interpreted as Disabled.")]
+  [DefaultValue (RowIndex.Undefined)]
+  public virtual RowIndex Index
+  {
+    get { return _index; }
+    set { _index = value; }
+  }
+
+  protected bool IsIndexEnabled
+  {
+    get { return _index != RowIndex.Undefined && _index != RowIndex.Disabled; }
+  }
+
+  /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
+  [Category ("Appearance")]
+  [Description ("The text that is displayed in the index column's title row.")]
+  [DefaultValue (null)]
+  public string IndexColumnTitle
+  {
+    get { return _indexColumnTitle; }
+    set { _indexColumnTitle = value; }
   }
 
   /// <summary> The number of rows displayed per page. </summary>
@@ -4945,6 +5060,21 @@ public class BocList:
   protected virtual string CssClassDataCellEvenSelected
   { get { return "bocListDataCellEvenSelected"; } }
 
+  /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the row index header. </summary>
+  /// <remarks> Class: <c>bocListTitleCellIndex</c> </remarks>
+  protected virtual string CssClassTitleCellIndex
+  { get { return "bocListTitleCellIndex"; } }
+
+  /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the row index. </summary>
+  /// <remarks> Class: <c>bocListDataCellIndex</c> </remarks>
+  protected virtual string CssClassDataCellIndex
+  { get { return "bocListDataCellIndex"; } }
+
+  /// <summary> Gets the CSS-Class applied to the content if there is no anchor element. </summary>
+  /// <remarks> Class: <c>bocListDataCellContent</c> </remarks>
+  protected virtual string CssClassContent
+  { get { return "bocListContent"; } }
+
   /// <summary> Gets the CSS-Class applied to the text providing the sorting order's index. </summary>
   /// <remarks> Class: <c>bocListSortingOrder</c> </remarks>
   protected virtual string CssClassSortingOrder
@@ -5105,6 +5235,14 @@ public enum RowSelection
   SingleCheckBox = 1,
   SingleRadioButton = 2,
   Multiple = 3 
+}
+
+public enum RowIndex
+{ 
+  Undefined = -1,
+  Disabled = 0,
+  InitialOrder = 1,
+  SortedOrder = 2
 }
 
 public enum ListMenuLineBreaks
