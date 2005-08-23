@@ -17,6 +17,10 @@ var _bocList_isSelectorControlClick = false;
 //  prior to the row's OnClick event.
 var _bocList_isCommandClick = false;
 
+//  A flag that indicates that the OnClick event for a selectorControl label has been raised
+//  prior to the row's OnClick event.
+var _bocList_isSelectorControlLabelClick = false;
+
 var _bocList_rowSelectionUndefined = -1;
 var _bocList_rowSelectionDisabled = 0;
 var _bocList_rowSelectionSingleCheckBox = 1;
@@ -106,7 +110,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
 //  Event handler for a table row in the BocList. 
 //  Selects/unselects a row/all rows depending on its selection state,
 //      whether CTRL has been pressed and if _bocList_isSelectorControlClick is true.
-//  Aborts the execution if _bocList_isCommandClick is true.
+//  Aborts the execution if _bocList_isCommandClick or _bocList_isSelectorControlClick is true.
 //  bocList: The BocList to which the row belongs.
 //  currentRow: The row that fired the click event.
 //  selectorControl: The selection selectorControl in this row.
@@ -119,6 +123,12 @@ function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
     return;
   }  
   
+  if (_bocList_isSelectorControlLabelClick)
+  {
+    _bocList_isSelectorControlLabelClick = false;
+    return;
+  }  
+
   var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl, isOdd);
   var selectedRows = _bocList_selectedRows[bocList.id];
   var className; //  The css-class
@@ -278,6 +288,13 @@ function BocList_OnSelectAllSelectorControlClick (bocList, selectAllSelectorCont
 function BocList_OnSelectionSelectorControlClick()
 {
   _bocList_isSelectorControlClick = true;
+}
+
+//  Event handler for the label tags associated with the row index in a data row.
+//  Sets the _bocList_isSelectorControlLabelClick flag.
+function BocList_OnSelectorControlLabelClick()
+{
+  _bocList_isSelectorControlLabelClick = true;
 }
 
 //  Event handler for the anchor tags (commands) in a data row.
