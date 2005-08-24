@@ -26,7 +26,10 @@
   </Class>
   <Dispatch>
     <remarks>
-      Each key must consist of the following three parts, seperated by colons, to be dispatched:
+      <para> 
+        For automatic resources each key must consist of the following three parts, seperated by colons, 
+        to be dispatched:
+      </para>
       <list type="table">
         <listheader>
           <term>Key Part</term>
@@ -52,12 +55,20 @@
           </description>
         </item>
       </list>
-      If the parameter section of the key contains prefixes, the child control must implement
-      IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
-      handle parameters named like one of the child control's properties.
+      <para>
+        If the parameter section of the key contains prefixes, the child control must implement
+        IResourceDispatchTarget for the resource to be applied. <c>Dispatch</c> itself can only 
+        handle parameters named like one of the child control's properties.
+      </para><para>
+        As an alternitve to <c>auto:</c>, you can use <c>global:</c> as a prefix, followed by a resource ID.
+        These global resources are dispatched by controls supporting <b>IResourceDispatchTarget</b>. Enter the global
+        reosurce ID (including the prefix) as the string properties value and the resource provided during dispatching.
+      </para><para>
+        Dispatch first dispatches the global resources, then the automatic resources.
+      </para>
     </remarks>
   </Dispatch>
-  <DispatchMain>
+  <DispatchByPropertyName>
     <remarks>
       The keys identify the elements in the control.
       The embedded IDictonaries contain property/value pairs to be dispatched to the elements.
@@ -73,8 +84,8 @@
     <param name="resourceSource">
       The name of the resource manager (used for logging).
     </param>  
-  </DispatchMain>
-  <DispatchGeneric>
+  </DispatchByPropertyName>
+  <DispatchGenericByPropertyName>
     <param name="obj">
       The object to be dispatched. Must not be <see langname="null"/>.
     </param>
@@ -82,5 +93,5 @@
       A dictonary consisting of name/value pairs corresponding to property's name and value resprectively. Must not be <see langname="null"/>.
       Type is IDictionary&lt;string, string&gt;.
     </param>
-   </DispatchGeneric>
+   </DispatchGenericByPropertyName>
 </ResourceDispatcher>
