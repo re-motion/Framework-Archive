@@ -11,6 +11,7 @@ using log4net;
 
 using Rubicon.Utilities;
 using Rubicon.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Globalization
 {
@@ -27,8 +28,11 @@ public sealed class ResourceDispatcher
 
   /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
   private const string c_thisElementID = "this";
+  private const string c_globalPrefix = "global:";
+  private const string c_autoPrefix = "auto:";
 
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
+  private static ArrayList _registeredDispatchTargets = new ArrayList();
 
   /// <summary>
   ///   Dispatches resources.
@@ -42,14 +46,17 @@ public sealed class ResourceDispatcher
   /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
-    const string autoPrefix = "auto:";
-
     ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    IDictionary elements = ResourceDispatcher.GetResources (resourceManager, autoPrefix);
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
-    ResourceDispatcher.Dispatch (control, elements, resourceManager.Name);
+    NameValueCollection globalElements = resourceManager.GetAllStrings (c_globalPrefix);
+    IDictionary autoElements = ResourceDispatcher.GetResources (resourceManager, c_autoPrefix);
+
+    ResourceDispatcher.DispatchByElementValue (control, globalElements);
+    ResourceDispatcher.DispatchByElementName (control, autoElements, resourceManager.Name);
   }
 
   /// <summary>
@@ -74,17 +81,55 @@ public sealed class ResourceDispatcher
     Dispatch (control, resourceManager);
   }
 
+  public static void DispatchByElementValue (Control control, NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    if (ControlHelper.IsDesignMode (control))
+      return;
+
+    if (values.Count == 0)
+      return;
+
+    foreach (IResourceDispatchTarget resourceDispatchTarget in _registeredDispatchTargets)
+      resourceDispatchTarget.DispatchByElementValue (values);
+  }
+
+  public static bool IsDispatchedByElementValue (string elementValue)
+  {
+    if (StringUtility.IsNullOrEmpty (elementValue))
+      return false;
+    return elementValue.StartsWith (c_globalPrefix);
+  }
+
+  public static string GetDispatchByElementValueKey (string elementValue)
+  {
+    if (IsDispatchedByElementValue (elementValue))
+      return elementValue;
+    else
+      return null;
+  }
+
+  public static void RegisterDispatchTarget (IResourceDispatchTarget resourceDispatchTarget)
+  {
+    _registeredDispatchTargets.Add (resourceDispatchTarget);
+  }
+
   /// <summary>
   ///   Dispatches an IDictonary of elementID/IDictonary pairs to the specified control.
   /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
-  public static void Dispatch (
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchByElementName/*' />
+  public static void DispatchByElementName (
       Control control,
       IDictionary elements,
       string resourceSource)
   {
     ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("elements", elements);
+
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
     //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)
@@ -109,9 +154,9 @@ public sealed class ResourceDispatcher
         IResourceDispatchTarget resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
-          resourceDispatchTarget.Dispatch (values);       
+          resourceDispatchTarget.DispatchByElementName (values);       
         else
-          ResourceDispatcher.DispatchGeneric (targetControl, values);
+          ResourceDispatcher.DispatchGenericByPropertyName (targetControl, values);
       }
     }
   }
@@ -119,8 +164,8 @@ public sealed class ResourceDispatcher
   /// <summary>
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
-  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
-  public static void DispatchGeneric (object obj, IDictionary values)
+  /// <include file='doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGenericByPropertyName/*' />
+  public static void DispatchGenericByPropertyName (object obj, IDictionary values)
   {
     ArgumentUtility.CheckNotNull ("obj", obj);
     ArgumentUtility.CheckNotNull ("values", values);
