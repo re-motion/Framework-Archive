@@ -1,3 +1,15 @@
+1.2.66
+======
+- Rubicon.Web.UI.Globalization.ResourceDispatcher
+  * Neues Feautere: Resourcen können nun global definiert werden
+    "global:ResourceID" definiert eine resource ID.
+    Die resource ID inkl. "global:" kann in String Properties von Controls eingetragen werden und während dem 
+      Dispatching werden die entsprechenden globalen Resourcen zugewiesen. 
+    Globale Resouren werden vor den automatischen (auto:) Resourcen zugewiesen und können von diesen überschrieben
+      werden.
+    Verwendung für identische Resource-Strings auf mehreren Seiten oder bei mehreren Controls auf einer Seite,
+      zB für Validator-Meldungen.
+
 1.2.65
 ======
 - Execution Engine
