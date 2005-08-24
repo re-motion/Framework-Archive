@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI.WebControls;
 
 using Rubicon.Utilities;
@@ -57,6 +58,11 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
 
   public void Dispatch (IDictionary values)
   {
+    ((IResourceDispatchTarget)this).DispatchByElementName (values);
+  }
+
+  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  {
     foreach (DictionaryEntry entry in values)
     {
       string key = entry.Key.ToString ();
@@ -71,6 +77,10 @@ public class ExtendedDropDownList : DropDownList, IResourceDispatchTarget
           item.Text = text;
       }
     }
+  }
+
+  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
+  {
   }
 
   public virtual int SelectedInt32Value
