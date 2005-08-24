@@ -24,7 +24,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected OBRTest.PersonTreeView PersonTreeView;
   protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
   protected System.Web.UI.WebControls.Button Button1;
-  protected Rubicon.Web.UI.Controls.WebButton WebButton1;
+  protected System.Web.UI.WebControls.Button Node101Button;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
@@ -126,7 +126,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     this.PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.Controls.BocTreeNodeEventHandler(this.PersonTreeView_SelectionChanged);
     this.RefreshPesonTreeViewButton.Click += new System.EventHandler(this.RefreshPesonTreeViewButton_Click);
     this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
-    this.WebButton1.Click += new System.EventHandler(this.WebButton1_Click);
+    this.Node101Button.Click += new System.EventHandler(this.Node101Button_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -146,7 +146,12 @@ public class SingleTestTreeView : SingleBocTestBasePage
     PersonTreeView.RefreshTreeNodes();
   }
 
-  private void WebButton1_Click(object sender, System.EventArgs e)
+  private void PersonTreeView_SelectionChanged(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeEventArgs e)
+  {
+  
+  }
+
+  private void Node101Button_Click(object sender, System.EventArgs e)
   {
     WebTreeNode node0 = (WebTreeNode)PersonTreeView.Nodes[0];
     node0.EvaluateExpand();
@@ -155,11 +160,6 @@ public class SingleTestTreeView : SingleBocTestBasePage
     WebTreeNode node010 = (WebTreeNode)node01.Children[0];
     node010.EvaluateExpand();
     node010.IsSelected = true;
-  }
-
-  private void PersonTreeView_SelectionChanged(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeEventArgs e)
-  {
-  
   }
 }
 
