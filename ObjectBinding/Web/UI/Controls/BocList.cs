@@ -37,7 +37,6 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
     BusinessObjectBoundModifiableWebControl, 
-    IResourceDispatchTarget, 
     IPostBackEventHandler, 
     IPostBackDataHandler, 
     IComparer,
@@ -411,7 +410,7 @@ public class BocList:
     {
       InitializeMenusItems();
     }
-  }
+ }
 
   protected override void OnLoad(EventArgs e)
   {
@@ -3503,9 +3502,9 @@ public class BocList:
   }
 
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocList"/>'s properties. </summary>
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  public void Dispatch (IDictionary values)
+  protected override void DispatchByElementName (IDictionary values)
   {
     HybridDictionary fixedColumnValues = new HybridDictionary();
     HybridDictionary optionsMenuItemValues = new HybridDictionary();
@@ -3586,14 +3585,51 @@ public class BocList:
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGeneric (this, propertyValues);
+    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
 
     //  Dispatch to collections
-    _fixedColumns.Dispatch (fixedColumnValues, this, "FixedColumns");
-    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
-    ListMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
+    _fixedColumns.DispatchByElementName (fixedColumnValues, this, "FixedColumns");
+    OptionsMenuItems.DispatchByElementName (optionsMenuItemValues, this, "OptionsMenuItems");
+    ListMenuItems.DispatchByElementName (listMenuItemValues, this, "ListMenuItems");
   }
 
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected override void DispatchByElementValue (NameValueCollection values)
+  {
+    base.DispatchByElementValue (values);
+
+    //  Dispatch simple properties
+    string key;    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (IndexColumnTitle);
+    if (! StringUtility.IsNullOrEmpty (key))
+      IndexColumnTitle = (string) values[key];
+    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (PageInfo);
+    if (! StringUtility.IsNullOrEmpty (key))
+      PageInfo = (string) values[key];
+    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (EmptyListMessage);
+    if (! StringUtility.IsNullOrEmpty (key))
+      EmptyListMessage = (string) values[key];
+    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (OptionsTitle);
+    if (! StringUtility.IsNullOrEmpty (key))
+      OptionsTitle = (string) values[key];
+    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (AvailableViewsListTitle);
+    if (! StringUtility.IsNullOrEmpty (key))
+      AvailableViewsListTitle = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ErrorMessage = (string) values[key];
+
+    //  Dispatch to collections
+    _fixedColumns.DispatchByElementValue (values);
+    OptionsMenuItems.DispatchByElementValue (values);
+    ListMenuItems.DispatchByElementValue (values);
+  }
 
   /// <summary>
   ///   Sets <see cref="_hasClientScript"/>  to <see langword="true"/> if 
