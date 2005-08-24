@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using log4net;
 using Rubicon.Utilities;
@@ -19,6 +20,7 @@ public interface IControlItem
 {
   Control OwnerControl { get; set; }
   string ItemID { get; }
+  void DispatchByElementValue (NameValueCollection values);
 }
 
 /// <summary>
@@ -245,7 +247,7 @@ public class ControlItemCollection: CollectionBase
     }
   }
 
-  public void Dispatch (IDictionary values, Control parent, string collectionName)
+  public void DispatchByElementName (IDictionary values, Control parent, string collectionName)
   {
     string parentID = string.Empty;
     string page = string.Empty;
@@ -261,9 +263,20 @@ public class ControlItemCollection: CollectionBase
       
       IControlItem item = Find (id);
       if (item != null)
-        ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value);
+        ResourceDispatcher.DispatchGenericByPropertyName (item, (IDictionary) entry.Value);
       else  //  Invalid collection element
         s_log.Debug ("'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName + "'.");
+    }
+  }
+
+  public void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    for (int i = 0; i < InnerList.Count; i++)
+    {
+      IControlItem controlItem = (IControlItem) InnerList[i];
+      controlItem.DispatchByElementValue (values);
     }
   }
 }

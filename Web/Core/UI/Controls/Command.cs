@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -9,6 +10,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -498,6 +500,15 @@ public class Command: IControlItem
   string IControlItem.ItemID
   {
     get { return null; }
+  }
+
+  public virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    string key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ToolTip = (string) values[key];
   }
 }
 
