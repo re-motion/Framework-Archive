@@ -80,7 +80,8 @@
         for details on localization.
       </para><para>
         The control supports resource dispatching to its properties through the <see cref="ResourceDispatcher"/>.
-        Use the following resource identifiers for dispatching strings to the <b>BocReferenceValue</b>.
+        Use the following resource identifiers for dispatching strings to the <b>BocReferenceValue</b>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
       </para>
       <list type="table">
         <listheader>
