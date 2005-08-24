@@ -354,6 +354,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\SmartNavigation.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\Style.css"
                     BuildAction = "Content"
                 />
