@@ -16,6 +16,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -413,6 +414,31 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected override void DispatchByElementValue (NameValueCollection values)
+  {
+    base.DispatchByElementValue (values);
+
+    //  Dispatch simple properties
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (TrueDescription);
+    if (! StringUtility.IsNullOrEmpty (key))
+      TrueDescription = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (FalseDescription);
+    if (! StringUtility.IsNullOrEmpty (key))
+      FalseDescription = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (NullDescription);
+    if (! StringUtility.IsNullOrEmpty (key))
+      NullDescription = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ErrorMessage = (string) values[key];
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
