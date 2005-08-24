@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI.Design;
@@ -6,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -132,8 +135,21 @@ public sealed class IconInfo: ISerializable
   public void Reset()
   {
     _url = string.Empty;
+    _alternateText = string.Empty;
     _width = Unit.Empty;
     _height = Unit.Empty;
+  }
+
+  public void DispatchByElementValue (NameValueCollection values)
+  {
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Url);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Url = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (AlternateText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      AlternateText = (string) values[key];
   }
 }
 
