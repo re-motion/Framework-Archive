@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
@@ -13,6 +14,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -118,6 +120,17 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   protected virtual string DisplayedTypeName
   {
     get { return "ColumnDefinition"; }
+  }
+
+  public override void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    base.DispatchByElementValue (values);
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ColumnTitle);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ColumnTitle = (string) values[key];
   }
 }
 
@@ -239,23 +252,6 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
     set { _text = value; }
   }
 
-  /// <summary> Depracated property. Only used for designer. Use <see cref="Text"/> instead. </summary>
-  /// TODO: Remove in a few weeks. (End of April).
-  /// Used right now only in demo applications
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [DefaultValue("")]
-  [Browsable (false)]
-  [Obsolete ("Not functional. Use 'Text' instead.")]
-  public string Label
-  {
-    get { return ""; }
-    set 
-    {
-      if (StringUtility.IsNullOrEmpty (Text))
-        Text = value; 
-    }
-  }
-
   /// <summary> Gets or sets the image representing the command in the rendered page. </summary>
   /// <value> An <see cref="Image"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -273,6 +269,20 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   protected override string DisplayedTypeName
   {
     get { return "CommandColumnDefinition"; }
+  }
+  public override void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    base.DispatchByElementValue (values);
+    
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Text = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (IconPath);
+    if (! StringUtility.IsNullOrEmpty (key))
+      IconPath = (string) values[key];
   }
 }
 
@@ -722,6 +732,31 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   protected override string DisplayedTypeName
   {
     get { return "EditDetailsColumnDefinition"; }
+  }
+  public override void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    base.DispatchByElementValue (values);
+    
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (EditText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      EditText = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (SaveText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      SaveText = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (CancelText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      CancelText = (string) values[key];
+
+    if (EditIcon != null)
+      EditIcon.DispatchByElementValue (values);
+    if (SaveIcon != null)
+      SaveIcon.DispatchByElementValue (values);
+    if (CancelIcon != null)
+      CancelIcon.DispatchByElementValue (values);
   }
 }
 
