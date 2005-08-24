@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 
 using Rubicon.Globalization;
@@ -14,15 +15,15 @@ namespace Rubicon.Web.UI.Globalization
 public interface IResourceDispatchTarget
 {
   /// <summary>
-  ///   <c>Dispatch</c> is called by the parent control
-  ///   and receives the resources as an <c>IDictonary</c>.
+  ///   <b>DispatchByElementName</b> is called by the parent control
+  ///   and receives the resources as an <b>IDictonary</b>.
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     The implementation of <c>IResourceDispatchTarget</c> is responsible for interpreting
-  ///     the resources provided through <c>Dispatch</c>.
+  ///     The implementation of <b>IResourceDispatchTarget</b> is responsible for interpreting
+  ///     the resources provided through <b>ByElementName</b>.
   ///   </para><para>
-  ///     The key of the <c>IDictonaryEntry</c> can be a simple property name
+  ///     The key of the <b>IDictonaryEntry</b> can be a simple property name
   ///     or a more complex string. It can be freely defined by the <c>IResourceDispatchTarget</c>
   ///     implementation. Inside the resource container, this key is prepended by the control
   ///     instance's ID and a prefix.For details, please refer to 
@@ -30,9 +31,10 @@ public interface IResourceDispatchTarget
   ///   </para>
   /// </remarks>
   /// <param name="values">
-  ///   An <c>IDictonary</c>: &lt;string key, string value&gt;.
+  ///   An <b>IDictonary</b>: &lt;string key, string value&gt;.
   /// </param>
-  void Dispatch (IDictionary values);
+  void DispatchByElementName (IDictionary values);
+  void DispatchByElementValue (NameValueCollection values);
 }
 
 }
