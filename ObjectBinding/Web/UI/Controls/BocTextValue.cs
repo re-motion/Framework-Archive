@@ -12,6 +12,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -356,6 +357,18 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected override void DispatchByElementValue (NameValueCollection values)
+  {
+    base.DispatchByElementValue (values);
+
+    //  Dispatch simple properties
+    string key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ErrorMessage = (string) values[key];
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
