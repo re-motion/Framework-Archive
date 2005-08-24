@@ -57,7 +57,10 @@ public class WxeStepList: WxeStep
     {
       context.IsPostBack = (i == _lastExecutedStep);
       _lastExecutedStep = i;
-      this[i].Execute (context);
+      WxeStep currentStep = this[i];
+      if (currentStep.IsAborted)
+        throw new InvalidOperationException ("Step " + i + " of " + this.GetType().FullName + " is aborted.");
+      currentStep.Execute (context);
       _nextStep = i + 1;
     }
   }

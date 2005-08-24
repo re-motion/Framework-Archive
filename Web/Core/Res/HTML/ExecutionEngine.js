@@ -1,14 +1,14 @@
 var _wxe_context = null;
 
-function Wxe_Initialize (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage)
+function Wxe_Initialize (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID)
 {
-  _wxe_context = new Wxe_Context (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage);
+  _wxe_context = new Wxe_Context (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID);
   window.onload = Wxe_OnLoad;
   window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
   window.onunload = Wxe_OnUnload;
 }
 
-function Wxe_Context (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage)
+function Wxe_Context (theForm, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID)
 {
   this.TheForm = document.getElementById (theForm);
   if (refreshInterval > 0)
@@ -22,6 +22,7 @@ function Wxe_Context (theForm, refreshInterval, refreshUrl, abortUrl, abortMessa
   this.IsAbortConfirmationEnabled = this.IsAbortEnabled && abortMessage != null;
   this.IsSubmit = false;
   this.AspnetDoPostBack = null;
+  this.SmartNavigationField = document.getElementById (smartNavigationFieldID);
 }
 
 function Wxe_Refresh()
@@ -41,13 +42,15 @@ function Wxe_OnLoad()
 	_wxe_context.TheForm.onsubmit = function() { _wxe_context.IsSubmit = true; };
 	
 	_wxe_context.AspnetDoPostBack = __doPostBack;
-	__doPostBack = function (eventTarget, eventArgument)
-	    {
-	      _wxe_context.IsSubmit = true;
-	      //SmartNavigation (document.getElementById ('eventTarget'));
-	      _wxe_context.AspnetDoPostBack (eventTarget, eventArgument);
-	    };
-	//SmartNavigationRestore();
+	__doPostBack = Wxe_DoPostBack;
+//	SmartNavigationRestore ( _wxe_context.SmartNavigationField.value);
+}
+
+function Wxe_DoPostBack (eventTarget, eventArgument)
+{
+	_wxe_context.IsSubmit = true;
+//	_wxe_context.SmartNavigationField.value = SmartNavigationBackup (eventTarget, eventArgument);
+	_wxe_context.AspnetDoPostBack (eventTarget, eventArgument);
 }
 
 function Wxe_OnBeforeUnload ()
@@ -83,54 +86,5 @@ function Wxe_OnUnload()
     catch (e)
     {
     }
-    //SmartNavigation (null);
-  }
-}
-
-function SmartNavigationRestore()
-{
-  var scrollParent = document.getElementById ('MultiView_ActiveView');
-  var scrollTop = 169;
-  var scrollLeft = 0;
-  if (scrollParent != null)
-  {
-    scrollParent.scrollTop = scrollTop;
-    scrollParent.scrollLeft = scrollLeft;
-  }
-  
-  var focusElement = document.getElementById ('TestTabbedPersonJobsUserControl_MultilineTextField_Boc_TextBox');
-  var offsetLeft = 417;
-  var offsetTop = 605;  
-  if (focusElement != null)
-  {
-    focusElement.focus();
-  }
-}
-
-function SmartNavigation (srcElement)
-{
-  var scrollParent = null;
-  for (var currentNode = srcElement; currentNode != null; currentNode = currentNode.offsetParent)
-  {
-    if (   currentNode.style.overflow.toLowerCase() == 'auto' 
-        || currentNode.style.overflow.toLowerCase() == 'scroll')
-    {
-      scrollParent = currentNode;
-      break;
-    }
-  }
-  if (scrollParent != null)
-  {
-    var scrollElement = document.getElementById ('smartNavigationScrollElement');
-    var scrollTop = document.getElementById ('smartNavigationScrollTop');
-    var scrollLeft = document.getElementById ('smartNavigationScrollLeft');
-    scrollElement.value = scrollParent.id;
-    scrollTop.value = scrollParent.scrollTop;
-    scrollLeft.value = scrollParent.scrollLeft;
-  }
-  if (srcElement != null)
-  {
-    var focus = document.getElementById ('smartNavigationFocus');
-    focus.value = srcElement.id;
   }
 }
