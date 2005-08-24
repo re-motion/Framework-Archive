@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -783,7 +784,12 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     }
   }
 
-  public void Dispatch(IDictionary values)
+  public void Dispatch (IDictionary values)
+  {
+    ((IResourceDispatchTarget)this).DispatchByElementName (values);
+  }
+
+  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
   {
     foreach (DictionaryEntry entry in values)
     {
@@ -815,6 +821,10 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
         Rubicon.Utilities.ReflectionUtility.SetFieldOrPropertyValue (this, key, text);
       }
     }
+  }
+
+  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
+  {
   }
 
   private TabMenu GetMenuByName (Tab tab, string menuName)
