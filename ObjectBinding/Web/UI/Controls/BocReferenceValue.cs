@@ -33,7 +33,6 @@ public class BocReferenceValue:
     BusinessObjectBoundModifiableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler,
-    IResourceDispatchTarget,
     IBocMenuItemContainer
 {
   // constants
@@ -294,9 +293,9 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the <see cref="BocReferenceValue"/>'s properties. </summary>
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  public void Dispatch (IDictionary values)
+  protected override void DispatchByElementName (IDictionary values)
   {
     HybridDictionary optionsMenuItemValues = new HybridDictionary();
     HybridDictionary propertyValues = new HybridDictionary();
@@ -389,13 +388,42 @@ public class BocReferenceValue:
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGeneric (this, propertyValues);
+    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
 
     //  Dispatch compound element properties
-    ResourceDispatcher.DispatchGeneric (Command, commandValues);
+    if (Command != null)
+      ResourceDispatcher.DispatchGenericByPropertyName (Command, commandValues);
 
     //  Dispatch to collections
-    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+    OptionsMenuItems.DispatchByElementName (optionsMenuItemValues, this, "OptionsMenuItems");
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected override void DispatchByElementValue (NameValueCollection values)
+  {
+    base.DispatchByElementValue (values);
+
+    //  Dispatch simple properties
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Select);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Select = (string) values[key];
+    
+    key = ResourceDispatcher.GetDispatchByElementValueKey (OptionsTitle);
+    if (! StringUtility.IsNullOrEmpty (key))
+      OptionsTitle = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ErrorMessage = (string) values[key];
+
+    //  Dispatch compound element properties
+    if (Command != null)
+      Command.DispatchByElementValue (values);
+
+    //  Dispatch to collections
+    OptionsMenuItems.DispatchByElementValue (values);
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
