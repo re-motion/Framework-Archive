@@ -16,6 +16,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -431,6 +432,23 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected override void DispatchByElementValue (NameValueCollection values)
+  {
+    base.DispatchByElementValue (values);
+
+    //  Dispatch simple properties
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (TrueDescription);
+    if (! StringUtility.IsNullOrEmpty (key))
+      TrueDescription = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (FalseDescription);
+    if (! StringUtility.IsNullOrEmpty (key))
+      FalseDescription = (string) values[key];
   }
 
   private void DetermineClientScriptLevel() 
