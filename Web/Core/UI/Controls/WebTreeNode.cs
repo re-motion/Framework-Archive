@@ -1,8 +1,11 @@
 using System;
 using System.ComponentModel;
+using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -310,6 +313,16 @@ public class WebTreeNode: IControlItem
         OnOwnerControlChanged();
       }
     }
+  }
+
+  public virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    string key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Text = (string) values[key];
+
+    if (Icon != null)
+      Icon.DispatchByElementValue (values);
   }
 }
 

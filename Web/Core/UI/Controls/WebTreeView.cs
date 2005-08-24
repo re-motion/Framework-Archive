@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
@@ -8,6 +9,7 @@ using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -16,7 +18,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\UI\Controls\WebTreeView.xml' path='WebTreeView/Class/*' />
 [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
 [DefaultEvent ("Click")]
-public class WebTreeView: WebControl, IControl, IPostBackEventHandler
+public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResourceDispatchTarget
 {
   // constants
   #region private const string c_nodeIcon...
@@ -256,6 +258,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
     base.OnInit (e);
     if (Page != null && ! Page.IsPostBack)
       _isLoadViewStateCompleted = true;
+    ResourceDispatcher.RegisterDispatchTarget (this);
   }
 
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
@@ -331,6 +334,53 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler
       nodesViewState[i] = nodeViewState;
     }
     return nodesViewState;
+  }
+
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    DispatchByElementName (values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void DispatchByElementName (IDictionary values)
+  {
+    //  Dispatch simple properties
+    ResourceDispatcher.DispatchGenericByPropertyName (this, values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    DispatchByElementValue (values);
+  }
+
+  /// <summary> 
+  ///   Dispatches the resources passed in <paramref name="values"/> to the control's properties. 
+  /// </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    //  Dispatch simple properties
+    string key;
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (AccessKey);
+    if (! StringUtility.IsNullOrEmpty (key))
+      AccessKey = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ToolTip = (string) values[key];
+
+    Nodes.DispatchByElementValue (values);
   }
 
   /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
