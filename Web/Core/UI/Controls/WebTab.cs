@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -278,6 +281,16 @@ public class WebTab: IControlItem
 
   public virtual void OnSelectionChanged()
   {
+  }
+
+  public virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    string key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Text = (string) values[key];
+    
+    if (Icon != null)
+      Icon.DispatchByElementValue (values);
   }
 }
 
