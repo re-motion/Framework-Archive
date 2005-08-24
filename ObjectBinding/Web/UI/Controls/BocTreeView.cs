@@ -240,10 +240,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
           if (isEvaluated)
             node.EvaluateExpand();
         }
-        bool isExpanded = (bool) values[1];
-        node.IsExpanded = isExpanded;
-        if (node.Children.Count == 0)
-          node.IsExpanded = false;
+        if (node.IsEvaluated)
+        {
+          bool isExpanded = (bool) values[1];
+          node.IsExpanded = isExpanded;
+          if (node.Children.Count == 0)
+            node.IsExpanded = false;
+        }
         ApplyNodesViewStateRecursive ((Pair[]) nodeViewState.Second, node.Children);
       }
     }
